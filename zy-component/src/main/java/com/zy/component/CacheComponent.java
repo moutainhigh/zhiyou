@@ -2,7 +2,6 @@ package com.zy.component;
 
 import com.zy.common.support.cache.CacheSupport;
 import com.zy.entity.cms.Notice;
-import com.zy.entity.cms.Notice.NoticeType;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.Job;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.zy.common.util.ValidateUtils.*;
 import static com.zy.model.Constants.*;
 
 @Component
@@ -88,7 +88,7 @@ public class CacheComponent {
 		}
 	}
 
-	public List<Notice> getNotice(NoticeType[] noticeTypes) {
+	public List<Notice> getNotice(Notice.NoticeType[] noticeTypes) {
 		validate(noticeTypes, NOT_EMPTY, "cache key notice types is null");
 		List<Notice> notices = null;
 		String key = Arrays.stream(noticeTypes).sorted().map(v -> String.valueOf(v.ordinal())).reduce("", (u, v) -> u + "-" + v);

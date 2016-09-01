@@ -34,6 +34,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
 @Service
 @Validated
 public class DepositServiceImpl implements DepositService {
