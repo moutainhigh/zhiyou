@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gc.mapper.FeedbackMapper" >
+
+	<resultMap id="baseResultMap" type="com.gc.entity.cms.Feedback">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="feedback_type" property="feedbackType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="feedback_status" property="feedbackStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="content" property="content" />
+		<result column="reply" property="reply" />
+		<result column="created_time" property="createdTime" />
+		<result column="replied_time" property="repliedTime" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.gc.entity.cms.Feedback" useGeneratedKeys="true" keyProperty="id">
+	  insert into `cms_feedback` (user_id,feedback_type,feedback_status,content,reply,created_time,replied_time)
+	  values (#{userId},#{feedbackType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{feedbackStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{content},#{reply},#{createdTime},#{repliedTime})
+	</insert>
+
+	<delete id="delete">
+		delete from `cms_feedback` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.gc.entity.cms.Feedback">
+		update `cms_feedback`
+		<set>
+			user_id = #{userId},
+			feedback_type = #{feedbackType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			feedback_status = #{feedbackStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			content = #{content},
+			reply = #{reply},
+			created_time = #{createdTime},
+			replied_time = #{repliedTime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `cms_feedback`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{feedback.userId},</when>
+					<when test="field == 'feedbackType'">feedback_type = #{feedback.feedbackType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.gc.entity.cms.Feedback$FeedbackType},</when>
+					<when test="field == 'feedbackStatus'">feedback_status = #{feedback.feedbackStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.gc.entity.cms.Feedback$FeedbackStatus},</when>
+					<when test="field == 'content'">content = #{feedback.content},</when>
+					<when test="field == 'reply'">reply = #{feedback.reply},</when>
+					<when test="field == 'createdTime'">created_time = #{feedback.createdTime},</when>
+					<when test="field == 'repliedTime'">replied_time = #{feedback.repliedTime},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{feedback.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,feedback_type,feedback_status,content,reply,created_time,replied_time
+		from `cms_feedback`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.gc.model.query.FeedbackQueryModel">
+		select
+		id,user_id,feedback_type,feedback_status,content,reply,created_time,replied_time
+		from `cms_feedback`
+		<where>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="feedbackStatusEQ != null">
+				 and feedback_status = #{feedbackStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.gc.model.query.FeedbackQueryModel">
+		select count(*) from `cms_feedback`
+		<where>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="feedbackStatusEQ != null">
+				 and feedback_status = #{feedbackStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+		</where>
+	</select>
+
+</mapper>

@@ -1,0 +1,11 @@
+User-agent: *
+
+Disallow: /login
+Disallow: /socialLogin
+Disallow: /logout
+Disallow: /register
+Disallow: /socialRegister
+Disallow: /findPassword
+Disallow: /ucenter/
+Disallow: /user/
+Disallow: /*Ajax$

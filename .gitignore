@@ -1,0 +1,14 @@
+*.iml
+*.class
+target/
+.project
+.settings/
+.classpath
+.springBeans
+.idea/
+*Test.java
+
+/sk-service-impl/src/test/java/com/ke/
+/sk-service-impl/src/main/java/com/GeneratorRun.java
+/jvm.log
+/gc-service-impl/src/main/java/com/zy/Run.java

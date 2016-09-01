@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		">
+	<bean id="closeableHttpClient" class="com.zy.common.extend.CloseableHttpClientFactoryBean" />
+
+	<bean id="memcachedClient" class="com.zy.common.extend.MemcachedClientFactoryBean">
+		<property name="servers" value="${memcached.url}" />
+		<property name="protocol" value="BINARY" />
+		<property name="transcoder">
+			<bean class="net.spy.memcached.transcoders.SerializingTranscoder">
+				<property name="compressionThreshold" value="1024" />
+			</bean>
+		</property>
+		<property name="opTimeout" value="3000" />
+		<property name="timeoutExceptionThreshold" value="1998" />
+		<property name="hashAlg">
+			<value type="net.spy.memcached.DefaultHashAlgorithm">KETAMA_HASH</value>
+		</property>
+		<property name="locatorType" value="CONSISTENT" />
+		<property name="failureMode" value="Redistribute" />
+		<property name="useNagleAlgorithm" value="false" />
+
+		<property name="authDescriptor">
+			<bean class="net.spy.memcached.auth.AuthDescriptor">
+				<constructor-arg index="0">
+					<array>
+						<value>PLAIN</value>
+					</array>
+				</constructor-arg>
+				<constructor-arg index="1">
+					<bean class="com.zy.common.extend.PlainCallbackHandler">
+						<constructor-arg index="0">
+							<value>${memcached.username}</value>
+						</constructor-arg>
+						<constructor-arg index="1">
+							<value>${memcached.password}</value>
+						</constructor-arg>
+					</bean>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="cacheSupport" class="com.zy.common.support.cache.MemcachedSupport">
+		<constructor-arg index="0" ref="memcachedClient" />
+		<constructor-arg index="1" value="${memcached.group}" />
+	</bean>
+
+	<bean id="luosimaoSmsSupport" class="com.zy.common.support.LuosimaoSmsSupport">
+		<constructor-arg index="0" value="${sms.apiKey}" />
+		<constructor-arg index="1" value="${sms.sign}" />
+	</bean>
+
+	<bean id="aliyunOssSupport" class="com.zy.common.support.AliyunOssSupport">
+		<constructor-arg index="0" value="${aliyun.ossEndpoint}" />
+		<constructor-arg index="1" value="${aliyun.accessKeyId}" />
+		<constructor-arg index="2" value="${aliyun.accessKeySecret}" />
+		<constructor-arg index="3" value="${aliyun.ossGroup}" />
+	</bean>
+
+	<bean id="wxMpConfigStorage" class="me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage">
+		<property name="appId" value="${weixinMp.appKey}" />
+		<property name="secret" value="${weixinMp.appSecret}" />
+		<property name="partnerId" value="${weixinPay.mchId}" />
+		<property name="partnerKey" value="${weixinPay.secret}" />
+		<property name="token" value="${weixinMp.token}" />
+		<property name="aesKey" value="${weixinMp.aesKey}" />
+	</bean>
+	
+	<bean id="wxMpService" class="me.chanjar.weixin.mp.api.WxMpServiceImpl">
+		<property name="wxMpConfigStorage" ref="wxMpConfigStorage" />
+	</bean>
+	
+</beans>

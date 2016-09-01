@@ -1,0 +1,95 @@
+.product-list {
+  background-color: #fff;
+}
+.product-list h2 {
+  padding-left: 15px;
+  color: #333; font-size: 18px; line-height: 42px;
+}
+.product-list .product {
+  float: left; padding: 10px 15px;
+  display: block; width: 50%;
+}
+.product-list .product h3 {
+  color: #333; font-size: 16px; line-height: 30px;
+}
+.product-list .product h4 {
+  height: 30px;
+  color: #999; font-size: 14px; line-height: 30px;
+}
+.product-list .product .image-box {
+  position: relative;
+}
+.product-list .product .image-box img {
+  width: 100%; height: 90px; max-width: 150px; 
+  background: #efefef url("../../image/image_placeholder.jpg") no-repeat scroll center center;
+  background-size: 100% 100%;
+}
+
+.product-list .product .product-info {
+  margin-top: 10px;
+  height: 24px;
+}
+.product-list .product .tag {
+  padding: 2px 12px;
+  color: #fff; font-size: 14px;
+  background-color: #f0732f;
+}
+.product-list .product .price {
+  color: #ff5959; font-size: 16px;
+}
+.product-list .product .price i {
+  color: #ccc; font-size: 14px;
+}
+
+@media screen and (max-width: 380px) {
+  .product-list .product .tag {
+    padding: 2px 8px;
+    font-size: 12px;
+  }
+  .product-list .product .price {
+    font-size: 14px;
+  }
+  .product-list .product .price i {
+    font-size: 12px;
+  }
+}
+
+
+.product-detail {
+  background-color: #fff;
+}
+.product-detail .product-image {
+  position: relative;
+  width: 100%; padding-top: 40%;
+}
+.product-detail .product-image img {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.product-detail .product-title {
+  padding: 0 15px; margin-top: 10px;
+  color: #333; font-size: 18px; line-height: 42px;
+}
+.product-detail .product-wrap .market-price {
+  padding: 0 15px;
+  color: #777; font-size: 14px; line-height: 30px;
+}
+.product-detail .product-wrap .price {
+  padding: 0 15px;
+  color: #f15353; font-size: 18px; line-height: 36px;
+}
+.product-detail .product-wrap .price span {
+  font-weight: 600;
+}
+.product-detail .detail-wrap {
+  margin-top: 20px;
+}
+.product-detail .detail-wrap img{
+  width: 100%;
+}
+.product-detail .footer-nav .btn-buy {
+  color: #fff; font-size: 15px; text-align: center; line-height: 48px;
+  background-color: #f0732f;
+}
+
+

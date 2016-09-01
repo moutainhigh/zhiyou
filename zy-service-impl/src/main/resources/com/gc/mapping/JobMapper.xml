@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gc.mapper.JobMapper" >
+
+	<resultMap id="baseResultMap" type="com.gc.entity.usr.Job">
+		<id column="id" property="id" />
+		<result column="job_name" property="jobName" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.gc.entity.usr.Job" useGeneratedKeys="true" keyProperty="id">
+	  insert into `usr_job` (job_name)
+	  values (#{jobName})
+	</insert>
+
+	<delete id="delete">
+		delete from `usr_job` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.gc.entity.usr.Job">
+		update `usr_job`
+		<set>
+			job_name = #{jobName},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `usr_job`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'jobName'">job_name = #{job.jobName},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{job.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,job_name
+		from `usr_job`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap">
+		select
+		id,job_name
+		from `usr_job`
+		order by id desc
+	</select>
+
+</mapper>

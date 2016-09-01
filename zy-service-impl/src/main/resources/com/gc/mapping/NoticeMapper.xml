@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gc.mapper.NoticeMapper" >
+
+	<resultMap id="baseResultMap" type="com.gc.entity.cms.Notice">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="created_time" property="createdTime" />
+		<result column="notice_type" property="noticeType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.gc.entity.cms.Notice" useGeneratedKeys="true" keyProperty="id">
+	  insert into `cms_notice` (title,content,created_time,notice_type)
+	  values (#{title},#{content},#{createdTime},#{noticeType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler})
+	</insert>
+
+	<delete id="delete">
+		delete from `cms_notice` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.gc.entity.cms.Notice">
+		update `cms_notice`
+		<set>
+			title = #{title},
+			content = #{content},
+			created_time = #{createdTime},
+			notice_type = #{noticeType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `cms_notice`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'title'">title = #{notice.title},</when>
+					<when test="field == 'content'">content = #{notice.content},</when>
+					<when test="field == 'createdTime'">created_time = #{notice.createdTime},</when>
+					<when test="field == 'noticeType'">notice_type = #{notice.noticeType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.gc.entity.cms.Notice$NoticeType},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{notice.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,title,content,created_time,notice_type
+		from `cms_notice`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.gc.model.query.NoticeQueryModel">
+		select
+		id,title,content,created_time,notice_type
+		from `cms_notice`
+		<where>
+			<if test="noticeTypeIN != null">
+				 and notice_type in
+				<foreach collection="noticeTypeIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+			</if>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
+			<if test="noticeTypeEQ != null">
+				 and notice_type = #{noticeTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.gc.model.query.NoticeQueryModel">
+		select count(*) from `cms_notice`
+		<where>
+			<if test="noticeTypeIN != null">
+				 and notice_type in
+				<foreach collection="noticeTypeIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+			</if>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
+			<if test="noticeTypeEQ != null">
+				 and notice_type = #{noticeTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+		</where>
+	</select>
+
+</mapper>

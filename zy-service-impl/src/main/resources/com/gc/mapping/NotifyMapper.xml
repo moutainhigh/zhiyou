@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gc.mapper.NotifyMapper" >
+
+	<resultMap id="baseResultMap" type="com.gc.entity.sys.Notify">
+		<id column="id" property="id" />
+		<result column="topic" property="topic" />
+		<result column="payload" property="payload" />
+		<result column="is_sent" property="isSent" />
+		<result column="created_time" property="createdTime" />
+		<result column="sent_time" property="sentTime" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.gc.entity.sys.Notify" useGeneratedKeys="true" keyProperty="id">
+	  insert into `sys_notify` (topic,payload,is_sent,created_time,sent_time)
+	  values (#{topic},#{payload},#{isSent},#{createdTime},#{sentTime})
+	</insert>
+
+	<delete id="delete">
+		delete from `sys_notify` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.gc.entity.sys.Notify">
+		update `sys_notify`
+		<set>
+			topic = #{topic},
+			payload = #{payload},
+			is_sent = #{isSent},
+			created_time = #{createdTime},
+			sent_time = #{sentTime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `sys_notify`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'topic'">topic = #{notify.topic},</when>
+					<when test="field == 'payload'">payload = #{notify.payload},</when>
+					<when test="field == 'isSent'">is_sent = #{notify.isSent},</when>
+					<when test="field == 'createdTime'">created_time = #{notify.createdTime},</when>
+					<when test="field == 'sentTime'">sent_time = #{notify.sentTime},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{notify.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,topic,payload,is_sent,created_time,sent_time
+		from `sys_notify`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap">
+		select
+		id,topic,payload,is_sent,created_time,sent_time
+		from `sys_notify`
+		order by id desc
+	</select>
+
+</mapper>

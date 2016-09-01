@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gc.mapper.ReportMapper" >
+
+	<resultMap id="baseResultMap" type="com.gc.entity.act.Report">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="realname" property="realname" />
+		<result column="date" property="date" />
+		<result column="age" property="age" />
+		<result column="gender" property="gender" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="report_result" property="reportResult" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="text" property="text" />
+		<result column="image1" property="image1" />
+		<result column="image2" property="image2" />
+		<result column="image3" property="image3" />
+		<result column="image4" property="image4" />
+		<result column="image5" property="image5" />
+		<result column="image6" property="image6" />
+		<result column="created_time" property="createdTime" />
+		<result column="confirm_status" property="confirmStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="confirm_remark" property="confirmRemark" />
+		<result column="applied_time" property="appliedTime" />
+		<result column="confirmed_time" property="confirmedTime" />
+		<result column="is_settled_up" property="isSettledUp" />
+		<result column="version" property="version" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.gc.entity.act.Report" useGeneratedKeys="true" keyProperty="id">
+	  insert into `act_report` (user_id,realname,date,age,gender,report_result,text,image1,image2,image3,image4,image5,image6,created_time,confirm_status,confirm_remark,applied_time,confirmed_time,is_settled_up,version)
+	  values (#{userId},#{realname},#{date},#{age},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{text},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{appliedTime},#{confirmedTime},#{isSettledUp},#{version})
+	</insert>
+
+	<delete id="delete">
+		delete from `act_report` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.gc.entity.act.Report">
+		update `act_report`
+		<set>
+			user_id = #{userId},
+			realname = #{realname},
+			date = #{date},
+			age = #{age},
+			gender = #{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			report_result = #{reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			text = #{text},
+			image1 = #{image1},
+			image2 = #{image2},
+			image3 = #{image3},
+			image4 = #{image4},
+			image5 = #{image5},
+			image6 = #{image6},
+			created_time = #{createdTime},
+			confirm_status = #{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			confirm_remark = #{confirmRemark},
+			applied_time = #{appliedTime},
+			confirmed_time = #{confirmedTime},
+			is_settled_up = #{isSettledUp},
+			version = version + 1,
+		</set>
+		where id = #{id} and version=#{version}
+	</update>
+
+	<update id="merge">
+		update `act_report`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{report.userId},</when>
+					<when test="field == 'realname'">realname = #{report.realname},</when>
+					<when test="field == 'date'">date = #{report.date},</when>
+					<when test="field == 'age'">age = #{report.age},</when>
+					<when test="field == 'gender'">gender = #{report.gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.gc.entity.usr.Portrait$Gender},</when>
+					<when test="field == 'reportResult'">report_result = #{report.reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.gc.entity.act.Report$ReportResult},</when>
+					<when test="field == 'text'">text = #{report.text},</when>
+					<when test="field == 'image1'">image1 = #{report.image1},</when>
+					<when test="field == 'image2'">image2 = #{report.image2},</when>
+					<when test="field == 'image3'">image3 = #{report.image3},</when>
+					<when test="field == 'image4'">image4 = #{report.image4},</when>
+					<when test="field == 'image5'">image5 = #{report.image5},</when>
+					<when test="field == 'image6'">image6 = #{report.image6},</when>
+					<when test="field == 'createdTime'">created_time = #{report.createdTime},</when>
+					<when test="field == 'confirmStatus'">confirm_status = #{report.confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.gc.entity.sys.ConfirmStatus},</when>
+					<when test="field == 'confirmRemark'">confirm_remark = #{report.confirmRemark},</when>
+					<when test="field == 'appliedTime'">applied_time = #{report.appliedTime},</when>
+					<when test="field == 'confirmedTime'">confirmed_time = #{report.confirmedTime},</when>
+					<when test="field == 'isSettledUp'">is_settled_up = #{report.isSettledUp},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{report.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,realname,date,age,gender,report_result,text,image1,image2,image3,image4,image5,image6,created_time,confirm_status,confirm_remark,applied_time,confirmed_time,is_settled_up,version
+		from `act_report`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.gc.model.query.ReportQueryModel">
+		select
+		id,user_id,realname,date,age,gender,report_result,text,image1,image2,image3,image4,image5,image6,created_time,confirm_status,confirm_remark,applied_time,confirmed_time,is_settled_up,version
+		from `act_report`
+		<where>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="userIdIN != null">
+				 and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="confirmStatusEQ != null">
+				 and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="realnameLK != null">
+				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.gc.model.query.ReportQueryModel">
+		select count(*) from `act_report`
+		<where>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="userIdIN != null">
+				 and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="confirmStatusEQ != null">
+				 and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="realnameLK != null">
+				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByTaskItemId" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,task_id,task_item_id,text,image1,image2,image3,image4,image5,image6,created_time
+		from `tsk_report`
+		where task_item_id = #{taskItemId}
+	</select>
+
+</mapper>

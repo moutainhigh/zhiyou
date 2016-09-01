@@ -1,0 +1,103 @@
+@charset "UTF-8";
+body{
+  background-color: #ffcdb7;
+}
+.share-wrap{
+  width: 100%; height: auto;
+  padding: 10px 15px;
+  background-color: #ffe0d2;
+  text-align: center;
+}
+.has-accepted{
+  position: fixed; top: 50%; left: 50%;
+  width: 210px; height: 70px; line-height: 70px;
+  margin-top: -35px; margin-left: -105px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.65);
+}
+ 
+.item-title {
+    margin: 25px 0 10px;
+    overflow: hidden;
+    text-align: center;
+}
+.item-title h2 {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 1;
+    position: relative;
+}
+.item-title h2::before, .item-title h2::after {
+    border-top: 1px solid #aaa;
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 300%;
+}
+.item-title h2::before {
+    left: -310%;
+}
+.item-title h2::after {
+    right: -310%;
+}
+.friend-item{
+  margin: 15px 0;
+  width: 100%; height: 35px;
+  padding-left: 35px;
+  overflow: hidden;
+} 
+.friend-item img{
+  float: left;
+  width: 35px; height: 35px;
+  border-radius: 5px;
+  margin-left: -35px;
+}
+.friend-info{
+  float: left;
+  margin-left: 10px; line-height: 17px;
+}
+.friend-info p{
+  height: 17px;
+  overflow: hidden;
+}
+.friend-info .font-orange{
+  display: inline-block;
+  text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
+}
+ 
+@media screen and (max-width: 330px) {
+    .friend-info p{
+      max-width: 149px;
+    }
+    .friend-info .font-orange{
+      max-width: 30px;
+    }
+}
+@media screen and (min-width: 331px) and (max-width: 374px) {
+    .friend-info p{
+      max-width: 160px;
+    }
+    .friend-info .font-orange{
+      max-width: 45px;
+      margin-right: 3px;
+    }
+}
+@media screen and (min-width: 375px) and (max-width: 390px) {
+    .friend-info p{
+      max-width: 200px;
+    }
+    .friend-info .font-orange{
+      max-width: 75px;
+      margin-right: 3px;
+    }
+}
+@media screen and (min-width: 391px) and (max-width: 414px) {
+    .friend-info p{
+      max-width: 220px;
+    }
+    .friend-info .font-orange{
+      max-width: 100px;
+      margin-right: 3px;
+    }
+}
+ 

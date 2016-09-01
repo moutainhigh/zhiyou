@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://code.alibabatech.com/schema/dubbo http://static.1024ke.com/file/dubbo.xsd">
+
+	<dubbo:consumer cluster="failfast" timeout="10000"/>
+	
+	<dubbo:reference id="adminService" interface="com.gc.service.AdminService" />
+	<dubbo:reference id="areaService" interface="com.gc.service.AreaService" />
+	<dubbo:reference id="accountService" interface="com.gc.service.AccountService" />
+	<dubbo:reference id="accountLogService" interface="com.gc.service.AccountLogService" />
+	<dubbo:reference id="bannerService" interface="com.gc.service.BannerService" />
+	<dubbo:reference id="messageService" interface="com.gc.service.MessageService" />
+	<dubbo:reference id="noticeService" interface="com.gc.service.NoticeService" />
+	<dubbo:reference id="roleService" interface="com.gc.service.RoleService" />
+	<dubbo:reference id="shortMessageService" interface="com.gc.service.ShortMessageService" />
+	<dubbo:reference id="userService" interface="com.gc.service.UserService" />
+	<dubbo:reference id="articleService" interface="com.gc.service.ArticleService" />
+	<dubbo:reference id="articleCategoryService" interface="com.gc.service.ArticleCategoryService" />
+	<dubbo:reference id="depositService" interface="com.gc.service.DepositService" />
+	<dubbo:reference id="withdrawService" interface="com.gc.service.WithdrawService" />
+	<dubbo:reference id="orderService" interface="com.gc.service.OrderService" />
+	<dubbo:reference id="orderItemService" interface="com.gc.service.OrderItemService" />
+	<dubbo:reference id="productService" interface="com.gc.service.ProductService" />
+	<dubbo:reference id="profitService" interface="com.gc.service.ProfitService" />
+	<dubbo:reference id="settingService" interface="com.gc.service.SettingService" />
+	<dubbo:reference id="deliveryService" interface="com.gc.service.DeliveryService" />
+	<dubbo:reference id="feedbackService" interface="com.gc.service.FeedbackService" />
+	<dubbo:reference id="addressService" interface="com.gc.service.AddressService" />
+	<dubbo:reference id="config" interface="com.gc.Config" />
+	<dubbo:reference id="bankCardService" interface="com.gc.service.BankCardService" />
+	<dubbo:reference id="weixinUserService" interface="com.gc.service.WeixinUserService" />
+	<dubbo:reference id="paymentService" interface="com.gc.service.PaymentService" />
+	<dubbo:reference id="giftService" interface="com.gc.service.GiftService" />
+	<dubbo:reference id="helpCategoryService" interface="com.gc.service.HelpCategoryService" />
+	<dubbo:reference id="helpService" interface="com.gc.service.HelpService" />
+	<dubbo:reference id="portraitService" interface="com.gc.service.PortraitService"  />
+	<dubbo:reference id="appearanceService" interface="com.gc.service.AppearanceService" />
+	<dubbo:reference id="reportService" interface="com.gc.service.ReportService" />
+	<dubbo:reference id="userSettingService" interface="com.gc.service.UserSettingService" />
+	<dubbo:reference id="tagService" interface="com.gc.service.TagService"/>
+	<dubbo:reference id="jobService" interface="com.gc.service.JobService"/>
+	<dubbo:reference id="activityService" interface="com.gc.service.ActivityService"/>
+	<dubbo:reference id="activityCollectService" interface="com.gc.service.ActivityCollectService"/>
+	<dubbo:reference id="activityApplyService" interface="com.gc.service.ActivityApplyService"/>
+	<dubbo:reference id="activitySignInService" interface="com.gc.service.ActivitySignInService"/>
+</beans>

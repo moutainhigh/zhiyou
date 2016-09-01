@@ -1,0 +1,31 @@
+.swipe {
+  position: relative; z-index: 9; overflow: hidden;
+  width: 100%; height: auto;
+  background: url("dot1x1.png") no-repeat center; background-size: 100% 100%;
+}
+.swipe .swipe-items > a {
+  float: left; position: relative;
+}
+.swipe .swipe-items > a > img {
+  display: block; width: 100%;
+}
+
+.swipe .swipe-title {
+  position: absolute; left: 0; bottom: 0px;
+  padding: 0 25% 0 10px;  overflow: hidden;
+  width: 100%; height: 40px; line-height: 40px;
+  background-color: rgba(0,0,0,0.5);
+  color: #fff; font-size: 14px; white-space: nowrap; text-overflow: ellipsis;
+}
+.swipe .swipe-pos {
+  position: absolute; right: 0; bottom: 10px;
+  padding: 0 10px; width: 25%;
+  text-align: right;
+}
+.swipe .swipe-pos > li {
+  display: inline-block; width: 10px; height: 10px; margin-left: 3px;
+  border: 1px solid #fff; border-radius: 50%;
+}
+.swipe .swipe-pos > li.current {
+  background: #fff;
+}

@@ -1,0 +1,316 @@
+/** CSS DOCUMENT **/
+
+/* ---------- Reset ---------- */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,li,ol,ul,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td
+  {
+  padding: 0px; margin: 0px; border: 0px; outline: 0px;
+}
+
+html,body,a,p,td,th,div,span,form,li,select,input,textarea {
+  font-family: 'Tahoma', 'Arial', '宋体'; font-size: 12px; color: #4f4f4f;
+}
+
+html {
+  _width: 100%; _height: 100%; -webkit-text-size-adjust: none; -ms-text-size-adjust: none;
+  _filter: expression(document.execCommand ( "BackgroundImageCache", false, true) );
+}
+
+body {
+  _width: 100%; _height: 100%; min-width: 1000px;
+  _width: expression(document.body.clientWidth <= 1000 ?   "1000px" :   "auto");
+  font: 12px tahoma, Arial, Verdana, sans-serif; color: #4f4f4f; background-color: #ffffff;
+  _background-image: url(about: blank); _background-attachment: fixed;
+}
+
+a {
+  text-decoration: none; color: #4f4f4f;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
+}
+
+a:hover {
+  color: #1f4faf; cursor: pointer; text-decoration: underline;
+}
+
+img {
+  vertical-align: middle; image-rendering: optimizeQuality; -ms-interpolation-mode: bicubic;
+}
+
+ul,li {
+  list-style: none;
+}
+
+pre {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+input,select {
+  vertical-align: middle; outline: none;
+}
+
+textarea {
+  padding: 2px; outline: 0px; resize: none; overflow-x: hidden;
+}
+
+table {
+  border-collapse: collapse; border-spacing: 0;
+}
+
+table td,table th {
+  font-weight: normal;
+}
+
+table td.head {
+  text-align: center;
+}
+
+table td.index {
+  text-align: center;
+}
+
+table td.value {
+  text-align: left;
+}
+
+table td.left,table th.left {
+  text-align: left !important;
+}
+
+table td.center,table th.center {
+  text-align: center !important;
+}
+
+table td.right,table th.right {
+  text-align: right !important;
+}
+
+/******clear float*******/
+.clearfix:after {
+  content: "."; display: block; font-size: 0; height: 0; line-height: 0; clear: both; visibility: hidden;
+}
+/* Hides from IE-mac \*/
+* html .clearfix {
+  height: 1%;
+}
+
+.clearfix {
+  display: block;
+}
+
+.black {
+  color: black;
+}
+
+.white {
+  color: white;
+}
+
+.gray {
+  color: gray;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
+.blue {
+  color: blue;
+}
+
+.hidden {
+  display: none;
+}
+
+.highlight {
+  color: #dc2c00;
+}
+
+.warning {
+  color: #ff2f2f;
+}
+
+.debug {
+  border: 1px solid #ff2f2f;
+}
+
+.disabled {
+  color: #9f9f9f; cursor: default;
+}
+/* ---------- Form ---------- */
+input.input {
+  width: 150px; height: 24px; line-height: 24px; padding: 0px 4px;
+  -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;
+  border-color: #cfcfcf #efefef #efefef #cfcfcf; border-style: solid; border-width: 1px;
+}
+input.input-long {
+  width: 300px; height: 24px; line-height: 24px; padding: 0px 4px;
+}
+
+input.input-mini {
+  width: 100px; height: 18px; line-height: 18px; padding: 0px 2px;
+}
+
+input.input[type=file],input.input[type=checkbox] {
+  -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none;
+}
+
+input.input:hover {
+  -webkit-transition: box-shadow linear 0.2s; -moz-transition: box-shadow linear 0.2s;
+  -ms-transition: box-shadow linear 0.2s; -o-transition: box-shadow linear 0.2s; transition: box-shadow linear 0.2s;
+  -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+  -moz-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6); border: 1px solid #d2cf99; /*74b9ef*/
+}
+
+input.input:disabled {
+  background-color: #f5f5f5;
+}
+
+input.input:disabled:hover {
+  -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none; transition: none;
+  -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; border-top: 1px solid #999999;
+  border-right: 1px solid #e1e1e1; border-bottom: 1px solid #e1e1e1; border-left: 1px solid #999999;
+  background-color: #f5f5f5;
+}
+
+input.button {
+  height: 24px; _line-height: 18px; display: inline-block; display: -moz-inline-stack; padding: 0px 16px;
+  margin-right: 10px; font-size: 12px; color: #4f4f4f; cursor: pointer; overflow: visible; text-shadow: 1px 1px #f0f0f0;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); outline: none; blr: expression(this.hideFocus =       true);
+}
+
+input.button-mini {
+  height: 22px; _line-height: 16px; padding: 0px 10px; margin-right: 6px;
+}
+
+input.button:hover {
+  color: #1f1f1f; transition: box-shadow linear 0.2s; -o-transition: box-shadow linear 0.2s;
+  -ms-transition: box-shadow linear 0.2s; -moz-transition: box-shadow linear 0.2s;
+  -webkit-transition: box-shadow linear 0.2s;
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075), 0px 0px 6px rgba(82, 168, 236, 0.6);
+  -moz-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075), 0px 0px 6px rgba(82, 168, 236, 0.6);
+  -webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.075), 0px 0px 6px rgba(82, 168, 236, 0.6);
+  background-position: 0px -30px;
+}
+
+input.button:active {
+  background-position: 0px -60px;
+}
+
+input.button:disabled {
+  color: #cfcfcf;
+}
+
+input.readonly {
+  color: #7f7f7f; cursor: default;
+}
+
+textarea.textarea {
+  width: 300px; height: 80px; padding: 4px; -webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1); box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; border-top: 1px solid #999999;
+  border-right: 1px solid #e1e1e1; border-bottom: 1px solid #e1e1e1; border-left: 1px solid #999999;
+}
+
+textarea.textarea:hover {
+  -webkit-transition: box-shadow linear 0.2s; -moz-transition: box-shadow linear 0.2s;
+  -ms-transition: box-shadow linear 0.2s; -o-transition: box-shadow linear 0.2s; transition: box-shadow linear 0.2s;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6); border: 1px solid #74b9ef;
+}
+
+textarea.textarea:disabled {
+  background-color: #f5f5f5;
+}
+
+textarea.textarea:disabled:hover {
+  -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none; transition: none;
+  -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; border-top: 1px solid #999999;
+  border-right: 1px solid #e1e1e1; border-bottom: 1px solid #e1e1e1; border-left: 1px solid #999999;
+  background-color: #f5f5f5;
+}
+
+textarea.editor {
+  width: 100%;
+}
+
+span.requiredField {
+  padding-right: 3px; color: #ffb042; font-size: 10px;
+}
+
+/* table */
+table.table-form {
+  width: 100%; word-break: break-all;
+}
+
+table.table-form th {
+  width: 130px; padding: 5px 10px; line-height: 20px; font-weight: normal; text-align: right; white-space: nowrap;
+  border-bottom: 1px solid #f0f0f0; background-color: #fafafa; vertical-align: middle;
+}
+
+table.table-form td {
+  line-height: 20px; padding: 5px 8px; border-bottom: 1px solid #f0f0f0;
+}
+
+table.table-form tr:hover th {
+  background-color: #f0f0f0;
+}
+
+table.table-form tr.noneHover:hover {
+  background-color: #ffffff;
+}
+
+table.table-form tr.noneHover:hover th {
+  background-color: #fafafa;
+}
+
+table.table-form .title th,table.table-form .title td {
+  text-align: left; padding-left: 8px; background-color: #f8f8f8;
+}
+
+table.table-form .fieldTitle {
+  height: 28px; line-height: 28px; padding-right: 5px; text-align: left;
+}
+
+table.table-form .buttonbar th,table.table-form .buttonbar td {
+  border-top: 1px solid #dfdfdf !important; border-bottom: 0;
+}
+
+table.table-form .buttonbar td {
+  text-align: left; padding: 4px 20px;
+}
+
+.buttonbar {
+  padding: 5px;
+}
+
+/* ----------- hint ---------- */
+.hint-body {
+  position: relative; margin-left: 12px; padding: 6px 10px; border: 1px solid #cc9933; background-color: #ffffd5;
+}
+
+.hint-body .hint-arrow {
+  position: absolute; left: -10px; top: 3px; width: 10px; height: 19px;
+  background: url('../image/hint_left.gif') left top no-repeat;
+}

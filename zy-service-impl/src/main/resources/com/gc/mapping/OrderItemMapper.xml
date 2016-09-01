@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gc.mapper.OrderItemMapper" >
+
+	<resultMap id="baseResultMap" type="com.gc.entity.mal.OrderItem">
+		<id column="id" property="id" />
+		<result column="order_id" property="orderId" />
+		<result column="product_id" property="productId" />
+		<result column="title" property="title" />
+		<result column="image" property="image" />
+		<result column="market_price" property="marketPrice" />
+		<result column="price" property="price" />
+		<result column="quantity" property="quantity" />
+		<result column="amount" property="amount" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.gc.entity.mal.OrderItem" useGeneratedKeys="true" keyProperty="id">
+	  insert into `mal_order_item` (order_id,product_id,title,image,market_price,price,quantity,amount)
+	  values (#{orderId},#{productId},#{title},#{image},#{marketPrice},#{price},#{quantity},#{amount})
+	</insert>
+
+	<delete id="delete">
+		delete from `mal_order_item` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.gc.entity.mal.OrderItem">
+		update `mal_order_item`
+		<set>
+			order_id = #{orderId},
+			product_id = #{productId},
+			title = #{title},
+			image = #{image},
+			market_price = #{marketPrice},
+			price = #{price},
+			quantity = #{quantity},
+			amount = #{amount},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `mal_order_item`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'orderId'">order_id = #{orderItem.orderId},</when>
+					<when test="field == 'productId'">product_id = #{orderItem.productId},</when>
+					<when test="field == 'title'">title = #{orderItem.title},</when>
+					<when test="field == 'image'">image = #{orderItem.image},</when>
+					<when test="field == 'marketPrice'">market_price = #{orderItem.marketPrice},</when>
+					<when test="field == 'price'">price = #{orderItem.price},</when>
+					<when test="field == 'quantity'">quantity = #{orderItem.quantity},</when>
+					<when test="field == 'amount'">amount = #{orderItem.amount},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{orderItem.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,order_id,product_id,title,image,market_price,price,quantity,amount
+		from `mal_order_item`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap">
+		select
+		id,order_id,product_id,title,image,market_price,price,quantity,amount
+		from `mal_order_item`
+		order by id desc
+	</select>
+
+	<select id="findByOrderId" resultMap="baseResultMap" parameterType="long">
+		select
+		*
+		from `mal_order_item`
+		where order_id = #{orderId}
+	</select>
+
+</mapper>

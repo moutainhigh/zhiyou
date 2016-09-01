@@ -1,0 +1,142 @@
+/****** index ******/
+
+.user-profile {
+  position: relative; padding: 15px;
+  height: 90px;
+  background-color: #6cb92d;
+}
+.user-profile .avatar-wrap {
+  position: absolute; left: 15px; top: 15px;
+}
+.user-profile .avatar {
+  display: block; width: 60px; height: 60px;
+  border: 2px solid #d1d3d7;
+}
+.user-profile .user-info {
+  margin-left: 75px; margin-top: 15px;
+  color: #fff; line-height: 25px;
+}
+.user-profile .nickname {
+  font-size: 20px; font-weight: 600; line-height: 30px;
+}
+.user-profile .icon-right {
+  position: absolute; right: 20px; top: 30px;
+  color: #eee; font-size: 20px; line-height: 30px;
+}
+
+/* wave */
+.water {
+  position: relative;
+  width: 100%; height: 30px;
+  background: #6cb92d none repeat scroll 0 0;
+}
+.water-1, .water-2 {
+  position: absolute;
+  width: 100%; height: 30px;
+}
+.water-1 {
+  animation: 3.2s linear 0s normal none infinite wave-animation-1;
+  -webkit-animation: 3.5s linear 0s normal none infinite running wave-animation-1;
+  background: rgba(0, 0, 0, 0) url("../../image/ucenter/water-1.svg") repeat-x scroll 0 0 / 600px auto;
+}
+.water-2 {
+  animation: 5.7s linear 0s normal none infinite wave-animation-2;
+  -webkit-animation: 6s linear 0s normal none infinite running wave-animation-2;
+  background: rgba(0, 0, 0, 0) url("../../image/ucenter/water-2.svg") repeat-x scroll 0 0 / 600px auto;
+  top: 6px;
+}
+@keyframes wave-animation-1 {
+  0% {
+    background-position: 0 top;
+  }
+  100% {
+    background-position: 600px top;
+  }
+}
+@-moz-keyframes wave-animation-1 {
+  0% {
+    background-position: 0 top;
+  }
+  100% {
+    background-position: 600px top;
+  }
+}
+@-webkit-keyframes wave-animation-1 {
+  0% {
+    background-position: 0 top;
+  }
+  100% {
+    background-position: 600px top;
+  }
+}
+@-o-keyframes wave-animation-1 {
+  0% {
+    background-position: 0 top;
+  }
+  100% {
+    background-position: 600px top;
+  }
+}
+
+@keyframes wave-animation-2 {
+  0% {
+    background-position: 0 top;
+  }
+  100% {
+    background-position: 600px top;
+  }
+}
+@-moz-keyframes wave-animation-2 {
+  0% {
+    background-position: 0 top;
+  }
+  100% {
+    background-position: 600px top;
+  }
+}
+@-webkit-keyframes wave-animation-2 {
+  0% {
+    background-position: 0 top;
+  }
+  100% {
+    background-position: 600px top;
+  }
+}
+@-o-keyframes wave-animation-2 {
+  0% {
+    background-position: 0 top;
+  }
+  100% {
+    background-position: 600px top;
+  }
+}
+
+/* user-currency */
+.user-currency {
+  padding-top: 10px; padding-bottom: 15px;
+  background-color: #fff;
+}
+.user-currency > a {
+  display: block; text-align: center;
+}
+.user-currency > a > i {
+  margin: 0 auto;
+  display: block; width: 32px; height: 32px;
+  background-size: 32px 32px;
+}
+.user-currency > a > em {
+  display: block;
+  color: #777; font-size: 11px; line-height: 20px;
+}
+.user-currency > a > span {
+  display: block;
+  color: #f0732f; font-size: 15px; font-weight: 600; line-height: 16px;
+}
+
+/****** userinfo ******/
+
+.list-item-avatar {
+  padding-top: 18px;
+  height: 80px;
+}
+

@@ -1,0 +1,29 @@
+/** form validate **/
+.valid-form .message-box {
+  display: none; padding: 5px 30px; margin: 8px 0;
+  font-weight: normal; line-height: 24px;  color: #3c6eb5;
+  /* border: 1px solid #c1493d; */
+}
+.valid-form span.prompt, .valid-form span.valid-error {
+  margin-left: 6px; padding-top: 8px; padding-bottom: 8px;
+  color: #777; font-size: 12px; line-height: 16px;
+  background: url('image/icon_info.png') left center no-repeat; padding-left: 20px;
+}
+.valid-form span.valid-error {
+  color: #ef493d;
+  background-image: url('image/icon_error.png');
+}
+.valid-form .valid-ok {
+  display: none; /* visibility: hidden; */ margin-left: 8px;  padding: 8px;
+  line-height: 16px; vertical-align: middle;
+  background: url('image/icon_success.png') left center no-repeat; 
+}
+.valid-form input.valid-error {
+  border: 1px solid #c1493d;
+}
+.valid-form select.valid-error {
+  border: 1px solid #c1493d;
+}
+.valid-form textarea.valid-error {
+  border: 1px solid #c1493d;
+}

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gc.mapper.UserMapper" >
+
+	<resultMap id="baseResultMap" type="com.gc.entity.usr.User">
+		<id column="id" property="id" />
+		<result column="phone" property="phone" />
+		<result column="password" property="password" />
+		<result column="nickname" property="nickname" />
+		<result column="user_type" property="userType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="user_rank" property="userRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="qq" property="qq" />
+		<result column="avatar" property="avatar" />
+		<result column="is_frozen" property="isFrozen" />
+		<result column="register_time" property="registerTime" />
+		<result column="register_ip" property="registerIp" />
+		<result column="inviter_id" property="inviterId" />
+		<result column="is_info_completed" property="isInfoCompleted" />
+		<result column="remark" property="remark" />
+		<result column="vip_expired_date" property="vipExpiredDate" />
+		<result column="invite_code" property="inviteCode" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.gc.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
+	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,is_info_completed,remark,vip_expired_date,invite_code)
+	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{isInfoCompleted},#{remark},#{vipExpiredDate},#{inviteCode})
+	</insert>
+
+	<delete id="delete">
+		delete from `usr_user` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.gc.entity.usr.User">
+		update `usr_user`
+		<set>
+			phone = #{phone},
+			password = #{password},
+			nickname = #{nickname},
+			user_type = #{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			user_rank = #{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			qq = #{qq},
+			avatar = #{avatar},
+			is_frozen = #{isFrozen},
+			register_time = #{registerTime},
+			register_ip = #{registerIp},
+			inviter_id = #{inviterId},
+			is_info_completed = #{isInfoCompleted},
+			remark = #{remark},
+			vip_expired_date = #{vipExpiredDate},
+			invite_code = #{inviteCode},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `usr_user`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'phone'">phone = #{user.phone},</when>
+					<when test="field == 'password'">password = #{user.password},</when>
+					<when test="field == 'nickname'">nickname = #{user.nickname},</when>
+					<when test="field == 'userType'">user_type = #{user.userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.gc.entity.usr.User$UserType},</when>
+					<when test="field == 'userRank'">user_rank = #{user.userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.gc.entity.usr.User$UserRank},</when>
+					<when test="field == 'qq'">qq = #{user.qq},</when>
+					<when test="field == 'avatar'">avatar = #{user.avatar},</when>
+					<when test="field == 'isFrozen'">is_frozen = #{user.isFrozen},</when>
+					<when test="field == 'registerTime'">register_time = #{user.registerTime},</when>
+					<when test="field == 'registerIp'">register_ip = #{user.registerIp},</when>
+					<when test="field == 'inviterId'">inviter_id = #{user.inviterId},</when>
+					<when test="field == 'isInfoCompleted'">is_info_completed = #{user.isInfoCompleted},</when>
+					<when test="field == 'remark'">remark = #{user.remark},</when>
+					<when test="field == 'vipExpiredDate'">vip_expired_date = #{user.vipExpiredDate},</when>
+					<when test="field == 'inviteCode'">invite_code = #{user.inviteCode},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{user.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,is_info_completed,remark,vip_expired_date,invite_code
+		from `usr_user`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.gc.model.query.UserQueryModel">
+		select
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,is_info_completed,remark,vip_expired_date,invite_code
+		from `usr_user`
+		<where>
+			<if test="idIN != null">
+				 and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="userTypeEQ != null">
+				 and user_type = #{userTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="registerTimeGTE != null">
+				 and register_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="nicknameLK != null">
+				<bind name="nicknameLK" value="'%' + nicknameLK + '%'"/> and nickname like #{nicknameLK}
+			</if>
+			<if test="registerTimeLT != null">
+				 and register_time &lt; #{registerTimeLT}
+			</if>
+			<if test="inviterIdEQ != null">
+				 and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="phoneEQ != null">
+				 and phone = #{phoneEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.gc.model.query.UserQueryModel">
+		select count(*) from `usr_user`
+		<where>
+			<if test="idIN != null">
+				 and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="userTypeEQ != null">
+				 and user_type = #{userTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="registerTimeGTE != null">
+				 and register_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="nicknameLK != null">
+				<bind name="nicknameLK" value="'%' + nicknameLK + '%'"/> and nickname like #{nicknameLK}
+			</if>
+			<if test="registerTimeLT != null">
+				 and register_time &lt; #{registerTimeLT}
+			</if>
+			<if test="inviterIdEQ != null">
+				 and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="phoneEQ != null">
+				 and phone = #{phoneEQ}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByInviteCode" resultMap="baseResultMap" parameterType="string">
+		select *
+		from `usr_user`
+		where invite_code = #{inviteCode}
+	</select>
+
+	<select id="findByPhone" resultMap="baseResultMap">
+		select * from `usr_user` where phone = #{phone}
+	</select>
+
+	<select id="findByNicknameIgnoreCase" resultMap="baseResultMap">
+		select * from `usr_user` where nickname = #{nickname}
+	</select>
+
+</mapper>

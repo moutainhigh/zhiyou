@@ -1,0 +1,51 @@
+
+/* service-contact */
+.service-contact {
+  background-color: #fff;
+}
+.service-contact > a {
+  padding-top: 15px; padding-bottom: 15px;
+  text-align: center;
+}
+.service-contact > a > i {
+  margin: 0 auto;
+  display: block; width: 32px; height: 32px;
+  font-size: 20px; line-height: 32px;
+}
+.service-contact > a > span {
+  display: block;
+  color: #555; font-size: 14px; line-height: 26px;
+}
+
+/****** service-question ******/
+.service-question {
+  padding: 15px;
+}
+.service-question .qa {
+  margin-bottom: 15px;
+  color: #666; font-size: 14px; line-height: 24px;
+  border-bottom: 1px solid #ccc;
+}
+.service-question .qa h3 {
+  color: #333; font-size: 16px; line-height: 24px; font-weight: 600;
+}
+.service-question .qa > p,
+.service-question .qa ul,
+.service-question .qa ol {
+  margin-top: 10px;
+}
+.service-question .qa ul > li {
+  margin-left: 20px;
+  line-height: 24px;
+  list-style-type: disc;
+  list-style-position: outside;
+}
+.service-question .qa ol > li {
+  margin-left: 20px;
+  line-height: 24px;
+  list-style-type: decimal;
+  list-style-position: outside;
+}
+.service-question a {
+  color: #f0732f;
+}

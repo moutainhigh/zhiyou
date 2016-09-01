@@ -1,0 +1,88 @@
+.task-nav{
+  margin: 11px auto;
+  width: 160px; height: 26px;
+  font-size: 12px;
+  border: solid 1px #eee; border-radius: 5px;
+}
+.task-nav a{
+  float: left; 
+  display: block; width: 50%; height: 24px; 
+  color: #fff; text-align: center; line-height: 24px;
+}
+.task-nav a.active{
+  color: #f0732f;
+  background-color: #fff;
+}
+
+.task-group {
+  margin-top: 15px;
+  background-color: #fff;
+}
+.task-item{
+  width: 100%; height: auto;
+  border-bottom: solid 1px #ddd;
+}
+.task-info{
+  position: relative; padding: 15px 45px 15px 155px;
+  display: block; width: 100%; height: 150px;  
+}
+.task-info img{
+  float: left; margin-left: -140px;
+  width: 130px; height: 130px;
+}
+.task-content{
+  float: left; 
+  width: 100%; height: auto;
+}
+.task-title{
+  max-height: 40px; overflow: hidden;
+  color: #333; font-size: 15px; line-height: 20px;
+}
+.task-time{
+  color: #999; font-size: 12px; line-height: 24px;
+}
+.task-label{
+  width: 100%; max-height: 50px; overflow: hidden;
+}
+.task-label span{
+  float: left; margin: 0 5px 5px 0;
+  display: block; padding-left: 8px; padding-right: 8px;
+  color: #fff; font-size: 12px; text-align: center; line-height: 20px;
+  border-radius: 3px;
+}
+.task-label span.baoyou{
+  background-color: #eb6877;
+}
+.task-label span.taobao{
+  background-color: #f2854a;
+}
+.task-label span.mobile{
+  background-color: #13b5b1;
+}
+.task-award{
+  color: #669c48; font-size: 12px; line-height: 20px;
+}
+.fa-angle-right{
+  position: absolute; top: 45px; right: 30px;
+  font-size: 30px;
+}
+.task-status .task-left,
+.task-status .task-right{
+  height: 30px; line-height: 30px;
+  background-color: #fff4ef;
+}
+.task-status .task-left{
+  float: left;
+  width: 75%;
+  padding-left: 15px;
+  color: #999; letter-spacing: 1px;
+  border-right: solid 3px #fff;
+}
+.task-status .task-right{
+  float: right;
+  width: 25%;
+  text-align: center; color: #ef7d4b;
+  border-left: solid 3px #fff;
+}
+
+

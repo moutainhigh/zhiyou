@@ -1,0 +1,29 @@
+.address-list .address {
+  position: relative; display: block;
+  padding: 10px 0;
+  color: #555;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+}
+.address-list .address.default {
+  color: #fff;
+  border-bottom: 1px solid #7889ab;
+  background-color: #7889ab;
+}
+.address-list .address .i-arrow {
+  position: absolute; right: 15px; top: 50%; margin-top: -5px;
+}
+.address-list .address .i-default {
+  position: absolute; left: 0px; top: 50%;
+  display: none; width: 32px; height: 32px; margin-top: -16px;
+  color: #fff; font-size: 16px; line-height: 32px; text-align: center;
+}
+.address-list .address.default .i-default {
+  display: block;
+}
+.address-list .address.default .i-arrow {
+  border-color: #eee;
+}
+.address-list .address .address-wrap {
+  position: relative; margin-left: 32px; margin-right: 32px;
+}

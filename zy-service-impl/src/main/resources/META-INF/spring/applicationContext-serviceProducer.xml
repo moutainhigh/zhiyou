@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://code.alibabatech.com/schema/dubbo http://static.1024ke.com/file/dubbo.xsd
+		">
+	<dubbo:application name="gc-provider" owner="gc"/>
+
+	<!--采用快速失败的集群模式,即只进行一次调用 failfast -->
+	<dubbo:provider cluster="failfast" timeout="10000"  filter="-exception,myException" loadbalance="roundrobin" />
+
+	<dubbo:registry protocol="${dubbo.registry.protocol}" address="${dubbo.registry.address}" />
+	<dubbo:protocol port="${gc-service-impl.dubbo.protocol.port}" threads="${gc-service-impl.dubbo.threads}"  />
+	
+	<dubbo:service ref="adminServiceImpl" interface="com.gc.service.AdminService" />
+	<dubbo:service ref="areaServiceImpl" interface="com.gc.service.AreaService" />
+	<dubbo:service ref="accountServiceImpl" interface="com.gc.service.AccountService" />
+	<dubbo:service ref="accountLogServiceImpl" interface="com.gc.service.AccountLogService" />
+	<dubbo:service ref="bannerServiceImpl" interface="com.gc.service.BannerService" />
+	<dubbo:service ref="messageServiceImpl" interface="com.gc.service.MessageService" />
+	<dubbo:service ref="noticeServiceImpl" interface="com.gc.service.NoticeService" />
+	<dubbo:service ref="roleServiceImpl" interface="com.gc.service.RoleService" />
+	<dubbo:service ref="shortMessageServiceImpl" interface="com.gc.service.ShortMessageService" />
+	<dubbo:service ref="userServiceImpl" interface="com.gc.service.UserService" />
+	<dubbo:service ref="articleServiceImpl" interface="com.gc.service.ArticleService" />
+	<dubbo:service ref="articleCategoryServiceImpl" interface="com.gc.service.ArticleCategoryService" />
+	<dubbo:service ref="depositServiceImpl" interface="com.gc.service.DepositService" />
+	<dubbo:service ref="withdrawServiceImpl" interface="com.gc.service.WithdrawService" />
+	<dubbo:service ref="orderServiceImpl" interface="com.gc.service.OrderService" />
+	<dubbo:service ref="orderItemServiceImpl" interface="com.gc.service.OrderItemService" />
+	<dubbo:service ref="productServiceImpl" interface="com.gc.service.ProductService" />
+	<dubbo:service ref="giftServiceImpl" interface="com.gc.service.GiftService" />
+	<dubbo:service ref="profitServiceImpl" interface="com.gc.service.ProfitService" />
+	<dubbo:service ref="settingServiceImpl" interface="com.gc.service.SettingService" />
+	<dubbo:service ref="deliveryServiceImpl" interface="com.gc.service.DeliveryService" />
+	<dubbo:service ref="feedbackServiceImpl" interface="com.gc.service.FeedbackService" />
+	<dubbo:service ref="addressServiceImpl" interface="com.gc.service.AddressService" />
+	<dubbo:service ref="configImpl" interface="com.gc.Config" />
+	<dubbo:service ref="bankCardServiceImpl" interface="com.gc.service.BankCardService" />
+	<dubbo:service ref="weixinUserServiceImpl" interface="com.gc.service.WeixinUserService" />
+	<dubbo:service ref="paymentServiceImpl" interface="com.gc.service.PaymentService" />
+	<dubbo:service ref="helpCategoryServiceImpl" interface="com.gc.service.HelpCategoryService" />
+	<dubbo:service ref="helpServiceImpl" interface="com.gc.service.HelpService" />
+	<dubbo:service ref="portraitServiceImpl" interface="com.gc.service.PortraitService"  />
+	<dubbo:service ref="appearanceServiceImpl" interface="com.gc.service.AppearanceService" />
+	<dubbo:service ref="reportServiceImpl" interface="com.gc.service.ReportService" />
+	<dubbo:service ref="userSettingServiceImpl" interface="com.gc.service.UserSettingService" />
+	<dubbo:service ref="tagServiceImpl" interface="com.gc.service.TagService"/>
+	<dubbo:service ref="jobServiceImpl" interface="com.gc.service.JobService"/>
+	<dubbo:service ref="activityServiceImpl" interface="com.gc.service.ActivityService"/>
+	<dubbo:service ref="activityCollectServiceImpl" interface="com.gc.service.ActivityCollectService"/>
+	<dubbo:service ref="activityApplyServiceImpl" interface="com.gc.service.ActivityApplyService"/>
+	<dubbo:service ref="activitySignInServiceImpl" interface="com.gc.service.ActivitySignInService"/>
+</beans>

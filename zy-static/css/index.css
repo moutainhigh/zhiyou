@@ -1,0 +1,35 @@
+body {
+  background-color: #f1f2f3;
+}
+
+.swipe-wrap {
+  position: relative; padding-top: 33.3333%;
+  display: block; width: 100%;
+}
+.swipe-wrap .swipe {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.swipe-wrap .swipe-items {
+  width: 100%; height: 100%;
+}
+.swipe-wrap .swipe-items > a {
+  width: 100%; height: 100%;
+}
+.swipe-wrap .swipe-items > a > img {
+  width: 100%; height: 100%;
+}
+
+.index-nav > a {
+  display: block;
+}
+.index-nav .img-wrap {
+  text-align: center;
+}
+.index-nav .img-wrap img {
+  width: 48px; height: 48px;
+}
+.index-nav .title {
+  margin-top: 5px;
+  text-align: center;
+}

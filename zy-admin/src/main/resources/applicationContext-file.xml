@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.2.xsd"
+	>
+
+	<bean id="platformLogisticssExport" class="com.zy.common.support.file.ExcelExportHandler" >
+		<property name="fields">
+			<list>
+				<bean class="com.zy.common.support.file.ExcelField" p:name="name" p:type="java.lang.String" p:title="物流公司"  />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="sn" p:type="java.lang.String" p:title="物流单号" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="platformLogisticsStatusLabel" p:type="java.lang.String" p:title="状态" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="productWeight" p:type="java.math.BigDecimal" p:title="商品重量" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="userShopInfoUsername" p:type="java.lang.String" p:title="商家ID" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="deliveredTimeLabel" p:type="java.lang.String" p:title="发货日期" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="senderProvince" p:type="java.lang.String" p:title="发货省份" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="senderCity" p:type="java.lang.String" p:title="发货城市" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="senderDistrict" p:type="java.lang.String" p:title="发货地区" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="senderAddress" p:type="java.lang.String" p:title="发货地址" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="senderAddressDetail" p:type="java.lang.String" p:title="发货详细地址" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="senderPhone" p:type="java.lang.String" p:title="发货号码" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="senderRealname" p:type="java.lang.String" p:title="发货人" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="outerOrderSn" p:type="java.lang.String" p:title="订单号" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="userBuyerInfoUsername" p:type="java.lang.String" p:title="买家ID" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="receiverProvince" p:type="java.lang.String" p:title="收货省份" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="receiverCity" p:type="java.lang.String" p:title="收货城市" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="receiverDistrict" p:type="java.lang.String" p:title="收货地区" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="receiverAddress" p:type="java.lang.String" p:title="收货地址" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="receiverAddressDetail" p:type="java.lang.String" p:title="收货详细地址" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="receiverPhone" p:type="java.lang.String" p:title="收件人号码" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="receiverRealname" p:type="java.lang.String" p:title="收件人姓名" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="platformLogisticssImport" class="com.zy.common.support.file.ExcelImportHandler" >
+		<property name="fields">
+			<list>
+				<bean class="com.zy.common.support.file.ExcelField" p:name="name" p:type="java.lang.String" p:title="物流公司" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="sn" p:type="java.lang.String" p:title="物流单号" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="accountLogExport" class="com.zy.common.support.file.ExcelExportHandler" >
+		<property name="fields">
+			<list>
+				<bean class="com.zy.common.support.file.ExcelField" p:name="id" p:type="java.lang.Long" p:title="id" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="userUserType" p:type="java.lang.String" p:title="用户类型" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="userNickname" p:type="java.lang.String" p:title="用户昵称" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="userPhone" p:type="java.lang.String" p:title="用户手机号" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="title" p:type="java.lang.String" p:title="标题" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="transactionRefType" p:type="java.lang.String" p:title="对应单据类型" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="refSn" p:type="java.lang.String" p:title="对应单据sn" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="transTime" p:type="java.util.Date" p:title="创建时间" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="transactionType" p:type="java.lang.String" p:title="流水类型" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="beforeMoney" p:type="java.math.BigDecimal" p:title="交易前本金" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="beforePoint" p:type="java.math.BigDecimal" p:title="交易前时光币" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="transMoney" p:type="java.math.BigDecimal" p:title="交易发生本金" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="transPoint" p:type="java.math.BigDecimal" p:title="交易发生时光币" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="afterMoney" p:type="java.math.BigDecimal" p:title="交易后本金" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="afterPoint" p:type="java.math.BigDecimal" p:title="交易后时光币" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="isOuter" p:type="java.lang.String" p:title="是否存在外部结算" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="outerFee" p:type="java.math.BigDecimal" p:title="外部手续费" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="outerRemark" p:type="java.lang.String" p:title="外部备注" />
+				
+			</list>
+		</property>
+	</bean>
+
+	<bean id="depositExport" class="com.zy.common.support.file.ExcelExportHandler" >
+		<property name="fields">
+			<list>
+				<bean class="com.zy.common.support.file.ExcelField" p:name="sn" p:type="java.lang.String" p:title="sn" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="title" p:type="java.lang.String" p:title="标题" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="payType" p:type="java.lang.String" p:title="支付类型" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="depositStatus" p:type="java.lang.String" p:title="充值状态" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="userNickname" p:type="java.lang.String" p:title="昵称" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="userPhone" p:type="java.lang.String" p:title="手机号" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="currencyType1" p:type="java.lang.String" p:title="货币类型1" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="amount1" p:type="java.math.BigDecimal" p:title="充值现金" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="currencyType1" p:type="java.lang.String" p:title="货币类型2" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="amount2" p:type="java.lang.String" p:title="充值试客币" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="createdTime" p:type="java.util.Date" p:title="创建时间" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="payType" p:type="java.util.Date" p:title="支付时间" />
+				<bean class="com.zy.common.support.file.ExcelField" p:name="outerSn" p:type="java.lang.String" p:title="外部sn" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

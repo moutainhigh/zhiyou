@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		">
+
+	<context:property-placeholder location="file:${user.home}/gc.properties" />
+
+	<context:component-scan base-package="com.gc">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+	
+	<aop:config proxy-target-class="true" />
+
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<bean class="com.zy.common.extend.StringToStringConverter" />
+				<bean class="com.zy.common.extend.StringToBigDecimalConverter" />
+				<bean class="com.zy.common.extend.StringToEnumConverterFactory" />
+				<bean class="com.zy.common.extend.StringToDateConverter" />
+				<bean class="com.zy.common.extend.NumberToBooleanConverter" />
+			</set>
+		</property>
+	</bean>
+	
+	<import resource="classpath:applicationContext-support.xml"/>
+	<import resource="classpath:applicationContext-shiro.xml"/>
+	<import resource="classpath:applicationContext-file.xml"/>
+	<import resource="classpath:applicationContext-serviceConsumer.xml"/>
+
+</beans>

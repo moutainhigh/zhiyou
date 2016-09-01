@@ -1,0 +1,130 @@
+@charset "UTF-8";
+/**
+ * icons
+ **/
+
+.icon {
+  display: inline-block; width: 20px; height: 20px;
+  text-align: center; vertical-align: -4px;
+  background-size: 100% 100%; background-position: center center; background-repeat: no-repeat;
+}
+.icon-2x {
+  width: 40px; height: 40px;
+}
+.icon-3x {
+  width: 60px; height: 60px;
+}
+.icon-4x {
+  width: 80px; height: 80px;
+}
+.icon-6x {
+  width: 120px; height: 120px;
+}
+.icon-logo {
+  background-image: url(../image/icon/icon_logo.png);
+}
+.icon-logo-o {
+  background-image: url(../image/icon/icon_logo_o.png);
+}
+
+.icon-jinpai {
+  background-image: url(../image/icon/icon_jinpai.png);
+}
+.icon-yinpai {
+  background-image: url(../image/icon/icon_yinpai.png);
+}
+.icon-tongpai {
+  background-image: url(../image/icon/icon_tongpai.png);
+}
+.icon-newbie {
+  width: 30px; height: 20px;
+  background-image: url(../image/icon/icon_newbie.png);
+}
+
+.icon-about {
+  background-image: url(../image/icon/icon_about.png);
+}
+.icon-account {
+  background-image: url(../image/icon/icon_account.png);
+}
+.icon-address {
+  background-image: url(../image/icon/icon_address.png);
+}
+.icon-service {
+  background-image: url(../image/icon/icon_service.png);
+}
+.icon-coupon {
+  background-image: url(../image/icon/icon_coupon.png);
+}
+.icon-task {
+  background-image: url(../image/icon/icon_task.png);
+}
+.icon-achievement {
+  background-image: url(../image/icon/icon_achievement.png);
+}
+.icon-appearance {
+  background-image: url(../image/icon/icon_appearance.png);
+}
+.icon-portrait {
+  background-image: url(../image/icon/icon_portrait.png);
+}
+
+.icon-money {
+  background-image: url(../image/icon/icon_money.png);
+}
+.icon-coin {
+  background-image: url(../image/icon/icon_coin.png);
+}
+.icon-point {
+  background-image: url(../image/icon/icon_point.png);
+}
+
+.icon-taobao {
+  background-image: url(../image/icon/icon_taobao.png);
+}
+.icon-jd {
+  background-image: url(../image/icon/icon_jd.png);
+}
+.icon-qq {
+  background-image: url(../image/icon/icon_qq.png);
+}
+.icon-weixin {
+  background-image: url(../image/icon/icon_weixin.png);
+}
+.icon-weibo {
+  background-image: url(../image/icon/icon_weibo.png);
+}
+.icon-clock {
+  background-image: url(../image/icon/icon_clock.png);
+}
+
+.icon-bank-youzhen {
+  background-image: url(../image/icon/bank/icon_bank_01.png);
+}
+.icon-bank-zhongguo {
+  background-image: url(../image/icon/bank/icon_bank_05.png);
+}
+.icon-bank-jianshe {
+  background-image: url(../image/icon/bank/icon_bank_09.png);
+}
+.icon-bank-pufa {
+  background-image: url(../image/icon/bank/icon_bank_11.png);
+}
+.icon-bank-zhaoshang {
+  background-image: url(../image/icon/bank/icon_bank_13.png);
+}
+.icon-bank-nongye {
+  background-image: url(../image/icon/bank/icon_bank_15.png);
+}
+.icon-bank-gongshang {
+  background-image: url(../image/icon/bank/icon_bank_26.png);
+}
+.icon-bank-guangfa {
+  background-image: url(../image/icon/bank/icon_bank_27.png);
+}
+.icon-bank-jiaotong {
+  background-image: url(../image/icon/bank/icon_bank_28.png);
+}
+.icon-bank-minsheng {
+  background-image: url(../image/icon/bank/icon_bank_31.png);
+}

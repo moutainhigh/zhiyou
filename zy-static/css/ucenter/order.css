@@ -1,0 +1,57 @@
+/* order-list */
+.order-list {
+  
+}
+.order-list .order {
+  position: relative;
+  display: block;
+  background-color: #fff;
+}
+.order-list .order-sn {
+  height: 36px; line-height: 36px;
+  background-color: #dff3cf;
+}
+.order-list .order-status {
+  position: absolute; right: 15px; top: 6px;
+}
+.order-list .product-title {
+  padding-left: 75px; padding-right: 80px;
+  min-height: 60px;
+}
+.order-list .product-image {
+  width: 60px; height: 60px;
+}
+
+/* order-detail */
+.order-detail .receiver-info {
+  padding-left: 40px;
+  font-size: 14px;
+}
+.order-detail .receiver-info i {
+  position: absolute; left: 10px; top: 50%; margin-top: -16px;
+  display: block; width: 32px; height: 32px;
+  color: #999; font-size: 20px; line-height: 32px; text-align: center;
+}
+.order-detail .order-info {
+  color: #777; font-size: 12px; line-height: 24px;
+}
+.order-detail .product-info {
+  color: #333; font-size: 12px;
+}
+.order-detail .deliver-info {
+  color: #555; font-size: 12px; line-height: 24px;
+}
+.order-detail .product-title {
+  margin-left: 95px; margin-right: 95px;
+  height: 80px; overflow: hidden;
+  line-height: 26px;
+}
+.order-detail .product-image {
+  width: 80px; height: 80px;
+}
+.order-detail .product-price {
+  width: 80px; height: 80px;
+}
+
+
+

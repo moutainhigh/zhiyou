@@ -1,0 +1,56 @@
+﻿#header {
+  overflow: hidden; height: 35px; background-color: #88aacc; line-height: 30px; color: #fff;
+}
+
+#header a {
+  color: #fff
+}
+
+#header .headerLeft {
+  float: left; margin-left: 10px;
+}
+
+#header .headerLeft a {
+  display: block;
+}
+
+#header .systemName {
+  color: #fff;
+}
+
+#header .headerRight {
+  float: right; padding-right: 20px;
+}
+
+#footer {
+  height: 30px; background-color: #ebebeb; line-height: 23px; overflow: hidden;
+}
+
+#footer span {
+  float: right; padding-right: 20px;
+}
+
+#menuAccordion ul {
+  list-style-type: none; margin: 0px; padding: 10px;
+}
+
+#menuAccordion ul li {
+  padding: 2px;
+}
+
+#menuAccordion ul li a {
+  position: relative; display: block; height: 24px; line-height: 24px; border: 1px solid #fff; padding-left: 28px;
+}
+
+#menuAccordion ul li a span {
+  position: absolute; top: 50%; left: 8px; width: 16px; height: 16px; margin-top: -8px; margin-right: 2px;
+  overflow: hidden;
+}
+
+#menuAccordion ul li a:hover {
+  color: #416aaf; border: 1px dashed #cbd6f2; background: #eff3ff; cursor: pointer; text-decoration: none;
+}
+
+#menuAccordion ul li a.selected {
+  color: #416aaf; border: 1px solid #cbd6f2; background: #e7eaff; cursor: pointer;
+}

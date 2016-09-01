@@ -1,0 +1,25 @@
+/* validata error */
+input.fieldError {
+  border: 1px solid #ff7f4f; background-color: #fffbf5;
+}
+
+textarea.fieldError {
+  border: 1px solid #ff7f4f; background-color: #fffbf5;
+}
+
+select.fieldError {
+  border: 1px solid #ff7f4f; background-color: #fffbf5;
+}
+
+label.fieldError {
+  line-height: 21px; color: red;
+}
+
+span.fieldError {
+  border: 1px solid #7f7f7f; background-color: #fffbf5;
+}
+
+#messageBox {
+  display: none; background: url("image/error.gif") #ffffd5 no-repeat 10px center; padding: 5px 30px; margin: 1px;
+  font-weight: normal; line-height: 24px; color: #ff0000;
+}

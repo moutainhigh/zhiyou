@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gc.mapper.ActivitySignInMapper" >
+
+	<resultMap id="baseResultMap" type="com.gc.entity.act.ActivitySignIn">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="activity_id" property="activityId" />
+		<result column="signed_in_time" property="signedInTime" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.gc.entity.act.ActivitySignIn" useGeneratedKeys="true" keyProperty="id">
+	  insert into `act_activity_sign_in` (user_id,activity_id,signed_in_time)
+	  values (#{userId},#{activityId},#{signedInTime})
+	</insert>
+
+	<delete id="delete">
+		delete from `act_activity_sign_in` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.gc.entity.act.ActivitySignIn">
+		update `act_activity_sign_in`
+		<set>
+			user_id = #{userId},
+			activity_id = #{activityId},
+			signed_in_time = #{signedInTime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `act_activity_sign_in`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{activitySignIn.userId},</when>
+					<when test="field == 'activityId'">activity_id = #{activitySignIn.activityId},</when>
+					<when test="field == 'signedInTime'">signed_in_time = #{activitySignIn.signedInTime},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{activitySignIn.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,activity_id,signed_in_time
+		from `act_activity_sign_in`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.gc.model.query.ActivitySignInQueryModel">
+		select
+		id,user_id,activity_id,signed_in_time
+		from `act_activity_sign_in`
+		<where>
+			<if test="signedInTimeLT != null">
+				 and signed_in_time &lt; #{signedInTimeLT}
+			</if>
+			<if test="userIdIN != null">
+				 and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="activityIdEQ != null">
+				 and activity_id = #{activityIdEQ}
+			</if>
+			<if test="signedInTimeGTE != null">
+				 and signed_in_time &gt;= #{signedInTimeGTE}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="activityIdIN != null">
+				 and activity_id in
+				<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.gc.model.query.ActivitySignInQueryModel">
+		select count(*) from `act_activity_sign_in`
+		<where>
+			<if test="signedInTimeLT != null">
+				 and signed_in_time &lt; #{signedInTimeLT}
+			</if>
+			<if test="userIdIN != null">
+				 and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="activityIdEQ != null">
+				 and activity_id = #{activityIdEQ}
+			</if>
+			<if test="signedInTimeGTE != null">
+				 and signed_in_time &gt;= #{signedInTimeGTE}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="activityIdIN != null">
+				 and activity_id in
+				<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+	<select id="findByActivityIdAndUserId" resultMap="baseResultMap">
+		select
+		*
+		from `act_activity_sign_in`
+		where activity_id = #{activityId} and user_id = #{userId}
+	</select>
+
+</mapper>

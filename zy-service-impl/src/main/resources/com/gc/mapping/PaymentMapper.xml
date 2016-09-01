@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gc.mapper.PaymentMapper" >
+
+	<resultMap id="baseResultMap" type="com.gc.entity.fnc.Payment">
+		<id column="id" property="id" />
+		<result column="sn" property="sn" />
+		<result column="user_id" property="userId" />
+		<result column="title" property="title" />
+		<result column="pay_type" property="payType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="biz_name" property="bizName" />
+		<result column="biz_sn" property="bizSn" />
+		<result column="created_time" property="createdTime" />
+		<result column="expired_time" property="expiredTime" />
+		<result column="paid_time" property="paidTime" />
+		<result column="payment_status" property="paymentStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="currency_type1" property="currencyType1" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="amount1" property="amount1" />
+		<result column="currency_type2" property="currencyType2" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="amount2" property="amount2" />
+		<result column="refund1" property="refund1" />
+		<result column="refund2" property="refund2" />
+		<result column="refunded_time" property="refundedTime" />
+		<result column="refund_remark" property="refundRemark" />
+		<result column="cancel_remark" property="cancelRemark" />
+		<result column="remark" property="remark" />
+		<result column="version" property="version" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.gc.entity.fnc.Payment" useGeneratedKeys="true" keyProperty="id">
+	  insert into `fnc_payment` (sn,user_id,title,pay_type,biz_name,biz_sn,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,version)
+	  values (#{sn},#{userId},#{title},#{payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{bizName},#{bizSn},#{createdTime},#{expiredTime},#{paidTime},#{paymentStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount1},#{currencyType2,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount2},#{refund1},#{refund2},#{refundedTime},#{refundRemark},#{cancelRemark},#{remark},#{version})
+	</insert>
+
+	<delete id="delete">
+		delete from `fnc_payment` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.gc.entity.fnc.Payment">
+		update `fnc_payment`
+		<set>
+			sn = #{sn},
+			user_id = #{userId},
+			title = #{title},
+			pay_type = #{payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			biz_name = #{bizName},
+			biz_sn = #{bizSn},
+			created_time = #{createdTime},
+			expired_time = #{expiredTime},
+			paid_time = #{paidTime},
+			payment_status = #{paymentStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			currency_type1 = #{currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			amount1 = #{amount1},
+			currency_type2 = #{currencyType2,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			amount2 = #{amount2},
+			refund1 = #{refund1},
+			refund2 = #{refund2},
+			refunded_time = #{refundedTime},
+			refund_remark = #{refundRemark},
+			cancel_remark = #{cancelRemark},
+			remark = #{remark},
+			version = version + 1,
+		</set>
+		where id = #{id} and version=#{version}
+	</update>
+
+	<update id="merge">
+		update `fnc_payment`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'sn'">sn = #{payment.sn},</when>
+					<when test="field == 'userId'">user_id = #{payment.userId},</when>
+					<when test="field == 'title'">title = #{payment.title},</when>
+					<when test="field == 'payType'">pay_type = #{payment.payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.gc.entity.fnc.PayType},</when>
+					<when test="field == 'bizName'">biz_name = #{payment.bizName},</when>
+					<when test="field == 'bizSn'">biz_sn = #{payment.bizSn},</when>
+					<when test="field == 'createdTime'">created_time = #{payment.createdTime},</when>
+					<when test="field == 'expiredTime'">expired_time = #{payment.expiredTime},</when>
+					<when test="field == 'paidTime'">paid_time = #{payment.paidTime},</when>
+					<when test="field == 'paymentStatus'">payment_status = #{payment.paymentStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.gc.entity.fnc.Payment$PaymentStatus},</when>
+					<when test="field == 'currencyType1'">currency_type1 = #{payment.currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.gc.entity.fnc.CurrencyType},</when>
+					<when test="field == 'amount1'">amount1 = #{payment.amount1},</when>
+					<when test="field == 'currencyType2'">currency_type2 = #{payment.currencyType2,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.gc.entity.fnc.CurrencyType},</when>
+					<when test="field == 'amount2'">amount2 = #{payment.amount2},</when>
+					<when test="field == 'refund1'">refund1 = #{payment.refund1},</when>
+					<when test="field == 'refund2'">refund2 = #{payment.refund2},</when>
+					<when test="field == 'refundedTime'">refunded_time = #{payment.refundedTime},</when>
+					<when test="field == 'refundRemark'">refund_remark = #{payment.refundRemark},</when>
+					<when test="field == 'cancelRemark'">cancel_remark = #{payment.cancelRemark},</when>
+					<when test="field == 'remark'">remark = #{payment.remark},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{payment.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,sn,user_id,title,pay_type,biz_name,biz_sn,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,version
+		from `fnc_payment`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.gc.model.query.PaymentQueryModel">
+		select
+		id,sn,user_id,title,pay_type,biz_name,biz_sn,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,version
+		from `fnc_payment`
+		<where>
+			<if test="bizNameEQ != null">
+				 and biz_name = #{bizNameEQ}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.gc.model.query.PaymentQueryModel">
+		select count(*) from `fnc_payment`
+		<where>
+			<if test="bizNameEQ != null">
+				 and biz_name = #{bizNameEQ}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+		</where>
+	</select>
+
+	<select id="findBySn" resultMap="baseResultMap" parameterType="string">
+		select *
+		from `fnc_payment`
+		where sn = #{sn}
+	</select>
+
+	<select id="findByBizNameAndBizSn" resultMap="baseResultMap">
+		select *
+		from `fnc_payment`
+		where biz_name = #{bizName} and biz_sn = #{bizSn}
+	</select>
+
+</mapper>

@@ -1,0 +1,35 @@
+/* here you can put your own css to customize and override the theme */
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+  word-wrap: break-word; white-space: normal; word-break: break-all;
+}
+
+.form-inline .form-group {
+  margin-bottom: 15px !important;
+}
+
+/* 图片尺寸 */
+.image-160 {
+  width: 160px; height: 160px;
+}
+.image-80 {
+  width: 80px; height: 80px;
+}
+.image-40 {
+  width: 40px; height: 40px;
+}
+
+/* 货币收入支出 */
+.currency-in {
+  color: #ff2200 !important; font-weight: 600;
+}
+.currency-in:before {
+  content: '+'; font-weight: 600;
+  margin-right: 2px; margin-left: 2px; 
+}
+.currency-out {
+  color: #00e74f!important; font-weight: 600;
+}
+.currency-out:before {
+  content: '-'; font-weight: 600;
+  margin-right: 2px; margin-left: 2px; 
+}

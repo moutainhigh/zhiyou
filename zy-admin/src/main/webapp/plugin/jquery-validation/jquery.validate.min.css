@@ -1,0 +1,4 @@
+label.error {
+  background: url("images/error.gif") no-repeat left center; padding-left: 18px; padding-bottom: 2px; font-weight: normal;
+  color: #ff7f7f; margin-left: 10px;
+}
