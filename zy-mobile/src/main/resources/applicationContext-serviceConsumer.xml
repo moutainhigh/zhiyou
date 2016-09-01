@@ -10,6 +10,6 @@
 	<dubbo:application name="zy-mobile" logger="slf4j" />
 	<dubbo:registry protocol="${dubbo.registry.protocol}" address="${dubbo.registry.address}"  file="false" />
 	
-	<import resource="classpath:/com/gc/applicationContext-serviceConsumer.xml"/>
+	<import resource="classpath:/com/zy/applicationContext-serviceConsumer.xml"/>
 	
 </beans>

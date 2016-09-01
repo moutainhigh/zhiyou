@@ -12,7 +12,7 @@
 	<dubbo:provider cluster="failfast" timeout="10000"  filter="-exception,myException" loadbalance="roundrobin" />
 
 	<dubbo:registry protocol="${dubbo.registry.protocol}" address="${dubbo.registry.address}" />
-	<dubbo:protocol port="${zy-service-impl.dubbo.protocol.port}" threads="${zy-service-impl.dubbo.threads}"  />
+	<dubbo:protocol port="${dubbo.protocol.port}" threads="${dubbo.threads}"  />
 	
 	<dubbo:service ref="adminServiceImpl" interface="com.zy.service.AdminService" />
 	<dubbo:service ref="areaServiceImpl" interface="com.zy.service.AreaService" />
