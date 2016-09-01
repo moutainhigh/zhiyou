@@ -122,19 +122,21 @@ public class ActivityComponent {
 	}
 	
 	private String buildStatus(Date applyDeadline, Date startTime, Date endTime) {
-		String status = StringUtils.EMPTY;
-		if(!isNull(applyDeadline) && !isNull(startTime) && !isNull(endTime)) {
+		
+		if(applyDeadline != null && startTime != null && endTime != null) {
 			Date now = new Date();
-			if(applyDeadline.before(now)) {
-				status = "报名中";
-			} else if(applyDeadline.before(now) && startTime.after(now)) {
-				status = "报名已结束";
-			} else if(startTime.before(now) && endTime.after(now)) {
-				status = "进行中";
-			} else if(endTime.before(now)) {
-				status = "活动已结束";
+			if (endTime.before(now)) {
+				return "活动已结束";
+			} else if (startTime.before(now)) {
+				return "进行中";
+			}
+			
+			if (applyDeadline.before(now)) {
+				return "报名已结束";
+			} else {
+				return "报名中";
 			}
 		}
-		return status;
+		return "活动已结束";
 	}
 }
