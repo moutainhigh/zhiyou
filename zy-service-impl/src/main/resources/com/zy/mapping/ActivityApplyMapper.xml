@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.ActivityApplyMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.act.ActivityApply">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="activity_id" property="activityId" />
+		<result column="applied_time" property="appliedTime" />
+		<result column="is_cancelled" property="isCancelled" />
+		<result column="inviter_id" property="inviterId" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.act.ActivityApply" useGeneratedKeys="true" keyProperty="id">
+	  insert into `act_activity_apply` (user_id,activity_id,applied_time,is_cancelled,inviter_id)
+	  values (#{userId},#{activityId},#{appliedTime},#{isCancelled},#{inviterId})
+	</insert>
+
+	<delete id="delete">
+		delete from `act_activity_apply` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.act.ActivityApply">
+		update `act_activity_apply`
+		<set>
+			user_id = #{userId},
+			activity_id = #{activityId},
+			applied_time = #{appliedTime},
+			is_cancelled = #{isCancelled},
+			inviter_id = #{inviterId},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `act_activity_apply`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{activityApply.userId},</when>
+					<when test="field == 'activityId'">activity_id = #{activityApply.activityId},</when>
+					<when test="field == 'appliedTime'">applied_time = #{activityApply.appliedTime},</when>
+					<when test="field == 'isCancelled'">is_cancelled = #{activityApply.isCancelled},</when>
+					<when test="field == 'inviterId'">inviter_id = #{activityApply.inviterId},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{activityApply.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,activity_id,applied_time,is_cancelled,inviter_id
+		from `act_activity_apply`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ActivityApplyQueryModel">
+		select
+		id,user_id,activity_id,applied_time,is_cancelled,inviter_id
+		from `act_activity_apply`
+		<where>
+			<if test="appliedTimeGTE != null">
+				 and applied_time &gt;= #{appliedTimeGTE}
+			</if>
+			<if test="appliedTimeLT != null">
+				 and applied_time &lt; #{appliedTimeLT}
+			</if>
+			<if test="userIdIN != null">
+				 and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="isCancelledEQ != null">
+				 and is_cancelled = #{isCancelledEQ}
+			</if>
+			<if test="activityIdEQ != null">
+				 and activity_id = #{activityIdEQ}
+			</if>
+			<if test="inviterIdEQ != null">
+				 and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="inviterIdIN != null">
+				 and inviter_id in
+				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="activityIdIN != null">
+				 and activity_id in
+				<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.ActivityApplyQueryModel">
+		select count(*) from `act_activity_apply`
+		<where>
+			<if test="appliedTimeGTE != null">
+				 and applied_time &gt;= #{appliedTimeGTE}
+			</if>
+			<if test="appliedTimeLT != null">
+				 and applied_time &lt; #{appliedTimeLT}
+			</if>
+			<if test="userIdIN != null">
+				 and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="isCancelledEQ != null">
+				 and is_cancelled = #{isCancelledEQ}
+			</if>
+			<if test="activityIdEQ != null">
+				 and activity_id = #{activityIdEQ}
+			</if>
+			<if test="inviterIdEQ != null">
+				 and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="inviterIdIN != null">
+				 and inviter_id in
+				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="activityIdIN != null">
+				 and activity_id in
+				<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+	<select id="findByActivityIdAndUserId" resultMap="baseResultMap">
+		select
+		*
+		from `act_activity_apply`
+		where activity_id = #{activityId} and user_id = #{userId}
+	</select>
+
+</mapper>

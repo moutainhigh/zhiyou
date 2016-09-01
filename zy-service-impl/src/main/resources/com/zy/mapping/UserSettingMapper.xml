@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.UserSettingMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.usr.UserSetting">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="is_receive_task_sms" property="isReceiveTaskSms" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.usr.UserSetting" useGeneratedKeys="true" keyProperty="id">
+	  insert into `usr_user_setting` (user_id,is_receive_task_sms)
+	  values (#{userId},#{isReceiveTaskSms})
+	</insert>
+
+	<delete id="delete">
+		delete from `usr_user_setting` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.usr.UserSetting">
+		update `usr_user_setting`
+		<set>
+			user_id = #{userId},
+			is_receive_task_sms = #{isReceiveTaskSms},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `usr_user_setting`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{userSetting.userId},</when>
+					<when test="field == 'isReceiveTaskSms'">is_receive_task_sms = #{userSetting.isReceiveTaskSms},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{userSetting.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,is_receive_task_sms
+		from `usr_user_setting`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap">
+		select
+		id,user_id,is_receive_task_sms
+		from `usr_user_setting`
+		order by id desc
+	</select>
+
+	<select id="findByUserId" resultMap="baseResultMap">
+		select
+		*
+		from `usr_user_setting`
+		where user_id = #{userId}
+	</select>
+
+</mapper>

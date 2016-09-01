@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.AddressMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.usr.Address">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="is_default" property="isDefault" />
+		<result column="area_id" property="areaId" />
+		<result column="realname" property="realname" />
+		<result column="phone" property="phone" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="district" property="district" />
+		<result column="address" property="address" />
+		<result column="is_deleted" property="isDeleted" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.usr.Address" useGeneratedKeys="true" keyProperty="id">
+	  insert into `usr_address` (user_id,is_default,area_id,realname,phone,province,city,district,address,is_deleted)
+	  values (#{userId},#{isDefault},#{areaId},#{realname},#{phone},#{province},#{city},#{district},#{address},#{isDeleted})
+	</insert>
+
+	<delete id="delete">
+		delete from `usr_address` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.usr.Address">
+		update `usr_address`
+		<set>
+			user_id = #{userId},
+			is_default = #{isDefault},
+			area_id = #{areaId},
+			realname = #{realname},
+			phone = #{phone},
+			province = #{province},
+			city = #{city},
+			district = #{district},
+			address = #{address},
+			is_deleted = #{isDeleted},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `usr_address`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{address.userId},</when>
+					<when test="field == 'isDefault'">is_default = #{address.isDefault},</when>
+					<when test="field == 'areaId'">area_id = #{address.areaId},</when>
+					<when test="field == 'realname'">realname = #{address.realname},</when>
+					<when test="field == 'phone'">phone = #{address.phone},</when>
+					<when test="field == 'province'">province = #{address.province},</when>
+					<when test="field == 'city'">city = #{address.city},</when>
+					<when test="field == 'district'">district = #{address.district},</when>
+					<when test="field == 'address'">address = #{address.address},</when>
+					<when test="field == 'isDeleted'">is_deleted = #{address.isDeleted},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{address.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,is_default,area_id,realname,phone,province,city,district,address,is_deleted
+		from `usr_address`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.AddressQueryModel">
+		select
+		id,user_id,is_default,area_id,realname,phone,province,city,district,address,is_deleted
+		from `usr_address`
+		<where>
+			<if test="isDeletedEQ != null">
+				 and is_deleted = #{isDeletedEQ}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="realnameLK != null">
+				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.AddressQueryModel">
+		select count(*) from `usr_address`
+		<where>
+			<if test="isDeletedEQ != null">
+				 and is_deleted = #{isDeletedEQ}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="realnameLK != null">
+				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+		</where>
+	</select>
+
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.ActivityCollectMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.act.ActivityCollect">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="activity_id" property="activityId" />
+		<result column="collected_time" property="collectedTime" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.act.ActivityCollect" useGeneratedKeys="true" keyProperty="id">
+	  insert into `act_activity_collect` (user_id,activity_id,collected_time)
+	  values (#{userId},#{activityId},#{collectedTime})
+	</insert>
+
+	<delete id="delete">
+		delete from `act_activity_collect` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.act.ActivityCollect">
+		update `act_activity_collect`
+		<set>
+			user_id = #{userId},
+			activity_id = #{activityId},
+			collected_time = #{collectedTime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `act_activity_collect`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{activityCollect.userId},</when>
+					<when test="field == 'activityId'">activity_id = #{activityCollect.activityId},</when>
+					<when test="field == 'collectedTime'">collected_time = #{activityCollect.collectedTime},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{activityCollect.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,activity_id,collected_time
+		from `act_activity_collect`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ActivityCollectQueryModel">
+		select
+		id,user_id,activity_id,collected_time
+		from `act_activity_collect`
+		<where>
+			<if test="userIdIN != null">
+				 and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="activityIdEQ != null">
+				 and activity_id = #{activityIdEQ}
+			</if>
+			<if test="collectedTimeLT != null">
+				 and collected_time &lt; #{collectedTimeLT}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="collectedTimeGTE != null">
+				 and collected_time &gt;= #{collectedTimeGTE}
+			</if>
+			<if test="activityIdIN != null">
+				 and activity_id in
+				<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.ActivityCollectQueryModel">
+		select count(*) from `act_activity_collect`
+		<where>
+			<if test="userIdIN != null">
+				 and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="activityIdEQ != null">
+				 and activity_id = #{activityIdEQ}
+			</if>
+			<if test="collectedTimeLT != null">
+				 and collected_time &lt; #{collectedTimeLT}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="collectedTimeGTE != null">
+				 and collected_time &gt;= #{collectedTimeGTE}
+			</if>
+			<if test="activityIdIN != null">
+				 and activity_id in
+				<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+	<select id="findByActivityIdAndUserId" resultMap="baseResultMap">
+		select
+		*
+		from `act_activity_collect`
+		where activity_id = #{activityId} and user_id = #{userId}
+	</select>
+
+</mapper>

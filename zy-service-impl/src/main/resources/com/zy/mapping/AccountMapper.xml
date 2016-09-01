@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.AccountMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.fnc.Account">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="amount" property="amount" />
+		<result column="currency_type" property="currencyType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="version" property="version" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.fnc.Account" useGeneratedKeys="true" keyProperty="id">
+	  insert into `fnc_account` (user_id,amount,currency_type,version)
+	  values (#{userId},#{amount},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{version})
+	</insert>
+
+	<delete id="delete">
+		delete from `fnc_account` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.fnc.Account">
+		update `fnc_account`
+		<set>
+			user_id = #{userId},
+			amount = #{amount},
+			currency_type = #{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			version = version + 1,
+		</set>
+		where id = #{id} and version=#{version}
+	</update>
+
+	<update id="merge">
+		update `fnc_account`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{account.userId},</when>
+					<when test="field == 'amount'">amount = #{account.amount},</when>
+					<when test="field == 'currencyType'">currency_type = #{account.currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.CurrencyType},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{account.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,amount,currency_type,version
+		from `fnc_account`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.AccountQueryModel">
+		select
+		id,user_id,amount,currency_type,version
+		from `fnc_account`
+		<where>
+			<if test="currencyTypeEQ != null">
+				 and currency_type = #{currencyTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="userIdIN != null">
+				 and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.AccountQueryModel">
+		select count(*) from `fnc_account`
+		<where>
+			<if test="currencyTypeEQ != null">
+				 and currency_type = #{currencyTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="userIdIN != null">
+				 and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+
+	<select id="findByUserIdAndCurrencyType" resultMap="baseResultMap">
+		select
+		*
+		from `fnc_account`
+		where user_id = #{userId} and currency_type = #{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.CurrencyType}
+	</select>
+
+	<select id="findByUserId" resultMap="baseResultMap" parameterType="long">
+		select *
+		from `fnc_account`
+		where user_id = #{userId}
+	</select>
+
+</mapper>

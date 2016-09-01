@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.HelpMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.cms.Help">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="created_time" property="createdTime" />
+		<result column="help_category_id" property="helpCategoryId" />
+		<result column="index_number" property="indexNumber" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.cms.Help" useGeneratedKeys="true" keyProperty="id">
+	  insert into `cms_help` (title,content,created_time,help_category_id,index_number)
+	  values (#{title},#{content},#{createdTime},#{helpCategoryId},#{indexNumber})
+	</insert>
+
+	<delete id="delete">
+		delete from `cms_help` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.cms.Help">
+		update `cms_help`
+		<set>
+			title = #{title},
+			content = #{content},
+			created_time = #{createdTime},
+			help_category_id = #{helpCategoryId},
+			index_number = #{indexNumber},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `cms_help`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'title'">title = #{help.title},</when>
+					<when test="field == 'content'">content = #{help.content},</when>
+					<when test="field == 'createdTime'">created_time = #{help.createdTime},</when>
+					<when test="field == 'helpCategoryId'">help_category_id = #{help.helpCategoryId},</when>
+					<when test="field == 'indexNumber'">index_number = #{help.indexNumber},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{help.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,title,content,created_time,help_category_id,index_number
+		from `cms_help`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap">
+		select
+		id,title,content,created_time,help_category_id,index_number
+		from `cms_help`
+		order by id desc
+	</select>
+
+	<select id="findByHelpCategoryId" resultMap="baseResultMap" parameterType="long">
+		select *
+		from `cms_help`
+		where help_category_id = #{helpCategoryId} order by index_number
+	</select>
+
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.BankCardMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.fnc.BankCard">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="realname" property="realname" />
+		<result column="card_number" property="cardNumber" />
+		<result column="bank_name" property="bankName" />
+		<result column="bank_branch_name" property="bankBranchName" />
+		<result column="is_default" property="isDefault" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="confirm_status" property="confirmStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="confirm_remark" property="confirmRemark" />
+		<result column="confirmed_time" property="confirmedTime" />
+		<result column="applied_time" property="appliedTime" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.fnc.BankCard" useGeneratedKeys="true" keyProperty="id">
+	  insert into `fnc_bank_card` (user_id,realname,card_number,bank_name,bank_branch_name,is_default,is_deleted,confirm_status,confirm_remark,confirmed_time,applied_time)
+	  values (#{userId},#{realname},#{cardNumber},#{bankName},#{bankBranchName},#{isDefault},#{isDeleted},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{confirmedTime},#{appliedTime})
+	</insert>
+
+	<delete id="delete">
+		delete from `fnc_bank_card` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.fnc.BankCard">
+		update `fnc_bank_card`
+		<set>
+			user_id = #{userId},
+			realname = #{realname},
+			card_number = #{cardNumber},
+			bank_name = #{bankName},
+			bank_branch_name = #{bankBranchName},
+			is_default = #{isDefault},
+			is_deleted = #{isDeleted},
+			confirm_status = #{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			confirm_remark = #{confirmRemark},
+			confirmed_time = #{confirmedTime},
+			applied_time = #{appliedTime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `fnc_bank_card`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{bankCard.userId},</when>
+					<when test="field == 'realname'">realname = #{bankCard.realname},</when>
+					<when test="field == 'cardNumber'">card_number = #{bankCard.cardNumber},</when>
+					<when test="field == 'bankName'">bank_name = #{bankCard.bankName},</when>
+					<when test="field == 'bankBranchName'">bank_branch_name = #{bankCard.bankBranchName},</when>
+					<when test="field == 'isDefault'">is_default = #{bankCard.isDefault},</when>
+					<when test="field == 'isDeleted'">is_deleted = #{bankCard.isDeleted},</when>
+					<when test="field == 'confirmStatus'">confirm_status = #{bankCard.confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.sys.ConfirmStatus},</when>
+					<when test="field == 'confirmRemark'">confirm_remark = #{bankCard.confirmRemark},</when>
+					<when test="field == 'confirmedTime'">confirmed_time = #{bankCard.confirmedTime},</when>
+					<when test="field == 'appliedTime'">applied_time = #{bankCard.appliedTime},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{bankCard.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,realname,card_number,bank_name,bank_branch_name,is_default,is_deleted,confirm_status,confirm_remark,confirmed_time,applied_time
+		from `fnc_bank_card`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.BankCardQueryModel">
+		select
+		id,user_id,realname,card_number,bank_name,bank_branch_name,is_default,is_deleted,confirm_status,confirm_remark,confirmed_time,applied_time
+		from `fnc_bank_card`
+		<where>
+			<if test="isDeletedEQ != null">
+				 and is_deleted = #{isDeletedEQ}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="confirmStatusEQ != null">
+				 and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="realnameLK != null">
+				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.BankCardQueryModel">
+		select count(*) from `fnc_bank_card`
+		<where>
+			<if test="isDeletedEQ != null">
+				 and is_deleted = #{isDeletedEQ}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="confirmStatusEQ != null">
+				 and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="realnameLK != null">
+				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByUserId" resultMap="baseResultMap" parameterType="long">
+		select
+		*
+		from `fnc_bank_card`
+		where user_id = #{userId}
+	</select>
+
+</mapper>

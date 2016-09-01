@@ -8,21 +8,21 @@ public class Run {
 
 	public static void main(String[] args) throws Exception {
 		Config config = new Config();
-		config.setGenLogFile("/Users/freeman/IdeaProjects/gc/gc-service-impl/src/main/gc.log");
+		config.setGenLogFile("/Users/freeman/IdeaProjects/gc/zy-service-impl/src/main/gc.log");
 		config.setUrl("jdbc:mysql://192.168.10.240/gc");
 		config.setEntityPackage("com.zy.entity");
 //		config.setMybatisMapperPackage("com.zy.mapper");
 //
 //
-//		config.setMybatisMapperPath("D:\\Work\\Workspace2016\\gc\\gc-service-impl\\src\\main\\java\\com\\gc\\mapper");
-//		config.setMybatisXmlPath("D:\\Work\\Workspace2016\\gc\\gc-service-impl\\src\\main\\resources\\com\\gc\\mapping");
+//		config.setMybatisMapperPath("D:\\Work\\Workspace2016\\gc\\zy-service-impl\\src\\main\\java\\com\\gc\\mapper");
+//		config.setMybatisXmlPath("D:\\Work\\Workspace2016\\gc\\zy-service-impl\\src\\main\\resources\\com\\gc\\mapping");
 //		config.setUsername("root");
 //		config.setPassword("123456");
 //
 //		config.setUseLombok(true);
 //
 //		config.setQueryModelPackage("com.zy.model.query");
-//		config.setQueryModelPath("D:\\Work\\Workspace2016\\gc\\gc-service\\src\\main\\java\\com\\gc\\model\\query");
+//		config.setQueryModelPath("D:\\Work\\Workspace2016\\gc\\zy-service\\src\\main\\java\\com\\gc\\model\\query");
 
 
 /*
@@ -32,7 +32,7 @@ public class Run {
 		Handler handler = new QueryModelHandler();
 
 /*		Generator.generate(config,
-				new VoHandler("com.zy.vo", "D:\\Work\\Workspace2016\\gc\\gc-component\\src\\main\\java\\com\\gc\\vo", true),
+				new VoHandler("com.zy.vo", "D:\\Work\\Workspace2016\\gc\\zy-component\\src\\main\\java\\com\\gc\\vo", true),
 				new QueryModelHandler(),
 				new MybatisMapperHandler(),
 				new MybatisXmlHandler(),
@@ -42,7 +42,7 @@ public class Run {
 		);*/
 
 		Generator.generate(config,
-				new VoHandler("com.zy.vo", "/Users/freeman/IdeaProjects/gc/gc-service-impl/src/main/java/com/gc/vo", true)/*,
+				new VoHandler("com.zy.vo", "/Users/freeman/IdeaProjects/gc/zy-service-impl/src/main/java/com/gc/vo", true)/*,
 				new QueryModelHandler()
 */
 

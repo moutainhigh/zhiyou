@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.MessageMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.sys.Message">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="user_id" property="userId" />
+		<result column="is_read" property="isRead" />
+		<result column="created_time" property="createdTime" />
+		<result column="read_time" property="readTime" />
+		<result column="message_type" property="messageType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="batch_number" property="batchNumber" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.sys.Message" useGeneratedKeys="true" keyProperty="id">
+	  insert into `sys_message` (title,content,user_id,is_read,created_time,read_time,message_type,batch_number)
+	  values (#{title},#{content},#{userId},#{isRead},#{createdTime},#{readTime},#{messageType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{batchNumber})
+	</insert>
+
+	<delete id="delete">
+		delete from `sys_message` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.sys.Message">
+		update `sys_message`
+		<set>
+			title = #{title},
+			content = #{content},
+			user_id = #{userId},
+			is_read = #{isRead},
+			created_time = #{createdTime},
+			read_time = #{readTime},
+			message_type = #{messageType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			batch_number = #{batchNumber},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `sys_message`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'title'">title = #{message.title},</when>
+					<when test="field == 'content'">content = #{message.content},</when>
+					<when test="field == 'userId'">user_id = #{message.userId},</when>
+					<when test="field == 'isRead'">is_read = #{message.isRead},</when>
+					<when test="field == 'createdTime'">created_time = #{message.createdTime},</when>
+					<when test="field == 'readTime'">read_time = #{message.readTime},</when>
+					<when test="field == 'messageType'">message_type = #{message.messageType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.sys.Message$MessageType},</when>
+					<when test="field == 'batchNumber'">batch_number = #{message.batchNumber},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{message.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,title,content,user_id,is_read,created_time,read_time,message_type,batch_number
+		from `sys_message`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.MessageQueryModel">
+		select
+		id,title,content,user_id,is_read,created_time,read_time,message_type,batch_number
+		from `sys_message`
+		<where>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
+			<if test="contentLK != null">
+				<bind name="contentLK" value="'%' + contentLK + '%'"/> and content like #{contentLK}
+			</if>
+			<if test="messageTypeEQ != null">
+				 and message_type = #{messageTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="batchNumberEQ != null">
+				 and batch_number = #{batchNumberEQ}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="isReadEQ != null">
+				 and is_read = #{isReadEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.MessageQueryModel">
+		select count(*) from `sys_message`
+		<where>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
+			<if test="contentLK != null">
+				<bind name="contentLK" value="'%' + contentLK + '%'"/> and content like #{contentLK}
+			</if>
+			<if test="messageTypeEQ != null">
+				 and message_type = #{messageTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="batchNumberEQ != null">
+				 and batch_number = #{batchNumberEQ}
+			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
+			<if test="isReadEQ != null">
+				 and is_read = #{isReadEQ}
+			</if>
+		</where>
+	</select>
+
+	<update id="readAll">
+		update `sys_message`
+		<set>
+			is_read = true,
+			read_time = #{readTime},
+		</set>
+		where user_id = #{userId} and is_read = false
+	</update>
+
+</mapper>

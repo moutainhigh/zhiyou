@@ -4,7 +4,7 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://ch.qos.logback/xml/ns/logback/  http://static.1024ke.com/file/logback.xsd">
 	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
-	<property file="${user.home}/gc.properties"/>
+	<property file="${user.home}/zy.properties"/>
 	<!-- 控制台输出 -->
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<!-- 日志输出编码 -->
@@ -18,7 +18,7 @@
 	<appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<prudent>true</prudent>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${log.dir}/gc-service-impl/gc-service-impl.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${log.dir}/zy-service-impl/zy-service-impl.%d{yyyy-MM-dd}.log</fileNamePattern>
 			<maxHistory>60</maxHistory>
 		</rollingPolicy>
 		<encoder>
@@ -27,7 +27,7 @@
 		</encoder>
 	</appender>
 
-	<logger name="com.gc" level="DEBUG"/>
+	<logger name="com.zy" level="DEBUG"/>
 
 	<!-- 日志输出级别 -->
 	<root level="INFO">

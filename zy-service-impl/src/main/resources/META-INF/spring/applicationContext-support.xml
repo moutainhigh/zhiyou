@@ -54,7 +54,7 @@
         <constructor-arg index="0" value="${sms.apiKey}"/>
         <constructor-arg index="1" value="${sms.sign}"/>
     </bean>
-    <bean id="kafkaProducerFactoryBean" class="com.gc.extend.KafkaProducerFactoryBean">
+    <bean id="kafkaProducerFactoryBean" class="com.zy.extend.KafkaProducerFactoryBean">
         <property name="properties">
             <util:properties>
                 <prop key="bootstrap.servers">${kafka.servers}</prop>
@@ -70,7 +70,7 @@
     </bean>
 
 
-     <bean id="wxMpConfigStorage" class="com.gc.extend.SKWxMpServiceImpl$SkWxMpInMemoryConfigStorage">
+     <bean id="wxMpConfigStorage" class="com.zy.extend.SKWxMpServiceImpl$SkWxMpInMemoryConfigStorage">
         <constructor-arg index="0" value="${weixinPay.cert.path}"/>
         <constructor-arg index="1" value="${weixinPay.mchId}"/>
          <constructor-arg index="2" value="${weixinPay.isDev}"/>
@@ -82,7 +82,7 @@
         <property name="aesKey" value="${weixinMp.aesKey}"/>
     </bean>
 
-    <bean id="skWxMpService" class="com.gc.extend.SKWxMpServiceImpl">
+    <bean id="skWxMpService" class="com.zy.extend.SKWxMpServiceImpl">
         <property name="wxMpConfigStorage" ref="wxMpConfigStorage"/>
     </bean>
 

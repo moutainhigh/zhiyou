@@ -9,9 +9,9 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 		">
 
-	<context:property-placeholder location="file:${user.home}/gc.properties" />
+	<context:property-placeholder location="file:${user.home}/zy.properties" />
 
-	<context:component-scan base-package="com.gc">
+	<context:component-scan base-package="com.zy">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
