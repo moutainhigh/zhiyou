@@ -187,7 +187,7 @@ a.disabled, a.disabled:hover, a.disabled:focus {
   background-color: #6cb92d;
 }
 .footer-nav > a.disabled {
-  background-color: #eee;
+  background-color: #e1e1e1;
 }
 
 
