@@ -38,8 +38,8 @@ public class UcenterActivityController {
 	@Autowired
 	private ActivityComponent activityComponent;
 
-	@RequestMapping(value = "/apply/{id}", method = RequestMethod.POST)
-	public String apply(@PathVariable Long id, String phone, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "/apply", method = RequestMethod.POST)
+	public String apply(Long id, String phone, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		
 		try {
 			activityService.apply(id, principal.getUserId());
