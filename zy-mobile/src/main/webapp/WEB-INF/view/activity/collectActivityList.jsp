@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>线下活动</title>
+<title>我关注的活动</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/activity.css" rel="stylesheet" />
 <script>
@@ -24,8 +24,9 @@
 </head>
 <body class="activity-list footer-fixed">
   <header class="header">
-    <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a>
     <h1>线下活动</h1>
+    <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="javascript" class="button-right"><i class="fa fa-edit"></i></a>
   </header>
 
   <article>

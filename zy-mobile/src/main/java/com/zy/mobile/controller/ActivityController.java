@@ -9,15 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.query.Page;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.ActivityComponent;
 import com.zy.entity.act.Activity;
-import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.model.query.ActivityCollectQueryModel;
@@ -90,34 +85,6 @@ public class ActivityController {
 		}
 		
 		return "activity/activityDetail";
-	}
-	
-	@RequestMapping(value = "/apply/{id}", method = RequestMethod.POST)
-	public String apply(@PathVariable Long id, String phone, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		
-		try {
-			activityService.apply(id, principal.getUserId());
-			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("申请成功!"));
-			return "activity/activityApplySuccess";
-		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("申请异常," + e.getMessage()));
-			return "redirect:/activity/" + id;
-		}
-		
-	}
-	
-	@RequestMapping(value = "/collect")
-	@ResponseBody
-	public Result<Boolean> collect(Long id, Principal principal) {
-		//TODO
-		return ResultBuilder.result(true);
-	}
-	
-	@RequestMapping(value = "/signIn")
-	@ResponseBody
-	public Result<Boolean> signIn(Long id, Principal principal) {
-		//TODO
-		return ResultBuilder.result(true);
 	}
 
 }
