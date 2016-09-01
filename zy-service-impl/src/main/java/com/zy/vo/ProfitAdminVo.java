@@ -1,6 +1,6 @@
-package com.gc.vo;
+package com.zy.vo;
 
-import com.gc.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.CurrencyType;
 import lombok.Getter;
 import lombok.Setter;
 

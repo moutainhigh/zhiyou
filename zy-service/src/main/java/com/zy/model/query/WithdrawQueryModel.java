@@ -1,4 +1,4 @@
-package com.gc.model.query;
+package com.zy.model.query;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.gc.entity.fnc.Withdraw.WithdrawStatus;
+import com.zy.entity.fnc.Withdraw.WithdrawStatus;
 
 @Getter
 @Setter

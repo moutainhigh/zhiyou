@@ -1,6 +1,6 @@
-package com.gc.vo;
+package com.zy.vo;
 
-import com.gc.entity.usr.Portrait.Gender;
+import com.zy.entity.usr.Portrait.Gender;
 import lombok.Getter;
 import lombok.Setter;
 

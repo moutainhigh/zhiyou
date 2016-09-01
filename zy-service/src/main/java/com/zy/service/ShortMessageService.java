@@ -1,8 +1,8 @@
-package com.gc.service;
+package com.zy.service;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.sys.ShortMessage;
-import com.gc.model.query.ShortMessageQueryModel;
+import com.zy.entity.sys.ShortMessage;
+import com.zy.model.query.ShortMessageQueryModel;
 
 public interface ShortMessageService {
 	

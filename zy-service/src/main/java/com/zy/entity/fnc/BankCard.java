@@ -1,4 +1,4 @@
-package com.gc.entity.fnc;
+package com.zy.entity.fnc;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
@@ -24,7 +24,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.zy.common.extend.StringBinder;
-import com.gc.entity.sys.ConfirmStatus;
+import com.zy.entity.sys.ConfirmStatus;
 
 @Entity
 @Table(name = "fnc_bank_card")

@@ -2,9 +2,9 @@ package com.zy.admin.controller.mal;
 
 import com.zy.common.model.query.Page;
 import com.zy.common.model.ui.Grid;
-import com.gc.entity.mal.Gift;
-import com.gc.model.query.GiftQueryModel;
-import com.gc.service.GiftService;
+import com.zy.entity.mal.Gift;
+import com.zy.model.query.GiftQueryModel;
+import com.zy.service.GiftService;
 import io.gd.generator.api.query.Direction;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;

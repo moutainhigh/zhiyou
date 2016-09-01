@@ -1,10 +1,10 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.cms.Banner;
-import com.gc.mapper.BannerMapper;
-import com.gc.model.query.BannerQueryModel;
-import com.gc.service.BannerService;
+import com.zy.entity.cms.Banner;
+import com.zy.mapper.BannerMapper;
+import com.zy.model.query.BannerQueryModel;
+import com.zy.service.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;

@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.zy.common.model.query.Page;
-import com.gc.component.OrderComponent;
-import com.gc.entity.mal.Order;
-import com.gc.entity.mal.Product;
-import com.gc.entity.usr.Address;
-import com.gc.model.Principal;
-import com.gc.model.query.OrderQueryModel;
-import com.gc.service.AddressService;
-import com.gc.service.OrderService;
-import com.gc.service.ProductService;
+import com.zy.component.OrderComponent;
+import com.zy.entity.mal.Order;
+import com.zy.entity.mal.Product;
+import com.zy.entity.usr.Address;
+import com.zy.model.Principal;
+import com.zy.model.query.OrderQueryModel;
+import com.zy.service.AddressService;
+import com.zy.service.OrderService;
+import com.zy.service.ProductService;
 
 @RequestMapping("/order")
 @Controller

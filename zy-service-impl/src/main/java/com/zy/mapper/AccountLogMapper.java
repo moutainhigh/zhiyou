@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.fnc.AccountLog;
-import com.gc.model.query.AccountLogQueryModel;
+import com.zy.entity.fnc.AccountLog;
+import com.zy.model.query.AccountLogQueryModel;
 
 
 public interface AccountLogMapper {

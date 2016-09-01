@@ -1,7 +1,7 @@
-package com.gc.vo;
+package com.zy.vo;
 
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.entity.mal.Order.OrderStatus;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.mal.Order.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
 

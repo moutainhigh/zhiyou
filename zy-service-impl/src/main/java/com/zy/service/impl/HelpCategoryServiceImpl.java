@@ -1,9 +1,9 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
-import com.gc.entity.cms.HelpCategory;
-import com.gc.mapper.HelpCategoryMapper;
-import com.gc.model.query.HelpCategoryQueryModel;
-import com.gc.service.HelpCategoryService;
+import com.zy.entity.cms.HelpCategory;
+import com.zy.mapper.HelpCategoryMapper;
+import com.zy.model.query.HelpCategoryQueryModel;
+import com.zy.service.HelpCategoryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

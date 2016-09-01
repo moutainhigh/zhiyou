@@ -1,4 +1,4 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.zy.common.model.query.Page;
-import com.gc.component.FncComponent;
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.entity.fnc.Profit;
-import com.gc.mapper.ProfitMapper;
-import com.gc.model.query.ProfitQueryModel;
-import com.gc.service.ProfitService;
+import com.zy.component.FncComponent;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Profit;
+import com.zy.mapper.ProfitMapper;
+import com.zy.model.query.ProfitQueryModel;
+import com.zy.service.ProfitService;
 
 @Service
 @Validated

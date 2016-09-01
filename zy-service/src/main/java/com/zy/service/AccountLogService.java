@@ -1,11 +1,11 @@
-package com.gc.service;
+package com.zy.service;
 
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.fnc.AccountLog;
-import com.gc.model.query.AccountLogQueryModel;
+import com.zy.entity.fnc.AccountLog;
+import com.zy.model.query.AccountLogQueryModel;
 
 public interface AccountLogService {
 

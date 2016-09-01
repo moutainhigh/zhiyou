@@ -1,13 +1,13 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.cms.Banner;
-import com.gc.model.query.BannerQueryModel;
+import com.zy.entity.cms.Banner;
+import com.zy.model.query.BannerQueryModel;
 
-import com.gc.entity.cms.Banner.BannerPosition;
+import com.zy.entity.cms.Banner.BannerPosition;
 
 public interface BannerMapper {
 

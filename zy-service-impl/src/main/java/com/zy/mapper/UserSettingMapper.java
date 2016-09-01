@@ -1,10 +1,10 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.usr.UserSetting;
+import com.zy.entity.usr.UserSetting;
 
 
 public interface UserSettingMapper {

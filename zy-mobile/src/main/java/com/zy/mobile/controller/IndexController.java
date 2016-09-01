@@ -10,11 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.zy.common.support.cache.CacheSupport;
-import com.gc.entity.cms.Banner;
-import com.gc.entity.cms.Banner.BannerPosition;
-import com.gc.model.Constants;
-import com.gc.model.query.BannerQueryModel;
-import com.gc.service.BannerService;
+import com.zy.entity.cms.Banner;
+import com.zy.entity.cms.Banner.BannerPosition;
+import com.zy.model.Constants;
+import com.zy.model.query.BannerQueryModel;
+import com.zy.service.BannerService;
 
 @RequestMapping
 @Controller

@@ -1,8 +1,8 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
-import com.gc.entity.cms.Help;
-import com.gc.mapper.HelpMapper;
-import com.gc.service.HelpService;
+import com.zy.entity.cms.Help;
+import com.zy.mapper.HelpMapper;
+import com.zy.service.HelpService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

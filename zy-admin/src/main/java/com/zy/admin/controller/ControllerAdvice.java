@@ -21,8 +21,8 @@ import com.zy.common.exception.ValidationException;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.util.JsonUtils;
 import com.zy.common.util.WebUtils;
-import com.gc.model.BizCode;
-import com.gc.model.Constants;
+import com.zy.model.BizCode;
+import com.zy.model.Constants;
 
 @org.springframework.web.bind.annotation.ControllerAdvice
 public class ControllerAdvice {

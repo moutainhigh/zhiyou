@@ -1,6 +1,6 @@
-package com.gc.vo;
+package com.zy.vo;
 
-import com.gc.entity.cms.Banner.BannerPosition;
+import com.zy.entity.cms.Banner.BannerPosition;
 import lombok.Getter;
 import lombok.Setter;
 

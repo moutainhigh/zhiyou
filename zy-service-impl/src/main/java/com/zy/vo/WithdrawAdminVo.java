@@ -1,7 +1,7 @@
-package com.gc.vo;
+package com.zy.vo;
 
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.entity.fnc.Withdraw.WithdrawStatus;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Withdraw.WithdrawStatus;
 import lombok.Getter;
 import lombok.Setter;
 

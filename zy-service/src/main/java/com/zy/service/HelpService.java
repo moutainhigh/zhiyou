@@ -1,8 +1,8 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
-import com.gc.entity.cms.Help;
+import com.zy.entity.cms.Help;
 
 public interface HelpService {
 

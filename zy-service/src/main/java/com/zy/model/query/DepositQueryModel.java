@@ -1,4 +1,4 @@
-package com.gc.model.query;
+package com.zy.model.query;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -11,8 +11,8 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.gc.entity.fnc.Deposit.DepositStatus;
-import com.gc.entity.fnc.PayType;
+import com.zy.entity.fnc.Deposit.DepositStatus;
+import com.zy.entity.fnc.PayType;
 import java.util.Date;
 
 @Getter

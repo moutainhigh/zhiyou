@@ -1,11 +1,11 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.cms.Feedback;
-import com.gc.entity.cms.Feedback.FeedbackStatus;
-import com.gc.mapper.FeedbackMapper;
-import com.gc.model.query.FeedbackQueryModel;
-import com.gc.service.FeedbackService;
+import com.zy.entity.cms.Feedback;
+import com.zy.entity.cms.Feedback.FeedbackStatus;
+import com.zy.mapper.FeedbackMapper;
+import com.zy.model.query.FeedbackQueryModel;
+import com.zy.service.FeedbackService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -21,9 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.entity.cms.ArticleCategory;
-import com.gc.model.query.ArticleCategoryQueryModel;
-import com.gc.service.ArticleCategoryService;
+import com.zy.entity.cms.ArticleCategory;
+import com.zy.model.query.ArticleCategoryQueryModel;
+import com.zy.service.ArticleCategoryService;
 
 @RequestMapping("/articleCategory")
 @Controller

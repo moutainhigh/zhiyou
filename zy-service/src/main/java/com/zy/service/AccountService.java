@@ -1,11 +1,11 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.fnc.Account;
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.model.query.AccountQueryModel;
+import com.zy.entity.fnc.Account;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.model.query.AccountQueryModel;
 
 public interface AccountService {
 

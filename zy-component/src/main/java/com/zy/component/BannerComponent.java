@@ -1,8 +1,8 @@
-package com.gc.component;
+package com.zy.component;
 
-import com.gc.entity.cms.Banner;
+import com.zy.entity.cms.Banner;
 import com.zy.util.GcUtils;
-import com.gc.vo.BannerAdminVo;
+import com.zy.vo.BannerAdminVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 

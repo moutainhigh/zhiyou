@@ -16,9 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.query.Page;
 import com.zy.common.model.ui.Grid;
-import com.gc.entity.mal.Product;
-import com.gc.model.query.ProductQueryModel;
-import com.gc.service.ProductService;
+import com.zy.entity.mal.Product;
+import com.zy.model.query.ProductQueryModel;
+import com.zy.service.ProductService;
 
 @RequestMapping("/product")
 @Controller

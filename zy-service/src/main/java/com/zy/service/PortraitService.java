@@ -1,8 +1,8 @@
-package com.gc.service;
+package com.zy.service;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.usr.Portrait;
-import com.gc.model.query.PortraitQueryModel;
+import com.zy.entity.usr.Portrait;
+import com.zy.model.query.PortraitQueryModel;
 
 /**
  * 用户画像操作支持

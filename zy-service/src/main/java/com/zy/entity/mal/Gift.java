@@ -1,4 +1,4 @@
-package com.gc.entity.mal;
+package com.zy.entity.mal;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;

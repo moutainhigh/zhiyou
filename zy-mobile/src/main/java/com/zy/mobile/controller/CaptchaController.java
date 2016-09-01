@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.gc.model.Constants;
+import com.zy.model.Constants;
 
 @Controller
 @RequestMapping("/captcha")

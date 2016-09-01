@@ -1,8 +1,8 @@
-package com.gc.service;
+package com.zy.service;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.act.ActivitySignIn;
-import com.gc.model.query.ActivitySignInQueryModel;
+import com.zy.entity.act.ActivitySignIn;
+import com.zy.model.query.ActivitySignInQueryModel;
 
 public interface ActivitySignInService {
 

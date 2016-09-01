@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.adm.Role;
-import com.gc.model.query.RoleQueryModel;
+import com.zy.entity.adm.Role;
+import com.zy.model.query.RoleQueryModel;
 
 
 public interface RoleMapper {

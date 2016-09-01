@@ -1,4 +1,4 @@
-package com.gc.component;
+package com.zy.component;
 
 import static java.util.Objects.isNull;
 
@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zy.common.util.BeanUtils;
-import com.gc.entity.mal.Product;
+import com.zy.entity.mal.Product;
 import com.zy.util.GcUtils;
-import com.gc.vo.ProductAdminVo;
-import com.gc.vo.ProductDetailVo;
-import com.gc.vo.ProductListVo;
+import com.zy.vo.ProductAdminVo;
+import com.zy.vo.ProductDetailVo;
+import com.zy.vo.ProductListVo;
 
 @Component
 public class ProductComponent {

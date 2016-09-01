@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.usr.Address;
-import com.gc.model.query.AddressQueryModel;
+import com.zy.entity.usr.Address;
+import com.zy.model.query.AddressQueryModel;
 
 
 public interface AddressMapper {

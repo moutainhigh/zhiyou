@@ -1,4 +1,4 @@
-package com.gc.entity.usr;
+package com.zy.entity.usr;
 
 import static io.gd.generator.api.query.Predicate.EQ;
 import static io.gd.generator.api.query.Predicate.IN;

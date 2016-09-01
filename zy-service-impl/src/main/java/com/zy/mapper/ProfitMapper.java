@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.fnc.Profit;
-import com.gc.model.query.ProfitQueryModel;
+import com.zy.entity.fnc.Profit;
+import com.zy.model.query.ProfitQueryModel;
 
 
 public interface ProfitMapper {

@@ -1,11 +1,11 @@
-package com.gc.component;
+package com.zy.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import com.gc.Config;
-import com.gc.mapper.UserMapper;
+import com.zy.Config;
+import com.zy.mapper.UserMapper;
 
 /**
  * Created by freeman on 16/8/3.

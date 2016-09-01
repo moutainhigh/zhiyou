@@ -1,4 +1,4 @@
-package com.gc.extend;
+package com.zy.extend;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.gc.model.Constants.*;
+import static com.zy.model.Constants.*;
 
 public class CommonRequestAttributeFilter extends OncePerRequestFilter {
 

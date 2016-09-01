@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.result.ResultBuilder;
-import com.gc.component.ReportComponent;
-import com.gc.entity.act.Report;
-import com.gc.model.Principal;
-import com.gc.service.ReportService;
+import com.zy.component.ReportComponent;
+import com.zy.entity.act.Report;
+import com.zy.model.Principal;
+import com.zy.service.ReportService;
 
 @RequestMapping("/u/report")
 @Controller

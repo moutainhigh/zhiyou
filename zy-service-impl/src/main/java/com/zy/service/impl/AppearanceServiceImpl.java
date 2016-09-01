@@ -1,4 +1,4 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -14,16 +14,16 @@ import org.springframework.validation.annotation.Validated;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
-import com.gc.entity.sys.ConfirmStatus;
-import com.gc.entity.usr.Appearance;
-import com.gc.entity.usr.User;
-import com.gc.extend.Producer;
-import com.gc.mapper.AppearanceMapper;
-import com.gc.mapper.UserMapper;
-import com.gc.model.BizCode;
-import com.gc.model.Constants;
-import com.gc.model.query.AppearanceQueryModel;
-import com.gc.service.AppearanceService;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.Appearance;
+import com.zy.entity.usr.User;
+import com.zy.extend.Producer;
+import com.zy.mapper.AppearanceMapper;
+import com.zy.mapper.UserMapper;
+import com.zy.model.BizCode;
+import com.zy.model.Constants;
+import com.zy.model.query.AppearanceQueryModel;
+import com.zy.service.AppearanceService;
 
 /**
  * Created by freeman on 16/7/15.

@@ -1,4 +1,4 @@
-package com.gc.entity.usr;
+package com.zy.entity.usr;
 
 import static io.gd.generator.api.query.Predicate.EQ;
 import static io.gd.generator.api.query.Predicate.IN;
@@ -27,7 +27,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 
 import com.zy.common.extend.StringBinder;
-import com.gc.entity.sys.ConfirmStatus;
+import com.zy.entity.sys.ConfirmStatus;
 
 @Entity
 @Table(name = "usr_appearance")

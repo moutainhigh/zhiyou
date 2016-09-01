@@ -1,10 +1,10 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.sys.Message;
-import com.gc.model.query.MessageQueryModel;
+import com.zy.entity.sys.Message;
+import com.zy.model.query.MessageQueryModel;
 
 public interface MessageService {
 

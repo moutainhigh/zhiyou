@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.support.cache.CacheSupport;
 import com.zy.common.util.CookieUtils;
-import com.gc.model.Constants;
+import com.zy.model.Constants;
 
 @Controller
 @RequestMapping

@@ -1,4 +1,4 @@
-package com.gc.entity.cms;
+package com.zy.entity.cms;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
@@ -20,7 +20,7 @@ import lombok.Setter;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.gc.entity.usr.User.UserType;
+import com.zy.entity.usr.User.UserType;
 
 @Entity
 @Table(name = "cms_help_category")

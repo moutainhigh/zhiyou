@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.result.ResultBuilder;
-import com.gc.component.AppearanceComponent;
-import com.gc.entity.sys.ConfirmStatus;
-import com.gc.entity.usr.Appearance;
-import com.gc.model.Principal;
-import com.gc.service.AppearanceService;
+import com.zy.component.AppearanceComponent;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.Appearance;
+import com.zy.model.Principal;
+import com.zy.service.AppearanceService;
 
 @RequestMapping("/u/appearance")
 @Controller

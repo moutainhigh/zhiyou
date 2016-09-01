@@ -1,8 +1,8 @@
-package com.gc.extend;
+package com.zy.extend;
 
 import com.zy.common.util.JsonUtils;
-import com.gc.entity.sys.Notify;
-import com.gc.mapper.NotifyMapper;
+import com.zy.entity.sys.Notify;
+import com.zy.mapper.NotifyMapper;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;

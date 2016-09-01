@@ -1,4 +1,4 @@
-package com.gc.model.query;
+package com.zy.model.query;
 
 import java.util.Set;
 import java.util.HashSet;

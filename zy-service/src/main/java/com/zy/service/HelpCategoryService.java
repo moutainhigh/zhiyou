@@ -1,9 +1,9 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
-import com.gc.entity.cms.HelpCategory;
-import com.gc.model.query.HelpCategoryQueryModel;
+import com.zy.entity.cms.HelpCategory;
+import com.zy.model.query.HelpCategoryQueryModel;
 
 public interface HelpCategoryService {
 

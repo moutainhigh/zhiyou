@@ -1,8 +1,8 @@
-package com.gc.service;
+package com.zy.service;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.cms.Feedback;
-import com.gc.model.query.FeedbackQueryModel;
+import com.zy.entity.cms.Feedback;
+import com.zy.model.query.FeedbackQueryModel;
 
 public interface FeedbackService {
 

@@ -1,11 +1,11 @@
-package com.gc.component;
+package com.zy.component;
 
-import com.gc.entity.fnc.Account;
-import com.gc.entity.usr.User;
-import com.gc.model.query.AccountQueryModel;
-import com.gc.service.AccountService;
+import com.zy.entity.fnc.Account;
+import com.zy.entity.usr.User;
+import com.zy.model.query.AccountQueryModel;
+import com.zy.service.AccountService;
 import com.zy.util.VoHelper;
-import com.gc.vo.AccountAdminVo;
+import com.zy.vo.AccountAdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

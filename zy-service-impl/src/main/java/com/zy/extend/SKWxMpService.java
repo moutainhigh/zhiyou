@@ -1,4 +1,4 @@
-package com.gc.extend;
+package com.zy.extend;
 
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;

@@ -1,4 +1,4 @@
-package com.gc.entity.usr;
+package com.zy.entity.usr;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;

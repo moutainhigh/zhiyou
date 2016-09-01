@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.gc.entity.mal.Product;
-import com.gc.service.ProductService;
+import com.zy.entity.mal.Product;
+import com.zy.service.ProductService;
 
 @RequestMapping("/product")
 @Controller

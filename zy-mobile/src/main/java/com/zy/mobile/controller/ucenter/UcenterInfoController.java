@@ -1,10 +1,10 @@
 package com.zy.mobile.controller.ucenter;
 
 import static com.zy.common.util.ValidateUtils.validate;
-import static com.gc.model.Constants.CACHE_NAME_BIND_PHONE_SMS_LAST_SEND_TIME;
-import static com.gc.model.Constants.MODEL_ATTRIBUTE_RESULT;
-import static com.gc.model.Constants.SESSION_ATTRIBUTE_BIND_PHONE_SMS;
-import static com.gc.model.Constants.SESSION_ATTRIBUTE_CAPTCHA;
+import static com.zy.model.Constants.CACHE_NAME_BIND_PHONE_SMS_LAST_SEND_TIME;
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
+import static com.zy.model.Constants.SESSION_ATTRIBUTE_BIND_PHONE_SMS;
+import static com.zy.model.Constants.SESSION_ATTRIBUTE_CAPTCHA;
 import static java.util.Objects.isNull;
 
 import java.io.IOException;
@@ -39,19 +39,19 @@ import com.zy.common.support.LuosimaoSmsSupport;
 import com.zy.common.support.LuosimaoSmsSupport.SmsRes;
 import com.zy.common.support.cache.CacheSupport;
 import com.zy.common.util.ValidateUtils;
-import com.gc.entity.sys.ConfirmStatus;
-import com.gc.entity.sys.ShortMessage;
-import com.gc.entity.usr.Appearance;
-import com.gc.entity.usr.Portrait;
-import com.gc.entity.usr.User;
-import com.gc.model.Constants;
-import com.gc.model.PhoneAndSmsCode;
-import com.gc.model.Principal;
-import com.gc.service.AddressService;
-import com.gc.service.AppearanceService;
-import com.gc.service.PortraitService;
-import com.gc.service.ShortMessageService;
-import com.gc.service.UserService;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.sys.ShortMessage;
+import com.zy.entity.usr.Appearance;
+import com.zy.entity.usr.Portrait;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.model.PhoneAndSmsCode;
+import com.zy.model.Principal;
+import com.zy.service.AddressService;
+import com.zy.service.AppearanceService;
+import com.zy.service.PortraitService;
+import com.zy.service.ShortMessageService;
+import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 
 

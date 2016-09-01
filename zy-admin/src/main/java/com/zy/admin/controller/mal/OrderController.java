@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.component.OrderComponent;
-import com.gc.entity.mal.Order;
-import com.gc.entity.usr.User;
-import com.gc.model.query.OrderQueryModel;
-import com.gc.model.query.UserQueryModel;
-import com.gc.service.OrderService;
-import com.gc.service.UserService;
-import com.gc.vo.OrderAdminVo;
+import com.zy.component.OrderComponent;
+import com.zy.entity.mal.Order;
+import com.zy.entity.usr.User;
+import com.zy.model.query.OrderQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.OrderService;
+import com.zy.service.UserService;
+import com.zy.vo.OrderAdminVo;
 
 
 @RequestMapping("/order")

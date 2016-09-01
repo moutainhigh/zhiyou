@@ -1,9 +1,9 @@
 package com.zy.admin.controller.sys;
 
-import com.gc.entity.sys.Setting;
-import com.gc.model.BizCode;
-import com.gc.model.Constants;
-import com.gc.service.SettingService;
+import com.zy.entity.sys.Setting;
+import com.zy.model.BizCode;
+import com.zy.model.Constants;
+import com.zy.service.SettingService;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.result.Result;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static com.gc.model.Constants.SETTING_SUPER_ADMIN_ID;
+import static com.zy.model.Constants.SETTING_SUPER_ADMIN_ID;
 import static com.zy.common.util.ValidateUtils.validate;
 
 @RequestMapping("/setting")

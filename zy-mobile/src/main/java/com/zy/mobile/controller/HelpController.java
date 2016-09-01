@@ -1,12 +1,12 @@
 package com.zy.mobile.controller;
 
 import com.zy.common.support.cache.CacheSupport;
-import com.gc.entity.cms.Help;
-import com.gc.entity.cms.HelpCategory;
-import com.gc.entity.usr.User.UserType;
-import com.gc.model.query.HelpCategoryQueryModel;
-import com.gc.service.HelpCategoryService;
-import com.gc.service.HelpService;
+import com.zy.entity.cms.Help;
+import com.zy.entity.cms.HelpCategory;
+import com.zy.entity.usr.User.UserType;
+import com.zy.model.query.HelpCategoryQueryModel;
+import com.zy.service.HelpCategoryService;
+import com.zy.service.HelpService;
 import io.gd.generator.api.query.Direction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-import static com.gc.model.Constants.CACHE_NAME_HELP;
-import static com.gc.model.Constants.CACHE_NAME_HELP_CATEGORY;
+import static com.zy.model.Constants.CACHE_NAME_HELP;
+import static com.zy.model.Constants.CACHE_NAME_HELP_CATEGORY;
 
 @RequestMapping("/help")
 @Controller

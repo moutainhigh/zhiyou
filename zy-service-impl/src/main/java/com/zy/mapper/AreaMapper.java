@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.sys.Area;
-import com.gc.model.query.AreaQueryModel;
+import com.zy.entity.sys.Area;
+import com.zy.model.query.AreaQueryModel;
 
 
 public interface AreaMapper {

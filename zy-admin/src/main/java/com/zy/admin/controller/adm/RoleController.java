@@ -21,12 +21,12 @@ import com.zy.common.exception.ValidationException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.entity.adm.Role;
-import com.gc.entity.adm.RolePermission;
-import com.gc.model.Constants;
-import com.gc.model.dto.RoleDto;
-import com.gc.model.query.RoleQueryModel;
-import com.gc.service.RoleService;
+import com.zy.entity.adm.Role;
+import com.zy.entity.adm.RolePermission;
+import com.zy.model.Constants;
+import com.zy.model.dto.RoleDto;
+import com.zy.model.query.RoleQueryModel;
+import com.zy.service.RoleService;
 
 
 /**

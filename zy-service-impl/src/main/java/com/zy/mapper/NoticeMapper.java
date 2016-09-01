@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.cms.Notice;
-import com.gc.model.query.NoticeQueryModel;
+import com.zy.entity.cms.Notice;
+import com.zy.model.query.NoticeQueryModel;
 
 
 public interface NoticeMapper {

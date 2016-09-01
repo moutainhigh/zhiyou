@@ -16,9 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.entity.fnc.Payment;
-import com.gc.model.query.PaymentQueryModel;
-import com.gc.service.PaymentService;
+import com.zy.entity.fnc.Payment;
+import com.zy.model.query.PaymentQueryModel;
+import com.zy.service.PaymentService;
 
 @RequestMapping("/payment")
 @Controller

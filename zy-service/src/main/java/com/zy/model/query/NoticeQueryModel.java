@@ -1,4 +1,4 @@
-package com.gc.model.query;
+package com.zy.model.query;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.gc.entity.cms.Notice.NoticeType;
+import com.zy.entity.cms.Notice.NoticeType;
 
 @Getter
 @Setter

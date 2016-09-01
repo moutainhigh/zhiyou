@@ -1,15 +1,15 @@
-package com.gc.component;
+package com.zy.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zy.common.util.BeanUtils;
-import com.gc.entity.usr.Job;
-import com.gc.entity.usr.Portrait;
-import com.gc.model.dto.AreaDto;
-import com.gc.service.TagService;
-import com.gc.vo.PortraitAdminVo;
-import com.gc.vo.PortraitVo;
+import com.zy.entity.usr.Job;
+import com.zy.entity.usr.Portrait;
+import com.zy.model.dto.AreaDto;
+import com.zy.service.TagService;
+import com.zy.vo.PortraitAdminVo;
+import com.zy.vo.PortraitVo;
 
 
 @Component

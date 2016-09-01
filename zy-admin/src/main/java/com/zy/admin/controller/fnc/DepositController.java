@@ -22,15 +22,15 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.common.support.file.ExportHandler;
-import com.gc.component.DepositComponent;
-import com.gc.entity.fnc.Deposit;
-import com.gc.entity.fnc.PayType;
-import com.gc.entity.usr.User;
-import com.gc.model.query.DepositQueryModel;
-import com.gc.model.query.UserQueryModel;
-import com.gc.service.DepositService;
-import com.gc.service.UserService;
-import com.gc.vo.DepositAdminVo;
+import com.zy.component.DepositComponent;
+import com.zy.entity.fnc.Deposit;
+import com.zy.entity.fnc.PayType;
+import com.zy.entity.usr.User;
+import com.zy.model.query.DepositQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.DepositService;
+import com.zy.service.UserService;
+import com.zy.vo.DepositAdminVo;
 
 @RequestMapping("/deposit")
 @Controller

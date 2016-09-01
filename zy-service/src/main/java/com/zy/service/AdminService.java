@@ -1,9 +1,9 @@
-package com.gc.service;
+package com.zy.service;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.adm.Admin;
-import com.gc.entity.adm.AdminRole;
-import com.gc.model.query.AdminQueryModel;
+import com.zy.entity.adm.Admin;
+import com.zy.entity.adm.AdminRole;
+import com.zy.model.query.AdminQueryModel;
 
 import java.util.List;
 import java.util.Set;

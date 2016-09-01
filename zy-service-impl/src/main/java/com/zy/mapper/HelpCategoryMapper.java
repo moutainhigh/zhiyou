@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.cms.HelpCategory;
-import com.gc.model.query.HelpCategoryQueryModel;
+import com.zy.entity.cms.HelpCategory;
+import com.zy.model.query.HelpCategoryQueryModel;
 
 
 public interface HelpCategoryMapper {

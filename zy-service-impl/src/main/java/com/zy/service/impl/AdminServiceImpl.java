@@ -1,16 +1,16 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.adm.Admin;
-import com.gc.entity.adm.AdminRole;
-import com.gc.entity.adm.Role;
-import com.gc.entity.adm.RolePermission;
-import com.gc.mapper.AdminMapper;
-import com.gc.mapper.AdminRoleMapper;
-import com.gc.mapper.RoleMapper;
-import com.gc.mapper.RolePermissionMapper;
-import com.gc.model.query.AdminQueryModel;
-import com.gc.service.AdminService;
+import com.zy.entity.adm.Admin;
+import com.zy.entity.adm.AdminRole;
+import com.zy.entity.adm.Role;
+import com.zy.entity.adm.RolePermission;
+import com.zy.mapper.AdminMapper;
+import com.zy.mapper.AdminRoleMapper;
+import com.zy.mapper.RoleMapper;
+import com.zy.mapper.RolePermissionMapper;
+import com.zy.model.query.AdminQueryModel;
+import com.zy.service.AdminService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

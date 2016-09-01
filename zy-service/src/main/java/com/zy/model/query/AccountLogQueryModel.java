@@ -1,4 +1,4 @@
-package com.gc.model.query;
+package com.zy.model.query;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -11,10 +11,10 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.gc.entity.fnc.AccountLog.AccountLogType;
-import com.gc.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.AccountLog.AccountLogType;
+import com.zy.entity.fnc.CurrencyType;
 import java.util.Date;
-import com.gc.entity.fnc.AccountLog.InOut;
+import com.zy.entity.fnc.AccountLog.InOut;
 
 @Getter
 @Setter

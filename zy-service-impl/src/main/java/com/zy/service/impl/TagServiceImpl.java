@@ -1,8 +1,8 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
-import com.gc.entity.usr.Tag;
-import com.gc.mapper.TagMapper;
-import com.gc.service.TagService;
+import com.zy.entity.usr.Tag;
+import com.zy.mapper.TagMapper;
+import com.zy.service.TagService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

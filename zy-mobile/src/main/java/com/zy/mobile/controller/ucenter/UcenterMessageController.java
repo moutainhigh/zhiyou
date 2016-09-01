@@ -1,11 +1,11 @@
 package com.zy.mobile.controller.ucenter;
 
 import com.zy.common.exception.UnauthorizedException;
-import com.gc.component.MessageComponent;
-import com.gc.entity.sys.Message;
-import com.gc.model.Principal;
-import com.gc.model.query.MessageQueryModel;
-import com.gc.service.MessageService;
+import com.zy.component.MessageComponent;
+import com.zy.entity.sys.Message;
+import com.zy.model.Principal;
+import com.zy.model.query.MessageQueryModel;
+import com.zy.service.MessageService;
 import io.gd.generator.api.query.Direction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

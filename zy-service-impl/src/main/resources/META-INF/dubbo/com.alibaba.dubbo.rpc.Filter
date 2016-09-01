@@ -1,2 +1,2 @@
 exception=com.alibaba.dubbo.rpc.filter.ExceptionFilter
-myException=com.gc.extend.ExceptionFilter 
+myException=com.zy.extend.ExceptionFilter 

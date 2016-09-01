@@ -1,13 +1,13 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
-import static com.gc.entity.fnc.CurrencyType.现金;
-import static com.gc.entity.fnc.CurrencyType.积分;
-import static com.gc.entity.fnc.CurrencyType.金币;
-import static com.gc.model.Constants.SETTING_DEFAULT_AVATAR;
-import static com.gc.model.Constants.TOPIC_REGISTER_SUCCESS;
-import static com.gc.model.Constants.TOPIC_USER_RANK_CHANGED;
+import static com.zy.entity.fnc.CurrencyType.现金;
+import static com.zy.entity.fnc.CurrencyType.积分;
+import static com.zy.entity.fnc.CurrencyType.金币;
+import static com.zy.model.Constants.SETTING_DEFAULT_AVATAR;
+import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
+import static com.zy.model.Constants.TOPIC_USER_RANK_CHANGED;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -22,28 +22,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import com.gc.Config;
+import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
-import com.gc.component.ActComponent;
-import com.gc.component.FncComponent;
-import com.gc.entity.fnc.Account;
-import com.gc.entity.usr.User;
-import com.gc.entity.usr.User.UserRank;
-import com.gc.entity.usr.User.UserType;
-import com.gc.entity.usr.UserLog;
-import com.gc.entity.usr.WeixinUser;
-import com.gc.extend.Producer;
-import com.gc.mapper.AccountMapper;
-import com.gc.mapper.UserLogMapper;
-import com.gc.mapper.UserMapper;
-import com.gc.mapper.WeixinUserMapper;
-import com.gc.model.BizCode;
-import com.gc.model.Constants;
-import com.gc.model.dto.RegisterDto;
-import com.gc.model.query.UserQueryModel;
-import com.gc.service.UserService;
+import com.zy.component.ActComponent;
+import com.zy.component.FncComponent;
+import com.zy.entity.fnc.Account;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
+import com.zy.entity.usr.User.UserType;
+import com.zy.entity.usr.UserLog;
+import com.zy.entity.usr.WeixinUser;
+import com.zy.extend.Producer;
+import com.zy.mapper.AccountMapper;
+import com.zy.mapper.UserLogMapper;
+import com.zy.mapper.UserMapper;
+import com.zy.mapper.WeixinUserMapper;
+import com.zy.model.BizCode;
+import com.zy.model.Constants;
+import com.zy.model.dto.RegisterDto;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.UserService;
 
 @Service
 @Validated

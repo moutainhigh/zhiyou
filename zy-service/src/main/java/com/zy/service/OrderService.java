@@ -1,8 +1,8 @@
-package com.gc.service;
+package com.zy.service;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.mal.Order;
-import com.gc.model.query.OrderQueryModel;
+import com.zy.entity.mal.Order;
+import com.zy.model.query.OrderQueryModel;
 
 public interface OrderService {
 	

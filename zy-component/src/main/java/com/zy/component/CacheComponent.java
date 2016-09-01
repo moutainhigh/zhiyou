@@ -1,15 +1,15 @@
-package com.gc.component;
+package com.zy.component;
 
 import com.zy.common.support.cache.CacheSupport;
-import com.gc.entity.cms.Notice;
-import com.gc.entity.cms.Notice.NoticeType;
-import com.gc.entity.fnc.BankCard;
-import com.gc.entity.usr.Address;
-import com.gc.entity.usr.Job;
-import com.gc.entity.usr.User;
-import com.gc.model.dto.AreaDto;
-import com.gc.model.query.NoticeQueryModel;
-import com.gc.service.*;
+import com.zy.entity.cms.Notice;
+import com.zy.entity.cms.Notice.NoticeType;
+import com.zy.entity.fnc.BankCard;
+import com.zy.entity.usr.Address;
+import com.zy.entity.usr.Job;
+import com.zy.entity.usr.User;
+import com.zy.model.dto.AreaDto;
+import com.zy.model.query.NoticeQueryModel;
+import com.zy.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.gc.model.Constants.*;
+import static com.zy.model.Constants.*;
 
 @Component
 public class CacheComponent {

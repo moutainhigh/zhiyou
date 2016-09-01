@@ -20,14 +20,14 @@ import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.component.WithdrawComponent;
-import com.gc.entity.fnc.Withdraw;
-import com.gc.entity.usr.User;
-import com.gc.model.query.UserQueryModel;
-import com.gc.model.query.WithdrawQueryModel;
-import com.gc.service.UserService;
-import com.gc.service.WithdrawService;
-import com.gc.vo.WithdrawAdminVo;
+import com.zy.component.WithdrawComponent;
+import com.zy.entity.fnc.Withdraw;
+import com.zy.entity.usr.User;
+import com.zy.model.query.UserQueryModel;
+import com.zy.model.query.WithdrawQueryModel;
+import com.zy.service.UserService;
+import com.zy.service.WithdrawService;
+import com.zy.vo.WithdrawAdminVo;
 
 
 @RequestMapping("/withdraw")

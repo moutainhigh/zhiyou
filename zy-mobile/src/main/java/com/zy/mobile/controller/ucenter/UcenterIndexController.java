@@ -7,13 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.gc.entity.fnc.Account;
-import com.gc.entity.usr.User;
-import com.gc.model.Principal;
-import com.gc.model.query.MessageQueryModel;
-import com.gc.service.AccountService;
-import com.gc.service.MessageService;
-import com.gc.service.UserService;
+import com.zy.entity.fnc.Account;
+import com.zy.entity.usr.User;
+import com.zy.model.Principal;
+import com.zy.model.query.MessageQueryModel;
+import com.zy.service.AccountService;
+import com.zy.service.MessageService;
+import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 
 @RequestMapping("/u")

@@ -1,13 +1,13 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.entity.fnc.Deposit;
-import com.gc.entity.fnc.PayType;
-import com.gc.model.query.DepositQueryModel;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Deposit;
+import com.zy.entity.fnc.PayType;
+import com.zy.model.query.DepositQueryModel;
 
 public interface DepositService {
 

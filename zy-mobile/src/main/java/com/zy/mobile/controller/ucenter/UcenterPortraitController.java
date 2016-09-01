@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.result.ResultBuilder;
-import com.gc.component.PortraitComponent;
-import com.gc.entity.usr.Portrait;
-import com.gc.entity.usr.Tag;
-import com.gc.model.Principal;
-import com.gc.service.JobService;
-import com.gc.service.PortraitService;
-import com.gc.service.TagService;
+import com.zy.component.PortraitComponent;
+import com.zy.entity.usr.Portrait;
+import com.zy.entity.usr.Tag;
+import com.zy.model.Principal;
+import com.zy.service.JobService;
+import com.zy.service.PortraitService;
+import com.zy.service.TagService;
 
 
 @RequestMapping("/u/portrait")

@@ -1,10 +1,10 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.usr.WeixinUser;
-import com.gc.mapper.WeixinUserMapper;
-import com.gc.model.query.WeixinUserQueryModel;
-import com.gc.service.WeixinUserService;
+import com.zy.entity.usr.WeixinUser;
+import com.zy.mapper.WeixinUserMapper;
+import com.zy.model.query.WeixinUserQueryModel;
+import com.zy.service.WeixinUserService;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;

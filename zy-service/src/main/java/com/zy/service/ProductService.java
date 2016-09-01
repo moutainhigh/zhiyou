@@ -1,10 +1,10 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.mal.Product;
-import com.gc.model.query.ProductQueryModel;
+import com.zy.entity.mal.Product;
+import com.zy.model.query.ProductQueryModel;
 
 public interface ProductService {
 

@@ -16,10 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
-import com.gc.component.CacheComponent;
-import com.gc.entity.usr.Address;
-import com.gc.model.Principal;
-import com.gc.service.AddressService;
+import com.zy.component.CacheComponent;
+import com.zy.entity.usr.Address;
+import com.zy.model.Principal;
+import com.zy.service.AddressService;
 
 @RequestMapping("/u/address")
 @Controller

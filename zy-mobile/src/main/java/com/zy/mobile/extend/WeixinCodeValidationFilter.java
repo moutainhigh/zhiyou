@@ -29,13 +29,13 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.zy.common.support.cache.CacheSupport;
 import com.zy.common.util.CookieUtils;
-import com.gc.entity.usr.User;
-import com.gc.entity.usr.WeixinUser;
-import com.gc.model.Constants;
-import com.gc.model.Principal;
-import com.gc.model.PrincipalBuilder;
-import com.gc.service.UserService;
-import com.gc.service.WeixinUserService;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.WeixinUser;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
+import com.zy.model.PrincipalBuilder;
+import com.zy.service.UserService;
+import com.zy.service.WeixinUserService;
 import com.zy.util.GcUtils;
 
 public class WeixinCodeValidationFilter implements Filter {

@@ -1,10 +1,10 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.mal.Gift;
-import com.gc.model.query.GiftQueryModel;
+import com.zy.entity.mal.Gift;
+import com.zy.model.query.GiftQueryModel;
 
 public interface GiftService {
 

@@ -1,4 +1,4 @@
-package com.gc.entity.sys;
+package com.zy.entity.sys;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;

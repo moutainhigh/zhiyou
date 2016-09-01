@@ -23,8 +23,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.zy.common.util.WebUtils;
-import com.gc.model.Constants;
-import com.gc.model.Principal;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
 import com.zy.util.GcUtils;
 
 

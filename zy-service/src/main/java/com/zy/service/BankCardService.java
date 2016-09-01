@@ -1,10 +1,10 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.fnc.BankCard;
-import com.gc.model.query.BankCardQueryModel;
+import com.zy.entity.fnc.BankCard;
+import com.zy.model.query.BankCardQueryModel;
 
 public interface BankCardService {
 	

@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.result.ResultBuilder;
-import com.gc.entity.usr.Tag;
-import com.gc.service.TagService;
+import com.zy.entity.usr.Tag;
+import com.zy.service.TagService;
 
 @RequestMapping("/tag")
 @Controller

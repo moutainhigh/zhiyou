@@ -1,4 +1,4 @@
-package com.gc.component;
+package com.zy.component;
 
 import static java.util.Objects.isNull;
 
@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zy.common.util.BeanUtils;
-import com.gc.entity.fnc.BankCard;
-import com.gc.entity.fnc.Withdraw;
+import com.zy.entity.fnc.BankCard;
+import com.zy.entity.fnc.Withdraw;
 import com.zy.util.VoHelper;
-import com.gc.vo.BankCardAdminVo;
-import com.gc.vo.WithdrawAdminVo;
+import com.zy.vo.BankCardAdminVo;
+import com.zy.vo.WithdrawAdminVo;
 
 @Component
 public class WithdrawComponent {

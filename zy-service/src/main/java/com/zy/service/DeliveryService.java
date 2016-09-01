@@ -1,10 +1,10 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.mal.Delivery;
-import com.gc.model.query.DeliveryQueryModel;
+import com.zy.entity.mal.Delivery;
+import com.zy.model.query.DeliveryQueryModel;
 
 public interface DeliveryService {
 

@@ -1,10 +1,10 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.sys.ShortMessage;
-import com.gc.mapper.ShortMessageMapper;
-import com.gc.model.query.ShortMessageQueryModel;
-import com.gc.service.ShortMessageService;
+import com.zy.entity.sys.ShortMessage;
+import com.zy.mapper.ShortMessageMapper;
+import com.zy.model.query.ShortMessageQueryModel;
+import com.zy.service.ShortMessageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

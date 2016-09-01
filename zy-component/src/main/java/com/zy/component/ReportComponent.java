@@ -1,10 +1,10 @@
-package com.gc.component;
+package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
-import com.gc.entity.act.Report;
+import com.zy.entity.act.Report;
 import com.zy.util.GcUtils;
-import com.gc.vo.ReportAdminVo;
-import com.gc.vo.ReportVo;
+import com.zy.vo.ReportAdminVo;
+import com.zy.vo.ReportVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

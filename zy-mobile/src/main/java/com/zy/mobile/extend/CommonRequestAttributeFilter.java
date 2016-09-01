@@ -1,10 +1,10 @@
 package com.zy.mobile.extend;
 
-import static com.gc.model.Constants.ALIYUN_URL_STATIC;
-import static com.gc.model.Constants.SETTING_SYS_NAME;
-import static com.gc.model.Constants.URL_MOBILE;
-import static com.gc.model.Constants.URL_PASSPORT;
-import static com.gc.model.Constants.URL_PC;
+import static com.zy.model.Constants.ALIYUN_URL_STATIC;
+import static com.zy.model.Constants.SETTING_SYS_NAME;
+import static com.zy.model.Constants.URL_MOBILE;
+import static com.zy.model.Constants.URL_PASSPORT;
+import static com.zy.model.Constants.URL_PC;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import java.util.List;
 
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.act.ActivityCollect;
-import com.gc.mapper.ActivityCollectMapper;
-import com.gc.model.query.ActivityCollectQueryModel;
-import com.gc.service.ActivityCollectService;
+import com.zy.entity.act.ActivityCollect;
+import com.zy.mapper.ActivityCollectMapper;
+import com.zy.model.query.ActivityCollectQueryModel;
+import com.zy.service.ActivityCollectService;
 
 @Service
 @Validated

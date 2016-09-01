@@ -1,10 +1,10 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.usr.Address;
-import com.gc.model.query.AddressQueryModel;
+import com.zy.entity.usr.Address;
+import com.zy.model.query.AddressQueryModel;
 
 public interface AddressService {
 

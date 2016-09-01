@@ -18,15 +18,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.component.ProfitComponent;
-import com.gc.entity.fnc.Profit;
-import com.gc.entity.usr.User;
-import com.gc.model.Constants;
-import com.gc.model.query.ProfitQueryModel;
-import com.gc.model.query.UserQueryModel;
-import com.gc.service.ProfitService;
-import com.gc.service.UserService;
-import com.gc.vo.ProfitAdminVo;
+import com.zy.component.ProfitComponent;
+import com.zy.entity.fnc.Profit;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.model.query.ProfitQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.ProfitService;
+import com.zy.service.UserService;
+import com.zy.vo.ProfitAdminVo;
 
 @RequestMapping("/profit")
 @Controller

@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.usr.Appearance;
-import com.gc.model.query.AppearanceQueryModel;
+import com.zy.entity.usr.Appearance;
+import com.zy.model.query.AppearanceQueryModel;
 
 
 public interface AppearanceMapper {

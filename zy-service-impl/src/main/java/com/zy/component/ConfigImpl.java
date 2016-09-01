@@ -1,12 +1,12 @@
-package com.gc.component;
+package com.zy.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import com.gc.entity.sys.Setting;
-import com.gc.mapper.SettingMapper;
-import com.gc.model.Constants;
+import com.zy.entity.sys.Setting;
+import com.zy.mapper.SettingMapper;
+import com.zy.model.Constants;
 
 @Component
 @Validated

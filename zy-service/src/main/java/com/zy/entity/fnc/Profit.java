@@ -1,4 +1,4 @@
-package com.gc.entity.fnc;
+package com.zy.entity.fnc;
 
 import static io.gd.generator.api.query.Predicate.EQ;
 import static io.gd.generator.api.query.Predicate.GTE;

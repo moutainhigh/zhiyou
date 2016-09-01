@@ -1,10 +1,10 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
-import com.gc.entity.usr.User;
-import com.gc.entity.usr.UserSetting;
-import com.gc.mapper.UserMapper;
-import com.gc.mapper.UserSettingMapper;
-import com.gc.service.UserSettingService;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserSetting;
+import com.zy.mapper.UserMapper;
+import com.zy.mapper.UserSettingMapper;
+import com.zy.service.UserSettingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

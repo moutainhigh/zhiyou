@@ -13,11 +13,11 @@ import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.component.AppearanceComponent;
-import com.gc.entity.usr.Appearance;
-import com.gc.model.query.AppearanceQueryModel;
-import com.gc.service.AppearanceService;
-import com.gc.vo.AppearanceAdminVo;
+import com.zy.component.AppearanceComponent;
+import com.zy.entity.usr.Appearance;
+import com.zy.model.query.AppearanceQueryModel;
+import com.zy.service.AppearanceService;
+import com.zy.vo.AppearanceAdminVo;
 
 @RequestMapping("/appearance")
 @Controller

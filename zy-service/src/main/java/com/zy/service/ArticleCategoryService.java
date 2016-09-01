@@ -1,7 +1,7 @@
-package com.gc.service;
+package com.zy.service;
 
-import com.gc.entity.cms.ArticleCategory;
-import com.gc.model.query.ArticleCategoryQueryModel;
+import com.zy.entity.cms.ArticleCategory;
+import com.zy.model.query.ArticleCategoryQueryModel;
 
 import java.util.List;
 

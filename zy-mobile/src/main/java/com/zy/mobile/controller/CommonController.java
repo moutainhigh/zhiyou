@@ -1,6 +1,6 @@
 package com.zy.mobile.controller;
 
-import static com.gc.model.Constants.MODEL_ATTRIBUTE_RESULT;
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,11 +24,11 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.cache.CacheSupport;
 import com.zy.common.util.CookieUtils;
 import com.zy.common.util.Identities;
-import com.gc.entity.usr.User;
-import com.gc.model.Constants;
-import com.gc.model.Principal;
-import com.gc.model.PrincipalBuilder;
-import com.gc.service.UserService;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
+import com.zy.model.PrincipalBuilder;
+import com.zy.service.UserService;
 
 @RequestMapping
 @Controller

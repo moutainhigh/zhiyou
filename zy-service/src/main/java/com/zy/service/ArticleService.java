@@ -1,10 +1,10 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.cms.Article;
-import com.gc.model.query.ArticleQueryModel;
+import com.zy.entity.cms.Article;
+import com.zy.model.query.ArticleQueryModel;
 
 public interface ArticleService {
 

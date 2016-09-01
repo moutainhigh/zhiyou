@@ -1,13 +1,13 @@
-package com.gc.component;
+package com.zy.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zy.common.util.BeanUtils;
-import com.gc.entity.fnc.BankCard;
-import com.gc.entity.usr.User;
+import com.zy.entity.fnc.BankCard;
+import com.zy.entity.usr.User;
 import com.zy.util.VoHelper;
-import com.gc.vo.BankCardAdminVo;
+import com.zy.vo.BankCardAdminVo;
 
 @Component
 public class BankCardComponent {

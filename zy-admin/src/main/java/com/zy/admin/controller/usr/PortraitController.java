@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.component.PortraitComponent;
-import com.gc.entity.usr.Portrait;
-import com.gc.entity.usr.User;
-import com.gc.model.query.PortraitQueryModel;
-import com.gc.model.query.UserQueryModel;
-import com.gc.service.PortraitService;
-import com.gc.service.UserService;
-import com.gc.vo.PortraitAdminVo;
+import com.zy.component.PortraitComponent;
+import com.zy.entity.usr.Portrait;
+import com.zy.entity.usr.User;
+import com.zy.model.query.PortraitQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.PortraitService;
+import com.zy.service.UserService;
+import com.zy.vo.PortraitAdminVo;
 
 @RequestMapping("/portrait")
 @Controller

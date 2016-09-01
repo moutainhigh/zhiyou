@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.gc.Config;
-import com.gc.service.AccountService;
+import com.zy.Config;
+import com.zy.service.AccountService;
 
 @RequestMapping("/discovery")
 @Controller

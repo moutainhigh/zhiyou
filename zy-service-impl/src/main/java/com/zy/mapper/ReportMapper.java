@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.act.Report;
-import com.gc.model.query.ReportQueryModel;
+import com.zy.entity.act.Report;
+import com.zy.model.query.ReportQueryModel;
 
 
 public interface ReportMapper {

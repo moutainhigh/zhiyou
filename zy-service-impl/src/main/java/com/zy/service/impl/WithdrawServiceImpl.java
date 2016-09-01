@@ -40,19 +40,19 @@ import static me.chanjar.weixin.common.util.StringUtils.isNotBlank;
 public class WithdrawServiceImpl implements WithdrawService {
 
 	@Autowired
-	private com.gc.mapper.AccountMapper accountMapper;
+	private com.zy.mapper.AccountMapper accountMapper;
 
 	@Autowired
-	private com.gc.mapper.UserMapper userMapper;
+	private com.zy.mapper.UserMapper userMapper;
 
 	@Autowired
-	private com.gc.mapper.BankCardMapper bankCardMapper;
+	private com.zy.mapper.BankCardMapper bankCardMapper;
 
 	@Autowired
-	private com.gc.mapper.WithdrawMapper withdrawMapper;
+	private com.zy.mapper.WithdrawMapper withdrawMapper;
 
 	@Autowired
-	private com.gc.mapper.WeixinUserMapper weixinUserMapper;
+	private com.zy.mapper.WeixinUserMapper weixinUserMapper;
 
 
 	@Autowired
@@ -65,7 +65,7 @@ public class WithdrawServiceImpl implements WithdrawService {
     private SKWxMpService skWxMpService;
 
     @Override
-    public com.gc.entity.fnc.Withdraw create(@NotNull Long userId, @NotNull com.gc.entity.fnc.CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
+    public com.zy.entity.fnc.Withdraw create(@NotNull Long userId, @NotNull com.zy.entity.fnc.CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
         final BigDecimal zero = new BigDecimal("0.00");
         validate(userId, NOT_NULL, "user id is null");
         validate(currencyType, NOT_NULL, "currency type is null");
@@ -74,10 +74,10 @@ public class WithdrawServiceImpl implements WithdrawService {
 
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + " is not found");
-		com.gc.entity.fnc.Account account = accountMapper.findByUserIdAndCurrencyType(userId, currencyType);
+		com.zy.entity.fnc.Account account = accountMapper.findByUserIdAndCurrencyType(userId, currencyType);
 		validate(account, NOT_NULL, "account user id " + userId + " currency type " + currencyType + " is not found");
  
-		if(currencyType.equals(com.gc.entity.fnc.CurrencyType.金币)) {
+		if(currencyType.equals(com.zy.entity.fnc.CurrencyType.金币)) {
 			if(UserRank.V2.compareTo(user.getUserRank()) > 0) {
 				throw new BizException(BizCode.ERROR, "提现试客币,需要用户等级达到铜牌及以上");
 			}
@@ -89,17 +89,17 @@ public class WithdrawServiceImpl implements WithdrawService {
 		Long bankCardId = null;
 		String openId = null;
 		if (userType == UserType.商家) {
-			if(currencyType != com.gc.entity.fnc.CurrencyType.现金) {
+			if(currencyType != com.zy.entity.fnc.CurrencyType.现金) {
 				throw new BizException(BizCode.ERROR, "提现种类不匹配");
 			}
-			com.gc.entity.fnc.BankCard bankCard = bankCardMapper.findByUserId(userId);
+			com.zy.entity.fnc.BankCard bankCard = bankCardMapper.findByUserId(userId);
 			if (bankCard == null) {
 				throw new BizException(BizCode.ERROR, "必须先绑定银行卡才能提现");
 			}
 			bankCardId = bankCard.getId();
 			isToBankCard = false;
 		} else if (userType == UserType.代理) {
-			if(currencyType != com.gc.entity.fnc.CurrencyType.现金 && currencyType != com.gc.entity.fnc.CurrencyType.金币) {
+			if(currencyType != com.zy.entity.fnc.CurrencyType.现金 && currencyType != com.zy.entity.fnc.CurrencyType.金币) {
 				throw new BizException(BizCode.ERROR, "提现种类不匹配");
 			}
 			WeixinUser weixinUser = weixinUserMapper.findByUserId(userId);
@@ -124,7 +124,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		BigDecimal fee = amount.multiply(feeRate).setScale(2, RoundingMode.HALF_UP);
 		BigDecimal realAmount = amount.subtract(fee);
 
-		com.gc.entity.fnc.Withdraw withdraw = new com.gc.entity.fnc.Withdraw();
+		com.zy.entity.fnc.Withdraw withdraw = new com.zy.entity.fnc.Withdraw();
 		withdraw.setCreatedTime(date);
 		withdraw.setCurrencyType(currencyType);
 		withdraw.setAmount(amount);
@@ -143,7 +143,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		validate(withdraw);
 		withdrawMapper.insert(withdraw);
 		
-		String currencyTypeLabel = currencyType == com.gc.entity.fnc.CurrencyType.金币 ? "试客币" : (currencyType == com.gc.entity.fnc.CurrencyType.现金 ? "本金" : currencyType.getAlias());
+		String currencyTypeLabel = currencyType == com.zy.entity.fnc.CurrencyType.金币 ? "试客币" : (currencyType == com.zy.entity.fnc.CurrencyType.现金 ? "本金" : currencyType.getAlias());
 		fncComponent.recordAccountLog(userId, currencyTypeLabel +  "提现", currencyType, amount, InOut.支出, withdraw);
 		fncComponent.recordAccountLog(config.getSysUserId(), currencyTypeLabel + "提现", currencyType, amount, InOut.收入, withdraw);
 		return withdraw;
@@ -153,7 +153,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 	public void success(@NotNull Long id, @NotNull Long operatorUserId, @NotBlank String remark) {
 
 		final BigDecimal zero = new BigDecimal("0.00");
-		com.gc.entity.fnc.Withdraw withdraw = withdrawMapper.findOne(id);
+		com.zy.entity.fnc.Withdraw withdraw = withdrawMapper.findOne(id);
 		validate(withdraw, NOT_NULL, "withdraw id " + id + " is not found null");
 		User user = userMapper.findOne(operatorUserId);
 		validate(user, NOT_NULL, "operator user id" + operatorUserId + " is not found null");
@@ -181,7 +181,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		if (withdrawMapper.update(withdraw) == 0) {
 			throw new ConcurrentException();
 		}
-		com.gc.entity.fnc.CurrencyType currencyType = withdraw.getCurrencyType();
+		com.zy.entity.fnc.CurrencyType currencyType = withdraw.getCurrencyType();
 		Long sysUserId = config.getSysUserId();
 
 		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw);
@@ -190,7 +190,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		BigDecimal fee = withdraw.getFee();
 		if (fee.compareTo(zero) > 0) {
 			String title = "提现单" + withdraw.getSn() + "收益";
-			com.gc.entity.fnc.Profit profit = fncComponent.createProfit(ProfitBizName.平台收益, currencyType, title, feeUserId, fee, null);
+			com.zy.entity.fnc.Profit profit = fncComponent.createProfit(ProfitBizName.平台收益, currencyType, title, feeUserId, fee, null);
 			fncComponent.recordAccountLog(sysUserId, title, currencyType, fee, InOut.支出, profit);
 			fncComponent.recordAccountLog(feeUserId, title, currencyType, fee, InOut.收入, profit);
 		}
@@ -202,7 +202,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		validate(operatorUserId, NOT_NULL, "operator user id is null");
 		validate(remark, NOT_BLANK, "remark is blank");
 
-		com.gc.entity.fnc.Withdraw withdraw = withdrawMapper.findOne(id);
+		com.zy.entity.fnc.Withdraw withdraw = withdrawMapper.findOne(id);
 		validate(withdraw, NOT_NULL, "withdraw id " + id + " is not found null");
 		User user = userMapper.findOne(operatorUserId);
 		validate(user, NOT_NULL, "operator user id" + operatorUserId + " is not found null");
@@ -219,7 +219,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		if (withdrawMapper.update(withdraw) == 0) {
 			throw new ConcurrentException();
 		}
-		com.gc.entity.fnc.CurrencyType currencyType = withdraw.getCurrencyType();
+		com.zy.entity.fnc.CurrencyType currencyType = withdraw.getCurrencyType();
 		
 		BigDecimal amount = withdraw.getAmount();
 		
@@ -228,14 +228,14 @@ public class WithdrawServiceImpl implements WithdrawService {
 	}
 
 	@Override
-	public Page<com.gc.entity.fnc.Withdraw> findPage(@NotNull WithdrawQueryModel withdrawQueryModel) {
+	public Page<com.zy.entity.fnc.Withdraw> findPage(@NotNull WithdrawQueryModel withdrawQueryModel) {
 		if (withdrawQueryModel.getPageNumber() == null)
 			withdrawQueryModel.setPageNumber(0);
 		if (withdrawQueryModel.getPageSize() == null)
 			withdrawQueryModel.setPageSize(20);
 		long total = withdrawMapper.count(withdrawQueryModel);
-		List<com.gc.entity.fnc.Withdraw> data = withdrawMapper.findAll(withdrawQueryModel);
-		Page<com.gc.entity.fnc.Withdraw> page = new Page<>();
+		List<com.zy.entity.fnc.Withdraw> data = withdrawMapper.findAll(withdrawQueryModel);
+		Page<com.zy.entity.fnc.Withdraw> page = new Page<>();
 		page.setPageNumber(withdrawQueryModel.getPageNumber());
 		page.setPageSize(withdrawQueryModel.getPageSize());
 		page.setData(data);
@@ -244,12 +244,12 @@ public class WithdrawServiceImpl implements WithdrawService {
 	}
 
 	@Override
-	public com.gc.entity.fnc.Withdraw findOne(@NotNull Long id) {
+	public com.zy.entity.fnc.Withdraw findOne(@NotNull Long id) {
 		return withdrawMapper.findOne(id);
 	}
 
 	@Override
-	public List<com.gc.entity.fnc.Withdraw> findAll(@NotNull WithdrawQueryModel withdrawQueryModel) {
+	public List<com.zy.entity.fnc.Withdraw> findAll(@NotNull WithdrawQueryModel withdrawQueryModel) {
 		return withdrawMapper.findAll(withdrawQueryModel);
 	}
 

@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.sys.ShortMessage;
-import com.gc.model.query.ShortMessageQueryModel;
+import com.zy.entity.sys.ShortMessage;
+import com.zy.model.query.ShortMessageQueryModel;
 
 
 public interface ShortMessageMapper {

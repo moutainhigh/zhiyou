@@ -25,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.zy.common.support.AliyunOssSupport;
 import com.zy.common.util.Encodes;
 import com.zy.common.util.JsonUtils;
-import com.gc.model.Constants;
+import com.zy.model.Constants;
 
 @SuppressWarnings("unchecked")
 @RequestMapping("/editor")

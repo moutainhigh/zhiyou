@@ -1,4 +1,4 @@
-package com.gc.entity.adm;
+package com.zy.entity.adm;
 
 import static io.gd.generator.api.query.Predicate.LK;
 import io.gd.generator.annotation.Field;

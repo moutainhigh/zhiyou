@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.mal.Product;
-import com.gc.model.query.ProductQueryModel;
+import com.zy.entity.mal.Product;
+import com.zy.model.query.ProductQueryModel;
 
 
 public interface ProductMapper {

@@ -1,4 +1,4 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.mal.Gift;
-import com.gc.mapper.GiftMapper;
-import com.gc.model.query.GiftQueryModel;
-import com.gc.service.GiftService;
+import com.zy.entity.mal.Gift;
+import com.zy.mapper.GiftMapper;
+import com.zy.model.query.GiftQueryModel;
+import com.zy.service.GiftService;
 
 @Service
 @Validated

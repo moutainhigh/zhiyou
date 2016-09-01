@@ -1,6 +1,6 @@
-package com.gc.service;
+package com.zy.service;
 
-import com.gc.entity.usr.UserSetting;
+import com.zy.entity.usr.UserSetting;
 
 public interface UserSettingService {
 

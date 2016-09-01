@@ -1,4 +1,4 @@
-package com.gc.component;
+package com.zy.component;
 
 import javax.validation.constraints.NotNull;
 
@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zy.common.support.LuosimaoSmsSupport;
-import com.gc.entity.mal.Delivery;
-import com.gc.entity.sys.Area;
-import com.gc.mapper.AreaMapper;
-import com.gc.mapper.DeliveryMapper;
-import com.gc.mapper.MessageMapper;
-import com.gc.model.dto.AreaDto;
+import com.zy.entity.mal.Delivery;
+import com.zy.entity.sys.Area;
+import com.zy.mapper.AreaMapper;
+import com.zy.mapper.DeliveryMapper;
+import com.zy.mapper.MessageMapper;
+import com.zy.model.dto.AreaDto;
 
 @Component
 public class SysComponent {

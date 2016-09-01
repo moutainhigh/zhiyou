@@ -1,11 +1,11 @@
-package com.gc.component;
+package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
-import com.gc.entity.act.Activity;
-import com.gc.model.dto.AreaDto;
-import com.gc.vo.ActivityAdminVo;
-import com.gc.vo.ActivityDetailVo;
-import com.gc.vo.ActivityListVo;
+import com.zy.entity.act.Activity;
+import com.zy.model.dto.AreaDto;
+import com.zy.vo.ActivityAdminVo;
+import com.zy.vo.ActivityDetailVo;
+import com.zy.vo.ActivityListVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

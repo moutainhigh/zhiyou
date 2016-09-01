@@ -1,6 +1,6 @@
-package com.gc.model.dto;
+package com.zy.model.dto;
 
-import com.gc.entity.sys.Area.AreaType;
+import com.zy.entity.sys.Area.AreaType;
 import lombok.Getter;
 import lombok.Setter;
 

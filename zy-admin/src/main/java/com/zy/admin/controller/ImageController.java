@@ -21,8 +21,8 @@ import com.zy.common.exception.ValidationException;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.AliyunOssSupport;
-import com.gc.model.Constants;
-import com.gc.model.Principal;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
 
 @Controller
 @RequestMapping("/image")

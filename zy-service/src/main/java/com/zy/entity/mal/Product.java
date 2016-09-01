@@ -1,4 +1,4 @@
-package com.gc.entity.mal;
+package com.zy.entity.mal;
 
 import static io.gd.generator.api.query.Predicate.EQ;
 import static io.gd.generator.api.query.Predicate.GTE;

@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.act.ActivityCollect;
-import com.gc.model.query.ActivityCollectQueryModel;
+import com.zy.entity.act.ActivityCollect;
+import com.zy.model.query.ActivityCollectQueryModel;
 
 
 public interface ActivityCollectMapper {

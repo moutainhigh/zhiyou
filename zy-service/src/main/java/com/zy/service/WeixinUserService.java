@@ -1,10 +1,10 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.usr.WeixinUser;
-import com.gc.model.query.WeixinUserQueryModel;
+import com.zy.entity.usr.WeixinUser;
+import com.zy.model.query.WeixinUserQueryModel;
 
 public interface WeixinUserService {
 

@@ -1,14 +1,14 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.adm.Role;
-import com.gc.entity.adm.RolePermission;
-import com.gc.mapper.AdminRoleMapper;
-import com.gc.mapper.RoleMapper;
-import com.gc.mapper.RolePermissionMapper;
-import com.gc.model.dto.RoleDto;
-import com.gc.model.query.RoleQueryModel;
-import com.gc.service.RoleService;
+import com.zy.entity.adm.Role;
+import com.zy.entity.adm.RolePermission;
+import com.zy.mapper.AdminRoleMapper;
+import com.zy.mapper.RoleMapper;
+import com.zy.mapper.RolePermissionMapper;
+import com.zy.model.dto.RoleDto;
+import com.zy.model.query.RoleQueryModel;
+import com.zy.service.RoleService;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;

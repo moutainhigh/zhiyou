@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.act.ActivitySignIn;
-import com.gc.model.query.ActivitySignInQueryModel;
+import com.zy.entity.act.ActivitySignIn;
+import com.zy.model.query.ActivitySignInQueryModel;
 
 
 public interface ActivitySignInMapper {

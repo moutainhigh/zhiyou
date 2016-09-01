@@ -1,10 +1,10 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.sys.Notify;
+import com.zy.entity.sys.Notify;
 
 
 public interface NotifyMapper {

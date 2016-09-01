@@ -16,9 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
-import com.gc.entity.fnc.BankCard;
-import com.gc.model.Principal;
-import com.gc.service.BankCardService;
+import com.zy.entity.fnc.BankCard;
+import com.zy.model.Principal;
+import com.zy.service.BankCardService;
 
 @RequestMapping("/u/bankCard")
 @Controller

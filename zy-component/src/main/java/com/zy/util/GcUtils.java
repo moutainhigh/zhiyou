@@ -1,6 +1,6 @@
 package com.zy.util;
 
-import static com.gc.model.Constants.ALIYUN_URL_IMAGE;
+import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -15,8 +15,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.zy.common.util.Encodes;
 import com.zy.common.util.Identities;
-import com.gc.model.Constants;
-import com.gc.model.Principal;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
 
 public class GcUtils {
 	

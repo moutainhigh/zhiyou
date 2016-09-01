@@ -1,4 +1,4 @@
-package com.gc.entity.usr;
+package com.zy.entity.usr;
 
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.MONTH;

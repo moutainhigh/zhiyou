@@ -7,15 +7,15 @@ import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.component.UserComponent;
-import com.gc.entity.usr.User;
-import com.gc.entity.usr.User.UserRank;
-import com.gc.entity.usr.User.UserType;
-import com.gc.model.dto.RegisterDto;
-import com.gc.model.query.UserQueryModel;
-import com.gc.service.UserService;
+import com.zy.component.UserComponent;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
+import com.zy.entity.usr.User.UserType;
+import com.zy.model.dto.RegisterDto;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.UserService;
 import com.zy.util.GcUtils;
-import com.gc.vo.UserAdminVo;
+import com.zy.vo.UserAdminVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static com.gc.model.Constants.MODEL_ATTRIBUTE_RESULT;
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
 @RequestMapping("/user")
 @Controller

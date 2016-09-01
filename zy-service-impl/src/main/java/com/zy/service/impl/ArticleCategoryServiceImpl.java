@@ -1,9 +1,9 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
-import com.gc.entity.cms.ArticleCategory;
-import com.gc.mapper.ArticleCategoryMapper;
-import com.gc.model.query.ArticleCategoryQueryModel;
-import com.gc.service.ArticleCategoryService;
+import com.zy.entity.cms.ArticleCategory;
+import com.zy.mapper.ArticleCategoryMapper;
+import com.zy.model.query.ArticleCategoryQueryModel;
+import com.zy.service.ArticleCategoryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.usr.User;
-import com.gc.model.query.UserQueryModel;
+import com.zy.entity.usr.User;
+import com.zy.model.query.UserQueryModel;
 
 
 public interface UserMapper {

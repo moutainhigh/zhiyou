@@ -30,9 +30,9 @@ import com.zy.common.exception.ValidationException;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.util.JsonUtils;
 import com.zy.common.util.WebUtils;
-import com.gc.model.BizCode;
-import com.gc.model.Constants;
-import com.gc.model.Principal;
+import com.zy.model.BizCode;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
 import com.zy.util.GcUtils;
 
 import me.chanjar.weixin.common.api.WxConsts;

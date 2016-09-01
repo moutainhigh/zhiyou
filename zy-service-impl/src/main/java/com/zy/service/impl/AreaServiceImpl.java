@@ -1,12 +1,12 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
-import com.gc.component.SysComponent;
-import com.gc.entity.sys.Area;
-import com.gc.entity.sys.Area.AreaType;
-import com.gc.mapper.AreaMapper;
-import com.gc.model.dto.AreaDto;
-import com.gc.model.query.AreaQueryModel;
-import com.gc.service.AreaService;
+import com.zy.component.SysComponent;
+import com.zy.entity.sys.Area;
+import com.zy.entity.sys.Area.AreaType;
+import com.zy.mapper.AreaMapper;
+import com.zy.model.dto.AreaDto;
+import com.zy.model.query.AreaQueryModel;
+import com.zy.service.AreaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

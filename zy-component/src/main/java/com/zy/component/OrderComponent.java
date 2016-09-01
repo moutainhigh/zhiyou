@@ -1,4 +1,4 @@
-package com.gc.component;
+package com.zy.component;
 
 import static org.apache.commons.lang3.time.DateFormatUtils.format;
 
@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zy.common.util.BeanUtils;
-import com.gc.entity.mal.Order;
-import com.gc.entity.mal.OrderItem;
-import com.gc.service.OrderItemService;
+import com.zy.entity.mal.Order;
+import com.zy.entity.mal.OrderItem;
+import com.zy.service.OrderItemService;
 import com.zy.util.GcUtils;
-import com.gc.vo.OrderAdminVo;
-import com.gc.vo.OrderItemAdminVo;
+import com.zy.vo.OrderAdminVo;
+import com.zy.vo.OrderItemAdminVo;
 
 @Component
 public class OrderComponent {

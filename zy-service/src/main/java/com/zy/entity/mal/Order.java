@@ -1,4 +1,4 @@
-package com.gc.entity.mal;
+package com.zy.entity.mal;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
@@ -27,7 +27,7 @@ import lombok.Setter;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.gc.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.CurrencyType;
 
 @Entity
 @Table(name = "mal_order")

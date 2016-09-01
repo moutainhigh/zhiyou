@@ -1,8 +1,8 @@
-package com.gc.service;
+package com.zy.service;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.act.ActivityCollect;
-import com.gc.model.query.ActivityCollectQueryModel;
+import com.zy.entity.act.ActivityCollect;
+import com.zy.model.query.ActivityCollectQueryModel;
 
 public interface ActivityCollectService {
 

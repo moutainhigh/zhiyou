@@ -1,12 +1,12 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.act.Report;
-import com.gc.entity.usr.User;
-import com.gc.mapper.ReportMapper;
-import com.gc.mapper.UserMapper;
-import com.gc.model.query.ReportQueryModel;
-import com.gc.service.ReportService;
+import com.zy.entity.act.Report;
+import com.zy.entity.usr.User;
+import com.zy.mapper.ReportMapper;
+import com.zy.mapper.UserMapper;
+import com.zy.model.query.ReportQueryModel;
+import com.zy.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;

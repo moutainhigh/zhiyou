@@ -1,10 +1,10 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
-import com.gc.entity.sys.Area;
-import com.gc.model.dto.AreaDto;
-import com.gc.model.query.AreaQueryModel;
+import com.zy.entity.sys.Area;
+import com.zy.model.dto.AreaDto;
+import com.zy.model.query.AreaQueryModel;
 
 public interface AreaService {
 

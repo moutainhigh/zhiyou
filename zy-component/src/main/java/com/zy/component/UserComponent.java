@@ -1,14 +1,14 @@
-package com.gc.component;
+package com.zy.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zy.common.util.BeanUtils;
-import com.gc.entity.usr.User;
+import com.zy.entity.usr.User;
 import com.zy.util.GcUtils;
-import com.gc.vo.UserAdminSimpleVo;
-import com.gc.vo.UserAdminVo;
-import com.gc.vo.UserSimpleVo;
+import com.zy.vo.UserAdminSimpleVo;
+import com.zy.vo.UserAdminVo;
+import com.zy.vo.UserSimpleVo;
 
 @Component
 public class UserComponent {

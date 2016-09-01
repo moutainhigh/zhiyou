@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.cms.ArticleCategory;
-import com.gc.model.query.ArticleCategoryQueryModel;
+import com.zy.entity.cms.ArticleCategory;
+import com.zy.model.query.ArticleCategoryQueryModel;
 
 
 public interface ArticleCategoryMapper {

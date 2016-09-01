@@ -1,9 +1,9 @@
-package com.gc.service;
+package com.zy.service;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.entity.fnc.Profit;
-import com.gc.model.query.ProfitQueryModel;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Profit;
+import com.zy.model.query.ProfitQueryModel;
 
 import java.math.BigDecimal;
 import java.util.List;

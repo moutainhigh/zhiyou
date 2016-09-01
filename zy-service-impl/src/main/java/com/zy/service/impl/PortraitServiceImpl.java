@@ -1,20 +1,20 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
-import com.gc.entity.sys.Area;
-import com.gc.entity.sys.Area.AreaType;
-import com.gc.entity.usr.Job;
-import com.gc.entity.usr.Portrait;
-import com.gc.entity.usr.User;
-import com.gc.extend.Producer;
-import com.gc.mapper.AreaMapper;
-import com.gc.mapper.JobMapper;
-import com.gc.mapper.PortraitMapper;
-import com.gc.mapper.UserMapper;
-import com.gc.model.BizCode;
-import com.gc.model.query.PortraitQueryModel;
-import com.gc.service.PortraitService;
+import com.zy.entity.sys.Area;
+import com.zy.entity.sys.Area.AreaType;
+import com.zy.entity.usr.Job;
+import com.zy.entity.usr.Portrait;
+import com.zy.entity.usr.User;
+import com.zy.extend.Producer;
+import com.zy.mapper.AreaMapper;
+import com.zy.mapper.JobMapper;
+import com.zy.mapper.PortraitMapper;
+import com.zy.mapper.UserMapper;
+import com.zy.model.BizCode;
+import com.zy.model.query.PortraitQueryModel;
+import com.zy.service.PortraitService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
-import static com.gc.model.Constants.TOPIC_PORTRAIT_COMPLETED;
+import static com.zy.model.Constants.TOPIC_PORTRAIT_COMPLETED;
 
 
 @Service

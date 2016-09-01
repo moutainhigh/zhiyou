@@ -1,8 +1,8 @@
-package com.gc.service;
+package com.zy.service;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.act.Report;
-import com.gc.model.query.ReportQueryModel;
+import com.zy.entity.act.Report;
+import com.zy.model.query.ReportQueryModel;
 
 public interface ReportService {
 

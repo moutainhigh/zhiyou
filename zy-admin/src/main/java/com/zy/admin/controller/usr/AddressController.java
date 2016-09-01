@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zy.common.model.query.Page;
 import com.zy.common.model.ui.Grid;
-import com.gc.entity.usr.Address;
-import com.gc.model.query.AddressQueryModel;
-import com.gc.service.AddressService;
+import com.zy.entity.usr.Address;
+import com.zy.model.query.AddressQueryModel;
+import com.zy.service.AddressService;
 
 @RequestMapping("/address")
 @Controller

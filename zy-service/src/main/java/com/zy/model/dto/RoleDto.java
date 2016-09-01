@@ -1,6 +1,6 @@
-package com.gc.model.dto;
+package com.zy.model.dto;
 
-import com.gc.entity.adm.Role;
+import com.zy.entity.adm.Role;
 import lombok.Getter;
 import lombok.Setter;
 

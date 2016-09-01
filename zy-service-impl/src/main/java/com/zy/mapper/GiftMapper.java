@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.mal.Gift;
-import com.gc.model.query.GiftQueryModel;
+import com.zy.entity.mal.Gift;
+import com.zy.model.query.GiftQueryModel;
 
 
 public interface GiftMapper {

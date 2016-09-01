@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.component.ReportComponent;
-import com.gc.entity.act.Report;
-import com.gc.entity.usr.User;
-import com.gc.model.query.ReportQueryModel;
-import com.gc.model.query.UserQueryModel;
-import com.gc.service.ReportService;
-import com.gc.service.UserService;
-import com.gc.vo.ReportAdminVo;
+import com.zy.component.ReportComponent;
+import com.zy.entity.act.Report;
+import com.zy.entity.usr.User;
+import com.zy.model.query.ReportQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.ReportService;
+import com.zy.service.UserService;
+import com.zy.vo.ReportAdminVo;
 
 @RequestMapping("/report")
 @Controller

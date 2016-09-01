@@ -1,10 +1,10 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.fnc.AccountLog;
-import com.gc.mapper.AccountLogMapper;
-import com.gc.model.query.AccountLogQueryModel;
-import com.gc.service.AccountLogService;
+import com.zy.entity.fnc.AccountLog;
+import com.zy.mapper.AccountLogMapper;
+import com.zy.model.query.AccountLogQueryModel;
+import com.zy.service.AccountLogService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -9,7 +9,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.zy.common.exception.UnauthenticatedException;
-import com.gc.model.Principal;
+import com.zy.model.Principal;
 import com.zy.util.GcUtils;
 
 public class PrincipalMethodArgumentResolver implements HandlerMethodArgumentResolver {

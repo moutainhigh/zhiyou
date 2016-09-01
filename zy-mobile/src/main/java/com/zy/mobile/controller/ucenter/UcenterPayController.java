@@ -3,17 +3,17 @@ package com.zy.mobile.controller.ucenter;
 import com.zy.common.exception.BizException;
 import com.zy.common.extend.BigDecimalBinder;
 import com.zy.common.util.Identities;
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.entity.fnc.Deposit;
-import com.gc.entity.fnc.Deposit.DepositStatus;
-import com.gc.entity.fnc.PayType;
-import com.gc.entity.usr.WeixinUser;
-import com.gc.model.BizCode;
-import com.gc.model.Constants;
-import com.gc.model.Principal;
-import com.gc.model.query.DepositQueryModel;
-import com.gc.service.DepositService;
-import com.gc.service.WeixinUserService;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Deposit;
+import com.zy.entity.fnc.Deposit.DepositStatus;
+import com.zy.entity.fnc.PayType;
+import com.zy.entity.usr.WeixinUser;
+import com.zy.model.BizCode;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
+import com.zy.model.query.DepositQueryModel;
+import com.zy.service.DepositService;
+import com.zy.service.WeixinUserService;
 import com.zy.util.GcUtils;
 import io.gd.generator.api.query.Direction;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
@@ -35,7 +35,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static com.zy.common.util.ValidateUtils.validate;
-import static com.gc.model.Constants.WEIXIN_PAY_EXPIRE_IN_MINUTES;
+import static com.zy.model.Constants.WEIXIN_PAY_EXPIRE_IN_MINUTES;
 
 @Controller
 @RequestMapping("/u/pay")

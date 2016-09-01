@@ -1,12 +1,12 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.adm.Role;
-import com.gc.entity.adm.RolePermission;
-import com.gc.model.dto.RoleDto;
-import com.gc.model.query.RoleQueryModel;
+import com.zy.entity.adm.Role;
+import com.zy.entity.adm.RolePermission;
+import com.zy.model.dto.RoleDto;
+import com.zy.model.query.RoleQueryModel;
 
 public interface RoleService {
 

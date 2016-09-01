@@ -1,6 +1,6 @@
-package com.gc.service;
+package com.zy.service;
 
-import com.gc.entity.usr.Job;
+import com.zy.entity.usr.Job;
 
 import java.util.List;
 

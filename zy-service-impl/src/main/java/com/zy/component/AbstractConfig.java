@@ -1,4 +1,4 @@
-package com.gc.component;
+package com.zy.component;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
@@ -10,11 +10,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 
-import com.gc.Config;
+import com.zy.Config;
 import com.zy.common.exception.BizException;
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.entity.sys.Setting;
-import com.gc.entity.usr.User.UserType;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.sys.Setting;
+import com.zy.entity.usr.User.UserType;
 
 public abstract class AbstractConfig implements Config {
 

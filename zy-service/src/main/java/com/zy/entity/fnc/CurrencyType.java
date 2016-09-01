@@ -1,4 +1,4 @@
-package com.gc.entity.fnc;
+package com.zy.entity.fnc;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;

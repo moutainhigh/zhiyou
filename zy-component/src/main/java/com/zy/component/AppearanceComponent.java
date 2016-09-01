@@ -1,12 +1,12 @@
-package com.gc.component;
+package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
-import com.gc.entity.usr.Appearance;
-import com.gc.entity.usr.User;
+import com.zy.entity.usr.Appearance;
+import com.zy.entity.usr.User;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
-import com.gc.vo.AppearanceAdminVo;
-import com.gc.vo.AppearanceVo;
+import com.zy.vo.AppearanceAdminVo;
+import com.zy.vo.AppearanceVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

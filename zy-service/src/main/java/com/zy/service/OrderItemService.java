@@ -1,8 +1,8 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
-import com.gc.entity.mal.OrderItem;
+import com.zy.entity.mal.OrderItem;
 
 public interface OrderItemService {
 

@@ -15,20 +15,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
-import com.gc.component.ActivityComponent;
-import com.gc.entity.act.Activity;
-import com.gc.model.Constants;
-import com.gc.model.Principal;
-import com.gc.model.query.ActivityApplyQueryModel;
-import com.gc.model.query.ActivityCollectQueryModel;
-import com.gc.model.query.ActivityQueryModel;
-import com.gc.model.query.ActivitySignInQueryModel;
-import com.gc.service.ActivityApplyService;
-import com.gc.service.ActivityCollectService;
-import com.gc.service.ActivityService;
-import com.gc.service.ActivitySignInService;
+import com.zy.component.ActivityComponent;
+import com.zy.entity.act.Activity;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
+import com.zy.model.query.ActivityApplyQueryModel;
+import com.zy.model.query.ActivityCollectQueryModel;
+import com.zy.model.query.ActivityQueryModel;
+import com.zy.model.query.ActivitySignInQueryModel;
+import com.zy.service.ActivityApplyService;
+import com.zy.service.ActivityCollectService;
+import com.zy.service.ActivityService;
+import com.zy.service.ActivitySignInService;
 import com.zy.util.GcUtils;
-import com.gc.vo.ActivityListVo;
+import com.zy.vo.ActivityListVo;
 
 
 @RequestMapping("/activity")

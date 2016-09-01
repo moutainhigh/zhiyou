@@ -22,11 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
 import com.zy.common.support.cache.CacheSupport;
-import com.gc.entity.adm.Admin;
-import com.gc.entity.usr.User;
-import com.gc.model.Constants;
-import com.gc.service.AdminService;
-import com.gc.service.UserService;
+import com.zy.entity.adm.Admin;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.service.AdminService;
+import com.zy.service.UserService;
 
 /**
  * 系统安全认证实现类

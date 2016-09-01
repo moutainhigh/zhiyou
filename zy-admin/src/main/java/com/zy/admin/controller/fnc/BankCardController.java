@@ -14,11 +14,11 @@ import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.component.BankCardComponent;
-import com.gc.entity.fnc.BankCard;
-import com.gc.model.query.BankCardQueryModel;
-import com.gc.service.BankCardService;
-import com.gc.vo.BankCardAdminVo;
+import com.zy.component.BankCardComponent;
+import com.zy.entity.fnc.BankCard;
+import com.zy.model.query.BankCardQueryModel;
+import com.zy.service.BankCardService;
+import com.zy.vo.BankCardAdminVo;
 
 @RequestMapping("/bankCard")
 @Controller

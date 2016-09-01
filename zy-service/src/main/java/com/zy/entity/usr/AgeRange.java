@@ -1,4 +1,4 @@
-package com.gc.entity.usr;
+package com.zy.entity.usr;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -1,10 +1,10 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.sys.Message;
-import com.gc.mapper.MessageMapper;
-import com.gc.model.query.MessageQueryModel;
-import com.gc.service.MessageService;
+import com.zy.entity.sys.Message;
+import com.zy.mapper.MessageMapper;
+import com.zy.model.query.MessageQueryModel;
+import com.zy.service.MessageService;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;

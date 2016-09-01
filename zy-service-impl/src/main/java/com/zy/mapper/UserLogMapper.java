@@ -1,10 +1,10 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.usr.UserLog;
+import com.zy.entity.usr.UserLog;
 
 
 public interface UserLogMapper {

@@ -19,10 +19,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.exception.ValidationException;
 import com.zy.common.model.result.ResultBuilder;
-import com.gc.entity.sys.Area;
-import com.gc.entity.sys.Area.AreaType;
-import com.gc.model.query.AreaQueryModel;
-import com.gc.service.AreaService;
+import com.zy.entity.sys.Area;
+import com.zy.entity.sys.Area.AreaType;
+import com.zy.model.query.AreaQueryModel;
+import com.zy.service.AreaService;
 
 @RequestMapping("/area")
 @Controller

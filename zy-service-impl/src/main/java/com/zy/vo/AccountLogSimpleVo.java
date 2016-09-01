@@ -1,6 +1,6 @@
-package com.gc.vo;
+package com.zy.vo;
 
-import com.gc.entity.fnc.AccountLog.InOut;
+import com.zy.entity.fnc.AccountLog.InOut;
 import lombok.Getter;
 import lombok.Setter;
 

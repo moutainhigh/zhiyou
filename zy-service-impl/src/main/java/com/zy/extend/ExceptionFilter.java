@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.gc.extend;
+package com.zy.extend;
 
 import java.lang.reflect.Method;
 
@@ -68,9 +68,9 @@ public class ExceptionFilter implements Filter {
                         return result;
                     }
                     
-                    // 是com.gc.common.自带异常直接抛出
+                    // 是com.zy.common.自带异常直接抛出
                     String className = exception.getClass().getName();
-                    if (className.startsWith("com.gc.common.")) {
+                    if (className.startsWith("com.zy.common.")) {
                         return result;
                     }
                     

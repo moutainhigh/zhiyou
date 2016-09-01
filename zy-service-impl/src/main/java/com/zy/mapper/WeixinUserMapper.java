@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.usr.WeixinUser;
-import com.gc.model.query.WeixinUserQueryModel;
+import com.zy.entity.usr.WeixinUser;
+import com.zy.model.query.WeixinUserQueryModel;
 
 
 public interface WeixinUserMapper {

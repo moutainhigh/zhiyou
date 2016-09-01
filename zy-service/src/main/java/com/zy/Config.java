@@ -1,7 +1,7 @@
 package com.zy;
 
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.entity.usr.User.UserType;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.usr.User.UserType;
 
 import java.math.BigDecimal;
 

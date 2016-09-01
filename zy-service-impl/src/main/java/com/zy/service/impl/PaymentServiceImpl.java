@@ -1,4 +1,4 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import java.util.List;
 
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.zy.common.model.query.Page;
-import com.gc.component.FncComponent;
-import com.gc.entity.fnc.Payment;
-import com.gc.mapper.PaymentMapper;
-import com.gc.model.query.PaymentQueryModel;
-import com.gc.service.PaymentService;
+import com.zy.component.FncComponent;
+import com.zy.entity.fnc.Payment;
+import com.zy.mapper.PaymentMapper;
+import com.zy.model.query.PaymentQueryModel;
+import com.zy.service.PaymentService;
 
 @Service
 @Validated

@@ -1,6 +1,6 @@
-package com.gc.vo;
+package com.zy.vo;
 
-import com.gc.entity.sys.Message.MessageType;
+import com.zy.entity.sys.Message.MessageType;
 import lombok.Getter;
 import lombok.Setter;
 

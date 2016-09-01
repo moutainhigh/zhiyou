@@ -1,6 +1,6 @@
-package com.gc.service;
+package com.zy.service;
 
-import com.gc.entity.usr.Tag;
+import com.zy.entity.usr.Tag;
 
 /**
  * Created by freeman on 16/8/11.

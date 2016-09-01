@@ -1,6 +1,6 @@
-package com.gc.service;
+package com.zy.service;
 
-import com.gc.entity.sys.Setting;
+import com.zy.entity.sys.Setting;
 
 public interface SettingService {
 

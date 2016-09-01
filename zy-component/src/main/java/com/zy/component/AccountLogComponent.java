@@ -1,12 +1,12 @@
-package com.gc.component;
+package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
-import com.gc.entity.fnc.AccountLog;
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.entity.usr.User;
+import com.zy.entity.fnc.AccountLog;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.usr.User;
 import com.zy.util.VoHelper;
-import com.gc.vo.AccountLogAdminVo;
-import com.gc.vo.AccountLogSimpleVo;
+import com.zy.vo.AccountLogAdminVo;
+import com.zy.vo.AccountLogSimpleVo;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zy.common.exception.BizException;
 import com.zy.common.util.BeanUtils;
 import com.zy.common.util.JsonUtils;
-import com.gc.entity.fnc.Deposit;
-import com.gc.model.BizCode;
-import com.gc.service.DepositService;
+import com.zy.entity.fnc.Deposit;
+import com.zy.model.BizCode;
+import com.zy.service.DepositService;
 
 @Controller
 @RequestMapping("/notify/weixinPay")

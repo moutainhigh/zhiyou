@@ -1,4 +1,4 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -14,15 +14,15 @@ import org.springframework.validation.annotation.Validated;
 
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
-import com.gc.entity.fnc.BankCard;
-import com.gc.entity.sys.ConfirmStatus;
-import com.gc.entity.usr.Appearance;
-import com.gc.entity.usr.User;
-import com.gc.mapper.BankCardMapper;
-import com.gc.mapper.UserMapper;
-import com.gc.model.BizCode;
-import com.gc.model.query.BankCardQueryModel;
-import com.gc.service.BankCardService;
+import com.zy.entity.fnc.BankCard;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.Appearance;
+import com.zy.entity.usr.User;
+import com.zy.mapper.BankCardMapper;
+import com.zy.mapper.UserMapper;
+import com.zy.model.BizCode;
+import com.zy.model.query.BankCardQueryModel;
+import com.zy.service.BankCardService;
 
 @Service
 @Validated

@@ -1,8 +1,8 @@
-package com.gc.vo;
+package com.zy.vo;
 
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.entity.fnc.Deposit.DepositStatus;
-import com.gc.entity.fnc.PayType;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Deposit.DepositStatus;
+import com.zy.entity.fnc.PayType;
 import lombok.Getter;
 import lombok.Setter;
 

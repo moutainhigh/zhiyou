@@ -1,8 +1,8 @@
-package com.gc.service;
+package com.zy.service;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.cms.Banner;
-import com.gc.model.query.BannerQueryModel;
+import com.zy.entity.cms.Banner;
+import com.zy.model.query.BannerQueryModel;
 
 import java.util.List;
 

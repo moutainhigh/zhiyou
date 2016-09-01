@@ -1,10 +1,10 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.cms.Notice;
-import com.gc.mapper.NoticeMapper;
-import com.gc.model.query.NoticeQueryModel;
-import com.gc.service.NoticeService;
+import com.zy.entity.cms.Notice;
+import com.zy.mapper.NoticeMapper;
+import com.zy.model.query.NoticeQueryModel;
+import com.zy.service.NoticeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

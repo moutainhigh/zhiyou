@@ -1,14 +1,14 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
-import com.gc.entity.mal.Delivery;
-import com.gc.entity.mal.Delivery.DeliveryStatus;
-import com.gc.mapper.DeliveryMapper;
-import com.gc.model.BizCode;
-import com.gc.model.query.DeliveryQueryModel;
-import com.gc.service.DeliveryService;
+import com.zy.entity.mal.Delivery;
+import com.zy.entity.mal.Delivery.DeliveryStatus;
+import com.zy.mapper.DeliveryMapper;
+import com.zy.model.BizCode;
+import com.zy.model.query.DeliveryQueryModel;
+import com.zy.service.DeliveryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

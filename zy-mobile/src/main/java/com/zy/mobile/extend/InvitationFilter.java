@@ -18,9 +18,9 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.zy.common.util.CookieUtils;
-import com.gc.entity.usr.User;
-import com.gc.model.Constants;
-import com.gc.service.UserService;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.service.UserService;
 
 public class InvitationFilter implements Filter {
 

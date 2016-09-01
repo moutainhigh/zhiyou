@@ -1,12 +1,12 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.entity.fnc.Withdraw;
-import com.gc.model.query.WithdrawQueryModel;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Withdraw;
+import com.zy.model.query.WithdrawQueryModel;
 
 public interface WithdrawService {
 

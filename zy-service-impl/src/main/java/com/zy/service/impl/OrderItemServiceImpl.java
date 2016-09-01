@@ -1,8 +1,8 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
-import com.gc.entity.mal.OrderItem;
-import com.gc.mapper.OrderItemMapper;
-import com.gc.service.OrderItemService;
+import com.zy.entity.mal.OrderItem;
+import com.zy.mapper.OrderItemMapper;
+import com.zy.service.OrderItemService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.adm.Admin;
-import com.gc.model.query.AdminQueryModel;
+import com.zy.entity.adm.Admin;
+import com.zy.model.query.AdminQueryModel;
 
 
 public interface AdminMapper {

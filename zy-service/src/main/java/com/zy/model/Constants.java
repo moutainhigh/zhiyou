@@ -1,4 +1,4 @@
-package com.gc.model;
+package com.zy.model;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

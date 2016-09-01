@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
-import com.gc.entity.usr.UserSetting;
-import com.gc.model.Principal;
-import com.gc.service.UserSettingService;
+import com.zy.entity.usr.UserSetting;
+import com.zy.model.Principal;
+import com.zy.service.UserSettingService;
 
 @RequestMapping("/u/userSetting")
 @Controller

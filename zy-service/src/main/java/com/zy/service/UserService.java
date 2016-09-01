@@ -1,13 +1,13 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.usr.User;
-import com.gc.entity.usr.WeixinUser;
-import com.gc.entity.usr.User.UserRank;
-import com.gc.model.dto.RegisterDto;
-import com.gc.model.query.UserQueryModel;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.WeixinUser;
+import com.zy.entity.usr.User.UserRank;
+import com.zy.model.dto.RegisterDto;
+import com.zy.model.query.UserQueryModel;
 
 public interface UserService {
 

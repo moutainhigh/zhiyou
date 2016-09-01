@@ -1,11 +1,11 @@
 package com.zy.admin.controller.cms;
 
-import com.gc.entity.cms.Help;
-import com.gc.entity.cms.HelpCategory;
-import com.gc.entity.usr.User.UserType;
-import com.gc.model.query.HelpCategoryQueryModel;
-import com.gc.service.HelpCategoryService;
-import com.gc.service.HelpService;
+import com.zy.entity.cms.Help;
+import com.zy.entity.cms.HelpCategory;
+import com.zy.entity.usr.User.UserType;
+import com.zy.model.query.HelpCategoryQueryModel;
+import com.zy.service.HelpCategoryService;
+import com.zy.service.HelpService;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;

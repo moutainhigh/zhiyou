@@ -1,8 +1,8 @@
-package com.gc.service;
+package com.zy.service;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.usr.Appearance;
-import com.gc.model.query.AppearanceQueryModel;
+import com.zy.entity.usr.Appearance;
+import com.zy.model.query.AppearanceQueryModel;
 
 public interface AppearanceService {
 

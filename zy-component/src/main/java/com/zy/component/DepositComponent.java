@@ -1,10 +1,10 @@
-package com.gc.component;
+package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
-import com.gc.entity.fnc.Deposit;
-import com.gc.entity.usr.User;
+import com.zy.entity.fnc.Deposit;
+import com.zy.entity.usr.User;
 import com.zy.util.VoHelper;
-import com.gc.vo.DepositAdminVo;
+import com.zy.vo.DepositAdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,13 +1,13 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.fnc.Account;
-import com.gc.model.query.AccountQueryModel;
+import com.zy.entity.fnc.Account;
+import com.zy.model.query.AccountQueryModel;
 
-import com.gc.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.CurrencyType;
 
 public interface AccountMapper {
 

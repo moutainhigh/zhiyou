@@ -1,8 +1,8 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
-import com.gc.entity.usr.Job;
-import com.gc.mapper.JobMapper;
-import com.gc.service.JobService;
+import com.zy.entity.usr.Job;
+import com.zy.mapper.JobMapper;
+import com.zy.service.JobService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

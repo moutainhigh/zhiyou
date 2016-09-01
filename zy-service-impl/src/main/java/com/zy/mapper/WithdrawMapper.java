@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.fnc.Withdraw;
-import com.gc.model.query.WithdrawQueryModel;
+import com.zy.entity.fnc.Withdraw;
+import com.zy.model.query.WithdrawQueryModel;
 
 
 public interface WithdrawMapper {

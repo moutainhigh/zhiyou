@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.cms.Feedback;
-import com.gc.model.query.FeedbackQueryModel;
+import com.zy.entity.cms.Feedback;
+import com.zy.model.query.FeedbackQueryModel;
 
 
 public interface FeedbackMapper {

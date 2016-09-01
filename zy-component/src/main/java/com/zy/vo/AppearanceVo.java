@@ -1,6 +1,6 @@
-package com.gc.vo;
+package com.zy.vo;
 
-import com.gc.entity.sys.ConfirmStatus;
+import com.zy.entity.sys.ConfirmStatus;
 import lombok.Getter;
 import lombok.Setter;
 

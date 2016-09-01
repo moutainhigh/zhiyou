@@ -1,10 +1,10 @@
-package com.gc.service;
+package com.zy.service;
 
 import java.util.List;
 
 import com.zy.common.model.query.Page;
-import com.gc.entity.cms.Notice;
-import com.gc.model.query.NoticeQueryModel;
+import com.zy.entity.cms.Notice;
+import com.zy.model.query.NoticeQueryModel;
 
 public interface NoticeService {
 

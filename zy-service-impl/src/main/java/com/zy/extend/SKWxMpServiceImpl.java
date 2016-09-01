@@ -1,4 +1,4 @@
-package com.gc.extend;
+package com.zy.extend;
 
 import com.zy.common.util.Identities;
 import com.thoughtworks.xstream.XStream;

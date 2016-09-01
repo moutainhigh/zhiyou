@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.sys.Message;
-import com.gc.model.query.MessageQueryModel;
+import com.zy.entity.sys.Message;
+import com.zy.model.query.MessageQueryModel;
 
 import java.util.Date;
 

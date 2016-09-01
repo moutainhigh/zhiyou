@@ -1,19 +1,19 @@
 package com.zy.mobile.controller.ucenter;
 
-import com.gc.Config;
+import com.zy.Config;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
-import com.gc.component.AccountLogComponent;
-import com.gc.entity.fnc.Account;
-import com.gc.entity.fnc.AccountLog;
-import com.gc.entity.fnc.Withdraw;
-import com.gc.model.Principal;
-import com.gc.model.query.AccountLogQueryModel;
-import com.gc.service.AccountLogService;
-import com.gc.service.AccountService;
-import com.gc.service.WithdrawService;
+import com.zy.component.AccountLogComponent;
+import com.zy.entity.fnc.Account;
+import com.zy.entity.fnc.AccountLog;
+import com.zy.entity.fnc.Withdraw;
+import com.zy.model.Principal;
+import com.zy.model.query.AccountLogQueryModel;
+import com.zy.service.AccountLogService;
+import com.zy.service.AccountService;
+import com.zy.service.WithdrawService;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.gc.entity.fnc.CurrencyType.现金;
-import static com.gc.entity.usr.User.UserType.代理;
-import static com.gc.model.Constants.MODEL_ATTRIBUTE_RESULT;
+import static com.zy.entity.fnc.CurrencyType.现金;
+import static com.zy.entity.usr.User.UserType.代理;
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
 @RequestMapping("/u/money")
 @Controller

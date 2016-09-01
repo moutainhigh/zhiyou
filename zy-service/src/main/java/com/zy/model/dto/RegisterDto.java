@@ -1,6 +1,6 @@
-package com.gc.model.dto;
+package com.zy.model.dto;
 
-import com.gc.entity.usr.User.UserType;
+import com.zy.entity.usr.User.UserType;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;

@@ -1,4 +1,4 @@
-package com.gc.service.impl;
+package com.zy.service.impl;
 
 import static com.zy.common.util.ValidateUtils.NOT_BLANK;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -10,15 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import com.gc.Config;
+import com.zy.Config;
 import com.zy.common.exception.ValidationException;
-import com.gc.component.AbstractConfig;
-import com.gc.entity.fnc.CurrencyType;
-import com.gc.entity.sys.Setting;
-import com.gc.entity.usr.User.UserType;
-import com.gc.mapper.SettingMapper;
-import com.gc.model.Constants;
-import com.gc.service.SettingService;
+import com.zy.component.AbstractConfig;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.sys.Setting;
+import com.zy.entity.usr.User.UserType;
+import com.zy.mapper.SettingMapper;
+import com.zy.model.Constants;
+import com.zy.service.SettingService;
 
 @Service
 @Validated

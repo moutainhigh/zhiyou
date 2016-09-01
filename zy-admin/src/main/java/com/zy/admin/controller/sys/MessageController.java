@@ -22,13 +22,13 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.entity.sys.Message;
-import com.gc.entity.sys.Message.MessageType;
-import com.gc.entity.usr.User;
-import com.gc.model.query.MessageQueryModel;
-import com.gc.model.query.UserQueryModel;
-import com.gc.service.MessageService;
-import com.gc.service.UserService;
+import com.zy.entity.sys.Message;
+import com.zy.entity.sys.Message.MessageType;
+import com.zy.entity.usr.User;
+import com.zy.model.query.MessageQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.MessageService;
+import com.zy.service.UserService;
 
 @RequestMapping("/message")
 @Controller

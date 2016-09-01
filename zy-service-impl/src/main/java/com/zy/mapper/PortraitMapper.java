@@ -1,11 +1,11 @@
-package com.gc.mapper;
+package com.zy.mapper;
 
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.gc.entity.usr.Portrait;
-import com.gc.model.query.PortraitQueryModel;
+import com.zy.entity.usr.Portrait;
+import com.zy.model.query.PortraitQueryModel;
 
 
 public interface PortraitMapper {

@@ -15,10 +15,10 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
-import com.gc.entity.cms.Feedback;
-import com.gc.entity.cms.Feedback.FeedbackStatus;
-import com.gc.model.query.FeedbackQueryModel;
-import com.gc.service.FeedbackService;
+import com.zy.entity.cms.Feedback;
+import com.zy.entity.cms.Feedback.FeedbackStatus;
+import com.zy.model.query.FeedbackQueryModel;
+import com.zy.service.FeedbackService;
 
 @RequestMapping("/feedback")
 @Controller

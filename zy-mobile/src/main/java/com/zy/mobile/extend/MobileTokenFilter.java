@@ -1,6 +1,6 @@
 package com.zy.mobile.extend;
 
-import static com.gc.model.Constants.COOKIE_NAME_MOBILE_TOKEN;
+import static com.zy.model.Constants.COOKIE_NAME_MOBILE_TOKEN;
 
 import java.io.IOException;
 
@@ -22,11 +22,11 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.zy.common.support.cache.CacheSupport;
 import com.zy.common.util.CookieUtils;
-import com.gc.entity.usr.User;
-import com.gc.model.Constants;
-import com.gc.model.Principal;
-import com.gc.model.PrincipalBuilder;
-import com.gc.service.UserService;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
+import com.zy.model.PrincipalBuilder;
+import com.zy.service.UserService;
 
 public class MobileTokenFilter implements Filter {
 

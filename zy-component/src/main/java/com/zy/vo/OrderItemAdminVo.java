@@ -1,4 +1,4 @@
-package com.gc.vo;
+package com.zy.vo;
 
 import lombok.Getter;
 import lombok.Setter;
