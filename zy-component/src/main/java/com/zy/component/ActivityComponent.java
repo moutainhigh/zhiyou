@@ -127,7 +127,7 @@ public class ActivityComponent {
 			Date now = new Date();
 			if(applyDeadline.before(now)) {
 				status = "报名中";
-			} else if(applyDeadline.after(now) && startTime.after(now)) {
+			} else if(applyDeadline.before(now) && startTime.after(now)) {
 				status = "报名已结束";
 			} else if(startTime.before(now) && endTime.after(now)) {
 				status = "进行中";
