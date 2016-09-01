@@ -12,8 +12,8 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import com.zy.entity.fnc.Deposit.DepositStatus;
-import com.zy.entity.fnc.PayType;
 import java.util.Date;
+import com.zy.entity.fnc.PayType;
 
 @Getter
 @Setter
