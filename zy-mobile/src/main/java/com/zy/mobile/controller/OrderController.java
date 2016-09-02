@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.zy.common.model.query.Page;
 import com.zy.component.OrderComponent;
 import com.zy.entity.mal.Order;
+import com.zy.entity.mal.OrderItem;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.Address;
 import com.zy.model.Principal;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.AddressService;
+import com.zy.service.OrderItemService;
 import com.zy.service.OrderService;
 import com.zy.service.ProductService;
 
@@ -32,6 +34,9 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 
+	@Autowired
+	private OrderItemService orderItemService;
+	
 	@Autowired
 	private OrderComponent orderComponent;
 	
@@ -60,21 +65,21 @@ public class OrderController {
 	public String in(Principal principal, Model model) {
 		
 		OrderQueryModel orderQueryModel = new OrderQueryModel();
-		orderQueryModel.setUserIdEQ(principal.getUserId());
+		orderQueryModel.setSellerIdEQ(principal.getUserId());
 		orderQueryModel.setPageNumber(0);
 		orderQueryModel.setPageSize(6);
 		Page<Order> page = orderService.findPage(orderQueryModel);
 		List<Order> list = page.getData();
 		if(!list.isEmpty()) {
-			/*
-			Long[] productIds = list.stream().map(v -> v.getProductId()).toArray(Long[]::new);
+
+			
+			/*Long[] productIds = list.stream().map(v -> v.getProductId()).toArray(Long[]::new);
 			ProductQueryModel productQueryModel = new ProductQueryModel();
 			productQueryModel.setIdIN(productIds);
 			List<Product> products = productService.findAll(productQueryModel);
 			
 			model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent.buildListVo(page.getData(), products)));
-			model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-			*/
+			model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));*/
 		}
 		
 		return "order/orderList";
@@ -84,8 +89,8 @@ public class OrderController {
 	public String out(Principal principal, Model model) {
 		
 		OrderQueryModel orderQueryModel = new OrderQueryModel();
+		orderQueryModel.setSellerIdEQ(principal.getUserId());
 		orderQueryModel.setUserIdEQ(principal.getUserId());
-		orderQueryModel.setPageNumber(0);
 		orderQueryModel.setPageSize(6);
 		Page<Order> page = orderService.findPage(orderQueryModel);
 		List<Order> list = page.getData();

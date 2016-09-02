@@ -31,6 +31,7 @@ import com.zy.service.ActivityCollectService;
 import com.zy.service.ActivityService;
 import com.zy.service.ActivitySignInService;
 import com.zy.service.UserService;
+import com.zy.vo.ActivityListVo;
 
 @RequestMapping("/u/activity")
 @Controller
@@ -73,19 +74,15 @@ public class UcenterActivityController {
 
 	@RequestMapping("/applyList")
 	public String applyList(Principal principal, Model model) {
-		ActivityApplyQueryModel activityApplyQueryModel = new ActivityApplyQueryModel();
-		activityApplyQueryModel.setUserIdEQ(principal.getUserId());
-		Page<ActivityApply> page = activityApplyService.findPage(activityApplyQueryModel);
-
-		if(!page.getData().isEmpty()) {
-			ActivityQueryModel activityQueryModel = new ActivityQueryModel();
-			activityQueryModel.setIdIN(page.getData().stream().map(v -> v.getActivityId()).toArray(Long[]::new));
-			Page<Activity> activityPage = activityService.findPage(activityQueryModel);
-			List<Activity> activities = activityPage.getData();
-			model.addAttribute("activities", activities.stream().map(v -> {
-				return activityComponent.buildListVo(v);
-			}).collect(Collectors.toList()));
-		}
+		
+		List<ActivityApply> list = activityApplyService.findAll(ActivityApplyQueryModel.builder().userIdEQ(principal.getUserId()).build());
+		List<ActivityListVo> vos = list.stream().map(v -> {
+			return activityComponent.buildApply(v);
+		}).collect(Collectors.toList());
+		
+		model.addAttribute("historyActivities", vos.stream().filter(v -> "活动已结束".equals(v.getStatus())).collect(Collectors.toList()));
+		model.addAttribute("activities", vos.stream().filter(v -> !"活动已结束".equals(v.getStatus())).collect(Collectors.toList()));
+		
 		return "activity/applyActivityList";
 	}
 	
@@ -105,19 +102,15 @@ public class UcenterActivityController {
 	
 	@RequestMapping("/collectList")
 	public String collectList(Principal principal, Model model) {
-		ActivityCollectQueryModel activityCollectQueryModel = new ActivityCollectQueryModel();
-		activityCollectQueryModel.setUserIdEQ(principal.getUserId());
-		Page<ActivityCollect> page = activityCollectService.findPage(activityCollectQueryModel);
-
-		if(!page.getData().isEmpty()) {
-			ActivityQueryModel activityQueryModel = new ActivityQueryModel();
-			activityQueryModel.setIdIN(page.getData().stream().map(v -> v.getActivityId()).toArray(Long[]::new));
-			Page<Activity> activityPage = activityService.findPage(activityQueryModel);
-			List<Activity> activities = activityPage.getData();
-			model.addAttribute("activities", activities.stream().map(v -> {
-				return activityComponent.buildListVo(v);
-			}).collect(Collectors.toList()));
-		}
+		
+		List<ActivityCollect> list = activityCollectService.findAll(ActivityCollectQueryModel.builder().userIdEQ(principal.getUserId()).build());
+		List<ActivityListVo> vos = list.stream().map(v -> {
+			return activityComponent.buildCollect(v);
+		}).collect(Collectors.toList());
+		
+		model.addAttribute("historyActivities", vos.stream().filter(v -> "活动已结束".equals(v.getStatus())).collect(Collectors.toList()));
+		model.addAttribute("activities", vos.stream().filter(v -> !"活动已结束".equals(v.getStatus())).collect(Collectors.toList()));
+		
 		return "activity/collectActivityList";
 	}
 
