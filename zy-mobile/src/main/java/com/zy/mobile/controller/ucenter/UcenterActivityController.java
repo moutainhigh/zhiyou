@@ -15,7 +15,9 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.ActivityComponent;
+import com.zy.component.CacheComponent;
 import com.zy.component.UserComponent;
+import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
 import com.zy.entity.act.ActivityCollect;
 import com.zy.model.Constants;
@@ -49,6 +51,9 @@ public class UcenterActivityController {
 	
 	@Autowired
 	private ActivityComponent activityComponent;
+	
+	@Autowired
+	private CacheComponent cacheComponent;
 
 	@RequestMapping(value = "/apply", method = RequestMethod.POST)
 	public String apply(Long id, String inviterPhone, Principal principal, Model model, RedirectAttributes redirectAttributes) {
@@ -69,7 +74,8 @@ public class UcenterActivityController {
 		
 		List<ActivityApply> list = activityApplyService.findAll(ActivityApplyQueryModel.builder().userIdEQ(principal.getUserId()).build());
 		List<ActivityListVo> vos = list.stream().map(v -> {
-			return activityComponent.buildApply(v);
+			Activity activity = cacheComponent.getActivity(v.getActivityId());
+			return activityComponent.buildListVo(activity);
 		}).collect(Collectors.toList());
 		
 		model.addAttribute("historyActivities", vos.stream().filter(v -> "活动已结束".equals(v.getStatus())).collect(Collectors.toList()));
@@ -97,7 +103,8 @@ public class UcenterActivityController {
 		
 		List<ActivityCollect> list = activityCollectService.findAll(ActivityCollectQueryModel.builder().userIdEQ(principal.getUserId()).build());
 		List<ActivityListVo> vos = list.stream().map(v -> {
-			return activityComponent.buildCollect(v);
+			Activity activity = cacheComponent.getActivity(v.getActivityId());
+			return activityComponent.buildListVo(activity);
 		}).collect(Collectors.toList());
 		
 		model.addAttribute("historyActivities", vos.stream().filter(v -> "活动已结束".equals(v.getStatus())).collect(Collectors.toList()));

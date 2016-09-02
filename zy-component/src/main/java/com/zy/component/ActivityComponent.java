@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
-import com.zy.entity.act.ActivityCollect;
 import com.zy.entity.usr.User;
 import com.zy.model.dto.AreaDto;
 import com.zy.model.query.ActivityApplyQueryModel;
@@ -172,7 +171,7 @@ public class ActivityComponent {
 			activityDetailVo.setDistrict(areaDto.getDistrict());
 		}
 		activityDetailVo.setImageBig(getThumbnail(activity.getImage(), 750, 450));
-		activityDetailVo.setImageThumbnail(getThumbnail(activity.getImage(), 180, 80));
+		activityDetailVo.setImageThumbnail(getThumbnail(activity.getImage(), 240, 160));
 		
 		Date applyDeadline = activity.getApplyDeadline();  //报名截止时间
 		Date startTime = activity.getStartTime();
@@ -213,7 +212,7 @@ public class ActivityComponent {
 			activityListVo.setDistrict(areaDto.getDistrict());
 		}
 		activityListVo.setImageBig(getThumbnail(activity.getImage(), 750, 450));
-		activityListVo.setImageThumbnail(getThumbnail(activity.getImage(), 180, 80));
+		activityListVo.setImageThumbnail(getThumbnail(activity.getImage(), 240, 160));
 		
 		Date applyDeadline = activity.getApplyDeadline();  //报名截止时间
 		Date startTime = activity.getStartTime();
@@ -229,16 +228,6 @@ public class ActivityComponent {
 		}
 		activityListVo.setStatus(buildStatus(applyDeadline, startTime, endTime));
 		return activityListVo;
-	}
-	
-	public ActivityListVo buildApply(ActivityApply activityApply) {
-		Activity activity = cacheComponent.getActivity(activityApply.getActivityId());
-		return buildListVo(activity);
-	}
-	
-	public ActivityListVo buildCollect(ActivityCollect activityCollect) {
-		Activity activity = cacheComponent.getActivity(activityCollect.getActivityId());
-		return buildListVo(activity);
 	}
 	
 	private String buildStatus(Date applyDeadline, Date startTime, Date endTime) {
