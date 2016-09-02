@@ -51,6 +51,7 @@ public class ActivityApply implements Serializable {
 	@Field(label = "报名时间")
 	@Query({Predicate.GTE, Predicate.LT})
 	@View(groups = "ActivityApplyAdminVo")
+	@View(name = "appliedTimeLabel", type = String.class, groups = "ActivityApplyAdminVo")
 	private Date appliedTime;
 
 	@NotNull

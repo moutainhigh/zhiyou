@@ -19,6 +19,7 @@ public class ActivityApplyAdminVo implements Serializable {
 
 	/* 扩展 */
 	private UserAdminSimpleVo user;
+	private String appliedTimeLabel;
 	private UserAdminSimpleVo inviter;
 
 }

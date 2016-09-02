@@ -17,5 +17,6 @@ public class ActivitySignInAdminVo implements Serializable {
 
 	/* 扩展 */
 	private UserAdminSimpleVo user;
+	private String signedInTimeLabel;
 
 }

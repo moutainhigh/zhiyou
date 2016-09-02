@@ -51,6 +51,7 @@ public class ActivitySignIn implements Serializable {
 	@Field(label = "签到时间")
 	@Query({Predicate.GTE, Predicate.LT})
 	@View(groups = "ActivitySignInAdminVo")
+	@View(name = "signedInTimeLabel", type = String.class, groups = "ActivitySignInAdminVo")
 	private Date signedInTime;
 
 }

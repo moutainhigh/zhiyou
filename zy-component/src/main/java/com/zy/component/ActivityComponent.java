@@ -3,14 +3,19 @@ package com.zy.component;
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Activity;
 import com.zy.model.dto.AreaDto;
-import com.zy.vo.ActivityAdminVo;
-import com.zy.vo.ActivityDetailVo;
-import com.zy.vo.ActivityListVo;
-import org.apache.commons.lang3.StringUtils;
+import com.zy.model.query.ActivityApplyQueryModel;
+import com.zy.model.query.ActivityCollectQueryModel;
+import com.zy.model.query.ActivitySignInQueryModel;
+import com.zy.service.ActivityApplyService;
+import com.zy.service.ActivityCollectService;
+import com.zy.service.ActivitySignInService;
+import com.zy.util.VoHelper;
+import com.zy.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.stream.Collectors;
 
 import static com.zy.util.GcUtils.getThumbnail;
 import static java.util.Objects.isNull;
@@ -22,7 +27,86 @@ public class ActivityComponent {
 	@Autowired
 	private CacheComponent cacheComponent;
 
+	@Autowired
+	private ActivityApplyService activityApplyService;
+
+	@Autowired
+	private ActivityCollectService activityCollectService;
+
+	@Autowired
+	private ActivitySignInService activitySignInService;
+
 	private static final String TIME_LABEL = "yyyy-MM-dd HH:mm";
+
+	public ActivityAdminFullVo buildAdminFullVo(Activity activity) {
+		String shortFmt = "yyyy年M月d日 HH:mm";
+		ActivityAdminFullVo activityAdminFullVo = new ActivityAdminFullVo();
+		BeanUtils.copyProperties(activity, activityAdminFullVo);
+		Long activityId = activity.getId();
+
+		Long areaId = activity.getAreaId();
+		if(areaId != null) {
+			AreaDto areaDto = cacheComponent.getAreaDto(activity.getAreaId());
+			if (areaDto != null) {
+				activityAdminFullVo.setProvince(areaDto.getProvince());
+				activityAdminFullVo.setCity(areaDto.getCity());
+				activityAdminFullVo.setDistrict(areaDto.getDistrict());
+			}
+		}
+		activityAdminFullVo.setImageBig(getThumbnail(activity.getImage(), 300, 180));
+		activityAdminFullVo.setImageThumbnail(getThumbnail(activity.getImage(), 150, 90));
+
+		Date applyDeadline = activity.getApplyDeadline();  //报名截止时间
+		Date startTime = activity.getStartTime();
+		Date endTime = activity.getEndTime();
+		if(applyDeadline != null) {
+			activityAdminFullVo.setApplyDeadlineLabel(format(applyDeadline, shortFmt));
+		}
+		if(startTime != null) {
+			activityAdminFullVo.setStartTimeLabel(format(startTime, shortFmt));
+		}
+		if(endTime != null) {
+			activityAdminFullVo.setEndTimeLabel(format(endTime, shortFmt));
+		}
+		activityAdminFullVo.setStatus(buildStatus(applyDeadline, startTime, endTime));
+
+		activityAdminFullVo.setActivityApplies(
+				activityApplyService.findAll(ActivityApplyQueryModel.builder().activityIdEQ(activityId).orderBy("appliedTime").build())
+						.stream().map(activityApply -> {
+					ActivityApplyAdminVo activityApplyAdminVo = new ActivityApplyAdminVo();
+					BeanUtils.copyProperties(activityApply, activityApplyAdminVo);
+					Long userId = activityApply.getUserId();
+					Long inviterId = activityApply.getInviterId();
+					activityApplyAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(userId)));
+					activityApplyAdminVo.setInviter(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(inviterId)));
+					activityApplyAdminVo.setAppliedTimeLabel(format(activityApply.getAppliedTime(), shortFmt));
+					return activityApplyAdminVo;
+				}).collect(Collectors.toList()));
+
+		activityAdminFullVo.setActivityCollects(
+				activityCollectService.findAll(ActivityCollectQueryModel.builder().activityIdEQ(activityId).orderBy("collectedTime").build())
+						.stream().map(activityCollect -> {
+					ActivityCollectAdminVo activityCollectAdminVo = new ActivityCollectAdminVo();
+					BeanUtils.copyProperties(activityCollect, activityCollectAdminVo);
+					Long userId = activityCollect.getUserId();
+					activityCollectAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(userId)));
+					activityCollectAdminVo.setCollectedTimeLabel(format(activityCollect.getCollectedTime(), shortFmt));
+					return activityCollectAdminVo;
+				}).collect(Collectors.toList()));
+
+		activityAdminFullVo.setActivitySignIns(
+				activitySignInService.findAll(ActivitySignInQueryModel.builder().activityIdEQ(activityId).orderBy("signedInTime").build())
+						.stream().map(activitySignIn -> {
+					ActivitySignInAdminVo activitySignInAdminVo = new ActivitySignInAdminVo();
+					BeanUtils.copyProperties(activity, activitySignInAdminVo);
+					Long userId = activitySignIn.getUserId();
+					activitySignInAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(userId)));
+					activitySignInAdminVo.setSignedInTimeLabel(format(activitySignInAdminVo.getSignedInTime(), shortFmt));
+					return activitySignInAdminVo;
+				}).collect(Collectors.toList()));
+
+		return activityAdminFullVo;
+	}
 	
 	public ActivityAdminVo buildAdminVo(Activity activity) {
 		String fullFmt = "yyyy-MM-dd HH:mm:ss";

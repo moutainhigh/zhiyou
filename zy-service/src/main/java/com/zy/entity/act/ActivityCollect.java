@@ -51,6 +51,7 @@ public class ActivityCollect implements Serializable {
 	@Field(label = "关注时间")
 	@Query({Predicate.GTE, Predicate.LT})
 	@View(groups = "ActivityCollectAdminVo")
+	@View(name = "collectedTimeLabel", type = String.class, groups = "ActivityCollectAdminVo")
 	private Date collectedTime;
 
 }
