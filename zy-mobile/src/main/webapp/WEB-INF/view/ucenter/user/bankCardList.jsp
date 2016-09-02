@@ -49,7 +49,7 @@
     </a>
     
     <a class="list-item-add list-item list-item-icon bd-0 mt-10" href="${ctx}/u/bankCard/create">
-      <label class="list-label"><i class="fa fa-plus-circle fs-20"></i>绑定新银行卡</label>
+      <label class="list-label font-ccc"><i class="fa fa-plus-circle fs-20"></i>绑定新银行卡</label>
       <span class="list-text"><i class="list-arrow"></i></span>
     </a>
   </article>

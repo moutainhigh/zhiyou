@@ -5,6 +5,7 @@ import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.time.DateFormatUtils.format;
 
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
 import com.zy.entity.act.ActivityCollect;
+import com.zy.entity.usr.User;
 import com.zy.model.dto.AreaDto;
 import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.model.query.ActivityCollectQueryModel;
@@ -21,6 +23,7 @@ import com.zy.model.query.ActivitySignInQueryModel;
 import com.zy.service.ActivityApplyService;
 import com.zy.service.ActivityCollectService;
 import com.zy.service.ActivitySignInService;
+import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.ActivityAdminFullVo;
 import com.zy.vo.ActivityAdminVo;
@@ -29,6 +32,7 @@ import com.zy.vo.ActivityCollectAdminVo;
 import com.zy.vo.ActivityDetailVo;
 import com.zy.vo.ActivityListVo;
 import com.zy.vo.ActivitySignInAdminVo;
+import com.zy.vo.UserSimpleVo;
 
 @Component
 public class ActivityComponent {
@@ -44,7 +48,7 @@ public class ActivityComponent {
 
 	@Autowired
 	private ActivitySignInService activitySignInService;
-
+	
 	private static final String TIME_LABEL = "yyyy-MM-dd HH:mm";
 
 	public ActivityAdminFullVo buildAdminFullVo(Activity activity) {
@@ -183,6 +187,17 @@ public class ActivityComponent {
 			activityDetailVo.setEndTimeLabel(format(activity.getEndTime(), TIME_LABEL));
 		}
 		activityDetailVo.setStatus(buildStatus(applyDeadline, startTime, endTime));
+		
+		List<ActivityApply> applies = activityApplyService.findAll(ActivityApplyQueryModel.builder().activityIdEQ(activity.getId()).build());
+		List<UserSimpleVo> userSimplVo = applies.stream().map(v -> {
+			User user = cacheComponent.getUser(v.getUserId());
+			UserSimpleVo userSimpleVo = new UserSimpleVo();
+			BeanUtils.copyProperties(user, userSimpleVo);
+			userSimpleVo.setAvatarThumbnail(GcUtils.getThumbnail(user.getAvatar()));
+			return userSimpleVo;
+		}).collect(Collectors.toList());
+		activityDetailVo.setAppliedUsers(userSimplVo);
+		
 		return activityDetailVo;
 	}
 	

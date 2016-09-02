@@ -56,7 +56,7 @@ public class ActivityController {
 	
 	@RequestMapping
 	public String list(Model model) {
-		Page<Activity> page = activityService.findPage(new ActivityQueryModel());
+		Page<Activity> page = activityService.findPage(ActivityQueryModel.builder().isReleasedEQ(true).build());
 		List<ActivityListVo> list = page.getData().stream().map(v -> {
 			return activityComponent.buildListVo(v);
 			}).collect(Collectors.toList());
