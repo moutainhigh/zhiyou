@@ -33,13 +33,13 @@ $(function() {
     //alert("XMLHttpRequest.status=" + XMLHttpRequest.status);
     switch (XMLHttpRequest.status) {
       case 401:
-        messageAlert('您还没有登录, 请先登录');
+        messageFlash('您还没有登录, 请先登录');
         break;
       case 403:
-        messageAlert('您没有权限执行该操作');
+        messageShow('您没有权限执行该操作', 'error');
         break;
       case 500:
-        messageAlert('操作失败, 请稍后再试');
+        messageFlash('操作失败, 请稍后再试');
         break;
       default:
         break;

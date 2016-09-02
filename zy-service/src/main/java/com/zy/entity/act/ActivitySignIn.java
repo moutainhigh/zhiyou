@@ -47,7 +47,7 @@ public class ActivitySignIn implements Serializable {
 	@View(groups = "ActivitySignInAdminVo")
 	private Long activityId;
 
-	@NotBlank
+	@NotNull
 	@Field(label = "签到时间")
 	@Query({Predicate.GTE, Predicate.LT})
 	@View(groups = "ActivitySignInAdminVo")

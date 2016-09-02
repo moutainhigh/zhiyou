@@ -47,7 +47,7 @@ public class ActivityCollect implements Serializable {
 	@View(groups = "ActivityCollectAdminVo")
 	private Long activityId;
 
-	@NotBlank
+	@NotNull
 	@Field(label = "关注时间")
 	@Query({Predicate.GTE, Predicate.LT})
 	@View(groups = "ActivityCollectAdminVo")
