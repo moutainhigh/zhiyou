@@ -49,8 +49,7 @@ public class UcenterActivityController {
 	private ActivityComponent activityComponent;
 
 	@RequestMapping(value = "/apply", method = RequestMethod.POST)
-	public String apply(Long id, String phone, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		
+	public String apply(Long id, String inviterPhone, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		try {
 			activityService.apply(id, principal.getUserId(), null);
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("申请成功!"));

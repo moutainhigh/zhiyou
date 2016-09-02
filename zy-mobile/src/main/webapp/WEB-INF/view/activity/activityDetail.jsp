@@ -40,6 +40,20 @@
         }
       });
     });
+    
+    $('#btnApply').click(function(){
+      $('#form').submit();
+    });
+    
+    <c:if test="${not empty inviter}">
+    $('.inviter-alert > a').click(function(){
+      $('.inviter-alert').slideUp(300, function(){
+        $(this).remove();
+      });
+      $('.header-back').removeAttr('style');
+      $('body').removeClass('header-fixed');
+    });
+    </c:if>
   });
   
   <%-- 加载地图插件 --%>
@@ -95,11 +109,21 @@
 </script>
 
 </head>
-<body class="activity-detail footer-fixed">
-  <div class="alert alert-warning">
-    ${inviter}
+<body class="activity-detail footer-fixed header-fixed">
+  <form id="form" action="${ctx}/u/activity/apply" method="post">
+  
+  <c:if test="${not empty inviter}">
+  <input type="hidden" name="inviterPhone" value="${inviter.phone}">
+  <div class="inviter-alert alert alert-warning fix-top p-10 zindex-10">
+    <img class="image-40 round" src="${inviter.avatarThumbnail}">
+    <span class="ml-10">${inviter.nickname} 邀请您参与该活动.</span>
+    <a class="right mt-10" href="javascript:;"><i class="fa fa-close"></i></a>
   </div>
+  <a class="header-back" style="margin-top: 70px;" href="${ctx}/activity?type=${type}"><i class="fa fa-angle-left"></i></a>
+  </c:if>
+  <c:if test="${empty inviter}">
   <a class="header-back" href="${ctx}/activity?type=${type}"><i class="fa fa-angle-left"></i></a>
+  </c:if>
   <article>
     <figure class="image-wrap">
       <img class="abs-lt" src="${activity.imageBig}">
@@ -195,7 +219,7 @@
     <a id="btnApply" class="flex-2 bg-blue fs-14 font-white" href="javascript:;">报名参与</a>
     </c:if>
     <c:if test="${activity.status == '进行中'}">
-    <a id="btnSignIn" class="flex-2 bg-orange fs-14 font-white" href="javascript:;">活动签到</a>
+    <a class="flex-2 bg-orange fs-14 font-white" href="javascript:;">活动进行中</a>
     </c:if>
     <c:if test="${activity.status == '报名已结束'}">
     <a class="flex-2 fs-14 disabled" href="javascript:;">报名已结束</a>
@@ -204,6 +228,8 @@
     <a class="flex-2 fs-14 disabled" href="javascript:;">活动已结束</a>
     </c:if>
   </nav>
+  
+  </form>
   
   <aside id="asideMap" class="abs-lt size-100p bg-white hide" style="z-index: 9999">
     <a class="header-back" href="javascript:closeMap();"><i class="fa fa-angle-left"></i></a>
