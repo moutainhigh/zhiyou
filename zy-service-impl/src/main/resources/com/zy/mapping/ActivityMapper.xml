@@ -92,6 +92,12 @@
 		id,title,area_id,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version
 		from `act_activity`
 		<where>
+			<if test="idIN != null">
+				 and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
 			<if test="startTimeGTE != null">
 				 and start_time &gt;= #{startTimeGTE}
 			</if>
@@ -119,12 +125,6 @@
 			<if test="areaIdEQ != null">
 				 and area_id = #{areaIdEQ}
 			</if>
-			<if test="idIN != null">
-				 and id in
-				<foreach collection="idIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
-			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -142,6 +142,12 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.ActivityQueryModel">
 		select count(*) from `act_activity`
 		<where>
+			<if test="idIN != null">
+				 and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
 			<if test="startTimeGTE != null">
 				 and start_time &gt;= #{startTimeGTE}
 			</if>

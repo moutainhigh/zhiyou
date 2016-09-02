@@ -4,26 +4,20 @@ import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
+import io.gd.generator.annotation.view.CollectionView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
-
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.persistence.Version;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 import lombok.Getter;
 import lombok.Setter;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "act_activity")
@@ -31,9 +25,17 @@ import org.hibernate.validator.constraints.NotBlank;
 @Setter
 @Type(label = "活动")
 @QueryModel
-@ViewObject(groups = {"ActivityListVo", "ActivityDetailVo", "ActivityAdminVo"}, views = {
-	@View(name = "status", type = String.class)
-})
+@ViewObject(groups = {"ActivityListVo", "ActivityDetailVo", "ActivityAdminVo", "ActivityAdminFullVo"},
+		views = {
+				@View(name = "status", type = String.class)
+		},
+		collectionViews = {
+				@CollectionView(name = "activityApplies", elementGroup = "ActivityApplyAdminVo", groups = "ActivityAdminFullVo"),
+				@CollectionView(name = "activityCollects", elementGroup = "ActivityCollectAdminVo", groups = "ActivityAdminFullVo"),
+				@CollectionView(name = "activitySignIns", elementGroup = "ActivitySignInAdminVo", groups = "ActivityAdminFullVo")
+		}
+
+)
 public class Activity implements Serializable {
 
 	@Id
@@ -55,7 +57,7 @@ public class Activity implements Serializable {
 	@View(name = "province", type = String.class)
 	@View(name = "city", type = String.class)
 	@View(name = "district", type = String.class)
-	@View(groups = "ActivityAdminVo")
+	@View(groups = {"ActivityAdminVo", "ActivityAdminFullVo"})
 	private Long areaId;
 
 	@NotBlank
@@ -65,12 +67,12 @@ public class Activity implements Serializable {
 
 	//@NotBlank
 	@Field(label = "纬度", description = "地图控件位置")
-	@View(groups = {"ActivityDetailVo", "ActivityAdminVo"})
+	@View(groups = {"ActivityDetailVo", "ActivityAdminVo", "ActivityAdminFullVo"})
 	private Double latitude;
 	
 	//@NotBlank
 	@Field(label = " 经度", description = "地图控件位置")
-	@View(groups = {"ActivityDetailVo", "ActivityAdminVo"})
+	@View(groups = {"ActivityDetailVo", "ActivityAdminVo", "ActivityAdminFullVo"})
 	private Double longitude; 
 
 	@NotBlank
@@ -83,7 +85,7 @@ public class Activity implements Serializable {
 	@NotBlank
 	@Lob
 	@Field(label = "活动详情")
-	@View(groups = {"ActivityDetailVo", "ActivityAdminVo"})
+	@View(groups = {"ActivityDetailVo", "ActivityAdminVo", "ActivityAdminFullVo"})
 	private String detail;
 
 	@NotNull
@@ -109,7 +111,7 @@ public class Activity implements Serializable {
 	@NotNull
 	@Min(0)
 	@Field(label = "签到数")
-	@View(groups = {"ActivityAdminVo"})
+	@View(groups = {"ActivityAdminVo", "ActivityAdminFullVo"})
 	private Long signedInCount;
 
 	@NotNull
@@ -133,7 +135,7 @@ public class Activity implements Serializable {
 	@NotNull
 	@Field(label = "是否发布")
 	@Query(Predicate.EQ)
-	@View(groups = {"ActivityAdminVo"})
+	@View(groups = {"ActivityAdminVo", "ActivityAdminFullVo"})
 	private Boolean isReleased;
 
 	@NotNull
