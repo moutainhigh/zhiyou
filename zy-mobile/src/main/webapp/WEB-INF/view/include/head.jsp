@@ -13,32 +13,11 @@
 <script src="${stccdn}/js/common.js"></script>
 <script src="${stccdn}/js/util.js"></script>
 <script>
-  $(function() {
-    FastClick.attach(document.body);
-  });
   var Config = {
     stc : '${stc}',
     ctx : '${ctx}',
     stccdn : '${stccdn}'
   }
-  
-  window.messageShow = function(message, icon){
-    $.message('message', icon || 'info');
-  };
-  window.messageFlash = function(message, time){
-    layer.open({
-      content: message,
-      skin: 'msg',
-      time: time || 2 //自动关闭
-    });
-  };
-  window.messageAlert = function(message, button){
-    layer.open({
-      content: message,
-      btn: button || '确定'
-    });
-  };
-  
 </script>
 <c:if test='${not empty result}'>
 <script>

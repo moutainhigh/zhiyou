@@ -19,8 +19,12 @@
     $('.tab-nav > a').tabs('.tab-content');
     
     $('#btnCollect').click(function(){
+      if($(this).hasClass('collected')) {
+        messageFlash('已关注');
+        return;
+      }
       $.ajax({
-        url: '${ctx}/activity/collect',
+        url: '${ctx}/u/activity/collect',
         data: {
           id: '${activity.id}'
         },
@@ -28,10 +32,10 @@
         type: 'post',
         success: function(result){
           if(result.code == 0) {
-            if(result.data) {
-              messageFlash('关注成功');
-              $('#btnCollect').html('<i class="fa fa-heart font-orange"></i><span>已关注 (' + ((parseInt($('#btnCollect').find('em').text()) || 0) + 1) + ')</span>');
-            }
+            messageFlash('关注成功');
+            $('#btnCollect').addClass('collected').html('<i class="fa fa-heart font-orange"></i><span>已关注 (' + ((parseInt($('#btnCollect').find('em').text()) || 0) + 1) + ')</span>');
+          } else {
+            
           }
         }
       });
@@ -121,7 +125,7 @@
     
     <div class="list-group mt-10">
       <div class="list-item list-item-icon">
-        <div class="list-label"><i class="fa fa-user font-gray"></i><span class="font-555 fs-14">已报名 <span class="font-orange">${activity.appliedCount}</span> 人</span></div>
+        <div class="list-label"><i class="fa fa-user font-gray"></i><span class="font-555 fs-14"><span class="font-orange">${activity.appliedCount}</span> 人已报名</span></div>
       </div>
       <div class="list-item pt-5 pl-20 users">
         <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/6fa938ce-9350-4df1-84aa-c03d5cd01947@80h_80w_1e_1c.jpg">
@@ -175,9 +179,15 @@
       </div>
     </div>
   </article>
-
   <nav class="footer footer-nav flex bd-0">
-    <a id="btnCollect" class="flex-1" href="javascript:;"><i class="fa fa-heart-o"></i><span>关注 (<em>${activity.collectedCount}</em>)</span></a>
+    <a id="btnCollect" class="flex-1${isCollected ? ' collected' : ''}" href="javascript:;">
+      <c:if test="${isCollected}">
+      <i class="fa fa-heart font-orange"></i><span>已关注 (<em>${activity.collectedCount}</em>)</span>
+      </c:if>
+      <c:if test="${!isCollected}">
+      <i class="fa fa-heart-o"></i><span>关注 (<em>${activity.collectedCount}</em>)</span>
+      </c:if>
+    </a>
     <c:if test="${activity.status == '报名中'}">
     <a id="btnApply" class="flex-2 bg-blue fs-14 font-white" href="javascript:;">报名参与</a>
     </c:if>
