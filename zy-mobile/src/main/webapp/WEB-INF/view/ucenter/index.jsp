@@ -95,11 +95,11 @@
     </div>
     
     <div class="list-group">
-      <a class="list-item list-item-icon" href="${ctx}/u/activity">
+      <a class="list-item list-item-icon" href="${ctx}/u/activity/applyList">
         <label class="list-label"><i class="icon icon-task"></i>我参与的活动</label>
         <span class="list-text"><i class="list-arrow"></i></span>
       </a>
-      <a class="list-item list-item-icon" href="${ctx}/u/activity/follow">
+      <a class="list-item list-item-icon" href="${ctx}/u/activity/collectList">
         <label class="list-label"><i class="icon icon-task"></i>我关注的活动</label>
         <span class="list-text"><i class="list-arrow"></i></span>
       </a>
