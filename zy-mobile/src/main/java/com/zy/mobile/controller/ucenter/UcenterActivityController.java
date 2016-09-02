@@ -125,12 +125,13 @@ public class UcenterActivityController {
 	@ResponseBody
 	public Result<?> signIn(Long id, Principal principal) {
 		
-		ActivitySignInQueryModel activitySignInQueryModel = new ActivitySignInQueryModel();
-		activitySignInQueryModel.setUserIdEQ(principal.getUserId());
-		Page<ActivitySignIn> page = activitySignInService.findPage(activitySignInQueryModel);
+		ActivityApplyQueryModel activityApplyQueryModel = new ActivityApplyQueryModel();
+		activityApplyQueryModel.setUserIdEQ(principal.getUserId());
+		Page<ActivityApply> page = activityApplyService.findPage(activityApplyQueryModel);
 		if(!page.getData().isEmpty()) {
-			return ResultBuilder.ok("已签到");
+			return ResultBuilder.ok("请先报名参加活动,再签到");
 		}
+		
 		activityService.signIn(id, principal.getUserId());
 		return ResultBuilder.ok("ok");
 	}
