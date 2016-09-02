@@ -53,7 +53,7 @@ public class UcenterActivityController {
 	public String apply(Long id, String phone, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		
 		try {
-			activityService.apply(id, principal.getUserId());
+			activityService.apply(id, principal.getUserId(), null);
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("申请成功!"));
 			return "activity/activityApplySuccess";
 		} catch (Exception e) {
@@ -83,25 +83,16 @@ public class UcenterActivityController {
 	
 	@RequestMapping(value = "/collect")
 	@ResponseBody
-	public Result<Boolean> collect(Long id, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		
-		try {
-			activityService.collect(id, principal.getUserId());
-			return ResultBuilder.result(true);
-		} catch (Exception e) {
-			return ResultBuilder.result(false);
-		}
+	public Result<? > collect(Long id, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		activityService.collect(id, principal.getUserId());
+		return ResultBuilder.ok("ok");
 	}
 	
 	@RequestMapping("/uncollect")
 	@ResponseBody
-	public Result<Boolean> uncollect(Long id, Principal principal, Model model) {
-		try {
-			activityService.uncollect(id, principal.getUserId());
-			return ResultBuilder.result(true);
-		} catch (Exception e) {
-			return ResultBuilder.result(false);
-		}
+	public Result<?> uncollect(Long id, Principal principal, Model model) {
+		activityService.uncollect(id, principal.getUserId());
+		return ResultBuilder.ok("ok");
 	}
 	
 	@RequestMapping("/collectList")
@@ -124,19 +115,15 @@ public class UcenterActivityController {
 
 	@RequestMapping(value = "/signIn")
 	@ResponseBody
-	public Result<Boolean> signIn(Long id, Principal principal) {
+	public Result<?> signIn(Long id, Principal principal) {
 		
 		ActivitySignInQueryModel activitySignInQueryModel = new ActivitySignInQueryModel();
 		activitySignInQueryModel.setUserIdEQ(principal.getUserId());
 		Page<ActivitySignIn> page = activitySignInService.findPage(activitySignInQueryModel);
 		if(!page.getData().isEmpty()) {
-			return ResultBuilder.result(true);
+			return ResultBuilder.ok("已签到");
 		}
-		try {
-			activityService.signIn(id, principal.getUserId());
-			return ResultBuilder.result(true);
-		} catch (Exception e) {
-			return ResultBuilder.result(false);
-		}
+		activityService.signIn(id, principal.getUserId());
+		return ResultBuilder.ok("ok");
 	}
 }

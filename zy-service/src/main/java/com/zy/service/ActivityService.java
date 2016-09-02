@@ -14,7 +14,7 @@ public interface ActivityService {
 
 	void modify(Activity activity);
 
-	void apply(Long activityId, Long userId);
+	void apply(Long activityId, Long userId, Long inviterId);
 
 	void cancel(Long activityId, Long userId);
 
