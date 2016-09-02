@@ -47,7 +47,7 @@ public class ProductController {
 	public String detail(@PathVariable Long id, Model model) {
 		Product product = productService.findOne(id);
 		validate(product, NOT_NULL, "product id" + id + " not found");
-		validate(product.getIsOn(), v -> true, "product not on");
+		validate(product.getIsOn(), v -> true, "product is not on");
 		model.addAttribute("product", productComponent.buildDetailVo(product));
 		return "product/productDetail";
 	}

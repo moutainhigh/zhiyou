@@ -109,7 +109,7 @@
 </script>
 
 </head>
-<body class="activity-detail footer-fixed header-fixed">
+<body class="activity-detail footer-fixed${not empty inviter ? ' header-fixed' : ''}">
   <form id="form" action="${ctx}/u/activity/apply" method="post">
   
   <input type="hidden" name="id" value="${activity.id}">
@@ -120,11 +120,8 @@
     <span class="ml-10">${inviter.nickname} 邀请您参与该活动.</span>
     <a class="right mt-10" href="javascript:;"><i class="fa fa-close"></i></a>
   </div>
-  <a class="header-back" style="margin-top: 70px;" href="${ctx}/activity?type=${type}"><i class="fa fa-angle-left"></i></a>
   </c:if>
-  <c:if test="${empty inviter}">
-  <a class="header-back" href="${ctx}/activity?type=${type}"><i class="fa fa-angle-left"></i></a>
-  </c:if>
+  <a class="header-back"${not empty inviter ? ' style="margin-top: 70px;"' : ''} href="${ctx}/activity?type=${type}"><i class="fa fa-angle-left"></i></a>
   <article>
     <figure class="image-wrap">
       <img class="abs-lt" src="${activity.imageBig}">
@@ -155,18 +152,13 @@
       <div class="list-item list-item-icon">
         <div class="list-label"><i class="fa fa-user font-gray"></i><span class="font-555 fs-14"><span class="font-orange">${activity.appliedCount}</span> 人已报名</span></div>
       </div>
+      <c:if test="${not empty activity.appliedUsers}">
       <div class="list-item pt-5 pl-20 users">
-        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/6fa938ce-9350-4df1-84aa-c03d5cd01947@80h_80w_1e_1c.jpg">
-        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/589995ef-76ae-4c84-bee8-1b27592e7b77@80h_80w_1e_1c.jpg">
-        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/f75d581b-87ba-454d-b0bb-27c7383334cb@80h_80w_1e_1c.jpg">
-        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/ce887059-c408-448f-a8d8-cfaae62e72d7@80h_80w_1e_1c.jpg">
-        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/4e08f740-828f-4709-afe8-78ad36b25849@80h_80w_1e_1c.jpg">
-        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/b2e3c0ac-1cc7-4df9-96e5-3eecf5470ac9@80h_80w_1e_1c.jpg">
-        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/7d100ece-0e9a-4fe1-851b-63bbc2c72c27@80h_80w_1e_1c.jpg">
-        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/af24f57a-4875-4740-ad5d-aefe86e4df87@80h_80w_1e_1c.jpg">
-        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/037d0589-a2d2-430b-871b-50602e004371@80h_80w_1e_1c.jpg">
-        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/c8200571-f585-456b-953c-3b0e23796c75@80h_80w_1e_1c.jpg">
+        <c:forEach items="${activity.appliedUsers}" var="user">
+        <img class="image-40 mt-5 round" src="${user.avtarThumbnail}">
+        </c:forEach>
       </div>
+      </c:if>
     </div>
     
     <div class="mb-15">

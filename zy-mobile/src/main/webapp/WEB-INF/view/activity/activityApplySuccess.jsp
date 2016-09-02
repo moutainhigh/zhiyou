@@ -25,7 +25,7 @@
 
   <header class="header">
     <h1>活动报名成功</h1>
-    <a href="${ctx}/avtivity/${activity.id}" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/activity/${activity.id}" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
   <article>
@@ -37,7 +37,7 @@
         <p class="clearfix fs-14 lh-30"><span class="left font-999">活动地点</span><span class="right font-555">${activity.province}${activity.city}${activity.district}${activity.address}</span></p>
       </div>
       <div class="form-btn mt-30">
-         <a href="${ctx}/avtivity/${activity.id}" class="btn green btn-block round-4">确 定</a>
+         <a href="${ctx}/activity/${activity.id}" class="btn green btn-block round-4">确 定</a>
       </div>
   </article>
   

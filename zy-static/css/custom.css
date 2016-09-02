@@ -241,7 +241,11 @@ a.disabled, a.disabled:hover, a.disabled:focus {
 .header-message .message-close {
   position: absolute; top: 12px; right: 15px;
   width: 18px; height: 24px; line-height: 24px;
-  color: #bbb; font-size: 16px; text-align: center;
+  color: #aaa; font-size: 16px; text-align: center;
+  cursor: pointer;
+}
+.header-message .message-close:hover {
+  color: #ccc;
 }
 .header-message .message-text {
   margin: 0 28px;

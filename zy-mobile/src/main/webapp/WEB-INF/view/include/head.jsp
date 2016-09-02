@@ -24,13 +24,13 @@
   $(function() {
     switch ('${result.code}') {
       case '0':
-        $.message('${result.message}', 'success');
+        messageShow('${result.message}', 'success');
         break;
       case '500':
-        $.message('${result.message}', 'error');
+        messageShow('${result.message}', 'error');
         break;
       default:
-        $.message('${result.message}', 'info');
+        messageShow('${result.message}', 'info');
         break;
     }
   });

@@ -1,7 +1,19 @@
 package com.zy.component;
 
+import static com.zy.util.GcUtils.getThumbnail;
+import static java.util.Objects.isNull;
+import static org.apache.commons.lang3.time.DateFormatUtils.format;
+
+import java.util.Date;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Activity;
+import com.zy.entity.act.ActivityApply;
+import com.zy.entity.act.ActivityCollect;
 import com.zy.model.dto.AreaDto;
 import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.model.query.ActivityCollectQueryModel;
@@ -10,16 +22,13 @@ import com.zy.service.ActivityApplyService;
 import com.zy.service.ActivityCollectService;
 import com.zy.service.ActivitySignInService;
 import com.zy.util.VoHelper;
-import com.zy.vo.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
-import java.util.stream.Collectors;
-
-import static com.zy.util.GcUtils.getThumbnail;
-import static java.util.Objects.isNull;
-import static org.apache.commons.lang3.time.DateFormatUtils.format;
+import com.zy.vo.ActivityAdminFullVo;
+import com.zy.vo.ActivityAdminVo;
+import com.zy.vo.ActivityApplyAdminVo;
+import com.zy.vo.ActivityCollectAdminVo;
+import com.zy.vo.ActivityDetailVo;
+import com.zy.vo.ActivityListVo;
+import com.zy.vo.ActivitySignInAdminVo;
 
 @Component
 public class ActivityComponent {
@@ -205,6 +214,16 @@ public class ActivityComponent {
 		}
 		activityListVo.setStatus(buildStatus(applyDeadline, startTime, endTime));
 		return activityListVo;
+	}
+	
+	public ActivityListVo buildApply(ActivityApply activityApply) {
+		Activity activity = cacheComponent.getActivity(activityApply.getActivityId());
+		return buildListVo(activity);
+	}
+	
+	public ActivityListVo buildCollect(ActivityCollect activityCollect) {
+		Activity activity = cacheComponent.getActivity(activityCollect.getActivityId());
+		return buildListVo(activity);
 	}
 	
 	private String buildStatus(Date applyDeadline, Date startTime, Date endTime) {

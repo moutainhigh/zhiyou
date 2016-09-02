@@ -3,7 +3,7 @@
  */
 
 window.messageShow = function(message, icon) {
-  $.message('message', icon || 'info');
+  $.message(message, icon || 'info');
 };
 
 window.messageFlash = function(message, time) {
