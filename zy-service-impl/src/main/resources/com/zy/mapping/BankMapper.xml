@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.BankMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.fnc.Bank">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="code" property="code" />
+		<result column="is_deleted" property="isDeleted" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.fnc.Bank" useGeneratedKeys="true" keyProperty="id">
+	  insert into `fnc_bank` (name,code,is_deleted)
+	  values (#{name},#{code},#{isDeleted})
+	</insert>
+
+	<delete id="delete">
+		delete from `fnc_bank` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.fnc.Bank">
+		update `fnc_bank`
+		<set>
+			name = #{name},
+			code = #{code},
+			is_deleted = #{isDeleted},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `fnc_bank`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'name'">name = #{bank.name},</when>
+					<when test="field == 'code'">code = #{bank.code},</when>
+					<when test="field == 'isDeleted'">is_deleted = #{bank.isDeleted},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{bank.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,name,code,is_deleted
+		from `fnc_bank`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.BankQueryModel">
+		select
+		id,name,code,is_deleted
+		from `fnc_bank`
+		<where>
+			<if test="isDeletedEQ != null">
+				 and is_deleted = #{isDeletedEQ}
+			</if>
+			<if test="nameLK != null">
+				<bind name="nameLK" value="'%' + nameLK + '%'"/> and name like #{nameLK}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.BankQueryModel">
+		select count(*) from `fnc_bank`
+		<where>
+			<if test="isDeletedEQ != null">
+				 and is_deleted = #{isDeletedEQ}
+			</if>
+			<if test="nameLK != null">
+				<bind name="nameLK" value="'%' + nameLK + '%'"/> and name like #{nameLK}
+			</if>
+		</where>
+	</select>
+
+</mapper>

@@ -7,14 +7,12 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class AdminAdminVo implements Serializable {
+public class BankVo implements Serializable {
 	/* 原生 */
 	private Long id;
-	private Long userId;
-	private String roleNames;
-	private Long siteId;
+	private String name;
+	private String code;
 
 	/* 扩展 */
-	private UserAdminSimpleVo user;
 
 }
