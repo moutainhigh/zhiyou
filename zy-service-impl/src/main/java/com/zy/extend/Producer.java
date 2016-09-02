@@ -3,16 +3,13 @@ package com.zy.extend;
 import com.zy.common.util.JsonUtils;
 import com.zy.entity.sys.Notify;
 import com.zy.mapper.NotifyMapper;
-
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.Future;
@@ -23,7 +20,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 /**
  * Created by freeman on 16/7/15.
  */
-@Component
+//@Component
 public class Producer {
 
     @Resource

@@ -8,6 +8,7 @@ import com.zy.entity.usr.User;
 import com.zy.util.GcUtils;
 import com.zy.vo.UserAdminSimpleVo;
 import com.zy.vo.UserAdminVo;
+import com.zy.vo.UserListVo;
 import com.zy.vo.UserSimpleVo;
 
 @Component
@@ -22,6 +23,16 @@ public class UserComponent {
 		userSimpleVo.setAvatarThumbnail(GcUtils.getThumbnail(user.getAvatar()));
 		userSimpleVo.setNickname(user.getNickname());
 		return userSimpleVo;
+	}
+	
+	public UserListVo buildListVo(User user) {
+		UserListVo userListVo = new UserListVo();
+		userListVo.setId(user.getId());
+		userListVo.setAvatarThumbnail(GcUtils.getThumbnail(user.getAvatar()));
+		userListVo.setNickname(user.getNickname());
+		userListVo.setPhone(user.getPhone());
+		userListVo.setUserRank(user.getUserRank());
+		return userListVo;
 	}
 	
 	public UserAdminVo buildAdminVo(User user) {

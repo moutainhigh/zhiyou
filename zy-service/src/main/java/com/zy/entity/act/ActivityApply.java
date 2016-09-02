@@ -60,7 +60,6 @@ public class ActivityApply implements Serializable {
 	@View(groups = "ActivityApplyAdminVo")
 	private Boolean isCancelled;
 
-	@NotNull
 	@Field(label = "邀请人id")
 	@Query({Predicate.IN, Predicate.EQ})
 	@View(groups = "ActivityApplyAdminVo")

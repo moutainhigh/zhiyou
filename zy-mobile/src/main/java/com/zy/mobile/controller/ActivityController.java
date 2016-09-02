@@ -71,9 +71,11 @@ public class ActivityController {
 		//浏览+1
 		activityService.view(id);
 		
-		User inviter = userService.findOne(inviterId);
-		if(inviter != null) {
-			model.addAttribute("inviter", userComponent.buildSimpleVo(inviter));
+		if(inviterId != null) {
+			User inviter = userService.findOne(inviterId);
+			if(inviter != null) {
+				model.addAttribute("inviter", userComponent.buildListVo(inviter));
+			}
 		}
 		
 		Activity activity = activityService.findOne(id);

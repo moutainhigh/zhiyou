@@ -87,7 +87,7 @@ public class User implements Serializable {
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "用户类型")
-	@View(groups = {"UserListVo", "UserAdminVo", "UserAdminSimpleVo"})
+	@View(groups = {"UserAdminVo", "UserAdminSimpleVo"})
 	private UserType userType;
 
 	@NotNull
