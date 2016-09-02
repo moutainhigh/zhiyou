@@ -1,6 +1,5 @@
 package com.zy.vo;
 
-import com.zy.entity.usr.User.UserType;
 import com.zy.entity.usr.User.UserRank;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +13,6 @@ public class UserListVo implements Serializable {
 	private Long id;
 	private String phone;
 	private String nickname;
-	private UserType userType;
 	private UserRank userRank;
 
 	/* 扩展 */

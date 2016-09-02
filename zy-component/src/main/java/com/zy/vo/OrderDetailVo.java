@@ -30,6 +30,6 @@ public class OrderDetailVo implements Serializable {
 	private String refundedTimeLabel;
 	private String amount;
 	private String refund;
-	private List<OrderItemAdminVo> orderItems = new ArrayList<>();
+	private List<OrderItemVo> orderItems = new ArrayList<>();
 
 }

@@ -23,6 +23,6 @@ public class OrderListVo implements Serializable {
 	private String createdTimeLabel;
 	private String expiredTimeLabel;
 	private String amount;
-	private List<OrderItemAdminVo> orderItems = new ArrayList<>();
+	private List<OrderItemVo> orderItems = new ArrayList<>();
 
 }
