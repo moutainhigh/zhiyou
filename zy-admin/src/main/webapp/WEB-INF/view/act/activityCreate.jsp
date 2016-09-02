@@ -12,6 +12,12 @@
   var ue;
   var content = '';
 
+  function onLocation(loc) {
+    alert(JSON.stringify(loc));
+    $('#latitude').val(loc.latlng.lat);
+    $('#longitude').val(loc.latlng.lng);
+  }
+
   $(function () {
 
     var area = new areaInit('province', 'city', 'district');
@@ -74,6 +80,10 @@
         var content = ue.getContent();
         if (!content) {
           layer.alert('请填写活动详情')
+          return false;
+        }
+        if (!$('#latitude').val() || !$('#longitude').val()) {
+          layer.alert('请地图选址')
           return false;
         }
         $(form).find(':submit').prop('disabled', true);
@@ -179,6 +189,17 @@
               </div>
             </div>
             <div class="form-group">
+              <label class="control-label col-md-3">地图选址<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <iframe id="mapPage" width="750" height="750" frameborder=0
+                        src="http://apis.map.qq.com/tools/locpicker?search=1&type=1&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp">
+                </iframe>
+
+                <input type="hidden" id="latitude" name="latitude" />
+                <input type="hidden" id="longitude" name="longitude" />
+              </div>
+            </div>
+            <div class="form-group">
               <label class="control-label col-md-3">开始时间<span class="required"> * </span></label>
               <div class="col-md-5">
                 <div class="input-icon input-medium right">
@@ -215,7 +236,7 @@
               <label class="control-label col-md-3">活动详情<span class="required"> * </span></label>
               <div class="col-md-5">
                 <div class="input-icon right">
-                  <script id="editor" type="text/plain" style="width:840px; height:500px;"></script>
+                  <script id="editor" type="text/plain" style="width:750px;height:500px;"></script>
                 </div>
               </div>
             </div>

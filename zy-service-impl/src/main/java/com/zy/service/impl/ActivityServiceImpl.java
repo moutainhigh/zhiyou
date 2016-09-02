@@ -68,7 +68,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public void modify(@NotNull Activity activity) {
-		String[] fields = new String[] { "areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime" };
+		String[] fields = new String[] { "areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime", "latitude", "longitude" };
 		validate(activity, fields);
 		checkAndFindActivity(activity.getId());
 		checkArea(activity.getAreaId());
