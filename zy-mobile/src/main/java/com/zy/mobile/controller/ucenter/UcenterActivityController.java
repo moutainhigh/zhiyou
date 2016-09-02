@@ -19,17 +19,14 @@ import com.zy.component.UserComponent;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
 import com.zy.entity.act.ActivityCollect;
-import com.zy.entity.act.ActivitySignIn;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.model.query.ActivityCollectQueryModel;
 import com.zy.model.query.ActivityQueryModel;
-import com.zy.model.query.ActivitySignInQueryModel;
 import com.zy.service.ActivityApplyService;
 import com.zy.service.ActivityCollectService;
 import com.zy.service.ActivityService;
-import com.zy.service.ActivitySignInService;
 import com.zy.service.UserService;
 
 @RequestMapping("/u/activity")
@@ -47,9 +44,6 @@ public class UcenterActivityController {
 	
 	@Autowired
 	private ActivityApplyService activityApplyService;
-	
-	@Autowired
-	private ActivitySignInService activitySignInService;
 
 	@Autowired
 	private UserComponent userComponent;
