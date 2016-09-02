@@ -1,14 +1,5 @@
 package com.zy.entity.mal;
 
-import io.gd.generator.annotation.Field;
-import io.gd.generator.annotation.Type;
-import io.gd.generator.annotation.query.Query;
-import io.gd.generator.annotation.query.QueryModel;
-import io.gd.generator.annotation.view.CollectionView;
-import io.gd.generator.annotation.view.View;
-import io.gd.generator.annotation.view.ViewObject;
-import io.gd.generator.api.query.Predicate;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,12 +13,20 @@ import javax.persistence.Version;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.zy.entity.fnc.CurrencyType;
+
+import io.gd.generator.annotation.Field;
+import io.gd.generator.annotation.Type;
+import io.gd.generator.annotation.query.Query;
+import io.gd.generator.annotation.query.QueryModel;
+import io.gd.generator.annotation.view.CollectionView;
+import io.gd.generator.annotation.view.View;
+import io.gd.generator.annotation.view.ViewObject;
+import io.gd.generator.api.query.Predicate;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "mal_order")
@@ -35,7 +34,10 @@ import com.zy.entity.fnc.CurrencyType;
 @Setter
 @QueryModel
 @ViewObject(groups = { "OrderListVo", "OrderDetailVo", "OrderAdminVo" },
-	collectionViews = @CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderListVo", "OrderDetailVo", "OrderAdminVo"}, elementGroup = "OrderItemAdminVo")
+	collectionViews = {
+			@CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderAdminVo"}, elementGroup = "OrderItemAdminVo"),
+			@CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderListVo", "OrderDetailVo"}, elementGroup = "OrderItemVo")
+	}
 )
 @Type(label = "订单")
 public class Order implements Serializable {
