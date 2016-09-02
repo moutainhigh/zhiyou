@@ -13,7 +13,6 @@
   var content = '';
 
   function onLocation(loc) {
-    alert(JSON.stringify(loc));
     $('#latitude').val(loc.latlng.lat);
     $('#longitude').val(loc.latlng.lng);
   }
