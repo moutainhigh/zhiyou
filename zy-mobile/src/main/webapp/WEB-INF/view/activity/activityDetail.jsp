@@ -96,6 +96,9 @@
 
 </head>
 <body class="activity-detail footer-fixed">
+  <div class="alert alert-warning">
+    ${inviter}
+  </div>
   <a class="header-back" href="${ctx}/activity?type=${type}"><i class="fa fa-angle-left"></i></a>
   <article>
     <figure class="image-wrap">

@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.zy.common.model.query.Page;
 import com.zy.component.ActivityComponent;
+import com.zy.component.UserComponent;
 import com.zy.entity.act.Activity;
+import com.zy.entity.usr.User;
 import com.zy.model.Principal;
 import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.model.query.ActivityCollectQueryModel;
@@ -22,6 +24,7 @@ import com.zy.service.ActivityApplyService;
 import com.zy.service.ActivityCollectService;
 import com.zy.service.ActivityService;
 import com.zy.service.ActivitySignInService;
+import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import com.zy.vo.ActivityListVo;
 
@@ -30,6 +33,12 @@ import com.zy.vo.ActivityListVo;
 @Controller
 public class ActivityController {
 
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private UserComponent userComponent;
+	
 	@Autowired
 	private ActivityService activityService;
 	
@@ -57,10 +66,15 @@ public class ActivityController {
 
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String detail(@PathVariable Long id, Model model) {
+	public String detail(@PathVariable Long id, Long inviterId, Model model) {
 		
 		//浏览+1
 		activityService.view(id);
+		
+		User inviter = userService.findOne(inviterId);
+		if(inviter != null) {
+			model.addAttribute("inviter", userComponent.buildSimpleVo(inviter));
+		}
 		
 		Activity activity = activityService.findOne(id);
 		model.addAttribute("activity", activityComponent.buildDetailVo(activity));
