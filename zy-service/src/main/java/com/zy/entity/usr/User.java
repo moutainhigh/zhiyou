@@ -1,14 +1,5 @@
 package com.zy.entity.usr;
 
-import io.gd.generator.annotation.Field;
-import io.gd.generator.annotation.Type;
-import io.gd.generator.annotation.query.Query;
-import io.gd.generator.annotation.query.QueryModel;
-import io.gd.generator.annotation.view.AssociationView;
-import io.gd.generator.annotation.view.View;
-import io.gd.generator.annotation.view.ViewObject;
-import io.gd.generator.api.query.Predicate;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,12 +12,20 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.zy.common.extend.StringBinder;
+
+import io.gd.generator.annotation.Field;
+import io.gd.generator.annotation.Type;
+import io.gd.generator.annotation.query.Query;
+import io.gd.generator.annotation.query.QueryModel;
+import io.gd.generator.annotation.view.AssociationView;
+import io.gd.generator.annotation.view.View;
+import io.gd.generator.annotation.view.ViewObject;
+import io.gd.generator.api.query.Predicate;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "usr_user")
@@ -34,7 +33,7 @@ import com.zy.common.extend.StringBinder;
 @Setter
 @QueryModel
 @Type(label = "用户")
-@ViewObject(groups = {"UserSimpleVo", "UserAdminVo", "UserAdminSimpleVo"})
+@ViewObject(groups = {"UserListVo", "UserSimpleVo", "UserAdminVo", "UserAdminSimpleVo"})
 public class User implements Serializable {
 
 	@Type(label = "用户类型")
@@ -69,7 +68,7 @@ public class User implements Serializable {
 	@StringBinder
 	@Query(Predicate.EQ)
 	@Field(label = "手机号")
-	@View(groups = {"UserAdminVo", "UserAdminSimpleVo"})
+	@View(groups = {"UserListVo", "UserAdminVo", "UserAdminSimpleVo"})
 	private String phone;
 
 	@Column(length = 60)
@@ -88,12 +87,12 @@ public class User implements Serializable {
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "用户类型")
-	@View(groups = {"UserAdminVo", "UserAdminSimpleVo"})
+	@View(groups = {"UserListVo", "UserAdminVo", "UserAdminSimpleVo"})
 	private UserType userType;
 
 	@NotNull
 	@Field(label = "用户等级")
-	@View(groups = {"UserAdminVo", "UserAdminSimpleVo"})
+	@View(groups = {"UserListVo", "UserAdminVo", "UserAdminSimpleVo"})
 	private UserRank userRank;
 
 	@Column(length = 11)
