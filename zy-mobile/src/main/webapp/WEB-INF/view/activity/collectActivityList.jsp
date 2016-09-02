@@ -30,7 +30,15 @@
   </header>
 
   <article>
-    <div class="list-group mb-15">
+    <c:if test="${empty activities && empty historyActivities}">
+    <div class="empty-tip">
+      <i class="fa fa-users"></i>
+      <span>您没有关注活动</span>
+    </div>
+    </c:if>
+  
+    <c:if test="${not empty activities}">
+    <div class="list-group">
       <c:forEach items="${activities}" var="activity">
       <a class="list-item activity" href="${ctx}/activity/${activity.id}">
         <figure class="image-wrap">
@@ -48,6 +56,29 @@
       </a>
       </c:forEach>
     </div>
+    </c:if>
+    
+    <c:if test="${not empty historyActivities}">
+    <div class="list-group mb-15">
+      <div class="list-title">已结束的活动</div>
+      <c:forEach items="${historyActivities}" var="activity">
+      <a class="list-item activity" href="${ctx}/activity/${activity.id}">
+        <figure class="image-wrap">
+          <img src="${activity.imageThumbnail}">
+        </figure>
+        <h2>${activity.title}</h2>
+        <div class="font-999 fs-12 lh-20">${activity.startTimeLabel} 开始</div>
+        <div class="font-999 fs-12 lh-20"><i class="fa fa-map-marker font-gray"></i> ${activity.province} ${activity.city} ${activity.district}</div>
+        <div class="fs-14 abs-rb mr-15 mb-15">
+          <c:if test="${activity.status == '报名中'}"><label class="label blue">报名中</label></c:if>
+          <c:if test="${activity.status == '报名已结束'}"><label class="label gray">报名已结束</label></c:if>
+          <c:if test="${activity.status == '进行中'}"><label class="label orange">进行中</label></c:if>
+          <c:if test="${activity.status == '活动已结束'}"><label class="label gray">活动已结束</label></c:if>
+        </div>
+      </a>
+      </c:forEach>
+    </div>
+    </c:if>
   </article>
 
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
