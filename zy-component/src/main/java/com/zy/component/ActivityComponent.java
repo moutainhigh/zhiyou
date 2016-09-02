@@ -78,7 +78,9 @@ public class ActivityComponent {
 					Long userId = activityApply.getUserId();
 					Long inviterId = activityApply.getInviterId();
 					activityApplyAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(userId)));
-					activityApplyAdminVo.setInviter(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(inviterId)));
+					if (inviterId != null) {
+						activityApplyAdminVo.setInviter(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(inviterId)));
+					}
 					activityApplyAdminVo.setAppliedTimeLabel(format(activityApply.getAppliedTime(), shortFmt));
 					return activityApplyAdminVo;
 				}).collect(Collectors.toList()));

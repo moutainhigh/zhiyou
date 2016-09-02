@@ -28,12 +28,13 @@
     <a href="${ctx}/avtivity/${activity.id}" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
-  <article class="mt-30">
-      <i class="icon icon-clock icon-6x block center"></i>
-      <h2 class="font-black fs-16 lh-30 text-center mt-20 mb-20">您已经成功报名活动</h2>
+  <article>
+      <img class="image-80 bd round block mt-30 center" src="${user.avatarThumbnail}">
+      <h2 class="font-555 fs-16 lh-30 text-center mt-30 mb-20">恭喜您，报名成功！</h2>
       <div class="list-group pl-15 pr-15 pt-10 pb-10">
-        <p class="clearfix fs-14 lh-30"><span class="left font-999">活动时间</span><span class="right font-black">${activity.startTimeLabel} 至 ${activity.endTimeLabel}</span></p>
-        <p class="clearfix fs-14 lh-30"><span class="left font-999">活动地点</span><span class="right font-black">${activity.province} ${activity.city} ${activity.district} ${activity.address}</span></p>
+        <h2 class="font-333 text-center lh-60">${activity.title}</h2>
+        <p class="clearfix fs-14 lh-30"><span class="left font-999">活动时间</span><span class="right font-555">${activity.startTimeLabel} 至 ${activity.endTimeLabel}</span></p>
+        <p class="clearfix fs-14 lh-30"><span class="left font-999">活动地点</span><span class="right font-555">${activity.province}${activity.city}${activity.district}${activity.address}</span></p>
       </div>
       <div class="form-btn mt-30">
          <a href="${ctx}/avtivity/${activity.id}" class="btn green btn-block round-4">确 定</a>

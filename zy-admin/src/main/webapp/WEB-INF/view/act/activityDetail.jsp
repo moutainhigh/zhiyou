@@ -84,53 +84,91 @@
                 <a href="#detail" data-toggle="tab" aria-expanded="true"> 详情 </a>
               </li>
               <li class="">
-                <a href="#applies" data-toggle="tab" aria-expanded="false"> 报名 </a>
+                <a href="#applies" data-toggle="tab" aria-expanded="false"> 报名 <span class="badge badge-primary"> ${activity.activityApplies.size()} </span></a>
               </li>
               <li class="">
-                <a href="#signIns" data-toggle="tab" aria-expanded="false"> 签到 </a>
+                <a href="#signIns" data-toggle="tab" aria-expanded="false"> 签到 <span class="badge badge-primary"> ${activity.activitySignIns.size()} </span></a>
               </li>
               <li class="">
-                <a href="#collects" data-toggle="tab" aria-expanded="false"> 关注 </a>
+                <a href="#collects" data-toggle="tab" aria-expanded="false"> 关注 <span class="badge badge-primary"> ${activity.activityCollects.size()} </span></a>
               </li>
             </ul>
 
             <div class="tab-content">
               <div class="tab-pane fade active in" id="detail">
-                <div>
-                  ${activity.detail}
+                <div class="form-group">
+                  <label class="control-label col-md-3">详情<span class="required"> * </span></label>
+                  <div class="col-md-5">
+                    <p class="form-control-static">${activity.detail}</p>
+                  </div>
                 </div>
               </div>
               <div class="tab-pane fade" id="applies">
-                <table class="table table-hover">
+                <table class="table table-hover table-bordered">
                   <thead>
                   <tr>
-                    <th> 申请人 </th>
-                    <th> 申请时间 </th>
-                    <th> 状态 </th>
+                    <th> 报名用户 </th>
+                    <th> 手机 </th>
+                    <th> 报名时间 </th>
+                    <th> 报名状态 </th>
                     <th> 邀请人 </th>
+                    <th> 邀请人手机 </th>
                   </tr>
                   </thead>
                   <tbody>
                   <c:forEach items="${activity.activityApplies}" var="activityApply">
-                  <tr>
-                    <td><img src="${activityApply.user.avatarThumbnail}" /> ${activityApply.user.nickname}</td>
-                    <td>${activityApply.appliedTimeLabel}</td>
-                    <td>${activityApply.isCancelled ? '已取消' : '已报名'}</td>
-                    <td><c:if test="${not empty activity}"><img src="${activityApply.inviter.avatarThumbnail}" /> ${activityApply.user.nickname}</c:if><c:if test="${empty activity}">-</c:if><</td>
-                  </tr>
+                    <tr>
+                      <td><img class="image-40 img-circle" src="${activityApply.user.avatarThumbnail}"/> ${activityApply.user.nickname}</td>
+                      <td>${activityApply.user.phone}</td>
+                      <td>${activityApply.appliedTimeLabel}</td>
+                      <td><c:if test="${not activityApply.isCancelled}"><span class="font-green">已报名</span></c:if><c:if test="${activityApply.isCancelled}">已取消</c:if></td>
+                      <td><c:if test="${not empty activityApply.inviter}"><img class="image-40 img-circle"
+                                                                               src="${activityApply.inviter.avatarThumbnail}"/> ${activityApply.inviter.nickname}</c:if></td>
+                      <td><c:if test="${not empty activityApply.inviter}">${activityApply.inviter.phone}</c:if></td>
+                    </tr>
                   </c:forEach>
                   </tbody>
                 </table>
               </div>
               <div class="tab-pane fade" id="signIns">
-                <p> Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone
-                  skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel
-                  fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr. </p>
+                <table class="table table-hover table-bordered">
+                  <thead>
+                  <tr>
+                    <th> 签到用户 </th>
+                    <th> 手机 </th>
+                    <th> 签到时间 </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <c:forEach items="${activity.activitySignIns}" var="activitySignIn">
+                    <tr>
+                      <td><img class="image-40 img-circle" src="${activitySignIn.user.avatarThumbnail}"/> ${activitySignIn.user.nickname}</td>
+                      <td>${activitySignIn.user.phone}</td>
+                      <td>${activitySignIn.signedInTimeLabel}</td>
+                    </tr>
+                  </c:forEach>
+                  </tbody>
+                </table>
               </div>
               <div class="tab-pane fade" id="collects">
-                <p> Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore
-                  wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats
-                  keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan. </p>
+                <table class="table table-hover table-bordered">
+                  <thead>
+                  <tr>
+                    <th> 关注者 </th>
+                    <th> 手机 </th>
+                    <th> 关注时间 </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <c:forEach items="${activity.activityCollects}" var="activityCollect">
+                    <tr>
+                      <td><img class="image-40 img-circle" src="${activityCollect.user.avatarThumbnail}"/> ${activityCollect.user.nickname}</td>
+                      <td>${activityCollect.user.phone}</td>
+                      <td>${activityCollect.collectedTimeLabel}</td>
+                    </tr>
+                  </c:forEach>
+                  </tbody>
+                </table>
               </div>
             </div>
 

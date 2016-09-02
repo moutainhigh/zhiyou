@@ -1,23 +1,8 @@
 package com.zy.mobile.controller.ucenter;
 
-import com.zy.common.model.query.Page;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.component.ActivityComponent;
-import com.zy.entity.act.Activity;
-import com.zy.entity.act.ActivityApply;
-import com.zy.entity.act.ActivityCollect;
-import com.zy.entity.act.ActivitySignIn;
-import com.zy.model.Constants;
-import com.zy.model.Principal;
-import com.zy.model.query.ActivityApplyQueryModel;
-import com.zy.model.query.ActivityCollectQueryModel;
-import com.zy.model.query.ActivityQueryModel;
-import com.zy.model.query.ActivitySignInQueryModel;
-import com.zy.service.ActivityApplyService;
-import com.zy.service.ActivityCollectService;
-import com.zy.service.ActivityService;
-import com.zy.service.ActivitySignInService;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +11,30 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.zy.common.model.query.Page;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.component.ActivityComponent;
+import com.zy.component.UserComponent;
+import com.zy.entity.act.Activity;
+import com.zy.entity.act.ActivityApply;
+import com.zy.entity.act.ActivityCollect;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
+import com.zy.model.query.ActivityApplyQueryModel;
+import com.zy.model.query.ActivityCollectQueryModel;
+import com.zy.model.query.ActivityQueryModel;
+import com.zy.service.ActivityApplyService;
+import com.zy.service.ActivityCollectService;
+import com.zy.service.ActivityService;
+import com.zy.service.UserService;
 
 @RequestMapping("/u/activity")
 @Controller
 public class UcenterActivityController {
+
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private ActivityService activityService;
@@ -41,9 +44,9 @@ public class UcenterActivityController {
 	
 	@Autowired
 	private ActivityApplyService activityApplyService;
-	
+
 	@Autowired
-	private ActivitySignInService activitySignInService;
+	private UserComponent userComponent;
 	
 	@Autowired
 	private ActivityComponent activityComponent;
@@ -52,13 +55,14 @@ public class UcenterActivityController {
 	public String apply(Long id, String inviterPhone, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		try {
 			activityService.apply(id, principal.getUserId(), null);
-			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("申请成功!"));
+			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功!"));
+			model.addAttribute("activity", activityComponent.buildListVo(activityService.findOne(id)));
+			model.addAttribute("user", userComponent.buildSimpleVo(userService.findOne(principal.getUserId())));
 			return "activity/activityApplySuccess";
 		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("申请异常," + e.getMessage()));
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名异常," + e.getMessage()));
 			return "redirect:/activity/" + id;
 		}
-		
 	}
 
 	@RequestMapping("/applyList")
@@ -115,12 +119,13 @@ public class UcenterActivityController {
 	@ResponseBody
 	public Result<?> signIn(Long id, Principal principal) {
 		
-		ActivitySignInQueryModel activitySignInQueryModel = new ActivitySignInQueryModel();
-		activitySignInQueryModel.setUserIdEQ(principal.getUserId());
-		Page<ActivitySignIn> page = activitySignInService.findPage(activitySignInQueryModel);
+		ActivityApplyQueryModel activityApplyQueryModel = new ActivityApplyQueryModel();
+		activityApplyQueryModel.setUserIdEQ(principal.getUserId());
+		Page<ActivityApply> page = activityApplyService.findPage(activityApplyQueryModel);
 		if(!page.getData().isEmpty()) {
-			return ResultBuilder.ok("已签到");
+			return ResultBuilder.ok("请先报名参加活动,再签到");
 		}
+		
 		activityService.signIn(id, principal.getUserId());
 		return ResultBuilder.ok("ok");
 	}

@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -29,5 +31,6 @@ public class ActivityDetailVo implements Serializable {
 	private String applyDeadlineLabel;
 	private String startTimeLabel;
 	private String endTimeLabel;
+	private List<UserSimpleVo> appliedUsers = new ArrayList<>();
 
 }

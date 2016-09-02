@@ -32,9 +32,9 @@ import java.util.Date;
 		collectionViews = {
 				@CollectionView(name = "activityApplies", elementGroup = "ActivityApplyAdminVo", groups = "ActivityAdminFullVo"),
 				@CollectionView(name = "activityCollects", elementGroup = "ActivityCollectAdminVo", groups = "ActivityAdminFullVo"),
-				@CollectionView(name = "activitySignIns", elementGroup = "ActivitySignInAdminVo", groups = "ActivityAdminFullVo")
+				@CollectionView(name = "activitySignIns", elementGroup = "ActivitySignInAdminVo", groups = "ActivityAdminFullVo"),
+				@CollectionView(name = "appliedUsers", elementGroup = "UserSimpleVo", groups = "ActivityDetailVo"),
 		}
-
 )
 public class Activity implements Serializable {
 

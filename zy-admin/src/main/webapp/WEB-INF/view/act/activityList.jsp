@@ -43,7 +43,7 @@
             title: '详细地址',
             render: function (data, type, full) {
               return '<p>' + full.province + '-' + full.city + '-' + full.district + '</p>'
-                + '<p class="small">'+ full.address + '</p>';
+                + '<p class="small">' + full.address + '</p>';
             }
           },
           {
@@ -72,10 +72,6 @@
             title: '浏览数'
           },
           {
-            data: 'collectedCount',
-            title: '关注数'
-          },
-          {
             data: 'appliedCount',
             title: '报名数',
             width: '60px'
@@ -83,6 +79,10 @@
           {
             data: 'signedInCount',
             title: '签到数'
+          },
+          {
+            data: 'collectedCount',
+            title: '关注数'
           },
           {
             data: 'isReleased',

@@ -24,62 +24,29 @@
 </head>
 <body class="activity-list footer-fixed">
   <header class="header">
-    <h1>线下活动</h1>
+    <h1>我关注的活动</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
     <a href="javascript" class="button-right"><i class="fa fa-edit"></i></a>
   </header>
 
   <article>
     <div class="list-group mb-15">
-      <a class="list-item activity" href="${ctx}/activity/1">
+      <c:forEach items="${activities}" var="activity">
+      <a class="list-item activity" href="${ctx}/activity/${activity.id}">
         <figure class="image-wrap">
-          <img src="http://img1.hudongba.com/upload/_oss/userhead/yuantu/201608/2417/1472031915271.jpg">
+          <img src="${activity.imageThumbnail}">
         </figure>
-        <h2>网赢研习社《创新网络营销总裁班》9-17杭州 免费报名中</h2>
-        <div class="font-999 fs-12 lh-20">09-03 14:00 开始</div>
-        <div class="font-999 fs-12 lh-20"><i class="fa fa-map-marker font-gray"></i> 徐家汇教堂</div>
-        <div class="font-orange fs-16 abs-rb mr-15 mb-15">¥ 108.00</div>
+        <h2>${activity.title}</h2>
+        <div class="font-999 fs-12 lh-20">${activity.startTimeLabel} 开始</div>
+        <div class="font-999 fs-12 lh-20"><i class="fa fa-map-marker font-gray"></i> ${activity.province} ${activity.city} ${activity.district}</div>
+        <div class="fs-14 abs-rb mr-15 mb-15">
+          <c:if test="${activity.status == '报名中'}"><label class="label blue">报名中</label></c:if>
+          <c:if test="${activity.status == '报名已结束'}"><label class="label gray">报名已结束</label></c:if>
+          <c:if test="${activity.status == '进行中'}"><label class="label orange">进行中</label></c:if>
+          <c:if test="${activity.status == '活动已结束'}"><label class="label gray">活动已结束</label></c:if>
+        </div>
       </a>
-      
-      <a class="list-item activity" href="${ctx}/activity/1">
-        <figure class="image-wrap">
-          <img src="http://img1.hudongba.com/upload/_oss/userhead/yuantu/201608/2417/1472031915271.jpg">
-        </figure>
-        <h2>网赢研习社《创新网络营销总裁班》9-17杭州 免费报名中</h2>
-        <div class="font-999 fs-12 lh-20">09-03 14:00 开始</div>
-        <div class="font-999 fs-12 lh-20"><i class="fa fa-map-marker font-gray"></i> 徐家汇教堂</div>
-        <div class="font-orange fs-16 abs-rb mr-15 mb-15">免费</div>
-      </a>
-      
-      <a class="list-item activity" href="${ctx}/activity/1">
-        <figure class="image-wrap">
-          <img src="http://img1.hudongba.com/upload/_oss/userhead/yuantu/201608/2417/1472031915271.jpg">
-        </figure>
-        <h2>网赢研习社《创新网络营销总裁班》9-17杭州 免费报名中</h2>
-        <div class="font-999 fs-12 lh-20">09-03 14:00 开始</div>
-        <div class="font-999 fs-12 lh-20"><i class="fa fa-map-marker font-gray"></i> 徐家汇教堂</div>
-        <div class="font-orange fs-16 abs-rb mr-15 mb-15">免费</div>
-      </a>
-      
-      <a class="list-item activity" href="${ctx}/activity/1">
-        <figure class="image-wrap">
-          <img src="http://img1.hudongba.com/upload/_oss/userhead/yuantu/201608/2417/1472031915271.jpg">
-        </figure>
-        <h2>网赢研习社《创新网络营销总裁班》9-17杭州 免费报名中</h2>
-        <div class="font-999 fs-12 lh-20">09-03 14:00 开始</div>
-        <div class="font-999 fs-12 lh-20"><i class="fa fa-map-marker font-gray"></i> 徐家汇教堂</div>
-        <div class="font-orange fs-16 abs-rb mr-15 mb-15">免费</div>
-      </a>
-      
-      <a class="list-item activity" href="${ctx}/activity/1">
-        <figure class="image-wrap">
-          <img src="http://img1.hudongba.com/upload/_oss/userhead/yuantu/201608/2417/1472031915271.jpg">
-        </figure>
-        <h2>网赢研习社《创新网络营销总裁班》9-17杭州 免费报名中</h2>
-        <div class="font-999 fs-12 lh-20">09-03 14:00 开始</div>
-        <div class="font-999 fs-12 lh-20"><i class="fa fa-map-marker font-gray"></i> 徐家汇教堂</div>
-        <div class="font-orange fs-16 abs-rb mr-15 mb-15">¥ 108.00</div>
-      </a>
+      </c:forEach>
     </div>
   </article>
 
