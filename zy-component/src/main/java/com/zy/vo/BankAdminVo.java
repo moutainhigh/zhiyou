@@ -7,12 +7,12 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class UserSimpleVo implements Serializable {
+public class BankAdminVo implements Serializable {
 	/* 原生 */
 	private Long id;
-	private String nickname;
+	private String name;
+	private String code;
 
 	/* 扩展 */
-	private String avatarThumbnail;
 
 }

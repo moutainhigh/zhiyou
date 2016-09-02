@@ -1,6 +1,7 @@
 package com.zy.component;
 
 import com.zy.common.support.cache.CacheSupport;
+import com.zy.entity.act.Activity;
 import com.zy.entity.cms.Notice;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.usr.Address;
@@ -9,6 +10,7 @@ import com.zy.entity.usr.User;
 import com.zy.model.dto.AreaDto;
 import com.zy.model.query.NoticeQueryModel;
 import com.zy.service.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,9 @@ public class CacheComponent {
 	@Autowired
 	private AddressService addressService;
 
+	@Autowired
+	private ActivityService activityService;
+	
 	private static final int DEFAULT_EXPIRE = 600;
 
 	public User getUser(Long userId) {
@@ -206,5 +211,27 @@ public class CacheComponent {
 		} catch (Exception e) {
 			logger.error("缓存异常", e);
 		}
+	}
+	
+	public Activity getActivity(Long activityId) {
+		validate(activityId, NOT_NULL, "cache key activity id is null");
+		Activity activity = null;
+		try {
+			activity = cacheSupport.get(CACHE_NAME_ACTIVITY, String.valueOf(activityId));
+		} catch (Exception e) {
+			logger.error("缓存异常", e);
+		}
+		if (activity == null) {
+			activity = activityService.findOne(activityId);
+			if (activity != null) {
+
+				try {
+					cacheSupport.set(CACHE_NAME_ACTIVITY, String.valueOf(activityId), activity, DEFAULT_EXPIRE);
+				} catch (Exception e) {
+					logger.error("缓存异常", e);
+				}
+			}
+		}
+		return activity;
 	}
 }

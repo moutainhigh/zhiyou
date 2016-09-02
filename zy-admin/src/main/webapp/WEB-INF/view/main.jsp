@@ -253,7 +253,7 @@
 		    }]
 		});
 	 	// 异步加载数据
-	   $.post('${ctx}/main/ajaxChart/register',{},function(result) {
+	   /*$.post('${ctx}/main/ajaxChart/register',{},function(result) {
 	       myChart.setOption({
 	           xAxis: {
 	               data: result.chartLabel
@@ -277,7 +277,7 @@
 	               data: result.userCount
 	           }]
 	       });
-	   });
+	   });*/
 	})
 	</script>
 	
@@ -329,7 +329,7 @@
 		    }]
 		});
 	 	// 异步加载数据
-	   $.post('${ctx}/main/ajaxChart/profit',{},function(result) {
+	  /* $.post('${ctx}/main/ajaxChart/profit',{},function(result) {
 	       myChart.setOption({
 	           xAxis: {
 	               data: result.chartLabel
@@ -353,7 +353,7 @@
 	               data: result.teamAmount
 	           }]
 	       });
-	   });
+	   });*/
 	})
 	</script>
 	
@@ -401,7 +401,7 @@
 		    }]
 		});
 	 	// 异步加载数据
-	   $.post('${ctx}/main/ajaxChart/task/daily',{},function(result) {
+	   /*$.post('${ctx}/main/ajaxChart/task/daily',{},function(result) {
 	       myChart.setOption({
 	           xAxis: {
 	               data: result.chartLabel
@@ -420,7 +420,7 @@
 	               data: result.taskItemCount
 	           }]
 	       });
-	   });
+	   });*/
 	})
 	</script>
 	
@@ -478,39 +478,40 @@
 		    }]
 		});
 	 	// 异步加载数据
-	   $.post('${ctx}/main/ajaxChart/task/time',{},function(result) {
-	       myChart.setOption({
-	           xAxis: {
-	               data: result.chartLabel,
-	               axisLabel: {
-	            	   interval: 0,
-	            	   rotate: 60
-	               }
-	           },
-	           yAxis: {
-	        	   splitNumber : 5
-	           },
-	           series: [{
-	               // 根据名字对应到相应的系列
-	               name: '商家昨日发布计划数',
-	               data: result.yesterdayTaskCount
-	           },
-	           {
-	               // 根据名字对应到相应的系列
-	               name: '商家今日发布计划数',
-	               data: result.taskCount
-	           },
-	           {
-	               // 根据名字对应到相应的系列
-	               name: '试客昨日接手任务数',
-	               data: result.yesterdayTaskItemCount
-	           },
-	           {
-	               // 根据名字对应到相应的系列
-	               name: '试客今日接手任务数',
-	               data: result.taskItemCount
-	           }]
-	       });
-	   });
+		/*$.post('
+		${ctx}/main/ajaxChart/task/time',{},function(result) {
+		 myChart.setOption({
+		 xAxis: {
+		 data: result.chartLabel,
+		 axisLabel: {
+		 interval: 0,
+		 rotate: 60
+		 }
+		 },
+		 yAxis: {
+		 splitNumber : 5
+		 },
+		 series: [{
+		 // 根据名字对应到相应的系列
+		 name: '商家昨日发布计划数',
+		 data: result.yesterdayTaskCount
+		 },
+		 {
+		 // 根据名字对应到相应的系列
+		 name: '商家今日发布计划数',
+		 data: result.taskCount
+		 },
+		 {
+		 // 根据名字对应到相应的系列
+		 name: '试客昨日接手任务数',
+		 data: result.yesterdayTaskItemCount
+		 },
+		 {
+		 // 根据名字对应到相应的系列
+		 name: '试客今日接手任务数',
+		 data: result.taskItemCount
+		 }]
+		 });
+		 });*/
 	})
 	</script>

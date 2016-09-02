@@ -12,6 +12,11 @@
   var ue;
   var content = '${activity.detail}';
 
+  function onLocation(loc) {
+    $('#latitude').val(loc.latlng.lat);
+    $('#longitude').val(loc.latlng.lng);
+  }
+
   $(function () {
 
     var area = new areaInit('province', 'city', 'district', '${activity.areaId}');
@@ -74,6 +79,10 @@
         var content = ue.getContent();
         if (!content) {
           layer.alert('请填写活动详情')
+          return false;
+        }
+        if (!$('#latitude').val() || !$('#longitude').val()) {
+          layer.alert('请地图选址')
           return false;
         }
         $(form).find(':submit').prop('disabled', true);
@@ -162,13 +171,13 @@
             <div class="form-group">
               <label class="control-label col-md-3">省市区<span class="required"> * </span></label>
               <div class="col-md-5">
-                <select style="display: block; width: 32%;" class="form-control pull-left" id="province" name="province">
+                <select style="display:block;width:32%;" class="form-control pull-left" id="province" name="province">
                   <option value="">-- 请选择省 --</option>
                 </select>
-                <select style="display: block;width: 32%; margin-left: 2%" class="form-control pull-left" id="city" name="city">
+                <select style="display:block;width:32%;margin-left:2%" class="form-control pull-left" id="city" name="city">
                   <option value="">-- 请选择市 --</option>
                 </select>
-                <select style="display: block;width: 32%; margin-left: 2%" class="form-control pull-left" id="district" name="areaId">
+                <select style="display:block;width:32%;margin-left:2%" class="form-control pull-left" id="district" name="areaId">
                   <option value="">-- 请选择区 --</option>
                 </select>
               </div>
@@ -177,6 +186,17 @@
               <label class="control-label col-md-3">地址<span class="required"> * </span></label>
               <div class="col-md-5">
                 <input type="text" class="form-control" name="address" value="${activity.address}"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-3">地图选址<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <iframe id="mapPage" width="750" height="750" frameborder=0
+                        src="http://apis.map.qq.com/tools/locpicker?search=1&type=1&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp<c:if test="${not empty activity.latitude && not empty activity.longitude}">&coord=${activity.latitude},${activity.longitude}</c:if>">
+                </iframe>
+
+                <input type="hidden" id="latitude" name="latitude" value="${activity.latitude}" />
+                <input type="hidden" id="longitude" name="longitude" value="${activity.longitude}" />
               </div>
             </div>
             <div class="form-group">
@@ -216,7 +236,7 @@
               <label class="control-label col-md-3">活动详情<span class="required"> * </span></label>
               <div class="col-md-5">
                 <div class="input-icon right">
-                  <script id="editor" type="text/plain" style="width:840px; height:500px;"></script>
+                  <script id="editor" type="text/plain" style="width:750px;height:500px;"></script>
                 </div>
               </div>
             </div>

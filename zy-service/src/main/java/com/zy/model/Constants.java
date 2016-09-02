@@ -52,6 +52,7 @@ public interface Constants {
     String CACHE_NAME_BANNER = "banner";
     String CACHE_NAME_ADDRESS = "address";
     String CACHE_NAME_JOB = "job";
+    String CACHE_NAME_ACTIVITY = "activity";
 
     /* weixin pay */
     String WEIXIN_PAY_NOTIFY = "http://www.zhi-you.net/notify/weixinPay";

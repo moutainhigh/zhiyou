@@ -96,6 +96,15 @@
   <!-- END PAGE LEVEL SCRIPTS -->
   <script>
 
+    window.addEventListener('message', function (event) {
+      var loc = event.data;
+      if (loc && loc.module == 'locationPicker') {
+        if (typeof onLocation === 'function') {
+          onLocation.call(null, loc);
+        }
+      }
+    }, false);
+
     jQuery(document).ready(function () {
       Metronic.init(); // init metronic core componets
       Layout.init(); // init layout

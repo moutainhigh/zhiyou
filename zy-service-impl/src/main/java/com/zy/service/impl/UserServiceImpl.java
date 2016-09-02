@@ -1,27 +1,5 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.fnc.CurrencyType.现金;
-import static com.zy.entity.fnc.CurrencyType.积分;
-import static com.zy.entity.fnc.CurrencyType.金币;
-import static com.zy.model.Constants.SETTING_DEFAULT_AVATAR;
-import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
-import static com.zy.model.Constants.TOPIC_USER_RANK_CHANGED;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
@@ -44,6 +22,22 @@ import com.zy.model.Constants;
 import com.zy.model.dto.RegisterDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.entity.fnc.CurrencyType.*;
+import static com.zy.model.Constants.*;
 
 @Service
 @Validated
@@ -101,8 +95,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> findAll(@NotNull UserQueryModel userQueryModel) {
-		userQueryModel.setPageNumber(null);
-		userQueryModel.setPageSize(null);
 		return userMapper.findAll(userQueryModel);
 	}
 

@@ -65,14 +65,16 @@ public class Activity implements Serializable {
 	@View
 	private String address;
 
-	//@NotBlank
+	@NotNull
 	@Field(label = "纬度", description = "地图控件位置")
 	@View(groups = {"ActivityDetailVo", "ActivityAdminVo", "ActivityAdminFullVo"})
+	@Column(scale = 6)
 	private Double latitude;
-	
-	//@NotBlank
+
+	@NotNull
 	@Field(label = " 经度", description = "地图控件位置")
 	@View(groups = {"ActivityDetailVo", "ActivityAdminVo", "ActivityAdminFullVo"})
+	@Column(scale = 6)
 	private Double longitude; 
 
 	@NotBlank
