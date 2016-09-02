@@ -113,10 +113,10 @@
                   <tbody>
                   <c:forEach items="${activity.activityApplies}" var="activityApply">
                   <tr>
-                    <td><img src="${activityApply.user.avatarThumbnail}">${activityApply.user.nickname}</td>
-                    <td> Mark </td>
-                    <td> Otto </td>
-                    <td> makr124 </td>
+                    <td><img src="${activityApply.user.avatarThumbnail}" /> ${activityApply.user.nickname}</td>
+                    <td>${activityApply.appliedTimeLabel}</td>
+                    <td>${activityApply.isCancelled ? '已取消' : '已报名'}</td>
+                    <td><c:if test="${not empty activity}"><img src="${activityApply.inviter.avatarThumbnail}" /> ${activityApply.user.nickname}</c:if><c:if test="${empty activity}">-</c:if><</td>
                   </tr>
                   </c:forEach>
                   </tbody>
