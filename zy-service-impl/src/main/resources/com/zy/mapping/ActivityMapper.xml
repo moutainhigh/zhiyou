@@ -119,6 +119,12 @@
 			<if test="areaIdEQ != null">
 				 and area_id = #{areaIdEQ}
 			</if>
+			<if test="idIN != null">
+				 and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">

@@ -1,19 +1,30 @@
 package com.zy.mobile.controller.ucenter;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.zy.common.model.query.Page;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.ActivityComponent;
+import com.zy.entity.act.Activity;
+import com.zy.entity.act.ActivityApply;
+import com.zy.entity.act.ActivityCollect;
+import com.zy.entity.act.ActivitySignIn;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
+import com.zy.model.query.ActivityApplyQueryModel;
+import com.zy.model.query.ActivityCollectQueryModel;
+import com.zy.model.query.ActivityQueryModel;
+import com.zy.model.query.ActivitySignInQueryModel;
 import com.zy.service.ActivityApplyService;
 import com.zy.service.ActivityCollectService;
 import com.zy.service.ActivityService;
@@ -54,34 +65,78 @@ public class UcenterActivityController {
 
 	@RequestMapping("/applyList")
 	public String applyList(Principal principal, Model model) {
-		//TODO
+		ActivityApplyQueryModel activityApplyQueryModel = new ActivityApplyQueryModel();
+		activityApplyQueryModel.setUserIdEQ(principal.getUserId());
+		Page<ActivityApply> page = activityApplyService.findPage(activityApplyQueryModel);
+
+		if(!page.getData().isEmpty()) {
+			ActivityQueryModel activityQueryModel = new ActivityQueryModel();
+			activityQueryModel.setIdIN(page.getData().stream().map(v -> v.getActivityId()).toArray(Long[]::new));
+			Page<Activity> activityPage = activityService.findPage(activityQueryModel);
+			List<Activity> activities = activityPage.getData();
+			model.addAttribute("activities", activities.stream().map(v -> {
+				return activityComponent.buildListVo(v);
+			}).collect(Collectors.toList()));
+		}
 		return "activity/applyActivityList";
 	}
 	
 	@RequestMapping(value = "/collect")
 	@ResponseBody
-	public Result<Boolean> collect(Long id, Principal principal) {
-		//TODO
-		return ResultBuilder.result(true);
+	public Result<Boolean> collect(Long id, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		
+		try {
+			activityService.collect(id, principal.getUserId());
+			return ResultBuilder.result(true);
+		} catch (Exception e) {
+			return ResultBuilder.result(false);
+		}
 	}
 	
 	@RequestMapping("/uncollect")
 	@ResponseBody
-	public Result<Boolean> unCollect(Long id, Principal principal, Model model) {
-		//TODO
-		return ResultBuilder.result(true);
+	public Result<Boolean> uncollect(Long id, Principal principal, Model model) {
+		try {
+			activityService.uncollect(id, principal.getUserId());
+			return ResultBuilder.result(true);
+		} catch (Exception e) {
+			return ResultBuilder.result(false);
+		}
 	}
 	
 	@RequestMapping("/collectList")
 	public String collectList(Principal principal, Model model) {
-		//TODO
-		return "activity/applyActivityList";
+		ActivityCollectQueryModel activityCollectQueryModel = new ActivityCollectQueryModel();
+		activityCollectQueryModel.setUserIdEQ(principal.getUserId());
+		Page<ActivityCollect> page = activityCollectService.findPage(activityCollectQueryModel);
+
+		if(!page.getData().isEmpty()) {
+			ActivityQueryModel activityQueryModel = new ActivityQueryModel();
+			activityQueryModel.setIdIN(page.getData().stream().map(v -> v.getActivityId()).toArray(Long[]::new));
+			Page<Activity> activityPage = activityService.findPage(activityQueryModel);
+			List<Activity> activities = activityPage.getData();
+			model.addAttribute("activities", activities.stream().map(v -> {
+				return activityComponent.buildListVo(v);
+			}).collect(Collectors.toList()));
+		}
+		return "activity/collectActivityList";
 	}
 
 	@RequestMapping(value = "/signIn")
 	@ResponseBody
 	public Result<Boolean> signIn(Long id, Principal principal) {
-		//TODO
-		return ResultBuilder.result(true);
+		
+		ActivitySignInQueryModel activitySignInQueryModel = new ActivitySignInQueryModel();
+		activitySignInQueryModel.setUserIdEQ(principal.getUserId());
+		Page<ActivitySignIn> page = activitySignInService.findPage(activitySignInQueryModel);
+		if(!page.getData().isEmpty()) {
+			return ResultBuilder.result(true);
+		}
+		try {
+			activityService.signIn(id, principal.getUserId());
+			return ResultBuilder.result(true);
+		} catch (Exception e) {
+			return ResultBuilder.result(false);
+		}
 	}
 }
