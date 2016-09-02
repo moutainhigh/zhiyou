@@ -68,7 +68,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public void modify(@NotNull Activity activity) {
-		String[] fields = new String[] {"areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime"};
+		String[] fields = new String[] { "areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime" };
 		validate(activity, fields);
 		checkAndFindActivity(activity.getId());
 		checkArea(activity.getAreaId());
@@ -104,8 +104,6 @@ public class ActivityServiceImpl implements ActivityService {
 				return; // 幂等操作
 			}
 		} else {
-
-
 
 			if (inviterId != null) {
 				if (inviterId.equals(userId)) {

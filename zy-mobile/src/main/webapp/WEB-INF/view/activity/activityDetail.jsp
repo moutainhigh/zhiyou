@@ -112,6 +112,7 @@
 <body class="activity-detail footer-fixed header-fixed">
   <form id="form" action="${ctx}/u/activity/apply" method="post">
   
+  <input type="hidden" name="id" value="${activity.id}">
   <c:if test="${not empty inviter}">
   <input type="hidden" name="inviterPhone" value="${inviter.phone}">
   <div class="inviter-alert alert alert-warning fix-top p-10 zindex-10">
