@@ -109,7 +109,7 @@
 </script>
 
 </head>
-<body class="activity-detail footer-fixed header-fixed">
+<body class="activity-detail footer-fixed${not empty inviter ? ' header-fixed' : ''}">
   <form id="form" action="${ctx}/u/activity/apply" method="post">
   
   <input type="hidden" name="id" value="${activity.id}">
@@ -120,11 +120,8 @@
     <span class="ml-10">${inviter.nickname} 邀请您参与该活动.</span>
     <a class="right mt-10" href="javascript:;"><i class="fa fa-close"></i></a>
   </div>
-  <a class="header-back" style="margin-top: 70px;" href="${ctx}/activity?type=${type}"><i class="fa fa-angle-left"></i></a>
   </c:if>
-  <c:if test="${empty inviter}">
-  <a class="header-back" href="${ctx}/activity?type=${type}"><i class="fa fa-angle-left"></i></a>
-  </c:if>
+  <a class="header-back"${not empty inviter ? ' style="margin-top: 70px;"' : ''} href="${ctx}/activity?type=${type}"><i class="fa fa-angle-left"></i></a>
   <article>
     <figure class="image-wrap">
       <img class="abs-lt" src="${activity.imageBig}">
