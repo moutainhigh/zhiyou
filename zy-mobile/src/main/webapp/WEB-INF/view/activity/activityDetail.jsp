@@ -155,7 +155,7 @@
       <c:if test="${not empty activity.appliedUsers}">
       <div class="list-item pt-5 pl-20 users">
         <c:forEach items="${activity.appliedUsers}" var="user">
-        <img class="image-40 mt-5 round" src="${user.avtarThumbnail}">
+        <img class="image-40 mt-5 round" src="${user.avatarThumbnail}">
         </c:forEach>
       </div>
       </c:if>
