@@ -1,11 +1,18 @@
 package com.zy.admin.controller.act;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.ActivityComponent;
 import com.zy.entity.act.Activity;
+import com.zy.model.Constants;
 import com.zy.model.query.ActivityQueryModel;
 import com.zy.service.ActivityService;
 import com.zy.vo.ActivityAdminVo;
@@ -17,8 +24,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 @RequestMapping("/activity")
 @Controller
@@ -104,4 +119,34 @@ public class ActivityController {
 		}
 		return "redirect:/activity";
 	}
+
+	@RequestMapping(value = "/signInQrCode", produces = "image/jpeg")
+	@ResponseBody
+	public BufferedImage signInQrCode(@RequestParam Long id) throws WriterException {
+		Activity activity = activityService.findOne(id);
+
+		validate(activity, NOT_NULL, "activity id " + id + " is not found");
+		String qrCodeUrl = Constants.URL_MOBILE + "/u/activity/signIn?id=" + id;
+		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+		Map<EncodeHintType, String> hints = new HashMap<>();
+		hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+		BitMatrix bitMatrix = multiFormatWriter.encode(qrCodeUrl, BarcodeFormat.QR_CODE, 480, 480, hints);
+		return MatrixToImageWriter.toBufferedImage(bitMatrix);
+	}
+
+	@RequestMapping(value = "/detailQrCode", produces = "image/jpeg")
+	@ResponseBody
+	public BufferedImage detailQrCode(@RequestParam Long id) throws WriterException {
+		Activity activity = activityService.findOne(id);
+
+		validate(activity, NOT_NULL, "activity id " + id + " is not found");
+		String qrCodeUrl = Constants.URL_MOBILE + "/activity/" + id;
+		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+		Map<EncodeHintType, String> hints = new HashMap<>();
+		hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+		BitMatrix bitMatrix = multiFormatWriter.encode(qrCodeUrl, BarcodeFormat.QR_CODE, 480, 480, hints);
+		return MatrixToImageWriter.toBufferedImage(bitMatrix);
+	}
+
+
 }
