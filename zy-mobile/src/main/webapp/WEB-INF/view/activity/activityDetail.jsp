@@ -19,8 +19,12 @@
     $('.tab-nav > a').tabs('.tab-content');
     
     $('#btnCollect').click(function(){
+      if($(this).hasClass('collected')) {
+        messageFlash('已关注');
+        return;
+      }
       $.ajax({
-        url: '${ctx}/activity/collect',
+        url: '${ctx}/u/activity/collect',
         data: {
           id: '${activity.id}'
         },
@@ -28,14 +32,28 @@
         type: 'post',
         success: function(result){
           if(result.code == 0) {
-            if(result.data) {
-              messageFlash('关注成功');
-              $('#btnCollect').html('<i class="fa fa-heart font-orange"></i><span>已关注 (' + ((parseInt($('#btnCollect').find('em').text()) || 0) + 1) + ')</span>');
-            }
+            messageFlash('关注成功');
+            $('#btnCollect').addClass('collected').html('<i class="fa fa-heart font-orange"></i><span>已关注 (' + ((parseInt($('#btnCollect').find('em').text()) || 0) + 1) + ')</span>');
+          } else {
+            
           }
         }
       });
     });
+    
+    $('#btnApply').click(function(){
+      $('#form').submit();
+    });
+    
+    <c:if test="${not empty inviter}">
+    $('.inviter-alert > a').click(function(){
+      $('.inviter-alert').slideUp(300, function(){
+        $(this).remove();
+      });
+      $('.header-back').removeAttr('style');
+      $('body').removeClass('header-fixed');
+    });
+    </c:if>
   });
   
   <%-- 加载地图插件 --%>
@@ -91,8 +109,22 @@
 </script>
 
 </head>
-<body class="activity-detail footer-fixed">
+<body class="activity-detail footer-fixed header-fixed">
+  <form id="form" action="${ctx}/u/activity/apply" method="post">
+  
+  <input type="hidden" name="id" value="${activity.id}">
+  <c:if test="${not empty inviter}">
+  <input type="hidden" name="inviterPhone" value="${inviter.phone}">
+  <div class="inviter-alert alert alert-warning fix-top p-10 zindex-10">
+    <img class="image-40 round" src="${inviter.avatarThumbnail}">
+    <span class="ml-10">${inviter.nickname} 邀请您参与该活动.</span>
+    <a class="right mt-10" href="javascript:;"><i class="fa fa-close"></i></a>
+  </div>
+  <a class="header-back" style="margin-top: 70px;" href="${ctx}/activity?type=${type}"><i class="fa fa-angle-left"></i></a>
+  </c:if>
+  <c:if test="${empty inviter}">
   <a class="header-back" href="${ctx}/activity?type=${type}"><i class="fa fa-angle-left"></i></a>
+  </c:if>
   <article>
     <figure class="image-wrap">
       <img class="abs-lt" src="${activity.imageBig}">
@@ -112,13 +144,28 @@
         </c:if>
       </a>
       <div class="list-item list-item-icon">
-        <div class="list-label"><i class="fa fa-clock-o font-gray"></i><span class="font-555 fs-14">报名截止  ${activity.appliedCount}</span></div>
-      </div>
-      <div class="list-item list-item-icon">
-        <div class="list-label"><i class="fa fa-user font-gray"></i><span class="font-555 fs-14">已报名 <span class="font-orange">${activity.appliedCount}</span> 人</span></div>
+        <div class="list-label"><i class="fa fa-clock-o font-gray"></i><span class="font-555 fs-14">报名截止  ${activity.applyDeadlineLabel}</span></div>
       </div>
       <div class="list-item list-item-icon">
         <div class="list-label"><i class="fa fa-cny font-gray"></i><span class="font-green fs-14">免费</span></div>
+      </div>
+    </div>
+    
+    <div class="list-group mt-10">
+      <div class="list-item list-item-icon">
+        <div class="list-label"><i class="fa fa-user font-gray"></i><span class="font-555 fs-14"><span class="font-orange">${activity.appliedCount}</span> 人已报名</span></div>
+      </div>
+      <div class="list-item pt-5 pl-20 users">
+        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/6fa938ce-9350-4df1-84aa-c03d5cd01947@80h_80w_1e_1c.jpg">
+        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/589995ef-76ae-4c84-bee8-1b27592e7b77@80h_80w_1e_1c.jpg">
+        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/f75d581b-87ba-454d-b0bb-27c7383334cb@80h_80w_1e_1c.jpg">
+        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/ce887059-c408-448f-a8d8-cfaae62e72d7@80h_80w_1e_1c.jpg">
+        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/4e08f740-828f-4709-afe8-78ad36b25849@80h_80w_1e_1c.jpg">
+        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/b2e3c0ac-1cc7-4df9-96e5-3eecf5470ac9@80h_80w_1e_1c.jpg">
+        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/7d100ece-0e9a-4fe1-851b-63bbc2c72c27@80h_80w_1e_1c.jpg">
+        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/af24f57a-4875-4740-ad5d-aefe86e4df87@80h_80w_1e_1c.jpg">
+        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/037d0589-a2d2-430b-871b-50602e004371@80h_80w_1e_1c.jpg">
+        <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/c8200571-f585-456b-953c-3b0e23796c75@80h_80w_1e_1c.jpg">
       </div>
     </div>
     
@@ -135,24 +182,6 @@
       
       <div class="tab-content hide">
         <div class="list-group mt-10">
-          <div class="list-item">
-            <div class="font-555">已报名 (${activity.appliedCount})</div>
-          </div>
-          <div class="list-item pt-5 pl-20 users">
-            <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/6fa938ce-9350-4df1-84aa-c03d5cd01947@80h_80w_1e_1c.jpg">
-            <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/589995ef-76ae-4c84-bee8-1b27592e7b77@80h_80w_1e_1c.jpg">
-            <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/f75d581b-87ba-454d-b0bb-27c7383334cb@80h_80w_1e_1c.jpg">
-            <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/ce887059-c408-448f-a8d8-cfaae62e72d7@80h_80w_1e_1c.jpg">
-            <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/4e08f740-828f-4709-afe8-78ad36b25849@80h_80w_1e_1c.jpg">
-            <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/b2e3c0ac-1cc7-4df9-96e5-3eecf5470ac9@80h_80w_1e_1c.jpg">
-            <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/7d100ece-0e9a-4fe1-851b-63bbc2c72c27@80h_80w_1e_1c.jpg">
-            <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/af24f57a-4875-4740-ad5d-aefe86e4df87@80h_80w_1e_1c.jpg">
-            <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/037d0589-a2d2-430b-871b-50602e004371@80h_80w_1e_1c.jpg">
-            <img class="image-40 mt-5 round" src="http://image.mayishike.com/avatar/c8200571-f585-456b-953c-3b0e23796c75@80h_80w_1e_1c.jpg">
-          </div>
-        </div>
-        
-        <div class="list-group">
           <div class="list-item">
             <div class="font-555">讨论 (13)</div>
           </div>
@@ -178,14 +207,20 @@
       </div>
     </div>
   </article>
-
   <nav class="footer footer-nav flex bd-0">
-    <a id="btnCollect" class="flex-1" href="javascript:;"><i class="fa fa-heart-o"></i><span>关注 (<em>${activity.collectedCount}</em>)</span></a>
+    <a id="btnCollect" class="flex-1${isCollected ? ' collected' : ''}" href="javascript:;">
+      <c:if test="${isCollected}">
+      <i class="fa fa-heart font-orange"></i><span>已关注 (<em>${activity.collectedCount}</em>)</span>
+      </c:if>
+      <c:if test="${!isCollected}">
+      <i class="fa fa-heart-o"></i><span>关注 (<em>${activity.collectedCount}</em>)</span>
+      </c:if>
+    </a>
     <c:if test="${activity.status == '报名中'}">
     <a id="btnApply" class="flex-2 bg-blue fs-14 font-white" href="javascript:;">报名参与</a>
     </c:if>
     <c:if test="${activity.status == '进行中'}">
-    <a id="btnSignIn" class="flex-2 bg-orange fs-14 font-white" href="javascript:;">活动签到</a>
+    <a class="flex-2 bg-orange fs-14 font-white" href="javascript:;">活动进行中</a>
     </c:if>
     <c:if test="${activity.status == '报名已结束'}">
     <a class="flex-2 fs-14 disabled" href="javascript:;">报名已结束</a>
@@ -194,6 +229,8 @@
     <a class="flex-2 fs-14 disabled" href="javascript:;">活动已结束</a>
     </c:if>
   </nav>
+  
+  </form>
   
   <aside id="asideMap" class="abs-lt size-100p bg-white hide" style="z-index: 9999">
     <a class="header-back" href="javascript:closeMap();"><i class="fa fa-angle-left"></i></a>

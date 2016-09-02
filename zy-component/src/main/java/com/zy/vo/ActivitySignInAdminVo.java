@@ -8,18 +8,15 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class ActivityApplyAdminVo implements Serializable {
+public class ActivitySignInAdminVo implements Serializable {
 	/* 原生 */
 	private Long id;
 	private Long userId;
 	private Long activityId;
-	private Date appliedTime;
-	private Boolean isCancelled;
-	private Long inviterId;
+	private Date signedInTime;
 
 	/* 扩展 */
 	private UserAdminSimpleVo user;
-	private String appliedTimeLabel;
-	private UserAdminSimpleVo inviter;
+	private String signedInTimeLabel;
 
 }

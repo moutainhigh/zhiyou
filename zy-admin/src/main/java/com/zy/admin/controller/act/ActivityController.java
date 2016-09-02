@@ -47,6 +47,13 @@ public class ActivityController {
 		return new Grid<>(voPage);
 	}
 
+	@RequiresPermissions("activity:view")
+	@RequestMapping(value = "detail", method = RequestMethod.GET)
+	public String detail(Model model, Long id) {
+		model.addAttribute("activity", activityComponent.buildAdminFullVo(activityService.findOne(id)));
+		return "act/activityDetail";
+	}
+
 	@RequiresPermissions("activity:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create(Model model) {

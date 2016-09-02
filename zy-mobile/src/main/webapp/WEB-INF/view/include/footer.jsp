@@ -16,26 +16,3 @@
 <aside class="elevator">
   <a href="javascript:;" class="go-top"><i class="fa fa-angle-up"></i></a>
 </aside>
-<script>
-  function backTop() {
-    h = $(window).height();
-    t = $(document).scrollTop();
-    if (t >= 200) {
-      $('.go-top').show();
-    } else {
-      $('.go-top').hide();
-    }
-  }
-  //回到顶部
-  $(document).ready(function(e) {
-    backTop();
-    $('.go-top').click(function() {
-      $("html,body").animate({
-        scrollTop : 0
-      }, 200);
-    })
-  });
-  $(window).scroll(function(e) {
-    backTop();
-  });
-</script>

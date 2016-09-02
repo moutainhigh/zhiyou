@@ -68,7 +68,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public void modify(@NotNull Activity activity) {
-		String[] fields = new String[] {"areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime"};
+		String[] fields = new String[] { "areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime" };
 		validate(activity, fields);
 		checkAndFindActivity(activity.getId());
 		checkArea(activity.getAreaId());
@@ -85,7 +85,7 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public void apply(@NotNull Long activityId, @NotNull Long userId) {
+	public void apply(@NotNull Long activityId, @NotNull Long userId, Long inviterId) {
 		checkUser(userId);
 		Activity activity = checkAndFindActivity(activityId);
 
@@ -105,6 +105,14 @@ public class ActivityServiceImpl implements ActivityService {
 			}
 		} else {
 
+			if (inviterId != null) {
+				if (inviterId.equals(userId)) {
+					inviterId = null;
+				} else {
+					checkUser(inviterId);
+				}
+			}
+
 			if (!activity.getIsReleased()) {
 				throw new BizException(BizCode.ERROR, "活动暂未开放不能报名");
 			}
@@ -121,6 +129,7 @@ public class ActivityServiceImpl implements ActivityService {
 			activityApply.setActivityId(activityId);
 			activityApply.setUserId(userId);
 			activityApply.setAppliedTime(new Date());
+			activityApply.setInviterId(inviterId);
 			activityApply.setIsCancelled(false);
 			validate(activityApply);
 			activityApplyMapper.insert(activityApply);

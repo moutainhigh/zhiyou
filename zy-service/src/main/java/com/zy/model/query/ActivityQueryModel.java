@@ -20,6 +20,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class ActivityQueryModel implements Serializable {
 
+	private Long[] idIN;
+
 	private String titleLK;
 
 	private Long areaIdEQ;

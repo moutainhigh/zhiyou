@@ -11,8 +11,8 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import java.util.Date;
 import com.zy.entity.usr.User.UserType;
+import java.util.Date;
 
 @Getter
 @Setter
