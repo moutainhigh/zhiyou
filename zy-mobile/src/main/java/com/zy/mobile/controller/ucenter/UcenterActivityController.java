@@ -83,7 +83,7 @@ public class UcenterActivityController {
 	
 	@RequestMapping(value = "/collect")
 	@ResponseBody
-	public Result<? > collect(Long id, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+	public Result<? > collect(Long id, Principal principal, Model model) {
 		activityService.collect(id, principal.getUserId());
 		return ResultBuilder.ok("ok");
 	}
