@@ -90,7 +90,7 @@
   <script src="${stc}/plugin/myui-1.0/jquery.myui.js"></script>
   <script src="${stc}/plugin/layer-2.2/layer.js"></script>
   <script src="${ctx}/plugin/My97DatePicker/WdatePicker.js"></script>
-  <script src="${ctx}/plugin/handlebars/handlebars.runtime-v4.0.5.js"></script>
+  <script src="${ctx}/plugin/handlebars/handlebars.min.js"></script>
   <script src="${ctx}/js/area.js"></script>
   <%@ include file="/WEB-INF/view/include/form.jsp" %>
 

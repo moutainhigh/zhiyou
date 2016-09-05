@@ -1,18 +1,9 @@
 package com.zy.admin.controller.act;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.ReportComponent;
 import com.zy.entity.act.Report;
@@ -23,6 +14,17 @@ import com.zy.model.query.UserQueryModel;
 import com.zy.service.ReportService;
 import com.zy.service.UserService;
 import com.zy.vo.ReportAdminVo;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @RequestMapping("/report")
 @Controller
@@ -63,6 +65,14 @@ public class ReportController {
 
 		Page<Report> page = reportService.findPage(reportQueryModel);
 		return new Grid<ReportAdminVo>(PageBuilder.copyAndConvert(page, reportComponent::buildAdminVo));
+	}
+
+	@RequiresPermissions("report:confirm")
+	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> confirm(@RequestParam Long id, @RequestParam boolean isSuccess, String confirmRemark) {
+		reportService.confirm(id, isSuccess, confirmRemark);
+		return ResultBuilder.ok("操作成功");
 	}
 
 }

@@ -9,4 +9,6 @@ public interface ReportService {
 	Report create(Report report);
 
 	Page<Report> findPage(ReportQueryModel reportQueryModel);
+
+	void confirm(Long id, boolean isSuccess, String confirmRemark);
 }
