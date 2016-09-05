@@ -1,29 +1,31 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
+import com.zy.common.exception.BizException;
+import com.zy.common.model.query.Page;
+import com.zy.entity.mal.Order;
+import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.mal.OrderItem;
+import com.zy.entity.mal.Product;
+import com.zy.entity.sys.Area;
+import com.zy.entity.sys.Area.AreaType;
+import com.zy.entity.usr.Address;
+import com.zy.entity.usr.User;
+import com.zy.mapper.*;
+import com.zy.model.BizCode;
+import com.zy.model.dto.OrderCreateDto;
+import com.zy.model.query.OrderQueryModel;
+import com.zy.service.OrderService;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import com.zy.common.model.query.Page;
-import com.zy.entity.mal.Order;
-import com.zy.entity.mal.Order.OrderStatus;
-import com.zy.entity.sys.Area;
-import com.zy.entity.sys.Area.AreaType;
-import com.zy.mapper.AreaMapper;
-import com.zy.mapper.OrderMapper;
-import com.zy.model.dto.OrderCreateDto;
-import com.zy.model.query.OrderQueryModel;
-import com.zy.service.OrderService;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
@@ -34,9 +36,54 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private AreaMapper areaMapper;
+
+	@Autowired
+	private UserMapper userMapper;
+
+	@Autowired
+	private ProductMapper productMapper;
+
+	@Autowired
+	private AddressMapper addressMapper;
+
 	
 	@Override
-	public Order create(OrderCreateDto orderCreateDto) {
+	public Order create(@NotNull OrderCreateDto orderCreateDto) {
+		validate(orderCreateDto);
+
+		/* check user */
+		Long userId = orderCreateDto.getUserId();
+		User user = userMapper.findOne(userId);
+		validate(user, NOT_NULL, "user id " + userId + " is not found");
+		validate(user, v -> v.getUserType() == User.UserType.代理, "user id " + userId + " is not found");
+
+		/* check address */
+		Long addressId = orderCreateDto.getAddressId();
+		Address address = addressMapper.findOne(addressId);
+		validate(address, NOT_NULL, "address id " + addressId + " is not found");
+		validate(address, v -> v.getUserId().equals(userId), "address " + addressId + " is not own");
+
+		/* check product */
+		Long productId = orderCreateDto.getProductId();
+		Product product = productMapper.findOne(productId);
+		validate(product, NOT_NULL, "product id " + productId + " is not found");
+		if (!product.getIsOn()) {
+			throw new BizException(BizCode.ERROR, "必须上架的商品才能购买");
+		}
+
+		BigDecimal amount = new BigDecimal("0.00");
+
+		Order order = new Order();
+		order.setAmount(amount);
+		order.setCreatedTime(new Date());
+		order.setIsSettledUp(false);
+		validate(order);
+		orderMapper.insert(order);
+
+		OrderItem orderItem = new OrderItem();
+		orderItem.setPrice(product.getPrice());
+		orderItem.setOrderId(order.getId());
+
 		return null;
 	}
 
