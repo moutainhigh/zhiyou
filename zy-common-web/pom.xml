@@ -81,6 +81,10 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.goudai</groupId>
+			<artifactId>gd-generator-api</artifactId>
+		</dependency>
 	</dependencies>
 
 	<properties>

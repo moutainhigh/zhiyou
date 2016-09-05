@@ -6,6 +6,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -300,4 +303,23 @@ public class Reflections {
 		}
 		return new RuntimeException("Unexpected Checked Exception.", e);
 	}
+	
+	public static List<Field> getFields(Class<?> clazz) {
+		List<Field> fields = new ArrayList<>();
+		for (; clazz!=null && clazz != Object.class; clazz = clazz.getSuperclass()) {
+			try {
+				Field[] declaredFields = clazz.getDeclaredFields();
+				if(declaredFields != null)
+				fields.addAll(Arrays.asList(declaredFields));
+			} catch (Exception e) {
+				//ig
+			}
+		}
+		return fields;
+	}
+	
+	public static boolean isNotStaticField(Field field) {
+		return !Modifier.isStatic(field.getModifiers());
+	}
+	
 }
