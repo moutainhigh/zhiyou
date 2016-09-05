@@ -150,6 +150,12 @@ public class Order implements Serializable {
 	@NotNull
 	private Boolean isSettledUp;
 
+	@NotNull
+	@Field(label = "是否物流发货")
+	@View(name = "useLogisticsLabel", groups = {"OrderAdminVo"})
+	@View(groups = {"OrderAdminVo"})
+	private Boolean useLogistics;
+
 	@NotBlank
 	@Query(Predicate.LK)
 	@Field(label = "物流公司名")

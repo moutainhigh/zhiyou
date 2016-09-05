@@ -19,7 +19,7 @@ public interface OrderService {
 	
 	Order findBySn(String sn);
 	
-	void deliver(Order order);
+	void deliver(Long id, boolean userLogistics, String logisticsName, String logisticsSn); // 发货
 	
-	void confirmDelivery(String sn);
+	void receive(Long id); // 确认收货
 }
