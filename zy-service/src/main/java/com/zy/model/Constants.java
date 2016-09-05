@@ -123,10 +123,7 @@ public interface Constants {
     }
 
     interface PaymentBizName {
-        String 发任务 = "发任务",
-                接任务 = "接任务",
-                积分兑换 = "积分兑换",
-                积分抽奖 = "积分抽奖";
+        String 订单支付 = "订单支付";
     }
     
     Map<String, BigDecimal> virtualGoods = new HashMap<String, BigDecimal>() {{

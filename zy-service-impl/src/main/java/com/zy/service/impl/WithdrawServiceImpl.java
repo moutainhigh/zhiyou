@@ -89,18 +89,8 @@ public class WithdrawServiceImpl implements WithdrawService {
 		Boolean isToBankCard = null;
 		Long bankCardId = null;
 		String openId = null;
-		if (userType == UserType.商家) {
+		if (userType == UserType.代理) {
 			if(currencyType != com.zy.entity.fnc.CurrencyType.现金) {
-				throw new BizException(BizCode.ERROR, "提现种类不匹配");
-			}
-			com.zy.entity.fnc.BankCard bankCard = bankCardMapper.findByUserId(userId);
-			if (bankCard == null) {
-				throw new BizException(BizCode.ERROR, "必须先绑定银行卡才能提现");
-			}
-			bankCardId = bankCard.getId();
-			isToBankCard = false;
-		} else if (userType == UserType.代理) {
-			if(currencyType != com.zy.entity.fnc.CurrencyType.现金 && currencyType != com.zy.entity.fnc.CurrencyType.金币) {
 				throw new BizException(BizCode.ERROR, "提现种类不匹配");
 			}
 			WeixinUser weixinUser = weixinUserMapper.findByUserId(userId);
