@@ -2,9 +2,12 @@ package com.zy.service;
 
 import com.zy.common.model.query.Page;
 import com.zy.entity.mal.Order;
+import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.query.OrderQueryModel;
 
 public interface OrderService {
+
+	Order create(OrderCreateDto orderCreateDto);
 	
 	void pay(Long id);
 	
