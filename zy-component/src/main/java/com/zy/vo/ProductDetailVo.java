@@ -20,14 +20,18 @@ public class ProductDetailVo implements Serializable {
 	private String skuCode;
 
 	/* 扩展 */
-	@Field(label = "个数")
-	private String number;
 	@Field(label = "价格")
-	private String price;
+	private String priceLabel;
+	@Field(label = "价格")
+	private String price1Label;
+	@Field(label = "价格")
+	private String price2Label;
+	@Field(label = "价格")
+	private String price3Label;
+	@Field(label = "价格")
+	private String price4Label;
 	@Field(label = "市场价")
-	private String marketPrice;
-	@Field(label = "库存数量")
-	private String stockQuantity;
+	private String marketPriceLabel;
 	@Field(label = "主图")
 	private String image1Big;
 	@Field(label = "主图")

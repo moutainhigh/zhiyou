@@ -28,8 +28,8 @@ public class OrderItemVo implements Serializable {
 	@Field(label = "商品图")
 	private String imageThumbnail;
 	@Field(label = "单价")
-	private String price;
+	private String priceLabel;
 	@Field(label = "子项金额")
-	private String amount;
+	private String amountLabel;
 
 }
