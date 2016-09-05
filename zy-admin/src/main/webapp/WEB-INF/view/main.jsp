@@ -56,11 +56,6 @@
 							<td>${buyerMoneyAndPoint.point}</td>
 						</tr>
 						<tr>
-							<td>商家总本金</td>
-							<td>${merchantMoneyAndPoint.money}</td>
-							<td>${merchantMoneyAndPoint.point}</td>
-						</tr>
-						<tr>
 							<td>中转账户</td>
 							<td>${sysUserMoneyAndPoint.money}</td>
 							<td>${sysUserMoneyAndPoint.point}</td>
@@ -151,10 +146,6 @@
 						<tr>
 							<td>注册总人数</td>
 							<td>${totalCount}</td>
-						</tr>
-						<tr>
-							<td>商家注册数</td>
-							<td>${merchantCount}</td>
 						</tr>
 						<tr>
 							<td>试客注册数</td>
