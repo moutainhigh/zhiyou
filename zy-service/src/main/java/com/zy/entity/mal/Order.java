@@ -146,58 +146,58 @@ public class Order implements Serializable {
 	@Query(Predicate.LK)
 	@Field(label = "物流公司名")
 	@StringBinder
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private String logisticsName;
 
 	@NotBlank
 	@Query(Predicate.LK)
 	@Field(label = "物流单号")
 	@StringBinder
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private String logisticsSn;
 
 	@NotNull
 	@Field(label = "收件人区域")
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private Long receiverAreaId;
 
 	@NotBlank
 	@StringBinder
 	@Field(label = "收件人姓名")
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private String receiverRealname;
 
 	@NotBlank
 	@StringBinder
 	@Field(label = "收件人电话")
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private String receiverPhone;
 
 	@NotBlank
 	@Field(label = "收件人省份")
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private String receiverProvince;
 
 	@NotBlank
 	@Field(label = "收件人城市")
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private String receiverCity;
 
 	@NotBlank
 	@Field(label = "收件人地区")
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private String receiverDistrict;
 
 	@NotBlank
 	@StringBinder
 	@Field(label = "收件人详细地址")
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private String receiverAddress;
 
 	@NotNull
 	@View(name = "deliveredTimeLabel", type = String.class)
 	@Field(label = "发货时间")
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private Date deliveredTime;
 
 }

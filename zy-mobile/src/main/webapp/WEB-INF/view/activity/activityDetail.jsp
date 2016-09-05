@@ -229,7 +229,7 @@
   
   </form>
   
-  <aside id="asideMap" class="abs-lt size-100p bg-white hide" style="z-index: 9999">
+  <aside id="asideMap" class="abs-lt size-100p bg-white hide zindex-1000">
     <a class="header-back" href="javascript:closeMap();"><i class="fa fa-angle-left"></i></a>
   </aside>
   
