@@ -31,18 +31,20 @@
   <article>
     <div class="list-group mb-15">
       <c:forEach items="${activities}" var="activity">
-      <a class="list-item activity" href="${ctx}/activity/${activity.id}">
-        <figure class="image-wrap">
-          <img src="${activity.imageThumbnail}">
-        </figure>
-        <h2>${activity.title}</h2>
-        <div class="font-999 fs-12 lh-20">${activity.startTimeLabel} 开始</div>
-        <div class="font-999 fs-12 lh-20"><i class="fa fa-map-marker font-gray"></i> ${activity.province} ${activity.city} ${activity.district}</div>
-        <div class="fs-14 abs-rb mr-15 mb-15">
-          <c:if test="${activity.status == '报名中'}"><label class="label blue">报名中</label></c:if>
-          <c:if test="${activity.status == '报名已结束'}"><label class="label gray">报名已结束</label></c:if>
-          <c:if test="${activity.status == '进行中'}"><label class="label orange">进行中</label></c:if>
-          <c:if test="${activity.status == '活动已结束'}"><label class="label gray">活动已结束</label></c:if>
+      <a class="list-item" href="${ctx}/activity/${activity.id}">
+        <div class="activity">
+          <figure class="abs-lt image-wrap">
+            <img src="${activity.imageThumbnail}">
+          </figure>
+          <h2>${activity.title}</h2>
+          <div class="font-999 fs-12 lh-20">${activity.startTimeLabel} 开始</div>
+          <div class="font-999 fs-12 lh-20"><i class="fa fa-map-marker font-gray"></i> ${activity.province} ${activity.city} ${activity.district}</div>
+          <div class="fs-14 abs-rb mb-5">
+            <c:if test="${activity.status == '报名中'}"><label class="label blue">报名中</label></c:if>
+            <c:if test="${activity.status == '报名已结束'}"><label class="label gray">报名已结束</label></c:if>
+            <c:if test="${activity.status == '进行中'}"><label class="label orange">进行中</label></c:if>
+            <c:if test="${activity.status == '活动已结束'}"><label class="label gray">活动已结束</label></c:if>
+          </div>
         </div>
       </a>
       </c:forEach>

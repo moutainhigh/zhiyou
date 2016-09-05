@@ -24,14 +24,10 @@
 <script>
   $(function() {
     var area = new areaInit('province', 'city', 'district');
-    var area2 = new areaInit('province2', 'city2', 'district2');
 
     $('.valid-form').validate({
       rules : {
         'areaId' : {
-          required : true
-        },
-        'hometownAreaId' : {
           required : true
         },
         'gender' : {
@@ -53,9 +49,6 @@
       messages : {
         'areaId' : {
           required : '请选择所在地区'
-        },
-        'hometownAreaId' : {
-          required : '请选择家乡'
         },
         'gender' : {
           required : '请选择性别'
@@ -168,56 +161,36 @@
     <a href="javascript:;" id="btnTagsSure" class="button-right hide"><span>确定</span></a>
   </header>
 
-  <article class="">
+  <article>
     <form id="form" class="valid-form" action="${ctx}/u/portrait/create" method="post">
-      <div class="form-group">
-        <div class="form-item">
-          <label class="control-label">所在地</label>
-          <div class="form-control-static pt-0 pb-0 pr-0 flex">
-            <div class="form-select flex-1">
+      
+      <div class="list-group">
+        <div class="list-item">
+          <label class="list-label">所在地</label>
+          <div class="list-text">
+            <div class="form-select pb-10 bd-b">
               <select name="" id="province">
-                <option value="">省</option>
+                <option value="">选择省</option>
               </select>
             </div>
-            <div class="form-select flex-1">
+            <div class="form-select mt-10 pb-10 bd-b">
               <select name="" id="city">
-                <option value="">市</option>
+                <option value="">选择市</option>
               </select>
             </div>
-            <div class="form-select flex-1">
+            <div class="form-select mt-10">
               <select name="areaId" id="district">
-                <option value="">区</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-item">
-          <label class="control-label">家乡</label>
-          <div class="form-control-static pt-0 pb-0 pr-0 flex">
-            <div class="form-select flex-1">
-              <select name="" id="province2">
-                <option value="">省</option>
-              </select>
-            </div>
-            <div class="form-select flex-1">
-              <select name="" id="city2">
-                <option value="">市</option>
-              </select>
-            </div>
-            <div class="form-select flex-1">
-              <select name="hometownAreaId" id="district2">
-                <option value="">区</option>
+                <option value="">选择区</option>
               </select>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <div class="form-item">
-          <label class="control-label">性别</label>
-          <div class="form-select">
+      <div class="list-group">
+        <div class="list-item">
+          <label class="list-label">性别</label>
+          <div class="list-text form-select">
             <select name="gender">
               <option value="">请选择</option>
               <option value="0">男</option>
@@ -226,28 +199,16 @@
           </div>
         </div>
 
-        <div class="form-item">
-          <label class="control-label">生日</label>
-          <input type="text" name="birthday" class="control-input" value="" placeholder="填写生日" onfocus="this.type='date'">
-        </div>
-
-        <div class="form-item">
-          <label class="control-label">收入水平</label>
-          <div class="form-select">
-            <select name="consumptionLevel">
-              <option value="">请选择</option>
-              <option value="0">2000元以下</option>
-              <option value="1">2001元 ~ 5000元</option>
-              <option value="2">5001元 ~ 10000元</option>
-              <option value="3">10001元 ~ 20000元</option>
-              <option value="4">20000元以上</option>
-            </select>
+        <div class="list-item">
+          <label class="list-label">生日</label>
+          <div class="list-text">
+            <input type="text" name="birthday" class="form-input" value="" placeholder="填写生日" onfocus="this.type='date'">
           </div>
         </div>
 
-        <div class="form-item">
-          <label class="control-label">职业</label>
-          <div class="form-select">
+        <div class="list-item">
+          <label class="list-label">职业</label>
+          <div class="list-text form-select">
             <select name="jobId">
               <option value="">请选择</option>
               <c:forEach items="${jobs}" var="job">
@@ -257,12 +218,13 @@
           </div>
         </div>
       </div>
-
-      <div id="formTags" class="form-group">
-        <div class="form-item input-group">
-          <label class="control-label">标签</label>
-          <div id="tagWrap" class="form-control-static tag-wrap">
-            <em class="font-999">请选择</em> <input type="hidden" name="tags" value="">
+      
+      <div id="formTags" class="list-group">
+        <div class="list-item">
+          <label class="list-label">标签</label>
+          <div id="tagWrap" class="list-text tag-wrap pt-5">
+            <em class="font-999">请选择</em>
+            <input type="hidden" name="tagIds" value="">
           </div>
           <i class="i-arrow"></i>
         </div>

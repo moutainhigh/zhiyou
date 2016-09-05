@@ -31,10 +31,12 @@
   </header>
   <article class="">
     <form id="form" class="valid-form" action="${ctx}/u/nickname" method="post">
-      <div class="form-group">
-        <div class="form-item">
-          <label class="control-label" for="holder">昵称</label>
-          <input type="text" id="nickname" name="nickname" class="control-input" value="${user.nickname}" placeholder="填写昵称">
+      <div class="list-group">
+        <div class="list-item">
+          <label class="list-label" for="nickname">昵称</label>
+          <div class="list-text">
+            <input type="text" id="nickname" name="nickname" class="form-input" value="${user.nickname}" placeholder="填写昵称">
+          </div>
         </div>
       </div>
 

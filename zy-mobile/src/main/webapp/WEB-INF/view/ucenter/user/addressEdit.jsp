@@ -92,48 +92,55 @@
       <div class="form-message note note-warning mb-0 hide">
         <p>输入信息有误，请先更正。</p>
       </div>
-      <div class="form-group">
-        <div class="form-item">
-          <label class="control-label" for="realname">收件人</label>
-          <input type="text" id="realname" name="realname" class="control-input" value="${address.realname}"
-            placeholder="填写收件人姓名">
+      <div class="list-group">
+        <div class="list-item">
+          <label class="list-label" for="realname">收件人</label>
+          <div class="list-text">
+            <input type="text" id="realname" name="realname" class="form-input" value="${address.realname}" placeholder="填写收件人姓名">
+          </div>
         </div>
-        <div class="form-item">
-          <label class="control-label" for="phone">手机号码</label>
-          <input type="tel" id="phone" name="phone" class="control-input" value="${address.phone}" placeholder="填写收件人手机号码">
+        <div class="list-item">
+          <label class="list-label" for="phone">手机号码</label>
+          <div class="list-text">
+            <input type="tel" id="phone" name="phone" class="form-input" value="${address.phone}" placeholder="填写收件人手机号码">
+          </div>
         </div>
-        <div class="form-item">
-          <label class="control-label">省份</label>
-          <div class="form-select">
+        <div class="list-item">
+          <label class="list-label">省份</label>
+          <div class="list-text form-select">
             <select name="province" id="province">
               <option value="">请选择</option>
             </select>
           </div>
         </div>
-        <div class="form-item">
-          <label class="control-label">城市</label>
-          <div class="form-select">
+        <div class="list-item">
+          <label class="list-label">城市</label>
+          <div class="list-text form-select">
             <select name="city" id="city">
               <option value="">请选择</option>
             </select>
           </div>
         </div>
-        <div class="form-item">
-          <label class="control-label">地区</label>
-          <div class="form-select">
+        <div class="list-item">
+          <label class="list-label">地区</label>
+          <div class="list-text form-select">
             <select name="areaId" id="district">
               <option value="">请选择</option>
             </select>
           </div>
         </div>
-        <div class="form-item input-cell">
-          <textarea name="address" class="control-input" rows="3" placeholder="填写详细地址，例如街道名称，楼层和门牌号等信息">${address.address}</textarea>
+        <div class="list-item">
+          <div class="list-text">
+            <textarea name="address" class="form-input" rows="3" placeholder="填写详细地址，例如街道名称，楼层和门牌号等信息">${address.address}</textarea>
+          </div>
         </div>
-        <div class="form-item form-switch">
-          <input type="hidden" name="_isDefault" value="false">
-          <input type="checkbox" id="isDefault" name="isDefault" value="true" <c:if test="${address.isDefault}"> checked="checked"</c:if>>
-          <label class="radius right" for="isDefault"></label>
-          <p class="form-switch-text">设为默认地址</p>
+        <div class="list-item">
+          <div class="list-text">设为默认地址</div>
+          <div class="list-unit form-switch">
+            <input type="hidden" name="_isDefault" value="false">
+            <input type="checkbox" id="isDefault" name="isDefault" value="true" <c:if test="${address.isDefault}"> checked="checked"</c:if>>
+            <label class="radius" for="isDefault"></label>
+          </div>
         </div>
       </div>
 

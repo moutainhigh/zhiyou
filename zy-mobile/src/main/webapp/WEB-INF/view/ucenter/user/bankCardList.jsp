@@ -48,10 +48,14 @@
       <div class="fs-12 text-right"><span class="left mt-10">蒋小涛</span><span class="fs-24">6225 **** **** 3872</span></div>
     </a>
     
-    <a class="list-item-add list-item list-item-icon bd-0 mt-10" href="${ctx}/u/bankCard/create">
-      <label class="list-label font-ccc"><i class="fa fa-plus-circle fs-20"></i>绑定新银行卡</label>
-      <span class="list-text"><i class="list-arrow"></i></span>
-    </a>
+    <div class="list-group">
+      <a class="list-item-add list-item bd-0 mt-10" href="${ctx}/u/bankCard/create">
+        <div class="list-icon"><i class="fa fa-plus-circle font-gray fs-20"></i></div>
+        <label class="list-text font-gray">绑定新银行卡</label>
+        <i class="list-arrow"></i>
+      </a>
+    </div>
+
   </article>
   
 </body>

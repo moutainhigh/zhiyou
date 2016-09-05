@@ -83,9 +83,7 @@ public class PortraitServiceImpl implements PortraitService {
         checkUser(portrait.getUserId());
 
         Long areaId = portrait.getAreaId();
-        Long hometownAreaId = portrait.getHometownAreaId();
         checkArea(areaId);
-        checkArea(hometownAreaId);
         portraitMapper.insert(portrait);
         // 完善画像发送消息
         producer.send(TOPIC_PORTRAIT_COMPLETED, portrait);
@@ -103,9 +101,7 @@ public class PortraitServiceImpl implements PortraitService {
         if (job == null) throw new BizException(BizCode.ERROR, "job dose not exists,id=" + portrait.getJobId());
 
         Long areaId = portrait.getAreaId();
-        Long hometownAreaId = portrait.getHometownAreaId();
         checkArea(areaId);
-        checkArea(hometownAreaId);
 
         portrait.setUserId(persistence.getUserId());
         portraitMapper.update(portrait);

@@ -20,17 +20,36 @@
     $('#deliverType1').click(function() {
       $('#logistics').slideDown(300);
     });
-    
+
     $('#deliverType0').click(function() {
       $('#logistics').slideUp(300);
     });
-    
+
+    $('.image-view').click(function() {
+      var url = $(this).attr('data-src');
+      var title = $(this).attr('data-title');
+      if (!url) {
+        return;
+      }
+      $.imageview({
+        url : url,
+        title : title
+      });
+    });
+
+    $('.image-single-upload').Fileupload({
+      width : 120,
+      height : 75,
+      url : '${ctx}/image/upload',
+      maxFileSize : '4MB'
+    });
+
     $('.image-add').Fileupload({
       width : 120,
       height : 120,
       url : '${ctx}/image/upload',
       maxFileSize : '4MB',
-      progress : function(){
+      progress : function() {
         var $this = $(this);
         $this.find('.state').removeClass('state-add').addClass('state-loading');
       },
@@ -70,36 +89,55 @@
     <form action="${ctx}/u/order/deliver" class="valid-form" method="post">
       <input type="hidden" name="orderId" value="${orderId}">
       <div class="list-group">
-        <div class="list-title">icon-label-text-unit</div>
+        <div class="list-title">列表布局</div>
+        <!-- icon-label-text-unit -->
         <div class="list-item">
-          <div class="list-icon"><i class="icon icon-account"></i></div>
-          <div class="list-label">我的年龄</div>
-          <div class="list-text"><input class="form-input" type="text" value="" placeholder="请输入年龄"></div>
-          <div class="list-unit"><em class="badge badge-danger">3</em>岁<i class="list-arrow"></i></div>
+          <i class="list-icon icon icon-account"></i>
+          <div class="list-text">昵称</div>
+          <div class="list-unit">哆来嘧</div>
         </div>
-      </div>
-      
-      <div class="list-group">
         <div class="list-item">
-          <div class="list-icon"><i class="fa fa-file-o font-red"></i></div>
-          <div class="list-text">我的订单</div>
-          <div class="list-unit"><em class="badge badge-danger">3</em><i class="list-arrow"></i></div>
+          <i class="list-icon fa fa-file-o font-red"></i>
+          <div class="list-text">订单数</div>
+          <div class="list-unit"><em class="badge badge-danger">3</em></div>
+          <i class="list-arrow"></i>
         </div>
         <a class="list-item" href="javascript:alert('去填写地址');">
-          <div class="list-icon"><i class="fa fa-map-marker font-orange"></i></div>
-          <div class="list-text">我的地址</div>
-          <div class="list-unit">未填写<i class="list-arrow"></i></div>
+          <i class="list-icon fa fa-map-marker font-orange"></i>
+          <div class="list-text">收货地址</div>
+          <div class="list-unit">未填写</div>
+          <i class="list-arrow"></i>
         </a>
       </div>
       
       <div class="list-group">
-        <div class="list-title">请选择收货地址</div>
+        <div class="list-title"><span class="font-red mr-10">表单</span>请选择收货地址</div>
         <div class="list-item">
-          <div class="list-label">姓名</div>
-          <div class="list-text"><input class="form-input" type="text" value="" placeholder="请输入姓名"></div>
+          <label class="list-label" for="name">姓名</label>
+          <div class="list-text"><input id="name" name="name" class="form-input" type="text" value="" placeholder="请输入姓名"></div>
+          <div class="form-error"><i class="fa fa-exclamation-circle"></i></div>
         </div>
+        <div class="list-item img-captcha">
+          <label for="captcha" class="list-label">图形码</label>
+          <div class="list-text">
+            <input type="text" id="captcha" name="captcha" class="form-input" placeholder="图形验证码">
+          </div>
+          <div class="list-unit">
+            <img id="captchaImage" src="${ctx}/captcha">
+          </div>
+        </div>
+        <div class="list-item phone-captcha">
+          <label for="smsCode" class="list-label" style="z-index: 9">手机验证码</label>
+          <div class="list-text">
+            <input type="text" id="smsCode" name="smsCode" class="form-input" placeholder="手机验证码" value="">
+          </div>
+          <div class="list-unit">
+            <a id="btnSend" class="btn blue btn-sm">发送验证码</a>
+          </div>
+        </div>
+        <!-- form-select -->
         <div class="list-item">
-          <div class="list-label">地区</div>
+          <label class="list-label" for="province">地区</label>
           <div class="list-text form-select">
             <select name="province" id="province">
               <option value="">请选择</option>
@@ -109,45 +147,26 @@
           </div>
           <div class="form-error"><i class="fa fa-exclamation-circle"></i></div>
         </div>
+        <!-- form-input/textarea -->
         <div class="list-item">
           <div class="list-text">
             <textarea name="address" class="form-input" rows="3" placeholder="填写详细地址，例如街道名称，楼层和门牌号等信息"></textarea>
           </div>
         </div>
+        <!-- form-switch -->
         <div class="list-item">
           <div class="list-text">设为默认地址</div>
           <div class="list-unit form-switch">
             <input type="hidden" name="_isDefault" value="false">
             <input type="checkbox" id="isDefault" name="isDefault" value="true">
-            <label class="radius right" for="isDefault"></label>
-          </div>
-          <div class="form-error"><i class="fa fa-exclamation-circle"></i></div>
-        </div>
-        <div class="list-item">
-          <div class="list-image">
-            <div class="image-item">
-              <img src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
-              <input type="hidden" name="image1" value="">
-            </div>
-            <div class="image-item">
-              <img src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
-              <input type="hidden" name="image2" value="">
-            </div>
-            <div class="image-item">
-              <img src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
-              <input type="hidden" name="image3" value="">
-            </div>
-            <div class="image-add" data-limit="6">
-              <input type="hidden" name="image4" value="">
-              <input type="file">
-              <em class="state state-add"></em>
-            </div>
+            <label class="radius" for="isDefault"></label>
           </div>
         </div>
       </div>
       
       <div class="list-group">
-        <div class="list-title">请选择发货方式</div>
+        <div class="list-title">radio布局</div>
+        <!-- form-radio -->
         <label class="list-item form-radio" for="deliverType0">
           <div class="list-text">面对面发货</div>
           <div class="list-unit">
@@ -167,12 +186,62 @@
       <div id="logistics" class="list-group hide">
         <div class="list-title">请填写您的物流信息</div>
         <div class="list-item">
-          <label class="list-label" for="logisticsName">物流公司名</label>
-          <input type="text" name="logisticsName" class="form-input" value="" placeholder="填写物流公司名">
-        </div>
-        <div class="list-item">
           <label class="list-label" for="logisticsNo">物流单号</label>
-          <input type="text" name="logisticsNo" class="form-input" value="" placeholder="填写物流单号">
+          <div class="list-text">
+            <input type="text" name="logisticsNo" class="form-input" value="" placeholder="填写物流单号">
+          </div>
+        </div>
+      </div>
+      
+      <div class="list-group">
+        <div class="list-title">图片上传插件</div>
+        <div class="list-item">
+          <label class="list-label">单个图片</label>
+          <div class="list-text list-image">
+            <div class="image-item image-single-upload bd">
+              <input type="hidden" name="infoImage2" id="infoImage2" value="">
+              <img src="${stccdn}/image/defaultImage_240_150.png">
+              <input type="file">
+            </div>
+          </div>
+          <div class="list-unit">
+            <a href="javascript:;" class="image-view font-blue fs-14" data-src="http://image.mayishike.com/image/1e27766d-62b3-496a-b442-15f512caaff5" data-title="淘宝截图示例图"><i class="fa fa-question-circle-o"></i> 示意图</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="list-group">
+        <div class="list-title"><span class="font-red">多图</span>上传插件</div>
+        <div class="list-item">
+          <div class="list-text list-image">
+            <div class="image-item">
+              <img src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+              <input type="hidden" name="image1" value="">
+            </div>
+            <div class="image-item">
+              <img src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+              <input type="hidden" name="image2" value="">
+            </div>
+            <div class="image-add" data-limit="6">
+              <input type="hidden" name="image3" value="">
+              <input type="file">
+              <em class="state state-add"></em>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="list-group">
+        <div class="list-title">图片布局</div>
+        <div class="list-item">
+          <div class="list-text list-image">
+            <div class="image-item">
+              <img class="image-view" data-title="照片名字" data-src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@640h_640w_1e_1c.jpg" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+            </div>
+            <div class="image-item">
+              <img class="image-view" data-title="我的美照" data-src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@640h_640w_1e_1c.jpg" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+            </div>
+          </div>
         </div>
       </div>
       
