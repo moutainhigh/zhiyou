@@ -51,9 +51,10 @@
     </div>
     
     <div class="list-group">
-      <a class="list-item list-item-icon" href="${ctx}/u/address/create">
-        <label class="list-label"><i class="fa fa-plus-circle font-green fs-20"></i>新增收货地址</label>
-        <span class="list-text"><i class="list-arrow"></i></span>
+      <a class="list-item" href="${ctx}/u/address/create">
+        <div class="list-icon"><i class="fa fa-plus-circle font-green fs-20"></i></div>
+        <label class="list-text">新增收货地址</label>
+        <i class="list-arrow"></i>
       </a>
     </div>
   </article>

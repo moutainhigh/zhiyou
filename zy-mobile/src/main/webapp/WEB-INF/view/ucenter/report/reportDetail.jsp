@@ -13,7 +13,7 @@
 
 <title>检测报告</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<script type="text/javascript">
+<script>
 
   $(function() {
     
@@ -32,7 +32,7 @@
   
 </script>
 </head>
-<body class="">
+<body>
   <header class="header">
     <h1>检测报告</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
@@ -40,65 +40,78 @@
   
   <div class="list-group">
     <div class="list-item">
-      <div class="list-label">客户姓名</div>
-      <span class="list-text">${report.realname}</span>
+      <div class="list-text">客户姓名</div>
+      <div class="list-unit">${report.realname}</div>
     </div>
     <div class="list-item">
-      <div class="list-label">性别</div>
-      <span class="list-text">${report.gender}</span>
+      <div class="list-text">性别</div>
+      <div class="list-unit">${report.gender}</div>
     </div>
     <div class="list-item">
-      <div class="list-label">年龄</div>
-      <span class="list-text">${report.age}岁</span>
+      <div class="list-text">年龄</div>
+      <div class="list-unit">${report.age}岁</div>
     </div>
     <div class="list-item">
-      <div class="list-label">检测时间</div>
-      <span class="list-text">${report.dateLabel}</span>
+      <div class="list-text">检测时间</div>
+      <div class="list-unit">${report.dateLabel}</div>
     </div>
     <div class="list-item">
-      <div class="list-label">检测结果</div>
-      <span class="list-text">
+      <div class="list-text">检测结果</div>
+      <div class="list-unit">
         <c:choose>
-        <c:when test="${report.reportResult == '阴性'}">
-        <span class="font-red">${report.reportResult}</span>
-        </c:when>
-        <c:when test="${report.reportResult == '弱阳性'}">
-        <span class="font-orange">${report.reportResult}</span>
-        </c:when>
-        <c:when test="${report.reportResult == '阳性'}">
-        <span class="font-green">${report.reportResult}</span>
-        </c:when>
-        <c:when test="${report.reportResult == '干扰色'}">
-        <span class="font-purple">${report.reportResult}</span>
-        </c:when>
-      </c:choose>
-      
-      </span>
+          <c:when test="${report.reportResult == '阴性'}">
+          <span class="font-red">${report.reportResult}</span>
+          </c:when>
+          <c:when test="${report.reportResult == '弱阳性'}">
+          <span class="font-orange">${report.reportResult}</span>
+          </c:when>
+          <c:when test="${report.reportResult == '阳性'}">
+          <span class="font-green">${report.reportResult}</span>
+          </c:when>
+          <c:when test="${report.reportResult == '干扰色'}">
+          <span class="font-purple">${report.reportResult}</span>
+          </c:when>
+        </c:choose>
+      </div>
     </div>
   </div>
   
   <div class="list-title">检测结果图片</div>
   <div class="list-group">
     <div class="list-item">
-      <img class="image-view ml-5 mt-5" src="${report.image1Thumbnail}" data-src="${report.image1Big}">
-      <img class="image-view ml-5 mt-5" src="${report.image2Thumbnail}" data-src="${report.image2Big}">
-      <img class="image-view ml-5 mt-5" src="${report.image3Thumbnail}" data-src="${report.image3Big}">
-      <c:if test="${not empty report.image4Thumbnail}">
-      <img class="image-view ml-5 mt-5" src="${report.image4Thumbnail}" data-src="${report.image4Big}">
-      </c:if>
-      <c:if test="${not empty report.image5Thumbnail}">
-      <img class="image-view ml-5 mt-5" src="${report.image5Thumbnail}" data-src="${report.image5Big}">
-      </c:if>
-      <c:if test="${not empty report.image6Thumbnail}">
-      <img class="image-view ml-5 mt-5" src="${report.image6Thumbnail}" data-src="${report.image6Big}">
-      </c:if>
+      <div class="list-text list-image">
+        <div class="image-item">
+          <img class="image-view" src="${report.image1Thumbnail}" data-src="${report.image1Big}">
+        </div>
+        <div class="image-item">
+          <img class="image-view" src="${report.image2Thumbnail}" data-src="${report.image2Big}">
+        </div>
+        <div class="image-item">
+          <img class="image-view" src="${report.image3Thumbnail}" data-src="${report.image3Big}">
+        </div>
+        <c:if test="${not empty report.image4Thumbnail}">
+        <div class="image-item">
+          <img class="image-view" src="${report.image4Thumbnail}" data-src="${report.image4Big}">
+        </div>
+        </c:if>
+        <c:if test="${not empty report.image5Thumbnail}">
+        <div class="image-item">
+          <img class="image-view" src="${report.image5Thumbnail}" data-src="${report.image5Big}">
+        </div>
+        </c:if>
+        <c:if test="${not empty report.image6Thumbnail}">
+        <div class="image-item">
+          <img class="image-view" src="${report.image6Thumbnail}" data-src="${report.image6Big}">
+        </div>
+        </c:if>
+      </div>
     </div>
   </div>
   
   <div class="list-title">客户使用心得</div>
   <div class="list-group">
     <div class="list-item">
-      <p class="mt-5 font-777">${report.text}</p>
+      <div class="list-text font-777">${report.text}</div>
     </div>
   </div>
 </body>

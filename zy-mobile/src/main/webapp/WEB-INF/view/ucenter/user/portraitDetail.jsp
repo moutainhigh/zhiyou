@@ -11,9 +11,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>自我画像</title>
+<title>个人资料</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <script>
   $(function() {
 
@@ -22,69 +21,38 @@
 </head>
 <body class="header-fixed">
   <header class="header">
-    <h1>自我画像</h1>
+    <h1>个人资料</h1>
     <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
     <a href="${ctx}/u/portrait/edit" class="button-right"><i class="fa fa-edit"></i></a>
   </header>
   <article class="">
     <div class="list-group">
       <div class="list-item">
-        <label class="list-label">所在地</label>
-        <div class="list-text">
-          <span>${portrait.province} ${portrait.city} ${portrait.district}</span>
-        </div>
+        <div class="list-text">所在地</div>
+        <div class="list-unit">${portrait.province} ${portrait.city} ${portrait.district}</div>
       </div>
       <div class="list-item">
-        <label class="list-label">家乡</label>
-        <div class="list-text">
-          <span>${portrait.homeProvince} ${portrait.homeDistrict}</span>
-        </div>
-      </div>
-      <div class="list-item">
-        <label class="list-label">性别</label>
-        <div class="list-text">
-          <span>${portrait.gender}</span>
-        </div>
+        <div class="list-text">性别</div>
+        <div class="list-unit">${portrait.gender}</div>
       </div>
 
       <div class="list-item">
-        <label class="list-label">生日</label>
-        <div class="list-text">
-          <span><fmt:formatDate value="${portrait.birthday}" pattern="yyyy年MM月dd日" /></span>
-        </div>
+        <div class="list-text">生日</div>
+        <div class="list-unit"><fmt:formatDate value="${portrait.birthday}" pattern="yyyy年MM月dd日" /></div>
       </div>
 
       <div class="list-item">
-        <label class="list-label">收入水平</label>
-        <div class="list-text">
-          <span> <c:if test="${portrait.consumptionLevel  eq 'C2000'}">
-                    2000元以下
-                </c:if> <c:if test="${portrait.consumptionLevel  eq 'C2001_5000'}">
-                      2001元 ~ 5000元
-                  </c:if> <c:if test="${portrait.consumptionLevel  eq 'C5001_10000'}">
-                      5001元 ~ 10000元
-                  </c:if> <c:if test="${portrait.consumptionLevel  eq 'C10001_20000'}">
-                      10001元 ~ 20000元
-                  </c:if> <c:if test="${portrait.consumptionLevel  eq 'C20000'}">
-                      20000元以上
-                  </c:if>
-          </span>
-        </div>
-      </div>
-
-      <div class="list-item">
-        <label class="list-label">职业</label>
-        <div class="list-text">
+        <div class="list-text">职业</div>
+        <div class="list-unit">
           <span>${portrait.jobName}</span>
         </div>
       </div>
-
-      <div style="min-height: 48px; padding: 12px 15px 12px 65px;">
-        <label class="list-label left" style="width: 50px; margin-left: -50px;">标签</label>
-        <div class="right">
-          <c:forEach items="${portrait.tags}" var="tag" varStatus="index">
-            <em
-              class="label mb-5 inline-block
+      
+      <div class="list-item">
+        <div class="list-text">标签</div>
+        <div class="list-unit">
+          <c:forEach items="${portrait.tagNames}" var="tag" varStatus="index">
+            <em class="label mb-5 inline-block
             <c:if test="${index.index % 5 == 0 }"> blue</c:if>
             <c:if test="${index.index % 5 == 1 }"> red</c:if>
             <c:if test="${index.index % 5 == 2 }"> orange</c:if>
@@ -94,6 +62,7 @@
           </c:forEach>
         </div>
       </div>
+      
     </div>
 
   </article>

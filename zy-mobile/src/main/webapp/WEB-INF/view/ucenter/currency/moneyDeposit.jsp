@@ -38,25 +38,51 @@
   
   <article class="account-wrap clearfix">
     <form id="orderForm" action="${ctx}/u/pay" method="get">
-      <div class="form-group mt-20">
-        <div class="form-item form-radio" data-num="5.00">
-          <label class="option">
-            <input type="radio" name="money" value="100"> <div>100元<small>¥ 100.00</small></div>
-          </label>
-          <label class="option">
-            <input type="radio" name="money" value="500"> <div>500元<small>¥ 500.00</small></div>
-          </label>
-          <label class="option">
-            <input type="radio" name="money" value="1000"> <div>1000元<small>¥ 1000.00</small></div>
-          </label>
-          <label class="option">
-            <input type="radio" name="money" value="5000"> <div>5000元<small>¥ 5000.00</small></div>
-          </label>
-          <label class="option">
-            <input type="radio" name="money" value="10000"> <div>10000元<small>¥ 10000.00</small></div>
-          </label>
-        </div>
-      </div> 
+      <div class="list-group">
+        <div class="list-title">请选择充值金额</div>
+        <!-- form-radio -->
+        <label class="list-item form-radio">
+          <div class="list-icon">
+            <input type="radio" name="money" value="100">
+            <em class="i-checked"></em>
+          </div>
+          <div class="list-text">本金 100</div>
+          <div class="list-unit">支付 ¥ 100.00</div>
+        </label>
+        <label class="list-item form-radio">
+          <div class="list-icon">
+            <input type="radio" name="money" value="500">
+            <em class="i-checked"></em>
+          </div>
+          <div class="list-text">本金 500</div>
+          <div class="list-unit">支付 ¥ 500.00</div>
+        </label>
+        <label class="list-item form-radio">
+          <div class="list-icon">
+            <input type="radio" name="money" value="1000">
+            <em class="i-checked"></em>
+          </div>
+          <div class="list-text">本金 1000</div>
+          <div class="list-unit">支付 ¥ 1000.00</div>
+        </label>
+        <label class="list-item form-radio">
+          <div class="list-icon">
+            <input type="radio" name="money" value="5000">
+            <em class="i-checked"></em>
+          </div>
+          <div class="list-text">本金 5000</div>
+          <div class="list-unit">支付 ¥ 5000.00</div>
+        </label>
+        <label class="list-item form-radio">
+          <div class="list-icon">
+            <input type="radio" name="money" value="10000">
+            <em class="i-checked"></em>
+          </div>
+          <div class="list-text">本金 10000</div>
+          <div class="list-unit">支付 ¥ 10000.00</div>
+        </label>
+      </div>
+      
       <div class="form-btn">
         <input type="submit" class="btn orange btn-block round-4" value="下一步">
       </div>

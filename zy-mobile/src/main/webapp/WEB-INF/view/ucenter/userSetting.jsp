@@ -53,15 +53,13 @@
   <article class="user-settings">
     <div class="list-group">
       <div class="list-item form-switch">
-        <p class="form-switch-text">接受短信提醒</p>
+        <div class="list-text">接受短信提醒</div>
         <input type="checkbox" id="isDefault" name="isDefault"<c:if test="${userSetting.isReceiveTaskSms}"> checked="checked"</c:if>>
         <label class="radius right" for="isDefault"></label>
       </div>
       <div class="list-item">
-        <label class="list-label">系统版本</label>
-        <span class="list-text">
-          <span>v1.0.3 Beta</span>
-        </span>
+        <div class="list-text">系统版本</div>
+        <div class="list-unit">v1.0.3 Beta</div>
       </div>
     </div>
     

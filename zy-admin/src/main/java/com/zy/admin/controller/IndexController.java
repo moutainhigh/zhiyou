@@ -98,7 +98,6 @@ public class IndexController {
 				totalCount = users.size();
 
 				List<Long> buyerUserIds = new ArrayList<>();
-				List<Long> merchantUserIds = new ArrayList<>();
 				for (User user : users) {
 					UserType userType = user.getUserType();
 					if (userType == UserType.代理) {
@@ -112,7 +111,6 @@ public class IndexController {
 			}
 
 			model.addAttribute("buyerCount", buyerCount);
-			model.addAttribute("merchantCount", merchantCount);
 			model.addAttribute("totalCount", totalCount);
 		}
 		{
@@ -182,7 +180,6 @@ public class IndexController {
 			Date date = null;
 			List<Long> userCountList = new ArrayList<Long>();
 			List<Long> buyerCountList = new ArrayList<Long>();
-			List<Long> merchantCountList = new ArrayList<Long>();
 			List<String> dataStrs = new ArrayList<String>();
 			while ((date = calendar.getTime()).before(now)) {
 				long userCount = 0L;
@@ -202,7 +199,6 @@ public class IndexController {
 
 				userCountList.add(userCount);
 				buyerCountList.add(buyerCount);
-				merchantCountList.add(merchantCount);
 				dataStrs.add(StringUtils.right(dateStr, 5));
 
 				calendar.add(Calendar.DATE, 1);
@@ -210,7 +206,6 @@ public class IndexController {
 			dataMap = new LinkedHashMap<String, Object>();
 			dataMap.put("userCount", userCountList);
 			dataMap.put("buyerCount", buyerCountList);
-			dataMap.put("merchantCount", merchantCountList);
 			dataMap.put("chartLabel", dataStrs);
 
 			cacheSupport.set(CACHE_NAME_STATISTICS, REGISTER_CHART, dataMap, DEFAULT_EXPIRE);

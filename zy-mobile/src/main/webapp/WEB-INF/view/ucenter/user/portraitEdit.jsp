@@ -43,9 +43,6 @@
         'birthday' : {
           required : true
         },
-        'consumptionLevel' : {
-          required : true
-        },
         'job' : {
           required : true
         },
@@ -68,9 +65,6 @@
         },
         'birthday' : {
           required : '请填写生日'
-        },
-        'consumptionLevel' : {
-          required : '请选择收入水平'
         },
         'job' : {
           required : '请选择职业'
@@ -173,56 +167,36 @@
     <a href="javascript:;" id="btnTagsClose" class="button-left hide"><i class="fa fa-angle-left"></i></a>
     <a href="javascript:;" id="btnTagsSure" class="button-right hide"><span>确定</span></a>
   </header>
-  <article class="">
+  <article>
     <form id="form" class="valid-form" action="${ctx}/u/portrait/edit" method="post">
-      <div class="form-group">
-        <div class="form-item">
-          <label class="control-label">所在地</label>
-          <div class="form-control-static pt-0 pb-0 pr-0 flex">
-            <div class="form-select flex-1">
+      <input name="id" value="${portrait.id}" type="hidden" />
+      <div class="list-group">
+        <div class="list-item">
+          <label class="list-label">所在地</label>
+          <div class="list-text">
+            <div class="form-select pb-10 bd-b">
               <select name="" id="province">
-                <option value="">省</option>
+                <option value="">选择省</option>
               </select>
             </div>
-            <div class="form-select flex-1">
+            <div class="form-select mt-10 pb-10 bd-b">
               <select name="" id="city">
-                <option value="">市</option>
+                <option value="">选择市</option>
               </select>
             </div>
-            <div class="form-select flex-1">
+            <div class="form-select mt-10">
               <select name="areaId" id="district">
-                <option value="">区</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-item">
-          <label class="control-label">家乡</label>
-          <div class="form-control-static pt-0 pb-0 pr-0 flex">
-            <div class="form-select flex-1">
-              <select name="" id="province2">
-                <option value="">省</option>
-              </select>
-            </div>
-            <div class="form-select flex-1">
-              <select name="" id="city2">
-                <option value="">市</option>
-              </select>
-            </div>
-            <div class="form-select flex-1">
-              <select name="hometownAreaId" id="district2">
-                <option value="">区</option>
+                <option value="">选择区</option>
               </select>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <div class="form-item">
-          <label class="control-label">性别</label>
-          <div class="form-select">
+      <div class="list-group">
+        <div class="list-item">
+          <label class="list-label">性别</label>
+          <div class="list-text form-select">
             <select name="gender">
               <option value="">请选择</option>
               <option value="0" <c:if test="${portrait.gender eq '男'}"> selected</c:if>>男</option>
@@ -231,54 +205,40 @@
           </div>
         </div>
 
-        <div class="form-item">
-          <label class="control-label">生日</label> <input type="text" name="birthday" class="control-input"
-            value="<c:if test="${not empty portrait.birthday}"><fmt:formatDate value="${portrait.birthday}" pattern="yyyy-MM-dd"/></c:if>" placeholder="填写生日"
-            onfocus="this.type='date'">
-        </div>
-
-        <div class="form-item">
-          <label class="control-label">收入</label>
-          <div class="form-select">
-            <select name="consumptionLevel">
-              <option value="">请选择</option>
-              <option value="0" <c:if test="${portrait.consumptionLevel eq 'C2000'}"> selected </c:if>>2000元以下</option>
-              <option value="1" <c:if test="${portrait.consumptionLevel eq 'C2001_5000'}"> selected </c:if>>2001元 ~ 5000元</option>
-              <option value="2" <c:if test="${portrait.consumptionLevel eq 'C5001_10000'}"> selected </c:if>>5001元 ~ 10000元</option>
-              <option value="3" <c:if test="${portrait.consumptionLevel eq 'C10001_20000'}"> selected </c:if>>10001元 ~ 20000元</option>
-              <option value="4" <c:if test="${portrait.consumptionLevel eq 'C20000'}"> selected </c:if>>20000元以上</option>
-            </select>
+        <div class="list-item">
+          <label class="list-label">生日</label>
+          <div class="list-text">
+            <input type="text" name="birthday" class="control-input"
+            value="<c:if test="${not empty portrait.birthday}"><fmt:formatDate value="${portrait.birthday}" pattern="yyyy-MM-dd"/></c:if>"
+            placeholder="填写生日" onfocus="this.type='date'">
           </div>
         </div>
 
-        <div class="form-item">
-          <label class="control-label">职业</label>
-          <div class="form-select">
+        <div class="list-item">
+          <label class="list-label">职业</label>
+          <div class="list-text form-select">
             <select name="jobId">
               <option value="">请选择</option>
               <c:forEach items="${jobs}" var="job">
-                <option value="${job.id}" <c:if
-                                    test="${portrait.jobId eq job.id}"> selected </c:if>>${job.jobName}</option>
+                <option value="${job.id}" <c:if test="${portrait.jobId eq job.id}"> selected </c:if>>${job.jobName}</option>
               </c:forEach>
             </select>
           </div>
         </div>
       </div>
 
-      <div id="formTags" class="form-group">
-        <div class="form-item input-group">
-          <label class="control-label">标签</label>
-          <div id="tagWrap" class="form-control-static tag-wrap">
+      <div id="formTags" class="list-group">
+        <div class="list-item">
+          <label class="list-label">标签</label>
+          <div id="tagWrap" class="list-text tag-wrap pt-5">
             <c:forEach items="${userTags}" var="tag" varStatus="index">
-              <em
-                class="label
-                        <c:if test="${index.index % 5 == 0 }"> blue</c:if>
+              <em class="label <c:if test="${index.index % 5 == 0 }"> blue</c:if>
                         <c:if test="${index.index % 5 == 1 }"> orange</c:if>
                         <c:if test="${index.index % 5 == 2 }"> red</c:if>
                         <c:if test="${index.index % 5 == 3 }"> green</c:if>
                         <c:if test="${index.index % 5 == 4 }"> yellow</c:if>">${tag}</em>
             </c:forEach>
-            <input type="hidden" name="tags" value="${portrait.tags}">
+            <input type="hidden" name="tagIds" value="${portrait.tags}">
           </div>
           <i class="i-arrow"></i>
         </div>
@@ -287,7 +247,7 @@
       <div class="form-btn">
         <input id="btnSubmit" class="btn-submit btn orange btn-block" type="submit" value="提 交">
       </div>
-      <input name="id" value="${portrait.id}" type="hidden" />
+
     </form>
   </article>
 

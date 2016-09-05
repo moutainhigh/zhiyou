@@ -1,12 +1,11 @@
 /* activity-list */
 
 .activity {
-  position: relative;
+  position: relative; width: 100%;
   padding-left: 145px;
   background-color: #fff;
 }
 .activity .image-wrap {
-  position: absolute; left: 15px; top: 10px;
   width: 120px; height: 80px;
 }
 .activity .image-wrap img {
@@ -28,5 +27,7 @@
   z-index: 5;
   background: #efefef url("../../image/image_placeholder.jpg") no-repeat scroll center center;
 }
-
+.activity-detail .detail-wrap img {
+  width: 100% !important;
+}
 

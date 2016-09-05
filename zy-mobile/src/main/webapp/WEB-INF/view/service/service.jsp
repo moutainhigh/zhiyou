@@ -43,8 +43,8 @@
     <div class="list-group">
       <c:forEach items="${helpCategories}" var="helpCategory">
       <a class="list-item" href="${ctx}/help/${helpCategory.code}">
-        <label class="list-label">${helpCategory.name}</label>
-        <span class="list-text"><i class="list-arrow"></i></span>
+        <label class="list-text">${helpCategory.name}</label>
+        <i class="list-arrow"></i>
       </a>
       </c:forEach>
     </div>

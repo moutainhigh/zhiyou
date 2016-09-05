@@ -90,15 +90,6 @@
     });
   });
 </script>
-<style type="text/css">
-.img-captcha .input-error {
-  right: 110px;
-}
-
-.phone-captcha .input-error {
-  right: 110px;
-}
-</style>
 </head>
 <body class="header-fixed">
   <header class="header">
@@ -108,26 +99,29 @@
 
   <article class="">
     <form action="${ctx}/u/bindPhone" class="valid-form" method="post">
-      <div class="form-group">
-        <div class="form-item">
-          <label for="realname" class="control-label">手机号</label> <input type="text" id="phone" name="phone" class="control-input" value="" placeholder="输入手机号">
-        </div>
-        <div class="form-item img-captcha">
-          <label for="realname" class="control-label" style="z-index: 9">图形码</label>
-          <div class="input-group">
-            <input type="text" id="captcha" name="captcha" class="control-input" placeholder="图形验证码">
-            <div class="input-unit">
-              <img id="captchaImage" src="${ctx}/captcha">
-            </div>
+      <div class="list-group">
+        <div class="list-item">
+          <label for="realname" class="list-label">手机号</label>
+          <div class="list-text">
+            <input type="text" id="phone" name="phone" class="form-input" value="" placeholder="输入手机号">
           </div>
         </div>
-        <div class="form-item phone-captcha">
-          <label for="realname" class="control-label" style="z-index: 9">手机验证码</label>
-          <div class="input-group">
-            <input type="text" id="smsCode" name="smsCode" class="control-input" placeholder="手机验证码" value="">
-            <div class="input-unit">
-              <a id="btnSend" class="btn blue btn-sm">发送验证码</a>
-            </div>
+        <div class="list-item img-captcha">
+          <label for="captcha" class="list-label">图形码</label>
+          <div class="list-text">
+            <input type="text" id="captcha" name="captcha" class="form-input" placeholder="图形验证码">
+          </div>
+          <div class="list-unit">
+            <img id="captchaImage" src="${ctx}/captcha">
+          </div>
+        </div>
+        <div class="list-item phone-captcha">
+          <label for="smsCode" class="list-label" style="z-index: 9">手机验证码</label>
+          <div class="list-text">
+            <input type="text" id="smsCode" name="smsCode" class="form-input" placeholder="手机验证码" value="">
+          </div>
+          <div class="list-unit">
+            <a id="btnSend" class="btn blue btn-sm">发送验证码</a>
           </div>
         </div>
       </div>

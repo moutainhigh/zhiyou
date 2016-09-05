@@ -35,20 +35,24 @@
     <a id="btnReadAll" href="javascript:;" class="button-right"><span>全部已读</span></a>
     </c:if>
   </header>
+  
   <form id="messageForm" action="${ctx}/u/message/readAll" method="post"></form>
-  <c:if test="${empty unreadMessageVos && empty readMessageVos}">
-    <section class="message-list">
+  
+  <article>
+    <c:if test="${empty unreadMessageVos && empty readMessageVos}">
+    <div class="message-list">
       <div class="empty-tip">
         <i class="fa fa-comments"></i> <span>空空如也!</span>
       </div>
-    </section>
-  </c:if>
+    </div>
+    </c:if>
 
-  <!-- 未读消息  -->
-  <c:if test="${not empty unreadMessageVos}">
-    <section class="list-group">
+    <!-- 未读消息  -->
+    <c:if test="${not empty unreadMessageVos}">
+    <div class="list-group">
       <c:forEach items="${unreadMessageVos}" var="message">
-        <a class="list-item" href="${ctx}/u/message/${message.id}">
+      <a class="list-item" href="${ctx}/u/message/${message.id}">
+        <div class="message">
           <div class="message-icon mt-5 left">
             <img alt="" src="${stccdn}/image/icon/email.png">
           </div>
@@ -58,16 +62,18 @@
             </p>
             <p class="fs-12 font-999">${message.title}</p>
           </div>
-        </a>
+        </div>
+      </a>
       </c:forEach>
-    </section>
-  </c:if>
+    </div>
+    </c:if>
 
-  <!-- 已读消息  -->
-  <c:if test="${not empty readMessageVos}">
-    <section class="list-group">
+    <!-- 已读消息  -->
+    <c:if test="${not empty readMessageVos}">
+    <div class="list-group">
       <c:forEach items="${readMessageVos}" var="message">
-        <a class="list-item" href="${ctx}/u/message/${message.id}">
+      <a class="list-item" href="${ctx}/u/message/${message.id}">
+        <div class="message">
           <div class="message-icon mt-5 left">
             <img alt="" src="${stccdn}/image/icon/email-read.png">
           </div>
@@ -77,10 +83,13 @@
             </p>
             <p class="fs-12 font-999">${message.title}</p>
           </div>
-        </a>
+        </div>
+      </a>
       </c:forEach>
-    </section>
-  </c:if>
+    </div>
+    </c:if>
+  
+  </article>
 
 </body>
 </html>
