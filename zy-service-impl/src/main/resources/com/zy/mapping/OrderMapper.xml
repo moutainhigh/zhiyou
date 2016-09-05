@@ -19,6 +19,8 @@
 		<result column="amount" property="amount" />
 		<result column="refund" property="refund" />
 		<result column="refund_remark" property="refundRemark" />
+		<result column="buyer_memo" property="buyerMemo" />
+		<result column="seller_memo" property="sellerMemo" />
 		<result column="remark" property="remark" />
 		<result column="is_settled_up" property="isSettledUp" />
 		<result column="logistics_name" property="logisticsName" />
@@ -35,8 +37,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.Order" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_order` (sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,remark,is_settled_up,logistics_name,logistics_sn,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version)
-	  values (#{sn},#{userId},#{sellerId},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{postFee},#{discountFee},#{amount},#{refund},#{refundRemark},#{remark},#{isSettledUp},#{logisticsName},#{logisticsSn},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{deliveredTime},#{version})
+	  insert into `mal_order` (sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,logistics_name,logistics_sn,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version)
+	  values (#{sn},#{userId},#{sellerId},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{postFee},#{discountFee},#{amount},#{refund},#{refundRemark},#{buyerMemo},#{sellerMemo},#{remark},#{isSettledUp},#{logisticsName},#{logisticsSn},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{deliveredTime},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -61,6 +63,8 @@
 			amount = #{amount},
 			refund = #{refund},
 			refund_remark = #{refundRemark},
+			buyer_memo = #{buyerMemo},
+			seller_memo = #{sellerMemo},
 			remark = #{remark},
 			is_settled_up = #{isSettledUp},
 			logistics_name = #{logisticsName},
@@ -98,6 +102,8 @@
 					<when test="field == 'amount'">amount = #{order.amount},</when>
 					<when test="field == 'refund'">refund = #{order.refund},</when>
 					<when test="field == 'refundRemark'">refund_remark = #{order.refundRemark},</when>
+					<when test="field == 'buyerMemo'">buyer_memo = #{order.buyerMemo},</when>
+					<when test="field == 'sellerMemo'">seller_memo = #{order.sellerMemo},</when>
 					<when test="field == 'remark'">remark = #{order.remark},</when>
 					<when test="field == 'isSettledUp'">is_settled_up = #{order.isSettledUp},</when>
 					<when test="field == 'logisticsName'">logistics_name = #{order.logisticsName},</when>
@@ -118,14 +124,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,remark,is_settled_up,logistics_name,logistics_sn,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version
+		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,logistics_name,logistics_sn,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version
 		from `mal_order`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderQueryModel">
 		select
-		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,remark,is_settled_up,logistics_name,logistics_sn,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version
+		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,logistics_name,logistics_sn,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version
 		from `mal_order`
 		<where>
 			<if test="userIdIN != null">

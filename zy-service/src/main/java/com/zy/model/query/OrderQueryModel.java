@@ -115,8 +115,10 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("receiverRealname");
 		fieldNames.add("logisticsName");
 		fieldNames.add("receiverAddress");
+		fieldNames.add("sellerMemo");
 		fieldNames.add("deliveredTime");
 		fieldNames.add("refund");
+		fieldNames.add("buyerMemo");
 	}
 
 }
