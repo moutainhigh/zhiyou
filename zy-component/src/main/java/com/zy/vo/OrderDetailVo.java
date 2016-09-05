@@ -68,9 +68,9 @@ public class OrderDetailVo implements Serializable {
 	@Field(label = "退款时间")
 	private String refundedTimeLabel;
 	@Field(label = "应付总金额")
-	private String amount;
+	private String amountLabel;
 	@Field(label = "退款金额")
-	private String refund;
+	private String refundLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
 	@Field(label = "orderItems")

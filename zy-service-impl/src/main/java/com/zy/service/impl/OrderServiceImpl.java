@@ -1,13 +1,12 @@
 package com.zy.service.impl;
 
 import com.zy.common.exception.BizException;
+import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.mal.OrderItem;
 import com.zy.entity.mal.Product;
-import com.zy.entity.sys.Area;
-import com.zy.entity.sys.Area.AreaType;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.mapper.*;
@@ -33,6 +32,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderMapper orderMapper;
+
+	@Autowired
+	private OrderItemMapper orderItemMapper;
 
 	@Autowired
 	private AreaMapper areaMapper;
@@ -71,20 +73,31 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "必须上架的商品才能购买");
 		}
 
-		BigDecimal amount = new BigDecimal("0.00");
+		BigDecimal amount = product.getPrice();
 
 		Order order = new Order();
 		order.setAmount(amount);
 		order.setCreatedTime(new Date());
 		order.setIsSettledUp(false);
+		order.setReceiverAreaId(address.getAreaId());
+		order.setReceiverProvince(address.getProvince());
+		order.setReceiverCity(address.getCity());
+		order.setReceiverDistrict(address.getDistrict());
+		order.setReceiverAddress(address.getAddress());
+		order.setReceiverRealname(address.getRealname());
+		order.setReceiverPhone(address.getPhone());
 		validate(order);
 		orderMapper.insert(order);
 
 		OrderItem orderItem = new OrderItem();
 		orderItem.setPrice(product.getPrice());
 		orderItem.setOrderId(order.getId());
+		orderItem.setMarketPrice(product.getMarketPrice());
+		orderItem.setQuantity(orderCreateDto.getQuantity());
+		orderItem.setAmount(amount);
 
-		return null;
+		orderItemMapper.insert(orderItem);
+		return order;
 	}
 
 	@Override
@@ -94,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void cancel(@NotNull Long id) {
-		throw new UnsupportedOperationException(); // 暂不支持主动取消订单
+		throw new BizException(BizCode.ERROR, "暂不支持主动取消订单");
 	}
 
 	@Override
@@ -124,47 +137,49 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public void deliver(@NotNull Order order) {
-		String sn = order.getSn();
-		validate(sn, NOT_BLANK, "sn is null");
-		Order persistence = orderMapper.findBySn(sn);
-		validate(persistence, NOT_NULL, "order sn" + sn + " not found");
-		validate(persistence.getOrderStatus(), v -> v == OrderStatus.已支付, "order status error: " + persistence.getOrderStatus());
-		
-		Long receiverAreaId = order.getReceiverAreaId();
-		validate(receiverAreaId, NOT_NULL, "receiver area id is null");
-		Area area = areaMapper.findOne(receiverAreaId);
-		validate(area, NOT_NULL, "receiver area id" + receiverAreaId + " not found");
-		validate(area.getAreaType(), v -> v == AreaType.区, "area type error: " + area.getAreaType());
-		
-		persistence.setOrderStatus(OrderStatus.已发货);
-		persistence.setReceiverAreaId(receiverAreaId);
-		persistence.setReceiverProvince(order.getReceiverProvince());
-		persistence.setReceiverCity(order.getReceiverCity());
-		persistence.setReceiverDistrict(order.getReceiverDistrict());
-		persistence.setReceiverAddress(order.getReceiverAddress());
-		persistence.setReceiverRealname(order.getReceiverRealname());
-		persistence.setReceiverPhone(order.getReceiverPhone());
-		persistence.setLogisticsName(order.getLogisticsName());
-		persistence.setLogisticsSn(order.getLogisticsSn());
-		persistence.setDeliveredTime(new Date());
-		validate(persistence);
-		
-		orderMapper.update(persistence);
+	public void deliver(@NotNull Long id, boolean userLogistics, String logisticsName, String logisticsSn) {
+		Order order = orderMapper.findOne(id);
+		validate(order, NOT_NULL, "order id" + id + " not found");
+		OrderStatus orderStatus = order.getOrderStatus();
+		if (orderStatus == OrderStatus.已发货) {
+			return; // 幂等处理
+		} else if (orderStatus != OrderStatus.已支付) {
+			throw new BizException(BizCode.ERROR, "只有已支付的订单才能发货");
+		}
+
+		if (userLogistics) {
+			validate(logisticsName, NOT_BLANK, "logistics name is blank");
+			validate(logisticsSn, NOT_BLANK, "logistics sn is blank");
+
+			order.setLogisticsName(logisticsName);
+			order.setLogisticsSn(logisticsSn);
+
+		}
+
+		order.setDeliveredTime(new Date());
+		order.setOrderStatus(OrderStatus.已发货);
+
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
 		
 	}
 
 	@Override
-	public void confirmDelivery(@NotBlank String sn) {
-		Order persistence = orderMapper.findBySn(sn);
-		validate(persistence, NOT_NULL, "order sn" + sn + " not found");
-		validate(persistence.getOrderStatus(), v -> v == OrderStatus.已发货, "order status error: " + persistence.getOrderStatus());
-		
-		Order orderForMerge = new Order();
-		orderForMerge.setId(persistence.getId());
-		orderForMerge.setOrderStatus(OrderStatus.已完成);
-		orderMapper.merge(orderForMerge, "orderStatus");
-		
+	public void receive(@NotNull Long id) {
+		Order order = orderMapper.findOne(id);
+		validate(order, NOT_NULL, "order id" + id + " not found");
+		OrderStatus orderStatus = order.getOrderStatus();
+		if (orderStatus == OrderStatus.已完成) {
+			return; // 幂等处理
+		} else if (orderStatus != OrderStatus.已发货) {
+			throw new BizException(BizCode.ERROR, "只有已发货的订单才能确认收货");
+		}
+
+		order.setOrderStatus(OrderStatus.已完成);
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
 	}
 
 }

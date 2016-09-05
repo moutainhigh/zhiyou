@@ -32,7 +32,7 @@ public class OrderListVo implements Serializable {
 	@Field(label = "过期时间")
 	private String expiredTimeLabel;
 	@Field(label = "应付总金额")
-	private String amount;
+	private String amountLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
 	@Field(label = "orderItems")

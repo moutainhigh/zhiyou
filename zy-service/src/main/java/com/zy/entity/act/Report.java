@@ -131,6 +131,12 @@ public class Report implements Serializable {
 
 	@NotNull
 	@Query(Predicate.EQ)
+	@Field(label = "一审状态")
+	@View(groups = {"ReportVo", "ReportAdminVo"})
+	private ConfirmStatus preConfirmStatus;
+
+	@NotNull
+	@Query(Predicate.EQ)
 	@Field(label = "审核状态")
 	@View(groups = {"ReportVo", "ReportAdminVo"})
 	private ConfirmStatus confirmStatus;

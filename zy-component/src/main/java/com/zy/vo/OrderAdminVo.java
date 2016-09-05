@@ -48,6 +48,8 @@ public class OrderAdminVo implements Serializable {
 	private String remark;
 	@Field(label = "是否已结算")
 	private Boolean isSettledUp;
+	@Field(label = "是否物流发货")
+	private Boolean useLogistics;
 	@Field(label = "物流公司名")
 	private String logisticsName;
 	@Field(label = "物流单号")
@@ -78,6 +80,8 @@ public class OrderAdminVo implements Serializable {
 	private String paidTimeLabel;
 	@Field(label = "退款时间")
 	private String refundedTimeLabel;
+	@Field(label = "是否物流发货")
+	private Boolean useLogisticsLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
 	@Field(label = "orderItems")

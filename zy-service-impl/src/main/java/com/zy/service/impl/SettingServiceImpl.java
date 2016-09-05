@@ -1,15 +1,5 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import com.zy.Config;
 import com.zy.common.exception.ValidationException;
 import com.zy.component.AbstractConfig;
@@ -19,6 +9,15 @@ import com.zy.entity.usr.User.UserType;
 import com.zy.mapper.SettingMapper;
 import com.zy.model.Constants;
 import com.zy.service.SettingService;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.validate;
 
 @Service
 @Validated
@@ -59,10 +58,7 @@ public class SettingServiceImpl implements SettingService {
 				return setting;
 			}
 		};
-		sb.append("试客本金提现费率").append(config.getWithdrawFeeRate(UserType.代理, CurrencyType.现金)).append("</br>");
-		sb.append("试客试客币提现费率").append(config.getWithdrawFeeRate(UserType.代理, CurrencyType.积分)).append("</br>");
-		sb.append("商家本金提现费率").append(config.getWithdrawFeeRate(UserType.商家, CurrencyType.现金)).append("</br>");
-		sb.append("商家试客币提现费率").append(config.getWithdrawFeeRate(UserType.商家, CurrencyType.积分)).append("</br>");
+		sb.append("提现费率").append(config.getWithdrawFeeRate(UserType.代理, CurrencyType.现金)).append("</br>");
 		return sb.toString();
 	}
 
