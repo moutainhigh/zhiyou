@@ -46,41 +46,41 @@ public class Product implements Serializable {
 	private String detail;
 
 	@NotNull
-	@View(type = String.class)
+	@View(name = "priceLabel", type = String.class)
 	@Field(label = "价格")
 	@DecimalMin("0.00")
 	@View(groups = { "ProductAdminVo" })
 	private BigDecimal price;
 
 	@NotNull
-	@View(type = String.class)
+	@View(name = "price1Label", type = String.class)
 	@Field(label = "价格")
 	@DecimalMin("0.00")
 	@View(groups = { "ProductAdminVo" })
 	private BigDecimal price1;
 
 	@NotNull
-	@View(type = String.class)
+	@View(name = "price2Label", type = String.class)
 	@Field(label = "价格")
 	@DecimalMin("0.00")
 	@View(groups = { "ProductAdminVo" })
 	private BigDecimal price2;
 
 	@NotNull
-	@View(type = String.class)
+	@View(name = "price3Label", type = String.class)
 	@Field(label = "价格")
 	@DecimalMin("0.00")
 	@View(groups = { "ProductAdminVo" })
 	private BigDecimal price3;
 
 	@NotNull
-	@View(type = String.class)
+	@View(name = "price4Label", type = String.class)
 	@Field(label = "价格")
 	@DecimalMin("0.00")
 	@View(groups = { "ProductAdminVo" })
 	private BigDecimal price4;
 
-	@View(type = String.class)
+	@View(name = "marketPriceLabel", type = String.class)
 	@Field(label = "市场价")
 	@DecimalMin("0.00")
 	@View(groups = { "ProductAdminVo" })
