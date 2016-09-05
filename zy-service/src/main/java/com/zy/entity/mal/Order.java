@@ -129,6 +129,14 @@ public class Order implements Serializable {
 	private String refundRemark;
 
 	@View(groups = { "OrderDetailVo", "OrderAdminVo" })
+	@Field(label = "买家留言")
+	private String buyerMemo;
+	
+	@View(groups = { "OrderDetailVo", "OrderAdminVo" })
+	@Field(label = "卖家留言")
+	private String sellerMemo;
+	
+	@View(groups = { "OrderDetailVo", "OrderAdminVo" })
 	@Field(label = "备注")
 	private String remark;
 
