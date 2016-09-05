@@ -64,7 +64,7 @@ public class OrderItem implements Serializable {
 	@DecimalMin("0.00")
 	@Field(label = "单价")
 	@View(groups = "OrderItemAdminVo")
-	@View(type = String.class, groups = "OrderItemVo")
+	@View(name = "priceLabel", type = String.class, groups = "OrderItemVo")
 	private BigDecimal price;
 
 	@NotNull
@@ -77,7 +77,7 @@ public class OrderItem implements Serializable {
 	@DecimalMin("0.00")
 	@Field(label = "子项金额", description = "单价 * 数量")
 	@View(groups = "OrderItemAdminVo")
-	@View(type = String.class, groups = "OrderItemVo")
+	@View(name = "amountLabel", type = String.class, groups = "OrderItemVo")
 	private BigDecimal amount;
 
 }

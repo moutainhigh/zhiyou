@@ -112,13 +112,13 @@ public class Order implements Serializable {
 
 	@NotNull
 	@DecimalMin("0.00")
-	@View(name = "amount", type = String.class, groups = { "OrderDetailVo", "OrderListVo"})
+	@View(name = "amountLabel", type = String.class, groups = { "OrderDetailVo", "OrderListVo"})
 	@View(groups = { "OrderAdminVo" })
 	@Field(label = "应付总金额", description = "应付总金额 = Σ订单子项金额 - 优惠金额")
 	private BigDecimal amount;
 
 	@DecimalMin("0.00")
-	@View(type = String.class, groups = { "OrderDetailVo"})
+	@View(name = "refundLabel", type = String.class, groups = { "OrderDetailVo"})
 	@View(groups = { "OrderAdminVo" })
 	@Field(label = "退款金额")
 	private BigDecimal refund;
