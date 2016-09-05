@@ -1,16 +1,5 @@
 package com.zy.component;
 
-import static com.zy.util.GcUtils.getThumbnail;
-import static java.util.Objects.isNull;
-import static org.apache.commons.lang3.time.DateFormatUtils.format;
-
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
@@ -24,14 +13,17 @@ import com.zy.service.ActivityCollectService;
 import com.zy.service.ActivitySignInService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
-import com.zy.vo.ActivityAdminFullVo;
-import com.zy.vo.ActivityAdminVo;
-import com.zy.vo.ActivityApplyAdminVo;
-import com.zy.vo.ActivityCollectAdminVo;
-import com.zy.vo.ActivityDetailVo;
-import com.zy.vo.ActivityListVo;
-import com.zy.vo.ActivitySignInAdminVo;
-import com.zy.vo.UserSimpleVo;
+import com.zy.vo.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.zy.util.GcUtils.getThumbnail;
+import static java.util.Objects.isNull;
+import static org.apache.commons.lang3.time.DateFormatUtils.format;
 
 @Component
 public class ActivityComponent {
@@ -122,11 +114,15 @@ public class ActivityComponent {
 		return activityAdminFullVo;
 	}
 	
-	public ActivityAdminVo buildAdminVo(Activity activity) {
+	public ActivityAdminVo buildAdminVo(Activity activity, boolean withDetail) {
 		String fullFmt = "yyyy-MM-dd HH:mm:ss";
 		String shortFmt = "M月d日 HH:mm";
 		ActivityAdminVo activityAdminVo = new ActivityAdminVo();
-		BeanUtils.copyProperties(activity, activityAdminVo);
+		BeanUtils.copyProperties(activity, activityAdminVo, "detail");
+
+		if (withDetail) {
+			activityAdminVo.setDetail(activity.getDetail());
+		}
 		
 		Long areaId = activity.getAreaId();
 		if(!isNull(areaId)) {

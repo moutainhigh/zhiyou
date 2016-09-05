@@ -15,6 +15,7 @@ public class ProductDetailVo implements Serializable {
 	private String skuCode;
 
 	/* 扩展 */
+	private String number;
 	private String price;
 	private String marketPrice;
 	private String stockQuantity;

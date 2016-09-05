@@ -92,6 +92,7 @@ public class ProductQueryModel implements Serializable {
 		fieldNames.add("title");
 		fieldNames.add("image1");
 		fieldNames.add("image2");
+		fieldNames.add("number");
 		fieldNames.add("price");
 		fieldNames.add("isOn");
 		fieldNames.add("createdTime");

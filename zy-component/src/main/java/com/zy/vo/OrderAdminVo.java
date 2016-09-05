@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Date;
 import java.util.ArrayList;
 
 @Getter
@@ -28,12 +29,23 @@ public class OrderAdminVo implements Serializable {
 	private String refundRemark;
 	private String remark;
 	private Boolean isSettledUp;
+	private String logisticsName;
+	private String logisticsSn;
+	private Long receiverAreaId;
+	private String receiverRealname;
+	private String receiverPhone;
+	private String receiverProvince;
+	private String receiverCity;
+	private String receiverDistrict;
+	private String receiverAddress;
+	private Date deliveredTime;
 
 	/* 扩展 */
 	private String createdTimeLabel;
 	private String expiredTimeLabel;
 	private String paidTimeLabel;
 	private String refundedTimeLabel;
+	private String deliveredTimeLabel;
 	private List<OrderItemAdminVo> orderItems = new ArrayList<>();
 
 }

@@ -1,33 +1,22 @@
 package com.zy.entity.mal;
 
-import static io.gd.generator.api.query.Predicate.EQ;
-import static io.gd.generator.api.query.Predicate.GTE;
-import static io.gd.generator.api.query.Predicate.IN;
-import static io.gd.generator.api.query.Predicate.LK;
-import static io.gd.generator.api.query.Predicate.LT;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
+import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
 @Table(name = "mal_product")
@@ -48,6 +37,10 @@ public class Product implements Serializable {
 	@Field(label = "商品名")
 	@View
 	private String title;
+
+	@View(type = String.class, groups = { "ProductDetailVo", "ProductAdminVo" })
+	@Field(label = "个数")
+	private Long number;
 
 	@Lob
 	@NotBlank

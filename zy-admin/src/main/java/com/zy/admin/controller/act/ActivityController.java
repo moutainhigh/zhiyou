@@ -58,7 +58,7 @@ public class ActivityController {
 	@ResponseBody
 	public Grid<ActivityAdminVo> list(ActivityQueryModel activityQueryModel) {
 		Page<Activity> page = activityService.findPage(activityQueryModel);
-		Page<ActivityAdminVo> voPage = PageBuilder.copyAndConvert(page, activityComponent::buildAdminVo);
+		Page<ActivityAdminVo> voPage = PageBuilder.copyAndConvert(page, v -> activityComponent.buildAdminVo(v, false));
 		return new Grid<>(voPage);
 	}
 
@@ -91,7 +91,7 @@ public class ActivityController {
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public String update(Long id, Model model) {
 		Activity activity = activityService.findOne(id);
-		model.addAttribute("activity", activityComponent.buildAdminVo(activity));
+		model.addAttribute("activity", activityComponent.buildAdminVo(activity, true));
 		return "act/activityUpdate";
 	}
 

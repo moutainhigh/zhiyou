@@ -1,22 +1,7 @@
 package com.zy.entity.mal;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
-
+import com.zy.common.extend.StringBinder;
 import com.zy.entity.fnc.CurrencyType;
-
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -27,6 +12,15 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 
 @Entity
 @Table(name = "mal_order")
@@ -67,7 +61,7 @@ public class Order implements Serializable {
 	
 	@NotNull
 	@Query({Predicate.EQ, Predicate.IN})
-	@Field(label = "用户id")
+	@Field(label = "卖家id")
 	@View
 	private Long sellerId;
 
@@ -147,5 +141,63 @@ public class Order implements Serializable {
 	@View(groups = {"OrderAdminVo"})
 	@NotNull
 	private Boolean isSettledUp;
+
+	@NotBlank
+	@Query(Predicate.LK)
+	@Field(label = "物流公司名")
+	@StringBinder
+	@View(groups = {"OrderAdminVo"})
+	private String logisticsName;
+
+	@NotBlank
+	@Query(Predicate.LK)
+	@Field(label = "物流单号")
+	@StringBinder
+	@View(groups = {"OrderAdminVo"})
+	private String logisticsSn;
+
+	@NotNull
+	@Field(label = "收件人区域")
+	@View(groups = {"OrderAdminVo"})
+	private Long receiverAreaId;
+
+	@NotBlank
+	@StringBinder
+	@Field(label = "收件人姓名")
+	@View(groups = {"OrderAdminVo"})
+	private String receiverRealname;
+
+	@NotBlank
+	@StringBinder
+	@Field(label = "收件人电话")
+	@View(groups = {"OrderAdminVo"})
+	private String receiverPhone;
+
+	@NotBlank
+	@Field(label = "收件人省份")
+	@View(groups = {"OrderAdminVo"})
+	private String receiverProvince;
+
+	@NotBlank
+	@Field(label = "收件人城市")
+	@View(groups = {"OrderAdminVo"})
+	private String receiverCity;
+
+	@NotBlank
+	@Field(label = "收件人地区")
+	@View(groups = {"OrderAdminVo"})
+	private String receiverDistrict;
+
+	@NotBlank
+	@StringBinder
+	@Field(label = "收件人详细地址")
+	@View(groups = {"OrderAdminVo"})
+	private String receiverAddress;
+
+	@NotNull
+	@View(name = "deliveredTimeLabel", type = String.class)
+	@Field(label = "发货时间")
+	@View(groups = {"OrderAdminVo"})
+	private Date deliveredTime;
 
 }

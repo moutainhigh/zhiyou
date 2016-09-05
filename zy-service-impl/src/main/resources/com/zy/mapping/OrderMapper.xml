@@ -21,12 +21,22 @@
 		<result column="refund_remark" property="refundRemark" />
 		<result column="remark" property="remark" />
 		<result column="is_settled_up" property="isSettledUp" />
+		<result column="logistics_name" property="logisticsName" />
+		<result column="logistics_sn" property="logisticsSn" />
+		<result column="receiver_area_id" property="receiverAreaId" />
+		<result column="receiver_realname" property="receiverRealname" />
+		<result column="receiver_phone" property="receiverPhone" />
+		<result column="receiver_province" property="receiverProvince" />
+		<result column="receiver_city" property="receiverCity" />
+		<result column="receiver_district" property="receiverDistrict" />
+		<result column="receiver_address" property="receiverAddress" />
+		<result column="delivered_time" property="deliveredTime" />
 		<result column="version" property="version" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.Order" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_order` (sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,remark,is_settled_up,version)
-	  values (#{sn},#{userId},#{sellerId},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{postFee},#{discountFee},#{amount},#{refund},#{refundRemark},#{remark},#{isSettledUp},#{version})
+	  insert into `mal_order` (sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,remark,is_settled_up,logistics_name,logistics_sn,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version)
+	  values (#{sn},#{userId},#{sellerId},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{postFee},#{discountFee},#{amount},#{refund},#{refundRemark},#{remark},#{isSettledUp},#{logisticsName},#{logisticsSn},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{deliveredTime},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -53,6 +63,16 @@
 			refund_remark = #{refundRemark},
 			remark = #{remark},
 			is_settled_up = #{isSettledUp},
+			logistics_name = #{logisticsName},
+			logistics_sn = #{logisticsSn},
+			receiver_area_id = #{receiverAreaId},
+			receiver_realname = #{receiverRealname},
+			receiver_phone = #{receiverPhone},
+			receiver_province = #{receiverProvince},
+			receiver_city = #{receiverCity},
+			receiver_district = #{receiverDistrict},
+			receiver_address = #{receiverAddress},
+			delivered_time = #{deliveredTime},
 			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
@@ -80,6 +100,16 @@
 					<when test="field == 'refundRemark'">refund_remark = #{order.refundRemark},</when>
 					<when test="field == 'remark'">remark = #{order.remark},</when>
 					<when test="field == 'isSettledUp'">is_settled_up = #{order.isSettledUp},</when>
+					<when test="field == 'logisticsName'">logistics_name = #{order.logisticsName},</when>
+					<when test="field == 'logisticsSn'">logistics_sn = #{order.logisticsSn},</when>
+					<when test="field == 'receiverAreaId'">receiver_area_id = #{order.receiverAreaId},</when>
+					<when test="field == 'receiverRealname'">receiver_realname = #{order.receiverRealname},</when>
+					<when test="field == 'receiverPhone'">receiver_phone = #{order.receiverPhone},</when>
+					<when test="field == 'receiverProvince'">receiver_province = #{order.receiverProvince},</when>
+					<when test="field == 'receiverCity'">receiver_city = #{order.receiverCity},</when>
+					<when test="field == 'receiverDistrict'">receiver_district = #{order.receiverDistrict},</when>
+					<when test="field == 'receiverAddress'">receiver_address = #{order.receiverAddress},</when>
+					<when test="field == 'deliveredTime'">delivered_time = #{order.deliveredTime},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -88,14 +118,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,remark,is_settled_up,version
+		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,remark,is_settled_up,logistics_name,logistics_sn,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version
 		from `mal_order`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderQueryModel">
 		select
-		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,remark,is_settled_up,version
+		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,remark,is_settled_up,logistics_name,logistics_sn,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version
 		from `mal_order`
 		<where>
 			<if test="userIdIN != null">
@@ -107,11 +137,17 @@
 			<if test="orderStatusEQ != null">
 				 and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
+			<if test="logisticsNameLK != null">
+				<bind name="logisticsNameLK" value="'%' + logisticsNameLK + '%'"/> and logistics_name like #{logisticsNameLK}
+			</if>
 			<if test="sellerIdEQ != null">
 				 and seller_id = #{sellerIdEQ}
 			</if>
 			<if test="userIdEQ != null">
 				 and user_id = #{userIdEQ}
+			</if>
+			<if test="logisticsSnLK != null">
+				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
 			</if>
 			<if test="snLK != null">
 				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
@@ -148,11 +184,17 @@
 			<if test="orderStatusEQ != null">
 				 and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
+			<if test="logisticsNameLK != null">
+				<bind name="logisticsNameLK" value="'%' + logisticsNameLK + '%'"/> and logistics_name like #{logisticsNameLK}
+			</if>
 			<if test="sellerIdEQ != null">
 				 and seller_id = #{sellerIdEQ}
 			</if>
 			<if test="userIdEQ != null">
 				 and user_id = #{userIdEQ}
+			</if>
+			<if test="logisticsSnLK != null">
+				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
 			</if>
 			<if test="snLK != null">
 				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}

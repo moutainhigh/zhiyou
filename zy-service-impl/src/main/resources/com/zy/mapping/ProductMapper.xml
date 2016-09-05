@@ -5,6 +5,7 @@
 	<resultMap id="baseResultMap" type="com.zy.entity.mal.Product">
 		<id column="id" property="id" />
 		<result column="title" property="title" />
+		<result column="number" property="number" />
 		<result column="detail" property="detail" />
 		<result column="price" property="price" />
 		<result column="market_price" property="marketPrice" />
@@ -22,8 +23,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.Product" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_product` (title,detail,price,market_price,sku_code,stock_quantity,locked_count,is_on,image1,image2,image3,image4,image5,image6,created_time)
-	  values (#{title},#{detail},#{price},#{marketPrice},#{skuCode},#{stockQuantity},#{lockedCount},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime})
+	  insert into `mal_product` (title,number,detail,price,market_price,sku_code,stock_quantity,locked_count,is_on,image1,image2,image3,image4,image5,image6,created_time)
+	  values (#{title},#{number},#{detail},#{price},#{marketPrice},#{skuCode},#{stockQuantity},#{lockedCount},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime})
 	</insert>
 
 	<delete id="delete">
@@ -34,6 +35,7 @@
 		update `mal_product`
 		<set>
 			title = #{title},
+			number = #{number},
 			detail = #{detail},
 			price = #{price},
 			market_price = #{marketPrice},
@@ -58,6 +60,7 @@
 				<foreach collection="fields" item="field">
 				<choose>
 					<when test="field == 'title'">title = #{product.title},</when>
+					<when test="field == 'number'">number = #{product.number},</when>
 					<when test="field == 'detail'">detail = #{product.detail},</when>
 					<when test="field == 'price'">price = #{product.price},</when>
 					<when test="field == 'marketPrice'">market_price = #{product.marketPrice},</when>
@@ -80,14 +83,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,title,detail,price,market_price,sku_code,stock_quantity,locked_count,is_on,image1,image2,image3,image4,image5,image6,created_time
+		id,title,number,detail,price,market_price,sku_code,stock_quantity,locked_count,is_on,image1,image2,image3,image4,image5,image6,created_time
 		from `mal_product`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ProductQueryModel">
 		select
-		id,title,detail,price,market_price,sku_code,stock_quantity,locked_count,is_on,image1,image2,image3,image4,image5,image6,created_time
+		id,title,number,detail,price,market_price,sku_code,stock_quantity,locked_count,is_on,image1,image2,image3,image4,image5,image6,created_time
 		from `mal_product`
 		<where>
 			<if test="idIN != null">
