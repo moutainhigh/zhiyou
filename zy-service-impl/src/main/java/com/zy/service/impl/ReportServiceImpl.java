@@ -1,7 +1,9 @@
 package com.zy.service.impl;
 
+import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.act.Report;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.mapper.ReportMapper;
 import com.zy.mapper.UserMapper;
@@ -55,6 +57,22 @@ public class ReportServiceImpl implements ReportService {
 		page.setData(data);
 		page.setTotal(total);
 		return page;
+	}
+
+	@Override
+	public void confirm(@NotNull Long id, boolean isSuccess, String confirmRemark) {
+		Report report = reportMapper.findOne(id);
+		validate(report, NOT_NULL, "report id " + id + " is not found");
+		if (isSuccess) {
+			report.setConfirmStatus(ConfirmStatus.审核通过);
+			report.setConfirmRemark(confirmRemark);
+		} else {
+			report.setConfirmStatus(ConfirmStatus.审核未通过);
+			report.setConfirmRemark(confirmRemark);
+		}
+		if (reportMapper.update(report) == 0) {
+			throw new ConcurrentException();
+		}
 	}
 
 }

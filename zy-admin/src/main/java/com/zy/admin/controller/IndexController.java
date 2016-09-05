@@ -104,9 +104,6 @@ public class IndexController {
 					if (userType == UserType.代理) {
 						buyerCount++;
 						buyerUserIds.add(user.getId());
-					} else if (userType == UserType.商家) {
-						merchantCount++;
-						merchantUserIds.add(user.getId());
 					}
 				}
 				cacheSupport.set(CACHE_NAME_STATISTICS, BUYER_REGISTER_COUNT, buyerCount, DEFAULT_EXPIRE);
@@ -198,9 +195,6 @@ public class IndexController {
 						UserType userType = user.getUserType();
 						if (userType == UserType.代理) {
 							buyerCount++;
-						}
-						if (userType == UserType.商家) {
-							merchantCount++;
 						}
 						userCount++;
 					}
