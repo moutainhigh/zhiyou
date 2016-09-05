@@ -77,6 +77,8 @@ public class AdminConstants {
 			sub.put("profit:view", "收益查看");
 			sub.put("accountLog:view", "流水查看");
 			sub.put("accountLog:export", "流水导出");
+			sub.put("bank:view", "银行信息(查看)");
+			sub.put("bank:edit", "银行信息(编辑)");
 			sub.put("bankCard:view", "绑定银行信息(查看)");
 			sub.put("bankCard:confirm", "绑定银行信息(审核)");
 	 		SETTING_PERMISSION_MAP.put("财务管理", sub);
