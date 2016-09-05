@@ -19,4 +19,7 @@ public interface OrderService {
 	
 	Order findBySn(String sn);
 	
+	void deliver(Order order);
+	
+	void confirmDelivery(String sn);
 }
