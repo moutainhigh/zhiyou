@@ -1,20 +1,22 @@
 package com.zy.mobile.controller.ucenter;
 
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.CACHE_NAME_BIND_PHONE_SMS_LAST_SEND_TIME;
-import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_BIND_PHONE_SMS;
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_CAPTCHA;
-import static java.util.Objects.isNull;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.zy.common.exception.ValidationException;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.support.AliyunOssSupport;
+import com.zy.common.support.cache.CacheSupport;
+import com.zy.common.support.sms.SmsSupport;
+import com.zy.common.util.ValidateUtils;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.sys.ShortMessage;
+import com.zy.entity.usr.Appearance;
+import com.zy.entity.usr.Portrait;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.model.PhoneAndSmsCode;
+import com.zy.model.Principal;
+import com.zy.service.*;
+import com.zy.util.GcUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -31,28 +33,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.zy.common.exception.ValidationException;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.support.AliyunOssSupport;
-import com.zy.common.support.LuosimaoSmsSupport;
-import com.zy.common.support.LuosimaoSmsSupport.SmsRes;
-import com.zy.common.support.cache.CacheSupport;
-import com.zy.common.util.ValidateUtils;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.sys.ShortMessage;
-import com.zy.entity.usr.Appearance;
-import com.zy.entity.usr.Portrait;
-import com.zy.entity.usr.User;
-import com.zy.model.Constants;
-import com.zy.model.PhoneAndSmsCode;
-import com.zy.model.Principal;
-import com.zy.service.AddressService;
-import com.zy.service.AppearanceService;
-import com.zy.service.PortraitService;
-import com.zy.service.ShortMessageService;
-import com.zy.service.UserService;
-import com.zy.util.GcUtils;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.*;
+import static java.util.Objects.isNull;
 
 
 @RequestMapping("/u")
@@ -71,7 +61,7 @@ public class UcenterInfoController {
     private AliyunOssSupport aliyunOssSupport;
     
     @Autowired
-	private LuosimaoSmsSupport luosimaoSmsSupport;
+	private SmsSupport smsSupport;
 
 	@Autowired
 	private ShortMessageService shortMessageService;
@@ -190,9 +180,9 @@ public class UcenterInfoController {
 
 		String smsCode = RandomStringUtils.randomNumeric(6);
 		String message = "您的短信验证码为" + smsCode;
-		SmsRes smsRes = luosimaoSmsSupport.send(phone, message);
-		if (smsRes.getError() != 0) {
-			return ResultBuilder.error("短信发送失败,错误代码" + smsRes.getError());
+		SmsSupport.SmsResult smsResult = smsSupport.send(phone, message, Constants.SETTING_SYS_NAME);
+		if (!smsResult.isSuccess()) {
+			return ResultBuilder.error("短信发送失败,错误代码" + smsResult.getMessage());
 		}
 		try {
 			ShortMessage shortMessage = new ShortMessage();
@@ -200,8 +190,8 @@ public class UcenterInfoController {
 			shortMessage.setPhone(phone);
 			shortMessage.setMessage(message);
 			shortMessage.setCreatedTime(new Date());
-			shortMessage.setErrorCode(smsRes.getError());
-			shortMessage.setErrorMsg(smsRes.getMsg());
+			shortMessage.setIsSuccess(true);
+			shortMessage.setErrorMessage(null);
 			shortMessageService.create(shortMessage);
 		} catch (Exception e) {
 			logger.error("保存失败", e);
