@@ -62,10 +62,6 @@ public class OrderController {
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(HttpServletRequest request, OrderCreateDto orderCreateDto, Principal principal, RedirectAttributes redirectAttributes, Model model) {
-		Long addressId = orderCreateDto.getAddressId();
-		validate(addressId, NOT_NULL, "address id is null!");
-		Address address = addressService.findOne(addressId);
-		validate(address, NOT_NULL, "address is not found id:" + addressId);
 		
 		orderCreateDto.setUserId(principal.getUserId());
 		try {
