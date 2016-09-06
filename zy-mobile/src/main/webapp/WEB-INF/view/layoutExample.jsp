@@ -124,6 +124,15 @@
             <i class="quantity-add fa fa-plus"></i>
           </div>
         </div>
+        <div class="list-item">
+          <label class="list-label" for="level">等级</label>
+          <div class="list-text form-range">
+            <input type="range" id="level" name="level" min="0" max="5" value="2" step="1" onchange="$('#levelVal').text($(this).val());">
+          </div>
+          <div class="list-unit fs-16 font-333">
+            <output id="levelVal">2</output> 级
+          </div>
+        </div>
         <div class="list-item img-captcha">
           <label for="captcha" class="list-label">图形码</label>
           <div class="list-text">
