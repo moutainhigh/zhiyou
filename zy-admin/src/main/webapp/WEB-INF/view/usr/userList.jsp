@@ -158,7 +158,7 @@
 </script>
 <script type="text/javascript">
   function exportUsers() {
-    location.href = '${ctx}/user/usersExport?' + $('#searchForm').serialize();
+    location.href = '${ctx}/user/export?' + $('#searchForm').serialize();
   }
 </script>
 <!-- END JAVASCRIPTS -->

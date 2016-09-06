@@ -105,7 +105,7 @@
                 <div class="form-group">
                   <label class="control-label col-md-3">详情<span class="required"> * </span></label>
                   <div class="col-md-5">
-                    <p class="form-control-static">${activity.detail}</p>
+                    <div style="width:750px;" class="form-control-static">${activity.detail}</div>
                   </div>
                 </div>
               </div>

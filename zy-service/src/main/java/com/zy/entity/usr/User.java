@@ -1,21 +1,6 @@
 package com.zy.entity.usr;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.zy.common.extend.StringBinder;
-
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -26,6 +11,13 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "usr_user")
@@ -38,7 +30,7 @@ public class User implements Serializable {
 
 	@Type(label = "用户类型")
 	public enum UserType {
-		平台, 代理, 商家
+		平台, 代理
 	}
 
 	@Type(label = "用户等级")

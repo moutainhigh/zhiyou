@@ -27,12 +27,12 @@ import java.util.Date;
 @QueryModel
 @ViewObject(groups = {"ActivityListVo", "ActivityDetailVo", "ActivityAdminVo", "ActivityAdminFullVo"},
 		views = {
-				@View(name = "status", type = String.class)
+				@View(name = "status", label="活动状态", type = String.class)
 		},
 		collectionViews = {
-				@CollectionView(name = "activityApplies", elementGroup = "ActivityApplyAdminVo", groups = "ActivityAdminFullVo"),
-				@CollectionView(name = "activityCollects", elementGroup = "ActivityCollectAdminVo", groups = "ActivityAdminFullVo"),
-				@CollectionView(name = "activitySignIns", elementGroup = "ActivitySignInAdminVo", groups = "ActivityAdminFullVo"),
+				@CollectionView(name = "activityApplies", label="活动报名", elementGroup = "ActivityApplyAdminVo", groups = "ActivityAdminFullVo"),
+				@CollectionView(name = "activityCollects", label="活动关注", elementGroup = "ActivityCollectAdminVo", groups = "ActivityAdminFullVo"),
+				@CollectionView(name = "activitySignIns", label="活动签到", elementGroup = "ActivitySignInAdminVo", groups = "ActivityAdminFullVo"),
 				@CollectionView(name = "appliedUsers", elementGroup = "UserSimpleVo", groups = "ActivityDetailVo"),
 		}
 )

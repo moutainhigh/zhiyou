@@ -129,12 +129,11 @@
   
   function setAddress(address) {
     closeAddress();
-    layer.close(layerIndex);
     $('#addressId').val(address.id);
     var addressText = address.addressText ? address.addressText 
         : address.province + ' ' + address.city + ' ' + address.district + ' ' + address.address
-    $('.receiver-wrap').html('<div>' + address.realname + '<span class="right">' + address.phone + '</span></div>' 
-        + '<div>' + addressText+ '</div>')
+    $('.receiver-wrap').html('<div>收件人：' + address.realname + '<span class="right">' + address.phone + '</span></div>' 
+        + '<div class="fs-14 font-777">收件地址：' + addressText+ '</div>')
   }
   
   function closeAddress() {
@@ -157,41 +156,55 @@
       <div class="form-message note note-warning mb-0 hide">
         <p>输入信息有误，请先更正。</p>
       </div>
-      <div class="form-group">
-        <div class="form-item">
-          <label class="control-label" for="holder">收件人</label>
-          <input type="text" id="realname" name="realname" class="control-input" value="" placeholder="填写收件人姓名">
+      <div class="list-group">
+        <div class="list-item">
+          <label class="list-label" for="realname">收件人</label>
+          <div class="list-text">
+            <input type="text" id="realname" name="realname" class="form-input" value="" placeholder="填写收件人姓名">
+          </div>
         </div>
-        <div class="form-item">
-          <label class="control-label" for="phone">手机号码</label>
-          <input type="tel" id="phone" name="phone" class="control-input" value="" placeholder="填写收件人手机号码">
+        <div class="list-item">
+          <label class="list-label" for="phone">手机号码</label>
+          <div class="list-text">
+            <input type="tel" id="phone" name="phone" class="form-input" value="" placeholder="填写收件人手机号码">
+          </div>
         </div>
-        <div class="form-item">
-          <label class="control-label">省份</label>
-          <div class="form-select">
+        <div class="list-item">
+          <label class="list-label">省份</label>
+          <div class="list-text form-select">
             <select name="province" id="province">
               <option value="">请选择</option>
             </select>
           </div>
         </div>
-        <div class="form-item">
-          <label class="control-label">城市</label>
-          <div class="form-select">
+        <div class="list-item">
+          <label class="list-label">城市</label>
+          <div class="list-text form-select">
             <select name="city" id="city">
               <option value="">请选择</option>
             </select>
           </div>
         </div>
-        <div class="form-item">
-          <label class="control-label">地区</label>
-          <div class="form-select">
+        <div class="list-item">
+          <label class="list-label">地区</label>
+          <div class="list-text form-select">
             <select name="areaId" id="district">
               <option value="">请选择</option>
             </select>
           </div>
         </div>
-        <div class="form-item input-cell">
-          <textarea id="address" name="address" class="control-input" rows="3" placeholder="填写详细地址，例如街道名称，楼层和门牌号等信息"></textarea>
+        <div class="list-item">
+          <div class="list-text">
+            <textarea id="address" name="address" class="form-input" rows="3" placeholder="填写详细地址，例如街道名称，楼层和门牌号等信息"></textarea>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="list-text">设为默认地址</div>
+          <div class="list-unit form-switch">
+            <input type="hidden" name="_isDefault" value="false">
+            <input type="checkbox" id="isDefault" name="isDefault" value="true">
+            <label class="radius" for="isDefault"></label>
+          </div>
         </div>
       </div>
 
@@ -232,19 +245,19 @@
   	<form id="orderForm" class="valid-form" action="${ctx}/order/create" method="post">
     <div class="list-group">
       <div class="list-item">
-        <div class="receiver-info clearfix">
+        <div class="list-text receiver-info">
           <i class="fa fa-map-marker"></i>
           <c:if test="${empty address}">
-          <div class="receiver-wrap">
+          <div class="receiver-wrap font-555">
             <span class="lh-30">您还未设置收货地址</span>
             <a class="btn-add-address btn orange btn-sm round-2 right width-180" href="javascript:;">设置收货地址</a>
           </div>
           </c:if>
           <c:if test="${not empty address}">
           <i class="fa fa-map-marker"></i>
-          <div class="receiver-wrap">
+          <div class="receiver-wrap font-555">
             <div>收货人：${order.addressRealname}<span class="right">${order.addressPhone}</span></div>
-            <div>收货地址：${order.addressProvince} ${order.addressCity} ${order.addressDistrict} ${order.addressAddress}</div>
+            <div class="fs-14 font-777">收货地址：${order.addressProvince} ${order.addressCity} ${order.addressDistrict} ${order.addressAddress}</div>
           </div>
           </c:if>
           <input type="hidden" name="addressId" value="${address.id}">
@@ -254,7 +267,7 @@
     
     <div class="list-group">
       <div class="list-item">
-        <div class="relative font-333">
+        <div class="list-text relative font-333">
           <img class="product-image abs-lt" alt="" src="${product.image1Thumbnail}">
           <div class="product-title">${product.title}</div>
           <div class="product-price abs-rt text-right">
@@ -269,16 +282,20 @@
           <input type="hidden" name="price" value="${product.price * quantity}">
         </div>
       </div>
-      <div class="list-item text-right">
-        <%-- <div class="fs-12">合计：<span class="font-red">¥ ${product.price * quantity}</span></div> --%>
-        <div class="fs-14">应付款： <span class="font-orange fs-16 bold">¥ ${product.price * quantity}</span></div>
+      <div class="list-item">
+        <div class="list-text text-right">
+          <%-- <div class="fs-12">合计：<span class="font-red">¥ ${product.price * quantity}</span></div> --%>
+          <div class="fs-14">应付款： <span class="font-orange fs-16 bold">¥ ${product.price * quantity}</span></div>
+        </div>
       </div>
     </div>
     
-    <div class="form-title">请写下您的订单留言</div>
-    <div class="form-group">
-      <div class="form-item input-cell">
-        <textarea name="memo" class="control-input" rows="2" placeholder="填写您的订单留言"></textarea>
+    <div class="list-title">请写下您的订单留言</div>
+    <div class="list-group">
+      <div class="list-item">
+        <div class="list-text">
+          <textarea name="memo" class="form-input" rows="2" placeholder="填写您的订单留言"></textarea>
+        </div>
       </div>
     </div>
     

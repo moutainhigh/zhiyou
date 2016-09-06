@@ -1,33 +1,23 @@
 package com.zy.entity.mal;
 
-import static io.gd.generator.api.query.Predicate.EQ;
-import static io.gd.generator.api.query.Predicate.GTE;
-import static io.gd.generator.api.query.Predicate.IN;
-import static io.gd.generator.api.query.Predicate.LK;
-import static io.gd.generator.api.query.Predicate.LT;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
+import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
 @Table(name = "mal_product")
@@ -56,32 +46,60 @@ public class Product implements Serializable {
 	private String detail;
 
 	@NotNull
-	@View(type = String.class)
+	@View(name = "priceLabel", type = String.class)
 	@Field(label = "价格")
+	@DecimalMin("0.00")
+	@View(groups = { "ProductAdminVo" })
 	private BigDecimal price;
 
-	@View(type = String.class)
+	@NotNull
+	@View(name = "price1Label", type = String.class)
+	@Field(label = "价格")
+	@DecimalMin("0.00")
+	@View(groups = { "ProductAdminVo" })
+	private BigDecimal price1;
+
+	@NotNull
+	@View(name = "price2Label", type = String.class)
+	@Field(label = "价格")
+	@DecimalMin("0.00")
+	@View(groups = { "ProductAdminVo" })
+	private BigDecimal price2;
+
+	@NotNull
+	@View(name = "price3Label", type = String.class)
+	@Field(label = "价格")
+	@DecimalMin("0.00")
+	@View(groups = { "ProductAdminVo" })
+	private BigDecimal price3;
+
+	@NotNull
+	@View(name = "price4Label", type = String.class)
+	@Field(label = "价格")
+	@DecimalMin("0.00")
+	@View(groups = { "ProductAdminVo" })
+	private BigDecimal price4;
+
+	@View(name = "marketPriceLabel", type = String.class)
 	@Field(label = "市场价")
+	@DecimalMin("0.00")
+	@View(groups = { "ProductAdminVo" })
 	private BigDecimal marketPrice;
 
 	@View(groups = { "ProductDetailVo", "ProductAdminVo" })
 	@Field(label = "商品编码")
 	private String skuCode;
 
-	@View(type = String.class, groups = { "ProductDetailVo", "ProductAdminVo" })
-	@Field(label = "库存数量")
-	private Long stockQuantity;
-
-	@Field(label = "锁定数量")
-	private Long lockedCount;
-
 	@Query(EQ)
 	@Field(label = "是否上架")
-	private Boolean isOn = false;
+	@NotNull
+	@View(groups = { "ProductAdminVo" })
+	private Boolean isOn;
 
 	@NotBlank
 	@View(name = "image1Big")
 	@View(name = "image1Thumbnail" )
+	@View(groups = { "ProductAdminVo" })
 	@Field(label = "主图")
 	private String image1;
 
@@ -104,6 +122,7 @@ public class Product implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Query({GTE,LT})
 	@Field(label = "创建时间")
+	@View(groups = { "ProductAdminVo" })
 	private Date createdTime;
 
 }

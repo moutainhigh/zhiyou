@@ -39,6 +39,7 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public void create(@NotNull Product product) {
 		product.setCreatedTime(new Date());
+		product.setIsOn(false);
 		validate(product);
 		productMapper.insert(product);
 	}

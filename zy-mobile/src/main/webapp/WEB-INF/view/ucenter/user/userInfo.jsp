@@ -34,64 +34,57 @@
     <div class="list-group mt-10">
       <div class="list-title">基本信息</div>
       <a class="list-item list-item-avatar" href="${ctx}/u/avatar">
-        <label class="list-label">头像</label>
-        <span class="list-text">
+        <div class="list-text">头像</div>
+        <div class="list-unit">
           <img class="image-60 round bd" src="${userAvatarSmall}">
-          <i class="list-arrow"></i>
-        </span>
+        </div>
+        <i class="list-arrow"></i>
       </a>
       <a class="list-item" href="${ctx}/u/nickname">
-        <label class="list-label">昵称</label>
-        <span class="list-text">
-          <span>${user.nickname}</span>
-          <i class="list-arrow"></i>
-        </span>
+        <div class="list-text">昵称</div>
+        <div class="list-unit">${user.nickname}</div>
+        <i class="list-arrow"></i>
       </a>
       <a class="list-item"<c:if test="${empty user.phone}"> href="${ctx}/u/bindPhone"</c:if><c:if test="${not empty user.phone}"> href="javascript:;"</c:if>>
-        <label class="list-label">手机号</label>
-        <span class="list-text">
+        <div class="list-text">手机号</div>
         <c:if test="${empty user.phone}">
-          <span>未绑定</span>
-          <i class="list-arrow"></i>
+        <div class="list-unit">未绑定</div>
+        <i class="list-arrow"></i>
         </c:if>
         <c:if test="${not empty user.phone}">
-          <span>${user.phone}</span>
+        <div class="list-unit">${user.phone}</div>
         </c:if>
-        </span>
       </a>
       <a class="list-item" href="${ctx}/help/userRank">
-        <label class="list-label">代理等级</label>
-        <span class="list-text">
-          <c:if test="${user.userRank == 'V1'}"><i class="icon icon-newbie"></i> <span>三级代理</span></c:if>
-          <c:if test="${user.userRank == 'V2'}"><i class="icon icon-tongpai"></i> <span>二级代理</span></c:if>
-          <c:if test="${user.userRank == 'V3'}"><i class="icon icon-yinnpai"></i> <span>一级代理</span></c:if>
-          <c:if test="${user.userRank == 'V4'}"><i class="icon icon-jinpai"></i> <span>特级代理</span></c:if>
-          <i class="list-arrow"></i>
-        </span>
+        <div class="list-text">代理等级</div>
+        <div class="list-unit">
+          <c:if test="${user.userRank == 'V1'}"><i class="icon icon-newbie"></i>三级代理</c:if>
+          <c:if test="${user.userRank == 'V2'}"><i class="icon icon-tongpai"></i>二级代理</c:if>
+          <c:if test="${user.userRank == 'V3'}"><i class="icon icon-yinnpai"></i>一级代理</span></c:if>
+          <c:if test="${user.userRank == 'V4'}"><i class="icon icon-jinpai"></i>特级代理</c:if>
+        </div>
+        <i class="list-arrow"></i>
       </a>
     </div>
 
     <div class="list-group">
       <a class="list-item list-item-icon" href="${ctx}/u/portrait">
-        <label class="list-label"><i class="icon icon-portrait"></i>详细资料</label>
-        <span class="list-text">
-          <span><c:if test="${!isCompletedPortrait}">未填写</c:if></span>
-          <i class="list-arrow"></i>
-        </span>
+        <i class="list-icon icon icon-portrait"></i>
+        <div class="list-text">个人资料</div>
+        <div class="list-unit"><c:if test="${!isCompletedPortrait}">未填写</c:if></div>
+        <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/address">
-        <label class="list-label"><i class="icon icon-address"></i>收货地址</label>
-        <span class="list-text">
-          <span><c:if test="${!hasAddress}">未填写</c:if></span>
-          <i class="list-arrow"></i>
-        </span>
+        <i class="list-icon icon icon-address"></i>
+        <div class="list-text">收货地址</div>
+        <div class="list-unit"><c:if test="${!hasAddress}">未填写</c:if></div>
+        <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/bankCard">
-        <label class="list-label"><i class="icon icon-appearance"></i>银行卡</label>
-        <span class="list-text">
-          <span><c:if test="${!hasBankCard}">未绑定</c:if></span>
-          <i class="list-arrow"></i>
-        </span>
+        <i class="list-icon icon icon-appearance"></i>
+        <div class="list-text">银行卡</div>
+        <div class="list-unit"><c:if test="${!hasBankCard}">未绑定</c:if></div>
+        <i class="list-arrow"></i>
       </a>
     </div>
 

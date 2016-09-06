@@ -64,26 +64,32 @@
       <div class="form-message note note-warning mb-0 hide">
         <p>输入信息有误，请先更正。</p>
       </div>
-      <div class="form-group">
-        <div class="form-item">
-          <label class="control-label">开户银行</label>
-          <div class="form-select">
+      <div class="list-group">
+        <div class="list-item">
+          <label class="list-label">开户银行</label>
+          <div class="list-text form-select">
             <select name="bankName" id="bankName">
               <option value="">请选择</option>
             </select>
           </div>
         </div>
-        <div class="form-item">
-          <label class="control-label" for="accountName">开户姓名</label>
-          <input type="text" id="accountName" name="accountName" class="control-input" value="" placeholder="填写开户姓名">
+        <div class="list-item">
+          <label class="list-label" for="accountName">开户姓名</label>
+          <div class="list-text">
+            <input type="text" id="accountName" name="accountName" class="form-input" value="" placeholder="填写开户姓名">
+          </div>
         </div>
-        <div class="form-item">
-          <label class="control-label" for="accountNo">银行卡号</label>
-          <input type="text" id="accountNo" name="accountNo" class="control-input" value="" placeholder="填写银行卡号">
+        <div class="list-item">
+          <label class="list-label" for="accountNo">银行卡号</label>
+          <div class="list-text">
+            <input type="text" id="accountNo" name="accountNo" class="form-input" value="" placeholder="填写银行卡号">
+          </div>
         </div>
-        <div class="form-item">
-          <label class="control-label" for="bankBranchName">开户支行名</label>
-          <input type="text" id="bankBranchName" name="bankBranchName" class="control-input" value="" placeholder="填写开户支行名称">
+        <div class="list-item">
+          <label class="list-label" for="bankBranchName">开户支行名</label>
+          <div class="list-text">
+            <input type="text" id="bankBranchName" name="bankBranchName" class="form-input" value="" placeholder="填写开户支行名称">
+          </div>
         </div>
       </div>
 

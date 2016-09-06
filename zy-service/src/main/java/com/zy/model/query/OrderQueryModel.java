@@ -32,6 +32,10 @@ public class OrderQueryModel implements Serializable {
 
 	private OrderStatus orderStatusEQ;
 
+	private String logisticsNameLK;
+
+	private String logisticsSnLK;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
@@ -85,24 +89,37 @@ public class OrderQueryModel implements Serializable {
 
 	static {
 		fieldNames.add("currencyType");
-		fieldNames.add("amount");
+		fieldNames.add("logisticsSn");
 		fieldNames.add("discountFee");
-		fieldNames.add("postFee");
 		fieldNames.add("orderStatus");
 		fieldNames.add("remark");
+		fieldNames.add("receiverProvince");
 		fieldNames.add("title");
-		fieldNames.add("paidTime");
-		fieldNames.add("userId");
-		fieldNames.add("version");
-		fieldNames.add("expiredTime");
+		fieldNames.add("receiverCity");
 		fieldNames.add("isSettledUp");
 		fieldNames.add("sellerId");
+		fieldNames.add("receiverPhone");
 		fieldNames.add("refundedTime");
+		fieldNames.add("receiverDistrict");
 		fieldNames.add("refundRemark");
 		fieldNames.add("createdTime");
 		fieldNames.add("id");
 		fieldNames.add("sn");
+		fieldNames.add("receiverAreaId");
+		fieldNames.add("amount");
+		fieldNames.add("postFee");
+		fieldNames.add("paidTime");
+		fieldNames.add("userId");
+		fieldNames.add("version");
+		fieldNames.add("expiredTime");
+		fieldNames.add("receiverRealname");
+		fieldNames.add("logisticsName");
+		fieldNames.add("receiverAddress");
+		fieldNames.add("sellerMemo");
+		fieldNames.add("deliveredTime");
 		fieldNames.add("refund");
+		fieldNames.add("buyerMemo");
+		fieldNames.add("useLogistics");
 	}
 
 }

@@ -66,53 +66,62 @@
   <article>
     <div class="list-group">
       <c:if test="${user.userRank == 'V0'}">
-      <a class="list-item list-item-icon" href="${ctx}/product?isFirst=true">
-        <label class="list-label"><i class="icon icon-account"></i>成为代理</label>
-        <span class="list-text"><i class="list-arrow"></i></span>
+      <a class="list-item bd-t-0" href="${ctx}/product?isFirst=true">
+        <i class="list-icon icon icon-account"></i>
+        <div class="list-text">成为代理</div>
+        <i class="list-arrow"></i>
       </a>
       </c:if>
       <c:if test="${user.userRank != 'V0'}">
       <a class="list-item list-item-icon" href="${ctx}/u/invite">
-        <label class="list-label"><i class="icon icon-account"></i>我的团队</label>
-        <span class="list-text"><i class="list-arrow"></i></span>
+        <i class="list-icon icon icon-account"></i>
+        <div class="list-text">我的团队</div>
+        <i class="list-arrow"></i>
       </a>
       </c:if>
     </div>
     
     <div class="list-group">
       <a class="list-item list-item-icon" href="${ctx}/u/order/in">
-        <label class="list-label"><i class="icon icon-coupon"></i>收到的订单</label>
-        <span class="list-text"><i class="list-arrow"></i></span>
+        <i class="list-icon icon icon-coupon"></i>
+        <div class="list-text">收到的订单</div>
+        <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/order/out">
-        <label class="list-label"><i class="icon icon-coupon"></i>发出的订单</label>
-        <span class="list-text"><i class="list-arrow"></i></span>
+        <i class="list-icon icon icon-account"></i>
+        <div class="list-text">发出的订单</div>
+        <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/report">
-        <label class="list-label"><i class="icon icon-achievement"></i>检测报告</label>
-        <span class="list-text"><i class="list-arrow"></i></span>
+        <i class="list-icon icon icon-achievement"></i>
+        <div class="list-text">检测报告</div>
+        <i class="list-arrow"></i>
       </a>
     </div>
     
     <div class="list-group">
       <a class="list-item list-item-icon" href="${ctx}/u/activity/applyList">
-        <label class="list-label"><i class="icon icon-task"></i>我参与的活动</label>
-        <span class="list-text"><i class="list-arrow"></i></span>
+        <i class="list-icon icon icon-task"></i>
+        <div class="list-text">我参与的活动</div>
+        <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/activity/collectList">
-        <label class="list-label"><i class="icon icon-task"></i>我关注的活动</label>
-        <span class="list-text"><i class="list-arrow"></i></span>
+        <i class="list-icon icon icon-task"></i>
+        <div class="list-text">我关注的活动</div>
+        <i class="list-arrow"></i>
       </a>
     </div>
     
     <div class="list-group">
       <a class="list-item list-item-icon" href="${ctx}/help">
-        <label class="list-label"><i class="icon icon-service"></i>服务中心</label>
-        <span class="list-text"><i class="list-arrow"></i></span>
+        <i class="list-icon icon icon-service"></i>
+        <div class="list-text">服务中心</div>
+        <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/about">
-        <label class="list-label"><i class="icon icon-about"></i>关于优检一生</label>
-        <span class="list-text"><i class="list-arrow"></i></span>
+        <i class="list-icon icon icon-about"></i>
+        <div class="list-text">关于优检一生</div>
+        <i class="list-arrow"></i>
       </a>
     </div>
     

@@ -29,9 +29,6 @@ public class PortraitComponent {
 		portraitVo.setCity(areaDto.getCity());
 		portraitVo.setDistrict(areaDto.getDistrict());
 
-		areaDto = cacheComponent.getAreaDto(v.getHometownAreaId());
-
-		BeanUtils.copyProperties(v, portraitVo);
 		return portraitVo;
 	}
 	

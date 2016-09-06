@@ -46,4 +46,5 @@
 	<dubbo:reference id="activityCollectService" interface="com.zy.service.ActivityCollectService"/>
 	<dubbo:reference id="activityApplyService" interface="com.zy.service.ActivityApplyService"/>
 	<dubbo:reference id="activitySignInService" interface="com.zy.service.ActivitySignInService"/>
+	<dubbo:reference id="bankService" interface="com.zy.service.BankService"/>
 </beans>

@@ -86,9 +86,7 @@ public class ProductQueryModel implements Serializable {
 		fieldNames.add("image6");
 		fieldNames.add("marketPrice");
 		fieldNames.add("image3");
-		fieldNames.add("lockedCount");
 		fieldNames.add("image4");
-		fieldNames.add("stockQuantity");
 		fieldNames.add("title");
 		fieldNames.add("image1");
 		fieldNames.add("image2");
@@ -97,7 +95,11 @@ public class ProductQueryModel implements Serializable {
 		fieldNames.add("createdTime");
 		fieldNames.add("id");
 		fieldNames.add("detail");
+		fieldNames.add("price3");
+		fieldNames.add("price4");
+		fieldNames.add("price1");
 		fieldNames.add("skuCode");
+		fieldNames.add("price2");
 	}
 
 }

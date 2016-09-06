@@ -26,13 +26,12 @@ public class ProductComponent {
 		
 		BigDecimal price = product.getPrice();
 		if(!isNull(price)) {
-			productAdminVo.setPrice(price.toString());
+			productAdminVo.setPriceLabel(price.toString());
 		}
 		BigDecimal marketPrice = product.getMarketPrice();
 		if(!isNull(marketPrice)) {
-			productAdminVo.setMarketPrice(marketPrice.toString());
+			productAdminVo.setMarketPriceLabel(marketPrice.toString());
 		}
-		productAdminVo.setStockQuantity(String.valueOf(product.getStockQuantity()));
 		productAdminVo.setImage1Thumbnail(GcUtils.getThumbnail(product.getImage1()));
 		return productAdminVo;
 	}
@@ -43,13 +42,12 @@ public class ProductComponent {
 		
 		BigDecimal price = product.getPrice();
 		if(!isNull(price)) {
-			productDetailVo.setPrice(price.toString());
+			productDetailVo.setPriceLabel(price.toString());
 		}
 		BigDecimal marketPrice = product.getMarketPrice();
 		if(!isNull(marketPrice)) {
-			productDetailVo.setMarketPrice(marketPrice.toString());
+			productDetailVo.setMarketPriceLabel(marketPrice.toString());
 		}
-		productDetailVo.setStockQuantity(String.valueOf(product.getStockQuantity()));
 		productDetailVo.setImage1Thumbnail(GcUtils.getThumbnail(product.getImage1()));
 		return productDetailVo;
 	}
@@ -60,11 +58,11 @@ public class ProductComponent {
 		
 		BigDecimal price = product.getPrice();
 		if(!isNull(price)) {
-			productListVo.setPrice(price.toString());
+			productListVo.setPriceLabel(price.toString());
 		}
 		BigDecimal marketPrice = product.getMarketPrice();
 		if(!isNull(marketPrice)) {
-			productListVo.setMarketPrice(marketPrice.toString());
+			productListVo.setMarketPriceLabel(marketPrice.toString());
 		}
 		productListVo.setImage1Thumbnail(GcUtils.getThumbnail(product.getImage1()));
 		return productListVo;

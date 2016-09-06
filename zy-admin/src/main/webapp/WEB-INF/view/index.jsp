@@ -90,6 +90,7 @@
   <script src="${stc}/plugin/myui-1.0/jquery.myui.js"></script>
   <script src="${stc}/plugin/layer-2.2/layer.js"></script>
   <script src="${ctx}/plugin/My97DatePicker/WdatePicker.js"></script>
+  <script src="${ctx}/plugin/handlebars/handlebars.min.js"></script>
   <script src="${ctx}/js/area.js"></script>
   <%@ include file="/WEB-INF/view/include/form.jsp" %>
 
@@ -308,6 +309,11 @@
             <shiro:hasPermission name="accountLog:view">
               <li>
                 <a href="javascript:;" data-href="${ctx}/accountLog"><i class="icon-calculator"></i> 流水管理<span class="badge badge-danger"></span></a>
+              </li>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="bank:view">
+              <li>
+                <a href="javascript:;" data-href="${ctx}/bank"><i class="icon-home"></i> 银行信息<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>
             <shiro:hasPermission name="bankCard:view">

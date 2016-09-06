@@ -1,13 +1,5 @@
 package com.zy.entity.usr;
 
-import io.gd.generator.annotation.Field;
-import io.gd.generator.annotation.Type;
-import io.gd.generator.annotation.query.Query;
-import io.gd.generator.annotation.query.QueryModel;
-import io.gd.generator.annotation.view.View;
-import io.gd.generator.annotation.view.ViewObject;
-import io.gd.generator.api.query.Predicate;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,10 +11,15 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import io.gd.generator.annotation.Field;
+import io.gd.generator.annotation.Type;
+import io.gd.generator.annotation.query.Query;
+import io.gd.generator.annotation.query.QueryModel;
+import io.gd.generator.annotation.view.View;
+import io.gd.generator.annotation.view.ViewObject;
+import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "usr_portrait")
@@ -131,12 +128,11 @@ public class Portrait implements Serializable {
 	@Field(label = "家乡所在地")
 	private Long hometownAreaId;
 
-	@NotNull
 	@Field(label = "收入水平")
 	private ConsumptionLevel consumptionLevel;
 
-	@NotBlank
 	@Field(label = "标签")
+	@View(name = "tagNames", type = String.class)
 	private String tagIds;
 
 }

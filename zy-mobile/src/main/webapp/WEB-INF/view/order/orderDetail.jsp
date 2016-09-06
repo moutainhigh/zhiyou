@@ -87,11 +87,11 @@
     
     <div class="list-group">
       <div class="list-item">
-        <div class="receiver-info clearfix">
+        <div class="list-text receiver-info">
           <i class="fa fa-map-marker"></i>
-          <div class="receiver-wrap">
+          <div class="receiver-wrap font-555">
             <div>收货人：${order.addressRealname}<span class="right">${order.addressPhone}</span></div>
-            <div>收货地址：${order.addressProvince} ${order.addressCity} ${order.addressDistrict} ${order.addressAddress}</div>
+            <div class="fs-14 font-777">收货地址：${order.addressProvince} ${order.addressCity} ${order.addressDistrict} ${order.addressAddress}</div>
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@
     <div class="list-group">
       <c:forEach items="${order.orderItems}" var="orderItem">
       <div class="list-item">
-        <div class="relative font-333">
+        <div class="list-text relative font-333">
           <img class="product-image abs-lt" alt="" src="${orderItem.imageThumbnail}">
           <div class="product-title">${orderItem.title}</div>
           <div class="product-price abs-rt text-right">
@@ -110,17 +110,23 @@
         </div>
       </div>
       </c:forEach>
-      <div class="list-item text-right">
-        <%-- <div class="fs-12">合计：<span class="font-red">¥ ${product.price * quantity}</span></div> --%>
-        <div class="fs-14">应付款： <span class="font-orange fs-16 bold">¥ ${order.amount}</span></div>
+      <div class="list-item">
+        <div class="list-text text-right">
+          <%-- <div class="fs-12">合计：<span class="font-red">¥ ${product.price * quantity}</span></div> --%>
+          <div class="fs-14">应付款： <span class="font-orange fs-16 bold">¥ ${order.amount}</span></div>
+        </div>
       </div>
     </div>
     
-    <div class="form-title">订单留言</div>
-    <div class="form-group">
-      <div class="form-item input-cell input-group">
-        <div class="form-control-static"><p class="fs-14 font-999">${order.memo}</p></div>
-        <a class="input-unit font-orange right" href="${ctx}/ucenter/order/edit/${order.sn}"><i class="fa fa-edit"></i></a>
+    <div class="list-title">订单留言</div>
+    <div class="list-group">
+      <div class="list-item">
+        <div class="list-text">
+          <p class="fs-14 font-999">${order.memo}</p>
+        </div>
+        <div class="list-unit">
+          <a class="input-unit font-orange right" href="${ctx}/ucenter/order/edit/${order.sn}"><i class="fa fa-edit"></i></a>
+        </div>
       </div>
     </div>
     

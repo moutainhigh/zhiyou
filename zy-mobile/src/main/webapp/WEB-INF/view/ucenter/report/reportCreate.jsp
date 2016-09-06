@@ -94,15 +94,17 @@
 
   <article>
     <form action="${ctx}/u/report/create" class="valid-form" method="post">
-      <div class="form-group mt-10">
-        <div class="form-title">填写客户资料</div>
-        <div class="form-item">
-          <label class="control-label" for="name">姓名</label>
-          <input type="text" name="name" class="control-input" value="" placeholder="填写客户姓名">
+      <div class="list-group mt-10">
+        <div class="list-title">填写客户资料</div>
+        <div class="list-item">
+          <label class="list-label" for="name">姓名</label>
+          <div class="list-text">
+            <input type="text" name="name" class="form-input" value="" placeholder="填写客户姓名">
+          </div>
         </div>
-        <div class="form-item">
-          <label class="control-label">性别</label>
-          <div class="form-select">
+        <div class="list-item">
+          <label class="list-label">性别</label>
+          <div class="list-text form-select">
             <select name="gender">
               <option value="">请选择</option>
               <option value="0">男</option>
@@ -110,17 +112,21 @@
             </select>
           </div>
         </div>
-        <div class="form-item">
-          <label class="control-label" for="age">年龄</label>
-          <input type="number" name="age" class="control-input" value="" placeholder="填写客户年龄">
+        <div class="list-item">
+          <label class="list-label" for="age">年龄</label>
+          <div class="list-text">
+            <input type="number" name="age" class="form-input" value="" placeholder="填写客户年龄">
+          </div>
         </div>
-        <div class="form-item">
-          <label class="control-label">检测时间</label>
-          <input type="text" name="date" class="control-input" value="" placeholder="填写检测时间" onfocus="this.type='date'">
+        <div class="list-item">
+          <label class="list-label">检测时间</label>
+          <div class="list-text">
+            <input type="text" name="date" class="form-input" value="" placeholder="填写检测时间" onfocus="this.type='date'">
+          </div>
         </div>
-        <div class="form-item">
-          <label class="control-label">检测结果</label>
-          <div class="form-select">
+        <div class="list-item">
+          <label class="list-label">检测结果</label>
+          <div class="list-text form-select">
             <select name="reportResult">
               <option value="">请选择</option>
               <option value="阴性">阴性</option>
@@ -132,21 +138,25 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <div class="form-title">您至少需要上传3张检测图片</div>
-        <div class="form-item form-image">
-          <div class="image-add" data-limit="6">
-            <input type="hidden" name="image1" value="">
-            <input type="file">
-            <em class="state state-add"></em>
+      <div class="list-group">
+        <div class="list-title">您至少需要上传3张检测图片</div>
+        <div class="list-item">
+          <div class="list-text list-image">
+            <div class="image-add" data-limit="6">
+              <input type="hidden" name="image1" value="">
+              <input type="file">
+              <em class="state state-add"></em>
+            </div>
           </div>
         </div>
 
       </div>
-      <div class="form-group">
-        <div class="form-title">填写产品使用心得</div>
-        <div class="form-item input-cell">
-          <textarea name="text" class="control-input" rows="3" placeholder="填写产品使用心得"></textarea>
+      <div class="list-group">
+        <div class="list-title">填写产品使用心得</div>
+        <div class="list-item">
+          <div class="list-text">
+            <textarea name="text" class="form-input" rows="3" placeholder="填写产品使用心得"></textarea>
+          </div>
         </div>
       </div>
 

@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User registerMerchant(@NotNull RegisterDto registerDto) {
-		validate(registerDto);
+		/*validate(registerDto);
 		Long inviterId = registerDto.getInviterId();
 		if (inviterId != null) {
 			User inviter = userMapper.findOne(inviterId);
@@ -134,7 +134,8 @@ public class UserServiceImpl implements UserService {
 
 		producer.send(TOPIC_REGISTER_SUCCESS, user);
 
-		return user;
+		return user;*/
+		return null;
 	}
 
 	String[] validateFileds = { "userType", "registerIp", "inviterId", "nickname", "avatar", "registerTime", "isFrozen", "isInfoCompleted", "userRank" };
@@ -151,7 +152,7 @@ public class UserServiceImpl implements UserService {
 		user.setRegisterTime(new Date());
 		user.setIsFrozen(false);
 		user.setIsInfoCompleted(false);
-		user.setUserRank(UserRank.V1);
+		user.setUserRank(UserRank.V0);
 
 		String inviteCode = getInviteCode();
 		User userByInviteCode = userMapper.findByInviteCode(inviteCode);
