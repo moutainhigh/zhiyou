@@ -1,7 +1,7 @@
 package com.zy.mobile.controller;
 
-import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +29,7 @@ public class ProductController {
 	private ProductComponent productComponent;
 	
 	@RequestMapping
-	public String list(boolean isFirst, Model model) {
+	public String list(Model model) {
 		
 		ProductQueryModel productQueryModel = new ProductQueryModel();
 		productQueryModel.setIsOnEQ(true);
@@ -37,11 +37,7 @@ public class ProductController {
 		model.addAttribute("products", products.stream().map(v -> {
 			return productComponent.buildListVo(v);
 		}).collect(Collectors.toList()));
-		if(isFirst) {
-			return "product/productListAgent";
-		} else {
-			return "product/productList";
-		}
+		return "product/productList";
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
