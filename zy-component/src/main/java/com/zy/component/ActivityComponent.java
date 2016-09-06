@@ -40,7 +40,9 @@ public class ActivityComponent {
 	@Autowired
 	private ActivitySignInService activitySignInService;
 	
-	private static final String TIME_LABEL = "yyyy-MM-dd HH:mm";
+	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	
+	private static final String SIMPLE_TIME_PATTERN = "M月d日 HH:mm";
 
 	public ActivityAdminFullVo buildAdminFullVo(Activity activity) {
 		String shortFmt = "yyyy年M月d日 HH:mm";
@@ -173,13 +175,13 @@ public class ActivityComponent {
 		Date startTime = activity.getStartTime();
 		Date endTime = activity.getEndTime();
 		if(!isNull(applyDeadline)) {
-			activityDetailVo.setApplyDeadlineLabel(format(applyDeadline, TIME_LABEL));
+			activityDetailVo.setApplyDeadlineLabel(format(applyDeadline, SIMPLE_TIME_PATTERN));
 		}
 		if(!isNull(startTime)) {
-			activityDetailVo.setStartTimeLabel(format(activity.getStartTime(), TIME_LABEL));
+			activityDetailVo.setStartTimeLabel(format(activity.getStartTime(), SIMPLE_TIME_PATTERN));
 		}
 		if(!isNull(endTime)) {
-			activityDetailVo.setEndTimeLabel(format(activity.getEndTime(), TIME_LABEL));
+			activityDetailVo.setEndTimeLabel(format(activity.getEndTime(), SIMPLE_TIME_PATTERN));
 		}
 		activityDetailVo.setStatus(buildStatus(applyDeadline, startTime, endTime));
 		
@@ -214,13 +216,13 @@ public class ActivityComponent {
 		Date startTime = activity.getStartTime();
 		Date endTime = activity.getEndTime();
 		if(!isNull(applyDeadline)) {
-			activityListVo.setApplyDeadlineLabel(format(applyDeadline, TIME_LABEL));
+			activityListVo.setApplyDeadlineLabel(format(applyDeadline, SIMPLE_TIME_PATTERN));
 		}
 		if(!isNull(startTime)) {
-			activityListVo.setStartTimeLabel(format(activity.getStartTime(), TIME_LABEL));
+			activityListVo.setStartTimeLabel(format(activity.getStartTime(), SIMPLE_TIME_PATTERN));
 		}
 		if(!isNull(endTime)) {
-			activityListVo.setEndTimeLabel(format(activity.getEndTime(), TIME_LABEL));
+			activityListVo.setEndTimeLabel(format(activity.getEndTime(), SIMPLE_TIME_PATTERN));
 		}
 		activityListVo.setStatus(buildStatus(applyDeadline, startTime, endTime));
 		return activityListVo;

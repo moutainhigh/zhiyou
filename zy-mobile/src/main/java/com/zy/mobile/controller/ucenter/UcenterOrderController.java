@@ -39,14 +39,14 @@ public class UcenterOrderController {
 	public String in(Principal principal, Model model) {
 		Page<Order> page = orderService.findPage(OrderQueryModel.builder().sellerIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).build());
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent::buildListVo));
-		return "order/orderList";
+		return "ucenter/order/orderList";
 	}
 	
 	@RequestMapping("/out")
 	public String out(Principal principal, Model model) {
 		Page<Order> page = orderService.findPage(OrderQueryModel.builder().userIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).build());
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent::buildListVo));
-		return "order/orderList";
+		return "ucenter/order/orderList";
 	}
 	
 	@RequestMapping("/{sn}")
@@ -54,13 +54,13 @@ public class UcenterOrderController {
 		  Order order =  orderService.findBySn(sn);
 		  validate(order, NOT_NULL, "order sn" + sn + " not found");
 		  model.addAttribute("order", order);
-		  return "order/orderDetail";  
+		  return "ucenter/order/orderDetail";  
 	}
 	
 	@RequestMapping(path = "/deliver", method = RequestMethod.GET)
 	public String deliver(String sn, Model model) {
 		
-		return "order/orderDeliver";
+		return "ucenter/order/orderDeliver";
 	}
 	
 	@RequestMapping(path = "/deliver", method = RequestMethod.POST)

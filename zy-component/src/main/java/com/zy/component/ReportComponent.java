@@ -14,9 +14,6 @@ import static org.apache.commons.lang3.time.DateFormatUtils.format;
 @Component
 public class ReportComponent {
 
-	@Autowired
-	private CacheComponent cacheComponent;
-	
 	private static final String TIME_LABEL = "yyyy-MM-dd HH:mm:ss";
 	
 	public ReportAdminVo buildAdminVo(Report report) {

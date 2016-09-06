@@ -1,15 +1,16 @@
 package com.zy.vo;
 
-import io.gd.generator.annotation.Field;
-import com.zy.entity.mal.Order.OrderStatus;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import com.zy.entity.mal.Order.OrderStatus;
+
+import io.gd.generator.annotation.Field;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -27,6 +28,10 @@ public class OrderDetailVo implements Serializable {
 	private String title;
 	@Field(label = "订单状态")
 	private OrderStatus orderStatus;
+	@Field(label = "应付总金额")
+	private BigDecimal amount;
+	@Field(label = "退款金额")
+	private BigDecimal  refund;
 	@Field(label = "退款备注")
 	private String refundRemark;
 	@Field(label = "买家留言")
@@ -67,10 +72,6 @@ public class OrderDetailVo implements Serializable {
 	private String paidTimeLabel;
 	@Field(label = "退款时间")
 	private String refundedTimeLabel;
-	@Field(label = "应付总金额")
-	private String amountLabel;
-	@Field(label = "退款金额")
-	private String refundLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
 	@Field(label = "orderItems")
