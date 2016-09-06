@@ -103,8 +103,12 @@ public class GcUtils {
 		return getDateLabel(date, null);
 	}
 	
+	public static String getBig(String url) {
+		return getThumbnail(url, 640, 640);
+	}
+	
 	public static String getThumbnail(String url) {
-		return getThumbnail(url, 80, 80);
+		return getThumbnail(url, 160, 160);
 	}
 	
 	public static String getThumbnail(String url, int width, int height) {

@@ -82,7 +82,7 @@ public class Product implements Serializable {
 	private Boolean isOn;
 
 	@NotBlank
-	@View(name = "image1Big")
+	@View(name = "image1Big", groups = { "ProductDetailVo", "ProductAdminVo"  })
 	@View(name = "image1Thumbnail" )
 	@View(groups = { "ProductAdminVo" })
 	@Field(label = "主图")

@@ -21,8 +21,6 @@ public class ProductListVo implements Serializable {
 	@Field(label = "市场价")
 	private String marketPriceLabel;
 	@Field(label = "主图")
-	private String image1Big;
-	@Field(label = "主图")
 	private String image1Thumbnail;
 
 }
