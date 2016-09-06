@@ -61,7 +61,7 @@ public class OrderComponent {
 		
 		orderListVo.setCreatedTimeLabel(format(order.getCreatedTime(), TIME_LABEL));
 		orderListVo.setExpiredTimeLabel(format(order.getExpiredTime(), TIME_LABEL));
-		orderListVo.setAmountLabel(order.getAmount().toString());
+		orderListVo.setAmountLabel(GcUtils.formatCurreny(order.getAmount()));
 		
 		List<OrderItem> orderItems = orderItemService.findByOrderId(order.getId());
 		List<OrderItemVo> orderItemVos = orderItems.stream().map(v ->{
@@ -69,8 +69,8 @@ public class OrderComponent {
 			BeanUtils.copyProperties(v, orderItemVo);
 			
 			orderItemVo.setImageThumbnail(GcUtils.getThumbnail(v.getImage()));
-			orderItemVo.setPriceLabel(v.getPrice().toString());
-			orderItemVo.setAmountLabel(v.getAmount().toString());
+			orderItemVo.setPriceLabel(GcUtils.formatCurreny(v.getPrice()));
+			orderItemVo.setAmountLabel(GcUtils.formatCurreny(v.getAmount()));
 			return orderItemVo;
 		}).collect(Collectors.toList());
 		orderListVo.setOrderItems((ArrayList<OrderItemVo>) orderItemVos);
@@ -86,8 +86,8 @@ public class OrderComponent {
 		orderDetailVo.setExpiredTimeLabel(format(order.getExpiredTime(), TIME_LABEL));
 		orderDetailVo.setPaidTimeLabel(format(order.getPaidTime(), TIME_LABEL));
 		orderDetailVo.setRefundedTimeLabel(format(order.getRefundedTime(), TIME_LABEL));
-		orderDetailVo.setAmountLabel(order.getAmount().toString());
-		orderDetailVo.setRefundLabel(order.getAmount().toString());
+		orderDetailVo.setAmountLabel(GcUtils.formatCurreny(order.getAmount()));
+		orderDetailVo.setRefundLabel(GcUtils.formatCurreny(order.getAmount()));
 		
 		List<OrderItem> orderItems = orderItemService.findByOrderId(order.getId());
 		List<OrderItemVo> orderItemVos = orderItems.stream().map(v ->{
@@ -95,8 +95,8 @@ public class OrderComponent {
 			BeanUtils.copyProperties(v, orderItemVo);
 			
 			orderItemVo.setImageThumbnail(GcUtils.getThumbnail(v.getImage()));
-			orderItemVo.setPriceLabel(v.getPrice().toString());
-			orderItemVo.setAmountLabel(v.getAmount().toString());
+			orderItemVo.setPriceLabel(GcUtils.formatCurreny(v.getPrice()));
+			orderItemVo.setAmountLabel(GcUtils.formatCurreny(v.getAmount()));
 			return orderItemVo;
 		}).collect(Collectors.toList());
 		orderDetailVo.setOrderItems((ArrayList<OrderItemVo>) orderItemVos);
