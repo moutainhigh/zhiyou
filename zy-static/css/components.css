@@ -86,8 +86,6 @@
 /* 内容布局 */
 .list-item .list-icon {
   margin-left: 6px; margin-right: 12px;
-}
-.list-item .list-icon {
   display: block; width: 24px; height: 24px;
   color: #aaa; font-size: 18px; text-align: center; vertical-align: middle; line-height: 24px;
 }
@@ -96,11 +94,12 @@
 }
 
 .list-item .list-label {
-  display: inline-block; width: 110px; padding-right: 6px;
+  display: block; width: 110px; padding-right: 6px;
   color: #333; font-size: 16px;
 }
 
 .list-item .list-text {
+  display: block;
   flex: 1; -ms-flex: 1; -webkit-flex: 1; box-flex: 1; -ms-box-flex: 1; -webkit-box-flex: 1;
   color: #333; font-size: 16px;
 }
@@ -110,7 +109,7 @@
 }
 
 .list-item .list-unit {
-  margin-left: 6px;
+  display: block; margin-left: 6px;
   color: #777; font-size: 14px;
 }
 .list-item .list-unit > img {
@@ -267,7 +266,7 @@ input.form-input[disabled] {
 }
 .form-radio .i-checked {
   position: relative;
-  display: inline-block; width: 24px; height: 24px;
+  display: block; width: 24px; height: 24px;
   background-color: #eee; cursor: pointer;  
   border-radius: 50%; box-shadow: 0 1px 15px rgba(0, 0, 0, 0.1) inset, 0 1px 4px rgba(0, 0, 0, 0.1) inset, 1px -1px 2px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease 0s;
@@ -301,7 +300,7 @@ input.form-input[disabled] {
 }
 .form-checkbox .i-checked::before {
   position: absolute; top: -3px; left: 0;
-  content: "✔"; display: block; width: 100%; height: 100%;
+  content: "✔"; width: 100%; height: 100%;
   color: #43ac43; font-size: 18px; text-align: center; vertical-align: text-top;
   transition: all 0.2s ease 0s;
   transform: scale(0, 0);
