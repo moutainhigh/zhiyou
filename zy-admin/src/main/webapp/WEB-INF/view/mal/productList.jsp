@@ -70,11 +70,14 @@
               render : function(data, type, full) {
                 var optionHtml
                 <shiro:hasPermission name="report:confirm">
-                  optionHtml = '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/product/update?id=' + data + '"><i class="fa  fa-mail-forward"></i> 编辑 </a>';
-                if (full.isOn) {
-                  optionHtml += '<a class="btn btn-xs default red-stripe" href="javascript:;" data-href="${ctx}/product/release?id=' + data + '&isReleased=false"><i class="fa fa-times"></i> 下架 </a>';
-                } else {
-                  optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/product/release?id=' + data + '&isReleased=true"><i class="fa fa-check"></i> 上架 </a>';
+                optionHtml = '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/product/update?id=' + data + '"><i class="fa  fa-edit"></i> 编辑 </a>';
+                optionHtml += '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/product/modifyPrice?id=' + data + '"><i class="fa  fa-edit"></i> 编辑价格 </a>';
+                if(full.productPriceType) {
+                  if (full.isOn) {
+                    optionHtml += '<a class="btn btn-xs default red-stripe" href="javascript:;" data-href="${ctx}/product/on?id=' + data + '&isOn=false"><i class="fa fa-times"></i> 下架 </a>';
+                  } else {
+                    optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/product/on?id=' + data + '&isOn=true"><i class="fa fa-check"></i> 上架 </a>';
+                  }
                 }
                 </shiro:hasPermission>
                 return optionHtml;
