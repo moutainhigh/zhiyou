@@ -1,17 +1,18 @@
 package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
+import com.zy.component.MalComponent;
 import com.zy.entity.mal.Product;
+import com.zy.entity.usr.User;
 import com.zy.mapper.ProductMapper;
 import com.zy.model.query.ProductQueryModel;
 import com.zy.service.ProductService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
-
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private ProductMapper productMapper;
 
+	@Autowired
+	private MalComponent malComponent;
 	
 	@Override
 	public void delete(@NotNull Long id) {
@@ -58,6 +61,11 @@ public class ProductServiceImpl implements ProductService{
 		
 		product.setIsOn(isOn);
 		productMapper.update(product);
+	}
+
+	@Override
+	public BigDecimal getPrice(@NotNull Long productId, @NotNull User.UserRank userRank, long quantity) {
+		return malComponent.getPrice(productId, userRank, quantity);
 	}
 
 	@Override
