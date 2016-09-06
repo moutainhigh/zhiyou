@@ -17,13 +17,12 @@
 <%@ include file="/WEB-INF/view/include/fileupload.jsp"%>
 <script type="text/javascript">
   $(function() {
-    $('#deliverType1').click(function() {
+    $('#deliverType0').click(function(){
+        $('#logistics').slideUp(300);
+    });
+    $('#deliverType1').click(function(){
       $('#logistics').slideDown(300);
-    });
-
-    $('#deliverType0').click(function() {
-      $('#logistics').slideUp(300);
-    });
+  });
 
     $('.image-view').click(function() {
       var url = $(this).attr('data-src');
@@ -174,40 +173,40 @@
       
       <div class="list-group">
         <div class="list-title">checkbox 复选</div>
-        <!-- form-radio -->
-        <label class="list-item form-checkbox">
-          <div class="list-icon">
-            <input type="checkbox" name="" value="0">
-            <em class="i-checked"></em>
+        <!-- form-checkbox -->
+        <div class="list-item">
+          <div class="list-icon form-checkbox">
+            <input type="checkbox" id="checkbox0" name="checkname" value="0">
+            <label class="i-checked" for="checkbox0"></label>
           </div>
-          <div class="list-text">使用平台礼品</div>
-        </label>
-        <label class="list-item form-checkbox">
-          <div class="list-icon">
-            <input type="checkbox" name="" value="1">
-            <em class="i-checked"></em>
+          <label class="list-text" for="checkbox0">使用平台礼品</label>
+        </div>
+        <div class="list-item">
+          <div class="list-icon form-checkbox">
+            <input type="checkbox" id="checkbox1" name="checkname" value="1">
+            <label class="i-checked" for="checkbox1"></label>
           </div>
-          <div class="list-text">使用平台物流</div>
-        </label>
+          <label class="list-text" for="checkbox1">使用平台物流</label>
+        </div>
       </div>
       
       <div class="list-group">
         <div class="list-title">radio 单选</div>
         <!-- form-radio -->
-        <label class="list-item form-radio">
-          <div class="list-text">面对面发货</div>
-          <div class="list-unit">
+        <div class="list-item">
+          <label class="list-text" for="deliverType0">面对面发货</label>
+          <div class="list-unit form-radio">
             <input id="deliverType0" type="radio" name="deliverType" value="0">
-            <em class="i-checked"></em>
+            <label class="i-checked" for="deliverType0"></label>
           </div>
-        </label>
-        <label class="list-item form-radio">
-          <div class="list-text">物流发货</div>
-          <div class="list-unit">
+        </div>
+        <div class="list-item">
+          <label class="list-text" for="deliverType1">物流发货</label>
+          <div class="list-unit form-radio">
             <input id="deliverType1" type="radio" name="deliverType" value="1">
-            <em class="i-checked"></em>
+            <label class="i-checked" for="deliverType1"></label>
           </div>
-        </label>
+        </div>
       </div>
       
       <div id="logistics" class="list-group hide">

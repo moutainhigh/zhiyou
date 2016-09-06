@@ -96,7 +96,7 @@
 }
 
 .list-item .list-label {
-  width: 110px; padding-right: 6px;
+  display: inline-block; width: 110px; padding-right: 6px;
   color: #333; font-size: 16px;
 }
 
@@ -263,39 +263,54 @@ input.form-input[disabled] {
 
 /* form-radio */
 .form-radio input[type=radio]{
-  position: absolute; left: -9999px;
+  display: none;
 }
 .form-radio .i-checked {
   position: relative;
-  display: block; width: 24px; height: 24px;
-  color: #fff; cursor: pointer;  
-  background-color: #fff;
-  border-radius: 50%; border: 2px solid #e1e1e1;
-  transition: all 0.4s cubic-bezier(0.17, 0.67, 0.43, 0.98) 0s;
+  display: inline-block; width: 24px; height: 24px;
+  background-color: #eee; cursor: pointer;  
+  border-radius: 50%; box-shadow: 0 1px 15px rgba(0, 0, 0, 0.1) inset, 0 1px 4px rgba(0, 0, 0, 0.1) inset, 1px -1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease 0s;
+}
+.form-radio .i-checked::before {
+  position: absolute; left: 4px; top: 4px;
+  width: 16px; height: 16px; content: "";
+  background: #43ac43 linear-gradient(#ffffff 0px, #e7e7e7 100%) repeat scroll 0 0;
+  border-radius: 50%; box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.3), 0 0 1px rgba(255, 255, 255, 0.4) inset;
+  transition: all 0.2s ease 0s;
+  transform: scale(0, 0);
 }
 .form-radio input:checked + .i-checked {
   background-color: #43ac43;
 }
+.form-radio input:checked + .i-checked::before {
+  transform: scale(1, 1);
+}
 
 /* form-checkbox */
 .form-checkbox input[type=checkbox]{
-  position: absolute; left: -9999px;
+  display: none;
 }
 .form-checkbox .i-checked {
-  position: relative; margin-top: 2px;
-  display: block; width: 20px; height: 20px;
-  cursor: pointer; background-color: #fff;
-  border-radius: 6px; border: 1px solid #bac4cb;
-  transition: all 0.4s cubic-bezier(0.17, 0.67, 0.43, 0.98) 0s;
+  position: relative; margin-top: 1px;
+  display: block; width: 22px; height: 22px;
+  cursor: pointer; background-color: #eee;
+  border-radius: 6px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1) inset, 0 1px 4px rgba(0, 0, 0, 0.1) inset, 1px -1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease 0s;
 }
-.form-checkbox input:checked + .i-checked {
-  border: 1px solid #b9d3b4;
-  background-color: #e8f1f2;
-}
-.form-checkbox input:checked + .i-checked::after {
+.form-checkbox .i-checked::before {
   position: absolute; top: -3px; left: 0;
   content: "✔"; display: block; width: 100%; height: 100%;
   color: #43ac43; font-size: 18px; text-align: center; vertical-align: text-top;
+  transition: all 0.2s ease 0s;
+  transform: scale(0, 0);
+}
+.form-checkbox input:checked + .i-checked {
+  background-color: #e2f1e6;
+}
+.form-checkbox input:checked + .i-checked::before {
+  transform: scale(1, 1);
 }
 
 /* form-quantity */
