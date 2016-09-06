@@ -104,7 +104,7 @@ public class GcUtils {
 	}
 
 	public static String getThumbnail(String url) {
-		return getThumbnail(url, 80, 80);
+		return getThumbnail(url, 160, 160);
 	}
 
 	public static String getThumbnail(String url, int width, int height) {

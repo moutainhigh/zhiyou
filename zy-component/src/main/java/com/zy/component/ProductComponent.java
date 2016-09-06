@@ -50,7 +50,7 @@ public class ProductComponent {
 			productDetailVo.setMarketPriceLabel(GcUtils.formatCurreny(marketPrice));
 		}
 		productDetailVo.setImage1Thumbnail(GcUtils.getThumbnail(product.getImage1()));
-		productDetailVo.setImage1Big(GcUtils.getBig(product.getImage1()));
+		productDetailVo.setImage1Big(GcUtils.getThumbnail(product.getImage1(), 640, 640));
 		return productDetailVo;
 	}
 	
