@@ -19,28 +19,41 @@
   });
 </script>
 <style>
-html, body {
-  width: 100%; height: 100%;
-}
-body {
-  background: #78C8B4 url(${stccdn}/image/tmp/success_background.png); background-size: cover;
-}
-.codesuccess-info {
-  left: 43%; top: 5%; width: 14%; height: 8%;
-}
-.codesuccess-name {
-  left: 33%; top: 14%; width: 34%; height: 5%; color: #FAAC0C; text-align: center;
-}
+  .m-img {
+    max-width: 557px; min-width: 320px;  min-height: 480px; margin: 0 auto;
+  }
+  .header-img{
+    top: 20px; left: 20%;  width: 60%;
+  }
+  .user-head{
+    top: 0px; left: 40%;  width: 20%;  border-radius: 100%;
+  }
+  .name{
+     top: 24%; left: 0;  text-align: center;
+  }
+  .link{
+    left: 30%;bottom: 40%;
+    width: 40%;  margin: 0 auto;
+  }
+  .footer-img{
+     bottom: 10px; left: 26%;
+    width: 48%;  margin: 0 auto;
+  }
 </style>
 </head>
-<body class="relative">
-  <img src="${stccdn}/image/tmp/success.png" class="size-100p">
-  <img src="${stccdn}/image/tmp/success_enter.png" class="size-100p abs-lt">
-  <img src="${stccdn}/image/tmp/success_footer.png" class="size-100p abs-lb">
-  <a class="codesuccess-info absolute block">
-    <img src="http://img1.hudongba.com/upload/_oss/userhead/yuantu/201608/2417/1472031915271.jpg" class="block round size-100p">
-  </a>
-  <span class="codesuccess-name absolute">昵称昵称</span>
+<body class="height-100p">
+  <div class="m-img relative size-100p o-hidden">
+    <img src="${stccdn}/image/tmp/bg.png" class="size-100p" />
+    <div class="header-img absolute block">
+      <img src="${stccdn}/image/tmp/header.png" class="width-100p"/>
+      <img class="user-head absolute" src="${stccdn}/image/tmp/3.jpg"/>
+      <p class="name absolute width-100p fs-12">昵称昵称昵称</p>
+    </div>
+    <a href="#">
+      <img src="${stccdn}/image/tmp/enter_03.png" class="link absolute block"/>
+    </a>
+    <img src="${stccdn}/image/tmp/footer.png" class="footer-img absolute block" />
+  </div>
 </body>
 </html>
 
