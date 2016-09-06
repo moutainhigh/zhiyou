@@ -1,25 +1,23 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
+import com.zy.common.model.query.Page;
+import com.zy.component.MalComponent;
+import com.zy.entity.mal.Product;
+import com.zy.entity.usr.User;
+import com.zy.mapper.ProductMapper;
+import com.zy.model.query.ProductQueryModel;
+import com.zy.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import com.zy.common.model.query.Page;
-import com.zy.entity.mal.Product;
-import com.zy.entity.mal.Product.ProductPriceType;
-import com.zy.mapper.ProductMapper;
-import com.zy.model.query.ProductQueryModel;
-import com.zy.service.ProductService;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 @Service
 @Validated
@@ -28,7 +26,9 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private ProductMapper productMapper;
 
-	
+	@Autowired
+	private MalComponent malComponent;
+
 	@Override
 	public void delete(@NotNull Long id) {
 		productMapper.delete(id);		
@@ -51,20 +51,18 @@ public class ProductServiceImpl implements ProductService{
 	public Product modify(@NotNull Product product) {
 		findAndValidate(product.getId());
 		validate(product);
-		productMapper.merge(product, "title", "detail", "productPriceType", "price", "priceScript", "marketPrice", "skuCode", 
+		productMapper.merge(product, "title", "detail", "productPriceType", "price", "priceScript", "marketPrice", "skuCode",
 				"image1", "image2", "image3", "image4", "image5", "image6");
 		return product;
 	}
 	
 	@Override
-	public void release(@NotNull Long id, @NotNull Boolean isRelease) {
+	public void on(@NotNull Long id, @NotNull Boolean isOn) {
+		Product product = productMapper.findOne(id);
+		validate(product, NOT_NULL, "product is null");
 		
-		findAndValidate(id);
-		
-		Product productForMerge = new Product();
-		productForMerge.setId(id);
-		productForMerge.setIsOn(isRelease);
-		productMapper.merge(productForMerge, "isOn");
+		product.setIsOn(isOn);
+		productMapper.update(product);
 	}
 
 	@Override
@@ -87,14 +85,14 @@ public class ProductServiceImpl implements ProductService{
 	public List<Product> findAll(@NotNull ProductQueryModel productQueryModel) {
 		return productMapper.findAll(productQueryModel);
 	}
-	
+
 	@Override
 	public Product modifyPrice(Product product) {
 		Long id = product.getId();
 		Product persistence = findAndValidate(id);
 		ProductPriceType productPriceType = persistence.getProductPriceType();
 		validate(productPriceType, NOT_NULL, "product price type is null");
-		
+
 		Product productForMerge = new Product();
 		productForMerge.setId(id);
 		productForMerge.setProductPriceType(productPriceType);
@@ -108,10 +106,10 @@ public class ProductServiceImpl implements ProductService{
 			productForMerge.setPriceScript(priceScript);
 		}
 		productMapper.merge(productForMerge, "productPriceType", "price", "priceScript");
-		
+
 		return null;
 	}
-	
+
 	private Product findAndValidate(Long id) {
 		validate(id, NOT_NULL, "id is null");
 		Product product = productMapper.findOne(id);

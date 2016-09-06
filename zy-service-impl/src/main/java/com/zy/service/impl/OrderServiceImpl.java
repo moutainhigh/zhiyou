@@ -19,12 +19,7 @@ import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
-import groovy.lang.Script;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,28 +54,6 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private AddressMapper addressMapper;
 
-	private String getFullName(Class<?> clazz) {
-		return StringUtils.replace(clazz.getName(), "$", ".");
-	}
-
-	private BigDecimal getPrice(long quantity, UserRank userRank, String scriptString) {
-		GroovyShell withdrawFeeRateShell;
-		ImportCustomizer importCustomizer = new ImportCustomizer();
-		importCustomizer.addImports(getFullName(User.UserType.class), getFullName(CurrencyType.class), getFullName(BizException.class));
-		CompilerConfiguration compilerConfiguration = new CompilerConfiguration();
-		compilerConfiguration.addCompilationCustomizers(importCustomizer);
-		withdrawFeeRateShell = new GroovyShell(compilerConfiguration);
-		String script = scriptString;
-		Binding binding = new Binding();
-		Script parse = withdrawFeeRateShell.parse(script);
-		binding.setVariable("userRank", userRank);
-		binding.setVariable("quantity", quantity);
-		parse.setBinding(binding);
-		BigDecimal result = (BigDecimal) parse.run();
-		return result;
-	}
-
-	
 	@Override
 	public Order create(@NotNull OrderCreateDto orderCreateDto) {
 		validate(orderCreateDto);
@@ -129,17 +102,8 @@ public class OrderServiceImpl implements OrderService {
 
 		String title = orderCreateDto.getTitle();
 		long quantity = orderCreateDto.getQuantity();
-		Product.ProductPriceType productPriceType = product.getProductPriceType();
-		BigDecimal price;
-		if (productPriceType == Product.ProductPriceType.脚本价格) {
-			price = getPrice(quantity, user.getUserRank(), product.getPriceScript());
-		} else if (productPriceType == Product.ProductPriceType.矩阵价格) {
-			throw new BizException(BizCode.ERROR, "暂未实现");
-		} else {
-			price = product.getPrice();
-		}
+		BigDecimal price = orderCreateDto.getPrice();
 		BigDecimal amount = price.multiply(new BigDecimal(quantity));
-
 
 		Order order = new Order();
 		order.setUserId(userId);

@@ -1,10 +1,12 @@
 package com.zy.service;
 
-import java.util.List;
-
 import com.zy.common.model.query.Page;
 import com.zy.entity.mal.Product;
+import com.zy.entity.usr.User;
 import com.zy.model.query.ProductQueryModel;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 public interface ProductService {
 
@@ -14,7 +16,8 @@ public interface ProductService {
 	Page<Product> findPage(ProductQueryModel productQueryModel);
 	List<Product> findAll(ProductQueryModel productQueryModel);
 	Product modify(Product product);
-	Product modifyPrice(Product product);
-	void release(Long id, Boolean isRelease);
-	
+	void on(Long id, Boolean isOn);
+
+	BigDecimal getPrice(Long productId, User.UserRank userRank, long quantity);
+
 }

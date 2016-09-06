@@ -4,9 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -20,6 +22,10 @@ public class OrderCreateDto implements Serializable {
 
 	@NotNull
 	private Long productId;
+
+	@NotNull
+	@DecimalMin("0.01")
+	private BigDecimal price;
 
 	@Min(1)
 	private long quantity;
