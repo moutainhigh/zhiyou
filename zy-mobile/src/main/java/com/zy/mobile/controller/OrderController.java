@@ -70,7 +70,7 @@ public class OrderController {
 			return "redirect:/ucenter/order/" + order.getSn();
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return "redirect:/ucenter/order/create?productId" + orderCreateDto.getProductId();
+			return "redirect:/ucenter/order/create?productId=" + orderCreateDto.getProductId();
 		}
 	}
 	
