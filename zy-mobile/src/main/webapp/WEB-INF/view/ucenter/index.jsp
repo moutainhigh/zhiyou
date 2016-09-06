@@ -66,7 +66,7 @@
   <article>
     <div class="list-group">
       <c:if test="${user.userRank == 'V0'}">
-      <a class="list-item bd-t-0" href="${ctx}/product?isFirst=true">
+      <a class="list-item bd-t-0" href="${ctx}/product/1">
         <i class="list-icon icon icon-account"></i>
         <div class="list-text">成为代理</div>
         <i class="list-arrow"></i>

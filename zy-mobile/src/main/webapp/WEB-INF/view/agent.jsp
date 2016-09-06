@@ -41,7 +41,16 @@
 	});
 	
 	$('#btnSubmit').click(function(){
+	  var agentLevel = $('[name="agentLevel"]:checked');
+	  if(agentLevel.length == 0) {
+	    messageFlash('请选择代理套餐');
+	    return false;
+	  }
 	  var phone = $('#phone').val();
+	  if(!phone) {
+	    messageFlash('请填写上级手机号');
+	    return false;
+	  }
 	  $.ajax({
 	    url: '${ctx}/u/agent/checkPhone',
 	    data: {
@@ -54,7 +63,7 @@
 	        $('[name="quantity"]').val(result.data);
 	        $('#form').submit();
 	      } else {
-	        messageShow(result.message);
+	        messageShow(result.message, 'error');
 	      }
 	    }
 	  });
