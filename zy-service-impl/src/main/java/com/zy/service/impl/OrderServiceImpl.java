@@ -107,8 +107,23 @@ public class OrderServiceImpl implements OrderService {
 
 		/* calculate seller id */
 		Long parentId = user.getParentId();
+		Long sellerId;
 		if (parentId == null) {
 			parentId = orderCreateDto.getParentId();
+			if (parentId == null) {
+				throw new BizException(BizCode.ERROR, "必须填写邀请人才能下单");
+			}
+			User parent = userMapper.findOne(userId);
+			if (parent == null) {
+				throw new BizException(BizCode.ERROR, "邀请人手机号没找到");
+			} else if (parent.getId().equals(userId)) {
+				throw new BizException(BizCode.ERROR, "邀请人不能为自己");
+			} else if (parent.getUserRank() == UserRank.V0) {
+				throw new BizException(BizCode.ERROR, "邀请人资格不足");
+			}
+			sellerId = parentId;
+		} else {
+			sellerId = parentId;
 		}
 
 
@@ -141,6 +156,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setBuyerMemo(orderCreateDto.getBuyerMemo());
 		order.setOrderStatus(OrderStatus.待支付);
 		order.setVersion(0);
+		order.setSellerId(sellerId);
 		order.setCurrencyType(CurrencyType.现金);
 		order.setSn(ServiceUtils.generateOrderSn());
 		order.setIsSettledUp(false);
