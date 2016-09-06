@@ -261,13 +261,11 @@ input.form-input[disabled] {
 }
 
 /* form-radio */
-.form-radio {
-  padding-top: 0; padding-bottom: 0;  
-}
 .form-radio:active {
   background-color: #f5f5f5;
 }
 .form-radio .list-text {
+  margin-top: -10px; margin-bottom: -10px;
   line-height: 44px;
 }
 .form-radio input[type=radio]{
@@ -296,13 +294,11 @@ input.form-input[disabled] {
 }
 
 /* form-checkbox */
-.form-checkbox {
-  padding-top: 0; padding-bottom: 0;  
-}
 .form-checkbox:active {
   background-color: #f5f5f5;
 }
 .form-checkbox .list-text {
+  margin-top: -10px; margin-bottom: -10px;
   line-height: 44px;
 }
 .form-checkbox input[type=checkbox]{
