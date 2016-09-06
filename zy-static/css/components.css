@@ -118,7 +118,7 @@
 
 .list-item .list-arrow {
   position: relative; margin-left: 6px; margin-right: 2px; margin-top: 2px;
-  display: inline-block; width: 9px; height: 9px;
+  display: block; width: 9px; height: 9px;
   border-bottom: 2px solid #ccc;
   border-right: 2px solid #ccc;
   transform: rotate(315deg); -webkit-transform: rotate(315deg); -moz-transform: rotate(315deg); -ms-transform: rotate(315deg); -o-transform: rotate(315deg);
@@ -216,7 +216,7 @@ input.form-input[disabled] {
 }
 .form-select::after {
   position: absolute; top: 7px; right: 5px;
-  display: inline-block; width: 8px; height: 8px;
+  display: block; width: 8px; height: 8px;
   font-size: 0; content: "";
   background-color: transparent;
   border-bottom: 2px solid rgba(0, 0, 0, 0.2);
