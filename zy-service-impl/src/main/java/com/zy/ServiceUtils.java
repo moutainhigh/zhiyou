@@ -13,8 +13,8 @@ public class ServiceUtils {
 	
 	public static Random random = new Random();
 
-	public static String generateTaskSn() {
-		return generateSn("T");
+	public static String generateOrderSn() {
+		return generateSn("R");
 	}
 	
 	public static String generatePaymentSn() {

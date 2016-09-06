@@ -1,19 +1,30 @@
 package com.zy.service.impl;
 
+import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
+import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.mal.Order;
+import com.zy.entity.mal.Order.LogisticsFeePayType;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.mal.OrderItem;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
 import com.zy.mapper.*;
 import com.zy.model.BizCode;
 import com.zy.model.dto.OrderCreateDto;
+import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
+import groovy.lang.Script;
+import org.apache.commons.lang3.StringUtils;
+import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.*;
+import static com.zy.common.util.ValidateUtils.validate;
 
 @Service
 @Validated
@@ -48,6 +60,27 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private AddressMapper addressMapper;
 
+	private String getFullName(Class<?> clazz) {
+		return StringUtils.replace(clazz.getName(), "$", ".");
+	}
+
+	private BigDecimal getPrice(long quantity, UserRank userRank, String scriptString) {
+		GroovyShell withdrawFeeRateShell;
+		ImportCustomizer importCustomizer = new ImportCustomizer();
+		importCustomizer.addImports(getFullName(User.UserType.class), getFullName(CurrencyType.class), getFullName(BizException.class));
+		CompilerConfiguration compilerConfiguration = new CompilerConfiguration();
+		compilerConfiguration.addCompilationCustomizers(importCustomizer);
+		withdrawFeeRateShell = new GroovyShell(compilerConfiguration);
+		String script = scriptString;
+		Binding binding = new Binding();
+		Script parse = withdrawFeeRateShell.parse(script);
+		binding.setVariable("userRank", userRank);
+		binding.setVariable("quantity", quantity);
+		parse.setBinding(binding);
+		BigDecimal result = (BigDecimal) parse.run();
+		return result;
+	}
+
 	
 	@Override
 	public Order create(@NotNull OrderCreateDto orderCreateDto) {
@@ -57,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
 		Long userId = orderCreateDto.getUserId();
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + " is not found");
-		validate(user, v -> v.getUserType() == User.UserType.代理, "user id " + userId + " is not found");
+		validate(user, v -> v.getUserType() == User.UserType.代理, "user type is wrong");
 
 		/* check address */
 		Long addressId = orderCreateDto.getAddressId();
@@ -73,9 +106,22 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "必须上架的商品才能购买");
 		}
 
-		BigDecimal amount = product.getPrice();
+		String title = orderCreateDto.getTitle();
+		long quantity = orderCreateDto.getQuantity();
+		Product.ProductPriceType productPriceType = product.getProductPriceType();
+		BigDecimal price;
+		if (productPriceType == Product.ProductPriceType.脚本价格) {
+			price = getPrice(quantity, user.getUserRank(), product.getPriceScript());
+		} else if (productPriceType == Product.ProductPriceType.矩阵价格) {
+			throw new BizException(BizCode.ERROR, "暂未实现");
+		} else {
+			price = product.getPrice();
+		}
+		BigDecimal amount = price.multiply(new BigDecimal(quantity));
+
 
 		Order order = new Order();
+		order.setUserId(userId);
 		order.setAmount(amount);
 		order.setCreatedTime(new Date());
 		order.setIsSettledUp(false);
@@ -86,16 +132,34 @@ public class OrderServiceImpl implements OrderService {
 		order.setReceiverAddress(address.getAddress());
 		order.setReceiverRealname(address.getRealname());
 		order.setReceiverPhone(address.getPhone());
+		order.setBuyerMemo(orderCreateDto.getBuyerMemo());
+		order.setOrderStatus(OrderStatus.待支付);
+		order.setVersion(0);
+		order.setCurrencyType(CurrencyType.现金);
+		order.setSn(ServiceUtils.generateOrderSn());
+		order.setIsSettledUp(false);
+		order.setDiscountFee(new BigDecimal("0.00"));
+		if (StringUtils.isNotBlank(title)) {
+			order.setTitle(title);
+		} else {
+			order.setTitle(product.getTitle());
+		}
+
+		// TODO 计算sellerId
+
 		validate(order);
 		orderMapper.insert(order);
 
 		OrderItem orderItem = new OrderItem();
-		orderItem.setPrice(product.getPrice());
+		orderItem.setPrice(price);
 		orderItem.setOrderId(order.getId());
+		orderItem.setProductId(productId);
 		orderItem.setMarketPrice(product.getMarketPrice());
-		orderItem.setQuantity(orderCreateDto.getQuantity());
+		orderItem.setQuantity(quantity);
 		orderItem.setAmount(amount);
-
+		orderItem.setTitle(product.getTitle());
+		orderItem.setImage(product.getImage1());
+		validate(orderItem);
 		orderItemMapper.insert(orderItem);
 		return order;
 	}
@@ -137,7 +201,12 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public void deliver(@NotNull Long id, boolean userLogistics, String logisticsName, String logisticsSn) {
+	public void deliver(@NotNull OrderDeliverDto orderDeliverDto) {
+
+		validate(orderDeliverDto, "logisticsFeePayType", "id");
+		boolean useLogistics = orderDeliverDto.isUseLogistics();
+
+		Long id = orderDeliverDto.getId();
 		Order order = orderMapper.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " not found");
 		OrderStatus orderStatus = order.getOrderStatus();
@@ -147,13 +216,29 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "只有已支付的订单才能发货");
 		}
 
-		if (userLogistics) {
+		if (useLogistics) {
+
+			String logisticsName = orderDeliverDto.getLogisticsName();
+			String logisticsSn = orderDeliverDto.getLogisticsSn();
+			BigDecimal logisticsFee = orderDeliverDto.getLogisticsFee();
+			LogisticsFeePayType logisticsFeePayType = orderDeliverDto.getLogisticsFeePayType();
+
 			validate(logisticsName, NOT_BLANK, "logistics name is blank");
 			validate(logisticsSn, NOT_BLANK, "logistics sn is blank");
+			validate(logisticsFee, NOT_NULL, "logistics fee is null");
+			validate(logisticsFeePayType, NOT_NULL, "logistics fee pay type is null");
+			validate(orderDeliverDto, "logisticsName", "logisticsSn", "logisticsFee");
 
 			order.setLogisticsName(logisticsName);
 			order.setLogisticsSn(logisticsSn);
+			order.setLogisticsFeePayType(logisticsFeePayType);
+			order.setLogisticsFee(logisticsFee);
 
+		} else {
+			order.setLogisticsFee(null);
+			order.setLogisticsFeePayType(null);
+			order.setLogisticsName(null);
+			order.setLogisticsSn(null);
 		}
 
 		order.setDeliveredTime(new Date());

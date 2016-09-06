@@ -8,6 +8,7 @@ import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -28,6 +29,11 @@ import static io.gd.generator.api.query.Predicate.*;
 @Type(label = "商品")
 public class Product implements Serializable {
 
+	@Type(label = "商品价格类型")
+	public enum ProductPriceType {
+		一般价格, 矩阵价格, 脚本价格
+	}
+
 	@Id
 	@Query(IN)
 	@View
@@ -37,6 +43,7 @@ public class Product implements Serializable {
 	@Query(LK)
 	@Field(label = "商品名")
 	@View
+	@Length(max = 100)
 	private String title;
 
 	@Lob
@@ -46,39 +53,18 @@ public class Product implements Serializable {
 	private String detail;
 
 	@NotNull
+	@Field(label = "商品价格类型")
+	@View(groups = { "ProductAdminVo" })
+	private ProductPriceType productPriceType;
+
 	@View(name = "priceLabel", type = String.class)
 	@Field(label = "价格")
-	@DecimalMin("0.00")
 	@View(groups = { "ProductAdminVo" })
 	private BigDecimal price;
 
-	@NotNull
-	@View(name = "price1Label", type = String.class)
-	@Field(label = "价格")
-	@DecimalMin("0.00")
+	@Field(label = "价格脚本")
 	@View(groups = { "ProductAdminVo" })
-	private BigDecimal price1;
-
-	@NotNull
-	@View(name = "price2Label", type = String.class)
-	@Field(label = "价格")
-	@DecimalMin("0.00")
-	@View(groups = { "ProductAdminVo" })
-	private BigDecimal price2;
-
-	@NotNull
-	@View(name = "price3Label", type = String.class)
-	@Field(label = "价格")
-	@DecimalMin("0.00")
-	@View(groups = { "ProductAdminVo" })
-	private BigDecimal price3;
-
-	@NotNull
-	@View(name = "price4Label", type = String.class)
-	@Field(label = "价格")
-	@DecimalMin("0.00")
-	@View(groups = { "ProductAdminVo" })
-	private BigDecimal price4;
+	private String priceScript;
 
 	@View(name = "marketPriceLabel", type = String.class)
 	@Field(label = "市场价")
