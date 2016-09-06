@@ -132,8 +132,8 @@
     $('#addressId').val(address.id);
     var addressText = address.addressText ? address.addressText 
         : address.province + ' ' + address.city + ' ' + address.district + ' ' + address.address
-    $('.receiver-wrap').html('<div>收件人：' + address.realname + '<span class="right">' + address.phone + '</span></div>' 
-        + '<div class="fs-14 font-777">收件地址：' + addressText+ '</div>')
+    $('.receiver-info').html('<div>' + address.realname + '<span class="right">' + address.phone + '</span></div>' 
+        + '<div class="fs-14 font-777">' + addressText+ '</div>')
   }
   
   function closeAddress() {
@@ -241,40 +241,37 @@
     <a href="javascript:history.back();" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
+  <form id="orderForm" class="valid-form" action="${ctx}/u/order/create" method="post">
+  
   <c:if test="${not empty parent}">
   <input type="hidden" name="parentId" value="${parent.id}">
-  <div class="parent-alert alert alert-warning fix-top p-10 zindex-10">
+  <div class="parent-alert alert alert-warning mb-10">
     <img class="image-40 round" src="${parent.avatarThumbnail}">
     <span class="ml-10">${parent.nickname} 将成为您的上级代理.</span>
-    <a class="right mt-10" href="javascript:;"><i class="fa fa-close"></i></a>
   </div>
   </c:if>
   
   <article class="order order-detail">
-  	<form id="orderForm" class="valid-form" action="${ctx}/u/order/create" method="post">
     <div class="list-group">
+      <div class="list-title">收件人信息</div>
       <div class="list-item">
-        <div class="list-text receiver-info">
-          <i class="fa fa-map-marker"></i>
+        <div class="list-icon"><i class="fa fa-map-marker fs-24"></i></div>
+        <div class="list-text fs-14 font-333 receiver-info">
           <c:if test="${empty address}">
-          <div class="receiver-wrap font-555">
             <span class="lh-30">您还未设置收货地址</span>
             <a class="btn-add-address btn orange btn-sm round-2 right width-180" href="javascript:;">设置收货地址</a>
-          </div>
           </c:if>
           <c:if test="${not empty address}">
-          <i class="fa fa-map-marker"></i>
-          <div class="receiver-wrap font-555">
-            <div>收货人：${order.addressRealname}<span class="right">${order.addressPhone}</span></div>
-            <div class="fs-14 font-777">收货地址：${order.addressProvince} ${order.addressCity} ${order.addressDistrict} ${order.addressAddress}</div>
-          </div>
+            <div>${address.realname}<span class="right">${address.phone}</span></div>
+            <div class="fs-14 font-777">${address.province} ${address.city} ${address.district} ${address.address}</div>
           </c:if>
-          <input type="hidden" name="addressId" value="${address.id}">
         </div>
+        <input type="hidden" name="addressId" value="${address.id}">
       </div>
     </div>
     
     <div class="list-group">
+      <div class="list-title">商品信息</div>
       <div class="list-item">
         <div class="list-text relative font-333">
           <img class="product-image abs-lt" alt="" src="${product.image1Thumbnail}">
@@ -283,12 +280,8 @@
             <div class="lh-24 fs-14 font-orange">¥ ${product.price}</div>
             <div class="lh-24 fs-12 font-gray">x ${quantity}</div>
           </div>
-          <input type="hidden" name="orderItems[0].productId" value="${product.id}">
-          <input type="hidden" name="orderItems[0].title" value="${product.title}">
-          <input type="hidden" name="orderItems[0].image" value="${product.image1}">
-          <input type="hidden" name="orderItems[0].price" value="${product.price}">
-          <input type="hidden" name="orderItems[0].quantity" value="${quantity}">
-          <input type="hidden" name="price" value="${product.price * quantity}">
+          <input type="hidden" name="productId" value="${product.id}">
+          <input type="hidden" name="quantity" value="${quantity}">
         </div>
       </div>
       <div class="list-item">
@@ -299,11 +292,11 @@
       </div>
     </div>
     
-    <div class="list-title">请写下您的订单留言</div>
     <div class="list-group">
+      <div class="list-title">请写下您的订单留言</div>
       <div class="list-item">
         <div class="list-text">
-          <textarea name="memo" class="form-input" rows="2" placeholder="填写您的订单留言"></textarea>
+          <textarea name="buyerMemo" class="form-input" rows="2" placeholder="填写您的订单留言"></textarea>
         </div>
       </div>
     </div>
@@ -311,8 +304,9 @@
     <div class="form-btn">
       <input type="submit" value="确认订单" class="btn-submit btn btn-block orange">
     </div>
-    </form>
+    
   </article>
+  </form>
   
 </body>
 </html>
