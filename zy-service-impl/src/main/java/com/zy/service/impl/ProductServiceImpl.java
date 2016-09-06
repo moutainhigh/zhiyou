@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService{
 
 	@Autowired
 	private MalComponent malComponent;
-	
+
 	@Override
 	public void delete(@NotNull Long id) {
 		productMapper.delete(id);		
@@ -49,7 +49,9 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public Product modify(@NotNull Product product) {
-		productMapper.merge(product, "title", "detail", "price", "marketPrice", "skuCode", "stockQuantity", "lockedCount", 
+		findAndValidate(product.getId());
+		validate(product);
+		productMapper.merge(product, "title", "detail", "productPriceType", "price", "priceScript", "marketPrice", "skuCode",
 				"image1", "image2", "image3", "image4", "image5", "image6");
 		return product;
 	}
@@ -61,11 +63,6 @@ public class ProductServiceImpl implements ProductService{
 		
 		product.setIsOn(isOn);
 		productMapper.update(product);
-	}
-
-	@Override
-	public BigDecimal getPrice(@NotNull Long productId, @NotNull User.UserRank userRank, long quantity) {
-		return malComponent.getPrice(productId, userRank, quantity);
 	}
 
 	@Override
@@ -87,6 +84,37 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public List<Product> findAll(@NotNull ProductQueryModel productQueryModel) {
 		return productMapper.findAll(productQueryModel);
+	}
+
+	@Override
+	public Product modifyPrice(Product product) {
+		Long id = product.getId();
+		Product persistence = findAndValidate(id);
+		ProductPriceType productPriceType = persistence.getProductPriceType();
+		validate(productPriceType, NOT_NULL, "product price type is null");
+
+		Product productForMerge = new Product();
+		productForMerge.setId(id);
+		productForMerge.setProductPriceType(productPriceType);
+		if(productPriceType == ProductPriceType.一般价格) {
+			BigDecimal price = persistence.getPrice();
+			validate(price, NOT_NULL, "product price is null");
+			productForMerge.setPrice(price);
+		} else if(productPriceType == ProductPriceType.脚本价格) {
+			String priceScript = persistence.getPriceScript();
+			validate(persistence.getPriceScript(), NOT_BLANK, "product price script is null");
+			productForMerge.setPriceScript(priceScript);
+		}
+		productMapper.merge(productForMerge, "productPriceType", "price", "priceScript");
+
+		return null;
+	}
+
+	private Product findAndValidate(Long id) {
+		validate(id, NOT_NULL, "id is null");
+		Product product = productMapper.findOne(id);
+		validate(product, NOT_NULL, "product id" + id + " not found");
+		return product;
 	}
 
 }

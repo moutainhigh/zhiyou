@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.exception.UnauthorizedException;
@@ -21,6 +20,7 @@ import com.zy.component.OrderComponent;
 import com.zy.entity.mal.Order;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
+import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
 
@@ -64,15 +64,16 @@ public class UcenterOrderController {
 	}
 	
 	@RequestMapping(path = "/deliver", method = RequestMethod.POST)
-	public String deliver(@RequestParam Long id, @RequestParam Boolean userLogistics, String logisticsName, String logisticsSn, RedirectAttributes redirectAttributes, Principal principal) {
+	public String deliver(OrderDeliverDto orderDeliverDto, RedirectAttributes redirectAttributes, Principal principal) {
 		
+		Long id = orderDeliverDto.getId();
 		Order persistence = orderService.findOne(id);
 		validate(persistence, NOT_NULL, "order id" + id + " not found");
 		if(principal.getUserId().equals(persistence.getSellerId())) {
 			throw new UnauthorizedException("权限不足");
 		}
 		try {
-			//orderService.deliver(id, userLogistics, logisticsName, logisticsSn);
+			orderService.deliver(orderDeliverDto);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("发货成功"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));

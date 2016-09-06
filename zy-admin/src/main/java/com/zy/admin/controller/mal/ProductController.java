@@ -5,20 +5,26 @@ import static com.zy.common.util.ValidateUtils.validate;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
+import com.zy.component.ProductComponent;
 import com.zy.entity.mal.Product;
+import com.zy.model.Constants;
 import com.zy.model.query.ProductQueryModel;
 import com.zy.service.ProductService;
+import com.zy.vo.ProductAdminVo;
 
 @RequestMapping("/product")
 @Controller
@@ -27,35 +33,49 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	
+	@Autowired
+	private ProductComponent productComponent;
+	
+	@RequiresPermissions("product:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list() {
 		return "mal/productList";
 	}
 	
+	@RequiresPermissions("product:view")
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Grid<Product> listAjax(ProductQueryModel productQueryModel) {
+	public Grid<ProductAdminVo> listAjax(ProductQueryModel productQueryModel) {
 		Page<Product> page = productService.findPage(productQueryModel);
-		return new Grid<Product>(page);
+		return new Grid<ProductAdminVo>(PageBuilder.copyAndConvert(page, productComponent::buildAdminVo));
 	}
 	
+	@RequiresPermissions("product:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create() {
+		
 		return "mal/productCreate";
 	}
 	
+	@RequiresPermissions("product:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(Product product, Model mode, RedirectAttributes redirectAttributes) {
-		productService.create(product);
-		redirectAttributes.addFlashAttribute("保存成功");
-		return "redirect:/product";
+		try {
+			productService.create(product);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));
+			return "redirect:/product";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return "redirect:/product/create";
+		}
 	}
 	
-	@RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
-	public String update(@PathVariable Long id, Model model) {
+	@RequiresPermissions("product:edit")
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public String update(@RequestParam Long id, Model model) {
 		Product product = productService.findOne(id);
 		validate(product, NOT_NULL, "product not fund, id = " + id);
-		model.addAttribute("product", product);
+		model.addAttribute("product", productComponent.buildAdminVo(product));
 		
 		String detail = StringEscapeUtils.unescapeHtml4(product.getDetail());
 		if (StringUtils.isNotBlank(detail)) {
@@ -65,30 +85,52 @@ public class ProductController {
 		return "mal/productUpdate";
 	}
 	
+	@RequiresPermissions("product:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(Product product, String mainImage, RedirectAttributes redirectAttributes, Model model) {
-		Long id = product.getId();
-		validate(id, NOT_NULL, "id为空");
-		Product pproduct = productService.findOne(id);
-		validate(pproduct, NOT_NULL, "product not found, id = " + id);
-		
-		productService.modify(product);
-		
-		return "redirect:/product";
+	public String update(Product product, RedirectAttributes redirectAttributes) {
+		try {
+			productService.modify(product);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));
+			return "redirect:/product";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return "redirect:/product/update?id=" + product.getId();
+		}
 	}
 	
-	@RequestMapping("/on")
-	@ResponseBody
-	public boolean isOn(Long id, Boolean isOn) {
-		validate(id, NOT_NULL, "id is null");
-		validate(isOn, NOT_NULL, "isOn is null");
-		
+	@RequiresPermissions("product:edit")
+	@RequestMapping(value = "/modifyPrice", method = RequestMethod.GET)
+	public String modifyPrice(@RequestParam Long id, Model model) {
 		Product product = productService.findOne(id);
-		validate(product, NOT_NULL, "product is null");
-		
-		productService.on(id, isOn);
-		return true;
+		validate(product, NOT_NULL, "product not fund, id = " + id);
+		model.addAttribute("product", productComponent.buildAdminVo(product));
+		return "mal/productModify";
 	}
-
+	
+	@RequiresPermissions("product:edit")
+	@RequestMapping(value = "/modifyPrice", method = RequestMethod.POST)
+	public String modifyPrice(Product product, RedirectAttributes redirectAttributes) {
+		try {
+			productService.modifyPrice(product);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));
+			return "redirect:/product";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return "redirect:/product/modifyPrice?id=" + product.getId();
+		}
+	}
+	
+	@RequiresPermissions("product:edit")
+	@RequestMapping(value = "/release")
+	public String release(Long id, RedirectAttributes redirectAttributes, boolean isReleased) {
+		String released = isReleased ? "上架" : "下架";
+		try {
+			productService.release(id, isReleased);
+			redirectAttributes.addFlashAttribute(ResultBuilder.ok("商品" + released + "成功"));
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(ResultBuilder.error("商品" + released + "失败, 原因" + e.getMessage()));
+		}
+		return "redirect:/product";
+	}
 	
 }
