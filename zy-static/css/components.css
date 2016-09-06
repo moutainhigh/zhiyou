@@ -343,8 +343,8 @@ input.form-input[disabled] {
 }
 .form-range input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  padding: 5px; cursor: ew-resize;
-  width: 20px; height: 20px;
+  padding: 5px; margin-top: -6px; cursor: ew-resize;
+  width: 24px; height: 24px;
   border: 1px solid #777; border-radius: 50%;
   background: linear-gradient(#5c8520, #5c8520) repeat scroll 0 0 content-box, rgba(0, 0, 0, 0) radial-gradient(circle at 25% 25% , #fbfbf9, #bfccad) repeat scroll 0 0 padding-box;
 }
