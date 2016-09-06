@@ -66,6 +66,11 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
+	public BigDecimal getPrice(Long productId, User.UserRank userRank, long quantity) {
+		return malComponent.getPrice(productId, userRank, quantity);
+	}
+
+	@Override
 	public Page<Product> findPage(@NotNull ProductQueryModel productQueryModel) {
 		if(productQueryModel.getPageNumber() == null)
 			productQueryModel.setPageNumber(0);
