@@ -123,6 +123,14 @@ public class ProductController {
 	@RequiresPermissions("product:edit")
 	@RequestMapping(value = "/on")
 	public String on(@RequestParam Long id, RedirectAttributes redirectAttributes, @RequestParam boolean isOn) {
+		
+		Product product = productService.findOne(id);
+		validate(product, NOT_NULL, "product is null");
+		if(product.getProductPriceType() == null) {
+			redirectAttributes.addFlashAttribute(ResultBuilder.error("请先编辑商品价格"));
+			return "redirect:/product";
+		}
+		
 		String released = isOn ? "上架" : "下架";
 		try {
 			productService.on(id, isOn);
