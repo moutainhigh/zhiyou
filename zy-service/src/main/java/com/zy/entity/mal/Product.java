@@ -52,7 +52,6 @@ public class Product implements Serializable {
 	@Field(label = "商品详情")
 	private String detail;
 
-	@NotNull
 	@Field(label = "商品价格类型")
 	@View(groups = { "ProductAdminVo" })
 	private ProductPriceType productPriceType;

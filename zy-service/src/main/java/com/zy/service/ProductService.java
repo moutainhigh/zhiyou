@@ -14,6 +14,7 @@ public interface ProductService {
 	Page<Product> findPage(ProductQueryModel productQueryModel);
 	List<Product> findAll(ProductQueryModel productQueryModel);
 	Product modify(Product product);
-	void on(Long id, Boolean isOn);
+	Product modifyPrice(Product product);
+	void release(Long id, Boolean isRelease);
 	
 }

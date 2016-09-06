@@ -138,7 +138,7 @@
             title: '图片1',
             orderable: false,
             render: function (data, type, full) {
-              return '<img class="imagescan" data-url="' + data + '" src="' + data + '" style="width: 80px; height: 80px;">';
+              return '<img class="imagescan" data-url="' + full.image1Big + '" src="' + data + '" style="width: 80px; height: 80px;">';
             }
           },
           {
@@ -146,7 +146,7 @@
             title: '图片2',
             orderable: false,
             render: function (data, type, full) {
-              return '<img class="imagescan" data-url="' + data + '" src="' + data + '" style="width: 80px; height: 80px;">';
+              return '<img class="imagescan" data-url="' + full.image2Big + '" src="' + data + '" style="width: 80px; height: 80px;">';
             }
           },
           {
@@ -154,7 +154,7 @@
             title: '图片3',
             orderable: false,
             render: function (data, type, full) {
-              return '<img class="imagescan" data-url="' + data + '" src="' + data + '" style="width: 80px; height: 80px;">';
+              return '<img class="imagescan" data-url="' + full.image3Big + '" src="' + data + '" style="width: 80px; height: 80px;">';
             }
           },
           /*{

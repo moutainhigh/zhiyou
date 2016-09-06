@@ -33,6 +33,7 @@ public class ProductComponent {
 			productAdminVo.setMarketPriceLabel(marketPrice.toString());
 		}
 		productAdminVo.setImage1Thumbnail(GcUtils.getThumbnail(product.getImage1()));
+		productAdminVo.setImage1Big(GcUtils.getThumbnail(product.getImage1(), 240, 150));
 		return productAdminVo;
 	}
 	

@@ -30,6 +30,12 @@ public class ReportComponent {
 		reportAdminVo.setImage4Thumbnail(getThumbnail(report.getImage4()));
 		reportAdminVo.setImage5Thumbnail(getThumbnail(report.getImage5()));
 		reportAdminVo.setImage6Thumbnail(getThumbnail(report.getImage6()));
+		reportAdminVo.setImage1Big(report.getImage1());
+		reportAdminVo.setImage2Big(report.getImage2());
+		reportAdminVo.setImage3Big(report.getImage3());
+		reportAdminVo.setImage4Big(report.getImage4());
+		reportAdminVo.setImage5Big(report.getImage5());
+		reportAdminVo.setImage6Big(report.getImage6());
 		return reportAdminVo;
 	}
 
