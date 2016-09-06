@@ -241,8 +241,17 @@
     <a href="javascript:history.back();" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
+  <c:if test="${not empty inviter}">
+  <input type="hidden" name="inviterPhone" value="${inviter.phone}">
+  <div class="inviter-alert alert alert-warning fix-top p-10 zindex-10">
+    <img class="image-40 round" src="${inviter.avatarThumbnail}">
+    <span class="ml-10">${inviter.nickname} 将成为您的上级代理.</span>
+    <a class="right mt-10" href="javascript:;"><i class="fa fa-close"></i></a>
+  </div>
+  </c:if>
+  
   <article class="order order-detail">
-  	<form id="orderForm" class="valid-form" action="${ctx}/order/create" method="post">
+  	<form id="orderForm" class="valid-form" action="${ctx}/u/order/create" method="post">
     <div class="list-group">
       <div class="list-item">
         <div class="list-text receiver-info">

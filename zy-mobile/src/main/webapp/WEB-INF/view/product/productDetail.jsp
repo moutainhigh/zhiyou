@@ -67,13 +67,7 @@
 <body class="product-detail footer-fixed">
   <a class="header-back" href="${ctx}/product"><i class="fa fa-angle-left"></i></a>
   
-  <div class="note note-warning mb-0">
-    <p>
-      <i class="fa fa-exclamation-circle"></i>购买此套餐产品即可成为一级代理。
-    </p>
-  </div>
-  
-  <form id="form" action="${ctx}/order/create" method="get">
+  <form id="form" action="${ctx}/u/order/create" method="get">
   <input type="hidden" name="productId" value="${product.id}">
   <article class="product-wrap">
     <figure class="product-image">
@@ -110,24 +104,33 @@
       <c:if test="${not empty product.detail}">${product.detail}</c:if>
     </div>
   </article>
-
-  <nav class="footer footer-nav flex">
-    <%--
-    <a class="flex-1 link-cart" href="${ctx}/cart">
-      <i class="fa fa-shopping-cart"></i>
-      <span>购物车</span>
-      <em id="cartNum" class="badge badge-danger">8</em>
-    </a>
-    --%>
-    <div class="flex-2 action-cart">
-      <div class="quantity-wrap">
-        <i class="fa fa-minus disabled"></i>
-        <input type="text" class="input-quantity text-center fs-14" id="quantity" name="quantity" value="1">
-        <i class="fa fa-plus"></i>
+  
+  <c:if test="${isAgent}">
+    <nav class="footer footer-nav flex">
+      <%--
+      <a class="flex-1 link-cart" href="${ctx}/cart">
+        <i class="fa fa-shopping-cart"></i>
+        <span>购物车</span>
+        <em id="cartNum" class="badge badge-danger">8</em>
+      </a>
+      --%>
+      <div class="flex-2 action-cart">
+        <div class="quantity-wrap">
+          <i class="fa fa-minus disabled"></i>
+          <input type="text" class="input-quantity text-center fs-14" id="quantity" name="quantity" value="1">
+          <i class="fa fa-plus"></i>
+        </div>
       </div>
-    </div>
-    <a id="btnOrder" class="flex-2 btn-order" href="javascript:;">立即订货</a>
-  </nav>
+      <a id="btnOrder" class="flex-2 btn-order" href="javascript:;">立即订货</a>
+    </nav>
+  </c:if>
+  
+  <c:if test="${!isAgent}">
+    <nav class="footer footer-nav flex">
+      <a id="btnAgent" class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">立即成为代理</a>
+    </nav>
+  </c:if>
+
   </form>
 
 </body>
