@@ -356,6 +356,7 @@ input.form-input[disabled] {
   background: #eee linear-gradient(to bottom, #eee, #f5f5f5) repeat-x scroll 0 0;
 }
 .form-range input[type="range"]:focus::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
   box-shadow: 0 4px 4px -2px #5c8520 inset;
   background: #000 linear-gradient(to bottom, #87c12f, #89c530) repeat scroll 0 0;
 }
