@@ -70,7 +70,7 @@ public class UcenterOrderCreateController {
 		model.addAttribute("product", productVo);
 		model.addAttribute("quantity", quantity);
 		model.addAttribute("address", address);
-		return "order/orderCreate";
+		return "ucenter/order/orderCreate";
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
