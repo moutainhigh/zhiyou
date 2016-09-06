@@ -1,5 +1,8 @@
 package com.zy.mobile.controller.ucenter;
 
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.UserComponent;
+import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Principal;
@@ -32,6 +36,9 @@ public class UcenterAgentController {
 
 	@RequestMapping
 	public String agent(Long productId, Principal principal, Model model) {
+		Product product = productService.findOne(productId);
+		validate(product, NOT_NULL, "product id:" + productId + " is not found !");
+		model.addAttribute("product", product);
 		User user = userService.findOne(principal.getUserId());
 		if(user.getInviterId() != null){
 			User inviter = userService.findOne(user.getInviterId());

@@ -21,15 +21,15 @@ public class OrderItemVo implements Serializable {
 	private String title;
 	@Field(label = "原价/市场价")
 	private BigDecimal marketPrice;
+	@Field(label = "单价")
+	private BigDecimal price;
+	@Field(label = "子项金额")
+	private BigDecimal amount;
 	@Field(label = "数量")
 	private Long quantity;
 
 	/* 扩展 */
 	@Field(label = "商品图")
 	private String imageThumbnail;
-	@Field(label = "单价")
-	private String priceLabel;
-	@Field(label = "子项金额")
-	private String amountLabel;
 
 }

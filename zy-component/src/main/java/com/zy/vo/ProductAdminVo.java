@@ -37,10 +37,6 @@ public class ProductAdminVo implements Serializable {
 	private Date createdTime;
 
 	/* 扩展 */
-	@Field(label = "价格")
-	private String priceLabel;
-	@Field(label = "市场价")
-	private String marketPriceLabel;
 	@Field(label = "主图")
 	private String image1Big;
 	@Field(label = "主图")

@@ -58,9 +58,8 @@ public class Product implements Serializable {
 	@View(groups = { "ProductAdminVo" })
 	private ProductPriceType productPriceType;
 
-	@View(name = "priceLabel", type = String.class)
 	@Field(label = "价格")
-	@View(groups = { "ProductAdminVo" })
+	@View
 	private BigDecimal price;
 
 	@Field(label = "价格脚本")
@@ -68,10 +67,9 @@ public class Product implements Serializable {
 	@Column(length = 1000)
 	private String priceScript;
 
-	@View(name = "marketPriceLabel", type = String.class)
 	@Field(label = "市场价")
 	@DecimalMin("0.00")
-	@View(groups = { "ProductAdminVo" })
+	@View
 	private BigDecimal marketPrice;
 
 	@View(groups = { "ProductDetailVo", "ProductAdminVo" })
