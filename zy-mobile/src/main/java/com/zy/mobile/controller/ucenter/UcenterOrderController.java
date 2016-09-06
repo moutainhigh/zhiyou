@@ -72,7 +72,7 @@ public class UcenterOrderController {
 			throw new UnauthorizedException("权限不足");
 		}
 		try {
-			orderService.deliver(id, userLogistics, logisticsName, logisticsSn);
+			//orderService.deliver(id, userLogistics, logisticsName, logisticsSn);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("发货成功"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
