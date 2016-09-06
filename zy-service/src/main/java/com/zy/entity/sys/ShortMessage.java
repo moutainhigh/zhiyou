@@ -5,18 +5,12 @@ import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.api.query.Predicate;
-
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "sys_short_message")
@@ -38,10 +32,10 @@ public class ShortMessage implements Serializable {
 	private String phone;
 
 	@Field(label = "错误码")
-	private Integer errorCode;
+	private Boolean isSuccess;
 
 	@Field(label = "错误信息")
-	private String errorMsg;
+	private String errorMessage;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Query({Predicate.GTE, Predicate.LT})

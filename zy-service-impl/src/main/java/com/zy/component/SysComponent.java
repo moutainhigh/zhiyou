@@ -1,17 +1,13 @@
 package com.zy.component;
 
-import javax.validation.constraints.NotNull;
-
+import com.zy.entity.sys.Area;
+import com.zy.mapper.AreaMapper;
+import com.zy.mapper.MessageMapper;
+import com.zy.model.dto.AreaDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.zy.common.support.LuosimaoSmsSupport;
-import com.zy.entity.mal.Delivery;
-import com.zy.entity.sys.Area;
-import com.zy.mapper.AreaMapper;
-import com.zy.mapper.DeliveryMapper;
-import com.zy.mapper.MessageMapper;
-import com.zy.model.dto.AreaDto;
+import javax.validation.constraints.NotNull;
 
 @Component
 public class SysComponent {
@@ -21,12 +17,6 @@ public class SysComponent {
 	
 	@Autowired
 	private MessageMapper messageMapper;
-	
-	@Autowired
-	private DeliveryMapper deliveryMapper;
-	
-	@Autowired
-	private LuosimaoSmsSupport luosimaoSmsSupport;
 	
 	public AreaDto findOneDto(@NotNull Long id) {
 		Area area = areaMapper.findOne(id);
@@ -73,8 +63,4 @@ public class SysComponent {
 		return areaDto;
 	}
 	
-	public Delivery fetchDelivery() {
-		return deliveryMapper.fetchOne();
-	}
-
 }

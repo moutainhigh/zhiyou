@@ -1,6 +1,7 @@
 package com.zy.common.support.sms;
 
 import com.zy.common.util.Digests;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -59,6 +60,13 @@ public class ZtinfoSmsSupport implements SmsSupport {
 
 	@Override
 	public SmsResult send(String phone, String message, String sign) {
+		String productId;
+		if (StringUtils.contains(message, "验证码")) {
+			productId = PRODUCT_ID_CAPTCHA;
+		} else {
+			productId = PRODUCT_ID_NOTICE;
+		}
+
 		SmsResult smsResult = new SmsResult();
 
 		String strtime = new SimpleDateFormat("yyyyMMddHHmmss").format(System.currentTimeMillis());
@@ -69,7 +77,7 @@ public class ZtinfoSmsSupport implements SmsSupport {
 		nvps.add(new BasicNameValuePair("username", username));
 		nvps.add(new BasicNameValuePair("tkey", strtime));
 		nvps.add(new BasicNameValuePair("password", pass));
-		nvps.add(new BasicNameValuePair("productid", PRODUCT_ID_CAPTCHA));
+		nvps.add(new BasicNameValuePair("productid", productId));
 		nvps.add(new BasicNameValuePair("mobile", phone));
 		nvps.add(new BasicNameValuePair("content", message + "【" + sign + "】"));
 		nvps.add(new BasicNameValuePair("xh", ""));
@@ -79,7 +87,12 @@ public class ZtinfoSmsSupport implements SmsSupport {
 			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				HttpEntity entity = resp.getEntity();
 				String r = EntityUtils.toString(entity, "utf8");
-
+				if (StringUtils.isNotBlank(r) && r.startsWith("1,")) {
+					smsResult.setSuccess(true);
+				} else {
+					smsResult.setSuccess(false);
+					smsResult.setMessage(r);
+				}
 			} else {
 				throw new Exception("http状态码异常" + resp.getStatusLine().getStatusCode());
 			}
@@ -89,8 +102,6 @@ public class ZtinfoSmsSupport implements SmsSupport {
 		}
 		return smsResult;
 	}
-
-
 
 }
 
