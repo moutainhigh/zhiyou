@@ -39,7 +39,7 @@
       </div>
       <h3>${product.title}</h3>
       <div class="product-info">
-        <span class="fs-16 font-orange">¥ ${product.price}</span>
+        <span class="fs-16 font-orange">¥ ${product.priceLabel}</span>
       </div>
     </a>
     </c:forEach>

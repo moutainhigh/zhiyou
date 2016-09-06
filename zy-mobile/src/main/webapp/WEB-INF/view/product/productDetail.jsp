@@ -57,8 +57,7 @@
 
     //下单
     $('#btnOrder').click(function() {
-      var quantity = $('#quantity').val();
-      location.href = '${ctx}/order/create/${product.id}?quantity=' + quantity;
+      $('#form').submit();
     });
 
   })
@@ -67,6 +66,15 @@
  
 <body class="product-detail footer-fixed">
   <a class="header-back" href="${ctx}/product"><i class="fa fa-angle-left"></i></a>
+  
+  <div class="note note-warning mb-0">
+    <p>
+      <i class="fa fa-exclamation-circle"></i>购买此套餐产品即可成为一级代理。
+    </p>
+  </div>
+  
+  <form id="form" action="${ctx}/order/create" method="get">
+  <input type="hidden" name="productId" value="${product.id}">
   <article class="product-wrap">
     <figure class="product-image">
       <img class="abs-lt" src="${product.image1Big}">
@@ -77,17 +85,17 @@
       </div>
       <div class="list-item">
         <div class="font-555 fs-14">
-          <span class="fs-15">商品编号： <span> ¥ ${product.skuCode}</span></span>
+          <span class="fs-15">商品编号： <span> ${product.skuCode}</span></span>
         </div>
       </div>
       <div class="list-item">
         <div class="font-555 fs-14">
-          <span class="fs-15">零售价： <span> ¥ ${product.marketPrice}</span></span>
+          <span class="fs-15">零售价： <span> ¥ ${product.marketPriceLabel}</span></span>
         </div>
       </div>
       <div class="list-item">
         <div class="font-555 fs-14">
-          <span class="fs-15">代理价： </span><span class="font-orange fs-18 bold"> ¥ ${product.price}</span>
+          <span class="fs-15">代理价： </span><span class="font-orange fs-18 bold"> ¥ ${product.priceLabel}</span>
         </div>
       </div>
     </div>
@@ -120,6 +128,7 @@
     </div>
     <a id="btnOrder" class="flex-2 btn-order" href="javascript:;">立即订货</a>
   </nav>
+  </form>
 
 </body>
 </html>

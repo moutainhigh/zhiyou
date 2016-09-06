@@ -50,6 +50,7 @@ public class ProductComponent {
 			productDetailVo.setMarketPriceLabel(marketPrice.toString());
 		}
 		productDetailVo.setImage1Thumbnail(GcUtils.getThumbnail(product.getImage1()));
+		productDetailVo.setImage1Big(GcUtils.getBig(product.getImage1()));
 		return productDetailVo;
 	}
 	

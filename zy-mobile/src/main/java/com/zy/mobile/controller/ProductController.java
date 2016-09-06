@@ -4,6 +4,7 @@ import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,7 @@ public class ProductController {
 		List<Product> products = productService.findAll(productQueryModel);
 		model.addAttribute("products", products.stream().map(v -> {
 			return productComponent.buildListVo(v);
-		}));
+		}).collect(Collectors.toList()));
 		if(isFirst) {
 			return "product/productListAgent";
 		} else {
