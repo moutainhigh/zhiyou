@@ -27,9 +27,9 @@
         <property name="authDescriptor">
             <bean class="net.spy.memcached.auth.AuthDescriptor">
                 <constructor-arg index="0">
-                    <array>
+                    <list>
                         <value>PLAIN</value>
-                    </array>
+                    </list>
                 </constructor-arg>
                 <constructor-arg index="1">
                     <bean class="com.zy.common.extend.PlainCallbackHandler">
@@ -50,10 +50,7 @@
         <constructor-arg index="1" value="${memcached.group}"/>
     </bean>
 
-    <bean id="luosimaoSmsSupport" class="com.zy.common.support.LuosimaoSmsSupport">
-        <constructor-arg index="0" value="${sms.apiKey}"/>
-        <constructor-arg index="1" value="${sms.sign}"/>
-    </bean>
+
     <!--<bean id="kafkaProducerFactoryBean" class="com.zy.extend.KafkaProducerFactoryBean">-->
         <!--<property name="properties">-->
             <!--<util:properties>-->
