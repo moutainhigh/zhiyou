@@ -35,6 +35,8 @@ public class UserQueryModel implements Serializable {
 
 	private Long inviterIdEQ;
 
+	private Long parentIdEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
@@ -93,6 +95,7 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("remark");
 		fieldNames.add("userRank");
 		fieldNames.add("avatar");
+		fieldNames.add("parentId");
 		fieldNames.add("isInfoCompleted");
 		fieldNames.add("password");
 		fieldNames.add("phone");

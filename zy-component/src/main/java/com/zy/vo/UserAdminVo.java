@@ -41,5 +41,7 @@ public class UserAdminVo implements Serializable {
 	private String avatarThumbnail;
 	@Field(label = "邀请人id")
 	private UserAdminSimpleVo inviter;
+	@Field(label = "上级id")
+	private UserAdminSimpleVo parent;
 
 }

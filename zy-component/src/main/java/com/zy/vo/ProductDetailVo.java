@@ -22,14 +22,6 @@ public class ProductDetailVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "价格")
 	private String priceLabel;
-	@Field(label = "价格")
-	private String price1Label;
-	@Field(label = "价格")
-	private String price2Label;
-	@Field(label = "价格")
-	private String price3Label;
-	@Field(label = "价格")
-	private String price4Label;
 	@Field(label = "市场价")
 	private String marketPriceLabel;
 	@Field(label = "主图")

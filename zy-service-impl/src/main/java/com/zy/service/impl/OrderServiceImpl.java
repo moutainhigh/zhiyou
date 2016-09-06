@@ -36,7 +36,6 @@ import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.*;
-import static com.zy.common.util.ValidateUtils.validate;
 
 @Service
 @Validated
@@ -106,6 +105,13 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "必须上架的商品才能购买");
 		}
 
+		/* calculate seller id */
+		Long parentId = user.getParentId();
+		if (parentId == null) {
+			parentId = orderCreateDto.getParentId();
+		}
+
+
 		String title = orderCreateDto.getTitle();
 		long quantity = orderCreateDto.getQuantity();
 		Product.ProductPriceType productPriceType = product.getProductPriceType();
@@ -144,8 +150,6 @@ public class OrderServiceImpl implements OrderService {
 		} else {
 			order.setTitle(product.getTitle());
 		}
-
-		// TODO 计算sellerId
 
 		validate(order);
 		orderMapper.insert(order);

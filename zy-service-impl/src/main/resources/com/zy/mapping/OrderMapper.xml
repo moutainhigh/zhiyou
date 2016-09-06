@@ -14,7 +14,6 @@
 		<result column="refunded_time" property="refundedTime" />
 		<result column="currency_type" property="currencyType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="order_status" property="orderStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
-		<result column="post_fee" property="postFee" />
 		<result column="discount_fee" property="discountFee" />
 		<result column="amount" property="amount" />
 		<result column="refund" property="refund" />
@@ -24,8 +23,10 @@
 		<result column="remark" property="remark" />
 		<result column="is_settled_up" property="isSettledUp" />
 		<result column="use_logistics" property="useLogistics" />
+		<result column="logistics_fee_pay_type" property="logisticsFeePayType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="logistics_name" property="logisticsName" />
 		<result column="logistics_sn" property="logisticsSn" />
+		<result column="logistics_fee" property="logisticsFee" />
 		<result column="receiver_area_id" property="receiverAreaId" />
 		<result column="receiver_realname" property="receiverRealname" />
 		<result column="receiver_phone" property="receiverPhone" />
@@ -38,8 +39,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.Order" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_order` (sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_name,logistics_sn,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version)
-	  values (#{sn},#{userId},#{sellerId},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{postFee},#{discountFee},#{amount},#{refund},#{refundRemark},#{buyerMemo},#{sellerMemo},#{remark},#{isSettledUp},#{useLogistics},#{logisticsName},#{logisticsSn},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{deliveredTime},#{version})
+	  insert into `mal_order` (sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_fee_pay_type,logistics_name,logistics_sn,logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version)
+	  values (#{sn},#{userId},#{sellerId},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{discountFee},#{amount},#{refund},#{refundRemark},#{buyerMemo},#{sellerMemo},#{remark},#{isSettledUp},#{useLogistics},#{logisticsFeePayType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{logisticsName},#{logisticsSn},#{logisticsFee},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{deliveredTime},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -59,7 +60,6 @@
 			refunded_time = #{refundedTime},
 			currency_type = #{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			order_status = #{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
-			post_fee = #{postFee},
 			discount_fee = #{discountFee},
 			amount = #{amount},
 			refund = #{refund},
@@ -69,8 +69,10 @@
 			remark = #{remark},
 			is_settled_up = #{isSettledUp},
 			use_logistics = #{useLogistics},
+			logistics_fee_pay_type = #{logisticsFeePayType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			logistics_name = #{logisticsName},
 			logistics_sn = #{logisticsSn},
+			logistics_fee = #{logisticsFee},
 			receiver_area_id = #{receiverAreaId},
 			receiver_realname = #{receiverRealname},
 			receiver_phone = #{receiverPhone},
@@ -99,7 +101,6 @@
 					<when test="field == 'refundedTime'">refunded_time = #{order.refundedTime},</when>
 					<when test="field == 'currencyType'">currency_type = #{order.currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.CurrencyType},</when>
 					<when test="field == 'orderStatus'">order_status = #{order.orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.mal.Order$OrderStatus},</when>
-					<when test="field == 'postFee'">post_fee = #{order.postFee},</when>
 					<when test="field == 'discountFee'">discount_fee = #{order.discountFee},</when>
 					<when test="field == 'amount'">amount = #{order.amount},</when>
 					<when test="field == 'refund'">refund = #{order.refund},</when>
@@ -109,8 +110,10 @@
 					<when test="field == 'remark'">remark = #{order.remark},</when>
 					<when test="field == 'isSettledUp'">is_settled_up = #{order.isSettledUp},</when>
 					<when test="field == 'useLogistics'">use_logistics = #{order.useLogistics},</when>
+					<when test="field == 'logisticsFeePayType'">logistics_fee_pay_type = #{order.logisticsFeePayType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.mal.Order$LogisticsFeePayType},</when>
 					<when test="field == 'logisticsName'">logistics_name = #{order.logisticsName},</when>
 					<when test="field == 'logisticsSn'">logistics_sn = #{order.logisticsSn},</when>
+					<when test="field == 'logisticsFee'">logistics_fee = #{order.logisticsFee},</when>
 					<when test="field == 'receiverAreaId'">receiver_area_id = #{order.receiverAreaId},</when>
 					<when test="field == 'receiverRealname'">receiver_realname = #{order.receiverRealname},</when>
 					<when test="field == 'receiverPhone'">receiver_phone = #{order.receiverPhone},</when>
@@ -127,14 +130,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_name,logistics_sn,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version
+		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_fee_pay_type,logistics_name,logistics_sn,logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version
 		from `mal_order`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderQueryModel">
 		select
-		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,post_fee,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_name,logistics_sn,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version
+		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_fee_pay_type,logistics_name,logistics_sn,logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,delivered_time,version
 		from `mal_order`
 		<where>
 			<if test="userIdIN != null">

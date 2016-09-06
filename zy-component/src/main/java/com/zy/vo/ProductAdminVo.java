@@ -1,6 +1,7 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
+import com.zy.entity.mal.Product.ProductPriceType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,16 +19,12 @@ public class ProductAdminVo implements Serializable {
 	private String title;
 	@Field(label = "商品详情")
 	private String detail;
+	@Field(label = "商品价格类型")
+	private ProductPriceType productPriceType;
 	@Field(label = "价格")
 	private BigDecimal price;
-	@Field(label = "价格")
-	private BigDecimal price1;
-	@Field(label = "价格")
-	private BigDecimal price2;
-	@Field(label = "价格")
-	private BigDecimal price3;
-	@Field(label = "价格")
-	private BigDecimal price4;
+	@Field(label = "价格脚本")
+	private String priceScript;
 	@Field(label = "市场价")
 	private BigDecimal marketPrice;
 	@Field(label = "商品编码")
@@ -42,14 +39,6 @@ public class ProductAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "价格")
 	private String priceLabel;
-	@Field(label = "价格")
-	private String price1Label;
-	@Field(label = "价格")
-	private String price2Label;
-	@Field(label = "价格")
-	private String price3Label;
-	@Field(label = "价格")
-	private String price4Label;
 	@Field(label = "市场价")
 	private String marketPriceLabel;
 	@Field(label = "主图")

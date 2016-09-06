@@ -27,8 +27,6 @@ public class OrderDetailVo implements Serializable {
 	private String title;
 	@Field(label = "订单状态")
 	private OrderStatus orderStatus;
-	@Field(label = "邮费")
-	private BigDecimal postFee;
 	@Field(label = "退款备注")
 	private String refundRemark;
 	@Field(label = "买家留言")
@@ -41,6 +39,8 @@ public class OrderDetailVo implements Serializable {
 	private String logisticsName;
 	@Field(label = "物流单号")
 	private String logisticsSn;
+	@Field(label = "物流费")
+	private BigDecimal logisticsFee;
 	@Field(label = "收件人区域")
 	private Long receiverAreaId;
 	@Field(label = "收件人姓名")

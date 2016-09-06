@@ -2,6 +2,7 @@ package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
 import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.mal.Order.LogisticsFeePayType;
 import com.zy.entity.fnc.CurrencyType;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,8 +31,6 @@ public class OrderAdminVo implements Serializable {
 	private CurrencyType currencyType;
 	@Field(label = "订单状态")
 	private OrderStatus orderStatus;
-	@Field(label = "邮费")
-	private BigDecimal postFee;
 	@Field(label = "优惠金额")
 	private BigDecimal discountFee;
 	@Field(label = "应付总金额")
@@ -50,10 +49,14 @@ public class OrderAdminVo implements Serializable {
 	private Boolean isSettledUp;
 	@Field(label = "是否物流发货")
 	private Boolean useLogistics;
+	@Field(label = "物流费支付类型")
+	private LogisticsFeePayType logisticsFeePayType;
 	@Field(label = "物流公司名")
 	private String logisticsName;
 	@Field(label = "物流单号")
 	private String logisticsSn;
+	@Field(label = "物流费")
+	private BigDecimal logisticsFee;
 	@Field(label = "收件人区域")
 	private Long receiverAreaId;
 	@Field(label = "收件人姓名")
