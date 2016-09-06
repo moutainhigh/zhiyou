@@ -121,11 +121,11 @@ public class ProductController {
 	}
 	
 	@RequiresPermissions("product:edit")
-	@RequestMapping(value = "/release")
-	public String release(Long id, RedirectAttributes redirectAttributes, boolean isReleased) {
-		String released = isReleased ? "上架" : "下架";
+	@RequestMapping(value = "/on")
+	public String on(@RequestParam Long id, RedirectAttributes redirectAttributes, @RequestParam boolean isOn) {
+		String released = isOn ? "上架" : "下架";
 		try {
-			productService.release(id, isReleased);
+			productService.on(id, isOn);
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("商品" + released + "成功"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error("商品" + released + "失败, 原因" + e.getMessage()));

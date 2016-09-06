@@ -1,23 +1,27 @@
 package com.zy.service.impl;
 
-import com.zy.common.model.query.Page;
-import com.zy.component.MalComponent;
-import com.zy.entity.mal.Product;
-import com.zy.entity.usr.User;
-import com.zy.mapper.ProductMapper;
-import com.zy.model.query.ProductQueryModel;
-import com.zy.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import com.zy.common.model.query.Page;
+import com.zy.component.MalComponent;
+import com.zy.entity.mal.Product;
+import com.zy.entity.mal.Product.ProductPriceType;
+import com.zy.entity.usr.User;
+import com.zy.mapper.ProductMapper;
+import com.zy.model.query.ProductQueryModel;
+import com.zy.service.ProductService;
 
 @Service
 @Validated
@@ -51,7 +55,7 @@ public class ProductServiceImpl implements ProductService{
 	public Product modify(@NotNull Product product) {
 		findAndValidate(product.getId());
 		validate(product);
-		productMapper.merge(product, "title", "detail", "productPriceType", "price", "priceScript", "marketPrice", "skuCode",
+		productMapper.merge(product, "title", "detail", "marketPrice", "skuCode",
 				"image1", "image2", "image3", "image4", "image5", "image6");
 		return product;
 	}
@@ -63,6 +67,11 @@ public class ProductServiceImpl implements ProductService{
 		
 		product.setIsOn(isOn);
 		productMapper.update(product);
+	}
+
+	@Override
+	public BigDecimal getPrice(Long productId, User.UserRank userRank, long quantity) {
+		return malComponent.getPrice(productId, userRank, quantity);
 	}
 
 	@Override

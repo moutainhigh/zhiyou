@@ -2,7 +2,6 @@ package com.zy.component;
 
 import com.zy.Config;
 import com.zy.common.exception.BizException;
-import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.mapper.ProductMapper;
@@ -11,7 +10,6 @@ import com.zy.model.BizCode;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
-import org.apache.commons.lang3.StringUtils;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +36,6 @@ public class MalComponent {
 	@Autowired
 	private ProductMapper productMapper;
 
-	private String getImportName(Class<?> clazz) {
-		return StringUtils.replace(clazz.getName(), "$", ".");
-	}
-
 	public BigDecimal getPrice(@NotNull Long productId, @NotNull User.UserRank userRank, long quantity) {
 
 		Product product = productMapper.findOne(productId);
@@ -52,7 +46,6 @@ public class MalComponent {
 		} else if (productPriceType == Product.ProductPriceType.脚本价格) {
 			GroovyShell withdrawFeeRateShell;
 			ImportCustomizer importCustomizer = new ImportCustomizer();
-			importCustomizer.addImports(getImportName(User.UserType.class), getImportName(CurrencyType.class), getImportName(BizException.class));
 			CompilerConfiguration compilerConfiguration = new CompilerConfiguration();
 			compilerConfiguration.addCompilationCustomizers(importCustomizer);
 			withdrawFeeRateShell = new GroovyShell(compilerConfiguration);
