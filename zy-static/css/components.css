@@ -300,8 +300,8 @@ input.form-input[disabled] {
 }
 .form-checkbox .i-checked::before {
   position: absolute; top: -3px; left: 0;
-  diplay: none; width: 100%; height: 100%;
-  content: "✔";
+  diplay: block; width: 100%; height: 100%;
+  content: "";
   color: #43ac43; font-size: 18px; text-align: center;
   transform: scale(0, 0);
   transition: all 0.2s ease 0s;
@@ -310,7 +310,7 @@ input.form-input[disabled] {
   background-color: #d9ecde;
 }
 .form-checkbox input:checked + .i-checked::before {
-  diplay: block;
+  content: "✔";
   transform: scale(1, 1);
 }
 
