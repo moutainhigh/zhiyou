@@ -130,7 +130,7 @@
           <div class="list-unit form-switch">
             <input type="hidden" name="_isDefault" value="false">
             <input type="checkbox" id="isDefault" name="isDefault" value="true">
-            <label class="radius" for="isDefault"></label>
+            <label class="i-switch" for="isDefault"></label>
           </div>
         </div>
       </div>
