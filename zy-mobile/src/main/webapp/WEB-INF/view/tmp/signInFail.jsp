@@ -20,32 +20,59 @@
   });
 </script>
 <style>
-html, body {
-  width: 100%; height: 100%;
-}
-
-body {
-  background: #78C8B4;
-}
-
-.codefail-info {
-  width: 14%; height: 8%; left: 43%; top: 5%;
-}
-
-.codefail-name {
-  width: 34%; height: 6%; text-align: center; left: 33%; top: 15%;
-}
+  * { margin: 0; outline: 0; padding: 0; font-size: 100%; }
+  html { height: 100%;  }
+  .m-img {
+    max-width: 420px; min-width: 320px;  min-height: 480px;
+    margin: 0 auto;background: #78C8B4;
+  }
+  .header-img{
+    top: 20px; left: 20%;
+    width: 60%;
+  }
+  .user-head{
+    top: 20px; left: 40%;
+    width: 20%;
+    border-radius: 100%;
+  }
+  .name{
+   top: 0px; left: 0;margin-top: 32%;
+    text-align: center;
+  }
+  .link{
+    left: 40%;bottom: 22%;
+    width: 20%;
+    margin: 0 auto;
+  }
+  .footer-img{
+     bottom: 10px; left: 29%;
+    width: 42%;
+    margin: 0 auto;
+  }
+  .middle{
+   top: 0px; left: 0;
+    margin: 0 auto;
+  }
+  .middle1{
+    top: 43%; left: 37%;
+    width: 28%;
+    margin: 0 auto;
+  }
 </style>
 </head>
-<body class="relative">
-  <img src="${stccdn}/image/tmp/fail.png" class="codefail-header size-100p">
-  <img src="${stccdn}/image/tmp/fail_sound.png" class="codefail-sound size-100p ab-lt">
-  <img src="${stccdn}/image/tmp/fail-sign.png" class="codefail-sign size-100p ab-lt">
-  <img src="${stccdn}/image/tmp/fail-logo.png" class="codefail-logo size-100p abs-lb">
-  <a class="codefail-info block absolute">
-    <img src="http://img1.hudongba.com/upload/_oss/userhead/yuantu/201608/2417/1472031915271.jpg" class="block round size-100p">
-  </a>
-  <span class="codefail-name absolute font-white">昵称昵称</span>
+<body>
+    <div class="m-img relative size-100p o-hidden">
+      <img src="${stccdn}/image/tmp/middle.png" class="middle absolute block width-100p"/>
+      <img src="${stccdn}/image/tmp/middle1.png" class="middle1 absolute block" />
+      <div class="header-img absolute block">
+        <img class="user-head absolute" src="${stccdn}/image/tmp/3.jpg"/>
+        <p class="name absolute width-100p fs-12">昵称昵称昵称</p>
+      </div>
+        <a href="#">
+            <img src="${stccdn}/image/tmp/sign.png" class="link absolute block"/>
+        </a>
+      <img src="${stccdn}/image/tmp/logo.png" class="footer-img absolute block" />
+    </div>
 </body>
 </html>
 
