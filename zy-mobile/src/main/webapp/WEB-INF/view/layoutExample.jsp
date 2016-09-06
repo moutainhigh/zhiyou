@@ -117,6 +117,14 @@
           <div class="list-text"><input id="name" name="name" class="form-input" type="text" value="" placeholder="请输入姓名"></div>
           <div class="form-error"><i class="fa fa-exclamation-circle"></i></div>
         </div>
+        <div class="list-item">
+          <label class="list-label" for="age">年龄</label>
+          <div class="list-text form-quantity">
+            <i class="quantity-min fa fa-minus disabled"></i>
+            <input id="age" name="age" class="form-input" type="number" value="" placeholder="请输入年龄">
+            <i class="quantity-add fa fa-plus"></i>
+          </div>
+        </div>
         <div class="list-item img-captcha">
           <label for="captcha" class="list-label">图形码</label>
           <div class="list-text">
@@ -159,22 +167,41 @@
           <div class="list-unit form-switch">
             <input type="hidden" name="_isDefault" value="false">
             <input type="checkbox" id="isDefault" name="isDefault" value="true">
-            <label class="radius" for="isDefault"></label>
+            <label class="i-switch" for="isDefault"></label>
           </div>
         </div>
       </div>
       
       <div class="list-group">
-        <div class="list-title">radio布局</div>
+        <div class="list-title">checkbox 复选</div>
         <!-- form-radio -->
-        <label class="list-item form-radio" for="deliverType0">
+        <label class="list-item form-checkbox">
+          <div class="list-icon">
+            <input type="checkbox" name="" value="0">
+            <em class="i-checked"></em>
+          </div>
+          <div class="list-text">使用平台礼品</div>
+        </label>
+        <label class="list-item form-checkbox">
+          <div class="list-icon">
+            <input type="checkbox" name="" value="1">
+            <em class="i-checked"></em>
+          </div>
+          <div class="list-text">使用平台物流</div>
+        </label>
+      </div>
+      
+      <div class="list-group">
+        <div class="list-title">radio 单选</div>
+        <!-- form-radio -->
+        <label class="list-item form-radio">
           <div class="list-text">面对面发货</div>
           <div class="list-unit">
             <input id="deliverType0" type="radio" name="deliverType" value="0">
             <em class="i-checked"></em>
           </div>
         </label>
-        <label class="list-item form-radio" for="deliverType1">
+        <label class="list-item form-radio">
           <div class="list-text">物流发货</div>
           <div class="list-unit">
             <input id="deliverType1" type="radio" name="deliverType" value="1">
