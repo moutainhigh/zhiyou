@@ -8,12 +8,14 @@ import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -63,6 +65,7 @@ public class Product implements Serializable {
 
 	@Field(label = "价格脚本")
 	@View(groups = { "ProductAdminVo" })
+	@Column(length = 1000)
 	private String priceScript;
 
 	@View(name = "marketPriceLabel", type = String.class)

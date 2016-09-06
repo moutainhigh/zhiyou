@@ -54,9 +54,8 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public Product modify(@NotNull Product product) {
 		findAndValidate(product.getId());
-		validate(product);
-		productMapper.merge(product, "title", "detail", "marketPrice", "skuCode",
-				"image1", "image2", "image3", "image4", "image5", "image6");
+		validate(product, "title", "detail", "image1");
+		productMapper.merge(product, "title", "detail", "marketPrice", "skuCode", "image1");
 		return product;
 	}
 	
@@ -98,20 +97,20 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public Product modifyPrice(Product product) {
 		Long id = product.getId();
-		Product persistence = findAndValidate(id);
-		ProductPriceType productPriceType = persistence.getProductPriceType();
+		findAndValidate(id);
+		ProductPriceType productPriceType = product.getProductPriceType();
 		validate(productPriceType, NOT_NULL, "product price type is null");
 
 		Product productForMerge = new Product();
 		productForMerge.setId(id);
 		productForMerge.setProductPriceType(productPriceType);
 		if(productPriceType == ProductPriceType.一般价格) {
-			BigDecimal price = persistence.getPrice();
+			BigDecimal price = product.getPrice();
 			validate(price, NOT_NULL, "product price is null");
 			productForMerge.setPrice(price);
 		} else if(productPriceType == ProductPriceType.脚本价格) {
-			String priceScript = persistence.getPriceScript();
-			validate(persistence.getPriceScript(), NOT_BLANK, "product price script is null");
+			String priceScript = product.getPriceScript();
+			validate(priceScript, NOT_BLANK, "product price script is null");
 			productForMerge.setPriceScript(priceScript);
 		}
 		productMapper.merge(productForMerge, "productPriceType", "price", "priceScript");

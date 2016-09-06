@@ -104,10 +104,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-edit"></i><span> 编辑商品</span>
-        </div>
-        <div class="tools">
-          <a href="javascript:;" class="collapse"> </a> <a href="javascript:;" class="reload"> </a>
+          <i class="icon-present"></i><span> 编辑商品</span>
         </div>
       </div>
       <div class="portlet-body form">
@@ -151,7 +148,7 @@
                 <div class="input-icon right">
                   <img data-target="image1" class="product-image bd" alt="商品主图 点击选择"
                     src="<c:if test="${not empty product.image1 }">${product.image1Big}</c:if><c:if test="${empty product.image1 }">${ctx}/image/upload_240_150.jpg</c:if>">
-                  <input type="hidden" name="image1" value="${product.image1Big}" />
+                  <input type="hidden" name="image1" value="${product.image1}" />
                 </div>
               </div>
             </div>

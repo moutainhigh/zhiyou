@@ -236,7 +236,7 @@
           <ul class="sub-menu">
             <shiro:hasPermission name="product:view">
               <li>
-                <a href="javascript:;" data-href="${ctx}/product"><i class="icon-game-controller"></i> 商品管理<span class="badge badge-danger"></span></a>
+                <a href="javascript:;" data-href="${ctx}/product"><i class="icon-present"></i> 商品管理<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>
             <%--<shiro:hasPermission name="gift:view">
