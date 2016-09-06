@@ -1,28 +1,27 @@
 package com.zy.service.impl;
 
-import com.zy.common.model.query.Page;
-import com.zy.component.MalComponent;
-import com.zy.entity.mal.Product;
-import com.zy.entity.mal.Product.ProductPriceType;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.User.UserRank;
-import com.zy.mapper.ProductMapper;
-import com.zy.model.query.ProductQueryModel;
-import com.zy.service.ProductService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.validate;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import com.zy.common.model.query.Page;
+import com.zy.component.MalComponent;
+import com.zy.entity.mal.Product;
+import com.zy.entity.mal.Product.ProductPriceType;
+import com.zy.entity.usr.User;
+import com.zy.mapper.ProductMapper;
+import com.zy.model.query.ProductQueryModel;
+import com.zy.service.ProductService;
 
 @Service
 @Validated
@@ -125,12 +124,6 @@ public class ProductServiceImpl implements ProductService{
 		Product product = productMapper.findOne(id);
 		validate(product, NOT_NULL, "product id" + id + " not found");
 		return product;
-	}
-
-	@Override
-	public BigDecimal getPrice(Long productId, UserRank userRank, long quantity) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
