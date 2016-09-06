@@ -174,15 +174,15 @@
       <div class="list-group">
         <div class="list-title">checkbox 复选</div>
         <!-- form-checkbox -->
-        <div class="list-item">
-          <div class="list-icon form-checkbox">
+        <div class="list-item form-checkbox">
+          <div class="list-icon">
             <input type="checkbox" id="checkbox0" name="checkname" value="0">
             <label class="i-checked" for="checkbox0"></label>
           </div>
           <label class="list-text" for="checkbox0">使用平台礼品</label>
         </div>
-        <div class="list-item">
-          <div class="list-icon form-checkbox">
+        <div class="list-item form-checkbox">
+          <div class="list-icon">
             <input type="checkbox" id="checkbox1" name="checkname" value="1">
             <label class="i-checked" for="checkbox1"></label>
           </div>
@@ -193,16 +193,16 @@
       <div class="list-group">
         <div class="list-title">radio 单选</div>
         <!-- form-radio -->
-        <div class="list-item">
+        <div class="list-item form-radio">
           <label class="list-text" for="deliverType0">面对面发货</label>
-          <div class="list-unit form-radio">
+          <div class="list-unit">
             <input id="deliverType0" type="radio" name="deliverType" value="0">
             <label class="i-checked" for="deliverType0"></label>
           </div>
         </div>
-        <div class="list-item">
+        <div class="list-item form-radio">
           <label class="list-text" for="deliverType1">物流发货</label>
-          <div class="list-unit form-radio">
+          <div class="list-unit">
             <input id="deliverType1" type="radio" name="deliverType" value="1">
             <label class="i-checked" for="deliverType1"></label>
           </div>

@@ -261,6 +261,12 @@ input.form-input[disabled] {
 }
 
 /* form-radio */
+.form-radio {
+  padding-top: 0; padding-bottom: 0;  
+}
+.form-radio .list-text {
+  line-height: 44px;
+}
 .form-radio input[type=radio]{
   display: none;
 }
@@ -287,6 +293,12 @@ input.form-input[disabled] {
 }
 
 /* form-checkbox */
+.form-checkbox {
+  padding-top: 0; padding-bottom: 0;  
+}
+.form-checkbox .list-text {
+  line-height: 44px;
+}
 .form-checkbox input[type=checkbox]{
   display: none;
 }
