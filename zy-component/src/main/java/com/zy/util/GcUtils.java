@@ -141,7 +141,7 @@ public class GcUtils {
 	}
 
 
-	public String formatCurreny(BigDecimal bigDecimal) {
+	public static String formatCurreny(BigDecimal bigDecimal) {
 		if (bigDecimal == null) {
 			return "";
 		}
