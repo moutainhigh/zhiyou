@@ -96,6 +96,7 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("receiverProvince");
 		fieldNames.add("title");
 		fieldNames.add("receiverCity");
+		fieldNames.add("logisticsFeePayType");
 		fieldNames.add("isSettledUp");
 		fieldNames.add("sellerId");
 		fieldNames.add("receiverPhone");
@@ -107,7 +108,6 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("sn");
 		fieldNames.add("receiverAreaId");
 		fieldNames.add("amount");
-		fieldNames.add("postFee");
 		fieldNames.add("paidTime");
 		fieldNames.add("userId");
 		fieldNames.add("version");
@@ -116,6 +116,7 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("logisticsName");
 		fieldNames.add("receiverAddress");
 		fieldNames.add("sellerMemo");
+		fieldNames.add("logisticsFee");
 		fieldNames.add("deliveredTime");
 		fieldNames.add("refund");
 		fieldNames.add("buyerMemo");

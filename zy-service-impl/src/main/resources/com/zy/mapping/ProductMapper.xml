@@ -6,11 +6,9 @@
 		<id column="id" property="id" />
 		<result column="title" property="title" />
 		<result column="detail" property="detail" />
+		<result column="product_price_type" property="productPriceType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="price" property="price" />
-		<result column="price1" property="price1" />
-		<result column="price2" property="price2" />
-		<result column="price3" property="price3" />
-		<result column="price4" property="price4" />
+		<result column="price_script" property="priceScript" />
 		<result column="market_price" property="marketPrice" />
 		<result column="sku_code" property="skuCode" />
 		<result column="is_on" property="isOn" />
@@ -24,8 +22,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.Product" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_product` (title,detail,price,price1,price2,price3,price4,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time)
-	  values (#{title},#{detail},#{price},#{price1},#{price2},#{price3},#{price4},#{marketPrice},#{skuCode},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime})
+	  insert into `mal_product` (title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time)
+	  values (#{title},#{detail},#{productPriceType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{price},#{priceScript},#{marketPrice},#{skuCode},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime})
 	</insert>
 
 	<delete id="delete">
@@ -37,11 +35,9 @@
 		<set>
 			title = #{title},
 			detail = #{detail},
+			product_price_type = #{productPriceType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			price = #{price},
-			price1 = #{price1},
-			price2 = #{price2},
-			price3 = #{price3},
-			price4 = #{price4},
+			price_script = #{priceScript},
 			market_price = #{marketPrice},
 			sku_code = #{skuCode},
 			is_on = #{isOn},
@@ -63,11 +59,9 @@
 				<choose>
 					<when test="field == 'title'">title = #{product.title},</when>
 					<when test="field == 'detail'">detail = #{product.detail},</when>
+					<when test="field == 'productPriceType'">product_price_type = #{product.productPriceType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.mal.Product$ProductPriceType},</when>
 					<when test="field == 'price'">price = #{product.price},</when>
-					<when test="field == 'price1'">price1 = #{product.price1},</when>
-					<when test="field == 'price2'">price2 = #{product.price2},</when>
-					<when test="field == 'price3'">price3 = #{product.price3},</when>
-					<when test="field == 'price4'">price4 = #{product.price4},</when>
+					<when test="field == 'priceScript'">price_script = #{product.priceScript},</when>
 					<when test="field == 'marketPrice'">market_price = #{product.marketPrice},</when>
 					<when test="field == 'skuCode'">sku_code = #{product.skuCode},</when>
 					<when test="field == 'isOn'">is_on = #{product.isOn},</when>
@@ -86,14 +80,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,title,detail,price,price1,price2,price3,price4,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time
+		id,title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time
 		from `mal_product`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ProductQueryModel">
 		select
-		id,title,detail,price,price1,price2,price3,price4,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time
+		id,title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time
 		from `mal_product`
 		<where>
 			<if test="idIN != null">

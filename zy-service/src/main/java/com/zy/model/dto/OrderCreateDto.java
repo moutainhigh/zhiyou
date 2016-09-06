@@ -30,4 +30,6 @@ public class OrderCreateDto implements Serializable {
 	@Length(max = 100)
 	private String buyerMemo;
 
+	private Long parentId; // 若用户下单parentId为空则必填
+
 }

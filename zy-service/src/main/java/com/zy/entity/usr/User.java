@@ -117,9 +117,14 @@ public class User implements Serializable {
 	private String registerIp;
 
 	@Query(Predicate.EQ)
-	@Field(label = "邀请人id")
+	@Field(label = "邀请人id", description = "此用户不是最终上下级关系")
 	@AssociationView(name = "inviter", associationGroup = "UserAdminSimpleVo", groups = {"UserAdminVo"})
 	private Long inviterId;
+
+	@Query(Predicate.EQ)
+	@Field(label = "上级id")
+	@AssociationView(name = "parent", associationGroup = "UserAdminSimpleVo", groups = {"UserAdminVo"})
+	private Long parentId;
 
 	@NotNull
 	@Field(label = "信息是否已完善")
