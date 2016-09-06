@@ -1183,3 +1183,40 @@ h1 .label, h2 .label, h3 .label, h4 .label, h5 .label, h6 .label {
 .badge-warning {
   background-color: #dfba49;
 }
+
+/* Badge color */
+
+/* gray */
+.gray.badge {
+  background-color: #c6c6c6;
+}
+
+/* red */
+.red.badge {
+  background-color: #e35b5a;
+}
+
+/* green */
+.green.badge {
+  background-color: #6cb92d; /*#35ba47;*/
+}
+
+/* blue */
+.blue.badge {
+  background-color: #46a7bf;
+}
+
+/* yellow */
+.yellow.badge {
+  background-color: #f4d03f;
+}
+
+/* orange */
+.orange.badge {
+  background-color: #e87e04;
+}
+
+/* purple */
+.purple.badge {
+  background-color: #8a3f8a;
+}
