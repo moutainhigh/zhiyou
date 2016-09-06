@@ -28,6 +28,8 @@ public class ReportVo implements Serializable {
 	private ReportResult reportResult;
 	@Field(label = "文字")
 	private String text;
+	@Field(label = "一审状态")
+	private ConfirmStatus preConfirmStatus;
 	@Field(label = "审核状态")
 	private ConfirmStatus confirmStatus;
 	@Field(label = "审核备注")

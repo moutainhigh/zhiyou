@@ -28,5 +28,7 @@ public class PortraitVo implements Serializable {
 	private String city;
 	@Field(label = "所在地")
 	private String district;
+	@Field(label = "标签")
+	private String tagNames;
 
 }

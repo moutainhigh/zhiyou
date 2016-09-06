@@ -26,6 +26,8 @@ public class ReportQueryModel implements Serializable {
 
 	private String realnameLK;
 
+	private ConfirmStatus preConfirmStatusEQ;
+
 	private ConfirmStatus confirmStatusEQ;
 
 	private Integer pageNumber;
@@ -101,6 +103,7 @@ public class ReportQueryModel implements Serializable {
 		fieldNames.add("text");
 		fieldNames.add("age");
 		fieldNames.add("reportResult");
+		fieldNames.add("preConfirmStatus");
 	}
 
 }

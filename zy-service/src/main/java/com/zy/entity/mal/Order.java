@@ -41,6 +41,11 @@ public class Order implements Serializable {
 		待支付, 已支付, 已发货, 已完成, 已退款, 已取消
 	}
 
+	@Type(label = "物流费支付方式")
+	public enum LogisticsFeePayType {
+		买家付, 卖家付, 线下支付;
+	}
+
 	@Id
 	@Field(label = "id")
 	@View
@@ -100,12 +105,6 @@ public class Order implements Serializable {
 
 	@NotNull
 	@DecimalMin("0.00")
-	@Field(label = "邮费")
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
-	private BigDecimal postFee;
-	
-	@NotNull
-	@DecimalMin("0.00")
 	@Field(label = "优惠金额")
 	@View(groups = "OrderAdminVo")
 	private BigDecimal discountFee;
@@ -150,25 +149,31 @@ public class Order implements Serializable {
 	@NotNull
 	private Boolean isSettledUp;
 
-	@NotNull
 	@Field(label = "是否物流发货")
 	@View(name = "useLogisticsLabel", groups = {"OrderAdminVo"})
 	@View(groups = {"OrderAdminVo"})
 	private Boolean useLogistics;
 
-	@NotBlank
+	@Field(label = "物流费支付类型")
+	@View(groups = {"OrderAdminVo"})
+	private LogisticsFeePayType logisticsFeePayType;
+
 	@Query(Predicate.LK)
 	@Field(label = "物流公司名")
 	@StringBinder
 	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private String logisticsName;
 
-	@NotBlank
 	@Query(Predicate.LK)
 	@Field(label = "物流单号")
 	@StringBinder
 	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private String logisticsSn;
+
+	@DecimalMin("0.00")
+	@Field(label = "物流费")
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	private BigDecimal logisticsFee;
 
 	@NotNull
 	@Field(label = "收件人区域")
@@ -208,7 +213,6 @@ public class Order implements Serializable {
 	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private String receiverAddress;
 
-	@NotNull
 	@View(name = "deliveredTimeLabel", type = String.class)
 	@Field(label = "发货时间")
 	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
