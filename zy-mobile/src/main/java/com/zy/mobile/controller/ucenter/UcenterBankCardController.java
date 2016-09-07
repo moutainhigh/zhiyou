@@ -23,9 +23,12 @@ import com.zy.common.support.cache.CacheSupport;
 import com.zy.component.BankCardComponent;
 import com.zy.entity.fnc.Bank;
 import com.zy.entity.fnc.BankCard;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.Appearance;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.BankQueryModel;
+import com.zy.service.AppearanceService;
 import com.zy.service.BankCardService;
 import com.zy.service.BankService;
 
@@ -44,9 +47,11 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	private BankCardComponent bankCardComponent;
 	
 	@Autowired
+	private AppearanceService appearanceService;
+	
+	@Autowired
 	private CacheSupport cacheSupport;
 	
-	private static final String CACHE_NAME_BANK = "bank";
 	private static final String CACHE_KEY_BANK = "bank";
 	
 	@RequestMapping
@@ -57,15 +62,15 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String create(Principal principal, Model model) {
+	public String create(Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		
-		//TODO 没有完成appearance 不能绑定  直接跳转到userInfo
+		checkAppearance(principal.getUserId(), redirectAttributes);
 		
-		List<Bank> banks = cacheSupport.get(CACHE_NAME_BANK, CACHE_KEY_BANK);
+		List<Bank> banks = cacheSupport.get(Constants.CACHE_NAME_BANK, CACHE_KEY_BANK);
 		if(banks == null) {
 			banks = bankService.findAll(BankQueryModel.builder().isDeletedEQ(false).orderBy("orderNumber").direction(Direction.ASC).build());
 			
-			cacheSupport.set(CACHE_NAME_BANK, CACHE_KEY_BANK, banks);
+			cacheSupport.set(Constants.CACHE_NAME_BANK, CACHE_KEY_BANK, banks);
 		}
 		model.addAttribute("banks", banks);
 		return "ucenter/user/bankCardCreate";
@@ -73,6 +78,14 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(BankCard bankCard, Model model, Principal principal, RedirectAttributes redirectAttributes) {
+		
+		checkAppearance(principal.getUserId(), redirectAttributes);
+		
+		Appearance appearance = appearanceService.findByUserId(principal.getUserId());
+		if(appearance == null || appearance.getConfirmStatus() != ConfirmStatus.审核通过) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您还没有完成实名认证过"));
+			return "redirect:/u/userInfo";
+		}
 		
 		try {
 			bankCard.setUserId(principal.getUserId());
@@ -87,7 +100,10 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	}
 	
 	@RequestMapping("/{id}")
-	public String edit(Principal principal, @PathVariable Long id, Model model) {
+	public String edit(Principal principal, @PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+		
+		checkAppearance(principal.getUserId(), redirectAttributes);
+		
 		BankCard bankCard = bankCardService.findOne(id);
 		if(bankCard != null) {
 			if(!bankCard.getUserId().equals(principal.getUserId())) {
@@ -96,11 +112,11 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 		}
 		model.addAttribute("bankCard", bankCardComponent.buildVo(bankCard));
 		
-		List<Bank> banks = cacheSupport.get(CACHE_NAME_BANK, CACHE_KEY_BANK);
+		List<Bank> banks = cacheSupport.get(Constants.CACHE_NAME_BANK, CACHE_KEY_BANK);
 		if(banks == null) {
 			banks = bankService.findAll(BankQueryModel.builder().isDeletedEQ(false).orderBy("orderNumber").direction(Direction.ASC).build());
 			
-			cacheSupport.set(CACHE_NAME_BANK, CACHE_KEY_BANK, banks);
+			cacheSupport.set(Constants.CACHE_NAME_BANK, CACHE_KEY_BANK, banks);
 		}
 		model.addAttribute("banks", banks);
 		
@@ -109,6 +125,8 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public String edit(BankCard bankCard, Model model, Principal principal, RedirectAttributes redirectAttributes) {
+		
+		checkAppearance(principal.getUserId(), redirectAttributes);
 		
 		Long bankCardId = bankCard.getId();
 		BankCard persistence = bankCardService.findOne(bankCardId);
@@ -153,5 +171,14 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	public Result<List<BankCard>> listAjax(Principal principal) {
 		List<BankCard> bankCardList = bankCardService.findByUserId(principal.getUserId());
 		return ResultBuilder.result(bankCardList);
+	}
+
+	private String checkAppearance(Long userId, RedirectAttributes redirectAttributes) {
+		Appearance appearance = appearanceService.findByUserId(userId);
+		if(appearance == null || appearance.getConfirmStatus() != ConfirmStatus.审核通过) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您还没有完成实名认证过"));
+			return "redirect:/u/userInfo";
+		}
+		return null;
 	}
 }
