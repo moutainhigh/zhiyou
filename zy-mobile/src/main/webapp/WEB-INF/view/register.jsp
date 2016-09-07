@@ -93,9 +93,10 @@
 </head>
 <body class="header-fixed">
   <header class="header">
-    <h1>完成注册</h1>
+    <h1>注册</h1>
   </header>
 
+  <c:if test="${isNew}">
   <article>
     <form action="${ctx}/u/bindPhone" class="valid-form" method="post">
       <img class="image-120 block round center mt-30" src="${avatar}">
@@ -132,6 +133,13 @@
       </div>
     </form>
   </article>
-
+  </c:if>
+  <c:if test="${!isNew}">
+    <div class="abs-mm">
+      <p class="fs-16 lh-30 text-center">请先完成微信授权</p>
+      <a class="btn green round-2 width-200 mt-30" href="${ctx}/">微信一键授权</a>
+    </div>
+  </c:if>
+  
 </body>
 </html>
