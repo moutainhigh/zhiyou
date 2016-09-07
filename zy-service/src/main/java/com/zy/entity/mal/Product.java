@@ -64,7 +64,7 @@ public class Product implements Serializable {
 
 	@Field(label = "价格脚本")
 	@View(groups = { "ProductAdminVo" })
-	@Column(length = 1000)
+	@Column(length = 3000)
 	private String priceScript;
 
 	@Field(label = "市场价")

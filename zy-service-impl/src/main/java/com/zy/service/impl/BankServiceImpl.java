@@ -50,6 +50,7 @@ public class BankServiceImpl implements BankService {
 
 		persistence.setCode(bank.getCode());
 		persistence.setName(bank.getName());
+		persistence.setOrderNumber(bank.getOrderNumber());
 		bankMapper.update(persistence);
 	}
 
