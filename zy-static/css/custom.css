@@ -341,6 +341,14 @@ a.disabled, a.disabled:hover, a.disabled:focus {
   display: inline-block; width: 160px; height: 160px;
   vertical-align: middle;
 }
+.image-120 {
+  display: inline-block; width: 120px; height: 120px;
+  vertical-align: middle;
+}
+.image-120-75 {
+  display: inline-block; width: 120px; height: 75px;
+  vertical-align: middle;
+}
 .image-80 {
   display: inline-block; width: 80px; height: 80px;
   vertical-align: middle;

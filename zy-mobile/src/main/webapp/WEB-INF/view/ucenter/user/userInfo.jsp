@@ -74,6 +74,12 @@
         <div class="list-unit"><c:if test="${!isCompletedPortrait}">未填写</c:if></div>
         <i class="list-arrow"></i>
       </a>
+      <a class="list-item list-item-icon" href="${ctx}/u/appearance">
+        <i class="list-icon icon icon-appearance"></i>
+        <div class="list-text">实名认证</div>
+        <div class="list-unit"><c:if test="${!isCompletedPortrait}">未认证</c:if></div>
+        <i class="list-arrow"></i>
+      </a>
       <a class="list-item list-item-icon" href="${ctx}/u/address">
         <i class="list-icon icon icon-address"></i>
         <div class="list-text">收货地址</div>
@@ -81,7 +87,7 @@
         <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/bankCard">
-        <i class="list-icon icon icon-appearance"></i>
+        <i class="list-icon icon icon-bank-gongshang"></i>
         <div class="list-text">银行卡</div>
         <div class="list-unit"><c:if test="${!hasBankCard}">未绑定</c:if></div>
         <i class="list-arrow"></i>
