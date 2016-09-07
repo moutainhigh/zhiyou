@@ -80,7 +80,7 @@
   <div class="list-group">
     <c:forEach items="${page.data}" var="report">
     <a class="list-item" href="${ctx}/u/report/${report.id}">
-      <div class="report">
+      <div class="list-text report">
         <div class="lh-30">${report.realname}<span class="ml-10 fs-12 font-999">&lt;${report.gender}  ${report.age}岁&gt;</span><span class="right fs-12 font-999">${report.dateLabel}</span></div>
         <div class="lh-30 fs-14">
         <c:choose>
@@ -99,13 +99,13 @@
         </c:choose>
         <c:choose>
           <c:when test="${report.confirmStatus == '待审核'}">
-          <span class="right label orange">待审核</span>
+          <span class="right lh-20 label orange">待审核</span>
           </c:when>
           <c:when test="${report.confirmStatus == '未通过'}">
-          <span class="right label gray">未通过</span>
+          <span class="right lh-20 label gray">未通过</span>
           </c:when>
           <c:when test="${report.confirmStatus == '已通过'}">
-          <span class="right label blue">已通过</span>
+          <span class="right lh-20 label blue">已通过</span>
           </c:when>
         </c:choose>
         </div>
