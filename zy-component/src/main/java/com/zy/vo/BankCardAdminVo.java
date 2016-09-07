@@ -20,7 +20,9 @@ public class BankCardAdminVo implements Serializable {
 	private String realname;
 	@Field(label = "银行卡号")
 	private String cardNumber;
-	@Field(label = "开户行")
+	@Field(label = "开户行id")
+	private Long bankId;
+	@Field(label = "开户行名")
 	private String bankName;
 	@Field(label = "开户支行")
 	private String bankBranchName;
@@ -38,5 +40,7 @@ public class BankCardAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
+	@Field(label = "开户行编码")
+	private String bankCode;
 
 }

@@ -147,7 +147,7 @@
 </script>
 
 <script id="addressCreateTpl" type="text/html">
-<aside class="aside-address-create abs-lt size-100p bg-white" style="z-index: 9999">
+<aside class="aside-address-create abs-lt size-100p bg-white z-1000">
   <header class="header">
     <h1>新增收货地址</h1>
     <a href="javascript:closeAddress();" class="button-left"><i class="fa fa-angle-left"></i></a>
@@ -216,7 +216,7 @@
 </script>
 
 <script id="addressTpl" type="text/html">
-<aside class="aside-address abs-lt size-100p bg-white" style="z-index: 9999">
+<aside class="aside-address abs-lt size-100p bg-white z-100">
   <header class="header" style="position: none;">
     <h1>设置收货地址</h1>
     <a href="javascript:closeAddress();" class="button-left"><i class="fa fa-angle-left"></i></a>

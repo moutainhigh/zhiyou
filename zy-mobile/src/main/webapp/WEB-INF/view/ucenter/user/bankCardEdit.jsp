@@ -18,28 +18,104 @@
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <script src="${stccdn}/js/area.js"></script>
 <script>
-	$(function() {
-
-		$('.valid-form').validate({
-			rules : {
-				'accountName' : {
-					required : true
-				},
-				'accountNo' : {
-					required : true
-				}
-			},
-			messages : {
-				'accountName' : {
-					required : '请输入开户姓名'
-				},
-				'accountNo' : {
-					required : '请输入银行卡号'
-				}
-			}
-		});
-		
-	});
+  $(function() {
+    
+    $('.valid-form').validate({
+      rules : {
+        'bankName' : {
+          required : true
+        },
+        'accountName' : {
+          required : true
+        },
+        'accountNo' : {
+          required : true
+        },
+        'bankBranchName' : {
+          required : true
+        }
+      },
+      messages : {
+        'bankName' : {
+          required : '请选择开户银行'
+        },
+        'accountName' : {
+          required : '请输入开户姓名'
+        },
+        'accountNo' : {
+          required : '请输入银行卡号'
+        },
+        'bankBranchName' : {
+          required : '请输入开户支行名'
+        }
+      }
+    });
+    
+    //选择银行
+  	$('.bank-info').click(function(){
+  	  showBankList();
+  	});
+    
+    $('body').on('click', '.bank', function() {
+      var $this = $(this);
+      var bank = {};
+      bank.id = $this.attr('data-id');
+      bank.name = $this.attr('data-name');
+      bank.code = $this.attr('data-code');
+      setBank(bank);
+    });
+    
+  });
+  
+  function showBankList() {
+    if ($('#bankList').length == 0) {
+      var bankList = document.getElementById('bankListTpl').innerHTML;
+      $(bankList).appendTo('body');
+    }
+    $('body').addClass('o-hidden');
+    $('#bankList').show().animate({
+      'left' : 0
+    }, 300, function() {
+    });
+  }
+	
+  function hideBankList() {
+    $('#bankList').animate({
+      'left' : '100%'
+    }, 300, function() {
+      $('body').removeClass('o-hidden');
+      $('#bankList').hide();
+    });
+  }
+  
+  function setBank(bank) {
+    hideBankList();
+    $('[name="bankId"]').val(bank.id);
+    $('[name="bankName"]').val(bank.name);
+    $('.bank-name').html('<i class="icon icon-bank-' + bank.code + ' mr-10"></i><span>' + bank.name + '</span>');
+  }
+</script>
+<script id="bankListTpl" type="text/html">
+  <aside id="bankList" class="bank-list header-fixed abs-lt size-100p bg-white z-1000" style="left: 100%; display: none;">
+    <header class="header">
+      <h1>选择银行</h1>
+      <a href="javascript:hideBankList();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    </header>
+    <div class="list-group">
+      <div class="list-item bank" data-id="1" data-name="中国工商银行" data-code="gongshang">
+        <div class="list-icon"><i class="icon icon-bank-gongshang"></i></div>
+        <div class="list-text">中国工商银行</div>
+      </div>
+      <div class="list-item bank" data-id="2" data-name="中国建设银行" data-code="jianshe">
+        <div class="list-icon"><i class="icon icon-bank-jianshe"></i></div>
+        <div class="list-text">中国建设银行</div>
+      </div>
+      <div class="list-item bank" data-id="3" data-name="中国农业银行" data-code="nongye">
+        <div class="list-icon"><i class="icon icon-bank-nongye"></i></div>
+        <div class="list-text">中国农业银行</div>
+      </div>
+    </div>
+  </aside>
 </script>
 </head>
 <body>
@@ -49,34 +125,43 @@
   </header>
   <article class="bank-create">
     <form id="bankForm" class="valid-form" action="${ctx}/u/bankCard/edit" method="post">
+      <input type="hidden" name="id" value="${bankCard.id}">
       <div class="form-message note note-warning mb-0 hide">
         <p>输入信息有误，请先更正。</p>
       </div>
       <div class="list-group">
-        <div class="list-item">
+        <div class="list-item bank-info">
           <label class="list-label">开户银行</label>
-          <div class="list-text form-select">
-            <select name="bankName" id="bankName">
-              <option value="">请选择</option>
-            </select>
+          <div class="list-text">
+            <span class="bank-name"><i class="icon icon-bank-${bankCard.bankCode} mr-10"></i><span>${bankCard.bankName}</span></span>
+            <input type="hidden" name="bankId" value="">
+            <input type="hidden" name="bankName" value="${bankCard.bankName}">
           </div>
         </div>
         <div class="list-item">
           <label class="list-label" for="accountName">开户姓名</label>
           <div class="list-text">
-            <input type="text" id="accountName" name="accountName" class="form-input" value="${bank.accountName}" placeholder="填写开户姓名">
+            <input type="text" id="accountName" name="accountName" class="form-input" value="${bankCard.accountName}" placeholder="填写开户姓名">
           </div>
         </div>
         <div class="list-item">
           <label class="list-label" for="accountNo">银行卡号</label>
           <div class="list-text">
-            <input type="text" id="accountNo" name="accountNo" class="form-input" value="${bank.accountNo}" placeholder="填写银行卡号">
+            <input type="text" id="accountNo" name="accountNo" class="form-input" value="${bankCard.accountNo}" placeholder="填写银行卡号">
           </div>
         </div>
         <div class="list-item">
           <label class="list-label" for="bankBranchName">开户支行名</label>
           <div class="list-text">
-            <input type="text" id="bankBranchName" name="bankBranchName" class="form-input" value="${bank.bankBranchName}" placeholder="填写开户支行名称">
+            <input type="text" id="bankBranchName" name="bankBranchName" class="form-input" value="${bankCard.bankBranchName}" placeholder="填写开户支行名称">
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="list-text">设为默认银行卡</div>
+          <div class="list-unit form-switch">
+            <input type="hidden" name="_isDefault" value="false">
+            <input type="checkbox" id="isDefault" name="isDefault" value="true" <c:if test="${bankCard.isDefault}"> checked="checked"</c:if>>
+            <label class="i-switch" for="isDefault"></label>
           </div>
         </div>
       </div>
