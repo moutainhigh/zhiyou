@@ -22,37 +22,42 @@
         ajax : {
           url : '${ctx}/bank', // ajax source
         },
-        columns : [ {
-          data : 'name',
-          title : '银行名称',
-          width : '120px'
-        }, {
-          data : 'code',
-          title : '代码',
-          width : '120px'
-        }, {
-          data : 'isDeleted',
-          title : '是否已删除',
-          orderable : false,
-          width : '100px',
-          render : function(data, type, full) {
-            return data ? '是' : '';
-          }
-         },
-         {
-           data: 'id',
-           title: '操作',
-           width: '120px',
-           orderable: false,
-           render: function (data, type, full) {
-             var optionHtml = '';
-             <shiro:hasPermission name="bank:edit">
-             optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/bank/update?id=' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
-             optionHtml += '<a class="btn btn-xs default red-stripe" href="javascript:;" data-href="${ctx}/bank/delete?id=' + data + '" data-confirm="您确定要删除选中数据吗?"><i class="fa fa-trash-o"></i> 删除 </a>';
-             </shiro:hasPermission>
-             return optionHtml;
-           }
-         }]
+        columns : [
+            {
+              data : 'name',
+              title : '银行名称'
+            },
+            {
+              data : 'code',
+              title : '代码'
+            },
+            {
+              data : 'isDeleted',
+              title : '是否已删除',
+              orderable : false,
+              render : function(data, type, full) {
+                return data ? '是' : '';
+              },
+            },
+            {
+              data : 'orderNumber',
+              title : '排序数字',
+              orderable : false
+            },
+            {
+              data : 'id',
+              title : '操作',
+              orderable : false,
+              render : function(data, type, full) {
+                var optionHtml = '';
+                <shiro:hasPermission name="bank:edit">
+                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/bank/update?id=' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
+                optionHtml += '<a class="btn btn-xs default red-stripe" href="javascript:;" data-href="${ctx}/bank/delete?id=' + data
+                    + '" data-confirm="您确定要删除选中数据吗?"><i class="fa fa-trash-o"></i> 删除 </a>';
+                </shiro:hasPermission>
+                return optionHtml;
+              }
+            } ]
       }
     });
   });
@@ -77,8 +82,7 @@
           <i class="icon-home"></i> 银行管理
         </div>
         <div class="actions">
-          <a class="btn btn-circle green" data-href="${ctx}/bank/create">
-            <i class="fa fa-plus"></i> 新增
+          <a class="btn btn-circle green" data-href="${ctx}/bank/create"> <i class="fa fa-plus"></i> 新增
           </a>
         </div>
       </div>

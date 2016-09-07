@@ -1,6 +1,7 @@
 package com.zy.admin.controller.fnc;
 
 import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class BankController {
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public String update(@RequestParam Long id, Model model) {
 		Bank bank = bankService.findOne(id);
-		validate(bank);
+		validate(bank, NOT_NULL, "bank id" + id + " not found");
 		model.addAttribute("bank", bank);
 		return "fnc/bankUpdate";
 	}
