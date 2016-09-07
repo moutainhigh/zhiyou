@@ -15,8 +15,6 @@ import com.zy.model.BizCode;
 import com.zy.model.Constants.ProfitBizName;
 import com.zy.model.query.WithdrawQueryModel;
 import com.zy.service.WithdrawService;
-import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.mp.bean.result.WxRedpackResult;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +28,6 @@ import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.*;
-import static me.chanjar.weixin.common.util.StringUtils.isNotBlank;
 
 @Service
 @Validated
@@ -50,20 +47,20 @@ public class WithdrawServiceImpl implements WithdrawService {
 
 	@Autowired
 	private FncComponent fncComponent;
-	
+
 	@Autowired
 	private Config config;
 
-    @Autowired
-    private SKWxMpService skWxMpService;
+	@Autowired
+	private SKWxMpService skWxMpService;
 
-    @Override
-    public Withdraw create(@NotNull Long userId, @NotNull Long bankCardId, @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
-        final BigDecimal zero = new BigDecimal("0.00");
-        validate(userId, NOT_NULL, "user id is null");
-        validate(currencyType, NOT_NULL, "currency type is null");
-        validate(amount, NOT_NULL, "amount is null");
-        validate(amount, v -> v.compareTo(zero) >= 0, currencyType + "amount must not be less than 0.00");
+	@Override
+	public Withdraw create(@NotNull Long userId, @NotNull Long bankCardId, @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
+		final BigDecimal zero = new BigDecimal("0.00");
+		validate(userId, NOT_NULL, "user id is null");
+		validate(currencyType, NOT_NULL, "currency type is null");
+		validate(amount, NOT_NULL, "amount is null");
+		validate(amount, v -> v.compareTo(zero) >= 0, currencyType + "amount must not be less than 0.00");
 
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + " is not found");
@@ -75,15 +72,15 @@ public class WithdrawServiceImpl implements WithdrawService {
 		Boolean isToBankCard = null;
 		String openId = null;
 
-	    if (userType != UserType.代理 && currencyType != CurrencyType.现金) {
-		    throw new BizException(BizCode.ERROR, "暂只支持代理现金提现");
+		if (userType != UserType.代理 && currencyType != CurrencyType.现金) {
+			throw new BizException(BizCode.ERROR, "暂只支持代理现金提现");
 
-	    }
+		}
 
 	    /* check bank card */
-	    BankCard bankCard = bankCardMapper.findOne(bankCardId);
-	    validate(bankCard, NOT_NULL, "bank card id " + bankCardId + " is not found");
-	    validate(bankCard, v -> v.getUserId().equals(userId), "bank card " + bankCardId + " must be own");
+		BankCard bankCard = bankCardMapper.findOne(bankCardId);
+		validate(bankCard, NOT_NULL, "bank card id " + bankCardId + " is not found");
+		validate(bankCard, v -> v.getUserId().equals(userId), "bank card " + bankCardId + " must be own");
 
 
 		/* check 余额 */
@@ -116,9 +113,9 @@ public class WithdrawServiceImpl implements WithdrawService {
 		withdraw.setWithdrawStatus(Withdraw.WithdrawStatus.已申请);
 		validate(withdraw);
 		withdrawMapper.insert(withdraw);
-		
+
 		String currencyTypeLabel = currencyType == CurrencyType.金币 ? "试客币" : (currencyType == CurrencyType.现金 ? "本金" : currencyType.getAlias());
-		fncComponent.recordAccountLog(userId, currencyTypeLabel +  "提现", currencyType, amount, InOut.支出, withdraw);
+		fncComponent.recordAccountLog(userId, currencyTypeLabel + "提现", currencyType, amount, InOut.支出, withdraw);
 		fncComponent.recordAccountLog(config.getSysUserId(), currencyTypeLabel + "提现", currencyType, amount, InOut.收入, withdraw);
 		return withdraw;
 	}
@@ -132,21 +129,14 @@ public class WithdrawServiceImpl implements WithdrawService {
 		User user = userMapper.findOne(operatorUserId);
 		validate(user, NOT_NULL, "operator user id" + operatorUserId + " is not found null");
 
-        if (withdraw.getWithdrawStatus() == Withdraw.WithdrawStatus.提现成功) {
-            return; // 幂等处理
-        } else if (withdraw.getWithdrawStatus() != Withdraw.WithdrawStatus.已申请) {
-            throw new BizException(BizCode.ERROR, "只有已申请状态的提现单可以确认成功");
-        }
-        if (!withdraw.getIsToBankCard()) {
-            try {
-                WxRedpackResult result = this.skWxMpService.transfer(withdraw.getSn(), withdraw.getOpenId(), withdraw.getAmount(), withdraw.getTitle());
-                if (isNotBlank(result.getReturnMsg())) {
-                    throw new BizException(BizCode.ERROR, result.getReturnMsg());
-                }
-            } catch (WxErrorException e) {
-                throw new BizException(BizCode.ERROR, e.getMessage());
-            }
-        }
+		if (withdraw.getWithdrawStatus() == Withdraw.WithdrawStatus.提现成功) {
+			return; // 幂等处理
+		} else if (withdraw.getWithdrawStatus() != Withdraw.WithdrawStatus.已申请) {
+			throw new BizException(BizCode.ERROR, "只有已申请状态的提现单可以确认成功");
+		}
+		if (!withdraw.getIsToBankCard()) {
+			throw new BizException(BizCode.ERROR, "暂不支持微信提现");
+		}
 
 		withdraw.setRemark(remark);
 		withdraw.setOperatorUserId(operatorUserId);
@@ -159,7 +149,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		Long sysUserId = config.getSysUserId();
 
 		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw);
-		
+
 		Long feeUserId = config.getFeeUserId();
 		BigDecimal fee = withdraw.getFee();
 		if (fee.compareTo(zero) > 0) {
@@ -194,9 +184,9 @@ public class WithdrawServiceImpl implements WithdrawService {
 			throw new ConcurrentException();
 		}
 		CurrencyType currencyType = withdraw.getCurrencyType();
-		
+
 		BigDecimal amount = withdraw.getAmount();
-		
+
 		fncComponent.recordAccountLog(withdraw.getUserId(), "提现取消退款", currencyType, amount, InOut.收入, withdraw);
 		fncComponent.recordAccountLog(config.getSysUserId(), "提现取消退款", currencyType, amount, InOut.支出, withdraw);
 	}
