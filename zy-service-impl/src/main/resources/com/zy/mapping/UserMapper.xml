@@ -168,7 +168,7 @@
 		select * from `usr_user` where phone = #{phone}
 	</select>
 
-	<select id="findByPhone" resultMap="baseResultMap">
+	<select id="findByOpenId" resultMap="baseResultMap">
 		select * from `usr_user` where open_id = #{openId}
 	</select>
 
