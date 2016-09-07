@@ -22,7 +22,7 @@ public class BankCardVo implements Serializable {
 	private String bankName;
 	@Field(label = "开户支行")
 	private String bankBranchName;
-	@Field(label = "是否默认地址")
+	@Field(label = "是否默认银行卡")
 	private Boolean isDefault;
 
 	/* 扩展 */
