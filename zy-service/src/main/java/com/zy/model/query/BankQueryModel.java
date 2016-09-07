@@ -76,6 +76,7 @@ public class BankQueryModel implements Serializable {
 
 	static {
 		fieldNames.add("code");
+		fieldNames.add("orderNumber");
 		fieldNames.add("isDeleted");
 		fieldNames.add("name");
 		fieldNames.add("id");

@@ -28,8 +28,9 @@ public class BankCardVo implements Serializable {
 	private Boolean isDefault;
 
 	/* 扩展 */
-	@Field(label = "开户行编码")
-	private String bankCode;
 	@Field(label = "银行卡号密文")
 	private String cardNumberLabel;
+	@Field(label = "开户行id")
+	private Long bankCode;
+
 }

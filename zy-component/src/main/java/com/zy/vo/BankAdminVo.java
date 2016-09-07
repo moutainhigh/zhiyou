@@ -16,6 +16,8 @@ public class BankAdminVo implements Serializable {
 	private String name;
 	@Field(label = "代码")
 	private String code;
+	@Field(label = "排序")
+	private Integer orderNumber;
 
 	/* 扩展 */
 
