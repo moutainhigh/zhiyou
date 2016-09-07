@@ -35,7 +35,7 @@
 <body>
   <header class="header">
     <h1>检测报告</h1>
-    <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/report" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
   <div class="list-group">
