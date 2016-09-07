@@ -37,6 +37,7 @@
 		<module>zy-component</module>
 		<module>zy-admin</module>
 		<module>zy-mobile</module>
+		<module>zy-task</module>
 	</modules>
 
 	<dependencyManagement>
