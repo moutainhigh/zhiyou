@@ -1,5 +1,6 @@
 package com.zy.service.impl;
 
+import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.act.Report;
@@ -7,13 +8,17 @@ import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.mapper.ReportMapper;
 import com.zy.mapper.UserMapper;
+import com.zy.model.BizCode;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.service.ReportService;
+
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+
 import java.util.Date;
 import java.util.List;
 
@@ -73,6 +78,42 @@ public class ReportServiceImpl implements ReportService {
 		if (reportMapper.update(report) == 0) {
 			throw new ConcurrentException();
 		}
+	}
+
+	@Override
+	public Report findOne(@NotNull Long id) {
+		return reportMapper.findOne(id);
+	}
+
+	@Override
+	public Report modify(@NotNull Report report) {
+		Long id = report.getId();
+		Validate.notNull(id, "id is null");
+		Report persistence = reportMapper.findOne(id);
+		Validate.notNull(persistence, "report id" + id + " not found");
+		if(persistence.getConfirmStatus() == ConfirmStatus.审核通过) {
+			throw new BizException(BizCode.ERROR, "状态不匹配");
+		}
+		
+		persistence.setAge(report.getAge());
+		persistence.setAppliedTime(new Date());
+		persistence.setConfirmedTime(null);
+		persistence.setConfirmRemark(null);
+		persistence.setConfirmStatus(ConfirmStatus.未审核);
+		persistence.setPreConfirmStatus(ConfirmStatus.未审核);
+		persistence.setDate(report.getDate());
+		persistence.setGender(report.getGender());
+		persistence.setImage1(report.getImage1());
+		persistence.setImage2(report.getImage2());
+		persistence.setImage3(report.getImage3());
+		persistence.setImage4(report.getImage4());
+		persistence.setImage5(report.getImage5());
+		persistence.setImage6(report.getImage6());
+		persistence.setRealname(report.getRealname());
+		persistence.setReportResult(report.getReportResult());
+		persistence.setText(report.getText());
+		reportMapper.update(persistence);
+		return persistence;
 	}
 
 }

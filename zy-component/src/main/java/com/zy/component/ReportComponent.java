@@ -1,15 +1,16 @@
 package com.zy.component;
 
+import static com.zy.util.GcUtils.getThumbnail;
+import static org.apache.commons.lang3.time.DateFormatUtils.format;
+
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.springframework.stereotype.Component;
+
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Report;
 import com.zy.util.GcUtils;
 import com.zy.vo.ReportAdminVo;
 import com.zy.vo.ReportVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import static com.zy.util.GcUtils.getThumbnail;
-import static org.apache.commons.lang3.time.DateFormatUtils.format;
 
 @Component
 public class ReportComponent {
@@ -38,15 +39,22 @@ public class ReportComponent {
 
 	public ReportVo buildVo(Report report) {
 		ReportVo reportVo = new ReportVo();
+		BeanUtils.copyProperties(report, reportVo);
 		
+		reportVo.setDateLabel(DateFormatUtils.format(report.getDate(), "yyyy-MM-dd"));
 		reportVo.setImage1Thumbnail(GcUtils.getThumbnail(report.getImage1()));
 		reportVo.setImage2Thumbnail(GcUtils.getThumbnail(report.getImage2()));
 		reportVo.setImage3Thumbnail(GcUtils.getThumbnail(report.getImage3()));
 		reportVo.setImage4Thumbnail(GcUtils.getThumbnail(report.getImage4()));
 		reportVo.setImage5Thumbnail(GcUtils.getThumbnail(report.getImage5()));
 		reportVo.setImage6Thumbnail(GcUtils.getThumbnail(report.getImage6()));
+		reportVo.setImage1Big(GcUtils.getThumbnail(report.getImage1(), 640, 640));
+		reportVo.setImage2Big(GcUtils.getThumbnail(report.getImage2(), 640, 640));
+		reportVo.setImage3Big(GcUtils.getThumbnail(report.getImage3(), 640, 640));
+		reportVo.setImage4Big(GcUtils.getThumbnail(report.getImage4(), 640, 640));
+		reportVo.setImage5Big(GcUtils.getThumbnail(report.getImage5(), 640, 640));
+		reportVo.setImage6Big(GcUtils.getThumbnail(report.getImage6(), 640, 640));
 		
-		BeanUtils.copyProperties(report, reportVo);
 		return reportVo;
 	}
 

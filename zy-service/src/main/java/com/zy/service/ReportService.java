@@ -6,8 +6,12 @@ import com.zy.model.query.ReportQueryModel;
 
 public interface ReportService {
 
+	Report findOne(Long id);
+	
 	Report create(Report report);
 
+	Report modify(Report report);
+	
 	Page<Report> findPage(ReportQueryModel reportQueryModel);
 
 	void confirm(Long id, boolean isSuccess, String confirmRemark);
