@@ -392,7 +392,7 @@ a.disabled, a.disabled:hover, a.disabled:focus {
 /* detail-wrap */
 .detail-wrap {
   padding: 10px 15px;
-  color: #555; font-size: 14px; line-height: 24px;
+  color: #555; font-size: 15px; line-height: 24px;
   background-color: #fff;
 }
 .detail-wrap img {

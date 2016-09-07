@@ -94,15 +94,21 @@
       </div>
     </div>
     
-    <nav class="tab-nav">
-      <a href="javascript:;" class="current">商品详情</a>
-      <a href="javascript:;"></a>
-    </nav>
-    <!-- 商品详情 -->
-    <div id="detail" class="tab-content detail-wrap">
-      <c:if test="${empty product.detail}"><p class="p-15">暂无详情</p></c:if>
-      <c:if test="${not empty product.detail}">${product.detail}</c:if>
+    <div class="list-group mb-0">
+      <div class="list-item">
+        <div class="list-icon"><i class="fa fa-list-alt font-orange"></i></div>
+        <div class="list-text">商品介绍</div>
+      </div>
+      <div class="list-item p-0">
+        <div class="list-text">
+          <div class="detail-wrap">
+            <c:if test="${empty product.detail}"><p class="p-15">暂无介绍</p></c:if>
+            <c:if test="${not empty product.detail}">${product.detail}</c:if>
+          </div>
+        </div>
+      </div>
     </div>
+    
   </article>
   
   <c:if test="${isAgent}">
