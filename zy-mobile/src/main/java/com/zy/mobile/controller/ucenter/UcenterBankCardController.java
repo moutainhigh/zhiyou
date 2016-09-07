@@ -58,6 +58,9 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create(Principal principal, Model model) {
+		
+		//TODO 没有完成appearance 不能绑定  直接跳转到userInfo
+		
 		List<Bank> banks = cacheSupport.get(CACHE_NAME_BANK, CACHE_KEY_BANK);
 		if(banks == null) {
 			banks = bankService.findAll(BankQueryModel.builder().isDeletedEQ(false).orderBy("orderNumber").direction(Direction.ASC).build());
