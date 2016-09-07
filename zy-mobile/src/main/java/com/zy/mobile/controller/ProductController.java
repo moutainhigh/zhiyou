@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.zy.component.ProductComponent;
 import com.zy.entity.mal.Product;
+import com.zy.entity.usr.User;
+import com.zy.model.Principal;
 import com.zy.model.query.ProductQueryModel;
 import com.zy.service.ProductService;
+import com.zy.service.UserService;
+import com.zy.util.GcUtils;
 
 @RequestMapping("/product")
 @Controller
@@ -24,13 +28,15 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private ProductComponent productComponent;
 	
 	@RequestMapping
 	public String list(Model model) {
-		
 		ProductQueryModel productQueryModel = new ProductQueryModel();
 		productQueryModel.setIsOnEQ(true);
 		List<Product> products = productService.findAll(productQueryModel);
@@ -41,6 +47,11 @@ public class ProductController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String detail(@PathVariable Long id, Model model) {
 		Product product = productService.findOne(id);
+		Principal principal = GcUtils.getPrincipal();
+		if(principal != null) {
+			User user = userService.findOne(principal.getUserId());
+			product.setPrice(productService.getPrice(product.getId(), user.getUserRank(), 1L));
+		}
 		validate(product, NOT_NULL, "product id" + id + " not found");
 		validate(product.getIsOn(), v -> true, "product is not on");
 		model.addAttribute("product", productComponent.buildDetailVo(product));
