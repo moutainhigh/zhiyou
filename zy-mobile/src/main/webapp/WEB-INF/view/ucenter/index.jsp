@@ -71,12 +71,12 @@
       <span>¥ 0.00</span>
     </a>
     <a class="flex-1 bd-r" href="${ctx}/u/order/in">
-      <i class="icon icon-coin icon-2x"></i>
+      <i class="icon icon-in icon-2x"></i>
       <em>进货</em>
       <span>0件</span>
     </a>
     <a class="flex-1" href="${ctx}/u/order/out">
-      <i class="icon icon-point icon-2x"></i>
+      <i class="icon icon-out icon-2x"></i>
       <em>出货</em>
       <span>0件</span>
     </a>
@@ -86,7 +86,7 @@
     <div class="list-group">
       <c:if test="${user.userRank == 'V0'}">
       <a class="list-item" href="${ctx}/product/1">
-        <i class="list-icon icon icon-account"></i>
+        <i class="list-icon icon icon-agent"></i>
         <div class="list-text">成为代理</div>
         <i class="list-arrow"></i>
       </a>
@@ -102,12 +102,12 @@
     
     <div class="list-group">
       <a class="list-item list-item-icon" href="${ctx}/u/activity/applyList">
-        <i class="list-icon icon icon-task"></i>
+        <i class="list-icon icon icon-join"></i>
         <div class="list-text">我参与的活动</div>
         <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/activity/collectList">
-        <i class="list-icon icon icon-task"></i>
+        <i class="list-icon icon icon-heart"></i>
         <div class="list-text">我关注的活动</div>
         <i class="list-arrow"></i>
       </a>
@@ -115,7 +115,7 @@
     
     <div class="list-group">
       <a class="list-item list-item-icon" href="${ctx}/u/report">
-        <i class="list-icon icon icon-achievement"></i>
+        <i class="list-icon icon icon-report"></i>
         <div class="list-text">检测报告</div>
         <i class="list-arrow"></i>
       </a>
