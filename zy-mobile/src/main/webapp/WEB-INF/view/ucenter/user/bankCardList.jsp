@@ -38,9 +38,11 @@
     
     <c:forEach items="${bankCards}" var="bankCard">
     <a href="${ctx}/u/bankCard/${bankCard.id}" class="bank round-4 relative">
-      <i class="icon icon-bank-${bankCard.bankCode} round"></i>
-      <span class="fs-16 lh-30">${bankCard.bankName}</span>
-      <div class="fs-12 text-right"><span class="left mt-10">${bankCard.realname}</span><span class="fs-24">**** **** **** ${bankCard.cardNumberLabel}</span></div>
+      <div class="bank-icon round"><i class="icon icon-bank-${bankCard.bankCode} round"></i></div>
+      <div class="bank-info">
+        <div class="fs-16 lh-30">${bankCard.bankName}</div>
+        <div class="fs-12 lh-30"><span>${bankCard.realname}</span><span class="fs-24 right">**** **** **** ${bankCard.cardNumberLabel}</span></div>
+      </div>
     </a>
     </c:forEach>
     
