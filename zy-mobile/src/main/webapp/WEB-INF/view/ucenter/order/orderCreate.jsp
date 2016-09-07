@@ -65,12 +65,12 @@
       var $this = $(this);
       var address = {};
       address.id = $this.attr('data-id');
-      address.name = $this.find('.address-name').text();
+      address.realname = $this.find('.address-name').text();
       address.phone = $this.find('.address-phone').text();
       address.addressText = $this.find('.address-text').text();
 
       var layerIndex = layer.open({
-        content : '您确定要设置收货地址吗？<br>' + '收件人：' + address.name + '<br>' + '手机号：' + address.phone + '<br>' + '地址：' + address.addressText,
+        content : '您确定要设置收货地址吗？<br>' + '收件人：' + address.realname + '<br>' + '手机号：' + address.phone + '<br>' + '地址：' + address.addressText,
         btn : [ '确认', '取消' ],
         shadeClose : false,
         yes : function() {
@@ -235,7 +235,7 @@
 </aside>
 </script>
 </head>
-<body>
+<body class="order-detail">
   <header class="header">
     <h1>确认订单信息</h1>
     <a href="javascript:history.back();" class="button-left"><i class="fa fa-angle-left"></i></a>
@@ -251,7 +251,7 @@
   </div>
   </c:if>
   
-  <article class="order order-detail">
+  <article>
     <div class="list-group">
       <div class="list-title">收件人信息</div>
       <div class="list-item">
@@ -273,13 +273,11 @@
     <div class="list-group">
       <div class="list-title">商品信息</div>
       <div class="list-item">
+        <img class="image-80 block mr-10" alt="" src="${product.image1Thumbnail}">
         <div class="list-text relative font-333">
-          <img class="product-image abs-lt" alt="" src="${product.image1Thumbnail}">
-          <div class="product-title">${product.title}</div>
-          <div class="product-price abs-rt text-right">
-            <div class="lh-24 fs-14 font-orange">¥ ${product.price}</div>
-            <div class="lh-24 fs-12 font-gray">x ${quantity}</div>
-          </div>
+          <div class="fs-14 lh-24">¥ ${product.title}</div>
+          <div class="lh-24 fs-14 text-right font-orange">¥ ${product.price}</div>
+          <div class="lh-24 fs-12 text-right font-gray">x ${quantity}</div>
           <input type="hidden" name="productId" value="${product.id}">
           <input type="hidden" name="quantity" value="${quantity}">
         </div>

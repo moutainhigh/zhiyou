@@ -65,6 +65,7 @@ public class UcenterOrderCreateController {
 
 		Address address = addressService.findDefaultByUserId(userId);
 		Product product = productService.findOne(productId);
+		product.setPrice(productService.getPrice(productId, user.getUserRank(), quantity));
 		validate(product, NOT_NULL, "product id:" + productId + " is not found !");
 		ProductListVo productVo = productComponent.buildListVo(product);
 		model.addAttribute("product", productVo);

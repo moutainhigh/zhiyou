@@ -22,27 +22,5 @@
   width: 60px; height: 60px;
 }
 
-/* order-detail */
-.order-detail .order-info {
-  color: #777; font-size: 12px; line-height: 24px;
-}
-.order-detail .product-info {
-  color: #333; font-size: 12px;
-}
-.order-detail .deliver-info {
-  color: #555; font-size: 12px; line-height: 24px;
-}
-.order-detail .product-title {
-  margin-left: 95px; margin-right: 95px;
-  height: 80px; overflow: hidden;
-  line-height: 26px;
-}
-.order-detail .product-image {
-  width: 80px; height: 80px;
-}
-.order-detail .product-price {
-  width: 80px; height: 80px;
-}
-
 
 
