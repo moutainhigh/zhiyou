@@ -38,7 +38,7 @@
 
       <div class="list-item">
         <div class="list-text">生日</div>
-        <div class="list-unit"><fmt:formatDate value="${portrait.birthday}" pattern="yyyy年MM月dd日" /></div>
+        <div class="list-unit">${portrait.birthdayLabel}</div>
       </div>
 
       <div class="list-item">
