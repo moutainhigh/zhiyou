@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
 			userMapper.update(user);
 		}
 
-		Long sellerId = null; //malComponent.calculateSellerId(userId);
+		Long sellerId = null;//malComponent.calculateSellerId(userId);
 
 
 		String title = orderCreateDto.getTitle();

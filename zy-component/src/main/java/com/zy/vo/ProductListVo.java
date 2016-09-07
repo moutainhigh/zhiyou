@@ -21,7 +21,7 @@ public class ProductListVo implements Serializable {
 	private BigDecimal marketPrice;
 
 	/* 扩展 */
-	@Field(label = "主图",order = 999)
+	@Field(label = "主图")
 	private String image1Thumbnail;
 
 }

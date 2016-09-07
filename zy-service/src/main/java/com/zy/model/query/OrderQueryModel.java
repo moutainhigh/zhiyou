@@ -30,6 +30,10 @@ public class OrderQueryModel implements Serializable {
 
 	private Long[] sellerIdIN;
 
+	private Long parentIdEQ;
+
+	private Long[] parentIdIN;
+
 	private OrderStatus orderStatusEQ;
 
 	private String logisticsNameLK;
@@ -91,6 +95,7 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("currencyType");
 		fieldNames.add("logisticsSn");
 		fieldNames.add("discountFee");
+		fieldNames.add("isPlatformDeliver");
 		fieldNames.add("orderStatus");
 		fieldNames.add("remark");
 		fieldNames.add("receiverProvince");
@@ -111,13 +116,14 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("paidTime");
 		fieldNames.add("userId");
 		fieldNames.add("version");
+		fieldNames.add("parentId");
 		fieldNames.add("expiredTime");
 		fieldNames.add("receiverRealname");
 		fieldNames.add("logisticsName");
 		fieldNames.add("receiverAddress");
 		fieldNames.add("sellerMemo");
-		fieldNames.add("logisticsFee");
 		fieldNames.add("deliveredTime");
+		fieldNames.add("logisticsFee");
 		fieldNames.add("refund");
 		fieldNames.add("buyerMemo");
 		fieldNames.add("useLogistics");

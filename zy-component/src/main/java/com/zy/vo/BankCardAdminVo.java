@@ -36,7 +36,7 @@ public class BankCardAdminVo implements Serializable {
 	private Date appliedTime;
 
 	/* 扩展 */
-	@Field(label = "用户id",order = 999)
+	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
 
 }

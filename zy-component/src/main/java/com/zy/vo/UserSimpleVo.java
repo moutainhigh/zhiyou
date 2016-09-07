@@ -16,7 +16,7 @@ public class UserSimpleVo implements Serializable {
 	private String nickname;
 
 	/* 扩展 */
-	@Field(label = "头像",order = 999)
+	@Field(label = "头像")
 	private String avatarThumbnail;
 
 }

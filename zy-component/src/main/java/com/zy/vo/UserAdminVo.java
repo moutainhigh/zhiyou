@@ -37,11 +37,11 @@ public class UserAdminVo implements Serializable {
 	private String remark;
 
 	/* 扩展 */
-	@Field(label = "头像",order = 999)
+	@Field(label = "头像")
 	private String avatarThumbnail;
-	@Field(label = "邀请人id",order = 999)
+	@Field(label = "邀请人id")
 	private UserAdminSimpleVo inviter;
-	@Field(label = "上级id",order = 999)
+	@Field(label = "上级id")
 	private UserAdminSimpleVo parent;
 
 }

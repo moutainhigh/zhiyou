@@ -27,11 +27,11 @@ public class ActivityApplyAdminVo implements Serializable {
 	private Boolean isSmsSent;
 
 	/* 扩展 */
-	@Field(label = "用户id",order = 999)
+	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
-	@Field(label = "报名时间",order = 999)
+	@Field(label = "报名时间")
 	private String appliedTimeLabel;
-	@Field(label = "邀请人id",order = 999)
+	@Field(label = "邀请人id")
 	private UserAdminSimpleVo inviter;
 
 }

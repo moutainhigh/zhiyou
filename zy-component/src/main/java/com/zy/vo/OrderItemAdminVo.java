@@ -31,7 +31,7 @@ public class OrderItemAdminVo implements Serializable {
 	private BigDecimal amount;
 
 	/* 扩展 */
-	@Field(label = "商品图",order = 999)
+	@Field(label = "商品图")
 	private String imageThumbnail;
 
 }

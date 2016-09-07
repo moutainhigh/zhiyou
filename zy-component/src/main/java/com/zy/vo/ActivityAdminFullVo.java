@@ -38,29 +38,29 @@ public class ActivityAdminFullVo implements Serializable {
 	private Boolean isReleased;
 
 	/* 扩展 */
-	@Field(label = "活动状态",order = 999)
+	@Field(label = "活动状态")
 	private String status;
-	@Field(label = "地区",order = 999)
+	@Field(label = "地区")
 	private String province;
-	@Field(label = "地区",order = 999)
+	@Field(label = "地区")
 	private String city;
-	@Field(label = "地区",order = 999)
+	@Field(label = "地区")
 	private String district;
-	@Field(label = "活动主图",order = 999)
+	@Field(label = "活动主图")
 	private String imageBig;
-	@Field(label = "活动主图",order = 999)
+	@Field(label = "活动主图")
 	private String imageThumbnail;
-	@Field(label = "报名截止时间",order = 999)
+	@Field(label = "报名截止时间")
 	private String applyDeadlineLabel;
-	@Field(label = "活动开始时间",order = 999)
+	@Field(label = "活动开始时间")
 	private String startTimeLabel;
-	@Field(label = "活动结束时间",order = 999)
+	@Field(label = "活动结束时间")
 	private String endTimeLabel;
-	@Field(label = "活动报名",order = 999)
+	@Field(label = "活动报名")
 	private List<ActivityApplyAdminVo> activityApplies = new ArrayList<>();
-	@Field(label = "活动关注",order = 999)
+	@Field(label = "活动关注")
 	private List<ActivityCollectAdminVo> activityCollects = new ArrayList<>();
-	@Field(label = "活动签到",order = 999)
+	@Field(label = "活动签到")
 	private List<ActivitySignInAdminVo> activitySignIns = new ArrayList<>();
 
 }

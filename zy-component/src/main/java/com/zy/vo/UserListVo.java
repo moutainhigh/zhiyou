@@ -21,7 +21,7 @@ public class UserListVo implements Serializable {
 	private UserRank userRank;
 
 	/* 扩展 */
-	@Field(label = "头像",order = 999)
+	@Field(label = "头像")
 	private String avatarThumbnail;
 
 }

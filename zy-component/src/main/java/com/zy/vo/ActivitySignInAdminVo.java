@@ -21,9 +21,9 @@ public class ActivitySignInAdminVo implements Serializable {
 	private Date signedInTime;
 
 	/* 扩展 */
-	@Field(label = "用户id",order = 999)
+	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
-	@Field(label = "签到时间",order = 999)
+	@Field(label = "签到时间")
 	private String signedInTimeLabel;
 
 }

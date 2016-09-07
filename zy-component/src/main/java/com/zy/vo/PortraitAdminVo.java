@@ -26,15 +26,15 @@ public class PortraitAdminVo implements Serializable {
 	private Long areaId;
 
 	/* 扩展 */
-	@Field(label = "职业",order = 999)
+	@Field(label = "职业")
 	private String jobName;
-	@Field(label = "所在地",order = 999)
+	@Field(label = "所在地")
 	private String province;
-	@Field(label = "所在地",order = 999)
+	@Field(label = "所在地")
 	private String city;
-	@Field(label = "所在地",order = 999)
+	@Field(label = "所在地")
 	private String district;
-	@Field(label = "标签",order = 999)
+	@Field(label = "标签")
 	private List<String> tagNames = new ArrayList<>();
 
 }

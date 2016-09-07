@@ -37,9 +37,9 @@ public class ProductAdminVo implements Serializable {
 	private Date createdTime;
 
 	/* 扩展 */
-	@Field(label = "主图",order = 999)
+	@Field(label = "主图")
 	private String image1Big;
-	@Field(label = "主图",order = 999)
+	@Field(label = "主图")
 	private String image1Thumbnail;
 
 }

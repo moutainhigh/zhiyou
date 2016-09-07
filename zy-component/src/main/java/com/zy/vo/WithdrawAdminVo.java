@@ -48,9 +48,9 @@ public class WithdrawAdminVo implements Serializable {
 	private String remark;
 
 	/* 扩展 */
-	@Field(label = "用户id",order = 999)
+	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
-	@Field(label = "银行卡id",order = 999)
+	@Field(label = "银行卡id")
 	private BankCardAdminVo bankCard;
 
 }

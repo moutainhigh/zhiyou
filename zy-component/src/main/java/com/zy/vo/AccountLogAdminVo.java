@@ -41,7 +41,7 @@ public class AccountLogAdminVo implements Serializable {
 	private BigDecimal afterAmount;
 
 	/* 扩展 */
-	@Field(label = "所属用户",order = 999)
+	@Field(label = "所属用户")
 	private UserAdminSimpleVo user;
 
 }

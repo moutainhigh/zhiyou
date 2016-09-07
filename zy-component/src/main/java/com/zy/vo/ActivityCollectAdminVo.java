@@ -21,9 +21,9 @@ public class ActivityCollectAdminVo implements Serializable {
 	private Date collectedTime;
 
 	/* 扩展 */
-	@Field(label = "用户id",order = 999)
+	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
-	@Field(label = "关注时间",order = 999)
+	@Field(label = "关注时间")
 	private String collectedTimeLabel;
 
 }

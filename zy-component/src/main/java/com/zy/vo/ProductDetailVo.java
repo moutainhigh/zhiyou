@@ -25,9 +25,9 @@ public class ProductDetailVo implements Serializable {
 	private String skuCode;
 
 	/* 扩展 */
-	@Field(label = "主图",order = 999)
+	@Field(label = "主图")
 	private String image1Big;
-	@Field(label = "主图",order = 999)
+	@Field(label = "主图")
 	private String image1Thumbnail;
 
 }
