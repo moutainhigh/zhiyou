@@ -2,6 +2,7 @@ package com.zy.component;
 
 import static java.util.stream.Collectors.toSet;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class PortraitComponent {
 		portraitVo.setCity(areaDto.getCity());
 		portraitVo.setDistrict(areaDto.getDistrict());
 		portraitVo.setJobName(cacheComponent.getJob(portrait.getJobId()).getJobName());
-		//portraitVo.setTagNames(Arrays.stream(portrait.getTagIds().split(",")).map(tag -> this.tagService.findById(Long.valueOf(tag)).getTagName()).collect(toSet()));
+		portraitVo.setTagNames(new ArrayList<String>(Arrays.stream(portrait.getTagIds().split(",")).map(tag -> this.tagService.findById(Long.valueOf(tag)).getTagName()).collect(toSet())));
 		return portraitVo;
 	}
 	

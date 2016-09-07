@@ -116,6 +116,7 @@ public class Portrait implements Serializable {
 	@NotNull
 	@Field(label = "职业")
 	@View(name = "jobName", type = String.class)
+	@View(groups = "PortraitVo")
 	private Long jobId;
 	
 	@NotNull
@@ -123,7 +124,7 @@ public class Portrait implements Serializable {
 	@View(name = "province", type = String.class)
 	@View(name = "city", type = String.class)
 	@View(name = "district", type = String.class)
-	@View(groups = "PortraitAdminVo")
+	@View(groups = {"PortraitAdminVo", "PortraitVo"})
 	private Long areaId;
 
 	@Field(label = "家乡所在地")
@@ -134,6 +135,7 @@ public class Portrait implements Serializable {
 
 	@Field(label = "标签")
 	@CollectionView(name = "tagNames", elementType = String.class)
+	@View(groups = "PortraitVo")
 	private String tagIds;
 
 }

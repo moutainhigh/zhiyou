@@ -6,8 +6,10 @@ import org.springframework.stereotype.Component;
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.usr.User;
+import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.BankCardAdminVo;
+import com.zy.vo.BankCardVo;
 
 @Component
 public class BankCardComponent {
@@ -24,4 +26,12 @@ public class BankCardComponent {
 		return bankCardAdminVo;
 	}
 
+	public BankCardVo buildVo(BankCard bankCard) {
+		BankCardVo bankCardVo = new BankCardVo();
+		BeanUtils.copyProperties(bankCard, bankCardVo);
+		
+		bankCardVo.setCardNumber(GcUtils.overlay(bankCard.getCardNumber(), 0, 4));
+		return bankCardVo;
+	}
+	
 }

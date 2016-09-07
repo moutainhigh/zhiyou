@@ -94,8 +94,7 @@ public class UcenterPortraitController {
         }
         model.addAttribute("jobs", this.jobService.findAll());
         model.addAttribute("tags", getTags());
-        model.addAttribute("userTags", Arrays.stream(portrait.getTagIds().split(",")).map(tag -> this.tagService.findById(Long.valueOf(tag)).getTagName()).collect(toSet()));
-        model.addAttribute("portrait", portrait);
+        model.addAttribute("portrait", portraitComponent.buildVo(portrait));
         return "ucenter/user/portraitEdit";
     }
     @RequestMapping(value = "/edit", method = POST)

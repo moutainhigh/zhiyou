@@ -24,16 +24,9 @@
 <script>
   $(function() {
     var area = new areaInit('province', 'city', 'district', '${portrait.areaId}');
-    var area2 = new areaInit('province2', 'city2', 'district2', '${portrait.hometownAreaId}');
 
     $('.valid-form').validate({
       rules : {
-        'province' : {
-          required : true
-        },
-        'city' : {
-          required : true
-        },
         'areaId' : {
           required : true
         },
@@ -51,12 +44,6 @@
         }
       },
       messages : {
-        'province' : {
-          required : '请选择所在省份'
-        },
-        'city' : {
-          required : '请选择所在城市'
-        },
         'areaId' : {
           required : '请选择所在地区'
         },
@@ -208,8 +195,7 @@
         <div class="list-item">
           <label class="list-label">生日</label>
           <div class="list-text">
-            <input type="text" name="birthday" class="control-input"
-            value="<c:if test="${not empty portrait.birthday}"><fmt:formatDate value="${portrait.birthday}" pattern="yyyy-MM-dd"/></c:if>"
+            <input type="text" name="birthday" class="control-input" value="${portrait.birthday}"
             placeholder="填写生日" onfocus="this.type='date'">
           </div>
         </div>
@@ -231,14 +217,14 @@
         <div class="list-item">
           <label class="list-label">标签</label>
           <div id="tagWrap" class="list-text tag-wrap pt-5">
-            <c:forEach items="${userTags}" var="tag" varStatus="index">
+            <c:forEach items="${portrait.tagNames}" var="tag" varStatus="index">
               <em class="label <c:if test="${index.index % 5 == 0 }"> blue</c:if>
                         <c:if test="${index.index % 5 == 1 }"> orange</c:if>
                         <c:if test="${index.index % 5 == 2 }"> red</c:if>
                         <c:if test="${index.index % 5 == 3 }"> green</c:if>
                         <c:if test="${index.index % 5 == 4 }"> yellow</c:if>">${tag}</em>
             </c:forEach>
-            <input type="hidden" name="tagIds" value="${portrait.tags}">
+            <input type="hidden" name="tagIds" value="${portrait.tagIds}">
           </div>
           <i class="i-arrow"></i>
         </div>

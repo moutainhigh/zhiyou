@@ -1,6 +1,7 @@
 package com.zy.mobile.controller.ucenter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,28 +17,52 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.support.cache.CacheSupport;
+import com.zy.component.BankCardComponent;
+import com.zy.entity.fnc.Bank;
 import com.zy.entity.fnc.BankCard;
+import com.zy.model.Constants;
 import com.zy.model.Principal;
+import com.zy.model.query.BankQueryModel;
 import com.zy.service.BankCardService;
+import com.zy.service.BankService;
 
 @RequestMapping("/u/bankCard")
 @Controller
 public class UcenterBankCardController {
 Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
-	
+
+	@Autowired
+	private BankService bankService;
+
 	@Autowired
 	private BankCardService bankCardService;
+	
+	@Autowired
+	private BankCardComponent BankCardComponent;
+	
+	@Autowired
+	private CacheSupport cacheSupport;
+	
+	private static final String CACHE_NAME_BANK = "bank";
+	private static final String CACHE_KEY_BANK = "bank";
 	
 	@RequestMapping
 	public String list(Principal principal, Model model, Integer pageNumber) {
 		List<BankCard> list = bankCardService.findByUserId(principal.getUserId());
-		model.addAttribute("list", list);
+		model.addAttribute("bankCards", list.stream().map(BankCardComponent::buildVo).collect(Collectors.toList()));
 		return "ucenter/user/bankCardList";
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String create(Principal principal) {
-		//TODO
+	public String create(Principal principal, Model model) {
+		List<Bank> banks = cacheSupport.get(CACHE_NAME_BANK, CACHE_KEY_BANK);
+		if(banks.isEmpty()) {
+			banks = bankService.findAll(BankQueryModel.builder().isDeletedEQ(false).build());
+			
+			cacheSupport.set(CACHE_NAME_BANK, CACHE_KEY_BANK, banks);
+		}
+		model.addAttribute("banks", banks);
 		return "ucenter/user/bankCardCreate";
 	}
 
@@ -47,9 +72,9 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 		try {
 			bankCard.setUserId(principal.getUserId());
 			bankCardService.create(bankCard);
-			redirectAttributes.addFlashAttribute(ResultBuilder.ok("银行卡保存成功"));
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("银行卡保存成功"));
 		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			return "redirect:/u/bankCard/create";
 		}
 		
@@ -74,16 +99,16 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 		Long bankCardId = bankCard.getId();
 		BankCard persistence = bankCardService.findOne(bankCardId);
 		if (!persistence.getUserId().equals(principal.getUserId())) {
-			throw new UnauthorizedException("权限不足只能编辑自己的地址");
+			throw new UnauthorizedException("权限不足只能编辑自己的银行卡");
 		}
 		
 		try {
 			bankCardService.update(bankCard);
 		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			return "redirect:/u/bankCard/edit";
 		}
-		redirectAttributes.addFlashAttribute(ResultBuilder.ok("银行卡修改成功"));
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("银行卡修改成功"));
 		return "redirect:/u/bankCard";
 	}
 	
@@ -96,7 +121,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 			}
 		}
 		bankCardService.delete(id);
-		redirectAttributes.addFlashAttribute(ResultBuilder.ok("银行卡删除成功"));
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("银行卡删除成功"));
 		return "redirect:/u/bankCard";
 	}
 	

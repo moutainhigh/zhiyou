@@ -81,7 +81,7 @@ public class BankCard implements Serializable {
 	private String bankBranchName;
 
 	@NotNull
-	@Field(label = "是否默认地址")
+	@Field(label = "是否默认银行卡")
 	@View
 	private Boolean isDefault;
 	
