@@ -26,7 +26,6 @@
   <header class="header">
     <h1>我的银行卡</h1>
     <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <a href="${ctx}/u/bankCard/create" class="button-right"><i class="fa fa-plus"></i></a>
   </header>
   
   <article>
@@ -41,7 +40,7 @@
     <a href="${ctx}/u/bankCard/${bankCard.id}" class="bank round-4 relative">
       <i class="icon icon-bank-${bankCard.bankCode} round"></i>
       <span class="fs-16 lh-30">${bankCard.bankName}</span>
-      <div class="fs-12 text-right"><span class="left mt-10">${bankCard.realname}</span><span class="fs-24">${bankCard.cardNumberLabel}</span></div>
+      <div class="fs-12 text-right"><span class="left mt-10">${bankCard.realname}</span><span class="fs-24">**** **** **** ${bankCard.cardNumberLabel}</span></div>
     </a>
     </c:forEach>
     

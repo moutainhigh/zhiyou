@@ -78,17 +78,17 @@
         <h2 class="product-title font-333 fs-16 lh-30">${product.title}</h2>
       </div>
       <div class="list-item">
-        <div class="font-555 fs-14">
+        <div class="font-777 fs-14">
           <span class="fs-15">商品编号： <span> ${product.skuCode}</span></span>
         </div>
       </div>
       <div class="list-item">
-        <div class="font-555 fs-14">
+        <div class="font-777 fs-14">
           <span class="fs-15">零售价： <span> ¥ ${product.marketPrice}</span></span>
         </div>
       </div>
       <div class="list-item">
-        <div class="font-555 fs-14">
+        <div class="font-777 fs-14">
           <span class="fs-15">代理价： </span><span class="font-orange fs-18 bold"> ¥ ${product.price}</span>
         </div>
       </div>
