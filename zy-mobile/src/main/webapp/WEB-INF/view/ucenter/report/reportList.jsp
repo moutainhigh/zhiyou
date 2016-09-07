@@ -82,32 +82,45 @@
     <a class="list-item" href="${ctx}/u/report/${report.id}">
       <div class="report">
         <div class="lh-30">${report.realname}<span class="ml-10 fs-12 font-999">&lt;${report.gender}  ${report.age}岁&gt;</span><span class="right fs-12 font-999">${report.dateLabel}</span></div>
+        <div class="lh-30 fs-14">
         <c:choose>
           <c:when test="${report.reportResult == '阴性'}">
-          <div class="fs-14 lh-30 font-red">${report.reportResult}</div>
+          <span class="font-red">${report.reportResult}</span>
           </c:when>
           <c:when test="${report.reportResult == '弱阳性'}">
-          <div class="fs-14 lh-30 font-orange">${report.reportResult}</div>
+          <span class="font-orange">${report.reportResult}</span>
           </c:when>
           <c:when test="${report.reportResult == '阳性'}">
-          <div class="fs-14 lh-30 font-green">${report.reportResult}</div>
+          <span class="font-green">${report.reportResult}</span>
           </c:when>
           <c:when test="${report.reportResult == '干扰色'}">
-          <div class="fs-14 lh-30 font-purple">${report.reportResult}</div>
+          <span class="ont-purple">${report.reportResult}</span>
           </c:when>
         </c:choose>
+        <c:choose>
+          <c:when test="${report.reportStatus == '待审核'}">
+          <span class="right label orange">待审核</span>
+          </c:when>
+          <c:when test="${report.reportStatus == '未通过'}">
+          <span class="right label gray">未通过</span>
+          </c:when>
+          <c:when test="${report.reportStatus == '已通过'}">
+          <span class="right label blue">已通过</span>
+          </c:when>
+        </c:choose>
+        </div>
         <div class="mt-5">
-          <img src="${report.image1Thumbnail}">
-          <img src="${report.image2Thumbnail}">
-          <img src="${report.image3Thumbnail}">
+          <img class="image-80 mr-5 mb-10" src="${report.image1Thumbnail}">
+          <img class="image-80 mr-5 mb-10" src="${report.image2Thumbnail}">
+          <img class="image-80 mr-5 mb-10" src="${report.image3Thumbnail}">
           <c:if test="${not empty report.image4Thumbnail}">
-          <img src="${report.image4Thumbnail}">
+          <img class="image-80 mr-5 mb-10" src="${report.image4Thumbnail}">
           </c:if>
           <c:if test="${not empty report.image5Thumbnail}">
-          <img src="${report.image5Thumbnail}">
+          <img class="image-80 mr-5 mb-10" src="${report.image5Thumbnail}">
           </c:if>
           <c:if test="${not empty report.image6Thumbnail}">
-          <img src="${report.image6Thumbnail}">
+          <img class="image-80 mr-5 mb-10" src="${report.image6Thumbnail}">
           </c:if>
         </div>
       </div>

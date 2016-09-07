@@ -69,10 +69,10 @@ public class ReportServiceImpl implements ReportService {
 		Report report = reportMapper.findOne(id);
 		validate(report, NOT_NULL, "report id " + id + " is not found");
 		if (isSuccess) {
-			report.setConfirmStatus(ConfirmStatus.审核通过);
+			report.setConfirmStatus(ConfirmStatus.已通过);
 			report.setConfirmRemark(confirmRemark);
 		} else {
-			report.setConfirmStatus(ConfirmStatus.审核未通过);
+			report.setConfirmStatus(ConfirmStatus.未通过);
 			report.setConfirmRemark(confirmRemark);
 		}
 		if (reportMapper.update(report) == 0) {
@@ -91,7 +91,7 @@ public class ReportServiceImpl implements ReportService {
 		Validate.notNull(id, "id is null");
 		Report persistence = reportMapper.findOne(id);
 		Validate.notNull(persistence, "report id" + id + " not found");
-		if(persistence.getConfirmStatus() == ConfirmStatus.审核通过) {
+		if(persistence.getConfirmStatus() == ConfirmStatus.已通过) {
 			throw new BizException(BizCode.ERROR, "状态不匹配");
 		}
 		
@@ -99,8 +99,8 @@ public class ReportServiceImpl implements ReportService {
 		persistence.setAppliedTime(new Date());
 		persistence.setConfirmedTime(null);
 		persistence.setConfirmRemark(null);
-		persistence.setConfirmStatus(ConfirmStatus.未审核);
-		persistence.setPreConfirmStatus(ConfirmStatus.未审核);
+		persistence.setConfirmStatus(ConfirmStatus.待审核);
+		persistence.setPreConfirmStatus(ConfirmStatus.待审核);
 		persistence.setDate(report.getDate());
 		persistence.setGender(report.getGender());
 		persistence.setImage1(report.getImage1());

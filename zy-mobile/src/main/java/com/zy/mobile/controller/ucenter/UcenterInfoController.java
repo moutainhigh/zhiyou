@@ -74,7 +74,7 @@ public class UcenterInfoController {
         
         Appearance appearance = appearanceService.findByUserId(userId);
         if(!isNull(appearance)) {
-        	model.addAttribute("isCompletedAppearance", appearance.getConfirmStatus() == ConfirmStatus.审核通过);
+        	model.addAttribute("isCompletedAppearance", appearance.getConfirmStatus() == ConfirmStatus.已通过);
         } 
         
         return "ucenter/user/userInfo";
