@@ -1,19 +1,20 @@
 package com.zy.service;
 
-import java.util.List;
-
 import com.zy.common.model.query.Page;
 import com.zy.entity.usr.User;
-import com.zy.entity.usr.WeixinUser;
 import com.zy.entity.usr.User.UserRank;
-import com.zy.model.dto.RegisterDto;
+import com.zy.model.dto.AgentRegisterDto;
 import com.zy.model.query.UserQueryModel;
+
+import java.util.List;
 
 public interface UserService {
 
 	User findOne(Long id);
 
 	User findByPhone(String phone);
+
+	User findByOpenId(String openId);
 
 	Page<User> findPage(UserQueryModel userQueryModel);
 
@@ -25,19 +26,11 @@ public interface UserService {
 
 	void modifyUserRank(Long id, UserRank userRank, String remark, Long operatorId);
 	
-	User registerAgent(RegisterDto registerDto, UserRank userRank);
-	
-	User registerMerchant(RegisterDto registerDto);
-	
-	User registerBuyer(WeixinUser weixinUser, String registerIp, Long inviterId);
+	User registerAgent(AgentRegisterDto agentRegisterDto);
 
 	long count(UserQueryModel userQueryModel);
 	
 	String hashPassword(String plainPassword);
-	
-	User findByInviteCode(String inviteCode);
-	
-	User findByOpenId(String openId);
 	
 	void modifyPasswordAndPhone(Long id, String password, String phone);
 	
@@ -50,8 +43,6 @@ public interface UserService {
 	void modifyAvatar(Long id, String avatar);
 	
 	void modifyInfo(User user);
-	
-	void bindPhone(Long id, String phone);
 	
 	void loginSuccess(Long id);
 	

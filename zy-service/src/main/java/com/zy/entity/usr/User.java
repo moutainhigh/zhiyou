@@ -11,6 +11,7 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -72,6 +73,7 @@ public class User implements Serializable {
 	@NotBlank
 	@StringBinder
 	@Query(Predicate.LK)
+	@Length(max = 60)
 	@Field(label = "昵称")
 	@View
 	private String nickname;
@@ -97,6 +99,7 @@ public class User implements Serializable {
 	@NotBlank
 	@Field(label = "头像")
 	@View(name = "avatarThumbnail", type = String.class)
+	@Length(max = 250)
 	private String avatar;
 
 	@NotNull
@@ -126,11 +129,6 @@ public class User implements Serializable {
 	@AssociationView(name = "parent", associationGroup = "UserAdminSimpleVo", groups = {"UserAdminVo"})
 	private Long parentId;
 
-	@NotNull
-	@Field(label = "信息是否已完善")
-	@View(groups = {"UserAdminVo"})
-	private Boolean isInfoCompleted;
-
 	@Field(label = "remark")
 	@View(groups = {"UserAdminVo"})
 	private String remark;
@@ -139,9 +137,7 @@ public class User implements Serializable {
 	@Field(label = "vipExpiredDate")
 	private Date vipExpiredDate;
 
-	@NotBlank
-	@Column(unique = true, length = 20)
-	@Field(label = "inviteCode")
-	private String inviteCode;
+	@Column(length = 60, unique = true)
+	private String openId;
 
 }

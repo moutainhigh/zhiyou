@@ -1,16 +1,16 @@
 package com.zy.service;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import com.zy.common.model.query.Page;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Withdraw;
 import com.zy.model.query.WithdrawQueryModel;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 public interface WithdrawService {
 
-	Withdraw create(Long userId, CurrencyType currencyType, BigDecimal amount);
+	Withdraw create(Long userId, Long bankCardId, CurrencyType currencyType, BigDecimal amount);
 	
 	void success(Long id, Long operatorUserId, String remark);
 	

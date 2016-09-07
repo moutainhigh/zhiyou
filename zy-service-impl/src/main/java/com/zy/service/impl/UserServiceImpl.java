@@ -11,15 +11,13 @@ import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
 import com.zy.entity.usr.UserLog;
-import com.zy.entity.usr.WeixinUser;
 import com.zy.extend.Producer;
 import com.zy.mapper.AccountMapper;
 import com.zy.mapper.UserLogMapper;
 import com.zy.mapper.UserMapper;
-import com.zy.mapper.WeixinUserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
-import com.zy.model.dto.RegisterDto;
+import com.zy.model.dto.AgentRegisterDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -32,12 +30,12 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.entity.fnc.CurrencyType.*;
-import static com.zy.model.Constants.*;
+import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
+import static com.zy.model.Constants.TOPIC_USER_RANK_CHANGED;
 
 @Service
 @Validated
@@ -45,9 +43,6 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserMapper userMapper;
-
-	@Autowired
-	private WeixinUserMapper weixinUserMapper;
 
 	@Autowired
 	private AccountMapper accountMapper;
@@ -99,79 +94,70 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User registerMerchant(@NotNull RegisterDto registerDto) {
-		/*validate(registerDto);
-		Long inviterId = registerDto.getInviterId();
-		if (inviterId != null) {
-			User inviter = userMapper.findOne(inviterId);
-			validate(inviter, NOT_NULL, "inviter id " + inviterId + " is not found");
-		}
-		User user = new User();
-		user.setUserType(UserType.商家);
-		user.setPassword(ServiceUtils.hashPassword(registerDto.getPassword()));
-		user.setRegisterIp(registerDto.getRegisterIp());
-		user.setQq(registerDto.getQq());
-		user.setPhone(registerDto.getPhone());
-		user.setNickname(registerDto.getNickname());
-		user.setInviterId(inviterId);
+	public User registerAgent(@NotNull AgentRegisterDto agentRegisterDto) {
+		validate(agentRegisterDto);
 
-		user.setAvatar(SETTING_DEFAULT_AVATAR);
-		user.setRegisterTime(new Date());
-		user.setIsFrozen(false);
-		user.setIsInfoCompleted(false);
-		user.setUserRank(UserRank.V1);
+		Long inviterId = agentRegisterDto.getInviterId();
+		User inviter = userMapper.findOne(inviterId);
+		validate(inviter, NOT_NULL, "inviter id " + inviterId + " is not found");
 
-		String inviteCode = getInviteCode();
-		User userByInviteCode = userMapper.findByInviteCode(inviteCode);
-		while (userByInviteCode != null) {
-			inviteCode = getInviteCode();
-			userByInviteCode = userMapper.findByInviteCode(inviteCode);
+		String openId = agentRegisterDto.getOpenId();
+		String phone = agentRegisterDto.getPhone();
+
+		String avatar = agentRegisterDto.getAvatar();
+		String nickname = agentRegisterDto.getNickname();
+		String registerIp = agentRegisterDto.getRegisterIp();
+
+		User user = userMapper.findByOpenId(openId);
+
+		if (user != null) {
+			if (user.getPhone().equals(phone)) {
+				return user; // 幂等操作
+			} else {
+				throw new BizException(BizCode.ERROR, "微信已绑定其他手机");
+			}
 		}
-		user.setInviteCode(inviteCode);
-		validate(user);
-		userMapper.insert(user);
-		insertAccount(user);
+
+		user = userMapper.findByPhone(phone);
+		if (user != null) {
+			if (user.getUserType() != UserType.代理) {
+				throw new BizException(BizCode.ERROR, "微信只能绑定代理");
+			}
+			if (user.getOpenId() != null) {
+				if (user.getOpenId().equals(openId)) {
+					return user; // 幂等操作 虽然不可能到达
+				} else {
+					throw new BizException(BizCode.ERROR, "手机已经绑定其他微信");
+				}
+			} else {
+				/* 绑定 */
+				user.setNickname(nickname);
+				user.setAvatar(avatar);
+				user.setRegisterTime(new Date());
+				user.setRegisterIp(registerIp);
+				user.setOpenId(openId);
+				userMapper.update(user);
+			}
+		} else {
+
+			/* 注册 */
+			user = new User();
+			user.setUserType(UserType.代理);
+			user.setRegisterIp(registerIp);
+			user.setInviterId(inviterId);
+			user.setNickname(nickname);
+			user.setAvatar(avatar);
+			user.setRegisterTime(new Date());
+			user.setIsFrozen(false);
+			user.setUserRank(UserRank.V0);
+			user.setOpenId(openId);
+
+			validate(user);
+			userMapper.insert(user);
+			insertAccount(user); // 初始化
+		}
 
 		producer.send(TOPIC_REGISTER_SUCCESS, user);
-
-		return user;*/
-		return null;
-	}
-
-	String[] validateFileds = { "userType", "registerIp", "inviterId", "nickname", "avatar", "registerTime", "isFrozen", "isInfoCompleted", "userRank" };
-
-	@Override
-	public User registerBuyer(WeixinUser weixinUser, @NotNull(message = "register ip cannot blank! ") String registerIp, Long inviterId) {
-		/* 新增User */
-		User user = new User();
-		user.setUserType(UserType.代理);
-		user.setRegisterIp(registerIp);
-		user.setInviterId(inviterId);
-		user.setNickname(weixinUser.getNickname());
-		user.setAvatar(weixinUser.getAvatar());
-		user.setRegisterTime(new Date());
-		user.setIsFrozen(false);
-		user.setIsInfoCompleted(false);
-		user.setUserRank(UserRank.V0);
-
-		String inviteCode = getInviteCode();
-		User userByInviteCode = userMapper.findByInviteCode(inviteCode);
-		while (userByInviteCode != null) {
-			inviteCode = getInviteCode();
-			userByInviteCode = userMapper.findByInviteCode(inviteCode);
-		}
-		user.setInviteCode(inviteCode);
-		validate(user, validateFileds);
-		userMapper.insert(user);
-		insertAccount(user);
-
-		/* 新增weixinUser */
-		weixinUser.setUserId(user.getId());
-		validate(weixinUser);
-		weixinUserMapper.insert(weixinUser);
-
-		producer.send(TOPIC_REGISTER_SUCCESS, user);
-
 		return user;
 	}
 
@@ -183,11 +169,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String hashPassword(@NotNull(message = "plain password is blank") String plainPassword) {
 		return ServiceUtils.hashPassword(plainPassword);
-	}
-
-	@Override
-	public User findByInviteCode(@NotNull(message = "invite code is blank") String inviteCode) {
-		return userMapper.findByInviteCode(StringUtils.upperCase(inviteCode));
 	}
 
 	@Override
@@ -258,27 +239,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findByOpenId(@NotNull(message = "openId is null") String openId) {
-		User user = null;
-		WeixinUser weixinUser = weixinUserMapper.findByOpenId(openId);
-		if (weixinUser != null) {
-			user = userMapper.findOne(weixinUser.getUserId());
-		}
-		return user;
-	}
-
-	char[] codeSeq = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '2', '3', '4', '5', '6',
-			'7', '8', '9' };
-
-	/* 生成随机数字和字母 */
-	private String getInviteCode() {
-		Random random = new Random();
-		int length = codeSeq.length;
-		StringBuilder s = new StringBuilder();
-		for (int i = 0; i < 6; i++) {
-			s.append(codeSeq[random.nextInt(length)]);
-		}
-		return s.toString();
+	public User findByOpenId(@NotBlank String openId) {
+		return userMapper.findByOpenId(openId);
 	}
 
 	/* 注册自动生成账号 */
@@ -383,21 +345,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void bindPhone(@NotNull Long userId, @NotBlank(message = "phone is null") String phone) {
-		User persistence = findAndValidate(userId);
-		if (StringUtils.isNotBlank(persistence.getPhone())) {
-			throw new BizException(BizCode.ERROR, "该账号已绑定手机");
-		}
-		User userByPhone = userMapper.findByPhone(phone);
-		if (userByPhone != null && !userByPhone.getId().equals(userId)) {
-			throw new BizException(BizCode.ERROR, "手机号已被绑定");
-		}
-		persistence.setPhone(phone);
-		userMapper.update(persistence);
-		producer.send(Constants.TOPIC_PHONE_BOUND, persistence);
-	}
-
-	@Override
 	public void modifyInfo(@NotNull User user) {
 		findAndValidate(user.getId());
 
@@ -407,45 +354,6 @@ public class UserServiceImpl implements UserService {
 	private User findAndValidate(Long userId) {
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + "not found");
-		return user;
-	}
-
-	@Override
-	public User registerAgent(RegisterDto registerDto, UserRank userRank) {
-		validate(registerDto);
-		Long inviterId = registerDto.getInviterId();
-		if (inviterId != null) {
-			User inviter = userMapper.findOne(inviterId);
-			validate(inviter, NOT_NULL, "inviter id " + inviterId + " is not found");
-		}
-		User user = new User();
-		user.setUserType(UserType.代理);
-		user.setPassword(ServiceUtils.hashPassword(registerDto.getPassword()));
-		user.setRegisterIp(registerDto.getRegisterIp());
-		user.setQq(registerDto.getQq());
-		user.setPhone(registerDto.getPhone());
-		user.setNickname(registerDto.getNickname());
-		user.setInviterId(inviterId);
-
-		user.setAvatar(SETTING_DEFAULT_AVATAR);
-		user.setRegisterTime(new Date());
-		user.setIsFrozen(false);
-		user.setIsInfoCompleted(false);
-		user.setUserRank(userRank);
-
-		String inviteCode = getInviteCode();
-		User userByInviteCode = userMapper.findByInviteCode(inviteCode);
-		while (userByInviteCode != null) {
-			inviteCode = getInviteCode();
-			userByInviteCode = userMapper.findByInviteCode(inviteCode);
-		}
-		user.setInviteCode(inviteCode);
-		validate(user);
-		userMapper.insert(user);
-		insertAccount(user);
-
-		producer.send(TOPIC_REGISTER_SUCCESS, user);
-
 		return user;
 	}
 

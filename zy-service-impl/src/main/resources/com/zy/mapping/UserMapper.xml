@@ -16,15 +16,14 @@
 		<result column="register_ip" property="registerIp" />
 		<result column="inviter_id" property="inviterId" />
 		<result column="parent_id" property="parentId" />
-		<result column="is_info_completed" property="isInfoCompleted" />
 		<result column="remark" property="remark" />
 		<result column="vip_expired_date" property="vipExpiredDate" />
-		<result column="invite_code" property="inviteCode" />
+		<result column="open_id" property="openId" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,is_info_completed,remark,vip_expired_date,invite_code)
-	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{isInfoCompleted},#{remark},#{vipExpiredDate},#{inviteCode})
+	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id)
+	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId})
 	</insert>
 
 	<delete id="delete">
@@ -46,10 +45,9 @@
 			register_ip = #{registerIp},
 			inviter_id = #{inviterId},
 			parent_id = #{parentId},
-			is_info_completed = #{isInfoCompleted},
 			remark = #{remark},
 			vip_expired_date = #{vipExpiredDate},
-			invite_code = #{inviteCode},
+			open_id = #{openId},
 		</set>
 		where id = #{id}
 	</update>
@@ -71,10 +69,9 @@
 					<when test="field == 'registerIp'">register_ip = #{user.registerIp},</when>
 					<when test="field == 'inviterId'">inviter_id = #{user.inviterId},</when>
 					<when test="field == 'parentId'">parent_id = #{user.parentId},</when>
-					<when test="field == 'isInfoCompleted'">is_info_completed = #{user.isInfoCompleted},</when>
 					<when test="field == 'remark'">remark = #{user.remark},</when>
 					<when test="field == 'vipExpiredDate'">vip_expired_date = #{user.vipExpiredDate},</when>
-					<when test="field == 'inviteCode'">invite_code = #{user.inviteCode},</when>
+					<when test="field == 'openId'">open_id = #{user.openId},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -83,14 +80,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,is_info_completed,remark,vip_expired_date,invite_code
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id
 		from `usr_user`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,is_info_completed,remark,vip_expired_date,invite_code
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id
 		from `usr_user`
 		<where>
 			<if test="idIN != null">
@@ -167,18 +164,12 @@
 		</where>
 	</select>
 
-	<select id="findByInviteCode" resultMap="baseResultMap" parameterType="string">
-		select *
-		from `usr_user`
-		where invite_code = #{inviteCode}
-	</select>
-
 	<select id="findByPhone" resultMap="baseResultMap">
 		select * from `usr_user` where phone = #{phone}
 	</select>
 
-	<select id="findByNicknameIgnoreCase" resultMap="baseResultMap">
-		select * from `usr_user` where nickname = #{nickname}
+	<select id="findByPhone" resultMap="baseResultMap">
+		select * from `usr_user` where open_id = #{openId}
 	</select>
 
 </mapper>
