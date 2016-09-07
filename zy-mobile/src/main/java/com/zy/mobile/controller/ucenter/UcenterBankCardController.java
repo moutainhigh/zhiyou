@@ -1,5 +1,7 @@
 package com.zy.mobile.controller.ucenter;
 
+import io.gd.generator.api.query.Direction;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,7 +60,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	public String create(Principal principal, Model model) {
 		List<Bank> banks = cacheSupport.get(CACHE_NAME_BANK, CACHE_KEY_BANK);
 		if(banks == null) {
-			banks = bankService.findAll(BankQueryModel.builder().isDeletedEQ(false).build());
+			banks = bankService.findAll(BankQueryModel.builder().isDeletedEQ(false).orderBy("orderNumber").direction(Direction.ASC).build());
 			
 			cacheSupport.set(CACHE_NAME_BANK, CACHE_KEY_BANK, banks);
 		}
@@ -93,7 +95,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 		
 		List<Bank> banks = cacheSupport.get(CACHE_NAME_BANK, CACHE_KEY_BANK);
 		if(banks == null) {
-			banks = bankService.findAll(BankQueryModel.builder().isDeletedEQ(false).build());
+			banks = bankService.findAll(BankQueryModel.builder().isDeletedEQ(false).orderBy("orderNumber").direction(Direction.ASC).build());
 			
 			cacheSupport.set(CACHE_NAME_BANK, CACHE_KEY_BANK, banks);
 		}
