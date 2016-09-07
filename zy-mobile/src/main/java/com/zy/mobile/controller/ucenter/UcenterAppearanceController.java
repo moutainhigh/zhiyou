@@ -11,6 +11,7 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.AppearanceComponent;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Appearance;
+import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.service.AppearanceService;
 
@@ -48,12 +49,12 @@ public class UcenterAppearanceController {
 		appearance.setUserId(principal.getUserId());
 		try {
 			appearanceService.create(appearance);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));
 		} catch (Exception e) {
-			model.addAttribute(ResultBuilder.error(e.getMessage()));
+			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			model.addAttribute("appearance", appearance);
 			return "ucenter/user/appearanceCreate";
 		}
-		redirectAttributes.addFlashAttribute(ResultBuilder.ok("保存成功"));
 		return "redirect:/u/appearance";
 	}
 	
@@ -63,7 +64,7 @@ public class UcenterAppearanceController {
 		if(appearance == null) {
 			return "ucenter/user/appearanceCreate";
 		}
-		model.addAttribute("appearance", appearance);
+		model.addAttribute("appearance", appearanceComponent.buildVo(appearance));
 		return "ucenter/user/appearanceEdit";
 	}
 	
@@ -78,11 +79,11 @@ public class UcenterAppearanceController {
 		}
 		try {
 			appearanceService.update(appearance);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));
 		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			return "redirect:/u/appearance/edit";
 		}
-		redirectAttributes.addFlashAttribute(ResultBuilder.ok("保存成功"));
 		return "redirect:/u/appearance";
 	}
 }
