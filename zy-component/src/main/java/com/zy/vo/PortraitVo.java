@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Date;
 import java.util.ArrayList;
 
 @Getter
@@ -18,8 +17,6 @@ public class PortraitVo implements Serializable {
 	private Long userId;
 	@Field(label = "性别")
 	private Gender gender;
-	@Field(label = "生日")
-	private Date birthday;
 	@Field(label = "职业")
 	private Long jobId;
 	@Field(label = "所在地")
@@ -28,6 +25,8 @@ public class PortraitVo implements Serializable {
 	private String tagIds;
 
 	/* 扩展 */
+	@Field(label = "生日")
+	private String birthdayLabel;
 	@Field(label = "职业")
 	private String jobName;
 	@Field(label = "所在地")
@@ -38,7 +37,5 @@ public class PortraitVo implements Serializable {
 	private String district;
 	@Field(label = "标签")
 	private List<String> tagNames = new ArrayList<>();
-	@Field(label = "生日")
-	private String birthdayLabel;
 
 }

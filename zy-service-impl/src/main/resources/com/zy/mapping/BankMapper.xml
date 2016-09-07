@@ -7,11 +7,12 @@
 		<result column="name" property="name" />
 		<result column="code" property="code" />
 		<result column="is_deleted" property="isDeleted" />
+		<result column="order_number" property="orderNumber" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.Bank" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_bank` (name,code,is_deleted)
-	  values (#{name},#{code},#{isDeleted})
+	  insert into `fnc_bank` (name,code,is_deleted,order_number)
+	  values (#{name},#{code},#{isDeleted},#{orderNumber})
 	</insert>
 
 	<delete id="delete">
@@ -24,6 +25,7 @@
 			name = #{name},
 			code = #{code},
 			is_deleted = #{isDeleted},
+			order_number = #{orderNumber},
 		</set>
 		where id = #{id}
 	</update>
@@ -36,6 +38,7 @@
 					<when test="field == 'name'">name = #{bank.name},</when>
 					<when test="field == 'code'">code = #{bank.code},</when>
 					<when test="field == 'isDeleted'">is_deleted = #{bank.isDeleted},</when>
+					<when test="field == 'orderNumber'">order_number = #{bank.orderNumber},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -44,14 +47,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,name,code,is_deleted
+		id,name,code,is_deleted,order_number
 		from `fnc_bank`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.BankQueryModel">
 		select
-		id,name,code,is_deleted
+		id,name,code,is_deleted,order_number
 		from `fnc_bank`
 		<where>
 			<if test="isDeletedEQ != null">
