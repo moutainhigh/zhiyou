@@ -26,7 +26,7 @@ public class AccountLogSimpleVo implements Serializable {
 	private BigDecimal afterAmount;
 
 	/* 扩展 */
-	@Field(label = " 交易产生时间")
+	@Field(label = " 交易产生时间",order = 999)
 	private String transTimeLabel;
 
 }

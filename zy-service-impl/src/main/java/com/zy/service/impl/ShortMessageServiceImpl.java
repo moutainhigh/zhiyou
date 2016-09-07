@@ -12,7 +12,10 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 
+import java.util.Date;
 import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.validate;
 
 @Service
 @Validated
@@ -38,6 +41,8 @@ public class ShortMessageServiceImpl implements ShortMessageService {
 
 	@Override
 	public ShortMessage create(@NotNull ShortMessage shortMessage) {
+		shortMessage.setCreatedTime(new Date());
+		validate(shortMessage);
 		shortMessageMapper.insert(shortMessage);
 		return shortMessage;
 	}

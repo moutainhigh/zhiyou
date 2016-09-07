@@ -29,11 +29,11 @@ public class BannerAdminVo implements Serializable {
 	private Boolean isOpenBlank;
 
 	/* 扩展 */
-	@Field(label = "width")
+	@Field(label = "width",order = 999)
 	private int width;
-	@Field(label = "height")
+	@Field(label = "height",order = 999)
 	private int height;
-	@Field(label = "banner图片")
+	@Field(label = "banner图片",order = 999)
 	private String imageThumbnail;
 
 }

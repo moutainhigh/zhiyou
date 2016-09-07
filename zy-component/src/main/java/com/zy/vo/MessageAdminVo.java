@@ -30,7 +30,7 @@ public class MessageAdminVo implements Serializable {
 	private String batchNumber;
 
 	/* 扩展 */
-	@Field(label = "用户id")
+	@Field(label = "用户id",order = 999)
 	private UserAdminSimpleVo user;
 
 }

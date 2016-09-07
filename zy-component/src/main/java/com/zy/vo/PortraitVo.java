@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Date;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -20,15 +22,15 @@ public class PortraitVo implements Serializable {
 	private Date birthday;
 
 	/* 扩展 */
-	@Field(label = "职业")
+	@Field(label = "职业",order = 999)
 	private String jobName;
-	@Field(label = "所在地")
+	@Field(label = "所在地",order = 999)
 	private String province;
-	@Field(label = "所在地")
+	@Field(label = "所在地",order = 999)
 	private String city;
-	@Field(label = "所在地")
+	@Field(label = "所在地",order = 999)
 	private String district;
-	@Field(label = "标签")
-	private String tagNames;
+	@Field(label = "标签",order = 999)
+	private List<String> tagNames = new ArrayList<>();
 
 }

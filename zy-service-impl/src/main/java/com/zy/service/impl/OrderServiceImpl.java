@@ -4,6 +4,7 @@ import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
+import com.zy.component.MalComponent;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.LogisticsFeePayType;
@@ -54,6 +55,9 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private AddressMapper addressMapper;
 
+	@Autowired
+	private MalComponent malComponent;
+
 	@Override
 	public Order create(@NotNull OrderCreateDto orderCreateDto) {
 		validate(orderCreateDto);
@@ -78,13 +82,14 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "必须上架的商品才能购买");
 		}
 
+
+
 		/* calculate seller id */
-		Long parentId = user.getParentId();
-		Long sellerId;
-		if (parentId == null) {
-			parentId = orderCreateDto.getParentId();
+		Long parentId = orderCreateDto.getParentId();
+		UserRank userRank = user.getUserRank();
+		if (userRank == UserRank.V0) {
 			if (parentId == null) {
-				throw new BizException(BizCode.ERROR, "必须填写邀请人才能下单");
+				throw new BizException(BizCode.ERROR, "首次下单必须填写邀请人");
 			}
 			User parent = userMapper.findOne(userId);
 			if (parent == null) {
@@ -93,16 +98,19 @@ public class OrderServiceImpl implements OrderService {
 				throw new BizException(BizCode.ERROR, "邀请人不能为自己");
 			} else if (parent.getUserRank() == UserRank.V0) {
 				throw new BizException(BizCode.ERROR, "邀请人资格不足");
+			} else if (parent.getUserType() != User.UserType.代理) {
+				throw new BizException(BizCode.ERROR, "非法邀请人");
 			}
-			sellerId = parentId;
-		} else {
-			sellerId = parentId;
+			user.setParentId(parentId);
+			userMapper.update(user);
 		}
+
+		Long sellerId = null; //malComponent.calculateSellerId(userId);
 
 
 		String title = orderCreateDto.getTitle();
 		long quantity = orderCreateDto.getQuantity();
-		BigDecimal price = orderCreateDto.getPrice();
+		BigDecimal price = malComponent.getPrice(productId, user.getUserRank(), quantity);
 		BigDecimal amount = price.multiply(new BigDecimal(quantity));
 
 		Order order = new Order();

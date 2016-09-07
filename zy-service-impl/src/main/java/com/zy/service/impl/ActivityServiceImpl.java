@@ -131,6 +131,7 @@ public class ActivityServiceImpl implements ActivityService {
 			activityApply.setAppliedTime(new Date());
 			activityApply.setInviterId(inviterId);
 			activityApply.setIsCancelled(false);
+			activityApply.setIsSmsSent(false);
 			validate(activityApply);
 			activityApplyMapper.insert(activityApply);
 		}

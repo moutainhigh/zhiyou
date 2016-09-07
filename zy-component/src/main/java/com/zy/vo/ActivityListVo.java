@@ -24,23 +24,23 @@ public class ActivityListVo implements Serializable {
 	private Long viewedCount;
 
 	/* 扩展 */
-	@Field(label = "活动状态")
+	@Field(label = "活动状态",order = 999)
 	private String status;
-	@Field(label = "地区")
+	@Field(label = "地区",order = 999)
 	private String province;
-	@Field(label = "地区")
+	@Field(label = "地区",order = 999)
 	private String city;
-	@Field(label = "地区")
+	@Field(label = "地区",order = 999)
 	private String district;
-	@Field(label = "活动主图")
+	@Field(label = "活动主图",order = 999)
 	private String imageBig;
-	@Field(label = "活动主图")
+	@Field(label = "活动主图",order = 999)
 	private String imageThumbnail;
-	@Field(label = "报名截止时间")
+	@Field(label = "报名截止时间",order = 999)
 	private String applyDeadlineLabel;
-	@Field(label = "活动开始时间")
+	@Field(label = "活动开始时间",order = 999)
 	private String startTimeLabel;
-	@Field(label = "活动结束时间")
+	@Field(label = "活动结束时间",order = 999)
 	private String endTimeLabel;
 
 }

@@ -23,7 +23,7 @@ public class MessageDetailVo implements Serializable {
 	private MessageType messageType;
 
 	/* 扩展 */
-	@Field(label = "创建时间")
+	@Field(label = "创建时间",order = 999)
 	private String createdTimeLabel;
 
 }

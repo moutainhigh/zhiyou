@@ -10,7 +10,6 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -65,5 +64,12 @@ public class ActivityApply implements Serializable {
 	@View(groups = "ActivityApplyAdminVo")
 	@AssociationView(name = "inviter", associationGroup = "UserAdminSimpleVo", groups = "ActivityApplyAdminVo")
 	private Long inviterId;
+
+
+	@Field(label = "短信通知是否已发送")
+	@Query({Predicate.EQ})
+	@View(groups = "ActivityApplyAdminVo")
+	@NotNull
+	private Boolean isSmsSent;
 
 }

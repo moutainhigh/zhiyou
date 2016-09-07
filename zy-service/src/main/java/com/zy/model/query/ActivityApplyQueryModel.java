@@ -38,6 +38,8 @@ public class ActivityApplyQueryModel implements Serializable {
 
 	private Long inviterIdEQ;
 
+	private Boolean isSmsSentEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
@@ -96,6 +98,7 @@ public class ActivityApplyQueryModel implements Serializable {
 		fieldNames.add("inviterId");
 		fieldNames.add("id");
 		fieldNames.add("userId");
+		fieldNames.add("isSmsSent");
 	}
 
 }

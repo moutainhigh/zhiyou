@@ -80,11 +80,9 @@ public class ShortMessageQueryModel implements Serializable {
 	static {
 		fieldNames.add("phone");
 		fieldNames.add("ip");
-		fieldNames.add("errorCode");
 		fieldNames.add("createdTime");
 		fieldNames.add("id");
-		fieldNames.add("message");
-		fieldNames.add("errorMsg");
+		fieldNames.add("content");
 	}
 
 }
