@@ -77,7 +77,7 @@
       <a class="list-item list-item-icon" href="${ctx}/u/appearance">
         <i class="list-icon icon icon-appearance"></i>
         <div class="list-text">实名认证</div>
-        <div class="list-unit"><c:if test="${!isCompletedPortrait}">未认证</c:if></div>
+        <div class="list-unit"><c:if test="${!isCompletedAppearance}">未认证</c:if></div>
         <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/address">
