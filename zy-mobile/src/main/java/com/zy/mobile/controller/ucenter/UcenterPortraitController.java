@@ -2,10 +2,12 @@ package com.zy.mobile.controller.ucenter;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
+import static java.util.stream.Collectors.toSet;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +94,7 @@ public class UcenterPortraitController {
         }
         model.addAttribute("jobs", this.jobService.findAll());
         model.addAttribute("tags", getTags());
-        //model.addAttribute("userTags", Arrays.stream(portrait.getTags().split(",")).map(tag -> this.tagService.findById(parseLong(tag)).getTagName()).collect(toSet()));
+        model.addAttribute("userTags", Arrays.stream(portrait.getTagIds().split(",")).map(tag -> this.tagService.findById(Long.valueOf(tag)).getTagName()).collect(toSet()));
         model.addAttribute("portrait", portrait);
         return "ucenter/user/portraitEdit";
     }

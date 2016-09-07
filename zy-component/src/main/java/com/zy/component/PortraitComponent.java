@@ -1,5 +1,9 @@
 package com.zy.component;
 
+import static java.util.stream.Collectors.toSet;
+
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,14 +25,16 @@ public class PortraitComponent {
 	@Autowired
 	private TagService tagService;
 
-	public PortraitVo buildVo(Portrait v) {
+	public PortraitVo buildVo(Portrait portrait) {
 		PortraitVo portraitVo = new PortraitVo();
-
-		AreaDto areaDto = cacheComponent.getAreaDto(v.getAreaId());
+		BeanUtils.copyProperties(portrait, portraitVo);
+		
+		AreaDto areaDto = cacheComponent.getAreaDto(portrait.getAreaId());
 		portraitVo.setProvince(areaDto.getProvince());
 		portraitVo.setCity(areaDto.getCity());
 		portraitVo.setDistrict(areaDto.getDistrict());
-
+		portraitVo.setJobName(cacheComponent.getJob(portrait.getJobId()).getJobName());
+		//portraitVo.setTagNames(Arrays.stream(portrait.getTagIds().split(",")).map(tag -> this.tagService.findById(Long.valueOf(tag)).getTagName()).collect(toSet()));
 		return portraitVo;
 	}
 	
