@@ -191,7 +191,6 @@
 }
 .form-input[type="date"] {
   height: 24px;
-  border: 1px solid #ccc;
 }
 input.form-input[disabled] {
   background: #fff none repeat scroll 0 0;
