@@ -41,8 +41,7 @@
 	});
 	
 	$('#btnSubmit').click(function(){
-	  var agentLevel = $('[name="agentLevel"]:checked');
-	  if(agentLevel.length == 0) {
+	  if(!$('[name="quantity"]').val()) {
 	    messageFlash('请选择代理套餐');
 	    return false;
 	  }
@@ -60,7 +59,7 @@
 	    dataType: 'JSON',
 	    success: function(result){
 	      if(result.code == 0) {
-	        $('[name="quantity"]').val(result.data);
+	        $('[name="parentId"]').val(result.message);
 	        $('#form').submit();
 	      } else {
 	        messageShow(result.message, 'error');
@@ -90,8 +89,8 @@
   <article class="mb-15 clearfix">
     <form id="form" action="${ctx}/u/order/create" method="get">
       <input type="hidden" name="productId" value="${product.id}">
-      <input type="hidden" name="quantity" value="">
       <input type="hidden" name="parentId" value="${inviter.id}">
+      <input type="hidden" name="quantity" value="">
       
       <div class="list-group">
         <!-- form-radio -->

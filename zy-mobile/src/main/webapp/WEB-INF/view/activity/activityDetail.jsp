@@ -129,22 +129,22 @@
 
     <div class="list-group">
       <div class="list-item">
-        <h2 class="list-text lh-30">${activity.title}</h2>
+        <h2 class="list-text font-333 lh-30">${activity.title}</h2>
       </div>
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-clock-o font-gray"></i></div>
-        <div class="list-text fs-14">${activity.startTimeLabel} 至 ${activity.endTimeLabel}</div>
+        <div class="list-text fs-14 font-777">${activity.startTimeLabel} 至 ${activity.endTimeLabel}</div>
       </div>
       <a id="location" class="list-item" href="javascript:;">
         <div class="list-icon"><i class="fa fa-map-marker font-gray"></i></div>
-        <div class="list-text fs-14">${activity.province} ${activity.city} ${activity.district} ${activity.address}</div>
+        <div class="list-text fs-14 font-777">${activity.province} ${activity.city} ${activity.district} ${activity.address}</div>
         <c:if test="${not empty activity.latitude && not empty activity.longitude}">
         <i class="list-arrow"></i>
         </c:if>
       </a>
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-clock-o font-gray"></i></div>
-        <div class="list-text fs-14">报名截止  ${activity.applyDeadlineLabel}</div>
+        <div class="list-text fs-14 font-777">报名截止  ${activity.applyDeadlineLabel}</div>
       </div>
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-cny font-gray"></i></div>
@@ -152,7 +152,7 @@
       </div>
     </div>
     
-    <div class="list-group mt-10">
+    <div class="list-group">
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-user font-gray"></i></div>
         <div class="list-text fs-14"><span class="font-orange">${activity.appliedCount}</span> 人已报名</div>
@@ -168,17 +168,32 @@
       </c:if>
     </div>
     
+    <div class="list-group mb-0">
+      <div class="list-item">
+        <div class="list-icon"><i class="fa fa-list-alt font-gray"></i></div>
+        <div class="list-text">活动介绍</div>
+      </div>
+      <div class="list-item p-0">
+        <div class="list-text">
+          <div class="detail-wrap">
+            <c:if test="${empty activity.detail}"><p class="p-15">暂无介绍</p></c:if>
+            <c:if test="${not empty activity.detail}">${activity.detail}</c:if>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <%--
     <div class="mb-15">
       <nav class="tab-nav">
         <a href="javascript:;" class="current">活动介绍</a>
         <a href="javascript:;">讨论 (43)</a>
       </nav>
-      <!-- 商品详情 -->
-      <div class="tab-content detail-wrap pt-10">
+      <!-- 活动介绍 -->
+      <div class="tab-content detail-wrap">
         <c:if test="${empty activity.detail}"><p class="p-15">暂无详情</p></c:if>
         <c:if test="${not empty activity.detail}">${activity.detail}</c:if>
       </div>
-      
       <div class="tab-content hide">
         <div class="list-group mt-10">
           <div class="list-item">
@@ -194,11 +209,6 @@
               <div class="comment relative mt-5 pr-5" style="padding-left: 55px;">
                 <img class="image-40 round abs-lt mt-5" src="http://image.mayishike.com/avatar/6fa938ce-9350-4df1-84aa-c03d5cd01947@80h_80w_1e_1c.jpg">
                 <div class="fs-14 font-blue">哆来嘧<span class="fs-12 font-999 right">08-11 12:43</span></div>
-                <p class="font-777 fa-14 bd-b pb-5">传统企业完成互联网转型的生死生死</p>
-              </div>
-              <div class="comment relative mt-5 pr-5" style="padding-left: 55px;">
-                <img class="image-40 round abs-lt mt-5" src="http://image.mayishike.com/avatar/6fa938ce-9350-4df1-84aa-c03d5cd01947@80h_80w_1e_1c.jpg">
-                <div class="fs-14 font-blue">哆来嘧<span class="fs-12 font-999 right">08-11 12:43</span></div>
                 <p class="font-777 fa-14 bd-b pb-5">代转型致胜为使命，致力于帮助传统企业完成互联网转型的生死生死</p>
               </div>
               <a class="block mt-5 fs-12 font-999 lh-30 text-center" href="javascript:;">查看更多评论</a>
@@ -207,6 +217,7 @@
         </div>
       </div>
     </div>
+    --%>
   </article>
   <nav class="footer footer-nav flex bd-0">
     <a id="btnCollect" class="flex-1${isCollected ? ' collected' : ''}" href="javascript:;">

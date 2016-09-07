@@ -36,13 +36,6 @@
   z-index: 5;
   background: #efefef url("../../image/image_placeholder.jpg") no-repeat scroll center center;
 }
-.product-detail .detail-wrap {
-  padding-top: 10px; padding-bottom: 10px;
-  background-color: #fff;
-}
-.product-detail .detail-wrap p img {
-  width: 100%;
-}
 
 
 .product-detail .footer-nav {

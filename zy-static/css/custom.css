@@ -389,3 +389,33 @@ a.disabled, a.disabled:hover, a.disabled:focus {
   animation: 0.75s linear 0s normal none infinite running rotate;
 }
 
+/* detail-wrap */
+.detail-wrap {
+  padding: 10px 15px;
+  color: #555; font-size: 15px; line-height: 24px;
+  background-color: #fff;
+}
+.detail-wrap img {
+  width: 100% !important;
+}
+.detail-wrap > p,
+.detail-wrap ul,
+.detail-wrap ol {
+  margin-top: 10px;
+}
+.detail-wrap ul > li {
+  margin-left: 20px;
+  line-height: 24px;
+  list-style-type: disc;
+  list-style-position: outside;
+}
+.detail-wrap ol > li {
+  margin-left: 20px;
+  line-height: 24px;
+  list-style-type: decimal;
+  list-style-position: outside;
+}
+.detail-wrap a {
+  color: #6cb92d;
+}
+

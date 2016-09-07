@@ -27,13 +27,13 @@
   });
 </script>
 </head>
-<body>
+<body class="order-detail">
   <header class="header">
     <h1>订单详情</h1>
     <a href="javascript:history.back();" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
-  <article class="order order-detail">
+  <article>
     <%-- 待支付, 已支付, 已发货, 已完成, 已退款, 已取消 --%>
     <c:if test="${order.orderStatus == '待支付'}">
     <div class="note note-danger mb-0">
@@ -86,27 +86,25 @@
     <input type="hidden" name="sn" value="${order.sn}">
     
     <div class="list-group">
+      <div class="list-title">收件人信息</div>
       <div class="list-item">
-        <div class="list-text receiver-info">
-          <i class="fa fa-map-marker"></i>
-          <div class="receiver-wrap font-555">
-            <div>收货人：${order.addressRealname}<span class="right">${order.addressPhone}</span></div>
-            <div class="fs-14 font-777">收货地址：${order.addressProvince} ${order.addressCity} ${order.addressDistrict} ${order.addressAddress}</div>
-          </div>
+        <div class="list-icon"><i class="fa fa-map-marker fs-24"></i></div>
+        <div class="list-text fs-14 font-333 receiver-info">
+          <div>${order.addressRealname}<span class="right">${order.addressPhone}</span></div>
+          <div class="fs-14 font-777">${order.addressProvince} ${order.addressCity} ${order.addressDistrict} ${order.addressAddress}</div>
         </div>
       </div>
     </div>
     
     <div class="list-group">
+      <div class="list-title">商品信息</div>
       <c:forEach items="${order.orderItems}" var="orderItem">
       <div class="list-item">
+        <img class="image-80 block mr-10" alt="" src="${orderItem.imageThumbnail}">
         <div class="list-text relative font-333">
-          <img class="product-image abs-lt" alt="" src="${orderItem.imageThumbnail}">
-          <div class="product-title">${orderItem.title}</div>
-          <div class="product-price abs-rt text-right">
-            <div class="lh-24 fs-14 font-orange">¥ ${orderItem.price}</div>
-            <div class="lh-24 fs-12 font-gray">x ${orderItem.quantity}</div>
-          </div>
+          <div class="fs-14 lh-24">¥ ${orderItem.title}</div>
+          <div class="lh-24 fs-14 text-right font-orange">¥ ${orderItem.price}</div>
+          <div class="lh-24 fs-12 text-right font-gray">x ${orderItem.quantity}</div>
         </div>
       </div>
       </c:forEach>
@@ -117,12 +115,13 @@
         </div>
       </div>
     </div>
+      
     
-    <div class="list-title">订单留言</div>
+    <div class="list-title">买家留言</div>
     <div class="list-group">
       <div class="list-item">
         <div class="list-text">
-          <p class="fs-14 font-999">${order.memo}</p>
+          <p class="fs-14 font-999">${order.buyerMemo}</p>
         </div>
         <div class="list-unit">
           <a class="input-unit font-orange right" href="${ctx}/ucenter/order/edit/${order.sn}"><i class="fa fa-edit"></i></a>

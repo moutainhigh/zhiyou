@@ -1,27 +1,14 @@
 /****** index ******/
 
 .user-profile {
-  position: relative; padding: 15px;
-  height: 90px;
   background-color: #6cb92d;
-}
-.user-profile .avatar-wrap {
-  position: absolute; left: 15px; top: 15px;
 }
 .user-profile .avatar {
   display: block; width: 60px; height: 60px;
   border: 2px solid #d1d3d7;
 }
-.user-profile .user-info {
-  margin-left: 75px; margin-top: 15px;
-  color: #fff; line-height: 25px;
-}
-.user-profile .nickname {
-  font-size: 20px; font-weight: 600; line-height: 30px;
-}
-.user-profile .icon-right {
-  position: absolute; right: 20px; top: 30px;
-  color: #eee; font-size: 20px; line-height: 30px;
+.user-profile .list-arrow {
+  border-color: #eee;
 }
 
 /* wave */
@@ -126,17 +113,9 @@
 }
 .user-currency > a > em {
   display: block;
-  color: #777; font-size: 11px; line-height: 20px;
+  color: #777; font-size: 12px; line-height: 24px;
 }
 .user-currency > a > span {
   display: block;
   color: #f0732f; font-size: 15px; font-weight: 600; line-height: 16px;
 }
-
-/****** userinfo ******/
-
-.list-item-avatar {
-  padding-top: 18px;
-  height: 80px;
-}
-
