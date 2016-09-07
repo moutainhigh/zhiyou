@@ -76,8 +76,8 @@
     </div>
   </div>
   
-  <div class="list-title">检测结果图片</div>
   <div class="list-group">
+    <div class="list-title">检测结果图片</div>
     <div class="list-item">
       <div class="list-text list-image">
         <div class="image-item">
@@ -108,8 +108,8 @@
     </div>
   </div>
   
-  <div class="list-title">客户使用心得</div>
   <div class="list-group">
+    <div class="list-title">客户使用心得</div>
     <div class="list-item">
       <div class="list-text font-777">${report.text}</div>
     </div>

@@ -26,7 +26,7 @@
 </script>
 </head>
 
-<body class="header-fixed">
+<body>
 
   <header class="header">
     <h1>我的消息</h1>

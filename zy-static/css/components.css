@@ -52,9 +52,6 @@
 .list-group {
   margin-bottom: 15px; overflow: hidden;
 }
-.list-group:last-child {
-  margin-bottom: 0;
-}
 .list-title {
   margin: 0; padding: 0 15px;
   color: #999; font-size: 14px; font-weight: 400; line-height: 28px;
