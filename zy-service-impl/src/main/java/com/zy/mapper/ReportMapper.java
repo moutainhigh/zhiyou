@@ -24,6 +24,4 @@ public interface ReportMapper {
 
 	long count(ReportQueryModel reportQueryModel);
 
-	Report findByTaskItemId(Long taskItemId);
-
 }
