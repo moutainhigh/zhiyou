@@ -64,7 +64,7 @@
   </header>
   
   <article>
-    <form action="" class="valid-form" method="post">
+    <form action="${ctx}/u/appearance/create" class="valid-form" method="post">
       <div class="list-group mt-10">
         <div class="list-item">
           <label class="list-label">姓名</label>
