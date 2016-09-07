@@ -85,12 +85,25 @@ public class BankCardServiceImpl implements BankCardService {
 		if (persistence.getConfirmStatus() == ConfirmStatus.审核通过) {
 			throw new BizException(BizCode.ERROR, "已审核通过，不允许修改，如需修改，请联系客服！");
 		} else {
+			Boolean isDefault = bankCard.getIsDefault();
+			if (isDefault) {
+				List<BankCard> persistentBankCards = bankCardMapper.findAll(BankCardQueryModel.builder().userIdEQ(persistence.getUserId()).build());
+				for(BankCard persistentBankCard : persistentBankCards) {
+					if (persistentBankCard.getIsDefault()) {
+						persistentBankCard.setIsDefault(false);
+						bankCardMapper.update(persistentBankCard);
+					}
+				}
+			}
+			
 			persistence.setRealname(bankCard.getRealname());
 			persistence.setCardNumber(bankCard.getCardNumber());
 			persistence.setBankName(bankCard.getBankName());
 			persistence.setBankBranchName(bankCard.getBankBranchName());
 			persistence.setConfirmStatus(ConfirmStatus.未审核);
 			persistence.setConfirmedTime(new Date());
+			persistence.setIsDefault(isDefault);
+			validate(persistence);
 			bankCardMapper.update(persistence);
 		}
 	}
