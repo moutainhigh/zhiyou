@@ -14,11 +14,13 @@ import org.springframework.validation.annotation.Validated;
 
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
+import com.zy.entity.fnc.Bank;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Appearance;
 import com.zy.entity.usr.User;
 import com.zy.mapper.BankCardMapper;
+import com.zy.mapper.BankMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.BankCardQueryModel;
@@ -31,6 +33,9 @@ public class BankCardServiceImpl implements BankCardService {
 	@Autowired
 	private BankCardMapper bankCardMapper;
 
+	@Autowired
+	private BankMapper bankMapper;
+	
 	@Autowired
 	private UserMapper userMapper;
 
@@ -54,9 +59,18 @@ public class BankCardServiceImpl implements BankCardService {
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + " is not found");
 		
+		Long bankId = bankCard.getBankId();
+		validate(bankId, NOT_NULL, "bank id is null");
+		Bank bank = bankMapper.findOne(bankId);
+		validate(bank, NOT_NULL, "bank id" + bankId + " not found");
+		if(bank.getIsDeleted()) {
+			throw new BizException(BizCode.ERROR, "当前银行不存在");
+		}
+
 		bankCard.setId(null);
 		bankCard.setConfirmStatus(ConfirmStatus.未审核);
 		bankCard.setAppliedTime(new Date());
+		bankCard.setIsDeleted(false);
 		validate(bankCard);
 		bankCardMapper.insert(bankCard);
 		return bankCard;
