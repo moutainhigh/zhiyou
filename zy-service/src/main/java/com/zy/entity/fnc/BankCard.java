@@ -62,7 +62,7 @@ public class BankCard implements Serializable {
 	@View(name = "cardNumberLabel", groups = "BankCardVo", field = @Field(label = "银行卡号密文"))
 	private String cardNumber;
 
-	@NotBlank
+	@NotNull
 	@StringBinder
 	@Field(label = "开户行id")
 	@View
