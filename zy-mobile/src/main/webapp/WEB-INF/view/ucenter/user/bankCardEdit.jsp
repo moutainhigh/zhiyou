@@ -134,7 +134,7 @@
           <label class="list-label">开户银行</label>
           <div class="list-text">
             <span class="bank-name"><i class="icon icon-bank-${bankCard.bankCode} mr-10"></i><span>${bankCard.bankName}</span></span>
-            <input type="hidden" name="bankId" value="">
+            <input type="hidden" name="bankId" value="${bankCard.bankId}">
             <input type="hidden" name="bankName" value="${bankCard.bankName}">
           </div>
         </div>
