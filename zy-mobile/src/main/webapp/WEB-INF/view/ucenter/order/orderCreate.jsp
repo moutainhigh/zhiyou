@@ -26,40 +26,12 @@
   		if($(this).find('.btn-add-address').length){
   			return;
   		}
-  		toSetAddress();
+  		showAddressList();
   	});
   
     $('body').on('click', '.btn-add-address', function() {
-      toCreateAddress();
+      showAddressCreate();
     });
-
-    function toCreateAddress() {
-      closeAddress();
-      var addressCreateHtml = document.getElementById('addressCreateTpl').innerHTML;
-      $('article > .list-item').hide();
-      $('body').css({
-        'overflow' : 'hidden'
-      }).append(addressCreateHtml);
-      var area = new areaInit('province', 'city', 'district');
-    }
-
-    function toSetAddress() {
-      $.ajax({
-        url : '${ctx}/u/address/listAjax',
-        type : 'POST',
-        dataType : 'json',
-        success : function(result) {
-          var addressTpl = document.getElementById('addressTpl').innerHTML;
-          laytpl(addressTpl).render(result.data, function(html) {
-            closeAddress();
-            $('article > .list-item').hide();
-            $('body').css({
-              'overflow' : 'hidden'
-            }).append(html);
-          });
-        }
-      });
-    }
 
     $('body').on('click', '.address', function() {
       var $this = $(this);
@@ -74,9 +46,9 @@
         btn : [ '确认', '取消' ],
         shadeClose : false,
         yes : function() {
-          closeAddress();
           layer.close(layerIndex);
           setAddress(address);
+          hideAddressList();
         },
         no : function() {
           layer.close(layerIndex);
@@ -120,6 +92,7 @@
           if (result.code == 0) {
             var address = result.data;
             setAddress(address);
+            hideAddressCreate();
           }
         }
       });
@@ -127,8 +100,57 @@
 
   });
   
+  function showAddressCreate() {
+    var addressCreateHtml = document.getElementById('addressCreateTpl').innerHTML;
+    $('article > .list-item').hide();
+    $('body').addClass('o-hidden').append(addressCreateHtml);
+    $('#addressCreate').show().animate({
+      'left' : 0
+    }, 300, function() {
+      $('.#addressList').remove();
+    });
+    var area = new areaInit('province', 'city', 'district');
+  }
+  
+  function hideAddressCreate(){
+    $('#addressCreate').animate({
+      'left' : '100%'
+    }, 300, function() {
+      $('body').removeClass('o-hidden');
+      $('#bankList').hide();
+    });
+  }
+
+  function showAddressList() {
+    $.ajax({
+      url : '${ctx}/u/address/listAjax',
+      type : 'POST',
+      dataType : 'json',
+      success : function(result) {
+        var addressTpl = document.getElementById('addressTpl').innerHTML;
+        laytpl(addressTpl).render(result.data, function(html) {
+          closeAddress();
+          $('article > .list-item').hide();
+          $('body').addClass('o-hidden').append(html);
+          $('#addressList').show().animate({
+            'left' : 0
+          }, 300, function() {
+          });
+          
+        });
+      }
+    });
+  }
+  
+  function hideAddressList(){
+    $('#addressList').animate({
+      'left' : '100%'
+    }, 300, function() {
+      $('body').removeClass('o-hidden');
+    });
+  }
+  
   function setAddress(address) {
-    closeAddress();
     $('#addressId').val(address.id);
     var addressText = address.addressText ? address.addressText 
         : address.province + ' ' + address.city + ' ' + address.district + ' ' + address.address
@@ -136,21 +158,13 @@
         + '<div class="fs-14 font-777">' + addressText+ '</div>')
   }
   
-  function closeAddress() {
-    $('body').css({
-      'overflow' : 'auto'
-    });
-    $('.aside-address-create').remove();
-    $('.aside-address').remove();
-    $('article > .list-item').show();
-  }
 </script>
 
 <script id="addressCreateTpl" type="text/html">
-<aside class="aside-address-create abs-lt size-100p bg-white z-1000">
+<aside id="addressCreate" class="abs-lt size-100p bg-white z-1000" style="left: 100%; display: none;">
   <header class="header">
     <h1>新增收货地址</h1>
-    <a href="javascript:closeAddress();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="javascript:hideAddressCreate();" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   <article class="address-create">
       <div class="form-message note note-warning mb-0 hide">
@@ -215,12 +229,12 @@
 </aside>
 </script>
 
-<script id="addressTpl" type="text/html">
-<aside class="aside-address abs-lt size-100p bg-white z-100">
-  <header class="header" style="position: none;">
+<script id="addressListTpl" type="text/html">
+<aside id="addressList" class="abs-lt size-100p bg-white z-100" style="left: 100%; display: none;">
+  <header class="header">
     <h1>设置收货地址</h1>
-    <a href="javascript:closeAddress();" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <a href="javascript:;" class="button-right btn-add-address">新增收货地址</a>
+    <a href="javascript:hideAddressList();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="javascript:;" class="button-right btn-add-address">新增</a>
   </header>
   <div class="address-list clearfix">
   	{{# for(var i = 0, len = d.length; i < len; i++){ }}

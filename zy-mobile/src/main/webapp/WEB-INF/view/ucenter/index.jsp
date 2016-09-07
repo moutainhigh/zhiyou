@@ -66,7 +66,7 @@
   
   <div class="user-currency flex">
     <a class="flex-1 bd-r" href="${ctx}/u/money">
-      <i class="icon icon-coin icon-2x"></i>
+      <i class="icon icon-money icon-2x"></i>
       <em>余额</em>
       <span>¥ 0.00</span>
     </a>
