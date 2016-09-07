@@ -156,7 +156,6 @@
   </header>
   <article>
     <form id="form" class="valid-form" action="${ctx}/u/portrait/edit" method="post">
-      <input name="id" value="${portrait.id}" type="hidden" />
       <div class="list-group">
         <div class="list-item">
           <label class="list-label">所在地</label>
@@ -195,7 +194,7 @@
         <div class="list-item">
           <label class="list-label">生日</label>
           <div class="list-text">
-            <input type="text" name="birthday" class="control-input" value="${portrait.birthday}"
+            <input type="text" name="birthday" class="control-input" value="${portrait.birthdayLabel}"
             placeholder="填写生日" onfocus="this.type='date'">
           </div>
         </div>

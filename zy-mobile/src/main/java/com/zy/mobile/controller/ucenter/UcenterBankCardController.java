@@ -39,7 +39,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	private BankCardService bankCardService;
 	
 	@Autowired
-	private BankCardComponent BankCardComponent;
+	private BankCardComponent bankCardComponent;
 	
 	@Autowired
 	private CacheSupport cacheSupport;
@@ -50,14 +50,14 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	@RequestMapping
 	public String list(Principal principal, Model model, Integer pageNumber) {
 		List<BankCard> list = bankCardService.findByUserId(principal.getUserId());
-		model.addAttribute("bankCards", list.stream().map(BankCardComponent::buildVo).collect(Collectors.toList()));
+		model.addAttribute("bankCards", list.stream().map(bankCardComponent::buildVo).collect(Collectors.toList()));
 		return "ucenter/user/bankCardList";
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create(Principal principal, Model model) {
 		List<Bank> banks = cacheSupport.get(CACHE_NAME_BANK, CACHE_KEY_BANK);
-		if(banks.isEmpty()) {
+		if(banks == null) {
 			banks = bankService.findAll(BankQueryModel.builder().isDeletedEQ(false).build());
 			
 			cacheSupport.set(CACHE_NAME_BANK, CACHE_KEY_BANK, banks);
@@ -82,14 +82,23 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	}
 	
 	@RequestMapping("/{id}")
-	public String detail(Principal principal, @PathVariable Long id, Model model) {
+	public String edit(Principal principal, @PathVariable Long id, Model model) {
 		BankCard bankCard = bankCardService.findOne(id);
 		if(bankCard != null) {
 			if(!bankCard.getUserId().equals(principal.getUserId())) {
 				throw new UnauthorizedException();
 			}
 		}
-		model.addAttribute("bankCard", bankCard);
+		model.addAttribute("bankCard", bankCardComponent.buildVo(bankCard));
+		
+		List<Bank> banks = cacheSupport.get(CACHE_NAME_BANK, CACHE_KEY_BANK);
+		if(banks == null) {
+			banks = bankService.findAll(BankQueryModel.builder().isDeletedEQ(false).build());
+			
+			cacheSupport.set(CACHE_NAME_BANK, CACHE_KEY_BANK, banks);
+		}
+		model.addAttribute("banks", banks);
+		
 		return "ucenter/user/bankCardEdit";
 	}
 

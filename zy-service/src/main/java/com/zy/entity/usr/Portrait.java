@@ -110,7 +110,7 @@ public class Portrait implements Serializable {
 	@NotNull
 	@Temporal(TemporalType.DATE)
 	@Field(label = "生日")
-	@View
+	@View(name = "birthdayLabel", type = String.class)
 	private Date birthday;
 
 	@NotNull
