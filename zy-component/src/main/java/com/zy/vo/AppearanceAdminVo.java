@@ -34,11 +34,11 @@ public class AppearanceAdminVo implements Serializable {
 	private Date confirmedTime;
 
 	/* 扩展 */
-	@Field(label = "用户id")
+	@Field(label = "用户id",order = 999)
 	private UserAdminSimpleVo user;
-	@Field(label = "图片1")
+	@Field(label = "图片1",order = 999)
 	private String image1Thumbnail;
-	@Field(label = "图片2")
+	@Field(label = "图片2",order = 999)
 	private String image2Thumbnail;
 
 }

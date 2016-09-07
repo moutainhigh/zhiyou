@@ -70,6 +70,12 @@ public class Order implements Serializable {
 	@View
 	private Long sellerId;
 
+	@NotNull
+	@Query({Predicate.EQ, Predicate.IN})
+	@Field(label = "卖家id")
+	@View
+	private Long parentId;
+
 	@NotBlank
 	@Field(label = "标题")
 	@View
@@ -156,6 +162,16 @@ public class Order implements Serializable {
 	@View(groups = {"OrderAdminVo"})
 	private LogisticsFeePayType logisticsFeePayType;
 
+	@View(groups = {"OrderAdminVo"})
+	@NotNull
+	@Field(label = "是否平台发货")
+	private Boolean isPlatformDeliver;
+
+	@View(name = "deliveredTimeLabel", type = String.class)
+	@Field(label = "发货时间")
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	private Date deliveredTime;
+
 	@Query(Predicate.LK)
 	@Field(label = "物流公司名")
 	@StringBinder
@@ -210,10 +226,5 @@ public class Order implements Serializable {
 	@Field(label = "收件人详细地址")
 	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private String receiverAddress;
-
-	@View(name = "deliveredTimeLabel", type = String.class)
-	@Field(label = "发货时间")
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
-	private Date deliveredTime;
 
 }

@@ -23,13 +23,13 @@ public class OrderItemVo implements Serializable {
 	private BigDecimal marketPrice;
 	@Field(label = "单价")
 	private BigDecimal price;
-	@Field(label = "子项金额")
-	private BigDecimal amount;
 	@Field(label = "数量")
 	private Long quantity;
+	@Field(label = "子项金额")
+	private BigDecimal amount;
 
 	/* 扩展 */
-	@Field(label = "商品图")
+	@Field(label = "商品图",order = 999)
 	private String imageThumbnail;
 
 }

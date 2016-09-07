@@ -188,10 +188,7 @@ public class UcenterInfoController {
 			ShortMessage shortMessage = new ShortMessage();
 			shortMessage.setIp(GcUtils.getHost());
 			shortMessage.setPhone(phone);
-			shortMessage.setMessage(message);
-			shortMessage.setCreatedTime(new Date());
-			shortMessage.setIsSuccess(true);
-			shortMessage.setErrorMessage(null);
+			shortMessage.setContent(message);
 			shortMessageService.create(shortMessage);
 		} catch (Exception e) {
 			logger.error("保存失败", e);

@@ -44,31 +44,31 @@ public class ReportAdminVo implements Serializable {
 	private Boolean isSettledUp;
 
 	/* 扩展 */
-	@Field(label = "检测时间")
+	@Field(label = "检测时间",order = 999)
 	private String dateLabel;
-	@Field(label = "图片1")
+	@Field(label = "图片1",order = 999)
 	private String image1Big;
-	@Field(label = "图片1")
+	@Field(label = "图片1",order = 999)
 	private String image1Thumbnail;
-	@Field(label = "图片2")
+	@Field(label = "图片2",order = 999)
 	private String image2Big;
-	@Field(label = "图片2")
+	@Field(label = "图片2",order = 999)
 	private String image2Thumbnail;
-	@Field(label = "图片3")
+	@Field(label = "图片3",order = 999)
 	private String image3Big;
-	@Field(label = "图片3")
+	@Field(label = "图片3",order = 999)
 	private String image3Thumbnail;
-	@Field(label = "图片4")
+	@Field(label = "图片4",order = 999)
 	private String image4Big;
-	@Field(label = "图片4")
+	@Field(label = "图片4",order = 999)
 	private String image4Thumbnail;
-	@Field(label = "图片5")
+	@Field(label = "图片5",order = 999)
 	private String image5Big;
-	@Field(label = "图片5")
+	@Field(label = "图片5",order = 999)
 	private String image5Thumbnail;
-	@Field(label = "图片6")
+	@Field(label = "图片6",order = 999)
 	private String image6Big;
-	@Field(label = "图片6")
+	@Field(label = "图片6",order = 999)
 	private String image6Thumbnail;
 
 }

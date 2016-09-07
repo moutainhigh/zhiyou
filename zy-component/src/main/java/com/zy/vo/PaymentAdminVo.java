@@ -59,7 +59,7 @@ public class PaymentAdminVo implements Serializable {
 	private String remark;
 
 	/* 扩展 */
-	@Field(label = "用户id")
+	@Field(label = "用户id",order = 999)
 	private UserAdminSimpleVo user;
 
 }

@@ -62,4 +62,9 @@ public class MalComponent {
 		}
 	}
 
+	public Long calculateSellerId(User.UserRank userRank, Long parentId) {
+		// TODO
+		return null;
+	}
+
 }

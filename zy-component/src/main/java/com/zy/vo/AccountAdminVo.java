@@ -15,13 +15,13 @@ public class AccountAdminVo implements Serializable {
 	private Long userId;
 
 	/* 扩展 */
-	@Field(label = "money")
+	@Field(label = "money",order = 999)
 	private BigDecimal money;
-	@Field(label = "coin")
+	@Field(label = "coin",order = 999)
 	private BigDecimal coin;
-	@Field(label = "point")
+	@Field(label = "point",order = 999)
 	private BigDecimal point;
-	@Field(label = "用户id")
+	@Field(label = "用户id",order = 999)
 	private UserAdminSimpleVo user;
 
 }

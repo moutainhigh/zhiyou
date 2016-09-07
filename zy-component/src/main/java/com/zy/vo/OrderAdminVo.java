@@ -25,6 +25,8 @@ public class OrderAdminVo implements Serializable {
 	private Long userId;
 	@Field(label = "卖家id")
 	private Long sellerId;
+	@Field(label = "卖家id")
+	private Long parentId;
 	@Field(label = "标题")
 	private String title;
 	@Field(label = "货币类型")
@@ -51,6 +53,10 @@ public class OrderAdminVo implements Serializable {
 	private Boolean useLogistics;
 	@Field(label = "物流费支付类型")
 	private LogisticsFeePayType logisticsFeePayType;
+	@Field(label = "是否平台发货")
+	private Boolean isPlatformDeliver;
+	@Field(label = "发货时间")
+	private Date deliveredTime;
 	@Field(label = "物流公司名")
 	private String logisticsName;
 	@Field(label = "物流单号")
@@ -71,23 +77,21 @@ public class OrderAdminVo implements Serializable {
 	private String receiverDistrict;
 	@Field(label = "收件人详细地址")
 	private String receiverAddress;
-	@Field(label = "发货时间")
-	private Date deliveredTime;
 
 	/* 扩展 */
-	@Field(label = "下单时间")
+	@Field(label = "下单时间",order = 999)
 	private String createdTimeLabel;
-	@Field(label = "过期时间")
+	@Field(label = "过期时间",order = 999)
 	private String expiredTimeLabel;
-	@Field(label = "支付时间")
+	@Field(label = "支付时间",order = 999)
 	private String paidTimeLabel;
-	@Field(label = "退款时间")
+	@Field(label = "退款时间",order = 999)
 	private String refundedTimeLabel;
-	@Field(label = "是否物流发货")
+	@Field(label = "是否物流发货",order = 999)
 	private Boolean useLogisticsLabel;
-	@Field(label = "发货时间")
+	@Field(label = "发货时间",order = 999)
 	private String deliveredTimeLabel;
-	@Field(label = "orderItems")
+	@Field(label = "orderItems",order = 999)
 	private List<OrderItemAdminVo> orderItems = new ArrayList<>();
 
 }

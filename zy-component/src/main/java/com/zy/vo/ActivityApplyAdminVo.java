@@ -23,13 +23,15 @@ public class ActivityApplyAdminVo implements Serializable {
 	private Boolean isCancelled;
 	@Field(label = "邀请人id")
 	private Long inviterId;
+	@Field(label = "短信通知是否已发送")
+	private Boolean isSmsSent;
 
 	/* 扩展 */
-	@Field(label = "用户id")
+	@Field(label = "用户id",order = 999)
 	private UserAdminSimpleVo user;
-	@Field(label = "报名时间")
+	@Field(label = "报名时间",order = 999)
 	private String appliedTimeLabel;
-	@Field(label = "邀请人id")
+	@Field(label = "邀请人id",order = 999)
 	private UserAdminSimpleVo inviter;
 
 }
