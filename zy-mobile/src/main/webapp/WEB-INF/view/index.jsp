@@ -69,17 +69,17 @@
   <nav class="index-nav flex box pt-15 pb-15">
     <a class="flex-1" href="${ctx}/task?type=gift">
       <div class="img-wrap">
-        <img class="round" src="${stccdn}/image/icon/icon_cate_1.png">
+        <img class="round" src="${stccdn}/image/icon/icon_free.png">
       </div>
       <div class="title">礼品任务</div>
     </a> <a class="flex-1" href="${ctx}/task">
       <div class="img-wrap">
-        <img class="round" src="${stccdn}/image/icon/icon_cate_2.png">
+        <img class="round" src="${stccdn}/image/icon/icon_bag.png">
       </div>
       <div class="title">精品试用</div>
     </a> <a class="flex-1" href="${ctx}/task?type=brand">
       <div class="img-wrap">
-        <img class="round" src="${stccdn}/image/icon/icon_cate_3.png">
+        <img class="round" src="${stccdn}/image/icon/icon_tag.png">
       </div>
       <div class="title">品牌折扣</div>
     </a>

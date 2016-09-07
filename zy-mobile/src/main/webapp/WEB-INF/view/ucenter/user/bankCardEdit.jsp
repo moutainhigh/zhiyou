@@ -137,6 +137,7 @@
             <input type="hidden" name="bankId" value="${bankCard.bankId}">
             <input type="hidden" name="bankName" value="${bankCard.bankName}">
           </div>
+          <i class="list-arrow"></i>
         </div>
         <div class="list-item">
           <label class="list-label" for="accountName">开户姓名</label>

@@ -152,29 +152,29 @@ a.disabled, a.disabled:hover, a.disabled:focus {
   font-size: 20px; line-height: 24px;
   background-size: 20px 20px; background-position: center center; background-repeat: no-repeat;
 }
-.footer-nav > a > .icon-index {
-  background-image: url(../image/icon/icon_tab_1.png);
+.footer-nav > a > .icon-home {
+  background-image: url(../image/icon/tab_home_o.png);
 }
-.footer-nav > a > .icon-task {
-  background-image: url(../image/icon/icon_tab_2.png);
+.footer-nav > a > .icon-cate {
+  background-image: url(../image/icon/tab_cate_o.png);
 }
-.footer-nav > a > .icon-discovery {
-  background-image: url(../image/icon/icon_tab_3.png);
+.footer-nav > a > .icon-activity {
+  background-image: url(../image/icon/tab_activity_o.png);
 }
-.footer-nav > a > .icon-ucenter {
-  background-image: url(../image/icon/icon_tab_4.png);
+.footer-nav > a > .icon-user {
+  background-image: url(../image/icon/tab_user_o.png);
 }
-.footer-nav > a.current > .icon-index {
-  background-image: url(../image/icon/icon_tab_1_on.png);
+.footer-nav > a.current > .icon-home {
+  background-image: url(../image/icon/tab_home.png);
 }
-.footer-nav > a.current > .icon-task{
-  background-image: url(../image/icon/icon_tab_2_on.png);
+.footer-nav > a.current > .icon-cate {
+  background-image: url(../image/icon/tab_cate.png);
 }
-.footer-nav > a.current > .icon-discovery {
-  background-image: url(../image/icon/icon_tab_3_on.png);
+.footer-nav > a.current > .icon-activity {
+  background-image: url(../image/icon/tab_activity.png);
 }
-.footer-nav > a.current > .icon-ucenter {
-  background-image: url(../image/icon/icon_tab_4_on.png);
+.footer-nav > a.current > .icon-user {
+  background-image: url(../image/icon/tab_user.png);
 }
 
 .footer-nav > a > span {

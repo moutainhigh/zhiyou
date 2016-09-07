@@ -23,62 +23,89 @@
 .icon-logo {
   background-image: url(../image/icon/icon_logo.png);
 }
-.icon-logo-o {
-  background-image: url(../image/icon/icon_logo_o.png);
-}
 
-.icon-jinpai {
-  background-image: url(../image/icon/icon_jinpai.png);
-}
-.icon-yinpai {
-  background-image: url(../image/icon/icon_yinpai.png);
-}
-.icon-tongpai {
-  background-image: url(../image/icon/icon_tongpai.png);
-}
-.icon-newbie {
-  width: 30px; height: 20px;
-  background-image: url(../image/icon/icon_newbie.png);
-}
 
 .icon-about {
   background-image: url(../image/icon/icon_about.png);
 }
-.icon-account {
-  background-image: url(../image/icon/icon_account.png);
-}
 .icon-address {
   background-image: url(../image/icon/icon_address.png);
 }
-.icon-service {
-  background-image: url(../image/icon/icon_service.png);
-}
-.icon-coupon {
-  background-image: url(../image/icon/icon_coupon.png);
-}
-.icon-task {
-  background-image: url(../image/icon/icon_task.png);
-}
-.icon-achievement {
-  background-image: url(../image/icon/icon_achievement.png);
+.icon-agent {
+  background-image: url(../image/icon/icon_agent.png);
 }
 .icon-appearance {
   background-image: url(../image/icon/icon_appearance.png);
 }
-.icon-portrait {
-  background-image: url(../image/icon/icon_portrait.png);
+.icon-bag {
+  background-image: url(../image/icon/icon_bag.png);
 }
-
-.icon-money {
-  background-image: url(../image/icon/icon_money.png);
+.icon-card {
+  background-image: url(../image/icon/icon_card.png);
+}
+.icon-clock {
+  background-image: url(../image/icon/icon_clock.png);
 }
 .icon-coin {
   background-image: url(../image/icon/icon_coin.png);
 }
+.icon-coupon {
+  background-image: url(../image/icon/icon_coupon.png);
+}
+.icon-email {
+  background-image: url(../image/icon/icon_email.png);
+}
+.icon-email-o {
+  background-image: url(../image/icon/icon_email_o.png);
+}
+.icon-free {
+  background-image: url(../image/icon/icon_free.png);
+}
+.icon-heart {
+  background-image: url(../image/icon/icon_heart.png);
+}
+.icon-in {
+  background-image: url(../image/icon/icon_in.png);
+}
+.icon-join {
+  background-image: url(../image/icon/icon_join.png);
+}
+.icon-link {
+  background-image: url(../image/icon/icon_link.png);
+}
+.icon-money {
+  background-image: url(../image/icon/icon_money.png);
+}
+.icon-out {
+  background-image: url(../image/icon/icon_out.png);
+}
 .icon-point {
   background-image: url(../image/icon/icon_point.png);
 }
+.icon-portrait {
+  background-image: url(../image/icon/icon_portrait.png);
+}
+.icon-report {
+  background-image: url(../image/icon/icon_report.png);
+}
+.icon-service {
+  background-image: url(../image/icon/icon_service.png);
+}
+.icon-star {
+  background-image: url(../image/icon/icon_star.png);
+}
+.icon-tag {
+  background-image: url(../image/icon/icon_tag.png);
+}
+.icon-task {
+  background-image: url(../image/icon/icon_task.png);
+}
+.icon-tencent {
+  background-image: url(../image/icon/icon_tencent.png);
+}
 
+
+/* sns */
 .icon-taobao {
   background-image: url(../image/icon/icon_taobao.png);
 }
@@ -94,10 +121,8 @@
 .icon-weibo {
   background-image: url(../image/icon/icon_weibo.png);
 }
-.icon-clock {
-  background-image: url(../image/icon/icon_clock.png);
-}
 
+/* bank */
 .icon-bank-youzheng {
   background-image: url(../image/icon/bank/icon_bank_01.png);
 }
