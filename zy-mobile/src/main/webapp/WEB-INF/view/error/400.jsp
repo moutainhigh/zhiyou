@@ -28,8 +28,8 @@
     <i class="error-icon font-orange fa fa-exclamation-triangle"></i>
     <div class="error-status">400</div>
     <div class="error-info">
-      <p>抱歉！您输入的信息有误</p>
-      <p>请检查您输入的页面地址是否正确</p>
+      <p class="font-orange fs-16">参数错误</p>
+      <p class="">请不要非法攻击本站</p>
     </div>
     <div class="error-btn">
       <a class="btn green" href="javascript:history.go(-1);">返回上一页</a>

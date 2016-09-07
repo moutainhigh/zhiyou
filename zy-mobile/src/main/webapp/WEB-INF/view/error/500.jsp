@@ -28,7 +28,7 @@
     <i class="error-icon font-orange fa fa-exclamation-triangle"></i>
     <div class="error-status">500</div>
     <div class="error-info">
-      <p>抱歉！服务器错误</p>
+      <p class="font-orange fs-16">抱歉！服务器错误</p>
       <c:if test="${not empty errorMessage}">
         <p>原因：${errorMessage}</p>
       </c:if>
