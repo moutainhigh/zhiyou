@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>自我画像</title>
+<title>完善资料</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/portrait.css" />
@@ -149,14 +149,13 @@
 </head>
 <body class="portrait-edit ox-hidden">
   <header class="header">
-    <h1>自我画像</h1>
+    <h1>完善资料</h1>
     <a href="${ctx}/u/portrait" class="button-left"><i class="fa fa-angle-left"></i></a>
     <a href="javascript:;" id="btnTagsClose" class="button-left hide"><i class="fa fa-angle-left"></i></a>
     <a href="javascript:;" id="btnTagsSure" class="button-right hide"><span>确定</span></a>
   </header>
   <article>
     <form id="form" class="valid-form" action="${ctx}/u/portrait/edit" method="post">
-      <input name="id" value="${portrait.id}" type="hidden" />
       <div class="list-group">
         <div class="list-item">
           <label class="list-label">所在地</label>
@@ -195,8 +194,7 @@
         <div class="list-item">
           <label class="list-label">生日</label>
           <div class="list-text">
-            <input type="text" name="birthday" class="control-input" value="${portrait.birthday}"
-            placeholder="填写生日" onfocus="this.type='date'">
+            <input type="text" name="birthday" class="form-input" value="${portrait.birthdayLabel}" onfocus="this.type='date'">
           </div>
         </div>
 

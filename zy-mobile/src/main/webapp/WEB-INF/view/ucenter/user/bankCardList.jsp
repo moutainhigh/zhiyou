@@ -26,27 +26,23 @@
   <header class="header">
     <h1>我的银行卡</h1>
     <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <a href="${ctx}/u/bankCard/create" class="button-right"><i class="fa fa-plus"></i></a>
   </header>
   
   <article>
-    <c:if test="${empty list}">
-      <div class="empty-tip hide">
-        <i class="fa fa-usd"></i>
-        <span>空空如也!</span>
+    <c:if test="${empty bankCards}">
+      <div class="empty-tip">
+        <i class="fa fa-file-o"></i>
+        <span>您还木有绑定银行卡</span>
       </div>
     </c:if>
     
-    <a href="${ctx}/u/bankCard/1" class="bank round-4 relative">
-      <i class="icon icon-bank-gongshang round"></i>
-      <span class="fs-16 lh-30">中国工商银行</span>
-      <div class="fs-12 text-right"><span class="left mt-10">蒋小涛</span><span class="fs-24">**** **** **** 3872</span></div>
+    <c:forEach items="${bankCards}" var="bankCard">
+    <a href="${ctx}/u/bankCard/${bankCard.id}" class="bank round-4 relative">
+      <i class="icon icon-bank-${bankCard.bankCode} round"></i>
+      <span class="fs-16 lh-30">${bankCard.bankName}</span>
+      <div class="fs-12 text-right"><span class="left mt-10">${bankCard.realname}</span><span class="fs-24">**** **** **** ${bankCard.cardNumberLabel}</span></div>
     </a>
-    <a href="${ctx}/u/bankCard/2" class="bank round-4 relative">
-      <i class="icon icon-bank-minsheng round"></i>
-      <span class="fs-16 lh-30">中国民生银行</span>
-      <div class="fs-12 text-right"><span class="left mt-10">蒋小涛</span><span class="fs-24">**** **** **** 3872</span></div>
-    </a>
+    </c:forEach>
     
     <div class="list-group">
       <a class="list-item-add list-item bd-0 mt-10" href="${ctx}/u/bankCard/create">

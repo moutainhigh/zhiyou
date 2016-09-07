@@ -1,13 +1,9 @@
 package com.zy.mobile.controller.ucenter;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static java.util.stream.Collectors.toSet;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,9 +95,14 @@ public class UcenterPortraitController {
     }
     @RequestMapping(value = "/edit", method = POST)
     public String edit(Portrait portrait, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+    	
+    	 Portrait persistence = portraitService.findByUserId(principal.getUserId());
+         if (persistence == null) {
+             return "redirect:/u/portrait/create";
+         }
+    	
         try {
-            validate(portrait.getJobId(), NOT_NULL, "job is cannot be null");
-            portrait.setJobId(portrait.getJobId());
+        	portrait.setId(persistence.getId());
             portraitService.update(portrait);
         } catch (Exception e) {
             model.addAttribute(ResultBuilder.error(e.getMessage()));

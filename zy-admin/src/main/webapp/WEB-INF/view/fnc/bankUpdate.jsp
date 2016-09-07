@@ -11,6 +11,9 @@
         },
         code: {
           required: true
+        },
+        orderNumber : {
+          required: true
         }
       }
     });
@@ -64,6 +67,15 @@
               <div class="col-md-5">
                 <input type="text" class="form-control" name="code" value="${bank.code}"/>
               </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="control-label col-md-3">排序数字<span class="required"> * </span>
+              </label>
+              <div class="col-md-5">
+                <input type="text" class="form-control" name="orderNumber" value="${bank.orderNumber}"/>
+              </div>
+              <span>数字越小排名越靠前</span>
             </div>
             
           </div>

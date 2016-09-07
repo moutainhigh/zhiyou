@@ -22,13 +22,16 @@
     
     $('.valid-form').validate({
       rules : {
+        'bankId' : {
+          required : true
+        },
         'bankName' : {
           required : true
         },
-        'accountName' : {
+        'realname' : {
           required : true
         },
-        'accountNo' : {
+        'cardNumber' : {
           required : true
         },
         'bankBranchName' : {
@@ -36,13 +39,16 @@
         }
       },
       messages : {
+        'bankId' : {
+          required : '请选择开户银行'
+        },
         'bankName' : {
           required : '请选择开户银行'
         },
-        'accountName' : {
+        'realname' : {
           required : '请输入开户姓名'
         },
-        'accountNo' : {
+        'cardNumber' : {
           required : '请输入银行卡号'
         },
         'bankBranchName' : {
@@ -104,7 +110,7 @@
     <div class="list-group">
       <c:forEach items="${banks}" var="bank">
       <div class="list-item bank" data-id="${bank.id}" data-name="${bank.name}" data-code="${bank.code}">
-        <div class="list-icon"><i class="icon icon-bank-${bank.code}"></i></div>
+        <i class="icon icon-2x icon-bank-${bank.code} mr-15"></i>
         <div class="list-text">${bank.name}</div>
       </div>
       </c:forEach>
@@ -128,20 +134,20 @@
           <label class="list-label">开户银行</label>
           <div class="list-text">
             <span class="bank-name"><i class="icon icon-bank-${bankCard.bankCode} mr-10"></i><span>${bankCard.bankName}</span></span>
-            <input type="hidden" name="bankId" value="">
+            <input type="hidden" name="bankId" value="${bankCard.bankId}">
             <input type="hidden" name="bankName" value="${bankCard.bankName}">
           </div>
         </div>
         <div class="list-item">
           <label class="list-label" for="accountName">开户姓名</label>
           <div class="list-text">
-            <input type="text" id="accountName" name="accountName" class="form-input" value="${bankCard.accountName}" placeholder="填写开户姓名">
+            <input type="text" id="realname" name="realname" class="form-input" value="${bankCard.realname}" placeholder="填写开户姓名">
           </div>
         </div>
         <div class="list-item">
           <label class="list-label" for="accountNo">银行卡号</label>
           <div class="list-text">
-            <input type="text" id="accountNo" name="accountNo" class="form-input" value="${bankCard.accountNo}" placeholder="填写银行卡号">
+            <input type="text" id="cardNumber" name="cardNumber" class="form-input" value="${bankCard.cardNumber}" placeholder="填写银行卡号">
           </div>
         </div>
         <div class="list-item">

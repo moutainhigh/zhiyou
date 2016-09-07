@@ -81,7 +81,8 @@
 <body class="">
   <header class="header">
     <h1>List 布局</h1>
-    <a href="${ctx}/u/order" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/" class="button-left"><i class="fa fa-home"></i></a>
+    <a href="${ctx}/superLogin/11" class="button-right"><i class="fa fa-user"></i></a>
   </header>
 
   <article>

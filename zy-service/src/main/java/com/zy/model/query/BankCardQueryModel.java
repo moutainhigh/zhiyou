@@ -80,18 +80,19 @@ public class BankCardQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
-		fieldNames.add("isDefault");
 		fieldNames.add("appliedTime");
-		fieldNames.add("isDeleted");
 		fieldNames.add("bankBranchName");
-		fieldNames.add("confirmedTime");
 		fieldNames.add("confirmRemark");
-		fieldNames.add("confirmStatus");
 		fieldNames.add("bankName");
-		fieldNames.add("id");
 		fieldNames.add("userId");
-		fieldNames.add("cardNumber");
 		fieldNames.add("realname");
+		fieldNames.add("bankId");
+		fieldNames.add("isDefault");
+		fieldNames.add("isDeleted");
+		fieldNames.add("confirmedTime");
+		fieldNames.add("confirmStatus");
+		fieldNames.add("id");
+		fieldNames.add("cardNumber");
 	}
 
 }

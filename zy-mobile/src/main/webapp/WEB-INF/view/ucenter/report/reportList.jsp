@@ -68,6 +68,12 @@
       </div>
     </a>
     </c:forEach>
+    
+    <a class="list-item" href="${ctx}/u/report/create">
+      <div class="list-icon"><i class="fa fa-plus-circle font-green fs-20"></i></div>
+      <label class="list-text">上传检测报告</label>
+      <i class="list-arrow"></i>
+    </a>
   </div>
 </body>
 </html>
