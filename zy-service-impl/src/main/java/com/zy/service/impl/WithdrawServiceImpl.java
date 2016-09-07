@@ -6,11 +6,8 @@ import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
-import com.zy.entity.fnc.Account;
+import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.AccountLog.InOut;
-import com.zy.entity.fnc.CurrencyType;
-import com.zy.entity.fnc.Profit;
-import com.zy.entity.fnc.Withdraw;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
 import com.zy.extend.SKWxMpService;
@@ -84,7 +81,9 @@ public class WithdrawServiceImpl implements WithdrawService {
 	    }
 
 	    /* check bank card */
-	    // TODO
+	    BankCard bankCard = bankCardMapper.findOne(bankCardId);
+	    validate(bankCard, NOT_NULL, "bank card id " + bankCardId + " is not found");
+	    validate(bankCard, v -> v.getUserId().equals(userId), "bank card " + bankCardId + " must be own");
 
 
 		/* check 余额 */
