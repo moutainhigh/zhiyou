@@ -33,6 +33,12 @@
 
 <script>
   $(function() {
+    
+    $('.form-radio img, .form-radio .list-text').click(function(){
+      //$('[name="agentLevel"]').removeAttr('checked');.attr('checked', 'checked')
+      $(this).parent().find('[name="agentLevel"]').click();
+    });
+    
 	$('[name="agentLevel"]').click(function(){
 	  var item = $(this).parents('.form-radio');
 	  item.addClass('current').siblings().removeClass('current');
@@ -100,11 +106,11 @@
             <label class="i-checked" for="agentLevel1"></label>
           </div>
           <img class="image-80 block mr-10" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
-          <label class="list-text" for="agentLevel1">
+          <div class="list-text">
             <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity1}</span>盒</h2>
             <div class="lh-30"><label class="label red">一级代理</label></div>
             <div class="font-orange lh-24">¥ ${amount1}</div>
-          </label>
+          </div>
         </div>
         <div class="list-item form-radio">
           <div class="list-icon">
@@ -112,11 +118,11 @@
             <label class="i-checked" for="agentLevel2"></label>
           </div>
           <img class="image-80 block mr-10" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
-          <label class="list-text" for="agentLevel2">
+          <div class="list-text">
             <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity2}</span>盒</h2>
             <div class="lh-30"><label class="label yellow">二级代理</label></div>
             <div class="font-orange lh-24">¥ ${amount2}</div>
-          </label>
+          </div>
         </div>
         <div class="list-item form-radio">
           <div class="list-icon">
@@ -124,11 +130,11 @@
             <label class="i-checked" for="agentLevel3"></label>
           </div>
           <img class="image-80 block mr-10" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
-          <label class="list-text" for="agentLevel3">
+          <div class="list-text">
             <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity3}</span>盒</h2>
             <div class="lh-30"><label class="label green">三级代理</label></div>
             <div class="font-orange lh-24">¥ ${amount3}</div>
-          </label>
+          </div>
         </div>
         
       </div>
