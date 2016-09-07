@@ -36,7 +36,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class Withdraw implements Serializable {
 
 	public enum WithdrawStatus {
-		已申请, 提现成功, WithdrawStatus, 已取消
+		已申请, 提现成功, 已取消
 	}
 
 	@Id
