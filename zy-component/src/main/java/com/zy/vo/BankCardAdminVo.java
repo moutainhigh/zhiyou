@@ -24,7 +24,7 @@ public class BankCardAdminVo implements Serializable {
 	private String bankName;
 	@Field(label = "开户支行")
 	private String bankBranchName;
-	@Field(label = "是否默认地址")
+	@Field(label = "是否默认银行卡")
 	private Boolean isDefault;
 	@Field(label = "审核状态")
 	private ConfirmStatus confirmStatus;

@@ -20,6 +20,12 @@ public class PortraitVo implements Serializable {
 	private Gender gender;
 	@Field(label = "生日")
 	private Date birthday;
+	@Field(label = "职业")
+	private Long jobId;
+	@Field(label = "所在地")
+	private Long areaId;
+	@Field(label = "标签")
+	private String tagIds;
 
 	/* 扩展 */
 	@Field(label = "职业")
