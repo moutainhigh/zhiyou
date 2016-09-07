@@ -45,28 +45,47 @@
     <a href="${ctx}/u/userSetting" class="button-right"><i class="fa fa-cog"></i></a>
   </header>
   
-  <article class="user-profile">
-    <a class="avatar-wrap" href="${ctx}/u/userInfo">
-      <img class="avatar round" src="${userAvatarSmall}">
+  <div class="list-group mb-0">
+    <a class="list-item user-profile bd-0" href="${ctx}/u/userInfo">
+      <img class="avatar round mr-20 ml-10" src="${userAvatarSmall}">
+      <div class="list-text font-white lh-30">
+        <div class="fs-18 bold">${user.nickname}</div>
+        <c:if test="${user.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
+        <c:if test="${user.userRank == 'V2'}"><label class="label blue">二级代理</label></c:if>
+        <c:if test="${user.userRank == 'V3'}"><label class="label orange">一级代理</label></c:if>
+        <c:if test="${user.userRank == 'V4'}"><label class="label red">特级代理</label></c:if>
+      </div>
+      <i class="list-arrow"></i>
     </a>
-    <a class="user-info block" href="${ctx}/u/userInfo">
-      <div class="nickname">${user.nickname} <c:if test="${user.userRank == 'V1'}"><i class="icon icon-newbie"></i></c:if>
-      <c:if test="${user.userRank == 'V2'}"><i class="icon icon-tongpai"></i></c:if>
-      <c:if test="${user.userRank == 'V3'}"><i class="icon icon-yinnpai"></i></c:if>
-      <c:if test="${user.userRank == 'V4'}"><i class="icon icon-jinpai"></i></c:if></div>
-      <i class="icon-right fa fa-angle-right"></i>
-    </a>
-  </article>
+  </div>
   
   <aside class="water">
     <div class="water-1"></div>
     <div class="water-2"></div>
   </aside>
   
+  <div class="user-currency flex">
+    <a class="flex-1 bd-r" href="${ctx}/u/money">
+      <i class="icon icon-money icon-2x"></i>
+      <em>余额</em>
+      <span>¥ 0.00</span>
+    </a>
+    <a class="flex-1 bd-r" href="${ctx}/u/order/in">
+      <i class="icon icon-coin icon-2x"></i>
+      <em>进货</em>
+      <span>0件</span>
+    </a>
+    <a class="flex-1" href="${ctx}/u/order/out">
+      <i class="icon icon-point icon-2x"></i>
+      <em>出货</em>
+      <span>0件</span>
+    </a>
+  </div>
+  
   <article>
     <div class="list-group">
       <c:if test="${user.userRank == 'V0'}">
-      <a class="list-item bd-t-0" href="${ctx}/product/1">
+      <a class="list-item" href="${ctx}/product/1">
         <i class="list-icon icon icon-account"></i>
         <div class="list-text">成为代理</div>
         <i class="list-arrow"></i>
@@ -82,24 +101,6 @@
     </div>
     
     <div class="list-group">
-      <a class="list-item list-item-icon" href="${ctx}/u/order/in">
-        <i class="list-icon icon icon-coupon"></i>
-        <div class="list-text">收到的订单</div>
-        <i class="list-arrow"></i>
-      </a>
-      <a class="list-item list-item-icon" href="${ctx}/u/order/out">
-        <i class="list-icon icon icon-account"></i>
-        <div class="list-text">发出的订单</div>
-        <i class="list-arrow"></i>
-      </a>
-      <a class="list-item list-item-icon" href="${ctx}/u/report">
-        <i class="list-icon icon icon-achievement"></i>
-        <div class="list-text">检测报告</div>
-        <i class="list-arrow"></i>
-      </a>
-    </div>
-    
-    <div class="list-group">
       <a class="list-item list-item-icon" href="${ctx}/u/activity/applyList">
         <i class="list-icon icon icon-task"></i>
         <div class="list-text">我参与的活动</div>
@@ -108,6 +109,14 @@
       <a class="list-item list-item-icon" href="${ctx}/u/activity/collectList">
         <i class="list-icon icon icon-task"></i>
         <div class="list-text">我关注的活动</div>
+        <i class="list-arrow"></i>
+      </a>
+    </div>
+    
+    <div class="list-group">
+      <a class="list-item list-item-icon" href="${ctx}/u/report">
+        <i class="list-icon icon icon-achievement"></i>
+        <div class="list-text">检测报告</div>
         <i class="list-arrow"></i>
       </a>
     </div>
