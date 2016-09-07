@@ -82,26 +82,30 @@ public class DepositController {
 			HttpServletResponse response) throws IOException {
 
 		List<Deposit> deposits = new ArrayList<>();
+		boolean empty = false;
 		if(StringUtils.isNotBlank(phoneEQ) || StringUtils.isNotBlank(nicknameLK)) {
 			UserQueryModel userQueryModel = new UserQueryModel();
 			userQueryModel.setPhoneEQ(phoneEQ);
 			userQueryModel.setNicknameLK(nicknameLK);
 			List<User> users = userService.findAll(userQueryModel);
-			if(!users.isEmpty()) {
-				Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
-				depositQueryModel.setUserIdIN(userIds);
-				depositQueryModel.setPageSize(null);
-				depositQueryModel.setPageNumber(null);
-				deposits = depositService.findAll(depositQueryModel);
+			if(users.isEmpty()) {
+				empty = true;
 			}
+			Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
+
+			depositQueryModel.setUserIdIN(userIds);
 		}
+		if (! empty) {
+			depositQueryModel.setPageSize(null);
+			depositQueryModel.setPageNumber(null);
+			deposits = depositService.findAll(depositQueryModel);
+		}
+		String fileName = "充值数据.xlsx";
+		WebUtils.setFileDownloadHeader(response, fileName);
 
 		List<DepositAdminVo> depositAdminVos = deposits.stream().map(depositComponent::buildAdminVo).collect(Collectors.toList());
 		OutputStream os = response.getOutputStream();
 		ExcelUtils.exportExcel(depositAdminVos, DepositAdminVo.class, os);
-
-		String fileName = "充值数据.xlsx";
-		WebUtils.setFileDownloadHeader(response, fileName);
 
 		return null;
 	}

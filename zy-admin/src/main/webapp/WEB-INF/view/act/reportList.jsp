@@ -7,7 +7,7 @@
 </style>
 <!-- BEGIN JAVASCRIPTS -->
 <script id="confirmTmpl" type="text/x-handlebars-template">
-  <form id="confirmForm{{id}}" action="" data-action="${ctx}/banner/create" class="form-horizontal" method="post">
+  <form id="confirmForm{{id}}" action="" data-action="${ctx}/banner/create" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
     <input type="hidden" name="id" value="{{id}}"/>
     <div class="form-body">
       <div class="alert alert-danger display-hide">

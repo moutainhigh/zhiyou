@@ -34,9 +34,7 @@ public class ProductController {
 		ProductQueryModel productQueryModel = new ProductQueryModel();
 		productQueryModel.setIsOnEQ(true);
 		List<Product> products = productService.findAll(productQueryModel);
-		model.addAttribute("products", products.stream().map(v -> {
-			return productComponent.buildListVo(v);
-		}).collect(Collectors.toList()));
+		model.addAttribute("products", products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
 		return "product/productList";
 	}
 
