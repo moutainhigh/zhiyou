@@ -121,7 +121,7 @@
         <div class="list-item">
           <label class="list-label">检测时间</label>
           <div class="list-text">
-            <input type="text" name="date" class="form-input" value="" placeholder="填写检测时间 2001-01-01" onfocus="this.type='date'">
+            <input type="text" name="date" class="form-input" value="2001-01-01" placeholder="填写检测时间 2001-01-01" onfocus="this.type='date'">
           </div>
         </div>
         <div class="list-item">
