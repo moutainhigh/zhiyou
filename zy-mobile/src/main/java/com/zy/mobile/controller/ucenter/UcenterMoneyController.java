@@ -1,19 +1,15 @@
 package com.zy.mobile.controller.ucenter;
 
-import com.zy.Config;
-import com.zy.common.model.query.Page;
-import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.component.AccountLogComponent;
-import com.zy.entity.fnc.Account;
-import com.zy.entity.fnc.AccountLog;
-import com.zy.entity.fnc.Withdraw;
-import com.zy.model.Principal;
-import com.zy.model.query.AccountLogQueryModel;
-import com.zy.service.AccountLogService;
-import com.zy.service.AccountService;
-import com.zy.service.WithdrawService;
+import static com.zy.entity.fnc.CurrencyType.现金;
+import static com.zy.entity.usr.User.UserType.代理;
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +21,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.zy.entity.fnc.CurrencyType.现金;
-import static com.zy.entity.usr.User.UserType.代理;
-import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
+import com.zy.Config;
+import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.component.AccountLogComponent;
+import com.zy.entity.fnc.Account;
+import com.zy.entity.fnc.AccountLog;
+import com.zy.entity.fnc.BankCard;
+import com.zy.entity.fnc.Withdraw;
+import com.zy.model.Principal;
+import com.zy.model.query.AccountLogQueryModel;
+import com.zy.model.query.BankCardQueryModel;
+import com.zy.service.AccountLogService;
+import com.zy.service.AccountService;
+import com.zy.service.BankCardService;
+import com.zy.service.WithdrawService;
 
 @RequestMapping("/u/money")
 @Controller
@@ -46,6 +51,9 @@ public class UcenterMoneyController {
 	
 	@Autowired
 	private WithdrawService withdrawService;
+	
+	@Autowired
+	private BankCardService bankCardService;
 	
 	@Autowired
 	private AccountLogComponent accountLogComponent;
@@ -106,6 +114,13 @@ public class UcenterMoneyController {
 	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
 	public String withdraw(Principal principal, Model model, BigDecimal amount, RedirectAttributes redirectAttributes) {
 		try {
+			BankCardQueryModel bankCardQueryModel = new BankCardQueryModel();
+			bankCardQueryModel.setUserIdEQ(principal.getUserId());
+			Long count = bankCardService.count(bankCardQueryModel);
+			if(count.compareTo(0L) <= 0){
+				redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您尚未绑定银行卡，请先绑定银行卡"));
+				return "redirect:/u/money/withdraw";
+			}
 			Withdraw withdraw = withdrawService.create(principal.getUserId(), null, 现金, amount);
 			model.addAttribute("withdraw", withdraw);
 			return "ucenter/currency/moneyWithdrawSuccess";

@@ -1,9 +1,11 @@
 package com.zy.service.impl;
 
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
+import com.zy.common.model.query.Page;
+import com.zy.component.FncComponent;
+import com.zy.entity.fnc.Payment;
+import com.zy.mapper.PaymentMapper;
+import com.zy.model.query.PaymentQueryModel;
+import com.zy.service.PaymentService;
 import org.hibernate.validator.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import com.zy.common.model.query.Page;
-import com.zy.component.FncComponent;
-import com.zy.entity.fnc.Payment;
-import com.zy.mapper.PaymentMapper;
-import com.zy.model.query.PaymentQueryModel;
-import com.zy.service.PaymentService;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Service
 @Validated
@@ -62,7 +60,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public void pay(@NotNull Long id) {
+	public void success(@NotNull Long id, String outerSn) {
 		fncComponent.payPayment(id);
 	}
 

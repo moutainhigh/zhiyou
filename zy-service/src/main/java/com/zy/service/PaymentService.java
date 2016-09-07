@@ -1,10 +1,10 @@
 package com.zy.service;
 
-import java.util.List;
-
 import com.zy.common.model.query.Page;
 import com.zy.entity.fnc.Payment;
 import com.zy.model.query.PaymentQueryModel;
+
+import java.util.List;
 
 public interface PaymentService {
 
@@ -16,7 +16,7 @@ public interface PaymentService {
 
 	Payment findBySn(String sn);
 
-	void pay(Long id);
+	void success(Long id, String outerSn);
 
 	Payment findByBizNameAndBizName(String bizName, String bizSn);
 }
