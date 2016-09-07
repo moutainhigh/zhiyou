@@ -102,18 +102,12 @@
       <a href="javascript:hideBankList();" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
     <div class="list-group">
-      <div class="list-item bank" data-id="1" data-name="中国工商银行" data-code="gongshang">
-        <div class="list-icon"><i class="icon icon-bank-gongshang"></i></div>
-        <div class="list-text">中国工商银行</div>
+      <c:forEach items="${banks}" var="bank">
+      <div class="list-item bank" data-id="${bank.id}" data-name="${bank.name}" data-code="${bank.code}">
+        <div class="list-icon"><i class="icon icon-bank-${bank.code}"></i></div>
+        <div class="list-text">${bank.name}</div>
       </div>
-      <div class="list-item bank" data-id="2" data-name="中国建设银行" data-code="jianshe">
-        <div class="list-icon"><i class="icon icon-bank-jianshe"></i></div>
-        <div class="list-text">中国建设银行</div>
-      </div>
-      <div class="list-item bank" data-id="3" data-name="中国农业银行" data-code="nongye">
-        <div class="list-icon"><i class="icon icon-bank-nongye"></i></div>
-        <div class="list-text">中国农业银行</div>
-      </div>
+      </c:forEach>
     </div>
   </aside>
 </script>
