@@ -123,7 +123,7 @@ public class Portrait implements Serializable {
 	@View(name = "province", type = String.class)
 	@View(name = "city", type = String.class)
 	@View(name = "district", type = String.class)
-	@View(groups = "PortraitAdminVo")
+	@View(groups = {"PortraitAdminVo", "PortraitVo"})
 	private Long areaId;
 
 	@Field(label = "家乡所在地")
