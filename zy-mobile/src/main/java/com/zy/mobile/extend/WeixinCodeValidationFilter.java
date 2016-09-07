@@ -1,42 +1,36 @@
 package com.zy.mobile.extend;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.zy.common.support.cache.CacheSupport;
+import com.zy.common.util.CookieUtils;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
+import com.zy.model.PrincipalBuilder;
+import com.zy.model.dto.AgentRegisterDto;
+import com.zy.service.UserService;
+import com.zy.util.GcUtils;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.api.WxMpServiceImpl;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.zy.common.support.cache.CacheSupport;
-import com.zy.common.util.CookieUtils;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.WeixinUser;
-import com.zy.model.Constants;
-import com.zy.model.Principal;
-import com.zy.model.PrincipalBuilder;
-import com.zy.service.UserService;
-import com.zy.service.WeixinUserService;
-import com.zy.util.GcUtils;
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.SESSION_ATTRIBUTE_AGENT_REGISTER_DTO;
+import static com.zy.model.Constants.SESSION_ATTRIBUTE_PRINCIPAL;
+import static com.zy.model.Constants.SESSION_ATTRIBUTE_REDIRECT_URL;
 
 public class WeixinCodeValidationFilter implements Filter {
 
@@ -60,11 +54,10 @@ public class WeixinCodeValidationFilter implements Filter {
 		WxMpService wxMpService = new WxMpServiceImpl();
 		wxMpService.setWxMpConfigStorage(wxMpConfigStorage);
 		UserService userService = wac.getBean(UserService.class);
-		WeixinUserService weixinUserService = wac.getBean(WeixinUserService.class);
 		CacheSupport cacheSupport = wac.getBean(CacheSupport.class);
 		String state = httpServletRequest.getParameter("state");
 
-		Principal principal = (Principal) session.getAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL);
+		Principal principal = (Principal) session.getAttribute(SESSION_ATTRIBUTE_PRINCIPAL);
 
 		if (principal != null || !Constants.WEIXIN_STATE_USERINFO.equals(state)) {
 			chain.doFilter(httpServletRequest, httpServletResponse);
@@ -78,40 +71,33 @@ public class WeixinCodeValidationFilter implements Filter {
 				String openId = wxMpOAuth2AccessToken.getOpenId();
 				validate(openId, NOT_BLANK, "open id is blank");
 
-				WeixinUser weixinUser = weixinUserService.findByOpenId(openId);
-				User user = null;
-				if (weixinUser == null) {
+				User user = userService.findByOpenId(openId);
+				if (user == null) {
 					WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
+					AgentRegisterDto agentRegisterDto = new AgentRegisterDto();
+
 					String avatar = wxMpUser.getHeadImgUrl();
 					if (StringUtils.isBlank(avatar)) {
 						avatar = Constants.SETTING_DEFAULT_AVATAR;
 					}
-					weixinUser = new WeixinUser();
-					weixinUser.setAvatar(avatar);
-					weixinUser.setOpenId(wxMpUser.getOpenId());
-					weixinUser.setUnionId(wxMpUser.getUnionId());
-					weixinUser.setNickname(wxMpUser.getNickname());
-					weixinUser.setUserId(null);
+					agentRegisterDto.setAvatar(avatar);
+					agentRegisterDto.setOpenId(wxMpUser.getOpenId());
+					agentRegisterDto.setNickname(wxMpUser.getNickname());
 
-					User inviter = (User) request.getAttribute("__inviter");
-					Long inviterId = null;
-					if (inviter != null) {
-						inviterId = inviter.getId();
-					}
-					String registerIp = GcUtils.getHost();
-					logger.info("register buyer");
-					user = userService.registerBuyer(weixinUser, registerIp, inviterId);
-					weixinUser = weixinUserService.findByUserId(user.getId());
+					session.setAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO, agentRegisterDto);
+					session.setAttribute(SESSION_ATTRIBUTE_REDIRECT_URL, GcUtils.resolveRedirectUrl(httpServletRequest));
+					httpServletResponse.sendRedirect(httpServletRequest.getServletPath() + "/register"); // 重定向到注册页面
+
 				} else {
-					user = userService.findByOpenId(openId);
+					Long userId = user.getId();
+					String tgt = GcUtils.generateTgt();
+					int expire = 60 * 60 * 24 * 7;
+					CookieUtils.add(httpServletResponse, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, expire, Constants.DOMAIN_MOBILE);
+					cacheSupport.set(Constants.CACHE_NAME_TGT, tgt, userId, expire);
+					session.setAttribute(SESSION_ATTRIBUTE_PRINCIPAL, PrincipalBuilder.build(userId, tgt));
+					logger.info("login success, tgt:" + tgt);
 				}
-				Long userId = user.getId();
-				String tgt = GcUtils.generateTgt();
-				int expire = 60 * 60 * 24 * 7;
-				CookieUtils.add(httpServletResponse, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, expire, Constants.DOMAIN_MOBILE);
-				cacheSupport.set(Constants.CACHE_NAME_TGT, tgt, userId, expire);
-				session.setAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL, PrincipalBuilder.build(userId, tgt));
-				logger.info("login success, tgt:" + tgt);
+
 			} catch (Exception e) {
 				logger.error("weixinCodeValidationFilter error", e);
 				throw new RuntimeException(e);

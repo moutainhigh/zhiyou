@@ -4,23 +4,19 @@ import com.zy.common.exception.ValidationException;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.AliyunOssSupport;
-import com.zy.common.support.cache.CacheSupport;
-import com.zy.common.support.sms.SmsSupport;
-import com.zy.common.util.ValidateUtils;
 import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.sys.ShortMessage;
 import com.zy.entity.usr.Appearance;
 import com.zy.entity.usr.Portrait;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
-import com.zy.model.PhoneAndSmsCode;
 import com.zy.model.Principal;
-import com.zy.service.*;
+import com.zy.service.AddressService;
+import com.zy.service.AppearanceService;
+import com.zy.service.PortraitService;
+import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.*;
 import static java.util.Objects.isNull;
 
 
@@ -60,15 +53,6 @@ public class UcenterInfoController {
     @Autowired
     private AliyunOssSupport aliyunOssSupport;
     
-    @Autowired
-	private SmsSupport smsSupport;
-
-	@Autowired
-	private ShortMessageService shortMessageService;
-
-	@Autowired
-	private CacheSupport cacheSupport;
-
 	@Autowired
 	private AddressService addressService;
 
@@ -151,69 +135,4 @@ public class UcenterInfoController {
         return "redirect:/u/userInfo";
     }
     
-	@RequestMapping(value = "/bindPhone", method = RequestMethod.GET)
-	public String bindPhone() {
-		return "ucenter/user/userPhone";
-	}
-
-	@RequestMapping(value = "/sendBindPhoneSmsCode", method = RequestMethod.POST)
-	@ResponseBody
-	public Result<?> sendSmsCode(HttpSession session, String phone, String captcha) {
-		validate(phone, ValidateUtils.PHONE, "错误的手机格式");
-		if (userService.findByPhone(phone) != null) {
-			return ResultBuilder.error("该手机已经被绑定");
-		}
-		
-		Date date = (Date) cacheSupport.get(CACHE_NAME_BIND_PHONE_SMS_LAST_SEND_TIME, phone);
-		if (date != null && DateUtils.addMinutes(date, 2).after(new Date())) {
-			return ResultBuilder.error("两次发送间隔为120秒");
-		}
-
-		String cachedCaptcha = (String) session.getAttribute(SESSION_ATTRIBUTE_CAPTCHA);
-		if (captcha == null || !captcha.equalsIgnoreCase(cachedCaptcha)) {
-			try {
-				session.removeAttribute(SESSION_ATTRIBUTE_CAPTCHA);
-			} catch (Exception e) {
-			}
-			return ResultBuilder.error("图形验证码错误");
-		}
-
-		String smsCode = RandomStringUtils.randomNumeric(6);
-		String message = "您的短信验证码为" + smsCode;
-		SmsSupport.SmsResult smsResult = smsSupport.send(phone, message, Constants.SETTING_SYS_NAME);
-		if (!smsResult.isSuccess()) {
-			return ResultBuilder.error("短信发送失败,错误代码" + smsResult.getMessage());
-		}
-		try {
-			ShortMessage shortMessage = new ShortMessage();
-			shortMessage.setIp(GcUtils.getHost());
-			shortMessage.setPhone(phone);
-			shortMessage.setContent(message);
-			shortMessageService.create(shortMessage);
-		} catch (Exception e) {
-			logger.error("保存失败", e);
-		}
-		session.setAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS, new PhoneAndSmsCode(phone, smsCode));
-		cacheSupport.set(CACHE_NAME_BIND_PHONE_SMS_LAST_SEND_TIME, phone, new Date(), 600);
-		return ResultBuilder.ok("短信发送成功");
-	}
-
-	@RequestMapping(value = "/bindPhone", method = RequestMethod.POST)
-	public String bindPhone(Principal principal, Model model, RedirectAttributes redirectAttributes, HttpSession session, @RequestParam String smsCode,
-			@RequestParam String phone) {
-
-		if (userService.findByPhone(phone) != null) {
-			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("该手机已被绑定"));
-			return bindPhone();
-		}
-		PhoneAndSmsCode phoneAndSmsCode = (PhoneAndSmsCode) session.getAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS);
-		if (phoneAndSmsCode == null || !smsCode.equalsIgnoreCase(phoneAndSmsCode.getSmsCode()) || !phone.equalsIgnoreCase(phoneAndSmsCode.getPhone())) {
-			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("短信校验码错误"));
-			return bindPhone();
-		}
-		userService.bindPhone(principal.getUserId(), phone);
-		session.removeAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS);
-		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("绑定手机成功"));
-		return "redirect:/u/userInfo";
-	}
 }

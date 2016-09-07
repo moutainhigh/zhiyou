@@ -10,8 +10,6 @@ public interface OrderService {
 
 	Order create(OrderCreateDto orderCreateDto);
 	
-	void pay(Long id);
-	
 	void cancel(Long id);
 	
 	Page<Order> findPage(OrderQueryModel orderQueryModel);
@@ -23,4 +21,8 @@ public interface OrderService {
 	void deliver(OrderDeliverDto orderDeliverDto); // 发货
 	
 	void receive(Long id); // 确认收货
+
+	void modifyIsPlatformDeliver(Long orderId, boolean isPlatformDeliver); // 设置是否平台发货
+
+	void modifySellerId(Long orderId, Long sellerId); // 设置卖家
 }

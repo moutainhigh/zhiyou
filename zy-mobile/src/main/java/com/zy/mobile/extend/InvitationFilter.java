@@ -1,26 +1,16 @@
 package com.zy.mobile.extend;
 
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.zy.common.util.CookieUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.zy.common.util.CookieUtils;
-import com.zy.entity.usr.User;
-import com.zy.model.Constants;
-import com.zy.service.UserService;
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import static com.zy.model.Constants.*;
 
 public class InvitationFilter implements Filter {
 
@@ -37,28 +27,21 @@ public class InvitationFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		String __u = request.getParameter("__u");
 		if(StringUtils.isNotBlank(__u)) {
-			CookieUtils.add(response, Constants.COOKIE_NAME_INVITATION, __u, 60*60*24*30, Constants.DOMAIN_COOKIE);
+			CookieUtils.add(response, COOKIE_NAME_INVITATION, __u, 60*60*24*30, DOMAIN_COOKIE);
 		} else {
-			__u = CookieUtils.get(request, Constants.COOKIE_NAME_INVITATION);
+			__u = CookieUtils.get(request, COOKIE_NAME_INVITATION);
 		}
-		
-		Long inviterId = null;
+
 		if(StringUtils.isNotBlank(__u)) {
 			try {
-				inviterId = Long.valueOf(__u);
+				Long inviterId = Long.valueOf(__u);
+				request.setAttribute(REQUEST_ATTRIBUTE_INVITER_ID, inviterId);
 			} catch (Exception e) {
-				logger.warn("__u参数错误：" + __u);
+				CookieUtils.removeWithDomain(request, response, COOKIE_NAME_INVITATION, DOMAIN_COOKIE);
 			}
 			
 		}
-		
-		if(inviterId != null) {
-			WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
-			UserService userService = wac.getBean(UserService.class);
-			User inviter = userService.findOne(inviterId);
-			request.setAttribute("__inviter", inviter);
-		}
-		
+
 		chain.doFilter(servletRequest, servletResponse);
 	}
 

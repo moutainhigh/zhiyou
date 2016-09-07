@@ -92,15 +92,14 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("qq");
 		fieldNames.add("registerIp");
 		fieldNames.add("registerTime");
+		fieldNames.add("openId");
 		fieldNames.add("remark");
 		fieldNames.add("userRank");
 		fieldNames.add("avatar");
 		fieldNames.add("parentId");
-		fieldNames.add("isInfoCompleted");
 		fieldNames.add("password");
 		fieldNames.add("phone");
 		fieldNames.add("inviterId");
-		fieldNames.add("inviteCode");
 		fieldNames.add("nickname");
 		fieldNames.add("vipExpiredDate");
 		fieldNames.add("id");

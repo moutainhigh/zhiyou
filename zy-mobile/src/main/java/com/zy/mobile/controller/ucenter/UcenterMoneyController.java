@@ -106,7 +106,7 @@ public class UcenterMoneyController {
 	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
 	public String withdraw(Principal principal, Model model, BigDecimal amount, RedirectAttributes redirectAttributes) {
 		try {
-			Withdraw withdraw = withdrawService.create(principal.getUserId(), 现金, amount);
+			Withdraw withdraw = withdrawService.create(principal.getUserId(), null, 现金, amount);
 			model.addAttribute("withdraw", withdraw);
 			return "ucenter/currency/moneyWithdrawSuccess";
 		} catch (Exception e) {

@@ -18,7 +18,8 @@ public interface Constants {
     String SESSION_ATTRIBUTE_SOCIAL_USER_INFO = "socialUserInfo";
     String SESSION_ATTRIBUTE_FIND_PASSWORD_SMS = "findPasswordSmsCode";
     String SESSION_ATTRIBUTE_FIND_PASSWORD_USER_ID = "findPasswordUserId";
-    String SESSION_ATTRIBUTE_TASK_DTO = "taskDto";
+    String SESSION_ATTRIBUTE_AGENT_REGISTER_DTO = "agentRegisterDto";
+    String SESSION_ATTRIBUTE_INVITER_ID = "inviterId";
 
     /* weixin */
     String WEIXIN_STATE_BASE = "XZYabc";
@@ -28,6 +29,9 @@ public interface Constants {
     String COOKIE_NAME_TGT = "__tgt";
     String COOKIE_NAME_INVITATION = "__u";
     String COOKIE_NAME_MOBILE_TOKEN = "__m_token";
+
+    /* request attribute */
+    String REQUEST_ATTRIBUTE_INVITER_ID = "__inviterId";
 
     /* model attribute */
     String MODEL_ATTRIBUTE_RESULT = "result";

@@ -31,8 +31,6 @@ public class UserAdminVo implements Serializable {
 	private Date registerTime;
 	@Field(label = "注册ip")
 	private String registerIp;
-	@Field(label = "信息是否已完善")
-	private Boolean isInfoCompleted;
 	@Field(label = "remark")
 	private String remark;
 
