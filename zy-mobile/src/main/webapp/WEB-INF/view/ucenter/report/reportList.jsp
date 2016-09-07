@@ -98,17 +98,18 @@
           </c:when>
         </c:choose>
         <c:choose>
-          <c:when test="${report.reportStatus == '待审核'}">
+          <c:when test="${report.confirmStatus == '待审核'}">
           <span class="right label orange">待审核</span>
           </c:when>
-          <c:when test="${report.reportStatus == '未通过'}">
+          <c:when test="${report.confirmStatus == '未通过'}">
           <span class="right label gray">未通过</span>
           </c:when>
-          <c:when test="${report.reportStatus == '已通过'}">
+          <c:when test="${report.confirmStatus == '已通过'}">
           <span class="right label blue">已通过</span>
           </c:when>
         </c:choose>
         </div>
+        <%-- 
         <div class="mt-5">
           <img class="image-80 mr-5 mb-10" src="${report.image1Thumbnail}">
           <img class="image-80 mr-5 mb-10" src="${report.image2Thumbnail}">
@@ -123,6 +124,7 @@
           <img class="image-80 mr-5 mb-10" src="${report.image6Thumbnail}">
           </c:if>
         </div>
+         --%>
       </div>
     </a>
     </c:forEach>
