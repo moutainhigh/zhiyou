@@ -35,8 +35,8 @@
   $(function() {
     
     $('.form-radio img, .form-radio .list-text').click(function(){
-      //$('[name="agentLevel"]').removeAttr('checked');.attr('checked', 'checked')
-      $(this).parent().find('[name="agentLevel"]').click();
+      $('[name="agentLevel"]').removeAttr('checked');
+      $(this).parent().find('[name="agentLevel"]').click().attr('checked', 'checked');
     });
     
 	$('[name="agentLevel"]').click(function(){
@@ -82,8 +82,9 @@
 <body class="product-list">
 
   <header class="header">
-    <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a> <a class="button-right" href="${ctx}/help"><i class="fa fa-question-circle"></i></a>
     <h1>成为代理</h1>
+    <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a class="button-right" href="${ctx}/help"><i class="fa fa-question-circle"></i></a>
   </header>
   
   <div class="note note-warning mb-0">
