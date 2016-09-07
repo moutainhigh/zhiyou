@@ -15,8 +15,53 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script type="text/javascript">
   $(function() {
-
+    if (!$('.list-more').hasClass('disabled')) {
+      $('.list-more').click(loadMore);
+    }
   });
+  
+  var timeLT = '${timeLT}';
+  var pageNumber = 0;
+
+  function loadMore() {
+    $.ajax({
+      url : '${ctx}/u/report',
+      data : {
+        pageNumber : pageNumber + 1,
+        timeLT : timeLT
+      },
+      dataType : 'json',
+      type : 'POST',
+      success : function(result) {
+        if(result.code != 0) {
+          return;
+        }
+        var page = result.data.page;
+        if (page.data.length) {
+          timeLT = result.data.timeLT;
+          pageNumber = page.pageNumber;
+          var pageData = page.data;
+          for ( var i in pageData) {
+            var row = pageData[i];
+            buildRow(row);
+          }
+        }
+        if (!page.data.length || page.data.length < page.pageSize) {
+          $('.list-more').addClass('disabled').text('没有更多数据了').unbind('click', loadMore);
+        }
+      }
+    });
+  }
+  
+  function buildRow(row){
+    var rowTpl = document.getElementById('rowTpl').innerHTML;
+    laytpl(rowTpl).render(row, function(html) {
+      $(html).insertBefore($('.list-more'));
+    });
+  }
+</script>
+<script id="rowTpl" type="text/html">
+
 </script>
 </head>
 <body class="">
