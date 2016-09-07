@@ -118,7 +118,7 @@
 
 	<select id="findByUserId" resultMap="baseResultMap" parameterType="long">
 		select *
-		from `act_appearance`
+		from `usr_appearance`
 		where user_id = #{userId}
 	</select>
 
