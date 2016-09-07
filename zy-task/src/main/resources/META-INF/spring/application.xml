@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd
+       http://code.alibabatech.com/schema/dubbo http://static.1024ke.com/file/dubbo.xsd
+       ">
+
+	<context:property-placeholder location="file:${user.home}/zy.properties"/>
+
+	<dubbo:application name="zy-task"/>
+
+	<context:component-scan base-package="com.zy.job">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+	<dubbo:reference interface="com.zy.service.UserService" id="userService"/>
+	<dubbo:reference interface="com.zy.service.PaymentService" id="paymentService"/>
+
+	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
+
+	<dubbo:consumer cluster="failfast" timeout="5000"/>
+
+	<bean id="paymentCancelTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+				<property name="durability" value="true"></property>
+				<property name="jobClass" value="com.zy.job.PaymentCancelJob"></property>
+			</bean>
+		</property>
+		<property name="cronExpression">
+			<value>0 0 0/1 * * ?</value>
+		</property>
+	</bean>
+
+	<bean id="conversionAvatarTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+				<property name="durability" value="true"></property>
+				<property name="jobClass" value="com.zy.job.ConversionAvatarJob"></property>
+			</bean>
+		</property>
+		<property name="cronExpression">
+			<value>0 0/2 * * * ?</value>
+		</property>
+	</bean>
+
+
+	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="conversionAvatarTrigger"/>
+				<ref bean="paymentCancelTrigger"/>
+			</list>
+		</property>
+		<property name="quartzProperties">
+			<props>
+				<prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
+				<prop key="org.quartz.threadPool.threadCount">30</prop>
+				<prop key="org.quartz.threadPool.threadPriority">5</prop>
+				<prop key="org.quartz.jobStore.misfireThreshold">60000</prop>
+				<prop key="org.quartz.jobStore.class">org.quartz.impl.jdbcjobstore.JobStoreTX</prop>
+				<prop key="org.quartz.jobStore.driverDelegateClass">org.quartz.impl.jdbcjobstore.StdJDBCDelegate</prop>
+				<prop key="org.quartz.jobStore.tablePrefix">QRTZ_</prop>
+				<prop key="org.quartz.jobStore.isClustered">true</prop>
+				<prop key="org.quartz.jobStore.clusterCheckinInterval">20000</prop>
+			</props>
+		</property>
+		<property name="waitForJobsToCompleteOnShutdown" value="true"/>
+		<property name="autoStartup" value="true"/>
+		<property name="jobFactory">
+			<bean class="com.zy.job.extend.SpringBeanJobFactory"/>
+		</property>
+		<property name="dataSource" ref="quartzDataSource"/>
+	</bean>
+
+	<bean id="quartzDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
+	      destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="url" value="${jdbc.quartzUrl}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+		<property name="initialSize" value="10"/>
+		<property name="minIdle" value="10"/>
+		<property name="maxActive" value="50"/>
+		<property name="maxWait" value="60000"/>
+		<property name="timeBetweenEvictionRunsMillis" value="60000"/>
+		<property name="minEvictableIdleTimeMillis" value="300000"/>
+		<property name="validationQuery" value="SELECT 'x' FROM DUAL"/>
+		<property name="testWhileIdle" value="true"/>
+		<property name="testOnBorrow" value="false"/>
+		<property name="testOnReturn" value="false"/>
+		<property name="filters" value="stat"/>
+	</bean>
+
+	<bean id="closeableHttpClient" class="com.zy.common.extend.CloseableHttpClientFactoryBean"
+	      destroy-method="destroy"/>
+
+	<bean id="aliyunOssSupport" class="com.zy.job.extend.AliyunOssSupport">
+		<constructor-arg index="0" value="${aliyun.ossEndpoint}"/>
+		<constructor-arg index="1" value="${aliyun.accessKeyId}"/>
+		<constructor-arg index="2" value="${aliyun.accessKeySecret}"/>
+		<constructor-arg index="3" value="${aliyun.ossGroup}"/>
+	</bean>
+
+</beans>
