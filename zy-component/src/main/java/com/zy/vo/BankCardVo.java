@@ -30,7 +30,7 @@ public class BankCardVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "银行卡号密文")
 	private String cardNumberLabel;
-	@Field(label = "开户行id")
-	private Long bankCode;
+	@Field(label = "开户行code")
+	private String bankCode;
 
 }

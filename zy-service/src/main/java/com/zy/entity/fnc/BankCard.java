@@ -66,7 +66,7 @@ public class BankCard implements Serializable {
 	@StringBinder
 	@Field(label = "开户行id")
 	@View
-	@View(name = "bankCode")
+	@View(name = "bankCode", type=String.class, field = @Field(label = "开户行code"))
 	private Long bankId;
 	
 	@NotBlank
