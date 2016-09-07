@@ -2,9 +2,11 @@ package com.zy.component;
 
 import static java.util.stream.Collectors.toSet;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,7 @@ import com.zy.entity.usr.Job;
 import com.zy.entity.usr.Portrait;
 import com.zy.model.dto.AreaDto;
 import com.zy.service.TagService;
+import com.zy.util.GcUtils;
 import com.zy.vo.PortraitAdminVo;
 import com.zy.vo.PortraitVo;
 
@@ -36,6 +39,7 @@ public class PortraitComponent {
 		portraitVo.setDistrict(areaDto.getDistrict());
 		portraitVo.setJobName(cacheComponent.getJob(portrait.getJobId()).getJobName());
 		portraitVo.setTagNames(new ArrayList<String>(Arrays.stream(portrait.getTagIds().split(",")).map(tag -> this.tagService.findById(Long.valueOf(tag)).getTagName()).collect(toSet())));
+		portraitVo.setBirthdayLabel(DateFormatUtils.format(portrait.getBirthday(), "yyyy-MM-dd"));
 		return portraitVo;
 	}
 	

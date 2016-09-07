@@ -58,4 +58,8 @@ public class Bank implements Serializable {
 	@Field(label = "是否删除")
 	private Boolean isDeleted;
 	
+	@Field(label = "排序")
+	@View(groups = "BankAdminVo")
+	@NotNull
+	private Integer orderNumber;
 }
