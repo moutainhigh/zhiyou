@@ -28,7 +28,7 @@
     <i class="error-icon font-orange fa fa-exclamation-triangle"></i>
     <div class="error-status">403</div>
     <div class="error-info">
-      <p>抱歉！您没有权限访问</p>
+      <p class="font-orange fs-16">抱歉！您没有权限访问</p>
       <p>请检查您输入的页面地址是否正确</p>
     </div>
     <div class="error-btn">

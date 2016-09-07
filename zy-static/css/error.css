@@ -10,7 +10,7 @@
 }
 .error-info p {
   margin-top: 10px;
-  font-size: 14px; line-height: 30px;
+  color: #777; font-size: 15px; line-height: 30px;
 }
 .error-btn {
   margin-top: 40px;
