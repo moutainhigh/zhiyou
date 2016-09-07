@@ -69,11 +69,11 @@ public class AppearanceServiceImpl implements AppearanceService {
 
 	@Override
 	public void confirm(@NotNull(message = "appearance id can not be null") Long id,
-						@NotNull(message ="appearance isSuccess cannot be null" ) boolean isSuccess, String confirmRemark, Integer score) {
+						@NotNull(message ="appearance isSuccess cannot be null" ) boolean isSuccess, String confirmRemark) {
 		Appearance appearance = this.appearanceMapper.findOne(id);
 		validate(appearance, NOT_NULL, "appearance is not exists");
 		if (appearance.getConfirmStatus() == ConfirmStatus.审核通过)
-			throw new BizException(BizCode.ERROR, "颜值已审核,不能再次审核");
+			throw new BizException(BizCode.ERROR, "实名认证已审核,不能再次审核");
 		Appearance merge = new Appearance();
 		merge.setId(id);
 		if (!isSuccess) {
@@ -82,14 +82,13 @@ public class AppearanceServiceImpl implements AppearanceService {
 			merge.setConfirmStatus(ConfirmStatus.审核未通过);
 			producer.send(Constants.TOPIC_APPEARANCE_REJECTED, appearance);
 		} else {
-			validate(score, NOT_NULL, "审核不通过, 请输入评分");
 			merge.setConfirmRemark(confirmRemark);
 			merge.setConfirmStatus(ConfirmStatus.审核通过);
 			merge.setConfirmedTime(new Date());
 			// 通过审核发送消息
 			producer.send(Constants.TOPIC_APPEARANCE_CONFIRMED, appearance);
 		}
-		appearanceMapper.merge(merge, "score", "confirmRemark", "confirmStatus", "confirmedTime");
+		appearanceMapper.merge(merge, "confirmRemark", "confirmStatus", "confirmedTime");
 	}
 
 	@Override
@@ -116,7 +115,7 @@ public class AppearanceServiceImpl implements AppearanceService {
 		Appearance persistence = appearanceMapper.findOne(id);
 		validate(persistence, NOT_NULL, "persistence id[" + id + "]not found");
 		if(persistence.getConfirmStatus() == ConfirmStatus.审核通过) {
-			throw new UnauthorizedException("颜值认证已审核过,不能重复编辑");
+			throw new UnauthorizedException("实名认证已审核过,不能重复编辑");
 		}
 		
 		persistence.setRealname(appearance.getRealname());

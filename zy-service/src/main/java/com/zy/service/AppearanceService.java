@@ -12,7 +12,7 @@ public interface AppearanceService {
 
 	Appearance findByUserId(Long userId);
 
-	void confirm(Long id, boolean isSuccess, String confirmRemark, Integer score);
+	void confirm(Long id, boolean isSuccess, String confirmRemark);
 
 	Appearance create(Appearance appearance);
 

@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>自我画像</title>
+<title>完善资料</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <link href="${stccdn}/css/ucenter/portrait.css" rel="stylesheet" />
@@ -36,9 +36,6 @@
         'birthday' : {
           required : true
         },
-        'consumptionLevel' : {
-          required : true
-        },
         'job' : {
           required : true
         },
@@ -46,26 +43,7 @@
           required : true
         }
       },
-      messages : {
-        'areaId' : {
-          required : '请选择所在地区'
-        },
-        'gender' : {
-          required : '请选择性别'
-        },
-        'birthday' : {
-          required : '请填写生日'
-        },
-        'consumptionLevel' : {
-          required : '请选择收入水平'
-        },
-        'job' : {
-          required : '请选择职业'
-        },
-        'tags' : {
-          required : '请填写标签'
-        }
-      }
+      messages : {}
     });
 
     /* tags 标签*/
@@ -91,7 +69,7 @@
         $('body').removeClass('header-fixed');
         $('#tagAside').hide();
       });
-      $('.header h1').text('自我画像');
+      $('.header h1').text('完善资料');
       $('#btnTagsClose').hide();
       $('#btnTagsSure').hide();
     }
@@ -155,7 +133,7 @@
 </head>
 <body class="portrait-create ox-hidden">
   <header class="header">
-    <h1>自我画像</h1>
+    <h1>完善资料</h1>
     <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
     <a href="javascript:;" id="btnTagsClose" class="button-left hide"><i class="fa fa-angle-left"></i></a>
     <a href="javascript:;" id="btnTagsSure" class="button-right hide"><span>确定</span></a>
@@ -202,7 +180,7 @@
         <div class="list-item">
           <label class="list-label">生日</label>
           <div class="list-text">
-            <input type="text" name="birthday" class="form-input" value="" placeholder="填写生日" onfocus="this.type='date'">
+            <input type="text" name="birthday" class="form-input" value="" placeholder="填写生日  1900-01-01" onfocus="this.type='date'">
           </div>
         </div>
 

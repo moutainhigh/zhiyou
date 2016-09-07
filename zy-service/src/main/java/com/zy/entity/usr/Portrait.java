@@ -15,6 +15,7 @@ import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
+import io.gd.generator.annotation.view.CollectionView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
@@ -132,7 +133,7 @@ public class Portrait implements Serializable {
 	private ConsumptionLevel consumptionLevel;
 
 	@Field(label = "标签")
-	@View(name = "tagNames", type = String.class)
+	@CollectionView(name = "tagNames", elementType = String.class)
 	private String tagIds;
 
 }

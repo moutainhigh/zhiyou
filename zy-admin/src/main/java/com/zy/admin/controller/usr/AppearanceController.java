@@ -47,9 +47,9 @@ public class AppearanceController {
 	@RequiresPermissions("appearance:confirm")
 	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> confirm(@RequestParam Long id, @RequestParam boolean isSuccess, String confirmRemark, Integer score) {
+	public Result<?> confirm(@RequestParam Long id, @RequestParam boolean isSuccess, String confirmRemark) {
 		try{
-			appearanceService.confirm(id, isSuccess, confirmRemark, score);
+			appearanceService.confirm(id, isSuccess, confirmRemark);
 		}catch (Exception e) {
 			return ResultBuilder.error("审核失败:" + e.getMessage());
 		}
