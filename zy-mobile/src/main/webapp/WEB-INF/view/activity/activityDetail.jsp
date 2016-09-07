@@ -19,12 +19,9 @@
     $('.tab-nav > a').tabs('.tab-content');
     
     $('#btnCollect').click(function(){
-      if($(this).hasClass('collected')) {
-        messageFlash('已关注');
-        return;
-      }
+      var collected = $(this).hasClass('collected');
       $.ajax({
-        url: '${ctx}/u/activity/collect',
+        url: '${ctx}/u/activity/' + (collected ? 'uncollect' : 'collect'),
         data: {
           id: '${activity.id}'
         },
@@ -32,10 +29,13 @@
         type: 'post',
         success: function(result){
           if(result.code == 0) {
-            messageFlash('关注成功');
-            $('#btnCollect').addClass('collected').html('<i class="fa fa-heart font-orange"></i><span>已关注 (' + ((parseInt($('#btnCollect').find('em').text()) || 0) + 1) + ')</span>');
-          } else {
-            
+            if(collected) {
+              messageFlash('取消关注');
+              $('#btnCollect').removeClass('collected').html('<i class="fa fa-heart-o"></i><span>关注 (<em>' + ((parseInt($('#btnCollect').find('em').text()) || 0) - 1) + '</em>)</span>');
+            } else {
+              messageFlash('关注成功');
+              $('#btnCollect').addClass('collected').html('<i class="fa fa-heart font-orange"></i><span>已关注 (<em>' + ((parseInt($('#btnCollect').find('em').text()) || 0) + 1) + '</em>)</span>');
+            }
           }
         }
       });

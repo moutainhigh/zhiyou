@@ -26,7 +26,6 @@
   <header class="header">
     <h1>我关注的活动</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <a href="javascript" class="button-right"><i class="fa fa-edit"></i></a>
   </header>
 
   <article>

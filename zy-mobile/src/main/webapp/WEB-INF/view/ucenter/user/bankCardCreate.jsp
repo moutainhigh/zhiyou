@@ -110,7 +110,7 @@
     <div class="list-group">
       <c:forEach items="${banks}" var="bank">
       <div class="list-item bank" data-id="${bank.id}" data-name="${bank.name}" data-code="${bank.code}">
-        <div class="list-icon"><i class="icon icon-bank-${bank.code}"></i></div>
+        <i class="icon icon-2x icon-bank-${bank.code} mr-15"></i>
         <div class="list-text">${bank.name}</div>
       </div>
       </c:forEach>
