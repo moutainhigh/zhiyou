@@ -22,7 +22,7 @@
     });
     $('#deliverType1').click(function(){
       $('#logistics').slideDown(300);
-  });
+    });
 
     $('.image-view > img').click(function() {
       var url = $(this).attr('data-src');
@@ -79,6 +79,24 @@
         });
       }
     });
+    
+    $(".valid-form").validate({
+      rules : {
+        'name' : {
+          required : true
+        },
+        'province' : {
+          required : true
+        },
+        'captcha' : {
+          required : true
+        },
+        'simage' : {
+          required : true
+        }
+      }
+    });
+  
   });
 </script>
 </head>
@@ -90,7 +108,7 @@
   </header>
 
   <article>
-    <form action="${ctx}/u/order/deliver" class="valid-form" method="post">
+    <form action="${ctx}/u" class="valid-form" method="get">
       <input type="hidden" name="orderId" value="${orderId}">
       <div class="list-group">
         <div class="list-title">列表布局</div>
@@ -119,7 +137,6 @@
         <div class="list-item">
           <label class="list-label" for="name">姓名</label>
           <div class="list-text"><input id="name" name="name" class="form-input" type="text" value="" placeholder="请输入姓名"></div>
-          <div class="form-error"><i class="fa fa-exclamation-circle"></i></div>
         </div>
         <div class="list-item">
           <label class="list-label" for="age">年龄</label>
@@ -166,7 +183,6 @@
               <option value="">北京</option>
             </select>
           </div>
-          <div class="form-error"><i class="fa fa-exclamation-circle"></i></div>
         </div>
         <!-- form-input/textarea -->
         <div class="list-item">
@@ -239,7 +255,7 @@
           <label class="list-label">单个图片</label>
           <div class="list-text image-upload image-single">
             <div class="image-item">
-              <input type="hidden" name="infoImage2" id="infoImage2" value="">
+              <input type="hidden" name="simage" id="simage" value="">
               <img src="${stccdn}/image/defaultImage_240_150.png">
               <input type="file">
             </div>
@@ -284,7 +300,7 @@
       </div>
       
       <div class="form-btn">
-        <input id="btnSubmit" class="btn-submit btn orange btn-block" type="submit" value="确认发货">
+        <input id="btnSubmit" class="btn-submit btn orange btn-block" type="submit" value="提交">
       </div>
       
     </form>
