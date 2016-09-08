@@ -25,4 +25,6 @@ public interface OrderService {
 	void modifyIsPlatformDeliver(Long orderId, boolean isPlatformDeliver); // 设置是否平台发货
 
 	void modifySellerId(Long orderId, Long sellerId); // 设置卖家
+
+	void settleUp(Long orderId);
 }

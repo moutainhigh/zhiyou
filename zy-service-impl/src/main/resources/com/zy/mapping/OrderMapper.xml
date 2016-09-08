@@ -185,6 +185,9 @@
 				#{item}
 				</foreach>
 			</if>
+			<if test="isSettledUpEQ != null">
+				 and is_settled_up = #{isSettledUpEQ}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -240,6 +243,9 @@
 				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+			</if>
+			<if test="isSettledUpEQ != null">
+				 and is_settled_up = #{isSettledUpEQ}
 			</if>
 		</where>
 	</select>

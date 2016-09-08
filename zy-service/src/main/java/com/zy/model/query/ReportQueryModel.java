@@ -30,6 +30,8 @@ public class ReportQueryModel implements Serializable {
 
 	private ConfirmStatus confirmStatusEQ;
 
+	private Boolean isSettledUpEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;

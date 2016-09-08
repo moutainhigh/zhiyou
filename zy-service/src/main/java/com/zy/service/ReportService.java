@@ -15,4 +15,6 @@ public interface ReportService {
 	Page<Report> findPage(ReportQueryModel reportQueryModel);
 
 	void confirm(Long id, boolean isSuccess, String confirmRemark);
+
+	void settleUp(Long id);
 }

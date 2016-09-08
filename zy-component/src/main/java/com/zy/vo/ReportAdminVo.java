@@ -44,7 +44,7 @@ public class ReportAdminVo implements Serializable {
 	private String image6;
 	@Field(label = "创建时间")
 	private Date createdTime;
-	@Field(label = "一审状态")
+	@Field(label = "初审状态")
 	private ConfirmStatus preConfirmStatus;
 	@Field(label = "审核状态")
 	private ConfirmStatus confirmStatus;

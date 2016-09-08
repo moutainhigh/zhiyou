@@ -110,20 +110,23 @@
 			<if test="preConfirmStatusEQ != null">
 				 and pre_confirm_status = #{preConfirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
-			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
-			</if>
 			<if test="userIdIN != null">
 				 and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
 			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
 			<if test="confirmStatusEQ != null">
 				 and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="realnameLK != null">
 				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+			<if test="isSettledUpEQ != null">
+				 and is_settled_up = #{isSettledUpEQ}
 			</if>
 		</where>
 		<choose>
@@ -145,20 +148,23 @@
 			<if test="preConfirmStatusEQ != null">
 				 and pre_confirm_status = #{preConfirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
-			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
-			</if>
 			<if test="userIdIN != null">
 				 and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
 			</if>
+			<if test="userIdEQ != null">
+				 and user_id = #{userIdEQ}
+			</if>
 			<if test="confirmStatusEQ != null">
 				 and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="realnameLK != null">
 				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+			<if test="isSettledUpEQ != null">
+				 and is_settled_up = #{isSettledUpEQ}
 			</if>
 		</where>
 	</select>

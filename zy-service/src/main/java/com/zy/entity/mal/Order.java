@@ -151,6 +151,7 @@ public class Order implements Serializable {
 	@Field(label = "是否已结算")
 	@View(groups = {"OrderAdminVo"})
 	@NotNull
+	@Query(Predicate.EQ)
 	private Boolean isSettledUp;
 
 	@Field(label = "是否物流发货")
