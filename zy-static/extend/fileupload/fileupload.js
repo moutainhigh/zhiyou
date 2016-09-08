@@ -6,6 +6,15 @@
     if (!element) {
       return;
     }
+    if(!options.width) {
+      options.width = 100;
+    }
+    if(!options.height) {
+      options.height = 100;
+    }
+    if(!options.retain) {
+      options.retain = 2;
+    }
     element.style.width = options.width + 'px';
     element.style.height = options.height + 'px';
     
@@ -73,6 +82,8 @@
       // get form data for POSTing
       var vFD = new FormData();
       vFD.append("file", file);
+      vFD.append("width", options.width *　options.retain);
+      vFD.append("height", options.height * options.retain);
       // create XMLHttpRequest object, adding few event listeners, and POSTing our data
       var oXHR = new XMLHttpRequest();
       oXHR.addEventListener('load', uploadSuccess, false);
@@ -112,19 +123,19 @@
         alert('图片上传失败，请重试' + '[' + result.code + ']');
         return;
       }
-      var imageUrl = result.data;
-      //alert(imageUrl);
+      var resultData = result.data;
+      //alert(result);
       
       var imageObj = element.getElementsByTagName('img')[0];
       var inputHidden = element.getElementsByTagName('input')[0];
       if(imageObj){
-        imageObj.src = imageUrl;
+        imageObj.src = resultData.imageThumbnail;
       }
       if(inputHidden){
-        inputHidden.value = imageUrl;
+        inputHidden.value = resultData.image;
       }
       if(options.success) {
-        options.success.call(element, imageUrl);
+        options.success.call(element, resultData);
       }
     };
     var sizeToBytes = function(size) {
