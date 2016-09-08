@@ -93,12 +93,12 @@
       </c:if>
       <c:if test="${user.userRank != 'V0'}">
       <a class="list-item" href="${ctx}/product/1">
-        <i class="list-icon icon icon-agent"></i>
+        <i class="list-icon icon icon-upgrade"></i>
         <div class="list-text">升级代理</div>
         <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/invite">
-        <i class="list-icon icon icon-account"></i>
+        <i class="list-icon icon icon-users"></i>
         <div class="list-text">我的团队</div>
         <i class="list-arrow"></i>
       </a>
