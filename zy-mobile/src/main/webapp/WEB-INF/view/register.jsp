@@ -91,7 +91,7 @@
   });
 </script>
 </head>
-<body class="header-fixed">
+<body>
   <header class="header">
     <h1>注册</h1>
   </header>

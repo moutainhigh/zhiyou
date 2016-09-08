@@ -15,6 +15,7 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
+<link rel="stylesheet" href="${stccdn}/css/load5.css" />
 <script type="text/javascript">
   $(function() {
     $('#deliverType0').click(function(){
@@ -101,8 +102,8 @@
   </header>
 
   <article>
-    <div class="width-200 height-200">
-      <div class="loading loading-2x"></div>
+    <div class="width-200 height-200 load5">
+      <div class="loader loading-2x"></div>
     </div>
     <form action="${ctx}/u" class="valid-form" method="get">
       <input type="hidden" name="orderId" value="${orderId}">
