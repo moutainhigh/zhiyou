@@ -40,7 +40,7 @@
           orderable : false,
           width : '200px',
           render : function(data, type, full) {
-            return '银行: ' + data + '<p>省市区: ' + full.provice + ' - ' + full.city + ' - ' + full.district + '</p>';
+            return '银行: ' + data;
           }
         }, {
           data : 'bankBranchName',
