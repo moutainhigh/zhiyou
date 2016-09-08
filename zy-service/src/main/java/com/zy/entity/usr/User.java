@@ -89,7 +89,6 @@ public class User implements Serializable {
 	private UserRank userRank;
 
 	@Column(length = 11)
-	@NotBlank
 	@Pattern(regexp = "^[\\d]{5,11}$")
 	@Field(label = "qq")
 	@View(groups = {"UserAdminVo"})
