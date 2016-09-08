@@ -108,12 +108,12 @@
     <div class="list-group">
       <a class="list-item list-item-icon" href="${ctx}/u/activity/applyList">
         <i class="list-icon icon icon-join"></i>
-        <div class="list-text">我参与的活动</div>
+        <div class="list-text">参与的活动</div>
         <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/activity/collectList">
         <i class="list-icon icon icon-heart"></i>
-        <div class="list-text">我关注的活动</div>
+        <div class="list-text">关注的活动</div>
         <i class="list-arrow"></i>
       </a>
     </div>

@@ -10,10 +10,12 @@ import com.zy.component.AccountComponent;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
+import com.zy.model.Constants;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.ProfitService;
 import com.zy.service.UserService;
 import com.zy.vo.AccountAdminVo;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,7 +59,7 @@ public class AccountController {
 	@RequiresPermissions("account:deposit")
 	@RequestMapping("/deposit")
 	@ResponseBody
-	public Result<?> deposit(Long userId, CurrencyType currencyType, @BigDecimalBinder BigDecimal amount, String remark) {
+	public Result<?> deposit(Long userId, @BigDecimalBinder BigDecimal amount, String remark) {
 
 		User user = userService.findOne(userId);
 		validate(user, NOT_NULL, "user id" + userId + " not found");
@@ -66,9 +68,7 @@ public class AccountController {
 		}
 
 		try {
-			
-			// TODO
-			profitService.grant(userId, "123", "系统补偿" + currencyType.getAlias(), currencyType, amount, remark);
+			profitService.grant(userId, Constants.BIZ_NAME_GRANT, "赠送余额", CurrencyType.现金, amount, remark);
 		} catch (Exception e) {
 			return ResultBuilder.error("充值失败," + e.getMessage());
 		}

@@ -101,9 +101,6 @@
   </header>
 
   <article>
-    <div class="width-200 height-200">
-      <div class="loading loading-2x"></div>
-    </div>
     <form action="${ctx}/u" class="valid-form" method="get">
       <input type="hidden" name="orderId" value="${orderId}">
       <div class="list-group">

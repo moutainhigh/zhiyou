@@ -46,31 +46,11 @@
           }
         }, {
           data : 'money',
-          title : '<i class="fa fa-money"></i> 本金',
+          title : '<i class="fa fa-money"></i> 余额',
           width : '100px',
           render : function(data, type, full) {
             if (data) {
               return data.toFixed(2);
-            }
-            return '-';
-          }
-        }, {
-          data : 'coin',
-          title : '<i class="fa fa-database"></i> 试客币',
-          width : '100px',
-          render : function(data, type, full) {
-            if (data) {
-              return data.toFixed(2);
-            }
-            return '-';
-          }
-        }, {
-          data : 'point',
-          title : '<i class="fa fa-life-ring"></i> 积分',
-          width : '100px',
-          render : function(data, type, full) {
-            if (data) {
-              return data.toFixed(0);
             }
             return '-';
           }
@@ -84,7 +64,7 @@
             if (full.user) {
               if (full.user.userType != '平台') {
                 <shiro:hasPermission name="account:deposit">
-                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="deposit(' + full.userId + ')"><i class="fa fa-money"></i> 赠送本金/试客币 </a>';
+                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="deposit(' + full.userId + ')"><i class="fa fa-money"></i> 赠送余额</a>';
                 </shiro:hasPermission>
               }
             }
@@ -101,13 +81,7 @@
           content: "<form action='' class='form-horizontal' style='margin-top: 20px;'>"
         		+"<div class='form-body'>"
         			+"<div class='form-group'>"
-        			+"<label class='control-label col-md-3'>赠送类型:</label>"
-        			+"<div class='col-md-5'>"
-        			+"<select class='form-control' id='currencyType'><option value=''>--请选择--</option><option value='现金'>本金</option><option value='金币'>试客币</option><option value='积分'>积分</option></select>"
-        			+"</div>"
-        			+"</div>"
-        			+"<div class='form-group'>"
-        			+"<label class='control-label col-md-3'>赠送金额:</label>"
+        			+"<label class='control-label col-md-3'>赠送余额:</label>"
         			+"<div class='col-md-5'><input type='text' id='amount' class='form-control' value=''/></div>"
         			+"</div>"
         			+"<div class='form-group'>"
@@ -132,15 +106,10 @@
   }
   function submitBtn(userId) {
     var amount = $('#amount').val();
-    var currencyType = $('#currencyType').find("option:selected").val();
     var remark = $('#remark').val();
 
     var reg = new RegExp("^[0-9]+(.[0-9]{1,2})?$");
 
-    if (currencyType == null || currencyType == '') {
-      alert('请选择赠送类型');
-      return;
-    }
     if (amount == null || amount == '') {
       alert('请输入赠送金额');
       return;
@@ -155,11 +124,14 @@
     }
     $.post('${ctx}/account/deposit', {
       userId : userId,
-      currencyType : currencyType,
       amount : amount,
       remark : remark
     }, function(result) {
-      toastr.success(result.message, '提示信息');
+      if(result.code == 0) {
+        toastr.success(result.message, '提示信息');
+      } else {
+        toastr.error(result.message, '提示信息');
+      }
       $addMoneyDialog.close();
       grid.getDataTable().ajax.reload(null, false);
     });
@@ -187,13 +159,6 @@
         <div class="caption">
           <i class="icon-wallet"></i><span>资金账户管理 </span>
         </div>
-        <!-- <div class="actions">
-       	  <div class="btn-group">
-	        <a class="btn green" href="">
-	          <i class="fa fa-search"></i> 新增
-	        </a>
-          </div>
-        </div> -->
       </div>
       <div class="portlet-body clearfix">
         <div class="table-container">

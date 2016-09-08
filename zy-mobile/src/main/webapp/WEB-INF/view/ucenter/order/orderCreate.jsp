@@ -12,7 +12,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <link href="${stccdn}/css/ucenter/order.css" rel="stylesheet"> 
-<link href="${stccdn}/css/ucenter/address.css" rel="stylesheet" />
 <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
 
 <title>确认订单信息</title>
@@ -107,7 +106,7 @@
     $('#addressCreate').show().animate({
       'left' : 0
     }, 300, function() {
-      $('.#addressList').remove();
+      $('#addressList').remove();
     });
     var area = new areaInit('province', 'city', 'district');
   }
@@ -116,8 +115,8 @@
     $('#addressCreate').animate({
       'left' : '100%'
     }, 300, function() {
+      $('#addressCreate').remove();
       $('body').removeClass('o-hidden');
-      $('#bankList').hide();
     });
   }
 
@@ -127,9 +126,8 @@
       type : 'POST',
       dataType : 'json',
       success : function(result) {
-        var addressTpl = document.getElementById('addressTpl').innerHTML;
+        var addressTpl = document.getElementById('addressListTpl').innerHTML;
         laytpl(addressTpl).render(result.data, function(html) {
-          closeAddress();
           $('article > .list-item').hide();
           $('body').addClass('o-hidden').append(html);
           $('#addressList').show().animate({
@@ -146,6 +144,7 @@
     $('#addressList').animate({
       'left' : '100%'
     }, 300, function() {
+      $('#addressList').remove();
       $('body').removeClass('o-hidden');
     });
   }
@@ -230,18 +229,18 @@
 </script>
 
 <script id="addressListTpl" type="text/html">
-<aside id="addressList" class="abs-lt size-100p bg-white z-100" style="left: 100%; display: none;">
+<aside id="addressList" class="address-list abs-lt size-100p bg-white z-100" style="left: 100%; display: none;">
   <header class="header">
     <h1>设置收货地址</h1>
     <a href="javascript:hideAddressList();" class="button-left"><i class="fa fa-angle-left"></i></a>
     <a href="javascript:;" class="button-right btn-add-address">新增</a>
   </header>
-  <div class="address-list clearfix">
+  <div class="list-group">
   	{{# for(var i = 0, len = d.length; i < len; i++){ }}
-      <a href="javascript:;" class="address" data-id="{{ d[i].id }}">
-        <div class="address-wrap relative">
-          <div class="fs-16 bold lh-24"><span class="address-name">{{ d[i].realname }}</span><span class="address-phone right">{{ d[i].phone }}</span></div>
-          <div class="fs-12 address-text">{{ d[i].province }} {{ d[i].city }} {{ d[i].district }} {{ d[i].address }}</div>
+      <a href="javascript:;" class="list-item address" data-id="{{ d[i].id }}">
+        <div class="list-text pl-10 pr-10">
+          <div><span class="address-name">{{ d[i].realname }}</span><span class="address-phone fs-14 font-777 right">{{ d[i].phone }}</span></div>
+          <div class="fs-14 font-777 address-text">{{ d[i].province }} {{ d[i].city }} {{ d[i].district }} {{ d[i].address }}</div>
         </div>
       </a>
       {{# } }}

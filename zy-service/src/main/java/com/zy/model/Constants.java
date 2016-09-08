@@ -110,6 +110,7 @@ public interface Constants {
     String BIZ_NAME_ORDER_PAY = "订单支付";
     String BIZ_NAME_ORDER_PROFIT = "订单分润";
     String BIZ_NAME_REPORT = "检测报告";
+    String BIZ_NAME_GRANT = "赠送余额";
 
 
 

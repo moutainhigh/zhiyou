@@ -14,20 +14,19 @@
 
 <title>本金记录</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<link rel="stylesheet" href="${stccdn}/css/ucenter/currency.css" />
 <script type="text/javascript">
   $(function() {
     if (!$('.list-more').hasClass('disabled')) {
       $('.list-more').click(loadMore);
     }
   });
-
+  
   var timeLT = '${timeLT}';
   var pageNumber = 0;
-
+  
   function loadMore() {
     $.ajax({
-      url : '${ctx}/u/money/log',
+      url : '${ctx}/u/report',
       data : {
         pageNumber : pageNumber + 1,
         timeLT : timeLT
@@ -35,18 +34,17 @@
       dataType : 'json',
       type : 'POST',
       success : function(result) {
+        if(result.code != 0) {
+          return;
+        }
         var page = result.data.page;
         if (page.data.length) {
           timeLT = result.data.timeLT;
           pageNumber = page.pageNumber;
           var pageData = page.data;
           for ( var i in pageData) {
-            var item = pageData[i];
-            var html = '<div class="list-item">' + '<div class="title lh-24 text-ellipsis">' + item.title + '</div>' + '<div class="inout '
-                + (item.inOut == '收入' ? 'currency-in' : 'currency-out') + ' lh-24 text-right">' + item.transAmount.toFixed(2) + '</div>' + '<div class="clearfix lh-24">'
-                + '<span class="left fs-12 font-999">' + item.transTimeLabel + '</span>' + '<span class="right fs-12 font-999">余额: ' + item.afterAmount.toFixed(2) + '</span>'
-                + '</div></div>';
-            $(html).insertBefore($('.list-more'));
+            var row = pageData[i];
+            buildRow(row);
           }
         }
         if (!page.data.length || page.data.length < page.pageSize) {
@@ -55,6 +53,15 @@
       }
     });
   }
+  
+  function buildRow(row){
+    var html = '<div class="list-item">' + '<div class="title lh-24 text-ellipsis">' + row.title + '</div>' + '<div class="inout '
+    	+ (row.inOut == '收入' ? 'currency-in' : 'currency-out') + ' lh-24 text-right">' + row.transAmount.toFixed(2) + '</div>' + '<div class="clearfix lh-24">'
+    	+ '<span class="left fs-12 font-999">' + row.transTimeLabel + '</span>' + '<span class="right fs-12 font-999">余额: ' + row.afterAmount.toFixed(2) + '</span>'
+    	+ '</div></div>';
+    $(html).insertBefore($('.list-more'));
+  }
+
 </script>
 </head>
  
@@ -78,13 +85,13 @@
     	
       <c:forEach items="${page.data}" var="accountLog">
       <div class="list-item">
-        <div class="log-item">
-          <div class="title lh-24 text-ellipsis">${accountLog.title}</div>
-          <div class="inout<c:if test="${accountLog.inOut == '支出'}"> currency-out</c:if><c:if test="${accountLog.inOut == '收入'}"> currency-in</c:if> lh-24 text-right">${accountLog.transAmount}</div>
-          <div class="clearfix lh-24">
-            <span class="left fs-12 font-999">${accountLog.transTimeLabel}</span>
-            <span class="right fs-12 font-999">余额: ${accountLog.afterAmount}</span>
-          </div>
+        <div class="list-text pl-5">
+          <div class="fs-14">${accountLog.title}</div>
+          <div class="fs-12 font-999">${accountLog.transTimeLabel}</div>
+        </div>
+        <div class="list-unit width-100 text-right">
+          <div class="<c:if test="${accountLog.inOut == '支出'}"> currency-out</c:if><c:if test="${accountLog.inOut == '收入'}"> currency-in</c:if>">${accountLog.transAmount}</div>
+          <div class="fs-12 font-999">余额: ${accountLog.afterAmount}</div>
         </div>
       </div>
       </c:forEach>
@@ -102,6 +109,19 @@
     </div>
   	</c:if>
     
+     <div class="list-group">
+    <div class="list-item">
+        <div class="list-text pl-5">
+          <div class="fs-14">舒服的空间放水电费水电费水电费水电费水电费水电费</div>
+          <div class="fs-12 font-999">1924-1243-1</div>
+        </div>
+        <div class="list-unit width-100 text-right">
+          <div class="currency-out">12.00</div>
+          <div class="fs-12 font-999">余额: 35.00</div>
+        </div>
+      </div>
+      </div>
+      
   </article>
 
 </body>
