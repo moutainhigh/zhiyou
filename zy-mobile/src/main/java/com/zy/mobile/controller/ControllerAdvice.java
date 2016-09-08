@@ -1,13 +1,18 @@
 package com.zy.mobile.controller;
 
-import java.beans.PropertyEditorSupport;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.zy.common.exception.BizException;
+import com.zy.common.exception.UnauthenticatedException;
+import com.zy.common.exception.UnauthorizedException;
+import com.zy.common.exception.ValidationException;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.util.JsonUtils;
+import com.zy.common.util.WebUtils;
+import com.zy.model.BizCode;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
+import com.zy.util.GcUtils;
+import me.chanjar.weixin.common.api.WxConsts;
+import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,20 +28,14 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.zy.common.exception.BizException;
-import com.zy.common.exception.UnauthenticatedException;
-import com.zy.common.exception.UnauthorizedException;
-import com.zy.common.exception.ValidationException;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.util.JsonUtils;
-import com.zy.common.util.WebUtils;
-import com.zy.model.BizCode;
-import com.zy.model.Constants;
-import com.zy.model.Principal;
-import com.zy.util.GcUtils;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.beans.PropertyEditorSupport;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
 
-import me.chanjar.weixin.common.api.WxConsts;
-import me.chanjar.weixin.mp.api.WxMpService;
+import static com.zy.model.Constants.SESSION_ATTRIBUTE_REDIRECT_URL;
 
 @org.springframework.web.bind.annotation.ControllerAdvice
 public class ControllerAdvice {
@@ -65,12 +64,18 @@ public class ControllerAdvice {
 	@ExceptionHandler(UnauthenticatedException.class)
 	public String handleUnauthenticatedException(UnauthenticatedException e, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		logger.info("UnauthenticatedException");
+
+		String redirectUrl = GcUtils.resolveRedirectUrl(request);
+		request.getSession().setAttribute(SESSION_ATTRIBUTE_REDIRECT_URL, redirectUrl);
+		String url = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_USER_INFO,
+				Constants.WEIXIN_STATE_USERINFO);
 		if (WebUtils.isAjax(request)) {
+			OutputStream os = response.getOutputStream();
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+			os.write(url.getBytes(Charset.forName("UTF-8")));
 			return null;
 		} else {
-			String url = wxMpService.oauth2buildAuthorizationUrl(GcUtils.resolveRedirectUrl(request), WxConsts.OAUTH2_SCOPE_USER_INFO,
-					Constants.WEIXIN_STATE_USERINFO);
 			logger.info("send to userinfo auth: " + url);
 			response.sendRedirect(url);
 			return null;

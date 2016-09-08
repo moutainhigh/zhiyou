@@ -30,7 +30,6 @@ import static com.zy.common.util.ValidateUtils.NOT_BLANK;
 import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.model.Constants.SESSION_ATTRIBUTE_AGENT_REGISTER_DTO;
 import static com.zy.model.Constants.SESSION_ATTRIBUTE_PRINCIPAL;
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_REDIRECT_URL;
 
 public class WeixinCodeValidationFilter implements Filter {
 
@@ -85,7 +84,6 @@ public class WeixinCodeValidationFilter implements Filter {
 					agentRegisterDto.setNickname(wxMpUser.getNickname());
 
 					session.setAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO, agentRegisterDto);
-					session.setAttribute(SESSION_ATTRIBUTE_REDIRECT_URL, GcUtils.resolveRedirectUrl(httpServletRequest));
 					String redirectTo = httpServletRequest.getContextPath() + "/register";
 					logger.info("redirectTo: " + redirectTo);
 					httpServletResponse.sendRedirect(redirectTo); // 重定向到注册页面
