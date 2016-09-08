@@ -4,11 +4,15 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.cache.CacheSupport;
 import com.zy.common.support.sms.SmsSupport;
+import com.zy.common.util.CookieUtils;
+import com.zy.common.util.Identities;
 import com.zy.common.util.ValidateUtils;
 import com.zy.entity.sys.ShortMessage;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.PhoneAndSmsCode;
+import com.zy.model.Principal;
+import com.zy.model.PrincipalBuilder;
 import com.zy.model.dto.AgentRegisterDto;
 import com.zy.service.BannerService;
 import com.zy.service.ShortMessageService;
@@ -29,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 
@@ -72,7 +77,7 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register(Model model, HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes, @RequestParam String smsCode,
+	public String register(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, @RequestParam String smsCode,
 	                       @RequestParam String phone) {
 		
 		AgentRegisterDto agentRegisterDto = (AgentRegisterDto) session.getAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO);
@@ -104,7 +109,7 @@ public class LoginController {
 		agentRegisterDto.setPhone(phone);
 		agentRegisterDto.setRegisterIp(GcUtils.getHost());
 
-		userService.registerAgent(agentRegisterDto);
+		user = userService.registerAgent(agentRegisterDto);
 
 		session.removeAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS);
 
@@ -113,6 +118,7 @@ public class LoginController {
 			redirectUrl = "/";
 		}
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, "恭喜您, 注册成功");
+		onLoginSuccess(request, response, user.getId());
 		return "redirect:" + redirectUrl;
 	}
 
@@ -157,6 +163,22 @@ public class LoginController {
 		session.setAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS, new PhoneAndSmsCode(phone, smsCode));
 		cacheSupport.set(CACHE_NAME_BIND_PHONE_SMS_LAST_SEND_TIME, phone, new Date(), 600);
 		return ResultBuilder.ok("短信发送成功");
+	}
+
+	private void onLoginSuccess(HttpServletRequest request, HttpServletResponse response, Long userId) {
+		String tgt = "tgt-" + Identities.uuid();
+		HttpSession session = request.getSession();
+		Principal principal = PrincipalBuilder.build(userId, tgt);
+		session.setAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL, principal);
+		int expire = 60 * 60 * 24 * 7;
+		boolean rememberMe = true;
+		if (rememberMe) {
+			CookieUtils.add(response, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, expire, Constants.DOMAIN_MOBILE);
+		} else {
+			CookieUtils.add(response, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, -1, Constants.DOMAIN_MOBILE);
+		}
+		cacheSupport.set(Constants.CACHE_NAME_TGT, tgt, userId, expire);
+
 	}
 	
 
