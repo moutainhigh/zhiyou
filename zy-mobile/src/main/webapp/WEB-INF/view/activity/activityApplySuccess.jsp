@@ -33,12 +33,10 @@
     <h2 class="font-555 fs-16 lh-30 text-center mt-30 mb-20">恭喜您，报名成功！</h2>
     <div class="list-group pl-15 pr-15 pt-10 pb-10">
       <h2 class="font-333 text-center lh-60">${activity.title}</h2>
-      <p class="clearfix fs-14 lh-30">
-        <span class="left font-999">活动时间</span><span class="right font-555">${activity.startTimeLabel} 至 ${activity.endTimeLabel}</span>
-      </p>
-      <p class="clearfix fs-14 lh-30">
-        <span class="left font-999">活动地点</span><span class="right font-555">${activity.province}${activity.city}${activity.district}${activity.address}</span>
-      </p>
+      <div class="font-999 fs-14 lh-24"><i class="fa fa-clock-o"></i> 活动时间</div>
+      <p class="font-555 fs-14 lh-30">${activity.startTimeLabel} 至 ${activity.endTimeLabel}</p>
+      <div class="font-999 fs-14 lh-24"><i class="fa fa-map-marker"></i> 活动地点</div>
+      <p class="font-555 fs-14 lh-30">${activity.province}${activity.city}${activity.district}${activity.address}</p>
     </div>
     <div class="form-btn mt-30">
       <a href="javascript:history.back();" class="btn green btn-block round-4">确 定</a>
