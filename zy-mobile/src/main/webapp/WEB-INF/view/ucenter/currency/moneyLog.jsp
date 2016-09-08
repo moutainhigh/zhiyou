@@ -48,7 +48,7 @@
           }
         }
         if (!page.data.length || page.data.length < page.pageSize) {
-          $('.list-more').addClass('disabled').text('没有更多数据了').unbind('click', loadMore);
+          $('.list-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
         }
       }
     });
@@ -56,9 +56,9 @@
   
   function buildRow(row){
     var html = '<div class="list-item">' + '<div class="title lh-24 text-ellipsis">' + row.title + '</div>' + '<div class="inout '
-    	+ (row.inOut == '收入' ? 'currency-in' : 'currency-out') + ' lh-24 text-right">' + row.transAmount.toFixed(2) + '</div>' + '<div class="clearfix lh-24">'
-    	+ '<span class="left fs-12 font-999">' + row.transTimeLabel + '</span>' + '<span class="right fs-12 font-999">余额: ' + row.afterAmount.toFixed(2) + '</span>'
-    	+ '</div></div>';
+      + (row.inOut == '收入' ? 'currency-in' : 'currency-out') + ' lh-24 text-right">' + row.transAmount.toFixed(2) + '</div>' + '<div class="clearfix lh-24">'
+      + '<span class="left fs-12 font-999">' + row.transTimeLabel + '</span>' + '<span class="right fs-12 font-999">余额: ' + row.afterAmount.toFixed(2) + '</span>'
+      + '</div></div>';
     $(html).insertBefore($('.list-more'));
   }
 
@@ -82,7 +82,7 @@
     
     <c:if test="${not empty page.data}">
     <div class="list-group">
-    	
+      
       <c:forEach items="${page.data}" var="accountLog">
       <div class="list-item">
         <div class="list-text pl-5">
@@ -97,31 +97,15 @@
       </c:forEach>
       
       <c:if test="${page.total > page.pageSize}">
-      <a class="list-item" href="javascript:;">
-        <div class="list-more text-center">点击加载更多</div>
-      </a>
+      <a class="list-item list-more" href="javascript:;"><span>点击加载更多</span></a>
       </c:if>
       <c:if test="${page.total <= page.pageSize}">
-      <a class="list-item" href="javascript:;">
-        <div class="list-more disabled text-center">没有更多数据了</div>
-      </a>
+      <a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>
       </c:if>
-    </div>
-  	</c:if>
-    
-     <div class="list-group">
-    <div class="list-item">
-        <div class="list-text pl-5">
-          <div class="fs-14">舒服的空间放水电费水电费水电费水电费水电费水电费</div>
-          <div class="fs-12 font-999">1924-1243-1</div>
-        </div>
-        <div class="list-unit width-100 text-right">
-          <div class="currency-out">12.00</div>
-          <div class="fs-12 font-999">余额: 35.00</div>
-        </div>
-      </div>
-      </div>
       
+    </div>
+    </c:if>
+    
   </article>
 
 </body>
