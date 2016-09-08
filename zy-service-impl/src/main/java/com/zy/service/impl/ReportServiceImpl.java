@@ -37,12 +37,21 @@ public class ReportServiceImpl implements ReportService {
 
 	@Override
 	public Report create(@NotNull Report report) {
-		report.setCreatedTime(new Date());
-		report.setVersion(0);
 		Long userId = report.getUserId();
 		validate(userId, NOT_NULL, "user id is null");
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + "  is not found");
+		
+		Date now = new Date();
+		report.setCreatedTime(new Date());
+		report.setVersion(0);
+		report.setPreConfirmStatus(ConfirmStatus.未审核);
+		report.setConfirmStatus(ConfirmStatus.未审核);
+		report.setConfirmRemark(null);
+		report.setConfirmedTime(null);
+		report.setAppliedTime(now);
+		report.setCreatedTime(now);
+		report.setIsSettledUp(false);
 		validate(report);
 		reportMapper.insert(report);
 		return report;
