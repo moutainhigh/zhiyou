@@ -1,50 +1,28 @@
 package com.zy.component;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.fnc.AccountLog.AccountLogType.充值单;
-import static com.zy.entity.fnc.AccountLog.AccountLogType.提现单;
-import static com.zy.entity.fnc.AccountLog.AccountLogType.支付单;
-import static com.zy.entity.fnc.AccountLog.AccountLogType.收益单;
-import static com.zy.entity.fnc.AccountLog.InOut.支出;
-import static com.zy.entity.fnc.AccountLog.InOut.收入;
-import static com.zy.entity.fnc.Payment.PaymentStatus.已支付;
-import static com.zy.entity.fnc.Payment.PaymentStatus.待支付;
-
-import java.math.BigDecimal;
-import java.util.Date;
-
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
-
 import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.exception.ValidationException;
-import com.zy.entity.fnc.Account;
-import com.zy.entity.fnc.AccountLog;
+import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.AccountLog.InOut;
-import com.zy.entity.fnc.CurrencyType;
-import com.zy.entity.fnc.Deposit;
-import com.zy.entity.fnc.PayType;
-import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Payment.PaymentStatus;
-import com.zy.entity.fnc.Profit;
-import com.zy.entity.fnc.Withdraw;
-import com.zy.entity.usr.User;
-import com.zy.mapper.AccountLogMapper;
-import com.zy.mapper.AccountMapper;
-import com.zy.mapper.PaymentMapper;
-import com.zy.mapper.ProfitMapper;
-import com.zy.mapper.UserMapper;
+import com.zy.mapper.*;
 import com.zy.model.BizCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+
+import static com.zy.common.util.ValidateUtils.*;
+import static com.zy.entity.fnc.AccountLog.AccountLogType.*;
+import static com.zy.entity.fnc.AccountLog.InOut.支出;
+import static com.zy.entity.fnc.AccountLog.InOut.收入;
 
 @Component
 @Validated
@@ -151,109 +129,11 @@ public class FncComponent {
 		return profit;
 	}
 
-	/**
-	 * 使用系统账户付款
-	 *
-	 * @param userId
-	 * @param bizName
-	 *            {@link com.zy.model.Constants.ProfitBizName}
-	 * @param title
-	 * @param currencyType
-	 * @param amount
-	 * @return
-	 */
 	public Profit grantProfit(Long userId, String bizName, String title, @NotNull CurrencyType currencyType, BigDecimal amount, String remark) {
 		Profit profit = this.createProfit(bizName, currencyType, title, userId, amount, remark);
-		this.recordAccountLog(config.getGrantUserId(), title, currencyType, amount, 支出, profit);
+		this.recordAccountLog(config.getSysUserId(), title, currencyType, amount, 支出, profit);
 		this.recordAccountLog(userId, title, currencyType, amount, 收入, profit);
 		return profit;
-	}
-
-	public Payment createPayment(@NotBlank String title, @NotNull Long userId, @NotNull CurrencyType currencyType1,
-			@NotNull @DecimalMin("0.01") BigDecimal amount1, CurrencyType currencyType2, BigDecimal amount2, @NotBlank String bizName, @NotBlank String bizSn) {
-
-		User user = userMapper.findOne(userId);
-		validate(user, NOT_NULL, "user id " + userId + " is not found");
-
-		if (currencyType2 != null) {
-			validate(currencyType2, v -> v != currencyType1, "curency type 1 equals curency type 2");
-			validate(amount2, NOT_NULL, "amount 2 is null");
-			validate(amount2, v -> v.compareTo(new BigDecimal("0.00")) > 0, "amount 2 must be greater than 0.00");
-		}
-
-		Payment persistence = paymentMapper.findByBizNameAndBizSn(bizName, bizSn);
-		if (persistence != null) {
-			return persistence;
-		}
-
-		Payment payment = new Payment();
-		payment.setSn(ServiceUtils.generatePaymentSn());
-		payment.setAmount1(amount1);
-		payment.setCurrencyType1(currencyType1);
-		payment.setAmount2(amount2);
-		payment.setCurrencyType2(currencyType2);
-		payment.setCreatedTime(new Date());
-		payment.setExpiredTime(null);
-		payment.setTitle(title);
-		payment.setPaymentStatus(待支付);
-		payment.setPayType(PayType.余额);
-		payment.setBizName(bizName);
-		payment.setBizSn(bizSn);
-		payment.setVersion(0);
-		payment.setUserId(userId);
-		validate(payment);
-		paymentMapper.insert(payment);
-		return payment;
-	}
-
-	public void payPayment(@NotNull Long paymentId) {
-		final BigDecimal zero = new BigDecimal("0.00");
-		Payment payment = paymentMapper.findOne(paymentId);
-		validate(payment, NOT_NULL, "payment id " + paymentId + " is not found");
-
-		Payment.PaymentStatus paymentStatus = payment.getPaymentStatus();
-		if (paymentStatus == 已支付) {
-			return; // 幂等操作
-		} else if (paymentStatus != 待支付) {
-			throw new BizException(BizCode.ERROR, "只有待支付订单才能支付");
-		}
-
-		Long userId = payment.getUserId();
-		CurrencyType currencyType1 = payment.getCurrencyType1();
-		CurrencyType currencyType2 = payment.getCurrencyType2();
-		BigDecimal amount1 = payment.getAmount1();
-		BigDecimal amount2 = payment.getAmount2();
-		Account account1 = accountMapper.findByUserIdAndCurrencyType(userId, currencyType1);
-
-		BigDecimal beforeAmount1 = account1.getAmount();
-		BigDecimal afterAmount1 = beforeAmount1.subtract(amount1);
-		if (afterAmount1.compareTo(zero) < 0) {
-			throw new BizException(BizCode.INSUFFICIENT_BALANCE, "支付失败, " + currencyType1.getAlias() + "余额不足");
-		}
-
-		String title = payment.getTitle();
-		recordAccountLog(userId, title, currencyType1, amount1, InOut.支出, payment);
-		recordAccountLog(config.getSysUserId(), title, currencyType1, amount1, InOut.收入, payment);
-
-		if (currencyType2 != null) {
-			Account account2 = accountMapper.findByUserIdAndCurrencyType(userId, currencyType2);
-			BigDecimal beforeAmount2 = account2.getAmount();
-			BigDecimal afterAmount2 = beforeAmount2.subtract(amount2);
-			if (afterAmount2.compareTo(zero) < 0) {
-				throw new BizException(BizCode.INSUFFICIENT_BALANCE, "支付失败, " + currencyType2.getAlias() + "余额不足");
-			}
-
-			title = payment.getTitle();
-			recordAccountLog(userId, title, currencyType2, amount2, InOut.支出, payment);
-			recordAccountLog(config.getSysUserId(), title, currencyType2, amount2, InOut.收入, payment);
-		}
-
-		payment.setPaidTime(new Date());
-		payment.setPaymentStatus(已支付);
-		if (paymentMapper.update(payment) == 0) {
-			throw new ConcurrentException();
-		}
-
 	}
 
 	public void refundPayment(@NotNull Long paymentId, @NotNull CurrencyType refundCurrencyType1, @NotNull @DecimalMin("0.00") BigDecimal refund1,

@@ -12,9 +12,9 @@ public interface WithdrawService {
 
 	Withdraw create(Long userId, Long bankCardId, CurrencyType currencyType, BigDecimal amount);
 	
-	void success(Long id, Long operatorUserId, String remark);
+	void success(Long id, Long operatorId, String remark);
 	
-	void cancel(Long id, Long operatorUserId, String remark);
+	void cancel(Long id, Long operatorId, String remark);
 	
 	Withdraw findOne(Long id);
 	

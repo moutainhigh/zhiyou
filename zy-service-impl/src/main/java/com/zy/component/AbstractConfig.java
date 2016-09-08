@@ -1,20 +1,18 @@
 package com.zy.component;
 
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
-import groovy.lang.Script;
-
-import java.math.BigDecimal;
-
-import org.apache.commons.lang3.StringUtils;
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.customizers.ImportCustomizer;
-
 import com.zy.Config;
 import com.zy.common.exception.BizException;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.sys.Setting;
 import com.zy.entity.usr.User.UserType;
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
+import groovy.lang.Script;
+import org.apache.commons.lang3.StringUtils;
+import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.control.customizers.ImportCustomizer;
+
+import java.math.BigDecimal;
 
 public abstract class AbstractConfig implements Config {
 
@@ -27,16 +25,6 @@ public abstract class AbstractConfig implements Config {
 	@Override
 	public Long getSysUserId() {
 		return getSetting().getSysUserId();
-	}
-
-	@Override
-	public Long getFeeUserId() {
-		return getSetting().getFeeUserId();
-	}
-
-	@Override
-	public Long getGrantUserId() {
-		return getSetting().getGrantUserId();
 	}
 
 	final GroovyShell withdrawFeeRateShell;

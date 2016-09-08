@@ -1,10 +1,6 @@
 package com.zy.model;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-
-import static java.math.BigDecimal.valueOf;
 
 public interface Constants {
 
@@ -108,36 +104,14 @@ public interface Constants {
     String SETTING_DEFAULT_AVATAR = "http://image.zhi-you.net/avatar_default.jpg";
 
     BigDecimal SETTING_MAX_WITHDRAW_FEE_RATE = new BigDecimal("0.05"); // 提现最大费率 设置不可超过该值
-
     BigDecimal SETTING_MIN_MERCHANT_DEPOSIT_MONEY = new BigDecimal("100.00"); // 商家充值本金最小金额
 
-    interface ProfitBizName {
 
-        String 签到收益 = "签到收益" // 完成签到获得积分  由签到业务送出
-                , 成就收益 = "成就收益" // 完成成就获取收益 完成成就由于成就系统送出
-                , 系统奖励 = "系统奖励" // 系统奖励, 比如注册成功
-                , 任务奖励 = "任务奖励" //买手任务佣金 完成任务获取
-                , 任务本金 = "任务本金" //买手任务本金 任务进行阶段获取
-                , 团队收益 = "团队收益" //团队收益 下级带来的收益 由团队服务发出
-                , 系统补偿 = "系统补偿" //由系统发出的收益 手动
-                , 红包收益 = "红包收益" //由领取好友分享的红包获得收益
-                , 平台收益 = "平台收益"
-                , 试客券奖励 = "试客券奖励"
-                ;
+    String BIZ_NAME_WITHDRAW = "提现";
+    String BIZ_NAME_ORDER_PAY = "订单支付";
+    String BIZ_NAME_ORDER_PROFIT = "订单分润";
 
-    }
 
-    interface PaymentBizName {
-        String 订单支付 = "订单支付";
-    }
-    
-    Map<String, BigDecimal> virtualGoods = new HashMap<String, BigDecimal>() {{
-        put("ticket1", valueOf(1.00));
-        put("ticket2", valueOf(2.00));
-        put("ticket3", valueOf(3.00));
-        put("ticket5", valueOf(5.00));
-        put("ticket10", valueOf(10.00));
-    }};
 
 
     /*

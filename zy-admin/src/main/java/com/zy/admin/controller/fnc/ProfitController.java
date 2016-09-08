@@ -1,10 +1,16 @@
 package com.zy.admin.controller.fnc;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.Arrays;
-import java.util.List;
-
+import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.ui.Grid;
+import com.zy.component.ProfitComponent;
+import com.zy.entity.fnc.Profit;
+import com.zy.entity.usr.User;
+import com.zy.model.query.ProfitQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.ProfitService;
+import com.zy.service.UserService;
+import com.zy.vo.ProfitAdminVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zy.common.model.query.Page;
-import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.ui.Grid;
-import com.zy.component.ProfitComponent;
-import com.zy.entity.fnc.Profit;
-import com.zy.entity.usr.User;
-import com.zy.model.Constants;
-import com.zy.model.query.ProfitQueryModel;
-import com.zy.model.query.UserQueryModel;
-import com.zy.service.ProfitService;
-import com.zy.service.UserService;
-import com.zy.vo.ProfitAdminVo;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.zy.model.Constants.BIZ_NAME_ORDER_PROFIT;
 
 @RequestMapping("/profit")
 @Controller
@@ -41,12 +39,17 @@ public class ProfitController {
 
     @Autowired
     private UserService userService;
-    List<String> values = Arrays.stream(Constants.ProfitBizName.class.getDeclaredFields()).map(f -> f.getName()).collect(toList());
+
+    List<String> profitTypes = new ArrayList<>();
+
+    {
+        profitTypes.add(BIZ_NAME_ORDER_PROFIT);
+    }
 
     @RequiresPermissions("profit:view")
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
-        model.addAttribute("profitTypes", values);
+        model.addAttribute("profitTypes", profitTypes);
         return "fnc/profitList";
     }
 
