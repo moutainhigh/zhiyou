@@ -144,37 +144,37 @@
           <div class="list-text list-image">
             <div class="image-item">
               <input type="hidden" name="image1" value="${report.image1}">
-              <img src="${report.image1}">
+              <img src="${report.image1Thumbnail}">
               <input type="file">
             </div>
             <div class="image-item">
               <input type="hidden" name="image2" value="${report.image2}">
-              <img src="${report.image2}">
+              <img src="${report.image2Thumbnail}">
               <input type="file">
             </div>
             <div class="image-item">
               <input type="hidden" name="image3" value="${report.image3}">
-              <img src="${report.image3}">
+              <img src="${report.image3Thumbnail}">
               <input type="file">
             </div>
             <c:if test="${not empty report.image4}">
             <div class="image-item">
               <input type="hidden" name="image4" value="${report.image4}">
-              <img src="${report.image4}">
+              <img src="${report.image4Thumbnail}">
               <input type="file">
             </div>
             </c:if>
             <c:if test="${not empty report.image5}">
             <div class="image-item">
               <input type="hidden" name="image5" value="${report.image5}">
-              <img src="${report.image5}">
+              <img src="${report.image5Thumbnail}">
               <input type="file">
             </div>
             </c:if>
             <c:if test="${not empty report.image6}">
             <div class="image-item">
               <input type="hidden" name="image6" value="${report.image6}">
-              <img src="${report.image6}">
+              <img src="${report.image6Thumbnail}">
               <input type="file">
             </div>
             </c:if>
