@@ -7,7 +7,7 @@
 </style>
 <!-- BEGIN JAVASCRIPTS -->
 <script id="confirmTmpl" type="text/x-handlebars-template">
-  <form id="confirmForm{{id}}" action="" data-action="${ctx}/banner/create" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+  <form id="confirmForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
     <input type="hidden" name="id" value="{{id}}"/>
     <div class="form-body">
       <div class="alert alert-danger display-hide">
@@ -38,7 +38,7 @@
         <button id="reportConfirmSubmit{{id}}" type="button" class="btn green">
           <i class="fa fa-save"></i> 保存
         </button>
-        <button id="reportConfirmCancel{{id}}" class="btn default" data-href="${ctx}/banner">
+        <button id="reportConfirmCancel{{id}}" class="btn default" data-href="">
           <i class="fa fa-chevron-left"></i> 返回
         </button>
       </div>
@@ -55,6 +55,7 @@
 
     $('#dataTable').on('click', '.report-confirm', function () {
       var id = $(this).data('id');
+      var step = $(this).data('step');
       var data = {
         id: id
       };
@@ -80,7 +81,13 @@
       $('#reportConfirmSubmit' + id).bind('click', function () {
         var result = $form.validate().form();
         if (result) {
-          $.post('${ctx}/report/confirm', $form.serialize(), function (data) {
+          var url = '';
+          if(step == 1) {
+            url = '${ctx}/report/preConfirm';
+          } else {
+            url = '${ctx}/report/confirm';
+          }
+          $.post(url, $form.serialize(), function (data) {
             if (data.code === 0) {
               layer.close(index);
               grid.getDataTable().ajax.reload(null, false);
@@ -185,8 +192,24 @@
             }
           },*/
           {
+            data: 'preConfirmStatus',
+            title: '预审核状态',
+            orderable: false,
+            render: function (data, type, full) {
+              var result = '';
+              if (data == '待审核') {
+                result = '<label class="label label-danger">待审核</label>';
+              } else if (data == '已通过') {
+                result = '<label class="label label-success">已通过</label>';
+              } else if (data == '未通过') {
+                result = '<label class="label label-default">未通过</label>';
+              }
+              return result;
+            }
+          },
+          {
             data: 'confirmStatus',
-            title: '审核状态',
+            title: '最终审核状态',
             orderable: false,
             render: function (data, type, full) {
               var result = '';
@@ -227,9 +250,14 @@
             orderable: false,
             render: function (data, type, full) {
               var optionHtml = '';
+              <shiro:hasPermission name="report:preConfirm">
+              if (full.preConfirmStatus == '待审核') {
+                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-step="1" data-id="' + full.id + '"><i class="fa fa-edit"></i> 预审核 </a>';
+              }
+              </shiro:hasPermission>
               <shiro:hasPermission name="report:confirm">
-              if (full.confirmStatus == '待审核') {
-                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
+              if (full.preConfirmStatus == '已通过' && full.confirmStatus == '待审核') {
+                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-step="2" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
               }
               </shiro:hasPermission>
               return optionHtml;
