@@ -25,16 +25,10 @@
 <body class="invite-list">
   <header class="header">
     <h1>哆来嘧</h1>
-    <a href="${ctx}/ucenter" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/team" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
   <article>
-    <c:if test="${empty list}">
-      <div class="empty-tip">
-        <i class="fa fa-user"></i>
-        <span>您还没有团队成员</span>
-      </div>
-    </c:if>
     
     <ul class="breadcrumb mt-10">
       <li><a href="#"><i class="fa fa-home"></i> 我的团队</a></li>
