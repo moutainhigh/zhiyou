@@ -4,6 +4,8 @@ import com.zy.common.model.query.Page;
 import com.zy.entity.act.Report;
 import com.zy.model.query.ReportQueryModel;
 
+import java.util.List;
+
 public interface ReportService {
 
 	Report findOne(Long id);
