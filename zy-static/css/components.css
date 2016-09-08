@@ -1221,7 +1221,7 @@ h1 .label, h2 .label, h3 .label, h4 .label, h5 .label, h6 .label {
 .breadcrumb {
   list-style: none; margin-bottom: 10px;
   display: flex; width: 100%;
-  background: #fecd98;
+  background: #fedfbc;
 }
 .breadcrumb li {
   float: left;
