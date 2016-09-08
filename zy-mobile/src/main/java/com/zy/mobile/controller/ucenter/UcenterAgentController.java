@@ -17,6 +17,7 @@ import com.zy.component.UserComponent;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
+import com.zy.entity.usr.User.UserType;
 import com.zy.model.Principal;
 import com.zy.service.ProductService;
 import com.zy.service.UserService;
@@ -63,10 +64,16 @@ public class UcenterAgentController {
 	
 	@ResponseBody
 	@RequestMapping("checkPhone")
-	public Result<String> checkPhone(String phone){
+	public Result<String> checkPhone(Principal principal, String phone){
 		User user = userService.findByPhone(phone);
 		if(user != null) {
-			return ResultBuilder.ok(user.getId().toString());
+			if(user.getId().equals(principal.getUserId())){
+				return ResultBuilder.error("不能设置本人为上级代理.");
+			} else if(user.getUserType() != UserType.代理){
+				return ResultBuilder.error("此手机绑定的用户不是代理.");
+			} else {
+				return ResultBuilder.ok(user.getId().toString());
+			}
 		} else {
 			return ResultBuilder.error("没有找到此手机号的代理.");
 		}

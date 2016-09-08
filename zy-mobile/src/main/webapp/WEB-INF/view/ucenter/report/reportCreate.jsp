@@ -40,7 +40,7 @@
         if (limit && limit <= imageItems.length + 1) {
           $this.remove();
         }
-        $this.siblings('.image-item').eq(imageItems.length).Fileupload({
+        $this.siblings('.image-item').eq(imageItems.length).imageupload({
           width : 100,
           height : 100,
           url : '${ctx}/image/upload',
