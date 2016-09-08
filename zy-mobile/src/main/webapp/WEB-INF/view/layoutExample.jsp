@@ -39,16 +39,9 @@
     $('.image-single .image-item').imageupload({
       width : 120,
       height : 75,
-      url : '${ctx}/image/upload',
-      maxFileSize : '4MB'
     });
     
-    $('.image-multi .image-item').imageupload({
-      width : 100,
-      height : 100,
-      url : '${ctx}/image/upload',
-      maxFileSize : '4MB'
-    });
+    $('.image-multi .image-item').imageupload();
 
     $('.image-multi .image-add').imageupload({
       width : 100,

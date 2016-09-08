@@ -6,18 +6,25 @@
     if (!element) {
       return;
     }
+    if((typeof options) == 'undefined') {
+      options = {};
+    }
+    if((typeof options.url) == 'undefined') {
+      options.url = this.defaults.url;
+    }
     if((typeof options.width) == 'undefined') {
-      options.width = defaults.width;
+      options.width = this.defaults.width;
     }
     if((typeof options.height) == 'undefined') {
-      options.height = defaults.height;
+      options.height = this.defaults.height;
     }
     if((typeof options.retain) == 'undefined') {
-      options.retain = defaults.retain;
+      options.retain = this.defaults.retain;
     }
-    if((typeof options.retain) == 'undefined') {
-      options.retain = defaults.retain;
+    if((typeof options.maxFileSize) == 'undefined') {
+      options.maxFileSize = this.defaults.maxFileSize;
     }
+    
     element.style.width = options.width + 'px';
     element.style.height = options.height + 'px';
     
@@ -198,10 +205,10 @@
         return this.each(function() {
           $(this).data('imageupload', new imageupload($(this)[0], params));
         });
-      }
-      $.fn.imageupload.defaults = function(defaults) {
-        window.imageupload.defaults = defaults;
-      }
+      };
+      $.fn.imageupload.setDefaults = function(defaults) {
+        window.imageupload.prototype.defaults = defaults;
+      };
     })(window.jQuery || window.Zepto)
   }
 
