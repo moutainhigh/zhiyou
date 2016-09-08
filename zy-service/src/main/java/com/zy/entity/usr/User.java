@@ -65,7 +65,6 @@ public class User implements Serializable {
 	private String phone;
 
 	@Column(length = 60)
-	@NotBlank
 	@Field(label = "密码")
 	private String password;
 
