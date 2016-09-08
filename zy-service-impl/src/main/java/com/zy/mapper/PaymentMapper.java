@@ -1,11 +1,11 @@
 package com.zy.mapper;
 
 
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
-
 import com.zy.entity.fnc.Payment;
 import com.zy.model.query.PaymentQueryModel;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 public interface PaymentMapper {
@@ -26,6 +26,6 @@ public interface PaymentMapper {
 
 	Payment findBySn(String sn);
 
-	Payment findByBizNameAndBizSn(@Param("bizName") String bizName, @Param("bizSn") String bizSn);
+	List<Payment> findByBizNameAndBizSn(@Param("bizName") String bizName, @Param("bizSn") String bizSn);
 
 }

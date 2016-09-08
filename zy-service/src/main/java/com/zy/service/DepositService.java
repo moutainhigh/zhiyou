@@ -1,21 +1,20 @@
 package com.zy.service;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import com.zy.common.model.query.Page;
-import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Deposit;
-import com.zy.entity.fnc.PayType;
 import com.zy.model.query.DepositQueryModel;
+
+import java.util.List;
 
 public interface DepositService {
 
-	Deposit create(String title, CurrencyType currencyType1, BigDecimal amount1, CurrencyType currencyType2, BigDecimal amount2, PayType payType, Long userId, Long paymentId);
+	Deposit create(Deposit deposit);
 	
 	void update(Deposit deposit);
 	
 	void success(Long id, String outerSn);
+
+	void offlineSuccess(Long id, Long operatorId, String remark);
 	
 	void cancel(Long id);
 	

@@ -8,23 +8,16 @@ import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "fnc_withdraw")
@@ -107,8 +100,8 @@ public class Withdraw implements Serializable {
 	@View
 	private WithdrawStatus withdrawStatus;
 
-	@Field(label = "提现操作者id")
-	private Long operatorUserId;
+	@Field(label = "操作者id")
+	private Long operatorId;
 
 	@NotNull
 	@Field(label = "是否提现到银行卡")

@@ -18,5 +18,11 @@ public interface PaymentService {
 
 	void success(Long id, String outerSn);
 
-	Payment findByBizNameAndBizName(String bizName, String bizSn);
+	void offlineSuccess(Long id, Long operatorId, String remark);
+
+	void balancePay(Long paymentId, boolean checkBalance);
+
+	Payment create(Payment payment);
+
+	List<Payment> findByBizNameAndBizName(String bizName, String bizSn);
 }
