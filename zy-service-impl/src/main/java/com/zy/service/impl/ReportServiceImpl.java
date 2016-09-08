@@ -11,16 +11,6 @@ import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.service.ReportService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
 
 @Service
 @Validated
@@ -38,7 +28,7 @@ public class ReportServiceImpl implements ReportService {
 		validate(userId, NOT_NULL, "user id is null");
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + "  is not found");
-
+		
 		Date now = new Date();
 		report.setCreatedTime(new Date());
 		report.setVersion(0);
@@ -70,11 +60,16 @@ public class ReportServiceImpl implements ReportService {
 		return page;
 	}
 
-
 	@Override
 	public void confirm(@NotNull Long id, boolean isSuccess, String confirmRemark) {
 		Report report = reportMapper.findOne(id);
 		validate(report, NOT_NULL, "report id " + id + " is not found");
+		validate(report.getPreConfirmStatus(), v -> v == ConfirmStatus.已通过, "pre confirm status error");
+		if(report.getConfirmStatus() != ConfirmStatus.待审核) {
+			return ;
+		}
+
+		report.setConfirmedTime(new Date());
 		if (isSuccess) {
 			report.setConfirmStatus(ConfirmStatus.已通过);
 			report.setConfirmRemark(confirmRemark);
@@ -88,8 +83,10 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
-	public void settleUp(Long id) {
-		// TODO
+	public void settleUp(@NotNull Long id) {
+
+
+
 	}
 
 	@Override
@@ -104,10 +101,10 @@ public class ReportServiceImpl implements ReportService {
 
 		Report persistence = reportMapper.findOne(id);
 		validate(persistence, NOT_NULL, "report id" + id + " not found");
-		if (persistence.getConfirmStatus() == ConfirmStatus.已通过) {
+		if(persistence.getConfirmStatus() == ConfirmStatus.已通过) {
 			throw new BizException(BizCode.ERROR, "状态不匹配");
 		}
-
+		
 		persistence.setAppliedTime(new Date());
 		persistence.setConfirmedTime(null);
 		persistence.setConfirmRemark(null);
@@ -127,6 +124,32 @@ public class ReportServiceImpl implements ReportService {
 		persistence.setReportResult(report.getReportResult());
 		reportMapper.update(persistence);
 		return persistence;
+	}
+
+	@Override
+	public void preConfirm(@NotNull Long id, boolean isSuccess, String confirmRemark) {
+		Report report = reportMapper.findOne(id);
+		validate(report, NOT_NULL, "report id" + id + " not found");
+		if(report.getPreConfirmStatus() != ConfirmStatus.待审核) {
+			return ;
+		}
+		if(report.getConfirmStatus() != ConfirmStatus.待审核) {
+			throw new BizException(BizCode.ERROR, "状态不匹配");
+		}
+
+		report.setConfirmedTime(new Date());
+		if(isSuccess) {
+			report.setPreConfirmStatus(ConfirmStatus.已通过);
+			report.setConfirmRemark(confirmRemark);
+		} else {
+			validate(confirmRemark, NOT_BLANK, "confirm remark is null");
+			report.setPreConfirmStatus(ConfirmStatus.未通过);
+			report.setConfirmRemark(confirmRemark);
+		}
+		if (reportMapper.update(report) == 0) {
+			throw new ConcurrentException();
+		}
+
 	}
 
 	@Override
