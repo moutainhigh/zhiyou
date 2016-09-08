@@ -27,8 +27,8 @@ public class UcenterTeamController {
 		return "ucenter/team/userList";
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String detail(@PathVariable Long id){
+	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+	public String detail(@PathVariable Long userId){
 		
 		return "ucenter/team/userDetail";
 	}
