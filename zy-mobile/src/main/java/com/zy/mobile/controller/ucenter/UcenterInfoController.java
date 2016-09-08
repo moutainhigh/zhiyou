@@ -10,11 +10,14 @@ import com.zy.entity.usr.Portrait;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
+import com.zy.model.query.BankCardQueryModel;
 import com.zy.service.AddressService;
 import com.zy.service.AppearanceService;
+import com.zy.service.BankCardService;
 import com.zy.service.PortraitService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -31,6 +34,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +61,9 @@ public class UcenterInfoController {
 	private AddressService addressService;
 
 	@Autowired
+	private BankCardService bankCardService;
+	
+	@Autowired
 	private AppearanceService appearanceService;
 	
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
@@ -71,11 +78,11 @@ public class UcenterInfoController {
         model.addAttribute("isCompletedPortrait", isCompletePortrait);
         model.addAttribute("user", user);
         model.addAttribute("userAvatarSmall", GcUtils.getThumbnail(user.getAvatar(), 240, 240));
-        
         Appearance appearance = appearanceService.findByUserId(userId);
         if(!isNull(appearance)) {
         	model.addAttribute("isCompletedAppearance", appearance.getConfirmStatus() == ConfirmStatus.已通过);
-        } 
+        }
+        model.addAttribute("hasBankCard", bankCardService.count(BankCardQueryModel.builder().userIdEQ(userId).build()) > 0);
         
         return "ucenter/user/userInfo";
     }

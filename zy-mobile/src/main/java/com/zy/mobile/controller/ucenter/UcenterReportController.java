@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.query.Page;
@@ -66,7 +67,7 @@ public class UcenterReportController {
 	}
 
 	@RequestMapping(value = "/edit", method = GET)
-	public String edit(Long id, Principal principal, Model model) {
+	public String edit(@RequestParam Long id, Principal principal, Model model) {
 		Report report = findAndValidate(id, principal.getUserId());
 		validate(report, NOT_NULL, "report id" + id + " not found");
 
@@ -87,7 +88,7 @@ public class UcenterReportController {
 			model.addAttribute(ResultBuilder.error(e.getMessage()));
 			return edit(report.getId(), principal, model);
 		}
-		redirectAttributes.addFlashAttribute(ResultBuilder.ok("更新检测报告成功"));
+		redirectAttributes.addFlashAttribute(ResultBuilder.ok("更新检测报告成功")); 
 		return "redirect:/u/report";
 	}
 
