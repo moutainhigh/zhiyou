@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="true">
+<configuration>
 	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
 	<property file="${user.home}/zy.properties"/>
 	<!-- 控制台输出 -->
@@ -15,7 +15,7 @@
 	<appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<prudent>true</prudent>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${log.dir}/zy-service-impl/zy-service-impl.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${log.dir}/zy-service-impl/%d{yyyy-MM-dd}.log</fileNamePattern>
 			<maxHistory>60</maxHistory>
 		</rollingPolicy>
 		<encoder>

@@ -15,14 +15,13 @@
 	<appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<prudent>true</prudent>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${log.dir}/zy-admin/zy-admin.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${log.dir}/zy-admin/%d{yyyy-MM-dd}.log</fileNamePattern>
 			<maxHistory>60</maxHistory>
 		</rollingPolicy>
 		<encoder>
 			<charset>UTF-8</charset>
 			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
 		</encoder>
-
 	</appender>
 
 	<logger name="com.zy" level="${log.packageLevel}"/>

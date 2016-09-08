@@ -18,7 +18,7 @@
 <script type="text/javascript">
   $(function() {
 		
-	$('.image-single-upload').Fileupload({
+	$('.image-single').Fileupload({
 		width: 120,
 		height: 75,
 		url: '${ctx}/image/upload',
@@ -85,7 +85,7 @@
         <div class="list-item">
           <label class="list-label">正面照</label>
           <div class="list-text list-image">
-            <div class="image-item image-single-upload bd">
+            <div class="image-item image-single bd">
               <input type="hidden" name="image1" id="image1" value="">
               <img src="${stccdn}/image/defaultImage_240_150.png">
               <input type="file">
@@ -98,7 +98,7 @@
         <div class="list-item">
           <label class="list-label">反面照</label>
           <div class="list-text list-image">
-            <div class="image-item image-single-upload bd">
+            <div class="image-item image-single bd">
               <input type="hidden" name="image2" id="image2" value="">
               <img src="${stccdn}/image/defaultImage_240_150.png">
               <input type="file">

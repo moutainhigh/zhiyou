@@ -74,5 +74,13 @@ public class ReportController {
 		reportService.confirm(id, isSuccess, confirmRemark);
 		return ResultBuilder.ok("操作成功");
 	}
+	
+	@RequiresPermissions("report:preConfirm")
+	@RequestMapping(value = "/preConfirm", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> preConfirm(@RequestParam Long id, @RequestParam boolean isSuccess, String confirmRemark) {
+		reportService.preConfirm(id, isSuccess, confirmRemark);
+		return ResultBuilder.ok("操作成功");
+	}
 
 }

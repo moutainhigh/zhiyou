@@ -36,25 +36,27 @@
       });
     });
 
-    $('.image-single-upload').Fileupload({
+    $('.image-single .image-item').Fileupload({
       width : 120,
       height : 75,
       url : '${ctx}/image/upload',
       maxFileSize : '4MB'
     });
+    
+    $('.image-multi .image-item').Fileupload({
+      width : 100,
+      height : 100,
+      url : '${ctx}/image/upload',
+      maxFileSize : '4MB'
+    });
 
-    $('.image-add').Fileupload({
+    $('.image-multi .image-add').Fileupload({
       width : 100,
       height : 100,
       url : '${ctx}/image/upload',
       maxFileSize : '4MB',
-      progress : function() {
-        var $this = $(this);
-        $this.find('.state').removeClass('state-add').addClass('state-loading');
-      },
       success : function(result) {
         var $this = $(this);
-        $this.find('.state').removeClass('state-loading').addClass('state-add');
         var limit = $this.attr('data-limit');
         var imageItems = $this.siblings('.image-item');
         var inputHidden = $this.children('input:hidden');
@@ -88,6 +90,9 @@
   </header>
 
   <article>
+    <div class="loader-wrap mt-10 width-200 height-200">
+      <div class="loader"></div>
+    </div>
     <form action="${ctx}/u/order/deliver" class="valid-form" method="post">
       <input type="hidden" name="orderId" value="${orderId}">
       <div class="list-group">
@@ -235,8 +240,8 @@
         <div class="list-title">图片上传插件</div>
         <div class="list-item">
           <label class="list-label">单个图片</label>
-          <div class="list-text list-image">
-            <div class="image-item image-single-upload bd">
+          <div class="list-text list-image image-single">
+            <div class="image-item">
               <input type="hidden" name="infoImage2" id="infoImage2" value="">
               <img src="${stccdn}/image/defaultImage_240_150.png">
               <input type="file">
@@ -251,14 +256,16 @@
       <div class="list-group">
         <div class="list-title"><span class="font-red">多图</span>上传插件</div>
         <div class="list-item">
-          <div class="list-text list-image">
+          <div class="list-text list-image image-multi">
             <div class="image-item">
               <img src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
               <input type="hidden" name="image1" value="">
+              <input type="file">
             </div>
             <div class="image-item">
               <img src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
               <input type="hidden" name="image2" value="">
+              <input type="file">
             </div>
             <div class="image-add" data-limit="6">
               <input type="hidden" name="image3" value="">

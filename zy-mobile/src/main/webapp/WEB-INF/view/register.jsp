@@ -96,15 +96,15 @@
     <h1>注册</h1>
   </header>
 
-  <c:if test="${isNew}">
+  <c:if test="${!isNew}">
   <article>
-    <form action="${ctx}/u/bindPhone" class="valid-form" method="post">
+    <form action="${ctx}/register" class="valid-form" method="post">
       <img class="image-120 block round center mt-30" src="${avatar}">
       <div class="mt-20 font-555 fs-24 lh-30 text-center">${nickname}</div>
       <p class="mt-30 font-999 fs-14 lh-30 text-center">只差一步啦，验证手机号完成注册</p>
       <div class="list-group mt-15">
         <div class="list-item">
-          <label class="list-label" for="realname">手机号</label>
+          <label class="list-label" for="phone">手机号</label>
           <div class="list-text">
             <input type="text" id="phone" name="phone" class="form-input" placeholder="输入手机号" value="">
           </div>
@@ -134,7 +134,7 @@
     </form>
   </article>
   </c:if>
-  <c:if test="${!isNew}">
+  <c:if test="${isNew}">
     <div class="abs-mm">
       <p class="fs-16 lh-30 text-center">请先完成微信授权</p>
       <a class="btn green round-2 width-200 mt-30" href="${ctx}/">微信一键授权</a>
