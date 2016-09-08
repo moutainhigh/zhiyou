@@ -40,6 +40,7 @@ public interface Constants {
     String CACHE_NAME_BIND_PHONE_SMS_LAST_SEND_TIME = "bindPhoneSmsLastSendTime";
     String CACHE_NAME_FIND_PASSWORD_LAST_SEND_TIME = "findPassWordLastSendTime";
     String CACHE_NAME_STATISTICS = "statistics";
+    String CACHE_NAME_BANK = "bank";
 
     String CACHE_NAME_TGT = "tgt";
 

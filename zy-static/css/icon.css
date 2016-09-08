@@ -64,6 +64,9 @@
 .icon-heart {
   background-image: url(../image/icon/icon_heart.png);
 }
+.icon-idcard {
+  background-image: url(../image/icon/icon_idcard.png);
+}
 .icon-in {
   background-image: url(../image/icon/icon_in.png);
 }
@@ -103,7 +106,12 @@
 .icon-tencent {
   background-image: url(../image/icon/icon_tencent.png);
 }
-
+.icon-upgrade {
+  background-image: url(../image/icon/icon_upgrade.png);
+}
+.icon-users {
+  background-image: url(../image/icon/icon_users.png);
+}
 
 /* sns */
 .icon-taobao {

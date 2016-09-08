@@ -1,5 +1,17 @@
 package com.zy.service.impl;
 
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
@@ -11,19 +23,6 @@ import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.service.ReportService;
-
-import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-
-import java.util.Date;
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
 
 @Service
 @Validated
@@ -37,12 +36,21 @@ public class ReportServiceImpl implements ReportService {
 
 	@Override
 	public Report create(@NotNull Report report) {
-		report.setCreatedTime(new Date());
-		report.setVersion(0);
 		Long userId = report.getUserId();
 		validate(userId, NOT_NULL, "user id is null");
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + "  is not found");
+		
+		Date now = new Date();
+		report.setCreatedTime(new Date());
+		report.setVersion(0);
+		report.setPreConfirmStatus(ConfirmStatus.待审核);
+		report.setConfirmStatus(ConfirmStatus.待审核);
+		report.setConfirmRemark(null);
+		report.setConfirmedTime(null);
+		report.setAppliedTime(now);
+		report.setCreatedTime(now);
+		report.setIsSettledUp(false);
 		validate(report);
 		reportMapper.insert(report);
 		return report;
@@ -69,10 +77,10 @@ public class ReportServiceImpl implements ReportService {
 		Report report = reportMapper.findOne(id);
 		validate(report, NOT_NULL, "report id " + id + " is not found");
 		if (isSuccess) {
-			report.setConfirmStatus(ConfirmStatus.审核通过);
+			report.setConfirmStatus(ConfirmStatus.已通过);
 			report.setConfirmRemark(confirmRemark);
 		} else {
-			report.setConfirmStatus(ConfirmStatus.审核未通过);
+			report.setConfirmStatus(ConfirmStatus.未通过);
 			report.setConfirmRemark(confirmRemark);
 		}
 		if (reportMapper.update(report) == 0) {
@@ -88,19 +96,19 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public Report modify(@NotNull Report report) {
 		Long id = report.getId();
-		Validate.notNull(id, "id is null");
+		validate(id, NOT_NULL, "id is null");
+
 		Report persistence = reportMapper.findOne(id);
-		Validate.notNull(persistence, "report id" + id + " not found");
-		if(persistence.getConfirmStatus() == ConfirmStatus.审核通过) {
+		validate(persistence, NOT_NULL, "report id" + id + " not found");
+		if(persistence.getConfirmStatus() == ConfirmStatus.已通过) {
 			throw new BizException(BizCode.ERROR, "状态不匹配");
 		}
 		
-		persistence.setAge(report.getAge());
 		persistence.setAppliedTime(new Date());
 		persistence.setConfirmedTime(null);
 		persistence.setConfirmRemark(null);
-		persistence.setConfirmStatus(ConfirmStatus.未审核);
-		persistence.setPreConfirmStatus(ConfirmStatus.未审核);
+		persistence.setConfirmStatus(ConfirmStatus.待审核);
+		persistence.setPreConfirmStatus(ConfirmStatus.待审核);
 		persistence.setDate(report.getDate());
 		persistence.setGender(report.getGender());
 		persistence.setImage1(report.getImage1());
@@ -110,8 +118,9 @@ public class ReportServiceImpl implements ReportService {
 		persistence.setImage5(report.getImage5());
 		persistence.setImage6(report.getImage6());
 		persistence.setRealname(report.getRealname());
-		persistence.setReportResult(report.getReportResult());
+		persistence.setAge(report.getAge());
 		persistence.setText(report.getText());
+		persistence.setReportResult(report.getReportResult());
 		reportMapper.update(persistence);
 		return persistence;
 	}

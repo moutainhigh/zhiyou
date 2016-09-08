@@ -61,64 +61,110 @@
   }
 </script>
 <script id="rowTpl" type="text/html">
-
+  <a class="list-item" href="${ctx}/u/report/{{ d.id }}">
+    <div class="list-text report">
+      <div class="lh-30">{{ d.realname }}<span class="ml-10 fs-12 font-999">&lt;{{ d.gender }}  {{ d.age }}岁&gt;</span><span class="right fs-12 font-999">{{ d.dateLabel }}</span></div>
+      <div class="lh-30 fs-14">
+      {{# if(d.reportResult == '阴性'){ }}
+      <span class="font-red">阴性</span>
+      {{# } else if(d.reportResult == '弱阳性'){ }}
+      <span class="font-orange">弱阳性</span>
+      {{# } else if(d.reportResult == '阳性'){ }}
+      <span class="font-green">阳性</span>
+      {{# } else if(d.reportResult == '干扰色'){ }}
+      <span class="ont-purple">干扰色</span>
+      {{# } }}
+      {{# if(d.confirmStatus == '待审核'){ }}
+      <span class="right lh-20 label orange">待审核</span>
+      {{# } else if(d.confirmStatus == '未通过'){ }}
+      <span class="right lh-20 label gray">未通过</span>
+      {{# } else if(d.confirmStatus == '已通过'){ }}
+      <span class="right lh-20 label blue">已通过</span>
+      {{# } }}
+      </div>
+    </div>
+  </a>
 </script>
 </head>
 <body class="">
   <header class="header">
     <h1>检测报告</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/report/create" class="button-right"><i class="fa fa-plus"></i></a>
   </header>
   
-  <c:if test="${empty page.data}">
-    <div class="empty-tip">
-      <i class="fa fa-file-o"></i>
-      <span>暂无记录</span>
-    </div>
-  </c:if>
-  
-  <div class="list-group">
-    <c:forEach items="${page.data}" var="report">
-    <a class="list-item" href="${ctx}/u/report/${report.id}">
-      <div class="report">
-        <div class="lh-30">${report.realname}<span class="ml-10 fs-12 font-999">&lt;${report.gender}  ${report.age}岁&gt;</span><span class="right fs-12 font-999">${report.dateLabel}</span></div>
-        <c:choose>
-          <c:when test="${report.reportResult == '阴性'}">
-          <div class="fs-14 lh-30 font-red">${report.reportResult}</div>
-          </c:when>
-          <c:when test="${report.reportResult == '弱阳性'}">
-          <div class="fs-14 lh-30 font-orange">${report.reportResult}</div>
-          </c:when>
-          <c:when test="${report.reportResult == '阳性'}">
-          <div class="fs-14 lh-30 font-green">${report.reportResult}</div>
-          </c:when>
-          <c:when test="${report.reportResult == '干扰色'}">
-          <div class="fs-14 lh-30 font-purple">${report.reportResult}</div>
-          </c:when>
-        </c:choose>
-        <div class="mt-5">
-          <img src="${report.image1Thumbnail}">
-          <img src="${report.image2Thumbnail}">
-          <img src="${report.image3Thumbnail}">
-          <c:if test="${not empty report.image4Thumbnail}">
-          <img src="${report.image4Thumbnail}">
-          </c:if>
-          <c:if test="${not empty report.image5Thumbnail}">
-          <img src="${report.image5Thumbnail}">
-          </c:if>
-          <c:if test="${not empty report.image6Thumbnail}">
-          <img src="${report.image6Thumbnail}">
-          </c:if>
-        </div>
+  <article>
+    <c:if test="${empty page.data}">
+      <div class="empty-tip">
+        <i class="fa fa-file-o"></i>
+        <span>暂无记录</span>
       </div>
-    </a>
-    </c:forEach>
+    </c:if>
     
-    <a class="list-item" href="${ctx}/u/report/create">
-      <div class="list-icon"><i class="fa fa-plus-circle font-green fs-20"></i></div>
-      <label class="list-text">上传检测报告</label>
-      <i class="list-arrow"></i>
-    </a>
-  </div>
+    <c:if test="${not empty page.data}">
+    <div class="list-group">
+      <c:forEach items="${page.data}" var="report">
+      <a class="list-item" href="${ctx}/u/report/${report.id}">
+        <div class="list-text report">
+          <div class="lh-30">${report.realname}<span class="ml-10 fs-12 font-999">&lt;${report.gender}  ${report.age}岁&gt;</span><span class="right fs-12 font-999">${report.dateLabel}</span></div>
+          <div class="lh-30 fs-14">
+          <c:choose>
+            <c:when test="${report.reportResult == '阴性'}">
+            <span class="font-red">${report.reportResult}</span>
+            </c:when>
+            <c:when test="${report.reportResult == '弱阳性'}">
+            <span class="font-orange">${report.reportResult}</span>
+            </c:when>
+            <c:when test="${report.reportResult == '阳性'}">
+            <span class="font-green">${report.reportResult}</span>
+            </c:when>
+            <c:when test="${report.reportResult == '干扰色'}">
+            <span class="ont-purple">${report.reportResult}</span>
+            </c:when>
+          </c:choose>
+          <c:choose>
+            <c:when test="${report.confirmStatus == '待审核'}">
+            <span class="right lh-20 label orange">待审核</span>
+            </c:when>
+            <c:when test="${report.confirmStatus == '未通过'}">
+            <span class="right lh-20 label gray">未通过</span>
+            </c:when>
+            <c:when test="${report.confirmStatus == '已通过'}">
+            <span class="right lh-20 label blue">已通过</span>
+            </c:when>
+          </c:choose>
+          </div>
+          <%-- 
+          <div class="mt-5">
+            <img class="image-80 mr-5 mb-10" src="${report.image1Thumbnail}">
+            <img class="image-80 mr-5 mb-10" src="${report.image2Thumbnail}">
+            <img class="image-80 mr-5 mb-10" src="${report.image3Thumbnail}">
+            <c:if test="${not empty report.image4Thumbnail}">
+            <img class="image-80 mr-5 mb-10" src="${report.image4Thumbnail}">
+            </c:if>
+            <c:if test="${not empty report.image5Thumbnail}">
+            <img class="image-80 mr-5 mb-10" src="${report.image5Thumbnail}">
+            </c:if>
+            <c:if test="${not empty report.image6Thumbnail}">
+            <img class="image-80 mr-5 mb-10" src="${report.image6Thumbnail}">
+            </c:if>
+          </div>
+           --%>
+        </div>
+      </a>
+      </c:forEach>
+      <c:if test="${page.total > page.pageSize}">
+      <a class="list-item" href="javascript:;">
+        <div class="list-more text-center">点击加载更多</div>
+      </a>
+      </c:if>
+      <c:if test="${page.total <= page.pageSize}">
+      <a class="list-item" href="javascript:;">
+        <div class="list-more disabled text-center">没有更多数据了</div>
+      </a>
+      </c:if>
+    </div>
+    </c:if>
+  </article>
 </body>
 </html>

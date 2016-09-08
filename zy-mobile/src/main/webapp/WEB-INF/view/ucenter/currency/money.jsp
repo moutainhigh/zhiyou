@@ -34,9 +34,16 @@
     <h2 class="font-777 fs-16 lh-30 text-center mt-20">我的余额(元)</h2>
     <div class="font-333 fs-36 lh-60 text-center">${amount}</div>
 
+    <c:if test="${!isBoundBankCard}">
+    <div class="form-btn mt-15">
+      <a href="javascript:;" class="btn btn-lg disabled btn-block round-4">尚未绑定银行卡</a>
+    </div>
+    </c:if>
+    <c:if test="${isBoundBankCard}">
     <div class="form-btn mt-30">
       <a href="${ctx}/u/money/withdraw" class="btn btn-lg orange btn-block round-4">提现</a>
     </div>
+    </c:if>
 
   </article>
   <a href="${ctx}/help/money" class="abs-lb mb-10 width-100p font-999 fs-12 text-center"><i class="fa fa-question-circle-o"></i> 余额问题</a>
