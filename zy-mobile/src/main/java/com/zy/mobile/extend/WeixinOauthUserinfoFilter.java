@@ -1,31 +1,29 @@
 package com.zy.mobile.extend;
 
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import me.chanjar.weixin.common.api.WxConsts;
-import me.chanjar.weixin.mp.api.WxMpConfigStorage;
-import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.api.WxMpServiceImpl;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import com.zy.common.util.WebUtils;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.util.GcUtils;
+import me.chanjar.weixin.common.api.WxConsts;
+import me.chanjar.weixin.mp.api.WxMpConfigStorage;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.api.WxMpServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+
+import static com.zy.model.Constants.SESSION_ATTRIBUTE_REDIRECT_URL;
 
 
 public class WeixinOauthUserinfoFilter implements Filter {
@@ -53,13 +51,21 @@ public class WeixinOauthUserinfoFilter implements Filter {
 		Principal principal = (Principal) session.getAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL);
 
 		if (principal == null) {
+			String redirectUrl = GcUtils.resolveRedirectUrl(httpServletRequest);
+			session.setAttribute(SESSION_ATTRIBUTE_REDIRECT_URL, redirectUrl);
+			String url = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_USER_INFO, Constants.WEIXIN_STATE_USERINFO);
+
 			if (WebUtils.isAjax(httpServletRequest)) {
-				httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED); // 401
+				OutputStream os = httpServletResponse.getOutputStream();
+				httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				httpServletResponse.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+				os.write(url.getBytes(Charset.forName("UTF-8")));
+				return;
 			} else {
-				String url = wxMpService.oauth2buildAuthorizationUrl(GcUtils.resolveRedirectUrl(httpServletRequest), WxConsts.OAUTH2_SCOPE_USER_INFO, Constants.WEIXIN_STATE_USERINFO);
+
 				logger.info("send to userinfo auth: " + url);
 				httpServletResponse.sendRedirect(url);
-	
+				return;
 			}
 		} else {
 			chain.doFilter(httpServletRequest, response);
