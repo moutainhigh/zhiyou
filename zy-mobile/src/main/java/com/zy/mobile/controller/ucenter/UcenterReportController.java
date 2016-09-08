@@ -1,9 +1,10 @@
 package com.zy.mobile.controller.ucenter;
 
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,20 +68,21 @@ public class UcenterReportController {
 	@RequestMapping(value = "/edit", method = GET)
 	public String edit(Long id, Principal principal, Model model) {
 		Report report = findAndValidate(id, principal.getUserId());
-		
-		try {
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
+		validate(report, NOT_NULL, "report id" + id + " not found");
+
+		model.addAttribute("report", reportComponent.buildVo(report));
 		return "ucenter/report/reportEdit";
 	}
 
 	@RequestMapping(value = "/edit", method = POST)
 	public String edit(Report report, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		Long id = report.getId();
+		validate(id, NOT_NULL, "id is null");
+		Report persistence = reportService.findOne(id);
+		validate(persistence, NOT_NULL, "report id" + id + " not found");
+		
 		try {
-			
+			reportService.modify(report);
 		} catch (Exception e) {
 			model.addAttribute(ResultBuilder.error(e.getMessage()));
 			return edit(report.getId(), principal, model);
@@ -91,9 +93,8 @@ public class UcenterReportController {
 
 	private Report findAndValidate(Long id, Long userId) {
 		Report report = reportService.findOne(id);
-		Validate.notNull(report, "report id" + id + " not found");
-		Validate.isTrue(userId.equals(report.getUserId()), "权限不足");
-		
+		validate(report, NOT_NULL, "report id" + id + " not found");
+		validate(report.getUserId(), v -> userId.equals(v), "权限不足");
 		return report;
 	}
 }
