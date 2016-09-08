@@ -276,7 +276,7 @@
             <div class="image-add" data-limit="6">
               <input type="hidden" name="image3" value="">
               <input type="file">
-              <em class="state state-add"></em>
+              <em class="state state-loading"></em>
             </div>
           </div>
         </div>
