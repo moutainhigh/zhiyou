@@ -119,7 +119,7 @@ public class User implements Serializable {
 	@View(groups = {"UserAdminVo"})
 	private String registerIp;
 
-	@Query(Predicate.EQ)
+	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "邀请人id", description = "此用户不是最终上下级关系")
 	@AssociationView(name = "inviter", associationGroup = "UserAdminSimpleVo", groups = {"UserAdminVo"})
 	private Long inviterId;

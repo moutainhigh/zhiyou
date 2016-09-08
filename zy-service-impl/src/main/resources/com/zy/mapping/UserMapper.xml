@@ -117,6 +117,12 @@
 			<if test="phoneEQ != null">
 				 and phone = #{phoneEQ}
 			</if>
+			<if test="inviterIdIN != null">
+				 and inviter_id in
+				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -160,6 +166,12 @@
 			</if>
 			<if test="phoneEQ != null">
 				 and phone = #{phoneEQ}
+			</if>
+			<if test="inviterIdIN != null">
+				 and inviter_id in
+				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
 			</if>
 		</where>
 	</select>

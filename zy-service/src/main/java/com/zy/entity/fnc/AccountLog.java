@@ -98,7 +98,7 @@ public class AccountLog implements Serializable {
 	@View(name = "transTimeLabel", type = String.class, groups = {"AccountLogSimpleVo"})
 	private Date transTime;
 
-	@NotNull
+	//@NotNull
 	@Field(label = "交易前余额")
 	@View(groups = {"AccountLogAdminVo"})
 	private BigDecimal beforeAmount;
@@ -109,7 +109,7 @@ public class AccountLog implements Serializable {
 	@View
 	private BigDecimal transAmount;
 
-	@NotNull
+	//@NotNull
 	@Field(label = "交易完成后金额")
 	@View
 	private BigDecimal afterAmount;

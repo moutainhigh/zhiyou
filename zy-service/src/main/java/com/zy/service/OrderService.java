@@ -6,6 +6,8 @@ import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 
+import java.util.List;
+
 public interface OrderService {
 
 	Order create(OrderCreateDto orderCreateDto);
@@ -27,4 +29,6 @@ public interface OrderService {
 	void modifySellerId(Long orderId, Long sellerId); // 设置卖家
 
 	void settleUp(Long orderId);
+
+	List<Order> findAll(OrderQueryModel build);
 }

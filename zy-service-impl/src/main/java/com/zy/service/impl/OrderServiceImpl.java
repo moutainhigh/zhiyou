@@ -238,7 +238,7 @@ public class OrderServiceImpl implements OrderService {
 		if (orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
 		}
-		
+
 	}
 
 	@Override
@@ -293,4 +293,8 @@ public class OrderServiceImpl implements OrderService {
 		// TODO
 	}
 
+	@Override
+	public List<Order> findAll(@NotNull OrderQueryModel queryModel) {
+		return this.orderMapper.findAll(queryModel);
+	}
 }
