@@ -93,7 +93,8 @@
   </header>
 
   <article>
-    <form action="${ctx}/u/report/create" class="valid-form" method="post">
+    <form action="${ctx}/u/report/edit" class="valid-form" method="post">
+      <input type="hidden" name="id" value="${report.id}"/>
       <div class="list-group mt-10">
         <div class="list-title">填写客户资料</div>
         <div class="list-item">
