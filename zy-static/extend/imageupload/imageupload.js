@@ -126,6 +126,12 @@
     }
     var uploadError = function(e) {
       alert('图片上传失败，请重试' + '[' + e.target.status + ']');
+      var state = element.getElementsByClassName('state')[0];
+      if(element.className.indexOf('image-add') != -1) {
+        state.className = 'state state-add';
+      } else {
+        element.removeChild(state);
+      }
       if (options.error) {
         options.error.call(element, e);
       }
