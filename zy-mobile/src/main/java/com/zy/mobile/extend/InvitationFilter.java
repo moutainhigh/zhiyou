@@ -27,7 +27,7 @@ public class InvitationFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		String __u = request.getParameter("__u");
 		if(StringUtils.isNotBlank(__u)) {
-			CookieUtils.add(response, COOKIE_NAME_INVITATION, __u, 60*60*24*30, DOMAIN_COOKIE);
+			CookieUtils.add(response, COOKIE_NAME_INVITATION, __u, 60*60*24*30, DOMAIN_MOBILE);
 		} else {
 			__u = CookieUtils.get(request, COOKIE_NAME_INVITATION);
 		}
@@ -37,7 +37,7 @@ public class InvitationFilter implements Filter {
 				Long inviterId = Long.valueOf(__u);
 				request.setAttribute(REQUEST_ATTRIBUTE_INVITER_ID, inviterId);
 			} catch (Exception e) {
-				CookieUtils.removeWithDomain(request, response, COOKIE_NAME_INVITATION, DOMAIN_COOKIE);
+				CookieUtils.removeWithDomain(request, response, COOKIE_NAME_INVITATION, DOMAIN_MOBILE);
 			}
 			
 		}

@@ -1,24 +1,5 @@
 package com.zy.mobile.controller;
 
-import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.cache.CacheSupport;
@@ -29,6 +10,23 @@ import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.PrincipalBuilder;
 import com.zy.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
 @RequestMapping
 @Controller
@@ -84,9 +82,9 @@ public class CommonController {
         int expire = 60 * 60 * 24 * 7;
         boolean rememberMe = true;
         if (rememberMe) {
-            CookieUtils.add(response, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, expire, Constants.DOMAIN_COOKIE);
+            CookieUtils.add(response, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, expire, Constants.DOMAIN_MOBILE);
         } else {
-            CookieUtils.add(response, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, -1, Constants.DOMAIN_COOKIE);
+            CookieUtils.add(response, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, -1, Constants.DOMAIN_MOBILE);
         }
         cacheSupport.set(Constants.CACHE_NAME_TGT, tgt, userId, expire);
     }
