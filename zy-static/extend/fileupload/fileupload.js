@@ -6,14 +6,17 @@
     if (!element) {
       return;
     }
-    if(!options.width) {
-      options.width = 100;
+    if((typeof options.width) == 'undefined') {
+      options.width = defaults.width;
     }
-    if(!options.height) {
-      options.height = 100;
+    if((typeof options.height) == 'undefined') {
+      options.height = defaults.height;
     }
-    if(!options.retain) {
-      options.retain = 2;
+    if((typeof options.retain) == 'undefined') {
+      options.retain = defaults.retain;
+    }
+    if((typeof options.retain) == 'undefined') {
+      options.retain = defaults.retain;
     }
     element.style.width = options.width + 'px';
     element.style.height = options.height + 'px';
@@ -59,10 +62,17 @@
       return !options.maxFileSize || file.size <= sizeToBytes(options.maxFileSize);
     };
     var startUploadFile = function() {
-      var imageObj = element.getElementsByTagName('img')[0];
+      /*var imageObj = element.getElementsByTagName('img')[0];
       if(imageObj){
         imageObj.src = Config.stccdn + '/image/loading_circle.gif';
+      }*/
+      var state = element.getElementsByClassName('state')[0];
+      if(!state){
+        var state = document.createElement('em');
+        element.appendChild(state);
       }
+      state.className = 'state state-loading';
+      
       var data = canvas.toDataURL('image/jpeg', quality);
       data = data.split(',')[1];
       data = window.atob(data);
@@ -127,10 +137,19 @@
       //alert(result);
       
       var imageObj = element.getElementsByTagName('img')[0];
-      var inputHidden = element.getElementsByTagName('input')[0];
-      if(imageObj){
+      var state = element.getElementsByClassName('state')[0];
+      
+      if(element.className.indexOf('image-add') != -1) {
+        //多图上传
+        state.className = 'state state-add';
+      } else {
         imageObj.src = resultData.imageThumbnail;
+        imageObj.onload = function(){
+          element.removeChild(state);
+        };
       }
+      
+      var inputHidden = element.getElementsByTagName('input')[0];
       if(inputHidden){
         inputHidden.value = resultData.image;
       }
@@ -179,6 +198,9 @@
         return this.each(function() {
           $(this).data('Fileupload', new Fileupload($(this)[0], params));
         });
+      }
+      $.fn.Fileupload.defaults = function(defaults) {
+        window.Fileupload.defaults = defaults;
       }
     })(window.jQuery || window.Zepto)
   }

@@ -17,33 +17,39 @@
 <%@ include file="/WEB-INF/view/include/fileupload.jsp"%>
 <script type="text/javascript">
   $(function() {
-    $('.image-add').Fileupload({
-      width : 120,
-      height : 120,
+    $('.image-multi .image-item').Fileupload({
+      width : 100,
+      height : 100,
+      url : '${ctx}/image/upload',
+      maxFileSize : '4MB'
+    });
+    
+    $('.image-multi .image-add').Fileupload({
+      width : 100,
+      height : 100,
       url : '${ctx}/image/upload',
       maxFileSize : '4MB',
       progress : function() {
-        var $this = $(this);
-        $this.find('.state').removeClass('state-add').addClass('state-loading');
       },
       success : function(result) {
         var $this = $(this);
-        $this.find('.state').removeClass('state-loading').addClass('state-add');
         var limit = $this.attr('data-limit');
-        var images = $this.siblings('.image-item');
+        var imageItems = $this.siblings('.image-item');
         var inputHidden = $this.children('input:hidden');
         var inputName = inputHidden.val('').attr('name');
-        inputName = inputName.replace((images.length + 1), '');
-        var imageItem = '<div class="image-item">' + '<input type="hidden" name="' + inputName + (images.length + 1) + '" value="' + result + '">'
-            + '<img src="' + result + '@200w_200h_1e_1c_jpg">' + '<input type="file">' + '</div>';
+        inputName = inputName.replace((imageItems.length + 1), '');
+        var image = result.image;
+        var imageThumbnail = result.imageThumbnail;
+        var imageItem = '<div class="image-item">' + '<input type="hidden" name="' + inputName + (imageItems.length + 1) + '" value="' + image + '">'
+            + '<img src="' + imageThumbnail + '">' + '<input type="file">' + '</div>';
         $(imageItem).insertBefore($this);
-        $this.children('input:hidden').attr('name', inputName + (images.length + 2));
-        if (limit && limit <= images.length + 1) {
+        $this.children('input:hidden').attr('name', inputName + (imageItems.length + 2));
+        if (limit && limit <= imageItems.length + 1) {
           $this.remove();
         }
-        $this.siblings('.image-item').eq(images.length).Fileupload({
-          width : 120,
-          height : 120,
+        $this.siblings('.image-item').eq(imageItems.length).Fileupload({
+          width : 100,
+          height : 100,
           url : '${ctx}/image/upload',
           maxFileSize : '4MB'
         });
@@ -142,7 +148,7 @@
       <div class="list-group">
         <div class="list-title">您至少需要上传3张检测图片</div>
         <div class="list-item">
-          <div class="list-text list-image">
+          <div class="list-text list-image image-multi">
             <div class="image-item">
               <input type="hidden" name="image1" value="${report.image1}">
               <img src="${report.image1Thumbnail}">
