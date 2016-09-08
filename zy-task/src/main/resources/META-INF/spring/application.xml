@@ -21,6 +21,7 @@
 	<dubbo:reference interface="com.zy.service.PaymentService" id="paymentService"/>
 	<dubbo:reference interface="com.zy.service.OrderService" id="orderService"/>
 	<dubbo:reference interface="com.zy.service.ReportService" id="reportService"/>
+	<dubbo:reference interface="com.zy.service.AccountLogService" id="accountLogService"/>
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
 
