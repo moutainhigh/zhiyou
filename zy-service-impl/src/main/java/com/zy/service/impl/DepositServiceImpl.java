@@ -99,10 +99,8 @@ public class DepositServiceImpl implements DepositService {
 	
 	@Override
 	public void success(@NotNull Long id, String outerSn) {
-		validate(id, NOT_NULL, "deposit is null");
-
 		Deposit deposit = depositMapper.findOne(id);
-		validate(deposit, NOT_NULL, "deposit id " + id + "is not found null");
+		validate(deposit, NOT_NULL, "deposit id " + id + "is not found");
 
 		PayType payType = deposit.getPayType();
 
@@ -126,10 +124,8 @@ public class DepositServiceImpl implements DepositService {
 
 	@Override
 	public void offlineSuccess(@NotNull Long id, @NotNull Long operatorId, @NotBlank String remark) {
-		validate(id, NOT_NULL, "deposit is null");
-
 		Deposit deposit = depositMapper.findOne(id);
-		validate(deposit, NOT_NULL, "deposit id " + id + "is not found null");
+		validate(deposit, NOT_NULL, "deposit id " + id + "is not found");
 
 		User operator = userMapper.findOne(operatorId);
 		validate(operator, NOT_NULL, "operator id" + operatorId + " is not found null");
@@ -177,8 +173,7 @@ public class DepositServiceImpl implements DepositService {
 	}
 
 	@Override
-	public void cancel(Long id) {
-		validate(id, NOT_NULL, "deposit is null");
+	public void cancel(@NotNull Long id) {
 		Deposit deposit = depositMapper.findOne(id);
 		validate(deposit, NOT_NULL, "deposit id " + id + "is not found");
 		DepositStatus depositStatus = deposit.getDepositStatus();
@@ -194,7 +189,7 @@ public class DepositServiceImpl implements DepositService {
 	}
 
 	@Override
-	public Page<Deposit> findPage(DepositQueryModel depositQueryModel) {
+	public Page<Deposit> findPage(@NotNull DepositQueryModel depositQueryModel) {
 		validate(depositQueryModel, NOT_NULL, "deposit query model is null");
 		if (depositQueryModel.getPageNumber() == null)
 			depositQueryModel.setPageNumber(0);
@@ -211,29 +206,19 @@ public class DepositServiceImpl implements DepositService {
 	}
 
 	@Override
-	public List<Deposit> findAll(DepositQueryModel depositQueryModel) {
+	public List<Deposit> findAll(@NotNull DepositQueryModel depositQueryModel) {
 		validate(depositQueryModel, NOT_NULL, "deposit query model is null");
 		return depositMapper.findAll(depositQueryModel);
 	}
 
 	@Override
-	public Deposit findOne(Long id) {
-		validate(id, NOT_NULL, "deposit id is null");
+	public Deposit findOne(@NotNull Long id) {
 		return depositMapper.findOne(id);
 	}
 
 	@Override
-	public Deposit findBySn(String sn) {
-		validate(sn, NOT_BLANK, "deposit sn is blank");
+	public Deposit findBySn(@NotBlank String sn) {
 		return depositMapper.findBySn(sn);
-	}
-
-	@Override
-	public void update(Deposit deposit) {
-		validate(deposit);
-		if (depositMapper.update(deposit) == 0) {
-			throw new ConcurrentException();
-		}
 	}
 
 }

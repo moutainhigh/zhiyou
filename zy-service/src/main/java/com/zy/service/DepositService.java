@@ -10,8 +10,6 @@ public interface DepositService {
 
 	Deposit create(Deposit deposit);
 	
-	void update(Deposit deposit);
-	
 	void success(Long id, String outerSn);
 
 	void offlineSuccess(Long id, Long operatorId, String remark);
