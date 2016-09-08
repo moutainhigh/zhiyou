@@ -97,7 +97,7 @@
         <div class="list-text">升级代理</div>
         <i class="list-arrow"></i>
       </a>
-      <a class="list-item list-item-icon" href="${ctx}/u/invite">
+      <a class="list-item list-item-icon" href="${ctx}/u/team">
         <i class="list-icon icon icon-users"></i>
         <div class="list-text">我的团队</div>
         <i class="list-arrow"></i>

@@ -14,11 +14,11 @@
 <title>实名认证</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
-<%@ include file="/WEB-INF/view/include/fileupload.jsp"%>
+<%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
 <script type="text/javascript">
   $(function() {
 		
-	$('.image-single').Fileupload({
+	$('.image-single').imageupload({
 		width: 120,
 		height: 75,
 		url: '${ctx}/image/upload',
@@ -84,7 +84,7 @@
         <div class="list-title">请上传身份证照片</div>
         <div class="list-item">
           <label class="list-label">正面照</label>
-          <div class="list-text list-image">
+          <div class="list-text image-upload">
             <div class="image-item image-single bd">
               <input type="hidden" name="image1" id="image1" value="">
               <img src="${stccdn}/image/defaultImage_240_150.png">
@@ -97,7 +97,7 @@
         </div>
         <div class="list-item">
           <label class="list-label">反面照</label>
-          <div class="list-text list-image">
+          <div class="list-text image-upload">
             <div class="image-item image-single bd">
               <input type="hidden" name="image2" id="image2" value="">
               <img src="${stccdn}/image/defaultImage_240_150.png">
