@@ -1,6 +1,7 @@
 package com.zy.service.impl;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
 import static com.zy.common.util.ValidateUtils.validate;
 
 import java.util.Date;
@@ -76,6 +77,12 @@ public class ReportServiceImpl implements ReportService {
 	public void confirm(@NotNull Long id, boolean isSuccess, String confirmRemark) {
 		Report report = reportMapper.findOne(id);
 		validate(report, NOT_NULL, "report id " + id + " is not found");
+		validate(report.getPreConfirmStatus(), v -> v == ConfirmStatus.已通过, "pre confirm status error");
+		if(report.getConfirmStatus() != ConfirmStatus.待审核) {
+			return ;
+		}
+		
+		report.setConfirmedTime(new Date());
 		if (isSuccess) {
 			report.setConfirmStatus(ConfirmStatus.已通过);
 			report.setConfirmRemark(confirmRemark);
@@ -123,6 +130,32 @@ public class ReportServiceImpl implements ReportService {
 		persistence.setReportResult(report.getReportResult());
 		reportMapper.update(persistence);
 		return persistence;
+	}
+
+	@Override
+	public void preConfirm(@NotNull Long id, boolean isSuccess, String confirmRemark) {
+		Report report = reportMapper.findOne(id);
+		validate(report, NOT_NULL, "report id" + id + " not found");
+		if(report.getPreConfirmStatus() != ConfirmStatus.待审核) {
+			return ;
+		}
+		if(report.getConfirmStatus() != ConfirmStatus.待审核) {
+			throw new BizException(BizCode.ERROR, "状态不匹配");
+		}
+		
+		report.setConfirmedTime(new Date());
+		if(isSuccess) {
+			report.setPreConfirmStatus(ConfirmStatus.已通过);
+			report.setConfirmRemark(confirmRemark);
+		} else {
+			validate(confirmRemark, NOT_BLANK, "confirm remark is null");
+			report.setPreConfirmStatus(ConfirmStatus.未通过);
+			report.setConfirmRemark(confirmRemark);
+		}
+		if (reportMapper.update(report) == 0) {
+			throw new ConcurrentException();
+		}
+		
 	}
 
 }
