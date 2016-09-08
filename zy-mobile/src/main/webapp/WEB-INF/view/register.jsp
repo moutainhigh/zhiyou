@@ -106,7 +106,7 @@
         <div class="list-item">
           <label class="list-label" for="phone">手机号</label>
           <div class="list-text">
-            <input type="text" id="phone" name="phone" class="form-input" placeholder="输入手机号" value="">
+            <input type="text" id="phone" name="phone" class="form-input" placeholder="输入手机号" value="${phone}">
           </div>
         </div>
         <div class="list-item img-captcha">
