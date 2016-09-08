@@ -127,7 +127,7 @@
       type : 'POST',
       dataType : 'json',
       success : function(result) {
-        var addressTpl = document.getElementById('addressTpl').innerHTML;
+        var addressTpl = document.getElementById('addressListTpl').innerHTML;
         laytpl(addressTpl).render(result.data, function(html) {
           closeAddress();
           $('article > .list-item').hide();

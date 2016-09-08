@@ -13,6 +13,7 @@
 
 <title>检测报告列表</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
+<script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
 <script type="text/javascript">
   $(function() {
     if (!$('.list-more').hasClass('disabled')) {
