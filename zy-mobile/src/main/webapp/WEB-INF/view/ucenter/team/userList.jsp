@@ -15,7 +15,6 @@
 
 <title>我的团队</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<link rel="stylesheet" href="${stccdn}/css/ucenter/invite.css" />
 <script type="text/javascript">
   $(function() {
 
