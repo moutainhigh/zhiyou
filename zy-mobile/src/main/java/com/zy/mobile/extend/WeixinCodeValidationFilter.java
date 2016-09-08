@@ -87,6 +87,7 @@ public class WeixinCodeValidationFilter implements Filter {
 					session.setAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO, agentRegisterDto);
 					session.setAttribute(SESSION_ATTRIBUTE_REDIRECT_URL, GcUtils.resolveRedirectUrl(httpServletRequest));
 					httpServletResponse.sendRedirect(httpServletRequest.getServletPath() + "/register"); // 重定向到注册页面
+					return;
 
 				} else {
 					Long userId = user.getId();
