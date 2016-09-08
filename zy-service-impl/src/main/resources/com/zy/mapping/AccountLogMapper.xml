@@ -7,6 +7,7 @@
 		<result column="in_out" property="inOut" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="title" property="title" />
 		<result column="user_id" property="userId" />
+		<result column="ref_user_id" property="refUserId" />
 		<result column="account_log_type" property="accountLogType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="ref_id" property="refId" />
 		<result column="ref_sn" property="refSn" />
@@ -15,11 +16,12 @@
 		<result column="before_amount" property="beforeAmount" />
 		<result column="trans_amount" property="transAmount" />
 		<result column="after_amount" property="afterAmount" />
+		<result column="is_acknowledged" property="isAcknowledged" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.AccountLog" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_account_log` (in_out,title,user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount)
-	  values (#{inOut,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{title},#{userId},#{accountLogType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{refSn},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{transTime},#{beforeAmount},#{transAmount},#{afterAmount})
+	  insert into `fnc_account_log` (in_out,title,user_id,ref_user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount,is_acknowledged)
+	  values (#{inOut,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{title},#{userId},#{refUserId},#{accountLogType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{refSn},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{transTime},#{beforeAmount},#{transAmount},#{afterAmount},#{isAcknowledged})
 	</insert>
 
 	<delete id="delete">
@@ -32,6 +34,7 @@
 			in_out = #{inOut,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			title = #{title},
 			user_id = #{userId},
+			ref_user_id = #{refUserId},
 			account_log_type = #{accountLogType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			ref_id = #{refId},
 			ref_sn = #{refSn},
@@ -40,6 +43,7 @@
 			before_amount = #{beforeAmount},
 			trans_amount = #{transAmount},
 			after_amount = #{afterAmount},
+			is_acknowledged = #{isAcknowledged},
 		</set>
 		where id = #{id}
 	</update>
@@ -52,6 +56,7 @@
 					<when test="field == 'inOut'">in_out = #{accountLog.inOut,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.AccountLog$InOut},</when>
 					<when test="field == 'title'">title = #{accountLog.title},</when>
 					<when test="field == 'userId'">user_id = #{accountLog.userId},</when>
+					<when test="field == 'refUserId'">ref_user_id = #{accountLog.refUserId},</when>
 					<when test="field == 'accountLogType'">account_log_type = #{accountLog.accountLogType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.AccountLog$AccountLogType},</when>
 					<when test="field == 'refId'">ref_id = #{accountLog.refId},</when>
 					<when test="field == 'refSn'">ref_sn = #{accountLog.refSn},</when>
@@ -60,6 +65,7 @@
 					<when test="field == 'beforeAmount'">before_amount = #{accountLog.beforeAmount},</when>
 					<when test="field == 'transAmount'">trans_amount = #{accountLog.transAmount},</when>
 					<when test="field == 'afterAmount'">after_amount = #{accountLog.afterAmount},</when>
+					<when test="field == 'isAcknowledged'">is_acknowledged = #{accountLog.isAcknowledged},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -68,14 +74,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,in_out,title,user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount
+		id,in_out,title,user_id,ref_user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount,is_acknowledged
 		from `fnc_account_log`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.AccountLogQueryModel">
 		select
-		id,in_out,title,user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount
+		id,in_out,title,user_id,ref_user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount,is_acknowledged
 		from `fnc_account_log`
 		<where>
 			<if test="currencyTypeEQ != null">
@@ -83,12 +89,6 @@
 			</if>
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
-			</if>
-			<if test="userIdIN != null">
-				 and user_id in
-				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
 			</if>
 			<if test="transTimeGTE != null">
 				 and trans_time &gt;= #{transTimeGTE}
@@ -102,11 +102,29 @@
 			<if test="userIdEQ != null">
 				 and user_id = #{userIdEQ}
 			</if>
+			<if test="refUserIdEQ != null">
+				 and ref_user_id = #{refUserIdEQ}
+			</if>
+			<if test="userIdIN != null">
+				 and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="refUserIdIN != null">
+				 and ref_user_id in
+				<foreach collection="refUserIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
 			<if test="refSnEQ != null">
 				 and ref_sn = #{refSnEQ}
 			</if>
 			<if test="transTimeLT != null">
 				 and trans_time &lt; #{transTimeLT}
+			</if>
+			<if test="isAcknowledgedEQ != null">
+				 and is_acknowledged = #{isAcknowledgedEQ}
 			</if>
 		</where>
 		<choose>
@@ -131,12 +149,6 @@
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
-			<if test="userIdIN != null">
-				 and user_id in
-				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
-			</if>
 			<if test="transTimeGTE != null">
 				 and trans_time &gt;= #{transTimeGTE}
 			</if>
@@ -149,11 +161,29 @@
 			<if test="userIdEQ != null">
 				 and user_id = #{userIdEQ}
 			</if>
+			<if test="refUserIdEQ != null">
+				 and ref_user_id = #{refUserIdEQ}
+			</if>
+			<if test="userIdIN != null">
+				 and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="refUserIdIN != null">
+				 and ref_user_id in
+				<foreach collection="refUserIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
 			<if test="refSnEQ != null">
 				 and ref_sn = #{refSnEQ}
 			</if>
 			<if test="transTimeLT != null">
 				 and trans_time &lt; #{transTimeLT}
+			</if>
+			<if test="isAcknowledgedEQ != null">
+				 and is_acknowledged = #{isAcknowledgedEQ}
 			</if>
 		</where>
 	</select>

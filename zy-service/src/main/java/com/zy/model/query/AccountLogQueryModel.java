@@ -31,6 +31,10 @@ public class AccountLogQueryModel implements Serializable {
 
 	private Long[] userIdIN;
 
+	private Long refUserIdEQ;
+
+	private Long[] refUserIdIN;
+
 	private AccountLogType accountLogTypeEQ;
 
 	private String refSnEQ;
@@ -40,6 +44,8 @@ public class AccountLogQueryModel implements Serializable {
 	private Date transTimeGTE;
 
 	private Date transTimeLT;
+
+	private Boolean isAcknowledgedEQ;
 
 	private Integer pageNumber;
 
@@ -94,16 +100,18 @@ public class AccountLogQueryModel implements Serializable {
 
 	static {
 		fieldNames.add("currencyType");
+		fieldNames.add("refUserId");
+		fieldNames.add("transTime");
+		fieldNames.add("title");
+		fieldNames.add("userId");
 		fieldNames.add("transAmount");
 		fieldNames.add("beforeAmount");
 		fieldNames.add("inOut");
-		fieldNames.add("transTime");
 		fieldNames.add("accountLogType");
+		fieldNames.add("isAcknowledged");
 		fieldNames.add("id");
 		fieldNames.add("refId");
 		fieldNames.add("refSn");
-		fieldNames.add("title");
-		fieldNames.add("userId");
 		fieldNames.add("afterAmount");
 	}
 

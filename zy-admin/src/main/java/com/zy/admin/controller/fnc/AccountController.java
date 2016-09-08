@@ -25,7 +25,6 @@ import java.math.BigDecimal;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.ProfitBizName.系统补偿;
 
 @RequestMapping("/account")
 @Controller
@@ -67,7 +66,9 @@ public class AccountController {
 		}
 
 		try {
-			profitService.grant(userId, 系统补偿, "系统补偿" + currencyType.getAlias(), currencyType, amount, remark);
+			
+			// TODO
+			profitService.grant(userId, "123", "系统补偿" + currencyType.getAlias(), currencyType, amount, remark);
 		} catch (Exception e) {
 			return ResultBuilder.error("充值失败," + e.getMessage());
 		}

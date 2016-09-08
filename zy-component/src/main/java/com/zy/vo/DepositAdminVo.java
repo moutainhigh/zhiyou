@@ -19,8 +19,6 @@ public class DepositAdminVo implements Serializable {
 	private Long id;
 	@Field(label = "用户id")
 	private Long userId;
-	@Field(label = "充值单id")
-	private Long paymentId;
 	@Field(label = "标题")
 	private String title;
 	@Field(label = "充值单号")
@@ -53,6 +51,8 @@ public class DepositAdminVo implements Serializable {
 	private Date expiredTime;
 	@Field(label = "提现单状态")
 	private DepositStatus depositStatus;
+	@Field(label = "备注")
+	private String remark;
 
 	/* 扩展 */
 	@Field(label = "用户id")

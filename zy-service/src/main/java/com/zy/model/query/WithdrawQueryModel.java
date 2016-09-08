@@ -90,13 +90,13 @@ public class WithdrawQueryModel implements Serializable {
 		fieldNames.add("version");
 		fieldNames.add("bankCardId");
 		fieldNames.add("realAmount");
-		fieldNames.add("operatorUserId");
 		fieldNames.add("isToBankCard");
 		fieldNames.add("withdrawedTime");
 		fieldNames.add("createdTime");
 		fieldNames.add("outerFee");
 		fieldNames.add("id");
 		fieldNames.add("sn");
+		fieldNames.add("operatorId");
 	}
 
 }
