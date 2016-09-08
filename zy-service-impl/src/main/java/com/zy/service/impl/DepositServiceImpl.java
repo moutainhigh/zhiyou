@@ -1,5 +1,6 @@
 package com.zy.service.impl;
 
+import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
@@ -49,6 +50,9 @@ public class DepositServiceImpl implements DepositService {
 
 	@Autowired
 	private FncComponent fncComponent;
+
+	@Autowired
+	private Config config;
 
 	@Override
 	public Deposit create(@NotNull Deposit deposit) {
@@ -162,10 +166,12 @@ public class DepositServiceImpl implements DepositService {
 		CurrencyType currencyType1 = deposit.getCurrencyType1();
 		CurrencyType currencyType2 = deposit.getCurrencyType2();
 
-		fncComponent.recordAccountLog(userId, "充值成功", currencyType1, deposit.getAmount1(), InOut.收入, deposit);
+		Long sysUserId = config.getSysUserId();
+
+		fncComponent.recordAccountLog(userId, "充值进账", currencyType1, deposit.getAmount1(), InOut.收入, deposit, sysUserId);
 
 		if (currencyType2 != null) {
-			fncComponent.recordAccountLog(userId, "充值成功", currencyType2, deposit.getAmount2(), InOut.收入, deposit);
+			fncComponent.recordAccountLog(userId, "充值进账", currencyType2, deposit.getAmount2(), InOut.收入, deposit, sysUserId);
 		}
 
 	}

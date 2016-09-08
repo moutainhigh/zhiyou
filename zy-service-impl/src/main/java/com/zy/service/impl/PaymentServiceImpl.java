@@ -168,16 +168,17 @@ public class PaymentServiceImpl implements PaymentService {
 			throw new ConcurrentException();
 		}
 
+		Long sysUserId = config.getSysUserId();
 		Long userId = payment.getUserId();
 
 		/* 支付成功记录流水 */
 		CurrencyType currencyType1 = payment.getCurrencyType1();
 		CurrencyType currencyType2 = payment.getCurrencyType2();
 
-		fncComponent.recordAccountLog(userId, "支付成功", currencyType1, payment.getAmount1(), AccountLog.InOut.收入, payment);
+		fncComponent.recordAccountLog(sysUserId, "支付成功", currencyType1, payment.getAmount1(), AccountLog.InOut.收入, payment, userId);
 
 		if (currencyType2 != null) {
-			fncComponent.recordAccountLog(userId, "支付成功", currencyType2, payment.getAmount2(), AccountLog.InOut.收入, payment);
+			fncComponent.recordAccountLog(sysUserId, "支付成功", currencyType2, payment.getAmount2(), AccountLog.InOut.收入, payment, userId);
 		}
 	}
 
@@ -216,8 +217,8 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 
 		String title = payment.getTitle();
-		fncComponent.recordAccountLog(userId, title, currencyType1, amount1, AccountLog.InOut.支出, payment);
-		fncComponent.recordAccountLog(sysUserId, title, currencyType1, amount1, AccountLog.InOut.收入, payment);
+		fncComponent.recordAccountLog(userId, title, currencyType1, amount1, AccountLog.InOut.支出, payment, sysUserId);
+		fncComponent.recordAccountLog(sysUserId, title, currencyType1, amount1, AccountLog.InOut.收入, payment, userId);
 
 		if (currencyType2 != null) {
 			Account account2 = accountMapper.findByUserIdAndCurrencyType(userId, currencyType2);
@@ -230,8 +231,8 @@ public class PaymentServiceImpl implements PaymentService {
 			}
 
 			title = payment.getTitle();
-			fncComponent.recordAccountLog(userId, title, currencyType2, amount2, AccountLog.InOut.支出, payment);
-			fncComponent.recordAccountLog(sysUserId, title, currencyType2, amount2, AccountLog.InOut.收入, payment);
+			fncComponent.recordAccountLog(userId, title, currencyType2, amount2, AccountLog.InOut.支出, payment, sysUserId);
+			fncComponent.recordAccountLog(sysUserId, title, currencyType2, amount2, AccountLog.InOut.收入, payment, userId);
 		}
 
 		payment.setPaidTime(new Date());
