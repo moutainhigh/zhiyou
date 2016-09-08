@@ -45,8 +45,8 @@ public class ReportServiceImpl implements ReportService {
 		Date now = new Date();
 		report.setCreatedTime(new Date());
 		report.setVersion(0);
-		report.setPreConfirmStatus(ConfirmStatus.未审核);
-		report.setConfirmStatus(ConfirmStatus.未审核);
+		report.setPreConfirmStatus(ConfirmStatus.待审核);
+		report.setConfirmStatus(ConfirmStatus.待审核);
 		report.setConfirmRemark(null);
 		report.setConfirmedTime(null);
 		report.setAppliedTime(now);
