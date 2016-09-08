@@ -8,6 +8,7 @@ import com.zy.common.exception.ValidationException;
 import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.AccountLog.InOut;
 import com.zy.entity.fnc.Payment.PaymentStatus;
+import com.zy.entity.usr.User;
 import com.zy.mapper.*;
 import com.zy.model.BizCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,7 @@ public class FncComponent {
 	private Config config;
 
 	public void recordAccountLog(Long userId, String title, CurrencyType currencyType, BigDecimal transAmount, InOut inOut, Object ref) {
+		User user = userMapper.findOne(userId);
 		Account account = accountMapper.findByUserIdAndCurrencyType(userId, currencyType);
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (transAmount.compareTo(zero) <= 0) {
@@ -55,22 +57,12 @@ public class FncComponent {
 		if (account.getCurrencyType() != currencyType) {
 			throw new ValidationException(currencyType + " does not match account currency type " + account.getCurrencyType());
 		}
-		BigDecimal beforeAmount = account.getAmount();
-		BigDecimal afterAmount = null;
-		if (inOut == 收入) {
-			afterAmount = beforeAmount.add(transAmount);
-		} else {
-			afterAmount = beforeAmount.subtract(transAmount);
-		}
 
 		AccountLog accountLog = new AccountLog();
 		accountLog.setTitle(title);
-		accountLog.setBeforeAmount(beforeAmount);
 		accountLog.setTransAmount(transAmount);
-		accountLog.setAfterAmount(afterAmount);
 		accountLog.setTransTime(new Date());
 		accountLog.setCurrencyType(currencyType);
-
 		accountLog.setUserId(account.getUserId());
 		accountLog.setInOut(inOut);
 
@@ -100,14 +92,29 @@ public class FncComponent {
 			throw new ValidationException("error ref class " + ref.getClass().getName());
 		}
 
-		validate(accountLog);
-		accountLogMapper.insert(accountLog);
+		if (user.getUserType() == User.UserType.平台) {
+			accountLog.setIsAcknowledged(false);
+			validate(accountLog);
+			accountLogMapper.insert(accountLog);
+		} else {
+			accountLog.setIsAcknowledged(true);
+			BigDecimal beforeAmount = account.getAmount();
+			BigDecimal afterAmount = null;
+			if (inOut == 收入) {
+				afterAmount = beforeAmount.add(transAmount);
+			} else {
+				afterAmount = beforeAmount.subtract(transAmount);
+			}
 
-		account.setAmount(afterAmount);
-		if (accountMapper.update(account) == 0) {
-			throw new ConcurrentException();
+			accountLog.setAfterAmount(afterAmount);
+			accountLog.setBeforeAmount(beforeAmount);
+			validate(accountLog);
+			accountLogMapper.insert(accountLog);
+			account.setAmount(afterAmount);
+			if (accountMapper.update(account) == 0) {
+				throw new ConcurrentException();
+			}
 		}
-
 	}
 
 	public Profit createProfit(String bizName, CurrencyType currencyType, String title, Long userId, BigDecimal amount, String remark) {
@@ -136,6 +143,7 @@ public class FncComponent {
 		return profit;
 	}
 
+	@Deprecated
 	public void refundPayment(@NotNull Long paymentId, @NotNull CurrencyType refundCurrencyType1, @NotNull @DecimalMin("0.00") BigDecimal refund1,
 			CurrencyType refundCurrencyType2, @DecimalMin("0.00") BigDecimal refund2) {
 
@@ -181,22 +189,6 @@ public class FncComponent {
 		payment.setRefund2(refund2);
 		payment.setPaymentStatus(PaymentStatus.已退款);
 
-		if (paymentMapper.update(payment) == 0) {
-			throw new ConcurrentException();
-		}
-	}
-
-	public void cancelPayment(@NotNull Long paymentId) {
-		Payment payment = paymentMapper.findOne(paymentId);
-		validate(payment, NOT_NULL, "payment id " + paymentId + " is not found");
-		PaymentStatus paymentStatus = payment.getPaymentStatus();
-		if (paymentStatus == PaymentStatus.已取消) {
-			return; // 幂等处理
-		} else if (paymentStatus != PaymentStatus.待支付) {
-			throw new BizException(BizCode.ERROR, "只有待支付支付订单才能取消");
-		}
-
-		payment.setPaymentStatus(PaymentStatus.已取消);
 		if (paymentMapper.update(payment) == 0) {
 			throw new ConcurrentException();
 		}

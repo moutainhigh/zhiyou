@@ -35,6 +35,8 @@ public class UserQueryModel implements Serializable {
 
 	private Long inviterIdEQ;
 
+	private Long[] inviterIdIN;
+
 	private Long parentIdEQ;
 
 	private Integer pageNumber;

@@ -27,9 +27,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.NULL;
-import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.common.util.ValidateUtils.*;
 import static com.zy.entity.fnc.Payment.PaymentStatus.已支付;
 import static com.zy.entity.fnc.Payment.PaymentStatus.待支付;
 
@@ -246,6 +244,22 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public List<Payment> findByBizNameAndBizName(@NotBlank String bizName, @NotBlank String bizSn) {
 		return paymentMapper.findByBizNameAndBizSn(bizName, bizSn);
+	}
+
+	@Override
+	public void cancel(@NotNull Long id) {
+		Payment payment = paymentMapper.findOne(id);
+		validate(payment, NOT_NULL, "payment id " + id + "is not found");
+		Payment.PaymentStatus paymentStatus = payment.getPaymentStatus();
+		if (paymentStatus == Payment.PaymentStatus.已取消) {
+			return; // 幂等处理
+		} else if (paymentStatus != Payment.PaymentStatus.待支付) {
+			throw new BizException(BizCode.ERROR, "只有待支付状态的支付订单才能取消");
+		}
+		payment.setPaymentStatus(Payment.PaymentStatus.已取消);
+		if (paymentMapper.update(payment) == 0) {
+			throw new ConcurrentException();
+		}
 	}
 
 }

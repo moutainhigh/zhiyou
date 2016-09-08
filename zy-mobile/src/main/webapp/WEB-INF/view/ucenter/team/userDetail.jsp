@@ -30,74 +30,67 @@
   <article>
     
     <ul class="breadcrumb mt-10">
-      <li><a href="#"><i class="fa fa-home"></i> 我的团队</a></li>
-      <li><a href="#">秘法所</a></li>
-      <li><a href="#">哆来嘧</a></li>
+      <li><a href="${ctx}/u/team/"><i class="fa fa-home"></i> 我的团队</a></li>
+      <c:if test="${not empty inviterLv3 && principalUserId != inviterLv3.id}">
+      <li><a href="${ctx}/u/team/">${inviterLv3.nickname}</a></li>
+      </c:if>
+      <c:if test="${not empty inviterLv2 && principalUserId != inviterLv2.id}">
+      <li><a href="${ctx}/u/team/${inviterLv2.id}">${inviterLv2.nickname}</a></li>
+      </c:if>
+      <c:if test="${not empty inviterLv1 && principalUserId != inviterLv1.id}">
+      <li><a href="${ctx}/u/team/${inviterLv1.id}">${inviterLv1.nickname}</a></li>
+      </c:if>
+      <li><a href="javascript:;">${user.nickname}</a></li>
     </ul>
     
     <div class="list-group">
       <div class="list-item">
         <i class="list-icon fa fa-user"></i>
         <div class="list-text">昵称</div>
-        <div class="list-unit">哆来嘧</div>
-        <img class="image-40 round ml-10" src="http://image.mayishike.com/avatar/6fa938ce-9350-4df1-84aa-c03d5cd01947">
+        <div class="list-unit">${user.nickname}</div>
+        <img class="image-40 round ml-10" src="${user.avatarThumbnail}">
       </div>
       <div class="list-item">
         <i class="list-icon fa fa-phone"></i>
         <div class="list-text">手机</div>
-        <div class="list-unit">15801992699</div>
+        <div class="list-unit">${user.phone}</div>
       </div>
       <div class="list-item">
         <i class="list-icon fa fa-map-marker"></i>
         <div class="list-text">地区</div>
-        <div class="list-unit">湖北省 宜昌市 枝江市</div>
+        <div class="list-unit">${address.province} ${address.city} ${address.district}</div>
       </div>
-    </div>
-    
-    <div class="list-group">
-      <div class="list-title">哆来嘧的下级代理</div>
-      <a class="list-item invite" href="${ctx}/ucenter/invite/${inviteUser.id}">
-        <div class="avatar"><img class="image-40 round mr-10" src="http://image.mayishike.com/avatar/6fa938ce-9350-4df1-84aa-c03d5cd01947"></div>
-        <div class="list-text">
-          <div class="fs-15">哆来嘧</div>
-          <div class="font-777 fs-14"><i class="fa fa-phone font-999"></i> 13747388829</div>
-        </div>
-        <div class="list-unit"><label class="label purple">三级代理</label></div>
-        <i class="list-arrow"></i>
-      </a>
-      <a class="list-item invite" href="${ctx}/ucenter/invite/${inviteUser.id}">
-        <div class="avatar"><img class="image-40 round mr-10" src="http://image.mayishike.com/avatar/6fa938ce-9350-4df1-84aa-c03d5cd01947"></div>
-        <div class="list-text">
-          <div class="fs-15">发索拉</div>
-          <div class="font-777 fs-14"><i class="fa fa-phone font-999"></i> 13702971837</div>
-        </div>
-        <div class="list-unit"><label class="label red">特级代理</label></div>
-        <i class="list-arrow"></i>
-      </a>
     </div>
     
     <c:if test="${not empty list}">
     <div class="list-group">
-      <div class="list-title">我的直接下级代理</div>
+      <div class="list-title">${user.nickname}的直接下级代理</div>
       <c:forEach items="${list}" var="inviteUser" varStatus="varStatus">
-      <a class="list-item invite" href="${ctx}/ucenter/invite/${inviteUser.id}">
-        <div class="avatar"><img class="image-40 round" src="http://image.mayishike.com/avatar/6fa938ce-9350-4df1-84aa-c03d5cd01947"></div>
+      <a class="list-item invite" href="${ctx}/u/team/${inviteUser.id}">
+        <div class="avatar">
+          <img class="image-40 round mr-10" src="${inviteUser.avatarThumbnail}">
+        </div>
         <div class="list-text">
-          <div class="fs-15">${inviteUser.realname}</div>
+          <div class="fs-15">${inviteUser.nickname}</div>
           <div class="font-777 fs-14"><i class="fa fa-phone font-999">${inviteUser.phone}</i></div>
-          <div class="list-unit">
-            <c:if test="${user.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
-            <c:if test="${user.userRank == 'V2'}"><label class="label blue">二级代理</label></c:if>
-            <c:if test="${user.userRank == 'V3'}"><label class="label orange">一级代理</label></c:if>
-            <c:if test="${user.userRank == 'V4'}"><label class="label red">特级代理</label></c:if>
-          </div>
+        </div>
+        <div class="list-unit">
+          <c:if test="${inviteUser.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V2'}"><label class="label blue">二级代理</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V3'}"><label class="label orange">一级代理</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V4'}"><label class="label red">特级代理</label></c:if>
         </div>
         <i class="list-arrow"></i>
       </a>
       </c:forEach>
     </div>
     </c:if>
-
+    <c:if test="${empty list}">
+    <div class="empty-tip">
+      <i class="fa fa-map-marker"></i>
+      <span>您没有下级代理!</span>
+    </div>
+    </c:if>
   </article>
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
