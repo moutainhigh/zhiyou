@@ -36,6 +36,8 @@ public class OrderQueryModel implements Serializable {
 
 	private OrderStatus orderStatusEQ;
 
+	private Boolean isSettledUpEQ;
+
 	private String logisticsNameLK;
 
 	private String logisticsSnLK;

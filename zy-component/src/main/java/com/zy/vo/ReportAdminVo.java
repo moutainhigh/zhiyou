@@ -20,6 +20,8 @@ public class ReportAdminVo implements Serializable {
 	private Long userId;
 	@Field(label = "姓名")
 	private String realname;
+	@Field(label = "检测时间")
+	private Date date;
 	@Field(label = "年龄")
 	private Integer age;
 	@Field(label = "性别")
@@ -28,9 +30,21 @@ public class ReportAdminVo implements Serializable {
 	private ReportResult reportResult;
 	@Field(label = "文字")
 	private String text;
+	@Field(label = "图片1")
+	private String image1;
+	@Field(label = "图片2")
+	private String image2;
+	@Field(label = "图片3")
+	private String image3;
+	@Field(label = "图片4")
+	private String image4;
+	@Field(label = "图片5")
+	private String image5;
+	@Field(label = "图片6")
+	private String image6;
 	@Field(label = "创建时间")
 	private Date createdTime;
-	@Field(label = "一审状态")
+	@Field(label = "初审状态")
 	private ConfirmStatus preConfirmStatus;
 	@Field(label = "审核状态")
 	private ConfirmStatus confirmStatus;

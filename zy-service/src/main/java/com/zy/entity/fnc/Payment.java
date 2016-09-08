@@ -79,10 +79,12 @@ public class Payment implements Serializable {
 	@NotNull
 	@Field(label = "下单时间")
 	@View
+	@Query({Predicate.LT, Predicate.GTE})
 	private Date createdTime;
 
 	@Field(label = "过期时间")
 	@View
+	@Query(Predicate.LT)
 	private Date expiredTime;
 
 	@Field(label = "支付时间")

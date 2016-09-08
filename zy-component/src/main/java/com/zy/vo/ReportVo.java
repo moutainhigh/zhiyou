@@ -20,6 +20,8 @@ public class ReportVo implements Serializable {
 	private Long userId;
 	@Field(label = "姓名")
 	private String realname;
+	@Field(label = "检测时间")
+	private Date date;
 	@Field(label = "年龄")
 	private Integer age;
 	@Field(label = "性别")
@@ -28,8 +30,6 @@ public class ReportVo implements Serializable {
 	private ReportResult reportResult;
 	@Field(label = "文字")
 	private String text;
-	@Field(label = "检测时间")
-	private Date date;
 	@Field(label = "图片1")
 	private String image1;
 	@Field(label = "图片2")
@@ -42,7 +42,7 @@ public class ReportVo implements Serializable {
 	private String image5;
 	@Field(label = "图片6")
 	private String image6;
-	@Field(label = "一审状态")
+	@Field(label = "初审状态")
 	private ConfirmStatus preConfirmStatus;
 	@Field(label = "审核状态")
 	private ConfirmStatus confirmStatus;

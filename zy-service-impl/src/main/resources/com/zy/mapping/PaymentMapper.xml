@@ -24,12 +24,14 @@
 		<result column="refund_remark" property="refundRemark" />
 		<result column="cancel_remark" property="cancelRemark" />
 		<result column="remark" property="remark" />
+		<result column="outer_sn" property="outerSn" />
+		<result column="operator_id" property="operatorId" />
 		<result column="version" property="version" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.Payment" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_payment` (sn,user_id,title,pay_type,biz_name,biz_sn,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,version)
-	  values (#{sn},#{userId},#{title},#{payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{bizName},#{bizSn},#{createdTime},#{expiredTime},#{paidTime},#{paymentStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount1},#{currencyType2,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount2},#{refund1},#{refund2},#{refundedTime},#{refundRemark},#{cancelRemark},#{remark},#{version})
+	  insert into `fnc_payment` (sn,user_id,title,pay_type,biz_name,biz_sn,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,operator_id,version)
+	  values (#{sn},#{userId},#{title},#{payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{bizName},#{bizSn},#{createdTime},#{expiredTime},#{paidTime},#{paymentStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount1},#{currencyType2,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount2},#{refund1},#{refund2},#{refundedTime},#{refundRemark},#{cancelRemark},#{remark},#{outerSn},#{operatorId},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -59,6 +61,8 @@
 			refund_remark = #{refundRemark},
 			cancel_remark = #{cancelRemark},
 			remark = #{remark},
+			outer_sn = #{outerSn},
+			operator_id = #{operatorId},
 			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
@@ -89,6 +93,8 @@
 					<when test="field == 'refundRemark'">refund_remark = #{payment.refundRemark},</when>
 					<when test="field == 'cancelRemark'">cancel_remark = #{payment.cancelRemark},</when>
 					<when test="field == 'remark'">remark = #{payment.remark},</when>
+					<when test="field == 'outerSn'">outer_sn = #{payment.outerSn},</when>
+					<when test="field == 'operatorId'">operator_id = #{payment.operatorId},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -97,21 +103,30 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,sn,user_id,title,pay_type,biz_name,biz_sn,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,version
+		id,sn,user_id,title,pay_type,biz_name,biz_sn,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,operator_id,version
 		from `fnc_payment`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.PaymentQueryModel">
 		select
-		id,sn,user_id,title,pay_type,biz_name,biz_sn,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,version
+		id,sn,user_id,title,pay_type,biz_name,biz_sn,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,operator_id,version
 		from `fnc_payment`
 		<where>
 			<if test="bizNameEQ != null">
 				 and biz_name = #{bizNameEQ}
 			</if>
+			<if test="createdTimeLT != null">
+				 and created_time &lt; #{createdTimeLT}
+			</if>
 			<if test="userIdEQ != null">
 				 and user_id = #{userIdEQ}
+			</if>
+			<if test="createdTimeGTE != null">
+				 and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="expiredTimeLT != null">
+				 and expired_time &lt; #{expiredTimeLT}
 			</if>
 		</where>
 		<choose>
@@ -133,8 +148,17 @@
 			<if test="bizNameEQ != null">
 				 and biz_name = #{bizNameEQ}
 			</if>
+			<if test="createdTimeLT != null">
+				 and created_time &lt; #{createdTimeLT}
+			</if>
 			<if test="userIdEQ != null">
 				 and user_id = #{userIdEQ}
+			</if>
+			<if test="createdTimeGTE != null">
+				 and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="expiredTimeLT != null">
+				 and expired_time &lt; #{expiredTimeLT}
 			</if>
 		</where>
 	</select>

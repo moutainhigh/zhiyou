@@ -96,6 +96,13 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
+	public void settleUp(@NotNull Long id) {
+
+
+
+	}
+	
+	@Override
 	public Report findOne(@NotNull Long id) {
 		return reportMapper.findOne(id);
 	}

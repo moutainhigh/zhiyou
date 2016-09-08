@@ -29,8 +29,6 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static com.zy.model.Constants.CACHE_NAME_STATISTICS;
-import static com.zy.model.Constants.ProfitBizName.任务奖励;
-import static com.zy.model.Constants.ProfitBizName.团队收益;
 
 @Controller
 @RequestMapping
@@ -248,7 +246,7 @@ public class IndexController {
 				String dateStr = DateFormatUtils.format(date, dateFmt);
 
 				for (Profit profit : profits) {
-					if (DateFormatUtils.format(profit.getCreatedTime(), dateFmt).equals(dateStr)) {
+				/*	if (DateFormatUtils.format(profit.getCreatedTime(), dateFmt).equals(dateStr)) {
 						switch (profit.getBizName()) {
 						case 任务奖励:
 							User user = cacheComponent.getUser(profit.getUserId());
@@ -264,7 +262,7 @@ public class IndexController {
 						default:
 							break;
 						}
-					}
+					}*/
 				}
 
 				feeAmountList.add(feeAmount);
