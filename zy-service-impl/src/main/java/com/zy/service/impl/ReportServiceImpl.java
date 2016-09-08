@@ -3,7 +3,9 @@ package com.zy.service.impl;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
+import com.zy.component.FncComponent;
 import com.zy.entity.act.Report;
+import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.mapper.ReportMapper;
@@ -16,14 +18,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.common.util.ValidateUtils.*;
 import static com.zy.entity.usr.User.UserRank.V0;
 import static com.zy.model.Constants.BIZ_NAME_REPORT;
-import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
