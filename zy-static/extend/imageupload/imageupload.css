@@ -18,12 +18,12 @@
   width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 1;
 }
 .image-upload .image-add {
-  border: 1px dashed #ddd;
-  background-color: #fff;
 }
 .image-upload .state {
   position: absolute; top: 0; left: 0;
   display: block; width: 100%; height: 100%;
+  border: 1px dashed #ddd;
+  background-color: #fff;
 }
 .image-upload .state-add::before {
   position: absolute; top: 50%; left: 12px; right: 12px; margin-top: -3px;
@@ -35,7 +35,7 @@
   display: block; width: 6px; height: auto;
   background-color: #eee; content: "";
 }
-.image-upload .state-loading {
+.image-upload .state-loading::before {
   position: absolute; top: 50%; left: 50%;
   margin-top: -6px; margin-left: -6px;
   display: block; width: 12px; height: 12px;
