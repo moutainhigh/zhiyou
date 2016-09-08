@@ -64,6 +64,10 @@ public class LoginController {
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String register(Model model, HttpSession session) {
 
+		if (GcUtils.getPrincipal() != null) {
+			return "redirect:/u";
+		}
+
 		AgentRegisterDto agentRegisterDto = (AgentRegisterDto) session.getAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO);
 		if (agentRegisterDto == null) {
 			model.addAttribute("isNew", true);
@@ -79,6 +83,10 @@ public class LoginController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, @RequestParam String smsCode,
 	                       @RequestParam String phone) {
+
+		if (GcUtils.getPrincipal() != null) {
+			return "redirect:/u";
+		}
 		
 		AgentRegisterDto agentRegisterDto = (AgentRegisterDto) session.getAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO);
 		if (agentRegisterDto == null) {
@@ -117,7 +125,8 @@ public class LoginController {
 		if (StringUtils.isBlank(redirectUrl)) {
 			redirectUrl = "/";
 		}
-		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, "恭喜您, 注册成功");
+		logger.info("redirect url = " + redirectUrl);
+		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("恭喜您, 注册成功"));
 		onLoginSuccess(request, response, user.getId());
 		return "redirect:" + redirectUrl;
 	}
