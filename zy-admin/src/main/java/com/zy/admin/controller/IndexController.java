@@ -117,7 +117,7 @@ public class IndexController {
 			Long userBankInfoUnconfirmCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, USER_BANK_INFO_COUNT);
 			if (userBankInfoUnconfirmCount == null) {
 				BankCardQueryModel userBankInfoQueryModel = new BankCardQueryModel();
-				userBankInfoQueryModel.setConfirmStatusEQ(ConfirmStatus.未审核);
+				userBankInfoQueryModel.setConfirmStatusEQ(ConfirmStatus.待审核);
 				userBankInfoUnconfirmCount = userBankInfoService.count(userBankInfoQueryModel);
 
 				cacheSupport.set(CACHE_NAME_STATISTICS, USER_BANK_INFO_COUNT, userBankInfoUnconfirmCount, DEFAULT_EXPIRE);

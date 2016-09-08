@@ -72,18 +72,18 @@ public class AppearanceServiceImpl implements AppearanceService {
 						@NotNull(message ="appearance isSuccess cannot be null" ) boolean isSuccess, String confirmRemark) {
 		Appearance appearance = this.appearanceMapper.findOne(id);
 		validate(appearance, NOT_NULL, "appearance is not exists");
-		if (appearance.getConfirmStatus() == ConfirmStatus.审核通过)
+		if (appearance.getConfirmStatus() == ConfirmStatus.已通过)
 			throw new BizException(BizCode.ERROR, "实名认证已审核,不能再次审核");
 		Appearance merge = new Appearance();
 		merge.setId(id);
 		if (!isSuccess) {
 			validate(confirmRemark, NOT_NULL, "审核不通过时,备注必须填写");
 			merge.setConfirmRemark(confirmRemark);
-			merge.setConfirmStatus(ConfirmStatus.审核未通过);
+			merge.setConfirmStatus(ConfirmStatus.未通过);
 			producer.send(Constants.TOPIC_APPEARANCE_REJECTED, appearance);
 		} else {
 			merge.setConfirmRemark(confirmRemark);
-			merge.setConfirmStatus(ConfirmStatus.审核通过);
+			merge.setConfirmStatus(ConfirmStatus.已通过);
 			merge.setConfirmedTime(new Date());
 			// 通过审核发送消息
 			producer.send(Constants.TOPIC_APPEARANCE_CONFIRMED, appearance);
@@ -99,7 +99,7 @@ public class AppearanceServiceImpl implements AppearanceService {
 		validate(user, NOT_NULL, "user id[" + userId + "]not found");
 		
 		appearance.setAppliedTime(new Date());
-		appearance.setConfirmStatus(ConfirmStatus.未审核);
+		appearance.setConfirmStatus(ConfirmStatus.待审核);
 		appearance.setConfirmedTime(null);
 		appearance.setConfirmRemark(null);
 		validate(appearance);
@@ -114,7 +114,7 @@ public class AppearanceServiceImpl implements AppearanceService {
 		
 		Appearance persistence = appearanceMapper.findOne(id);
 		validate(persistence, NOT_NULL, "persistence id[" + id + "]not found");
-		if(persistence.getConfirmStatus() == ConfirmStatus.审核通过) {
+		if(persistence.getConfirmStatus() == ConfirmStatus.已通过) {
 			throw new UnauthorizedException("实名认证已审核过,不能重复编辑");
 		}
 		
@@ -123,7 +123,7 @@ public class AppearanceServiceImpl implements AppearanceService {
 		persistence.setImage1(appearance.getImage1());
 		persistence.setImage2(appearance.getImage2());
 		persistence.setAppliedTime(new Date());
-		persistence.setConfirmStatus(ConfirmStatus.未审核);
+		persistence.setConfirmStatus(ConfirmStatus.待审核);
 		persistence.setConfirmRemark(null);
 		persistence.setConfirmedTime(null);
 		validate(persistence);

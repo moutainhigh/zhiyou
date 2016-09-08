@@ -84,7 +84,7 @@
   }
   
 </script>
-<script id="bankListTpl" type="text/html">
+<script id="bankCardListTpl" type="text/html">
   <aside id="bankCardList" class="header-fixed abs-lt size-100p bg-white z-1000" style="left: 100%; display: none;">
     <header class="header">
       <h1>选择银行卡</h1>
@@ -95,7 +95,7 @@
       <div class="list-item bank-card" data-id="${bankCard.id}" data-card-number="${bankCard.cardNumberLabel}" data-bank-name="${bankCard.bankName}" data-bank-code="${bankCard.bankCode}">
         <i class="icon icon-2x icon-bank-${bankCard.bankCode} mr-15"></i>
         <div class="list-text">${bankCard.bankName}</div>
-        <div class="list-unit">尾号${bankCard.cardNumberLabel}</div>
+        <div class="list-unit fs-16">尾号 ${bankCard.cardNumberLabel}</div>
       </div>
       </c:forEach>
     </div>

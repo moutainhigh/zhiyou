@@ -82,7 +82,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 		checkAppearance(principal.getUserId(), redirectAttributes);
 		
 		Appearance appearance = appearanceService.findByUserId(principal.getUserId());
-		if(appearance == null || appearance.getConfirmStatus() != ConfirmStatus.审核通过) {
+		if(appearance == null || appearance.getConfirmStatus() != ConfirmStatus.已通过) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您还没有完成实名认证过"));
 			return "redirect:/u/userInfo";
 		}
@@ -175,7 +175,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 
 	private String checkAppearance(Long userId, RedirectAttributes redirectAttributes) {
 		Appearance appearance = appearanceService.findByUserId(userId);
-		if(appearance == null || appearance.getConfirmStatus() != ConfirmStatus.审核通过) {
+		if(appearance == null || appearance.getConfirmStatus() != ConfirmStatus.已通过) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您还没有完成实名认证过"));
 			return "redirect:/u/userInfo";
 		}
