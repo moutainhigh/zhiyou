@@ -36,8 +36,6 @@
   background-color: #eee; content: "";
 }
 .image-upload .state-loading {
-}
-.image-upload .state-loading {
   position: absolute; top: 50%; left: 50%;
   margin-top: -6px; margin-left: -6px;
   display: block; width: 12px; height: 12px;
