@@ -38,7 +38,7 @@ public class ReportServiceImpl implements ReportService {
 		validate(userId, NOT_NULL, "user id is null");
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + "  is not found");
-		
+
 		Date now = new Date();
 		report.setCreatedTime(new Date());
 		report.setVersion(0);
@@ -69,6 +69,7 @@ public class ReportServiceImpl implements ReportService {
 		page.setTotal(total);
 		return page;
 	}
+
 
 	@Override
 	public void confirm(@NotNull Long id, boolean isSuccess, String confirmRemark) {
@@ -103,10 +104,10 @@ public class ReportServiceImpl implements ReportService {
 
 		Report persistence = reportMapper.findOne(id);
 		validate(persistence, NOT_NULL, "report id" + id + " not found");
-		if(persistence.getConfirmStatus() == ConfirmStatus.已通过) {
+		if (persistence.getConfirmStatus() == ConfirmStatus.已通过) {
 			throw new BizException(BizCode.ERROR, "状态不匹配");
 		}
-		
+
 		persistence.setAppliedTime(new Date());
 		persistence.setConfirmedTime(null);
 		persistence.setConfirmRemark(null);
@@ -126,6 +127,11 @@ public class ReportServiceImpl implements ReportService {
 		persistence.setReportResult(report.getReportResult());
 		reportMapper.update(persistence);
 		return persistence;
+	}
+
+	@Override
+	public List<Report> findAll(@NotNull ReportQueryModel reportQueryModel) {
+		return reportMapper.findAll(reportQueryModel);
 	}
 
 }
