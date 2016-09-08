@@ -111,8 +111,9 @@ public class WithdrawServiceImpl implements WithdrawService {
 		validate(withdraw);
 		withdrawMapper.insert(withdraw);
 
-		fncComponent.recordAccountLog(userId, "提现申请", currencyType, amount, InOut.支出, withdraw);
-		fncComponent.recordAccountLog(config.getSysUserId(), "提现申请", currencyType, amount, InOut.收入, withdraw);
+		Long sysUserId = config.getSysUserId();
+		fncComponent.recordAccountLog(userId, "提现申请", currencyType, amount, InOut.支出, withdraw, sysUserId);
+		fncComponent.recordAccountLog(sysUserId, "提现申请", currencyType, amount, InOut.收入, withdraw, userId);
 		return withdraw;
 	}
 
@@ -144,7 +145,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		CurrencyType currencyType = withdraw.getCurrencyType();
 		Long sysUserId = config.getSysUserId();
 
-		fncComponent.recordAccountLog(sysUserId, "提现出账(外部)", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw);
+		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw, withdraw.getUserId());
 
 		BigDecimal fee = withdraw.getFee();
 		if (fee.compareTo(zero) > 0) {
@@ -180,8 +181,11 @@ public class WithdrawServiceImpl implements WithdrawService {
 
 		BigDecimal amount = withdraw.getAmount();
 
-		fncComponent.recordAccountLog(withdraw.getUserId(), "提现取消退款", currencyType, amount, InOut.收入, withdraw);
-		fncComponent.recordAccountLog(config.getSysUserId(), "提现取消退款", currencyType, amount, InOut.支出, withdraw);
+		Long userId = withdraw.getUserId();
+		Long sysUserId = config.getSysUserId();
+
+		fncComponent.recordAccountLog(userId, "提现取消退款", currencyType, amount, InOut.收入, withdraw, sysUserId);
+		fncComponent.recordAccountLog(sysUserId, "提现取消退款", currencyType, amount, InOut.支出, withdraw, userId);
 	}
 
 	@Override

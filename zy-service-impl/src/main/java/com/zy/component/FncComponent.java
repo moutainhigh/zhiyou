@@ -2,15 +2,13 @@ package com.zy.component;
 
 import com.zy.Config;
 import com.zy.ServiceUtils;
-import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.exception.ValidationException;
 import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.AccountLog.InOut;
-import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.usr.User;
 import com.zy.mapper.*;
-import com.zy.model.BizCode;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +18,8 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import static com.zy.common.util.ValidateUtils.*;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.entity.fnc.AccountLog.AccountLogType.*;
 import static com.zy.entity.fnc.AccountLog.InOut.支出;
 import static com.zy.entity.fnc.AccountLog.InOut.收入;
@@ -47,8 +46,10 @@ public class FncComponent {
 	@Autowired
 	private Config config;
 
-	public void recordAccountLog(Long userId, String title, CurrencyType currencyType, BigDecimal transAmount, InOut inOut, Object ref) {
+	public void recordAccountLog(@NotNull Long userId, @NotBlank String title, @NotNull CurrencyType currencyType,
+	                             @NotNull @DecimalMin("0.01") BigDecimal transAmount,  @NotNull InOut inOut,  @NotNull Object ref,  @NotNull Long refUserId) {
 		User user = userMapper.findOne(userId);
+		validate(user, NOT_NULL, "user id " + userId + " is not found");
 		Account account = accountMapper.findByUserIdAndCurrencyType(userId, currencyType);
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (transAmount.compareTo(zero) <= 0) {
@@ -57,6 +58,9 @@ public class FncComponent {
 		if (account.getCurrencyType() != currencyType) {
 			throw new ValidationException(currencyType + " does not match account currency type " + account.getCurrencyType());
 		}
+
+		User refUser = userMapper.findOne(userId);
+		validate(refUser, NOT_NULL, "ref user id " + refUserId + " is not found");
 
 		AccountLog accountLog = new AccountLog();
 		accountLog.setTitle(title);
@@ -138,8 +142,9 @@ public class FncComponent {
 
 	public Profit grantProfit(Long userId, String bizName, String title, @NotNull CurrencyType currencyType, BigDecimal amount, String remark) {
 		Profit profit = this.createProfit(bizName, currencyType, title, userId, amount, remark);
-		this.recordAccountLog(config.getSysUserId(), title, currencyType, amount, 支出, profit);
-		this.recordAccountLog(userId, title, currencyType, amount, 收入, profit);
+		Long sysUserId = config.getSysUserId();
+		this.recordAccountLog(sysUserId, title, currencyType, amount, 支出, profit, userId);
+		this.recordAccountLog(userId, title, currencyType, amount, 收入, profit, sysUserId);
 		return profit;
 	}
 
@@ -147,7 +152,7 @@ public class FncComponent {
 	public void refundPayment(@NotNull Long paymentId, @NotNull CurrencyType refundCurrencyType1, @NotNull @DecimalMin("0.00") BigDecimal refund1,
 			CurrencyType refundCurrencyType2, @DecimalMin("0.00") BigDecimal refund2) {
 
-		Payment payment = paymentMapper.findOne(paymentId);
+		/*Payment payment = paymentMapper.findOne(paymentId);
 		validate(payment, NOT_NULL, "payment id " + paymentId + " is not found");
 
 		PaymentStatus paymentStatus = payment.getPaymentStatus();
@@ -165,8 +170,10 @@ public class FncComponent {
 		}
 
 		String title = payment.getTitle() + currencyType1.getAlias() + "退款";
-		recordAccountLog(config.getSysUserId(), title, currencyType1, refund1, InOut.支出, payment);
-		recordAccountLog(payment.getUserId(), title, currencyType1, refund1, InOut.收入, payment);
+		Long sysUserId = config.getSysUserId();
+		Long userId = payment.getUserId();
+		recordAccountLog(sysUserId, title, currencyType1, refund1, InOut.支出, payment, userId);
+		recordAccountLog(userId, title, currencyType1, refund1, InOut.收入, payment, sysUserId);
 
 		CurrencyType currencyType2 = payment.getCurrencyType2();
 		validate(refundCurrencyType2, v -> v == currencyType2, "currency type 2 is not the same");
@@ -179,8 +186,8 @@ public class FncComponent {
 			validate(refundCurrencyType2, v -> v == currencyType2, "currency type 2 is not the same");
 
 			title = payment.getTitle() + currencyType2.getAlias() + "退款";
-			recordAccountLog(config.getSysUserId(), title, currencyType2, refund2, InOut.支出, payment);
-			recordAccountLog(payment.getUserId(), title, currencyType2, refund2, InOut.收入, payment);
+			recordAccountLog(sysUserId, title, currencyType2, refund2, InOut.支出, payment, userId);
+			recordAccountLog(userId, title, currencyType2, refund2, InOut.收入, payment, sysUserId);
 		} else {
 			validate(refund2, NULL, "refund 2 must be null");
 		}
@@ -191,7 +198,7 @@ public class FncComponent {
 
 		if (paymentMapper.update(payment) == 0) {
 			throw new ConcurrentException();
-		}
+		}*/
 	}
 
 }
