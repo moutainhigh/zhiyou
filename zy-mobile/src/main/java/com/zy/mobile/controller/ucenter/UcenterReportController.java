@@ -43,7 +43,7 @@ public class UcenterReportController {
 
 	@RequestMapping()
 	public String list(Principal principal, Model model) {
-		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(0).pageSize(2).build());
+		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(0).pageSize(6).build());
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, reportComponent::buildVo));
 		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		return "ucenter/report/reportList";
@@ -57,7 +57,7 @@ public class UcenterReportController {
 		}
 		
 		Map<String, Object> map = new HashMap<>();
-		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).build());
+		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(pageNumber).pageSize(6).build());
 		map.put("page", PageBuilder.copyAndConvert(page, reportComponent::buildVo));
 		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
 			
