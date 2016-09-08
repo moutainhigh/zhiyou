@@ -74,13 +74,13 @@ public class LoginController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(Model model, HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes, @RequestParam String smsCode,
 	                       @RequestParam String phone) {
-
+		
 		AgentRegisterDto agentRegisterDto = (AgentRegisterDto) session.getAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO);
 		if (agentRegisterDto == null) {
 			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("注册已超时, 请刷新重试"));
 			return register(model, session);
 		}
-
+		model.addAttribute("phone", phone);
 		User user = userService.findByPhone(phone);
 		if (user != null && StringUtils.isNotBlank(user.getOpenId())) {
 			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("该手机已经被其他微信绑定, 请先解绑"));
