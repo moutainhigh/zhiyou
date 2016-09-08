@@ -97,9 +97,10 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public Report modify(@NotNull Report report) {
 		Long id = report.getId();
-		Validate.notNull(id, "id is null");
+		validate(id, NOT_NULL, "id is null");
+
 		Report persistence = reportMapper.findOne(id);
-		Validate.notNull(persistence, "report id" + id + " not found");
+		validate(persistence, NOT_NULL, "report id" + id + " not found");
 		if(persistence.getConfirmStatus() == ConfirmStatus.已通过) {
 			throw new BizException(BizCode.ERROR, "状态不匹配");
 		}

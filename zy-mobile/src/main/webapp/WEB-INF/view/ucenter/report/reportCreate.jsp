@@ -89,7 +89,7 @@
 <body class="">
   <header class="header">
     <h1>提交试用报告</h1>
-    <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/report" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
   <article>
