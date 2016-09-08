@@ -3,7 +3,9 @@ package com.zy.service.impl;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
+import com.zy.component.FncComponent;
 import com.zy.entity.act.Report;
+import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.mapper.ReportMapper;
@@ -16,11 +18,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.entity.usr.User.UserRank.V0;
+import static com.zy.model.Constants.BIZ_NAME_REPORT;
 
 @Service
 @Validated
@@ -32,13 +37,22 @@ public class ReportServiceImpl implements ReportService {
 	@Autowired
 	private UserMapper userMapper;
 
+	@Autowired
+	private FncComponent fncComponent;
+
 	@Override
 	public Report create(@NotNull Report report) {
 		Long userId = report.getUserId();
 		validate(userId, NOT_NULL, "user id is null");
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + "  is not found");
-		
+		if (user.getUserType() != User.UserType.代理) {
+			throw new BizException(BizCode.ERROR, "只有代理才能提交检测报告");
+		}
+		if (user.getUserRank() == null || user.getUserRank() == V0) {
+			throw new BizException(BizCode.ERROR, "不具有提交检测报告的权限, 请升级代理等级");
+		}
+
 		Date now = new Date();
 		report.setCreatedTime(new Date());
 		report.setVersion(0);
@@ -88,8 +102,47 @@ public class ReportServiceImpl implements ReportService {
 
 	@Override
 	public void settleUp(@NotNull Long id) {
+		Report report = reportMapper.findOne(id);
+		validate(report, NOT_NULL, "report id " + id + " is not found");
+		if (report.getIsSettledUp()) {
+			return;
+		}
+		if (report.getConfirmStatus() != ConfirmStatus.已通过) {
+			throw new BizException(BizCode.ERROR, "只有审核通过的报告才能结算");
+		}
 
+		Long userId = report.getUserId();
+		User user = userMapper.findOne(userId);
+		String title = "检测报告数据奖";
+		if (user.getUserRank() == User.UserRank.V4) {
+			/* 全额给一个人 */
+			fncComponent.grantProfit(userId, BIZ_NAME_REPORT, title, CurrencyType.现金, new BigDecimal("18.00"), null);
+		} else {
+			/* 否则找到第一个特级代理 */
+			Long topId = null;
 
+			Long parentId = user.getParentId();
+			while (parentId != null) {
+				User parent = userMapper.findOne(parentId);
+				if (parent.getUserRank() == User.UserRank.V4) {
+					topId = parentId;
+					break;
+				}
+				parentId = parent.getParentId();
+			}
+
+			fncComponent.grantProfit(userId, BIZ_NAME_REPORT, title, CurrencyType.现金, new BigDecimal("15.00"), null);
+
+			if (topId != null) {
+				fncComponent.grantProfit(topId, BIZ_NAME_REPORT, title, CurrencyType.现金, new BigDecimal("3.00"), null);
+			}
+
+		}
+
+		report.setIsSettledUp(true);
+		if (reportMapper.update(report) == 0) {
+			throw new ConcurrentException();
+		}
 
 	}
 
@@ -105,10 +158,10 @@ public class ReportServiceImpl implements ReportService {
 
 		Report persistence = reportMapper.findOne(id);
 		validate(persistence, NOT_NULL, "report id" + id + " not found");
-		if(persistence.getConfirmStatus() == ConfirmStatus.已通过) {
+		if (persistence.getConfirmStatus() == ConfirmStatus.已通过) {
 			throw new BizException(BizCode.ERROR, "状态不匹配");
 		}
-		
+
 		persistence.setAppliedTime(new Date());
 		persistence.setConfirmedTime(null);
 		persistence.setConfirmRemark(null);

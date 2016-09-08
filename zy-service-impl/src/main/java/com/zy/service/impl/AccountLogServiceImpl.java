@@ -42,6 +42,11 @@ public class AccountLogServiceImpl implements AccountLogService {
 	}
 
 	@Override
+	public void acknowledge(Long id) {
+        // TODO
+	}
+
+	@Override
 	public List<AccountLog> findAll(@NotNull AccountLogQueryModel accountLogQueryModel) {
 		return accountLogMapper.findAll(accountLogQueryModel);
 	}
