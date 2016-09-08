@@ -146,6 +146,7 @@ public class UserServiceImpl implements UserService {
 
 			/* 注册 */
 			user = new User();
+			user.setPhone(phone);
 			user.setUserType(UserType.代理);
 			user.setRegisterIp(registerIp);
 			user.setInviterId(inviterId);
