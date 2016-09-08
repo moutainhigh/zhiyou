@@ -89,6 +89,7 @@ public class DepositQueryModel implements Serializable {
 		fieldNames.add("currencyType1");
 		fieldNames.add("currencyType2");
 		fieldNames.add("isOuterCreated");
+		fieldNames.add("remark");
 		fieldNames.add("title");
 		fieldNames.add("paidTime");
 		fieldNames.add("userId");
@@ -98,7 +99,6 @@ public class DepositQueryModel implements Serializable {
 		fieldNames.add("payType");
 		fieldNames.add("weixinOpenId");
 		fieldNames.add("amount2");
-		fieldNames.add("paymentId");
 		fieldNames.add("amount1");
 		fieldNames.add("qrCodeUrl");
 		fieldNames.add("createdTime");
@@ -106,6 +106,7 @@ public class DepositQueryModel implements Serializable {
 		fieldNames.add("outerSn");
 		fieldNames.add("id");
 		fieldNames.add("sn");
+		fieldNames.add("operatorId");
 	}
 
 }

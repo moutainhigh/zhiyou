@@ -5,7 +5,6 @@
 	<resultMap id="baseResultMap" type="com.zy.entity.fnc.Deposit">
 		<id column="id" property="id" />
 		<result column="user_id" property="userId" />
-		<result column="payment_id" property="paymentId" />
 		<result column="title" property="title" />
 		<result column="sn" property="sn" />
 		<result column="currency_type1" property="currencyType1" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
@@ -22,12 +21,14 @@
 		<result column="created_time" property="createdTime" />
 		<result column="expired_time" property="expiredTime" />
 		<result column="deposit_status" property="depositStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="remark" property="remark" />
+		<result column="operator_id" property="operatorId" />
 		<result column="version" property="version" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.Deposit" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_deposit` (user_id,payment_id,title,sn,currency_type1,amount1,currency_type2,amount2,total_amount,is_outer_created,outer_sn,qr_code_url,weixin_open_id,pay_type,paid_time,created_time,expired_time,deposit_status,version)
-	  values (#{userId},#{paymentId},#{title},#{sn},#{currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount1},#{currencyType2,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount2},#{totalAmount},#{isOuterCreated},#{outerSn},#{qrCodeUrl},#{weixinOpenId},#{payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{paidTime},#{createdTime},#{expiredTime},#{depositStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{version})
+	  insert into `fnc_deposit` (user_id,title,sn,currency_type1,amount1,currency_type2,amount2,total_amount,is_outer_created,outer_sn,qr_code_url,weixin_open_id,pay_type,paid_time,created_time,expired_time,deposit_status,remark,operator_id,version)
+	  values (#{userId},#{title},#{sn},#{currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount1},#{currencyType2,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount2},#{totalAmount},#{isOuterCreated},#{outerSn},#{qrCodeUrl},#{weixinOpenId},#{payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{paidTime},#{createdTime},#{expiredTime},#{depositStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{remark},#{operatorId},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -38,7 +39,6 @@
 		update `fnc_deposit`
 		<set>
 			user_id = #{userId},
-			payment_id = #{paymentId},
 			title = #{title},
 			sn = #{sn},
 			currency_type1 = #{currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
@@ -55,6 +55,8 @@
 			created_time = #{createdTime},
 			expired_time = #{expiredTime},
 			deposit_status = #{depositStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			remark = #{remark},
+			operator_id = #{operatorId},
 			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
@@ -66,7 +68,6 @@
 				<foreach collection="fields" item="field">
 				<choose>
 					<when test="field == 'userId'">user_id = #{deposit.userId},</when>
-					<when test="field == 'paymentId'">payment_id = #{deposit.paymentId},</when>
 					<when test="field == 'title'">title = #{deposit.title},</when>
 					<when test="field == 'sn'">sn = #{deposit.sn},</when>
 					<when test="field == 'currencyType1'">currency_type1 = #{deposit.currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.CurrencyType},</when>
@@ -83,6 +84,8 @@
 					<when test="field == 'createdTime'">created_time = #{deposit.createdTime},</when>
 					<when test="field == 'expiredTime'">expired_time = #{deposit.expiredTime},</when>
 					<when test="field == 'depositStatus'">deposit_status = #{deposit.depositStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.Deposit$DepositStatus},</when>
+					<when test="field == 'remark'">remark = #{deposit.remark},</when>
+					<when test="field == 'operatorId'">operator_id = #{deposit.operatorId},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -91,14 +94,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,payment_id,title,sn,currency_type1,amount1,currency_type2,amount2,total_amount,is_outer_created,outer_sn,qr_code_url,weixin_open_id,pay_type,paid_time,created_time,expired_time,deposit_status,version
+		id,user_id,title,sn,currency_type1,amount1,currency_type2,amount2,total_amount,is_outer_created,outer_sn,qr_code_url,weixin_open_id,pay_type,paid_time,created_time,expired_time,deposit_status,remark,operator_id,version
 		from `fnc_deposit`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.DepositQueryModel">
 		select
-		id,user_id,payment_id,title,sn,currency_type1,amount1,currency_type2,amount2,total_amount,is_outer_created,outer_sn,qr_code_url,weixin_open_id,pay_type,paid_time,created_time,expired_time,deposit_status,version
+		id,user_id,title,sn,currency_type1,amount1,currency_type2,amount2,total_amount,is_outer_created,outer_sn,qr_code_url,weixin_open_id,pay_type,paid_time,created_time,expired_time,deposit_status,remark,operator_id,version
 		from `fnc_deposit`
 		<where>
 			<if test="userIdIN != null">

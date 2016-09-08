@@ -1,19 +1,24 @@
 package com.zy.util;
 
+import com.zy.common.exception.ValidationException;
 import com.zy.common.util.Identities;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
 
@@ -152,6 +157,27 @@ public class GcUtils {
 
 	public static String generateTgt() {
 		return "tgt-" + Identities.uuid();
+	}
+
+	public static void checkImage(MultipartFile file) {
+
+		if (file == null || file.isEmpty()) {
+			throw new ValidationException("图片不能为空");
+		}
+		long fileSize = file.getSize();
+		String originalFilename = file.getOriginalFilename();
+		String ext = StringUtils.lowerCase(FilenameUtils.getExtension(originalFilename));
+		String[] allowedExts = new String[] { "jpg", "png", "jpeg", "gif", "webp" };
+		List<String> exts = new ArrayList<String>();
+		for (String str : allowedExts) {
+			exts.add(str);
+		}
+		if (!exts.contains(ext)) {
+			throw new ValidationException("图片后缀错误,必须为" + StringUtils.join(allowedExts, ","));
+		}
+		if (fileSize > 4 * 1024 * 1024) {
+			throw new ValidationException("图片大小不能超过4MB");
+		}
 	}
 
 }

@@ -57,6 +57,8 @@ public class PaymentAdminVo implements Serializable {
 	private String cancelRemark;
 	@Field(label = "备注")
 	private String remark;
+	@Field(label = "外部sn")
+	private String outerSn;
 
 	/* 扩展 */
 	@Field(label = "用户id")

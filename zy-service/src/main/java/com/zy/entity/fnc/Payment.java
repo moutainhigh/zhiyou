@@ -8,27 +8,20 @@ import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.persistence.Version;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
-
 @Entity
-@Table(name = "fnc_payment", uniqueConstraints = @UniqueConstraint(columnNames = {"bizName", "bizSn"}))
+@Table(name = "fnc_payment")
 @Getter
 @Setter
 @QueryModel
@@ -49,6 +42,7 @@ public class Payment implements Serializable {
 	@Column(length = 60, unique = true)
 	@Field(label = "支付订单号")
 	@View
+	@Length(max = 60)
 	private String sn;
 
 	@NotNull
@@ -61,6 +55,7 @@ public class Payment implements Serializable {
 	@NotBlank
 	@Field(label = "标题")
 	@View
+	@Length(max = 255)
 	private String title;
 
 	@NotNull
@@ -143,11 +138,19 @@ public class Payment implements Serializable {
 
 	@Field(label = "备注")
 	@View
+	@Column(length = 1000)
 	private String remark;
+
+	@Field(label = "外部sn")
+	@View
+	private String outerSn;
 
 	@NotNull
 	@Version
 	@Field(label = "乐观锁")
 	private Integer version;
+
+	@Field(label = "操作者id")
+	private Long operatorId;
 
 }

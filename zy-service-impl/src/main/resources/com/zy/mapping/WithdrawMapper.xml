@@ -16,7 +16,7 @@
 		<result column="created_time" property="createdTime" />
 		<result column="withdrawed_time" property="withdrawedTime" />
 		<result column="withdraw_status" property="withdrawStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
-		<result column="operator_user_id" property="operatorUserId" />
+		<result column="operator_id" property="operatorId" />
 		<result column="is_to_bank_card" property="isToBankCard" />
 		<result column="bank_card_id" property="bankCardId" />
 		<result column="open_id" property="openId" />
@@ -25,8 +25,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.Withdraw" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_withdraw` (user_id,currency_type,title,sn,amount,fee_rate,fee,real_amount,outer_fee,created_time,withdrawed_time,withdraw_status,operator_user_id,is_to_bank_card,bank_card_id,open_id,remark,version)
-	  values (#{userId},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{title},#{sn},#{amount},#{feeRate},#{fee},#{realAmount},#{outerFee},#{createdTime},#{withdrawedTime},#{withdrawStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{operatorUserId},#{isToBankCard},#{bankCardId},#{openId},#{remark},#{version})
+	  insert into `fnc_withdraw` (user_id,currency_type,title,sn,amount,fee_rate,fee,real_amount,outer_fee,created_time,withdrawed_time,withdraw_status,operator_id,is_to_bank_card,bank_card_id,open_id,remark,version)
+	  values (#{userId},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{title},#{sn},#{amount},#{feeRate},#{fee},#{realAmount},#{outerFee},#{createdTime},#{withdrawedTime},#{withdrawStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{operatorId},#{isToBankCard},#{bankCardId},#{openId},#{remark},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -48,7 +48,7 @@
 			created_time = #{createdTime},
 			withdrawed_time = #{withdrawedTime},
 			withdraw_status = #{withdrawStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
-			operator_user_id = #{operatorUserId},
+			operator_id = #{operatorId},
 			is_to_bank_card = #{isToBankCard},
 			bank_card_id = #{bankCardId},
 			open_id = #{openId},
@@ -75,7 +75,7 @@
 					<when test="field == 'createdTime'">created_time = #{withdraw.createdTime},</when>
 					<when test="field == 'withdrawedTime'">withdrawed_time = #{withdraw.withdrawedTime},</when>
 					<when test="field == 'withdrawStatus'">withdraw_status = #{withdraw.withdrawStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.Withdraw$WithdrawStatus},</when>
-					<when test="field == 'operatorUserId'">operator_user_id = #{withdraw.operatorUserId},</when>
+					<when test="field == 'operatorId'">operator_id = #{withdraw.operatorId},</when>
 					<when test="field == 'isToBankCard'">is_to_bank_card = #{withdraw.isToBankCard},</when>
 					<when test="field == 'bankCardId'">bank_card_id = #{withdraw.bankCardId},</when>
 					<when test="field == 'openId'">open_id = #{withdraw.openId},</when>
@@ -88,14 +88,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,currency_type,title,sn,amount,fee_rate,fee,real_amount,outer_fee,created_time,withdrawed_time,withdraw_status,operator_user_id,is_to_bank_card,bank_card_id,open_id,remark,version
+		id,user_id,currency_type,title,sn,amount,fee_rate,fee,real_amount,outer_fee,created_time,withdrawed_time,withdraw_status,operator_id,is_to_bank_card,bank_card_id,open_id,remark,version
 		from `fnc_withdraw`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.WithdrawQueryModel">
 		select
-		id,user_id,currency_type,title,sn,amount,fee_rate,fee,real_amount,outer_fee,created_time,withdrawed_time,withdraw_status,operator_user_id,is_to_bank_card,bank_card_id,open_id,remark,version
+		id,user_id,currency_type,title,sn,amount,fee_rate,fee,real_amount,outer_fee,created_time,withdrawed_time,withdraw_status,operator_id,is_to_bank_card,bank_card_id,open_id,remark,version
 		from `fnc_withdraw`
 		<where>
 			<if test="withdrawStatusEQ != null">

@@ -1,10 +1,5 @@
 package com.zy.entity.fnc;
 
-import static io.gd.generator.api.query.Predicate.EQ;
-import static io.gd.generator.api.query.Predicate.GTE;
-import static io.gd.generator.api.query.Predicate.IN;
-import static io.gd.generator.api.query.Predicate.LK;
-import static io.gd.generator.api.query.Predicate.LT;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -12,19 +7,20 @@ import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+import io.gd.generator.api.query.Predicate;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
+import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
 @Table(name = "fnc_account_log")
@@ -66,6 +62,11 @@ public class AccountLog implements Serializable {
 	@View
 	@AssociationView(name = "user", groups = "AccountLogAdminVo", associationGroup = "UserAdminSimpleVo")
 	private Long userId;
+
+	@NotNull
+	@Query({EQ, IN})
+	@Field(label = "对应用户id")
+	private Long refUserId;
 
 	@NotNull
 	@Query(EQ)
@@ -112,5 +113,10 @@ public class AccountLog implements Serializable {
 	@Field(label = "交易完成后金额")
 	@View
 	private BigDecimal afterAmount;
+
+	@NotNull
+	@Field(label = "是否已确认")
+	@Query(Predicate.EQ)
+	private Boolean isAcknowledged;
 
 }

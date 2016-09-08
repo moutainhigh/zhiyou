@@ -26,6 +26,6 @@ public interface PaymentMapper {
 
 	Payment findBySn(String sn);
 
-	Payment findByBizNameAndBizSn(@Param("bizName") String bizName, @Param("bizSn") String bizSn);
+	List<Payment> findByBizNameAndBizSn(@Param("bizName") String bizName, @Param("bizSn") String bizSn);
 
 }

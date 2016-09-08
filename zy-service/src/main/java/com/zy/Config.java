@@ -9,10 +9,6 @@ public interface Config {
 
     Long getSysUserId();
 
-    Long getFeeUserId();
-
-    Long getGrantUserId();
-
     BigDecimal getWithdrawFeeRate(UserType userType, CurrencyType currencyType);
 
     boolean isDev();

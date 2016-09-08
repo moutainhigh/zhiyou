@@ -12,7 +12,6 @@ import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
 import com.zy.extend.SKWxMpService;
 import com.zy.model.BizCode;
-import com.zy.model.Constants.ProfitBizName;
 import com.zy.model.query.WithdrawQueryModel;
 import com.zy.service.WithdrawService;
 import org.hibernate.validator.constraints.NotBlank;
@@ -28,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.*;
+import static com.zy.model.Constants.BIZ_NAME_WITHDRAW;
 
 @Service
 @Validated
@@ -69,8 +69,6 @@ public class WithdrawServiceImpl implements WithdrawService {
  
 		/* check 提现币种 */
 		UserType userType = user.getUserType();
-		Boolean isToBankCard = null;
-		String openId = null;
 
 		if (userType != UserType.代理 && currencyType != CurrencyType.现金) {
 			throw new BizException(BizCode.ERROR, "暂只支持代理现金提现");
@@ -81,7 +79,6 @@ public class WithdrawServiceImpl implements WithdrawService {
 		BankCard bankCard = bankCardMapper.findOne(bankCardId);
 		validate(bankCard, NOT_NULL, "bank card id " + bankCardId + " is not found");
 		validate(bankCard, v -> v.getUserId().equals(userId), "bank card " + bankCardId + " must be own");
-
 
 		/* check 余额 */
 		BigDecimal beforeAmount = account.getAmount();
@@ -106,28 +103,27 @@ public class WithdrawServiceImpl implements WithdrawService {
 		withdraw.setSn(ServiceUtils.generateWithdrawSn());
 		withdraw.setUserId(userId);
 		withdraw.setVersion(0);
-		withdraw.setIsToBankCard(isToBankCard);
+		withdraw.setIsToBankCard(true);
 		withdraw.setBankCardId(bankCardId);
-		withdraw.setOpenId(openId);
-		withdraw.setTitle("代理提现");
+		withdraw.setOpenId(null);
+		withdraw.setTitle("余额提现");
 		withdraw.setWithdrawStatus(Withdraw.WithdrawStatus.已申请);
 		validate(withdraw);
 		withdrawMapper.insert(withdraw);
 
-		String currencyTypeLabel = currencyType == CurrencyType.金币 ? "试客币" : (currencyType == CurrencyType.现金 ? "本金" : currencyType.getAlias());
-		fncComponent.recordAccountLog(userId, currencyTypeLabel + "提现", currencyType, amount, InOut.支出, withdraw);
-		fncComponent.recordAccountLog(config.getSysUserId(), currencyTypeLabel + "提现", currencyType, amount, InOut.收入, withdraw);
+		fncComponent.recordAccountLog(userId, "提现申请", currencyType, amount, InOut.支出, withdraw);
+		fncComponent.recordAccountLog(config.getSysUserId(), "提现申请", currencyType, amount, InOut.收入, withdraw);
 		return withdraw;
 	}
 
 	@Override
-	public void success(@NotNull Long id, @NotNull Long operatorUserId, @NotBlank String remark) {
+	public void success(@NotNull Long id, @NotNull Long operatorId, @NotBlank String remark) {
 
 		final BigDecimal zero = new BigDecimal("0.00");
 		Withdraw withdraw = withdrawMapper.findOne(id);
 		validate(withdraw, NOT_NULL, "withdraw id " + id + " is not found null");
-		User user = userMapper.findOne(operatorUserId);
-		validate(user, NOT_NULL, "operator user id" + operatorUserId + " is not found null");
+		User operator = userMapper.findOne(operatorId);
+		validate(operator, NOT_NULL, "operator id" + operatorId + " is not found null");
 
 		if (withdraw.getWithdrawStatus() == Withdraw.WithdrawStatus.提现成功) {
 			return; // 幂等处理
@@ -139,7 +135,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		}
 
 		withdraw.setRemark(remark);
-		withdraw.setOperatorUserId(operatorUserId);
+		withdraw.setOperatorId(operatorId);
 		withdraw.setWithdrawStatus(Withdraw.WithdrawStatus.提现成功);
 		withdraw.setWithdrawedTime(new Date());
 		if (withdrawMapper.update(withdraw) == 0) {
@@ -148,28 +144,25 @@ public class WithdrawServiceImpl implements WithdrawService {
 		CurrencyType currencyType = withdraw.getCurrencyType();
 		Long sysUserId = config.getSysUserId();
 
-		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw);
+		fncComponent.recordAccountLog(sysUserId, "提现出账(外部)", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw);
 
-		Long feeUserId = config.getFeeUserId();
 		BigDecimal fee = withdraw.getFee();
 		if (fee.compareTo(zero) > 0) {
 			String title = "提现单" + withdraw.getSn() + "收益";
-			Profit profit = fncComponent.createProfit(ProfitBizName.平台收益, currencyType, title, feeUserId, fee, null);
-			fncComponent.recordAccountLog(sysUserId, title, currencyType, fee, InOut.支出, profit);
-			fncComponent.recordAccountLog(feeUserId, title, currencyType, fee, InOut.收入, profit);
+			Profit profit = fncComponent.createProfit(BIZ_NAME_WITHDRAW, currencyType, title, sysUserId, fee, null);
 		}
 	}
 
 	@Override
-	public void cancel(Long id, Long operatorUserId, String remark) {
+	public void cancel(Long id, Long operatorId, String remark) {
 		validate(id, NOT_NULL, "withdraw is null");
-		validate(operatorUserId, NOT_NULL, "operator user id is null");
+		validate(operatorId, NOT_NULL, "operator user id is null");
 		validate(remark, NOT_BLANK, "remark is blank");
 
 		Withdraw withdraw = withdrawMapper.findOne(id);
 		validate(withdraw, NOT_NULL, "withdraw id " + id + " is not found null");
-		User user = userMapper.findOne(operatorUserId);
-		validate(user, NOT_NULL, "operator user id" + operatorUserId + " is not found null");
+		User operator = userMapper.findOne(operatorId);
+		validate(operator, NOT_NULL, "operator id" + operatorId + " is not found null");
 
 		if (withdraw.getWithdrawStatus() == Withdraw.WithdrawStatus.已取消) {
 			return; // 幂等处理
@@ -178,7 +171,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		}
 
 		withdraw.setRemark(remark);
-		withdraw.setOperatorUserId(operatorUserId);
+		withdraw.setOperatorId(operatorId);
 		withdraw.setWithdrawStatus(Withdraw.WithdrawStatus.已取消);
 		if (withdrawMapper.update(withdraw) == 0) {
 			throw new ConcurrentException();

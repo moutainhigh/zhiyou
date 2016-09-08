@@ -93,9 +93,11 @@ public class PaymentQueryModel implements Serializable {
 		fieldNames.add("bizSn");
 		fieldNames.add("refundRemark");
 		fieldNames.add("createdTime");
+		fieldNames.add("outerSn");
 		fieldNames.add("id");
 		fieldNames.add("sn");
 		fieldNames.add("cancelRemark");
+		fieldNames.add("operatorId");
 		fieldNames.add("paymentStatus");
 	}
 
