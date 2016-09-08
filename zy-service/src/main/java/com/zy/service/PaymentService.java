@@ -27,4 +27,5 @@ public interface PaymentService {
 	List<Payment> findByBizNameAndBizName(String bizName, String bizSn);
 
 	void cancel(Long id);
+
 }

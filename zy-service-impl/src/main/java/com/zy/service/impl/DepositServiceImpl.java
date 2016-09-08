@@ -174,7 +174,7 @@ public class DepositServiceImpl implements DepositService {
 	public void cancel(Long id) {
 		validate(id, NOT_NULL, "deposit is null");
 		Deposit deposit = depositMapper.findOne(id);
-		validate(deposit, NOT_NULL, "deposit id " + id + "is not found null");
+		validate(deposit, NOT_NULL, "deposit id " + id + "is not found");
 		DepositStatus depositStatus = deposit.getDepositStatus();
 		if (depositStatus == DepositStatus.已取消) {
 			return; // 幂等处理

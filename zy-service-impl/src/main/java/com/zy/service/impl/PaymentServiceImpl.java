@@ -27,9 +27,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.NULL;
-import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.common.util.ValidateUtils.*;
 import static com.zy.entity.fnc.Payment.PaymentStatus.已支付;
 import static com.zy.entity.fnc.Payment.PaymentStatus.待支付;
 
@@ -249,22 +247,19 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public void cancel(Long id) {
-		/*validate(id, NOT_NULL, "deposit is null");
-		Deposit deposit = depositMapper.findOne(id);
-		validate(deposit, NOT_NULL, "deposit id " + id + "is not found null");
-		DepositStatus depositStatus = deposit.getDepositStatus();
-		if (depositStatus == DepositStatus.已取消) {
+	public void cancel(@NotNull Long id) {
+		Payment payment = paymentMapper.findOne(id);
+		validate(payment, NOT_NULL, "payment id " + id + "is not found");
+		Payment.PaymentStatus paymentStatus = payment.getPaymentStatus();
+		if (paymentStatus == Payment.PaymentStatus.已取消) {
 			return; // 幂等处理
-		} else if (depositStatus != DepositStatus.待充值) {
-			throw new BizException(BizCode.ERROR, "只有待充值状态的充值单才能取消");
+		} else if (paymentStatus != Payment.PaymentStatus.待支付) {
+			throw new BizException(BizCode.ERROR, "只有待支付状态的支付订单才能取消");
 		}
-		deposit.setDepositStatus(DepositStatus.已取消);
-		if (depositMapper.update(deposit) == 0) {
+		payment.setPaymentStatus(Payment.PaymentStatus.已取消);
+		if (paymentMapper.update(payment) == 0) {
 			throw new ConcurrentException();
-		}*/
-
-		// TODO
+		}
 	}
 
 }

@@ -118,7 +118,7 @@ public class ReportServiceImpl implements ReportService {
 
 		Long userId = report.getUserId();
 		User user = userMapper.findOne(userId);
-		String title = "检测报告数据奖";
+		String title = "数据奖,检测报告编号" + id;
 		if (user.getUserRank() == User.UserRank.V4) {
 			/* 全额给一个人 */
 			fncComponent.grantProfit(userId, BIZ_NAME_REPORT, title, CurrencyType.现金, new BigDecimal("18.00"), null);
@@ -129,6 +129,9 @@ public class ReportServiceImpl implements ReportService {
 			Long parentId = user.getParentId();
 			while (parentId != null) {
 				User parent = userMapper.findOne(parentId);
+				if (parent.getUserType() != User.UserType.代理) {
+					break;
+				}
 				if (parent.getUserRank() == User.UserRank.V4) {
 					topId = parentId;
 					break;

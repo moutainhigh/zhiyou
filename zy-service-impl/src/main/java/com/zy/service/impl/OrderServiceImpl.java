@@ -82,8 +82,6 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "必须上架的商品才能购买");
 		}
 
-
-
 		/* calculate parent id */
 		Long parentId;
 		UserRank userRank = user.getUserRank();
@@ -289,8 +287,19 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public void settleUp(Long orderId) {
+	public void settleUp(@NotNull Long orderId) {
+		Order order = orderMapper.findOne(orderId);
+		validate(order, NOT_NULL, "order id" + orderId + " is not found");
+		if (order.getIsSettledUp()) {
+			return; // 幂等操作
+		}
+		if (order.getOrderStatus() != OrderStatus.已完成) {
+			throw new BizException(BizCode.ERROR, "只有已完成订单才能结算");
+		}
+
+		/* 平级奖 */
 		// TODO
+
 	}
 
 	@Override

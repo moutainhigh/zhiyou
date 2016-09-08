@@ -143,6 +143,7 @@ public class FncComponent {
 		return profit;
 	}
 
+	@Deprecated
 	public void refundPayment(@NotNull Long paymentId, @NotNull CurrencyType refundCurrencyType1, @NotNull @DecimalMin("0.00") BigDecimal refund1,
 			CurrencyType refundCurrencyType2, @DecimalMin("0.00") BigDecimal refund2) {
 
@@ -188,22 +189,6 @@ public class FncComponent {
 		payment.setRefund2(refund2);
 		payment.setPaymentStatus(PaymentStatus.已退款);
 
-		if (paymentMapper.update(payment) == 0) {
-			throw new ConcurrentException();
-		}
-	}
-
-	public void cancelPayment(@NotNull Long paymentId) {
-		Payment payment = paymentMapper.findOne(paymentId);
-		validate(payment, NOT_NULL, "payment id " + paymentId + " is not found");
-		PaymentStatus paymentStatus = payment.getPaymentStatus();
-		if (paymentStatus == PaymentStatus.已取消) {
-			return; // 幂等处理
-		} else if (paymentStatus != PaymentStatus.待支付) {
-			throw new BizException(BizCode.ERROR, "只有待支付支付订单才能取消");
-		}
-
-		payment.setPaymentStatus(PaymentStatus.已取消);
 		if (paymentMapper.update(payment) == 0) {
 			throw new ConcurrentException();
 		}
