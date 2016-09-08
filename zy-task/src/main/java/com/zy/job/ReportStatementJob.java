@@ -21,7 +21,7 @@ public class ReportStatementJob implements Job {
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		reportService.findAll(builder().isSettledUpEQ(false).confirmStatusEQ(ConfirmStatus.已通过).build())
-				.parallelStream()
+				.stream()
 				.map(report -> report.getId())
 				.forEach(reportService::settleUp);
 	}
