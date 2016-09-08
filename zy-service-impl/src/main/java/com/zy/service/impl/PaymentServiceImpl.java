@@ -248,4 +248,23 @@ public class PaymentServiceImpl implements PaymentService {
 		return paymentMapper.findByBizNameAndBizSn(bizName, bizSn);
 	}
 
+	@Override
+	public void cancel(Long id) {
+		/*validate(id, NOT_NULL, "deposit is null");
+		Deposit deposit = depositMapper.findOne(id);
+		validate(deposit, NOT_NULL, "deposit id " + id + "is not found null");
+		DepositStatus depositStatus = deposit.getDepositStatus();
+		if (depositStatus == DepositStatus.已取消) {
+			return; // 幂等处理
+		} else if (depositStatus != DepositStatus.待充值) {
+			throw new BizException(BizCode.ERROR, "只有待充值状态的充值单才能取消");
+		}
+		deposit.setDepositStatus(DepositStatus.已取消);
+		if (depositMapper.update(deposit) == 0) {
+			throw new ConcurrentException();
+		}*/
+
+		// TODO
+	}
+
 }

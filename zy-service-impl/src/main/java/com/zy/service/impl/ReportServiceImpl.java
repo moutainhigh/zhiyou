@@ -87,8 +87,10 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
-	public void settleUp(Long id) {
-		// TODO
+	public void settleUp(@NotNull Long id) {
+
+
+
 	}
 
 	@Override

@@ -25,4 +25,6 @@ public interface PaymentService {
 	Payment create(Payment payment);
 
 	List<Payment> findByBizNameAndBizName(String bizName, String bizSn);
+
+	void cancel(Long id);
 }
