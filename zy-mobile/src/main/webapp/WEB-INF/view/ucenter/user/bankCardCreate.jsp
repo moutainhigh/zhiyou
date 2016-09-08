@@ -132,10 +132,11 @@
         <div class="list-item bank-info">
           <label class="list-label">开户银行</label>
           <div class="list-text">
-            <span class="bank-name"><span class="font-777">请选择</span></span>
+            <span class="bank-name"><span class="font-999">请选择</span></span>
             <input type="hidden" name="bankId" value="">
             <input type="hidden" name="bankName" value="">
           </div>
+          <i class="list-arrow"></i>
         </div>
         <div class="list-item">
           <label class="list-label" for="accountName">开户姓名</label>

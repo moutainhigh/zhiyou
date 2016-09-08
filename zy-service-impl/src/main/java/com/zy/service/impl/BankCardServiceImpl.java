@@ -68,7 +68,7 @@ public class BankCardServiceImpl implements BankCardService {
 		}
 
 		bankCard.setId(null);
-		bankCard.setConfirmStatus(ConfirmStatus.未审核);
+		bankCard.setConfirmStatus(ConfirmStatus.待审核);
 		bankCard.setAppliedTime(new Date());
 		bankCard.setIsDeleted(false);
 		validate(bankCard);
@@ -82,15 +82,28 @@ public class BankCardServiceImpl implements BankCardService {
 		validate(id, NOT_NULL, "bank card id is null");
 		BankCard persistence = bankCardMapper.findOne(id);
 		validate(persistence, NOT_NULL, "bank card id" + id + "is not found");
-		if (persistence.getConfirmStatus() == ConfirmStatus.审核通过) {
+		if (persistence.getConfirmStatus() == ConfirmStatus.已通过) {
 			throw new BizException(BizCode.ERROR, "已审核通过，不允许修改，如需修改，请联系客服！");
 		} else {
+			Boolean isDefault = bankCard.getIsDefault();
+			if (isDefault) {
+				List<BankCard> persistentBankCards = bankCardMapper.findAll(BankCardQueryModel.builder().userIdEQ(persistence.getUserId()).build());
+				for(BankCard persistentBankCard : persistentBankCards) {
+					if (persistentBankCard.getIsDefault()) {
+						persistentBankCard.setIsDefault(false);
+						bankCardMapper.update(persistentBankCard);
+					}
+				}
+			}
+			
 			persistence.setRealname(bankCard.getRealname());
 			persistence.setCardNumber(bankCard.getCardNumber());
 			persistence.setBankName(bankCard.getBankName());
 			persistence.setBankBranchName(bankCard.getBankBranchName());
-			persistence.setConfirmStatus(ConfirmStatus.未审核);
+			persistence.setConfirmStatus(ConfirmStatus.待审核);
 			persistence.setConfirmedTime(new Date());
+			persistence.setIsDefault(isDefault);
+			validate(persistence);
 			bankCardMapper.update(persistence);
 		}
 	}
@@ -132,16 +145,16 @@ public class BankCardServiceImpl implements BankCardService {
 		validate(id, NOT_NULL, "id can not be null");
 		BankCard bankCard = bankCardMapper.findOne(id);
 		validate(bankCard, NOT_NULL, "appearance is not exists");
-		if (bankCard.getConfirmStatus() == ConfirmStatus.审核通过)
+		if (bankCard.getConfirmStatus() == ConfirmStatus.已通过)
 			throw new BizException(BizCode.ERROR, "已审核,不能再次审核");
 		Appearance merge = new Appearance();
 		merge.setId(id);
 		if (!isSuccess) {
 			validate(confirmRemark, NOT_NULL, "审核不通过时,备注必须填写");
 			merge.setConfirmRemark(confirmRemark);
-			merge.setConfirmStatus(ConfirmStatus.审核未通过);
+			merge.setConfirmStatus(ConfirmStatus.未通过);
 		} else {
-			merge.setConfirmStatus(ConfirmStatus.审核通过);
+			merge.setConfirmStatus(ConfirmStatus.已通过);
 			merge.setConfirmedTime(new Date());
 		}
 		bankCardMapper.merge(bankCard);

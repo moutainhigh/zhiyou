@@ -1,6 +1,5 @@
 package com.zy.util;
 
-import com.zy.common.util.Encodes;
 import com.zy.common.util.Identities;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
@@ -45,15 +44,6 @@ public class GcUtils {
 			}
 		}
 		return redirectUrl;
-	}
-
-	public static String resolvePassportUrl(HttpServletRequest request) {
-		String redirectUrl = resolveRedirectUrl(request);
-		if (StringUtils.isBlank(redirectUrl)) {
-			return Constants.URL_PASSPORT + "/login?redirect=" + Constants.URL_PC + "/u";
-		} else {
-			return Constants.URL_PASSPORT + "/login?redirect=" + Encodes.urlEncode(redirectUrl);
-		}
 	}
 
 	public static String getTimeLabel(Date date) {

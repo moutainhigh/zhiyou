@@ -90,13 +90,13 @@
       </c:forEach>
       
       <c:if test="${page.total > page.pageSize}">
-      <a class="list-item list-more" href="javascript:;">
-        <div class="text-center">点击加载更多</div>
+      <a class="list-item" href="javascript:;">
+        <div class="list-more text-center">点击加载更多</div>
       </a>
       </c:if>
       <c:if test="${page.total <= page.pageSize}">
-      <a class="list-item list-more disabled" href="javascript:;">
-        <div class="text-center">没有更多数据了</div>
+      <a class="list-item" href="javascript:;">
+        <div class="list-more disabled text-center">没有更多数据了</div>
       </a>
       </c:if>
     </div>

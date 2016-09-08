@@ -7,13 +7,13 @@ import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Deposit;
 import com.zy.entity.fnc.Deposit.DepositStatus;
 import com.zy.entity.fnc.PayType;
-import com.zy.entity.usr.WeixinUser;
+import com.zy.entity.usr.User;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.DepositQueryModel;
 import com.zy.service.DepositService;
-import com.zy.service.WeixinUserService;
+import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import io.gd.generator.api.query.Direction;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
@@ -47,7 +47,7 @@ public class UcenterPayController {
 	private DepositService depositService;
 
 	@Autowired
-	private WeixinUserService weixinUserService;
+	private UserService userService;
 
 	@Autowired
 	private WxMpConfigStorage wxMpConfigStorage;
@@ -84,8 +84,8 @@ public class UcenterPayController {
 			deposit = depositService.create(title, CurrencyType.金币, coin, null, null, PayType.微信公众号, userId, null);
 		}
 
-		WeixinUser weixinUser = weixinUserService.findByUserId(deposit.getUserId());
-		String openId = weixinUser.getOpenId();
+		User user = userService.findOne(deposit.getUserId());
+		String openId = user.getOpenId();
 
 		if (!deposit.getIsOuterCreated()) {
 			String sn = deposit.getSn();

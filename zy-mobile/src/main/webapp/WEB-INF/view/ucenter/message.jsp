@@ -26,7 +26,7 @@
 </script>
 </head>
 
-<body class="header-fixed">
+<body>
 
   <header class="header">
     <h1>我的消息</h1>
@@ -54,7 +54,7 @@
       <a class="list-item" href="${ctx}/u/message/${message.id}">
         <div class="message">
           <div class="message-icon mt-5 left">
-            <img alt="" src="${stccdn}/image/icon/email.png">
+            <img alt="" src="${stccdn}/image/icon/icon_email.png">
           </div>
           <div class="message-info">
             <p class="font-black clearfix">
@@ -75,7 +75,7 @@
       <a class="list-item" href="${ctx}/u/message/${message.id}">
         <div class="message">
           <div class="message-icon mt-5 left">
-            <img alt="" src="${stccdn}/image/icon/email-read.png">
+            <img alt="" src="${stccdn}/image/icon/icon_email_o.png">
           </div>
           <div class="message-info">
             <p class="font-777 clearfix">

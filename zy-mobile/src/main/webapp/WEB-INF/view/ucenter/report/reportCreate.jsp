@@ -97,9 +97,9 @@
       <div class="list-group mt-10">
         <div class="list-title">填写客户资料</div>
         <div class="list-item">
-          <label class="list-label" for="name">姓名</label>
+          <label class="list-label" for="realname">姓名</label>
           <div class="list-text">
-            <input type="text" name="name" class="form-input" value="" placeholder="填写客户姓名">
+            <input type="text" name="realname" class="form-input" value="" placeholder="填写客户姓名">
           </div>
         </div>
         <div class="list-item">
@@ -119,9 +119,9 @@
           </div>
         </div>
         <div class="list-item">
-          <label class="list-label">检测时间</label>
+          <label class="list-label" for="date">检测时间</label>
           <div class="list-text">
-            <input type="text" name="date" class="form-input" value="" placeholder="填写检测时间 2001-01-01" onfocus="this.type='date'">
+            <input type="text" id="date" name="date" class="form-input" value="" placeholder="填写检测时间 2001-01-01" onfocus="this.type='date'">
           </div>
         </div>
         <div class="list-item">

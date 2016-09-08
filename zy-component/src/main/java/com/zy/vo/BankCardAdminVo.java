@@ -40,7 +40,7 @@ public class BankCardAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
-	@Field(label = "开户行id")
-	private Long bankCode;
+	@Field(label = "开户行code")
+	private String bankCode;
 
 }

@@ -190,12 +190,12 @@
             orderable: false,
             render: function (data, type, full) {
               var result = '';
-              if (data == '未审核') {
-                result = '<label class="label label-danger">未审核</label>';
-              } else if (data == '审核通过') {
-                result = '<label class="label label-success">审核通过</label>';
-              } else if (data == '审核未通过') {
-                result = '<label class="label label-default">审核未通过</label>';
+              if (data == '待审核') {
+                result = '<label class="label label-danger">待审核</label>';
+              } else if (data == '已通过') {
+                result = '<label class="label label-success">已通过</label>';
+              } else if (data == '未通过') {
+                result = '<label class="label label-default">未通过</label>';
               }
               return result;
             }
@@ -228,7 +228,7 @@
             render: function (data, type, full) {
               var optionHtml = '';
               <shiro:hasPermission name="report:confirm">
-              if (full.confirmStatus == '未审核') {
+              if (full.confirmStatus == '待审核') {
                 optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
               }
               </shiro:hasPermission>

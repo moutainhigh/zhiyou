@@ -43,7 +43,7 @@
 	});
 </script>
 </head>
-<body class="header-fixed">
+<body>
 
   <header class="header">
     <h1>设置</h1>
@@ -52,14 +52,16 @@
 
   <article class="user-settings">
     <div class="list-group">
-      <div class="list-item form-switch">
+      <div class="list-item">
         <div class="list-text">接受短信提醒</div>
-        <input type="checkbox" id="isDefault" name="isDefault"<c:if test="${userSetting.isReceiveTaskSms}"> checked="checked"</c:if>>
-        <label class="radius right" for="isDefault"></label>
+        <div class="list-unit form-switch">
+          <input type="checkbox" id="isDefault" name="isDefault"<c:if test="${userSetting.isReceiveTaskSms}"> checked="checked"</c:if>>
+          <label class="i-switch" for="isDefault"></label>
+        </div>
       </div>
       <div class="list-item">
         <div class="list-text">系统版本</div>
-        <div class="list-unit">v1.0.3 Beta</div>
+        <div class="list-unit">v1.1.8 Beta</div>
       </div>
     </div>
     

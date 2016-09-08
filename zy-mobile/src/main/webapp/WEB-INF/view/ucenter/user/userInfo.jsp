@@ -75,9 +75,9 @@
         <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/appearance">
-        <i class="list-icon icon icon-appearance"></i>
+        <i class="list-icon icon icon-idcard"></i>
         <div class="list-text">实名认证</div>
-        <div class="list-unit"><c:if test="${!isCompletedPortrait}">未认证</c:if></div>
+        <div class="list-unit"><c:if test="${!isCompletedAppearance}">未认证</c:if></div>
         <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/address">
@@ -87,7 +87,7 @@
         <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/bankCard">
-        <i class="list-icon icon icon icon-bank-youzheng"></i>
+        <i class="list-icon icon icon icon-card"></i>
         <div class="list-text">银行卡</div>
         <div class="list-unit"><c:if test="${!hasBankCard}">未绑定</c:if></div>
         <i class="list-arrow"></i>

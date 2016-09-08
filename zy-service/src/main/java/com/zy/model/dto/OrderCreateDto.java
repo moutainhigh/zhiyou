@@ -23,10 +23,6 @@ public class OrderCreateDto implements Serializable {
 	@NotNull
 	private Long productId;
 
-	@NotNull
-	@DecimalMin("0.01")
-	private BigDecimal price;
-
 	@Min(1)
 	private long quantity;
 

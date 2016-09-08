@@ -6,19 +6,15 @@ import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
+import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.AccountLog.InOut;
-import com.zy.entity.fnc.Withdraw.WithdrawStatus;
 import com.zy.entity.usr.User;
-import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
-import com.zy.entity.usr.WeixinUser;
 import com.zy.extend.SKWxMpService;
 import com.zy.model.BizCode;
 import com.zy.model.Constants.ProfitBizName;
 import com.zy.model.query.WithdrawQueryModel;
 import com.zy.service.WithdrawService;
-import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.mp.bean.result.WxRedpackResult;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,10 +27,7 @@ import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static me.chanjar.weixin.common.util.StringUtils.isNotBlank;
+import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
@@ -53,55 +46,42 @@ public class WithdrawServiceImpl implements WithdrawService {
 	private com.zy.mapper.WithdrawMapper withdrawMapper;
 
 	@Autowired
-	private com.zy.mapper.WeixinUserMapper weixinUserMapper;
-
-
-	@Autowired
 	private FncComponent fncComponent;
-	
+
 	@Autowired
 	private Config config;
 
-    @Autowired
-    private SKWxMpService skWxMpService;
+	@Autowired
+	private SKWxMpService skWxMpService;
 
-    @Override
-    public com.zy.entity.fnc.Withdraw create(@NotNull Long userId, @NotNull com.zy.entity.fnc.CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
-        final BigDecimal zero = new BigDecimal("0.00");
-        validate(userId, NOT_NULL, "user id is null");
-        validate(currencyType, NOT_NULL, "currency type is null");
-        validate(amount, NOT_NULL, "amount is null");
-        validate(amount, v -> v.compareTo(zero) >= 0, currencyType + "amount must not be less than 0.00");
+	@Override
+	public Withdraw create(@NotNull Long userId, @NotNull Long bankCardId, @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
+		final BigDecimal zero = new BigDecimal("0.00");
+		validate(userId, NOT_NULL, "user id is null");
+		validate(currencyType, NOT_NULL, "currency type is null");
+		validate(amount, NOT_NULL, "amount is null");
+		validate(amount, v -> v.compareTo(zero) >= 0, currencyType + "amount must not be less than 0.00");
 
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + " is not found");
-		com.zy.entity.fnc.Account account = accountMapper.findByUserIdAndCurrencyType(userId, currencyType);
+		Account account = accountMapper.findByUserIdAndCurrencyType(userId, currencyType);
 		validate(account, NOT_NULL, "account user id " + userId + " currency type " + currencyType + " is not found");
  
-		if(currencyType.equals(com.zy.entity.fnc.CurrencyType.金币)) {
-			if(UserRank.V2.compareTo(user.getUserRank()) > 0) {
-				throw new BizException(BizCode.ERROR, "提现试客币,需要用户等级达到铜牌及以上");
-			}
-		}
-		
 		/* check 提现币种 */
 		UserType userType = user.getUserType();
 		Boolean isToBankCard = null;
-		Long bankCardId = null;
 		String openId = null;
-		if (userType == UserType.代理) {
-			if(currencyType != com.zy.entity.fnc.CurrencyType.现金) {
-				throw new BizException(BizCode.ERROR, "提现种类不匹配");
-			}
-			WeixinUser weixinUser = weixinUserMapper.findByUserId(userId);
-			if (weixinUser == null) {
-				throw new BizException(BizCode.ERROR, "必须先绑定微信才能提现");
-			}
-			openId = weixinUser.getOpenId();
-			isToBankCard = true;
-		} else {
-			throw new BizException(BizCode.ERROR, "提现用户不匹配");
+
+		if (userType != UserType.代理 && currencyType != CurrencyType.现金) {
+			throw new BizException(BizCode.ERROR, "暂只支持代理现金提现");
+
 		}
+
+	    /* check bank card */
+		BankCard bankCard = bankCardMapper.findOne(bankCardId);
+		validate(bankCard, NOT_NULL, "bank card id " + bankCardId + " is not found");
+		validate(bankCard, v -> v.getUserId().equals(userId), "bank card " + bankCardId + " must be own");
+
 
 		/* check 余额 */
 		BigDecimal beforeAmount = account.getAmount();
@@ -115,7 +95,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		BigDecimal fee = amount.multiply(feeRate).setScale(2, RoundingMode.HALF_UP);
 		BigDecimal realAmount = amount.subtract(fee);
 
-		com.zy.entity.fnc.Withdraw withdraw = new com.zy.entity.fnc.Withdraw();
+		Withdraw withdraw = new Withdraw();
 		withdraw.setCreatedTime(date);
 		withdraw.setCurrencyType(currencyType);
 		withdraw.setAmount(amount);
@@ -129,13 +109,13 @@ public class WithdrawServiceImpl implements WithdrawService {
 		withdraw.setIsToBankCard(isToBankCard);
 		withdraw.setBankCardId(bankCardId);
 		withdraw.setOpenId(openId);
-		withdraw.setTitle("提现");
-		withdraw.setWithdrawStatus(WithdrawStatus.已申请);
+		withdraw.setTitle("代理提现");
+		withdraw.setWithdrawStatus(Withdraw.WithdrawStatus.已申请);
 		validate(withdraw);
 		withdrawMapper.insert(withdraw);
-		
-		String currencyTypeLabel = currencyType == com.zy.entity.fnc.CurrencyType.金币 ? "试客币" : (currencyType == com.zy.entity.fnc.CurrencyType.现金 ? "本金" : currencyType.getAlias());
-		fncComponent.recordAccountLog(userId, currencyTypeLabel +  "提现", currencyType, amount, InOut.支出, withdraw);
+
+		String currencyTypeLabel = currencyType == CurrencyType.金币 ? "试客币" : (currencyType == CurrencyType.现金 ? "本金" : currencyType.getAlias());
+		fncComponent.recordAccountLog(userId, currencyTypeLabel + "提现", currencyType, amount, InOut.支出, withdraw);
 		fncComponent.recordAccountLog(config.getSysUserId(), currencyTypeLabel + "提现", currencyType, amount, InOut.收入, withdraw);
 		return withdraw;
 	}
@@ -144,44 +124,37 @@ public class WithdrawServiceImpl implements WithdrawService {
 	public void success(@NotNull Long id, @NotNull Long operatorUserId, @NotBlank String remark) {
 
 		final BigDecimal zero = new BigDecimal("0.00");
-		com.zy.entity.fnc.Withdraw withdraw = withdrawMapper.findOne(id);
+		Withdraw withdraw = withdrawMapper.findOne(id);
 		validate(withdraw, NOT_NULL, "withdraw id " + id + " is not found null");
 		User user = userMapper.findOne(operatorUserId);
 		validate(user, NOT_NULL, "operator user id" + operatorUserId + " is not found null");
 
-        if (withdraw.getWithdrawStatus() == WithdrawStatus.提现成功) {
-            return; // 幂等处理
-        } else if (withdraw.getWithdrawStatus() != WithdrawStatus.已申请) {
-            throw new BizException(BizCode.ERROR, "只有已申请状态的提现单可以确认成功");
-        }
-        if (!withdraw.getIsToBankCard()) {
-            try {
-                WxRedpackResult result = this.skWxMpService.transfer(withdraw.getSn(), withdraw.getOpenId(), withdraw.getAmount(), withdraw.getTitle());
-                if (isNotBlank(result.getReturnMsg())) {
-                    throw new BizException(BizCode.ERROR, result.getReturnMsg());
-                }
-            } catch (WxErrorException e) {
-                throw new BizException(BizCode.ERROR, e.getMessage());
-            }
-        }
+		if (withdraw.getWithdrawStatus() == Withdraw.WithdrawStatus.提现成功) {
+			return; // 幂等处理
+		} else if (withdraw.getWithdrawStatus() != Withdraw.WithdrawStatus.已申请) {
+			throw new BizException(BizCode.ERROR, "只有已申请状态的提现单可以确认成功");
+		}
+		if (!withdraw.getIsToBankCard()) {
+			throw new BizException(BizCode.ERROR, "暂不支持微信提现");
+		}
 
 		withdraw.setRemark(remark);
 		withdraw.setOperatorUserId(operatorUserId);
-		withdraw.setWithdrawStatus(WithdrawStatus.提现成功);
+		withdraw.setWithdrawStatus(Withdraw.WithdrawStatus.提现成功);
 		withdraw.setWithdrawedTime(new Date());
 		if (withdrawMapper.update(withdraw) == 0) {
 			throw new ConcurrentException();
 		}
-		com.zy.entity.fnc.CurrencyType currencyType = withdraw.getCurrencyType();
+		CurrencyType currencyType = withdraw.getCurrencyType();
 		Long sysUserId = config.getSysUserId();
 
 		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw);
-		
+
 		Long feeUserId = config.getFeeUserId();
 		BigDecimal fee = withdraw.getFee();
 		if (fee.compareTo(zero) > 0) {
 			String title = "提现单" + withdraw.getSn() + "收益";
-			com.zy.entity.fnc.Profit profit = fncComponent.createProfit(ProfitBizName.平台收益, currencyType, title, feeUserId, fee, null);
+			Profit profit = fncComponent.createProfit(ProfitBizName.平台收益, currencyType, title, feeUserId, fee, null);
 			fncComponent.recordAccountLog(sysUserId, title, currencyType, fee, InOut.支出, profit);
 			fncComponent.recordAccountLog(feeUserId, title, currencyType, fee, InOut.收入, profit);
 		}
@@ -193,40 +166,40 @@ public class WithdrawServiceImpl implements WithdrawService {
 		validate(operatorUserId, NOT_NULL, "operator user id is null");
 		validate(remark, NOT_BLANK, "remark is blank");
 
-		com.zy.entity.fnc.Withdraw withdraw = withdrawMapper.findOne(id);
+		Withdraw withdraw = withdrawMapper.findOne(id);
 		validate(withdraw, NOT_NULL, "withdraw id " + id + " is not found null");
 		User user = userMapper.findOne(operatorUserId);
 		validate(user, NOT_NULL, "operator user id" + operatorUserId + " is not found null");
 
-		if (withdraw.getWithdrawStatus() == WithdrawStatus.已取消) {
+		if (withdraw.getWithdrawStatus() == Withdraw.WithdrawStatus.已取消) {
 			return; // 幂等处理
-		} else if (withdraw.getWithdrawStatus() != WithdrawStatus.已申请) {
+		} else if (withdraw.getWithdrawStatus() != Withdraw.WithdrawStatus.已申请) {
 			throw new BizException(BizCode.ERROR, "只有已申请状态的提现单可以取消");
 		}
 
 		withdraw.setRemark(remark);
 		withdraw.setOperatorUserId(operatorUserId);
-		withdraw.setWithdrawStatus(WithdrawStatus.已取消);
+		withdraw.setWithdrawStatus(Withdraw.WithdrawStatus.已取消);
 		if (withdrawMapper.update(withdraw) == 0) {
 			throw new ConcurrentException();
 		}
-		com.zy.entity.fnc.CurrencyType currencyType = withdraw.getCurrencyType();
-		
+		CurrencyType currencyType = withdraw.getCurrencyType();
+
 		BigDecimal amount = withdraw.getAmount();
-		
+
 		fncComponent.recordAccountLog(withdraw.getUserId(), "提现取消退款", currencyType, amount, InOut.收入, withdraw);
 		fncComponent.recordAccountLog(config.getSysUserId(), "提现取消退款", currencyType, amount, InOut.支出, withdraw);
 	}
 
 	@Override
-	public Page<com.zy.entity.fnc.Withdraw> findPage(@NotNull WithdrawQueryModel withdrawQueryModel) {
+	public Page<Withdraw> findPage(@NotNull WithdrawQueryModel withdrawQueryModel) {
 		if (withdrawQueryModel.getPageNumber() == null)
 			withdrawQueryModel.setPageNumber(0);
 		if (withdrawQueryModel.getPageSize() == null)
 			withdrawQueryModel.setPageSize(20);
 		long total = withdrawMapper.count(withdrawQueryModel);
-		List<com.zy.entity.fnc.Withdraw> data = withdrawMapper.findAll(withdrawQueryModel);
-		Page<com.zy.entity.fnc.Withdraw> page = new Page<>();
+		List<Withdraw> data = withdrawMapper.findAll(withdrawQueryModel);
+		Page<Withdraw> page = new Page<>();
 		page.setPageNumber(withdrawQueryModel.getPageNumber());
 		page.setPageSize(withdrawQueryModel.getPageSize());
 		page.setData(data);
@@ -235,12 +208,12 @@ public class WithdrawServiceImpl implements WithdrawService {
 	}
 
 	@Override
-	public com.zy.entity.fnc.Withdraw findOne(@NotNull Long id) {
+	public Withdraw findOne(@NotNull Long id) {
 		return withdrawMapper.findOne(id);
 	}
 
 	@Override
-	public List<com.zy.entity.fnc.Withdraw> findAll(@NotNull WithdrawQueryModel withdrawQueryModel) {
+	public List<Withdraw> findAll(@NotNull WithdrawQueryModel withdrawQueryModel) {
 		return withdrawMapper.findAll(withdrawQueryModel);
 	}
 

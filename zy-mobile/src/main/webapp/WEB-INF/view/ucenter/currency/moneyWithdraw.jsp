@@ -16,11 +16,7 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script type="text/javascript">
   $(function() {
-    var withdrawFeeRate = $
-    {
-      withdrawFeeRate
-    }
-    ;
+    var withdrawFeeRate = ${withdrawFeeRate};
     $('#amount').bind('input propertychange', function() {
       var textValue = $.trim($(this).val());
       var value = textValue
@@ -43,7 +39,67 @@
       var realAmount = Number(value) * (1 - withdrawFeeRate);
       $('#realAmount').text(realAmount.toFixed(2));
     });
+    
+    //选择银行卡
+  	$('.bank-card-info').click(function(){
+  	  showBankCardList();
+  	});
+    
+    $('body').on('click', '.bank-card', function() {
+      var $this = $(this);
+      var bankCard = {};
+      bankCard.id = $this.attr('data-id');
+      bankCard.bankName = $this.attr('data-bank-name');
+      bankCard.bankCode = $this.attr('data-bank-code');
+      bankCard.cardNumber = $this.attr('data-card-number');
+      setBankCard(bankCard);
+    });
   });
+  
+  function showBankCardList() {
+    if ($('#bankCardList').length == 0) {
+      var bankCardList = document.getElementById('bankCardListTpl').innerHTML;
+      $(bankCardList).appendTo('body');
+    }
+    $('body').addClass('o-hidden');
+    $('#bankCardList').show().animate({
+      'left' : 0
+    }, 300, function() {
+    });
+  }
+	
+  function hideBankCardList() {
+    $('#bankCardList').animate({
+      'left' : '100%'
+    }, 300, function() {
+      $('body').removeClass('o-hidden');
+      $('#bankCardList').hide();
+    });
+  }
+  
+  function setBankCard(bankCard) {
+    hideBankCardList();
+    $('[name="bankCardId"]').val(bankCard.id);
+    $('.bank-card-info').html('<i class="icon icon-bank-' + bankCard.bankCode + ' mr-10"></i><span>' + bankCard.bankName + '</span>(<span>' + bankCard.cardNumber + '</span>)');
+  }
+  
+</script>
+<script id="bankCardListTpl" type="text/html">
+  <aside id="bankCardList" class="header-fixed abs-lt size-100p bg-white z-1000" style="left: 100%; display: none;">
+    <header class="header">
+      <h1>选择银行卡</h1>
+      <a href="javascript:hideBankCardList();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    </header>
+    <div class="list-group">
+      <c:forEach items="${bankCards}" var="bankCard">
+      <div class="list-item bank-card" data-id="${bankCard.id}" data-card-number="${bankCard.cardNumberLabel}" data-bank-name="${bankCard.bankName}" data-bank-code="${bankCard.bankCode}">
+        <i class="icon icon-2x icon-bank-${bankCard.bankCode} mr-15"></i>
+        <div class="list-text">${bankCard.bankName}</div>
+        <div class="list-unit fs-16">尾号 ${bankCard.cardNumberLabel}</div>
+      </div>
+      </c:forEach>
+    </div>
+  </aside>
 </script>
 </head>
 
@@ -61,14 +117,11 @@
       <div class="list-group">
         <div class="list-item">
           <label class="list-text lh-36">提现到</label>
-          <div class="list-unit">
-            <i class="icon icon-bank-gongshang"></i> 工商银行（6321）
+          <div class="list-unit bank-card-info">
+            <i class="icon icon-bank-${defaultBankCard.bankCode}"></i> ${defaultBankCard.bankName}（${defaultBankCard.cardNumberLabel}）
           </div>
-          <%--
-          <div class="list-control-static text-right font-555 lh-36">
-            <i class="icon icon-weixin"></i> 微信零钱
-          </div>
-           --%>
+          <i class="list-arrow"></i>
+          <input type="hidden" name="bankCardId" value="${defaultBankCard.id}">
         </div>
       </div>
       <div class="list-group">

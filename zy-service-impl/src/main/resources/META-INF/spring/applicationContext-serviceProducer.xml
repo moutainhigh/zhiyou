@@ -39,7 +39,6 @@
 	<dubbo:service ref="addressServiceImpl" interface="com.zy.service.AddressService" />
 	<dubbo:service ref="configImpl" interface="com.zy.Config" />
 	<dubbo:service ref="bankCardServiceImpl" interface="com.zy.service.BankCardService" />
-	<dubbo:service ref="weixinUserServiceImpl" interface="com.zy.service.WeixinUserService" />
 	<dubbo:service ref="paymentServiceImpl" interface="com.zy.service.PaymentService" />
 	<dubbo:service ref="helpCategoryServiceImpl" interface="com.zy.service.HelpCategoryService" />
 	<dubbo:service ref="helpServiceImpl" interface="com.zy.service.HelpService" />

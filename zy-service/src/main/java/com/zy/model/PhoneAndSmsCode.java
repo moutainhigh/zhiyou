@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 public class PhoneAndSmsCode implements Serializable {
 
-	private static final long serialVersionUID = 4236136945217453696L;
-
 	private String phone;
 
 	private String smsCode;

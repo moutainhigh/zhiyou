@@ -74,9 +74,10 @@ public class UcenterAppearanceController {
 		if(persistence == null) {
 			return "ucenter/user/appearanceCreate";
 		}
-		if(persistence.getConfirmStatus() == ConfirmStatus.审核通过) {
+		if(persistence.getConfirmStatus() == ConfirmStatus.已通过) {
 			return "redirect:/u/appearance";
 		}
+		appearance.setId(persistence.getId());
 		try {
 			appearanceService.update(appearance);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));

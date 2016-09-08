@@ -26,8 +26,6 @@ public interface UserMapper {
 
 	User findByPhone(String phone);
 
-	User findByNicknameIgnoreCase(String nickname);
-
-	User findByInviteCode(String inviteCode);
+	User findByOpenId(String openId);
 
 }

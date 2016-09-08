@@ -84,10 +84,11 @@ public class OrderServiceImpl implements OrderService {
 
 
 
-		/* calculate seller id */
-		Long parentId = orderCreateDto.getParentId();
+		/* calculate parent id */
+		Long parentId;
 		UserRank userRank = user.getUserRank();
 		if (userRank == UserRank.V0) {
+			parentId = orderCreateDto.getParentId();
 			if (parentId == null) {
 				throw new BizException(BizCode.ERROR, "首次下单必须填写邀请人");
 			}
@@ -103,13 +104,16 @@ public class OrderServiceImpl implements OrderService {
 			}
 			user.setParentId(parentId);
 			userMapper.update(user);
+		} else {
+			parentId = user.getParentId();
 		}
-
-		Long sellerId = null;//malComponent.calculateSellerId(userId);
 
 
 		String title = orderCreateDto.getTitle();
 		long quantity = orderCreateDto.getQuantity();
+
+		Long sellerId = malComponent.calculateSellerId(userRank, quantity, parentId);
+
 		BigDecimal price = malComponent.getPrice(productId, user.getUserRank(), quantity);
 		BigDecimal amount = price.multiply(new BigDecimal(quantity));
 
@@ -157,11 +161,6 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public void pay(@NotNull Long id) {
-//		fncComponent.payOrder(id);
-	}
-
-	@Override
 	public void cancel(@NotNull Long id) {
 		throw new BizException(BizCode.ERROR, "暂不支持主动取消订单");
 	}
@@ -200,7 +199,7 @@ public class OrderServiceImpl implements OrderService {
 
 		Long id = orderDeliverDto.getId();
 		Order order = orderMapper.findOne(id);
-		validate(order, NOT_NULL, "order id" + id + " not found");
+		validate(order, NOT_NULL, "order id" + id + " is not found");
 		OrderStatus orderStatus = order.getOrderStatus();
 		if (orderStatus == OrderStatus.已发货) {
 			return; // 幂等处理
@@ -245,7 +244,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void receive(@NotNull Long id) {
 		Order order = orderMapper.findOne(id);
-		validate(order, NOT_NULL, "order id" + id + " not found");
+		validate(order, NOT_NULL, "order id" + id + " is not found");
 		OrderStatus orderStatus = order.getOrderStatus();
 		if (orderStatus == OrderStatus.已完成) {
 			return; // 幂等处理
@@ -254,6 +253,36 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 		order.setOrderStatus(OrderStatus.已完成);
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
+	}
+
+	@Override
+	public void modifyIsPlatformDeliver(@NotNull Long orderId, boolean isPlatformDeliver) {
+		Order order = orderMapper.findOne(orderId);
+		validate(order, NOT_NULL, "order id" + orderId + " is not found");
+		if (order.getOrderStatus() != OrderStatus.已支付) {
+			throw new BizException(BizCode.ERROR, "只有已支付的订单才能转换为平台发货");
+		}
+		order.setIsPlatformDeliver(isPlatformDeliver);
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
+
+	}
+
+	@Override
+	public void modifySellerId(@NotNull Long orderId, @NotNull Long sellerId) {
+		Order order = orderMapper.findOne(orderId);
+		validate(order, NOT_NULL, "order id" + orderId + " is not found");
+		User seller = userMapper.findOne(sellerId);
+		validate(seller, NOT_NULL, "seller id" + seller + " is not found");
+
+		if (order.getOrderStatus() != OrderStatus.已支付) {
+			throw new BizException(BizCode.ERROR, "只有已支付的订单才能修改卖家");
+		}
+		order.setSellerId(sellerId);
 		if (orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
 		}

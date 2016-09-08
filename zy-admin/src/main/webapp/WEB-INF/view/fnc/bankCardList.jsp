@@ -71,12 +71,12 @@
           width : '80px',
           render : function(data, type, full) {
             var result = '';
-            if (data == '未审核') {
-              result = '<label class="label label-danger">未审核</label>';
-            } else if (data == '审核通过') {
-              result = '<label class="label label-success">审核通过</label>';
-            } else if (data == '审核未通过') {
-              result = '<label class="label label-default">审核未通过</label>';
+            if (data == '待审核') {
+              result = '<label class="label label-danger">待审核</label>';
+            } else if (data == '已通过') {
+              result = '<label class="label label-success">已通过</label>';
+            } else if (data == '未通过') {
+              result = '<label class="label label-default">未通过</label>';
             }
             return result;
           }
@@ -89,7 +89,7 @@
           render : function(data, type, full) {
             var optionHtml = '';
             <shiro:hasPermission name="user:edit">
-            if (full.confirmStatus == '未审核') {
+            if (full.confirmStatus == '待审核') {
               optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="confirm(' + full.id + ')"><i class="fa fa-edit"></i> 审核 </a>';
             }
 
@@ -175,9 +175,9 @@
               <div class="form-group input-inline">
                 <select name=confirmStatusEQ class="form-control">
                   <option value="">-- 审核状态 --</option>
-                  <option value="0">未审核</option>
-                  <option value="1">审核通过</option>
-                  <option value="2">审核未通过</option>
+                  <option value="0">待审核</option>
+                  <option value="1">已通过</option>
+                  <option value="2">未通过</option>
                 </select>
               </div>
               <div class="form-group input-inline">
