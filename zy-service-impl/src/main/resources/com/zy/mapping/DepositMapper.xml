@@ -104,6 +104,9 @@
 		id,user_id,title,sn,currency_type1,amount1,currency_type2,amount2,total_amount,is_outer_created,outer_sn,qr_code_url,weixin_open_id,pay_type,paid_time,created_time,expired_time,deposit_status,remark,operator_id,version
 		from `fnc_deposit`
 		<where>
+			<if test="createdTimeLT != null">
+				 and created_time &lt; #{createdTimeLT}
+			</if>
 			<if test="userIdIN != null">
 				 and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
@@ -119,11 +122,17 @@
 			<if test="paidTimeLT != null">
 				 and paid_time &lt; #{paidTimeLT}
 			</if>
+			<if test="createdTimeGTE != null">
+				 and created_time &gt;= #{createdTimeGTE}
+			</if>
 			<if test="depositStatusEQ != null">
 				 and deposit_status = #{depositStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="paidTimeGTE != null">
 				 and paid_time &gt;= #{paidTimeGTE}
+			</if>
+			<if test="expiredTimeLT != null">
+				 and expired_time &lt; #{expiredTimeLT}
 			</if>
 		</where>
 		<choose>
@@ -142,6 +151,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.DepositQueryModel">
 		select count(*) from `fnc_deposit`
 		<where>
+			<if test="createdTimeLT != null">
+				 and created_time &lt; #{createdTimeLT}
+			</if>
 			<if test="userIdIN != null">
 				 and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
@@ -157,11 +169,17 @@
 			<if test="paidTimeLT != null">
 				 and paid_time &lt; #{paidTimeLT}
 			</if>
+			<if test="createdTimeGTE != null">
+				 and created_time &gt;= #{createdTimeGTE}
+			</if>
 			<if test="depositStatusEQ != null">
 				 and deposit_status = #{depositStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="paidTimeGTE != null">
 				 and paid_time &gt;= #{paidTimeGTE}
+			</if>
+			<if test="expiredTimeLT != null">
+				 and expired_time &lt; #{expiredTimeLT}
 			</if>
 		</where>
 	</select>

@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -22,6 +23,12 @@ public class PaymentQueryModel implements Serializable {
 	private Long userIdEQ;
 
 	private String bizNameEQ;
+
+	private Date createdTimeLT;
+
+	private Date createdTimeGTE;
+
+	private Date expiredTimeLT;
 
 	private Integer pageNumber;
 

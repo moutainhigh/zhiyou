@@ -32,6 +32,12 @@ public class DepositQueryModel implements Serializable {
 
 	private Date paidTimeLT;
 
+	private Date createdTimeLT;
+
+	private Date createdTimeGTE;
+
+	private Date expiredTimeLT;
+
 	private DepositStatus depositStatusEQ;
 
 	private Integer pageNumber;
