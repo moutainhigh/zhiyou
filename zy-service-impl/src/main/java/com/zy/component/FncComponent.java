@@ -48,6 +48,9 @@ public class FncComponent {
 
 	public void recordAccountLog(@NotNull Long userId, @NotBlank String title, @NotNull CurrencyType currencyType,
 	                             @NotNull @DecimalMin("0.01") BigDecimal transAmount,  @NotNull InOut inOut,  @NotNull Object ref,  @NotNull Long refUserId) {
+
+		validate(refUserId, v -> !v.equals(userId), "ref user id must not be same with user id");
+
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + " is not found");
 		Account account = accountMapper.findByUserIdAndCurrencyType(userId, currencyType);
@@ -69,6 +72,7 @@ public class FncComponent {
 		accountLog.setCurrencyType(currencyType);
 		accountLog.setUserId(account.getUserId());
 		accountLog.setInOut(inOut);
+		accountLog.setRefUserId(refUserId);
 
 		if (ref instanceof Payment) {
 			Payment payment = (Payment) ref;
