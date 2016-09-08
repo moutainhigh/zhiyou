@@ -54,6 +54,7 @@ public class Report implements Serializable {
 	@NotNull
 	@Temporal(TemporalType.DATE)
 	@Field(label = "检测时间")
+	@View
 	@View(name = "dateLabel", type = String.class)
 	private Date date;
 	
@@ -83,6 +84,7 @@ public class Report implements Serializable {
 	@URL
 	@StringBinder
 	@Field(label = "图片1")
+	@View
 	@View(name = "image1Big")
 	@View(name = "image1Thumbnail")
 	private String image1;
@@ -91,6 +93,7 @@ public class Report implements Serializable {
 	@URL
 	@StringBinder
 	@Field(label = "图片2")
+	@View
 	@View(name = "image2Big")
 	@View(name = "image2Thumbnail")
 	private String image2;
@@ -99,6 +102,7 @@ public class Report implements Serializable {
 	@URL
 	@StringBinder
 	@Field(label = "图片3")
+	@View
 	@View(name = "image3Big")
 	@View(name = "image3Thumbnail")
 	private String image3;
@@ -106,6 +110,7 @@ public class Report implements Serializable {
 	@StringBinder
 	@URL
 	@Field(label = "图片4")
+	@View
 	@View(name = "image4Big")
 	@View(name = "image4Thumbnail")
 	private String image4;
@@ -113,12 +118,14 @@ public class Report implements Serializable {
 	@StringBinder
 	@Field(label = "图片5")
 	@URL
+	@View
 	@View(name = "image5Big")
 	@View(name = "image5Thumbnail")
 	private String image5;
 
 	@StringBinder
 	@URL
+	@View
 	@View(name = "image6Big")
 	@View(name = "image6Thumbnail")
 	@Field(label = "图片6")
