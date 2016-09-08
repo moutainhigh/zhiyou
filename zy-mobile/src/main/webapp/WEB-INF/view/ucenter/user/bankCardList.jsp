@@ -40,8 +40,9 @@
     <a href="${ctx}/u/bankCard/${bankCard.id}" class="bank round-4 relative">
       <div class="bank-icon round"><i class="icon icon-bank-${bankCard.bankCode} round"></i></div>
       <div class="bank-info">
-        <div class="fs-16 lh-30">${bankCard.bankName}</div>
-        <div class="fs-12 lh-30"><span>${bankCard.realname}</span><span class="fs-24 right">**** **** **** ${bankCard.cardNumberLabel}</span></div>
+        <div class="fs-15 lh-24">${bankCard.bankName}</div>
+        <div class="fs-12 lh-20">${bankCard.realname}</div>
+        <div class="fs-24 lh-30">**** **** **** ${bankCard.cardNumberLabel}</div>
       </div>
     </a>
     </c:forEach>

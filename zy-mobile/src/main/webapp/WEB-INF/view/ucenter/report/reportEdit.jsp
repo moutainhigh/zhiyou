@@ -14,17 +14,17 @@
 <title>修改检测报告</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
-<%@ include file="/WEB-INF/view/include/fileupload.jsp"%>
+<%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
 <script type="text/javascript">
   $(function() {
-    $('.image-multi .image-item').Fileupload({
+    $('.image-multi .image-item').imageupload({
       width : 100,
       height : 100,
       url : '${ctx}/image/upload',
       maxFileSize : '4MB'
     });
     
-    $('.image-multi .image-add').Fileupload({
+    $('.image-multi .image-add').imageupload({
       width : 100,
       height : 100,
       url : '${ctx}/image/upload',
@@ -47,7 +47,7 @@
         if (limit && limit <= imageItems.length + 1) {
           $this.remove();
         }
-        $this.siblings('.image-item').eq(imageItems.length).Fileupload({
+        $this.siblings('.image-item').eq(imageItems.length).imageupload({
           width : 100,
           height : 100,
           url : '${ctx}/image/upload',
@@ -148,7 +148,7 @@
       <div class="list-group">
         <div class="list-title">您至少需要上传3张检测图片</div>
         <div class="list-item">
-          <div class="list-text list-image image-multi">
+          <div class="list-text image-upload image-multi">
             <div class="image-item">
               <input type="hidden" name="image1" value="${report.image1}">
               <img src="${report.image1Thumbnail}">

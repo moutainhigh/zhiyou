@@ -58,7 +58,7 @@
         </div>
         <div class="list-text">
           <div class="fs-15">${inviteUser.nickname}</div>
-          <div class="font-777 fs-14"><i class="fa fa-phone font-999">${inviteUser.phone}</i></div>
+          <div class="font-777 fs-14"><i class="fa fa-phone font-999"> ${inviteUser.phone}</i></div>
         </div>
         <div class="list-unit">
           <c:if test="${inviteUser.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>

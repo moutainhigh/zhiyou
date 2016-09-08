@@ -17,7 +17,7 @@
 
   $(function() {
     
-    $('.image-view').click(function() {
+    $('.image-view img').click(function() {
       var url = $(this).attr('data-src');
       if (!url) {
         return;
@@ -98,30 +98,18 @@
   <div class="list-group">
     <div class="list-title">检测结果图片</div>
     <div class="list-item">
-      <div class="list-text list-image">
-        <div class="image-item">
-          <img class="image-view" src="${report.image1Thumbnail}" data-src="${report.image1Big}">
-        </div>
-        <div class="image-item">
-          <img class="image-view" src="${report.image2Thumbnail}" data-src="${report.image2Big}">
-        </div>
-        <div class="image-item">
-          <img class="image-view" src="${report.image3Thumbnail}" data-src="${report.image3Big}">
-        </div>
+      <div class="list-text list-image image-view">
+        <img src="${report.image1Thumbnail}" data-src="${report.image1Big}">
+        <img src="${report.image2Thumbnail}" data-src="${report.image2Big}">
+        <img src="${report.image3Thumbnail}" data-src="${report.image3Big}">
         <c:if test="${not empty report.image4Thumbnail}">
-        <div class="image-item">
-          <img class="image-view" src="${report.image4Thumbnail}" data-src="${report.image4Big}">
-        </div>
+          <img src="${report.image4Thumbnail}" data-src="${report.image4Big}">
         </c:if>
         <c:if test="${not empty report.image5Thumbnail}">
-        <div class="image-item">
-          <img class="image-view" src="${report.image5Thumbnail}" data-src="${report.image5Big}">
-        </div>
+          <img src="${report.image5Thumbnail}" data-src="${report.image5Big}">
         </c:if>
         <c:if test="${not empty report.image6Thumbnail}">
-        <div class="image-item">
-          <img class="image-view" src="${report.image6Thumbnail}" data-src="${report.image6Big}">
-        </div>
+          <img src="${report.image6Thumbnail}" data-src="${report.image6Big}">
         </c:if>
       </div>
     </div>

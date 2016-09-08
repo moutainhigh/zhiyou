@@ -64,7 +64,7 @@
     
     <c:if test="${not empty list}">
     <div class="list-group">
-      <div class="list-title">${user.nickname}的直接下级代理</div>
+      <div class="list-title">&lt;${user.nickname}&gt;的直接下级代理</div>
       <c:forEach items="${list}" var="inviteUser" varStatus="varStatus">
       <a class="list-item invite" href="${ctx}/u/team/${inviteUser.id}">
         <div class="avatar">
@@ -72,7 +72,7 @@
         </div>
         <div class="list-text">
           <div class="fs-15">${inviteUser.nickname}</div>
-          <div class="font-777 fs-14"><i class="fa fa-phone font-999">${inviteUser.phone}</i></div>
+          <div class="font-777 fs-14"><i class="fa fa-phone font-999"></i> ${inviteUser.phone}</div>
         </div>
         <div class="list-unit">
           <c:if test="${inviteUser.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
@@ -83,12 +83,6 @@
         <i class="list-arrow"></i>
       </a>
       </c:forEach>
-    </div>
-    </c:if>
-    <c:if test="${empty list}">
-    <div class="empty-tip">
-      <i class="fa fa-map-marker"></i>
-      <span>您没有下级代理!</span>
     </div>
     </c:if>
   </article>

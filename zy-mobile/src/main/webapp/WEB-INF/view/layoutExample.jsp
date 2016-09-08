@@ -14,7 +14,7 @@
 <title>list-group布局</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
-<%@ include file="/WEB-INF/view/include/fileupload.jsp"%>
+<%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
 <script type="text/javascript">
   $(function() {
     $('#deliverType0').click(function(){
@@ -24,7 +24,7 @@
       $('#logistics').slideDown(300);
   });
 
-    $('.image-view').click(function() {
+    $('.image-view > img').click(function() {
       var url = $(this).attr('data-src');
       var title = $(this).attr('data-title');
       if (!url) {
@@ -36,21 +36,21 @@
       });
     });
 
-    $('.image-single .image-item').Fileupload({
+    $('.image-single .image-item').imageupload({
       width : 120,
       height : 75,
       url : '${ctx}/image/upload',
       maxFileSize : '4MB'
     });
     
-    $('.image-multi .image-item').Fileupload({
+    $('.image-multi .image-item').imageupload({
       width : 100,
       height : 100,
       url : '${ctx}/image/upload',
       maxFileSize : '4MB'
     });
 
-    $('.image-multi .image-add').Fileupload({
+    $('.image-multi .image-add').imageupload({
       width : 100,
       height : 100,
       url : '${ctx}/image/upload',
@@ -71,7 +71,7 @@
         if (limit && limit <= imageItems.length + 1) {
           $this.remove();
         }
-        $this.siblings('.image-item').eq(imageItems.length).Fileupload({
+        $this.siblings('.image-item').eq(imageItems.length).imageupload({
           width : 100,
           height : 100,
           url : '${ctx}/image/upload',
@@ -90,9 +90,6 @@
   </header>
 
   <article>
-    <div class="loader-wrap mt-10 width-200 height-200">
-      <div class="loader"></div>
-    </div>
     <form action="${ctx}/u/order/deliver" class="valid-form" method="post">
       <input type="hidden" name="orderId" value="${orderId}">
       <div class="list-group">
@@ -240,7 +237,7 @@
         <div class="list-title">图片上传插件</div>
         <div class="list-item">
           <label class="list-label">单个图片</label>
-          <div class="list-text list-image image-single">
+          <div class="list-text image-upload image-single">
             <div class="image-item">
               <input type="hidden" name="infoImage2" id="infoImage2" value="">
               <img src="${stccdn}/image/defaultImage_240_150.png">
@@ -256,7 +253,7 @@
       <div class="list-group">
         <div class="list-title"><span class="font-red">多图</span>上传插件</div>
         <div class="list-item">
-          <div class="list-text list-image image-multi">
+          <div class="list-text image-upload image-multi">
             <div class="image-item">
               <img src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
               <input type="hidden" name="image1" value="">
@@ -279,13 +276,9 @@
       <div class="list-group">
         <div class="list-title">图片布局</div>
         <div class="list-item">
-          <div class="list-text list-image">
-            <div class="image-item">
-              <img class="image-view" data-title="照片名字" data-src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@640h_640w_1e_1c.jpg" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
-            </div>
-            <div class="image-item">
-              <img class="image-view" data-title="我的美照" data-src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@640h_640w_1e_1c.jpg" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
-            </div>
+          <div class="list-text list-image image-view">
+            <img data-title="照片名字" data-src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@640h_640w_1e_1c.jpg" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+            <img data-title="我的美照" data-src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@640h_640w_1e_1c.jpg" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
           </div>
         </div>
       </div>
