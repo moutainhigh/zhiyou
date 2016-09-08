@@ -56,7 +56,7 @@ public class LoginController {
 	@Autowired
 	private CacheSupport cacheSupport;
 	
-	@RequestMapping(value = "register", method = RequestMethod.GET)
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String register(Model model, HttpSession session) {
 
 		AgentRegisterDto agentRegisterDto = (AgentRegisterDto) session.getAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO);
@@ -70,7 +70,7 @@ public class LoginController {
 		return "register";
 	}
 	
-	@RequestMapping(value = "register", method = RequestMethod.POST)
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(Model model, HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes, @RequestParam String smsCode,
 	                       @RequestParam String phone) {
 
@@ -115,7 +115,7 @@ public class LoginController {
 		return "redirect:" + redirectUrl;
 	}
 
-	@RequestMapping(value = "register/sendSmsCode", method = RequestMethod.POST)
+	@RequestMapping(value = "/register/sendSmsCode", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<?> sendSmsCode(HttpSession session, String phone, String captcha) {
 		validate(phone, ValidateUtils.PHONE, "错误的手机格式");

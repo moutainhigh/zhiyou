@@ -44,7 +44,7 @@
       var leftTime = 120;
 
       $.ajax({
-        url : '${ctx}/u/sendBindPhoneSmsCode',
+        url : '${ctx}/register/sendSmsCode',
         type : 'POST',
         data : {
           phone : phone,
