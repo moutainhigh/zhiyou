@@ -22,13 +22,13 @@
 	});
 </script>
 </head>
-<body class="header-fixed">
+<body class="address-list">
   <header class="header">
     <h1>收货地址</h1>
     <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
-  <article class="address-list">
+  <article>
     <c:if test="${empty list}">
       <div class="empty-tip">
         <i class="fa fa-map-marker"></i>
@@ -38,13 +38,15 @@
     
     <div class="list-group">
       <c:forEach items="${list}" var="address" varStatus="status">
-      <a href="${ctx}/u/address/${address.id}" class="address<c:if test="${address.isDefault}"> default</c:if>">
-        <i class="i-default fa fa-check-circle"></i>
-        <i class="i-arrow"></i>
-        <div class="address-wrap relative">
-          <div class="fs-16 bold lh-24">${address.realname}<span class="right">${address.phone}</span></div>
-          <address class="fs-12">${address.province} ${address.city} ${address.district} ${address.address}</address>
+      <a href="${ctx}/u/address/${address.id}" class="list-item">
+        <c:if test="${address.isDefault}">
+          <i class="fa fa-check-circle font-orange fs-20"></i>
+        </c:if>
+        <div class="list-text pl-15 pr-10<c:if test="${address.isDefault}"> font-orange</c:if>">
+          <div>${address.realname}<span class="right fs-14 font-777">${address.phone}</span></div>
+          <div class="fs-14 font-777">${address.province} ${address.city} ${address.district} ${address.address}</div>
         </div>
+        <i class="list-arrow"></i>
       </a>
       </c:forEach>
     </div>
