@@ -30,28 +30,28 @@
   <header class="header">
     <h1>实名认证</h1>
     <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <c:if test="${appearance.confirmStatus != '审核通过'}">
+    <c:if test="${appearance.confirmStatus != '已通过'}">
       <a href="${ctx}/u/appearance/edit" class="button-right"><i class="fa fa-edit"></i></a>
     </c:if>
   </header>
 
   <article>
 
-    <c:if test="${appearance.confirmStatus == '未审核'}">
+    <c:if test="${appearance.confirmStatus == '待审核'}">
       <div class="note note-warning mb-0">
         <p>
           <i class="fa fa-clock-o"></i> 审核信息：${appearance.confirmStatus}
         </p>
       </div>
     </c:if>
-    <c:if test="${appearance.confirmStatus == '审核未通过'}">
+    <c:if test="${appearance.confirmStatus == '未通过'}">
       <div class="note note-danger mb-0">
         <p>
           <i class="fa fa-close"></i> 审核信息：${appearance.confirmStatus}, ${appearance.confirmRemark}
         </p>
       </div>
     </c:if>
-    <c:if test="${appearance.confirmStatus == '审核通过'}">
+    <c:if test="${appearance.confirmStatus == '已通过'}">
       <div class="note note-success mb-0">
         <p>
           <i class="fa fa-check"></i> 审核信息：${appearance.confirmStatus}
