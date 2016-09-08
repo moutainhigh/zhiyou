@@ -385,18 +385,6 @@ a.disabled, a.disabled:hover, a.disabled:focus {
   transform: rotate(315deg); -webkit-transform: rotate(315deg); -moz-transform: rotate(315deg); -ms-transform: rotate(315deg); -o-transform: rotate(315deg);
 }
 
-.loading > em {
-  display: inline-block; width: 25px; height: 25px;
-  background: transparent none repeat scroll 0 0 !important;
-  border: 2px solid #fff;
-  border-radius: 100%;
-  -moz-border-bottom-colors: none;
-  -moz-border-left-colors: none;
-  -moz-border-right-colors: none;
-  -moz-border-top-colors: none;
-  animation: 0.75s linear 0s normal none infinite running rotate;
-}
-
 /* detail-wrap */
 .detail-wrap {
   padding: 10px 15px;
