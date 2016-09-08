@@ -39,23 +39,17 @@
 
     <c:if test="${appearance.confirmStatus == '待审核'}">
       <div class="note note-warning mb-0">
-        <p>
-          <i class="fa fa-clock-o"></i> 审核信息：${appearance.confirmStatus}
-        </p>
+        <i class="fa fa-clock-o"></i> 审核信息：${appearance.confirmStatus}
       </div>
     </c:if>
     <c:if test="${appearance.confirmStatus == '未通过'}">
       <div class="note note-danger mb-0">
-        <p>
-          <i class="fa fa-close"></i> 审核信息：${appearance.confirmStatus}, ${appearance.confirmRemark}
-        </p>
+        <i class="fa fa-close"></i> 审核信息：${appearance.confirmStatus}, ${appearance.confirmRemark}
       </div>
     </c:if>
     <c:if test="${appearance.confirmStatus == '已通过'}">
       <div class="note note-success mb-0">
-        <p>
-          <i class="fa fa-check"></i> 审核信息：${appearance.confirmStatus}
-        </p>
+        <i class="fa fa-check"></i> 审核信息：${appearance.confirmStatus}
       </div>
     </c:if>
 

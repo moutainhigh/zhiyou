@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>上传检测报告</title>
+<title>修改检测报告</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <%@ include file="/WEB-INF/view/include/fileupload.jsp"%>
@@ -22,7 +22,7 @@
       height : 120,
       url : '${ctx}/image/upload',
       maxFileSize : '4MB',
-      progress : function(){
+      progress : function() {
         var $this = $(this);
         $this.find('.state').removeClass('state-add').addClass('state-loading');
       },
@@ -88,7 +88,7 @@
 </head>
 <body class="">
   <header class="header">
-    <h1>上传检测报告</h1>
+    <h1>修改检测报告</h1>
     <a href="${ctx}/u/report" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
@@ -99,7 +99,7 @@
         <div class="list-item">
           <label class="list-label" for="realname">姓名</label>
           <div class="list-text">
-            <input type="text" name="realname" class="form-input" value="" placeholder="填写客户姓名">
+            <input type="text" name="realname" class="form-input" value="${report.realname}" placeholder="填写客户姓名">
           </div>
         </div>
         <div class="list-item">
@@ -107,21 +107,21 @@
           <div class="list-text form-select">
             <select name="gender">
               <option value="">请选择</option>
-              <option value="0">男</option>
-              <option value="1">女</option>
+              <option value="0"<c:if test="${report.gender eq '男'}"> selected</c:if>>男</option>
+              <option value="1"<c:if test="${report.gender eq '女'}"> selected</c:if>>女</option>
             </select>
           </div>
         </div>
         <div class="list-item">
           <label class="list-label" for="age">年龄</label>
           <div class="list-text">
-            <input type="number" name="age" class="form-input" value="" placeholder="填写客户年龄">
+            <input type="number" name="age" class="form-input" value="${report.age}" placeholder="填写客户年龄">
           </div>
         </div>
         <div class="list-item">
           <label class="list-label" for="date">检测时间</label>
           <div class="list-text">
-            <input type="text" id="date" name="date" class="form-input" value="" placeholder="填写检测时间 2001-01-01" onfocus="this.type='date'">
+            <input type="text" id="date" name="date" class="form-input" value="${report.date}" placeholder="填写检测时间 2001-01-01" onfocus="this.type='date'">
           </div>
         </div>
         <div class="list-item">
@@ -129,10 +129,10 @@
           <div class="list-text form-select">
             <select name="reportResult">
               <option value="">请选择</option>
-              <option value="阴性">阴性</option>
-              <option value="弱阳性">弱阳性</option>
-              <option value="阳性">阳性</option>
-              <option value="干扰色">干扰色</option>
+              <option value="阴性"<c:if test="${report.reportResult eq '阴性'}"> selected</c:if>>阴性</option>
+              <option value="弱阳性"<c:if test="${report.reportResult eq '弱阳性'}"> selected</c:if>>弱阳性</option>
+              <option value="阳性"<c:if test="${report.reportResult eq '阳性'}"> selected</c:if>>阳性</option>
+              <option value="干扰色"<c:if test="${report.reportResult eq '干扰色'}"> selected</c:if>>干扰色</option>
             </select>
           </div>
         </div>
@@ -142,11 +142,49 @@
         <div class="list-title">您至少需要上传3张检测图片</div>
         <div class="list-item">
           <div class="list-text list-image">
+            <div class="image-item">
+              <input type="hidden" name="image1" value="${report.image1}">
+              <img src="${report.image1}">
+              <input type="file">
+            </div>
+            <div class="image-item">
+              <input type="hidden" name="image2" value="${report.image2}">
+              <img src="${report.image2}">
+              <input type="file">
+            </div>
+            <div class="image-item">
+              <input type="hidden" name="image3" value="${report.image3}">
+              <img src="${report.image3}">
+              <input type="file">
+            </div>
+            <c:if test="${not empty report.image4}">
+            <div class="image-item">
+              <input type="hidden" name="image4" value="${report.image4}">
+              <img src="${report.image4}">
+              <input type="file">
+            </div>
+            </c:if>
+            <c:if test="${not empty report.image5}">
+            <div class="image-item">
+              <input type="hidden" name="image5" value="${report.image5}">
+              <img src="${report.image5}">
+              <input type="file">
+            </div>
+            </c:if>
+            <c:if test="${not empty report.image6}">
+            <div class="image-item">
+              <input type="hidden" name="image6" value="${report.image6}">
+              <img src="${report.image6}">
+              <input type="file">
+            </div>
+            </c:if>
+            <c:if test="${empty report.image6}">
             <div class="image-add" data-limit="6">
-              <input type="hidden" name="image1" value="">
+              <input type="hidden" name="image" value="">
               <input type="file">
               <em class="state state-add"></em>
             </div>
+            </c:if>
           </div>
         </div>
 
@@ -155,7 +193,7 @@
         <div class="list-title">填写产品使用心得</div>
         <div class="list-item">
           <div class="list-text">
-            <textarea name="text" class="form-input" rows="3" placeholder="填写产品使用心得"></textarea>
+            <textarea name="text" class="form-input" rows="3" placeholder="填写产品使用心得">${report.text}</textarea>
           </div>
         </div>
       </div>
