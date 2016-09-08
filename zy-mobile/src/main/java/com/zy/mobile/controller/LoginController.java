@@ -62,10 +62,11 @@ public class LoginController {
 		AgentRegisterDto agentRegisterDto = (AgentRegisterDto) session.getAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO);
 		if (agentRegisterDto == null) {
 			model.addAttribute("isNew", true);
+		} else {
+			model.addAttribute("isNew", false);
+			model.addAttribute("avatar", agentRegisterDto.getAvatar());
+			model.addAttribute("nickname", agentRegisterDto.getNickname());
 		}
-
-		model.addAttribute("avatar", agentRegisterDto.getAvatar());
-		model.addAttribute("nickname", agentRegisterDto.getNickname());
 		
 		return "register";
 	}
