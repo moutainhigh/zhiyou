@@ -1,6 +1,9 @@
 package com.zy.mobile.extend;
 
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.util.JsonUtils;
 import com.zy.common.util.WebUtils;
+import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.util.GcUtils;
@@ -53,18 +56,19 @@ public class WeixinOauthUserinfoFilter implements Filter {
 		if (principal == null) {
 			String redirectUrl = GcUtils.resolveRedirectUrl(httpServletRequest);
 			session.setAttribute(SESSION_ATTRIBUTE_REDIRECT_URL, redirectUrl);
-			String url = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_USER_INFO, Constants.WEIXIN_STATE_USERINFO);
+			String oauthUrl = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_USER_INFO, Constants.WEIXIN_STATE_USERINFO);
 
 			if (WebUtils.isAjax(httpServletRequest)) {
 				OutputStream os = httpServletResponse.getOutputStream();
 				httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				httpServletResponse.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
-				os.write(url.getBytes(Charset.forName("UTF-8")));
+				httpServletResponse.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+				os.write(JsonUtils.toJson(new ResultBuilder<>().code(BizCode.UNAUTHENTICATED).message("need oauth").data(oauthUrl).build()).getBytes(
+						Charset.forName("UTF-8")));
 				return;
 			} else {
 
-				logger.info("send to userinfo auth: " + url);
-				httpServletResponse.sendRedirect(url);
+				logger.info("send to userinfo auth: " + oauthUrl);
+				httpServletResponse.sendRedirect(oauthUrl);
 				return;
 			}
 		} else {

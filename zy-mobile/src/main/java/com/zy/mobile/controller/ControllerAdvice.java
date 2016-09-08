@@ -67,17 +67,18 @@ public class ControllerAdvice {
 
 		String redirectUrl = GcUtils.resolveRedirectUrl(request);
 		request.getSession().setAttribute(SESSION_ATTRIBUTE_REDIRECT_URL, redirectUrl);
-		String url = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_USER_INFO,
+		String oauthUrl = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_USER_INFO,
 				Constants.WEIXIN_STATE_USERINFO);
 		if (WebUtils.isAjax(request)) {
 			OutputStream os = response.getOutputStream();
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
-			os.write(url.getBytes(Charset.forName("UTF-8")));
+			response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+			os.write(JsonUtils.toJson(new ResultBuilder<>().code(BizCode.UNAUTHENTICATED).message("need oauth").data(oauthUrl).build()).getBytes(
+					Charset.forName("UTF-8")));
 			return null;
 		} else {
-			logger.info("send to userinfo auth: " + url);
-			response.sendRedirect(url);
+			logger.info("send to userinfo auth: " + oauthUrl);
+			response.sendRedirect(oauthUrl);
 			return null;
 		}
 	}
