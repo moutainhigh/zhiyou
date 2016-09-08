@@ -98,7 +98,7 @@
 
   <c:if test="${!isNew}">
   <article>
-    <form action="${ctx}/u/bindPhone" class="valid-form" method="post">
+    <form action="${ctx}/register" class="valid-form" method="post">
       <img class="image-120 block round center mt-30" src="${avatar}">
       <div class="mt-20 font-555 fs-24 lh-30 text-center">${nickname}</div>
       <p class="mt-30 font-999 fs-14 lh-30 text-center">只差一步啦，验证手机号完成注册</p>
