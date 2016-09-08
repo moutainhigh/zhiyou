@@ -58,10 +58,10 @@
       <a class="list-item" href="${ctx}/help/userRank">
         <div class="list-text">代理等级</div>
         <div class="list-unit">
-          <c:if test="${user.userRank == 'V1'}"><i class="icon icon-newbie"></i>三级代理</c:if>
-          <c:if test="${user.userRank == 'V2'}"><i class="icon icon-tongpai"></i>二级代理</c:if>
-          <c:if test="${user.userRank == 'V3'}"><i class="icon icon-yinnpai"></i>一级代理</span></c:if>
-          <c:if test="${user.userRank == 'V4'}"><i class="icon icon-jinpai"></i>特级代理</c:if>
+          <c:if test="${user.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
+          <c:if test="${user.userRank == 'V2'}"><label class="label blue">二级代理</label></c:if>
+          <c:if test="${user.userRank == 'V3'}"><label class="label orange">一级代理</label></c:if>
+          <c:if test="${user.userRank == 'V4'}"><label class="label red">特级代理</label></c:if>
         </div>
         <i class="list-arrow"></i>
       </a>

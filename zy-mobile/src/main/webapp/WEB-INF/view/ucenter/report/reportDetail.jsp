@@ -36,7 +36,26 @@
   <header class="header">
     <h1>检测报告</h1>
     <a href="${ctx}/u/report" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <c:if test="${report.confirmStatus != '已通过'}">
+    <a href="${ctx}/u/report/edit?id=${report.id}" class="button-right"><i class="fa fa-edit"></i></a>
+    </c:if>
   </header>
+  
+  <c:if test="${report.confirmStatus == '待审核'}">
+  <div class="note note-warning mb-0">
+    <i class="fa fa-clock-o"></i> 审核信息：待审核
+  </div>
+  </c:if>
+  <c:if test="${report.confirmStatus == '未通过'}">
+  <div class="note note-danger mb-0">
+    <i class="fa fa-close"></i> 审核信息：未通过, ${report.confirmRemark}
+  </div>
+  </c:if>
+  <c:if test="${report.confirmStatus == '已通过'}">
+  <div class="note note-success mb-0">
+    <i class="fa fa-check"></i> 审核信息：已通过
+  </div>
+  </c:if>
   
   <div class="list-group">
     <div class="list-item">
