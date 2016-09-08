@@ -98,8 +98,12 @@ public class UserServiceImpl implements UserService {
 		validate(agentRegisterDto);
 
 		Long inviterId = agentRegisterDto.getInviterId();
-		User inviter = userMapper.findOne(inviterId);
-		validate(inviter, NOT_NULL, "inviter id " + inviterId + " is not found");
+		if (inviterId != null) {
+			User inviter = userMapper.findOne(inviterId);
+			if (inviter == null || inviter.getUserType() != UserType.代理) {
+				inviterId = null;
+			}
+		}
 
 		String openId = agentRegisterDto.getOpenId();
 		String phone = agentRegisterDto.getPhone();
@@ -142,6 +146,7 @@ public class UserServiceImpl implements UserService {
 
 			/* 注册 */
 			user = new User();
+			user.setPhone(phone);
 			user.setUserType(UserType.代理);
 			user.setRegisterIp(registerIp);
 			user.setInviterId(inviterId);
