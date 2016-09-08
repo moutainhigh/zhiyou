@@ -1190,33 +1190,112 @@ h1 .label, h2 .label, h3 .label, h4 .label, h5 .label, h6 .label {
 .gray.badge {
   background-color: #c6c6c6;
 }
-
 /* red */
 .red.badge {
   background-color: #e35b5a;
 }
-
 /* green */
 .green.badge {
   background-color: #6cb92d; /*#35ba47;*/
 }
-
 /* blue */
 .blue.badge {
   background-color: #46a7bf;
 }
-
 /* yellow */
 .yellow.badge {
   background-color: #f4d03f;
 }
-
 /* orange */
 .orange.badge {
   background-color: #e87e04;
 }
-
 /* purple */
 .purple.badge {
   background-color: #8a3f8a;
+}
+
+
+/* breadcrumb */
+/* #2980b9 #3498db #1abc9c */
+.breadcrumb {
+  list-style: none; margin-bottom: 10px;
+  display: flex; width: 100%;
+  background: #fecd98;
+}
+.breadcrumb li {
+  float: left;
+}
+.breadcrumb li a {
+  position: relative; margin-right: 23px; padding: 0 10px 0 5px;
+  display: block; height: 40px;
+  color: #fff; line-height: 40px; text-align: center; text-decoration: none;
+  background: #fc992c;
+}
+.breadcrumb li:nth-child(even) a {
+  background-color: #fb8604;
+}
+.breadcrumb li:nth-child(even) a:before {
+  border-color: #fb8604;
+  border-left-color: transparent;
+}
+.breadcrumb li:nth-child(even) a:after {
+  border-left-color: #fb8604;
+}
+.breadcrumb li:first-child a {
+  padding-left: 15px;
+  /* -moz-border-radius: 4px 0 0 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px 0 0 4px; */
+}
+.breadcrumb li:first-child a:before {
+  border: none;
+}
+.breadcrumb li:last-child a {
+  padding-right: 15px;
+  /* -moz-border-radius: 0 4px 4px 0;
+  -webkit-border-radius: 0;
+  border-radius: 0 4px 4px 0; */
+}
+/*
+.breadcrumb li:last-child a:after {
+  border: none;
+}
+*/
+.breadcrumb li a:before, .breadcrumb li a:after {
+  content: ""; width: 0; height: 0;
+  position: absolute; top: 0;
+  border: 0 solid #fc992c;
+  border-width: 20px 10px;
+}
+.breadcrumb li a:before {
+  left: -20px;
+  border-left-color: transparent;
+}
+.breadcrumb li a:after {
+  left: 100%;
+  border-color: transparent;
+  border-left-color: #fc992c;
+}
+
+.breadcrumb li a:hover {
+  background-color: #e95458;
+}
+.breadcrumb li a:hover:before {
+  border-color: #e95458;
+  border-left-color: transparent;
+}
+.breadcrumb li a:hover:after {
+  border-left-color: #e95458;
+}
+
+.breadcrumb li a:active {
+  background-color: #e95458;
+}
+.breadcrumb li a:active:before {
+  border-color: #e95458;
+  border-left-color: transparent;
+}
+.breadcrumb li a:active:after {
+  border-left-color: #e95458;
 }
