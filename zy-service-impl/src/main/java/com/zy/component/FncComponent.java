@@ -72,7 +72,7 @@ public class FncComponent {
 		accountLog.setCurrencyType(currencyType);
 		accountLog.setUserId(account.getUserId());
 		accountLog.setInOut(inOut);
-		accountLog.setRefId(refUserId);
+		accountLog.setRefUserId(refUserId);
 
 		if (ref instanceof Payment) {
 			Payment payment = (Payment) ref;
