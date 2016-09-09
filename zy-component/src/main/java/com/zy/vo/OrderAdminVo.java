@@ -93,5 +93,7 @@ public class OrderAdminVo implements Serializable {
 	private String deliveredTimeLabel;
 	@Field(label = "orderItems")
 	private List<OrderItemAdminVo> orderItems = new ArrayList<>();
+	@Field(label = "payments")
+	private List<PaymentAdminVo> payments = new ArrayList<>();
 
 }

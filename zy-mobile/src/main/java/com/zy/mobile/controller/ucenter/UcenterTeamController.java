@@ -40,18 +40,18 @@ public class UcenterTeamController {
 	public String agent(Principal principal, Model model) {
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
-		userQueryModel.setInviterIdEQ(userId);
+		userQueryModel.setParentIdEQ(userId);
 		List<User> agents = userService.findAll(userQueryModel);
 		model.addAttribute("list", agents.stream().map(userComponent::buildListVo).collect(Collectors.toList()));
 		
 		long agentsCount = agents.size();
 		long allAgentsCount = agentsCount;
 		if(agentsCount > 0l){
-			Set<Long> inviterIdSet = new HashSet<>();
-			inviterIdSet.add(userId);
-			inviterIdSet.addAll(agents.stream().map(User::getId).collect(Collectors.toSet()));
-			userQueryModel.setInviterIdEQ(null);
-			userQueryModel.setInviterIdIN(inviterIdSet.toArray(new Long[]{}));
+			Set<Long> parentIdSet = new HashSet<>();
+			parentIdSet.add(userId);
+			parentIdSet.addAll(agents.stream().map(User::getId).collect(Collectors.toSet()));
+			userQueryModel.setParentIdEQ(null);
+			userQueryModel.setParentIdIN(parentIdSet.toArray(new Long[]{}));
 			allAgentsCount = userService.count(userQueryModel);
 		}
 		model.addAttribute("agentsCount", agentsCount);
@@ -67,15 +67,15 @@ public class UcenterTeamController {
 		model.addAttribute("user", userComponent.buildListVo(user));
 		model.addAttribute("principalUserId", principal.getUserId());
 		
-		if(user.getInviterId() != null){
-			User inviterLv1 = userService.findOne(user.getInviterId());
-			model.addAttribute("inviterLv1", userComponent.buildListVo(inviterLv1));
-			if(inviterLv1.getInviterId() != null){
-				User inviterLv2 = userService.findOne(inviterLv1.getInviterId());
-				model.addAttribute("inviterLv2", userComponent.buildListVo(inviterLv2));
-				if(inviterLv2.getInviterId() != null){
-					User inviterLv3 = userService.findOne(inviterLv2.getInviterId());
-					model.addAttribute("inviterLv3", userComponent.buildListVo(inviterLv3));
+		if(user.getParentId() != null){
+			User parentLv1 = userService.findOne(user.getParentId());
+			model.addAttribute("parentLv1", userComponent.buildListVo(parentLv1));
+			if(parentLv1.getParentId() != null){
+				User parentLv2 = userService.findOne(parentLv1.getParentId());
+				model.addAttribute("parentLv2", userComponent.buildListVo(parentLv2));
+				if(parentLv2.getParentId() != null){
+					User parentLv3 = userService.findOne(parentLv2.getParentId());
+					model.addAttribute("parentLv3", userComponent.buildListVo(parentLv3));
 				}
 			}
 		}
@@ -84,7 +84,7 @@ public class UcenterTeamController {
 		model.addAttribute("address", address);
 		
 		UserQueryModel userQueryModel = new UserQueryModel();
-		userQueryModel.setInviterIdEQ(id);
+		userQueryModel.setParentIdEQ(id);
 		List<User> agents = userService.findAll(userQueryModel);
 		model.addAttribute("list", agents.stream().map(userComponent::buildListVo).collect(Collectors.toList()));
 		return "ucenter/team/userDetail";

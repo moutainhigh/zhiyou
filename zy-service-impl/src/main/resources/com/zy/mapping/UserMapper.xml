@@ -123,6 +123,12 @@
 				#{item}
 				</foreach>
 			</if>
+			<if test="parentIdIN != null">
+				 and parent_id in
+				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -170,6 +176,12 @@
 			<if test="inviterIdIN != null">
 				 and inviter_id in
 				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="parentIdIN != null">
+				 and parent_id in
+				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
 			</if>
