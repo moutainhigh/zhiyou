@@ -57,7 +57,7 @@
                   width : '160px',
                   render : function(data, type, full) {
                     if (full.user) {
-                      return '<img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname;
+                      return '<p>昵称: ' + full.user.nickname + '</p><p>手机号: ' + full.user.phone + '</p>';
                     } else {
                       return '-';
                     }
@@ -207,7 +207,7 @@
               </div>
 
               <div class="form-group">
-                <input type="text" name="nicknameLK" class="form-control" placeholder="昵称" />
+                <input type="text" name="userNicknameLK" class="form-control" placeholder="昵称" />
               </div>
 
               <div class="form-group">
