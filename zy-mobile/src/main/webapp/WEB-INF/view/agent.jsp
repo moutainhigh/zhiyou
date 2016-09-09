@@ -73,8 +73,8 @@
 	      }
 	    }
 	  });
-	  </c:if>
 	  return false;
+	  </c:if>
 	});
 	
   });
