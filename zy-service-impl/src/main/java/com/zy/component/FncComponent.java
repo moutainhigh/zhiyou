@@ -1,28 +1,44 @@
 package com.zy.component;
 
-import com.zy.Config;
-import com.zy.ServiceUtils;
-import com.zy.common.exception.ConcurrentException;
-import com.zy.common.exception.ValidationException;
-import com.zy.entity.fnc.*;
-import com.zy.entity.fnc.AccountLog.InOut;
-import com.zy.entity.usr.User;
-import com.zy.mapper.*;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.entity.fnc.AccountLog.AccountLogType.充值单;
+import static com.zy.entity.fnc.AccountLog.AccountLogType.提现单;
+import static com.zy.entity.fnc.AccountLog.AccountLogType.支付单;
+import static com.zy.entity.fnc.AccountLog.AccountLogType.收益单;
+import static com.zy.entity.fnc.AccountLog.InOut.支出;
+import static com.zy.entity.fnc.AccountLog.InOut.收入;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.Date;
-
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.fnc.AccountLog.AccountLogType.*;
-import static com.zy.entity.fnc.AccountLog.InOut.支出;
-import static com.zy.entity.fnc.AccountLog.InOut.收入;
+import com.zy.Config;
+import com.zy.ServiceUtils;
+import com.zy.common.exception.ConcurrentException;
+import com.zy.common.exception.ValidationException;
+import com.zy.entity.fnc.Account;
+import com.zy.entity.fnc.AccountLog;
+import com.zy.entity.fnc.AccountLog.InOut;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Deposit;
+import com.zy.entity.fnc.Payment;
+import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Profit.ProfitType;
+import com.zy.entity.fnc.Withdraw;
+import com.zy.entity.usr.User;
+import com.zy.mapper.AccountLogMapper;
+import com.zy.mapper.AccountMapper;
+import com.zy.mapper.PaymentMapper;
+import com.zy.mapper.ProfitMapper;
+import com.zy.mapper.UserMapper;
 
 @Component
 @Validated
@@ -125,27 +141,26 @@ public class FncComponent {
 		}
 	}
 
-	public Profit createProfit(String bizName, CurrencyType currencyType, String title, Long userId, BigDecimal amount, String remark) {
+	public Profit createProfit(Long userId, ProfitType profitType, Long refId,  String title, CurrencyType currencyType, BigDecimal amount) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
 		}
 		Profit profit = new Profit();
-		profit.setBizName(bizName);
+		profit.setProfitType(profitType);
 		profit.setTitle(title);
 		profit.setUserId(userId);
 		profit.setAmount(amount);
 		profit.setSn(ServiceUtils.generateProfitSn());
 		profit.setCurrencyType(currencyType);
 		profit.setCreatedTime(new Date());
-		profit.setRemark(remark);
 		validate(profit);
 		profitMapper.insert(profit);
 		return profit;
 	}
 
-	public Profit grantProfit(Long userId, String bizName, String title, @NotNull CurrencyType currencyType, BigDecimal amount, String remark) {
-		Profit profit = this.createProfit(bizName, currencyType, title, userId, amount, remark);
+	public Profit createProfitAndRecordAccountLog(Long userId, ProfitType profitType, Long refId, String title, @NotNull CurrencyType currencyType, BigDecimal amount) {
+		Profit profit = this.createProfit(userId, profitType, refId, title, currencyType, amount);
 		Long sysUserId = config.getSysUserId();
 		this.recordAccountLog(sysUserId, title, currencyType, amount, 支出, profit, userId);
 		this.recordAccountLog(userId, title, currencyType, amount, 收入, profit, sysUserId);

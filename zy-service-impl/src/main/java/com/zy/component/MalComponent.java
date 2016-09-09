@@ -67,4 +67,10 @@ public class MalComponent {
 		return parentId;
 	}
 
+
+	public void successOrder(@NotNull Long orderId) {
+
+		// TODO
+	}
+
 }

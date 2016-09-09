@@ -1,11 +1,27 @@
 package com.zy.service.impl;
 
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.entity.usr.User.UserRank.V0;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
 import com.zy.entity.act.Report;
 import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.mapper.ReportMapper;
@@ -13,18 +29,6 @@ import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.service.ReportService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.*;
-import static com.zy.entity.usr.User.UserRank.V0;
-import static com.zy.model.Constants.BIZ_NAME_REPORT;
 
 @Service
 @Validated
@@ -119,13 +123,12 @@ public class ReportServiceImpl implements ReportService {
 		Long userId = report.getUserId();
 		User user = userMapper.findOne(userId);
 		String title = "数据奖,检测报告编号" + id;
+		Long topId = null; // 找到第一个特级代理
 		if (user.getUserRank() == User.UserRank.V4) {
-			/* 全额给一个人 */
-			fncComponent.grantProfit(userId, BIZ_NAME_REPORT, title, CurrencyType.现金, new BigDecimal("18.00"), null);
+			/* 如果自己是特级代理 */
+			topId = userId;
 		} else {
-			/* 否则找到第一个特级代理 */
-			Long topId = null;
-
+			/* 否则递归查找 */
 			Long parentId = user.getParentId();
 			while (parentId != null) {
 				User parent = userMapper.findOne(parentId);
@@ -138,14 +141,14 @@ public class ReportServiceImpl implements ReportService {
 				}
 				parentId = parent.getParentId();
 			}
-
-			fncComponent.grantProfit(userId, BIZ_NAME_REPORT, title, CurrencyType.现金, new BigDecimal("15.00"), null);
-
-			if (topId != null) {
-				fncComponent.grantProfit(topId, BIZ_NAME_REPORT, title, CurrencyType.现金, new BigDecimal("3.00"), null);
-			}
-
 		}
+		
+		if (topId == null) {
+			throw new BizException(BizCode.ERROR, "结算失败,找不到特级代理");
+		}
+
+		/* 全额给一个人 */
+		fncComponent.createProfitAndRecordAccountLog(userId, ProfitType.数据奖, id, title, CurrencyType.现金, new BigDecimal("18.00")); // TODO	 写死
 
 		report.setIsSettledUp(true);
 		if (reportMapper.update(report) == 0) {

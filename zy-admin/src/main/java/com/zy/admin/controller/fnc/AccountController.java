@@ -68,7 +68,7 @@ public class AccountController {
 		}
 
 		try {
-			profitService.grant(userId, Constants.BIZ_NAME_GRANT, "赠送余额", CurrencyType.现金, amount, remark);
+			profitService.grant(userId, remark, CurrencyType.现金, amount);
 		} catch (Exception e) {
 			return ResultBuilder.error("充值失败," + e.getMessage());
 		}

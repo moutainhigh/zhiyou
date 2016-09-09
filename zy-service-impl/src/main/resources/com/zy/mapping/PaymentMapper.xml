@@ -8,8 +8,8 @@
 		<result column="user_id" property="userId" />
 		<result column="title" property="title" />
 		<result column="pay_type" property="payType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
-		<result column="biz_name" property="bizName" />
-		<result column="biz_sn" property="bizSn" />
+		<result column="payment_type" property="paymentType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="ref_id" property="refId" />
 		<result column="created_time" property="createdTime" />
 		<result column="expired_time" property="expiredTime" />
 		<result column="paid_time" property="paidTime" />
@@ -30,8 +30,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.Payment" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_payment` (sn,user_id,title,pay_type,biz_name,biz_sn,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,operator_id,version)
-	  values (#{sn},#{userId},#{title},#{payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{bizName},#{bizSn},#{createdTime},#{expiredTime},#{paidTime},#{paymentStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount1},#{currencyType2,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount2},#{refund1},#{refund2},#{refundedTime},#{refundRemark},#{cancelRemark},#{remark},#{outerSn},#{operatorId},#{version})
+	  insert into `fnc_payment` (sn,user_id,title,pay_type,payment_type,ref_id,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,operator_id,version)
+	  values (#{sn},#{userId},#{title},#{payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{paymentType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{createdTime},#{expiredTime},#{paidTime},#{paymentStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount1},#{currencyType2,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount2},#{refund1},#{refund2},#{refundedTime},#{refundRemark},#{cancelRemark},#{remark},#{outerSn},#{operatorId},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -45,8 +45,8 @@
 			user_id = #{userId},
 			title = #{title},
 			pay_type = #{payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
-			biz_name = #{bizName},
-			biz_sn = #{bizSn},
+			payment_type = #{paymentType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			ref_id = #{refId},
 			created_time = #{createdTime},
 			expired_time = #{expiredTime},
 			paid_time = #{paidTime},
@@ -77,8 +77,8 @@
 					<when test="field == 'userId'">user_id = #{payment.userId},</when>
 					<when test="field == 'title'">title = #{payment.title},</when>
 					<when test="field == 'payType'">pay_type = #{payment.payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.PayType},</when>
-					<when test="field == 'bizName'">biz_name = #{payment.bizName},</when>
-					<when test="field == 'bizSn'">biz_sn = #{payment.bizSn},</when>
+					<when test="field == 'paymentType'">payment_type = #{payment.paymentType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.Payment$PaymentType},</when>
+					<when test="field == 'refId'">ref_id = #{payment.refId},</when>
 					<when test="field == 'createdTime'">created_time = #{payment.createdTime},</when>
 					<when test="field == 'expiredTime'">expired_time = #{payment.expiredTime},</when>
 					<when test="field == 'paidTime'">paid_time = #{payment.paidTime},</when>
@@ -103,21 +103,24 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,sn,user_id,title,pay_type,biz_name,biz_sn,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,operator_id,version
+		id,sn,user_id,title,pay_type,payment_type,ref_id,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,operator_id,version
 		from `fnc_payment`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.PaymentQueryModel">
 		select
-		id,sn,user_id,title,pay_type,biz_name,biz_sn,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,operator_id,version
+		id,sn,user_id,title,pay_type,payment_type,ref_id,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,operator_id,version
 		from `fnc_payment`
 		<where>
-			<if test="bizNameEQ != null">
-				 and biz_name = #{bizNameEQ}
-			</if>
 			<if test="createdTimeLT != null">
 				 and created_time &lt; #{createdTimeLT}
+			</if>
+			<if test="paymentTypeEQ != null">
+				 and payment_type = #{paymentTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="refIdEQ != null">
+				 and ref_id = #{refIdEQ}
 			</if>
 			<if test="userIdEQ != null">
 				 and user_id = #{userIdEQ}
@@ -145,11 +148,14 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.PaymentQueryModel">
 		select count(*) from `fnc_payment`
 		<where>
-			<if test="bizNameEQ != null">
-				 and biz_name = #{bizNameEQ}
-			</if>
 			<if test="createdTimeLT != null">
 				 and created_time &lt; #{createdTimeLT}
+			</if>
+			<if test="paymentTypeEQ != null">
+				 and payment_type = #{paymentTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="refIdEQ != null">
+				 and ref_id = #{refIdEQ}
 			</if>
 			<if test="userIdEQ != null">
 				 and user_id = #{userIdEQ}

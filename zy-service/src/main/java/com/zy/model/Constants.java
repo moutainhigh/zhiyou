@@ -105,16 +105,6 @@ public interface Constants {
     BigDecimal SETTING_MAX_WITHDRAW_FEE_RATE = new BigDecimal("0.05"); // 提现最大费率 设置不可超过该值
     BigDecimal SETTING_MIN_MERCHANT_DEPOSIT_MONEY = new BigDecimal("100.00"); // 商家充值本金最小金额
 
-
-    String BIZ_NAME_WITHDRAW = "提现";
-    String BIZ_NAME_ORDER_PAY = "订单支付";
-    String BIZ_NAME_ORDER_PROFIT = "订单分润";
-    String BIZ_NAME_REPORT = "检测报告";
-    String BIZ_NAME_GRANT = "赠送余额";
-
-
-
-
     /*
      * topic 用于发送mq
      *

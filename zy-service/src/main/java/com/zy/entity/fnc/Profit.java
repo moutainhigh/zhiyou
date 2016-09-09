@@ -7,6 +7,7 @@ import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
+import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
@@ -31,6 +32,13 @@ import static io.gd.generator.api.query.Predicate.*;
 @Type(label = "收益单")
 @ViewObject(groups = "ProfitAdminVo")
 public class Profit implements Serializable {
+
+	public enum ProfitType {
+		订单收款, 
+		数据奖, 
+		补偿
+	}
+
 
 	@Id
 	@Field(label = "id")
@@ -72,17 +80,16 @@ public class Profit implements Serializable {
 	@View
 	private Date createdTime;
 
-	@NotBlank
-	@Query(EQ)
-	@Field(label = "业务名")
+	@Query(Predicate.EQ)
+	@Field(label = "收益单类型")
 	@View
-	private String bizName;
+	@NotNull
+	private ProfitType profitType;
 
-	@NotBlank
-	@Column(length = 60)
-	@Field(label = "业务sn")
+	@Field(label = "关联业务id", description = "可以不填写")
 	@View
-	private String bizSn;
+	@Query(Predicate.EQ)
+	private Long refId;
 
 	@Field(label = "备注")
 	@View

@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.util.Date;
+import com.zy.entity.fnc.Payment.PaymentType;
 
 @Getter
 @Setter
@@ -22,7 +23,9 @@ public class PaymentQueryModel implements Serializable {
 
 	private Long userIdEQ;
 
-	private String bizNameEQ;
+	private PaymentType paymentTypeEQ;
+
+	private Long refIdEQ;
 
 	private Date createdTimeLT;
 
@@ -92,17 +95,17 @@ public class PaymentQueryModel implements Serializable {
 		fieldNames.add("version");
 		fieldNames.add("expiredTime");
 		fieldNames.add("refund2");
+		fieldNames.add("paymentType");
 		fieldNames.add("payType");
-		fieldNames.add("bizName");
 		fieldNames.add("amount2");
 		fieldNames.add("amount1");
 		fieldNames.add("refundedTime");
-		fieldNames.add("bizSn");
 		fieldNames.add("refundRemark");
 		fieldNames.add("createdTime");
 		fieldNames.add("outerSn");
 		fieldNames.add("id");
 		fieldNames.add("sn");
+		fieldNames.add("refId");
 		fieldNames.add("cancelRemark");
 		fieldNames.add("operatorId");
 		fieldNames.add("paymentStatus");

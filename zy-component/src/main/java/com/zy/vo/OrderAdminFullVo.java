@@ -84,5 +84,7 @@ public class OrderAdminFullVo implements Serializable {
 	private List<OrderItemAdminVo> orderItems = new ArrayList<>();
 	@Field(label = "payments")
 	private List<PaymentAdminVo> payments = new ArrayList<>();
+	@Field(label = "profits")
+	private List<ProfitAdminVo> profits = new ArrayList<>();
 
 }
