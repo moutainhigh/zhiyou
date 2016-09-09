@@ -29,11 +29,13 @@ function deleteTag(id) {
     <div class="portlet box grey-cararra">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-tag"></i><span> 标签库管理</span>
+          <i class="icon-tag"></i><span> 标签库管理</span>
         </div>
-        <a data-href="${ctx}/tag/create" class="btn green" style="float: right;">
-         <i class="fa fa-plus"></i> 新增
-        </a>
+        <div class="actions">
+          <a class="btn btn-circle green" data-href="${ctx}/tag/create">
+            <i class="fa fa-plus"></i> 新增
+          </a>
+        </div>
       </div>
       <div class="portlet-body form">
         <!-- BEGIN FORM-->

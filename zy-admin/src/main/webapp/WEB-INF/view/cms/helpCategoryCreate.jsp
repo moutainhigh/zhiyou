@@ -17,24 +17,6 @@
 				indexNumber : {
 					required : true,
 					digits : true
-				},
-				userType : {
-					required : true
-				}
-			},
-			messages : {
-				code : {
-					required : '请输入code'
-				},
-				name : {
-					required : '请输入内容'
-				},
-				indexNumber : {
-					required : '请输入排序数字',
-					digits : '只能输入数字'
-				},
-				userType : {
-					requered : '请你选择针对用户类型'
 				}
 			}
 		});
@@ -56,10 +38,10 @@
 <div class="row">
 	<div class="col-md-12">
 		<!-- BEGIN VALIDATION STATES-->
-		<div class="portlet box green">
+		<div class="portlet light bordered">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-plus-circle"></i><span> 创建帮助归类</span>
+					<i class="icon-speech"></i><span> 创建帮助归类</span>
 				</div>
 				<div class="tools">
 					<a href="javascript:;" class="collapse"> </a> <a href="javascript:;" class="reload"> </a>
@@ -97,29 +79,19 @@
 							</div>
 						</div>
 						
-						<div class="form-group">
-							<label class="control-label col-md-3">针对用户类型<span class="required"> * </span></label>
-							<div class="col-md-5">
-								<div class="input-icon right">
-									<select name="userType" id="userType" class="form-control">
-					               		<option value="">--请选择针对用户类型-- </option>
-					               		<option value="0"<c:if test="${helpCategory.userType == '0' }"> selected="selected"</c:if>>商家</option>
-					               		<option value="1"<c:if test="${helpCategory.userType == '1' }"> selected="selected"</c:if>>试客</option>
-					                  </select>
-								</div>
-							</div>
-						</div>
-						
 					</div>
-					<div class="form-actions fluid">
-						<div class="col-md-offset-3 col-md-9">
-							<button type="submit" class="btn green">
-								<i class="fa fa-plus"></i> 保存</button>
-							<button class="btn default" data-href="${ctx}/helpCategory">
-								<i class="fa fa-arrow-left"></i> 返回
-							</button>
-						</div>
-					</div>
+					
+                    <div class="form-actions fluid">
+                      <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn green">
+                          <i class="fa fa-save"></i> 保存
+                        </button>
+                        <button class="btn default" data-href="${ctx}/helpCategory">
+                          <i class="fa fa-chevron-left"></i> 返回
+                        </button>
+                      </div>
+                    </div>
+
 				</form>
 				<!-- END FORM-->
 			</div>
