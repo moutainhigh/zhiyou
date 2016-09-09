@@ -2,20 +2,17 @@ package com.zy.entity.usr;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
-
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "usr_user_log")

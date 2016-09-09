@@ -1,11 +1,15 @@
 package com.zy.job;
 
+import com.zy.common.exception.ConcurrentException;
 import com.zy.service.OrderService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.concurrent.TimeUnit;
+
+import static com.zy.common.support.weixinpay.WeixinPayClient.logger;
 import static com.zy.entity.mal.Order.OrderStatus.已完成;
 import static com.zy.model.query.OrderQueryModel.builder;
 
@@ -15,11 +19,28 @@ import static com.zy.model.query.OrderQueryModel.builder;
 public class OrderStatementJob implements Job {
 	@Autowired
 	private OrderService orderService;
+
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		orderService.findAll(builder().orderStatusEQ(已完成).isSettledUpEQ(false).build())
 				.stream()
 				.map(order -> order.getId())
-				.forEach(orderService::settleUp);
+				.forEach(this::settleUp);
+	}
+
+	private void settleUp(Long id) {
+		try {
+			try {
+				TimeUnit.SECONDS.sleep(2);
+			} catch (InterruptedException e) {
+
+			}
+			this.orderService.settleUp(id);
+			logger.info("结算 {} 成功", id);
+		} catch (ConcurrentException e) {
+			settleUp(id);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
 	}
 }

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 public class Main {
 
 	public static void main(String[] args) {
+		CharSequence sequence = "";
 		System.setProperty("dubbo.application.logger", "slf4j");
 		System.setProperty("dubbo.container", "spring");
 		LoggerFactory.getLogger(Main.class).info("started.... task");
