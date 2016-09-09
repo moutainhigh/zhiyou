@@ -131,9 +131,14 @@
     </nav>
   </c:if>
   
-  <c:if test="${!isAgent}">
+  <c:if test="${empty user.userRank}">
     <nav class="footer footer-nav flex">
       <a id="btnAgent" class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">立即成为代理</a>
+    </nav>
+  </c:if>
+  <c:if test="${not empty user.userRank && user.userRank != 'V3'}">
+    <nav class="footer footer-nav flex">
+      <a id="btnAgent" class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">升级代理</a>
     </nav>
   </c:if>
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.zy.component.ProductComponent;
+import com.zy.component.UserComponent;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.model.Principal;
@@ -35,6 +36,9 @@ public class ProductController {
 	@Autowired
 	private ProductComponent productComponent;
 	
+	@Autowired
+	private UserComponent userComponent;
+	
 	@RequestMapping
 	public String list(Model model) {
 		ProductQueryModel productQueryModel = new ProductQueryModel();
@@ -51,6 +55,7 @@ public class ProductController {
 		if(principal != null) {
 			User user = userService.findOne(principal.getUserId());
 			product.setPrice(productService.getPrice(product.getId(), user.getUserRank(), 1L));
+			model.addAttribute("user", userComponent.buildListVo(user));
 		}
 		validate(product, NOT_NULL, "product id" + id + " not found");
 		validate(product.getIsOn(), v -> true, "product is not on");

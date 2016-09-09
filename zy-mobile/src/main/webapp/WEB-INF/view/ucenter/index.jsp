@@ -70,19 +70,21 @@
   
   <article>
     <div class="list-group">
-      <c:if test="${user.userRank == 'V0'}">
+      <c:if test="${empty user.userRank}">
       <a class="list-item" href="${ctx}/product/1">
         <i class="list-icon icon icon-agent"></i>
         <div class="list-text">成为代理</div>
         <i class="list-arrow"></i>
       </a>
       </c:if>
-      <c:if test="${user.userRank != 'V0'}">
+      <c:if test="${not empty user.userRank}">
+      <c:if test="${user.userRank != 'V3'}">
       <a class="list-item" href="${ctx}/product/1">
         <i class="list-icon icon icon-upgrade"></i>
         <div class="list-text">升级代理</div>
         <i class="list-arrow"></i>
       </a>
+      </c:if>
       <a class="list-item list-item-icon" href="${ctx}/u/team">
         <i class="list-icon icon icon-users"></i>
         <div class="list-text">我的团队</div>
