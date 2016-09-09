@@ -25,7 +25,7 @@ $(function() {
                    
           ], // set first column as a default sort by desc
           ajax: {
-            url: '${ctx}/help', // ajax source
+            url: '${ctx}/help?helpCategoryId=${helpCategoryId}', // ajax source
           },
           columns : [
               {
@@ -71,40 +71,24 @@ $(function() {
 <div class="row">
   <div class="col-md-12">
     <!-- BEGIN ALERTS PORTLET-->
-    <div class="portlet box green">
+    <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
           <i class="fa fa-hand-o-right"></i> ${helpCategory.name}
         </div>
-        <div class="tools">
-          <a class="collapse" href="javascript:;"> </a> <a class="reload" href="javascript:;"> </a>
+        <div class="actions">
+          <a class="btn btn-circle green" data-href="${ctx}/help/create/${helpCategoryId}">
+            <i class="fa fa-plus"></i> 新增
+          </a>
+          <button class="btn btn-circle default" data-href="${ctx}/helpCategory" >
+  			<i class="fa fa-arrow-left"></i> 返回
+  		  </button>
         </div>
       </div>
       <div class="portlet-body clearfix">
         <div class="table-container">
           <div class="table-toolbar">
-            <div class="btn-group">
-              <button id="" class="btn green" data-href="${ctx}/help/create/${helpCategory.id}">
-                新增 <i class="fa fa-plus"></i>
-              </button>
-            </div>
-            <!-- <div class="btn-group pull-right">
-              <button class="btn dropdown-toggle" data-toggle="dropdown">
-                工具 <i class="fa fa-angle-down"></i>
-              </button>
-              <ul class="dropdown-menu pull-right">
-                <li><a href="#"> 打印 </a></li>
-                <li><a href="#"> 导出Excel </a></li>
-              </ul>
-            </div> -->
-          </div>
-
-          <div class="row">
-            <div class="col-md-3 table-actions">
-              <span class="table-row-checked"></span>
-            </div>
-            <div class="col-md-9">
-              <form class="filter-form form-inline pull-right">
+              <form class="filter-form form-inline">
                 <input id="_orderBy" name="orderBy" type="hidden" value=""/>
                 <input id="_direction" name="direction" type="hidden" value=""/>
                 <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
@@ -112,11 +96,6 @@ $(function() {
                	<input type="hidden" name="helpCategoryId" value="${helpCategory.id}" />
                
               </form>
-              	<div class="form-group input-inline" style="float: right">
-					<button class="btn default" data-href="${ctx}/helpCategory" >
-						<i class="fa fa-arrow-left"></i> 返回
-					</button>
-				</div>
             </div>
           </div>
           <table class="table table-striped table-bordered table-hover" id="dataTable">

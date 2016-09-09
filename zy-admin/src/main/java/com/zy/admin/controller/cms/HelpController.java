@@ -103,7 +103,7 @@ public class HelpController {
 	public String list(@PathVariable Long helpCategoryId, Model model) {
 		HelpCategory helpCategory = helpCategoryService.findOne(helpCategoryId);
 		model.addAttribute("helpCategory", helpCategory);
-		 return "cms/helpList";
+		return "cms/helpList";
 	}
 	
 	@RequestMapping(value = "/help", method = RequestMethod.POST)
