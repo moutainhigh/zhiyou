@@ -16,12 +16,14 @@ import java.math.BigDecimal;
 @Component
 public class AccountLogComponent {
 
+	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	
 	@Autowired
 	private CacheComponent cacheComponent;
 
 	public AccountLogSimpleVo buildSimpleVo(AccountLog accountLog) {
 		AccountLogSimpleVo accountLogSimpleVo = new AccountLogSimpleVo();
-		accountLogSimpleVo.setTransTimeLabel(DateFormatUtils.format(accountLog.getTransTime(), "yyyy-MM-dd HH:mm:ss"));
+		accountLogSimpleVo.setTransTimeLabel(DateFormatUtils.format(accountLog.getTransTime(), TIME_PATTERN));
 		accountLogSimpleVo.setTitle(accountLog.getTitle());
 		BigDecimal transAmount = accountLog.getTransAmount();
 		BigDecimal afterAmount = accountLog.getAfterAmount();

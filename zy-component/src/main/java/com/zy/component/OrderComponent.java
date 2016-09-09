@@ -25,16 +25,18 @@ public class OrderComponent {
 	@Autowired
 	private OrderItemService orderItemService;
 	
-	private static final String TIME_LABEL = "yyyy-MM-dd HH:mm:ss";
+	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	
+	private static final String SIMPLE_TIME_PATTERN = "M月d日 HH:mm";
 	
 	public OrderAdminVo buildAdminVo(Order order) {
 		OrderAdminVo orderAdminVo = new OrderAdminVo();
 		BeanUtils.copyProperties(order, orderAdminVo);
 		
-		orderAdminVo.setCreatedTimeLabel(formatDate(order.getCreatedTime(), TIME_LABEL));
-		orderAdminVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), TIME_LABEL));
-		orderAdminVo.setPaidTimeLabel(formatDate(order.getPaidTime(), TIME_LABEL));
-		orderAdminVo.setRefundedTimeLabel(formatDate(order.getRefundedTime(), TIME_LABEL));
+		orderAdminVo.setCreatedTimeLabel(formatDate(order.getCreatedTime(), TIME_PATTERN));
+		orderAdminVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), TIME_PATTERN));
+		orderAdminVo.setPaidTimeLabel(formatDate(order.getPaidTime(), TIME_PATTERN));
+		orderAdminVo.setRefundedTimeLabel(formatDate(order.getRefundedTime(), TIME_PATTERN));
 		
 		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
 		if (orderItem != null) {
@@ -50,8 +52,8 @@ public class OrderComponent {
 		OrderListVo orderListVo = new OrderListVo();
 		BeanUtils.copyProperties(order, orderListVo);
 		
-		orderListVo.setCreatedTimeLabel(formatDate(order.getCreatedTime(), TIME_LABEL));
-		orderListVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), TIME_LABEL));
+		orderListVo.setCreatedTimeLabel(formatDate(order.getCreatedTime(), SIMPLE_TIME_PATTERN));
+		orderListVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), SIMPLE_TIME_PATTERN));
 		orderListVo.setAmount(order.getAmount());
 		
 		List<OrderItem> orderItems = orderItemService.findByOrderId(order.getId());
@@ -73,15 +75,15 @@ public class OrderComponent {
 		OrderDetailVo orderDetailVo = new OrderDetailVo();
 		BeanUtils.copyProperties(order, orderDetailVo);
 		
-		orderDetailVo.setCreatedTimeLabel(formatDate(order.getCreatedTime(), TIME_LABEL));
+		orderDetailVo.setCreatedTimeLabel(formatDate(order.getCreatedTime(), TIME_PATTERN));
 		if(order.getExpiredTime() != null){
-			orderDetailVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), TIME_LABEL));
+			orderDetailVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), TIME_PATTERN));
 		}
 		if(order.getExpiredTime() != null){
-			orderDetailVo.setPaidTimeLabel(formatDate(order.getPaidTime(), TIME_LABEL));
+			orderDetailVo.setPaidTimeLabel(formatDate(order.getPaidTime(), TIME_PATTERN));
 		}
 		if(order.getExpiredTime() != null){
-		orderDetailVo.setRefundedTimeLabel(formatDate(order.getRefundedTime(), TIME_LABEL));
+		orderDetailVo.setRefundedTimeLabel(formatDate(order.getRefundedTime(), TIME_PATTERN));
 		}
 		orderDetailVo.setAmount(order.getAmount());
 		orderDetailVo.setRefund(order.getAmount());

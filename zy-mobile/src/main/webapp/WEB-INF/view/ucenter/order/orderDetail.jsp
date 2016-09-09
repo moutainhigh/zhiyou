@@ -115,12 +115,36 @@
       </div>
     </div>
       
+    <div class="list-group">
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">下单时间</div>
+        <div class="list-unit fs-12">${order.createdTimeLabel}</div>
+      </div>
+      <c:if test="${not empty order.paidTimeLabel}">
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">支付时间</div>
+        <div class="list-unit fs-12">${order.paidTimeLabel}</div>
+      </div>
+      </c:if>
+      <c:if test="${not empty order.deliveredTimeLabel}">
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">发货时间</div>
+        <div class="list-unit fs-12">${order.deliveredTimeLabel}</div>
+      </div>
+      </c:if>
+      <c:if test="${not empty order.refundedTimeLabel}">
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">退款时间</div>
+        <div class="list-unit fs-12">${order.refundedTimeLabel}</div>
+      </div>
+      </c:if>
+    </div>
     
     <div class="list-title">买家留言</div>
     <div class="list-group">
       <div class="list-item">
         <div class="list-text">
-          <p class="fs-14 font-999">${order.buyerMemo}</p>
+          <p class="fs-14 font-999">${empty order.buyerMemo ? '买家无留言' : 'order.buyerMemo'}</p>
         </div>
         <%-- 
         <div class="list-unit">
