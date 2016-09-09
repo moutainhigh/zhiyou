@@ -48,7 +48,7 @@
       <label class="order-status label orange">${order.orderStatus}</label>
       <div class="product-info pl-15 pr-15">
         <div class="product relative clearfix mt-5">
-          <img class="product-image abs-lt" alt="" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@80w_80h_1e_1c.jpg">
+          <img class="product-image abs-lt" alt="" src="${order.orderItems[0].imageThumbnail}">
           <div class="product-title">${order.orderItems[0].title}</div>
           <div class="product-price abs-rt text-right">
             <div class="lh-24 fs-12">¥ ${order.orderItems[0].price}</div>
