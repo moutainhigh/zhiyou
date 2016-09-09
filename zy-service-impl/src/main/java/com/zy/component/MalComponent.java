@@ -79,35 +79,59 @@ public class MalComponent {
 	}
 
 	public Long calculateSellerId(User.UserRank userRank, long quantity, Long parentId) {
+		Long sysUserId = config.getSysUserId();
+		if (userRank == UserRank.V4) {
+			return sysUserId;
+		}
 
-		UserRank upragdeUserRank = getUpradeUserRank(userRank, quantity);
+		UserRank upgradeUserRank = getUpgradeUserRank(userRank, quantity);
 
-		return parentId;
+		Long sellerId = null;
+
+		while (parentId != null) {
+			User parent = userMaper.findOne(parentId);
+			if (parent.getUserType() != User.UserType.代理) {
+				logger.error("代理父级数据错误,parentId=" + parentId);
+				throw new BizException(BizCode.ERROR, "代理父级数据错误"); // 防御性校验
+			}
+			if (parent.getUserRank().getLevel() > upgradeUserRank.getLevel()) {
+				sellerId = parentId;
+				break;
+			}
+			parentId = parent.getParentId();
+		}
+
+		if (sellerId == null) {
+			logger.error("代理父级数据错误,parentId=" + parentId);
+			throw new BizException(BizCode.ERROR, "代理父级数据错误"); // 防御性校验
+		}
+
+		return sellerId;
 	}
 
 
-	public UserRank getUpradeUserRank(User.UserRank userRank, long quantity) {
-		UserRank upragdeUserRank = userRank;
+	public UserRank getUpgradeUserRank(User.UserRank userRank, long quantity) {
+		UserRank upgradeUserRank = userRank;
 		if (userRank == UserRank.V0) {
 			if (quantity >= 300) {
-				upragdeUserRank = UserRank.V3;
+				upgradeUserRank = UserRank.V3;
 			} else if (quantity >= 100 && quantity < 300) {
-				upragdeUserRank = UserRank.V2;
+				upgradeUserRank = UserRank.V2;
 			} else if (quantity >= 15) {
-				upragdeUserRank = UserRank.V1;
+				upgradeUserRank = UserRank.V1;
 			}
 		} else if (userRank == UserRank.V1) {
 			if (quantity >= 300) {
-				upragdeUserRank = UserRank.V3;
+				upgradeUserRank = UserRank.V3;
 			} else if (quantity >= 100 && quantity < 300) {
-				upragdeUserRank = UserRank.V2;
+				upgradeUserRank = UserRank.V2;
 			}
 		} else if (userRank == UserRank.V2) {
 			if (quantity >= 300) {
-				upragdeUserRank = UserRank.V3;
+				upgradeUserRank = UserRank.V3;
 			}
 		}
-		return upragdeUserRank;
+		return upgradeUserRank;
 	}
 
 

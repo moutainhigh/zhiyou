@@ -1,20 +1,5 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.usr.User.UserRank.V0;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
@@ -29,6 +14,18 @@ import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.service.ReportService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import static com.zy.common.support.weixinpay.WeixinPayUtils.logger;
+import static com.zy.common.util.ValidateUtils.*;
+import static com.zy.entity.usr.User.UserRank.V0;
 
 @Service
 @Validated
@@ -133,7 +130,8 @@ public class ReportServiceImpl implements ReportService {
 			while (parentId != null) {
 				User parent = userMapper.findOne(parentId);
 				if (parent.getUserType() != User.UserType.代理) {
-					break;
+					logger.error("代理父级数据错误,parentId=" + parentId);
+					throw new BizException(BizCode.ERROR, "代理父级数据错误"); // 防御性校验
 				}
 				if (parent.getUserRank() == User.UserRank.V4) {
 					topId = parentId;
