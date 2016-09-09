@@ -101,6 +101,7 @@
       
       <div class="list-group">
         <!-- form-radio -->
+        <c:if test="${userRank == 'V0' || userRank == 'V1' || userRank == 'V2'}">
         <div class="list-item form-radio">
           <div class="list-icon">
             <input id="agentLevel1" type="radio" name="agentLevel" value="0">
@@ -113,6 +114,8 @@
             <div class="font-orange lh-24">¥ ${amount1}</div>
           </div>
         </div>
+        </c:if>
+        <c:if test="${userRank == 'V0' || userRank == 'V1'}">
         <div class="list-item form-radio">
           <div class="list-icon">
             <input id="agentLevel2" type="radio" name="agentLevel" value="1">
@@ -125,6 +128,8 @@
             <div class="font-orange lh-24">¥ ${amount2}</div>
           </div>
         </div>
+        </c:if>
+        <c:if test="${userRank == 'V0'}">
         <div class="list-item form-radio">
           <div class="list-icon">
             <input id="agentLevel3" type="radio" name="agentLevel" value="2">
@@ -137,6 +142,7 @@
             <div class="font-orange lh-24">¥ ${amount3}</div>
           </div>
         </div>
+        </c:if>
         
       </div>
       

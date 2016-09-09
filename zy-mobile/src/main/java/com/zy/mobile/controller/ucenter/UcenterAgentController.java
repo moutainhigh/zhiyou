@@ -41,6 +41,7 @@ public class UcenterAgentController {
 		validate(product, NOT_NULL, "product id:" + productId + " is not found !");
 		model.addAttribute("product", product);
 		User user = userService.findOne(principal.getUserId());
+		model.addAttribute("userRank", user.getUserRank());
 		if(user.getInviterId() != null){
 			User inviter = userService.findOne(user.getInviterId());
 			if(inviter != null) {

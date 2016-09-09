@@ -58,7 +58,7 @@ public class ProductController {
 			product.setPrice(productService.getPrice(product.getId(), user.getUserRank(), 1L));
 			if(user.getUserRank() == UserRank.V0){
 				model.addAttribute("isFirst", true);
-			} else if(user.getUserRank() != UserRank.V4 && isAgent){
+			} else if((user.getUserRank() != UserRank.V1 || user.getUserRank() != UserRank.V2)&& isAgent){
 				model.addAttribute("isUpgrade", true);
 			}
 		}

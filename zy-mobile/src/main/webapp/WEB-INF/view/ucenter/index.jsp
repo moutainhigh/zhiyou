@@ -78,7 +78,7 @@
       </a>
       </c:if>
       <c:if test="${not empty user.userRank}">
-      <c:if test="${user.userRank != 'V3'}">
+      <c:if test="${user.userRank == 'V1' || user.userRank == 'V2'}">
       <a class="list-item" href="${ctx}/product/1?isAgent=true">
         <i class="list-icon icon icon-upgrade"></i>
         <div class="list-text">升级代理</div>
