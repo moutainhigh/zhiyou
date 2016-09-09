@@ -53,7 +53,7 @@ public class PortraitController {
                 return new Grid<PortraitAdminVo>(PageBuilder.empty(portraitQueryModel.getPageSize(), portraitQueryModel.getPageNumber()));
             }
             Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
-            //portraitQueryModel.setUserIdIN(userIds);
+            portraitQueryModel.setUserIdIN(userIds);
         }
 		
 		Page<Portrait> page = portraitService.findPage(portraitQueryModel);

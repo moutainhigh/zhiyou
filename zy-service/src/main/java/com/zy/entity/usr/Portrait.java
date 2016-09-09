@@ -15,6 +15,7 @@ import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
+import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.CollectionView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
@@ -100,6 +101,7 @@ public class Portrait implements Serializable {
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "用户id")
 	@View
+	@AssociationView(name = "user", groups = "PortraitAdminVo", associationGroup = "UserAdminSimpleVo")
 	private Long userId;
 
 	@NotNull

@@ -1,7 +1,9 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
+
 import com.zy.entity.usr.Portrait.Gender;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,5 +37,7 @@ public class PortraitAdminVo implements Serializable {
 	private String district;
 	@Field(label = "标签")
 	private List<String> tagNames = new ArrayList<>();
+	@Field(label = "用户id")
+	private UserAdminSimpleVo user;
 
 }
