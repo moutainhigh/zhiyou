@@ -29,6 +29,8 @@ public class ProfitAdminVo implements Serializable {
 	private Date createdTime;
 	@Field(label = "业务名")
 	private String bizName;
+	@Field(label = "业务sn")
+	private String bizSn;
 	@Field(label = "备注")
 	private String remark;
 

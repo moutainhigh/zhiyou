@@ -210,7 +210,7 @@ public class Order implements Serializable {
 
 	@NotBlank
 	@Field(label = "收件人省份")
-	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo", "OrderAdminFullVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	private String receiverProvince;
 
 	@NotBlank

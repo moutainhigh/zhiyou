@@ -37,17 +37,12 @@ public class OrderComponent {
 		orderAdminVo.setPaidTimeLabel(format(order.getPaidTime(), TIME_LABEL));
 		orderAdminVo.setRefundedTimeLabel(format(order.getRefundedTime(), TIME_LABEL));
 		
-		List<OrderItem> orderItems = orderItemService.findByOrderId(order.getId());
-		List<OrderItemAdminVo> orderItemAdminVos = orderItems.stream().map(v ->{
-			OrderItemAdminVo orderItemAdminVo = new OrderItemAdminVo();
-			BeanUtils.copyProperties(v, orderItemAdminVo);
-			
-			orderItemAdminVo.setImageThumbnail(GcUtils.getThumbnail(v.getImage()));
-			orderItemAdminVo.setAmount(v.getAmount());
-			orderItemAdminVo.setPrice(v.getPrice());
-			return orderItemAdminVo;
-		}).collect(Collectors.toList());
-		orderAdminVo.setOrderItems((ArrayList<OrderItemAdminVo>) orderItemAdminVos);
+		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
+		if (orderItem != null) {
+			orderAdminVo.setImageThumbnail(GcUtils.getThumbnail(orderItem.getImage()));
+			orderAdminVo.setPrice(orderItem.getPrice());
+			orderAdminVo.setQuantity(orderItem.getQuantity());
+		}
 		return orderAdminVo;
 	}
 	

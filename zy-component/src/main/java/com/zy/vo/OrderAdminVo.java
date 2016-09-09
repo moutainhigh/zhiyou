@@ -9,9 +9,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Date;
-import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -25,8 +23,6 @@ public class OrderAdminVo implements Serializable {
 	private Long userId;
 	@Field(label = "卖家id")
 	private Long sellerId;
-	@Field(label = "卖家id")
-	private Long parentId;
 	@Field(label = "标题")
 	private String title;
 	@Field(label = "货币类型")
@@ -79,6 +75,12 @@ public class OrderAdminVo implements Serializable {
 	private String receiverAddress;
 
 	/* 扩展 */
+	@Field(label = "imageThumbnail")
+	private String imageThumbnail;
+	@Field(label = "price")
+	private BigDecimal price;
+	@Field(label = "quantity")
+	private Long quantity;
 	@Field(label = "下单时间")
 	private String createdTimeLabel;
 	@Field(label = "过期时间")
@@ -91,9 +93,5 @@ public class OrderAdminVo implements Serializable {
 	private Boolean useLogisticsLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
-	@Field(label = "orderItems")
-	private List<OrderItemAdminVo> orderItems = new ArrayList<>();
-	@Field(label = "payments")
-	private List<PaymentAdminVo> payments = new ArrayList<>();
 
 }

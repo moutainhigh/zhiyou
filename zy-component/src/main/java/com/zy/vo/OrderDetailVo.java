@@ -23,8 +23,6 @@ public class OrderDetailVo implements Serializable {
 	private Long userId;
 	@Field(label = "卖家id")
 	private Long sellerId;
-	@Field(label = "卖家id")
-	private Long parentId;
 	@Field(label = "标题")
 	private String title;
 	@Field(label = "订单状态")
