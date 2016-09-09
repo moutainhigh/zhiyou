@@ -1,7 +1,7 @@
 package com.zy.component;
 
+import static com.zy.util.GcUtils.formatDate;
 import static com.zy.util.GcUtils.getThumbnail;
-import static org.apache.commons.lang3.time.DateFormatUtils.format;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class ReportComponent {
 		ReportAdminVo reportAdminVo = new ReportAdminVo();
 		BeanUtils.copyProperties(report, reportAdminVo);
 		
-		reportAdminVo.setDateLabel(format(report.getDate(), TIME_LABEL));
+		reportAdminVo.setDateLabel(formatDate(report.getDate(), TIME_LABEL));
 		reportAdminVo.setImage1Thumbnail(getThumbnail(report.getImage1()));
 		reportAdminVo.setImage2Thumbnail(getThumbnail(report.getImage2()));
 		reportAdminVo.setImage3Thumbnail(getThumbnail(report.getImage3()));

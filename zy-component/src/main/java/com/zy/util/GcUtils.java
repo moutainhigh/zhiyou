@@ -1,18 +1,7 @@
 package com.zy.util;
 
-import com.zy.common.exception.ValidationException;
-import com.zy.common.util.Identities;
-import com.zy.model.Constants;
-import com.zy.model.Principal;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MultipartFile;
+import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -20,7 +9,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.zy.common.exception.ValidationException;
+import com.zy.common.util.Identities;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
 
 public class GcUtils {
 
@@ -77,7 +79,7 @@ public class GcUtils {
 			formatterPattern = "yyyy-MM-dd";
 		}
 		Long subTime = new Date().getTime() - date.getTime();
-//		long days = subTime / (1000 * 60 * 60 * 24);
+		// long days = subTime / (1000 * 60 * 60 * 24);
 		long hours = subTime / (1000 * 60 * 60);
 		long minutes = subTime / (1000 * 60);
 		if (minutes == 0) {
@@ -107,9 +109,7 @@ public class GcUtils {
 	}
 
 	/*
-	 * isCut: 是否裁剪
-	 * shortFirst: 短边优先
-	 * /
+	 * isCut: 是否裁剪 shortFirst: 短边优先 /
 	 */
 	private static String getThumbnail(String url, int width, int height, boolean isCut, boolean shortFirst) {
 		if (StringUtils.isBlank(url)) {
@@ -122,6 +122,13 @@ public class GcUtils {
 		}
 	}
 
+	public static String formatDate(Date date, String pattern) {
+		if (date == null) {
+			return null;
+		}
+		return DateFormatUtils.format(date, pattern);
+	}
+
 	public static String formatDuration(Long duration) {
 		if (duration == null || duration <= 0) {
 			return "00:00";
@@ -130,11 +137,9 @@ public class GcUtils {
 		int minutes = (int) (duration / 60 % 60);
 		int seconds = (int) (duration % 60);
 
-		return (hours > 0 ? (hours < 10 ? "0" : "") + hours + "小时" : "")
-				+ (minutes > 0 ? (minutes < 10 ? "0" : "") + minutes + "分" : "00分")
+		return (hours > 0 ? (hours < 10 ? "0" : "") + hours + "小时" : "") + (minutes > 0 ? (minutes < 10 ? "0" : "") + minutes + "分" : "00分")
 				+ (seconds > 0 ? (seconds < 10 ? "0" : "") + seconds + "秒" : "00秒");
 	}
-
 
 	public static String formatCurreny(BigDecimal bigDecimal) {
 		if (bigDecimal == null) {
