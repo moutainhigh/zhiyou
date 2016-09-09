@@ -18,7 +18,7 @@
 <script type="text/javascript">
   $(function() {
     $('#deliverType0').click(function(){
-        $('#logistics').slideUp(300);
+      $('#logistics').slideUp(300);
     });
     $('#deliverType1').click(function(){
       $('#logistics').slideDown(300);
@@ -276,7 +276,7 @@
             <div class="image-add" data-limit="6">
               <input type="hidden" name="image3" value="">
               <input type="file">
-              <em class="state state-loading"></em>
+              <em class="state state-add"></em>
             </div>
           </div>
         </div>
