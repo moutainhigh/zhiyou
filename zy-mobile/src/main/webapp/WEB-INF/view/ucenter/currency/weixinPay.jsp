@@ -50,19 +50,15 @@ $(function() {
 .order-title {
   margin: 25px 15px 35px; text-align: center; overflow: hidden;
 }
-
 .order-title h2 {
   position: relative; display: inline-block; font-size: 21px; line-height: 1;
 }
-
 .order-title h2:before, .order-title h2:after {
   position: absolute; top: 50%; width: 300%; border-top: 1px solid #d9d9d9; content: "";
 }
-
 .order-title h2:before {
   left: -310%;
 }
-
 .order-title h2:after {
   right: -310%;
 }
@@ -91,7 +87,7 @@ $(function() {
       <span class="left font-333">支付金额：</span> <span class="right font-red">￥${deposit.totalAmount}</span>
     </p>
     <div class="form-btn mt-30">
-      <a id="btnPay" class="btn btn-block green " href="javascript:;">确认支付</a>
+      <a id="btnPay" class="btn btn-block green round-2" href="javascript:;">确认支付</a>
     </div>
 
   </section>

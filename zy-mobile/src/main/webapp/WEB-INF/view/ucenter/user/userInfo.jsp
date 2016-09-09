@@ -23,7 +23,7 @@
   });
 </script>
 </head>
-<body class="header-fixed">
+<body>
 
   <header class="header">
     <h1>我的信息</h1>

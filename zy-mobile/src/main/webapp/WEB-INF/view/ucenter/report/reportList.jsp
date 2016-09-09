@@ -87,7 +87,7 @@
   </a>
 </script>
 </head>
-<body class="">
+<body class="header-fixed">
   <header class="header">
     <h1>检测报告</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>

@@ -14,14 +14,9 @@
 
 <title>我的余额</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<script type="text/javascript">
-	$(function() {
-
-	});
-</script>
 </head>
 
-<body class="header-fixed">
+<body>
 
   <header class="header">
     <h1>我的余额</h1>
@@ -36,12 +31,12 @@
 
     <c:if test="${!isBoundBankCard}">
     <div class="form-btn mt-15">
-      <a href="javascript:;" class="btn btn-lg disabled btn-block round-4">尚未绑定银行卡</a>
+      <a href="javascript:;" class="btn disabled btn-block round-2">提现(请先添加银行卡)</a>
     </div>
     </c:if>
     <c:if test="${isBoundBankCard}">
     <div class="form-btn mt-30">
-      <a href="${ctx}/u/money/withdraw" class="btn btn-lg orange btn-block round-4">提现</a>
+      <a href="${ctx}/u/money/withdraw" class="btn orange btn-block round-2">提现</a>
     </div>
     </c:if>
 

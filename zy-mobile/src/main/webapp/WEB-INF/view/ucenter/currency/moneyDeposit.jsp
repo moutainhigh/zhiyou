@@ -11,7 +11,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="keywords" content="微信分销" />
 
 <title>余额充值</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
@@ -29,7 +28,7 @@
 </script>
 </head>
 
-<body class="header-fixed">
+<body>
 
   <header class="header">
     <h1>余额充值</h1>
@@ -84,7 +83,7 @@
       </div>
       
       <div class="form-btn">
-        <input type="submit" class="btn orange btn-block round-4" value="下一步">
+        <input type="submit" class="btn orange btn-block round-2" value="下一步">
       </div>
     </form>
   </article>

@@ -21,7 +21,7 @@
   });
 </script>
 </head>
-<body class="invite-list">
+<body>
   <header class="header">
     <h1>我的团队</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>

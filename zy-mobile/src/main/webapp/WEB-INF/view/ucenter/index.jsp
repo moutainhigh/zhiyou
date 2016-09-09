@@ -17,20 +17,6 @@
 <title>微信分销-我的</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/index.css" />
-<script type="text/javascript">
-
-	$(function() {
-		<%--
-		$.message({
-			content: '测试测试',
-			type: 'info',
-			callback: function() {
-			}
-		});
-        --%>
-	});
-
-</script>
 </head>
 <body class="header-fixed footer-fixed">
 

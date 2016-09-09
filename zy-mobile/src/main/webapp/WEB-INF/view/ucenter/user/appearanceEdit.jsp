@@ -17,47 +17,42 @@
 <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
 <script type="text/javascript">
   $(function() {
-		
-	$('.image-single').imageupload({
-		width: 120,
-		height: 75,
-		url: '${ctx}/image/upload',
-		maxFileSize: '4MB'
-	});
-	
-	//注册验证
-	$(".valid-form").validate({
-		rules : {
-			'realname' : {
-				required : true
-			},
-			'idCardNumber' : {
-				required : true
-			},
-			'image1' : {
-				required : true
-			},
-			'image2' : {
-				required : true
-			}
-		}
-	});
-	
-	$('.image-view').click(function(){
-		var url = $(this).attr('data-src');
-		var title = $(this).attr('data-title');
-		$.imageview({
-			url: url,
-			title: title
-		});
-	});
-});
-	
 
-	
+    $('.image-single').imageupload({
+      width : 120,
+      height : 75,
+    });
+
+    //注册验证
+    $(".valid-form").validate({
+      rules : {
+        'realname' : {
+          required : true
+        },
+        'idCardNumber' : {
+          required : true
+        },
+        'image1' : {
+          required : true
+        },
+        'image2' : {
+          required : true
+        }
+      }
+    });
+
+    $('.image-view').click(function() {
+      var url = $(this).attr('data-src');
+      var title = $(this).attr('data-title');
+      $.imageview({
+        url : url,
+        title : title
+      });
+    });
+  });
 </script>
 </head>
-<body class="header-fixed">
+<body>
   <header class="header">
     <h1>实名认证</h1>
     <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
@@ -111,7 +106,7 @@
       </div>
     
       <div class="form-btn">
-        <input id="btnSubmit" class="btn-submit btn orange btn-block" type="submit" value="提交">
+        <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提交">
       </div>
     </form>
     

@@ -10,8 +10,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="keywords" content="微信分销" />
-<meta name="description" content="新增收货地址" />
 
 <title>新增收货地址</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
@@ -136,7 +134,7 @@
       </div>
 
       <div class="form-btn">
-        <input id="btnSubmit" class="btn-submit btn orange btn-block" type="submit" value="保 存">
+        <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="保 存">
       </div>
     </form>
   </article>

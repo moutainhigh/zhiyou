@@ -24,12 +24,12 @@
   });
 </script>
 </head>
-<body class="header-fixed">
+<body>
   <header class="header">
     <h1>修改昵称</h1>
     <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
-  <article class="">
+  <article>
     <form id="form" class="valid-form" action="${ctx}/u/nickname" method="post">
       <div class="list-group">
         <div class="list-item">
@@ -41,7 +41,7 @@
       </div>
 
       <div class="form-btn">
-        <input id="btnSubmit" class="btn-submit btn orange btn-block" type="submit" value="提 交">
+        <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提 交">
       </div>
     </form>
   </article>

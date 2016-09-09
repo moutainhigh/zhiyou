@@ -13,11 +13,6 @@
 
 <title>个人资料</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<script>
-  $(function() {
-
-  });
-</script>
 </head>
 <body class="header-fixed">
   <header class="header">

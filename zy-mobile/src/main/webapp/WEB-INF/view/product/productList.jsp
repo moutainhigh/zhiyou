@@ -17,12 +17,6 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/product.css" rel="stylesheet" />
 
-<script>
-  $(function() {
-
-  });
-</script>
-
 </head>
 <body class="product-list footer-fixed">
 

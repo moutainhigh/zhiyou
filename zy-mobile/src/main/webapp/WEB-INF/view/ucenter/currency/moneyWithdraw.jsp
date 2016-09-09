@@ -103,7 +103,7 @@
 </script>
 </head>
 
-<body class="header-fixed">
+<body>
 
   <header class="header">
     <h1>本金提现</h1>
@@ -140,7 +140,7 @@
       </div>
 
       <div class="form-btn mt-15">
-        <button type="button" class="btn btn-block disabled round-4">确认提现</button>
+        <button type="button" class="btn btn-block disabled round-2">确认提现</button>
       </div>
 
     </form>

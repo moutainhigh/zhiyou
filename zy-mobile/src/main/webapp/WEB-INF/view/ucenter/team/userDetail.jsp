@@ -13,7 +13,7 @@
 <meta name="keywords" content="微信分销" />
 <meta name="description" content="我的团队" />
 
-<title>我的团队</title>
+<title>${user.nickname}</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script type="text/javascript">
   $(function() {
@@ -21,9 +21,9 @@
   });
 </script>
 </head>
-<body class="invite-list">
+<body>
   <header class="header">
-    <h1>哆来嘧</h1>
+    <h1>${user.nickname}</h1>
     <a href="${ctx}/u/team" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 

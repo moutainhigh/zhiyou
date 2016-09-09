@@ -313,7 +313,7 @@
     </div>
     
     <div class="form-btn">
-      <input type="submit" value="确认订单" class="btn-submit btn btn-block orange">
+      <input type="submit" value="确认订单" class="btn btn-block orange round-2">
     </div>
     
   </article>

@@ -64,7 +64,7 @@
 </script>
 </head>
  
-<body class="product-detail footer-fixed">
+<body class="product-detail">
   <a class="header-back" href="${ctx}/"><i class="fa fa-angle-left"></i></a>
   
   <form id="form" action="${ctx}/u/order/create" method="get">
@@ -138,6 +138,6 @@
   </c:if>
 
   </form>
-
+  <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
 </html>

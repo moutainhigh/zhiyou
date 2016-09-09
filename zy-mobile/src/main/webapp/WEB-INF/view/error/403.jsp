@@ -18,7 +18,7 @@
 <link href="${stccdn}/css/error.css" rel="stylesheet" />
 </head>
 
-<body class="footer-fixed">
+<body>
   <header class="header">
     <h1>出错啦</h1>
     <a href="javascript:history.back();" class="button-left"><i class="fa fa-angle-left"></i></a>
