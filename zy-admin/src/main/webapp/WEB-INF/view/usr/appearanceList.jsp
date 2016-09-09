@@ -178,11 +178,11 @@ img {
                 name="pageNumber" type="hidden" value="0" /> <input id="_pageSize" name="pageSize" type="hidden" value="20" />
 
               <div class="form-group">
-                <input type="text" name="phoneEQ" class="form-control" placeholder="手机号" />
+                <input type="text" name="userPhoneEQ" class="form-control" placeholder="手机号" />
               </div>
               
               <div class="form-group">
-                <input type="text" name="nicknameLK" class="form-control" placeholder="昵称" />
+                <input type="text" name="userNicknameLK" class="form-control" placeholder="昵称" />
               </div>
 
               <div class="form-group input-inline">
