@@ -144,7 +144,7 @@
     <div class="list-group">
       <div class="list-item">
         <div class="list-text">
-          <p class="fs-14 font-999">${empty order.buyerMemo ? '买家无留言' : 'order.buyerMemo'}</p>
+          <p class="fs-14 font-999">${empty order.buyerMemo ? '买家无留言' : order.buyerMemo}</p>
         </div>
         <%-- 
         <div class="list-unit">
