@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/index.css" />
 </head>
-<body class="header-fixed footer-fixed">
+<body class="footer-fixed">
 
   <header class="header">
     <h1>我的</h1>

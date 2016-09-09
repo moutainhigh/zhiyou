@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.component.ProductComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
@@ -35,11 +36,14 @@ public class UcenterAgentController {
 	@Autowired
 	private UserComponent userComponent;
 
+	@Autowired
+	private ProductComponent productComponent;
+	
 	@RequestMapping
 	public String agent(Long productId, Principal principal, Model model) {
 		Product product = productService.findOne(productId);
 		validate(product, NOT_NULL, "product id:" + productId + " is not found !");
-		model.addAttribute("product", product);
+		model.addAttribute("product", productComponent.buildListVo(product));
 		User user = userService.findOne(principal.getUserId());
 		model.addAttribute("userRank", user.getUserRank());
 		if(user.getInviterId() != null){
