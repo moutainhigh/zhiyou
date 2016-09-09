@@ -263,4 +263,9 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 	}
 
+	@Override
+	public void refund(Long id) {
+		throw new BizException(BizCode.ERROR, "暂不支持退款");
+	}
+
 }
