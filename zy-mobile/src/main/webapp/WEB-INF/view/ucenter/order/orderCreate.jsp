@@ -20,6 +20,13 @@
 
 <script>
   $(function() {
+    $('#orderForm').submit(function(){
+      if(!$('#addressId').val()) {
+        messageFlash('请先选择收货地址.');
+        return false;  
+      }
+    });
+    
   	//选择收货地址
   	$('.receiver-info').click(function(){
   		if($(this).find('.btn-add-address').length){
@@ -279,7 +286,7 @@
             <div class="fs-14 font-777">${address.province} ${address.city} ${address.district} ${address.address}</div>
           </c:if>
         </div>
-        <input type="hidden" name="addressId" value="${address.id}">
+        <input type="hidden" id="addressId" name="addressId" value="${address.id}">
       </div>
     </div>
     
