@@ -64,7 +64,7 @@
 </script>
 </head>
  
-<body class="product-detail">
+<body class="product-detail footer-fixed">
   <a class="header-back" href="${ctx}/"><i class="fa fa-angle-left"></i></a>
   
   <form id="form" action="${ctx}/u/order/create" method="get">
