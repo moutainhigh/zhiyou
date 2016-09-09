@@ -54,17 +54,17 @@
     <a class="flex-1 bd-r" href="${ctx}/u/money">
       <i class="icon icon-money icon-2x"></i>
       <em>余额</em>
-      <span>¥ 0.00</span>
+      <span>¥${money}</span>
     </a>
     <a class="flex-1 bd-r" href="${ctx}/u/order/in">
       <i class="icon icon-in icon-2x"></i>
       <em>进货</em>
-      <span>0件</span>
+      <span>${orderInConut}件</span>
     </a>
     <a class="flex-1" href="${ctx}/u/order/out">
       <i class="icon icon-out icon-2x"></i>
       <em>出货</em>
-      <span>0件</span>
+      <span>${orderOutConut}件</span>
     </a>
   </div>
   

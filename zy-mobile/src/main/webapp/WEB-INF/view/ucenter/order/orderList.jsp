@@ -23,9 +23,9 @@
   
   <nav class="tab-nav">
     <a href="${ctx}/u/order/${inOut}"<c:if test="${empty orderStatus}"> class="current"</c:if>>全部订单</a>
-    <a href="${ctx}/u/order/${inOut}?orderStatus=0"<c:if test="${orderStatus == '待支付'}"> class="current"</c:if>>待付款 (2)</a>
-    <a href="${ctx}/u/order/${inOut}?orderStatus=1"<c:if test="${orderStatus == '待发货'}"> class="current"</c:if>>待发货 (1)</a>
-    <a href="${ctx}/u/order/${inOut}?orderStatus=2"<c:if test="${orderStatus == '待收货'}"> class="current"</c:if>>待收货 (1)</a>
+    <a href="${ctx}/u/order/${inOut}?orderStatus=0"<c:if test="${orderStatus == '待支付'}"> class="current"</c:if>>待付款 (${waitForPayConut})</a>
+    <a href="${ctx}/u/order/${inOut}?orderStatus=1"<c:if test="${orderStatus == '已支付'}"> class="current"</c:if>>待发货 (${waitForDeliverConut})</a>
+    <a href="${ctx}/u/order/${inOut}?orderStatus=2"<c:if test="${orderStatus == '已发货'}"> class="current"</c:if>>待收货 (${waitForReceiveConut})</a>
   </nav>
   
   <article class="order-list">
@@ -36,7 +36,7 @@
     </div>
     </c:if>
     
-    <c:forEach items="${orders}" var="order">
+    <c:forEach items="${page.data}" var="order">
     <a class="order mt-15 bd-t bd-b" href="${ctx}/u/order/${order.sn}">
       <div class="order-sn pl-15 pr-15 font-777 fs-12">订单编号：${order.sn}</div>
       <c:if test="${order.orderStatus == '待支付'}"><label class="order-status label red">待支付</label></c:if>

@@ -66,7 +66,7 @@
     </c:if>
     
     <c:if test="${order.orderStatus == '待支付'}">
-    <form id="orderForm" class="valid-form" action="${ctx}/order/pay" method="post">
+    <form id="orderForm" class="valid-form" action="${ctx}/u/pay" method="post">
     </c:if>
     <c:if test="${order.orderStatus == '已发货'}">
     <form id="orderForm" class="valid-form" action="${ctx}/order/confirmDelivery method="post">
