@@ -14,7 +14,6 @@
 <meta name="description" content="订单详情 " />
 
 <link href="${stccdn}/css/ucenter/order.css" rel="stylesheet"> 
-<link href="${stccdn}/css/ucenter/address.css" rel="stylesheet" />
 <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
 
 <title>确认订单信息</title>
@@ -131,22 +130,22 @@
     
     <c:if test="${order.orderStatus == '待支付'}">
     <div class="form-btn">
-      <input type="submit" id="btnSubmit" value="立即支付" class="btn btn-block green">
+      <input type="submit" id="btnSubmit" value="立即支付" class="btn btn-block green round-2">
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已发货'}">
     <div class="form-btn">
-      <input type="submit" id="btnSubmit" value="确认收货" class="btn btn-block green">
+      <input type="submit" id="btnSubmit" value="确认收货" class="btn btn-block green round-2">
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已完成'}">
     <div class="form-btn">
-      <input type="submit" id="btnSubmit" value="再来一单" class="btn btn-block green">
+      <input type="submit" id="btnSubmit" value="再来一单" class="btn btn-block green round-2">
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已取消'}">
     <div class="form-btn">
-      <input type="submit" id="btnSubmit" value="重新下单" class="btn btn-block green">
+      <input type="submit" id="btnSubmit" value="重新下单" class="btn btn-block green round-2">
     </div>
     </c:if>
     

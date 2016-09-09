@@ -14,12 +14,6 @@
 <title>我的订单</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/order.css" />
-<script>
-	$(function() {
-
-	});
-</script>
-
 </head>
 <body class="header-fixed footer-fixed">
   <header class="header">

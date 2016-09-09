@@ -26,7 +26,7 @@
   });
 </script>
 </head>
-<body class="header-fixed">
+<body>
   <header class="header">
     <h1>实名认证</h1>
     <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>

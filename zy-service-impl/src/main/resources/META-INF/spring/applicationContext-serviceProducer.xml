@@ -34,7 +34,6 @@
 	<dubbo:service ref="giftServiceImpl" interface="com.zy.service.GiftService" />
 	<dubbo:service ref="profitServiceImpl" interface="com.zy.service.ProfitService" />
 	<dubbo:service ref="settingServiceImpl" interface="com.zy.service.SettingService" />
-	<dubbo:service ref="deliveryServiceImpl" interface="com.zy.service.DeliveryService" />
 	<dubbo:service ref="feedbackServiceImpl" interface="com.zy.service.FeedbackService" />
 	<dubbo:service ref="addressServiceImpl" interface="com.zy.service.AddressService" />
 	<dubbo:service ref="configImpl" interface="com.zy.Config" />

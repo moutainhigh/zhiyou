@@ -17,22 +17,8 @@
 <title>微信分销-我的</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/index.css" />
-<script type="text/javascript">
-
-	$(function() {
-		<%--
-		$.message({
-			content: '测试测试',
-			type: 'info',
-			callback: function() {
-			}
-		});
-        --%>
-	});
-
-</script>
 </head>
-<body class="header-fixed footer-fixed">
+<body class="footer-fixed">
 
   <header class="header">
     <h1>我的</h1>
@@ -85,18 +71,20 @@
   <article>
     <div class="list-group">
       <c:if test="${user.userRank == 'V0'}">
-      <a class="list-item" href="${ctx}/product/1">
+      <a class="list-item" href="${ctx}/product/1?isAgent=true">
         <i class="list-icon icon icon-agent"></i>
         <div class="list-text">成为代理</div>
         <i class="list-arrow"></i>
       </a>
       </c:if>
-      <c:if test="${user.userRank != 'V0'}">
-      <a class="list-item" href="${ctx}/product/1">
+      <c:if test="${not empty user.userRank}">
+      <c:if test="${user.userRank == 'V1' || user.userRank == 'V2'}">
+      <a class="list-item" href="${ctx}/product/1?isAgent=true">
         <i class="list-icon icon icon-upgrade"></i>
         <div class="list-text">升级代理</div>
         <i class="list-arrow"></i>
       </a>
+      </c:if>
       <a class="list-item list-item-icon" href="${ctx}/u/team">
         <i class="list-icon icon icon-users"></i>
         <div class="list-text">我的团队</div>

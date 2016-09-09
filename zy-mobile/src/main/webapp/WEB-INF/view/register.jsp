@@ -129,7 +129,7 @@
         </div>
       </div>
       <div class="form-btn">
-        <input id="btnSubmit" class="btn-submit btn green btn-block" type="submit" value="提交">
+        <input id="btnSubmit" class="btn green btn-block round-2" type="submit" value="提交">
       </div>
     </form>
   </article>

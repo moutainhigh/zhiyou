@@ -44,7 +44,7 @@
   });
 </script>
 </head>
-<body class="">
+<body>
   <header class="header">
     <h1>订单发货</h1>
     <a href="${ctx}/u/order" class="button-left"><i class="fa fa-angle-left"></i></a>
@@ -89,7 +89,7 @@
       </div>
       
       <div class="form-btn">
-        <input id="btnSubmit" class="btn-submit btn orange btn-block" type="submit" value="确认发货">
+        <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="确认发货">
       </div>
       
     </form>

@@ -16,9 +16,9 @@
 <title>消息详情</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script type="text/javascript">
-	$(function() {
+  $(function() {
 
-	});
+  });
 </script>
 </head>
 <body>

@@ -1,6 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/include/taglib.jsp"%>
-<c:set var="nav" value="2" />
 
 <!DOCTYPE html>
 <html>
@@ -18,11 +17,11 @@
 <link href="${stccdn}/css/activity.css" rel="stylesheet" />
 <script>
   $(function() {
-    $('.tab-nav > a').tabs('.tab-content');
+    
   });
 </script>
 </head>
-<body class="activity-list footer-fixed">
+<body class="activity-list">
   <header class="header">
     <h1>我关注的活动</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>

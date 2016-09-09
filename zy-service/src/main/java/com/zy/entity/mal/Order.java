@@ -30,6 +30,7 @@ import java.util.Date;
 @ViewObject(groups = { "OrderListVo", "OrderDetailVo", "OrderAdminVo" },
 	collectionViews = {
 			@CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderAdminVo"}, elementGroup = "OrderItemAdminVo"),
+			@CollectionView(name = "payments", type = ArrayList.class, groups = {"OrderAdminVo"}, elementGroup = "PaymentAdminVo"),
 			@CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderListVo", "OrderDetailVo"}, elementGroup = "OrderItemVo")
 	}
 )
@@ -43,7 +44,7 @@ public class Order implements Serializable {
 
 	@Type(label = "物流费支付方式")
 	public enum LogisticsFeePayType {
-		买家付, 卖家付, 线下支付;
+		无, 买家付, 卖家付
 	}
 
 	@Id

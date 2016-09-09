@@ -26,15 +26,21 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.ReportComponent;
 import com.zy.entity.act.Report;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.service.ReportService;
+import com.zy.service.UserService;
 
 @RequestMapping("/u/report")
 @Controller
 public class UcenterReportController {
 
+	@Autowired
+	private UserService userService;
+	
 	@Autowired
 	private ReportService reportService;
 
@@ -65,20 +71,26 @@ public class UcenterReportController {
 	}
 	
 	@RequestMapping(value = "create", method = GET)
-	public String create(Model model) {
-
+	public String create(Model model, Principal principal) {
+		User user = userService.findOne(principal.getUserId());
+		model.addAttribute("userRank", user.getUserRank());
 		return "ucenter/report/reportCreate";
 	}
 
 	@RequestMapping(value = "/create", method = POST)
 	public String create(Report report, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		User user = userService.findOne(principal.getUserId());
+		if(user.getUserRank() == UserRank.V0) {
+			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("只有成为代理后才能提交检测报告"));
+			return "redirect:/u/report";
+		}
 		report.setUserId(principal.getUserId());
 		try {
 			reportService.create(report);
 		} catch (Exception e) {
 			model.addAttribute("report", report);
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return create(model);
+			return create(model, principal);
 		}
 		redirectAttributes.addFlashAttribute(ResultBuilder.ok("上传检测报告成功"));
 		return "redirect:/u/report";

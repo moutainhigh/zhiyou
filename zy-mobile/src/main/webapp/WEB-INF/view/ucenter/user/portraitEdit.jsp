@@ -16,11 +16,6 @@
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/portrait.css" />
 <script src="${stccdn}/js/area.js"></script>
-<style type="text/css">
-.tag-input .input-error {
-  right: 55px;
-}
-</style>
 <script>
   $(function() {
     var area = new areaInit('province', 'city', 'district', '${portrait.areaId}');
@@ -147,7 +142,7 @@
 </script>
 
 </head>
-<body class="portrait-edit ox-hidden">
+<body class="ox-hidden">
   <header class="header">
     <h1>完善资料</h1>
     <a href="${ctx}/u/portrait" class="button-left"><i class="fa fa-angle-left"></i></a>
@@ -229,7 +224,7 @@
       </div>
 
       <div class="form-btn">
-        <input id="btnSubmit" class="btn-submit btn orange btn-block" type="submit" value="提 交">
+        <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提 交">
       </div>
 
     </form>

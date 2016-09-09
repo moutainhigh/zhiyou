@@ -90,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
 			if (parentId == null) {
 				throw new BizException(BizCode.ERROR, "首次下单必须填写邀请人");
 			}
-			User parent = userMapper.findOne(userId);
+			User parent = userMapper.findOne(parentId);
 			if (parent == null) {
 				throw new BizException(BizCode.ERROR, "邀请人手机号没找到");
 			} else if (parent.getId().equals(userId)) {

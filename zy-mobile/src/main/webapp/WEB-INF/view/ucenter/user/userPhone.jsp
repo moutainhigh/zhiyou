@@ -91,7 +91,7 @@
   });
 </script>
 </head>
-<body class="header-fixed">
+<body>
   <header class="header">
     <h1>绑定手机号</h1>
     <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
@@ -126,7 +126,7 @@
         </div>
       </div>
       <div class="form-btn">
-        <input id="btnSubmit" class="btn-submit btn orange btn-block" type="submit" value="提交">
+        <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提 交">
       </div>
     </form>
   </article>

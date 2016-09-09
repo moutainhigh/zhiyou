@@ -1,7 +1,17 @@
 package com.zy.mobile.controller.ucenter;
 
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.zy.common.model.result.ResultBuilder;
-import com.zy.component.OrderComponent;
 import com.zy.component.ProductComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.mal.Order;
@@ -16,15 +26,6 @@ import com.zy.service.OrderService;
 import com.zy.service.ProductService;
 import com.zy.service.UserService;
 import com.zy.vo.ProductListVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import static com.zy.common.util.ValidateUtils.*;
 
 @RequestMapping("/u/order")
 @Controller
@@ -39,9 +40,6 @@ public class UcenterOrderCreateController {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private OrderComponent orderComponent;
-	
 	@Autowired
 	private ProductService productService;
 
