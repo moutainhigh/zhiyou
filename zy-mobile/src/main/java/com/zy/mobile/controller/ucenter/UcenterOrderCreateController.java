@@ -45,7 +45,7 @@ public class UcenterOrderCreateController {
 
 	@Autowired
 	private ProductComponent productComponent;
-
+	
 	@Autowired
 	private UserComponent userComponent;
 
@@ -79,7 +79,7 @@ public class UcenterOrderCreateController {
 		orderCreateDto.setParentId(parentId);
 
 		Order order = orderService.create(orderCreateDto);
-		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("下单成功,请继续支付"));
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("下单成功，请继续支付"));
 		return "redirect:/u/order/" + order.getSn();
 
 	}

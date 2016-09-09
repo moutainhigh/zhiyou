@@ -2,7 +2,6 @@ package com.zy.mobile.controller.ucenter;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
-import io.gd.generator.api.query.Direction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +22,8 @@ import com.zy.model.Principal;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
+
+import io.gd.generator.api.query.Direction;
 
 @RequestMapping("/u/order")
 @Controller
@@ -50,10 +51,11 @@ public class UcenterOrderController {
 	}
 	
 	@RequestMapping("/{sn}")
-	public String detail(@PathVariable String sn, Model model) {
+	public String detail(@PathVariable String sn, Principal principal, Model model) {
 		  Order order =  orderService.findBySn(sn);
 		  validate(order, NOT_NULL, "order sn" + sn + " not found");
-		  model.addAttribute("order", order);
+		  model.addAttribute("order", orderComponent.buildDetailVo(order));
+		  model.addAttribute("inOut", order.getUserId().equals(principal.getUserId()) ? "in" : "out");
 		  return "ucenter/order/orderDetail";  
 	}
 	
