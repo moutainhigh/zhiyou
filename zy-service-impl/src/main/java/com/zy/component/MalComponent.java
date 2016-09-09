@@ -6,12 +6,15 @@ import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.mapper.OrderMapper;
+import com.zy.entity.usr.User.UserRank;
 import com.zy.mapper.ProductMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
+
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
+
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.slf4j.Logger;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
@@ -76,7 +80,34 @@ public class MalComponent {
 
 	public Long calculateSellerId(User.UserRank userRank, long quantity, Long parentId) {
 
+		UserRank upragdeUserRank = getUpradeUserRank(userRank, quantity);
+
 		return parentId;
+	}
+
+
+	public UserRank getUpradeUserRank(User.UserRank userRank, long quantity) {
+		UserRank upragdeUserRank = userRank;
+		if (userRank == UserRank.V0) {
+			if (quantity >= 300) {
+				upragdeUserRank = UserRank.V3;
+			} else if (quantity >= 100 && quantity < 300) {
+				upragdeUserRank = UserRank.V2;
+			} else if (quantity >= 15) {
+				upragdeUserRank = UserRank.V1;
+			}
+		} else if (userRank == UserRank.V1) {
+			if (quantity >= 300) {
+				upragdeUserRank = UserRank.V3;
+			} else if (quantity >= 100 && quantity < 300) {
+				upragdeUserRank = UserRank.V2;
+			}
+		} else if (userRank == UserRank.V2) {
+			if (quantity >= 300) {
+				upragdeUserRank = UserRank.V3;
+			}
+		}
+		return upragdeUserRank;
 	}
 
 

@@ -87,7 +87,8 @@ public class PaymentServiceImpl implements PaymentService {
 		return paymentMapper.findBySn(sn);
 	}
 
-	public Payment create(Payment payment) {
+	@Override
+	public Payment create(@NotNull Payment payment) {
 
 		Long userId = payment.getUserId();
 		CurrencyType currencyType1 = payment.getCurrencyType1();
@@ -259,10 +260,6 @@ public class PaymentServiceImpl implements PaymentService {
 		onSuccess(payment);
 	}
 
-	@Override
-	public List<Payment> findByBizNameAndBizName(@NotBlank String bizName, @NotBlank String bizSn) {
-		return paymentMapper.findByBizNameAndBizSn(bizName, bizSn);
-	}
 
 	@Override
 	public void cancel(@NotNull Long id) {

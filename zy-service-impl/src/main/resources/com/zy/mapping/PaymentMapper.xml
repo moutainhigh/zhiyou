@@ -175,10 +175,4 @@
 		where sn = #{sn}
 	</select>
 
-	<select id="findByBizNameAndBizSn" resultMap="baseResultMap">
-		select *
-		from `fnc_payment`
-		where biz_name = #{bizName} and biz_sn = #{bizSn}
-	</select>
-
 </mapper>
