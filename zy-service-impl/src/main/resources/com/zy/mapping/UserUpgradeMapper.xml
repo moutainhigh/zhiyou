@@ -52,11 +52,41 @@
 		where id = #{id}
 	</select>
 
-	<select id="findAll" resultMap="baseResultMap">
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserUpgradeQueryModel">
 		select
 		id,user_id,from_user_rank,to_user_rank,upgraded_time
 		from `usr_user_upgrade`
-		order by id desc
+		<where>
+			<if test="upgradedTimeGTE != null">
+				 and upgraded_time &gt;= #{upgradedTimeGTE}
+			</if>
+			<if test="upgradedTimeLT != null">
+				 and upgraded_time &lt; #{upgradedTimeLT}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.UserUpgradeQueryModel">
+		select count(*) from `usr_user_upgrade`
+		<where>
+			<if test="upgradedTimeGTE != null">
+				 and upgraded_time &gt;= #{upgradedTimeGTE}
+			</if>
+			<if test="upgradedTimeLT != null">
+				 and upgraded_time &lt; #{upgradedTimeLT}
+			</if>
+		</where>
 	</select>
 
 </mapper>

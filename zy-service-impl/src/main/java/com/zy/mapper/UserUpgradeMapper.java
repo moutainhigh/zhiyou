@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.zy.entity.usr.UserUpgrade;
+import com.zy.model.query.UserUpgradeQueryModel;
 
 
 public interface UserUpgradeMapper {
@@ -19,6 +20,8 @@ public interface UserUpgradeMapper {
 
 	UserUpgrade findOne(Long id);
 
-	List<UserUpgrade> findAll();
+	List<UserUpgrade> findAll(UserUpgradeQueryModel userUpgradeQueryModel);
+
+	long count(UserUpgradeQueryModel userUpgradeQueryModel);
 
 }

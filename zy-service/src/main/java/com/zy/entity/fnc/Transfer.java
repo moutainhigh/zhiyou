@@ -43,7 +43,6 @@ public class Transfer implements Serializable {
 		待转账, 已转账, 已取消
 	}
 
-
 	@Id
 	@Field(label = "id")
 	@View
@@ -67,7 +66,6 @@ public class Transfer implements Serializable {
 	@View
 	@AssociationView(name = "toUser", groups = "TransferAdminVo", associationGroup = "UserAdminSimpleVo")
 	private Long toUserId;
-
 
 	@Column(length = 60, unique = true)
 	@NotBlank

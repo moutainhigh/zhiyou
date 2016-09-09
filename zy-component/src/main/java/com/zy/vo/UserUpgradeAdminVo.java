@@ -14,7 +14,7 @@ public class UserUpgradeAdminVo implements Serializable {
 	/* 原生 */
 	@Field(label = "id")
 	private Long id;
-	@Field(label = "操作者id")
+	@Field(label = "用户")
 	private Long userId;
 	@Field(label = "升级前等级")
 	private UserRank fromUserRank;

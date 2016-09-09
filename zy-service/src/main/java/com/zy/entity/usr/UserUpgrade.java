@@ -2,8 +2,11 @@ package com.zy.entity.usr;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
+import io.gd.generator.annotation.query.Query;
+import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
+import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +23,7 @@ import java.util.Date;
 @Setter
 @Type(label = "用户升级")
 @ViewObject(groups = "UserUpgradeAdminVo")
+@QueryModel
 public class UserUpgrade implements Serializable {
 
 	@Id
@@ -28,7 +32,7 @@ public class UserUpgrade implements Serializable {
 	private Long id;
 
 	@NotNull
-	@Field(label = "操作者id")
+	@Field(label = "用户")
 	@View(groups = "UserUpgradeAdminVo")
 	private Long userId;
 
@@ -45,6 +49,7 @@ public class UserUpgrade implements Serializable {
 	@NotNull
 	@Field(label = "升级时间")
 	@View(groups = "UserUpgradeAdminVo")
+	@Query({Predicate.GTE, Predicate.LT})
 	private Date upgradedTime;
 
 }

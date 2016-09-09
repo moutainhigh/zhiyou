@@ -142,11 +142,16 @@ public class ReportServiceImpl implements ReportService {
 		}
 		
 		if (topId == null) {
+			logger.error("代理父级数据错误,parentId=" + user.getParentId());
 			throw new BizException(BizCode.ERROR, "结算失败,找不到特级代理");
 		}
 
 		/* 全额给一个人 */
 		fncComponent.createProfitAndRecordAccountLog(userId, ProfitType.数据奖, id, title, CurrencyType.现金, new BigDecimal("18.00")); // TODO	 写死
+
+		if (!topId.equals(userId)) {
+			fncComponent.createTransfer(topId, userId, CurrencyType.现金, new BigDecimal("15.00"));
+		}
 
 		report.setIsSettledUp(true);
 		if (reportMapper.update(report) == 0) {
