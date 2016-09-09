@@ -80,7 +80,7 @@
         <div class="list-item">
           <label class="list-label">正面照</label>
           <div class="list-text image-upload">
-            <div class="image-item image-single bd">
+            <div class="image-item image-single">
               <input type="hidden" name="image1" id="image1" value="${appearance.image1}">
               <img src="${appearance.image1Thumbnail}">
               <input type="file">
@@ -93,7 +93,7 @@
         <div class="list-item">
           <label class="list-label">反面照</label>
           <div class="list-text image-upload">
-            <div class="image-item image-single bd">
+            <div class="image-item image-single">
               <input type="hidden" name="image2" id="image2" value="${appearance.image2}">
               <img src="${appearance.image2Thumbnail}">
               <input type="file">
