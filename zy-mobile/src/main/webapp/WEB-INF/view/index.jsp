@@ -15,7 +15,7 @@
 <title>${sys}- 首页</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/index.css" rel="stylesheet" />
-<link href="${stccdn}/css/task/task.css" rel="stylesheet" />
+<link href="${stccdn}/css/product.css" rel="stylesheet" />
 <link href="${stccdn}/plugin/swipe-2.0/swipe.css" rel="stylesheet" />
 <script src="${stccdn}/plugin/swipe-2.0/swipe.js"></script>
 
@@ -67,42 +67,40 @@
   </article>
 
   <nav class="index-nav flex box pt-15 pb-15">
-    <a class="flex-1" href="${ctx}/task?type=gift">
+    <a class="flex-1" href="${ctx}/product/1">
       <div class="img-wrap">
-        <img class="round" src="${stccdn}/image/icon/icon_free.png">
+        <img class="round" src="${stccdn}/image/icon/icon_about.png">
       </div>
-      <div class="title">礼品任务</div>
-    </a> <a class="flex-1" href="${ctx}/task">
+      <div class="title">商品</div>
+    </a>
+    <a class="flex-1" href="${ctx}/activity">
       <div class="img-wrap">
         <img class="round" src="${stccdn}/image/icon/icon_bag.png">
       </div>
-      <div class="title">精品试用</div>
-    </a> <a class="flex-1" href="${ctx}/task?type=brand">
+      <div class="title">活动</div>
+    </a>
+    <a class="flex-1" href="${ctx}/u/report">
       <div class="img-wrap">
-        <img class="round" src="${stccdn}/image/icon/icon_tag.png">
+        <img class="round" src="${stccdn}/image/icon/icon_report.png">
       </div>
-      <div class="title">品牌折扣</div>
+      <div class="title">检测报告</div>
     </a>
   </nav>
 
-  <article class="task-list mb-15 clearfix">
+  <article class="product-list mb-15 clearfix">
     <h2>
-      <i class="fa fa-heart-o"></i> 推荐试用<a href="${ctx}/task" class="right mr-10 fs-14 font-777">更多</a>
+      <i class="fa fa-heart-o"></i> 推荐商品<a href="javascript:;" class="right mr-10 fs-14 font-777">更多</a>
     </h2>
-    <c:forEach items="${taskVos}" var="task">
-      <a href="${ctx}/task/detail?id=${task.id}&giftId=${task.giftId}" class="task">
-        <div class="image-box">
-          <img class="abs-lt" src="${task.imageThumbnail}">
-        </div>
-        <h3>${task.title}</h3>
-        <div class="task-info">
-          <c:if test="${not empty task.totalQuantity}">
-            <span class="right">限量${task.totalQuantity}份</span>
-          </c:if>
-          <span class="price">¥<del>${task.marketPrice}</del></span>
-          <em class="round-2"><c:if test="${task.price <= 0.00}">免费</c:if><c:if test="${task.price > 0.00}">${task.price}元</c:if></em>
-        </div>
-      </a>
+    <c:forEach items="${products}" var="product">
+    <a href="${ctx}/product/${product.id}" class="product">
+      <div class="image-box">
+        <img class="abs-lt" src="${product.image1Thumbnail}">
+      </div>
+      <h3>${product.title}</h3>
+      <div class="product-info">
+        <span class="fs-16 font-orange">¥ ${product.price}</span>
+      </div>
+    </a>
     </c:forEach>
   </article>
 
