@@ -36,32 +36,32 @@
     <%-- 待支付, 已支付, 已发货, 已完成, 已退款, 已取消 --%>
     <c:if test="${order.orderStatus == '待支付'}">
     <div class="note note-danger mb-0">
-      <p><i class="fa fa-clock-o"></i> 订单状态：待支付</p>
+      <p><i class="fa fa-clock-o fs-16"></i> 订单状态：待支付</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已支付'}">
     <div class="note note-danger mb-0">
-      <p><i class="fa fa-clock-o"></i> 订单状态：已支付，请耐心等待发货</p>
+      <p><i class="fa fa-clock-o fs-16"></i> 订单状态：已支付，请耐心等待发货</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已发货'}">
     <div class="note note-success mb-0">
-      <p><i class="fa fa-truck"></i> 订单状态：已发货</p>
+      <p><i class="fa fa-truck fs-16"></i> 订单状态：已发货</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已完成'}">
     <div class="note note-success mb-0">
-      <p><i class="fa fa-check"></i> 订单状态：已完成</p>
+      <p><i class="fa fa-check fs-16"></i> 订单状态：已完成</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已退款'}">
     <div class="note note-success mb-0">
-      <p><i class="fa fa-reply"></i> 订单状态：已退款</p>
+      <p><i class="fa fa-reply fs-16"></i> 订单状态：已退款</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已取消'}">
     <div class="note note-success mb-0">
-      <p><i class="fa fa-close"></i> 订单状态：已取消</p>
+      <p><i class="fa fa-close fs-16"></i> 订单状态：已取消</p>
     </div>
     </c:if>
     

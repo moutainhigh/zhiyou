@@ -17,15 +17,15 @@
 </head>
 <body class="header-fixed footer-fixed">
   <header class="header">
-    <h1>我发出的订单</h1>
+    <h1>${inOut == 'out' ? '出货' : '进货'}订单</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
   <nav class="tab-nav">
-    <a href="${ctx}/u/order?orderStatus=0"<c:if test="${orderStatus == '待支付'}"> class="current"</c:if>>待付款 (2)</a>
-    <a href="${ctx}/u/order?orderStatus=1"<c:if test="${orderStatus == '待发货'}"> class="current"</c:if>>待发货 (1)</a>
-    <a href="${ctx}/u/order?orderStatus=2"<c:if test="${orderStatus == '待收货'}"> class="current"</c:if>>待收货 (1)</a>
-    <a href="${ctx}/u/order"<c:if test="${empty orderStatus}"> class="current"</c:if>>全部订单</a>
+    <a href="${ctx}/u/order/${inOut}"<c:if test="${empty orderStatus}"> class="current"</c:if>>全部订单</a>
+    <a href="${ctx}/u/order/${inOut}?orderStatus=0"<c:if test="${orderStatus == '待支付'}"> class="current"</c:if>>待付款 (2)</a>
+    <a href="${ctx}/u/order/${inOut}?orderStatus=1"<c:if test="${orderStatus == '待发货'}"> class="current"</c:if>>待发货 (1)</a>
+    <a href="${ctx}/u/order/${inOut}?orderStatus=2"<c:if test="${orderStatus == '待收货'}"> class="current"</c:if>>待收货 (1)</a>
   </nav>
   
   <article class="order-list">
