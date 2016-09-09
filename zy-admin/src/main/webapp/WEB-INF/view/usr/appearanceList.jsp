@@ -36,17 +36,18 @@ img {
           }
         }, {
           data : 'idCardNumber',
-          title : '身份证号'
+          title : '身份证号',
+          orderable : false
         }, {
           data : 'image1Thumbnail',
-          title : '图片1',
+          title : '身份证正面照',
           orderable : false,
           render : function(data, type, full) {
             return '<img class="imagescan" data-url="' + full.image1 + '" src="'+ data +'" style="width: 80px; height: 80px;">';
           }
         },  {
           data : 'image2Thumbnail',
-          title : '图片2',
+          title : '身份证背面照',
           orderable : false,
           render : function(data, type, full) {
             return '<img class="imagescan" data-url="' + full.image2 + '" src="'+ data +'" style="width: 80px; height: 80px;">';
