@@ -49,15 +49,17 @@ public class ProductController {
 	public String detail(@PathVariable Long id, boolean isAgent, Model model) {
 		Product product = productService.findOne(id);
 		Principal principal = GcUtils.getPrincipal();
+		if(principal == null) {
+			model.addAttribute("isFirst", true);
+		}
 		if(principal != null) {
 			User user = userService.findOne(principal.getUserId());
+			model.addAttribute("user", user.getUserRank());
 			product.setPrice(productService.getPrice(product.getId(), user.getUserRank(), 1L));
-			if(isAgent) {
-				if(user.getUserRank() == UserRank.V0){
-					model.addAttribute("isFirst", true);
-				} else if(user.getUserRank() == UserRank.V4){
-					model.addAttribute("isUpgrade", true);
-				}
+			if(user.getUserRank() == UserRank.V0){
+				model.addAttribute("isFirst", true);
+			} else if((user.getUserRank() != UserRank.V1 || user.getUserRank() != UserRank.V2)&& isAgent){
+				model.addAttribute("isUpgrade", true);
 			}
 		}
 		validate(product, NOT_NULL, "product id" + id + " not found");

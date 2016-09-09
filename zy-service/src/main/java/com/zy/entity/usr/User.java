@@ -122,7 +122,7 @@ public class User implements Serializable {
 	@AssociationView(name = "inviter", associationGroup = "UserAdminSimpleVo", groups = {"UserAdminVo"})
 	private Long inviterId;
 
-	@Query(Predicate.EQ)
+	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "上级id")
 	@AssociationView(name = "parent", associationGroup = "UserAdminSimpleVo", groups = {"UserAdminVo"})
 	private Long parentId;

@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/index.css" />
 </head>
-<body class="header-fixed footer-fixed">
+<body class="footer-fixed">
 
   <header class="header">
     <h1>我的</h1>
@@ -70,7 +70,7 @@
   
   <article>
     <div class="list-group">
-      <c:if test="${empty user.userRank}">
+      <c:if test="${user.userRank == 'V0'}">
       <a class="list-item" href="${ctx}/product/1?isAgent=true">
         <i class="list-icon icon icon-agent"></i>
         <div class="list-text">成为代理</div>
@@ -78,7 +78,7 @@
       </a>
       </c:if>
       <c:if test="${not empty user.userRank}">
-      <c:if test="${user.userRank != 'V3'}">
+      <c:if test="${user.userRank == 'V1' || user.userRank == 'V2'}">
       <a class="list-item" href="${ctx}/product/1?isAgent=true">
         <i class="list-icon icon icon-upgrade"></i>
         <div class="list-text">升级代理</div>
