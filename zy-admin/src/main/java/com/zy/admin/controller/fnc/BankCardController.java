@@ -51,8 +51,8 @@ public class BankCardController {
 		try{
 			bankCardService.confirm(id, isSuccess, confirmRemark);
 		}catch (BizException e) {
-			return ResultBuilder.error("审核失败:" + e.getMessage());
+			return ResultBuilder.error("操作失败:" + e.getMessage());
 		}
-		return ResultBuilder.ok("审核成功");
+		return ResultBuilder.ok("操作成功");
 	}
 }
