@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>成为代理</title>
+<title>代理套餐</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <style>
 .form-radio.current {
@@ -84,15 +84,13 @@
 <body>
 
   <header class="header">
-    <h1>成为代理</h1>
+    <h1><c:if test="${userRank == 'V0'}">成为代理</c:if><c:if test="${userRank != 'V0'}">升级代理</c:if></h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
     <a class="button-right" href="${ctx}/help"><i class="fa fa-question-circle"></i></a>
   </header>
   
   <div class="note note-warning mb-0">
-    <p>
-      <i class="fa fa-exclamation-circle"></i> 购买下列套餐产品即可成为相应代理。
-    </p>
+    <p><i class="fa fa-exclamation-circle"></i> 购买下列套餐产品即可<c:if test="${userRank != 'V0'}">升级</c:if>成为相应代理。</p>
   </div>
   
   <article class="mb-15 clearfix">
