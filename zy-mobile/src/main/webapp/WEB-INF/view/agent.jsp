@@ -146,6 +146,7 @@
         
       </div>
       
+      <c:if test="${userRank == 'V0'}">
       <div class="list-group">
         <div class="list-item">
           <label class="list-label" for="name">上级手机号</label>
@@ -154,6 +155,7 @@
           </div>
         </div>
       </div>
+      </c:if>
       
       <div class="form-btn">
         <a id="btnSubmit" class="btn orange btn-block" href="javascript:;">去下单</a>
