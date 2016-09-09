@@ -75,6 +75,7 @@
 	  });
 	  return false;
 	  </c:if>
+	  $('#form').submit();
 	});
 	
   });
@@ -158,7 +159,7 @@
       </c:if>
       
       <div class="form-btn">
-        <a id="btnSubmit" class="btn orange btn-block" href="javascript:;">去下单</a>
+        <a id="btnSubmit" class="btn orange btn-block" href="javascript:;">购买套餐</a>
       </div>
       
     </form>
