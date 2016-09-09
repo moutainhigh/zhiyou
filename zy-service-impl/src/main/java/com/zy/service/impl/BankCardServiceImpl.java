@@ -17,7 +17,6 @@ import com.zy.common.model.query.Page;
 import com.zy.entity.fnc.Bank;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.Appearance;
 import com.zy.entity.usr.User;
 import com.zy.mapper.BankCardMapper;
 import com.zy.mapper.BankMapper;
@@ -147,7 +146,7 @@ public class BankCardServiceImpl implements BankCardService {
 		validate(bankCard, NOT_NULL, "appearance is not exists");
 		if (bankCard.getConfirmStatus() == ConfirmStatus.已通过)
 			throw new BizException(BizCode.ERROR, "已审核,不能再次审核");
-		Appearance merge = new Appearance();
+		BankCard merge = new BankCard();
 		merge.setId(id);
 		if (!isSuccess) {
 			validate(confirmRemark, NOT_NULL, "审核不通过时,备注必须填写");
@@ -157,7 +156,7 @@ public class BankCardServiceImpl implements BankCardService {
 			merge.setConfirmStatus(ConfirmStatus.已通过);
 			merge.setConfirmedTime(new Date());
 		}
-		bankCardMapper.merge(bankCard);
+		bankCardMapper.merge(merge, "confirmStatus", "confirmRemark", "confirmedTime");
 	}
 
 }
