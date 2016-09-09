@@ -13,9 +13,11 @@ import org.springframework.stereotype.Component;
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.usr.Job;
 import com.zy.entity.usr.Portrait;
+import com.zy.entity.usr.User;
 import com.zy.model.dto.AreaDto;
 import com.zy.service.TagService;
 import com.zy.util.GcUtils;
+import com.zy.util.VoHelper;
 import com.zy.vo.PortraitAdminVo;
 import com.zy.vo.PortraitVo;
 
@@ -47,7 +49,9 @@ public class PortraitComponent {
 		
 		PortraitAdminVo portraitAdminVo = new PortraitAdminVo();
 		BeanUtils.copyProperties(portrait, portraitAdminVo);
-
+		User user = cacheComponent.getUser(portrait.getUserId());
+		portraitAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
+		
 		AreaDto areaDto = cacheComponent.getAreaDto(portrait.getAreaId());
 		if (areaDto != null) {
 			portraitAdminVo.setProvince(areaDto.getProvince());
@@ -62,7 +66,8 @@ public class PortraitComponent {
 				portraitAdminVo.setJobName(job.getJobName());	
 			}
 		}
-		
+		portraitAdminVo.setTagNames(new ArrayList<String>(Arrays.stream(portrait.getTagIds().split(",")).map(tag -> this.tagService.findById(Long.valueOf(tag)).getTagName()).collect(toSet())));
+		portraitAdminVo.setBirthdayLabel(DateFormatUtils.format(portrait.getBirthday(), "yyyy-MM-dd"));
 		return portraitAdminVo;
 	}
 

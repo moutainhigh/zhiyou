@@ -214,7 +214,7 @@
             </shiro:hasPermission>
             <shiro:hasPermission name="portrait:view">
               <li>
-                <a href="javascript:;" data-href="${ctx}/portrait"><i class="icon-graduation"></i> 用户画像管理<span class="badge badge-danger"></span></a>
+                <a href="javascript:;" data-href="${ctx}/portrait"><i class="icon-graduation"></i> 完善资料管理<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>
             <shiro:hasPermission name="tag:view">

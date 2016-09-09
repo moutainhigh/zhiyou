@@ -1,6 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <!-- BEGIN JAVASCRIPTS -->
+<style>
+  .mr-5 { 
+    margin-right: 5px !important; 
+  }
+  .mb-5 { 
+    margin-bottom: 5px !important; 
+  }
+  .inline-block {
+    display: inline-block;
+  }
+</style>
 <script>
   var grid = new Datatable();
 
@@ -25,46 +36,53 @@
         columns : [ {
           data : '',
           title : '用户信息',
-          width : '140px',
+          orderable : false,
           render : function(data, type, full) {
-            return '昵称: ' + full.userNickname + '<br /> 手机号：' + full.userPhone;
+            return '昵称: ' + full.user.nickname + '<br /> 手机号：' + full.user.phone;
           }
         }, {
           data : 'gender',
-          title : '性别',
-          width : '60px'
+          title : '性别'
         }, {
-          data : 'birthday',
+          data : 'birthdayLabel',
           title : '出生年月',
-          width : '120px'
+          width : '120px',
+          orderable : false,
+        }, {
+          data : 'tagNames',
+          title : '标签',
+          width : '130px',
+          orderable : false,
+          render : function(data, type, full) {
+            var html = '';
+            for (var i = 0; i < data.length; i++) {
+              if (i % 5 == 0) {
+                html += '<em class="label mb-5 mr-5 inline-block label-success">' + data[i] + '</em>';
+              } else if (i % 5 == 1) {
+                html += '<em class="label mb-5 mr-5 inline-block label-danger">' + data[i] + '</em>';
+              } else if (i % 5 == 2) {
+                html += '<em class="label mb-5 mr-5 inline-block label-info">' + data[i] + '</em>';
+              } else if (i % 5 == 3) {
+                html += '<em class="label mb-5 mr-5 inline-block label-warning">' + data[i] + '</em>';
+              } else if (i % 5 == 4) {
+                html += '<em class="label mb-5 mr-5 inline-block label-primary">' + data[i] + '</em>';
+              }
+            }
+            return html;
+          }
         }, {
           data : '',
           title : '所在地',
-          width : '120px',
+          orderable : false,
           render : function(data, type, full) {
             return full.province + '-' + full.city + '-' + full.district;
           }
         }, {
-          data : '',
-          title : '家乡所在地',
-          width : '120px',
-          render : function(data, type, full) {
-            return full.homeProvince + '-' + full.homeCity + '-' + full.homeDistrict;
-          }
-        }, {
-          data : 'job',
+          data : 'jobName',
           title : '职业',
-          width : '80px'
-
-        }, {
-          data : 'consumptionLevel',
-          title : '收入水平',
-          width : '100px'
-        }, {
-          data : 'appearanceScore',
-          title : '颜值评分',
-          width : '100px'
-        } ]
+          width : '100px',
+          orderable : false
+        }]
       }
     });
 
@@ -77,7 +95,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/portrait">用户画像管理</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/portrait">完善资料管理</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -88,7 +106,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-graduation"></i><span>用户画像管理 </span>
+          <i class="icon-graduation"></i><span>完善资料管理 </span>
         </div>
       </div>
       <div class="portlet-body clearfix">
@@ -101,7 +119,7 @@
               <div class="form-group">
                 <input type="text" name="phoneEQ" class="form-control" placeholder="手机号" />
               </div>
-              
+
               <div class="form-group">
                 <input type="text" name="nicknameLK" class="form-control" placeholder="昵称" />
               </div>
