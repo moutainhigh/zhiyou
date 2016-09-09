@@ -229,4 +229,11 @@
 		</where>
 	</select>
 
+	<select id="findBySn" resultMap="baseResultMap">
+		select
+		*
+		from `mal_order`
+		where sn = #{sn}
+	</select>
+
 </mapper>
