@@ -84,13 +84,13 @@
     
     <input type="hidden" name="sn" value="${order.sn}">
     
-    <div class="list-group">
+    <div class="list-group mt-10">
       <div class="list-title">收件人信息</div>
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-map-marker fs-24"></i></div>
-        <div class="list-text fs-14 font-333 receiver-info">
-          <div>${order.addressRealname}<span class="right">${order.addressPhone}</span></div>
-          <div class="fs-14 font-777">${order.addressProvince} ${order.addressCity} ${order.addressDistrict} ${order.addressAddress}</div>
+        <div class="list-text fs-14 font-333 pl-5 pr-5">
+          <div>${order.receiverRealname}<span class="right">${order.receiverPhone}</span></div>
+          <div class="fs-14 font-777">${order.receiverProvince} ${order.receiverCity} ${order.receiverDistrict} ${order.receiverAddress}</div>
         </div>
       </div>
     </div>
