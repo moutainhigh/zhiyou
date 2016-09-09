@@ -1,6 +1,7 @@
 package com.zy.service.impl;
 
 import com.zy.entity.cms.HelpCategory;
+import com.zy.entity.usr.User.UserType;
 import com.zy.mapper.HelpCategoryMapper;
 import com.zy.model.query.HelpCategoryQueryModel;
 import com.zy.service.HelpCategoryService;
@@ -27,6 +28,7 @@ public class HelpCategoryServiceImpl implements HelpCategoryService{
 	@Override
 	public HelpCategory create(@NotNull HelpCategory helpCategory) {
 		helpCategory.setCreatedTime(new Date());
+		helpCategory.setUserType(UserType.代理);
 		validate(helpCategory);
 		helpCategoryMapper.insert(helpCategory);
 		return helpCategory;
@@ -34,6 +36,7 @@ public class HelpCategoryServiceImpl implements HelpCategoryService{
 
 	@Override
 	public HelpCategory update(@NotNull HelpCategory helpCategory) {
+		helpCategory.setUserType(UserType.代理);
 		validate(helpCategory,"code", "name", "userType", "indexNumber", "id");
 		helpCategoryMapper.merge(helpCategory, "code", "name", "userType", "indexNumber");
 		return helpCategory;

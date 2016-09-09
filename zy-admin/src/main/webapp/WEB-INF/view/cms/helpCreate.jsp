@@ -82,7 +82,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<!-- BEGIN VALIDATION STATES-->
-		<div class="portlet box green">
+		<div class="portlet light bordered">
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="fa fa-plus-circle"></i><span> 创建帮助</span>
