@@ -149,6 +149,14 @@ public class Payment implements Serializable {
 	@View
 	private String outerSn;
 
+	@Field(label = "线下转账截图")
+	@View
+	private String offlineImage;
+	
+	@Field(label = "线下转账备注")
+	@View
+	private String offlineMemo;
+	
 	@NotNull
 	@Version
 	@Field(label = "乐观锁")

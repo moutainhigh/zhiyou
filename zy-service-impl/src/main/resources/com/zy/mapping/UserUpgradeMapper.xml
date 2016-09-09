@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.UserUpgradeMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.usr.UserUpgrade">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="from_user_rank" property="fromUserRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="to_user_rank" property="toUserRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="upgraded_time" property="upgradedTime" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.usr.UserUpgrade" useGeneratedKeys="true" keyProperty="id">
+	  insert into `usr_user_upgrade` (user_id,from_user_rank,to_user_rank,upgraded_time)
+	  values (#{userId},#{fromUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{toUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{upgradedTime})
+	</insert>
+
+	<delete id="delete">
+		delete from `usr_user_upgrade` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.usr.UserUpgrade">
+		update `usr_user_upgrade`
+		<set>
+			user_id = #{userId},
+			from_user_rank = #{fromUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			to_user_rank = #{toUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			upgraded_time = #{upgradedTime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `usr_user_upgrade`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{userUpgrade.userId},</when>
+					<when test="field == 'fromUserRank'">from_user_rank = #{userUpgrade.fromUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.User$UserRank},</when>
+					<when test="field == 'toUserRank'">to_user_rank = #{userUpgrade.toUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.User$UserRank},</when>
+					<when test="field == 'upgradedTime'">upgraded_time = #{userUpgrade.upgradedTime},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{userUpgrade.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,from_user_rank,to_user_rank,upgraded_time
+		from `usr_user_upgrade`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap">
+		select
+		id,user_id,from_user_rank,to_user_rank,upgraded_time
+		from `usr_user_upgrade`
+		order by id desc
+	</select>
+
+</mapper>

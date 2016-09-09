@@ -12,26 +12,34 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.util.Date;
-import com.zy.entity.fnc.Payment.PaymentType;
+import com.zy.entity.fnc.Transfer.TransferType;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentQueryModel implements Serializable {
+public class TransferQueryModel implements Serializable {
 
-	private Long userIdEQ;
+	private Long fromUserIdEQ;
 
-	private PaymentType paymentTypeEQ;
+	private Long[] fromUserIdIN;
 
-	private Long refIdEQ;
+	private Long toUserIdEQ;
 
-	private Date createdTimeLT;
+	private Long[] toUserIdIN;
 
 	private Date createdTimeGTE;
 
-	private Date expiredTimeLT;
+	private Date createdTimeLT;
+
+	private Date transferredTimeGTE;
+
+	private Date transferredTimeLT;
+
+	private TransferType transferTypeEQ;
+
+	private Long refIdEQ;
 
 	private Integer pageNumber;
 
@@ -85,32 +93,19 @@ public class PaymentQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
+		fieldNames.add("currencyType");
+		fieldNames.add("amount");
+		fieldNames.add("transferStatus");
+		fieldNames.add("fromUserId");
 		fieldNames.add("remark");
+		fieldNames.add("transferredTime");
 		fieldNames.add("title");
-		fieldNames.add("refund1");
-		fieldNames.add("refund2");
-		fieldNames.add("paymentType");
-		fieldNames.add("payType");
-		fieldNames.add("amount2");
-		fieldNames.add("amount1");
-		fieldNames.add("refundedTime");
-		fieldNames.add("refundRemark");
+		fieldNames.add("toUserId");
 		fieldNames.add("createdTime");
-		fieldNames.add("offlineImage");
+		fieldNames.add("transferType");
 		fieldNames.add("id");
 		fieldNames.add("sn");
-		fieldNames.add("cancelRemark");
-		fieldNames.add("operatorId");
-		fieldNames.add("paymentStatus");
-		fieldNames.add("currencyType1");
-		fieldNames.add("currencyType2");
-		fieldNames.add("paidTime");
-		fieldNames.add("userId");
-		fieldNames.add("version");
-		fieldNames.add("expiredTime");
-		fieldNames.add("outerSn");
 		fieldNames.add("refId");
-		fieldNames.add("offlineMemo");
 	}
 
 }

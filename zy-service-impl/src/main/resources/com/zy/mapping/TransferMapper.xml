@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.TransferMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.fnc.Transfer">
+		<id column="id" property="id" />
+		<result column="transfer_status" property="transferStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="from_user_id" property="fromUserId" />
+		<result column="to_user_id" property="toUserId" />
+		<result column="sn" property="sn" />
+		<result column="title" property="title" />
+		<result column="currency_type" property="currencyType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="amount" property="amount" />
+		<result column="created_time" property="createdTime" />
+		<result column="transferred_time" property="transferredTime" />
+		<result column="transfer_type" property="transferType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="ref_id" property="refId" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.fnc.Transfer" useGeneratedKeys="true" keyProperty="id">
+	  insert into `fnc_transfer` (transfer_status,from_user_id,to_user_id,sn,title,currency_type,amount,created_time,transferred_time,transfer_type,ref_id,remark)
+	  values (#{transferStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{fromUserId},#{toUserId},#{sn},#{title},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount},#{createdTime},#{transferredTime},#{transferType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{remark})
+	</insert>
+
+	<delete id="delete">
+		delete from `fnc_transfer` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.fnc.Transfer">
+		update `fnc_transfer`
+		<set>
+			transfer_status = #{transferStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			from_user_id = #{fromUserId},
+			to_user_id = #{toUserId},
+			sn = #{sn},
+			title = #{title},
+			currency_type = #{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			amount = #{amount},
+			created_time = #{createdTime},
+			transferred_time = #{transferredTime},
+			transfer_type = #{transferType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			ref_id = #{refId},
+			remark = #{remark},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `fnc_transfer`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'transferStatus'">transfer_status = #{transfer.transferStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.Transfer$TransferStatus},</when>
+					<when test="field == 'fromUserId'">from_user_id = #{transfer.fromUserId},</when>
+					<when test="field == 'toUserId'">to_user_id = #{transfer.toUserId},</when>
+					<when test="field == 'sn'">sn = #{transfer.sn},</when>
+					<when test="field == 'title'">title = #{transfer.title},</when>
+					<when test="field == 'currencyType'">currency_type = #{transfer.currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.CurrencyType},</when>
+					<when test="field == 'amount'">amount = #{transfer.amount},</when>
+					<when test="field == 'createdTime'">created_time = #{transfer.createdTime},</when>
+					<when test="field == 'transferredTime'">transferred_time = #{transfer.transferredTime},</when>
+					<when test="field == 'transferType'">transfer_type = #{transfer.transferType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.Transfer$TransferType},</when>
+					<when test="field == 'refId'">ref_id = #{transfer.refId},</when>
+					<when test="field == 'remark'">remark = #{transfer.remark},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{transfer.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,transfer_status,from_user_id,to_user_id,sn,title,currency_type,amount,created_time,transferred_time,transfer_type,ref_id,remark
+		from `fnc_transfer`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TransferQueryModel">
+		select
+		id,transfer_status,from_user_id,to_user_id,sn,title,currency_type,amount,created_time,transferred_time,transfer_type,ref_id,remark
+		from `fnc_transfer`
+		<where>
+			<if test="toUserIdIN != null">
+				 and to_user_id in
+				<foreach collection="toUserIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="fromUserIdEQ != null">
+				 and from_user_id = #{fromUserIdEQ}
+			</if>
+			<if test="transferTypeEQ != null">
+				 and transfer_type = #{transferTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="createdTimeLT != null">
+				 and created_time &lt; #{createdTimeLT}
+			</if>
+			<if test="transferredTimeGTE != null">
+				 and transferred_time &gt;= #{transferredTimeGTE}
+			</if>
+			<if test="refIdEQ != null">
+				 and ref_id = #{refIdEQ}
+			</if>
+			<if test="fromUserIdIN != null">
+				 and from_user_id in
+				<foreach collection="fromUserIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="transferredTimeLT != null">
+				 and transferred_time &lt; #{transferredTimeLT}
+			</if>
+			<if test="toUserIdEQ != null">
+				 and to_user_id = #{toUserIdEQ}
+			</if>
+			<if test="createdTimeGTE != null">
+				 and created_time &gt;= #{createdTimeGTE}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.TransferQueryModel">
+		select count(*) from `fnc_transfer`
+		<where>
+			<if test="toUserIdIN != null">
+				 and to_user_id in
+				<foreach collection="toUserIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="fromUserIdEQ != null">
+				 and from_user_id = #{fromUserIdEQ}
+			</if>
+			<if test="transferTypeEQ != null">
+				 and transfer_type = #{transferTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="createdTimeLT != null">
+				 and created_time &lt; #{createdTimeLT}
+			</if>
+			<if test="transferredTimeGTE != null">
+				 and transferred_time &gt;= #{transferredTimeGTE}
+			</if>
+			<if test="refIdEQ != null">
+				 and ref_id = #{refIdEQ}
+			</if>
+			<if test="fromUserIdIN != null">
+				 and from_user_id in
+				<foreach collection="fromUserIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="transferredTimeLT != null">
+				 and transferred_time &lt; #{transferredTimeLT}
+			</if>
+			<if test="toUserIdEQ != null">
+				 and to_user_id = #{toUserIdEQ}
+			</if>
+			<if test="createdTimeGTE != null">
+				 and created_time &gt;= #{createdTimeGTE}
+			</if>
+		</where>
+	</select>
+
+</mapper>

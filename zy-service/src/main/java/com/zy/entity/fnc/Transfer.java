@@ -56,16 +56,16 @@ public class Transfer implements Serializable {
 
 	@NotNull
 	@Query({EQ,IN})
-	@Field(label = "用户id")
+	@Field(label = "转出用户id")
 	@View
-	@AssociationView(name = "user", groups = "TransferAdminVo", associationGroup = "UserAdminSimpleVo")
+	@AssociationView(name = "fromUser", groups = "TransferAdminVo", associationGroup = "UserAdminSimpleVo")
 	private Long fromUserId;
 
 	@NotNull
 	@Query({EQ,IN})
-	@Field(label = "用户id")
+	@Field(label = "转入用户id")
 	@View
-	@AssociationView(name = "user", groups = "TransferAdminVo", associationGroup = "UserAdminSimpleVo")
+	@AssociationView(name = "toUser", groups = "TransferAdminVo", associationGroup = "UserAdminSimpleVo")
 	private Long toUserId;
 
 
