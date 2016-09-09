@@ -19,6 +19,71 @@ body{
   background: url('image/icon_loading.gif') #fff no-repeat scroll 8px center;
 }
 
+
+.mui-dialog .mui-dialog-mask, .mui-dialog .mui-dialog-wrap {
+  position: fixed; left: 0; top: 0;
+  display: block; width: 100%; height: 100%;
+}
+.mui-dialog .mui-dialog-mask {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.mui-dialog .mui-dialog-wrap {
+  display: table;
+}
+.mui-dialog .mui-dialog-content {
+  display: table-cell;
+  color: #333; text-align: center; vertical-align: middle;
+  background-color: #eee;
+}
+.mui-dialog .mui-dialog-bottom {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  margin: 0 auto; width: 100%;
+}
+.mui-dialog .mui-dialog-title {
+  padding: 20px;
+  font-size: 14px; line-height: 24px;
+  background-color: rgba(255,255,255,.9);
+}
+.mui-dialog .mui-dialog-buttons {
+  display: block; height: auto;
+  background: none;
+}
+.mui-dialog .mui-dialog-button {
+  position: relative; padding: 10px 15px; margin-top: 1px;
+  display: block;
+  font-size: 14px; line-height: 24px;
+  background-color: #f7f7f7; cursor: pointer;
+}
+.mui-dialog .mui-dialog-button-cancle {
+  color: #777;
+}
+
+@-webkit-keyframes mui-animation-scale {
+  0% {opacity: 0; -webkit-transform: scale(.5); transform: scale(.5)}
+  100% {opacity: 1; -webkit-transform: scale(1); transform: scale(1)}
+}
+@keyframes mui-animation-scale {
+  0% {opacity: 0; -webkit-transform: scale(.5); transform: scale(.5)}
+  100% {opacity: 1; -webkit-transform: scale(1); transform: scale(1)}
+}
+.mui-animation-scale {
+  animation-name:  mui-animation-scale; -webkit-animation-name:  mui-animation-scale;
+}
+
+@-webkit-keyframes mui-animation-up {
+  0%{opacity: 0; -webkit-transform: translateY(800px); transform: translateY(800px)}
+  100%{opacity: 1; -webkit-transform: translateY(0); transform: translateY(0)}
+}
+@keyframes mui-animation-up {
+  0%{opacity: 0; -webkit-transform: translateY(800px); transform: translateY(800px)}
+  100%{opacity: 1; -webkit-transform: translateY(0); transform: translateY(0)}
+}
+.mui-animation-up {
+  animation-name: mui-animation-up; -webkit-animation-name: mui-animation-up;
+  animation-duration: 0.2s; -webkit-animation-duration: 0.2s;
+  animation-fill-mode: both; -webkit-animation-fill-mode: both;
+}
+
 /* ---------- Dialog ---------- */
 .window-mask {
   display: none; position: fixed;  top: 0; left: 0; width: 100%; height: 100%; z-index: 99;
@@ -356,3 +421,4 @@ select.validateError {
 .pager input {
   width: 24px; height: 18px; line-height: 18px; font-size: 12px; margin: 0 2px; vertical-align: top;
 }
+

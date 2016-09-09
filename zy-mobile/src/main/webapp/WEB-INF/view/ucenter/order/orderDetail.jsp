@@ -16,14 +16,49 @@
 <link href="${stccdn}/css/ucenter/order.css" rel="stylesheet"> 
 <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
 
-<title>确认订单信息</title>
+<title>订单详情</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script src="${stccdn}/js/area.js"></script>
 
 <script>
   $(function() {
     
+    $('#btnPay').click(function(){
+      var html = document.getElementById('dialogTpl').innerHTML;
+      $('body').addClass('o-hidden').append(html);
+    });
+    
+    $('body').on('click', '.mui-dialog-button-cancle', function(){
+      $('body').removeClass('o-hidden');
+      $('.mui-dialog').remove();
+    });
+    
+    $('body').on('click', '#btnPay1', function(){
+      //余额支付
+      alert('余额支付');
+    });
+    
+    $('body').on('click', '#btnPay2', function(){
+      //线下支付
+	  alert('线下支付');
+    });
+    
   });
+</script>
+<script id="dialogTpl" type="text/html">
+<aside id="mui-dialog0" class="mui-dialog" data-index="0">
+  <div class="mui-dialog-mask"></div>
+  <div class="mui-dialog-wrap">
+    <div class="mui-dialog-content mui-dialog-bottom mui-animation-up">
+      <div class="mui-dialog-title">请选择支付方式</div>
+      <div class="mui-dialog-buttons">
+        <div class="mui-dialog-button" data-index="1"><a id="btnPay1" class="btn orange block round-2">余额支付</a></div>
+        <div class="mui-dialog-button" data-index="2"><a id="btnPay2" class="btn green block round-2">线下支付</a></div>
+        <div class="mui-dialog-button mui-dialog-button-cancle" data-index="0">取消</div>
+      </div>
+    </div>
+  </div>
+</aside>
 </script>
 </head>
 <body class="order-detail">
@@ -156,7 +191,7 @@
     
     <c:if test="${order.orderStatus == '待支付'}">
     <div class="form-btn">
-      <input type="submit" id="btnSubmit" value="立即支付" class="btn btn-block green round-2">
+      <a id="btnPay" class="btn btn-block green round-2">立即支付</a>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已发货'}">
