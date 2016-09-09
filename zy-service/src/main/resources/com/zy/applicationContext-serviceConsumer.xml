@@ -26,7 +26,6 @@
 	<dubbo:reference id="productService" interface="com.zy.service.ProductService" />
 	<dubbo:reference id="profitService" interface="com.zy.service.ProfitService" />
 	<dubbo:reference id="settingService" interface="com.zy.service.SettingService" />
-	<dubbo:reference id="deliveryService" interface="com.zy.service.DeliveryService" />
 	<dubbo:reference id="feedbackService" interface="com.zy.service.FeedbackService" />
 	<dubbo:reference id="addressService" interface="com.zy.service.AddressService" />
 	<dubbo:reference id="config" interface="com.zy.Config" />
