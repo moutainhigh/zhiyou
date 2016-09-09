@@ -29,6 +29,10 @@ import java.util.Date;
 @ViewObject(groups = "PaymentAdminVo")
 public class Payment implements Serializable {
 
+	public enum PaymentType {
+		订单支付
+	}
+
 	public enum PaymentStatus {
 		待支付, 已支付, 已退款, 已取消
 	}
@@ -63,18 +67,16 @@ public class Payment implements Serializable {
 	@View
 	private PayType payType;
 
-	@NotBlank
-	@Column(length = 60)
 	@Query(Predicate.EQ)
-	@Field(label = "业务类型")
+	@Field(label = "支付单类型")
 	@View
-	private String bizName;
+	@NotNull
+	private PaymentType paymentType;
 
-	@NotBlank
-	@Column(length = 60)
-	@Field(label = "业务sn")
+	@Field(label = "关联业务id", description = "可以不填写")
 	@View
-	private String bizSn;
+	@Query(Predicate.EQ)
+	private Long refId;
 
 	@NotNull
 	@Field(label = "下单时间")
