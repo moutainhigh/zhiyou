@@ -104,10 +104,10 @@
         <c:if test="${userRank == 'V0' || userRank == 'V1' || userRank == 'V2'}">
         <div class="list-item form-radio">
           <div class="list-icon">
-            <input id="agentLevel1" type="radio" name="agentLevel" value="0">
+            <input id="agentLevel1" type="radio" name="agentLevel" value="V3">
             <label class="i-checked" for="agentLevel1"></label>
           </div>
-          <img class="image-80 block mr-10" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+          <img class="image-80 block mr-10" src="${product.image1Thumbnail}">
           <div class="list-text">
             <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity1}</span>盒</h2>
             <div class="lh-30"><label class="label red">一级代理</label></div>
@@ -118,10 +118,10 @@
         <c:if test="${userRank == 'V0' || userRank == 'V1'}">
         <div class="list-item form-radio">
           <div class="list-icon">
-            <input id="agentLevel2" type="radio" name="agentLevel" value="1">
+            <input id="agentLevel2" type="radio" name="agentLevel" value="V2">
             <label class="i-checked" for="agentLevel2"></label>
           </div>
-          <img class="image-80 block mr-10" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+          <img class="image-80 block mr-10" src="${product.image1Thumbnail}">
           <div class="list-text">
             <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity2}</span>盒</h2>
             <div class="lh-30"><label class="label yellow">二级代理</label></div>
@@ -132,10 +132,10 @@
         <c:if test="${userRank == 'V0'}">
         <div class="list-item form-radio">
           <div class="list-icon">
-            <input id="agentLevel3" type="radio" name="agentLevel" value="2">
+            <input id="agentLevel3" type="radio" name="agentLevel" value="V1">
             <label class="i-checked" for="agentLevel3"></label>
           </div>
-          <img class="image-80 block mr-10" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+          <img class="image-80 block mr-10" src="${product.image1Thumbnail}">
           <div class="list-text">
             <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity3}</span>盒</h2>
             <div class="lh-30"><label class="label green">三级代理</label></div>
