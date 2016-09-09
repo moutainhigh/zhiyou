@@ -71,7 +71,7 @@
   <article>
     <div class="list-group">
       <c:if test="${empty user.userRank}">
-      <a class="list-item" href="${ctx}/product/1">
+      <a class="list-item" href="${ctx}/product/1?isAgent=true">
         <i class="list-icon icon icon-agent"></i>
         <div class="list-text">成为代理</div>
         <i class="list-arrow"></i>
@@ -79,7 +79,7 @@
       </c:if>
       <c:if test="${not empty user.userRank}">
       <c:if test="${user.userRank != 'V3'}">
-      <a class="list-item" href="${ctx}/product/1">
+      <a class="list-item" href="${ctx}/product/1?isAgent=true">
         <i class="list-icon icon icon-upgrade"></i>
         <div class="list-text">升级代理</div>
         <i class="list-arrow"></i>
