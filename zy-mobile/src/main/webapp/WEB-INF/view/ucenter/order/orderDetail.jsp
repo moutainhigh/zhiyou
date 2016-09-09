@@ -122,9 +122,11 @@
         <div class="list-text">
           <p class="fs-14 font-999">${order.buyerMemo}</p>
         </div>
+        <%-- 
         <div class="list-unit">
           <a class="input-unit font-orange right" href="${ctx}/ucenter/order/edit/${order.sn}"><i class="fa fa-edit"></i></a>
         </div>
+        --%>
       </div>
     </div>
     
