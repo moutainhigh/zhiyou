@@ -121,7 +121,7 @@
 <body>
   <header class="header">
     <h1>新增银行卡</h1>
-    <a href="javascript:history.back();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/bankCard" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   <article class="bank-card-create">
     <form id="bankCardForm" class="valid-form" action="${ctx}/u/bankCard/create" method="post">
@@ -131,36 +131,45 @@
       <div class="list-group">
         <div class="list-item bank-info">
           <label class="list-label">开户银行</label>
+          <c:if test="${empty bankCard}">
           <div class="list-text">
             <span class="bank-name"><span class="font-999">请选择</span></span>
             <input type="hidden" name="bankId" value="">
             <input type="hidden" name="bankName" value="">
           </div>
+          </c:if>
+          <c:if test="${not empty bankCard}">
+          <div class="list-text">
+            <span class="bank-name"><i class="icon icon-bank-${bankCard.bankCode} mr-10"></i><span>${bankCard.bankName}</span></span>
+            <input type="hidden" name="bankId" value="${bankCard.bankId}">
+            <input type="hidden" name="bankName" value="${bankCard.bankName}">
+          </div>
+          </c:if>
           <i class="list-arrow"></i>
         </div>
         <div class="list-item">
           <label class="list-label" for="accountName">开户姓名</label>
           <div class="list-text">
-            <input type="text" id="realname" name="realname" class="form-input" value="" placeholder="填写开户姓名">
+            <input type="text" id="realname" name="realname" class="form-input" value="${bankCard.realname}" placeholder="填写开户姓名">
           </div>
         </div>
         <div class="list-item">
           <label class="list-label" for="accountNo">银行卡号</label>
           <div class="list-text">
-            <input type="text" id="cardNumber" name="cardNumber" class="form-input" value="" placeholder="填写银行卡号">
+            <input type="text" id="cardNumber" name="cardNumber" class="form-input" value="${bankCard.cardNumber}" placeholder="填写银行卡号">
           </div>
         </div>
         <div class="list-item">
           <label class="list-label" for="bankBranchName">开户支行名</label>
           <div class="list-text">
-            <input type="text" id="bankBranchName" name="bankBranchName" class="form-input" value="" placeholder="填写开户支行名称">
+            <input type="text" id="bankBranchName" name="bankBranchName" class="form-input" value="${bankCard.bankBranchName}" placeholder="填写开户支行名称">
           </div>
         </div>
         <div class="list-item">
           <div class="list-text">设为默认银行卡</div>
           <div class="list-unit form-switch">
             <input type="hidden" name="_isDefault" value="false">
-            <input type="checkbox" id="isDefault" name="isDefault" value="true">
+            <input type="checkbox" id="isDefault" name="isDefault" value="true"<c:if test="${bankCard.isDefault}"> checked="checked"</c:if>>
             <label class="i-switch" for="isDefault"></label>
           </div>
         </div>

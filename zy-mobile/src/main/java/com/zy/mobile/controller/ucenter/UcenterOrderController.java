@@ -2,7 +2,6 @@ package com.zy.mobile.controller.ucenter;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
-import io.gd.generator.api.query.Direction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,11 +17,14 @@ import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.OrderComponent;
 import com.zy.entity.mal.Order;
+import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
+
+import io.gd.generator.api.query.Direction;
 
 @RequestMapping("/u/order")
 @Controller
@@ -36,24 +38,45 @@ public class UcenterOrderController {
 	
 	
 	@RequestMapping("/in")
-	public String in(Principal principal, Model model) {
-		Page<Order> page = orderService.findPage(OrderQueryModel.builder().sellerIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).build());
+	public String in(Principal principal, Model model, OrderStatus orderStatus) {
+		OrderQueryModel orderQueryModel = OrderQueryModel.builder().userIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).build();
+		orderQueryModel.setOrderStatusEQ(orderStatus);
+		Page<Order> page = orderService.findPage(orderQueryModel);
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent::buildListVo));
+		model.addAttribute("inOut", "in");
+		model.addAttribute("orderStatus", orderStatus);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.待支付);
+		model.addAttribute("waitForPayConut", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已支付);
+		model.addAttribute("waitForDeliverConut", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已发货);
+		model.addAttribute("waitForReceiveConut", orderService.count(orderQueryModel));
 		return "ucenter/order/orderList";
 	}
 	
 	@RequestMapping("/out")
-	public String out(Principal principal, Model model) {
-		Page<Order> page = orderService.findPage(OrderQueryModel.builder().userIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).build());
+	public String out(Principal principal, Model model, OrderStatus orderStatus) {
+		OrderQueryModel orderQueryModel = OrderQueryModel.builder().sellerIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).build();
+		orderQueryModel.setOrderStatusEQ(orderStatus);
+		Page<Order> page = orderService.findPage(orderQueryModel);
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent::buildListVo));
+		model.addAttribute("inOut", "out");
+		model.addAttribute("orderStatus", orderStatus);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.待支付);
+		model.addAttribute("waitForPayConut", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已支付);
+		model.addAttribute("waitForDeliverConut", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已发货);
+		model.addAttribute("waitForReceiveConut", orderService.count(orderQueryModel));
 		return "ucenter/order/orderList";
 	}
 	
 	@RequestMapping("/{sn}")
-	public String detail(@PathVariable String sn, Model model) {
+	public String detail(@PathVariable String sn, Principal principal, Model model) {
 		  Order order =  orderService.findBySn(sn);
 		  validate(order, NOT_NULL, "order sn" + sn + " not found");
-		  model.addAttribute("order", order);
+		  model.addAttribute("order", orderComponent.buildDetailVo(order));
+		  model.addAttribute("inOut", order.getUserId().equals(principal.getUserId()) ? "in" : "out");
 		  return "ucenter/order/orderDetail";  
 	}
 	

@@ -1,7 +1,7 @@
 package com.zy.component;
 
+import static com.zy.util.GcUtils.formatDate;
 import static com.zy.util.GcUtils.getThumbnail;
-import static org.apache.commons.lang3.time.DateFormatUtils.format;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.stereotype.Component;
@@ -15,13 +15,13 @@ import com.zy.vo.ReportVo;
 @Component
 public class ReportComponent {
 
-	private static final String TIME_LABEL = "yyyy-MM-dd HH:mm:ss";
+	private static final String SIMPLE_TIME_PATTERN = "yyyy-MM-dd";
 	
 	public ReportAdminVo buildAdminVo(Report report) {
 		ReportAdminVo reportAdminVo = new ReportAdminVo();
 		BeanUtils.copyProperties(report, reportAdminVo);
 		
-		reportAdminVo.setDateLabel(format(report.getDate(), TIME_LABEL));
+		reportAdminVo.setDateLabel(formatDate(report.getDate(), SIMPLE_TIME_PATTERN));
 		reportAdminVo.setImage1Thumbnail(getThumbnail(report.getImage1()));
 		reportAdminVo.setImage2Thumbnail(getThumbnail(report.getImage2()));
 		reportAdminVo.setImage3Thumbnail(getThumbnail(report.getImage3()));
@@ -41,7 +41,7 @@ public class ReportComponent {
 		ReportVo reportVo = new ReportVo();
 		BeanUtils.copyProperties(report, reportVo);
 		
-		reportVo.setDateLabel(DateFormatUtils.format(report.getDate(), "yyyy-MM-dd"));
+		reportVo.setDateLabel(DateFormatUtils.format(report.getDate(), SIMPLE_TIME_PATTERN));
 		reportVo.setImage1Thumbnail(GcUtils.getThumbnail(report.getImage1()));
 		reportVo.setImage2Thumbnail(GcUtils.getThumbnail(report.getImage2()));
 		reportVo.setImage3Thumbnail(GcUtils.getThumbnail(report.getImage3()));

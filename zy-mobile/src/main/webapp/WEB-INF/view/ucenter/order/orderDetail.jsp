@@ -29,44 +29,44 @@
 <body class="order-detail">
   <header class="header">
     <h1>订单详情</h1>
-    <a href="javascript:history.back();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/order/${inOut}" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
   <article>
     <%-- 待支付, 已支付, 已发货, 已完成, 已退款, 已取消 --%>
     <c:if test="${order.orderStatus == '待支付'}">
     <div class="note note-danger mb-0">
-      <p><i class="fa fa-clock-o"></i> 订单状态：待支付</p>
+      <p><i class="fa fa-clock-o fs-16"></i> 订单状态：待支付</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已支付'}">
     <div class="note note-danger mb-0">
-      <p><i class="fa fa-clock-o"></i> 订单状态：已支付，请耐心等待发货</p>
+      <p><i class="fa fa-clock-o fs-16"></i> 订单状态：已支付，请耐心等待发货</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已发货'}">
     <div class="note note-success mb-0">
-      <p><i class="fa fa-truck"></i> 订单状态：已发货</p>
+      <p><i class="fa fa-truck fs-16"></i> 订单状态：已发货</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已完成'}">
     <div class="note note-success mb-0">
-      <p><i class="fa fa-check"></i> 订单状态：已完成</p>
+      <p><i class="fa fa-check fs-16"></i> 订单状态：已完成</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已退款'}">
     <div class="note note-success mb-0">
-      <p><i class="fa fa-reply"></i> 订单状态：已退款</p>
+      <p><i class="fa fa-reply fs-16"></i> 订单状态：已退款</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已取消'}">
     <div class="note note-success mb-0">
-      <p><i class="fa fa-close"></i> 订单状态：已取消</p>
+      <p><i class="fa fa-close fs-16"></i> 订单状态：已取消</p>
     </div>
     </c:if>
     
     <c:if test="${order.orderStatus == '待支付'}">
-    <form id="orderForm" class="valid-form" action="${ctx}/order/pay" method="post">
+    <form id="orderForm" class="valid-form" action="${ctx}/u/pay" method="post">
     </c:if>
     <c:if test="${order.orderStatus == '已发货'}">
     <form id="orderForm" class="valid-form" action="${ctx}/order/confirmDelivery method="post">
@@ -84,13 +84,13 @@
     
     <input type="hidden" name="sn" value="${order.sn}">
     
-    <div class="list-group">
+    <div class="list-group mt-10">
       <div class="list-title">收件人信息</div>
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-map-marker fs-24"></i></div>
-        <div class="list-text fs-14 font-333 receiver-info">
-          <div>${order.addressRealname}<span class="right">${order.addressPhone}</span></div>
-          <div class="fs-14 font-777">${order.addressProvince} ${order.addressCity} ${order.addressDistrict} ${order.addressAddress}</div>
+        <div class="list-text fs-14 font-333 pl-5 pr-5">
+          <div>${order.receiverRealname}<span class="right">${order.receiverPhone}</span></div>
+          <div class="fs-14 font-777">${order.receiverProvince} ${order.receiverCity} ${order.receiverDistrict} ${order.receiverAddress}</div>
         </div>
       </div>
     </div>
@@ -115,16 +115,42 @@
       </div>
     </div>
       
+    <div class="list-group">
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">下单时间</div>
+        <div class="list-unit fs-12">${order.createdTimeLabel}</div>
+      </div>
+      <c:if test="${not empty order.paidTimeLabel}">
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">支付时间</div>
+        <div class="list-unit fs-12">${order.paidTimeLabel}</div>
+      </div>
+      </c:if>
+      <c:if test="${not empty order.deliveredTimeLabel}">
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">发货时间</div>
+        <div class="list-unit fs-12">${order.deliveredTimeLabel}</div>
+      </div>
+      </c:if>
+      <c:if test="${not empty order.refundedTimeLabel}">
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">退款时间</div>
+        <div class="list-unit fs-12">${order.refundedTimeLabel}</div>
+      </div>
+      </c:if>
+    </div>
     
     <div class="list-title">买家留言</div>
     <div class="list-group">
       <div class="list-item">
         <div class="list-text">
-          <p class="fs-14 font-999">${order.buyerMemo}</p>
+          <p class="fs-14 font-999">${empty order.buyerMemo ? '买家无留言' : 'order.buyerMemo'}</p>
         </div>
+        <%-- 
         <div class="list-unit">
           <a class="input-unit font-orange right" href="${ctx}/ucenter/order/edit/${order.sn}"><i class="fa fa-edit"></i></a>
         </div>
+        --%>
       </div>
     </div>
     

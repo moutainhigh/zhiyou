@@ -119,17 +119,27 @@
   }
   function submitBtn(id) {
     var isSuccess = $('select[name="confirmSelect"]').val();
+    var confirmRemark = $('#confirmRemark').val();
     if (isSuccess == '') {
-      alert('请选择审核状态');
+      layer.alert('请选择审核状态');
+      return;
+    }
+    if(isSuccess == 'false' && confirmRemark == '') {
+      layer.alert('请输入审核信息');
       return;
     }
     var confirmRemark = $('#confirmRemark').val();
-    $.post('${ctx}/userBankInfo/confirm', {
+    $.post('${ctx}/bankCard/confirm', {
       id : id,
       isSuccess : isSuccess,
       confirmRemark : confirmRemark
     }, function(result) {
-      toastr.success(result.message, '提示信息');
+      if(result.code == 0) {
+        toastr.success(result.message, '提示信息');
+      } else {
+        toastr.error(result.message, '提示信息');
+      }
+      
       $confirmDialog.close();
       grid.getDataTable().ajax.reload(null, false);
     })
@@ -166,13 +176,12 @@
             <form class="filter-form form-inline" id="searchForm">
               <input id="_orderBy" name="orderBy" type="hidden" value="" /> <input id="_direction" name="direction" type="hidden" value="" /> <input id="_pageNumber"
                 name="pageNumber" type="hidden" value="0" /> <input id="_pageSize" name="pageSize" type="hidden" value="20" />
+              
               <div class="form-group input-inline">
                 <input type="text" name="realnameLK" class="form-control" placeholder="真实姓名" />
               </div>
-              <div class="form-group input-inline">
-                <input type="text" name="usernameLK" class="form-control" placeholder="卡号" />
-              </div>
-              <div class="form-group input-inline">
+              
+              <div class="form-group">
                 <select name=confirmStatusEQ class="form-control">
                   <option value="">-- 审核状态 --</option>
                   <option value="0">待审核</option>
@@ -180,7 +189,8 @@
                   <option value="2">未通过</option>
                 </select>
               </div>
-              <div class="form-group input-inline">
+              
+              <div class="form-group">
                 <button class="btn blue filter-submit">
                   <i class="fa fa-search"></i> 查询
                 </button>

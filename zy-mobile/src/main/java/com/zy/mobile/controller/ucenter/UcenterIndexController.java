@@ -11,8 +11,10 @@ import com.zy.entity.fnc.Account;
 import com.zy.entity.usr.User;
 import com.zy.model.Principal;
 import com.zy.model.query.MessageQueryModel;
+import com.zy.model.query.OrderQueryModel;
 import com.zy.service.AccountService;
 import com.zy.service.MessageService;
+import com.zy.service.OrderService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 
@@ -28,6 +30,9 @@ public class UcenterIndexController {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private OrderService orderService;
 	
 	@RequestMapping
 	public String index(Principal principal, Model model) {
@@ -60,6 +65,8 @@ public class UcenterIndexController {
 		messageQueryModel.setIsReadEQ(false);
 		model.addAttribute("unreadMessageCount", messageService.count(messageQueryModel));
 		
+		model.addAttribute("orderInConut", orderService.count(OrderQueryModel.builder().userIdEQ(userId).build()));
+		model.addAttribute("orderOutConut", orderService.count(OrderQueryModel.builder().sellerIdEQ(userId).build()));
 		return "ucenter/index";
 	}
 	

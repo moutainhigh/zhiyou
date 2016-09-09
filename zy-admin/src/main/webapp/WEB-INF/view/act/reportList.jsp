@@ -1,7 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 <style>
-  img {
+  .imagescan {
+    cursor: pointer;
+    width : 80px; height: 80px;
+  }
+  .mr-10 {
+    margin-left: 10px;
+  }
+  .text {
+    width: 320px; height: 100px;
+    overflow: hidden; 
+    text-overflow:ellipsis; 
+    white-space:nowrap;
     cursor: pointer;
   }
 </style>
@@ -125,15 +136,19 @@
         columns: [
           {
             data: '',
-            title: '用户信息',
+            title: '客户信息',
             render: function (data, type, full) {
               return '<p>姓名: ' + full.realname + '</p><p>性别: ' + full.gender + '</p><p>年龄: ' + full.age + '</p>';
             }
           },
           {
             data: 'text',
-            title: '评论',
-            orderable: false
+            title: '客户使用心得',
+            orderable: false,
+            width: '320px',
+            render : function (data, type, full) {
+              return '<div class="text" title=' + data + '>' + data +  '</div>';
+            }
           },
           {
             data: 'reportResult',
@@ -142,55 +157,14 @@
           },
           {
             data: 'image1Thumbnail',
-            title: '图片1',
+            title: '图片',
             orderable: false,
             render: function (data, type, full) {
-              return '<img class="imagescan" data-url="' + full.image1Big + '" src="' + data + '" style="width: 80px; height: 80px;">';
+              return '<img class="imagescan mr-10" data-url="' + full.image1Big + '" src="' + full.image1Thumbnail + '" >'
+              		+'<img class="imagescan mr-10" data-url="' + full.image2Big + '" src="' + full.image2Thumbnail + '" >'
+              		+'<img class="imagescan mr-10" data-url="' + full.image3Big + '" src="' + full.image3Thumbnail + '" >';
             }
           },
-          {
-            data: 'image2Thumbnail',
-            title: '图片2',
-            orderable: false,
-            render: function (data, type, full) {
-              return '<img class="imagescan" data-url="' + full.image2Big + '" src="' + data + '" style="width: 80px; height: 80px;">';
-            }
-          },
-          {
-            data: 'image3Thumbnail',
-            title: '图片3',
-            orderable: false,
-            render: function (data, type, full) {
-              return '<img class="imagescan" data-url="' + full.image3Big + '" src="' + data + '" style="width: 80px; height: 80px;">';
-            }
-          },
-          /*{
-            data: 'image4Thumbnail',
-            title: '图片4',
-            orderable: false,
-            width: '100px',
-            render: function (data, type, full) {
-              return '<img class="imagescan" data-url="' + data + '" src="' + data + '" style="width: 80px; height: 80px;">';
-            }
-          },
-          {
-            data: 'image5Thumbnail',
-            title: '图片5',
-            orderable: false,
-            width: '100px',
-            render: function (data, type, full) {
-              return '<img class="imagescan" data-url="' + data + '" src="' + data + '" style="width: 80px; height: 80px;">';
-            }
-          },
-          {
-            data: 'image6Thumbnail',
-            title: '图片6',
-            orderable: false,
-            width: '100px',
-            render: function (data, type, full) {
-              return '<img class="imagescan" data-url="' + data + '" src="' + data + '" style="width: 80px; height: 80px;">';
-            }
-          },*/
           {
             data: 'preConfirmStatus',
             title: '预审核状态',
@@ -266,12 +240,21 @@
         ]
       }
     });
+    
     $('#dataTable').on('click', '.imagescan', function () {
       var url = $(this).attr('data-url');
       $.imagescan({
         url: url
       });
     });
+    
+    $('#dataTable').on('click', '.text', function() {
+      var text = $(this).text();
+      if(text != '') {
+        layer.alert($(this).text());
+      }
+    })
+    
   });
 
 </script>

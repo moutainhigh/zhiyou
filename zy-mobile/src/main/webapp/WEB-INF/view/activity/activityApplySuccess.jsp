@@ -20,7 +20,7 @@
 
   <header class="header">
     <h1>活动报名成功</h1>
-    <a href="javascript:history.back();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/activity/${activity.id}" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
   <article>

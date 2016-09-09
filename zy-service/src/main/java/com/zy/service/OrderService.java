@@ -31,4 +31,6 @@ public interface OrderService {
 	void settleUp(Long orderId);
 
 	List<Order> findAll(OrderQueryModel build);
+	
+	long count(OrderQueryModel build);
 }
