@@ -6,6 +6,7 @@ import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
+import com.zy.component.MalComponent;
 import com.zy.entity.fnc.*;
 import com.zy.entity.usr.User;
 import com.zy.mapper.AccountMapper;
@@ -47,6 +48,9 @@ public class PaymentServiceImpl implements PaymentService {
 	private UserMapper userMapper;
 
 	@Autowired
+	private MalComponent malComponent;
+
+	@Autowired
 	private AccountMapper accountMapper;
 
 	@Autowired
@@ -83,7 +87,8 @@ public class PaymentServiceImpl implements PaymentService {
 		return paymentMapper.findBySn(sn);
 	}
 
-	public Payment create(Payment payment) {
+	@Override
+	public Payment create(@NotNull Payment payment) {
 
 		Long userId = payment.getUserId();
 		CurrencyType currencyType1 = payment.getCurrencyType1();
@@ -131,6 +136,8 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 
 		payment.setOuterSn(outerSn);
+		updateSuccess(payment);
+		onSuccess(payment);
 	}
 
 	@Override
@@ -156,11 +163,12 @@ public class PaymentServiceImpl implements PaymentService {
 
 		payment.setRemark(remark);
 		payment.setOperatorId(operatorId);
-		successFinal(payment);
+		updateSuccess(payment);
+		onSuccess(payment);
 
 	}
 
-	private void successFinal(Payment payment) {
+	private void updateSuccess(Payment payment) {
 
 		payment.setPaymentStatus(Payment.PaymentStatus.已支付);
 		payment.setPaidTime(new Date());
@@ -179,6 +187,14 @@ public class PaymentServiceImpl implements PaymentService {
 
 		if (currencyType2 != null) {
 			fncComponent.recordAccountLog(sysUserId, "支付成功", currencyType2, payment.getAmount2(), AccountLog.InOut.收入, payment, userId);
+		}
+	}
+
+	private void onSuccess(Payment payment) {
+		Payment.PaymentType paymentType = payment.getPaymentType();
+		Long refId = payment.getRefId();
+		if (paymentType == Payment.PaymentType.订单支付) {
+			malComponent.successOrder(refId);
 		}
 	}
 
@@ -240,12 +256,10 @@ public class PaymentServiceImpl implements PaymentService {
 		if (paymentMapper.update(payment) == 0) {
 			throw new ConcurrentException();
 		}
+
+		onSuccess(payment);
 	}
 
-	@Override
-	public List<Payment> findByBizNameAndBizName(@NotBlank String bizName, @NotBlank String bizSn) {
-		return paymentMapper.findByBizNameAndBizSn(bizName, bizSn);
-	}
 
 	@Override
 	public void cancel(@NotNull Long id) {
@@ -264,7 +278,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public void refund(Long id) {
+	public void refund(@NotNull Long id) {
 		throw new BizException(BizCode.ERROR, "暂不支持退款");
 	}
 

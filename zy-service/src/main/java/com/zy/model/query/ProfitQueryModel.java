@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.util.Date;
+import com.zy.entity.fnc.Profit.ProfitType;
 
 @Getter
 @Setter
@@ -28,7 +29,9 @@ public class ProfitQueryModel implements Serializable {
 
 	private Date createdTimeLT;
 
-	private String bizNameEQ;
+	private ProfitType profitTypeEQ;
+
+	private Long refIdEQ;
 
 	private Integer pageNumber;
 
@@ -84,14 +87,14 @@ public class ProfitQueryModel implements Serializable {
 	static {
 		fieldNames.add("currencyType");
 		fieldNames.add("amount");
-		fieldNames.add("bizName");
-		fieldNames.add("bizSn");
 		fieldNames.add("createdTime");
 		fieldNames.add("remark");
 		fieldNames.add("id");
 		fieldNames.add("sn");
+		fieldNames.add("refId");
 		fieldNames.add("title");
 		fieldNames.add("userId");
+		fieldNames.add("profitType");
 	}
 
 }

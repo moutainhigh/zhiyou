@@ -34,10 +34,10 @@
 <div class="row">
   <div class="col-md-12">
     <!-- BEGIN VALIDATION STATES-->
-    <div class="portlet box green">
+    <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-plus-circle"></i><span> 标签新增</span>
+          <i class="icon-tag"></i><span> 标签新增</span>
         </div>
       </div>
       <div class="portlet-body form">
@@ -67,16 +67,18 @@
             </div>
             
           </div>
+          
           <div class="form-actions fluid">
             <div class="col-md-offset-3 col-md-9">
               <button type="submit" class="btn green">
-                <i class="fa fa-plus"></i> 保存
+                <i class="fa fa-save"></i> 保存
               </button>
               <button class="btn default" data-href="${ctx}/tag">
-                <i class="fa fa-arrow-left"></i> 返回
+                <i class="fa fa-chevron-left"></i> 返回
               </button>
             </div>
           </div>
+
         </form>
         <!-- END FORM-->
       </div>

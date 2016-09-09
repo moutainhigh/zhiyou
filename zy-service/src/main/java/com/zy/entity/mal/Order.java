@@ -31,6 +31,7 @@ import java.util.Date;
 		collectionViews = {
 				@CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderAdminFullVo"}, elementGroup = "OrderItemAdminVo"),
 				@CollectionView(name = "payments", type = ArrayList.class, groups = {"OrderAdminFullVo"}, elementGroup = "PaymentAdminVo"),
+				@CollectionView(name = "profits", type = ArrayList.class, groups = {"OrderAdminFullVo"}, elementGroup = "ProfitAdminVo"),
 				@CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderListVo", "OrderDetailVo"}, elementGroup = "OrderItemVo")
 		},
 		views = {

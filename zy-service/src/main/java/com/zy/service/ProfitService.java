@@ -14,6 +14,6 @@ public interface ProfitService {
 	
 	List<Profit> findAll(ProfitQueryModel profitQueryModel);
 	
-	Profit grant(Long userId, String bizName, String title, CurrencyType currencyType, BigDecimal amount, String remark);
+	Profit grant(Long userId, String title, CurrencyType currencyType, BigDecimal amount);
 	
 }

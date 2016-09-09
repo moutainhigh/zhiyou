@@ -4,14 +4,17 @@ import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.mapper.ProfitMapper;
 import com.zy.model.query.ProfitQueryModel;
 import com.zy.service.ProfitService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -47,12 +50,9 @@ public class ProfitServiceImpl implements ProfitService {
 	}
 
 
-
-
-
 	@Override
-	public Profit grant(Long userId, String bizName, String title, CurrencyType currencyType, BigDecimal amount, String remark) {
-		return fncComponent.grantProfit(userId, bizName, title, currencyType, amount, remark);
+	public Profit grant(Long userId, String title, CurrencyType currencyType, BigDecimal amount) {
+		return fncComponent.createProfitAndRecordAccountLog(userId, ProfitType.补偿, null, title, currencyType, amount);
 	}
 
 }

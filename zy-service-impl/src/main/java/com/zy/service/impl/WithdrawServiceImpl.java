@@ -1,33 +1,39 @@
 package com.zy.service.impl;
 
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
-import com.zy.entity.fnc.*;
+import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.AccountLog.InOut;
+import com.zy.entity.fnc.BankCard;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Withdraw;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
 import com.zy.extend.SKWxMpService;
 import com.zy.model.BizCode;
 import com.zy.model.query.WithdrawQueryModel;
 import com.zy.service.WithdrawService;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Date;
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.*;
-import static com.zy.model.Constants.BIZ_NAME_WITHDRAW;
 
 @Service
 @Validated
@@ -147,11 +153,13 @@ public class WithdrawServiceImpl implements WithdrawService {
 
 		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw, withdraw.getUserId());
 
-		BigDecimal fee = withdraw.getFee();
+		/*BigDecimal fee = withdraw.getFee();
 		if (fee.compareTo(zero) > 0) {
 			String title = "提现单" + withdraw.getSn() + "收益";
 			Profit profit = fncComponent.createProfit(BIZ_NAME_WITHDRAW, currencyType, title, sysUserId, fee, null);
-		}
+		}*/
+		
+		// TODO 暂不处理提现手续费收益
 	}
 
 	@Override

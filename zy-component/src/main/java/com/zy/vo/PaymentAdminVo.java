@@ -4,6 +4,7 @@ import io.gd.generator.annotation.Field;
 import com.zy.entity.fnc.PayType;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Payment.PaymentType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,10 +26,10 @@ public class PaymentAdminVo implements Serializable {
 	private String title;
 	@Field(label = "支付方式")
 	private PayType payType;
-	@Field(label = "业务类型")
-	private String bizName;
-	@Field(label = "业务sn")
-	private String bizSn;
+	@Field(label = "支付单类型")
+	private PaymentType paymentType;
+	@Field(label = "关联业务id")
+	private Long refId;
 	@Field(label = "下单时间")
 	private Date createdTime;
 	@Field(label = "过期时间")

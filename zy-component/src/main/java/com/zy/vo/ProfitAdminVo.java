@@ -2,6 +2,7 @@ package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
 import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Profit.ProfitType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,10 +28,10 @@ public class ProfitAdminVo implements Serializable {
 	private BigDecimal amount;
 	@Field(label = "创建时间")
 	private Date createdTime;
-	@Field(label = "业务名")
-	private String bizName;
-	@Field(label = "业务sn")
-	private String bizSn;
+	@Field(label = "收益单类型")
+	private ProfitType profitType;
+	@Field(label = "关联业务id")
+	private Long refId;
 	@Field(label = "备注")
 	private String remark;
 
