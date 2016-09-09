@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 import static com.zy.util.GcUtils.getThumbnail;
 import static java.util.Objects.isNull;
-import static org.apache.commons.lang3.time.DateFormatUtils.format;
+import static com.zy.util.GcUtils.formatDate;
 
 @Component
 public class ActivityComponent {
@@ -66,13 +66,13 @@ public class ActivityComponent {
 		Date startTime = activity.getStartTime();
 		Date endTime = activity.getEndTime();
 		if(applyDeadline != null) {
-			activityAdminFullVo.setApplyDeadlineLabel(format(applyDeadline, shortFmt));
+			activityAdminFullVo.setApplyDeadlineLabel(formatDate(applyDeadline, shortFmt));
 		}
 		if(startTime != null) {
-			activityAdminFullVo.setStartTimeLabel(format(startTime, shortFmt));
+			activityAdminFullVo.setStartTimeLabel(formatDate(startTime, shortFmt));
 		}
 		if(endTime != null) {
-			activityAdminFullVo.setEndTimeLabel(format(endTime, shortFmt));
+			activityAdminFullVo.setEndTimeLabel(formatDate(endTime, shortFmt));
 		}
 		activityAdminFullVo.setStatus(buildStatus(applyDeadline, startTime, endTime));
 
@@ -87,7 +87,7 @@ public class ActivityComponent {
 					if (inviterId != null) {
 						activityApplyAdminVo.setInviter(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(inviterId)));
 					}
-					activityApplyAdminVo.setAppliedTimeLabel(format(activityApply.getAppliedTime(), shortFmt));
+					activityApplyAdminVo.setAppliedTimeLabel(formatDate(activityApply.getAppliedTime(), shortFmt));
 					return activityApplyAdminVo;
 				}).collect(Collectors.toList()));
 
@@ -98,7 +98,7 @@ public class ActivityComponent {
 					BeanUtils.copyProperties(activityCollect, activityCollectAdminVo);
 					Long userId = activityCollect.getUserId();
 					activityCollectAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(userId)));
-					activityCollectAdminVo.setCollectedTimeLabel(format(activityCollect.getCollectedTime(), shortFmt));
+					activityCollectAdminVo.setCollectedTimeLabel(formatDate(activityCollect.getCollectedTime(), shortFmt));
 					return activityCollectAdminVo;
 				}).collect(Collectors.toList()));
 
@@ -109,7 +109,7 @@ public class ActivityComponent {
 					BeanUtils.copyProperties(activity, activitySignInAdminVo);
 					Long userId = activitySignIn.getUserId();
 					activitySignInAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(userId)));
-					activitySignInAdminVo.setSignedInTimeLabel(format(activitySignInAdminVo.getSignedInTime(), shortFmt));
+					activitySignInAdminVo.setSignedInTimeLabel(formatDate(activitySignInAdminVo.getSignedInTime(), shortFmt));
 					return activitySignInAdminVo;
 				}).collect(Collectors.toList()));
 
@@ -142,16 +142,16 @@ public class ActivityComponent {
 		Date startTime = activity.getStartTime();
 		Date endTime = activity.getEndTime();
 		if(applyDeadline != null) {
-			activityAdminVo.setApplyDeadlineLabel(format(applyDeadline, shortFmt));
-			activityAdminVo.setApplyDeadlineFormatted(format(applyDeadline, fullFmt));
+			activityAdminVo.setApplyDeadlineLabel(formatDate(applyDeadline, shortFmt));
+			activityAdminVo.setApplyDeadlineFormatted(formatDate(applyDeadline, fullFmt));
 		}
 		if(startTime != null) {
-			activityAdminVo.setStartTimeLabel(format(startTime, shortFmt));
-			activityAdminVo.setStartTimeFormatted(format(startTime, fullFmt));
+			activityAdminVo.setStartTimeLabel(formatDate(startTime, shortFmt));
+			activityAdminVo.setStartTimeFormatted(formatDate(startTime, fullFmt));
 		}
 		if(endTime != null) {
-			activityAdminVo.setEndTimeLabel(format(endTime, shortFmt));
-			activityAdminVo.setEndTimeFormatted(format(endTime, fullFmt));
+			activityAdminVo.setEndTimeLabel(formatDate(endTime, shortFmt));
+			activityAdminVo.setEndTimeFormatted(formatDate(endTime, fullFmt));
 		}
 		activityAdminVo.setStatus(buildStatus(applyDeadline, startTime, endTime));
 		return activityAdminVo;
@@ -175,13 +175,13 @@ public class ActivityComponent {
 		Date startTime = activity.getStartTime();
 		Date endTime = activity.getEndTime();
 		if(!isNull(applyDeadline)) {
-			activityDetailVo.setApplyDeadlineLabel(format(applyDeadline, SIMPLE_TIME_PATTERN));
+			activityDetailVo.setApplyDeadlineLabel(formatDate(applyDeadline, SIMPLE_TIME_PATTERN));
 		}
 		if(!isNull(startTime)) {
-			activityDetailVo.setStartTimeLabel(format(activity.getStartTime(), SIMPLE_TIME_PATTERN));
+			activityDetailVo.setStartTimeLabel(formatDate(activity.getStartTime(), SIMPLE_TIME_PATTERN));
 		}
 		if(!isNull(endTime)) {
-			activityDetailVo.setEndTimeLabel(format(activity.getEndTime(), SIMPLE_TIME_PATTERN));
+			activityDetailVo.setEndTimeLabel(formatDate(activity.getEndTime(), SIMPLE_TIME_PATTERN));
 		}
 		activityDetailVo.setStatus(buildStatus(applyDeadline, startTime, endTime));
 		
@@ -216,13 +216,13 @@ public class ActivityComponent {
 		Date startTime = activity.getStartTime();
 		Date endTime = activity.getEndTime();
 		if(!isNull(applyDeadline)) {
-			activityListVo.setApplyDeadlineLabel(format(applyDeadline, SIMPLE_TIME_PATTERN));
+			activityListVo.setApplyDeadlineLabel(formatDate(applyDeadline, SIMPLE_TIME_PATTERN));
 		}
 		if(!isNull(startTime)) {
-			activityListVo.setStartTimeLabel(format(activity.getStartTime(), SIMPLE_TIME_PATTERN));
+			activityListVo.setStartTimeLabel(formatDate(activity.getStartTime(), SIMPLE_TIME_PATTERN));
 		}
 		if(!isNull(endTime)) {
-			activityListVo.setEndTimeLabel(format(activity.getEndTime(), SIMPLE_TIME_PATTERN));
+			activityListVo.setEndTimeLabel(formatDate(activity.getEndTime(), SIMPLE_TIME_PATTERN));
 		}
 		activityListVo.setStatus(buildStatus(applyDeadline, startTime, endTime));
 		return activityListVo;

@@ -30,10 +30,6 @@ public class OrderQueryModel implements Serializable {
 
 	private Long[] sellerIdIN;
 
-	private Long parentIdEQ;
-
-	private Long[] parentIdIN;
-
 	private OrderStatus orderStatusEQ;
 
 	private Boolean isSettledUpEQ;
@@ -118,7 +114,6 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("paidTime");
 		fieldNames.add("userId");
 		fieldNames.add("version");
-		fieldNames.add("parentId");
 		fieldNames.add("expiredTime");
 		fieldNames.add("receiverRealname");
 		fieldNames.add("logisticsName");

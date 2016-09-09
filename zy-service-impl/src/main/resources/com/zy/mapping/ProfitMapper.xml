@@ -11,12 +11,13 @@
 		<result column="amount" property="amount" />
 		<result column="created_time" property="createdTime" />
 		<result column="biz_name" property="bizName" />
+		<result column="biz_sn" property="bizSn" />
 		<result column="remark" property="remark" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.Profit" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_profit` (user_id,sn,title,currency_type,amount,created_time,biz_name,remark)
-	  values (#{userId},#{sn},#{title},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount},#{createdTime},#{bizName},#{remark})
+	  insert into `fnc_profit` (user_id,sn,title,currency_type,amount,created_time,biz_name,biz_sn,remark)
+	  values (#{userId},#{sn},#{title},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount},#{createdTime},#{bizName},#{bizSn},#{remark})
 	</insert>
 
 	<delete id="delete">
@@ -33,6 +34,7 @@
 			amount = #{amount},
 			created_time = #{createdTime},
 			biz_name = #{bizName},
+			biz_sn = #{bizSn},
 			remark = #{remark},
 		</set>
 		where id = #{id}
@@ -50,6 +52,7 @@
 					<when test="field == 'amount'">amount = #{profit.amount},</when>
 					<when test="field == 'createdTime'">created_time = #{profit.createdTime},</when>
 					<when test="field == 'bizName'">biz_name = #{profit.bizName},</when>
+					<when test="field == 'bizSn'">biz_sn = #{profit.bizSn},</when>
 					<when test="field == 'remark'">remark = #{profit.remark},</when>
 				</choose>
 				</foreach>
@@ -59,14 +62,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,sn,title,currency_type,amount,created_time,biz_name,remark
+		id,user_id,sn,title,currency_type,amount,created_time,biz_name,biz_sn,remark
 		from `fnc_profit`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
 		select
-		id,user_id,sn,title,currency_type,amount,created_time,biz_name,remark
+		id,user_id,sn,title,currency_type,amount,created_time,biz_name,biz_sn,remark
 		from `fnc_profit`
 		<where>
 			<if test="bizNameEQ != null">

@@ -85,6 +85,7 @@ public class ProfitQueryModel implements Serializable {
 		fieldNames.add("currencyType");
 		fieldNames.add("amount");
 		fieldNames.add("bizName");
+		fieldNames.add("bizSn");
 		fieldNames.add("createdTime");
 		fieldNames.add("remark");
 		fieldNames.add("id");

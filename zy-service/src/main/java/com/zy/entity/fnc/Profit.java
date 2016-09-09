@@ -1,9 +1,5 @@
 package com.zy.entity.fnc;
 
-import static io.gd.generator.api.query.Predicate.EQ;
-import static io.gd.generator.api.query.Predicate.GTE;
-import static io.gd.generator.api.query.Predicate.IN;
-import static io.gd.generator.api.query.Predicate.LT;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -11,10 +7,9 @@ import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,11 +17,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
+import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
 @Table(name = "fnc_profit")
@@ -82,6 +77,12 @@ public class Profit implements Serializable {
 	@Field(label = "业务名")
 	@View
 	private String bizName;
+
+	@NotBlank
+	@Column(length = 60)
+	@Field(label = "业务sn")
+	@View
+	private String bizSn;
 
 	@Field(label = "备注")
 	@View

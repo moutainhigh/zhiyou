@@ -64,7 +64,12 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create(Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		
-		checkAppearance(principal.getUserId(), redirectAttributes);
+		Appearance appearance = appearanceService.findByUserId(principal.getUserId());
+		if(appearance == null || appearance.getConfirmStatus() != ConfirmStatus.已通过) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成实名认证"));
+			return "redirect:/u/userInfo";
+		}
+		model.addAttribute("appearance", appearance);
 		
 		List<Bank> banks = cacheSupport.get(Constants.CACHE_NAME_BANK, CACHE_KEY_BANK);
 		if(banks == null) {
@@ -79,12 +84,16 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(BankCard bankCard, Model model, Principal principal, RedirectAttributes redirectAttributes) {
 		
-		checkAppearance(principal.getUserId(), redirectAttributes);
-		
 		Appearance appearance = appearanceService.findByUserId(principal.getUserId());
 		if(appearance == null || appearance.getConfirmStatus() != ConfirmStatus.已通过) {
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您还没有完成实名认证过"));
-			return "redirect:/u/userInfo";
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成实名认证"));
+			return "redirect:/u/bankCard";
+		}
+		if(!bankCard.getRealname().equals(appearance.getRealname())) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("只能添加您本人开户的银行卡"));
+			bankCard.setRealname(appearance.getRealname());
+			model.addAttribute("bankCard", bankCardComponent.buildVo(bankCard));
+			return "redirect:/u/bankCard/create";
 		}
 		
 		try {
@@ -101,8 +110,6 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	
 	@RequestMapping("/{id}")
 	public String edit(Principal principal, @PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-		
-		checkAppearance(principal.getUserId(), redirectAttributes);
 		
 		BankCard bankCard = bankCardService.findOne(id);
 		if(bankCard != null) {
@@ -126,12 +133,10 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public String edit(BankCard bankCard, Model model, Principal principal, RedirectAttributes redirectAttributes) {
 		
-		checkAppearance(principal.getUserId(), redirectAttributes);
-		
 		Long bankCardId = bankCard.getId();
 		BankCard persistence = bankCardService.findOne(bankCardId);
 		if (!persistence.getUserId().equals(principal.getUserId())) {
-			throw new UnauthorizedException("权限不足只能编辑自己的银行卡");
+			throw new UnauthorizedException("权限不足，只能编辑自己的银行卡");
 		}
 		
 		try {
@@ -173,12 +178,4 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 		return ResultBuilder.result(bankCardList);
 	}
 
-	private String checkAppearance(Long userId, RedirectAttributes redirectAttributes) {
-		Appearance appearance = appearanceService.findByUserId(userId);
-		if(appearance == null || appearance.getConfirmStatus() != ConfirmStatus.已通过) {
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您还没有完成实名认证过"));
-			return "redirect:/u/userInfo";
-		}
-		return null;
-	}
 }

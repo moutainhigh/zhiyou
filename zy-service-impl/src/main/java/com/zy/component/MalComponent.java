@@ -63,7 +63,7 @@ public class MalComponent {
 	}
 
 	public Long calculateSellerId(User.UserRank userRank, long quantity, Long parentId) {
-		// TODO 实现
+
 		return parentId;
 	}
 

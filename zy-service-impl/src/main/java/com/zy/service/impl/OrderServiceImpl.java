@@ -111,6 +111,13 @@ public class OrderServiceImpl implements OrderService {
 		long quantity = orderCreateDto.getQuantity();
 
 		Long sellerId = malComponent.calculateSellerId(userRank, quantity, parentId);
+		User seller = userMapper.findOne(sellerId);
+		Boolean isPlatformDeliver;
+		if (seller.getUserType() == User.UserType.平台) {
+			isPlatformDeliver = true;
+		} else {
+			isPlatformDeliver = false;
+		}
 
 		BigDecimal price = malComponent.getPrice(productId, user.getUserRank(), quantity);
 		BigDecimal amount = price.multiply(new BigDecimal(quantity));
@@ -120,6 +127,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setAmount(amount);
 		order.setCreatedTime(new Date());
 		order.setIsSettledUp(false);
+		order.setIsPlatformDeliver(isPlatformDeliver);
 		order.setReceiverAreaId(address.getAreaId());
 		order.setReceiverProvince(address.getProvince());
 		order.setReceiverCity(address.getCity());

@@ -71,6 +71,12 @@
       setBank(bank);
     });
     
+    $('#btnDelete').click(function() {
+      if (window.confirm('您确定要删除该银行卡吗?') == 1) {
+        location.href = '${ctx}/u/bankCard/delete/${address.id}';
+      }
+    });
+    
   });
   
   function showBankList() {
@@ -122,6 +128,7 @@
   <header class="header">
     <h1>修改银行卡</h1>
     <a href="javascript:history.back();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="javascript:;" id="btnDelete" class="button-right"><i class="fa fa-trash"></i></a>
   </header>
   <article class="bank-create">
     <form id="bankForm" class="valid-form" action="${ctx}/u/bankCard/edit" method="post">
@@ -161,7 +168,7 @@
           <div class="list-text">设为默认银行卡</div>
           <div class="list-unit form-switch">
             <input type="hidden" name="_isDefault" value="false">
-            <input type="checkbox" id="isDefault" name="isDefault" value="true" <c:if test="${bankCard.isDefault}"> checked="checked"</c:if>>
+            <input type="checkbox" id="isDefault" name="isDefault" value="true"<c:if test="${bankCard.isDefault}"> checked="checked"</c:if>>
             <label class="i-switch" for="isDefault"></label>
           </div>
         </div>

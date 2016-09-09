@@ -1,6 +1,6 @@
 package com.zy.component;
 
-import static org.apache.commons.lang3.time.DateFormatUtils.format;
+import static com.zy.util.GcUtils.formatDate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,6 @@ import com.zy.service.OrderItemService;
 import com.zy.util.GcUtils;
 import com.zy.vo.OrderAdminVo;
 import com.zy.vo.OrderDetailVo;
-import com.zy.vo.OrderItemAdminVo;
 import com.zy.vo.OrderItemVo;
 import com.zy.vo.OrderListVo;
 
@@ -32,22 +31,17 @@ public class OrderComponent {
 		OrderAdminVo orderAdminVo = new OrderAdminVo();
 		BeanUtils.copyProperties(order, orderAdminVo);
 		
-		orderAdminVo.setCreatedTimeLabel(format(order.getCreatedTime(), TIME_LABEL));
-		orderAdminVo.setExpiredTimeLabel(format(order.getExpiredTime(), TIME_LABEL));
-		orderAdminVo.setPaidTimeLabel(format(order.getPaidTime(), TIME_LABEL));
-		orderAdminVo.setRefundedTimeLabel(format(order.getRefundedTime(), TIME_LABEL));
+		orderAdminVo.setCreatedTimeLabel(formatDate(order.getCreatedTime(), TIME_LABEL));
+		orderAdminVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), TIME_LABEL));
+		orderAdminVo.setPaidTimeLabel(formatDate(order.getPaidTime(), TIME_LABEL));
+		orderAdminVo.setRefundedTimeLabel(formatDate(order.getRefundedTime(), TIME_LABEL));
 		
-		List<OrderItem> orderItems = orderItemService.findByOrderId(order.getId());
-		List<OrderItemAdminVo> orderItemAdminVos = orderItems.stream().map(v ->{
-			OrderItemAdminVo orderItemAdminVo = new OrderItemAdminVo();
-			BeanUtils.copyProperties(v, orderItemAdminVo);
-			
-			orderItemAdminVo.setImageThumbnail(GcUtils.getThumbnail(v.getImage()));
-			orderItemAdminVo.setAmount(v.getAmount());
-			orderItemAdminVo.setPrice(v.getPrice());
-			return orderItemAdminVo;
-		}).collect(Collectors.toList());
-		orderAdminVo.setOrderItems((ArrayList<OrderItemAdminVo>) orderItemAdminVos);
+		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
+		if (orderItem != null) {
+			orderAdminVo.setImageThumbnail(GcUtils.getThumbnail(orderItem.getImage()));
+			orderAdminVo.setPrice(orderItem.getPrice());
+			orderAdminVo.setQuantity(orderItem.getQuantity());
+		}
 		return orderAdminVo;
 	}
 	
@@ -56,8 +50,8 @@ public class OrderComponent {
 		OrderListVo orderListVo = new OrderListVo();
 		BeanUtils.copyProperties(order, orderListVo);
 		
-		orderListVo.setCreatedTimeLabel(format(order.getCreatedTime(), TIME_LABEL));
-		orderListVo.setExpiredTimeLabel(format(order.getExpiredTime(), TIME_LABEL));
+		orderListVo.setCreatedTimeLabel(formatDate(order.getCreatedTime(), TIME_LABEL));
+		orderListVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), TIME_LABEL));
 		orderListVo.setAmount(order.getAmount());
 		
 		List<OrderItem> orderItems = orderItemService.findByOrderId(order.getId());
@@ -79,10 +73,16 @@ public class OrderComponent {
 		OrderDetailVo orderDetailVo = new OrderDetailVo();
 		BeanUtils.copyProperties(order, orderDetailVo);
 		
-		orderDetailVo.setCreatedTimeLabel(format(order.getCreatedTime(), TIME_LABEL));
-		orderDetailVo.setExpiredTimeLabel(format(order.getExpiredTime(), TIME_LABEL));
-		orderDetailVo.setPaidTimeLabel(format(order.getPaidTime(), TIME_LABEL));
-		orderDetailVo.setRefundedTimeLabel(format(order.getRefundedTime(), TIME_LABEL));
+		orderDetailVo.setCreatedTimeLabel(formatDate(order.getCreatedTime(), TIME_LABEL));
+		if(order.getExpiredTime() != null){
+			orderDetailVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), TIME_LABEL));
+		}
+		if(order.getExpiredTime() != null){
+			orderDetailVo.setPaidTimeLabel(formatDate(order.getPaidTime(), TIME_LABEL));
+		}
+		if(order.getExpiredTime() != null){
+		orderDetailVo.setRefundedTimeLabel(formatDate(order.getRefundedTime(), TIME_LABEL));
+		}
 		orderDetailVo.setAmount(order.getAmount());
 		orderDetailVo.setRefund(order.getAmount());
 		

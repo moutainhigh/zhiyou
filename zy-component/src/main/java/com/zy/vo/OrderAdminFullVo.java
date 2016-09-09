@@ -2,6 +2,7 @@ package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
 import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.mal.Order.LogisticsFeePayType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 
 @Getter
 @Setter
-public class OrderDetailVo implements Serializable {
+public class OrderAdminFullVo implements Serializable {
 	/* 原生 */
 	@Field(label = "id")
 	private Long id;
@@ -31,14 +32,18 @@ public class OrderDetailVo implements Serializable {
 	private BigDecimal amount;
 	@Field(label = "退款金额")
 	private BigDecimal refund;
-	@Field(label = "退款备注")
-	private String refundRemark;
 	@Field(label = "买家留言")
 	private String buyerMemo;
 	@Field(label = "卖家留言")
 	private String sellerMemo;
 	@Field(label = "备注")
 	private String remark;
+	@Field(label = "是否已结算")
+	private Boolean isSettledUp;
+	@Field(label = "物流费支付类型")
+	private LogisticsFeePayType logisticsFeePayType;
+	@Field(label = "是否平台发货")
+	private Boolean isPlatformDeliver;
 	@Field(label = "发货时间")
 	private Date deliveredTime;
 	@Field(label = "物流公司名")
@@ -71,9 +76,13 @@ public class OrderDetailVo implements Serializable {
 	private String paidTimeLabel;
 	@Field(label = "退款时间")
 	private String refundedTimeLabel;
+	@Field(label = "是否物流发货")
+	private Boolean useLogisticsLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
 	@Field(label = "orderItems")
-	private List<OrderItemVo> orderItems = new ArrayList<>();
+	private List<OrderItemAdminVo> orderItems = new ArrayList<>();
+	@Field(label = "payments")
+	private List<PaymentAdminVo> payments = new ArrayList<>();
 
 }
