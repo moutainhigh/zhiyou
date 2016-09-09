@@ -27,12 +27,18 @@ import java.util.Date;
 @Getter
 @Setter
 @QueryModel
-@ViewObject(groups = { "OrderListVo", "OrderDetailVo", "OrderAdminVo" },
-	collectionViews = {
-			@CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderAdminVo"}, elementGroup = "OrderItemAdminVo"),
-			@CollectionView(name = "payments", type = ArrayList.class, groups = {"OrderAdminVo"}, elementGroup = "PaymentAdminVo"),
-			@CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderListVo", "OrderDetailVo"}, elementGroup = "OrderItemVo")
-	}
+@ViewObject(groups = {"OrderListVo", "OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"},
+		collectionViews = {
+				@CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderAdminFullVo"}, elementGroup = "OrderItemAdminVo"),
+				@CollectionView(name = "payments", type = ArrayList.class, groups = {"OrderAdminFullVo"}, elementGroup = "PaymentAdminVo"),
+				@CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderListVo", "OrderDetailVo"}, elementGroup = "OrderItemVo")
+		},
+		views = {
+				@View(name = "imageThumbnail", type = String.class, groups = {"OrderAdminVo"}),
+				@View(name = "price", type = BigDecimal.class, groups = {"OrderAdminVo"}),
+				@View(name = "quantity", type = Long.class, groups = {"OrderAdminVo"})
+		}
+
 )
 @Type(label = "订单")
 public class Order implements Serializable {
@@ -64,18 +70,12 @@ public class Order implements Serializable {
 	@Field(label = "用户id")
 	@View
 	private Long userId;
-	
-	@NotNull
-	@Query({Predicate.EQ, Predicate.IN})
-	@Field(label = "卖家id")
-	@View
-	private Long sellerId;
 
 	@NotNull
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "卖家id")
 	@View
-	private Long parentId;
+	private Long sellerId;
 
 	@NotBlank
 	@Field(label = "标题")
@@ -91,11 +91,11 @@ public class Order implements Serializable {
 	@View(name = "expiredTimeLabel", type = String.class)
 	private Date expiredTime;
 
-	@View(name = "paidTimeLabel", type = String.class, groups = { "OrderDetailVo", "OrderAdminVo" })
+	@View(name = "paidTimeLabel", type = String.class, groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	@Field(label = "支付时间")
 	private Date paidTime;
 
-	@View(name = "refundedTimeLabel", type = String.class, groups = { "OrderDetailVo", "OrderAdminVo" })
+	@View(name = "refundedTimeLabel", type = String.class, groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	@Field(label = "退款时间")
 	private Date refundedTime;
 
@@ -123,24 +123,24 @@ public class Order implements Serializable {
 	private BigDecimal amount;
 
 	@DecimalMin("0.00")
-	@View(groups = { "OrderDetailVo", "OrderAdminVo" })
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	@Field(label = "退款金额")
 	private BigDecimal refund;
 
-	@View(type = String.class, groups = { "OrderDetailVo"})
-	@View(groups = { "OrderAdminVo" })
+	@View(type = String.class, groups = {"OrderDetailVo"})
+	@View(groups = {"OrderAdminVo"})
 	@Field(label = "退款备注")
 	private String refundRemark;
 
-	@View(groups = { "OrderDetailVo", "OrderAdminVo" })
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	@Field(label = "买家留言")
 	private String buyerMemo;
-	
-	@View(groups = { "OrderDetailVo", "OrderAdminVo" })
+
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	@Field(label = "卖家留言")
 	private String sellerMemo;
-	
-	@View(groups = { "OrderDetailVo", "OrderAdminVo" })
+
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	@Field(label = "备注")
 	private String remark;
 
@@ -148,85 +148,85 @@ public class Order implements Serializable {
 	@Version
 	@Field(label = "乐观锁")
 	private Integer version;
-	
+
 	@Field(label = "是否已结算")
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderAdminVo", "OrderAdminFullVo"})
 	@NotNull
 	@Query(Predicate.EQ)
 	private Boolean isSettledUp;
 
 	@Field(label = "是否物流发货")
-	@View(name = "useLogisticsLabel", groups = {"OrderAdminVo"})
+	@View(name = "useLogisticsLabel", groups = {"OrderAdminVo", "OrderAdminFullVo"})
 	@View(groups = {"OrderAdminVo"})
 	private Boolean useLogistics;
 
 	@Field(label = "物流费支付类型")
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderAdminVo", "OrderAdminFullVo"})
 	private LogisticsFeePayType logisticsFeePayType;
 
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderAdminVo", "OrderAdminFullVo"})
 	@NotNull
 	@Field(label = "是否平台发货")
 	private Boolean isPlatformDeliver;
 
 	@View(name = "deliveredTimeLabel", type = String.class)
 	@Field(label = "发货时间")
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	private Date deliveredTime;
 
 	@Query(Predicate.LK)
 	@Field(label = "物流公司名")
 	@StringBinder
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	private String logisticsName;
 
 	@Query(Predicate.LK)
 	@Field(label = "物流单号")
 	@StringBinder
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	private String logisticsSn;
 
 	@DecimalMin("0.00")
 	@Field(label = "物流费")
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	private BigDecimal logisticsFee;
 
 	@NotNull
 	@Field(label = "收件人区域")
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	private Long receiverAreaId;
 
 	@NotBlank
 	@StringBinder
 	@Field(label = "收件人姓名")
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	private String receiverRealname;
 
 	@NotBlank
 	@StringBinder
 	@Field(label = "收件人电话")
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	private String receiverPhone;
 
 	@NotBlank
 	@Field(label = "收件人省份")
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo", "OrderAdminFullVo"})
 	private String receiverProvince;
 
 	@NotBlank
 	@Field(label = "收件人城市")
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	private String receiverCity;
 
 	@NotBlank
 	@Field(label = "收件人地区")
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	private String receiverDistrict;
 
 	@NotBlank
 	@StringBinder
 	@Field(label = "收件人详细地址")
-	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	private String receiverAddress;
 
 }
