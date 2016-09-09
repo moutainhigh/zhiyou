@@ -127,7 +127,7 @@
 <body>
   <header class="header">
     <h1>修改银行卡</h1>
-    <a href="javascript:history.back();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/bankCard" class="button-left"><i class="fa fa-angle-left"></i></a>
     <a href="javascript:;" id="btnDelete" class="button-right"><i class="fa fa-trash"></i></a>
   </header>
   <article class="bank-create">

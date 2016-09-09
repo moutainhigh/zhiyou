@@ -121,7 +121,7 @@
 <body>
   <header class="header">
     <h1>新增银行卡</h1>
-    <a href="javascript:history.back();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/bankCard" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   <article class="bank-card-create">
     <form id="bankCardForm" class="valid-form" action="${ctx}/u/bankCard/create" method="post">

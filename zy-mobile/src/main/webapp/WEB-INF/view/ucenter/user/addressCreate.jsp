@@ -71,10 +71,10 @@
   });
 </script>
 </head>
-<body class="">
+<body>
   <header class="header">
     <h1>新增收货地址</h1>
-    <a href="javascript:history.back();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/address" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   <article class="address-create">
     <form id="addressForm" class="valid-form" action="${ctx}/u/address/create" method="post">
