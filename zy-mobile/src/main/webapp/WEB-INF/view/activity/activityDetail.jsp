@@ -36,7 +36,7 @@
               messageFlash('关注成功');
               $('#btnCollect').addClass('collected').html('<i class="fa fa-heart font-orange"></i><span>已关注 (<em>' + ((parseInt($('#btnCollect').find('em').text()) || 0) + 1) + '</em>)</span>');
             }
-          } else if(result.code = 401) {
+          } else if(result.code == 401) {
             showLogin();
           }
         }
@@ -107,16 +107,6 @@
   }
   
   </c:if>
-  
-  function showLogin(){
-    $('article').hide();
-    $('#asideLogin').fadeIn();
-  }
-  
-  function hideLogin(){
-    $('article').show();
-    $('#asideLogin').fadeOut();
-  }
   
 </script>
 
@@ -260,13 +250,6 @@
   
   <aside id="asideMap" class="abs-lt size-100p bg-white hide zindex-1000">
     <a class="header-back" href="javascript:closeMap();"><i class="fa fa-angle-left"></i></a>
-  </aside>
-  
-  <aside id="asideLogin" class="abs-lt size-100p text-center hide zindex-1000" style="background-color:rgba(0, 0, 0, 0.8)">
-    <div class="abs-mm">
-      <p class="font-white fs-14 lh-30">您还没有登录，请先登录</p>
-      <a class="btn green mt-15 width-200 round-2" href="javascript:;">去授权登录</a>
-    </div>
   </aside>
   
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>

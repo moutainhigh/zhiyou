@@ -33,7 +33,18 @@ $(function() {
     //alert("XMLHttpRequest.status=" + XMLHttpRequest.status);
     switch (XMLHttpRequest.status) {
       case 401:
-        messageFlash('您还没有登录, 请先登录');
+        //messageFlash('您还没有登录, 请先登录');
+        
+        /* 未登录提示 */
+        asideHtml = '<aside id="asideLogin" class="abs-lt size-100p text-center hide zindex-1000" style="background-color:rgba(0, 0, 0, 0.8)">'
+          + '<div class="abs-mm">'
+          + '<p class="font-white fs-15 lh-30">您还没有登录，请先登录</p>'
+          + '<a class="btn green mt-15 width-200 round-2" href="javascript:;">去授权登录</a>'
+          + '</div>'
+          + '</aside>';
+        $('body').addClass('o-hidden');
+        $(asideHtml).appendTo($('body')).fadeIn(300);
+      
         break;
       case 403:
         messageShow('您没有权限执行该操作', 'error');
