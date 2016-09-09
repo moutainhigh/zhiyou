@@ -28,4 +28,6 @@ public interface PaymentService {
 
 	void cancel(Long id);
 
+	void refund(Long id);
+
 }
