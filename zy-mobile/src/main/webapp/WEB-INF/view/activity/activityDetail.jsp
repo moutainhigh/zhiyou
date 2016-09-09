@@ -228,16 +228,13 @@
       <i class="fa fa-heart-o"></i><span>关注 (<em>${activity.collectedCount}</em>)</span>
       </c:if>
     </a>
-    <c:if test="${activity.status == '报名中'}">
+    <c:if test="${activity.status == '报名中' || activity.status == '进行中'}">
     <c:if test="${isApplied}">
     <a class="flex-2 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-check"></i> 您已报名</div></a>
     </c:if>
     <c:if test="${!isApplied}">
     <a id="btnApply" class="flex-2 bg-blue fs-14 font-white" href="javascript:;">报名参与</a>
     </c:if>
-    </c:if>
-    <c:if test="${activity.status == '进行中'}">
-    <a class="flex-2 bg-orange fs-14 font-white" href="javascript:;"><div><i class="fa fa-users"></i> 活动进行中</div></a>
     </c:if>
     <c:if test="${activity.status == '报名已结束'}">
     <a class="flex-2 fs-14 disabled" href="javascript:;">报名已结束</a>
