@@ -83,7 +83,7 @@ $(function() {
 }
 </style>
 </head>
-<body class="header-fixed">
+<body>
 
   <header class="header">
     <h1>修改头像</h1>
@@ -96,7 +96,7 @@ $(function() {
         <img src="${userAvatarSmall}">
       </figure>
       <div class="btns">
-        <input type="button" class="btn-submit btn btn-block orange mt-10" value="更改头像">
+        <input type="button" class="btn btn-block orange round-2 mt-10" value="更改头像">
         <input type="file" class="input-file" id="upload" name="file" value="选择图片" accept="image/*" />
       </div>
     </form>

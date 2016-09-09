@@ -48,7 +48,7 @@
           }
         }
         if (!page.data.length || page.data.length < page.pageSize) {
-          $('.list-more').addClass('disabled').text('没有更多数据了').unbind('click', loadMore);
+          $('.list-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
         }
       }
     });
@@ -87,7 +87,7 @@
   </a>
 </script>
 </head>
-<body class="">
+<body class="header-fixed">
   <header class="header">
     <h1>检测报告</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
@@ -155,14 +155,10 @@
       </a>
       </c:forEach>
       <c:if test="${page.total > page.pageSize}">
-      <a class="list-item" href="javascript:;">
-        <div class="list-more text-center">点击加载更多</div>
-      </a>
+      <a class="list-item list-more" href="javascript:;"><span>点击加载更多</span></a>
       </c:if>
       <c:if test="${page.total <= page.pageSize}">
-      <a class="list-item" href="javascript:;">
-        <div class="list-more disabled text-center">没有更多数据了</div>
-      </a>
+      <a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>
       </c:if>
     </div>
     </c:if>

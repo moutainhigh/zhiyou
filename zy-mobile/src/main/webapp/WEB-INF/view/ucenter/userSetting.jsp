@@ -15,32 +15,32 @@
 <title>设置</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script type="text/javascript">
-	$(function() {
-		$('#isDefault').click(function(event){
-			var $this = $(this);
-			var checked = $this.is(':checked');
+  $(function() {
+    $('#isDefault').click(function(event) {
+      var $this = $(this);
+      var checked = $this.is(':checked');
 
-			$.ajax({
-				url: '${ctx}/u/userSetting/modifyIsReceiveTaskSms',
-				data: {
-					isReceiveTaskSms : checked
-				},
-				type: 'POST',
-				dataType: 'JSON',
-				success: function(result){
-					if(result.data.checked) {
-						$this.attr('checked', 'checked');
-					} else {
-						$this.removeAttr('checked');
-					}
-				},
-				error: function(){
-					$this.removeAttr('checked');
-				}
-			});
-			
-		});
-	});
+      $.ajax({
+        url : '${ctx}/u/userSetting/modifyIsReceiveTaskSms',
+        data : {
+          isReceiveTaskSms : checked
+        },
+        type : 'POST',
+        dataType : 'JSON',
+        success : function(result) {
+          if (result.data.checked) {
+            $this.attr('checked', 'checked');
+          } else {
+            $this.removeAttr('checked');
+          }
+        },
+        error : function() {
+          $this.removeAttr('checked');
+        }
+      });
+
+    });
+  });
 </script>
 </head>
 <body>
@@ -55,7 +55,7 @@
       <div class="list-item">
         <div class="list-text">接受短信提醒</div>
         <div class="list-unit form-switch">
-          <input type="checkbox" id="isDefault" name="isDefault"<c:if test="${userSetting.isReceiveTaskSms}"> checked="checked"</c:if>>
+          <input type="checkbox" id="isDefault" name="isDefault" <c:if test="${userSetting.isReceiveTaskSms}"> checked="checked"</c:if>>
           <label class="i-switch" for="isDefault"></label>
         </div>
       </div>
@@ -64,9 +64,9 @@
         <div class="list-unit">v1.1.8 Beta</div>
       </div>
     </div>
-    
+
     <div class="form-btn">
-      <a href="${ctx}/logout" class="btn btn-danger btn-block round-4">退出</a>
+      <a href="${ctx}/logout" class="btn btn-danger btn-block round-2">退出</a>
     </div>
 
   </article>

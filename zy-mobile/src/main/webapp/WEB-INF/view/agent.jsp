@@ -79,7 +79,7 @@
 </script>
 
 </head>
-<body class="product-list">
+<body>
 
   <header class="header">
     <h1>成为代理</h1>

@@ -14,14 +14,9 @@
 
 <title>活动报名成功</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<script type="text/javascript">
-  $(function() {
-
-  });
-</script>
 </head>
 
-<body class="header-fixed">
+<body>
 
   <header class="header">
     <h1>活动报名成功</h1>
@@ -39,7 +34,7 @@
       <p class="font-555 fs-14 lh-30">${activity.province}${activity.city}${activity.district}${activity.address}</p>
     </div>
     <div class="form-btn mt-30">
-      <a href="javascript:history.back();" class="btn green btn-block round-4">确 定</a>
+      <a href="javascript:history.back();" class="btn green btn-block round-2">确 定</a>
     </div>
   </article>
 

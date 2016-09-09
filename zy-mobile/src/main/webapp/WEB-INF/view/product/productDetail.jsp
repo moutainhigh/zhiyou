@@ -111,7 +111,7 @@
     
   </article>
   
-  <c:if test="${isAgent}">
+  <c:if test="${!isUpgrade && !isFirst}">
     <nav class="footer footer-nav flex">
       <%--
       <a class="flex-1 link-cart" href="${ctx}/cart">
@@ -131,13 +131,18 @@
     </nav>
   </c:if>
   
-  <c:if test="${!isAgent}">
+  <c:if test="${isFirst}">
     <nav class="footer footer-nav flex">
       <a id="btnAgent" class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">立即成为代理</a>
     </nav>
   </c:if>
+  <c:if test="${isUpgrade}">
+    <nav class="footer footer-nav flex">
+      <a id="btnAgent" class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">升级代理</a>
+    </nav>
+  </c:if>
 
   </form>
-
+  <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
 </html>

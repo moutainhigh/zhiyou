@@ -16,11 +16,6 @@
 <title>我的银行卡</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/bank.css" />
-<script type="text/javascript">
-	$(function() {
-
-	});
-</script>
 </head>
 <body class="bank-list">
   <header class="header">

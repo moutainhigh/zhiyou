@@ -30,97 +30,28 @@ img {
         columns : [ {
           data : '',
           title : '基本信息',
-          width : '120px',
-          render : function(data, type, full) {
-            return '<p>姓名:' + full.realname + '</p><p>昵称:' + full.userNickname + '</p><p>手机号:' + full.userPhone + '</p>';
-          }
-        }, {
-          data : 'score',
-          title : '颜值评分',
-          width : '80px',
-          render : function(data, type, full) {
-            if (data != null) {
-              return '<label style="font-weight: bold;">' + data + '</label>';
-            }
-            return '';
-          }
-        }, {
-          data : 'idCardImage1',
-          title : '身份证正面照片',
           orderable : false,
-          width : '100px',
           render : function(data, type, full) {
-            return '<img class="imagescan" data-url="' + data + '" src="'+ data +'" style="width: 80px; height: 80px;">';
+            return '<p>姓名:' + full.realname + '</p><p>昵称:' + full.user.nickname + '</p><p>手机号:' + full.user.phone + '</p>';
           }
         }, {
-          data : 'idCardImage2',
-          title : '身份证背面照片',
+          data : 'idCardNumber',
+          title : '身份证号'
+        }, {
+          data : 'image1Thumbnail',
+          title : '图片1',
           orderable : false,
-          width : '100px',
           render : function(data, type, full) {
-            if (data != null) {
-              return '<img class="imagescan" data-url="' + data + '" src="'+ data +'" style="width: 80px; height: 80px;">';
-            }
-            return '';
+            return '<img class="imagescan" data-url="' + full.image1 + '" src="'+ data +'" style="width: 80px; height: 80px;">';
           }
-        }, {
-          data : 'image1',
-          title : '生活照',
+        },  {
+          data : 'image2Thumbnail',
+          title : '图片2',
           orderable : false,
-          width : '100px',
           render : function(data, type, full) {
-            return '<img class="imagescan" data-url="' + data + '" src="'+ data +'" style="width: 80px; height: 80px;">';
+            return '<img class="imagescan" data-url="' + full.image2 + '" src="'+ data +'" style="width: 80px; height: 80px;">';
           }
-        }, {
-          data : 'image2',
-          title : '生活照',
-          orderable : false,
-          width : '100px',
-          render : function(data, type, full) {
-            return '<img class="imagescan" data-url="' + data + '" src="'+ data +'" style="width: 80px; height: 80px;">';
-          }
-        }, {
-          data : 'image3',
-          title : '生活照',
-          orderable : false,
-          width : '100px',
-          render : function(data, type, full) {
-            return '<img class="imagescan" data-url="' + data + '" src="'+ data +'" style="width: 80px; height: 80px;">';
-          }
-        }, {
-          data : 'image4',
-          title : '生活照',
-          orderable : false,
-          width : '100px',
-          render : function(data, type, full) {
-            if (data != null) {
-              return '<img class="imagescan" data-url="' + data + '" src="'+ data +'" style="width: 80px; height: 80px;">';
-            }
-            return '';
-          }
-        }, {
-          data : 'image5',
-          title : '生活照',
-          orderable : false,
-          width : '100px',
-          render : function(data, type, full) {
-            if (data != null) {
-              return '<img class="imagescan" data-url="' + data + '" src="'+ data +'" style="width: 80px; height: 80px;">';
-            }
-            return '';
-          }
-        }, {
-          data : 'image6',
-          title : '生活照',
-          orderable : false,
-          width : '100px',
-          render : function(data, type, full) {
-            if (data != null) {
-              return '<img class="imagescan" data-url="' + data + '" src="'+ data +'" style="width: 80px; height: 80px;">';
-            }
-            return '';
-          }
-        }, {
+        },  {
           data : 'appliedTime',
           title : '申请时间',
           orderable : false,
@@ -175,12 +106,17 @@ img {
           + "<label class='control-label col-md-3'>审核状态:</label>" + "<div class='col-md-5'><select name='confirmSelect' class='form-control' style='width: 220px'>"
           + "<option value=''>请选择审核状态</option>" + "<option value='true'>审核通过</option>" + "<option value='false'>审核拒绝</option>" + "</select></div>" + "</div>"
           + "<div class='form-group'>" + "<label class='control-label col-md-3'>审核信息:</label>"
-          + "<div class='col-md-5'><textarea class='form-control' style='width: 220px;height: 120px;' id='confirmRemark'></textarea></div>" + "</div>" + "<div class='form-group'>"
-          + "<label class='control-label col-md-3'>颜值评分:</label>" + "<div class='col-md-5'><select name='score' class='form-control' style='width: 220px'>"
-          + "<option value=''>请选择颜值评分</option>" + "<option value='10'>10分</option>" + "<option value='9'>9分</option>" + "<option value='8'>8分</option>"
-          + "<option value='7'>7分</option>" + "<option value='6'>6分</option>" + "</select></div>" + "</div>" + "</div>" + "<div class='form-actions fluid'>"
-          + "<div class='col-md-offset-3 col-md-9'>" + "<button type='button' class='btn green' onclick='submitBtn(" + id + ")'>" + "保存</button>"
-          + "<button type='button' class='btn default' onclick='closeBtn()' style='margin-left: 20px;'>" + "取消</button>" + "</div>" + "</div>" + "</form>",
+          + "<div class='col-md-5'><textarea class='form-control' style='width: 220px;height: 120px;' id='confirmRemark'></textarea></div>"
+          + "</div>" 
+          + "<div class='form-actions fluid'>"
+          + "<div class='col-md-offset-3 col-md-9'>" 
+          + "<button type='button' class='btn green' onclick='submitBtn(" + id + ")'>" 
+          + "保存</button>"
+          + "<button type='button' class='btn default' onclick='closeBtn()' style='margin-left: 20px;'>" 
+          + "取消</button>" 
+          + "</div>" 
+          + "</div>"
+          + "</form>",
       title : '颜值认证审核',
       width : 500,
       height : 360,
@@ -189,8 +125,6 @@ img {
   }
   function submitBtn(id) {
     var isSuccess = $('select[name="confirmSelect"]').val();
-    var score = $('select[name="score"]').val();
-    var reg = '^[6-10]$';
     if (isSuccess == '') {
       alert('请选择审核状态');
       return;
@@ -200,10 +134,13 @@ img {
     $.post('${ctx}/appearance/confirm', {
       id : id,
       isSuccess : isSuccess,
-      confirmRemark : confirmRemark,
-      score : score
+      confirmRemark : confirmRemark
     }, function(result) {
-      toastr.success(result.message, '提示信息');
+      if(result.code == 0) {
+        toastr.success(result.message, '提示信息');
+      } else {
+        toastr.error(result.message, '提示信息');
+      }
       $confirmDialog.close();
       grid.getDataTable().ajax.reload(null, false);
     })
@@ -219,7 +156,7 @@ img {
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/appearance">颜值认证管理</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/appearance">实名认证管理</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -230,7 +167,7 @@ img {
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-user-female"></i> 颜值认证管理
+          <i class="icon-user-female"></i> 实名认证管理
         </div>
       </div>
       <div class="portlet-body clearfix">

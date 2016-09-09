@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.zy.component.ProductComponent;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Principal;
 import com.zy.model.query.ProductQueryModel;
 import com.zy.service.ProductService;
@@ -45,12 +46,19 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String detail(@PathVariable Long id, Model model) {
+	public String detail(@PathVariable Long id, boolean isAgent, Model model) {
 		Product product = productService.findOne(id);
 		Principal principal = GcUtils.getPrincipal();
 		if(principal != null) {
 			User user = userService.findOne(principal.getUserId());
 			product.setPrice(productService.getPrice(product.getId(), user.getUserRank(), 1L));
+			if(isAgent) {
+				if(user.getUserRank() == UserRank.V0){
+					model.addAttribute("isFirst", true);
+				} else if(user.getUserRank() == UserRank.V4){
+					model.addAttribute("isUpgrade", true);
+				}
+			}
 		}
 		validate(product, NOT_NULL, "product id" + id + " not found");
 		validate(product.getIsOn(), v -> true, "product is not on");

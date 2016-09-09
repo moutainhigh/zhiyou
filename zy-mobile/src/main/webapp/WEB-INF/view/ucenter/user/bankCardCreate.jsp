@@ -167,7 +167,7 @@
       </div>
 
       <div class="form-btn">
-        <input id="btnSubmit" class="btn-submit btn orange btn-block" type="submit" value="保 存">
+        <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="保 存">
       </div>
     </form>
   </article>

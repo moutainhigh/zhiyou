@@ -18,72 +18,66 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/login.css" rel="stylesheet">
 <script type="text/javascript">
-	$(function() {
-		$('#userPasswordForm').submit(function() {
-			var oldPwd = $('#oldPwd').val();
-			var newPwd = $('#newPwd').val();
-			var rePwd = $('#rePwd').val();
-			var passwordRegex = /^\w{6,32}$/;
-			if (!oldPwd || !oldPwd.match(passwordRegex)) {
-				$.messageError('旧密码有误!');
-				return false;
-			}
-			if (!newPwd || !newPwd.match(passwordRegex)) {
-				$.messageError('新密码有误!');
-				return false;
-			}
-			if (!rePwd ) {
-				$.messageError('请确认密码!');
-				return false;
-			}
-			if (rePwd!=newPwd ) {
-				$.messageError('密码不一致,请重新确认输入!');
-				return false;
-			}
-		});
-
-		$(".login-tip").slideDown();
-		setTimeout(function() {
-			$(".login-tip").slideUp();
-		}, 3000);
-		$(".fa-times-circle").click(function() {
-			$(".login-tip").slideUp();
-		});
-	});
+  $(function() {
+    $('#userPasswordForm').submit(function() {
+      var oldPassword = $('#oldPassword').val();
+      var password = $('#password').val();
+      var password2 = $('#password2').val();
+      var passwordRegex = /^\w{6,32}$/;
+      if (!oldPassword || !oldPassword.match(passwordRegex)) {
+        $.messageError('旧密码有误!');
+        return false;
+      }
+      if (!password || !password.match(passwordRegex)) {
+        $.messageError('新密码有误!');
+        return false;
+      }
+      if (!password2) {
+        $.messageError('请输入确认密码!');
+        return false;
+      }
+      if (password2 != password) {
+        $.messageError('密码不一致,请重新确认输入!');
+        return false;
+      }
+    });
+  });
 </script>
 </head>
 <body>
-  
+
   <header class="header">
-    <h1><a class="logo" href="${ctx}/"><img src="${stccdn}/image/logo.png" alt="微信分销"></a></h1>
-    <a href="javascript:history.back();" class="icon-left fa fa-angle-left"></a>
+    <h1>修改密码</h1>
+    <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
-  <div class="page-title">
-    <h2>修改密码</h2>
-  </div>
-  <section class="form-section login">
-    <form id="userPasswordForm" action="${ctx}/u/password" method="post">
-      <div class="form-group">
-        <label class="input-icon fa fa-key" for="oldPwd"></label>
-        <input id="oldPwd" name="oldPassword" type="password" placeholder="请输入当前密码" class="form-control input">
+  <article>
+    <form id="userForm" action="${ctx}/u/password" method="post">
+    <div class="list-group">
+      <div class="list-item">
+        <i class="list-icon fa fa-key"></i>
+        <label class="list-label" for="oldPassword">原密码</label>
+        <div class="list-text">
+          <input id="oldPassword" name="oldPassword" type="password" class="form-input" value="" placeholder="请输入当前密码">
+        </div>
       </div>
-      <div class="form-group">
-        <label class="input-icon fa fa-key" for="newPwd"></label>
-        <input id="newPwd" name="password" type="password" placeholder="请输入新密码" class="form-control input">
+      <div class="list-item">
+        <i class="list-icon fa fa-key"></i>
+        <label class="list-label" for="password">新密码</label>
+        <input id="password" name="password" type="password" class="form-input" value="" placeholder="请输入新密码">
       </div>
-      <div class="form-group">
-        <label class="input-icon fa fa-key" for="rePwd"></label>
-        <input id="rePwd" name="password" type="password" placeholder="请确认密码" class="form-control input">
+      <div class="list-item">
+        <i class="list-icon fa fa-key"></i>
+        <label class="list-label" for="password2">确认密码</label>
+        <input id="password2" name="password2" type="password" class="form-input" value="" placeholder="请确认密码">
       </div>
-      <input id="btnLogin" class="btn-login btn green mt-10" type="submit" value="保 存">
+    </div>
+    <div class="form-btn">
+      <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="保 存">
+    </div>
     </form>
-  </section>
-   
+  </article>
 
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
-
- 
-   
 </html>

@@ -21,7 +21,7 @@
 </script>
 </head>
  
-<body class="header-fixed">
+<body>
 
   <header class="header">
     <h1>提现成功</h1>
@@ -36,7 +36,7 @@
         <p class="clearfix fs-14 lh-30"><span class="left font-999">提现金额</span><span class="right font-black">￥${withdraw.amount}</span></p>
       </div>
       <div class="form-btn mt-30">
-         <a href="${ctx}/u/money" class="btn green btn-block round-4">完成</a>
+         <a href="${ctx}/u/money" class="btn green btn-block round-2">完成</a>
       </div>
   </article>
   

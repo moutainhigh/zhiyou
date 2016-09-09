@@ -120,12 +120,11 @@
   border-right: 2px solid #ccc;
   transform: rotate(315deg); -webkit-transform: rotate(315deg); -moz-transform: rotate(315deg); -ms-transform: rotate(315deg); -o-transform: rotate(315deg);
 }
-
-.list-more {
-  width: 100%;
+.list-more > span {
+  display: block; width: 100%;
   color: #999; font-size: 14px; line-height: 24px; text-align: center;
 }
-.list-more.disabled {
+.list-more.disabled > span {
   color: #ccc; cursor: default;
 }
 
