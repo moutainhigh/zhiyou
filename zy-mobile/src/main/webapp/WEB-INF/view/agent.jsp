@@ -51,6 +51,7 @@
 	    messageFlash('请选择代理套餐');
 	    return false;
 	  }
+	  <c:if test="${userRank == 'V0'}">
 	  var phone = $('#phone').val();
 	  if(!phone) {
 	    messageFlash('请填写上级手机号');
@@ -59,7 +60,7 @@
 	  $.ajax({
 	    url: '${ctx}/u/agent/checkPhone',
 	    data: {
-	      phone: phone,
+	      phone: phone
 	    },
 	    type: 'POST',
 	    dataType: 'JSON',
@@ -72,6 +73,7 @@
 	      }
 	    }
 	  });
+	  </c:if>
 	  return false;
 	});
 	
@@ -89,7 +91,7 @@
   
   <div class="note note-warning mb-0">
     <p>
-      <i class="fa fa-exclamation-circle"></i>购买下列套餐产品即可成为相应代理。
+      <i class="fa fa-exclamation-circle"></i> 购买下列套餐产品即可成为相应代理。
     </p>
   </div>
   
