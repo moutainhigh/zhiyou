@@ -88,9 +88,9 @@
                   orderable : false,
                   width : '200px',
                   render : function(data, type, full) {
-                    if (full.isToBankCard) {
-                      return '<p>开户名：' + full.bankCardRealname + '</p><p>开户行：' + full.bankCardBankName + '</p><p>开户行支行：' + full.bankCardBankBranchName + '</p><p>卡号：'
-                          + full.bankCardCardNumber + '</p>';
+                    if(full.isToBankCard) {
+                      return '<p>开户名：' + full.bankCard.realname + '</p><p>开户行：' + full.bankCard.bankName + '</p><p>开户行支行：' + full.bankCard.bankBranchName + '</p>'
+                      +'<p>卡号：' + full.bankCard.cardNumber + '</p>';
                     }
                     return '';
                   }
