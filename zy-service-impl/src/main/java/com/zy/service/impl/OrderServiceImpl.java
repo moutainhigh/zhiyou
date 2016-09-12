@@ -8,6 +8,7 @@ import com.zy.component.FncComponent;
 import com.zy.component.MalComponent;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Transfer;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.LogisticsFeePayType;
 import com.zy.entity.mal.Order.OrderStatus;
@@ -23,6 +24,7 @@ import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -310,6 +312,7 @@ public class OrderServiceImpl implements OrderService {
 		OrderItem orderItem = orderItemMapper.findByOrderId(orderId).get(0);
 
 		Long quantity = orderItem.getQuantity();
+		Long productId = orderItem.getProductId();
 		Long buyerId = order.getUserId();
 		Long sellerId = order.getSellerId();
 		User buyer = userMapper.findOne(buyerId);
@@ -317,25 +320,89 @@ public class OrderServiceImpl implements OrderService {
 		UserRank buyerUserRank = buyer.getUserRank();
 		UserRank sellerUserRank = seller.getUserRank();
 
+		/* 订单收款 */
+		if (buyerUserRank != UserRank.V4) {
+			BigDecimal amount = order.getAmount();
+			if (sellerUserRank == UserRank.V4 && order.getIsPlatformDeliver()) {
+				amount = amount.subtract(malComponent.getPrice(productId, UserRank.V4, quantity).multiply(BigDecimal.valueOf(quantity))).setScale(2, BigDecimal.ROUND_HALF_UP);
+			}
+			fncComponent.createProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单收款", CurrencyType.现金, amount);
+		}
 
 		/* 销量奖 */
-		final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
 		if (buyerUserRank == UserRank.V4) {
+			final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
 			fncComponent.createProfit(buyerId, Profit.ProfitType.销量奖, orderId, "订单销量奖", CurrencyType.现金, saleBonus);
 		} else if (sellerUserRank == UserRank.V4 && order.getIsPlatformDeliver()) {
+			final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
 			fncComponent.createProfit(sellerId, Profit.ProfitType.销量奖, orderId, "订单销量奖", CurrencyType.现金, saleBonus);
 		}
 
-
-
 		/* 一级平级奖 */
-		// TODO
+		if (buyerUserRank == UserRank.V3) {
+			final BigDecimal v3FlatBonus = new BigDecimal("7.00").multiply(BigDecimal.valueOf(quantity));
+			fncComponent.createTransfer(sellerId, buyerId, Transfer.TransferType.一级平级奖, orderId, "特级发放一级平级奖", CurrencyType.现金, v3FlatBonus);
+		}
 
 
-		/* 特级平级奖 */
+		/* 特级平级奖 + 一级越级奖 */
+		if (buyerUserRank == UserRank.V4) {
+
+			int index = 0;
+			final BigDecimal v4FlatBonus1 = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
+			final BigDecimal v4FlatBonus2 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
+			final BigDecimal v4FlatBonus3 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
+
+			final BigDecimal v3SkipBonus3 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
+
+			Long parentId = buyer.getParentId();
 
 
-		/* 越级奖 */
+			Long skipBonusUserId = null;
+			boolean firstParent = true;
+
+			while(parentId != null) {
+				User parent = userMapper.findOne(parentId);
+				if (firstParent) {
+					if (parent.getUserRank() == UserRank.V3) {
+						Date lastUpgradedTime = parent.getLastUpgradedTime();
+						if (lastUpgradedTime != null && DateUtils.addMonths(lastUpgradedTime, 3).after(new Date())) {
+							skipBonusUserId = parentId;
+						}
+					}
+					firstParent = false;
+				}
+
+				if (parent.getUserRank() == UserRank.V4) {
+					index ++;
+					if (index == 0) {
+						continue;
+					} else if (index == 1) {
+						fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus1);
+						if (skipBonusUserId != null) {
+							/* 一级越级奖 */
+							fncComponent.createTransfer(parentId, skipBonusUserId, Transfer.TransferType.一级越级奖, orderId, "一级越级奖", CurrencyType.现金, v3SkipBonus3);
+						}
+
+					} else if (index == 2) {
+						fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus2);
+					} else if (index == 3) {
+						fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus3);
+					} else {
+						break;
+					}
+
+				}
+				parentId = parent.getParentId();
+
+			}
+
+		}
+
+		order.setIsSettledUp(true);
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
 
 	}
 

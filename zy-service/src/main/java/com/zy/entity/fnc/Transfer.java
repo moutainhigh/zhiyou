@@ -35,8 +35,8 @@ public class Transfer implements Serializable {
 
 	public enum TransferType {
 		数据奖,
-		平级奖,
-		越级奖
+		一级平级奖,
+		一级越级奖
 	}
 
 	public enum TransferStatus {
