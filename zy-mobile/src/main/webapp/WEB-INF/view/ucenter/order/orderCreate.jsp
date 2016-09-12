@@ -54,7 +54,7 @@
         overlayClose: false,
         callback : function(index){
           if(index == 1) {
-            layer.close(layerIndex);
+            hideAddressList();
             setAddress(address);
             return true;
           }
