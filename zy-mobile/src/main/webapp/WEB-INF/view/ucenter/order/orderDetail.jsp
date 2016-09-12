@@ -22,7 +22,6 @@
 
 <script>
   $(function() {
-    
     $('#btnPay').click(function(){
       var html = document.getElementById('dialogTpl').innerHTML;
       $('body').addClass('o-hidden').append(html);
@@ -34,13 +33,13 @@
     });
     
     $('body').on('click', '#btnPay1', function(){
-      //余额支付
       alert('余额支付');
+      location.href = '${ctx}/pay/${order.sn}?payType=0';
     });
     
     $('body').on('click', '#btnPay2', function(){
-      //线下支付
-	  alert('线下支付');
+	  alert('银行汇款');
+	  location.href = '${ctx}/pay/${order.sn}?payType=1';
     });
     
   });
@@ -53,7 +52,7 @@
       <div class="mui-dialog-title">请选择支付方式</div>
       <div class="mui-dialog-buttons">
         <div class="mui-dialog-button" data-index="1"><a id="btnPay1" class="btn orange block round-2">余额支付</a></div>
-        <div class="mui-dialog-button" data-index="2"><a id="btnPay2" class="btn green block round-2">线下支付</a></div>
+        <div class="mui-dialog-button" data-index="2"><a id="btnPay2" class="btn green block round-2">银行汇款</a></div>
         <div class="mui-dialog-button mui-dialog-button-cancle" data-index="0">取消</div>
       </div>
     </div>

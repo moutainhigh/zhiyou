@@ -11,6 +11,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,20 +23,27 @@ import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.MalComponent;
 import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.PayType;
+import com.zy.entity.fnc.Payment;
+import com.zy.entity.fnc.Payment.PaymentStatus;
+import com.zy.entity.fnc.Payment.PaymentType;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.LogisticsFeePayType;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.mal.OrderItem;
 import com.zy.entity.mal.Product;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.mapper.AddressMapper;
 import com.zy.mapper.OrderItemMapper;
 import com.zy.mapper.OrderMapper;
+import com.zy.mapper.PaymentMapper;
 import com.zy.mapper.ProductMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
+import com.zy.model.Constants;
 import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
@@ -50,6 +58,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderItemMapper orderItemMapper;
+	
+	@Autowired
+	private PaymentMapper paymentMapper;
 
 	@Autowired
 	private UserMapper userMapper;
@@ -323,5 +334,45 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public long count(OrderQueryModel build) {
 		return orderMapper.count(build);
+	}
+
+	@Override
+	public Order pay(String sn, PayType payType, String offlineImage, String offlineMemo) {
+		validate(payType, NOT_NULL, "order payType" + payType + " is null");
+		if(payType == PayType.银行汇款){
+			validate(offlineImage, NOT_BLANK, "order offlineImage" + offlineImage + " is blank");
+			validate(offlineMemo, NOT_BLANK, "order offlineMemo" + offlineMemo + " is blank");
+		}
+		Order order =  orderMapper.findBySn(sn);
+		validate(order, NOT_NULL, "order sn" + sn + " not found");
+		
+		List<Payment> payments = paymentMapper.findByRefId(order.getId());
+		Payment payment = payments.stream().filter(v -> v.getPayType() == payType)
+				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
+				.filter(v -> v.getPaymentStatus() == PaymentStatus.待支付)
+				.findFirst().orElse(null);
+		if(payment == null){
+			payment = new Payment();
+			Date date = new Date();
+			payment.setPaymentStatus(PaymentStatus.待支付);
+			payment.setPaymentType(PaymentType.订单支付);
+			payment.setPayType(payType);
+			payment.setRefId(order.getId());
+			payment.setCreatedTime(date);
+			payment.setExpiredTime(DateUtils.addMinutes(date, Constants.OFFLINE_PAY_EXPIRE_IN_MINUTES));
+			payment.setCurrencyType1(CurrencyType.现金);
+			payment.setAmount1(order.getAmount());
+			payment.setSn(ServiceUtils.generatePaymentSn());
+			payment.setTitle(order.getTitle());
+			payment.setUserId(order.getUserId());
+			payment.setVersion(0);
+			if(payType == PayType.银行汇款){
+				payment.setOfflineImage(offlineImage);
+				payment.setOfflineMemo(offlineMemo);
+				payment.setConfirmStatus(ConfirmStatus.待审核);
+			}
+		}
+		
+		return orderMapper.findOne(order.getId());
 	}
 }

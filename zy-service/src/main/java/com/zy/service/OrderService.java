@@ -1,6 +1,7 @@
 package com.zy.service;
 
 import com.zy.common.model.query.Page;
+import com.zy.entity.fnc.PayType;
 import com.zy.entity.mal.Order;
 import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
@@ -19,6 +20,8 @@ public interface OrderService {
 	Order findOne(Long id);
 	
 	Order findBySn(String sn);
+	
+	Order pay(String sn, PayType payType, String offlineImage, String offlineMemo);
 	
 	void deliver(OrderDeliverDto orderDeliverDto); // 发货
 	
