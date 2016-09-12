@@ -55,10 +55,15 @@
 		from `adm_admin`
 		<where>
 			<if test="userIdIN != null">
-				 and user_id in
+				<if test="userIdIN.length != 0">
+				and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 		</where>
 		<choose>
@@ -78,10 +83,15 @@
 		select count(*) from `adm_admin`
 		<where>
 			<if test="userIdIN != null">
-				 and user_id in
+				<if test="userIdIN.length != 0">
+				and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 		</where>
 	</select>

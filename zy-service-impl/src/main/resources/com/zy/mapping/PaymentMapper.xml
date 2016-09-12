@@ -120,22 +120,22 @@
 		from `fnc_payment`
 		<where>
 			<if test="createdTimeLT != null">
-				 and created_time &lt; #{createdTimeLT}
+				and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="paymentTypeEQ != null">
-				 and payment_type = #{paymentTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and payment_type = #{paymentTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="refIdEQ != null">
-				 and ref_id = #{refIdEQ}
+				and ref_id = #{refIdEQ}
 			</if>
 			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="createdTimeGTE != null">
-				 and created_time &gt;= #{createdTimeGTE}
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 			<if test="expiredTimeLT != null">
-				 and expired_time &lt; #{expiredTimeLT}
+				and expired_time &lt; #{expiredTimeLT}
 			</if>
 		</where>
 		<choose>
@@ -155,22 +155,22 @@
 		select count(*) from `fnc_payment`
 		<where>
 			<if test="createdTimeLT != null">
-				 and created_time &lt; #{createdTimeLT}
+				and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="paymentTypeEQ != null">
-				 and payment_type = #{paymentTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and payment_type = #{paymentTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="refIdEQ != null">
-				 and ref_id = #{refIdEQ}
+				and ref_id = #{refIdEQ}
 			</if>
 			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="createdTimeGTE != null">
-				 and created_time &gt;= #{createdTimeGTE}
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 			<if test="expiredTimeLT != null">
-				 and expired_time &lt; #{expiredTimeLT}
+				and expired_time &lt; #{expiredTimeLT}
 			</if>
 		</where>
 	</select>

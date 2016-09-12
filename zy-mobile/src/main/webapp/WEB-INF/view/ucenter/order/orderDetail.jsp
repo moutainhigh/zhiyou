@@ -23,8 +23,9 @@
   $(function() {
     $('#btnPay').click(function(){
       $.dialog({
-        title : '请选择支付方式',
+        content : '请选择支付方式',
         skin : 'footer',
+        overlayClose : true,
         btn : [ '<a id="btnPay1" class="btn orange block round-2">余额支付</a>',
               '<a id="btnPay2" class="btn green block round-2">银行汇款</a>' ],
         callback : function(index){

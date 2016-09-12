@@ -58,16 +58,21 @@
 		from `cms_notice`
 		<where>
 			<if test="noticeTypeIN != null">
-				 and notice_type in
+				<if test="noticeTypeIN.length != 0">
+				and notice_type in
 				<foreach collection="noticeTypeIN" item="item" open="(" separator="," close=")">
 				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 				</foreach>
+				</if>
+				<if test="noticeTypeIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
 			<if test="noticeTypeEQ != null">
-				 and notice_type = #{noticeTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and notice_type = #{noticeTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 		<choose>
@@ -87,16 +92,21 @@
 		select count(*) from `cms_notice`
 		<where>
 			<if test="noticeTypeIN != null">
-				 and notice_type in
+				<if test="noticeTypeIN.length != 0">
+				and notice_type in
 				<foreach collection="noticeTypeIN" item="item" open="(" separator="," close=")">
 				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 				</foreach>
+				</if>
+				<if test="noticeTypeIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
 			<if test="noticeTypeEQ != null">
-				 and notice_type = #{noticeTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and notice_type = #{noticeTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 	</select>

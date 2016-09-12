@@ -48,10 +48,7 @@
       address.addressText = $this.find('.address-text').text();
       
       $.dialog({
-        title : '您确定要设置收货地址吗？<br>' + '收件人：' + address.realname + '<br>' + '手机号：' + address.phone + '<br>' + '地址：' + address.addressText,
-        skin : 'center',
-        btn : [ '确定' ],
-        overlayClose: false,
+        content : '您确定要设置收货地址吗？<br>' + '收件人：' + address.realname + '<br>' + '手机号：' + address.phone + '<br>' + '地址：' + address.addressText,
         callback : function(index){
           if(index == 1) {
             hideAddressList();

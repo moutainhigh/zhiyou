@@ -28,25 +28,26 @@
   pointer-events: none;
 }
 .mui-dialog .mui-dialog-content {
-  color: #333; text-align: center;
+  position: relative; overflow: hidden;
+  color: #555; font-size: 14px;  text-align: center;
   pointer-events: auto;
 }
 .mui-dialog .mui-dialog-title {
   padding: 20px;
-  font-size: 15px; line-height: 24px;
+  color: #333; font-size: 15px; line-height: 24px;
   background-color: #f7f7f7;
 }
 .mui-dialog .mui-dialog-buttons {
   display: block; width: 100%; height: auto;
 }
 .mui-dialog .mui-dialog-button {
-  position: relative; padding: 10px 5px;
+  position: relative; padding: 10px 15px;
   font-size: 14px; line-height: 24px; cursor: pointer;
   background-color: #f7f7f7; border-top: 1px solid #e1e1e1;
 }
 
 .mui-dialog .mui-dialog-center {
-  display: inline-block; width: 80%; overflow: hidden;
+  display: inline-block; min-width: 70%; max-width: 90%;
   background-color: #fff; border-radius: 5px;
 }
 .mui-dialog .mui-dialog-center .mui-dialog-buttons {
@@ -54,7 +55,7 @@
 }
 .mui-dialog .mui-dialog-center .mui-dialog-button {
   -moz-box-flex: 1; box-flex: 1; -webkit-box-flex: 1;
-  border-right: 1px solid #e1e1e1;
+  padding: 10px 5px; border-right: 1px solid #e1e1e1;
 }
 .mui-dialog .mui-dialog-center .mui-dialog-button:last-child {
   border-right: none;
@@ -67,11 +68,23 @@
 .mui-dialog .mui-dialog-footer .mui-dialog-buttons {
 }
 .mui-dialog .mui-dialog-footer .mui-dialog-button {
-  display: block;
 }
 .mui-dialog .mui-dialog-footer .mui-dialog-button-cancle {
   margin-top: 5px;
   color: #777;
+}
+
+.mui-dialog .mui-dialog-message {
+  display: inline-block; max-width: 80%; bottom: -150px;
+  border-radius: 5px;
+}
+.mui-dialog .mui-dialog-message .mui-dialog-title {
+  padding: 10px 20px;
+  background-color: rgba(0, 0, 0, 0.7); border-radius: 5px;
+  color: #fff;
+}
+.mui-dialog .mui-dialog-message .mui-dialog-buttons {
+  display: none;
 }
 
 @-webkit-keyframes mui-animation-scale {

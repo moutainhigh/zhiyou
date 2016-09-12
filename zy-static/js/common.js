@@ -7,17 +7,14 @@ window.messageShow = function(message, icon) {
 };
 
 window.messageFlash = function(message, time) {
-  layer.open({
-    content : message,
-    skin : 'msg',
-    time : time || 2 // 自动关闭
-  });
+  $.dialog(message, time || 2);
 };
 
 window.messageAlert = function(message, button) {
-  layer.open({
+  $.dialog({
     content : message,
-    btn : button || '确定'
+    btn : [ button || '我知道了' ],
+    cancleBtn : false
   });
 };
 
