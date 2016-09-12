@@ -151,10 +151,8 @@
   text-align: center; vertical-align: middle;
 }
 .myui-imageview .loading {
-  position: absolute; top: 50%; left: 50%;
-  margin-left: -24px; margin-top: -24px;
-  display: block; width: 48px; height: 48px;
-  background: #000 url('image/big_loading.gif') no-repeat center center;
+  position: absolute;
+  background: #000; border: none;
 }
 .myui-imageview-wrap img {
   margin: 0 auto;
