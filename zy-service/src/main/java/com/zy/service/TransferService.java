@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TransferService {
 
-	void success(Long id, String remark);
+	void success(Long id, String transferRemark);
 	
 	Transfer findOne(Long id);
 	

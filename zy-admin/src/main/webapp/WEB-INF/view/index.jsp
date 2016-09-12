@@ -222,6 +222,11 @@
                 <a href="javascript:;" data-href="${ctx}/tag"><i class="icon-tag"></i> 标签库管理<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>
+            <shiro:hasPermission name="job:view">
+              <li>
+                <a href="javascript:;" data-href="${ctx}/job"><i class="icon-badge"></i> 职位管理<span class="badge badge-danger"></span></a>
+              </li>
+            </shiro:hasPermission>
 
           </ul>
         </li>
