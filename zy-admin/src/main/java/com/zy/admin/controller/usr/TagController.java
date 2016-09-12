@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +27,7 @@ public class TagController {
 	@Autowired
 	private TagService tagService;
 	
+	@RequiresPermissions("tag:view")
 	@RequestMapping
 	public String list(Model model) {
 		List<Tag> list = tagService.findAll();
@@ -43,11 +45,13 @@ public class TagController {
 		return "usr/tagList";
 	}
 	
+	@RequiresPermissions("tag:edit")
 	@RequestMapping(value = "/create", method = GET)
 	public String create() {
 		return "usr/tagCreate";
 	}
 	
+	@RequiresPermissions("tag:edit")
 	@RequestMapping(value = "/create", method = POST)
 	public String create(Tag tag, RedirectAttributes redirectAttributes) {
 		try {
@@ -59,6 +63,7 @@ public class TagController {
 		return "redirect:/tag";
 	}
 	
+	@RequiresPermissions("tag:edit")
 	@RequestMapping(value = "/delete/{id}", method = GET)
 	public String delete(@PathVariable Long id) {
 		tagService.delete(id);
