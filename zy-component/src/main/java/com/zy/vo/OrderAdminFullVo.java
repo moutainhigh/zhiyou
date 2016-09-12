@@ -74,6 +74,10 @@ public class OrderAdminFullVo implements Serializable {
 	private BigDecimal price;
 	@Field(label = "quantity")
 	private Long quantity;
+	@Field(label = "用户id")
+	private UserAdminSimpleVo user;
+	@Field(label = "卖家id")
+	private UserAdminSimpleVo seller;
 	@Field(label = "下单时间")
 	private String createdTimeLabel;
 	@Field(label = "过期时间")
