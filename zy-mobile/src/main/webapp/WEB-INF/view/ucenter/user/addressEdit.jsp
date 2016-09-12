@@ -67,9 +67,7 @@
 
     $('#btnDelete').click(function() {
       $.dialog({
-        title : '您确认要删除该收货地址吗?',
-        skin : 'center',
-        btn : [ '确定' ],
+        content : '您确认要删除该收货地址吗?',
         callback : function(index){
           if(index == 1) {
             location.href = '${ctx}/u/address/delete/${address.id}';

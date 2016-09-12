@@ -15,9 +15,10 @@ window.messageFlash = function(message, time) {
 };
 
 window.messageAlert = function(message, button) {
-  layer.open({
+  $.dialog({
     content : message,
-    btn : button || '确定'
+    btn : [ button || '我知道了' ],
+    cancleBtn : false
   });
 };
 

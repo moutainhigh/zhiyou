@@ -30,8 +30,8 @@
     } else {
       html += '<div class="mui-dialog-content mui-dialog-center mui-animation-scale">';
     }
-    if(options.title){
-      html +=   '<div class="mui-dialog-title">' + options.title + '</div>';
+    if(options.content){
+      html +=   '<div class="mui-dialog-title">' + options.content + '</div>';
     }
     html +=     '<div class="mui-dialog-buttons">';
     $.each(options.btn, function(index){
@@ -72,10 +72,10 @@
   };
 
   $.dialog.defaults = $.extend({}, {
-    title : '',
-    btn : ['确定'],
-    skin: 'footer',
+    content : '',
+    skin: 'center',
     overlayClose : false,
+    btn : [ '确定' ],
     cancleBtn : true,
     callback : function(index) {
       //alert(index);
