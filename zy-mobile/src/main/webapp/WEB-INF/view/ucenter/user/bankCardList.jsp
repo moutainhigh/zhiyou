@@ -45,7 +45,7 @@
     <div class="list-group">
       <a class="list-item-add list-item bd-0 mt-10" href="${ctx}/u/bankCard/create">
         <div class="list-icon"><i class="fa fa-plus-circle font-gray fs-20"></i></div>
-        <label class="list-text font-gray">绑定新银行卡</label>
+        <label class="list-text font-gray">添加新银行卡</label>
         <i class="list-arrow"></i>
       </a>
     </div>
