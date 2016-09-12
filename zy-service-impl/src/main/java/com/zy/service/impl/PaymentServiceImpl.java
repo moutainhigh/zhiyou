@@ -8,6 +8,7 @@ import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
 import com.zy.component.MalComponent;
 import com.zy.entity.fnc.*;
+import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.usr.User;
 import com.zy.mapper.AccountMapper;
 import com.zy.mapper.PaymentMapper;
@@ -166,6 +167,33 @@ public class PaymentServiceImpl implements PaymentService {
 		updateSuccess(payment);
 		onSuccess(payment);
 
+	}
+	
+	@Override
+	public void offlineFailure(@NotNull Long id, @NotNull Long operatorId, @NotBlank String remark) {
+
+		Payment payment = paymentMapper.findOne(id);
+		validate(payment, NOT_NULL, "payment id " + id + "is not found null");
+
+		User operator = userMapper.findOne(operatorId);
+		validate(operator, NOT_NULL, "operator id" + operatorId + " is not found null");
+
+		PayType payType = payment.getPayType();
+
+		if (payType != PayType.银行汇款) {
+			throw new BizException(BizCode.ERROR, "支付方式只能为银行汇款");
+		}
+
+		if (payment.getPaymentStatus() == Payment.PaymentStatus.已取消) {
+			return; // 幂等处理
+		}
+		
+		payment.setRemark(remark);
+		payment.setOperatorId(operatorId);
+		payment.setPaymentStatus(PaymentStatus.已取消);
+		if (paymentMapper.update(payment) == 0) {
+			throw new ConcurrentException();
+		}
 	}
 
 	private void updateSuccess(Payment payment) {
