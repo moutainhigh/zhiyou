@@ -136,6 +136,10 @@ public class User implements Serializable {
 	private Date vipExpiredDate;
 
 	@Column(length = 60, unique = true)
+	@Field(label = "微信openId")
 	private String openId;
+
+	@Field(label = "上次升级时间")
+	private Date lastUpgradedTime;
 
 }

@@ -60,9 +60,9 @@ public class PaymentAdminVo implements Serializable {
 	private String remark;
 	@Field(label = "外部sn")
 	private String outerSn;
-	@Field(label = "线下转账截图")
+	@Field(label = "银行汇款截图")
 	private String offlineImage;
-	@Field(label = "线下转账备注")
+	@Field(label = "银行汇款备注")
 	private String offlineMemo;
 
 	/* 扩展 */

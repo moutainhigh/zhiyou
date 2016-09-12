@@ -46,18 +46,18 @@
       address.realname = $this.find('.address-name').text();
       address.phone = $this.find('.address-phone').text();
       address.addressText = $this.find('.address-text').text();
-
-      var layerIndex = layer.open({
-        content : '您确定要设置收货地址吗？<br>' + '收件人：' + address.realname + '<br>' + '手机号：' + address.phone + '<br>' + '地址：' + address.addressText,
-        btn : [ '确认', '取消' ],
-        shadeClose : false,
-        yes : function() {
-          layer.close(layerIndex);
-          setAddress(address);
-          hideAddressList();
-        },
-        no : function() {
-          layer.close(layerIndex);
+      
+      $.dialog({
+        title : '您确定要设置收货地址吗？<br>' + '收件人：' + address.realname + '<br>' + '手机号：' + address.phone + '<br>' + '地址：' + address.addressText,
+        skin : 'center',
+        btn : [ '确定' ],
+        overlayClose: false,
+        callback : function(index){
+          if(index == 1) {
+            hideAddressList();
+            setAddress(address);
+            return true;
+          }
         }
       });
     });

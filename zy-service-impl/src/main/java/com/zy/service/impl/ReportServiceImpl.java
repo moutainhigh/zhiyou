@@ -7,6 +7,7 @@ import com.zy.component.FncComponent;
 import com.zy.entity.act.Report;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit.ProfitType;
+import com.zy.entity.fnc.Transfer;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.mapper.ReportMapper;
@@ -147,10 +148,10 @@ public class ReportServiceImpl implements ReportService {
 		}
 
 		/* 全额给一个人 */
-		fncComponent.createProfitAndRecordAccountLog(userId, ProfitType.数据奖, id, title, CurrencyType.现金, new BigDecimal("18.00")); // TODO	 写死
+		fncComponent.createProfit(userId, ProfitType.数据奖, id, title, CurrencyType.现金, new BigDecimal("18.00")); // TODO	 写死
 
 		if (!topId.equals(userId)) {
-			fncComponent.createTransfer(topId, userId, CurrencyType.现金, new BigDecimal("15.00"));
+			fncComponent.createTransfer(topId, userId, Transfer.TransferType.数据奖, id, title, CurrencyType.现金, new BigDecimal("15.00"));
 		}
 
 		report.setIsSettledUp(true);

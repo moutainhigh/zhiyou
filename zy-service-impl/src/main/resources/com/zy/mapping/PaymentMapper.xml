@@ -181,4 +181,10 @@
 		where sn = #{sn}
 	</select>
 
+	<select id="findByRefId" resultMap="baseResultMap" parameterType="long">
+		select *
+		from `fnc_payment`
+		where ref_id = #{refId}
+	</select>
+
 </mapper>

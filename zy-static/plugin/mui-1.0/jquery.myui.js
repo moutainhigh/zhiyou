@@ -7,344 +7,78 @@
 ;
 (function() {
 
-  /**
-   * loading... 遮盖效果
-   */
-  $.fn.loading = function(message) {
-    var $this = $(this);
-    $('<div class="loading-mask"></div>').css({
-      display : 'block',
-      position : 'absolute',
-      width : '100%',
-      height : '100%'
-    }).appendTo($this);
-    var $msg = $('<div class="loading-mask-msg"></div>').html(message).appendTo($this);
-    $msg.css({
-      display : 'block',
-      position : 'absolute',
-      left : ($this.outerWidth(true) - $msg.outerWidth(true)) / 2
-    });
-  };
-
-  $.loading = function(message) {
-    $('<div class="loading-mask"></div>').css({
-      display : 'block',
-      position : 'fixed',
-      width : '100%',
-      height : $(window).height()
-    }).appendTo('body');
-    $('<div class="loading-mask-msg"></div>').html(message).appendTo('body').css({
-      display : 'block',
-      position : 'fixed',
-      left : ($(document.body).outerWidth(true) - 190) / 2,
-      top : ($(window).height() - 45) / 2
-    });
-  };
-
-  $.loaded = function() {
-    $('.loading-mask').remove();
-    $('.loading-mask-msg').remove();
-  };
-
-  /**
-   * @author 将form表单元素的值序列化成对象
-   * @returns object
-   */
-  $.fn.serializeObj = function() {
-    var o = {}, arrayObj = this.serializeArray();
-    $.each(arrayObj, function(index) {
-      if (o[this['name']]) {
-        o[this['name']] = o[this['name']] + "," + this['value'];
-      } else {
-        o[this['name']] = this['value'];
-      }
-    });
-    return o;
-  };
-
-  /**
-   * Form 序列化表单元素数据
-   * 
-   * @requires jQuery
-   * @param 参数bool:
-   *          设置为true的话，会把string型"true"和"false"字符串值转化为boolean型。
-   * @return object
-   */
-  $.fn.serializeObject = function(bool) {
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-      var val = bool ? ((this.value == 'true' || this.value == 'false') ? this.value == 'true' : this.value) : this.value;
-      if (o[this.name]) {
-        if (!o[this.name].push) {
-          o[this.name] = [ o[this.name] ];
-        }
-        o[this.name].push(val || '');
-      } else {
-        o[this.name] = val || '';
-      }
-    });
-    return o;
-  };
-
-  /**
-   * @author 将form表单元素的值序列化成对象
-   * @returns object
-   */
-  $.fn.serializeObj = function() {
-    var o = {}, arrayObj = this.serializeArray();
-    $.each(arrayObj, function(index) {
-      if (o[this['name']]) {
-        o[this['name']] = o[this['name']] + "," + this['value'];
-      } else {
-        o[this['name']] = this['value'];
-      }
-    });
-    return o;
-  };
-
-  /**
-   * Form 序列化表单元素数据
-   * 
-   * @requires jQuery
-   * @param 参数bool:
-   *          设置为true的话，会把string型"true"和"false"字符串值转化为boolean型。
-   * @return object
-   */
-  $.fn.serializeObject = function(bool) {
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-      var val = bool ? ((this.value == 'true' || this.value == 'false') ? this.value == 'true' : this.value) : this.value;
-      if (o[this.name]) {
-        if (!o[this.name].push) {
-          o[this.name] = [ o[this.name] ];
-        }
-        o[this.name].push(val || '');
-      } else {
-        o[this.name] = val || '';
-      }
-    });
-    return o;
-  };
-
-  var _myui_window_index = 0; // 弹出窗口id
-  // var _myui_window_zindex = 1000; //弹出窗口index
-
-  var loadContent = function($dialog, options) {
-    var $dialogContent = $dialog.find('div.window-content');
-
-    if (options.content) {
-      $dialogContent.html(options.content);
-      // $.parser.parse($dialog);
-      options.onComplete.call($dialog, window.top.jQuery);
-    } else {
-      // var iframe = document.createElement('iframe');
-      var iframe = $('<iframe src="" frameborder="no" border="0" style="width:100%;height:100%;border:none;overflow: scroll;"></iframe>');
-      if (iframe[0].attachEvent) {
-        iframe[0].attachEvent('onload', function() {
-          options.onComplete.call($dialog, window.top.jQuery);
-        });
-      } else {
-        iframe[0].onload = function() {
-          options.onComplete.call($dialog, window.top.jQuery);
-        };
-      }
-      $dialogContent.append(iframe);
-      iframe[0].src = options.url;
-      $dialog.iframe = iframe;
-    }
-
-  };
+  var _myui_dialog_index = 0; // 弹出窗口id
 
   /**
    * 弹出窗口
    */
-  $.window = function(options) {
-    options = $.extend({}, $.window.defaults, options || {});
+  $.dialog = function(options) {
+    options = $.extend({}, $.dialog.defaults, options || {});
 
-    if (!options.url && !options.content) {
-      alert('缺少参数[url或content不能同时为空]!');
+    if (!options.btn) {
+      alert('[缺少参数]btn不能为空!');
       return;
     }
 
-    /* html */
-    options.id = options.id || ('_myui_window_' + (_myui_window_index++));
-    var html = '<div id="' + options.id + '" class="myui-window">' + '<div class="window-panel">';
-    if (options.title) {
-      html += '<div class="window-title">' + (options.icon ? '<i class="window-icon icon-' + options.icon + '"></i>' : '') + options.title + '</div>';
+    options.id = 'mui_dialog_' + (_myui_dialog_index++);
+    var html = '<aside id="' + options.id + '" class="mui-dialog" data-index="' + _myui_dialog_index++ + '">'
+      +   '<div class="mui-dialog-mask"></div>'
+      +   '<div class="mui-dialog-wrap">'
+      +     '<div class="mui-dialog-inner">';
+    if(options.skin == 'footer') {
+      html += '<div class="mui-dialog-content mui-dialog-footer mui-animation-up">';
+    } else {
+      html += '<div class="mui-dialog-content mui-dialog-center mui-animation-scale">';
     }
-    html += '<div class="window-close"></div>';
-    html += '<div class="window-content"></div>';
-
-    if (options.button == true) {
-      html += '<div class="window-buttonbar">' + '<input type="button" class="window-button ok" value="' + options.ok + '" hidefocus="true" />'
-          + '<input type="button" class="window-button cancel" value="' + options.cancel + '" hidefocus="true" />' + '</div>';
+    if(options.title){
+      html +=   '<div class="mui-dialog-title">' + options.title + '</div>';
     }
-    html += '</div></div>'; // window-panel
-
+    html +=     '<div class="mui-dialog-buttons">';
+    $.each(options.btn, function(index){
+      html +=     '<div class="mui-dialog-button" data-index="' + (index + 1) + '">' + options.btn[index] + '</div>';
+    });
+    if(options.cancleBtn){
+      html +=     '<div class="mui-dialog-button mui-dialog-button-cancle" data-index="0">取消</div>';
+    }
+    html +=     '</div>'
+      +       '</div>'
+      +     '</div>'
+      +   '</div>'
+      + '</aside>';
     var $dialog = $(html);
-
-    $dialog.css({
-      width: options.width,
-      height: options.height,
-      'z-index' : options.zIndex
-    }).appendTo($(options.target));
-
-    var $dialogTitle = $dialog.find('.window-title');
-    var $buttonClose = $dialog.find('.window-close');
-    var $dialogContent = $dialog.find('.window-content');
-    var $buttonbar = $dialog.find('.window-buttonbar');
-    var $buttonOk = $dialog.find('.ok');
-    var $buttonCancel = $dialog.find('.cancel');
-    var $overlay = $('<div class="window-mask"></div>');
-
-    $dialogContent.css({
-      height : $dialog.height() - $dialogTitle.height() - $buttonbar.height()
-    });
-    if ($dialog.width() > $(window).width()) { /* fix overflow */
-      $dialogContent.css({
-        width : $(window).width()
-      });
+    $('body').addClass('o-hidden').append($dialog);
+    //$dialogContent = $dialog.find('.mui-dialog-content');
+    var onClose = function(){
+      $('body').removeClass('o-hidden');
+      $('.mui-dialog').remove();
     }
-    if ($dialog.height() > $(window).height()) { /* fix overflow */
-      $dialogContent.css({
-        height : $(window).height() - $dialogTitle.height() - $buttonbar.height()
-      });
-    }
-
-    $dialog.css({
-      'margin-left' : -parseInt($dialog.width() / 2),
-      'margin-top' : -parseInt($dialog.height() / 2)
-    });
-
-    if (options.modal == true) {
-      $overlay.css({
-        width : '100%',
-        height : '100%' // $(window).height()
-      }).appendTo($(options.target)).fadeIn(300);
-    }
-    function onClose() {
-      if ($.isFunction(options.onClose) == 'function') {
-        options.onClose.apply($dialog);
-      }
-      $overlay.remove();
-      $dialog.remove();
-    }
-    $buttonClose.click(onClose);
-    if (options.overlayClose == true) {
-      $overlay.click(onClose);
-    }
-    $buttonOk.click(function() {
-      // alert($dialog);
-      if ($.isFunction(options.okCallback)) {
-        if (options.okCallback.call($dialog, window.top.jQuery) != false) {
-          onClose();
-        }
-      } else {
+    if(options.overlayClose) {
+      $dialog.find('.mui-dialog-mask').click(function(){
         onClose();
-      }
-    });
-    $buttonCancel.click(function() {
-      if ($.isFunction(options.cancelCallback)) {
-        if (options.cancelCallback.apply($dialog, window.top.jQuery) != false) {
-          onClose();
-        }
-      } else {
-        onClose();
-      }
-    });
-
-    // title dnd
-    var pointX;
-    var pointY;
-
-    $dialogTitle.mousedown(function(event) {
-      var offset = $(this).offset();
-      var dialogWidth = $dialog.width();
-      var dialogHeight = $dialog.height();
-
-      if (!window.XMLHttpRequest) {
-        pointX = event.clientX - offset.left + 6;
-        pointY = event.clientY - offset.top + 6;
-      } else {
-        pointX = event.pageX - offset.left + 6;
-        pointY = event.pageY - offset.top + 6;
-      }
-
-      $(document).bind('mousemove', function(event) {
-        var top = event.clientY - pointY;
-        var left = event.clientX - pointX;
-        if (left < 0) {
-          left = 0;
-        }
-        if (left + dialogWidth > $(window).width()) {
-          left = $(window).width() - dialogWidth;
-        }
-        if (top < 0) {
-          top = 0;
-        }
-        if (top + dialogHeight > $(window).height()) {
-          top = $(window).height() - dialogHeight;
-        }
-        $dialog.css({
-          'top' : top,
-          'left' : left,
-          'margin' : 0
-        });
       });
-      return false;
+    }
+    $dialog.find('.mui-dialog-button-cancle').click(function(){
+      onClose();
     });
-    $(document).mouseup(function() {
-      $(document).unbind('mousemove');
-    });
-
-    $dialog.keypress(function(event) {
-      if (event.keyCode == 13) {
-        if ($.isFunction(options.okCallback)) {
-          if (options.okCallback.call($dialog, window.top.jQuery)!= false) {
-            onClose();
-          }
-        } else {
+    $dialog.find('.mui-dialog-button').click(function(){
+      var index = $(this).attr('data-index');
+      if ($.isFunction(options.callback)) {
+        if(options.callback.call($dialog, index)) {
           onClose();
         }
       }
     });
-    if (options.timeout) {
-      setTimeout(function() {
-        $dialog.animate({
-          top : $dialog.position().top - 50,
-          opacity : 0
-        }, 300, onClose);
-      }, options.timeout);
-    }
-    loadContent($dialog, options);
-    $dialog.fadeIn(300);
-    $dialog.focus();
     return $dialog;
   };
 
-  $.window.defaults = $.extend({}, {
-    url : '',
-    content : '',
+  $.dialog.defaults = $.extend({}, {
     title : '',
-    icon : null,
-    target : 'body',
-    width : 780,
-    height : 'auto',
-    zIndex : 1000,
-    closable : true,
-    timeout : 0,
+    btn : ['确定'],
+    skin: 'footer',
     overlayClose : false,
-    modal : true,
-    button : true,
-    onComplete : function() {
-    },
-    ok : '确定',
-    okCallback : function() {
-    },
-    cancel : '取消',
-    cancelCallback : function() {
+    cancleBtn : true,
+    callback : function(index) {
+      //alert(index);
     }
   });
 
@@ -378,25 +112,28 @@
     }
     html += '">';
     html += '<i class="message-icon"></i>';
-    html += '<i class="message-close fa fa-times"></i>';
+    if (options.closable){
+      html += '<i class="message-close fa fa-times"></i>';
+    }
     html += '<div class="message-text">' + options.content + '</div>';
     html += '</div>';
     var $message = $(html);
-    var $messageClose = $message.find(".message-close");
-
-    var onClose = function() {
-      $message.slideUp(300);
-    };
     
-    $messageClose.click(function(){
-    	if ($.isFunction(options.callback)) {
+    var onClose = function() {
+      if ($.isFunction(options.callback)) {
         if (options.callback.call($message, window.jQuery || window.Zepto) != false) {
-          onClose();
+          $message.slideUp(300);
         }
       } else {
-        onClose();
+        $message.slideUp(300);
       }
-    });
+    };
+    
+    if (options.closable){
+      var $messageClose = $message.find(".message-close");
+      $messageClose.click(onClose);
+    }
+    
     $message.appendTo('body').slideDown(300);
     if (options.timeout) {
       setTimeout(function() {
@@ -406,7 +143,7 @@
     return $message;
   };
 
-  $.message.defaults = $.extend({}, $.window.defaults, {
+  $.message.defaults = $.extend({}, {
     type : 'info', // info, success, error
     content : '',
     closable : true,
@@ -493,166 +230,6 @@
     title : '',
   });
 
-  /**
-   * Image Scan
-   */
-  $.imagescan = function(options){
-    if(typeof(options) == 'string') {
-      options = {url: options};
-    }
-    options = $.extend({}, $.imagescan.defaults, options || {});
-    if (options.url == null) {
-      alert('缺少参数[图片URL]!');
-      return;
-    }
-    var scrWidth = $(window).width(), scrHeight = $(window).height();
-    var width = options.width > scrWidth - 16 ? scrWidth - 16 : options.width;
-    var height = options.height > scrHeight - 16 ? scrHeight - 16 : options.height;
-    $image = $('<img src="' + options.url + '" alt="' + options.title + '" style="display:none;" />');
-    var str = '<div class="myui-imagescan">'
-      + '<div class="imagescan-close"><a onclick="return false;" href="javascript:void(0);"></a></div>'
-      + '<div class="imagescan-content"><div class="myui-imagescan-wrapper"><div class="loading"></div></div>';
-    if(options.toolbar) {
-      str += '<div class="imagescan-bottom imagescan-toolbar">'
-          + '<div class="toolbar-mask"></div><div class="image-title">' + options.title + '</div><div class="image-tools">'
-          + '<ul><li><a title="放大" href="javascript:void(0)" class="magnify" style="display:none">放大</a></li>'
-          + '<li><a title="缩小" href="javascript:void(0)" class="minify" style="display:none">缩小</a></li>'
-          + '<li><a title="全屏模式" href="javascript:void(0)" class="fullscreen">全屏</a></li>'
-          + '</ul></div></div>';
-      str += '<div class="imagescan-top imagescan-toolbar">'
-        + '<div class="toolbar-mask"></div><input class="image-url" style="display:none" type="text" readonly="readonly" value="' + options.url + '" />'
-        + '</div>';
-    }
-    str += '</div></div>';
-    
-    var $imagescan = $(str);
-    $imagescan.appendTo($(options.target));
-    $imagescanContent = $imagescan.find(".imagescan-content");
-    $imageWrapper = $imagescan.find(".myui-imagescan-wrapper");
-    $loading = $imagescan.find(".loading");
-    $toolbar = $imagescan.find(".imagescan-toolbar");
-    $magnify = $toolbar.find(".magnify");
-    $minify = $toolbar.find(".minify");
-    $fullscreen = $toolbar.find(".fullscreen");
-    $thumbnail = $imagescan.find(".imagescan-thumbnail");
-    $imagescan.css({'margin-left': - parseInt(width / 2), 'margin-top': - parseInt(height / 2), 'z-index': options.zIndex + 1});
-    $imagescanContent.css({'width': width, 'height': height - $thumbnail.height()});
-    
-    $imagescan.hover(function(){
-      $toolbar.show();
-    },
-    function(){
-      $toolbar.fadeOut(300);
-    });
-    var $overlay = $('<div class="myui-imagescan-mask"></div>').css({'z-index': options.zIndex}).appendTo($(options.target));
-    var onClose = function(){
-      $imagescan.remove();
-      $overlay.remove();
-    };
-    var $imagescanClose = $imagescan.find(".imagescan-close");
-    $imagescanClose.click(onClose);
-    if(options.overlayClose == true) {
-      $overlay.click(onClose);
-    }
-    // var $fullscreenClose = $('<div
-    // class="myui-imagescan-fullscreen-close"></div>').css({'z-index':
-    // options.zIndex + 1}).appendTo($(options.target));
-    $fullscreen.click(function(){
-      // $fullscreenClose.show();
-      $overlay.css('opacity', 1.0).append($imageWrapper);
-      // $overlay.unbind();
-      var size = getSize($image[0], scrWidth, scrHeight);
-      resizeImage($image[0], size.width, size.height, function(){
-        $imageWrapper.css({width: size.width, height: size.height, "margin-left": - parseInt(size.width / 2), "margin-top": - parseInt(size.height / 2)});
-        $imagescan.hide();
-      });
-    });
-     
-    /*
-     * $fullscreenClose.click(function(){ $fullscreenClose.hide();
-     * $overlay.css('opacity', 0.8); $imageWrapper.appendTo($imagescanContent);
-     * $imagescan.show(); $overlay.click(onClose); var size = getSize($image[0],
-     * width, height); resizeImage($image[0], size.width, size.height,
-     * function(){ $imageWrapper.css({"margin-left": - parseInt(size.width / 2),
-     * "margin-top": - parseInt(size.height / 2)}); }); });
-     */
-    // $imagescan.css({"margin-left": - parseInt($imagescan.width() / 2),
-    // "margin-top": - parseInt($imagescan.height() / 2), "z-index":
-    // options.zIndex});
-    var size = getSize($image[0], width, height);
-    resizeImage($image[0], size.width, size.height, function(){
-      $imageWrapper.css({"margin-left": - parseInt(size.width / 2), "margin-top": - parseInt(size.height / 2)});
-      $image.show();
-      $loading.hide();
-    });
-    $imageWrapper.append($image);
-    
-    function getSize(image, width, height) {
-        var w,h;
-        var tmpimg = new Image();
-        tmpimg.src = image.src;// + "?" + new Date();
-        if(tmpimg.width > 0 && tmpimg.height > 0) {
-          w = tmpimg.width;
-          h = tmpimg.height;
-           if (w / h >= width / height) {
-            if (w > width) {
-              h = (h * width) / w;
-              w = width;
-            }
-          } else {
-            if (h > height) {
-              w = (w * height) / h;
-              h = height;
-            }
-          }
-          image.width = w;
-          image.height = h;
-        } else {
-          tmpimg.onload = function(){
-            if (tmpimg.width == 0 || tmpimg.height == 0) {
-              return;
-            }
-            w = tmpimg.width;
-            h = tmpimg.height;
-            if (w / h >= width / height) {
-              if (w > width) {
-                h = (h * width) / w;
-                w = width;
-              }
-            } else {
-              if (h > height) {
-                w = (w * height) / h;
-                h = height;
-              }
-            }
-            image.width = w;
-            image.height = h;
-          };
-        }
-        return {width: w, height: h};
-      };
- 
-    function resizeImage(image, width, height, callback) {
-      image.width = width;
-      image.height = height;
-      if ($.isFunction(callback)) {
-        callback.apply();
-      }
-    };
-  };
-
-  $.imagescan.defaults = $.extend({}, {
-    url : '',
-    title : '',
-    target : 'body',
-    width : 750,
-    height : 750,
-    zIndex : 9900,
-    toolbar : true,
-    closable : true,
-    overlayClose : true
-  });
-  
   $.fn.placeholder = function (config) {
   	if (('placeholder' in document.createElement('input'))) {
   		return;
@@ -697,7 +274,7 @@
     $tabs.each(function() {
       var $this = $(this);
       var index = $tabs.index($this);
-      if ($this.hasClass("current")) {
+      if ($this.hasClass('current')) {
         $tabContent.eq(index).show();
       } else {
         $tabContent.eq(index).hide();
@@ -706,7 +283,7 @@
     $tabs.bind(eventName, function() {
       var $this = $(this);
       var index = $tabs.index($this);
-      $this.addClass("current").siblings().removeClass("current");
+      $this.addClass('current').siblings().removeClass('current');
       $tabContent.hide().eq(index).show();
     });
     var interval;
@@ -718,7 +295,7 @@
         } else if (index >= count) {
           index = 0;
         }
-        $tabs.removeClass("current").eq(index).addClass("current");
+        $tabs.removeClass('current').eq(index).addClass('current');
         $tabContent.hide().eq(index).show();
       };
       
@@ -739,58 +316,57 @@
       }
     }
     options = $.extend({}, $.fn.timer.defaults, options || {});
-    $(this).each(
-        function() {
-          var $this = $(this);
-          var beginTime = $this.attr('data-begin-time');
-          if(beginTime){
-          	beginTime = strToDate(beginTime);
-          }
-          var endTime = strToDate($this.attr('data-end-time'));
-          var nowTime = new Date().getTime();
-          var $timerInterval = function() {
-            nowTime = new Date().getTime();
-            var bal = endTime - nowTime;
-            
-            bal_day = Math.floor(bal / (60*60*24*1000));
-            bal_hour = Math.floor((bal - (bal_day*60*60*24*1000)) / (60*60*1000));
-            bal_minute = Math.floor((bal - (bal_day*60*60*24*1000) - (bal_hour*60*60*1000)) / (60*1000));
-            bal_second = Math.floor((bal - (bal_day*60*60*24*1000) - (bal_hour*60*60*1000) - (bal_minute*60*1000)) / 1000);
-            var html = '';
-            if(bal_day > 0) {
-            	html += bal_day + '<em>天</em>';
-            }
-            html += (bal_hour < 10 ? '0' + bal_hour : bal_hour) + '<em>时</em>';
-            html += (bal_minute < 10 ? '0' + bal_minute : bal_minute) + '<em>分</em>';
-            html += (bal_second < 10 ? '0' + bal_second : bal_second) + '<em>秒</em>';
-            
-            $this.html(html);
-          };
-          if (beginTime && beginTime > nowTime) { // 未开始
-          	$this.html(options.beginText);
-          } else if (endTime > nowTime) { // 进行中
-            $timerInterval();
-            setInterval($timerInterval, 1000);
-          } else if (endTime < nowTime) { // 已结束
-          	$this.html(options.endText);
-          	clearInterval($timerInterval);
-          }
-        });
+    $(this).each(function() {
+      var $this = $(this);
+      var beginTime = $this.attr('data-begin-time');
+      if(beginTime){
+        beginTime = strToDate(beginTime);
+      }
+      var endTime = strToDate($this.attr('data-end-time'));
+      var nowTime = new Date().getTime();
+      var timerInterval = function() {
+        nowTime = new Date().getTime();
+        var bal = endTime - nowTime;
+        
+        bal_day = Math.floor(bal / (60*60*24*1000));
+        bal_hour = Math.floor((bal - (bal_day*60*60*24*1000)) / (60*60*1000));
+        bal_minute = Math.floor((bal - (bal_day*60*60*24*1000) - (bal_hour*60*60*1000)) / (60*1000));
+        bal_second = Math.floor((bal - (bal_day*60*60*24*1000) - (bal_hour*60*60*1000) - (bal_minute*60*1000)) / 1000);
+        var html = '';
+        if(bal_day > 0) {
+          html += bal_day + '<em>' + options.unit[0] + '</em>';
+        }
+        html += (bal_hour < 10 ? '0' + bal_hour : bal_hour) + '<em>' + options.unit[1] + '</em>';
+        html += (bal_minute < 10 ? '0' + bal_minute : bal_minute) + '<em>' + options.unit[2] + '</em>';
+        html += (bal_second < 10 ? '0' + bal_second : bal_second) + '<em>' + options.unit[3] + '</em>';
+        
+        $this.html(html);
+      };
+      if (beginTime && beginTime > nowTime) { // 未开始
+        $this.html(options.beginText);
+      } else if (endTime > nowTime) { // 进行中
+        timerInterval();
+        setInterval(timerInterval, 1000);
+      } else if (endTime < nowTime) { // 已结束
+        $this.html(options.endText);
+        clearInterval(timerInterval);
+      }
+    });
 
-    // 字符串转换成日期对象函数
+    // 字符串转换成日期对象函数yyyy-MM-dd HH:mm:ss
     function strToDate(dateStr) {
       var arr = dateStr.split(' ');
       arr[0] = arr[0].split('-');
       arr[1] = arr[1].split(':');
       var theDate = new Date(arr[0][0], (arr[0][1] - 1), arr[0][2], arr[1][0], arr[1][1], arr[1][2]);
-      // js的日期对象的月份是从0～11，0代表1月份，11代表12月份，故此第二个参数月份要减1
       return theDate.getTime();
     }
   };
   
   $.fn.timer.defaults = $.extend({}, {
   	beginText : '未开始',
-    endText : '已结束'
+    endText : '已结束',
+    units: ['天', '时', '分', '秒']
   });
 
 })(jQuery);

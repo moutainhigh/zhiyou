@@ -15,12 +15,14 @@
 		<result column="transferred_time" property="transferredTime" />
 		<result column="transfer_type" property="transferType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="ref_id" property="refId" />
+		<result column="transfer_remark" property="transferRemark" />
 		<result column="remark" property="remark" />
+		<result column="version" property="version" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.Transfer" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_transfer` (transfer_status,from_user_id,to_user_id,sn,title,currency_type,amount,created_time,transferred_time,transfer_type,ref_id,remark)
-	  values (#{transferStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{fromUserId},#{toUserId},#{sn},#{title},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount},#{createdTime},#{transferredTime},#{transferType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{remark})
+	  insert into `fnc_transfer` (transfer_status,from_user_id,to_user_id,sn,title,currency_type,amount,created_time,transferred_time,transfer_type,ref_id,transfer_remark,remark,version)
+	  values (#{transferStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{fromUserId},#{toUserId},#{sn},#{title},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount},#{createdTime},#{transferredTime},#{transferType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{transferRemark},#{remark},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -41,9 +43,11 @@
 			transferred_time = #{transferredTime},
 			transfer_type = #{transferType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			ref_id = #{refId},
+			transfer_remark = #{transferRemark},
 			remark = #{remark},
+			version = version + 1,
 		</set>
-		where id = #{id}
+		where id = #{id} and version=#{version}
 	</update>
 
 	<update id="merge">
@@ -62,6 +66,7 @@
 					<when test="field == 'transferredTime'">transferred_time = #{transfer.transferredTime},</when>
 					<when test="field == 'transferType'">transfer_type = #{transfer.transferType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.Transfer$TransferType},</when>
 					<when test="field == 'refId'">ref_id = #{transfer.refId},</when>
+					<when test="field == 'transferRemark'">transfer_remark = #{transfer.transferRemark},</when>
 					<when test="field == 'remark'">remark = #{transfer.remark},</when>
 				</choose>
 				</foreach>
@@ -71,14 +76,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,transfer_status,from_user_id,to_user_id,sn,title,currency_type,amount,created_time,transferred_time,transfer_type,ref_id,remark
+		id,transfer_status,from_user_id,to_user_id,sn,title,currency_type,amount,created_time,transferred_time,transfer_type,ref_id,transfer_remark,remark,version
 		from `fnc_transfer`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TransferQueryModel">
 		select
-		id,transfer_status,from_user_id,to_user_id,sn,title,currency_type,amount,created_time,transferred_time,transfer_type,ref_id,remark
+		id,transfer_status,from_user_id,to_user_id,sn,title,currency_type,amount,created_time,transferred_time,transfer_type,ref_id,transfer_remark,remark,version
 		from `fnc_transfer`
 		<where>
 			<if test="toUserIdIN != null">
@@ -110,6 +115,12 @@
 			</if>
 			<if test="transferredTimeLT != null">
 				 and transferred_time &lt; #{transferredTimeLT}
+			</if>
+			<if test="transferTypeIN != null">
+				 and transfer_type in
+				<foreach collection="transferTypeIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
 			</if>
 			<if test="toUserIdEQ != null">
 				 and to_user_id = #{toUserIdEQ}
@@ -163,6 +174,12 @@
 			</if>
 			<if test="transferredTimeLT != null">
 				 and transferred_time &lt; #{transferredTimeLT}
+			</if>
+			<if test="transferTypeIN != null">
+				 and transfer_type in
+				<foreach collection="transferTypeIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
 			</if>
 			<if test="toUserIdEQ != null">
 				 and to_user_id = #{toUserIdEQ}

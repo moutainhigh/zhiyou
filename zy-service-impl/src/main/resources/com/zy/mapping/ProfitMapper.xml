@@ -93,6 +93,12 @@
 			<if test="createdTimeGTE != null">
 				 and created_time &gt;= #{createdTimeGTE}
 			</if>
+			<if test="profitTypeIN != null">
+				 and profit_type in
+				<foreach collection="profitTypeIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -130,6 +136,12 @@
 			</if>
 			<if test="createdTimeGTE != null">
 				 and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="profitTypeIN != null">
+				 and profit_type in
+				<foreach collection="profitTypeIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
 			</if>
 		</where>
 	</select>

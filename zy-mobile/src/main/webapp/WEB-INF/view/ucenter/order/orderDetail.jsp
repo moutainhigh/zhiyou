@@ -14,7 +14,6 @@
 <meta name="description" content="订单详情 " />
 
 <link href="${stccdn}/css/ucenter/order.css" rel="stylesheet"> 
-<script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
 
 <title>订单详情</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
@@ -22,43 +21,24 @@
 
 <script>
   $(function() {
-    
     $('#btnPay').click(function(){
-      var html = document.getElementById('dialogTpl').innerHTML;
-      $('body').addClass('o-hidden').append(html);
+      $.dialog({
+        title : '请选择支付方式',
+        skin : 'footer',
+        btn : [ '<a id="btnPay1" class="btn orange block round-2">余额支付</a>',
+              '<a id="btnPay2" class="btn green block round-2">银行汇款</a>' ],
+        callback : function(index){
+          if(index == 1) {
+            alert('余额支付');
+            location.href = '${ctx}/pay/${order.sn}?payType=0';
+          } else if(index == 2) {
+        	alert('银行汇款');
+        	location.href = '${ctx}/pay/${order.sn}?payType=1';
+          }
+        }
+      });
     });
-    
-    $('body').on('click', '.mui-dialog-button-cancle', function(){
-      $('body').removeClass('o-hidden');
-      $('.mui-dialog').remove();
-    });
-    
-    $('body').on('click', '#btnPay1', function(){
-      //余额支付
-      alert('余额支付');
-    });
-    
-    $('body').on('click', '#btnPay2', function(){
-      //线下支付
-	  alert('线下支付');
-    });
-    
   });
-</script>
-<script id="dialogTpl" type="text/html">
-<aside id="mui-dialog0" class="mui-dialog" data-index="0">
-  <div class="mui-dialog-mask"></div>
-  <div class="mui-dialog-wrap">
-    <div class="mui-dialog-content mui-dialog-bottom mui-animation-up">
-      <div class="mui-dialog-title">请选择支付方式</div>
-      <div class="mui-dialog-buttons">
-        <div class="mui-dialog-button" data-index="1"><a id="btnPay1" class="btn orange block round-2">余额支付</a></div>
-        <div class="mui-dialog-button" data-index="2"><a id="btnPay2" class="btn green block round-2">线下支付</a></div>
-        <div class="mui-dialog-button mui-dialog-button-cancle" data-index="0">取消</div>
-      </div>
-    </div>
-  </div>
-</aside>
 </script>
 </head>
 <body class="order-detail">

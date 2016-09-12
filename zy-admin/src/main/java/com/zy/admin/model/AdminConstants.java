@@ -29,6 +29,8 @@ public class AdminConstants {
 			sub.put("tag:view", "标签管理(查看)");
 			sub.put("tag:edit", "标签管理(编辑)");
 			sub.put("tag:delete", "标签管理(删除)");
+			sub.put("job:view", "职位管理(查看)");
+			sub.put("job:edit", "职位管理(编辑)");
 			sub.put("address:view", "地址管理(查看)");
 	 		SETTING_PERMISSION_MAP.put("用户中心", sub);
 		}

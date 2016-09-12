@@ -52,7 +52,7 @@ public class ProfitServiceImpl implements ProfitService {
 
 	@Override
 	public Profit grant(Long userId, String title, CurrencyType currencyType, BigDecimal amount) {
-		return fncComponent.createProfitAndRecordAccountLog(userId, ProfitType.补偿, null, title, currencyType, amount);
+		return fncComponent.createProfit(userId, ProfitType.补偿, null, title, currencyType, amount);
 	}
 
 }
