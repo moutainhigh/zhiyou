@@ -79,16 +79,16 @@
 				<bind name="contentLK" value="'%' + contentLK + '%'"/> and content like #{contentLK}
 			</if>
 			<if test="messageTypeEQ != null">
-				 and message_type = #{messageTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and message_type = #{messageTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="batchNumberEQ != null">
-				 and batch_number = #{batchNumberEQ}
+				and batch_number = #{batchNumberEQ}
 			</if>
 			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="isReadEQ != null">
-				 and is_read = #{isReadEQ}
+				and is_read = #{isReadEQ}
 			</if>
 		</where>
 		<choose>
@@ -114,16 +114,16 @@
 				<bind name="contentLK" value="'%' + contentLK + '%'"/> and content like #{contentLK}
 			</if>
 			<if test="messageTypeEQ != null">
-				 and message_type = #{messageTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and message_type = #{messageTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="batchNumberEQ != null">
-				 and batch_number = #{batchNumberEQ}
+				and batch_number = #{batchNumberEQ}
 			</if>
 			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="isReadEQ != null">
-				 and is_read = #{isReadEQ}
+				and is_read = #{isReadEQ}
 			</if>
 		</where>
 	</select>

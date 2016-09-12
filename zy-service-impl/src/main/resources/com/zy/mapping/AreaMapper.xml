@@ -61,16 +61,21 @@
 		from `sys_area`
 		<where>
 			<if test="idIN != null">
-				 and id in
+				<if test="idIN.length != 0">
+				and id in
 				<foreach collection="idIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="parentIdEQ != null">
-				 and parent_id = #{parentIdEQ}
+				and parent_id = #{parentIdEQ}
 			</if>
 			<if test="areaTypeEQ != null">
-				 and area_type = #{areaTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and area_type = #{areaTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 		<choose>
@@ -90,16 +95,21 @@
 		select count(*) from `sys_area`
 		<where>
 			<if test="idIN != null">
-				 and id in
+				<if test="idIN.length != 0">
+				and id in
 				<foreach collection="idIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="parentIdEQ != null">
-				 and parent_id = #{parentIdEQ}
+				and parent_id = #{parentIdEQ}
 			</if>
 			<if test="areaTypeEQ != null">
-				 and area_type = #{areaTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and area_type = #{areaTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 	</select>

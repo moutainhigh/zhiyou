@@ -87,46 +87,61 @@
 		from `fnc_transfer`
 		<where>
 			<if test="toUserIdIN != null">
-				 and to_user_id in
+				<if test="toUserIdIN.length != 0">
+				and to_user_id in
 				<foreach collection="toUserIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="toUserIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="fromUserIdEQ != null">
-				 and from_user_id = #{fromUserIdEQ}
+				and from_user_id = #{fromUserIdEQ}
 			</if>
 			<if test="transferTypeEQ != null">
-				 and transfer_type = #{transferTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and transfer_type = #{transferTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="createdTimeLT != null">
-				 and created_time &lt; #{createdTimeLT}
+				and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="transferredTimeGTE != null">
-				 and transferred_time &gt;= #{transferredTimeGTE}
+				and transferred_time &gt;= #{transferredTimeGTE}
 			</if>
 			<if test="refIdEQ != null">
-				 and ref_id = #{refIdEQ}
+				and ref_id = #{refIdEQ}
 			</if>
 			<if test="fromUserIdIN != null">
-				 and from_user_id in
+				<if test="fromUserIdIN.length != 0">
+				and from_user_id in
 				<foreach collection="fromUserIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="fromUserIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="transferredTimeLT != null">
-				 and transferred_time &lt; #{transferredTimeLT}
+				and transferred_time &lt; #{transferredTimeLT}
 			</if>
 			<if test="transferTypeIN != null">
-				 and transfer_type in
+				<if test="transferTypeIN.length != 0">
+				and transfer_type in
 				<foreach collection="transferTypeIN" item="item" open="(" separator="," close=")">
 				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 				</foreach>
+				</if>
+				<if test="transferTypeIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="toUserIdEQ != null">
-				 and to_user_id = #{toUserIdEQ}
+				and to_user_id = #{toUserIdEQ}
 			</if>
 			<if test="createdTimeGTE != null">
-				 and created_time &gt;= #{createdTimeGTE}
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 		</where>
 		<choose>
@@ -146,46 +161,61 @@
 		select count(*) from `fnc_transfer`
 		<where>
 			<if test="toUserIdIN != null">
-				 and to_user_id in
+				<if test="toUserIdIN.length != 0">
+				and to_user_id in
 				<foreach collection="toUserIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="toUserIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="fromUserIdEQ != null">
-				 and from_user_id = #{fromUserIdEQ}
+				and from_user_id = #{fromUserIdEQ}
 			</if>
 			<if test="transferTypeEQ != null">
-				 and transfer_type = #{transferTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and transfer_type = #{transferTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="createdTimeLT != null">
-				 and created_time &lt; #{createdTimeLT}
+				and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="transferredTimeGTE != null">
-				 and transferred_time &gt;= #{transferredTimeGTE}
+				and transferred_time &gt;= #{transferredTimeGTE}
 			</if>
 			<if test="refIdEQ != null">
-				 and ref_id = #{refIdEQ}
+				and ref_id = #{refIdEQ}
 			</if>
 			<if test="fromUserIdIN != null">
-				 and from_user_id in
+				<if test="fromUserIdIN.length != 0">
+				and from_user_id in
 				<foreach collection="fromUserIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="fromUserIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="transferredTimeLT != null">
-				 and transferred_time &lt; #{transferredTimeLT}
+				and transferred_time &lt; #{transferredTimeLT}
 			</if>
 			<if test="transferTypeIN != null">
-				 and transfer_type in
+				<if test="transferTypeIN.length != 0">
+				and transfer_type in
 				<foreach collection="transferTypeIN" item="item" open="(" separator="," close=")">
 				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 				</foreach>
+				</if>
+				<if test="transferTypeIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="toUserIdEQ != null">
-				 and to_user_id = #{toUserIdEQ}
+				and to_user_id = #{toUserIdEQ}
 			</if>
 			<if test="createdTimeGTE != null">
-				 and created_time &gt;= #{createdTimeGTE}
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 		</where>
 	</select>

@@ -91,22 +91,27 @@
 		from `mal_product`
 		<where>
 			<if test="idIN != null">
-				 and id in
+				<if test="idIN.length != 0">
+				and id in
 				<foreach collection="idIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="createdTimeLT != null">
-				 and created_time &lt; #{createdTimeLT}
+				and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
 			<if test="isOnEQ != null">
-				 and is_on = #{isOnEQ}
+				and is_on = #{isOnEQ}
 			</if>
 			<if test="createdTimeGTE != null">
-				 and created_time &gt;= #{createdTimeGTE}
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 		</where>
 		<choose>
@@ -126,22 +131,27 @@
 		select count(*) from `mal_product`
 		<where>
 			<if test="idIN != null">
-				 and id in
+				<if test="idIN.length != 0">
+				and id in
 				<foreach collection="idIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="createdTimeLT != null">
-				 and created_time &lt; #{createdTimeLT}
+				and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
 			<if test="isOnEQ != null">
-				 and is_on = #{isOnEQ}
+				and is_on = #{isOnEQ}
 			</if>
 			<if test="createdTimeGTE != null">
-				 and created_time &gt;= #{createdTimeGTE}
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 		</where>
 	</select>
