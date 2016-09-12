@@ -35,6 +35,8 @@ public class UserAdminVo implements Serializable {
 	private String remark;
 
 	/* 扩展 */
+	@Field(label = "用户等级")
+	private String userRankLabel;
 	@Field(label = "头像")
 	private String avatarThumbnail;
 	@Field(label = "邀请人id")

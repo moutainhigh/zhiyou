@@ -25,5 +25,5 @@
 .activity-detail .image-wrap img {
   display: block; width: 100%;
   z-index: 5;
-  background: #efefef url("../../image/image_placeholder.jpg") no-repeat scroll center center;
+  background: #efefef url("../image/image_placeholder.jpg") no-repeat scroll center center;
 }

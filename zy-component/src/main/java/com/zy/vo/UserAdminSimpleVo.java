@@ -24,6 +24,8 @@ public class UserAdminSimpleVo implements Serializable {
 	private UserRank userRank;
 
 	/* 扩展 */
+	@Field(label = "用户等级")
+	private String userRankLabel;
 	@Field(label = "头像")
 	private String avatarThumbnail;
 
