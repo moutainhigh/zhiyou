@@ -5,6 +5,8 @@
  * @author jxt
  */
 
+/* ---------- Dialog ---------- */
+
 .mui-dialog .mui-dialog-mask {
   position: fixed; left: 0; top: 0;
   display: block; width: 100%; height: 100%;
@@ -68,133 +70,6 @@
   animation-fill-mode: both; -webkit-animation-fill-mode: both;
 }
 
-/* ---------- Dialog ---------- */
-.window-mask {
-  display: none; position: fixed;  top: 0; left: 0; width: 100%; height: 100%; z-index: 99;
-  filter: alpha(opacity = 20); -moz-opacity: 0.20; opacity: 0.20; zoom: 1; 
-  background-color: #000;
-}
-* html .window-mask {
-  position: absolute; top: 0; left: 0;
-}
-.myui-window {
-  display: none; position: fixed; top: 50%; left: 50%; padding: 0; 
-  z-index: 1000; /*overflow: hidden; border-radius: 3px;*/  width:80%; height:40%;
-}
-* html .myui-window {
-  position: absolute;
-  top: expression(( document.documentElement.scrollTop || document.body.scrollTop)
-    +  Math.round(40 * (document.documentElement.offsetHeight|| document.body.clientHeight  )/ 100 ) + 'px' );
-}
-.myui-window .window-wrap {
-  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
-  filter: alpha(opacity = 15); -moz-opacity: 0.15; opacity: 0.15; 
-  z-index: -1; background-color: #000000;
-}
-  
-.myui-window .window-panel {
-  border: 2px solid #aaa;
-  background: #fff;
-}
-.myui-window .window-title {
-  position: relative; width: 100%; height: 40px; 
-  color: #555; font-weight: normal; text-indent: 32px; line-height: 40px;
-  background-color: #eee; cursor: move; 
-}
-.myui-window .window-icon {
-  position: absolute; top: 13px; left: 12px;
-  display: inline-block; width: 16px; height: 16px;
-}
-.myui-window .icon-info {
-  background: url(image/icon_info.png) 0px 0px no-repeat;
-}
-.myui-window .icon-error {
-  background: url(image/icon_info.png) -32px 0px no-repeat;
-}
-.myui-window .icon-confirm {
-  background: url(image/icon_info.png) -16px 0px no-repeat;
-}
-.myui-window .window-close {
-  position: absolute; top: 14px; right: 12px; width: 15px; height: 15px; cursor: pointer;
-  background: url(image/icon_delete.png) 0px 0px no-repeat;
-}
-.myui-window .window-close:hover {
-  background-position: 0px -15px;
-}
-.myui-window .window-content {
-  float: left; clear: both; position: relative; background:#fff; width: 100%; height: auto;
-  line-height: 24px; text-indent: 0;	
-  word-break: break-all; word-wrap: break-word;
-} 
-.myui-window .window-buttonbar {
-  clear: both; width: 100%; height: 40px; text-align: center; padding: 0;
-}
-.myui-window .window-button {
-  padding: 6px 16px; margin: 0px 16px 0; 
-  text-align: center; color: #fff; font-size: 12px;
-  border: none; background: #3c6eb5; outline: none; cursor: pointer;
-}
-.myui-window .window-button.ok {
-  background: #35ba47;
-}
-.myui-window .window-button.cancel {
-  background: #e35b5a;
-}
-.myui-window .window-button:hover {
-  color: #fff; background: #5c9ef5;
-}
- 
-/* ---------- Message ---------- */
-.myui-window .message-content {
-  /*min-height: 64px; height: auto !important; */height: 100%;
-  padding: 10px; line-height: 24px; text-indent: 0;
-  word-break: break-all; word-wrap: break-word; overflow: scroll;
-}
-
-.myui-message {
-  display: none; position: fixed; right: 0; bottom: 0; z-index: 1000; overflow: hidden;
-  min-width: 150px; 
-}
-* html .myui-message {
-  position: absolute;
-}
-.myui-message .message-wrap {
-  width: 2000px; height: 2000px; position: absolute; z-index: -1; left: 0; top: 0; 
-  filter: alpha(opacity = 15); -moz-opacity: 0.15; opacity: 0.15; background-color: #000000;
-}
-.myui-message .message-panel {
-  margin: 5px; border: 1px solid #291440; background: #fff; /* overflow-y: auto; */
-}
-.myui-message .message-title {
-  line-height: 40px; clear: both; padding: 0; color: #fff; font-weight: normal; cursor: move;
-  background: #291440 0px 0px; text-indent: 12px;
-}
-.myui-message .message-close {
-  width: 15px; height: 15px; position: absolute; top: 12px; right: 12px; cursor: pointer;
-  background: url(image/icon_delete.png) 0px -15px no-repeat;
-}
-.myui-message .message-close:hover {
-  background-position: 0px -30px;
-}
-.myui-message .message-icon {
-  padding: 10px;
-}
-.myui-message .icon-info {
-  background: url(image/i_info.png) left center no-repeat;
-}
-.myui-message .icon-error {
-  background: url(image/i_error.png) left center no-repeat;
-}
-.myui-message .icon-confirm {
-  background: url(image/i_error.png) left center no-repeat;
-}
-.myui-message .message-content p {
-  min-height: 64px; height: auto !important; height: 64px;
-  padding: 8px 16px 8px 16px; line-height: 24px; text-indent: 0;
-  word-break: break-all; word-wrap: break-word; overflow: hidden;
-}
-
-
 /****** header message ******/
 
 .header-message {
@@ -220,13 +95,13 @@
   background-size: 24px 24px;
 }
 .header-message-success .message-icon {
-  background-image: url('../image/icon/icon_success.png');
+  background-image: url('image/icon_success.png');
 }
 .header-message-info .message-icon {
-  background-image: url('../image/icon/icon_info.png');
+  background-image: url('image/icon_info.png');
 }
 .header-message-error .message-icon {
-  background-image: url('../image/icon/icon_error.png');
+  background-image: url('image/icon_error.png');
 }
 .header-message .message-close {
   position: absolute; top: 12px; right: 15px;
