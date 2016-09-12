@@ -47,7 +47,7 @@
 }
 
 .mui-dialog .mui-dialog-center {
-  display: inline-block; width: 80%; overflow: hidden;
+  display: inline-block; min-width: 60%; max-width: 90%;
   background-color: #fff; border-radius: 5px;
 }
 .mui-dialog .mui-dialog-center .mui-dialog-buttons {
