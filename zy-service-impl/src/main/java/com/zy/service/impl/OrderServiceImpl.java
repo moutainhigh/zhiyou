@@ -332,16 +332,16 @@ public class OrderServiceImpl implements OrderService {
 		/* 销量奖 */
 		if (buyerUserRank == UserRank.V4) {
 			final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
-			fncComponent.createProfit(buyerId, Profit.ProfitType.销量奖, orderId, "订单销量奖", CurrencyType.现金, saleBonus);
+			fncComponent.createProfit(buyerId, Profit.ProfitType.销量奖, orderId, "销量奖", CurrencyType.现金, saleBonus);
 		} else if (sellerUserRank == UserRank.V4 && order.getIsPlatformDeliver()) {
 			final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
-			fncComponent.createProfit(sellerId, Profit.ProfitType.销量奖, orderId, "订单销量奖", CurrencyType.现金, saleBonus);
+			fncComponent.createProfit(sellerId, Profit.ProfitType.销量奖, orderId, "销量奖", CurrencyType.现金, saleBonus);
 		}
 
 		/* 一级平级奖 */
 		if (buyerUserRank == UserRank.V3) {
 			final BigDecimal v3FlatBonus = new BigDecimal("7.00").multiply(BigDecimal.valueOf(quantity));
-			fncComponent.createTransfer(sellerId, buyerId, Transfer.TransferType.一级平级奖, orderId, "特级发放一级平级奖", CurrencyType.现金, v3FlatBonus);
+			fncComponent.createTransfer(sellerId, buyerId, Transfer.TransferType.一级平级奖, orderId, "一级平级奖", CurrencyType.现金, v3FlatBonus);
 		}
 
 
@@ -353,7 +353,7 @@ public class OrderServiceImpl implements OrderService {
 			final BigDecimal v4FlatBonus2 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
 			final BigDecimal v4FlatBonus3 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
 
-			final BigDecimal v3SkipBonus3 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
+			final BigDecimal v3SkipBonus = new BigDecimal("3.00").multiply(BigDecimal.valueOf(quantity));
 
 			Long parentId = buyer.getParentId();
 
@@ -381,7 +381,7 @@ public class OrderServiceImpl implements OrderService {
 						fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus1);
 						if (skipBonusUserId != null) {
 							/* 一级越级奖 */
-							fncComponent.createTransfer(parentId, skipBonusUserId, Transfer.TransferType.一级越级奖, orderId, "一级越级奖", CurrencyType.现金, v3SkipBonus3);
+							fncComponent.createTransfer(parentId, skipBonusUserId, Transfer.TransferType.一级越级奖, orderId, "一级越级奖", CurrencyType.现金, v3SkipBonus);
 						}
 
 					} else if (index == 2) {
