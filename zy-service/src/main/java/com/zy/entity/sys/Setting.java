@@ -26,16 +26,8 @@ public class Setting implements Serializable {
 	private Long id;
 
 	@NotNull
-	@Field(label = "系统中转账户")
+	@Field(label = "系统账户")
 	private Long sysUserId;
-
-	@NotNull
-	@Field(label = "佣金账户")
-	private Long feeUserId;
-
-	@NotNull
-	@Field(label = "发放账户")
-	private Long grantUserId;
 
 	@NotBlank
 	@Column(length = 1000)

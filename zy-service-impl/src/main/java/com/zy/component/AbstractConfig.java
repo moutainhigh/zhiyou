@@ -51,9 +51,7 @@ public abstract class AbstractConfig implements Config {
 
 	@Override
 	public boolean isDev() {
-//		return getSetting().getIsDev();
-		// TODO
-		return true;
+		return getSetting().getIsDev();
 	}
 
 
