@@ -279,7 +279,48 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 	public void refund(@NotNull Long id) {
-		throw new BizException(BizCode.ERROR, "暂不支持退款");
+
+		Payment payment = paymentMapper.findOne(id);
+		validate(payment, NOT_NULL, "payment id " + id + " is not found");
+
+		Payment.PaymentStatus paymentStatus = payment.getPaymentStatus();
+		if (paymentStatus == Payment.PaymentStatus.已退款) {
+			return; // 幂等处理
+		} else if (paymentStatus != Payment.PaymentStatus.已支付) {
+			throw new BizException(BizCode.ERROR, "只有已支付支付订单才能退款");
+		}
+
+		PayType payType = payment.getPayType();
+
+		if (payType == PayType.余额) {
+
+			CurrencyType currencyType1 = payment.getCurrencyType1();
+			BigDecimal amount1 = payment.getAmount1();
+
+			String title = payment.getTitle() + currencyType1.getAlias() + "退款";
+			Long sysUserId = config.getSysUserId();
+			Long userId = payment.getUserId();
+			fncComponent.recordAccountLog(sysUserId, title, currencyType1, amount1, AccountLog.InOut.支出, payment, userId);
+			fncComponent.recordAccountLog(userId, title, currencyType1, amount1, AccountLog.InOut.收入, payment, sysUserId);
+
+			CurrencyType currencyType2 = payment.getCurrencyType2();
+			BigDecimal amount2 = payment.getAmount2();
+			if (currencyType2 != null) {
+				title = payment.getTitle() + currencyType2.getAlias() + "退款";
+				fncComponent.recordAccountLog(sysUserId, title, currencyType2, amount2, AccountLog.InOut.支出, payment, userId);
+				fncComponent.recordAccountLog(userId, title, currencyType2, amount2, AccountLog.InOut.收入, payment, sysUserId);
+			}
+			payment.setRefundedTime(new Date());
+			payment.setRefund1(amount1);
+			payment.setRefund2(amount2);
+			payment.setPaymentStatus(Payment.PaymentStatus.已退款);
+
+			if (paymentMapper.update(payment) == 0) {
+				throw new ConcurrentException();
+			}
+		} else {
+			throw new BizException(BizCode.ERROR, "暂不支持余额以外其他支付方式退款");
+		}
 	}
 
 }
