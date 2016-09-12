@@ -189,7 +189,7 @@
         <div class="list-item">
           <label class="list-label">生日</label>
           <div class="list-text">
-            <input type="text" name="birthday" class="form-input" value="${portrait.birthdayLabel}" onfocus="this.type='date'">
+            <input type="date" name="birthday" class="form-input" value="${portrait.birthdayLabel}" placeholder="填写生日  1900-01-01">
           </div>
         </div>
 

@@ -66,9 +66,16 @@
     });
 
     $('#btnDelete').click(function() {
-      if (window.confirm('您确认要删除该收货地址吗?') == 1) {
-        location.href = '${ctx}/u/address/delete/${address.id}';
-      }
+      $.dialog({
+        title : '您确认要删除该收货地址吗?',
+        skin : 'center',
+        btn : [ '确定' ],
+        callback : function(index){
+          if(index == 1) {
+            location.href = '${ctx}/u/address/delete/${address.id}';
+          }
+        }
+      });
     });
 
     $('.form-switch label').click(function() {

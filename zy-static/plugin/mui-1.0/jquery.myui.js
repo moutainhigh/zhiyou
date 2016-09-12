@@ -24,18 +24,24 @@
     var html = '<aside id="' + options.id + '" class="mui-dialog" data-index="' + _myui_dialog_index++ + '">'
       +   '<div class="mui-dialog-mask"></div>'
       +   '<div class="mui-dialog-wrap">'
-      +     '<div class="mui-dialog-content mui-dialog-bottom mui-animation-up">';
-    if(options.title){
-      html += '<div class="mui-dialog-title">' + options.title + '</div>';
+      +     '<div class="mui-dialog-inner">';
+    if(options.skin == 'footer') {
+      html += '<div class="mui-dialog-content mui-dialog-footer mui-animation-up">';
+    } else {
+      html += '<div class="mui-dialog-content mui-dialog-center mui-animation-scale">';
     }
-    html +=   '<div class="mui-dialog-buttons">';
+    if(options.title){
+      html +=   '<div class="mui-dialog-title">' + options.title + '</div>';
+    }
+    html +=     '<div class="mui-dialog-buttons">';
     $.each(options.btn, function(index){
-      html +=   '<div class="mui-dialog-button" data-index="' + (index + 1) + '">' + options.btn[index] + '</div>';
+      html +=     '<div class="mui-dialog-button" data-index="' + (index + 1) + '">' + options.btn[index] + '</div>';
     });
     if(options.cancleBtn){
-      html +=   '<div class="mui-dialog-button mui-dialog-button-cancle" data-index="0">取消</div>';
+      html +=     '<div class="mui-dialog-button mui-dialog-button-cancle" data-index="0">取消</div>';
     }
-    html +=   '</div>'
+    html +=     '</div>'
+      +       '</div>'
       +     '</div>'
       +   '</div>'
       + '</aside>';
