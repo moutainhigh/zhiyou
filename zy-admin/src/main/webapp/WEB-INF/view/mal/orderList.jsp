@@ -53,15 +53,15 @@ $(function() {
 								return result;
 			                  }
 						},
-						{
+						/* {
 						    data : '',
 						    title: '用户信息',
 						    width: '180px',
 						    orderable : false,
 			                render : function(data, type, full) {
-			                	return '<p>昵称: ' + full.userNickname + '</p><p>手机号: ' + full.userPhone + '</p>';
+			                	return '<p>昵称: ' + full.user.nickname + '</p><p>手机号: ' + full.user.phone + '</p>';
 			                  }
-						},
+						}, */
 						{
 							data : 'totalMoney',
 							title : '交易金额',
@@ -72,15 +72,15 @@ $(function() {
 						    }
 						},
 						{
-							data : 'createdTime',
+							data : 'createdTimeLabel',
 							title : '下单时间',
-							orderable : true,
+							orderable : false,
 							width : '120px'
 						},
 						{
-							data : 'paidTime',
+							data : 'paidTimeLabel',
 							title : '支付时间',
-							orderable : true,
+							orderable : false,
 							width : '120px'
 						},
 						{
@@ -96,9 +96,9 @@ $(function() {
 							width : '120px'
 						},
 						{
-							data : 'refundedTime',
+							data : 'refundedTimeLabel',
 							title : '退款时间',
-							orderable : true,
+							orderable : false,
 							width : '120px'
 						},
 						{

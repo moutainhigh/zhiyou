@@ -22,25 +22,23 @@
 
 <script>
   $(function() {
-    
     $('#btnPay').click(function(){
       $.dialog({
         title : '请选择支付方式',
         skin : 'footer',
         btn : [ '<a id="btnPay1" class="btn orange block round-2">余额支付</a>',
-              '<a id="btnPay2" class="btn green block round-2">线下支付</a>' ],
+              '<a id="btnPay2" class="btn green block round-2">银行汇款</a>' ],
         callback : function(index){
           if(index == 1) {
-            //余额支付
             alert('余额支付');
+            location.href = '${ctx}/pay/${order.sn}?payType=0';
           } else if(index == 2) {
-            //线下支付
-        	alert('线下支付');
+        	alert('银行汇款');
+        	location.href = '${ctx}/pay/${order.sn}?payType=1';
           }
         }
       });
     });
-    
   });
 </script>
 </head>

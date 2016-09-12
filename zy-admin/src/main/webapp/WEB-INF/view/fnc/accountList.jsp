@@ -98,7 +98,7 @@
         			+"</div>"
         		+"</div>"
         		+"</form>",
-          title : '赠送本金/试客币',
+  		  title : '赠送金额',
           width : 420,
           height : 360,
           button : false

@@ -31,6 +31,8 @@ public class ProfitQueryModel implements Serializable {
 
 	private ProfitType profitTypeEQ;
 
+	private ProfitType[] profitTypeIN;
+
 	private Long refIdEQ;
 
 	private Integer pageNumber;

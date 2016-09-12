@@ -8,11 +8,12 @@
 		<result column="content" property="content" />
 		<result column="created_time" property="createdTime" />
 		<result column="ip" property="ip" />
+		<result column="token" property="token" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.sys.ShortMessage" useGeneratedKeys="true" keyProperty="id">
-	  insert into `sys_short_message` (phone,content,created_time,ip)
-	  values (#{phone},#{content},#{createdTime},#{ip})
+	  insert into `sys_short_message` (phone,content,created_time,ip,token)
+	  values (#{phone},#{content},#{createdTime},#{ip},#{token})
 	</insert>
 
 	<delete id="delete">
@@ -26,6 +27,7 @@
 			content = #{content},
 			created_time = #{createdTime},
 			ip = #{ip},
+			token = #{token},
 		</set>
 		where id = #{id}
 	</update>
@@ -39,6 +41,7 @@
 					<when test="field == 'content'">content = #{shortMessage.content},</when>
 					<when test="field == 'createdTime'">created_time = #{shortMessage.createdTime},</when>
 					<when test="field == 'ip'">ip = #{shortMessage.ip},</when>
+					<when test="field == 'token'">token = #{shortMessage.token},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -47,14 +50,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,content,created_time,ip
+		id,phone,content,created_time,ip,token
 		from `sys_short_message`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ShortMessageQueryModel">
 		select
-		id,phone,content,created_time,ip
+		id,phone,content,created_time,ip,token
 		from `sys_short_message`
 		<where>
 			<if test="createdTimeLT != null">

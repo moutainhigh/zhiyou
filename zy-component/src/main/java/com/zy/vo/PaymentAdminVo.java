@@ -1,6 +1,7 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.fnc.PayType;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.CurrencyType;
@@ -60,10 +61,12 @@ public class PaymentAdminVo implements Serializable {
 	private String remark;
 	@Field(label = "外部sn")
 	private String outerSn;
-	@Field(label = "线下转账截图")
+	@Field(label = "银行汇款截图")
 	private String offlineImage;
-	@Field(label = "线下转账备注")
+	@Field(label = "银行汇款备注")
 	private String offlineMemo;
+	@Field(label = "银行汇款审核状态")
+	private ConfirmStatus confirmStatus;
 
 	/* 扩展 */
 	@Field(label = "用户id")
