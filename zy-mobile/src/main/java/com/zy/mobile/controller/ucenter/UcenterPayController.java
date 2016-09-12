@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.exception.BizException;
 import com.zy.common.extend.BigDecimalBinder;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Deposit;
@@ -129,37 +130,44 @@ public class UcenterPayController {
 			  payment.setRefId(orderId);
 			  payment.setUserId(order.getUserId());
 			  payment.setTitle(order.getTitle());
+			  payment.setPayType(payType);
 			  paymentService.create(payment);
 		  }
 		  
 		  model.addAttribute("amount", order.getAmount());
 		  model.addAttribute("paymentId", payment.getId());
 		  if(payType == PayType.银行汇款){
+			  model.addAttribute("offlineImage", payment.getOfflineImage());
+			  model.addAttribute("offlineMemo", payment.getOfflineMemo());
 			  return "ucenter/pay/payOffline";
-		  } else {
+		  } else if(payment.getPayType() == PayType.余额){
 			  Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.现金);
 			  model.addAttribute("balance", account.getAmount());
 			  return "ucenter/pay/payBalance";
+		  } else {
+			  throw new BizException(BizCode.ERROR, "不支持的付款方式");
 		  }
 	}
 
 	@RequestMapping(path = "/payment", method = RequestMethod.POST)
 	public String pay(Long paymentId, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes, Principal principal) {
-		validate(paymentId, NOT_NULL, "payment id" + paymentId + " is null");
+		validate(paymentId, NOT_NULL, "payment id " + paymentId + " is null");
 		Payment payment = paymentService.findOne(paymentId);
 		validate(payment, NOT_NULL, "payment id" + paymentId + " not found");
 		if(payment.getPayType() == PayType.余额){
 			paymentService.balancePay(paymentId, true);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, "余额支付成功");
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("余额支付成功"));
+			return "redirect:/u";
 		} else if(payment.getPayType() == PayType.银行汇款) {
 			validate(offlineImage, NOT_BLANK, "payment offlineImage is blank");
 			validate(offlineMemo, NOT_BLANK, "payment offlineMemo is blank");
 			payment.setOfflineImage(offlineImage);
 			payment.setOfflineMemo(offlineMemo);
 			paymentService.modifyOffline(paymentId, offlineImage, offlineMemo);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, "转账汇款信息提交成功，请等待工作人员确认");
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("转账汇款信息提交成功，请等待工作人员确认"));
+			return "redirect:/u/pay/order/" + payment.getRefId() + "?payType=1";
+		} else {
+			throw new BizException(BizCode.ERROR, "不支持的付款方式");
 		}
-		
-		return "redirect:/u";
 	}
 }
