@@ -47,7 +47,7 @@
 		select
 		id,job_name
 		from `usr_job`
-		order by id desc
+		order by id asc
 	</select>
 
 </mapper>

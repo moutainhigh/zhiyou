@@ -206,53 +206,6 @@ a.disabled, a.disabled:hover, a.disabled:focus {
   font-size: 28px; color: #777;
 }
 
-/****** header message ******/
-.header-message {
-  position: fixed; top: 0; left: 0; 
-  display: none; width: 100%; line-height: 24px;
-  padding: 12px 15px; background: #f7e2e1; z-index: 99999;
-}
-.header-message-success {
-  color: #235836;
-  background-color: rgba(222, 245, 188, 1);
-}
-.header-message-info {
-  color: #108198;
-  background-color: rgba(201, 221, 241, 1);
-}
-.header-message-error {
-  color: #d60539;
-  background-color: rgba(249, 199, 199, 1);
-}
-.header-message .message-icon {
-  position: absolute; top: 12px; left: 15px;
-  width: 24px; height: 24px;
-  background-size: 24px 24px;
-}
-.header-message-success .message-icon {
-  background-image: url('../image/icon/icon_success.png');
-}
-.header-message-info .message-icon {
-  background-image: url('../image/icon/icon_info.png');
-}
-.header-message-error .message-icon {
-  background-image: url('../image/icon/icon_error.png');
-}
-.header-message .message-close {
-  position: absolute; top: 12px; right: 15px;
-  width: 18px; height: 24px; line-height: 24px;
-  color: #aaa; font-size: 16px; text-align: center;
-  cursor: pointer;
-}
-.header-message .message-close:hover {
-  color: #ccc;
-}
-.header-message .message-text {
-  margin: 0 28px;
-  font-size: 15px; text-align: left;
-  white-space: nowrap; overflow: hidden;
-}
-
 /****** empty tip *******/
 .empty-tip {
   width: 100%; height: 100%;
