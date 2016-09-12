@@ -165,10 +165,6 @@ public class Payment implements Serializable {
 	@View
 	private String offlineMemo;
 	
-	@Field(label = "银行汇款审核状态")
-	@View
-	private ConfirmStatus confirmStatus;
-	
 	@NotNull
 	@Version
 	@Field(label = "乐观锁")
