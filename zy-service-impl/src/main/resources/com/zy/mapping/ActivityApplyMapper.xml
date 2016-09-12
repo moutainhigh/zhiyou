@@ -64,43 +64,58 @@
 		from `act_activity_apply`
 		<where>
 			<if test="appliedTimeGTE != null">
-				 and applied_time &gt;= #{appliedTimeGTE}
+				and applied_time &gt;= #{appliedTimeGTE}
 			</if>
 			<if test="appliedTimeLT != null">
-				 and applied_time &lt; #{appliedTimeLT}
+				and applied_time &lt; #{appliedTimeLT}
 			</if>
 			<if test="userIdIN != null">
-				 and user_id in
+				<if test="userIdIN.length != 0">
+				and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="isCancelledEQ != null">
-				 and is_cancelled = #{isCancelledEQ}
+				and is_cancelled = #{isCancelledEQ}
 			</if>
 			<if test="activityIdEQ != null">
-				 and activity_id = #{activityIdEQ}
+				and activity_id = #{activityIdEQ}
 			</if>
 			<if test="inviterIdEQ != null">
-				 and inviter_id = #{inviterIdEQ}
+				and inviter_id = #{inviterIdEQ}
 			</if>
 			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="inviterIdIN != null">
-				 and inviter_id in
+				<if test="inviterIdIN.length != 0">
+				and inviter_id in
 				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="inviterIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="isSmsSentEQ != null">
-				 and is_sms_sent = #{isSmsSentEQ}
+				and is_sms_sent = #{isSmsSentEQ}
 			</if>
 			<if test="activityIdIN != null">
-				 and activity_id in
+				<if test="activityIdIN.length != 0">
+				and activity_id in
 				<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="activityIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 		</where>
 		<choose>
@@ -120,43 +135,58 @@
 		select count(*) from `act_activity_apply`
 		<where>
 			<if test="appliedTimeGTE != null">
-				 and applied_time &gt;= #{appliedTimeGTE}
+				and applied_time &gt;= #{appliedTimeGTE}
 			</if>
 			<if test="appliedTimeLT != null">
-				 and applied_time &lt; #{appliedTimeLT}
+				and applied_time &lt; #{appliedTimeLT}
 			</if>
 			<if test="userIdIN != null">
-				 and user_id in
+				<if test="userIdIN.length != 0">
+				and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="isCancelledEQ != null">
-				 and is_cancelled = #{isCancelledEQ}
+				and is_cancelled = #{isCancelledEQ}
 			</if>
 			<if test="activityIdEQ != null">
-				 and activity_id = #{activityIdEQ}
+				and activity_id = #{activityIdEQ}
 			</if>
 			<if test="inviterIdEQ != null">
-				 and inviter_id = #{inviterIdEQ}
+				and inviter_id = #{inviterIdEQ}
 			</if>
 			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="inviterIdIN != null">
-				 and inviter_id in
+				<if test="inviterIdIN.length != 0">
+				and inviter_id in
 				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="inviterIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="isSmsSentEQ != null">
-				 and is_sms_sent = #{isSmsSentEQ}
+				and is_sms_sent = #{isSmsSentEQ}
 			</if>
 			<if test="activityIdIN != null">
-				 and activity_id in
+				<if test="activityIdIN.length != 0">
+				and activity_id in
 				<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="activityIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 		</where>
 	</select>

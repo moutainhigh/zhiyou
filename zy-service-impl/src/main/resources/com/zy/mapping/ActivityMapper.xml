@@ -93,37 +93,47 @@
 		from `act_activity`
 		<where>
 			<if test="idIN != null">
-				 and id in
+				<if test="idIN.length != 0">
+				and id in
 				<foreach collection="idIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="startTimeGTE != null">
-				 and start_time &gt;= #{startTimeGTE}
+				and start_time &gt;= #{startTimeGTE}
 			</if>
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
 			<if test="applyDeadlineGTE != null">
-				 and apply_deadline &gt;= #{applyDeadlineGTE}
+				and apply_deadline &gt;= #{applyDeadlineGTE}
 			</if>
 			<if test="areaIdIN != null">
-				 and area_id in
+				<if test="areaIdIN.length != 0">
+				and area_id in
 				<foreach collection="areaIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="areaIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="startTimeLT != null">
-				 and start_time &lt; #{startTimeLT}
+				and start_time &lt; #{startTimeLT}
 			</if>
 			<if test="applyDeadlineLT != null">
-				 and apply_deadline &lt; #{applyDeadlineLT}
+				and apply_deadline &lt; #{applyDeadlineLT}
 			</if>
 			<if test="isReleasedEQ != null">
-				 and is_released = #{isReleasedEQ}
+				and is_released = #{isReleasedEQ}
 			</if>
 			<if test="areaIdEQ != null">
-				 and area_id = #{areaIdEQ}
+				and area_id = #{areaIdEQ}
 			</if>
 		</where>
 		<choose>
@@ -143,37 +153,47 @@
 		select count(*) from `act_activity`
 		<where>
 			<if test="idIN != null">
-				 and id in
+				<if test="idIN.length != 0">
+				and id in
 				<foreach collection="idIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="startTimeGTE != null">
-				 and start_time &gt;= #{startTimeGTE}
+				and start_time &gt;= #{startTimeGTE}
 			</if>
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
 			<if test="applyDeadlineGTE != null">
-				 and apply_deadline &gt;= #{applyDeadlineGTE}
+				and apply_deadline &gt;= #{applyDeadlineGTE}
 			</if>
 			<if test="areaIdIN != null">
-				 and area_id in
+				<if test="areaIdIN.length != 0">
+				and area_id in
 				<foreach collection="areaIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="areaIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="startTimeLT != null">
-				 and start_time &lt; #{startTimeLT}
+				and start_time &lt; #{startTimeLT}
 			</if>
 			<if test="applyDeadlineLT != null">
-				 and apply_deadline &lt; #{applyDeadlineLT}
+				and apply_deadline &lt; #{applyDeadlineLT}
 			</if>
 			<if test="isReleasedEQ != null">
-				 and is_released = #{isReleasedEQ}
+				and is_released = #{isReleasedEQ}
 			</if>
 			<if test="areaIdEQ != null">
-				 and area_id = #{areaIdEQ}
+				and area_id = #{areaIdEQ}
 			</if>
 		</where>
 	</select>
