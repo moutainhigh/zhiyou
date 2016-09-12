@@ -13,23 +13,42 @@
    * 弹出窗口
    */
   $.dialog = function(options) {
-    options = $.extend({}, $.dialog.defaults, options || {});
 
+    if (typeof (options) == 'string') {
+      options = {
+        content : options,
+        skin : 'message',
+        timeout : 2
+      };
+      if (arguments.length > 1) {
+        options.timeout = arguments[2];
+      }
+    }
+
+    options = $.extend({}, $.dialog.defaults, options || {});
+    
     if (!options.btn) {
       alert('[缺少参数]btn不能为空!');
       return;
     }
 
     options.id = 'mui_dialog_' + (_myui_dialog_index++);
-    var html = '<aside id="' + options.id + '" class="mui-dialog" data-index="' + _myui_dialog_index++ + '">'
-      +   '<div class="mui-dialog-mask"></div>'
-      +   '<div class="mui-dialog-wrap">'
-      +     '<div class="mui-dialog-inner">';
-    if(options.skin == 'footer') {
-      html += '<div class="mui-dialog-content mui-dialog-footer mui-animation-up">';
-    } else {
-      html += '<div class="mui-dialog-content mui-dialog-center mui-animation-scale">';
+    var html = '<aside id="' + options.id + '" class="mui-dialog" data-index="' + _myui_dialog_index++ + '">';
+    if(options.skin != 'message'){
+      html += '<div class="mui-dialog-mask"></div>';
     }
+      
+    html += '<div class="mui-dialog-wrap">'
+      +     '<div class="mui-dialog-inner">';
+    var skinClass = '';
+    if(options.skin == 'footer') {
+      skinClass = ' mui-dialog-footer mui-animation-up';
+    } else if(options.skin == 'center') {
+      skinClass = ' mui-dialog-center mui-animation-scale';
+    } else if(options.skin == 'message') {
+      skinClass = ' mui-dialog-message mui-animation-up';
+    }
+    html +=   '<div class="mui-dialog-content' + skinClass + '">';
     if(options.content){
       html +=   '<div class="mui-dialog-title">' + options.content + '</div>';
     }
@@ -47,10 +66,16 @@
       + '</aside>';
     var $dialog = $(html);
     $('body').addClass('o-hidden').append($dialog);
-    //$dialogContent = $dialog.find('.mui-dialog-content');
+    $dialogContent = $dialog.find('.mui-dialog-content');
     var onClose = function(){
       $('body').removeClass('o-hidden');
-      $('.mui-dialog').remove();
+      $dialog.remove();
+    }
+    
+    if (options.timeout) {
+      setTimeout(function() {
+        onClose();
+      }, options.timeout * 1000);
     }
     if(options.overlayClose) {
       $dialog.find('.mui-dialog-mask').click(function(){
@@ -73,7 +98,8 @@
 
   $.dialog.defaults = $.extend({}, {
     content : '',
-    skin: 'center',
+    skin : 'center',
+    timeout : 0,
     overlayClose : false,
     btn : [ '确定' ],
     cancleBtn : true,

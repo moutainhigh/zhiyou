@@ -7,11 +7,7 @@ window.messageShow = function(message, icon) {
 };
 
 window.messageFlash = function(message, time) {
-  layer.open({
-    content : message,
-    skin : 'msg',
-    time : time || 2 // 自动关闭
-  });
+  $.dialog(message, time || 2);
 };
 
 window.messageAlert = function(message, button) {
