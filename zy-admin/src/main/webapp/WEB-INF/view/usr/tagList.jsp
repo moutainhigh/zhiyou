@@ -47,8 +47,7 @@ function deleteTag(id) {
               <span class="form-errors">您填写的信息有误，请检查。</span>
             </div>
             <div class="form-group">
-              <label class="control-label col-md-3">标签库管理
-              </label>
+              <label class="control-label col-md-3"></label>
               <div class="col-md-5">
                 <div class="checkbox-list">
                 	<c:forEach items="${tagMap}" var="map">

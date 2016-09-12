@@ -66,7 +66,7 @@
               <button class="close" data-close="alert"></button>
               <span class="form-errors">您填写的信息有误，请检查。</span>
             </div>
-            <div class="form-group" style="margin-top: 10px;">
+            <div class="form-group">
               <label class="control-label col-md-3"></label>
               <div class="col-md-5">
                 <div class="checkbox-list">
