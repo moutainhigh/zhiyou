@@ -42,6 +42,9 @@ public class UsrComponent {
 		userUpgrade.setUserId(userId);
 		userUpgradeMapper.insert(userUpgrade);
 
+		user.setLastUpgradedTime(new Date());
+		user.setUserRank(to);
+		userMapper.update(user);
 	}
 
 }
