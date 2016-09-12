@@ -42,6 +42,9 @@ public class FncComponent {
 	private UserMapper userMapper;
 
 	@Autowired
+	private TransferMapper transferMapper;
+
+	@Autowired
 	private PaymentMapper paymentMapper;
 
 	@Autowired
@@ -126,7 +129,8 @@ public class FncComponent {
 		}
 	}
 
-	public Profit createProfit(Long userId, ProfitType profitType, Long refId,  String title, CurrencyType currencyType, BigDecimal amount) {
+	public Profit createProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
+	                           @NotNull CurrencyType currencyType, @NotBlank @DecimalMin("0.01") BigDecimal amount) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
@@ -139,75 +143,31 @@ public class FncComponent {
 		profit.setSn(ServiceUtils.generateProfitSn());
 		profit.setCurrencyType(currencyType);
 		profit.setCreatedTime(new Date());
+		profit.setRefId(refId);
 		validate(profit);
 		profitMapper.insert(profit);
-		return profit;
-	}
-
-	public Profit createProfitAndRecordAccountLog(Long userId, ProfitType profitType, Long refId, String title, @NotNull CurrencyType currencyType, BigDecimal amount) {
-		Profit profit = this.createProfit(userId, profitType, refId, title, currencyType, amount);
 		Long sysUserId = config.getSysUserId();
 		this.recordAccountLog(sysUserId, title, currencyType, amount, 支出, profit, userId);
 		this.recordAccountLog(userId, title, currencyType, amount, 收入, profit, sysUserId);
 		return profit;
 	}
 
-	@Deprecated
-	public void refundPayment(@NotNull Long paymentId, @NotNull CurrencyType refundCurrencyType1, @NotNull @DecimalMin("0.00") BigDecimal refund1,
-			CurrencyType refundCurrencyType2, @DecimalMin("0.00") BigDecimal refund2) {
-
-		/*Payment payment = paymentMapper.findOne(paymentId);
-		validate(payment, NOT_NULL, "payment id " + paymentId + " is not found");
-
-		PaymentStatus paymentStatus = payment.getPaymentStatus();
-		if (paymentStatus == PaymentStatus.已退款) {
-			return; // 幂等处理
-		} else if (paymentStatus != PaymentStatus.已支付) {
-			throw new BizException(BizCode.ERROR, "只有已支付支付订单才能退款");
-		}
-
-		CurrencyType currencyType1 = payment.getCurrencyType1();
-		validate(refundCurrencyType1, v -> v == currencyType1, "currency type 1 is not the same");
-		BigDecimal amount1 = payment.getAmount1();
-		if (refund1.compareTo(amount1) > 0) {
-			throw new BizException(BizCode.ERROR, "退款金额1超过支付金额");
-		}
-
-		String title = payment.getTitle() + currencyType1.getAlias() + "退款";
-		Long sysUserId = config.getSysUserId();
-		Long userId = payment.getUserId();
-		recordAccountLog(sysUserId, title, currencyType1, refund1, InOut.支出, payment, userId);
-		recordAccountLog(userId, title, currencyType1, refund1, InOut.收入, payment, sysUserId);
-
-		CurrencyType currencyType2 = payment.getCurrencyType2();
-		validate(refundCurrencyType2, v -> v == currencyType2, "currency type 2 is not the same");
-		if (currencyType2 != null) {
-			validate(refund2, NOT_NULL, "refund 2 must not be null");
-			BigDecimal amount2 = payment.getAmount2();
-			if (refund2.compareTo(amount2) > 0) {
-				throw new BizException(BizCode.ERROR, "退款金额2超过支付金额");
-			}
-			validate(refundCurrencyType2, v -> v == currencyType2, "currency type 2 is not the same");
-
-			title = payment.getTitle() + currencyType2.getAlias() + "退款";
-			recordAccountLog(sysUserId, title, currencyType2, refund2, InOut.支出, payment, userId);
-			recordAccountLog(userId, title, currencyType2, refund2, InOut.收入, payment, sysUserId);
-		} else {
-			validate(refund2, NULL, "refund 2 must be null");
-		}
-		payment.setRefundedTime(new Date());
-		payment.setRefund1(refund1);
-		payment.setRefund2(refund2);
-		payment.setPaymentStatus(PaymentStatus.已退款);
-
-		if (paymentMapper.update(payment) == 0) {
-			throw new ConcurrentException();
-		}*/
-	}
-
-	public Transfer createTransfer(Long fromUserId, Long toUserId, CurrencyType currencyType, BigDecimal amount) {
-		// TODO liuyi
-		return null;
+	public Transfer createTransfer(@NotNull Long fromUserId, @NotNull Long toUserId, @NotNull Transfer.TransferType transferType, Long refId,
+	                               @NotBlank String title, @NotNull CurrencyType currencyType,
+	                               @NotNull @DecimalMin("0.01") BigDecimal amount) {
+		Transfer transfer = new Transfer();
+		transfer.setRefId(refId);
+		transfer.setTransferStatus(Transfer.TransferStatus.待转账);
+		transfer.setTransferType(transferType);
+		transfer.setAmount(amount);
+		transfer.setFromUserId(fromUserId);
+		transfer.setToUserId(toUserId);
+		transfer.setCurrencyType(currencyType);
+		transfer.setCreatedTime(new Date());
+		transfer.setTitle(title);
+		transferMapper.insert(transfer);
+		validate(transfer);
+		return transfer;
 	}
 
 }

@@ -88,47 +88,6 @@
     return o;
   };
 
-  /**
-   * @author 将form表单元素的值序列化成对象
-   * @returns object
-   */
-  $.fn.serializeObj = function() {
-    var o = {}, arrayObj = this.serializeArray();
-    $.each(arrayObj, function(index) {
-      if (o[this['name']]) {
-        o[this['name']] = o[this['name']] + "," + this['value'];
-      } else {
-        o[this['name']] = this['value'];
-      }
-    });
-    return o;
-  };
-
-  /**
-   * Form 序列化表单元素数据
-   * 
-   * @requires jQuery
-   * @param 参数bool:
-   *          设置为true的话，会把string型"true"和"false"字符串值转化为boolean型。
-   * @return object
-   */
-  $.fn.serializeObject = function(bool) {
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-      var val = bool ? ((this.value == 'true' || this.value == 'false') ? this.value == 'true' : this.value) : this.value;
-      if (o[this.name]) {
-        if (!o[this.name].push) {
-          o[this.name] = [ o[this.name] ];
-        }
-        o[this.name].push(val || '');
-      } else {
-        o[this.name] = val || '';
-      }
-    });
-    return o;
-  };
-
   var _myui_window_index = 0; // 弹出窗口idx
 
   var loadContent = function($dialog, options) {

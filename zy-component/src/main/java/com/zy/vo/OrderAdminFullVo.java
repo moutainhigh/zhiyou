@@ -68,6 +68,16 @@ public class OrderAdminFullVo implements Serializable {
 	private String receiverAddress;
 
 	/* 扩展 */
+	@Field(label = "imageThumbnail")
+	private String imageThumbnail;
+	@Field(label = "price")
+	private BigDecimal price;
+	@Field(label = "quantity")
+	private Long quantity;
+	@Field(label = "用户id")
+	private UserAdminSimpleVo user;
+	@Field(label = "卖家id")
+	private UserAdminSimpleVo seller;
 	@Field(label = "下单时间")
 	private String createdTimeLabel;
 	@Field(label = "过期时间")
@@ -80,11 +90,11 @@ public class OrderAdminFullVo implements Serializable {
 	private Boolean useLogisticsLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
-	@Field(label = "orderItems")
-	private List<OrderItemAdminVo> orderItems = new ArrayList<>();
 	@Field(label = "payments")
 	private List<PaymentAdminVo> payments = new ArrayList<>();
 	@Field(label = "profits")
 	private List<ProfitAdminVo> profits = new ArrayList<>();
+	@Field(label = "transfers")
+	private List<TransferAdminVo> transfers = new ArrayList<>();
 
 }

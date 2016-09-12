@@ -21,8 +21,6 @@ public interface OrderService {
 	
 	Order findBySn(String sn);
 	
-	Order pay(String sn, PayType payType, String offlineImage, String offlineMemo);
-	
 	void deliver(OrderDeliverDto orderDeliverDto); // 发货
 	
 	void receive(Long id); // 确认收货

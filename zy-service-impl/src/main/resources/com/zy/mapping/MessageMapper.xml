@@ -12,11 +12,12 @@
 		<result column="read_time" property="readTime" />
 		<result column="message_type" property="messageType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="batch_number" property="batchNumber" />
+		<result column="token" property="token" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.sys.Message" useGeneratedKeys="true" keyProperty="id">
-	  insert into `sys_message` (title,content,user_id,is_read,created_time,read_time,message_type,batch_number)
-	  values (#{title},#{content},#{userId},#{isRead},#{createdTime},#{readTime},#{messageType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{batchNumber})
+	  insert into `sys_message` (title,content,user_id,is_read,created_time,read_time,message_type,batch_number,token)
+	  values (#{title},#{content},#{userId},#{isRead},#{createdTime},#{readTime},#{messageType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{batchNumber},#{token})
 	</insert>
 
 	<delete id="delete">
@@ -34,6 +35,7 @@
 			read_time = #{readTime},
 			message_type = #{messageType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			batch_number = #{batchNumber},
+			token = #{token},
 		</set>
 		where id = #{id}
 	</update>
@@ -51,6 +53,7 @@
 					<when test="field == 'readTime'">read_time = #{message.readTime},</when>
 					<when test="field == 'messageType'">message_type = #{message.messageType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.sys.Message$MessageType},</when>
 					<when test="field == 'batchNumber'">batch_number = #{message.batchNumber},</when>
+					<when test="field == 'token'">token = #{message.token},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -59,14 +62,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,title,content,user_id,is_read,created_time,read_time,message_type,batch_number
+		id,title,content,user_id,is_read,created_time,read_time,message_type,batch_number,token
 		from `sys_message`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.MessageQueryModel">
 		select
-		id,title,content,user_id,is_read,created_time,read_time,message_type,batch_number
+		id,title,content,user_id,is_read,created_time,read_time,message_type,batch_number,token
 		from `sys_message`
 		<where>
 			<if test="titleLK != null">

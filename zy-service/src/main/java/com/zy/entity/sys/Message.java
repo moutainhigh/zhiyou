@@ -8,19 +8,13 @@ import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
-
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "sys_message")
@@ -83,5 +77,8 @@ public class Message implements Serializable {
 	@View(groups = "MessageAdminVo")
 	private String batchNumber;
 
+	@Field(label = "token")
+	@Column(length = 60, unique = true)
+	private String token;
 
 }

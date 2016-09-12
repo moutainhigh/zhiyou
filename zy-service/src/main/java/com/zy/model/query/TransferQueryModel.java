@@ -39,6 +39,8 @@ public class TransferQueryModel implements Serializable {
 
 	private TransferType transferTypeEQ;
 
+	private TransferType[] transferTypeIN;
+
 	private Long refIdEQ;
 
 	private Integer pageNumber;
@@ -101,6 +103,8 @@ public class TransferQueryModel implements Serializable {
 		fieldNames.add("transferredTime");
 		fieldNames.add("title");
 		fieldNames.add("toUserId");
+		fieldNames.add("version");
+		fieldNames.add("transferRemark");
 		fieldNames.add("createdTime");
 		fieldNames.add("transferType");
 		fieldNames.add("id");

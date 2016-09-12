@@ -83,6 +83,7 @@ public class ShortMessageQueryModel implements Serializable {
 		fieldNames.add("createdTime");
 		fieldNames.add("id");
 		fieldNames.add("content");
+		fieldNames.add("token");
 	}
 
 }

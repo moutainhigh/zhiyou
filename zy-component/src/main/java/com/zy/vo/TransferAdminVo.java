@@ -39,6 +39,8 @@ public class TransferAdminVo implements Serializable {
 	private TransferType transferType;
 	@Field(label = "关联业务id")
 	private Long refId;
+	@Field(label = "转账备注")
+	private String transferRemark;
 	@Field(label = "备注")
 	private String remark;
 

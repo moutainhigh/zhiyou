@@ -1,15 +1,28 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
+import com.zy.ServiceUtils;
+import com.zy.common.exception.BizException;
+import com.zy.common.exception.ConcurrentException;
+import com.zy.common.model.query.Page;
+import com.zy.component.FncComponent;
+import com.zy.component.MalComponent;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Transfer;
+import com.zy.entity.mal.Order;
+import com.zy.entity.mal.Order.LogisticsFeePayType;
+import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.mal.OrderItem;
+import com.zy.entity.mal.Product;
+import com.zy.entity.usr.Address;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
+import com.zy.mapper.*;
+import com.zy.model.BizCode;
+import com.zy.model.dto.OrderCreateDto;
+import com.zy.model.dto.OrderDeliverDto;
+import com.zy.model.query.OrderQueryModel;
+import com.zy.service.OrderService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.validator.constraints.NotBlank;
@@ -17,37 +30,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import com.zy.ServiceUtils;
-import com.zy.common.exception.BizException;
-import com.zy.common.exception.ConcurrentException;
-import com.zy.common.model.query.Page;
-import com.zy.component.MalComponent;
-import com.zy.entity.fnc.CurrencyType;
-import com.zy.entity.fnc.PayType;
-import com.zy.entity.fnc.Payment;
-import com.zy.entity.fnc.Payment.PaymentStatus;
-import com.zy.entity.fnc.Payment.PaymentType;
-import com.zy.entity.mal.Order;
-import com.zy.entity.mal.Order.LogisticsFeePayType;
-import com.zy.entity.mal.Order.OrderStatus;
-import com.zy.entity.mal.OrderItem;
-import com.zy.entity.mal.Product;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.Address;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.User.UserRank;
-import com.zy.mapper.AddressMapper;
-import com.zy.mapper.OrderItemMapper;
-import com.zy.mapper.OrderMapper;
-import com.zy.mapper.PaymentMapper;
-import com.zy.mapper.ProductMapper;
-import com.zy.mapper.UserMapper;
-import com.zy.model.BizCode;
-import com.zy.model.Constants;
-import com.zy.model.dto.OrderCreateDto;
-import com.zy.model.dto.OrderDeliverDto;
-import com.zy.model.query.OrderQueryModel;
-import com.zy.service.OrderService;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
@@ -58,9 +46,6 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderItemMapper orderItemMapper;
-	
-	@Autowired
-	private PaymentMapper paymentMapper;
 
 	@Autowired
 	private UserMapper userMapper;
@@ -73,6 +58,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private MalComponent malComponent;
+
+	@Autowired
+	private FncComponent fncComponent;
 
 	@Override
 	public Order create(@NotNull OrderCreateDto orderCreateDto) {
@@ -321,8 +309,100 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "只有已完成订单才能结算");
 		}
 
-		/* 平级奖 */
-		// TODO
+		OrderItem orderItem = orderItemMapper.findByOrderId(orderId).get(0);
+
+		Long quantity = orderItem.getQuantity();
+		Long productId = orderItem.getProductId();
+		Long buyerId = order.getUserId();
+		Long sellerId = order.getSellerId();
+		User buyer = userMapper.findOne(buyerId);
+		User seller = userMapper.findOne(sellerId);
+		UserRank buyerUserRank = buyer.getUserRank();
+		UserRank sellerUserRank = seller.getUserRank();
+
+		/* 订单收款 */
+		if (buyerUserRank != UserRank.V4) {
+			BigDecimal amount = order.getAmount();
+			if (sellerUserRank == UserRank.V4 && order.getIsPlatformDeliver()) {
+				amount = amount.subtract(malComponent.getPrice(productId, UserRank.V4, quantity).multiply(BigDecimal.valueOf(quantity))).setScale(2, BigDecimal.ROUND_HALF_UP);
+			}
+			fncComponent.createProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单收款", CurrencyType.现金, amount);
+		}
+
+		/* 销量奖 */
+		if (buyerUserRank == UserRank.V4) {
+			final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
+			fncComponent.createProfit(buyerId, Profit.ProfitType.销量奖, orderId, "销量奖", CurrencyType.现金, saleBonus);
+		} else if (sellerUserRank == UserRank.V4 && order.getIsPlatformDeliver()) {
+			final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
+			fncComponent.createProfit(sellerId, Profit.ProfitType.销量奖, orderId, "销量奖", CurrencyType.现金, saleBonus);
+		}
+
+		/* 一级平级奖 */
+		if (buyerUserRank == UserRank.V3) {
+			final BigDecimal v3FlatBonus = new BigDecimal("7.00").multiply(BigDecimal.valueOf(quantity));
+			fncComponent.createTransfer(sellerId, buyerId, Transfer.TransferType.一级平级奖, orderId, "一级平级奖", CurrencyType.现金, v3FlatBonus);
+		}
+
+
+		/* 特级平级奖 + 一级越级奖 */
+		if (buyerUserRank == UserRank.V4) {
+
+			int index = 0;
+			final BigDecimal v4FlatBonus1 = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
+			final BigDecimal v4FlatBonus2 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
+			final BigDecimal v4FlatBonus3 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
+
+			final BigDecimal v3SkipBonus = new BigDecimal("3.00").multiply(BigDecimal.valueOf(quantity));
+
+			Long parentId = buyer.getParentId();
+
+
+			Long skipBonusUserId = null;
+			boolean firstParent = true;
+
+			while(parentId != null) {
+				User parent = userMapper.findOne(parentId);
+				if (firstParent) {
+					if (parent.getUserRank() == UserRank.V3) {
+						Date lastUpgradedTime = parent.getLastUpgradedTime();
+						if (lastUpgradedTime != null && DateUtils.addMonths(lastUpgradedTime, 3).after(new Date())) {
+							skipBonusUserId = parentId;
+						}
+					}
+					firstParent = false;
+				}
+
+				if (parent.getUserRank() == UserRank.V4) {
+					index ++;
+					if (index == 0) {
+						continue;
+					} else if (index == 1) {
+						fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus1);
+						if (skipBonusUserId != null) {
+							/* 一级越级奖 */
+							fncComponent.createTransfer(parentId, skipBonusUserId, Transfer.TransferType.一级越级奖, orderId, "一级越级奖", CurrencyType.现金, v3SkipBonus);
+						}
+
+					} else if (index == 2) {
+						fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus2);
+					} else if (index == 3) {
+						fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus3);
+					} else {
+						break;
+					}
+
+				}
+				parentId = parent.getParentId();
+
+			}
+
+		}
+
+		order.setIsSettledUp(true);
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
 
 	}
 
@@ -334,45 +414,5 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public long count(OrderQueryModel build) {
 		return orderMapper.count(build);
-	}
-
-	@Override
-	public Order pay(String sn, PayType payType, String offlineImage, String offlineMemo) {
-		validate(payType, NOT_NULL, "order payType" + payType + " is null");
-		if(payType == PayType.银行汇款){
-			validate(offlineImage, NOT_BLANK, "order offlineImage" + offlineImage + " is blank");
-			validate(offlineMemo, NOT_BLANK, "order offlineMemo" + offlineMemo + " is blank");
-		}
-		Order order =  orderMapper.findBySn(sn);
-		validate(order, NOT_NULL, "order sn" + sn + " not found");
-		
-		List<Payment> payments = paymentMapper.findByRefId(order.getId());
-		Payment payment = payments.stream().filter(v -> v.getPayType() == payType)
-				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
-				.filter(v -> v.getPaymentStatus() == PaymentStatus.待支付)
-				.findFirst().orElse(null);
-		if(payment == null){
-			payment = new Payment();
-			Date date = new Date();
-			payment.setPaymentStatus(PaymentStatus.待支付);
-			payment.setPaymentType(PaymentType.订单支付);
-			payment.setPayType(payType);
-			payment.setRefId(order.getId());
-			payment.setCreatedTime(date);
-			payment.setExpiredTime(DateUtils.addMinutes(date, Constants.OFFLINE_PAY_EXPIRE_IN_MINUTES));
-			payment.setCurrencyType1(CurrencyType.现金);
-			payment.setAmount1(order.getAmount());
-			payment.setSn(ServiceUtils.generatePaymentSn());
-			payment.setTitle(order.getTitle());
-			payment.setUserId(order.getUserId());
-			payment.setVersion(0);
-			if(payType == PayType.银行汇款){
-				payment.setOfflineImage(offlineImage);
-				payment.setOfflineMemo(offlineMemo);
-				payment.setConfirmStatus(ConfirmStatus.待审核);
-			}
-		}
-		
-		return orderMapper.findOne(order.getId());
 	}
 }

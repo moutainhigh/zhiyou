@@ -10,14 +10,17 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -35,8 +38,8 @@ public class Transfer implements Serializable {
 
 	public enum TransferType {
 		数据奖,
-		平级奖,
-		越级奖
+		一级平级奖,
+		一级越级奖
 	}
 
 	public enum TransferStatus {
@@ -95,13 +98,12 @@ public class Transfer implements Serializable {
 	@View
 	private Date createdTime;
 
-	@NotNull
 	@Query({GTE,LT})
 	@Field(label = "转账时间")
 	@View
 	private Date transferredTime;
 
-	@Query(Predicate.EQ)
+	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "转账类型")
 	@View
 	@NotNull
@@ -112,8 +114,16 @@ public class Transfer implements Serializable {
 	@Query(Predicate.EQ)
 	private Long refId;
 
+	@Field(label = "转账备注")
+	@View
+	private String transferRemark;
+
 	@Field(label = "备注")
 	@View
 	private String remark;
 
+	@NotNull
+	@Version
+	@Field(label = "乐观锁")
+	private Integer version;
 }

@@ -93,6 +93,7 @@ public class MessageQueryModel implements Serializable {
 		fieldNames.add("userId");
 		fieldNames.add("content");
 		fieldNames.add("batchNumber");
+		fieldNames.add("token");
 	}
 
 }

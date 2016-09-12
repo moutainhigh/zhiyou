@@ -6,6 +6,7 @@ import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
+import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.CollectionView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
@@ -29,15 +30,15 @@ import java.util.Date;
 @QueryModel
 @ViewObject(groups = {"OrderListVo", "OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"},
 		collectionViews = {
-				@CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderAdminFullVo"}, elementGroup = "OrderItemAdminVo"),
 				@CollectionView(name = "payments", type = ArrayList.class, groups = {"OrderAdminFullVo"}, elementGroup = "PaymentAdminVo"),
 				@CollectionView(name = "profits", type = ArrayList.class, groups = {"OrderAdminFullVo"}, elementGroup = "ProfitAdminVo"),
+				@CollectionView(name = "transfers", type = ArrayList.class, groups = {"OrderAdminFullVo"}, elementGroup = "TransferAdminVo"),
 				@CollectionView(name = "orderItems", type = ArrayList.class, groups = {"OrderListVo", "OrderDetailVo"}, elementGroup = "OrderItemVo")
 		},
 		views = {
-				@View(name = "imageThumbnail", type = String.class, groups = {"OrderAdminVo"}),
-				@View(name = "price", type = BigDecimal.class, groups = {"OrderAdminVo"}),
-				@View(name = "quantity", type = Long.class, groups = {"OrderAdminVo"})
+				@View(name = "imageThumbnail", type = String.class, groups = {"OrderAdminVo", "OrderAdminFullVo"}),
+				@View(name = "price", type = BigDecimal.class, groups = {"OrderAdminVo", "OrderAdminFullVo"}),
+				@View(name = "quantity", type = Long.class, groups = {"OrderAdminVo", "OrderAdminFullVo"})
 		}
 
 )
@@ -70,12 +71,14 @@ public class Order implements Serializable {
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "用户id")
 	@View
+	@AssociationView(name = "user", groups = {"OrderAdminVo", "OrderAdminFullVo"}, associationGroup = "UserAdminSimpleVo")
 	private Long userId;
 
 	@NotNull
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "卖家id")
 	@View
+	@AssociationView(name = "seller", groups = {"OrderAdminVo", "OrderAdminFullVo"}, associationGroup = "UserAdminSimpleVo")
 	private Long sellerId;
 
 	@NotBlank
