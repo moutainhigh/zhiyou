@@ -18,7 +18,7 @@
 .product .image-box img {
   display: block; height: 100%; margin: 0 auto;
   z-index: 5;
-  background: #efefef url("../../image/image_placeholder.jpg") no-repeat scroll center center;
+  background: #efefef url("../image/image_placeholder.jpg") no-repeat scroll center center;
 }
 .product h3 {
   padding-left: 5px; padding-right: 5px;
@@ -39,7 +39,7 @@
 .product-detail .product-image img {
   display: block; width: 100%;
   z-index: 5;
-  background: #efefef url("../../image/image_placeholder.jpg") no-repeat scroll center center;
+  background: #efefef url("../image/image_placeholder.jpg") no-repeat scroll center center;
 }
 
 
