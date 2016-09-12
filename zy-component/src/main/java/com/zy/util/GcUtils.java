@@ -1,17 +1,10 @@
 package com.zy.util;
 
-import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.zy.common.exception.ValidationException;
+import com.zy.common.util.Identities;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -19,10 +12,16 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.zy.common.exception.ValidationException;
-import com.zy.common.util.Identities;
-import com.zy.model.Constants;
-import com.zy.model.Principal;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
 
 public class GcUtils {
 
@@ -182,6 +181,22 @@ public class GcUtils {
 		}
 		if (fileSize > 4 * 1024 * 1024) {
 			throw new ValidationException("图片大小不能超过4MB");
+		}
+	}
+
+	public static String getUserRankLabel(User.UserRank userRank) {
+		if (userRank == User.UserRank.V0) {
+			return "普通用户";
+		} else if (userRank == User.UserRank.V1) {
+			return "三级代理";
+		} else if (userRank == User.UserRank.V2) {
+			return "二级代理";
+		} else if (userRank == User.UserRank.V3) {
+			return "一级代理";
+		} else if (userRank == User.UserRank.V4) {
+			return "特级代理";
+		} else {
+			return null;
 		}
 	}
 

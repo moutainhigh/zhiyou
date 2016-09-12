@@ -86,6 +86,7 @@ public class User implements Serializable {
 	@NotNull
 	@Field(label = "用户等级")
 	@View(groups = {"UserListVo", "UserAdminVo", "UserAdminSimpleVo"})
+	@View(name = "userRankLabel", type = String.class, groups = {"UserAdminVo", "UserAdminSimpleVo"})
 	private UserRank userRank;
 
 	@Column(length = 11)

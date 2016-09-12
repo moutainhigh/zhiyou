@@ -10,10 +10,11 @@ public class VoHelper {
 		if (user == null) {
 			return null;
 		}
-		UserAdminSimpleVo userAdmiSimpleVo = new UserAdminSimpleVo();
-		BeanUtils.copyProperties(user, userAdmiSimpleVo);
-		userAdmiSimpleVo.setAvatarThumbnail(GcUtils.getThumbnail(user.getAvatar()));
-		return userAdmiSimpleVo;
+		UserAdminSimpleVo userAdminSimpleVo = new UserAdminSimpleVo();
+		BeanUtils.copyProperties(user, userAdminSimpleVo);
+		userAdminSimpleVo.setAvatarThumbnail(GcUtils.getThumbnail(user.getAvatar()));
+		userAdminSimpleVo.setUserRankLabel(GcUtils.getUserRankLabel(user.getUserRank()));
+		return userAdminSimpleVo;
 	}
 
 }
