@@ -27,4 +27,5 @@ public interface PaymentMapper {
 	Payment findBySn(String sn);
 
 	List<Payment> findByRefId(Long refId);
+
 }

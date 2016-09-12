@@ -97,7 +97,6 @@ public class PaymentQueryModel implements Serializable {
 		fieldNames.add("refundRemark");
 		fieldNames.add("createdTime");
 		fieldNames.add("offlineImage");
-		fieldNames.add("confirmStatus");
 		fieldNames.add("id");
 		fieldNames.add("sn");
 		fieldNames.add("cancelRemark");

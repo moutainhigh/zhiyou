@@ -5,15 +5,13 @@
 	<resultMap id="baseResultMap" type="com.zy.entity.sys.Setting">
 		<id column="id" property="id" />
 		<result column="sys_user_id" property="sysUserId" />
-		<result column="fee_user_id" property="feeUserId" />
-		<result column="grant_user_id" property="grantUserId" />
 		<result column="withdraw_fee_rate_script" property="withdrawFeeRateScript" />
 		<result column="is_dev" property="isDev" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.sys.Setting" useGeneratedKeys="true" keyProperty="id">
-	  insert into `sys_setting` (sys_user_id,fee_user_id,grant_user_id,withdraw_fee_rate_script,is_dev)
-	  values (#{sysUserId},#{feeUserId},#{grantUserId},#{withdrawFeeRateScript},#{isDev})
+	  insert into `sys_setting` (sys_user_id,withdraw_fee_rate_script,is_dev)
+	  values (#{sysUserId},#{withdrawFeeRateScript},#{isDev})
 	</insert>
 
 	<delete id="delete">
@@ -24,8 +22,6 @@
 		update `sys_setting`
 		<set>
 			sys_user_id = #{sysUserId},
-			fee_user_id = #{feeUserId},
-			grant_user_id = #{grantUserId},
 			withdraw_fee_rate_script = #{withdrawFeeRateScript},
 			is_dev = #{isDev},
 		</set>
@@ -38,8 +34,6 @@
 				<foreach collection="fields" item="field">
 				<choose>
 					<when test="field == 'sysUserId'">sys_user_id = #{setting.sysUserId},</when>
-					<when test="field == 'feeUserId'">fee_user_id = #{setting.feeUserId},</when>
-					<when test="field == 'grantUserId'">grant_user_id = #{setting.grantUserId},</when>
 					<when test="field == 'withdrawFeeRateScript'">withdraw_fee_rate_script = #{setting.withdrawFeeRateScript},</when>
 					<when test="field == 'isDev'">is_dev = #{setting.isDev},</when>
 				</choose>
@@ -50,14 +44,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,sys_user_id,fee_user_id,grant_user_id,withdraw_fee_rate_script,is_dev
+		id,sys_user_id,withdraw_fee_rate_script,is_dev
 		from `sys_setting`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap">
 		select
-		id,sys_user_id,fee_user_id,grant_user_id,withdraw_fee_rate_script,is_dev
+		id,sys_user_id,withdraw_fee_rate_script,is_dev
 		from `sys_setting`
 		order by id desc
 	</select>
