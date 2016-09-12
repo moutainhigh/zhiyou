@@ -34,9 +34,11 @@ import static io.gd.generator.api.query.Predicate.*;
 public class Profit implements Serializable {
 
 	public enum ProfitType {
+		补偿,
 		订单收款, 
-		数据奖, 
-		补偿
+		数据奖,
+		销量奖
+
 	}
 
 

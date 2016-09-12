@@ -95,7 +95,6 @@ public class Transfer implements Serializable {
 	@View
 	private Date createdTime;
 
-	@NotNull
 	@Query({GTE,LT})
 	@Field(label = "转账时间")
 	@View
@@ -111,6 +110,10 @@ public class Transfer implements Serializable {
 	@View
 	@Query(Predicate.EQ)
 	private Long refId;
+
+	@Field(label = "转账备注")
+	@View
+	private String transferRemark;
 
 	@Field(label = "备注")
 	@View
