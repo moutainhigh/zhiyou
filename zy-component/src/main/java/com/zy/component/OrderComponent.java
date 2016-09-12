@@ -1,33 +1,92 @@
 package com.zy.component;
 
-import static com.zy.util.GcUtils.formatDate;
+import com.zy.common.util.BeanUtils;
+import com.zy.entity.fnc.Payment;
+import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Transfer;
+import com.zy.entity.mal.Order;
+import com.zy.entity.mal.OrderItem;
+import com.zy.model.query.PaymentQueryModel;
+import com.zy.model.query.ProfitQueryModel;
+import com.zy.model.query.TransferQueryModel;
+import com.zy.service.OrderItemService;
+import com.zy.service.PaymentService;
+import com.zy.service.ProfitService;
+import com.zy.service.TransferService;
+import com.zy.util.GcUtils;
+import com.zy.vo.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.zy.common.util.BeanUtils;
-import com.zy.entity.mal.Order;
-import com.zy.entity.mal.OrderItem;
-import com.zy.service.OrderItemService;
-import com.zy.util.GcUtils;
-import com.zy.vo.OrderAdminVo;
-import com.zy.vo.OrderDetailVo;
-import com.zy.vo.OrderItemVo;
-import com.zy.vo.OrderListVo;
+import static com.zy.util.GcUtils.formatDate;
 
 @Component
 public class OrderComponent {
 	
 	@Autowired
 	private OrderItemService orderItemService;
-	
+	@Autowired
+	private ProfitService profitService;
+	@Autowired
+	private PaymentService paymentService;
+	@Autowired
+	private TransferService transferService;
+
+	@Autowired
+	private ProfitComponent profitComponent;
+	@Autowired
+	private PaymentComponent paymentComponent;
+	@Autowired
+	private TransferComponent transferComponent;
+
 	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 	
 	private static final String SIMPLE_TIME_PATTERN = "M月d日 HH:mm";
+
+
+	public OrderAdminFullVo buildAdminFullVo(Order order) {
+		OrderAdminFullVo orderAdminFullVo = new OrderAdminFullVo();
+		BeanUtils.copyProperties(order, orderAdminFullVo);
+
+		orderAdminFullVo.setCreatedTimeLabel(formatDate(order.getCreatedTime(), TIME_PATTERN));
+		orderAdminFullVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), TIME_PATTERN));
+		orderAdminFullVo.setPaidTimeLabel(formatDate(order.getPaidTime(), TIME_PATTERN));
+		orderAdminFullVo.setRefundedTimeLabel(formatDate(order.getRefundedTime(), TIME_PATTERN));
+
+		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
+		if (orderItem != null) {
+			orderAdminFullVo.setImageThumbnail(GcUtils.getThumbnail(orderItem.getImage()));
+			orderAdminFullVo.setPrice(orderItem.getPrice());
+			orderAdminFullVo.setQuantity(orderItem.getQuantity());
+		}
+
+		orderAdminFullVo.setProfits(profitService
+				.findAll(ProfitQueryModel.builder().profitTypeIN(new Profit.ProfitType[] {Profit.ProfitType.特级平级奖, Profit.ProfitType.订单收款, Profit.ProfitType.销量奖}).build())
+				.stream()
+				.map(profitComponent::buildAdminVo).collect(Collectors.toList())
+
+		);
+
+		orderAdminFullVo.setPayments(paymentService
+				.findAll(PaymentQueryModel.builder().paymentTypeEQ(Payment.PaymentType.订单支付).build())
+				.stream()
+				.map(paymentComponent::buildAdminVo).collect(Collectors.toList())
+
+		);
+
+		orderAdminFullVo.setTransfers(transferService
+				.findAll(TransferQueryModel.builder().transferTypeIN(new Transfer.TransferType[] {Transfer.TransferType.一级平级奖, Transfer.TransferType.一级越级奖}).build())
+				.stream()
+				.map(transferComponent::buildAdminVo).collect(Collectors.toList())
+
+		);
+
+		return orderAdminFullVo;
+	}
 	
 	public OrderAdminVo buildAdminVo(Order order) {
 		OrderAdminVo orderAdminVo = new OrderAdminVo();

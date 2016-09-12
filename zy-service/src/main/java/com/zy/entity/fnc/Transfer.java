@@ -103,7 +103,7 @@ public class Transfer implements Serializable {
 	@View
 	private Date transferredTime;
 
-	@Query(Predicate.EQ)
+	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "转账类型")
 	@View
 	@NotNull

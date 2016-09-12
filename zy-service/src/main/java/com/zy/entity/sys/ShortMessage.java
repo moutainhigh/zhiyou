@@ -45,4 +45,8 @@ public class ShortMessage implements Serializable {
 	@Field(label = "ip地址")
 	private String ip;
 
+	@Field(label = "token")
+	@Column(length = 60, unique = true)
+	private String token;
+
 }

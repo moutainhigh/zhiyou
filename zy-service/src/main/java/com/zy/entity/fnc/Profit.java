@@ -39,9 +39,7 @@ public class Profit implements Serializable {
 		数据奖,
 		销量奖,
 		特级平级奖
-
 	}
-
 
 	@Id
 	@Field(label = "id")
@@ -83,7 +81,7 @@ public class Profit implements Serializable {
 	@View
 	private Date createdTime;
 
-	@Query(Predicate.EQ)
+	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "收益单类型")
 	@View
 	@NotNull

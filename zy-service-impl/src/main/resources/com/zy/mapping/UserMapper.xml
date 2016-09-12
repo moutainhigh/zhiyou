@@ -19,11 +19,12 @@
 		<result column="remark" property="remark" />
 		<result column="vip_expired_date" property="vipExpiredDate" />
 		<result column="open_id" property="openId" />
+		<result column="last_upgraded_time" property="lastUpgradedTime" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id)
-	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId})
+	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,last_upgraded_time)
+	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{lastUpgradedTime})
 	</insert>
 
 	<delete id="delete">
@@ -48,6 +49,7 @@
 			remark = #{remark},
 			vip_expired_date = #{vipExpiredDate},
 			open_id = #{openId},
+			last_upgraded_time = #{lastUpgradedTime},
 		</set>
 		where id = #{id}
 	</update>
@@ -72,6 +74,7 @@
 					<when test="field == 'remark'">remark = #{user.remark},</when>
 					<when test="field == 'vipExpiredDate'">vip_expired_date = #{user.vipExpiredDate},</when>
 					<when test="field == 'openId'">open_id = #{user.openId},</when>
+					<when test="field == 'lastUpgradedTime'">last_upgraded_time = #{user.lastUpgradedTime},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -80,14 +83,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,last_upgraded_time
 		from `usr_user`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,last_upgraded_time
 		from `usr_user`
 		<where>
 			<if test="idIN != null">
