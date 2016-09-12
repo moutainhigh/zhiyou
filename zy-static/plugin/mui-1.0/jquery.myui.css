@@ -28,7 +28,7 @@
   pointer-events: none;
 }
 .mui-dialog .mui-dialog-content {
-  position: relative;
+  position: relative; overflow: hidden;
   color: #555; font-size: 14px;  text-align: center;
   pointer-events: auto;
 }
@@ -47,7 +47,7 @@
 }
 
 .mui-dialog .mui-dialog-center {
-  display: inline-block; min-width: 60%; max-width: 90%;
+  display: inline-block; min-width: 70%; max-width: 90%;
   background-color: #fff; border-radius: 5px;
 }
 .mui-dialog .mui-dialog-center .mui-dialog-buttons {
