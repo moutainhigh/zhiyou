@@ -23,6 +23,8 @@ public interface PaymentService {
 	void offlineFailure(Long id, Long operatorId, String remark);
 
 	void balancePay(Long paymentId, boolean checkBalance);
+	
+	void modifyOffline(Long paymentId, String offlineImage, String offlineMemo);
 
 	Payment create(Payment payment);
 

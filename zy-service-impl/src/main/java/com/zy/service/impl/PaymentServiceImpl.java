@@ -287,6 +287,21 @@ public class PaymentServiceImpl implements PaymentService {
 
 		onSuccess(payment);
 	}
+	
+	@Override
+	public void modifyOffline(Long paymentId, String offlineImage, String offlineMemo) {
+		Payment persistance = paymentMapper.findOne(paymentId);
+		validate(persistance, NOT_NULL, "payment id " + paymentId + " is not found");
+		validate(offlineImage, NOT_BLANK, "payment offlineImage is blank");
+		validate(offlineMemo, NOT_BLANK, "payment offlineMemo is blank");
+		
+		persistance.setOfflineMemo(offlineMemo);
+		persistance.setOfflineImage(offlineImage);
+		persistance.setPaidTime(new Date());
+		if (paymentMapper.update(persistance) == 0) {
+			throw new ConcurrentException();
+		}
+	}
 
 
 	@Override

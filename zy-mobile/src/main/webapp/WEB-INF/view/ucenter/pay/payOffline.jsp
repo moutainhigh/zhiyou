@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>线下支付</title>
+<title>转账汇款</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
@@ -36,10 +36,10 @@
   	
     $(".valid-form").validate({
         rules : {
-          'simage' : {
+          'offlineImage' : {
             required : true
           },
-          'address' : {
+          'offlineMemo' : {
             required : true
           }
         }
@@ -52,12 +52,12 @@
 <body>
 
   <header class="header">
-    <h1>线下支付</h1>
+    <h1>转账汇款</h1>
     <a href="javascript:history.go(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
   <div class="note note-warning mb-0">
-    <p><i class="fa fa-exclamation-circle"></i> 支付提示支付提示支付提示支付提示支付提示</p>
+    <p><i class="fa fa-exclamation-circle"></i> 请将本次交易金额${amount}元，转入以下银行账户</p>
   </div>
   
   <article class="mt-15 mb-15 clearfix">
@@ -74,31 +74,36 @@
           <div class="list-text">收款人</div>
           <div class="list-unit">戴钟华</div>
         </div>
+        <div class="list-item">
+          <div class="list-text">转账金额</div>
+          <div class="list-unit">${amount}元</div>
+        </div>
      </div>
      
-     <form action="${ctx}/u" class="valid-form" method="get">
+     <form action="${ctx}/u/pay/payment" class="valid-form" method="post">
+     <input type="hidden" name="paymentId" value="${paymentId}" >
      <div class="list-group">
         <div class="list-title">上传图片</div>
         <div class="list-item">
           <label class="list-label">上传图片</label>
           <div class="list-text image-upload image-single">
             <div class="image-item">
-              <input type="hidden" name="simage" id="simage" value="">
+              <input type="hidden" name="offlineImage" id="offlineImage" value="">
               <img src="${stccdn}/image/defaultImage_240_150.png">
               <input type="file">
             </div>
           </div>
           <div class="list-unit">
-            <a href="javascript:;" class="image-view font-blue fs-14" data-src="http://image.mayishike.com/image/1e27766d-62b3-496a-b442-15f512caaff5" data-title="淘宝截图示例图"><i class="fa fa-question-circle-o"></i> 示意图</a>
+            <a href="javascript:;" class="image-view font-blue fs-14" data-src="http://image.mayishike.com/image/1e27766d-62b3-496a-b442-15f512caaff5" data-title="转账汇款截图示例图"><i class="fa fa-question-circle-o"></i> 示意图</a>
           </div>
         </div>
         <div class="list-item">
           <div class="list-text">
-            <textarea placeholder="填写备注填写备注填写备注" rows="3" class="form-input" name="address"></textarea>
+            <textarea placeholder="请填写汇款账号、汇款人、汇款金额" rows="3" class="form-input" name="offlineMemo"></textarea>
           </div>
         </div>
         <p class="bg-white font-red width-100p pl-15 pr-15 pt-10 pb-10">注意事项：</p>
-        <p class="bg-white pl-15 pr-15 pb-10">上传截图提示信息上传截图提示信息上传截图提示信息上传截图提示信息上传截图提示信息上传截图提示信息上传截图提示信息上传截图提示信息</p>
+        <p class="bg-white pl-15 pr-15 pb-10">办理银行转帐时，请您务必核对好以上的账户信息和转账金额。</p>
      </div>
      
      <div class="form-btn">

@@ -30,10 +30,10 @@
         callback : function(index){
           if(index == 1) {
             alert('余额支付');
-            location.href = '${ctx}/pay/${order.sn}?payType=0';
+            location.href = '${ctx}/u/pay/order/${order.sn}?payType=0';
           } else if(index == 2) {
         	alert('银行汇款');
-        	location.href = '${ctx}/pay/${order.sn}?payType=1';
+        	location.href = '${ctx}/u/pay/order/${order.sn}?payType=1';
           }
         }
       });
