@@ -41,7 +41,7 @@
   display: block; width: 100%; height: auto;
 }
 .mui-dialog .mui-dialog-button {
-  position: relative; padding: 10px 5px;
+  position: relative; padding: 10px 15px;
   font-size: 14px; line-height: 24px; cursor: pointer;
   background-color: #f7f7f7; border-top: 1px solid #e1e1e1;
 }
@@ -55,7 +55,7 @@
 }
 .mui-dialog .mui-dialog-center .mui-dialog-button {
   -moz-box-flex: 1; box-flex: 1; -webkit-box-flex: 1;
-  border-right: 1px solid #e1e1e1;
+  padding: 10px 5px; border-right: 1px solid #e1e1e1;
 }
 .mui-dialog .mui-dialog-center .mui-dialog-button:last-child {
   border-right: none;
@@ -68,7 +68,6 @@
 .mui-dialog .mui-dialog-footer .mui-dialog-buttons {
 }
 .mui-dialog .mui-dialog-footer .mui-dialog-button {
-  display: block;
 }
 .mui-dialog .mui-dialog-footer .mui-dialog-button-cancle {
   margin-top: 5px;
