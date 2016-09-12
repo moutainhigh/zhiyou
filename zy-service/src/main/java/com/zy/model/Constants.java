@@ -57,7 +57,7 @@ public interface Constants {
 
     /* order */
     int SETTING_ORDER_EXPIRE_IN_MINUTES = 60 * 24 * 10;
-    int OFFLINE_PAY_EXPIRE_IN_MINUTES = 60 * 30; // 转账汇款   支付单过期时间 30分钟
+    int SETTING_PAYMENT_EXPIRE_IN_MINUTES = 60 * 30; // 余额支付/转账汇款   支付单过期时间 30分钟
     
     /* weixin pay */
     String WEIXIN_PAY_NOTIFY = "http://www.zhi-you.net/notify/weixinPay";

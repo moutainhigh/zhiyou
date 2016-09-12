@@ -35,9 +35,11 @@
     <p><i class="fa fa-exclamation-circle"></i> 对不起，您账户余额不足！</p>
   </div>
   
+  <form action="${ctx}/u/pay/payment" class="valid-form" method="post">
+  <input type="hidden" name="paymentId" value="${paymentId}" >
   <article class="mt-15 mb-15 clearfix">
      <div class="list-title">订单信息</div>
-     <div class="list-group">
+     <%-- <div class="list-group">
        <div class="list-item">
           <div class="activity">
             <figure class="abs-lt image-wrap">
@@ -48,17 +50,17 @@
             <div class="font-999 fs-12 lh-20">付款金额：99元</div>
           </div>
        </div>
-     </div>  
+     </div> --%>  
      
      <div class="list-title">账户信息</div> 
      <div class="list-group">
        <div class="list-item">
          <div class="list-text">账户余额</div>
-         <div class="list-unit">999元</div>
+         <div class="list-unit">${balance}元</div>
        </div>
        <div class="list-item">
          <div class="list-text">支付金额</div>
-         <div class="list-unit">99元</div>
+         <div class="list-unit">${amount}元</div>
        </div>
      </div>
      
@@ -66,6 +68,6 @@
         <div id="btnSubmit" class="btn orange btn-block round-2">确认支付</div>
      </div>
   </article>  
-
+  </form>
 </body>
 </html>
