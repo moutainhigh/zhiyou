@@ -73,6 +73,7 @@
         callback : function(index){
           if(index == 1) {
             location.href = '${ctx}/u/address/delete/${address.id}';
+            return true;
           }
         }
       });

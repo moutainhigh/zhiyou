@@ -52,15 +52,21 @@
       $('body').removeClass('o-hidden');
       $('.mui-dialog').remove();
     }
-    $dialog.find('.mui-dialog-mask').click(function(){
+    if(options.overlayClose) {
+      $dialog.find('.mui-dialog-mask').click(function(){
+        onClose();
+      });
+    }
+    $dialog.find('.mui-dialog-button-cancle').click(function(){
       onClose();
     });
     $dialog.find('.mui-dialog-button').click(function(){
       var index = $(this).attr('data-index');
       if ($.isFunction(options.callback)) {
-        options.callback.call($dialog, index);
+        if(options.callback.call($dialog, index)) {
+          onClose();
+        }
       }
-      onClose();
     });
     return $dialog;
   };
@@ -69,6 +75,7 @@
     title : '',
     btn : ['确定'],
     skin: 'footer',
+    overlayClose : false,
     cancleBtn : true,
     callback : function(index) {
       //alert(index);

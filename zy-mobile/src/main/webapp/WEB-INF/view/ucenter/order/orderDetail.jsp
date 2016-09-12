@@ -14,7 +14,6 @@
 <meta name="description" content="订单详情 " />
 
 <link href="${stccdn}/css/ucenter/order.css" rel="stylesheet"> 
-<script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
 
 <title>订单详情</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
