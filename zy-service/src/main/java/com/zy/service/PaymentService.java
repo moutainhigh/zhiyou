@@ -19,6 +19,8 @@ public interface PaymentService {
 	void success(Long id, String outerSn);
 
 	void offlineSuccess(Long id, Long operatorId, String remark);
+	
+	void offlineFailure(Long id, Long operatorId, String remark);
 
 	void balancePay(Long paymentId, boolean checkBalance);
 
