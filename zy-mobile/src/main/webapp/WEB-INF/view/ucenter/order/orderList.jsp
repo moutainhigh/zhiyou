@@ -39,13 +39,12 @@
     <c:forEach items="${page.data}" var="order">
     <a class="order mt-15 bd-t bd-b" href="${ctx}/u/order/${order.sn}">
       <div class="order-sn pl-15 pr-15 font-777 fs-12">订单编号：${order.sn}</div>
-      <c:if test="${order.orderStatus == '待支付'}"><label class="order-status label red">待支付</label></c:if>
-      <c:if test="${order.orderStatus == '已支付'}"><label class="order-status label orange">已支付</label></c:if>
-      <c:if test="${order.orderStatus == '已发货'}"><label class="order-status label yellow">已发货</label></c:if>
-      <c:if test="${order.orderStatus == '已完成'}"><label class="order-status label green">已完成</label></c:if>
-      <c:if test="${order.orderStatus == '已退款'}"><label class="order-status label blue">已退款</label></c:if>
-      <c:if test="${order.orderStatus == '已取消'}"><label class="order-status label gray">已取消</label></c:if>
-      <label class="order-status label orange">${order.orderStatus}</label>
+      <label class="order-status label<c:if test="${order.orderStatus == '待支付'}"> red</c:if>
+      <c:if test="${order.orderStatus == '已支付'}"> orange</c:if>
+      <c:if test="${order.orderStatus == '已发货'}"> yellow</c:if>
+      <c:if test="${order.orderStatus == '已完成'}"> green</c:if>
+      <c:if test="${order.orderStatus == '已退款'}"> blue</c:if>
+      <c:if test="${order.orderStatus == '已取消'}"> gray</c:if>">${order.orderStatus}</label>
       <div class="product-info pl-15 pr-15">
         <div class="product relative clearfix mt-5">
           <img class="product-image abs-lt" alt="" src="${order.orderItems[0].imageThumbnail}">

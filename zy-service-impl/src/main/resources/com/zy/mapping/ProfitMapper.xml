@@ -79,37 +79,50 @@
 		from `fnc_profit`
 		<where>
 			<if test="createdTimeLT != null">
-				 and created_time &lt; #{createdTimeLT}
+				and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="userIdIN != null">
-				 and user_id in
+				<if test="userIdIN.length != 0">
+				and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="grantedTimeLT != null">
-				 and granted_time &lt; #{grantedTimeLT}
+				and granted_time &lt; #{grantedTimeLT}
 			</if>
 			<if test="profitTypeEQ != null">
-				 and profit_type = #{profitTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and profit_type = #{profitTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="refIdEQ != null">
-				 and ref_id = #{refIdEQ}
+				and ref_id = #{refIdEQ}
 			</if>
 			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="createdTimeGTE != null">
-				 and created_time &gt;= #{createdTimeGTE}
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 			<if test="profitTypeIN != null">
-				 and profit_type in
+				<if test="profitTypeIN.length != 0">
+				and profit_type in
 				<foreach collection="profitTypeIN" item="item" open="(" separator="," close=")">
 				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 				</foreach>
+				</if>
+				<if test="profitTypeIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="grantedTimeGTE != null">
-				 and granted_time &gt;= #{grantedTimeGTE}
+				and granted_time &gt;= #{grantedTimeGTE}
+			</if>
+			<if test="profitStatusEQ != null">
+				and profit_status = #{profitStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 		<choose>
@@ -129,37 +142,50 @@
 		select count(*) from `fnc_profit`
 		<where>
 			<if test="createdTimeLT != null">
-				 and created_time &lt; #{createdTimeLT}
+				and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="userIdIN != null">
-				 and user_id in
+				<if test="userIdIN.length != 0">
+				and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="grantedTimeLT != null">
-				 and granted_time &lt; #{grantedTimeLT}
+				and granted_time &lt; #{grantedTimeLT}
 			</if>
 			<if test="profitTypeEQ != null">
-				 and profit_type = #{profitTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and profit_type = #{profitTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="refIdEQ != null">
-				 and ref_id = #{refIdEQ}
+				and ref_id = #{refIdEQ}
 			</if>
 			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="createdTimeGTE != null">
-				 and created_time &gt;= #{createdTimeGTE}
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 			<if test="profitTypeIN != null">
-				 and profit_type in
+				<if test="profitTypeIN.length != 0">
+				and profit_type in
 				<foreach collection="profitTypeIN" item="item" open="(" separator="," close=")">
 				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 				</foreach>
+				</if>
+				<if test="profitTypeIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="grantedTimeGTE != null">
-				 and granted_time &gt;= #{grantedTimeGTE}
+				and granted_time &gt;= #{grantedTimeGTE}
+			</if>
+			<if test="profitStatusEQ != null">
+				and profit_status = #{profitStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 	</select>
