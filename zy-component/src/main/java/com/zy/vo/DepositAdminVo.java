@@ -53,9 +53,15 @@ public class DepositAdminVo implements Serializable {
 	private DepositStatus depositStatus;
 	@Field(label = "备注")
 	private String remark;
+	@Field(label = "银行汇款截图")
+	private String offlineImage;
+	@Field(label = "银行汇款备注")
+	private String offlineMemo;
 
 	/* 扩展 */
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
+	@Field(label = "银行汇款截图")
+	private String offlineImageThumbnail;
 
 }

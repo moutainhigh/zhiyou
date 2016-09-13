@@ -109,9 +109,11 @@ public class DepositQueryModel implements Serializable {
 		fieldNames.add("qrCodeUrl");
 		fieldNames.add("createdTime");
 		fieldNames.add("depositStatus");
+		fieldNames.add("offlineImage");
 		fieldNames.add("outerSn");
 		fieldNames.add("id");
 		fieldNames.add("sn");
+		fieldNames.add("offlineMemo");
 		fieldNames.add("operatorId");
 	}
 
