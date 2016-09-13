@@ -31,14 +31,7 @@ $(function() {
     switch (XMLHttpRequest.status) {
       case 401: /* 未登录提示 */
         var result = JSON.parse(XMLHttpRequest.responseText);
-        asideHtml = '<aside id="asideLogin" class="abs-lt size-100p text-center hide zindex-1000" style="background-color:rgba(0, 0, 0, 0.8)">'
-          + '<div class="abs-mm">'
-          + '<p class="font-white fs-15 lh-30">您还没有登录，请先登录</p>'
-          + '<a class="btn green mt-15 width-200 round-2" href="' + result.data + '"><i class="fa fa-weixin font-white"></i> 去授权登录</a>'
-          + '</div>'
-          + '</aside>';
-        $('body').addClass('o-hidden');
-        $(asideHtml).appendTo($('body')).fadeIn(300);
+        showLogin(result.data);
         //messageFlash('您还没有登录, 请先登录');
         break;
       case 403:
@@ -51,6 +44,24 @@ $(function() {
         break;
     }
   });
+  
+  var showLogin = function(url){
+    asideHtml = '<aside id="asideLogin" class="fix-lt size-100p hide zindex-100">'
+      + '<div class="aside-mask fix-lt size-100p zindex-100" style="background-color:rgba(0, 0, 0, 0.8)"></div>'
+      + '<a href="javascript:;" class="btn-close abs-rt mt-10 mr-15 zindex-100"><i class="fa fa-times-circle font-white fs-20"></i></a>'
+      + '<div class="abs-mm text-center zindex-100">'
+      + '<p class="font-white fs-15 lh-30">您还没有登录，请先登录</p>'
+      + '<a class="btn green mt-15 width-200 round-2" href="' + url + '"><i class="fa fa-weixin font-white"></i> 去授权登录</a>'
+      + '</div>'
+      + '</aside>';
+    $('body').addClass('o-hidden');
+    $(asideHtml).appendTo($('body')).fadeIn(300).find('a.btn-close').click(function(){
+      $('body').removeClass('o-hidden');
+      $('#asideLogin').fadeOut(300, function(){
+        $('#asideLogin').remove();
+      });
+    });
+  };
   
   /* 回到顶部按钮 */
   if($('.go-top').length > 0) {
