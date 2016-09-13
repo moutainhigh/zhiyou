@@ -42,7 +42,7 @@ public class Profit implements Serializable {
 	}
 
 	public enum ProfitStatus {
-		待发放, 已发放
+		待发放, 已发放, 已取消
 	}
 
 	@Id
