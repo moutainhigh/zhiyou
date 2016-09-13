@@ -135,7 +135,7 @@ public class FncComponent {
 	}
 
 	public Profit createAndGrantProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
-	                           @NotNull CurrencyType currencyType, @NotBlank @DecimalMin("0.01") BigDecimal amount) {
+	                           @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
@@ -161,7 +161,7 @@ public class FncComponent {
 	}
 
 	public Profit createProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
-	                                   @NotNull CurrencyType currencyType, @NotBlank @DecimalMin("0.01") BigDecimal amount) {
+	                                   @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
