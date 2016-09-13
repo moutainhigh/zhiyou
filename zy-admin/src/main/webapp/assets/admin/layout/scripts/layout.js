@@ -561,6 +561,12 @@ var Layout = function () {
         ajax: function(url, type, data, success){
           ajax(url, type, data, success);
         },
+        
+        postForm: function(form){
+          var url = $(form).attr('data-action');
+          var data = $(form).serialize();
+          Layout.ajax(url, 'POST', data);
+        },
 
         //public function to fix the sidebar and content height accordingly
         fixContentHeight: function () {
