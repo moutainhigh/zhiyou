@@ -39,6 +39,7 @@ public class AdminConstants {
 			sub.put("product:view", "商品查看");
 			sub.put("product:edit", "商品编辑");
 			sub.put("order:view", "订单查看");
+			sub.put("order:deliver", "订单发货");
 			sub.put("agent:view", "代理信息(查看)");
 			sub.put("agent:edit", "代理信息(编辑)");
 			sub.put("agent:addVip", "代理信息(加VIP)");
