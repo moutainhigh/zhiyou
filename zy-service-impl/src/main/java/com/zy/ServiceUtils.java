@@ -14,27 +14,31 @@ public class ServiceUtils {
 	public static Random random = new Random();
 
 	public static String generateOrderSn() {
-		return generateSn("R");
+		return generateSn("D");
 	}
 	
 	public static String generatePaymentSn() {
-		return generateSn("P");
+		return generateSn("F");
 	}
 
 	public static String generateWithdrawSn() {
-		return generateSn("W");
+		return generateSn("T");
 	}
 
 	public static String generateDepositSn() {
-		return generateSn("D");
+		return generateSn("C");
+	}
+
+	public static String generateTransferSn() {
+		return generateSn("Z");
 	}
 
 	public static String generateProfitSn() {
-		return generateSn("R");
+		return generateSn("S");
 	}
 	
 	private static String generateSn(String prefix) {
-		return prefix + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + StringUtils.leftPad(String.valueOf(random.nextInt(1000000)), 6, '0');
+		return prefix + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + "-" + StringUtils.leftPad(String.valueOf(random.nextInt(10000)), 4, '0');
 	}
 	
 	public static String hashPassword(String plainPassword) {
