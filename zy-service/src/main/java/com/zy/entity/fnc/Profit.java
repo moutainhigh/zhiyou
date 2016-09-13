@@ -10,6 +10,7 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -89,11 +91,13 @@ public class Profit implements Serializable {
 	@Query({GTE,LT})
 	@Field(label = "创建时间")
 	@View
+	@View(name = "createdTimeLabel", type = String.class)
 	private Date createdTime;
 
 	@Query({GTE,LT})
 	@Field(label = "发放时间")
 	@View
+	@View(name = "grantedTimeLabel", type = String.class)
 	private Date grantedTime;
 
 	@Query({Predicate.EQ, Predicate.IN})
