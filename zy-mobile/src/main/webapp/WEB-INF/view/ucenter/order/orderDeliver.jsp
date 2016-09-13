@@ -65,20 +65,20 @@
       
       <div class="list-group">
         <div class="list-title">请选择发货方式</div>
-        <label class="list-item form-radio" for="deliverType0">
-          <div class="list-text">面对面发货</div>
+        <div class="list-item form-radio">
+          <label class="list-text" for="deliverType0">面对面发货</label>
           <div class="list-unit">
             <input id="deliverType0" type="radio" name="useLogistics" value="false">
-            <em class="i-checked"></em>
+            <label class="i-checked" for="deliverType0"></label>
           </div>
-        </label>
-        <label class="list-item form-radio" for="deliverType1">
-          <div class="list-text">物流发货</div>
+        </div>
+        <div class="list-item form-radio">
+          <label class="list-text" for="deliverType1">物流发货</label>
           <div class="list-unit">
             <input id="deliverType1" type="radio" name="useLogistics" value="true">
-            <em class="i-checked"></em>
+            <label class="i-checked" for="deliverType1"></label>
           </div>
-        </label>
+        </div>
       </div>
       
       <div id="logistics" class="list-group hide">
