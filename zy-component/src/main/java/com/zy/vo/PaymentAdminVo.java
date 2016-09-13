@@ -66,6 +66,8 @@ public class PaymentAdminVo implements Serializable {
 	private String offlineMemo;
 
 	/* 扩展 */
+	@Field(label = "用户id")
+	private UserAdminSimpleVo user;
 	@Field(label = "下单时间")
 	private String createdTimeLabel;
 	@Field(label = "过期时间")
@@ -74,7 +76,5 @@ public class PaymentAdminVo implements Serializable {
 	private String paidTimeLabel;
 	@Field(label = "退款时间")
 	private String refundedTimeLabel;
-	@Field(label = "用户id")
-	private UserAdminSimpleVo user;
 
 }
