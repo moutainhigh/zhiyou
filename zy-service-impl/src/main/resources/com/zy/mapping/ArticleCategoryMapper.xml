@@ -64,13 +64,13 @@
 		from `cms_article_category`
 		<where>
 			<if test="isVisiableEQ != null">
-				and is_visiable = #{isVisiableEQ}
+				 and is_visiable = #{isVisiableEQ}
 			</if>
 			<if test="parentIdEQ != null">
-				and parent_id = #{parentIdEQ}
+				 and parent_id = #{parentIdEQ}
 			</if>
 			<if test="isTopParentEQ != null">
-				and is_top_parent = #{isTopParentEQ}
+				 and is_top_parent = #{isTopParentEQ}
 			</if>
 		</where>
 		<choose>
@@ -90,13 +90,13 @@
 		select count(*) from `cms_article_category`
 		<where>
 			<if test="isVisiableEQ != null">
-				and is_visiable = #{isVisiableEQ}
+				 and is_visiable = #{isVisiableEQ}
 			</if>
 			<if test="parentIdEQ != null">
-				and parent_id = #{parentIdEQ}
+				 and parent_id = #{parentIdEQ}
 			</if>
 			<if test="isTopParentEQ != null">
-				and is_top_parent = #{isTopParentEQ}
+				 and is_top_parent = #{isTopParentEQ}
 			</if>
 		</where>
 	</select>

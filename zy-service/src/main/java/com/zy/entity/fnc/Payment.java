@@ -163,6 +163,7 @@ public class Payment implements Serializable {
 
 	@Field(label = "银行汇款截图")
 	@View
+	@View(name = "offlineImageThumbnail")
 	private String offlineImage;
 	
 	@Field(label = "银行汇款备注")

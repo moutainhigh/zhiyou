@@ -67,10 +67,10 @@
 		from `cms_feedback`
 		<where>
 			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+				 and user_id = #{userIdEQ}
 			</if>
 			<if test="feedbackStatusEQ != null">
-				and feedback_status = #{feedbackStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and feedback_status = #{feedbackStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 		<choose>
@@ -90,10 +90,10 @@
 		select count(*) from `cms_feedback`
 		<where>
 			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+				 and user_id = #{userIdEQ}
 			</if>
 			<if test="feedbackStatusEQ != null">
-				and feedback_status = #{feedbackStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and feedback_status = #{feedbackStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 	</select>

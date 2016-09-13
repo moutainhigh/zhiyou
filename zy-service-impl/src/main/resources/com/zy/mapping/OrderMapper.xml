@@ -144,27 +144,22 @@
 		from `mal_order`
 		<where>
 			<if test="userIdIN != null">
-				<if test="userIdIN.length != 0">
-				and user_id in
+				 and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="userIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 			<if test="orderStatusEQ != null">
-				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="logisticsNameLK != null">
 				<bind name="logisticsNameLK" value="'%' + logisticsNameLK + '%'"/> and logistics_name like #{logisticsNameLK}
 			</if>
 			<if test="sellerIdEQ != null">
-				and seller_id = #{sellerIdEQ}
+				 and seller_id = #{sellerIdEQ}
 			</if>
 			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+				 and user_id = #{userIdEQ}
 			</if>
 			<if test="logisticsSnLK != null">
 				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
@@ -173,18 +168,13 @@
 				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
 			</if>
 			<if test="sellerIdIN != null">
-				<if test="sellerIdIN.length != 0">
-				and seller_id in
+				 and seller_id in
 				<foreach collection="sellerIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="sellerIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 			<if test="isSettledUpEQ != null">
-				and is_settled_up = #{isSettledUpEQ}
+				 and is_settled_up = #{isSettledUpEQ}
 			</if>
 		</where>
 		<choose>
@@ -204,27 +194,22 @@
 		select count(*) from `mal_order`
 		<where>
 			<if test="userIdIN != null">
-				<if test="userIdIN.length != 0">
-				and user_id in
+				 and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="userIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 			<if test="orderStatusEQ != null">
-				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="logisticsNameLK != null">
 				<bind name="logisticsNameLK" value="'%' + logisticsNameLK + '%'"/> and logistics_name like #{logisticsNameLK}
 			</if>
 			<if test="sellerIdEQ != null">
-				and seller_id = #{sellerIdEQ}
+				 and seller_id = #{sellerIdEQ}
 			</if>
 			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+				 and user_id = #{userIdEQ}
 			</if>
 			<if test="logisticsSnLK != null">
 				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
@@ -233,18 +218,13 @@
 				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
 			</if>
 			<if test="sellerIdIN != null">
-				<if test="sellerIdIN.length != 0">
-				and seller_id in
+				 and seller_id in
 				<foreach collection="sellerIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="sellerIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 			<if test="isSettledUpEQ != null">
-				and is_settled_up = #{isSettledUpEQ}
+				 and is_settled_up = #{isSettledUpEQ}
 			</if>
 		</where>
 	</select>

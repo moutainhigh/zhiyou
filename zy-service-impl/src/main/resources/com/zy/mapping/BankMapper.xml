@@ -58,7 +58,7 @@
 		from `fnc_bank`
 		<where>
 			<if test="isDeletedEQ != null">
-				and is_deleted = #{isDeletedEQ}
+				 and is_deleted = #{isDeletedEQ}
 			</if>
 			<if test="nameLK != null">
 				<bind name="nameLK" value="'%' + nameLK + '%'"/> and name like #{nameLK}
@@ -81,7 +81,7 @@
 		select count(*) from `fnc_bank`
 		<where>
 			<if test="isDeletedEQ != null">
-				and is_deleted = #{isDeletedEQ}
+				 and is_deleted = #{isDeletedEQ}
 			</if>
 			<if test="nameLK != null">
 				<bind name="nameLK" value="'%' + nameLK + '%'"/> and name like #{nameLK}

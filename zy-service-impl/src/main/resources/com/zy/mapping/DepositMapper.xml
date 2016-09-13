@@ -105,39 +105,34 @@
 		from `fnc_deposit`
 		<where>
 			<if test="createdTimeLT != null">
-				and created_time &lt; #{createdTimeLT}
+				 and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="userIdIN != null">
-				<if test="userIdIN.length != 0">
-				and user_id in
+				 and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="userIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 			<if test="payTypeEQ != null">
-				and pay_type = #{payTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and pay_type = #{payTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+				 and user_id = #{userIdEQ}
 			</if>
 			<if test="paidTimeLT != null">
-				and paid_time &lt; #{paidTimeLT}
+				 and paid_time &lt; #{paidTimeLT}
 			</if>
 			<if test="createdTimeGTE != null">
-				and created_time &gt;= #{createdTimeGTE}
+				 and created_time &gt;= #{createdTimeGTE}
 			</if>
 			<if test="depositStatusEQ != null">
-				and deposit_status = #{depositStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and deposit_status = #{depositStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="paidTimeGTE != null">
-				and paid_time &gt;= #{paidTimeGTE}
+				 and paid_time &gt;= #{paidTimeGTE}
 			</if>
 			<if test="expiredTimeLT != null">
-				and expired_time &lt; #{expiredTimeLT}
+				 and expired_time &lt; #{expiredTimeLT}
 			</if>
 		</where>
 		<choose>
@@ -157,39 +152,34 @@
 		select count(*) from `fnc_deposit`
 		<where>
 			<if test="createdTimeLT != null">
-				and created_time &lt; #{createdTimeLT}
+				 and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="userIdIN != null">
-				<if test="userIdIN.length != 0">
-				and user_id in
+				 and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="userIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 			<if test="payTypeEQ != null">
-				and pay_type = #{payTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and pay_type = #{payTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+				 and user_id = #{userIdEQ}
 			</if>
 			<if test="paidTimeLT != null">
-				and paid_time &lt; #{paidTimeLT}
+				 and paid_time &lt; #{paidTimeLT}
 			</if>
 			<if test="createdTimeGTE != null">
-				and created_time &gt;= #{createdTimeGTE}
+				 and created_time &gt;= #{createdTimeGTE}
 			</if>
 			<if test="depositStatusEQ != null">
-				and deposit_status = #{depositStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and deposit_status = #{depositStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="paidTimeGTE != null">
-				and paid_time &gt;= #{paidTimeGTE}
+				 and paid_time &gt;= #{paidTimeGTE}
 			</if>
 			<if test="expiredTimeLT != null">
-				and expired_time &lt; #{expiredTimeLT}
+				 and expired_time &lt; #{expiredTimeLT}
 			</if>
 		</where>
 	</select>

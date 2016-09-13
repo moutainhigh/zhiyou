@@ -58,10 +58,10 @@
 		from `usr_user_upgrade`
 		<where>
 			<if test="upgradedTimeGTE != null">
-				and upgraded_time &gt;= #{upgradedTimeGTE}
+				 and upgraded_time &gt;= #{upgradedTimeGTE}
 			</if>
 			<if test="upgradedTimeLT != null">
-				and upgraded_time &lt; #{upgradedTimeLT}
+				 and upgraded_time &lt; #{upgradedTimeLT}
 			</if>
 		</where>
 		<choose>
@@ -81,10 +81,10 @@
 		select count(*) from `usr_user_upgrade`
 		<where>
 			<if test="upgradedTimeGTE != null">
-				and upgraded_time &gt;= #{upgradedTimeGTE}
+				 and upgraded_time &gt;= #{upgradedTimeGTE}
 			</if>
 			<if test="upgradedTimeLT != null">
-				and upgraded_time &lt; #{upgradedTimeLT}
+				 and upgraded_time &lt; #{upgradedTimeLT}
 			</if>
 		</where>
 	</select>

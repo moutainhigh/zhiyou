@@ -61,13 +61,13 @@
 		from `sys_short_message`
 		<where>
 			<if test="createdTimeLT != null">
-				and created_time &lt; #{createdTimeLT}
+				 and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="phoneEQ != null">
-				and phone = #{phoneEQ}
+				 and phone = #{phoneEQ}
 			</if>
 			<if test="createdTimeGTE != null">
-				and created_time &gt;= #{createdTimeGTE}
+				 and created_time &gt;= #{createdTimeGTE}
 			</if>
 		</where>
 		<choose>
@@ -87,13 +87,13 @@
 		select count(*) from `sys_short_message`
 		<where>
 			<if test="createdTimeLT != null">
-				and created_time &lt; #{createdTimeLT}
+				 and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="phoneEQ != null">
-				and phone = #{phoneEQ}
+				 and phone = #{phoneEQ}
 			</if>
 			<if test="createdTimeGTE != null">
-				and created_time &gt;= #{createdTimeGTE}
+				 and created_time &gt;= #{createdTimeGTE}
 			</if>
 		</where>
 	</select>

@@ -61,10 +61,10 @@
 		from `cms_help_category`
 		<where>
 			<if test="userTypeEQ != null">
-				and user_type = #{userTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and user_type = #{userTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="codeEQ != null">
-				and code = #{codeEQ}
+				 and code = #{codeEQ}
 			</if>
 		</where>
 		<choose>
@@ -84,10 +84,10 @@
 		select count(*) from `cms_help_category`
 		<where>
 			<if test="userTypeEQ != null">
-				and user_type = #{userTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and user_type = #{userTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="codeEQ != null">
-				and code = #{codeEQ}
+				 and code = #{codeEQ}
 			</if>
 		</where>
 	</select>

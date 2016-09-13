@@ -76,21 +76,16 @@
 		from `cms_article`
 		<where>
 			<if test="articleCategoryIdIN != null">
-				<if test="articleCategoryIdIN.length != 0">
-				and article_category_id in
+				 and article_category_id in
 				<foreach collection="articleCategoryIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="articleCategoryIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 			<if test="articleCategoryIdEQ != null">
-				and article_category_id = #{articleCategoryIdEQ}
+				 and article_category_id = #{articleCategoryIdEQ}
 			</if>
 			<if test="isReleasedEQ != null">
-				and is_released = #{isReleasedEQ}
+				 and is_released = #{isReleasedEQ}
 			</if>
 		</where>
 		<choose>
@@ -110,21 +105,16 @@
 		select count(*) from `cms_article`
 		<where>
 			<if test="articleCategoryIdIN != null">
-				<if test="articleCategoryIdIN.length != 0">
-				and article_category_id in
+				 and article_category_id in
 				<foreach collection="articleCategoryIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="articleCategoryIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 			<if test="articleCategoryIdEQ != null">
-				and article_category_id = #{articleCategoryIdEQ}
+				 and article_category_id = #{articleCategoryIdEQ}
 			</if>
 			<if test="isReleasedEQ != null">
-				and is_released = #{isReleasedEQ}
+				 and is_released = #{isReleasedEQ}
 			</if>
 		</where>
 	</select>
