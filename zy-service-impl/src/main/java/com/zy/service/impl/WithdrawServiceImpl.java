@@ -30,7 +30,6 @@ import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Withdraw;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
-import com.zy.extend.SKWxMpService;
 import com.zy.model.BizCode;
 import com.zy.model.query.WithdrawQueryModel;
 import com.zy.service.WithdrawService;
@@ -56,9 +55,6 @@ public class WithdrawServiceImpl implements WithdrawService {
 
 	@Autowired
 	private Config config;
-
-	@Autowired
-	private SKWxMpService skWxMpService;
 
 	@Override
 	public Withdraw create(@NotNull Long userId, @NotNull Long bankCardId, @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
@@ -126,7 +122,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 	@Override
 	public void success(@NotNull Long id, @NotNull Long operatorId, @NotBlank String remark) {
 
-		final BigDecimal zero = new BigDecimal("0.00");
+//		final BigDecimal zero = new BigDecimal("0.00");
 		Withdraw withdraw = withdrawMapper.findOne(id);
 		validate(withdraw, NOT_NULL, "withdraw id " + id + " is not found null");
 		User operator = userMapper.findOne(operatorId);
