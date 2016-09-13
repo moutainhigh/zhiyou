@@ -24,7 +24,7 @@
     <a class="button-right" href="${ctx}/u/money/log"><span>明细</span></a>
   </header>
 
-  <div class="relative pb-30" style="min-height:100%;">
+  <article>
     <i class="icon icon-money icon-6x block center mt-30"></i>
     <h2 class="font-777 fs-16 lh-30 text-center mt-20">我的余额(元)</h2>
     <div class="font-333 fs-36 lh-60 text-center">${amount}</div>
@@ -46,8 +46,8 @@
       <a href="${ctx}/u/bankCard" class="btn default btn-block round-2">我的银行卡</a>
     </div>
     
-    <a href="${ctx}/help/money" class="abs-lb mb-10 width-100p font-999 fs-12 text-center"><i class="fa fa-question-circle-o"></i> 余额问题</a>
-  </div>
+    <a href="${ctx}/help/money" class="mt-30 mb-10 block width-100p font-999 fs-12 text-center"><i class="fa fa-question-circle-o"></i> 余额问题</a>
+  </article>
 
 </body>
 
