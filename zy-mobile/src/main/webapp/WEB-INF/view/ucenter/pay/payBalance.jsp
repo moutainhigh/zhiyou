@@ -40,19 +40,13 @@
   <form action="${ctx}/u/pay/payment" class="valid-form" id="form" method="post">
   <input type="hidden" name="paymentId" value="${paymentId}" >
   <article class="mt-15 mb-15 clearfix">
-     <%-- <div class="list-title">订单信息</div>
+     <div class="list-title">订单信息</div>
      <div class="list-group">
        <div class="list-item">
-          <div class="activity">
-            <figure class="abs-lt image-wrap">
-              <img src="http://image.zhi-you.net/image/aa7af759-93b8-436b-bbe2-ece54163c0e3@160h_240w_1e_1c.jpg">
-            </figure>
-            <h2>智优生物上海总部宣讲会</h2>
-            <div class="font-999 fs-12 lh-20">数量：2件 </div>
-            <div class="font-999 fs-12 lh-20">付款金额：99元</div>
-          </div>
+          <div class="list-text">标题</div>
+          <div class="list-unit">${balance}元</div>
        </div>
-     </div> --%>  
+     </div>  
      
      <div class="list-title">支付信息</div> 
      <div class="list-group">
