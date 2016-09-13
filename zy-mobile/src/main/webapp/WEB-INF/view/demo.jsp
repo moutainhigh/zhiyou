@@ -143,19 +143,19 @@
         <!-- icon-label-text-unit -->
         <div class="list-item">
           <i class="list-icon fa fa-user"></i>
-          <div class="list-text">昵称</div>
-          <div class="list-unit">哆来嘧</div>
+          <div class="list-text">版本</div>
+          <div class="list-unit">v 1.0</div>
         </div>
         <div class="list-item">
           <i class="list-icon fa fa-file-o"></i>
-          <div class="list-text">订单数</div>
-          <div class="list-unit"><em class="badge red">3</em></div>
+          <div class="list-text">用户数</div>
+          <div class="list-unit"><em class="badge red">1024</em></div>
           <i class="list-arrow"></i>
         </div>
-        <a class="list-item" href="javascript:messageFlash('去填写地址..');">
+        <a class="list-item" href="javascript:messageFlash('为移动web开发量身定制..');">
           <i class="list-icon fa fa-map-marker font-orange"></i>
-          <div class="list-text">收货地址</div>
-          <div class="list-unit">未填写</div>
+          <div class="list-text">兼容性</div>
+          <div class="list-unit">还不错</div>
           <i class="list-arrow"></i>
         </a>
       </div>
@@ -165,7 +165,7 @@
       </div>
       
       <div class="list-group">
-        <div class="list-title"><span class="font-red mr-10">validate 表单</span>请选择收货地址</div>
+        <div class="list-title"><span class="font-red mr-10">validate 表单</span>完善您的资料</div>
         <div class="list-item">
           <label class="list-label" for="name">姓名</label>
           <div class="list-text"><input id="name" name="name" class="form-input" type="text" value="" placeholder="请输入姓名"></div>
@@ -224,7 +224,7 @@
         </div>
         <!-- form-switch -->
         <div class="list-item">
-          <div class="list-text">设为默认地址<small>switch开关</small></div>
+          <div class="list-text">是否接受更新提醒<small>switch开关</small></div>
           <div class="list-unit form-switch">
             <input type="hidden" name="_isDefault" value="false">
             <input type="checkbox" id="isDefault" name="isDefault" value="true">
@@ -234,7 +234,7 @@
       </div>
       
       <div class="form-btn">
-        <input type="submit" class="btn orange btn-block round-2" value="提交">
+        <button type="submit" class="btn orange btn-block round-2"><i class="fa fa-check"></i> 提 交</button>
       </div>
       
       <div class="list-group">
@@ -242,17 +242,17 @@
         <!-- form-checkbox -->
         <div class="list-item form-checkbox">
           <div class="list-icon">
-            <input type="checkbox" id="checkbox0" name="checkname" value="0">
+            <input type="checkbox" id="checkbox0" name="checkname" value="0" checked="checked">
             <label class="i-checked" for="checkbox0"></label>
           </div>
-          <label class="list-text" for="checkbox0">使用平台礼品</label>
+          <label class="list-text" for="checkbox0">使用HTML5</label>
         </div>
         <div class="list-item form-checkbox">
           <div class="list-icon">
-            <input type="checkbox" id="checkbox1" name="checkname" value="1">
+            <input type="checkbox" id="checkbox1" name="checkname" value="1" checked="checked">
             <label class="i-checked" for="checkbox1"></label>
           </div>
-          <label class="list-text" for="checkbox1">使用平台物流</label>
+          <label class="list-text" for="checkbox1">使用CSS3</label>
         </div>
       </div>
       
@@ -260,9 +260,9 @@
         <div class="list-title">radio 单选</div>
         <!-- form-radio -->
         <div class="list-item form-radio">
-          <label class="list-text" for="deliverType0">面对面发货</label>
+          <label class="list-text" for="deliverType0">不使用物流</label>
           <div class="list-unit">
-            <input id="deliverType0" type="radio" name="deliverType" value="0">
+            <input id="deliverType0" type="radio" name="deliverType" value="0" checked="checked">
             <label class="i-checked" for="deliverType0"></label>
           </div>
         </div>
@@ -297,7 +297,7 @@
             </div>
           </div>
           <div class="list-unit">
-            <a href="javascript:;" class="image-view font-blue fs-14" data-src="http://image.mayishike.com/image/1e27766d-62b3-496a-b442-15f512caaff5" data-title="淘宝截图示例图"><i class="fa fa-question-circle-o"></i> 示例图</a>
+            <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/cube.png" data-title="淘宝截图示例图"><i class="fa fa-question-circle-o"></i> 示例图</a>
           </div>
         </div>
       </div>
@@ -307,12 +307,12 @@
         <div class="list-item">
           <div class="list-text image-upload image-multi">
             <div class="image-item">
-              <img src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+              <img src="${stccdn}/image/example/cube.png">
               <input type="hidden" name="image1" value="">
               <input type="file">
             </div>
             <div class="image-item">
-              <img src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+              <img src="${stccdn}/image/example/cube.png">
               <input type="hidden" name="image2" value="">
               <input type="file">
             </div>
@@ -329,8 +329,8 @@
         <div class="list-title">图片布局</div>
         <div class="list-item">
           <div class="list-text list-image">
-            <img class="image-view" data-title="照片名字" data-src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@640h_640w_1e_1c.jpg" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
-            <img class="image-view" data-title="我的美照" data-src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@640h_640w_1e_1c.jpg" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+            <img class="image-view" data-title="照片名字" data-src="${stccdn}/image/example/cube.png" src="${stccdn}/image/example/cube.png">
+            <img class="image-view" data-title="我的美照" data-src="${stccdn}/image/example/cube.png" src="${stccdn}/image/example/cube.png">
           </div>
         </div>
       </div>
