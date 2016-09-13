@@ -195,7 +195,7 @@
         </div>
       </c:if>
       <c:if test="${order.orderStatus == '已完成'}">
-        <form id="orderForm" action="${ctx}/u/order/create" method="post">
+        <form id="orderForm" action="${ctx}/u/order/create" method="get">
         <input type="hidden" name="productId" value="${order.orderItems[0].productId}">
         <input type="hidden" name="quantity" value="${order.orderItems[0].quantity}">
         <div class="form-btn">
@@ -204,7 +204,7 @@
         </form>
       </c:if>
       <c:if test="${order.orderStatus == '已取消'}">
-        <form id="orderForm" action="${ctx}/u/order/create" method="post">
+        <form id="orderForm" action="${ctx}/u/order/create" method="get">
         <input type="hidden" name="productId" value="${order.orderItems[0].productId}">
         <input type="hidden" name="quantity" value="${order.orderItems[0].quantity}">
         <div class="form-btn">
