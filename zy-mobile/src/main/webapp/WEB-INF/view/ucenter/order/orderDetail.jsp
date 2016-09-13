@@ -206,11 +206,19 @@
         </div>
       </c:if>
       <c:if test="${order.orderStatus == '已支付'}">
+        <c:if test="${userRank == 'V4'}">
+          <form id="orderForm" action="${ctx}/order/platformDeliver" method="post">
+          <input type="hidden" name="sn" value="${order.sn}">
+          <div class="form-btn">
+            <button type="submit" class="btn btn-block blue round-2">转给公司发货</button>
+          </div>
+          </form>
+        </c:if>
         <form id="orderForm" action="${ctx}/order/deliver" method="post">
-        <input type="hidden" name="sn" value="${order.sn}">
-        <div class="form-btn">
-          <button id="btnDeliver" type="submit" class="btn btn-block orange round-2">发货</button>
-        </div>
+          <input type="hidden" name="sn" value="${order.sn}">
+          <div class="form-btn">
+            <button id="btnDeliver" type="submit" class="btn btn-block orange round-2">发货</button>
+          </div>
         </form>
       </c:if>
     </c:if>
