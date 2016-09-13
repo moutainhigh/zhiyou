@@ -39,10 +39,9 @@ public class AccountLogAckJob implements Job {
 			try {
 				TimeUnit.SECONDS.sleep(2);
 			} catch (InterruptedException e) {
-
 			}
 			this.accountLogService.acknowledge(id);
-			logger.info("取消 {} 成功", id);
+			logger.info(" acknowledge {} success", id);
 		} catch (ConcurrentException e) {
 			acknowledge(id);
 		} catch (Exception e) {
