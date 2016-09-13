@@ -60,7 +60,8 @@ public class OrderComponent {
 		orderAdminFullVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), TIME_PATTERN));
 		orderAdminFullVo.setPaidTimeLabel(formatDate(order.getPaidTime(), TIME_PATTERN));
 		orderAdminFullVo.setRefundedTimeLabel(formatDate(order.getRefundedTime(), TIME_PATTERN));
-
+		orderAdminFullVo.setDeliveredTimeLabel(formatDate(order.getDeliveredTime(), TIME_PATTERN));
+		
 		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
 		if (orderItem != null) {
 			orderAdminFullVo.setImageThumbnail(GcUtils.getThumbnail(orderItem.getImage()));

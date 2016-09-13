@@ -1,5 +1,24 @@
 package com.zy.service.impl;
 
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
@@ -13,25 +32,10 @@ import com.zy.entity.fnc.Deposit.DepositStatus;
 import com.zy.entity.fnc.PayType;
 import com.zy.entity.usr.User;
 import com.zy.mapper.DepositMapper;
-import com.zy.mapper.PaymentMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.DepositQueryModel;
 import com.zy.service.DepositService;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
@@ -45,9 +49,6 @@ public class DepositServiceImpl implements DepositService {
 	@Autowired
 	private DepositMapper depositMapper;
 	
-	@Autowired
-	private PaymentMapper paymentMapper;
-
 	@Autowired
 	private FncComponent fncComponent;
 
@@ -144,9 +145,36 @@ public class DepositServiceImpl implements DepositService {
 
 		deposit.setRemark(remark);
 		deposit.setOperatorId(operatorId);
+		deposit.setPaidTime(new Date());
 		successFinal(deposit);
 	}
 
+	@Override
+	public void offlineFailure(Long id, Long operatorId, String remark) {
+		Deposit deposit = depositMapper.findOne(id);
+		validate(deposit, NOT_NULL, "deposit id " + id + "is not found null");
+
+		User operator = userMapper.findOne(operatorId);
+		validate(operator, NOT_NULL, "operator id" + operatorId + " is not found null");
+
+		PayType payType = deposit.getPayType();
+
+		if (payType != PayType.银行汇款) {
+			throw new BizException(BizCode.ERROR, "支付方式只能为银行汇款");
+		}
+
+		if (deposit.getDepositStatus() == Deposit.DepositStatus.已取消) {
+			return; // 幂等处理
+		}
+		
+		deposit.setRemark(remark);
+		deposit.setOperatorId(operatorId);
+		deposit.setDepositStatus(DepositStatus.已取消);
+		if (depositMapper.update(deposit) == 0) {
+			throw new ConcurrentException();
+		}
+	}
+	
 	private void successFinal(Deposit deposit) {
 
 		deposit.setDepositStatus(DepositStatus.充值成功);
@@ -219,6 +247,20 @@ public class DepositServiceImpl implements DepositService {
 	@Override
 	public Deposit findBySn(@NotBlank String sn) {
 		return depositMapper.findBySn(sn);
+	}
+
+	@Override
+	public void modifyOffline(Long depositId, String offlineImage, String offlineMemo) {
+		Deposit persistance = depositMapper.findOne(depositId);
+		validate(persistance, NOT_NULL, "deposit id " + depositId + " is not found");
+		validate(offlineImage, NOT_BLANK, "deposit offlineImage is blank");
+		validate(offlineMemo, NOT_BLANK, "deposit offlineMemo is blank");
+		
+		persistance.setOfflineMemo(offlineMemo);
+		persistance.setOfflineImage(offlineImage);
+		if (depositMapper.update(persistance) == 0) {
+			throw new ConcurrentException();
+		}
 	}
 
 }

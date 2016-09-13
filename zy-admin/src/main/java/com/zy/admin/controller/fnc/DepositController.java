@@ -1,8 +1,35 @@
 package com.zy.admin.controller.fnc;
 
 
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.common.util.ExcelUtils;
 import com.zy.common.util.WebUtils;
@@ -15,23 +42,6 @@ import com.zy.model.query.UserQueryModel;
 import com.zy.service.DepositService;
 import com.zy.service.UserService;
 import com.zy.vo.DepositAdminVo;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequestMapping("/deposit")
 @Controller
@@ -74,6 +84,21 @@ public class DepositController {
 		Page<DepositAdminVo> voPage = PageBuilder.copyAndConvert(page, depositComponent::buildAdminVo);
 		
 		return new Grid<DepositAdminVo>(voPage);
+	}
+	
+	@RequiresPermissions("deposit:confirmPaid")
+	@RequestMapping(value = "/confirmPaid", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> confirmPaid(@RequestParam(required = true) Long id, @RequestParam(required = true) boolean isSuccess, String remark) {
+		AdminPrincipal principal = (AdminPrincipal)SecurityUtils.getSubject().getPrincipal();
+		Deposit deposit = depositService.findOne(id);
+		validate(deposit, NOT_NULL, "deposit id not found,id = " + id);
+		if(isSuccess){
+			depositService.offlineSuccess(id, principal.getUserId(), remark);
+		} else {
+			depositService.offlineFailure(id, principal.getUserId(), remark);
+		}
+		return ResultBuilder.ok("充值单[" + deposit.getTitle() + "]确认支付成功");
 	}
 	
 	@RequiresPermissions("deposit:export")

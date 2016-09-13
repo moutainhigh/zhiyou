@@ -1,6 +1,10 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/include/taglib.jsp"%>
 
+<c:if test="${!isUpgrade && !isFirst}">
+<c:set var="minQuantity" value="${(userRank == 'V3' || userRank == 'V4') ? 100 : 1}"/>
+</c:if>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,15 +22,19 @@
 <link href="${stccdn}/css/product.css" rel="stylesheet" />
 <script>
   $(function() {
-
-    var MAX_QUANTITY = 100;
+    
+    <c:if test="${!isUpgrade && !isFirst}">
+    
+    var MIN_QUANTITY = ${minQuantity}; 
+    
+    var MAX_QUANTITY = 10000;
     function editQuantity(quantity) {
-      if (isNaN(quantity) || quantity < 1) {
-        quantity = 1;
+      if (isNaN(quantity) || quantity < MIN_QUANTITY) {
+        quantity = MIN_QUANTITY;
       } else if (quantity > MAX_QUANTITY) {
         quantity = MAX_QUANTITY;
       }
-      if (quantity == 1) {
+      if (quantity == MIN_QUANTITY) {
         $(".fa-minus").addClass('disabled');
         $(".fa-plus").removeClass('disabled');
       } else if (quantity == MAX_QUANTITY) {
@@ -54,6 +62,8 @@
       var quantity = $("#quantity").val();
       editQuantity(parseInt(quantity) - 1);
     });
+    
+    </c:if>
 
     //下单
     $('#btnOrder').click(function() {
@@ -123,7 +133,7 @@
       <div class="flex-2 action-cart">
         <div class="quantity-wrap">
           <i class="fa fa-minus disabled"></i>
-          <input type="text" class="input-quantity text-center fs-14" id="quantity" name="quantity" value="1">
+          <input type="text" class="input-quantity text-center fs-14" id="quantity" name="quantity" value="${minQuantity}">
           <i class="fa fa-plus"></i>
         </div>
       </div>

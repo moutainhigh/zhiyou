@@ -10,8 +10,10 @@ import com.zy.entity.fnc.Withdraw.WithdrawStatus;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
+import com.zy.model.Constants;
 import com.zy.model.query.*;
 import com.zy.service.*;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.shiro.SecurityUtils;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -60,13 +63,10 @@ public class IndexController {
 
 	private static final int DEFAULT_EXPIRE = 300;
 
-	private static final String BUYER_REGISTER_COUNT = "buyerRegisterCount";
-	private static final String MERCHANT_REGISTER_COUNT = "merchantRegisterCount";
-	private static final String TOTAL_REGISTER_COUNT = "totalRegisterCount";
 	private static final String USER_BANK_INFO_COUNT = "userBankInfoCount";
 	private static final String WITHDRAW_COUNT = "withdrawCount";
 	private static final String FEEDBACK_COUNT = "feedbackCount";
-	private static final String REGISTER_CHART = "registerChart";
+
 	private static final String PROFIT_CHART = "profitChart";
 
 	@RequestMapping("/index")
@@ -82,34 +82,12 @@ public class IndexController {
 
 		/* 统计注册信息 */
 		{
-			Integer buyerCount = (Integer) cacheSupport.get(CACHE_NAME_STATISTICS, BUYER_REGISTER_COUNT);
-			Integer merchantCount = (Integer) cacheSupport.get(CACHE_NAME_STATISTICS, MERCHANT_REGISTER_COUNT);
-			Integer totalCount = (Integer) cacheSupport.get(CACHE_NAME_STATISTICS, TOTAL_REGISTER_COUNT);
-			if (buyerCount == null || merchantCount == null || totalCount == null) {
-
-				buyerCount = 0;
-				merchantCount = 0;
-				totalCount = 0;
-
-				UserQueryModel userQueryModel = new UserQueryModel();
-				List<User> users = userService.findAll(userQueryModel);
-				totalCount = users.size();
-
-				List<Long> buyerUserIds = new ArrayList<>();
-				for (User user : users) {
-					UserType userType = user.getUserType();
-					if (userType == UserType.代理) {
-						buyerCount++;
-						buyerUserIds.add(user.getId());
-					}
-				}
-				cacheSupport.set(CACHE_NAME_STATISTICS, BUYER_REGISTER_COUNT, buyerCount, DEFAULT_EXPIRE);
-				cacheSupport.set(CACHE_NAME_STATISTICS, MERCHANT_REGISTER_COUNT, merchantCount, DEFAULT_EXPIRE);
-				cacheSupport.set(CACHE_NAME_STATISTICS, TOTAL_REGISTER_COUNT, totalCount, DEFAULT_EXPIRE);
+			Long agentCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, Constants.CACHE_NAME_AGENT_REGISTER_COUNT);
+			if (agentCount == null) {
+				agentCount = userService.count(UserQueryModel.builder().userTypeEQ(UserType.代理).build());
+				cacheSupport.set(CACHE_NAME_STATISTICS, Constants.CACHE_NAME_AGENT_REGISTER_COUNT, agentCount, DEFAULT_EXPIRE);
 			}
-
-			model.addAttribute("buyerCount", buyerCount);
-			model.addAttribute("totalCount", totalCount);
+			model.addAttribute("agentCount", agentCount);
 		}
 		{
 			Long userBankInfoUnconfirmCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, USER_BANK_INFO_COUNT);
@@ -157,7 +135,7 @@ public class IndexController {
 	public Map<String, Object> getRegisterChart() {
 
 		@SuppressWarnings("unchecked")
-		Map<String, Object> dataMap = (Map<String, Object>) cacheSupport.get(CACHE_NAME_STATISTICS, REGISTER_CHART);
+		Map<String, Object> dataMap = (Map<String, Object>) cacheSupport.get(CACHE_NAME_STATISTICS, Constants.CACHE_NAME_REGISTER_CHART);
 		if (dataMap == null) {
 			Date now = new Date();
 
@@ -171,6 +149,7 @@ public class IndexController {
 
 			UserQueryModel userQueryModel = new UserQueryModel();
 			userQueryModel.setPageSize(null);
+			userQueryModel.setUserTypeEQ(UserType.代理);
 			userQueryModel.setRegisterTimeGTE(calendar.getTime());
 			List<User> users = userService.findAll(userQueryModel);
 
@@ -180,23 +159,16 @@ public class IndexController {
 			List<Long> buyerCountList = new ArrayList<Long>();
 			List<String> dataStrs = new ArrayList<String>();
 			while ((date = calendar.getTime()).before(now)) {
-				long userCount = 0L;
-				long buyerCount = 0L;
-				long merchantCount = 0L;
+				long agentCount = 0L;
 				String dateStr = DateFormatUtils.format(date, dateFmt);
 
 				for (User user : users) {
 					if (DateFormatUtils.format(user.getRegisterTime(), dateFmt).equals(dateStr)) {
-						UserType userType = user.getUserType();
-						if (userType == UserType.代理) {
-							buyerCount++;
-						}
-						userCount++;
+						agentCount++;
 					}
 				}
 
-				userCountList.add(userCount);
-				buyerCountList.add(buyerCount);
+				userCountList.add(agentCount);
 				dataStrs.add(StringUtils.right(dateStr, 5));
 
 				calendar.add(Calendar.DATE, 1);
@@ -206,7 +178,7 @@ public class IndexController {
 			dataMap.put("buyerCount", buyerCountList);
 			dataMap.put("chartLabel", dataStrs);
 
-			cacheSupport.set(CACHE_NAME_STATISTICS, REGISTER_CHART, dataMap, DEFAULT_EXPIRE);
+			cacheSupport.set(CACHE_NAME_STATISTICS, Constants.CACHE_NAME_REGISTER_CHART, dataMap, DEFAULT_EXPIRE);
 		}
 
 		return dataMap;

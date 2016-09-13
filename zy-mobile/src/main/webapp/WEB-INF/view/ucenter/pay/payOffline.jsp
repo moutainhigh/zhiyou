@@ -58,11 +58,23 @@
 
   <div class="note note-warning mb-0">
     <p>
-      <i class="fa fa-exclamation-circle"></i> 请将本次交易金额${amount}元汇入以下银行账户，并将<span class="font-orange">汇款凭证</span>拍照或截图上传。
+      <i class="fa fa-exclamation-circle"></i> 请将本次交易金额<span class="font-orange">${amount}元</span>汇入以下银行账户，并将<span class="font-orange">汇款凭证</span>拍照或截图上传。
     </p>
   </div>
 
   <article class="mt-15 mb-15 clearfix">
+    <div class="list-title">单据信息</div>
+    <div class="list-group">
+     <div class="list-item">
+        <div class="list-text">标题</div>
+        <div class="list-unit">${title}</div>
+     </div>
+     <div class="list-item">
+        <div class="list-text">单据号</div>
+        <div class="list-unit">${sn}</div>
+     </div>
+    </div> 
+    <div class="list-title">收款银行账户</div>
     <div class="list-group">
       <div class="list-item">
         <div class="list-text">银行</div>
@@ -82,8 +94,10 @@
       </div>
     </div>
 
-    <form action="${ctx}/u/pay/payment" class="valid-form" id="form" method="post">
-      <input type="hidden" name="paymentId" value="${paymentId}">
+    
+    
+    <form action="<c:if test="${bizType == '订单支付'}">${ctx}/u/pay/payment</c:if><c:if test="${bizType == '余额充值'}">${ctx}/u/pay/deposit</c:if>" class="valid-form" id="form" method="post">
+      <input type="hidden" name="refId" value="${refId}">
       <div class="list-group">
         <div class="list-title">上传汇款凭证</div>
         <div class="list-item">
@@ -113,7 +127,7 @@
         <div class="list-item">
           <div class="list-text">
             <p class="font-red fs-14">注意事项：</p>
-            <p class="mt-5 fs-14">办理银行转帐时，请您务必核对好以上的账户信息和转账金额。</p>
+            <p class="mt-5 fs-14">办理银行转帐时，请您务必核对好以上的收款银行账户和转账金额。</p>
           </div>
         </div>
       </div>

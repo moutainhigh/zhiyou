@@ -40,7 +40,6 @@ public interface Constants {
     String CACHE_NAME_BIND_PHONE_SMS_LAST_SEND_TIME = "bindPhoneSmsLastSendTime";
     String CACHE_NAME_FIND_PASSWORD_LAST_SEND_TIME = "findPassWordLastSendTime";
     String CACHE_NAME_STATISTICS = "statistics";
-    String CACHE_NAME_BANK = "bank";
 
     String CACHE_NAME_TGT = "tgt";
 
@@ -55,6 +54,9 @@ public interface Constants {
     String CACHE_NAME_JOB = "job";
     String CACHE_NAME_ACTIVITY = "activity";
 
+	String CACHE_NAME_AGENT_REGISTER_COUNT = "agentRegisterCount";
+	String CACHE_NAME_REGISTER_CHART = "registerChart";
+    
     /* order */
     int SETTING_ORDER_EXPIRE_IN_MINUTES = 60 * 24 * 10;
     int SETTING_PAYMENT_EXPIRE_IN_MINUTES = 60 * 30; // 余额支付/转账汇款   支付单过期时间 30分钟

@@ -144,12 +144,8 @@
 	              <table class="table table-bordered table-hover">
 					<tbody>
 						<tr>
-							<td>注册总人数</td>
-							<td>${totalCount}</td>
-						</tr>
-						<tr>
-							<td>试客注册数</td>
-							<td>${buyerCount}</td>
+							<td>代理总人数</td>
+							<td>${agentCount}</td>
 						</tr>
 					</tbody>
 				</table>
