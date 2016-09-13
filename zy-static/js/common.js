@@ -7,7 +7,7 @@ window.messageShow = function(message, icon) {
 };
 
 window.messageFlash = function(message, timeout) {
-  $.dialog(message, timeout || 2);
+  $.dialog(message + '', timeout || 2);
 };
 
 window.messageAlert = function(message, button) {
