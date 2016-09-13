@@ -17,20 +17,9 @@
 <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
 <script type="text/javascript">
   $(function() {
-    $('.image-multi .image-item').imageupload({
-      width : 100,
-      height : 100,
-      url : '${ctx}/image/upload',
-      maxFileSize : '4MB'
-    });
+    $('.image-multi .image-item').imageupload();
     
     $('.image-multi .image-add').imageupload({
-      width : 100,
-      height : 100,
-      url : '${ctx}/image/upload',
-      maxFileSize : '4MB',
-      progress : function() {
-      },
       success : function(result) {
         var $this = $(this);
         var limit = $this.attr('data-limit');
@@ -47,12 +36,7 @@
         if (limit && limit <= imageItems.length + 1) {
           $this.remove();
         }
-        $this.siblings('.image-item').eq(imageItems.length).imageupload({
-          width : 100,
-          height : 100,
-          url : '${ctx}/image/upload',
-          maxFileSize : '4MB'
-        });
+        $this.siblings('.image-item').eq(imageItems.length).imageupload();
       }
     });
 
@@ -75,12 +59,6 @@
           required : true
         },
         'image1' : {
-          required : true
-        },
-        'image2' : {
-          required : true
-        },
-        'image3' : {
           required : true
         },
         'text' : {
@@ -154,16 +132,20 @@
               <img src="${report.image1Thumbnail}">
               <input type="file">
             </div>
+            <c:if test="${not empty report.image2}">
             <div class="image-item">
               <input type="hidden" name="image2" value="${report.image2}">
               <img src="${report.image2Thumbnail}">
               <input type="file">
             </div>
+            </c:if>
+            <c:if test="${not empty report.image3}">
             <div class="image-item">
               <input type="hidden" name="image3" value="${report.image3}">
               <img src="${report.image3Thumbnail}">
               <input type="file">
             </div>
+            </c:if>
             <c:if test="${not empty report.image4}">
             <div class="image-item">
               <input type="hidden" name="image4" value="${report.image4}">

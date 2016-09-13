@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>完成注册</title>
+<title>注册</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <script type="text/javascript">
@@ -94,6 +94,7 @@
 <body>
   <header class="header">
     <h1>注册</h1>
+    <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
   <c:if test="${!isNew}">
@@ -137,7 +138,7 @@
   <c:if test="${isNew}">
     <div class="abs-mm">
       <p class="fs-16 lh-30 text-center">请先完成微信授权</p>
-      <a class="btn green round-2 width-200 mt-30" href="${ctx}/">微信一键授权</a>
+      <a class="btn green round-2 width-200 mt-30" href="${oauthUrl}"><i class="fa fa-weixin font-white"></i> 微信一键授权</a>
     </div>
   </c:if>
   

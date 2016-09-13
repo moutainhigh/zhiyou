@@ -41,10 +41,19 @@ public class Profit implements Serializable {
 		特级平级奖
 	}
 
+	public enum ProfitStatus {
+		待发放, 已发放
+	}
+
 	@Id
 	@Field(label = "id")
 	@View
 	private Long id;
+
+	@NotNull
+	@Field(label = "收益单状态")
+	@View
+	private ProfitStatus profitStatus;
 
 	@NotNull
 	@Query({EQ,IN})
@@ -80,6 +89,11 @@ public class Profit implements Serializable {
 	@Field(label = "创建时间")
 	@View
 	private Date createdTime;
+
+	@Query({GTE,LT})
+	@Field(label = "发放时间")
+	@View
+	private Date grantedTime;
 
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "收益单类型")
