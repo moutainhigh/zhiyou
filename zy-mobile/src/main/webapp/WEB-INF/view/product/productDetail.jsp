@@ -18,15 +18,23 @@
 <link href="${stccdn}/css/product.css" rel="stylesheet" />
 <script>
   $(function() {
-
-    var MAX_QUANTITY = 100;
+    
+    <c:if test="${!isUpgrade && !isFirst}">
+    
+    var MIN_QUANTITY = 1; 
+    
+    <c:if test="${userRank == 'V3' || userRank == 'V4'}">
+    MIN_QUANTITY = 100; //一级 特级
+    </c:if>
+    
+    var MAX_QUANTITY = 10000;
     function editQuantity(quantity) {
-      if (isNaN(quantity) || quantity < 1) {
-        quantity = 1;
+      if (isNaN(quantity) || quantity < MIN_QUANTITY) {
+        quantity = MIN_QUANTITY;
       } else if (quantity > MAX_QUANTITY) {
         quantity = MAX_QUANTITY;
       }
-      if (quantity == 1) {
+      if (quantity == MIN_QUANTITY) {
         $(".fa-minus").addClass('disabled');
         $(".fa-plus").removeClass('disabled');
       } else if (quantity == MAX_QUANTITY) {
@@ -54,6 +62,8 @@
       var quantity = $("#quantity").val();
       editQuantity(parseInt(quantity) - 1);
     });
+    
+    </c:if>
 
     //下单
     $('#btnOrder').click(function() {
