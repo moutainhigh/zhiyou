@@ -39,6 +39,7 @@ public class AdminConstants {
 			sub.put("product:view", "商品查看");
 			sub.put("product:edit", "商品编辑");
 			sub.put("order:view", "订单查看");
+			sub.put("order:deliver", "订单发货");
 			sub.put("agent:view", "代理信息(查看)");
 			sub.put("agent:edit", "代理信息(编辑)");
 			sub.put("agent:addVip", "代理信息(加VIP)");
@@ -73,7 +74,7 @@ public class AdminConstants {
 			sub.put("account:view", "账户查看");
 			sub.put("account:deposit", "账户充值");
 			sub.put("deposit:view", "充值查看");
-			sub.put("deposit:confirm", "充值审核");
+			sub.put("deposit:confirmPaid", "充值单确认支付");
 			sub.put("deposit:export", "充值导出");
 			sub.put("withdraw:view", "提现查看");
 			sub.put("withdraw:confirm", "操作提现");

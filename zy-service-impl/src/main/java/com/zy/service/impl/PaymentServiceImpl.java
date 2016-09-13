@@ -164,6 +164,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 		payment.setRemark(remark);
 		payment.setOperatorId(operatorId);
+		payment.setPaidTime(new Date());
 		updateSuccess(payment);
 		onSuccess(payment);
 

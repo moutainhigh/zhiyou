@@ -59,7 +59,7 @@ public class ProfitServiceImpl implements ProfitService {
 
 	@Override
 	public Profit createAndGrant(Long userId, String title, CurrencyType currencyType, BigDecimal amount) {
-		return fncComponent.createProfit(userId, ProfitType.补偿, null, title, currencyType, amount);
+		return fncComponent.createAndGrantProfit(userId, ProfitType.补偿, null, title, currencyType, amount);
 	}
 
 	@Override

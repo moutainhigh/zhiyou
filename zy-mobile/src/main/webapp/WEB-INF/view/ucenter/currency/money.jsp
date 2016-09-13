@@ -30,7 +30,7 @@
     <div class="font-333 fs-36 lh-60 text-center">${amount}</div>
     
     <div class="form-btn mt-20">
-      <a href="${ctx}/u/deposit" class="btn orange btn-block round-2">充值</a>
+      <a href="${ctx}/u/pay/deposit?payType=1" class="btn orange btn-block round-2">充值</a>
     </div>
     <c:if test="${!isBoundBankCard}">
     <div class="form-btn">
