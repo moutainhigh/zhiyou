@@ -39,7 +39,7 @@ $(function() {
           + '</aside>';
         $('body').addClass('o-hidden');
         $(asideHtml).appendTo($('body')).fadeIn(300);
-        messageFlash('您还没有登录, 请先登录');
+        //messageFlash('您还没有登录, 请先登录');
         break;
       case 403:
         messageShow('您没有权限执行该操作', 'error');
