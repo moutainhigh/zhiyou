@@ -154,7 +154,7 @@ public class Order implements Serializable {
 	private Integer version;
 
 	@Field(label = "是否已结算")
-	@View(groups = {"OrderAdminVo", "OrderAdminFullVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	@NotNull
 	@Query(Predicate.EQ)
 	private Boolean isSettledUp;

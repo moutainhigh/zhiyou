@@ -110,7 +110,7 @@ public class UcenterOrderController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
 
-		return "redirect:/order/" + persistence.getSn();
+		return "redirect:/u/order/" + persistence.getSn();
 	}
 
 	@RequestMapping("/confirmDelivery")
@@ -129,7 +129,7 @@ public class UcenterOrderController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
 
-		return "redirect:/order/" + persistence.getSn();
+		return "redirect:/u/order/" + persistence.getSn();
 	}
 	
 	@RequestMapping("/platformDeliver")

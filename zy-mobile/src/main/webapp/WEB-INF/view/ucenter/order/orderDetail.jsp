@@ -95,6 +95,10 @@
     <c:if test="${order.orderStatus == '已完成'}">
     <div class="note note-success mb-0">
       <p><i class="fa fa-check fs-16"></i> 订单状态：已完成</p>
+      <%-- 结算信息 --%>
+      <c:if test="${order.isSettledUp}">
+      
+      </c:if>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已退款'}">
