@@ -61,7 +61,7 @@
 <body>
   <header class="header">
     <h1>订单发货</h1>
-    <a href="${ctx}/u/order" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/order/${orderId}" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
   <article>

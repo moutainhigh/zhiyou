@@ -75,10 +75,10 @@ public class UcenterOrderController {
 		return "ucenter/order/orderList";
 	}
 
-	@RequestMapping("/{sn}")
-	public String detail(@PathVariable String sn, Principal principal, Model model) {
-		Order order = orderService.findBySn(sn);
-		validate(order, NOT_NULL, "order sn" + sn + " not found");
+	@RequestMapping("/{id}")
+	public String detail(@PathVariable Long id, Principal principal, Model model) {
+		Order order = orderService.findOne(id);
+		validate(order, NOT_NULL, "order id" + id + " not found");
 		if (principal != null) {
 			User user = userService.findOne(principal.getUserId());
 			model.addAttribute("userRank", user.getUserRank());
@@ -110,7 +110,7 @@ public class UcenterOrderController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
 
-		return "redirect:/u/order/" + persistence.getSn();
+		return "redirect:/u/order/" + persistence.getId();
 	}
 
 	@RequestMapping("/confirmDelivery")
@@ -129,7 +129,7 @@ public class UcenterOrderController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
 
-		return "redirect:/u/order/" + persistence.getSn();
+		return "redirect:/u/order/" + persistence.getId();
 	}
 	
 	@RequestMapping("/platformDeliver")
@@ -145,7 +145,7 @@ public class UcenterOrderController {
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
-		return "redirect:/u/order/" + order.getSn();
+		return "redirect:/u/order/" + order.getId();
 	}
 	
 }
