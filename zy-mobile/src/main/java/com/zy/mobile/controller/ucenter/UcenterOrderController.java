@@ -18,11 +18,13 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.OrderComponent;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
+import com.zy.service.UserService;
 
 import io.gd.generator.api.query.Direction;
 
@@ -31,12 +33,14 @@ import io.gd.generator.api.query.Direction;
 public class UcenterOrderController {
 
 	@Autowired
-	private OrderService orderService;
+	private UserService userService;
 	
 	@Autowired
+	private OrderService orderService;
+
+	@Autowired
 	private OrderComponent orderComponent;
-	
-	
+
 	@RequestMapping("/in")
 	public String in(Principal principal, Model model, OrderStatus orderStatus) {
 		OrderQueryModel orderQueryModel = OrderQueryModel.builder().userIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).build();
@@ -53,7 +57,7 @@ public class UcenterOrderController {
 		model.addAttribute("waitForReceiveConut", orderService.count(orderQueryModel));
 		return "ucenter/order/orderList";
 	}
-	
+
 	@RequestMapping("/out")
 	public String out(Principal principal, Model model, OrderStatus orderStatus) {
 		OrderQueryModel orderQueryModel = OrderQueryModel.builder().sellerIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).build();
@@ -70,29 +74,33 @@ public class UcenterOrderController {
 		model.addAttribute("waitForReceiveConut", orderService.count(orderQueryModel));
 		return "ucenter/order/orderList";
 	}
-	
+
 	@RequestMapping("/{sn}")
 	public String detail(@PathVariable String sn, Principal principal, Model model) {
-		  Order order =  orderService.findBySn(sn);
-		  validate(order, NOT_NULL, "order sn" + sn + " not found");
-		  model.addAttribute("order", orderComponent.buildDetailVo(order));
-		  model.addAttribute("inOut", order.getUserId().equals(principal.getUserId()) ? "in" : "out");
-		  return "ucenter/order/orderDetail";  
+		Order order = orderService.findBySn(sn);
+		validate(order, NOT_NULL, "order sn" + sn + " not found");
+		if (principal != null) {
+			User user = userService.findOne(principal.getUserId());
+			model.addAttribute("userRank", user.getUserRank());
+		}
+		model.addAttribute("order", orderComponent.buildDetailVo(order));
+		model.addAttribute("inOut", order.getUserId().equals(principal.getUserId()) ? "in" : "out");
+		return "ucenter/order/orderDetail";
 	}
-	
+
 	@RequestMapping(path = "/deliver", method = RequestMethod.GET)
 	public String deliver(Long id, Model model) {
 		model.addAttribute("id", id);
 		return "ucenter/order/orderDeliver";
 	}
-	
+
 	@RequestMapping(path = "/deliver", method = RequestMethod.POST)
 	public String deliver(OrderDeliverDto orderDeliverDto, RedirectAttributes redirectAttributes, Principal principal) {
-		
+
 		Long id = orderDeliverDto.getId();
 		Order persistence = orderService.findOne(id);
 		validate(persistence, NOT_NULL, "order id" + id + " not found");
-		if(principal.getUserId().equals(persistence.getSellerId())) {
+		if (principal.getUserId().equals(persistence.getSellerId())) {
 			throw new UnauthorizedException("权限不足");
 		}
 		try {
@@ -101,26 +109,26 @@ public class UcenterOrderController {
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
-		
+
 		return "redirect:/order/" + persistence.getSn();
 	}
-	
+
 	@RequestMapping("/confirmDelivery")
 	public String confirmDelivery(Long id, RedirectAttributes redirectAttributes, Principal principal) {
-		
+
 		Order persistence = orderService.findOne(id);
 		validate(persistence, NOT_NULL, "order id" + id + " not found");
-		if(principal.getUserId().equals(persistence.getUserId())) {
+		if (principal.getUserId().equals(persistence.getUserId())) {
 			throw new UnauthorizedException("权限不足");
 		}
-		
+
 		try {
 			orderService.receive(id);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("确认收货成功"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
-		
+
 		return "redirect:/order/" + persistence.getSn();
 	}
 	
