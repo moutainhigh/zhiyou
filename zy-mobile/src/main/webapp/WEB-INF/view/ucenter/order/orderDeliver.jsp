@@ -31,7 +31,9 @@
           required : true
         },
         'logisticsFee' : {
-          required : true
+          required : true,
+          number : true,
+          min : 0
         }
       },
       submitHandler : function(form) {
@@ -101,7 +103,7 @@
         <div class="list-item">
           <label class="list-label" for="logisticsFee">物流费用</label>
           <div class="list-text">
-            <input type="text" name="logisticsFee" class="form-input" value="" placeholder="填写物流费用">
+            <input type="number" name="logisticsFee" class="form-input" value="" placeholder="填写物流费用">
           </div>
         </div>
       </div>
