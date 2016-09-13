@@ -9,12 +9,12 @@
 
 .mui-dialog {
 }
-.mui-dialog .mui-dialog-mask,
+.mui-dialog .mui-dialog-shade,
 .mui-dialog .mui-dialog-wrap {
   position: fixed; left: 0; top: 0;
   width: 100%; height: 100%;
 }
-.mui-dialog .mui-dialog-mask {
+.mui-dialog .mui-dialog-shade {
   background-color: rgba(0, 0, 0, 0.7);
   pointer-events: auto;
 }
