@@ -511,24 +511,24 @@ input.form-input[disabled] {
 /* default */
 .default.btn {
   color: #666;
-  background-color: #e1e5ec;
-  border-color: #e1e5ec;
+  background-color: #f7f7f7;
+  border: 1px solid #e1e5ec;
 }
 .default.btn:hover, .default.btn:focus, .default.btn.active {
   color: #666;
-  background-color: #c2cad8;
+  background-color: #f1f1f1;
   border-color: #bcc5d4;
 }
 
 /* gray */
 .gray.btn {
-  color: #333333;
-  background-color: #e5e5e5;
+  color: #666;
+  background-color: #e1e5ec;
   border-color: "";
 }
 .gray.btn:hover, .gray.btn:focus, .gray.btn.active {
-  color: #333333;
-  background-color: #d1d1d1;
+  color: #666;
+  background-color: #c2cad8;
 }
 
 /* red */

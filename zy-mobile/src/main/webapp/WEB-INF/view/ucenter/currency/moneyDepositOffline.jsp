@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>转账汇款</title>
+<title>银行汇款</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
@@ -52,7 +52,7 @@
 <body>
 
   <header class="header">
-    <h1>转账汇款</h1>
+    <h1>银行汇款</h1>
     <a href="javascript:history.go(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 

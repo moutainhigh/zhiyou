@@ -54,7 +54,7 @@
        </div>
      </div> --%>  
      
-     <div class="list-title">账户信息</div> 
+     <div class="list-title">支付信息</div> 
      <div class="list-group">
        <div class="list-item">
          <div class="list-text">账户余额</div>
@@ -62,7 +62,7 @@
        </div>
        <div class="list-item">
          <div class="list-text">支付金额</div>
-         <div class="list-unit">${amount}元</div>
+         <div class="list-unit"><span class="font-orange">${amount}</span>元</div>
        </div>
      </div>
      

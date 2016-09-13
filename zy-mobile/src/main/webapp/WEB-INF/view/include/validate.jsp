@@ -9,10 +9,13 @@
     errorClass : 'valid-error',
     errorElement : 'span',
     errorPlacement : function(error, element) {
-      $('.form-message').html('<p>输入信息有误，请先更正。</p>').slideDown(300);
-      if (element.parents('.list-item').find('.form-error').length == 0) {
+      //messageFlash(error.text());
+      if($('.form-message').length > 0){
+        $('.form-message').html('<p>输入信息有误，请先更正。</p>').slideDown(300);
+      }
+      if ($(element).parents('.list-item').find('.form-error').length == 0) {
         var formError = $('<div class="form-error"><i class="fa fa-exclamation-circle"></i></div>');
-        element.parents('.list-item').addClass('list-item-error').append(formError);
+        $(element).parents('.list-item').addClass('list-item-error').append(formError);
       }
     },
     success : function(error, element) {
