@@ -90,7 +90,7 @@ public class UcenterOrderController {
 
 	@RequestMapping(path = "/deliver", method = RequestMethod.GET)
 	public String deliver(Long id, Model model) {
-		model.addAttribute("id", id);
+		model.addAttribute("orderId", id);
 		return "ucenter/order/orderDeliver";
 	}
 
