@@ -127,7 +127,7 @@ public class UcenterMoneyController {
 			return "redirect:/u/money";
 		}
 		List<BankCard> bankCardList = bankCardService.findByUserId(principal.getUserId());
-		BankCard defaultBankCard = bankCardList.stream().filter(v -> v.getIsDefault()).findFirst().get();
+		BankCard defaultBankCard = bankCardList.stream().filter(v -> v.getIsDefault()).findFirst().orElse(null);
 		defaultBankCard = defaultBankCard == null ? bankCardList.get(0) : defaultBankCard;
 		
 		Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), 现金);

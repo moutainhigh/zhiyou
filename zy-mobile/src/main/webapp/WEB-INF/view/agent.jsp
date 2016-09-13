@@ -69,7 +69,7 @@
 	        $('[name="parentId"]').val(result.message);
 	        $('#form').submit();
 	      } else {
-	        messageShow(result.message, 'error');
+	        messageAlert(result.message);
 	      }
 	    }
 	  });

@@ -76,7 +76,9 @@ public class UcenterAgentController {
 				return ResultBuilder.error("不能设置本人为上级代理.");
 			} else if(user.getUserType() != UserType.代理){
 				return ResultBuilder.error("此手机绑定的用户不是代理.");
-			} else {
+			} else if(user.getUserRank() == UserRank.V0){
+				return ResultBuilder.error("此手机绑定的用户不是代理.");
+			}{
 				return ResultBuilder.ok(user.getId().toString());
 			}
 		} else {

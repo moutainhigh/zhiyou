@@ -387,7 +387,7 @@
                       <td>${profit.currencyType}</td>
                       <td>${profit.amount}</td>
                       <td>${profit.user.nickname}</td>
-                      <td>${profit.createdTime}</td>
+                      <td>${profit.createdTimeLabel}</td>
                       <td>${profit.profitType}</td>
                     </tr>
                   </c:forEach>
@@ -429,8 +429,8 @@
                       <td>${transfer.toUser.nickname}</td>
                       <td>${transfer.currencyType}</td>
                       <td>${transfer.amount}</td>
-                      <td>${transfer.createdTime}</td>
-                      <td>${transfer.transferredTime}</td>
+                      <td>${transfer.createdTimeLabel}</td>
+                      <td>${transfer.transferredTimeLabel}</td>
                       <td>${transfer.transferType}</td>
                       <td>${transfer.transferRemark}</td>
                       <td>${transfer.remark}</td>

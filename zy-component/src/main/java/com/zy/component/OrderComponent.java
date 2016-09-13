@@ -85,7 +85,7 @@ public class OrderComponent {
 		);
 
 		orderAdminFullVo.setTransfers(transferService
-				.findAll(TransferQueryModel.builder().transferTypeIN(new Transfer.TransferType[] {Transfer.TransferType.一级平级奖, Transfer.TransferType.一级越级奖}).refIdEQ(orderId).build())
+				.findAll(TransferQueryModel.builder().transferTypeIN(new Transfer.TransferType[] {Transfer.TransferType.一级平级奖, Transfer.TransferType.一级越级奖, Transfer.TransferType.邮费}).refIdEQ(orderId).build())
 				.stream()
 				.map(transferComponent::buildAdminVo).collect(Collectors.toList())
 
