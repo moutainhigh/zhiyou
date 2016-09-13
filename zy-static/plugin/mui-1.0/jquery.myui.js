@@ -21,12 +21,11 @@
         timeout : 2
       };
       if (arguments.length > 1) {
-        options.timeout = arguments[2];
+        options.timeout = arguments[1];
       }
     }
 
     options = $.extend({}, $.dialog.defaults, options || {});
-    
     if (!options.btn) {
       alert('[缺少参数]btn不能为空!');
       return;
@@ -72,7 +71,7 @@
       $dialog.remove();
     }
     
-    if (options.timeout) {
+    if (options.timeout != 0) {
       setTimeout(function() {
         onClose();
       }, options.timeout * 1000);
@@ -164,7 +163,7 @@
     if (options.timeout) {
       setTimeout(function() {
         $message.slideUp(300, onClose);
-      }, options.timeout);
+      }, options.timeout * 1000);
     }
     return $message;
   };
@@ -173,7 +172,7 @@
     type : 'info', // info, success, error
     content : '',
     closable : true,
-    timeout : 3000,
+    timeout : 3,
     callback : function(message) {
     }
   });
@@ -182,7 +181,7 @@
     $.message({
     	type : 'success',
       content : message,
-      timeout : 2000
+      timeout : 2
     });
   };
 
@@ -190,7 +189,7 @@
     $.message({
     	type : 'info',
       content : message,
-      timeout : 2000
+      timeout : 2
     });
   };
 
@@ -198,7 +197,7 @@
     $.message({
     	type : 'error',
       content : message,
-      timeout : 3000
+      timeout : 3
     });
   };
   

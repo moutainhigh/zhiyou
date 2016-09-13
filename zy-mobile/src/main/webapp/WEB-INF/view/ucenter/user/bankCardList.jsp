@@ -10,8 +10,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="keywords" content="微信分销" />
-<meta name="description" content="管理收货地址" />
 
 <title>我的银行卡</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
@@ -20,7 +18,7 @@
 <body class="bank-list">
   <header class="header">
     <h1>我的银行卡</h1>
-    <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/money" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
   <article>

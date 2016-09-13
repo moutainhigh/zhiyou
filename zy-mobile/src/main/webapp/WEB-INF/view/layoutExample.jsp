@@ -102,7 +102,6 @@
 
   <article>
     <form action="${ctx}/u" class="valid-form" method="get">
-      <input type="hidden" name="orderId" value="${orderId}">
       <div class="list-group">
         <div class="list-title">列表布局</div>
         <!-- icon-label-text-unit -->
@@ -114,7 +113,7 @@
         <div class="list-item">
           <i class="list-icon fa fa-file-o font-red"></i>
           <div class="list-text">订单数</div>
-          <div class="list-unit"><em class="badge badge-danger">3</em></div>
+          <div class="list-unit"><em class="badge red">3</em></div>
           <i class="list-arrow"></i>
         </div>
         <a class="list-item" href="javascript:alert('去填写地址');">
@@ -192,6 +191,10 @@
             <label class="i-switch" for="isDefault"></label>
           </div>
         </div>
+      </div>
+      
+      <div class="form-btn">
+        <input class="btn red btn-block round-2" type="button" value="提交">
       </div>
       
       <div class="list-group">

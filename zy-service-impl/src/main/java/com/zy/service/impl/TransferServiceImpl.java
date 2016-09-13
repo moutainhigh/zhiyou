@@ -2,7 +2,10 @@ package com.zy.service.impl;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.entity.fnc.AccountLog.InOut.支出;
+import static com.zy.entity.fnc.AccountLog.InOut.收入;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.zy.common.exception.BizException;
+import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
+import com.zy.component.FncComponent;
+import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Transfer;
 import com.zy.entity.fnc.Transfer.TransferStatus;
 import com.zy.mapper.TransferMapper;
@@ -28,8 +34,11 @@ public class TransferServiceImpl implements TransferService {
 	@Autowired
 	private TransferMapper transferMapper;
 	
+	@Autowired
+	private FncComponent fncComponent;
+	
 	@Override
-	public void success(@NotNull Long id, String transferRemark) {
+	public void transfer(@NotNull Long id, String transferRemark) {
 		Transfer transfer = transferMapper.findOne(id);
 		validate(transfer, NOT_NULL, "transfer id" + id + " not found");
 		TransferStatus transferStatus = transfer.getTransferStatus();
@@ -43,7 +52,17 @@ public class TransferServiceImpl implements TransferService {
 		transfer.setTransferStatus(TransferStatus.已转账);
 		transfer.setTransferredTime(new Date());
 		transfer.setTransferRemark(transferRemark);
-		transferMapper.update(transfer);
+		if(transferMapper.update(transfer) == 0) {
+			throw new ConcurrentException();
+		}
+		
+		String title = transfer.getTitle();
+		CurrencyType currencyType = transfer.getCurrencyType();
+		BigDecimal amount = transfer.getAmount();
+		Long fromUserId = transfer.getFromUserId();
+		Long toUserId = transfer.getToUserId();
+		fncComponent.recordAccountLog(fromUserId, title, currencyType, amount, 支出, transfer, toUserId);
+		fncComponent.recordAccountLog(toUserId, title, currencyType, amount, 收入, transfer, fromUserId);
 	}
 
 	@Override

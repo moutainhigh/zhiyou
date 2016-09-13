@@ -6,8 +6,8 @@ window.messageShow = function(message, icon) {
   $.message(message, icon || 'info');
 };
 
-window.messageFlash = function(message, time) {
-  $.dialog(message, time || 2);
+window.messageFlash = function(message, timeout) {
+  $.dialog(message + '', timeout || 2);
 };
 
 window.messageAlert = function(message, button) {
@@ -27,21 +27,19 @@ $(function() {
   
   /* 全局的ajax访问，处理ajax清求时sesion超时 */
   $(document).ajaxComplete(function(event, XMLHttpRequest, textStatus) {
-    //alert("XMLHttpRequest.status=" + XMLHttpRequest.status);
+    //console.log("XMLHttpRequest.responseText=" + XMLHttpRequest.responseText);
     switch (XMLHttpRequest.status) {
-      case 401:
-        //messageFlash('您还没有登录, 请先登录');
-        
-        /* 未登录提示 */
+      case 401: /* 未登录提示 */
+        var result = JSON.parse(XMLHttpRequest.responseText);
         asideHtml = '<aside id="asideLogin" class="abs-lt size-100p text-center hide zindex-1000" style="background-color:rgba(0, 0, 0, 0.8)">'
           + '<div class="abs-mm">'
           + '<p class="font-white fs-15 lh-30">您还没有登录，请先登录</p>'
-          + '<a class="btn green mt-15 width-200 round-2" href="javascript:;">去授权登录</a>'
+          + '<a class="btn green mt-15 width-200 round-2" href="' + result.data + '"><i class="fa fa-weixin font-white"></i> 去授权登录</a>'
           + '</div>'
           + '</aside>';
         $('body').addClass('o-hidden');
         $(asideHtml).appendTo($('body')).fadeIn(300);
-      
+        messageFlash('您还没有登录, 请先登录');
         break;
       case 403:
         messageShow('您没有权限执行该操作', 'error');
@@ -82,13 +80,13 @@ $(function() {
 
 /**
  * Debug print
- * @param map
+ * @param object
  */
-function printMap(map) {
+function log(object) {
   var s = '{';
-  for ( var k in map) {
-    s += '\n\t' + k + ': \'' + map[k] + '\'';
+  for ( var k in object) {
+    s += '\n\t' + k + ': \'' + object[k] + '\'';
   }
   s += '\n}';
-  alert(s);
+  console.log(s);
 }
