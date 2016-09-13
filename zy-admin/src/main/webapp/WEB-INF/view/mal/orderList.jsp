@@ -2,9 +2,19 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <!-- BEGIN JAVASCRIPTS -->
 <script>
-  var grid = new Datatable();
+  
 
   $(function() {
+    
+    var grid = new Datatable();
+    
+    $('#statusTab li').bind('click', function(){
+      $this = $(this);
+      $('input[name="orderStatusEQ"]').val($this.data('order-status'));
+      $('input[name="isPlatformDeliverEQ"]').val($this.data('is-platform-deliver'));
+      grid.getDataTable().ajax.reload(null, false);
+    });
+    
     grid.init({
       src : $('#dataTable'),
       onSuccess : function(grid) {
@@ -39,10 +49,14 @@
               result = '<label class="label label-danger">待支付</label>';
             } else if (data == '已支付') {
               result = '<label class="label label-success">已支付</label>';
+            } else if (data == '已发货') {
+              result = '<label class="label label-default">已发货</label>';
+            } else if (data == '已完成') {
+              result = '<label class="label label-success">已完成</label>';
+            } else if (data == '已退款') {
+              result = '<label class="label label-default">已退款</label>';
             } else if (data == '订单取消') {
               result = '<label class="label label-default">订单取消</label>';
-            } else if (data == '已完成') {
-              result = '<label class="label label-default">已完成</label>';
             }
             return result;
           }
@@ -60,23 +74,20 @@
           render : function(data, type, full) {
             return '<p>昵称: ' + full.seller.nickname + '</p><p>手机号: ' + full.seller.phone + '</p><p>等级: ' + full.user.userRankLabel + '</p>';
           }
-        }, {
-          data : '',
-          title : '图片',
-          orderable : false,
-          render : function(data, type, full) {
-            return '<img style="width:180px;height:80px;"  src="' + full.imageThumbnail + '"/>';
-          }
-        }, {
+        },{
+          data : 'price',
+          title : '单价',
+          orderable : false
+        },  {
           data : 'quantity',
           title : '数量',
           orderable : false
         }, {
           data : 'totalMoney',
-          title : '交易金额',
+          title : '总金额',
           orderable : false,
           render : function(data, type, full) {
-            return '<p>单价' + full.price + '</p><p>优惠金额: ' + full.discountFee.toFixed(2) + '</p><p>总金额：' + full.amount.toFixed(2) + '</p>';
+            return full.amount.toFixed(2);
           }
         }, {
           data : 'createdTimeLabel',
@@ -107,7 +118,13 @@
           title : '操作',
           orderable : false,
           render : function(data, type, full) {
-            return '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/order/detail?id=' + data + '"><i class="fa fa-search"></i> 查看 </a>';
+          	var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/order/detail?id=' + data + '"><i class="fa fa-search"></i> 查看 </a>';
+          	<shiro:hasPermission name="order:deliver">
+          	if(full.orderStatus == '已支付' && full.isPlatformDeliver) {
+          	  optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/order/deliver?id=' + data + '"><i class="fa fa-car"></i> 发货 </a>';
+          	}
+          	</shiro:hasPermission>
+          	return optionHtml;
           }
         } ]
       }
@@ -139,31 +156,33 @@
         <div class="table-container">
           <div class="table-toolbar">
             <form class="filter-form form-inline" id="searchForm">
+             <ul id="statusTab" class="nav nav-tabs">
+              <li class="active"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 全部</a></li>
+              <li class="" data-order-status="0"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 待付款</a></li>
+              <li class="" data-order-status="1"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已支付</a></li>
+              <li class="" data-order-status="1" data-is-platform-deliver="true"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"><strong> 已支付(平台发货) </strong></a></li>
+              <li class="" data-order-status="2"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已发货</a></li>
+              <li class="" data-order-status="3"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已完成</a></li>
+              <li class="" data-order-status="4"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已退款</a></li>
+              <li class="" data-order-status="5"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已取消</a></li>
+            </ul>
               <input id="_orderBy" name="orderBy" type="hidden" value="" /> <input id="_direction" name="direction" type="hidden" value="" /> <input id="_pageNumber"
                 name="pageNumber" type="hidden" value="0" /> <input id="_pageSize" name="pageSize" type="hidden" value="20" />
-
+              <input type="hidden" name="orderStatusEQ" value="" />
+              <input type="hidden" name="isPlatformDeliverEQ" value="" />
+              
               <div class="form-group">
-                <input type="text" name="phoneEQ" class="form-control" placeholder="手机号" />
+                <input type="text" name="userPhoneEQ" class="form-control" placeholder="用户手机号" />
               </div>
 
               <div class="form-group input-inline">
-                <input type="text" name="nicknameLK" class="form-control" placeholder="昵称" />
+                <input type="text" name="userNicknameLK" class="form-control" placeholder="用户昵称" />
               </div>
 
               <div class="form-group input-inline">
-                <input type="text" name=refIdEQ class="form-control" placeholder="订单号" />
+                <input type="text" name="snLK" class="form-control" placeholder="订单号" />
               </div>
-              <div class="form-group input-inline">
-                <select name="orderStatusEQ" class="form-control">
-                  <option value="">-- 订单状态 --</option>
-                  <option label="0">待支付</option>
-                  <option label="1">已支付</option>
-                  <option label="2">已发货</option>
-                  <option label="3">已完成</option>
-                  <option label="4">已退款</option>
-                  <option label="5">已取消</option>
-                </select>
-              </div>
+              
               <div class="form-group input-inline">
                 <button class="btn blue filter-submit">
                   <i class="fa fa-search"></i> 查询
@@ -171,6 +190,7 @@
               </div>
             </form>
           </div>
+
           <table class="table table-striped table-bordered table-hover" id="dataTable">
           </table>
         </div>

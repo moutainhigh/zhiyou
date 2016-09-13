@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -21,16 +22,17 @@ public class PaymentCancelJob implements Job {
 
 	private Logger logger = LoggerFactory.getLogger(ReportStatementJob.class);
 
-
 	@Autowired
 	private PaymentService paymentService;
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
+		logger.info("begin...{}", LocalDateTime.now());
 		paymentService.findAll(builder().expiredTimeLT(new Date()).build())
 				.stream()
 				.map(payment -> payment.getId())
 				.forEach(this::cancel);
+		logger.info("end...{}", LocalDateTime.now());
 
 
 	}

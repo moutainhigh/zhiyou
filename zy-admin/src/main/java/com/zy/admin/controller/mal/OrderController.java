@@ -1,7 +1,7 @@
 package com.zy.admin.controller.mal;
 
-import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 import java.util.List;
 
@@ -12,14 +12,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.OrderComponent;
 import com.zy.entity.mal.Order;
+import com.zy.entity.mal.Order.LogisticsFeePayType;
 import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.OrderService;
@@ -55,11 +61,7 @@ public class OrderController {
         	UserQueryModel userQueryModel = new UserQueryModel();
         	userQueryModel.setPhoneEQ(userPhoneEQ);
         	userQueryModel.setNicknameLK(userNicknameLK);
-        	
             List<User> users = userService.findAll(userQueryModel);
-            if (users == null || users.size() == 0) {
-                return new Grid<OrderAdminVo>(PageBuilder.empty(orderQueryModel.getPageSize(), orderQueryModel.getPageNumber()));
-            }
             Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
             orderQueryModel.setUserIdIN(userIds);
         }
@@ -69,11 +71,38 @@ public class OrderController {
 		return new Grid<OrderAdminVo>(voPage);
 	}
 
+	@RequiresPermissions("order:view")
 	@RequestMapping(value = "/detail")
 	public String detail(Long id, Model model) {
 		Order order = orderService.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " not found");
 		model.addAttribute("order", orderComponent.buildAdminFullVo(order));
 		return "mal/orderDetail";
+	}
+	
+	@RequiresPermissions("order:deliver")
+	@RequestMapping(value = "/deliver", method = RequestMethod.GET)
+	public String deliver(@RequestParam Long id, Model model) {
+		Order order = orderService.findOne(id);
+		validate(order, NOT_NULL, "order id " + id + "not found");
+		
+		model.addAttribute("order", orderComponent.buildAdminVo(order));
+		model.addAttribute("logisticsFeePayTypes", LogisticsFeePayType.values());
+		return "mal/orderDeliver";
+	}
+	
+	@RequiresPermissions("order:deliver")
+	@RequestMapping(value = "/deliver", method = RequestMethod.POST)
+	public String deliver(OrderDeliverDto orderDeliverDto, RedirectAttributes redirectAttributes) {
+
+		try {
+			orderDeliverDto.setUseLogistics(true);
+			orderService.deliver(orderDeliverDto);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("发货成功"));
+			return "redirect:/order";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return "redirect:/order/deliver?id=" + orderDeliverDto.getId();
+		}
 	}
 }

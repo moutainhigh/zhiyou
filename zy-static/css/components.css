@@ -601,12 +601,13 @@ input.form-input[disabled] {
 /* disabled */
 .btn.disabled {
   cursor: not-allowed;
-  color: #777;
-  background-color: #eee;
+  color: #999;
+  background-color: #edeff3;
+  border: 1px solid #e1e5ec;
 }
 .btn.disabled:hover, .btn.disabled:focus, .btn.disabled.active {
   cursor: not-allowed;
-  color: #777;
+  color: #999;
   background-color: #eee;
 }
 

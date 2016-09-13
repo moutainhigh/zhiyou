@@ -116,7 +116,7 @@
           </div>
         </div>
         <div class="list-item phone-captcha">
-          <label for="smsCode" class="list-label" style="z-index: 9">手机验证码</label>
+          <label for="smsCode" class="list-label">手机验证码</label>
           <div class="list-text">
             <input type="text" id="smsCode" name="smsCode" class="form-input" placeholder="手机验证码" value="">
           </div>

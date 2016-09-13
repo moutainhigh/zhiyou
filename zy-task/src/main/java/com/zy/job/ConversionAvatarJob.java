@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -46,12 +47,14 @@ public class ConversionAvatarJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        logger.info("begin...{}", LocalDateTime.now());
         userService.findAll(UserQueryModel.builder()
                 .registerTimeGTE(org.apache.commons.lang3.time.DateUtils
                         .addDays(new Date(),-2))
                 .build())
                 .parallelStream()
                 .forEach(this::doHandle);
+        logger.info("end...{}", LocalDateTime.now());
     }
 
     private void doHandle(User user) {
