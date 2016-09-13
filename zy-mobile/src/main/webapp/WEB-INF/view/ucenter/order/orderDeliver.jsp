@@ -29,6 +29,9 @@
         },
         'logisticsSn' : {
           required : true
+        },
+        'logisticsFee' : {
+          required : true
         }
       },
       submitHandler : function(form) {
