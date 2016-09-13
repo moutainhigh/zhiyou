@@ -52,6 +52,7 @@ public class Profit implements Serializable {
 
 	@NotNull
 	@Field(label = "收益单状态")
+	@Query(EQ)
 	@View
 	private ProfitStatus profitStatus;
 
