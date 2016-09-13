@@ -72,7 +72,7 @@
           title : '卖家信息',
           orderable : false,
           render : function(data, type, full) {
-            return '<p>昵称: ' + full.seller.nickname + '</p><p>手机号: ' + full.seller.phone + '</p><p>等级: ' + full.user.userRankLabel + '</p>';
+            return '<p>昵称: ' + full.seller.nickname + '</p><p>手机号: ' + full.seller.phone + '</p><p>等级: ' + full.seller.userRankLabel + '</p>';
           }
         },{
           data : 'price',
