@@ -20,7 +20,7 @@
         skin : 'message',
         timeout : 2,
         btn : [],
-        cancleBtn : false
+        btnCancle : false
       };
       if (arguments.length > 1) {
         options.timeout = arguments[1];
@@ -61,7 +61,8 @@
     } else if(options.skin == 'message') {
       skinClass = ' mui-dialog-message mui-animation-up';
     }
-    html +=   '<div class="mui-dialog-content' + skinClass + '">';
+    var style = (options.style ? ' style="' + options.style + '"' : '')
+    html +=   '<div class="mui-dialog-content' + skinClass + '"' + style + '>';
     if(options.content){
       html +=   '<div class="mui-dialog-title">' + options.content + '</div>';
     }
@@ -69,7 +70,7 @@
     $.each(options.btn, function(index){
       html +=     '<div class="mui-dialog-button" data-index="' + (index + 1) + '">' + options.btn[index] + '</div>';
     });
-    if(options.cancleBtn){
+    if(options.btnCancle){
       html +=     '<div class="mui-dialog-button mui-dialog-button-cancle" data-index="0">取消</div>';
     }
     html +=     '</div>'
@@ -112,9 +113,10 @@
   $.dialog.defaults = $.extend({}, {
     content : '',
     skin : 'center', //center,footer,message
+    style : '',
     timeout : 0,
     btn : [ '确定' ],
-    cancleBtn : true,
+    btnCancle : true,
     callback : function(index) {
       //alert(index);
     }

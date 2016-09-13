@@ -24,7 +24,7 @@
       $('#logistics').slideDown(300);
     });
 
-    $('.image-view > img').click(function() {
+    $('.image-view').click(function() {
       var url = $(this).attr('data-src');
       var title = $(this).attr('data-title');
       if (!url) {
@@ -73,7 +73,7 @@
       }
     });
     
-    $(".valid-form").validate({
+    $('.valid-form').validate({
       rules : {
         'name' : {
           required : true
@@ -84,10 +84,39 @@
         'captcha' : {
           required : true
         },
+        'address' : {
+          required : true
+        },
         'simage' : {
           required : true
         }
       }
+    });
+    
+    $('.btn-dialog > a').eq(0).click(function(){
+      $.dialog({
+        content : '提示信息，2秒后消失',
+        skin: 'message',
+        timeout : 2
+      });
+    });
+    
+    $('.btn-dialog > a').eq(1).click(function(){
+      $.dialog({
+        content : '中间显示对话框，可自定义按钮',
+        skin: 'center',
+        btn : ['确定1', '确定2'],
+        btnCancel: true
+      });
+    });
+    
+    $('.btn-dialog > a').eq(2).click(function(){
+      $.dialog({
+        content : '底部对话框，可以不要标题，点遮罩层消失',
+        skin: 'footer',
+        btn : ['确定1', '确定2'],
+        btnCancel: true
+      });
     });
   
   });
@@ -95,23 +124,30 @@
 </head>
 <body class="">
   <header class="header">
-    <h1>List 布局</h1>
+    <h1>UI</h1>
     <a href="${ctx}/" class="button-left"><i class="fa fa-home"></i></a>
     <a href="${ctx}/superLogin/11" class="button-right"><i class="fa fa-user"></i></a>
   </header>
-
+  
   <article>
+    <div class="list-title">信息提示</div>
+    <div class="btn-dialog form-btn flex">
+      <a class="flex-1 btn red round-2">提示信息</a>
+      <a class="flex-1 btn blue round-2 ml-5">询问框</a>
+      <a class="flex-1 btn purple round-2 ml-5">底部对话框</a>
+    </div>
+      
     <form action="${ctx}/u" class="valid-form" method="get">
       <div class="list-group">
         <div class="list-title">列表布局</div>
         <!-- icon-label-text-unit -->
         <div class="list-item">
-          <i class="list-icon icon icon-account"></i>
+          <i class="list-icon fa fa-user"></i>
           <div class="list-text">昵称</div>
           <div class="list-unit">哆来嘧</div>
         </div>
         <div class="list-item">
-          <i class="list-icon fa fa-file-o font-red"></i>
+          <i class="list-icon fa fa-file-o"></i>
           <div class="list-text">订单数</div>
           <div class="list-unit"><em class="badge red">3</em></div>
           <i class="list-arrow"></i>
@@ -124,8 +160,12 @@
         </a>
       </div>
       
+      <div class="form-message note note-warning hide">
+        <p>输入信息有误，请先更正。</p>
+      </div>
+      
       <div class="list-group">
-        <div class="list-title"><span class="font-red mr-10">表单</span>请选择收货地址</div>
+        <div class="list-title"><span class="font-red mr-10">validate 表单</span>请选择收货地址</div>
         <div class="list-item">
           <label class="list-label" for="name">姓名</label>
           <div class="list-text"><input id="name" name="name" class="form-input" type="text" value="" placeholder="请输入姓名"></div>
@@ -150,14 +190,14 @@
         <div class="list-item img-captcha">
           <label for="captcha" class="list-label">图形码</label>
           <div class="list-text">
-            <input type="text" id="captcha" name="captcha" class="form-input" placeholder="图形验证码">
+            <input type="text" id="captcha" name="captcha" class="form-input" placeholder="图形验证码" value="">
           </div>
           <div class="list-unit">
             <img id="captchaImage" src="${ctx}/captcha">
           </div>
         </div>
         <div class="list-item phone-captcha">
-          <label for="smsCode" class="list-label" style="z-index: 9">手机验证码</label>
+          <label for="smsCode" class="list-label">手机验证码</label>
           <div class="list-text">
             <input type="text" id="smsCode" name="smsCode" class="form-input" placeholder="手机验证码" value="">
           </div>
@@ -184,7 +224,7 @@
         </div>
         <!-- form-switch -->
         <div class="list-item">
-          <div class="list-text">设为默认地址</div>
+          <div class="list-text">设为默认地址<small>switch开关</small></div>
           <div class="list-unit form-switch">
             <input type="hidden" name="_isDefault" value="false">
             <input type="checkbox" id="isDefault" name="isDefault" value="true">
@@ -194,7 +234,7 @@
       </div>
       
       <div class="form-btn">
-        <input class="btn red btn-block round-2" type="button" value="提交">
+        <input type="submit" class="btn orange btn-block round-2" value="提交">
       </div>
       
       <div class="list-group">
@@ -257,7 +297,7 @@
             </div>
           </div>
           <div class="list-unit">
-            <a href="javascript:;" class="image-view font-blue fs-14" data-src="http://image.mayishike.com/image/1e27766d-62b3-496a-b442-15f512caaff5" data-title="淘宝截图示例图"><i class="fa fa-question-circle-o"></i> 示意图</a>
+            <a href="javascript:;" class="image-view font-blue fs-14" data-src="http://image.mayishike.com/image/1e27766d-62b3-496a-b442-15f512caaff5" data-title="淘宝截图示例图"><i class="fa fa-question-circle-o"></i> 示例图</a>
           </div>
         </div>
       </div>
@@ -288,15 +328,11 @@
       <div class="list-group">
         <div class="list-title">图片布局</div>
         <div class="list-item">
-          <div class="list-text list-image image-view">
-            <img data-title="照片名字" data-src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@640h_640w_1e_1c.jpg" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
-            <img data-title="我的美照" data-src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@640h_640w_1e_1c.jpg" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+          <div class="list-text list-image">
+            <img class="image-view" data-title="照片名字" data-src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@640h_640w_1e_1c.jpg" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
+            <img class="image-view" data-title="我的美照" data-src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@640h_640w_1e_1c.jpg" src="http://image.mayishike.com/image/65d50e00-a2b0-4fc4-bf6b-9c4e8f79bad8@240h_240w_1e_1c.jpg">
           </div>
         </div>
-      </div>
-      
-      <div class="form-btn">
-        <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提交">
       </div>
       
     </form>
