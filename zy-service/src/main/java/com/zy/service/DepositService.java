@@ -14,6 +14,10 @@ public interface DepositService {
 
 	void offlineSuccess(Long id, Long operatorId, String remark);
 	
+	void offlineFailure(Long id, Long operatorId, String remark);
+	
+	void modifyOffline(Long depositId, String offlineImage, String offlineMemo);
+	
 	void cancel(Long id);
 	
 	Deposit findOne(Long id);

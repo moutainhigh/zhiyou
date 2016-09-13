@@ -1,6 +1,10 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/include/taglib.jsp"%>
 
+<c:if test="${!isUpgrade && !isFirst}">
+<c:set var="minQuantity" value="${(userRank == 'V3' || userRank == 'V4') ? 100 : 1}"/>
+</c:if>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,11 +25,7 @@
     
     <c:if test="${!isUpgrade && !isFirst}">
     
-    var MIN_QUANTITY = 1; 
-    
-    <c:if test="${userRank == 'V3' || userRank == 'V4'}">
-    MIN_QUANTITY = 100; //一级 特级
-    </c:if>
+    var MIN_QUANTITY = ${minQuantity}; 
     
     var MAX_QUANTITY = 10000;
     function editQuantity(quantity) {
@@ -133,7 +133,7 @@
       <div class="flex-2 action-cart">
         <div class="quantity-wrap">
           <i class="fa fa-minus disabled"></i>
-          <input type="text" class="input-quantity text-center fs-14" id="quantity" name="quantity" value="1">
+          <input type="text" class="input-quantity text-center fs-14" id="quantity" name="quantity" value="${minQuantity}">
           <i class="fa fa-plus"></i>
         </div>
       </div>
