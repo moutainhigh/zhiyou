@@ -95,6 +95,12 @@
             <input type="text" name="logisticsSn" class="form-input" value="" placeholder="填写物流单号">
           </div>
         </div>
+        <div class="list-item">
+          <label class="list-label" for="logisticsFee">物流费用</label>
+          <div class="list-text">
+            <input type="text" name="logisticsFee" class="form-input" value="" placeholder="填写物流费用">
+          </div>
+        </div>
       </div>
       
       <div class="form-btn">
