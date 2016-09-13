@@ -135,22 +135,6 @@
             </c:when>
           </c:choose>
           </div>
-          <%-- 
-          <div class="mt-5">
-            <img class="image-80 mr-5 mb-10" src="${report.image1Thumbnail}">
-            <img class="image-80 mr-5 mb-10" src="${report.image2Thumbnail}">
-            <img class="image-80 mr-5 mb-10" src="${report.image3Thumbnail}">
-            <c:if test="${not empty report.image4Thumbnail}">
-            <img class="image-80 mr-5 mb-10" src="${report.image4Thumbnail}">
-            </c:if>
-            <c:if test="${not empty report.image5Thumbnail}">
-            <img class="image-80 mr-5 mb-10" src="${report.image5Thumbnail}">
-            </c:if>
-            <c:if test="${not empty report.image6Thumbnail}">
-            <img class="image-80 mr-5 mb-10" src="${report.image6Thumbnail}">
-            </c:if>
-          </div>
-           --%>
         </div>
       </a>
       </c:forEach>

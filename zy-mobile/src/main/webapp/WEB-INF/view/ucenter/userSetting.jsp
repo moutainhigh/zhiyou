@@ -43,14 +43,14 @@
   });
 </script>
 </head>
-<body>
+<body class="user-settings">
 
   <header class="header">
     <h1>设置</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
-  <article class="user-settings">
+  <article>
     <div class="list-group">
       <div class="list-item">
         <div class="list-text">接受短信提醒</div>
@@ -66,7 +66,7 @@
     </div>
 
     <div class="form-btn">
-      <a href="${ctx}/logout" class="btn btn-danger btn-block round-2">退出</a>
+      <a href="${ctx}/logout" class="btn red btn-block round-2">退出</a>
     </div>
 
   </article>

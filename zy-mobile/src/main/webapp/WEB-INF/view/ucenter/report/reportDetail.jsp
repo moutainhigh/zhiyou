@@ -100,8 +100,12 @@
     <div class="list-item">
       <div class="list-text list-image image-view">
         <img src="${report.image1Thumbnail}" data-src="${report.image1Big}">
+        <c:if test="${not empty report.image2Thumbnail}">
         <img src="${report.image2Thumbnail}" data-src="${report.image2Big}">
+        </c:if>
+        <c:if test="${not empty report.image3Thumbnail}">
         <img src="${report.image3Thumbnail}" data-src="${report.image3Big}">
+        </c:if>
         <c:if test="${not empty report.image4Thumbnail}">
           <img src="${report.image4Thumbnail}" data-src="${report.image4Big}">
         </c:if>

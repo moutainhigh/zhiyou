@@ -300,9 +300,9 @@ h5 { font-size: 14px; line-height: 28px; }
 .bg-black {background-color: #000;}
 .bg-gray {background-color: #f1f3f5;}
 
-.bg-red{background-color: #dd3837}
-.bg-blue{background-color: #00a0e9}
-.bg-green{background-color: #00d747}
+.bg-red{background-color: #f3565d}
+.bg-blue{background-color: #428bca}
+.bg-green{background-color: #45b6af}
 .bg-orange {background-color: #f0732f;}
 
 /* Text */
