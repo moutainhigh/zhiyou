@@ -1,7 +1,6 @@
 package com.zy.model.dto;
 
 import com.zy.common.extend.StringBinder;
-import com.zy.entity.mal.Order.LogisticsFeePayType;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -19,8 +18,6 @@ public class OrderDeliverDto implements Serializable {
 	private Long id;
 
 	private boolean useLogistics;
-
-	private LogisticsFeePayType logisticsFeePayType;
 
 	@StringBinder
 	@Length(max = 20)
