@@ -92,29 +92,11 @@
 				#{item}
 				</foreach>
 			</if>
-			<if test="fromUserIdEQ != null">
-				 and from_user_id = #{fromUserIdEQ}
-			</if>
-			<if test="transferTypeEQ != null">
-				 and transfer_type = #{transferTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
-			</if>
-			<if test="createdTimeLT != null">
-				 and created_time &lt; #{createdTimeLT}
-			</if>
 			<if test="transferredTimeGTE != null">
 				 and transferred_time &gt;= #{transferredTimeGTE}
 			</if>
 			<if test="refIdEQ != null">
 				 and ref_id = #{refIdEQ}
-			</if>
-			<if test="fromUserIdIN != null">
-				 and from_user_id in
-				<foreach collection="fromUserIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
-			</if>
-			<if test="transferredTimeLT != null">
-				 and transferred_time &lt; #{transferredTimeLT}
 			</if>
 			<if test="transferTypeIN != null">
 				 and transfer_type in
@@ -125,8 +107,29 @@
 			<if test="toUserIdEQ != null">
 				 and to_user_id = #{toUserIdEQ}
 			</if>
+			<if test="fromUserIdEQ != null">
+				 and from_user_id = #{fromUserIdEQ}
+			</if>
+			<if test="transferTypeEQ != null">
+				 and transfer_type = #{transferTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="createdTimeLT != null">
+				 and created_time &lt; #{createdTimeLT}
+			</if>
+			<if test="fromUserIdIN != null">
+				 and from_user_id in
+				<foreach collection="fromUserIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="transferredTimeLT != null">
+				 and transferred_time &lt; #{transferredTimeLT}
+			</if>
 			<if test="createdTimeGTE != null">
 				 and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="transferStatusEQ != null">
+				 and transfer_status = #{transferStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 		<choose>
@@ -151,29 +154,11 @@
 				#{item}
 				</foreach>
 			</if>
-			<if test="fromUserIdEQ != null">
-				 and from_user_id = #{fromUserIdEQ}
-			</if>
-			<if test="transferTypeEQ != null">
-				 and transfer_type = #{transferTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
-			</if>
-			<if test="createdTimeLT != null">
-				 and created_time &lt; #{createdTimeLT}
-			</if>
 			<if test="transferredTimeGTE != null">
 				 and transferred_time &gt;= #{transferredTimeGTE}
 			</if>
 			<if test="refIdEQ != null">
 				 and ref_id = #{refIdEQ}
-			</if>
-			<if test="fromUserIdIN != null">
-				 and from_user_id in
-				<foreach collection="fromUserIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
-			</if>
-			<if test="transferredTimeLT != null">
-				 and transferred_time &lt; #{transferredTimeLT}
 			</if>
 			<if test="transferTypeIN != null">
 				 and transfer_type in
@@ -184,8 +169,29 @@
 			<if test="toUserIdEQ != null">
 				 and to_user_id = #{toUserIdEQ}
 			</if>
+			<if test="fromUserIdEQ != null">
+				 and from_user_id = #{fromUserIdEQ}
+			</if>
+			<if test="transferTypeEQ != null">
+				 and transfer_type = #{transferTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="createdTimeLT != null">
+				 and created_time &lt; #{createdTimeLT}
+			</if>
+			<if test="fromUserIdIN != null">
+				 and from_user_id in
+				<foreach collection="fromUserIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+			</if>
+			<if test="transferredTimeLT != null">
+				 and transferred_time &lt; #{transferredTimeLT}
+			</if>
 			<if test="createdTimeGTE != null">
 				 and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="transferStatusEQ != null">
+				 and transfer_status = #{transferStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 	</select>

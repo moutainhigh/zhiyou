@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.util.Date;
 import com.zy.entity.fnc.Transfer.TransferType;
+import com.zy.entity.fnc.Transfer.TransferStatus;
 
 @Getter
 @Setter
@@ -20,6 +21,8 @@ import com.zy.entity.fnc.Transfer.TransferType;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransferQueryModel implements Serializable {
+
+	private TransferStatus transferStatusEQ;
 
 	private Long fromUserIdEQ;
 

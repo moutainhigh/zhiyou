@@ -144,7 +144,7 @@
 		from `mal_order`
 		<where>
 			<if test="isPlatformDeliverEQ != null">
-				and is_platform_deliver = #{isPlatformDeliverEQ}
+				 and is_platform_deliver = #{isPlatformDeliverEQ}
 			</if>
 			<if test="userIdIN != null">
 				 and user_id in
@@ -197,7 +197,7 @@
 		select count(*) from `mal_order`
 		<where>
 			<if test="isPlatformDeliverEQ != null">
-				and is_platform_deliver = #{isPlatformDeliverEQ}
+				 and is_platform_deliver = #{isPlatformDeliverEQ}
 			</if>
 			<if test="userIdIN != null">
 				 and user_id in
