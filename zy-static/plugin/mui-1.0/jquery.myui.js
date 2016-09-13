@@ -18,11 +18,18 @@
       options = {
         content : options,
         skin : 'message',
-        timeout : 2
+        timeout : 2,
+        btn : [],
+        cancleBtn : false
       };
       if (arguments.length > 1) {
         options.timeout = arguments[1];
       }
+    }
+    
+    if(options.skin == 'footer' && typeof(options.shade) == 'undefined') {
+      options.shade = true;
+      options.shadeClose = true;
     }
 
     options = $.extend({}, $.dialog.defaults, options || {});
@@ -30,13 +37,12 @@
       alert('[缺少参数]btn不能为空!');
       return;
     }
-
+    
     options.id = 'mui_dialog_' + (_myui_dialog_index++);
     var html = '<aside id="' + options.id + '" class="mui-dialog" data-index="' + _myui_dialog_index++ + '">';
-    if(options.skin != 'message'){
-      html += '<div class="mui-dialog-mask"></div>';
+    if(options.shade){
+      html += '<div class="mui-dialog-shade"></div>';
     }
-      
     html += '<div class="mui-dialog-wrap">'
       +     '<div class="mui-dialog-inner">';
     var skinClass = '';
@@ -76,8 +82,8 @@
         onClose();
       }, options.timeout * 1000);
     }
-    if(options.overlayClose) {
-      $dialog.find('.mui-dialog-mask').click(function(){
+    if(options.shadeClose) {
+      $dialog.find('.mui-dialog-shade').click(function(){
         onClose();
       });
     }
@@ -97,9 +103,10 @@
 
   $.dialog.defaults = $.extend({}, {
     content : '',
-    skin : 'center',
+    skin : 'center', //center,footer,message
     timeout : 0,
-    overlayClose : false,
+    shade : false,
+    shadeClose : false,
     btn : [ '确定' ],
     cancleBtn : true,
     callback : function(index) {
