@@ -103,11 +103,10 @@ public class UcenterPayController {
 		model.addAttribute("sn", deposit.getSn());
 		model.addAttribute("amount", deposit.getAmount1());
 		model.addAttribute("refId", deposit.getId());
-		model.addAttribute("bizType", "余额充值");
 		if (payType == PayType.银行汇款) {
 			model.addAttribute("offlineImage", deposit.getOfflineImage());
 			model.addAttribute("offlineMemo", deposit.getOfflineMemo());
-			return "ucenter/pay/payOffline";
+			return "ucenter/currency/moneyDepositOffline";
 		} else {
 			return null;
 		}
@@ -157,7 +156,6 @@ public class UcenterPayController {
 		model.addAttribute("sn", order.getSn());
 		model.addAttribute("amount", order.getAmount());
 		model.addAttribute("refId", payment.getId());
-		model.addAttribute("bizType", "订单支付");
 		if (payType == PayType.银行汇款) {
 			model.addAttribute("offlineImage", payment.getOfflineImage());
 			model.addAttribute("offlineMemo", payment.getOfflineMemo());

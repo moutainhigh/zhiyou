@@ -21,18 +21,18 @@
     $(".valid-form").validate({
       ignore: ':hidden',
       rules : {
-        'deliverType' : {
+        'useLogistics' : {
           required : true
         },
         'logisticsName' : {
           required : true
         },
-        'logisticsNo' : {
+        'logisticsSn' : {
           required : true
         }
       },
       submitHandler : function(form) {
-        var deliverType = $('input[name="deliverType"]:checked');
+        var deliverType = $('input[name="useLogistics"]:checked');
         if(deliverType.length == 0) {
           messageFlash('请选择发货方式');
           return;
@@ -61,21 +61,21 @@
 
   <article>
     <form action="${ctx}/u/order/deliver" class="valid-form" method="post">
-      <input type="hidden" name="orderId" value="${orderId}">
+      <input type="hidden" name="id" value="${orderId}">
       
       <div class="list-group">
         <div class="list-title">请选择发货方式</div>
         <label class="list-item form-radio" for="deliverType0">
           <div class="list-text">面对面发货</div>
           <div class="list-unit">
-            <input id="deliverType0" type="radio" name="deliverType" value="0">
+            <input id="deliverType0" type="radio" name="useLogistics" value="false">
             <em class="i-checked"></em>
           </div>
         </label>
         <label class="list-item form-radio" for="deliverType1">
           <div class="list-text">物流发货</div>
           <div class="list-unit">
-            <input id="deliverType1" type="radio" name="deliverType" value="1">
+            <input id="deliverType1" type="radio" name="useLogistics" value="true">
             <em class="i-checked"></em>
           </div>
         </label>
@@ -90,9 +90,9 @@
           </div>
         </div>
         <div class="list-item">
-          <label class="list-label" for="logisticsNo">物流单号</label>
+          <label class="list-label" for="logisticsSn">物流单号</label>
           <div class="list-text">
-            <input type="text" name="logisticsNo" class="form-input" value="" placeholder="填写物流单号">
+            <input type="text" name="logisticsSn" class="form-input" value="" placeholder="填写物流单号">
           </div>
         </div>
       </div>

@@ -25,50 +25,52 @@
         },
         columns: [
           {
+            data: 'id'
+          },
+          {
             data: '',
             title: '流水情况',
             orderable: false,
-            width: '300px',
             render: function (data, type, full) {
-              return '<p>ID: ' + full.id + ' 标题：' + full.title + '</p><p>对应单据：' + full.accountLogType + ' ' + full.refSn + '</p>';
+              return '<p>标题：' + full.title + '</p><p>对应单据：' + full.accountLogType + ' ' + full.refSn + '</p>';
             }
           },
           {
             data: 'userPhone',
             title: '用户信息',
-            width: '180px',
             render: function (data, type, full) {
-              return '<p>昵称: ' + full.userNickname + '</p><p>手机号：' + data + '</p>';
+              if (full.user) {
+                return '<img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname;
+              } else {
+                return '-';
+              }
             }
           },
           {
             data: 'currencyType',
-            title: '金币类型',
-            width: '80px'
+            title: '货币类型'
           },
           {
             data: '',
             title: '交易前',
             orderable: false,
-            width: '150px',
             render: function (data, type, full) {
               if (typeof full.beforeAmount === 'undefined') {
                 return '-';
               } else {
-                return '<p>本金 ' + full.beforeAmount.toFixed(2) + '</p>';
+                return '<p>' + full.beforeAmount.toFixed(2) + '</p>';
               }
             }
           },
           {
             data: 'transAmount',
-            title: '交易发生本金',
+            title: '交易金额',
             orderable: false,
-            width: '150px',
             render: function (data, type, full) {
               if (full.inOut == '收入') {
-                return '<p>本金 <span class="currency-in">' + full.transAmount.toFixed(2) + '</span></p>';
+                return '<p><span class="currency-in">' + full.transAmount.toFixed(2) + '</span></p>';
               } else {
-                return '<p>本金 <span class="currency-out">' + full.transAmount.toFixed(2) + '</span></p>';
+                return '<p><span class="currency-out">' + full.transAmount.toFixed(2) + '</span></p>';
               }
             }
           },
@@ -76,29 +78,18 @@
             data: 'afterAmount',
             title: '交易后(余额)',
             orderable: false,
-            width: '150px',
             render: function (data, type, full) {
               if (typeof full.afterAmount === 'undefined') {
                 return '-';
               } else {
-                return '<p>本金 ' + full.afterAmount.toFixed(2) + '</p>';
+                return '<p>' + full.afterAmount.toFixed(2) + '</p>';
               }
             }
           },
           {
-            data: 'isOuter',
-            title: '是否存在外部结算',
-            orderable: false,
-            width: '80px',
-            render: function (data, type, full) {
-              return data ? '是' : '否';
-            }
-          },
-          {
             data: 'transTime',
-            title: '创建时间',
-            orderable: false,
-            width: '120px'
+            title: '流水时间',
+            orderable: false
           }]
       }
     });
@@ -161,6 +152,7 @@
                     <option value="1">订单</option>
                     <option value="2">提现单</option>
                     <option value="3">收益单</option>
+                    <option value="4">转账单</option>
                   </select>
                 </div>
 
