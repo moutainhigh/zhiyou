@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>list-group布局</title>
+<title>MiUI</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
@@ -124,7 +124,7 @@
 </head>
 <body class="">
   <header class="header">
-    <h1>UI</h1>
+    <h1>MiUI</h1>
     <a href="${ctx}/" class="button-left"><i class="fa fa-home"></i></a>
     <a href="${ctx}/superLogin/11" class="button-right"><i class="fa fa-user"></i></a>
   </header>
@@ -152,7 +152,7 @@
           <div class="list-unit"><em class="badge red">3</em></div>
           <i class="list-arrow"></i>
         </div>
-        <a class="list-item" href="javascript:alert('去填写地址');">
+        <a class="list-item" href="javascript:messageFlash('去填写地址..');">
           <i class="list-icon fa fa-map-marker font-orange"></i>
           <div class="list-text">收货地址</div>
           <div class="list-unit">未填写</div>
