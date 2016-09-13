@@ -22,67 +22,106 @@
 	<dubbo:reference interface="com.zy.service.OrderService" id="orderService"/>
 	<dubbo:reference interface="com.zy.service.ReportService" id="reportService"/>
 	<dubbo:reference interface="com.zy.service.AccountLogService" id="accountLogService"/>
+	<dubbo:reference interface="com.zy.service.ProfitService" id="profitService"/>
+	<dubbo:reference interface="com.zy.service.TransferService" id="transferService"/>
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
 
-	<dubbo:consumer cluster="failfast" timeout="5000"/>
+	<dubbo:consumer cluster="failfast" timeout="10000"/>
 
-	<bean id="paymentCancelTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail">
-			<bean id="paymentCancelDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-				<property name="durability" value="true"></property>
-				<property name="jobClass" value="com.zy.job.PaymentCancelJob"></property>
-			</bean>
-		</property>
-		<property name="cronExpression">
-			<value>0 0 0/1 * * ?</value>
-		</property>
-	</bean>
 
-	<bean id="conversionAvatarTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail">
-			<bean id="conversionAvatarDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-				<property name="durability" value="true"></property>
-				<property name="jobClass" value="com.zy.job.ConversionAvatarJob"></property>
-			</bean>
-		</property>
-		<property name="cronExpression">
-			<value>0 0/2 * * * ?</value>
-		</property>
-	</bean>
-
-	<bean id="orderStatementJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail">
-			<bean id="orderStatementJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-				<property name="durability" value="true"></property>
-				<property name="jobClass" value="com.zy.job.OrderStatementJob"></property>
-			</bean>
-		</property>
-		<property name="cronExpression">
-			<value>0 0/2 * * * ?</value>
-		</property>
-	</bean>
-
-	<bean id="reportStatementJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail">
-			<bean id="reportStatementJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-				<property name="durability" value="true"></property>
-				<property name="jobClass" value="com.zy.job.ReportStatementJob"></property>
-			</bean>
-		</property>
-		<property name="cronExpression">
-			<value>0 0/2 * * * ?</value>
-		</property>
-	</bean>
 
 
 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="conversionAvatarTrigger"/>
-				<ref bean="paymentCancelTrigger"/>
-				<ref bean="orderStatementJobTrigger"/>
-				<ref bean="reportStatementJobTrigger"/>
+				<!--account log ack job -->
+				<bean id="accountLogAckJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id="paymentCancelDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.job.AccountLogAckJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/1 0 * * ?</value>
+					</property>
+				</bean>
+				<!--头像装换job-->
+				<bean id="conversionAvatarTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id="conversionAvatarDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.job.ConversionAvatarJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/1 * * * ?</value>
+					</property>
+				</bean>
+				<!--订单结算job-->
+				<bean id="orderStatementJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id="orderStatementJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.job.OrderStatementJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/1 * * * ?</value>
+					</property>
+				</bean>
+
+				<!--支付单取消job-->
+				<bean id="paymentCancelTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id="paymentCancelDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.job.PaymentCancelJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0 0/1 * * ?</value>
+					</property>
+				</bean>
+
+				<!--收益单结算job-->
+				<bean id="profitGrantJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id="profitGrantJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.job.ProfitGrantJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/1 * * * ?</value>
+					</property>
+				</bean>
+				<!--report 结算-->
+				<bean id="reportStatementJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id="reportStatementJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.job.ReportStatementJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/1 * * * ?</value>
+					</property>
+				</bean>
+				<!--转账 job-->
+				<bean id="transferJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id="transferJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.job.TransferJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/1 * * * ?</value>
+					</property>
+				</bean>
+
 			</list>
 		</property>
 		<property name="quartzProperties">
