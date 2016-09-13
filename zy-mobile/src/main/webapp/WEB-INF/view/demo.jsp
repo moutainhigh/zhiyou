@@ -149,8 +149,7 @@
         <div class="list-item">
           <i class="list-icon fa fa-file-o"></i>
           <div class="list-text">用户数</div>
-          <div class="list-unit"><em class="badge red">1024</em></div>
-          <i class="list-arrow"></i>
+          <div class="list-unit"><em class="badge red">99+</em></div>
         </div>
         <a class="list-item" href="javascript:messageFlash('为移动web开发量身定制..');">
           <i class="list-icon fa fa-map-marker font-orange"></i>
