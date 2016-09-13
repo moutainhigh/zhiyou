@@ -86,12 +86,14 @@
         <div class="list-unit"><c:if test="${!hasAddress}">未填写</c:if></div>
         <i class="list-arrow"></i>
       </a>
+      <%--
       <a class="list-item list-item-icon" href="${ctx}/u/bankCard">
         <i class="list-icon icon icon icon-card"></i>
         <div class="list-text">银行卡</div>
         <div class="list-unit"><c:if test="${!hasBankCard}">未绑定</c:if></div>
         <i class="list-arrow"></i>
       </a>
+      --%>
     </div>
 
   </article>
