@@ -105,8 +105,7 @@
       $.dialog({
         content : '中间显示对话框，可自定义按钮',
         skin: 'center',
-        btn : ['确定1', '确定2'],
-        btnCancel: '取消'
+        btn : ['确定1', '确定2']
       });
     });
     
@@ -114,8 +113,7 @@
       $.dialog({
         content : '底部对话框，可以不要标题，点遮罩层消失',
         skin: 'footer',
-        btn : ['确定1', '确定2'],
-        btnCancel: '取消'
+        btn : ['确定1', '确定2']
       });
     });
   
