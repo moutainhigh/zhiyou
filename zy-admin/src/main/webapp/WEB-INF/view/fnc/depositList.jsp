@@ -126,7 +126,12 @@
         ajax : {
           url : '${ctx}/deposit', // ajax source
         },
-        columns : [ {
+        columns : [
+          {
+            data: 'id',
+            title: 'id'
+          },
+          {
           data : '',
           title : '充值情况',
           orderable : false,

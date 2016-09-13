@@ -24,6 +24,10 @@
               url : '${ctx}/withdraw', // ajax source
             },
             columns : [
+              {
+                data: 'id',
+                title: 'id'
+              },
                 {
                   data : 'title',
                   title : '提现情况',

@@ -11,8 +11,8 @@
   }
   .text {
     width: 320px; height: 100px;
-    overflow: hidden; 
-    text-overflow:ellipsis; 
+    overflow: hidden;
+    text-overflow:ellipsis;
     white-space:nowrap;
     cursor: pointer;
   }
@@ -61,7 +61,7 @@
 $(function() {
   var grid = new Datatable();
   var template = Handlebars.compile($('#confirmTmpl').html());
-  
+
   $('#dataTable').on('click', '.payment-confirm', function () {
     var id = $(this).data('id');
     var data = {
@@ -115,10 +115,10 @@ $(function() {
           // execute some code after table records loaded
         },
         onError : function(grid) {
-          // execute some code on network or other general error  
+          // execute some code on network or other general error
         },
         dataTable : {
-          //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>", 
+          //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
           lengthMenu: [
                          [10, 20, 50, 100, -1],
                          [10, 20, 50, 100, 'All'] // change per page values here
@@ -129,6 +129,10 @@ $(function() {
                   url: '${ctx}/payment', // ajax source
                 },
 				columns : [
+          {
+            data: 'id',
+            title: 'id'
+          },
 						{
 							data : 'sn',
 							title : '支付单sn',
@@ -166,9 +170,9 @@ $(function() {
 							width : '50px',
 			                render : function(data, type, full) {
 			                	if(data == '待支付'){
-			                		return '<label class="label label-danger">待支付</label>';	
+			                		return '<label class="label label-danger">待支付</label>';
 			                	}else if(data == '已支付'){
-			                		return '<label class="label label-success">已支付</label>';	
+			                		return '<label class="label label-success">已支付</label>';
 			                	}else if(data == '已退款'){
 			                		return '<label class="label label-primary">已退款</label>';
 			                	}else if(data == '已取消'){
@@ -181,7 +185,7 @@ $(function() {
 							title : '应付金额',
 							orderable : false,
 							width : '50px'
-						}, 
+						},
 						{
 							data : 'offlineImage',
 							title : '银行汇款截图',
@@ -193,7 +197,7 @@ $(function() {
 							  } else {
 							    return '';
 							  }
-							  
+
           		            }
 						},
 						{
@@ -201,7 +205,7 @@ $(function() {
 							title : '银行汇款备注',
 							orderable : false,
 							width : '50px'
-						}, 
+						},
 						{
           		            data : '',
           		            title : '昵称',
@@ -223,7 +227,7 @@ $(function() {
 			                	var optionHtml = '';
 			                	<shiro:hasPermission name="payment:confirmPaid">
 			                	if(full.payType == '银行汇款' && full.paymentStatus == '待支付' && full.offlineImage){
-			                		optionHtml += '<a class="btn btn-xs default yellow-stripe payment-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';	
+			                		optionHtml += '<a class="btn btn-xs default yellow-stripe payment-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';
 			                	}
 			                	</shiro:hasPermission>
 			                  return optionHtml;
@@ -238,7 +242,7 @@ $(function() {
             url: url
           });
         });
-        
+
         });
 </script>
 
@@ -295,7 +299,7 @@ $(function() {
                 <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
                 <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
                 <div class="form-group input-inline">
-                
+
               	  <label class="sr-only">支付状态</label>
                    <select name="paymentStatusEQ" class="form-control">
                		<option value="">--请选择支付状态-- </option>
