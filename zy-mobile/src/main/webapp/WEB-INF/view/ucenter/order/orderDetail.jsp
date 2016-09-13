@@ -19,32 +19,40 @@
 
 <script>
   $(function() {
-    
+
     /*
      * 进货订单操作(买家)
      */
-    
+
     //买家支付
-    $('#btnPay').click(function(){
+    $('#btnPay').click(function() {
       $.dialog({
         content : '请选择支付方式',
         skin : 'footer',
-        btn : [ '<a id="btnPay1" class="btn orange block round-2">余额支付</a>',
-              '<a id="btnPay2" class="btn green block round-2">银行汇款</a>' ],
-        callback : function(index){
-          if(index == 1) {
+        btn : [ '<a id="btnPay1" class="btn orange block round-2">余额支付</a>', '<a id="btnPay2" class="btn green block round-2">银行汇款</a>' ],
+        callback : function(index) {
+          if (index == 1) {
             location.href = '${ctx}/u/pay/order/${order.id}?payType=0';
-          } else if(index == 2) {
-        	location.href = '${ctx}/u/pay/order/${order.id}?payType=1';
+          } else if (index == 2) {
+            location.href = '${ctx}/u/pay/order/${order.id}?payType=1';
           }
         }
       });
     });
-    
+
     /*
      * 出货订单操作(卖家)
      */
-     
+    $('#btnPlatformDeliver').click(function() {
+      $.dialog({
+        content : '您确定要将此订单转给公司发货吗？',
+        callback : function(index) {
+          if (index == 1) {
+            location.href = '${ctx}/u/order/platformDeliver?id=${order.id}';
+          }
+        }
+      });
+    });
   });
 </script>
 </head>
@@ -58,17 +66,17 @@
     <%-- 待支付, 已支付, 已发货, 已完成, 已退款, 已取消 --%>
     <c:if test="${order.orderStatus == '待支付'}">
     <div class="note note-danger mb-0">
-      <p><i class="fa fa-clock-o fs-16"></i> 订单状态：待支付</p>
+      <p><i class="fa fa-clock-o fs-16"></i> 订单状态：买家未支付</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已支付'}">
     <div class="note note-danger mb-0">
-      <p><i class="fa fa-clock-o fs-16"></i> 订单状态：已支付，请耐心等待发货</p>
+      <p><i class="fa fa-clock-o fs-16"></i> 订单状态：已支付，等待卖家发货</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已发货'}">
     <div class="note note-success mb-0">
-      <p><i class="fa fa-truck fs-16"></i> 订单状态：已发货</p>
+      <p><i class="fa fa-truck fs-16"></i> 订单状态：卖家已发货</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已完成'}">
@@ -157,25 +165,18 @@
       </div>
     </div>
     
-    <c:if test="${inOut == 'in'}">
-    
-    </c:if>
-    
-    <input type="hidden" name="sn" value="${order.sn}">
-    
-    
-    
+    <%-- 买家操作(进货) --%>
     <c:if test="${inOut == 'in'}">
       <c:if test="${order.orderStatus == '待支付'}">
         <div class="form-btn">
-          <a id="btnPay" class="btn btn-block green round-2">立即支付</a>
+          <a id="btnPay" class="btn btn-block green round-2" href="javascript:;"><i class="fa fa-cny"></i> 立即支付</a>
         </div>
       </c:if>
       <c:if test="${order.orderStatus == '已发货'}">
         <form id="orderForm" action="${ctx}/u/order/confirmDelivery" method="post">
         <input type="hidden" name="id" value="${order.id}">
         <div class="form-btn">
-          <button id="btnConfirm" type="submit" class="btn btn-block green round-2">确认收货</button>
+          <button id="btnConfirm" type="submit" class="btn btn-block green round-2"><i class="fa fa-check"></i> 确认收货</button>
         </div>
         </form>
       </c:if>
@@ -184,7 +185,7 @@
         <input type="hidden" name="productId" value="${order.orderItem[0].productId}">
         <input type="hidden" name="quantity" value="${order.orderItem[0].quantity}">
         <div class="form-btn">
-          <button id="btnReOrder" type="submit" class="btn btn-block red round-2">再来一单</button>
+          <button id="btnReOrder" type="submit" class="btn btn-block red round-2"><i class="fa fa-redo"></i> 再来一单</button>
         </div>
         </form>
       </c:if>
@@ -193,37 +194,35 @@
         <input type="hidden" name="productId" value="${order.orderItem[0].productId}">
         <input type="hidden" name="quantity" value="${order.orderItem[0].quantity}">
         <div class="form-btn">
-          <button id="btnReOrder" type="submit" class="btn btn-block red round-2">重新下单</button>
+          <button id="btnReOrder" type="submit" class="btn btn-block red round-2"><i class="fa fa-redo"></i> 重新下单</button>
         </div>
         </form>
       </c:if>
     </c:if>
     
+    <%-- 卖家操作(出货) --%>
     <c:if test="${inOut == 'out'}">
       <c:if test="${order.orderStatus == '待支付'}">
         <div class="form-btn">
-          <a class="btn disabled btn-block round-2">等待买家支付</a>
+          <a class="btn disabled btn-block round-2" href="javascript:;"><i class="fa fa-clock"></i> 等待买家支付</a>
         </div>
       </c:if>
       <c:if test="${order.orderStatus == '已支付' && !order.isPlatformDeliver}">
         <c:if test="${userRank == 'V4'}">
-          <form id="orderForm" action="${ctx}/u/order/platformDeliver" method="post">
-          <input type="hidden" name="id" value="${order.id}">
           <div class="form-btn">
-            <button type="submit" class="btn btn-block blue round-2">转给公司发货</button>
+            <a id="btnPlatformDeliver" class="btn blue btn-block round-2"><i class="fa fa-share"></i> 转给公司发货</a>
           </div>
-          </form>
         </c:if>
         <form id="orderForm" action="${ctx}/u/order/deliver" method="get">
           <input type="hidden" name="id" value="${order.id}">
           <div class="form-btn">
-            <button id="btnDeliver" type="submit" class="btn btn-block orange round-2">发货</button>
+            <button id="btnDeliver" type="submit" class="btn btn-block orange round-2"><i class="fa fa-truck"></i> 发货</button>
           </div>
         </form>
       </c:if>
       <c:if test="${order.orderStatus == '已支付' && order.isPlatformDeliver}">
         <div class="form-btn">
-          <a class="btn disabled btn-block round-2">已转给公司发货，等待公司发货。</a>
+          <a class="btn disabled btn-block round-2" href="javascript:;"><i class="fa fa-share"></i> 已转给公司发货，等待公司发货。</a>
         </div>
       </c:if>
     </c:if>
