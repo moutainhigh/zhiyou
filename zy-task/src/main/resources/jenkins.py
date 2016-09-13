@@ -26,7 +26,7 @@ class SETHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         os.system('curl -u ufohjl:XabUCvOJv77fD5JN42EJr2Xfwd1hA http://jenkins.binggejia.com/view/zhiyou/job/zy-admin/build?token=token')
         os.system('curl -u ufohjl:XabUCvOJv77fD5JN42EJr2Xfwd1hA http://jenkins.binggejia.com/view/zhiyou/job/zy-mobile/build?token=token')
         print 'sccess'
-        self.wfile.write('hello world')
+        self.wfile.write('success')
 
 
 Handler = SETHandler

@@ -100,6 +100,11 @@ public class FncComponent {
 			accountLog.setRefSn(deposit.getSn());
 			accountLog.setRefId(deposit.getId());
 			accountLog.setAccountLogType(充值单);
+		} else if (ref instanceof Transfer) {
+			Transfer transfer = (Transfer) ref;
+			accountLog.setRefSn(transfer.getSn());
+			accountLog.setRefId(transfer.getId());
+			accountLog.setAccountLogType(转账单);
 		} else {
 			throw new ValidationException("error ref class " + ref.getClass().getName());
 		}
@@ -130,7 +135,7 @@ public class FncComponent {
 	}
 
 	public Profit createAndGrantProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
-	                           @NotNull CurrencyType currencyType, @NotBlank @DecimalMin("0.01") BigDecimal amount) {
+	                           @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
@@ -156,7 +161,7 @@ public class FncComponent {
 	}
 
 	public Profit createProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
-	                                   @NotNull CurrencyType currencyType, @NotBlank @DecimalMin("0.01") BigDecimal amount) {
+	                                   @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
@@ -182,6 +187,10 @@ public class FncComponent {
 	                               @NotBlank String title, @NotNull CurrencyType currencyType,
 	                               @NotNull @DecimalMin("0.01") BigDecimal amount) {
 		Transfer transfer = new Transfer();
+		if (fromUserId.equals(toUserId)) {
+			throw new ValidationException("from user id must not be same with to user id");
+		}
+		
 		transfer.setRefId(refId);
 		transfer.setTransferStatus(Transfer.TransferStatus.待转账);
 		transfer.setTransferType(transferType);
@@ -189,8 +198,10 @@ public class FncComponent {
 		transfer.setFromUserId(fromUserId);
 		transfer.setToUserId(toUserId);
 		transfer.setCurrencyType(currencyType);
+		transfer.setSn(ServiceUtils.generateTransferSn());
 		transfer.setCreatedTime(new Date());
 		transfer.setTitle(title);
+		transfer.setVersion(0);
 		transferMapper.insert(transfer);
 		validate(transfer);
 		return transfer;

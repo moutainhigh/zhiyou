@@ -8,13 +8,14 @@
 /* ---------- Dialog ---------- */
 
 .mui-dialog {
+  z-index: 1200;
 }
-.mui-dialog .mui-dialog-mask,
+.mui-dialog .mui-dialog-shade,
 .mui-dialog .mui-dialog-wrap {
   position: fixed; left: 0; top: 0;
   width: 100%; height: 100%;
 }
-.mui-dialog .mui-dialog-mask {
+.mui-dialog .mui-dialog-shade {
   background-color: rgba(0, 0, 0, 0.7);
   pointer-events: auto;
 }
@@ -43,7 +44,7 @@
 .mui-dialog .mui-dialog-button {
   position: relative; padding: 10px 15px;
   font-size: 14px; line-height: 24px; cursor: pointer;
-  background-color: #f7f7f7; border-top: 1px solid #e1e1e1;
+  background-color: #f7f7f7;
 }
 
 .mui-dialog .mui-dialog-center {
@@ -52,10 +53,12 @@
 }
 .mui-dialog .mui-dialog-center .mui-dialog-buttons {
   display: box; display: -moz-box; display: -webkit-box;
+  border-top: 1px solid #e1e1e1;
 }
 .mui-dialog .mui-dialog-center .mui-dialog-button {
   -moz-box-flex: 1; box-flex: 1; -webkit-box-flex: 1;
-  padding: 10px 5px; border-right: 1px solid #e1e1e1;
+  padding: 10px 5px;
+  border-right: 1px solid #e1e1e1;
 }
 .mui-dialog .mui-dialog-center .mui-dialog-button:last-child {
   border-right: none;
@@ -68,10 +71,11 @@
 .mui-dialog .mui-dialog-footer .mui-dialog-buttons {
 }
 .mui-dialog .mui-dialog-footer .mui-dialog-button {
+  border-top: 1px solid #e1e1e1;
 }
 .mui-dialog .mui-dialog-footer .mui-dialog-button-cancle {
   margin-top: 5px;
-  color: #777;
+  color: #777; border-top: none;
 }
 
 .mui-dialog .mui-dialog-message {
@@ -120,7 +124,7 @@
 .header-message {
   position: fixed; top: 0; left: 0; 
   display: none; width: 100%; line-height: 24px;
-  padding: 12px 15px; background: #f7e2e1; z-index: 99999;
+  padding: 12px 15px; background: #f7e2e1; z-index: 1100;
 }
 .header-message-success {
   color: #235836;
@@ -172,7 +176,7 @@
 }
 .myui-imageview .button-right {
   position: absolute; top: 6px; right: 6px;
-  height: 36px; z-index: 9999;
+  height: 36px; z-index: 1002;
   color: #fff; font-size: 14px; line-height: 36px;
 }
 .myui-imageview .button-right > i {
@@ -180,7 +184,7 @@
   font-size: 20px; line-height: 36px; text-align: center; vertical-align: middle;
 }
 .myui-imageview .header {
-  position: absolute; z-index: 9900;
+  position: absolute; z-index: 1001;
   background-color: rgba(0, 0, 0, 0.9);
 }
 .myui-imageview .header h2 {

@@ -30,6 +30,15 @@
         'logisticsNo' : {
           required : true
         }
+      },
+      submitHandler : function(form) {
+        var deliverType = $('input[name="deliverType"]:checked');
+        if(deliverType.length == 0) {
+          messageFlash('请选择发货方式');
+          return;
+        }
+        $(form).find(':submit').prop('disabled', true);
+        form.submit();
       }
     });
     

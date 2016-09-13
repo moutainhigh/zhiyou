@@ -1,8 +1,7 @@
 package com.zy.job;
 
 import com.zy.common.exception.ConcurrentException;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.service.ReportService;
+import com.zy.service.TransferService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -13,43 +12,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
-import static com.zy.model.query.ReportQueryModel.builder;
+import static com.zy.entity.fnc.Transfer.TransferStatus.待转账;
+import static com.zy.model.query.TransferQueryModel.builder;
 
 /**
- * Created by freeman on 16/9/8.
+ * Created by freeman on 16/9/13.
  */
-public class ReportStatementJob implements Job {
+public class TransferJob implements Job {
 
-	private Logger logger = LoggerFactory.getLogger(ReportStatementJob.class);
+	private Logger logger = LoggerFactory.getLogger(ProfitGrantJob.class);
 
 	@Autowired
-	private ReportService reportService;
-
+	private TransferService transferService;
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		logger.info("begin...{}", LocalDateTime.now());
-		reportService.findAll(builder().isSettledUpEQ(false).confirmStatusEQ(ConfirmStatus.已通过).build())
+		transferService.findAll(builder().transferStatusEQ(待转账).build())
 				.stream()
-				.map(report -> report.getId())
-				.forEach(this::settleUp);
+				.map(transfer -> transfer.getId())
+				.forEach(this::transfer);
 		logger.info("end...{}", LocalDateTime.now());
 
 	}
 
-	private void settleUp(Long id) {
+	private void transfer(Long transferId) {
 		try {
 			try {
 				TimeUnit.SECONDS.sleep(2);
 			} catch (InterruptedException e) {
-
 			}
-			this.reportService.settleUp(id);
-			logger.info("结算 {} 成功",id);
+			this.transferService.transfer(transferId, "");
+			logger.info("transferId {} success", transferId);
 		} catch (ConcurrentException e) {
-			settleUp(id);
-		}catch (Exception e){
-			logger.error(e.getMessage(),e);
+			transfer(transferId);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 		}
 	}
 }

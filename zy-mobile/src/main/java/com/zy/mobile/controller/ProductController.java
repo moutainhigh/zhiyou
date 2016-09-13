@@ -54,7 +54,7 @@ public class ProductController {
 		}
 		if(principal != null) {
 			User user = userService.findOne(principal.getUserId());
-			model.addAttribute("user", user.getUserRank());
+			model.addAttribute("userRank", user.getUserRank());
 			product.setPrice(productService.getPrice(product.getId(), user.getUserRank(), 1L));
 			if(user.getUserRank() == UserRank.V0){
 				model.addAttribute("isFirst", true);

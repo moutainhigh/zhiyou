@@ -5,11 +5,13 @@ import com.zy.service.OrderService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
-import static com.zy.common.support.weixinpay.WeixinPayClient.logger;
 import static com.zy.entity.mal.Order.OrderStatus.已完成;
 import static com.zy.model.query.OrderQueryModel.builder;
 
@@ -17,15 +19,20 @@ import static com.zy.model.query.OrderQueryModel.builder;
  * Created by freeman on 16/9/8.
  */
 public class OrderStatementJob implements Job {
+
+	private Logger logger = LoggerFactory.getLogger(OrderStatementJob.class);
+
 	@Autowired
 	private OrderService orderService;
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
+		logger.info("begin...{}", LocalDateTime.now());
 		orderService.findAll(builder().orderStatusEQ(已完成).isSettledUpEQ(false).build())
 				.stream()
 				.map(order -> order.getId())
 				.forEach(this::settleUp);
+		logger.info("end...{}", LocalDateTime.now());
 	}
 
 	private void settleUp(Long id) {

@@ -121,6 +121,9 @@
 			<if test="grantedTimeGTE != null">
 				and granted_time &gt;= #{grantedTimeGTE}
 			</if>
+			<if test="profitStatusEQ != null">
+				and profit_status = #{profitStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -180,6 +183,9 @@
 			</if>
 			<if test="grantedTimeGTE != null">
 				and granted_time &gt;= #{grantedTimeGTE}
+			</if>
+			<if test="profitStatusEQ != null">
+				and profit_status = #{profitStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 	</select>

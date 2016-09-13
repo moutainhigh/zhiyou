@@ -10,8 +10,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="keywords" content="微信分销" />
-<meta name="description" content="订单详情 " />
 
 <link href="${stccdn}/css/ucenter/order.css" rel="stylesheet"> 
 
@@ -21,11 +19,16 @@
 
 <script>
   $(function() {
+    
+    /*
+     * 进货订单操作(买家)
+     */
+    
+    //买家支付
     $('#btnPay').click(function(){
       $.dialog({
         content : '请选择支付方式',
         skin : 'footer',
-        overlayClose : true,
         btn : [ '<a id="btnPay1" class="btn orange block round-2">余额支付</a>',
               '<a id="btnPay2" class="btn green block round-2">银行汇款</a>' ],
         callback : function(index){
@@ -37,6 +40,22 @@
         }
       });
     });
+    
+    //买家确认收货
+	$('#btnConfirm').click(function(){
+      
+    });
+    
+    
+    /*
+     * 出货订单操作(卖家)
+     */
+     
+    //卖家发货
+    $('#btnDeliver').click(function(){
+      
+    });
+    
   });
 </script>
 </head>
@@ -168,25 +187,40 @@
       </div>
     </div>
     
-    <c:if test="${order.orderStatus == '待支付'}">
-    <div class="form-btn">
-      <a id="btnPay" class="btn btn-block green round-2">立即支付</a>
-    </div>
+    <c:if test="${inOut == 'in'}">
+      <c:if test="${order.orderStatus == '待支付'}">
+      <div class="form-btn">
+        <a id="btnPay" class="btn btn-block green round-2">立即支付</a>
+      </div>
+      </c:if>
+      <c:if test="${order.orderStatus == '已发货'}">
+      <div class="form-btn">
+        <input id="btnConfirm" type="submit" value="确认收货" class="btn btn-block green round-2">
+      </div>
+      </c:if>
+      <c:if test="${order.orderStatus == '已完成'}">
+      <div class="form-btn">
+        <input id="btnReOrder" type="submit" value="再来一单" class="btn btn-block green round-2">
+      </div>
+      </c:if>
+      <c:if test="${order.orderStatus == '已取消'}">
+      <div class="form-btn">
+        <input id="btnReOrder" type="submit" value="重新下单" class="btn btn-block green round-2">
+      </div>
+      </c:if>
     </c:if>
-    <c:if test="${order.orderStatus == '已发货'}">
-    <div class="form-btn">
-      <input type="submit" id="btnSubmit" value="确认收货" class="btn btn-block green round-2">
-    </div>
-    </c:if>
-    <c:if test="${order.orderStatus == '已完成'}">
-    <div class="form-btn">
-      <input type="submit" id="btnSubmit" value="再来一单" class="btn btn-block green round-2">
-    </div>
-    </c:if>
-    <c:if test="${order.orderStatus == '已取消'}">
-    <div class="form-btn">
-      <input type="submit" id="btnSubmit" value="重新下单" class="btn btn-block green round-2">
-    </div>
+    
+    <c:if test="${inOut == 'out'}">
+      <c:if test="${order.orderStatus == '待支付'}">
+      <div class="form-btn">
+        <a class="btn disabled btn-block round-2">等待买家支付</a>
+      </div>
+      </c:if>
+      <c:if test="${order.orderStatus == '已支付'}">
+      <div class="form-btn">
+        <a id="btnDeliver" class="btn orange btn-block round-2">发货</a>
+      </div>
+      </c:if>
     </c:if>
     
     </form>

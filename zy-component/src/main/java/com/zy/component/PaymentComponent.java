@@ -1,6 +1,7 @@
 package com.zy.component;
 
 import static com.zy.util.GcUtils.formatDate;
+import static com.zy.util.GcUtils.getThumbnail;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ public class PaymentComponent {
 		paymentAdminVo.setExpiredTimeLabel(formatDate(payment.getExpiredTime(), TIME_PATTERN));
 		paymentAdminVo.setPaidTimeLabel(formatDate(payment.getPaidTime(), TIME_PATTERN));
 		paymentAdminVo.setRefundedTimeLabel(formatDate(payment.getRefundedTime(), TIME_PATTERN));
+		paymentAdminVo.setOfflineImageThumbnail(getThumbnail(payment.getOfflineImage()));
 		return paymentAdminVo;
 	}
 }

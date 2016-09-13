@@ -131,6 +131,15 @@ public class Deposit implements Serializable {
 	@Column(length = 1000)
 	private String remark;
 
+	@Field(label = "银行汇款截图")
+	@View
+	@View(name = "offlineImageThumbnail")
+	private String offlineImage;
+	
+	@Field(label = "银行汇款备注")
+	@View
+	private String offlineMemo;
+	
 	@NotNull
 	@Version
 	@Field(label = "乐观锁")

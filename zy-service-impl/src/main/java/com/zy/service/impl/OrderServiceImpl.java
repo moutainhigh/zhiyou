@@ -1,5 +1,6 @@
 package com.zy.service.impl;
 
+import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
@@ -23,6 +24,7 @@ import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.validator.constraints.NotBlank;
@@ -31,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -49,6 +52,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private Config config;
 
 	@Autowired
 	private ProductMapper productMapper;
@@ -329,6 +335,30 @@ public class OrderServiceImpl implements OrderService {
 			fncComponent.createProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单收款", CurrencyType.现金, amount);
 		}
 
+		/* 邮费 */
+		if (order.getUseLogistics()) {
+			LogisticsFeePayType logisticsFeePayType = order.getLogisticsFeePayType();
+			BigDecimal logisticsFee = order.getLogisticsFee();
+			Boolean isPlatformDeliver = order.getIsPlatformDeliver();
+			if (logisticsFee.compareTo(new BigDecimal("0.00")) > 0) {
+				if (isPlatformDeliver) {
+					Long sysUserId = config.getSysUserId();
+					if (logisticsFeePayType == LogisticsFeePayType.买家付) {
+						fncComponent.createTransfer(buyerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
+					} else if (logisticsFeePayType == LogisticsFeePayType.卖家付) {
+						fncComponent.createTransfer(sellerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
+					}
+				} else {
+					Long sysUserId = config.getSysUserId();
+					if (logisticsFeePayType == LogisticsFeePayType.买家付) {
+						fncComponent.createTransfer(buyerId, sellerId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
+					} else if (logisticsFeePayType == LogisticsFeePayType.卖家付) {
+						// ignore
+					}
+				}
+			}
+		}
+		
 		/* 销量奖 */
 		if (buyerUserRank == UserRank.V4) {
 			final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
@@ -340,8 +370,14 @@ public class OrderServiceImpl implements OrderService {
 
 		/* 一级平级奖 */
 		if (buyerUserRank == UserRank.V3) {
-			final BigDecimal v3FlatBonus = new BigDecimal("7.00").multiply(BigDecimal.valueOf(quantity));
-			fncComponent.createTransfer(sellerId, buyerId, Transfer.TransferType.一级平级奖, orderId, "一级平级奖", CurrencyType.现金, v3FlatBonus);
+			Long buyerParentId = buyer.getParentId();
+			if (buyerParentId != null) {
+				User buyerParent = userMapper.findOne(buyerParentId);
+				if (buyerParent.getUserRank() == UserRank.V3) {
+					final BigDecimal v3FlatBonus = new BigDecimal("7.00").multiply(BigDecimal.valueOf(quantity));
+					fncComponent.createTransfer(sellerId, buyerParentId, Transfer.TransferType.一级平级奖, orderId, "一级平级奖", CurrencyType.现金, v3FlatBonus);
+				}
+			}
 		}
 
 

@@ -18,25 +18,39 @@
       options = {
         content : options,
         skin : 'message',
-        timeout : 2
+        timeout : 2,
+        btn : [],
+        btnCancle : false
       };
       if (arguments.length > 1) {
         options.timeout = arguments[1];
       }
     }
-
+    
     options = $.extend({}, $.dialog.defaults, options || {});
-    if (!options.btn) {
-      alert('[缺少参数]btn不能为空!');
+    if (!options.content && (!options.btn || options.btn.length == 0)) {
+      alert('[缺少参数]content 和 btn 不能为空!');
       return;
     }
-
+    
+    if(options.skin == 'message' && typeof(options.shade) == 'undefined') {
+      options.shade = false;
+      options.shadeClose = false;
+    }
+    if(options.skin == 'footer' && typeof(options.shade) == 'undefined') {
+      options.shade = true;
+      options.shadeClose = true;
+    }
+    if(options.skin == 'center' && typeof(options.shade) == 'undefined') {
+      options.shade = true;
+      options.shadeClose = false;
+    }
+    
     options.id = 'mui_dialog_' + (_myui_dialog_index++);
     var html = '<aside id="' + options.id + '" class="mui-dialog" data-index="' + _myui_dialog_index++ + '">';
-    if(options.skin != 'message'){
-      html += '<div class="mui-dialog-mask"></div>';
+    if(options.shade){
+      html += '<div class="mui-dialog-shade"></div>';
     }
-      
     html += '<div class="mui-dialog-wrap">'
       +     '<div class="mui-dialog-inner">';
     var skinClass = '';
@@ -47,7 +61,8 @@
     } else if(options.skin == 'message') {
       skinClass = ' mui-dialog-message mui-animation-up';
     }
-    html +=   '<div class="mui-dialog-content' + skinClass + '">';
+    var style = (options.style ? ' style="' + options.style + '"' : '')
+    html +=   '<div class="mui-dialog-content' + skinClass + '"' + style + '>';
     if(options.content){
       html +=   '<div class="mui-dialog-title">' + options.content + '</div>';
     }
@@ -55,7 +70,7 @@
     $.each(options.btn, function(index){
       html +=     '<div class="mui-dialog-button" data-index="' + (index + 1) + '">' + options.btn[index] + '</div>';
     });
-    if(options.cancleBtn){
+    if(options.btnCancle){
       html +=     '<div class="mui-dialog-button mui-dialog-button-cancle" data-index="0">取消</div>';
     }
     html +=     '</div>'
@@ -76,8 +91,8 @@
         onClose();
       }, options.timeout * 1000);
     }
-    if(options.overlayClose) {
-      $dialog.find('.mui-dialog-mask').click(function(){
+    if(options.shadeClose) {
+      $dialog.find('.mui-dialog-shade').click(function(){
         onClose();
       });
     }
@@ -97,11 +112,11 @@
 
   $.dialog.defaults = $.extend({}, {
     content : '',
-    skin : 'center',
+    skin : 'center', //center,footer,message
+    style : '',
     timeout : 0,
-    overlayClose : false,
     btn : [ '确定' ],
-    cancleBtn : true,
+    btnCancle : true,
     callback : function(index) {
       //alert(index);
     }
@@ -176,30 +191,6 @@
     callback : function(message) {
     }
   });
-
-  $.messageSuccess = function(message) {
-    $.message({
-    	type : 'success',
-      content : message,
-      timeout : 2
-    });
-  };
-
-  $.messageInfo = function(message) {
-    $.message({
-    	type : 'info',
-      content : message,
-      timeout : 2
-    });
-  };
-
-  $.messageError = function(message) {
-    $.message({
-    	type : 'error',
-      content : message,
-      timeout : 3
-    });
-  };
   
   /**
    * Image view

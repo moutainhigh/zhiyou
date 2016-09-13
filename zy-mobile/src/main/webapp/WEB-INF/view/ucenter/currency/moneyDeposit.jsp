@@ -14,14 +14,28 @@
 
 <title>余额充值</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
+<%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <script type="text/javascript">
   $(function() {
-    //验证表单
-    $('#orderForm').submit(function() {
-      var payNum = $('input:radio[name="money"]:checked').val();
-      if (payNum == null) {
-        messageFlash("请选择充值的金额！");
-        return false;
+    
+    $(".valid-form").validate({
+      ignore: ':hidden',
+      rules : {
+        'payType' : {
+          required : true
+        },
+        'amount' : {
+          required : true
+        }
+      },
+      submitHandler : function(form) {
+        var payType = $('input[name="payType"]:checked');
+        if(payType.length == 0) {
+          messageFlash('请选择支付方式');
+          return;
+        }
+        $(form).find(':submit').prop('disabled', true);
+        form.submit();
       }
     });
   });
@@ -36,49 +50,35 @@
   </header>
   
   <article class="account-wrap clearfix">
-    <form id="orderForm" action="${ctx}/u/pay" method="get">
+    <form id="form" action="${ctx}/u/pay" class="valid-form" method="post">
       <div class="list-group">
-        <div class="list-title">请选择充值金额</div>
+        <div class="list-title">请输入充值金额</div>
+        <div class="list-item">
+          <label for="amount" class="list-label lh-48 fs-18">金额：</label>
+          <div class="list-text">
+            <input type="number" class="form-input lh-48 fs-18" name="amount" placeholder="输入充值金额" value="">
+          </div>
+        </div>
+      </div>
+      
+      <div class="list-group">
+        <div class="list-title">支付方式</div>
         <!-- form-radio -->
-        <label class="list-item form-radio">
-          <div class="list-icon">
-            <input type="radio" name="money" value="100">
+        <%-- 
+        <label class="list-item form-radio" for="payType0">
+          <div class="list-text">在线支付</div>
+          <div class="list-unit">
+            <input id="payType0" type="radio" name="payType" value="0">
             <em class="i-checked"></em>
           </div>
-          <div class="list-text">本金 100</div>
-          <div class="list-unit">支付 ¥ 100.00</div>
         </label>
-        <label class="list-item form-radio">
-          <div class="list-icon">
-            <input type="radio" name="money" value="500">
+        --%>
+        <label class="list-item form-radio" for="payType1">
+          <div class="list-text">银行汇款</div>
+          <div class="list-unit">
+            <input id="payType1" type="radio" name="payType" value="1" checked="checked">
             <em class="i-checked"></em>
           </div>
-          <div class="list-text">本金 500</div>
-          <div class="list-unit">支付 ¥ 500.00</div>
-        </label>
-        <label class="list-item form-radio">
-          <div class="list-icon">
-            <input type="radio" name="money" value="1000">
-            <em class="i-checked"></em>
-          </div>
-          <div class="list-text">本金 1000</div>
-          <div class="list-unit">支付 ¥ 1000.00</div>
-        </label>
-        <label class="list-item form-radio">
-          <div class="list-icon">
-            <input type="radio" name="money" value="5000">
-            <em class="i-checked"></em>
-          </div>
-          <div class="list-text">本金 5000</div>
-          <div class="list-unit">支付 ¥ 5000.00</div>
-        </label>
-        <label class="list-item form-radio">
-          <div class="list-icon">
-            <input type="radio" name="money" value="10000">
-            <em class="i-checked"></em>
-          </div>
-          <div class="list-text">本金 10000</div>
-          <div class="list-unit">支付 ¥ 10000.00</div>
         </label>
       </div>
       

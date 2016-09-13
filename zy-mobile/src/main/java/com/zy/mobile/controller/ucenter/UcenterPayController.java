@@ -131,7 +131,7 @@ public class UcenterPayController {
 			  payment.setUserId(order.getUserId());
 			  payment.setTitle(order.getTitle());
 			  payment.setPayType(payType);
-			  paymentService.create(payment);
+			  payment = paymentService.create(payment);
 		  }
 		  
 		  model.addAttribute("amount", order.getAmount());
