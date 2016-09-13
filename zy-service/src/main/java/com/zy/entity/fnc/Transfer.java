@@ -54,6 +54,7 @@ public class Transfer implements Serializable {
 
 	@NotNull
 	@Field(label = "转账状态")
+	@Query(EQ)
 	@View
 	private TransferStatus transferStatus;
 
