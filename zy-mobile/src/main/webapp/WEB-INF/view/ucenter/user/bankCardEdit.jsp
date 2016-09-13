@@ -149,7 +149,7 @@
         <div class="list-item">
           <label class="list-label" for="accountName">开户姓名</label>
           <div class="list-text">
-            <input type="text" id="realname" name="realname" class="form-input" value="${bankCard.realname}" placeholder="填写开户姓名">
+            <input type="text" id="realname" name="realname" class="form-input" value="${bankCard.realname}" placeholder="填写开户姓名" readonly="readonly">
           </div>
         </div>
         <div class="list-item">
