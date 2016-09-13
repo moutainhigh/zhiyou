@@ -56,6 +56,7 @@ public interface Constants {
 
 	String CACHE_NAME_AGENT_REGISTER_COUNT = "agentRegisterCount";
 	String CACHE_NAME_REGISTER_CHART = "registerChart";
+	String CACHE_NAME_BANK = "bank";
     
     /* order */
     int SETTING_ORDER_EXPIRE_IN_MINUTES = 60 * 24 * 10;
