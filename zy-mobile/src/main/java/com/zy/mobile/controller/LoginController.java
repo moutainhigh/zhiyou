@@ -18,6 +18,10 @@ import com.zy.service.BannerService;
 import com.zy.service.ShortMessageService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
+
+import me.chanjar.weixin.common.api.WxConsts;
+import me.chanjar.weixin.mp.api.WxMpService;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -35,6 +39,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.util.Date;
 
 import static com.zy.common.util.ValidateUtils.validate;
@@ -61,15 +66,23 @@ public class LoginController {
 	@Autowired
 	private CacheSupport cacheSupport;
 	
+	@Autowired
+	private WxMpService wxMpService;
+	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String register(Model model, HttpSession session) {
+	public String register(Model model, HttpServletRequest request) {
 
 		if (GcUtils.getPrincipal() != null) {
 			return "redirect:/u";
 		}
+		HttpSession session = request.getSession();
 
 		AgentRegisterDto agentRegisterDto = (AgentRegisterDto) session.getAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO);
 		if (agentRegisterDto == null) {
+			String redirectUrl = request.getContextPath() + "/u";
+			String oauthUrl = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_USER_INFO,
+					Constants.WEIXIN_STATE_USERINFO);
+			model.addAttribute("oauthUrl", oauthUrl);
 			model.addAttribute("isNew", true);
 		} else {
 			model.addAttribute("isNew", false);
@@ -91,19 +104,19 @@ public class LoginController {
 		AgentRegisterDto agentRegisterDto = (AgentRegisterDto) session.getAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO);
 		if (agentRegisterDto == null) {
 			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("注册已超时, 请刷新重试"));
-			return register(model, session);
+			return register(model, request);
 		}
 		model.addAttribute("phone", phone);
 		User user = userService.findByPhone(phone);
 		if (user != null && StringUtils.isNotBlank(user.getOpenId())) {
 			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("该手机已经被其他微信绑定, 请先解绑"));
-			return register(model, session);
+			return register(model, request);
 		}
 
 		PhoneAndSmsCode phoneAndSmsCode = (PhoneAndSmsCode) session.getAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS);
 		if (phoneAndSmsCode == null || !smsCode.equalsIgnoreCase(phoneAndSmsCode.getSmsCode()) || !phone.equalsIgnoreCase(phoneAndSmsCode.getPhone())) {
 			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("短信校验码错误"));
-			return register(model, session);
+			return register(model, request);
 		}
 
 		Long inviterId = (Long) request.getAttribute(REQUEST_ATTRIBUTE_INVITER_ID);
