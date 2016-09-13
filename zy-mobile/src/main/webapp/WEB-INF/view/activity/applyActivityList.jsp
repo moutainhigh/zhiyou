@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>我参与的活动</title>
+<title>我报名的活动</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/activity.css" rel="stylesheet" />
 <script>
@@ -23,15 +23,15 @@
 </head>
 <body class="activity-list">
   <header class="header">
-    <h1>我参与的活动</h1>
+    <h1>我报名的活动</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
   <article>
     <c:if test="${empty activities && empty historyActivities}">
     <div class="empty-tip">
-      <i class="fa fa-users"></i>
-      <span>您没有参与活动</span>
+      <i class="fa fa-flag"></i>
+      <span>您没有报名活动</span>
     </div>
     </c:if>
   
