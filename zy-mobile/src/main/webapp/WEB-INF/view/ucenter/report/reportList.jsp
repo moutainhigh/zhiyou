@@ -103,7 +103,7 @@
     </c:if>
     
     <c:if test="${not empty page.data}">
-    <div class="list-group">
+    <div class="list-group mb-0">
       <c:forEach items="${page.data}" var="report">
       <a class="list-item" href="${ctx}/u/report/${report.id}">
         <div class="list-text report">
