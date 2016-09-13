@@ -118,6 +118,7 @@ public class Deposit implements Serializable {
 	@Field(label = "过期时间")
 	@View
 	@Query(Predicate.LT)
+	@NotNull
 	private Date expiredTime;
 
 	@NotNull
