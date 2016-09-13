@@ -8,7 +8,31 @@
         'useLogistics' : {
           required: true
         }
-      }
+      },
+      submitHandler : 
+        function(form){
+          var val = $('#useLogistics').find("option:selected").val();
+          if(val == 'true') {
+            var logisticsName = $('#logisticsName').val();
+            var logisticsSn = $('#logisticsSn').val();
+            var logisticsFee = $('#logisticsFee').val();
+            if(!logisticsName) {
+              layer.alert("请填写物流公司名称");
+              return;
+            }
+            if(!logisticsSn) {
+              layer.alert("请填写物流单号");
+              return;
+            }
+            if(!logisticsFee) {
+              layer.alert("请填写物流费");
+              return;
+            }
+          }
+    	  
+  		  $(form).find(':submit').prop('disabled', true);
+  		  Layout.postForm(form);
+  		}
     });
     
     $('#useLogistics').change(function(){
@@ -91,30 +115,30 @@
                 <select name="useLogistics" id="useLogistics" class="form-control">
                   <option value="">-- 请选择 --</option>
                   <option value="false">面对面发货</option>
-                  <option value="true">平台发货</option>
+                  <option value="true">物流发货</option>
                 </select>
               </div>
             </div>
             
             <span id="logistics" style="display: none;">
 	        <div class="form-group">
-	          <label class="control-label col-md-3">发货人物流公司 <span class="font-red">*</span></label>
+	          <label class="control-label col-md-3">物流公司 <span class="font-red">*</span></label>
 	          <div class="col-md-5">
-	            <input type="text" name="logisticsName" id="logisticsName" class="form-control" value="${order.logisticsName}" required="required">
+	            <input type="text" name="logisticsName" id="logisticsName" class="form-control" value="${order.logisticsName}" />
 	          </div>
 	        </div>
 	        
 	        <div class="form-group">
-	          <label class="control-label col-md-3">发货人物流单号 <span class="font-red">*</span></label>
+	          <label class="control-label col-md-3">物流单号 <span class="font-red">*</span></label>
 	          <div class="col-md-5">
-	            <input type="text" name="logisticsSn" id="logisticsSn" class="form-control" value="${order.logisticsSn}" required="required">
+	            <input type="text" name="logisticsSn" id="logisticsSn" class="form-control" value="${order.logisticsSn}" />
 	          </div>
 	        </div>
           
           <div class="form-group">
             <label class="control-label col-md-3">物流费 <span class="font-red">*</span></label>
             <div class="col-md-5">
-              <input type="text" name="logisticsFee" id="logisticsFee" class="form-control" value="${order.logisticsFee}" required="required">
+              <input type="text" name="logisticsFee" id="logisticsFee" class="form-control" value="${order.logisticsFee}" />
             </div>
           </div>
 	      </span>  
