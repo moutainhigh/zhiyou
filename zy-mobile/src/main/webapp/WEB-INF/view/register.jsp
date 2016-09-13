@@ -138,7 +138,7 @@
   <c:if test="${isNew}">
     <div class="abs-mm">
       <p class="fs-16 lh-30 text-center">请先完成微信授权</p>
-      <a class="btn green round-2 width-200 mt-30" href="${result.data}"><i class="fa fa-weixin font-white"></i> 微信一键授权</a>
+      <a class="btn green round-2 width-200 mt-30" href="${oauthUrl}"><i class="fa fa-weixin font-white"></i> 微信一键授权</a>
     </div>
   </c:if>
   

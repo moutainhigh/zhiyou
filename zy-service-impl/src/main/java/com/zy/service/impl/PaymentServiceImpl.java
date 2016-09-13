@@ -297,7 +297,6 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		persistance.setOfflineMemo(offlineMemo);
 		persistance.setOfflineImage(offlineImage);
-		persistance.setPaidTime(new Date());
 		if (paymentMapper.update(persistance) == 0) {
 			throw new ConcurrentException();
 		}
