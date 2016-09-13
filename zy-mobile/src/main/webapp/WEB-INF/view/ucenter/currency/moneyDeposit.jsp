@@ -24,7 +24,7 @@
         'payType' : {
           required : true
         },
-        'amount' : {
+        'money' : {
           required : true
         }
       },
@@ -36,6 +36,7 @@
         }
         $(form).find(':submit').prop('disabled', true);
         form.submit();
+        $(form).find(':submit').prop('disabled', false);
       }
     });
   });
@@ -54,9 +55,9 @@
       <div class="list-group">
         <div class="list-title">请输入充值金额</div>
         <div class="list-item">
-          <label for="amount" class="list-label lh-48 fs-18">金额：</label>
+          <label for="money" class="list-label lh-48 fs-18">金额：</label>
           <div class="list-text">
-            <input type="number" class="form-input lh-48 fs-18" name="amount" placeholder="输入充值金额" value="">
+            <input type="number" class="form-input lh-48 fs-18" name="money" placeholder="输入充值金额" value="">
           </div>
         </div>
       </div>

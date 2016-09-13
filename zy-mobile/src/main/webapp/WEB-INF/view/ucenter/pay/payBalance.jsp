@@ -40,11 +40,15 @@
   <form action="${ctx}/u/pay/payment" class="valid-form" id="form" method="post">
   <input type="hidden" name="paymentId" value="${paymentId}" >
   <article class="mt-15 mb-15 clearfix">
-     <div class="list-title">订单信息</div>
+     <div class="list-title">单据信息</div>
      <div class="list-group">
        <div class="list-item">
           <div class="list-text">标题</div>
-          <div class="list-unit">${balance}元</div>
+          <div class="list-unit">${title}</div>
+       </div>
+       <div class="list-item">
+          <div class="list-text">单据号</div>
+          <div class="list-unit">${sn}</div>
        </div>
      </div>  
      
