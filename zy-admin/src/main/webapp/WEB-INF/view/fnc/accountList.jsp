@@ -49,10 +49,7 @@
           title : '<i class="fa fa-money"></i> 余额',
           width : '100px',
           render : function(data, type, full) {
-            if (data) {
-              return data.toFixed(2);
-            }
-            return '-';
+            return data.toFixed(2);
           }
         }, {
           data : '',
