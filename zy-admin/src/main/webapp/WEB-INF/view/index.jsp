@@ -249,11 +249,6 @@
                 <a href="javascript:;" data-href="${ctx}/gift"><i class="icon-game-controller"></i> 礼品管理<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>--%>
-            <shiro:hasPermission name="agent:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/agent"><i class="icon-user"></i> 代理信息<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
             <shiro:hasPermission name="order:view">
               <li>
                 <a href="javascript:;" data-href="${ctx}/order"><i class="icon-docs"></i> 订单管理<span class="badge badge-danger"></span></a>
