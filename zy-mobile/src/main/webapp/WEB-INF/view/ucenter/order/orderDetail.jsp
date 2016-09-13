@@ -41,21 +41,10 @@
       });
     });
     
-    //买家确认收货
-	$('#btnConfirm').click(function(){
-      
-    });
-    
-    
     /*
      * 出货订单操作(卖家)
      */
      
-    //卖家发货
-    $('#btnDeliver').click(function(){
-      
-    });
-    
   });
 </script>
 </head>
@@ -97,25 +86,6 @@
       <p><i class="fa fa-close fs-16"></i> 订单状态：已取消</p>
     </div>
     </c:if>
-    
-    <c:if test="${order.orderStatus == '待支付'}">
-    <form id="orderForm" class="valid-form" action="${ctx}/u/pay" method="post">
-    </c:if>
-    <c:if test="${order.orderStatus == '已发货'}">
-    <form id="orderForm" class="valid-form" action="${ctx}/order/confirmDelivery method="post">
-    </c:if>
-    <c:if test="${order.orderStatus == '已完成'}">
-    <form id="orderForm" class="valid-form" action="${ctx}/order/create" method="post">
-    <input type="hidden" name="productId" value="${order.orderItem[0].productId}">
-    <input type="hidden" name="quantity" value="${order.orderItem[0].quantity}">
-    </c:if>
-    <c:if test="${order.orderStatus == '已取消'}">
-    <form id="orderForm" class="valid-form" action="${ctx}/order/create" method="post">
-    <input type="hidden" name="productId" value="${order.orderItem[0].productId}">
-    <input type="hidden" name="quantity" value="${order.orderItem[0].quantity}">
-    </c:if>
-    
-    <input type="hidden" name="sn" value="${order.sn}">
     
     <div class="list-group mt-10">
       <div class="list-title">收件人信息</div>
@@ -188,42 +158,63 @@
     </div>
     
     <c:if test="${inOut == 'in'}">
+    
+    </c:if>
+    
+    <input type="hidden" name="sn" value="${order.sn}">
+    
+    
+    
+    <c:if test="${inOut == 'in'}">
       <c:if test="${order.orderStatus == '待支付'}">
-      <div class="form-btn">
-        <a id="btnPay" class="btn btn-block green round-2">立即支付</a>
-      </div>
+        <div class="form-btn">
+          <a id="btnPay" class="btn btn-block green round-2">立即支付</a>
+        </div>
       </c:if>
       <c:if test="${order.orderStatus == '已发货'}">
-      <div class="form-btn">
-        <input id="btnConfirm" type="submit" value="确认收货" class="btn btn-block green round-2">
-      </div>
+        <form id="orderForm" action="${ctx}/order/confirmDelivery" method="post">
+        <input type="hidden" name="sn" value="${order.sn}">
+        <div class="form-btn">
+          <button id="btnConfirm" type="submit" class="btn btn-block green round-2">确认收货</button>
+        </div>
+        </form>
       </c:if>
       <c:if test="${order.orderStatus == '已完成'}">
-      <div class="form-btn">
-        <input id="btnReOrder" type="submit" value="再来一单" class="btn btn-block green round-2">
-      </div>
+        <form id="orderForm" action="${ctx}/order/create" method="post">
+        <input type="hidden" name="productId" value="${order.orderItem[0].productId}">
+        <input type="hidden" name="quantity" value="${order.orderItem[0].quantity}">
+        <div class="form-btn">
+          <button id="btnReOrder" type="submit" class="btn btn-block red round-2">再来一单</button>
+        </div>
+        </form>
       </c:if>
       <c:if test="${order.orderStatus == '已取消'}">
-      <div class="form-btn">
-        <input id="btnReOrder" type="submit" value="重新下单" class="btn btn-block green round-2">
-      </div>
+        <form id="orderForm" action="${ctx}/order/create" method="post">
+        <input type="hidden" name="productId" value="${order.orderItem[0].productId}">
+        <input type="hidden" name="quantity" value="${order.orderItem[0].quantity}">
+        <div class="form-btn">
+          <button id="btnReOrder" type="submit" class="btn btn-block red round-2">重新下单</button>
+        </div>
+        </form>
       </c:if>
     </c:if>
     
     <c:if test="${inOut == 'out'}">
       <c:if test="${order.orderStatus == '待支付'}">
-      <div class="form-btn">
-        <a class="btn disabled btn-block round-2">等待买家支付</a>
-      </div>
+        <div class="form-btn">
+          <a class="btn disabled btn-block round-2">等待买家支付</a>
+        </div>
       </c:if>
       <c:if test="${order.orderStatus == '已支付'}">
-      <div class="form-btn">
-        <a id="btnDeliver" class="btn orange btn-block round-2">发货</a>
-      </div>
+        <form id="orderForm" action="${ctx}/order/deliver" method="post">
+        <input type="hidden" name="sn" value="${order.sn}">
+        <div class="form-btn">
+          <button id="btnDeliver" type="submit" class="btn btn-block orange round-2">发货</button>
+        </div>
+        </form>
       </c:if>
     </c:if>
     
-    </form>
   </article>
   
 </body>
