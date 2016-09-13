@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.usr.User;
 import com.zy.util.GcUtils;
+import com.zy.util.VoHelper;
 import com.zy.vo.UserAdminSimpleVo;
 import com.zy.vo.UserAdminVo;
 import com.zy.vo.UserListVo;
@@ -48,6 +49,10 @@ public class UserComponent {
 				userAdminSimpleVo.setAvatarThumbnail(GcUtils.getThumbnail(inviter.getAvatar()));
 				userAdminVo.setInviter(userAdminSimpleVo);
 			}
+		}
+		Long parentId = user.getParentId();
+		if(parentId != null) {
+			userAdminVo.setParent(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(user.getParentId())));
 		}
 		return userAdminVo;
 	}

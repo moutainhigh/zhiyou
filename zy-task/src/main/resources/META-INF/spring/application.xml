@@ -38,7 +38,7 @@
 				<!--account log ack job -->
 				<bean id="accountLogAckJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="paymentCancelDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+						<bean id="accountLogAckJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.job.AccountLogAckJob"></property>
 						</bean>
@@ -81,7 +81,7 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0 0/1 * * ?</value>
+						<value>0 0/1 * * * ?</value>
 					</property>
 				</bean>
 
