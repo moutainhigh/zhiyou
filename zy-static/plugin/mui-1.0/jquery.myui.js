@@ -189,30 +189,6 @@
     callback : function(message) {
     }
   });
-
-  $.messageSuccess = function(message) {
-    $.message({
-    	type : 'success',
-      content : message,
-      timeout : 2
-    });
-  };
-
-  $.messageInfo = function(message) {
-    $.message({
-    	type : 'info',
-      content : message,
-      timeout : 2
-    });
-  };
-
-  $.messageError = function(message) {
-    $.message({
-    	type : 'error',
-      content : message,
-      timeout : 3
-    });
-  };
   
   /**
    * Image view
