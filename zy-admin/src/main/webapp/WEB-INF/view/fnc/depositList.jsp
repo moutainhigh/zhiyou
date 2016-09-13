@@ -136,16 +136,16 @@
             title: 'id'
           },
           {
-            data: '',
-            title: '充值情况',
+            data: 'sn',
+            title: '充值单号',
             orderable: false,
             render: function (data, type, full) {
-              return 'sn: ' + full.sn + '<br /> 标题：' + full.title + '<br /> 支付类型：' + full.payType + '';
+              return full.sn;
             }
           },
           {
             data: 'payType',
-            title: '支付类型',
+            title: '支付方式',
             orderable: false
           },
           {
@@ -176,14 +176,14 @@
               }
             }
           },
-          {
+/*          {
             data: 'currencyType1',
             title: '货币类型',
             orderable: false
-          },
+          },*/
           {
             data: 'amount1',
-            title: '本金',
+            title: '金额',
             orderable: true
           },
           {
