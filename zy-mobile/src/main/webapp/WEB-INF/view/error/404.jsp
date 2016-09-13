@@ -15,7 +15,7 @@
 
 <title>404错误</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<link href="${stccdn}/css/error.css" rel="stylesheet" />
+<link rel="stylesheet" href="${stccdn}/css/error.css" />
 </head>
 
 <body>
