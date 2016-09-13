@@ -143,6 +143,9 @@
 		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_fee_pay_type,is_platform_deliver,delivered_time,logistics_name,logistics_sn,logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,version
 		from `mal_order`
 		<where>
+			<if test="isPlatformDeliverEQ != null">
+				and is_platform_deliver = #{isPlatformDeliverEQ}
+			</if>
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
 				and user_id in
@@ -203,6 +206,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.OrderQueryModel">
 		select count(*) from `mal_order`
 		<where>
+			<if test="isPlatformDeliverEQ != null">
+				and is_platform_deliver = #{isPlatformDeliverEQ}
+			</if>
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
 				and user_id in
