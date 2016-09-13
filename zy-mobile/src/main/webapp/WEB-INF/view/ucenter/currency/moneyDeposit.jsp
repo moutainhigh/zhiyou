@@ -17,10 +17,10 @@
 <script type="text/javascript">
   $(function() {
     //验证表单
-    $('#orderForm').submit(function() {
-      var payNum = $('input:radio[name="money"]:checked').val();
-      if (payNum == null) {
-        messageFlash("请选择充值的金额！");
+    $('#"form"').submit(function() {
+      var money = $('#amount').val();
+      if (money == null) {
+        messageFlash("请输入充值的金额！");
         return false;
       }
     });
@@ -36,50 +36,16 @@
   </header>
   
   <article class="account-wrap clearfix">
-    <form id="orderForm" action="${ctx}/u/pay" method="get">
+    <form id="form" action="${ctx}/u/pay" method="get">
       <div class="list-group">
-        <div class="list-title">请选择充值金额</div>
+        <div class="list-title">请输入充值金额</div>
         <!-- form-radio -->
-        <label class="list-item form-radio">
-          <div class="list-icon">
-            <input type="radio" name="money" value="100">
-            <em class="i-checked"></em>
+        <div class="list-item">
+          <label for="amount" class="list-label lh-48 fs-18">金额：</label>
+          <div class="list-text">
+            <input type="number" class="form-input lh-48 fs-18" id="amount" name="amount" placeholder="输入充值金额" value="">
           </div>
-          <div class="list-text">本金 100</div>
-          <div class="list-unit">支付 ¥ 100.00</div>
-        </label>
-        <label class="list-item form-radio">
-          <div class="list-icon">
-            <input type="radio" name="money" value="500">
-            <em class="i-checked"></em>
-          </div>
-          <div class="list-text">本金 500</div>
-          <div class="list-unit">支付 ¥ 500.00</div>
-        </label>
-        <label class="list-item form-radio">
-          <div class="list-icon">
-            <input type="radio" name="money" value="1000">
-            <em class="i-checked"></em>
-          </div>
-          <div class="list-text">本金 1000</div>
-          <div class="list-unit">支付 ¥ 1000.00</div>
-        </label>
-        <label class="list-item form-radio">
-          <div class="list-icon">
-            <input type="radio" name="money" value="5000">
-            <em class="i-checked"></em>
-          </div>
-          <div class="list-text">本金 5000</div>
-          <div class="list-unit">支付 ¥ 5000.00</div>
-        </label>
-        <label class="list-item form-radio">
-          <div class="list-icon">
-            <input type="radio" name="money" value="10000">
-            <em class="i-checked"></em>
-          </div>
-          <div class="list-text">本金 10000</div>
-          <div class="list-unit">支付 ¥ 10000.00</div>
-        </label>
+        </div>
       </div>
       
       <div class="form-btn">
