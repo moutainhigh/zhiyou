@@ -36,11 +36,11 @@
     </c:if>
     <c:if test="${isBoundBankCard}">
     <div class="form-btn mt-30">
-      <a href="${ctx}/u/money/withdraw" class="btn orange btn-block round-2">提现</a>
+      <a href="${ctx}/u/money/withdraw" class="btn green btn-block round-2">提现</a>
     </div>
     </c:if>
-    <div class="form-btn mt-30">
-      <a href="${ctx}/u/bankCard" class="btn orange btn-block round-2">我的银行卡</a>
+    <div class="form-btn">
+      <a href="${ctx}/u/bankCard" class="btn blue btn-block round-2">我的银行卡</a>
     </div>
   </article>
   <a href="${ctx}/help/money" class="abs-lb mb-10 width-100p font-999 fs-12 text-center"><i class="fa fa-question-circle-o"></i> 余额问题</a>
