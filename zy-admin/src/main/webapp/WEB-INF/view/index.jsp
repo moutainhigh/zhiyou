@@ -296,6 +296,11 @@
                 <a href="javascript:;" data-href="${ctx}/account"><i class="icon-wallet"></i> 资金账户管理<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>
+            <shiro:hasPermission name="payment:view">
+              <li>
+                <a href="javascript:;" data-href="${ctx}/payment"><i class="icon-doc"></i> 支付单管理<span class="badge badge-danger"></span></a>
+              </li>
+            </shiro:hasPermission>
             <shiro:hasPermission name="deposit:view">
               <li>
                 <a href="javascript:;" data-href="${ctx}/deposit"><i class="icon-login"></i> 充值管理<span class="badge badge-danger"></span></a>

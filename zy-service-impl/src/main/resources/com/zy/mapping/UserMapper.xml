@@ -94,58 +94,43 @@
 		from `usr_user`
 		<where>
 			<if test="idIN != null">
-				<if test="idIN.length != 0">
-				and id in
+				 and id in
 				<foreach collection="idIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="idIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 			<if test="userTypeEQ != null">
-				and user_type = #{userTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and user_type = #{userTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="registerTimeGTE != null">
-				and register_time &gt;= #{registerTimeGTE}
+				 and register_time &gt;= #{registerTimeGTE}
 			</if>
 			<if test="nicknameLK != null">
 				<bind name="nicknameLK" value="'%' + nicknameLK + '%'"/> and nickname like #{nicknameLK}
 			</if>
 			<if test="registerTimeLT != null">
-				and register_time &lt; #{registerTimeLT}
+				 and register_time &lt; #{registerTimeLT}
 			</if>
 			<if test="parentIdEQ != null">
-				and parent_id = #{parentIdEQ}
+				 and parent_id = #{parentIdEQ}
 			</if>
 			<if test="inviterIdEQ != null">
-				and inviter_id = #{inviterIdEQ}
+				 and inviter_id = #{inviterIdEQ}
 			</if>
 			<if test="phoneEQ != null">
-				and phone = #{phoneEQ}
+				 and phone = #{phoneEQ}
 			</if>
 			<if test="inviterIdIN != null">
-				<if test="inviterIdIN.length != 0">
-				and inviter_id in
+				 and inviter_id in
 				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="inviterIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 			<if test="parentIdIN != null">
-				<if test="parentIdIN.length != 0">
-				and parent_id in
+				 and parent_id in
 				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="parentIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 		</where>
 		<choose>
@@ -165,58 +150,43 @@
 		select count(*) from `usr_user`
 		<where>
 			<if test="idIN != null">
-				<if test="idIN.length != 0">
-				and id in
+				 and id in
 				<foreach collection="idIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="idIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 			<if test="userTypeEQ != null">
-				and user_type = #{userTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and user_type = #{userTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="registerTimeGTE != null">
-				and register_time &gt;= #{registerTimeGTE}
+				 and register_time &gt;= #{registerTimeGTE}
 			</if>
 			<if test="nicknameLK != null">
 				<bind name="nicknameLK" value="'%' + nicknameLK + '%'"/> and nickname like #{nicknameLK}
 			</if>
 			<if test="registerTimeLT != null">
-				and register_time &lt; #{registerTimeLT}
+				 and register_time &lt; #{registerTimeLT}
 			</if>
 			<if test="parentIdEQ != null">
-				and parent_id = #{parentIdEQ}
+				 and parent_id = #{parentIdEQ}
 			</if>
 			<if test="inviterIdEQ != null">
-				and inviter_id = #{inviterIdEQ}
+				 and inviter_id = #{inviterIdEQ}
 			</if>
 			<if test="phoneEQ != null">
-				and phone = #{phoneEQ}
+				 and phone = #{phoneEQ}
 			</if>
 			<if test="inviterIdIN != null">
-				<if test="inviterIdIN.length != 0">
-				and inviter_id in
+				 and inviter_id in
 				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="inviterIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 			<if test="parentIdIN != null">
-				<if test="parentIdIN.length != 0">
-				and parent_id in
+				 and parent_id in
 				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="parentIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 		</where>
 	</select>

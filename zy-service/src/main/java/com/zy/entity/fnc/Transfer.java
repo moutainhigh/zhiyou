@@ -39,7 +39,8 @@ public class Transfer implements Serializable {
 	public enum TransferType {
 		数据奖,
 		一级平级奖,
-		一级越级奖
+		一级越级奖,
+		邮费
 	}
 
 	public enum TransferStatus {
@@ -53,6 +54,7 @@ public class Transfer implements Serializable {
 
 	@NotNull
 	@Field(label = "转账状态")
+	@Query(EQ)
 	@View
 	private TransferStatus transferStatus;
 

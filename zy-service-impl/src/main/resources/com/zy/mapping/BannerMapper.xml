@@ -70,10 +70,10 @@
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
 			<if test="bannerPositionEQ != null">
-				and banner_position = #{bannerPositionEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and banner_position = #{bannerPositionEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="isReleasedEQ != null">
-				and is_released = #{isReleasedEQ}
+				 and is_released = #{isReleasedEQ}
 			</if>
 		</where>
 		<choose>
@@ -96,10 +96,10 @@
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
 			<if test="bannerPositionEQ != null">
-				and banner_position = #{bannerPositionEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and banner_position = #{bannerPositionEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="isReleasedEQ != null">
-				and is_released = #{isReleasedEQ}
+				 and is_released = #{isReleasedEQ}
 			</if>
 		</where>
 	</select>

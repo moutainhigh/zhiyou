@@ -57,21 +57,16 @@
 		from `fnc_account`
 		<where>
 			<if test="currencyTypeEQ != null">
-				and currency_type = #{currencyTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and currency_type = #{currencyTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+				 and user_id = #{userIdEQ}
 			</if>
 			<if test="userIdIN != null">
-				<if test="userIdIN.length != 0">
-				and user_id in
+				 and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="userIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 		</where>
 		<choose>
@@ -91,21 +86,16 @@
 		select count(*) from `fnc_account`
 		<where>
 			<if test="currencyTypeEQ != null">
-				and currency_type = #{currencyTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and currency_type = #{currencyTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+				 and user_id = #{userIdEQ}
 			</if>
 			<if test="userIdIN != null">
-				<if test="userIdIN.length != 0">
-				and user_id in
+				 and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
-				</if>
-				<if test="userIdIN.length == 0">
-				1 = 2
-				</if>
 			</if>
 		</where>
 	</select>

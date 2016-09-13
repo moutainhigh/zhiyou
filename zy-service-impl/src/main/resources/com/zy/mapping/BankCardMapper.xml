@@ -82,13 +82,13 @@
 		from `fnc_bank_card`
 		<where>
 			<if test="isDeletedEQ != null">
-				and is_deleted = #{isDeletedEQ}
+				 and is_deleted = #{isDeletedEQ}
 			</if>
 			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+				 and user_id = #{userIdEQ}
 			</if>
 			<if test="confirmStatusEQ != null">
-				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="realnameLK != null">
 				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
@@ -111,13 +111,13 @@
 		select count(*) from `fnc_bank_card`
 		<where>
 			<if test="isDeletedEQ != null">
-				and is_deleted = #{isDeletedEQ}
+				 and is_deleted = #{isDeletedEQ}
 			</if>
 			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+				 and user_id = #{userIdEQ}
 			</if>
 			<if test="confirmStatusEQ != null">
-				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				 and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="realnameLK != null">
 				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}

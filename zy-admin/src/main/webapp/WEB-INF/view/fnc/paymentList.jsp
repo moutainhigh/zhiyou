@@ -1,11 +1,114 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script type="text/javascript" src="${ctx}/plugin/My97DatePicker/WdatePicker.js"></script>
+<style>
+  .imagescan {
+    cursor: pointer;
+    width : 80px; height: 80px;
+  }
+  .mr-10 {
+    margin-left: 10px;
+  }
+  .text {
+    width: 320px; height: 100px;
+    overflow: hidden; 
+    text-overflow:ellipsis; 
+    white-space:nowrap;
+    cursor: pointer;
+  }
+</style>
 <!-- BEGIN JAVASCRIPTS -->
+<script id="confirmTmpl" type="text/x-handlebars-template">
+  <form id="confirmForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+    <input type="hidden" name="id" value="{{id}}"/>
+    <div class="form-body">
+      <div class="alert alert-danger display-hide">
+        <i class="fa fa-exclamation-circle"></i>
+        <button class="close" data-close="alert"></button>
+        <span class="form-errors">您填写的信息有误，请检查。</span>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4">审核结果<span class="required"> * </span></label>
+        <div class="col-md-6">
+          <select name="isSuccess" class="form-control">
+            <option value="">--请选择--</option>
+            <option value="true">通过</option>
+            <option value="false">拒绝</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4">审核备注<span class="required"> * </span>
+        </label>
+        <div class="col-md-6">
+          <textarea type="text" class="form-control" name="remark"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions fluid">
+      <div class="col-md-offset-5 col-md-7">
+        <button id="paymentConfirmSubmit{{id}}" type="button" class="btn green">
+          <i class="fa fa-save"></i> 保存
+        </button>
+        <button id="paymentConfirmCancel{{id}}" class="btn default" data-href="">
+          <i class="fa fa-chevron-left"></i> 返回
+        </button>
+      </div>
+    </div>
+  </form>
+</script>
 <script>
-var grid = new Datatable();
-
 $(function() {
+  var grid = new Datatable();
+  var template = Handlebars.compile($('#confirmTmpl').html());
+  
+  $('#dataTable').on('click', '.payment-confirm', function () {
+    var id = $(this).data('id');
+    var data = {
+      id: id
+    };
+    var html = template(data);
+    var index = layer.open({
+      type: 1,
+      //skin: 'layui-layer-rim', //加上边框
+      area: ['600px', '360px'], //宽高
+      content: html
+    });
+
+    $form = $('#confirmForm' + id);
+    $form.validate({
+      rules: {
+        isSuccess: {
+          required: true
+        },
+        confirmRemark: {
+          required: true
+        }
+      },
+      messages: {}
+    });
+
+    $('#paymentConfirmSubmit' + id).bind('click', function () {
+      var result = $form.validate().form();
+      if (result) {
+        var url = '${ctx}/payment/confirmPaid';
+        $.post(url, $form.serialize(), function (data) {
+          if (data.code === 0) {
+            layer.close(index);
+            grid.getDataTable().ajax.reload(null, false);
+          } else {
+            layer.alert('审核失败,原因' + data.message);
+          }
+        });
+      }
+    })
+
+    $('#paymentConfirmCancel' + id).bind('click', function () {
+      layer.close(index);
+    })
+
+  });
+
   grid.init({
         src : $('#dataTable'),
         onSuccess : function(grid) {
@@ -51,7 +154,7 @@ $(function() {
 							width : '50px'
 						},
 						{
-							data : 'paymentType',
+							data : 'payType',
 							title : '支付方式',
 							orderable : false,
 							width : '50px'
@@ -66,29 +169,51 @@ $(function() {
 			                		return '<label class="label label-danger">待支付</label>';	
 			                	}else if(data == '已支付'){
 			                		return '<label class="label label-success">已支付</label>';	
-			                	}else if(data == '支付取消'){
-			                		return '<label class="label label-default">支付取消</label>';
+			                	}else if(data == '已退款'){
+			                		return '<label class="label label-primary">已退款</label>';
+			                	}else if(data == '已取消'){
+			                		return '<label class="label label-default">已取消</label>';
 			                	}
 			                  }
 						},
 						{
-							data : 'amount',
+							data : 'amount1',
 							title : '应付金额',
 							orderable : false,
 							width : '50px'
+						}, 
+						{
+							data : 'offlineImage',
+							title : '银行汇款截图',
+							orderable : false,
+							width : '50px',
+							render : function(data, type, full) {
+							  if(full.offlineImage){
+							    return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
+							  } else {
+							    return '';
+							  }
+							  
+          		            }
 						},
 						{
-							data : 'nickname',
-							title : '用户昵称',
+							data : 'offlineMemo',
+							title : '银行汇款备注',
 							orderable : false,
 							width : '50px'
-						},
+						}, 
 						{
-							data : 'phone',
-							title : '手机号',
-							orderable : false,
-							width : '50px'
-						},
+          		            data : '',
+          		            title : '昵称',
+          		            width : '100px',
+          		            render : function(data, type, full) {
+          		              if (full.user) {
+          		                return '<img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname + '<br/>手机：' + full.user.phone;
+          		              } else {
+          		                return '-';
+          		              }
+          		          }
+          		        },
 			              {
 			                data : '',
 			                title: '操作',
@@ -96,16 +221,25 @@ $(function() {
 			                orderable : false,
 			                render : function(data, type, full) {
 			                	var optionHtml = '';
-			                	if(full.paymentType == '线下支付' && full.paymentStatus == '待支付'){
-			                		optionHtml = '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/payment/confirmPaid/' + full.id + '" data-confirm="您确定用户【'+full.nickname+'】的支付单【'+full.title+'】已支付?"><i class="fa fa-edit"></i> 确认已支付 </a>';	
+			                	<shiro:hasPermission name="payment:confirmPaid">
+			                	if(full.payType == '银行汇款' && full.paymentStatus == '待支付' && full.offlineImage){
+			                		optionHtml += '<a class="btn btn-xs default yellow-stripe payment-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';	
 			                	}
+			                	</shiro:hasPermission>
 			                  return optionHtml;
 			                }
 			              } ]
           }
         });
 
-  });
+        $('#dataTable').on('click', '.imagescan', function () {
+          var url = $(this).attr('data-url');
+          $.imagescan({
+            url: url
+          });
+        });
+        
+        });
 </script>
 
 <!-- END JAVASCRIPTS -->
@@ -167,7 +301,8 @@ $(function() {
                		<option value="">--请选择支付状态-- </option>
            			<option value="待支付">待支付</option>
            			<option value="已支付">已支付</option>
-           			<option value="支付取消">支付取消</option>
+           			<option value="已退款">已退款</option>
+                    <option value="已取消">已取消</option>
                    </select>
                 </div>
                 <div class="form-group input-inline">
