@@ -27,15 +27,23 @@
       }
     }
     
+    options = $.extend({}, $.dialog.defaults, options || {});
+    if (!options.content && (!options.btn || options.btn.length == 0)) {
+      alert('[缺少参数]content 和 btn 不能为空!');
+      return;
+    }
+    
+    if(options.skin == 'message' && typeof(options.shade) == 'undefined') {
+      options.shade = false;
+      options.shadeClose = false;
+    }
     if(options.skin == 'footer' && typeof(options.shade) == 'undefined') {
       options.shade = true;
       options.shadeClose = true;
     }
-
-    options = $.extend({}, $.dialog.defaults, options || {});
-    if (!options.btn) {
-      alert('[缺少参数]btn不能为空!');
-      return;
+    if(options.skin == 'center' && typeof(options.shade) == 'undefined') {
+      options.shade = true;
+      options.shadeClose = false;
     }
     
     options.id = 'mui_dialog_' + (_myui_dialog_index++);
@@ -105,8 +113,6 @@
     content : '',
     skin : 'center', //center,footer,message
     timeout : 0,
-    shade : false,
-    shadeClose : false,
     btn : [ '确定' ],
     cancleBtn : true,
     callback : function(index) {
