@@ -100,7 +100,7 @@ public class UcenterOrderController {
 		Long id = orderDeliverDto.getId();
 		Order persistence = orderService.findOne(id);
 		validate(persistence, NOT_NULL, "order id" + id + " not found");
-		if (principal.getUserId().equals(persistence.getSellerId())) {
+		if (!principal.getUserId().equals(persistence.getSellerId())) {
 			throw new UnauthorizedException("权限不足");
 		}
 		try {
@@ -118,7 +118,7 @@ public class UcenterOrderController {
 
 		Order persistence = orderService.findOne(id);
 		validate(persistence, NOT_NULL, "order id" + id + " not found");
-		if (principal.getUserId().equals(persistence.getUserId())) {
+		if (!principal.getUserId().equals(persistence.getUserId())) {
 			throw new UnauthorizedException("权限不足");
 		}
 
