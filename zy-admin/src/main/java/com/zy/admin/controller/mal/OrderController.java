@@ -96,7 +96,6 @@ public class OrderController {
 	public String deliver(OrderDeliverDto orderDeliverDto, RedirectAttributes redirectAttributes) {
 
 		try {
-			orderDeliverDto.setUseLogistics(true);
 			orderService.deliver(orderDeliverDto);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("发货成功"));
 			return "redirect:/order";

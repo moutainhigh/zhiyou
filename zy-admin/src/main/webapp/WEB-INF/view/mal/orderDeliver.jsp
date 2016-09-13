@@ -5,20 +5,21 @@
   $(function() {
     $('#form').validate({
       rules: {
-        'logisticsName' : {
-          required: true
-        },
-        'logisticsSn' : {
-          required: true
-        },
-        'logisticsFeePayType' : {
-          required: true
-        },
-        'logisticsFee' : {
+        'useLogistics' : {
           required: true
         }
       }
     });
+    
+    $('#useLogistics').change(function(){
+      var val = $(this).find("option:selected").val();
+      if(val == 'true') {
+        $('#logistics').show();
+      } else if(val == 'false') {
+        $('#logistics').hide();
+      }
+    });
+    
   });
 </script>
 <!-- END JAVASCRIPTS -->
@@ -85,9 +86,21 @@
 	        </div>
 	
             <div class="form-group">
+              <label class="control-label col-md-3">发货方式<span class="font-red">*</span> </label>
+              <div class="col-md-5">
+                <select name="useLogistics" id="useLogistics" class="form-control">
+                  <option value="">-- 请选择 --</option>
+                  <option value="false">面对面发货</option>
+                  <option value="true">平台发货</option>
+                </select>
+              </div>
+            </div>
+            
+            <span id="logistics" style="display: none;">
+            <div class="form-group">
               <label class="control-label col-md-3">物流费支付方式<span class="font-red">*</span></label>
               <div class="col-md-5">
-                <select name="logisticsFeePayType" class="form-control">
+                <select name="logisticsFeePayType" class="form-control" required="required">
                   <option value="">-- 请选择 --</option>
                   <c:forEach items="${logisticsFeePayTypes}" var="logisticsFeePayType">
                   <option value="${logisticsFeePayType}">${logisticsFeePayType}</option>
@@ -99,24 +112,25 @@
 	        <div class="form-group">
 	          <label class="control-label col-md-3">发货人物流公司 <span class="font-red">*</span></label>
 	          <div class="col-md-5">
-	            <input type="text" name="logisticsName" id="logisticsName" class="form-control" value="${order.logisticsName}" >
+	            <input type="text" name="logisticsName" id="logisticsName" class="form-control" value="${order.logisticsName}" required="required">
 	          </div>
 	        </div>
 	        
 	        <div class="form-group">
 	          <label class="control-label col-md-3">发货人物流单号 <span class="font-red">*</span></label>
 	          <div class="col-md-5">
-	            <input type="text" name="logisticsSn" id="logisticsSn" class="form-control" value="${order.logisticsSn}">
+	            <input type="text" name="logisticsSn" id="logisticsSn" class="form-control" value="${order.logisticsSn}" required="required">
 	          </div>
 	        </div>
           
           <div class="form-group">
             <label class="control-label col-md-3">物流费 <span class="font-red">*</span></label>
             <div class="col-md-5">
-              <input type="text" name="logisticsFee" id="logisticsFee" class="form-control" value="${order.logisticsFee}" >
+              <input type="text" name="logisticsFee" id="logisticsFee" class="form-control" value="${order.logisticsFee}" required="required">
             </div>
           </div>
-	        
+	      </span>  
+          
           </div>
           <div class="form-actions fluid">
             <div class="col-md-offset-3 col-md-9">
