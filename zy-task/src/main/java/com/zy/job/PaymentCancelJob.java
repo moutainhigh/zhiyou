@@ -20,7 +20,7 @@ import static com.zy.model.query.PaymentQueryModel.builder;
  */
 public class PaymentCancelJob implements Job {
 
-	private Logger logger = LoggerFactory.getLogger(ReportStatementJob.class);
+	private Logger logger = LoggerFactory.getLogger(PaymentCancelJob.class);
 
 	@Autowired
 	private PaymentService paymentService;
