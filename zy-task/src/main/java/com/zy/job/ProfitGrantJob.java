@@ -45,7 +45,7 @@ public class ProfitGrantJob implements Job {
 			} catch (InterruptedException e) {
 			}
 			this.profitService.grant(profitId);
-			logger.info("transferId {} success", profitId);
+			logger.info("profitId  {} success", profitId);
 		} catch (ConcurrentException e) {
 			gant(profitId);
 		} catch (Exception e) {

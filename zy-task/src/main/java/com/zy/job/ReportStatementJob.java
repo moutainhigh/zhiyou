@@ -45,7 +45,7 @@ public class ReportStatementJob implements Job {
 
 			}
 			this.reportService.settleUp(id);
-			logger.info("结算 {} 成功",id);
+			logger.info("settleUp {} success",id);
 		} catch (ConcurrentException e) {
 			settleUp(id);
 		}catch (Exception e){

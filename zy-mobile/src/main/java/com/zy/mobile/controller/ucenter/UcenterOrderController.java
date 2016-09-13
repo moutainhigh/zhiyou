@@ -89,8 +89,8 @@ public class UcenterOrderController {
 	}
 
 	@RequestMapping(path = "/deliver", method = RequestMethod.GET)
-	public String deliver(String sn, Model model) {
-
+	public String deliver(Long id, Model model) {
+		model.addAttribute("orderId", id);
 		return "ucenter/order/orderDeliver";
 	}
 
@@ -131,5 +131,21 @@ public class UcenterOrderController {
 
 		return "redirect:/order/" + persistence.getSn();
 	}
-
+	
+	@RequestMapping("/platformDeliver")
+	public String platformDeliver(Long id, boolean isPlatformDeliver, Principal principal, RedirectAttributes redirectAttributes) {
+		Order order = orderService.findOne(id);
+		validate(order, NOT_NULL, "order id" + id + " not found");
+		if(!principal.getUserId().equals(order.getSellerId())) {
+			throw new UnauthorizedException("权限不足");
+		}
+		try {
+			orderService.modifyIsPlatformDeliver(id, isPlatformDeliver);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("设置成功"));
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+		}
+		return "redirect:/u/order/" + order.getSn();
+	}
+	
 }

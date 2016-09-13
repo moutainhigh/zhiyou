@@ -96,7 +96,7 @@
 
     
     
-    <form action="${ctx}/u/pay/payment" class="valid-form" id="form" method="post">
+    <form action="${ctx}/u/pay/deposit" class="valid-form" id="form" method="post">
       <input type="hidden" name="refId" value="${refId}">
       <div class="list-group">
         <div class="list-title">上传汇款凭证</div>
