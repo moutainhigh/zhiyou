@@ -198,6 +198,7 @@ public class FncComponent {
 		transfer.setFromUserId(fromUserId);
 		transfer.setToUserId(toUserId);
 		transfer.setCurrencyType(currencyType);
+		transfer.setSn(ServiceUtils.generateTransferSn());
 		transfer.setCreatedTime(new Date());
 		transfer.setTitle(title);
 		transfer.setVersion(0);

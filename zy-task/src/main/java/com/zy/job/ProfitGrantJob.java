@@ -1,8 +1,7 @@
 package com.zy.job;
 
 import com.zy.common.exception.ConcurrentException;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.service.ReportService;
+import com.zy.service.ProfitService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -13,43 +12,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
-import static com.zy.model.query.ReportQueryModel.builder;
+import static com.zy.entity.fnc.Profit.ProfitStatus.待发放;
+import static com.zy.model.query.ProfitQueryModel.builder;
+
+;
 
 /**
- * Created by freeman on 16/9/8.
+ * Created by freeman on 16/9/13.
  */
-public class ReportStatementJob implements Job {
+public class ProfitGrantJob implements Job {
 
-	private Logger logger = LoggerFactory.getLogger(ReportStatementJob.class);
+	private Logger logger = LoggerFactory.getLogger(ProfitGrantJob.class);
 
 	@Autowired
-	private ReportService reportService;
-
+	private ProfitService profitService;
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		logger.info("begin...{}", LocalDateTime.now());
-		reportService.findAll(builder().isSettledUpEQ(false).confirmStatusEQ(ConfirmStatus.已通过).build())
+		profitService.findAll(builder().profitStatusEQ(待发放).build())
 				.stream()
-				.map(report -> report.getId())
-				.forEach(this::settleUp);
+				.map(profit -> profit.getId())
+				.forEach(this::gant);
 		logger.info("end...{}", LocalDateTime.now());
 
 	}
 
-	private void settleUp(Long id) {
+	private void gant(Long profitId) {
 		try {
 			try {
 				TimeUnit.SECONDS.sleep(2);
 			} catch (InterruptedException e) {
-
 			}
-			this.reportService.settleUp(id);
-			logger.info("结算 {} 成功",id);
+			this.profitService.grant(profitId);
+			logger.info("transferId {} success", profitId);
 		} catch (ConcurrentException e) {
-			settleUp(id);
-		}catch (Exception e){
-			logger.error(e.getMessage(),e);
+			gant(profitId);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 		}
 	}
 }
