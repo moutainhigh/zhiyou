@@ -44,7 +44,7 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0/1 0 * * ?</value>
+						<value>0 0/1 * * * ?</value>
 					</property>
 				</bean>
 				<!--头像装换job-->
