@@ -57,7 +57,7 @@
   </header>
   
   <div class="note note-warning mb-0">
-    <p><i class="fa fa-exclamation-circle"></i> 请将本次交易金额${amount}元，转入以下银行账户</p>
+    <p><i class="fa fa-exclamation-circle"></i> 请将本次交易金额${amount}元汇入以下银行账户，并将汇款凭证拍照或截图上传。</p>
   </div>
   
   <article class="mt-15 mb-15 clearfix">
@@ -80,7 +80,7 @@
         </div>
      </div>
      
-     <form action="${ctx}/u/pay/payment" class="valid-form" method="post">
+     <form action="${ctx}/u/pay/payment" class="valid-form" id="form" method="post">
      <input type="hidden" name="paymentId" value="${paymentId}" >
      <div class="list-group">
         <div class="list-title">上传图片</div>
@@ -88,8 +88,13 @@
           <label class="list-label">上传图片</label>
           <div class="list-text image-upload image-single">
             <div class="image-item">
-              <input type="hidden" name="offlineImage" id="offlineImage" value="">
+              <input type="hidden" name="offlineImage" id="offlineImage" value="${offlineImage}">
+              <c:if test="${not empty offlineImage}">
+              <img src="${offlineImage}">
+              </c:if>
+              <c:if test="${empty offlineImage}">
               <img src="${stccdn}/image/defaultImage_240_150.png">
+              </c:if>
               <input type="file">
             </div>
           </div>
@@ -99,7 +104,7 @@
         </div>
         <div class="list-item">
           <div class="list-text">
-            <textarea placeholder="请填写汇款账号、汇款人、汇款金额" rows="3" class="form-input" name="offlineMemo"></textarea>
+            <textarea placeholder="请填写汇款账号、汇款人、汇款金额" rows="3" class="form-input" name="offlineMemo">${offlineMemo}</textarea>
           </div>
         </div>
         <p class="bg-white font-red width-100p pl-15 pr-15 pt-10 pb-10">注意事项：</p>

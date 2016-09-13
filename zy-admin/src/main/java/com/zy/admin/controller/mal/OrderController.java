@@ -1,11 +1,15 @@
 package com.zy.admin.controller.mal;
 
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -65,5 +69,11 @@ public class OrderController {
 		return new Grid<OrderAdminVo>(voPage);
 	}
 
-
+	@RequestMapping(value = "/detail")
+	public String detail(Long id, Model model) {
+		Order order = orderService.findOne(id);
+		validate(order, NOT_NULL, "order id" + id + " not found");
+		model.addAttribute("order", orderComponent.buildAdminFullVo(order));
+		return "mal/orderDetail";
+	}
 }

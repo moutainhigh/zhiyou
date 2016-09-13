@@ -18,7 +18,7 @@
 <script type="text/javascript">
   $(function() {
 	  $("#btnSubmit").click(function(){
-		  	
+		 $("#form").submit();
       });
   });
 </script>
@@ -31,15 +31,17 @@
     <a href="javascript:history.go(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
+  <c:if test="${amount > balance}">
   <div class="note note-warning mb-0">
     <p><i class="fa fa-exclamation-circle"></i> 对不起，您账户余额不足！</p>
   </div>
+  </c:if>
   
-  <form action="${ctx}/u/pay/payment" class="valid-form" method="post">
+  <form action="${ctx}/u/pay/payment" class="valid-form" id="form" method="post">
   <input type="hidden" name="paymentId" value="${paymentId}" >
   <article class="mt-15 mb-15 clearfix">
-     <div class="list-title">订单信息</div>
-     <%-- <div class="list-group">
+     <%-- <div class="list-title">订单信息</div>
+     <div class="list-group">
        <div class="list-item">
           <div class="activity">
             <figure class="abs-lt image-wrap">
@@ -64,9 +66,16 @@
        </div>
      </div>
      
+     <c:if test="${amount <= balance}">
      <div class="form-btn">
         <div id="btnSubmit" class="btn orange btn-block round-2">确认支付</div>
      </div>
+     </c:if>
+     <c:if test="${amount > balance}">
+     <div class="form-btn">
+        <div id="btn" class="btn disable btn-block round-2">余额不足，请先充值</div>
+     </div>
+     </c:if>
   </article>  
   </form>
 </body>

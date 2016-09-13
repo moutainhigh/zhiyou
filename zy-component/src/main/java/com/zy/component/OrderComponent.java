@@ -14,7 +14,9 @@ import com.zy.service.PaymentService;
 import com.zy.service.ProfitService;
 import com.zy.service.TransferService;
 import com.zy.util.GcUtils;
+import com.zy.util.VoHelper;
 import com.zy.vo.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +44,9 @@ public class OrderComponent {
 	private PaymentComponent paymentComponent;
 	@Autowired
 	private TransferComponent transferComponent;
-
+	@Autowired
+	private CacheComponent cacheComponent;
+	
 	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 	
 	private static final String SIMPLE_TIME_PATTERN = "M月d日 HH:mm";
@@ -85,6 +89,8 @@ public class OrderComponent {
 
 		);
 
+		orderAdminFullVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getUserId())));
+		orderAdminFullVo.setSeller(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getSellerId())));
 		return orderAdminFullVo;
 	}
 	
@@ -103,6 +109,9 @@ public class OrderComponent {
 			orderAdminVo.setPrice(orderItem.getPrice());
 			orderAdminVo.setQuantity(orderItem.getQuantity());
 		}
+		
+		orderAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getUserId())));
+		orderAdminVo.setSeller(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getSellerId())));
 		return orderAdminVo;
 	}
 	
