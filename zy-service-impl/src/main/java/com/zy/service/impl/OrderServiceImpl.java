@@ -210,8 +210,8 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void deliver(@NotNull OrderDeliverDto orderDeliverDto) {
 
-		validate(orderDeliverDto, "logisticsFeePayType", "id");
-		boolean useLogistics = orderDeliverDto.isUseLogistics();
+		validate(orderDeliverDto, "id", "useLogistics");
+		boolean useLogistics = orderDeliverDto.getUseLogistics();
 
 		Long id = orderDeliverDto.getId();
 		Order order = orderMapper.findOne(id);
@@ -265,8 +265,8 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void platformDeliver(@NotNull OrderDeliverDto orderDeliverDto) {
-		validate(orderDeliverDto, "logisticsFeePayType", "id");
-		boolean useLogistics = orderDeliverDto.isUseLogistics();
+		validate(orderDeliverDto, "id", "useLogistics");
+		boolean useLogistics = orderDeliverDto.getUseLogistics();
 
 		Long id = orderDeliverDto.getId();
 		Order order = orderMapper.findOne(id);
