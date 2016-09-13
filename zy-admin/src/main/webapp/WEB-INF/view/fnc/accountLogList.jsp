@@ -48,7 +48,11 @@
           orderable : false,
           width : '150px',
           render : function(data, type, full) {
-            return '<p>本金 ' + full.beforeAmount.toFixed(2) + '</p>';
+            if (typeof full.beforeAmount === 'undefined') {
+              return '-';
+            } else {
+              return '<p>本金 ' + full.beforeAmount.toFixed(2) + '</p>';
+            }
           }
         }, {
           data : 'transAmount',
@@ -68,7 +72,11 @@
           orderable : false,
           width : '150px',
           render : function(data, type, full) {
-            return '<p>本金 ' + full.afterAmount.toFixed(2) + '</p>';
+            if (typeof full.afterAmount === 'undefined') {
+              return '-';
+            } else {
+              return '<p>本金 ' + full.afterAmount.toFixed(2) + '</p>';
+            }
           }
         }, {
           data : 'isOuter',
