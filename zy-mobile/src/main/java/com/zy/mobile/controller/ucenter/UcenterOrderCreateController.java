@@ -82,7 +82,7 @@ public class UcenterOrderCreateController {
 			order = orderService.create(orderCreateDto);
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return "redirect:/u";
+			return "redirect:/u/order/create?productId=" + orderCreateDto.getProductId() + "&quantity=" + orderCreateDto.getQuantity() + (orderCreateDto.getParentId() == null ? "" : ("&parentId=" + orderCreateDto.getParentId()));
 		}
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("下单成功，请继续支付"));
 		return "redirect:/u/order/" + order.getSn();
