@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import com.zy.entity.fnc.Profit.ProfitStatus;
 import java.util.Date;
 import com.zy.entity.fnc.Profit.ProfitType;
 
@@ -20,6 +21,8 @@ import com.zy.entity.fnc.Profit.ProfitType;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfitQueryModel implements Serializable {
+
+	private ProfitStatus profitStatusEQ;
 
 	private Long userIdEQ;
 

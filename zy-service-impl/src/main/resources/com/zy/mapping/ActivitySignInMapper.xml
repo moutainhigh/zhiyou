@@ -55,28 +55,38 @@
 		from `act_activity_sign_in`
 		<where>
 			<if test="signedInTimeLT != null">
-				 and signed_in_time &lt; #{signedInTimeLT}
+				and signed_in_time &lt; #{signedInTimeLT}
 			</if>
 			<if test="userIdIN != null">
-				 and user_id in
+				<if test="userIdIN.length != 0">
+				and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="activityIdEQ != null">
-				 and activity_id = #{activityIdEQ}
+				and activity_id = #{activityIdEQ}
 			</if>
 			<if test="signedInTimeGTE != null">
-				 and signed_in_time &gt;= #{signedInTimeGTE}
+				and signed_in_time &gt;= #{signedInTimeGTE}
 			</if>
 			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="activityIdIN != null">
-				 and activity_id in
+				<if test="activityIdIN.length != 0">
+				and activity_id in
 				<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="activityIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 		</where>
 		<choose>
@@ -96,28 +106,38 @@
 		select count(*) from `act_activity_sign_in`
 		<where>
 			<if test="signedInTimeLT != null">
-				 and signed_in_time &lt; #{signedInTimeLT}
+				and signed_in_time &lt; #{signedInTimeLT}
 			</if>
 			<if test="userIdIN != null">
-				 and user_id in
+				<if test="userIdIN.length != 0">
+				and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="activityIdEQ != null">
-				 and activity_id = #{activityIdEQ}
+				and activity_id = #{activityIdEQ}
 			</if>
 			<if test="signedInTimeGTE != null">
-				 and signed_in_time &gt;= #{signedInTimeGTE}
+				and signed_in_time &gt;= #{signedInTimeGTE}
 			</if>
 			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="activityIdIN != null">
-				 and activity_id in
+				<if test="activityIdIN.length != 0">
+				and activity_id in
 				<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="activityIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 		</where>
 	</select>

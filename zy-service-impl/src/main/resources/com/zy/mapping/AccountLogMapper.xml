@@ -85,46 +85,56 @@
 		from `fnc_account_log`
 		<where>
 			<if test="currencyTypeEQ != null">
-				 and currency_type = #{currencyTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and currency_type = #{currencyTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
 			<if test="transTimeGTE != null">
-				 and trans_time &gt;= #{transTimeGTE}
+				and trans_time &gt;= #{transTimeGTE}
 			</if>
 			<if test="inOutEQ != null">
-				 and in_out = #{inOutEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and in_out = #{inOutEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="accountLogTypeEQ != null">
-				 and account_log_type = #{accountLogTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and account_log_type = #{accountLogTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="refUserIdEQ != null">
-				 and ref_user_id = #{refUserIdEQ}
+				and ref_user_id = #{refUserIdEQ}
 			</if>
 			<if test="userIdIN != null">
-				 and user_id in
+				<if test="userIdIN.length != 0">
+				and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="refUserIdIN != null">
-				 and ref_user_id in
+				<if test="refUserIdIN.length != 0">
+				and ref_user_id in
 				<foreach collection="refUserIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="refUserIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="refSnEQ != null">
-				 and ref_sn = #{refSnEQ}
+				and ref_sn = #{refSnEQ}
 			</if>
 			<if test="transTimeLT != null">
-				 and trans_time &lt; #{transTimeLT}
+				and trans_time &lt; #{transTimeLT}
 			</if>
 			<if test="isAcknowledgedEQ != null">
-				 and is_acknowledged = #{isAcknowledgedEQ}
+				and is_acknowledged = #{isAcknowledgedEQ}
 			</if>
 		</where>
 		<choose>
@@ -144,46 +154,56 @@
 		select count(*) from `fnc_account_log`
 		<where>
 			<if test="currencyTypeEQ != null">
-				 and currency_type = #{currencyTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and currency_type = #{currencyTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
 			<if test="transTimeGTE != null">
-				 and trans_time &gt;= #{transTimeGTE}
+				and trans_time &gt;= #{transTimeGTE}
 			</if>
 			<if test="inOutEQ != null">
-				 and in_out = #{inOutEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and in_out = #{inOutEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="accountLogTypeEQ != null">
-				 and account_log_type = #{accountLogTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				and account_log_type = #{accountLogTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="userIdEQ != null">
-				 and user_id = #{userIdEQ}
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="refUserIdEQ != null">
-				 and ref_user_id = #{refUserIdEQ}
+				and ref_user_id = #{refUserIdEQ}
 			</if>
 			<if test="userIdIN != null">
-				 and user_id in
+				<if test="userIdIN.length != 0">
+				and user_id in
 				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="refUserIdIN != null">
-				 and ref_user_id in
+				<if test="refUserIdIN.length != 0">
+				and ref_user_id in
 				<foreach collection="refUserIdIN" item="item" open="(" separator="," close=")">
 				#{item}
 				</foreach>
+				</if>
+				<if test="refUserIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="refSnEQ != null">
-				 and ref_sn = #{refSnEQ}
+				and ref_sn = #{refSnEQ}
 			</if>
 			<if test="transTimeLT != null">
-				 and trans_time &lt; #{transTimeLT}
+				and trans_time &lt; #{transTimeLT}
 			</if>
 			<if test="isAcknowledgedEQ != null">
-				 and is_acknowledged = #{isAcknowledgedEQ}
+				and is_acknowledged = #{isAcknowledgedEQ}
 			</if>
 		</where>
 	</select>
