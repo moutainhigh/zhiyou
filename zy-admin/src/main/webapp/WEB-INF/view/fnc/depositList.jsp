@@ -1,18 +1,22 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
-<%@ include file="/WEB-INF/view/include/head.jsp"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/view/include/head.jsp" %>
 <style>
   .imagescan {
     cursor: pointer;
-    width : 80px; height: 80px;
+    width: 80px;
+    height: 80px;
   }
+
   .mr-10 {
     margin-left: 10px;
   }
+
   .text {
-    width: 320px; height: 100px;
-    overflow: hidden; 
-    text-overflow:ellipsis; 
-    white-space:nowrap;
+    width: 320px;
+    height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     cursor: pointer;
   }
 </style>
@@ -58,10 +62,10 @@
 </script>
 <script>
 
-  $(function() {
+  $(function () {
     var grid = new Datatable();
     var template = Handlebars.compile($('#confirmTmpl').html());
-    
+
     $('#dataTable').on('click', '.deposit-confirm', function () {
       var id = $(this).data('id');
       var data = {
@@ -110,127 +114,131 @@
     });
 
     grid.init({
-      src : $('#dataTable'),
-      onSuccess : function(grid) {
+      src: $('#dataTable'),
+      onSuccess: function (grid) {
         // execute some code after table records loaded
       },
-      onError : function(grid) {
+      onError: function (grid) {
         // execute some code on network or other general error  
       },
-      dataTable : {
+      dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>", 
-        lengthMenu : [ [ 10, 20, 50, 100, -1 ], [ 10, 20, 50, 100, 'All' ] // change per page values here
+        lengthMenu: [[10, 20, 50, 100, -1], [10, 20, 50, 100, 'All'] // change per page values here
         ],
-        pageLength : 20, // default record count per page
-        order : [], // set first column as a default sort by desc
-        ajax : {
-          url : '${ctx}/deposit', // ajax source
+        pageLength: 20, // default record count per page
+        order: [], // set first column as a default sort by desc
+        ajax: {
+          url: '${ctx}/deposit', // ajax source
         },
-        columns : [
+        columns: [
           {
             data: 'id',
             title: 'id'
           },
           {
-          data : '',
-          title : '充值情况',
-          orderable : false,
-          width : '180px',
-          render : function(data, type, full) {
-            return 'sn: ' + full.sn + '<br /> 标题：' + full.title + '<br /> 支付类型：' + full.payType + '';
-          }
-        }, {
-          data : 'payType',
-          title : '支付类型',
-          orderable : false,
-          width : '80px'
-        }, {
-          data : 'depositStatus',
-          title : '充值状态',
-          orderable : false,
-          width : '100px',
-          render : function(data, type, full) {
-            var result = '';
-            if (data == '待充值') {
-              result = '<label class="label label-danger">待充值</label>';
-            } else if (data == '充值成功') {
-              result = '<label class="label label-success">充值成功</label>';
-            } else if (data == '已取消') {
-              result = '<label class="label label-default">已取消</label>';
+            data: '',
+            title: '充值情况',
+            orderable: false,
+            width: '180px',
+            render: function (data, type, full) {
+              return 'sn: ' + full.sn + '<br /> 标题：' + full.title + '<br /> 支付类型：' + full.payType + '';
             }
-            return result;
-          }
-        }, {
-          data : '',
-          title : '用户信息',
-          width : '180px',
-          orderable : false,
-          render : function(data, type, full) {
-            if (full.user) {
-              return '<img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname;
-            } else {
-              return '-';
+          },
+          {
+            data: 'payType',
+            title: '支付类型',
+            orderable: false,
+            width: '80px'
+          },
+          {
+            data: 'depositStatus',
+            title: '充值状态',
+            orderable: false,
+            width: '100px',
+            render: function (data, type, full) {
+              var result = '';
+              if (data == '待充值') {
+                result = '<label class="label label-danger">待充值</label>';
+              } else if (data == '充值成功') {
+                result = '<label class="label label-success">充值成功</label>';
+              } else if (data == '已取消') {
+                result = '<label class="label label-default">已取消</label>';
+              }
+              return result;
             }
-          }
-        }, 
-        {
-          data : 'currencyType1',
-          title : '货币类型',
-          width : '100px',
-          orderable : false
-        }, {
-          data : 'amount1',
-          title : '本金',
-          orderable : true,
-          width : '100px'
-        }, 
-		{
-          data : 'paidTime',
-          title : '支付时间',
-          orderable : true,
-          width : '100px'
-        }, 
-        {
-    		data : 'offlineImage',
-    		title : '银行汇款截图',
-    		orderable : false,
-    		width : '80px',
-    		render : function(data, type, full) {
-    		  if(full.offlineImage){
-    		    return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
-    		  } else {
-    		    return '';
-    		  }
-    		  
-    		}
-    	},
-    	{
-    		data : 'offlineMemo',
-    		title : '银行汇款备注',
-    		orderable : false,
-    		width : '150px'
-    	}, 
-        {
-          data : 'outerSn',
-          title : '外部sn',
-          orderable : true,
-          width : '100px'
-        },
-        {
-          data : '',
-          title: '操作',
-          width: '10%',
-          orderable : false,
-          render : function(data, type, full) {
-          	var optionHtml = '';
-          	<shiro:hasPermission name="deposit:confirmPaid">
-          	if(full.payType == '银行汇款' && full.depositStatus == '待充值' && full.offlineImage){
-          		optionHtml += '<a class="btn btn-xs default yellow-stripe deposit-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';	
-          	}
-          	</shiro:hasPermission>
-            return optionHtml;
-          }
-        } ]
+          },
+          {
+            data: '',
+            title: '用户信息',
+            width: '180px',
+            orderable: false,
+            render: function (data, type, full) {
+              if (full.user) {
+                return '<img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname;
+              } else {
+                return '-';
+              }
+            }
+          },
+          {
+            data: 'currencyType1',
+            title: '货币类型',
+            width: '100px',
+            orderable: false
+          },
+          {
+            data: 'amount1',
+            title: '本金',
+            orderable: true,
+            width: '100px'
+          },
+          {
+            data: 'paidTime',
+            title: '支付时间',
+            orderable: true,
+            width: '100px'
+          },
+          {
+            data: 'offlineImage',
+            title: '银行汇款截图',
+            orderable: false,
+            width: '80px',
+            render: function (data, type, full) {
+              if (full.offlineImage) {
+                return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
+              } else {
+                return '';
+              }
+
+            }
+          },
+          {
+            data: 'offlineMemo',
+            title: '银行汇款备注',
+            orderable: false,
+            width: '150px'
+          },
+          {
+            data: 'outerSn',
+            title: '外部sn',
+            orderable: true,
+            width: '100px'
+          },
+          {
+            data: '',
+            title: '操作',
+            width: '10%',
+            orderable: false,
+            render: function (data, type, full) {
+              var optionHtml = '';
+              <shiro:hasPermission name="deposit:confirmPaid">
+              if (full.payType == '银行汇款' && full.depositStatus == '待充值' && full.offlineImage) {
+                optionHtml += '<a class="btn btn-xs default yellow-stripe deposit-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';
+              }
+              </shiro:hasPermission>
+              return optionHtml;
+            }
+          }]
       }
     });
 
@@ -265,15 +273,17 @@
         <div class="table-container">
           <div class="table-toolbar">
             <form id="searchForm" class="filter-form form-inline">
-              <input id="_orderBy" name="orderBy" type="hidden" value="" /> <input id="_direction" name="direction" type="hidden" value="" /> <input id="_pageNumber"
-                name="pageNumber" type="hidden" value="0" /> <input id="_pageSize" name="pageSize" type="hidden" value="20" />
+              <input id="_orderBy" name="orderBy" type="hidden" value=""/>
+              <input id="_direction" name="direction" type="hidden" value=""/>
+              <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
+              <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
               <div class="form-group">
-                <input type="text" name="phoneEQ" class="form-control" placeholder="手机号" />
+                <input type="text" name="phoneEQ" class="form-control" placeholder="手机号"/>
               </div>
 
               <div class="form-group">
-                <input type="text" name="nicknameLK" class="form-control" placeholder="昵称" />
+                <input type="text" name="nicknameLK" class="form-control" placeholder="昵称"/>
               </div>
 
               <div class="form-group">
@@ -295,13 +305,15 @@
               </div>
 
               <div class="form-group">
-                <label class="sr-only">支付时间起</label> <input class="Wdate form-control" type="text" id="paidTime"
-                  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="paidTimeGTE" value="" placeholder="支付时间起" />
+                <label class="sr-only">支付时间起</label>
+                <input class="Wdate form-control" type="text" id="paidTime"
+                       onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="paidTimeGTE" value="" placeholder="支付时间起"/>
               </div>
 
               <div class="form-group">
-                <label class="sr-only">支付时间止</label> <input class="Wdate form-control" type="text" id="paidTime"
-                  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="paidTimeLT" value="" placeholder="支付时间止" />
+                <label class="sr-only">支付时间止</label>
+                <input class="Wdate form-control" type="text" id="paidTime"
+                       onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="paidTimeLT" value="" placeholder="支付时间止"/>
               </div>
 
               <div class="form-group">

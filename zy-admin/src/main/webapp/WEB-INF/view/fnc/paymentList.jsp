@@ -1,19 +1,23 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
-<%@ include file="/WEB-INF/view/include/head.jsp"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/view/include/head.jsp" %>
 <script type="text/javascript" src="${ctx}/plugin/My97DatePicker/WdatePicker.js"></script>
 <style>
   .imagescan {
     cursor: pointer;
-    width : 80px; height: 80px;
+    width: 80px;
+    height: 80px;
   }
+
   .mr-10 {
     margin-left: 10px;
   }
+
   .text {
-    width: 320px; height: 100px;
+    width: 320px;
+    height: 100px;
     overflow: hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     cursor: pointer;
   }
 </style>
@@ -58,192 +62,181 @@
   </form>
 </script>
 <script>
-$(function() {
-  var grid = new Datatable();
-  var template = Handlebars.compile($('#confirmTmpl').html());
+  $(function () {
+    var grid = new Datatable();
+    var template = Handlebars.compile($('#confirmTmpl').html());
 
-  $('#dataTable').on('click', '.payment-confirm', function () {
-    var id = $(this).data('id');
-    var data = {
-      id: id
-    };
-    var html = template(data);
-    var index = layer.open({
-      type: 1,
-      //skin: 'layui-layer-rim', //加上边框
-      area: ['600px', '360px'], //宽高
-      content: html
-    });
+    $('#dataTable').on('click', '.payment-confirm', function () {
+      var id = $(this).data('id');
+      var data = {
+        id: id
+      };
+      var html = template(data);
+      var index = layer.open({
+        type: 1,
+        //skin: 'layui-layer-rim', //加上边框
+        area: ['600px', '360px'], //宽高
+        content: html
+      });
 
-    $form = $('#confirmForm' + id);
-    $form.validate({
-      rules: {
-        isSuccess: {
-          required: true
-        },
-        confirmRemark: {
-          required: true
-        }
-      },
-      messages: {}
-    });
-
-    $('#paymentConfirmSubmit' + id).bind('click', function () {
-      var result = $form.validate().form();
-      if (result) {
-        var url = '${ctx}/payment/confirmPaid';
-        $.post(url, $form.serialize(), function (data) {
-          if (data.code === 0) {
-            layer.close(index);
-            grid.getDataTable().ajax.reload(null, false);
-          } else {
-            layer.alert('审核失败,原因' + data.message);
+      $form = $('#confirmForm' + id);
+      $form.validate({
+        rules: {
+          isSuccess: {
+            required: true
+          },
+          confirmRemark: {
+            required: true
           }
-        });
-      }
-    })
-
-    $('#paymentConfirmCancel' + id).bind('click', function () {
-      layer.close(index);
-    })
-
-  });
-
-  grid.init({
-        src : $('#dataTable'),
-        onSuccess : function(grid) {
-          // execute some code after table records loaded
         },
-        onError : function(grid) {
-          // execute some code on network or other general error
+        messages: {}
+      });
+
+      $('#paymentConfirmSubmit' + id).bind('click', function () {
+        var result = $form.validate().form();
+        if (result) {
+          var url = '${ctx}/payment/confirmPaid';
+          $.post(url, $form.serialize(), function (data) {
+            if (data.code === 0) {
+              layer.close(index);
+              grid.getDataTable().ajax.reload(null, false);
+            } else {
+              layer.alert('审核失败,原因' + data.message);
+            }
+          });
+        }
+      })
+
+      $('#paymentConfirmCancel' + id).bind('click', function () {
+        layer.close(index);
+      })
+
+    });
+
+    grid.init({
+      src: $('#dataTable'),
+      onSuccess: function (grid) {
+        // execute some code after table records loaded
+      },
+      onError: function (grid) {
+        // execute some code on network or other general error
+      },
+      dataTable: {
+        //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
+        lengthMenu: [
+          [10, 20, 50, 100, -1],
+          [10, 20, 50, 100, 'All'] // change per page values here
+        ],
+        pageLength: 20, // default record count per page
+        order: [], // set first column as a default sort by desc
+        ajax: {
+          url: '${ctx}/payment', // ajax source
         },
-        dataTable : {
-          //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
-          lengthMenu: [
-                         [10, 20, 50, 100, -1],
-                         [10, 20, 50, 100, 'All'] // change per page values here
-                         ],
-          pageLength: 20, // default record count per page
-          order: [], // set first column as a default sort by desc
-        	  ajax: {
-                  url: '${ctx}/payment', // ajax source
-                },
-				columns : [
+        columns: [
           {
             data: 'id',
             title: 'id'
           },
-						{
-							data : 'sn',
-							title : '支付单sn',
-							orderable : false,
-							width : '100px'
-						},
-						{
-							data : 'title',
-							title : '标题',
-							orderable : false,
-							width : '50px'
-						},
-						{
-							data : 'createdTime',
-							title : '创建时间',
-							orderable : true,
-							width : '50px'
-						},
-						{
-							data : 'paidTime',
-							title : '支付时间',
-							orderable : true,
-							width : '50px'
-						},
-						{
-							data : 'payType',
-							title : '支付方式',
-							orderable : false,
-							width : '50px'
-						},
-						{
-							data : 'paymentStatus',
-							title : '支付状态',
-							orderable : false,
-							width : '50px',
-			                render : function(data, type, full) {
-			                	if(data == '待支付'){
-			                		return '<label class="label label-danger">待支付</label>';
-			                	}else if(data == '已支付'){
-			                		return '<label class="label label-success">已支付</label>';
-			                	}else if(data == '已退款'){
-			                		return '<label class="label label-primary">已退款</label>';
-			                	}else if(data == '已取消'){
-			                		return '<label class="label label-default">已取消</label>';
-			                	}
-			                  }
-						},
-						{
-							data : 'amount1',
-							title : '应付金额',
-							orderable : false,
-							width : '50px'
-						},
-						{
-							data : 'offlineImage',
-							title : '银行汇款截图',
-							orderable : false,
-							width : '50px',
-							render : function(data, type, full) {
-							  if(full.offlineImage){
-							    return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
-							  } else {
-							    return '';
-							  }
+          {
+            data: 'sn',
+            title: '支付单sn',
+            orderable: false
+          },
+          {
+            data: 'title',
+            title: '标题',
+            orderable: false
+          },
+          {
+            data: 'createdTime',
+            title: '创建时间',
+            orderable: true
+          },
+          {
+            data: 'paidTime',
+            title: '支付时间',
+            orderable: true
+          },
+          {
+            data: 'payType',
+            title: '支付方式',
+            orderable: false
+          },
+          {
+            data: 'paymentStatus',
+            title: '支付状态',
+            orderable: false,
+            render: function (data, type, full) {
+              if (data == '待支付') {
+                return '<label class="label label-danger">待支付</label>';
+              } else if (data == '已支付') {
+                return '<label class="label label-success">已支付</label>';
+              } else if (data == '已退款') {
+                return '<label class="label label-primary">已退款</label>';
+              } else if (data == '已取消') {
+                return '<label class="label label-default">已取消</label>';
+              }
+            }
+          },
+          {
+            data: 'amount1',
+            title: '应付金额',
+            orderable: false
+          },
+          {
+            data: 'offlineImage',
+            title: '银行汇款截图',
+            orderable: false,
+            render: function (data, type, full) {
+              if (full.offlineImage) {
+                return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
+              } else {
+                return '';
+              }
 
-          		            }
-						},
-						{
-							data : 'offlineMemo',
-							title : '银行汇款备注',
-							orderable : false,
-							width : '50px'
-						},
-						{
-          		            data : '',
-          		            title : '昵称',
-          		            width : '100px',
-          		            render : function(data, type, full) {
-          		              if (full.user) {
-          		                return '<img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname + '<br/>手机：' + full.user.phone;
-          		              } else {
-          		                return '-';
-          		              }
-          		          }
-          		        },
-			              {
-			                data : '',
-			                title: '操作',
-			                width: '10%',
-			                orderable : false,
-			                render : function(data, type, full) {
-			                	var optionHtml = '';
-			                	<shiro:hasPermission name="payment:confirmPaid">
-			                	if(full.payType == '银行汇款' && full.paymentStatus == '待支付' && full.offlineImage){
-			                		optionHtml += '<a class="btn btn-xs default yellow-stripe payment-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';
-			                	}
-			                	</shiro:hasPermission>
-			                  return optionHtml;
-			                }
-			              } ]
-          }
-        });
+            }
+          },
+          {
+            data: 'offlineMemo',
+            title: '银行汇款备注',
+            orderable: false
+          },
+          {
+            data: '',
+            title: '昵称',
+            render: function (data, type, full) {
+              if (full.user) {
+                return '<img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname + '<br/>手机：' + full.user.phone;
+              } else {
+                return '-';
+              }
+            }
+          },
+          {
+            data: '',
+            title: '操作',
+            orderable: false,
+            render: function (data, type, full) {
+              var optionHtml = '';
+              <shiro:hasPermission name="payment:confirmPaid">
+              if (full.payType == '银行汇款' && full.paymentStatus == '待支付' && full.offlineImage) {
+                optionHtml += '<a class="btn btn-xs default yellow-stripe payment-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';
+              }
+              </shiro:hasPermission>
+              return optionHtml;
+            }
+          }]
+      }
+    });
 
-        $('#dataTable').on('click', '.imagescan', function () {
-          var url = $(this).attr('data-url');
-          $.imagescan({
-            url: url
-          });
-        });
+    $('#dataTable').on('click', '.imagescan', function () {
+      var url = $(this).attr('data-url');
+      $.imagescan({
+        url: url
+      });
+    });
 
-        });
+  });
 </script>
 
 <!-- END JAVASCRIPTS -->
@@ -300,18 +293,18 @@ $(function() {
                 <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
                 <div class="form-group input-inline">
 
-              	  <label class="sr-only">支付状态</label>
-                   <select name="paymentStatusEQ" class="form-control">
-               		<option value="">--请选择支付状态-- </option>
-           			<option value="待支付">待支付</option>
-           			<option value="已支付">已支付</option>
-           			<option value="已退款">已退款</option>
+                  <label class="sr-only">支付状态</label>
+                  <select name="paymentStatusEQ" class="form-control">
+                    <option value="">--请选择支付状态--</option>
+                    <option value="待支付">待支付</option>
+                    <option value="已支付">已支付</option>
+                    <option value="已退款">已退款</option>
                     <option value="已取消">已取消</option>
-                   </select>
+                  </select>
                 </div>
                 <div class="form-group input-inline">
                   <button class="btn blue filter-submit">
-                     <i class="fa fa-check"></i> 查询
+                    <i class="fa fa-check"></i> 查询
                   </button>
                 </div>
               </form>

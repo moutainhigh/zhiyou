@@ -56,7 +56,7 @@
             title: '交易前',
             orderable: false,
             render: function (data, type, full) {
-              if (typeof full.beforeAmount === 'undefined' || typeof full.beforeAmount === 'null') {
+              if (typeof(full.beforeAmount) === 'undefined' || typeof(full.beforeAmount) === 'null') {
                 return '-';
               } else {
                 return '<p>' + full.beforeAmount.toFixed(2) + '</p>';
@@ -80,7 +80,7 @@
             title: '交易后(余额)',
             orderable: false,
             render: function (data, type, full) {
-              if (typeof full.afterAmount === 'undefined' || typeof full.afterAmount === 'null') {
+              if (typeof(full.afterAmount) === 'undefined' || typeof(full.afterAmount) === 'null') {
                 return '-';
               } else {
                 return '<p>' + full.afterAmount.toFixed(2) + '</p>';
