@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +46,8 @@ import com.zy.service.WithdrawService;
 @RequestMapping("/u/money")
 @Controller
 public class UcenterMoneyController {
+	
+	Logger logger = LoggerFactory.getLogger(UcenterMoneyController.class);
 	
 	@Autowired
 	private AccountService accountService;
@@ -141,12 +145,13 @@ public class UcenterMoneyController {
 	}
 	
 	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
-	public String withdraw(Principal principal, Model model, BigDecimal amount, RedirectAttributes redirectAttributes) {
+	public String withdraw(Principal principal, Model model, BigDecimal amount,Long bankCardId, RedirectAttributes redirectAttributes) {
 		try {
-			Withdraw withdraw = withdrawService.create(principal.getUserId(), null, 现金, amount);
+			Withdraw withdraw = withdrawService.create(principal.getUserId(), bankCardId, 现金, amount);
 			model.addAttribute("withdraw", withdraw);
 			return "ucenter/currency/moneyWithdrawSuccess";
 		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(现金.getAlias() + "提现申请失败, 原因" + e.getMessage()));
 			return "redirect:/u/money/withdraw";
 		}
