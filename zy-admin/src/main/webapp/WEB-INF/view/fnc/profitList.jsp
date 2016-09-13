@@ -1,81 +1,86 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
-<%@ include file="/WEB-INF/view/include/head.jsp"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/view/include/head.jsp" %>
 <!-- BEGIN JAVASCRIPTS -->
 <script>
   var grid = new Datatable();
 
-  $(function() {
+  $(function () {
     grid.init({
-      src : $('#dataTable'),
-      onSuccess : function(grid) {
+      src: $('#dataTable'),
+      onSuccess: function (grid) {
         // execute some code after table records loaded
       },
-      onError : function(grid) {
+      onError: function (grid) {
         // execute some code on network or other general error  
       },
-      dataTable : {
+      dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>", 
-        lengthMenu : [ [ 10, 20, 50, 100, -1 ], [ 10, 20, 50, 100, 'All' ] // change per page values here
+        lengthMenu: [[10, 20, 50, 100, -1], [10, 20, 50, 100, 'All'] // change per page values here
         ],
-        pageLength : 20, // default record count per page
-        order : [], // set first column as a default sort by desc
-        ajax : {
-          url : '${ctx}/profit', // ajax source
+        pageLength: 20, // default record count per page
+        order: [], // set first column as a default sort by desc
+        ajax: {
+          url: '${ctx}/profit', // ajax source
         },
-        columns : [ {
-          data : 'title',
-          title : '收益基本信息',
-          orderable : false,
-          width : '300px',
-          render : function(data, type, full) {
-            return '<p>sn: ' + full.sn + '</p><p> 标题：' + full.title + '</p>';
-          }
-        }, {
-          data : '',
-          title : '收益',
-          orderable : false,
-          width : '100px',
-          render : function(data, type, full) {
-            return '<p>收益类型：' + full.currencyType + '</p><p>金额: ' + full.amount + '</p>';
-          }
-        }, {
-          data : 'bizName',
-          title : '业务名',
-          orderable : false,
-          width : '100px'
-        }, {
-          data : '',
-          title : '用户',
-          width : '100px',
-          render : function(data, type, full) {
-            if (full.user) {
-              return '<img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname;
-            } else {
-              return '-';
+        columns: [
+          {
+            data: 'title',
+            title: '收益基本信息',
+            orderable: false,
+            render: function (data, type, full) {
+              return '<p>sn: ' + full.sn + '</p><p> 标题：' + full.title + '</p>';
             }
-          }
-        }, {
-          data : '',
-          title : '手机号',
-          width : '100px',
-          render : function(data, type, full) {
-            if (full.user) {
-              return full.user.phone;
-            } else {
-              return '-';
+          },
+          {
+            data: '',
+            title: '收益',
+            orderable: false,
+            render: function (data, type, full) {
+              return '<p>收益类型：' + full.currencyType + '</p><p>金额: ' + full.amount + '</p>';
             }
-          }
-        }, {
-          data : 'remark',
-          title : '备注',
-          orderable : false,
-          width : '100px'
-        }, {
-          data : 'createdTime',
-          title : '收益时间',
-          orderable : false,
-          width : '100px'
-        } ]
+          },
+          {
+            data: 'profitType',
+            title: '业务名',
+            orderable: false
+          },
+          {
+            data: 'profitStatus',
+            title: '收益单状态',
+            orderable: false
+          },
+          {
+            data: '',
+            title: '用户',
+            render: function (data, type, full) {
+              if (full.user) {
+                return '<img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname;
+              } else {
+                return '-';
+              }
+            }
+          },
+          {
+            data: '',
+            title: '手机号',
+            render: function (data, type, full) {
+              if (full.user) {
+                return full.user.phone;
+              } else {
+                return '-';
+              }
+            }
+          },
+          {
+            data: 'remark',
+            title: '备注',
+            orderable: false
+          },
+          {
+            data: 'createdTime',
+            title: '收益时间',
+            orderable: false
+          }]
       }
     });
 
@@ -104,15 +109,17 @@
         <div class="table-container">
           <div class="table-toolbar">
             <form class="filter-form form-inline">
-              <input id="_orderBy" name="orderBy" type="hidden" value="" /> <input id="_direction" name="direction" type="hidden" value="" /> <input id="_pageNumber"
-                name="pageNumber" type="hidden" value="0" /> <input id="_pageSize" name="pageSize" type="hidden" value="20" />
+              <input id="_orderBy" name="orderBy" type="hidden" value=""/>
+              <input id="_direction" name="direction" type="hidden" value=""/>
+              <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
+              <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
               <div class="form-group">
-                <input type="text" name="phoneEQ" class="form-control" placeholder="手机号" />
+                <input type="text" name="phoneEQ" class="form-control" placeholder="手机号"/>
               </div>
 
               <div class="form-group">
-                <input type="text" name="nicknameLK"class="form-control" placeholder="昵称" />
+                <input type="text" name="nicknameLK" class="form-control" placeholder="昵称"/>
               </div>
 
               <div class="form-group">
