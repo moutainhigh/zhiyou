@@ -49,5 +49,9 @@ public class TransferAdminVo implements Serializable {
 	private UserAdminSimpleVo fromUser;
 	@Field(label = "转入用户id")
 	private UserAdminSimpleVo toUser;
+	@Field(label = "创建时间")
+	private String createdTimeLabel;
+	@Field(label = "转账时间")
+	private String transferredTimeLabel;
 
 }
