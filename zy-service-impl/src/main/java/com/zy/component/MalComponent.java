@@ -7,6 +7,7 @@ import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
+import com.zy.mapper.OrderItemMapper;
 import com.zy.mapper.OrderMapper;
 import com.zy.mapper.ProductMapper;
 import com.zy.mapper.UserMapper;
@@ -30,6 +31,7 @@ import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.entity.mal.Order.OrderStatus.已支付;
 import static com.zy.entity.mal.Order.OrderStatus.待支付;
+import static com.zy.entity.usr.User.UserRank.V4;
 import static java.lang.String.join;
 import static java.lang.String.valueOf;
 
@@ -49,7 +51,13 @@ public class MalComponent {
 	private OrderMapper orderMapper;
 
 	@Autowired
+	private OrderItemMapper orderItemMapper;
+
+	@Autowired
 	private ProductMapper productMapper;
+
+	@Autowired
+	private UsrComponent usrComponent;
 
 	public BigDecimal getPrice(@NotNull Long productId, @NotNull User.UserRank userRank, long quantity) {
 
@@ -79,7 +87,7 @@ public class MalComponent {
 
 	public Long calculateSellerId(User.UserRank userRank, long quantity, Long parentId) {
 		Long sysUserId = config.getSysUserId();
-		if (userRank == UserRank.V4) {
+		if (userRank == V4) {
 			return sysUserId;
 		}
 
@@ -149,6 +157,19 @@ public class MalComponent {
 		if(orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
 		}
+
+		long quantity = orderItemMapper.findByOrderId(orderId).get(0).getQuantity();
+
+		Long userId = order.getUserId();
+		User user = userMaper.findOne(userId);
+		UserRank userRank = user.getUserRank();
+
+		UserRank upgradeUserRank = getUpgradeUserRank(userRank, quantity);
+
+		if (upgradeUserRank.getLevel() > userRank.getLevel()) {
+			usrComponent.upgrade(userId, userRank, upgradeUserRank);
+		}
+
 
 	}
 
