@@ -133,15 +133,15 @@ public class UcenterOrderController {
 	}
 	
 	@RequestMapping("/platformDeliver")
-	public String platformDeliver(Long id, boolean isPlatformDeliver, Principal principal, RedirectAttributes redirectAttributes) {
+	public String platformDeliver(Long id, Principal principal, RedirectAttributes redirectAttributes) {
 		Order order = orderService.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " not found");
 		if(!principal.getUserId().equals(order.getSellerId())) {
 			throw new UnauthorizedException("权限不足");
 		}
 		try {
-			orderService.modifyIsPlatformDeliver(id, isPlatformDeliver);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("设置成功"));
+			orderService.modifyIsPlatformDeliver(id, true);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("已成功转给公司发货"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}

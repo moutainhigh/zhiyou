@@ -38,7 +38,7 @@
   </c:if>
   
   <form action="${ctx}/u/pay/payment" class="valid-form" id="form" method="post">
-  <input type="hidden" name="paymentId" value="${paymentId}" >
+  <input type="hidden" name="refId" value="${refId}" >
   <article class="mt-15 mb-15 clearfix">
      <div class="list-title">单据信息</div>
      <div class="list-group">
