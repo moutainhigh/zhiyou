@@ -1,5 +1,7 @@
 package com.zy.service.impl;
 
+import com.zy.Config;
+import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
 import com.zy.entity.fnc.CurrencyType;
@@ -8,15 +10,17 @@ import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.mapper.ProfitMapper;
 import com.zy.model.query.ProfitQueryModel;
 import com.zy.service.ProfitService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
-
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+
+import static com.zy.entity.fnc.AccountLog.InOut.支出;
+import static com.zy.entity.fnc.AccountLog.InOut.收入;
 
 @Service
 @Validated
@@ -27,6 +31,9 @@ public class ProfitServiceImpl implements ProfitService {
 
 	@Autowired
 	private FncComponent fncComponent;
+
+	@Autowired
+	private Config config;
 
 	@Override
 	public Page<Profit> findPage(@NotNull ProfitQueryModel profitQueryModel) {
@@ -51,8 +58,31 @@ public class ProfitServiceImpl implements ProfitService {
 
 
 	@Override
-	public Profit grant(Long userId, String title, CurrencyType currencyType, BigDecimal amount) {
+	public Profit createAndGrant(Long userId, String title, CurrencyType currencyType, BigDecimal amount) {
 		return fncComponent.createProfit(userId, ProfitType.补偿, null, title, currencyType, amount);
+	}
+
+	@Override
+	public void grant(@NotNull Long id) {
+		Profit profit = profitMapper.findOne(id);
+		Profit.ProfitStatus profitStatus = profit.getProfitStatus();
+		if (profitStatus == Profit.ProfitStatus.已发放) {
+			return; // 幂等操作
+		}
+
+		String title = profit.getTitle();
+		CurrencyType currencyType = profit.getCurrencyType();
+		BigDecimal amount = profit.getAmount();
+		Long userId = profit.getUserId();
+		Long sysUserId = config.getSysUserId();
+		fncComponent.recordAccountLog(sysUserId, title, currencyType, amount, 支出, profit, userId);
+		fncComponent.recordAccountLog(userId, title, currencyType, amount, 收入, profit, sysUserId);
+		profit.setGrantedTime(new Date());
+		profit.setProfitStatus(Profit.ProfitStatus.已发放);
+		if (profitMapper.update(profit) == 0) {
+			throw new ConcurrentException();
+		}
+
 	}
 
 }

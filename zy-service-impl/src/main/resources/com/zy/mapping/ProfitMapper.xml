@@ -4,20 +4,22 @@
 
 	<resultMap id="baseResultMap" type="com.zy.entity.fnc.Profit">
 		<id column="id" property="id" />
+		<result column="profit_status" property="profitStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="user_id" property="userId" />
 		<result column="sn" property="sn" />
 		<result column="title" property="title" />
 		<result column="currency_type" property="currencyType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="amount" property="amount" />
 		<result column="created_time" property="createdTime" />
+		<result column="granted_time" property="grantedTime" />
 		<result column="profit_type" property="profitType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="ref_id" property="refId" />
 		<result column="remark" property="remark" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.Profit" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_profit` (user_id,sn,title,currency_type,amount,created_time,profit_type,ref_id,remark)
-	  values (#{userId},#{sn},#{title},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount},#{createdTime},#{profitType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{remark})
+	  insert into `fnc_profit` (profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark)
+	  values (#{profitStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userId},#{sn},#{title},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount},#{createdTime},#{grantedTime},#{profitType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{remark})
 	</insert>
 
 	<delete id="delete">
@@ -27,12 +29,14 @@
 	<update id="update" parameterType="com.zy.entity.fnc.Profit">
 		update `fnc_profit`
 		<set>
+			profit_status = #{profitStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			user_id = #{userId},
 			sn = #{sn},
 			title = #{title},
 			currency_type = #{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			amount = #{amount},
 			created_time = #{createdTime},
+			granted_time = #{grantedTime},
 			profit_type = #{profitType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			ref_id = #{refId},
 			remark = #{remark},
@@ -45,12 +49,14 @@
 			<set>
 				<foreach collection="fields" item="field">
 				<choose>
+					<when test="field == 'profitStatus'">profit_status = #{profit.profitStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.Profit$ProfitStatus},</when>
 					<when test="field == 'userId'">user_id = #{profit.userId},</when>
 					<when test="field == 'sn'">sn = #{profit.sn},</when>
 					<when test="field == 'title'">title = #{profit.title},</when>
 					<when test="field == 'currencyType'">currency_type = #{profit.currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.CurrencyType},</when>
 					<when test="field == 'amount'">amount = #{profit.amount},</when>
 					<when test="field == 'createdTime'">created_time = #{profit.createdTime},</when>
+					<when test="field == 'grantedTime'">granted_time = #{profit.grantedTime},</when>
 					<when test="field == 'profitType'">profit_type = #{profit.profitType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.Profit$ProfitType},</when>
 					<when test="field == 'refId'">ref_id = #{profit.refId},</when>
 					<when test="field == 'remark'">remark = #{profit.remark},</when>
@@ -62,14 +68,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,sn,title,currency_type,amount,created_time,profit_type,ref_id,remark
+		id,profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark
 		from `fnc_profit`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
 		select
-		id,user_id,sn,title,currency_type,amount,created_time,profit_type,ref_id,remark
+		id,profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark
 		from `fnc_profit`
 		<where>
 			<if test="createdTimeLT != null">
@@ -85,6 +91,9 @@
 				<if test="userIdIN.length == 0">
 				1 = 2
 				</if>
+			</if>
+			<if test="grantedTimeLT != null">
+				and granted_time &lt; #{grantedTimeLT}
 			</if>
 			<if test="profitTypeEQ != null">
 				and profit_type = #{profitTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
@@ -108,6 +117,9 @@
 				<if test="profitTypeIN.length == 0">
 				1 = 2
 				</if>
+			</if>
+			<if test="grantedTimeGTE != null">
+				and granted_time &gt;= #{grantedTimeGTE}
 			</if>
 		</where>
 		<choose>
@@ -140,6 +152,9 @@
 				1 = 2
 				</if>
 			</if>
+			<if test="grantedTimeLT != null">
+				and granted_time &lt; #{grantedTimeLT}
+			</if>
 			<if test="profitTypeEQ != null">
 				and profit_type = #{profitTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -162,6 +177,9 @@
 				<if test="profitTypeIN.length == 0">
 				1 = 2
 				</if>
+			</if>
+			<if test="grantedTimeGTE != null">
+				and granted_time &gt;= #{grantedTimeGTE}
 			</if>
 		</where>
 	</select>

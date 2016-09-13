@@ -29,6 +29,10 @@ public class ProfitQueryModel implements Serializable {
 
 	private Date createdTimeLT;
 
+	private Date grantedTimeGTE;
+
+	private Date grantedTimeLT;
+
 	private ProfitType profitTypeEQ;
 
 	private ProfitType[] profitTypeIN;
@@ -89,9 +93,11 @@ public class ProfitQueryModel implements Serializable {
 	static {
 		fieldNames.add("currencyType");
 		fieldNames.add("amount");
+		fieldNames.add("grantedTime");
 		fieldNames.add("createdTime");
 		fieldNames.add("remark");
 		fieldNames.add("id");
+		fieldNames.add("profitStatus");
 		fieldNames.add("sn");
 		fieldNames.add("refId");
 		fieldNames.add("title");
