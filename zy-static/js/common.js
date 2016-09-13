@@ -29,10 +29,8 @@ $(function() {
   $(document).ajaxComplete(function(event, XMLHttpRequest, textStatus) {
     //console.log("XMLHttpRequest.responseText=" + XMLHttpRequest.responseText);
     switch (XMLHttpRequest.status) {
-      case 401:
-        messageFlash('您还没有登录, 请先登录');
+      case 401: /* 未登录提示 */
         var result = JSON.parse(XMLHttpRequest.responseText);
-        /* 未登录提示 */
         asideHtml = '<aside id="asideLogin" class="abs-lt size-100p text-center hide zindex-1000" style="background-color:rgba(0, 0, 0, 0.8)">'
           + '<div class="abs-mm">'
           + '<p class="font-white fs-15 lh-30">您还没有登录，请先登录</p>'
@@ -41,7 +39,7 @@ $(function() {
           + '</aside>';
         $('body').addClass('o-hidden');
         $(asideHtml).appendTo($('body')).fadeIn(300);
-      
+        messageFlash('您还没有登录, 请先登录');
         break;
       case 403:
         messageShow('您没有权限执行该操作', 'error');
