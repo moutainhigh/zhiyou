@@ -129,7 +129,7 @@
           <label for="amount" class="list-label lh-48 fs-18">金额：</label>
           <div class="list-text">
             <input type="number" class="form-input lh-48 fs-18" id="amount" name="amount" placeholder="输入提现金额" value="">
-            <div class="form-help mt-5 bdd-t text-right">可提现金额 <em id="accountBalance" class="font-orange fs-16 bold">${amount}</em> 元</div>
+            <div class="form-help pt-5 bdd-t text-right">可提现金额 <em id="accountBalance" class="font-orange fs-16 bold">${amount}</em> 元</div>
           </div>
         </div>
       </div>

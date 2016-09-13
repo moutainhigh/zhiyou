@@ -41,6 +41,7 @@ import com.zy.mapper.OrderMapper;
 import com.zy.mapper.ProductMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
+import com.zy.model.Constants;
 import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
@@ -159,6 +160,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setSn(ServiceUtils.generateOrderSn());
 		order.setIsSettledUp(false);
 		order.setDiscountFee(new BigDecimal("0.00"));
+		order.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_ORDER_EXPIRE_IN_MINUTES));
 		if (StringUtils.isNotBlank(title)) {
 			order.setTitle(title);
 		} else {
