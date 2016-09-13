@@ -14,27 +14,27 @@ public class ServiceUtils {
 	public static Random random = new Random();
 
 	public static String generateOrderSn() {
-		return generateSn("D");
+		return generateSn("DD");
 	}
 	
 	public static String generatePaymentSn() {
-		return generateSn("F");
+		return generateSn("ZF");
 	}
 
 	public static String generateWithdrawSn() {
-		return generateSn("T");
+		return generateSn("TX");
 	}
 
 	public static String generateDepositSn() {
-		return generateSn("C");
+		return generateSn("CZ");
 	}
 
 	public static String generateTransferSn() {
-		return generateSn("Z");
+		return generateSn("ZZ");
 	}
 
 	public static String generateProfitSn() {
-		return generateSn("S");
+		return generateSn("SY");
 	}
 	
 	private static String generateSn(String prefix) {
