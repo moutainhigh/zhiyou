@@ -57,7 +57,7 @@
   </header>
   
   <div class="note note-warning mb-0">
-    <p><i class="fa fa-exclamation-circle"></i> 请将本次交易金额${amount}元汇入以下银行账户</p>
+    <p><i class="fa fa-exclamation-circle"></i> 请将本次交易金额${amount}元汇入以下银行账户，并将汇款凭证拍照或截图上传。</p>
   </div>
   
   <article class="mt-15 mb-15 clearfix">
