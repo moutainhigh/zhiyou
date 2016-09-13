@@ -27,7 +27,6 @@
                 {
                   data : 'avatarThumbnail',
                   title : '昵称',
-                  width : '100px',
                   render : function(data, type, full) {
                     return '<img src="' + data + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.nickname;
                   }
@@ -35,26 +34,22 @@
                 {
                   data : 'phone',
                   title : '手机号',
-                  orderable : false,
-                  width : '100px'
+                  orderable : false
                 },
                 {
                   data : 'qq',
                   title : 'QQ',
-                  orderable : false,
-                  width : '100px'
+                  orderable : false
                 },
                 {
                   data : 'userRank',
                   title : 'VIP',
-                  orderable : false,
-                  width : '60px'
+                  orderable : false
                 },
                 {
                   data : 'isFrozen',
                   title : '是否冻结',
                   orderable : false,
-                  width : '60px',
                   render : function(data, type, full) {
                     if (full.isFrozen == 0) {
                       return '';
@@ -65,20 +60,17 @@
                 },
                 {
                   data : 'userType',
-                  title : '类型',
-                  width : '60px'
+                  title : '类型'
                 },
                 {
                   data : 'registerTime',
                   title : '注册时间',
-                  orderable : false,
-                  width : '100px'
+                  orderable : false
                 },
                 {
                   data : '',
                   title : '邀请人',
                   orderable : false,
-                  width : '60px',
                   render : function(data, type, full) {
                     if (full.inviter) {
                       return '<img src="' + full.inviter.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>'
@@ -89,9 +81,19 @@
                   }
                 },
                 {
+                  data : '',
+                  title : '上级信息',
+                  orderable : false,
+                  render : function(data, type, full) {
+                    if(full.parent) {
+                      return '<p>昵称:' + full.parent.nickname + '</p><p>手机号:' + full.parent.phone + ' </p>';
+                    }
+                    return '-';
+                  }
+                },
+                {
                   data : 'id',
                   title : '操作',
-                  width : '15%',
                   orderable : false,
                   render : function(data, type, full) {
                     var optionHtml = '';
