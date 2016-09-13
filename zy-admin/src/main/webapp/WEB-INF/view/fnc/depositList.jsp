@@ -130,7 +130,7 @@
           data : '',
           title : '充值情况',
           orderable : false,
-          width : '300px',
+          width : '180px',
           render : function(data, type, full) {
             return 'sn: ' + full.sn + '<br /> 标题：' + full.title + '<br /> 支付类型：' + full.payType + '';
           }
@@ -189,7 +189,7 @@
     		data : 'offlineImage',
     		title : '银行汇款截图',
     		orderable : false,
-    		width : '50px',
+    		width : '80px',
     		render : function(data, type, full) {
     		  if(full.offlineImage){
     		    return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
@@ -203,7 +203,7 @@
     		data : 'offlineMemo',
     		title : '银行汇款备注',
     		orderable : false,
-    		width : '50px'
+    		width : '150px'
     	}, 
         {
           data : 'outerSn',
