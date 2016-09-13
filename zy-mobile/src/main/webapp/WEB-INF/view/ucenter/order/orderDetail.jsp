@@ -195,18 +195,18 @@
         </div>
       </c:if>
       <c:if test="${order.orderStatus == '已完成'}">
-        <form id="orderForm" action="${ctx}/u/order/create" method="post">
-        <input type="hidden" name="productId" value="${order.orderItem[0].productId}">
-        <input type="hidden" name="quantity" value="${order.orderItem[0].quantity}">
+        <form id="orderForm" action="${ctx}/u/order/create" method="get">
+        <input type="hidden" name="productId" value="${order.orderItems[0].productId}">
+        <input type="hidden" name="quantity" value="${order.orderItems[0].quantity}">
         <div class="form-btn">
           <button id="btnReOrder" type="submit" class="btn btn-block red round-2"><i class="fa fa-redo"></i> 再来一单</button>
         </div>
         </form>
       </c:if>
       <c:if test="${order.orderStatus == '已取消'}">
-        <form id="orderForm" action="${ctx}/u/order/create" method="post">
-        <input type="hidden" name="productId" value="${order.orderItem[0].productId}">
-        <input type="hidden" name="quantity" value="${order.orderItem[0].quantity}">
+        <form id="orderForm" action="${ctx}/u/order/create" method="get">
+        <input type="hidden" name="productId" value="${order.orderItems[0].productId}">
+        <input type="hidden" name="quantity" value="${order.orderItems[0].quantity}">
         <div class="form-btn">
           <button id="btnReOrder" type="submit" class="btn btn-block red round-2"><i class="fa fa-redo"></i> 重新下单</button>
         </div>

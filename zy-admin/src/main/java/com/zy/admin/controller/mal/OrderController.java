@@ -94,9 +94,8 @@ public class OrderController {
 	@RequiresPermissions("order:deliver")
 	@RequestMapping(value = "/deliver", method = RequestMethod.POST)
 	public String deliver(OrderDeliverDto orderDeliverDto, RedirectAttributes redirectAttributes) {
-
 		try {
-			orderService.deliver(orderDeliverDto);
+			orderService.platformDeliver(orderDeliverDto);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("发货成功"));
 			return "redirect:/order";
 		} catch (Exception e) {

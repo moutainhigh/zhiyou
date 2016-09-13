@@ -18,7 +18,7 @@ public class ProfitComponent {
 		ProfitAdminVo profitAdminVo = new ProfitAdminVo();
 		BeanUtils.copyProperties(profit, profitAdminVo);
 		profitAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(profit.getUserId())));
-		
+
 		return profitAdminVo;
 	}
 	
