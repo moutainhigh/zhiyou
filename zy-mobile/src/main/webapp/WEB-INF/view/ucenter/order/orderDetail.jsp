@@ -214,7 +214,7 @@
           </div>
           </form>
         </c:if>
-        <form id="orderForm" action="${ctx}/u/order/deliver" method="post">
+        <form id="orderForm" action="${ctx}/u/order/deliver" method="get">
           <input type="hidden" name="id" value="${order.id}">
           <div class="form-btn">
             <button id="btnDeliver" type="submit" class="btn btn-block orange round-2">发货</button>
