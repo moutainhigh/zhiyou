@@ -205,7 +205,7 @@
           <a class="btn disabled btn-block round-2">等待买家支付</a>
         </div>
       </c:if>
-      <c:if test="${order.orderStatus == '已支付'}">
+      <c:if test="${order.orderStatus == '已支付' && !order.isPlatformDeliver}">
         <c:if test="${userRank == 'V4'}">
           <form id="orderForm" action="${ctx}/u/order/platformDeliver" method="post">
           <input type="hidden" name="id" value="${order.id}">
@@ -220,6 +220,11 @@
             <button id="btnDeliver" type="submit" class="btn btn-block orange round-2">发货</button>
           </div>
         </form>
+      </c:if>
+      <c:if test="${order.orderStatus == '已支付' && order.isPlatformDeliver}">
+        <div class="form-btn">
+          <a class="btn disabled btn-block round-2">已转给公司发货，等待公司发货。</a>
+        </div>
       </c:if>
     </c:if>
     
