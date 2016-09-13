@@ -36,7 +36,7 @@ public class AccountLog implements Serializable {
 	}
 
 	public enum AccountLogType {
-		充值单, 支付单, 提现单, 收益单
+		充值单, 支付单, 提现单, 收益单, 转账单
 	}
 
 	@Id
