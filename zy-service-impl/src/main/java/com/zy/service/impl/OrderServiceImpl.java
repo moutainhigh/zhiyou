@@ -248,6 +248,8 @@ public class OrderServiceImpl implements OrderService {
 			order.setLogisticsSn(null);
 		}
 
+		order.setUseLogistics(useLogistics);
+
 		order.setDeliveredTime(new Date());
 		order.setOrderStatus(OrderStatus.已发货);
 
