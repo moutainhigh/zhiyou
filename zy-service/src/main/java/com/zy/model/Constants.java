@@ -59,8 +59,10 @@ public interface Constants {
 	String CACHE_NAME_BANK = "bank";
     
     /* order */
-    int SETTING_ORDER_EXPIRE_IN_MINUTES = 60 * 24 * 10;
-    int SETTING_PAYMENT_EXPIRE_IN_MINUTES = 60 * 30; // 余额支付/转账汇款   支付单过期时间 30分钟
+    int SETTING_ORDER_EXPIRE_IN_MINUTES = 60 * 24 * 30; // 订单过期 30天
+    int SETTING_PAYMENT_EXPIRE_IN_MINUTES = 60 * 24 * 7; // 支付单过期时间 7天
+    int SETTING_PAYMENT_OFFLINE_EXPIRE_IN_MINUTES = 60 * 24 * 15; // 银行汇款支付单过期时间 15天
+    int SETTING_DEPOSIT_OFFLINE_EXPIRE_IN_MINUTES = 60 * 24 * 7; // 银行汇款支付单过期时间 15天
     
     /* weixin pay */
     String WEIXIN_PAY_NOTIFY = "http://www.zhi-you.net/notify/weixinPay";

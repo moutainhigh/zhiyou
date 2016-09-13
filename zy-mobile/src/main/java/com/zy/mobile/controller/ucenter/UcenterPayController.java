@@ -95,7 +95,7 @@ public class UcenterPayController {
 			deposit.setTitle(title);
 			deposit.setAmount1(money);
 			deposit.setUserId(userId);
-			deposit.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
+			deposit.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_DEPOSIT_OFFLINE_EXPIRE_IN_MINUTES));
 			deposit = depositService.create(deposit);
 		}
 
@@ -141,9 +141,13 @@ public class UcenterPayController {
 
 		if (payment == null) {
 			payment = new Payment();
+			if(payType == PayType.银行汇款){
+				payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_OFFLINE_EXPIRE_IN_MINUTES));
+			} else {
+				payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
+			}
 			payment.setAmount1(order.getAmount());
 			payment.setCurrencyType1(order.getCurrencyType());
-			payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
 			payment.setPaymentType(PaymentType.订单支付);
 			payment.setRefId(orderId);
 			payment.setUserId(order.getUserId());
