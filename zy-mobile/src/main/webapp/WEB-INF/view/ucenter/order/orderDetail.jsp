@@ -39,6 +39,19 @@
         }
       });
     });
+    
+    $('#btnConfirm').click(function() {
+      $.dialog({
+        content : '请确认您已收到该订单商品，您确定要确认收货吗？',
+        callback : function(index) {
+          if (index == 1) {
+            location.href = '${ctx}/u/order/confirmDelivery?id=${order.id}';
+          }
+        }
+      });
+    });
+    
+    
 
     /*
      * 出货订单操作(卖家)
@@ -173,12 +186,9 @@
         </div>
       </c:if>
       <c:if test="${order.orderStatus == '已发货'}">
-        <form id="orderForm" action="${ctx}/u/order/confirmDelivery" method="post">
-        <input type="hidden" name="id" value="${order.id}">
         <div class="form-btn">
-          <button id="btnConfirm" type="submit" class="btn btn-block green round-2"><i class="fa fa-check"></i> 确认收货</button>
+          <a id="btnConfirm" class="btn green btn-block round-2"><i class="fa fa-check"></i> 确认收货</a>
         </div>
-        </form>
       </c:if>
       <c:if test="${order.orderStatus == '已完成'}">
         <form id="orderForm" action="${ctx}/u/order/create" method="post">
