@@ -138,7 +138,7 @@
           {
             data: '',
             title: '充值情况',
-            orderable: false
+            orderable: false,
             render: function (data, type, full) {
               return 'sn: ' + full.sn + '<br /> 标题：' + full.title + '<br /> 支付类型：' + full.payType + '';
             }
@@ -194,7 +194,7 @@
           {
             data: 'offlineImage',
             title: '银行汇款截图',
-            orderable: false
+            orderable: false,
             render: function (data, type, full) {
               if (full.offlineImage) {
                 return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
@@ -295,13 +295,13 @@
 
               <div class="form-group">
                 <label class="sr-only">支付时间起</label>
-                <input class="Wdate form-control" type="text" id="paidTime"
+                <input class="Wdate form-control" type="text"
                        onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="paidTimeGTE" value="" placeholder="支付时间起"/>
               </div>
 
               <div class="form-group">
                 <label class="sr-only">支付时间止</label>
-                <input class="Wdate form-control" type="text" id="paidTime"
+                <input class="Wdate form-control" type="text"
                        onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="paidTimeLT" value="" placeholder="支付时间止"/>
               </div>
 
