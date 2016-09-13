@@ -97,11 +97,13 @@ public class Transfer implements Serializable {
 	@NotNull
 	@Query({GTE,LT})
 	@Field(label = "创建时间")
+	@View(name = "createdTimeLabel", type = String.class)
 	@View
 	private Date createdTime;
 
 	@Query({GTE,LT})
 	@Field(label = "转账时间")
+	@View(name = "transferredTimeLabel", type = String.class)
 	@View
 	private Date transferredTime;
 
