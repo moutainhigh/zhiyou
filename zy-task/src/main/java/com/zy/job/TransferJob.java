@@ -20,7 +20,7 @@ import static com.zy.model.query.TransferQueryModel.builder;
  */
 public class TransferJob implements Job {
 
-	private Logger logger = LoggerFactory.getLogger(ProfitGrantJob.class);
+	private Logger logger = LoggerFactory.getLogger(TransferJob.class);
 
 	@Autowired
 	private TransferService transferService;

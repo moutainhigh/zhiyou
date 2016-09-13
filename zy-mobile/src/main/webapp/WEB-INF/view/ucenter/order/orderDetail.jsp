@@ -172,7 +172,7 @@
         </div>
       </c:if>
       <c:if test="${order.orderStatus == '已发货'}">
-        <form id="orderForm" action="${ctx}/order/confirmDelivery" method="post">
+        <form id="orderForm" action="${ctx}/u/order/confirmDelivery" method="post">
         <input type="hidden" name="id" value="${order.id}">
         <div class="form-btn">
           <button id="btnConfirm" type="submit" class="btn btn-block green round-2">确认收货</button>
@@ -180,7 +180,7 @@
         </form>
       </c:if>
       <c:if test="${order.orderStatus == '已完成'}">
-        <form id="orderForm" action="${ctx}/order/create" method="post">
+        <form id="orderForm" action="${ctx}/u/order/create" method="post">
         <input type="hidden" name="productId" value="${order.orderItem[0].productId}">
         <input type="hidden" name="quantity" value="${order.orderItem[0].quantity}">
         <div class="form-btn">
@@ -189,7 +189,7 @@
         </form>
       </c:if>
       <c:if test="${order.orderStatus == '已取消'}">
-        <form id="orderForm" action="${ctx}/order/create" method="post">
+        <form id="orderForm" action="${ctx}/u/order/create" method="post">
         <input type="hidden" name="productId" value="${order.orderItem[0].productId}">
         <input type="hidden" name="quantity" value="${order.orderItem[0].quantity}">
         <div class="form-btn">
@@ -205,21 +205,26 @@
           <a class="btn disabled btn-block round-2">等待买家支付</a>
         </div>
       </c:if>
-      <c:if test="${order.orderStatus == '已支付'}">
+      <c:if test="${order.orderStatus == '已支付' && !order.isPlatformDeliver}">
         <c:if test="${userRank == 'V4'}">
-          <form id="orderForm" action="${ctx}/order/platformDeliver" method="post">
+          <form id="orderForm" action="${ctx}/u/order/platformDeliver" method="post">
           <input type="hidden" name="id" value="${order.id}">
           <div class="form-btn">
             <button type="submit" class="btn btn-block blue round-2">转给公司发货</button>
           </div>
           </form>
         </c:if>
-        <form id="orderForm" action="${ctx}/order/deliver" method="post">
+        <form id="orderForm" action="${ctx}/u/order/deliver" method="post">
           <input type="hidden" name="id" value="${order.id}">
           <div class="form-btn">
             <button id="btnDeliver" type="submit" class="btn btn-block orange round-2">发货</button>
           </div>
         </form>
+      </c:if>
+      <c:if test="${order.orderStatus == '已支付' && order.isPlatformDeliver}">
+        <div class="form-btn">
+          <a class="btn disabled btn-block round-2">已转给公司发货，等待公司发货。</a>
+        </div>
       </c:if>
     </c:if>
     

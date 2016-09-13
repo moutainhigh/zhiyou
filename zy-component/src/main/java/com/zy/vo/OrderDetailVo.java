@@ -39,6 +39,8 @@ public class OrderDetailVo implements Serializable {
 	private String sellerMemo;
 	@Field(label = "备注")
 	private String remark;
+	@Field(label = "是否平台发货")
+	private Boolean isPlatformDeliver;
 	@Field(label = "发货时间")
 	private Date deliveredTime;
 	@Field(label = "物流公司名")

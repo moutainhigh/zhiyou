@@ -23,7 +23,7 @@
 }
 .tab-nav > a {
   flex:1;-ms-flex:1;-webkit-flex:1;box-flex:1;-ms-box-flex:1;-webkit-box-flex:1;
-  position: relative; margin: 0 10px;
+  position: relative; margin: 0 6px;
   display: block; height: 49px; line-height: 48px;
   border-bottom: 3px solid transparent;
   text-align: center; font-size: 14px;
