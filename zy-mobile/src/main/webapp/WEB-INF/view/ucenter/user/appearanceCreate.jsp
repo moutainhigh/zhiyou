@@ -87,7 +87,7 @@
             </div>
           </div>
           <div class="list-unit">
-            <a href="javascript:;" class="image-view font-blue fs-14" data-src="http://image.mayishike.com/image/293f9bcb-d900-4f98-8caa-7e0cdcebc510" data-title="身份证照片"><i class="fa fa-question-circle-o"></i> 示意图</a>
+            <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_1.jpg" data-title="身份证照片"><i class="fa fa-question-circle-o"></i> 示意图</a>
           </div>
         </div>
         <div class="list-item">
@@ -100,7 +100,7 @@
             </div>
           </div>
           <div class="list-unit">
-            <a href="javascript:;" class="image-view font-blue fs-14" data-src="http://image.mayishike.com/image/293f9bcb-d900-4f98-8caa-7e0cdcebc510" data-title="身份证照片"><i class="fa fa-question-circle-o"></i> 示意图</a>
+            <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_2.jpg" data-title="身份证照片"><i class="fa fa-question-circle-o"></i> 示意图</a>
           </div>
         </div>
       </div>
