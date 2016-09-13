@@ -317,10 +317,7 @@
                   <th>支付状态</th>
                   <th>货币1</th>
                   <th>货币1支付金额</th>
-                  <th>货币2</th>
-                  <th>货币2支付金额</th>
                   <th>货币1退款金额</th>
-                  <th>货币2退款金额</th>
                   <th>退款时间</th>
                   <th>退款备注</th>
                   <th>取消备注</th>
@@ -349,10 +346,7 @@
                       <td>${payment.paymentStatus}</td>
                       <td>${payment.currencyType1}</td>
                       <td>${payment.amount1}</td>
-                      <td>${payment.currencyType2}</td>
-                      <td>${payment.amount2}</td>
                       <td>${payment.refund1}</td>
-                      <td>${payment.refund2}</td>
                       <td>${payment.refundedTimeLabel}</td>
                       <td>${payment.refundRemark}</td>
                       <td>${payment.cancelRemark}</td>
@@ -374,9 +368,9 @@
                   <th>标题</th>
                   <th>币种</th>
                   <th>金额</th>
+                  <th>用户</th>
                   <th>创建时间</th>
                   <th>收益单类型</th>
-                  <th>备注</th>
                 </tr>
               </thead>
               <tbody>
@@ -392,9 +386,9 @@
                       <td>${profit.title}</td>
                       <td>${profit.currencyType}</td>
                       <td>${profit.amount}</td>
+                      <td>${profit.user.nickname}</td>
                       <td>${profit.createdTime}</td>
                       <td>${profit.profitType}</td>
-                      <td>${profit.remark}</td>
                     </tr>
                   </c:forEach>
                 </c:if>

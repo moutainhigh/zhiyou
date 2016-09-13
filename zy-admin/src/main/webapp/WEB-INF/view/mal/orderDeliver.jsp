@@ -97,18 +97,6 @@
             </div>
             
             <span id="logistics" style="display: none;">
-            <div class="form-group">
-              <label class="control-label col-md-3">物流费支付方式<span class="font-red">*</span></label>
-              <div class="col-md-5">
-                <select name="logisticsFeePayType" class="form-control" required="required">
-                  <option value="">-- 请选择 --</option>
-                  <c:forEach items="${logisticsFeePayTypes}" var="logisticsFeePayType">
-                  <option value="${logisticsFeePayType}">${logisticsFeePayType}</option>
-                  </c:forEach>
-                </select>
-              </div>
-            </div>
-
 	        <div class="form-group">
 	          <label class="control-label col-md-3">发货人物流公司 <span class="font-red">*</span></label>
 	          <div class="col-md-5">
