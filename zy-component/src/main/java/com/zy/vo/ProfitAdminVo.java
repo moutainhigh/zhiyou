@@ -1,6 +1,7 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
+import com.zy.entity.fnc.Profit.ProfitStatus;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit.ProfitType;
 import lombok.Getter;
@@ -16,6 +17,8 @@ public class ProfitAdminVo implements Serializable {
 	/* 原生 */
 	@Field(label = "id")
 	private Long id;
+	@Field(label = "收益单状态")
+	private ProfitStatus profitStatus;
 	@Field(label = "用户id")
 	private Long userId;
 	@Field(label = "收益单号")
@@ -28,6 +31,8 @@ public class ProfitAdminVo implements Serializable {
 	private BigDecimal amount;
 	@Field(label = "创建时间")
 	private Date createdTime;
+	@Field(label = "发放时间")
+	private Date grantedTime;
 	@Field(label = "收益单类型")
 	private ProfitType profitType;
 	@Field(label = "关联业务id")

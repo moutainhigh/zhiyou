@@ -111,7 +111,7 @@ public class FncComponent {
 		} else {
 			accountLog.setIsAcknowledged(true);
 			BigDecimal beforeAmount = account.getAmount();
-			BigDecimal afterAmount = null;
+			BigDecimal afterAmount;
 			if (inOut == 收入) {
 				afterAmount = beforeAmount.add(transAmount);
 			} else {
@@ -129,12 +129,13 @@ public class FncComponent {
 		}
 	}
 
-	public Profit createProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
+	public Profit createAndGrantProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
 	                           @NotNull CurrencyType currencyType, @NotBlank @DecimalMin("0.01") BigDecimal amount) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
 		}
+		Date date = new Date();
 		Profit profit = new Profit();
 		profit.setProfitType(profitType);
 		profit.setTitle(title);
@@ -142,13 +143,38 @@ public class FncComponent {
 		profit.setAmount(amount);
 		profit.setSn(ServiceUtils.generateProfitSn());
 		profit.setCurrencyType(currencyType);
-		profit.setCreatedTime(new Date());
+		profit.setCreatedTime(date);
 		profit.setRefId(refId);
+		profit.setProfitStatus(Profit.ProfitStatus.已发放);
+		profit.setGrantedTime(date);
 		validate(profit);
 		profitMapper.insert(profit);
 		Long sysUserId = config.getSysUserId();
 		this.recordAccountLog(sysUserId, title, currencyType, amount, 支出, profit, userId);
 		this.recordAccountLog(userId, title, currencyType, amount, 收入, profit, sysUserId);
+		return profit;
+	}
+
+	public Profit createProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
+	                                   @NotNull CurrencyType currencyType, @NotBlank @DecimalMin("0.01") BigDecimal amount) {
+		final BigDecimal zero = new BigDecimal("0.00");
+		if (amount.compareTo(zero) <= 0) {
+			throw new ValidationException("profit amount " + amount + " is wrong");
+		}
+		Date date = new Date();
+		Profit profit = new Profit();
+		profit.setProfitType(profitType);
+		profit.setTitle(title);
+		profit.setUserId(userId);
+		profit.setAmount(amount);
+		profit.setSn(ServiceUtils.generateProfitSn());
+		profit.setCurrencyType(currencyType);
+		profit.setCreatedTime(date);
+		profit.setRefId(refId);
+		profit.setProfitStatus(Profit.ProfitStatus.待发放);
+		profit.setGrantedTime(null);
+		validate(profit);
+		profitMapper.insert(profit);
 		return profit;
 	}
 

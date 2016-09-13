@@ -3,9 +3,20 @@
 <%@ include file="/WEB-INF/view/include/editor.jsp"%>
 <!-- BEGIN JAVASCRIPTS -->
 <style>
+.imagescan {
+    cursor: pointer;
+    width : 80px; height: 80px;
+  }
 </style>
 <script>
   $(function() {
+    
+    $('.imagescan').click(function(){
+      var url = $(this).attr('data-url');
+      $.imagescan({
+        url: url
+      });
+    });
 
   });
 </script>
@@ -332,9 +343,9 @@
                       <td>${payment.title}</td>
                       <td>${payment.payType}</td>
                       <td>${payment.paymentType}</td>
-                      <td>${payment.createdTime}</td>
-                      <td>${payment.expiredTime}</td>
-                      <td>${payment.paidTime}</td>
+                      <td>${payment.createdTimeLabel}</td>
+                      <td>${payment.expiredTimeLabel}</td>
+                      <td>${payment.paidTimeLabel}</td>
                       <td>${payment.paymentStatus}</td>
                       <td>${payment.currencyType1}</td>
                       <td>${payment.amount1}</td>
@@ -342,12 +353,12 @@
                       <td>${payment.amount2}</td>
                       <td>${payment.refund1}</td>
                       <td>${payment.refund2}</td>
-                      <td>${payment.refundedTime}</td>
+                      <td>${payment.refundedTimeLabel}</td>
                       <td>${payment.refundRemark}</td>
                       <td>${payment.cancelRemark}</td>
                       <td>${payment.remark}</td>
                       <td>${payment.outerSn}</td>
-                      <td><c:if test="${not empty payment.offlineImage}"><img class="image-40 img-circle" src="${payment.offlineImage}" /></c:if></td>
+                      <td><c:if test="${not empty payment.offlineImage}"><img class="imagescan" data-url="${payment.offlineImage}" src="${payment.offlineImage}" /></c:if></td>
                       <td>${payment.offlineMemo}</td>
                     </tr>
                   </c:forEach>

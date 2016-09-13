@@ -262,7 +262,7 @@ public class UserServiceImpl implements UserService {
 			validate(account);
 			accountMapper.insert(account);
 		}
-		{
+		/*{
 			Account account = new Account();
 			account.setAmount(zero);
 			account.setCurrencyType(积分);
@@ -279,7 +279,7 @@ public class UserServiceImpl implements UserService {
 			account.setVersion(0);
 			validate(account);
 			accountMapper.insert(account);
-		}
+		}*/
 
 	}
 

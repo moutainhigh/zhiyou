@@ -89,16 +89,19 @@ public class Payment implements Serializable {
 	@NotNull
 	@Field(label = "下单时间")
 	@View
+	@View(name = "createdTimeLabel", type = String.class)
 	@Query({Predicate.LT, Predicate.GTE})
 	private Date createdTime;
 
 	@Field(label = "过期时间")
 	@View
 	@Query(Predicate.LT)
+	@View(name = "expiredTimeLabel", type = String.class)
 	private Date expiredTime;
 
 	@Field(label = "支付时间")
 	@View
+	@View(name = "paidTimeLabel", type = String.class)
 	private Date paidTime;
 
 	@NotNull
@@ -138,6 +141,7 @@ public class Payment implements Serializable {
 
 	@Field(label = "退款时间")
 	@View
+	@View(name = "refundedTimeLabel", type = String.class)
 	private Date refundedTime;
 
 	@Field(label = "退款备注")

@@ -1,8 +1,8 @@
 package com.zy.entity.act;
 
+import com.zy.common.extend.StringBinder;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Portrait.Gender;
-import com.zy.common.extend.StringBinder;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
