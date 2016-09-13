@@ -133,7 +133,7 @@
       <div class="flex-2">
         <div class="quantity-wrap">
           <i class="fa fa-minus disabled"></i>
-          <input type="text" class="input-quantity text-center fs-14 round-0" id="quantity" name="quantity" value="${minQuantity}">
+          <input type="text" class="input-quantity text-center fs-14" id="quantity" name="quantity" value="${minQuantity}">
           <i class="fa fa-plus"></i>
         </div>
       </div>
