@@ -17,8 +17,7 @@ window.messageFlash = function(message, timeout) {
 window.messageAlert = function(message, button) {
   $.dialog({
     content : message,
-    btn : [ button || '我知道了' ],
-    btnCancle : false
+    btn : [ button || '我知道了' ]
   });
 };
 

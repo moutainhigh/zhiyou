@@ -20,7 +20,7 @@
         skin : 'message',
         timeout : 2,
         btn : [],
-        btnCancle : false
+        btnCancle : null
       };
       if (arguments.length > 1) {
         options.timeout = arguments[1];
@@ -71,7 +71,7 @@
       html +=     '<div class="mui-dialog-button" data-index="' + (index + 1) + '">' + options.btn[index] + '</div>';
     });
     if(options.btnCancle){
-      html +=     '<div class="mui-dialog-button mui-dialog-button-cancle" data-index="0">取消</div>';
+      html +=     '<div class="mui-dialog-button mui-dialog-button-cancle" data-index="0">' + options.btnCancle + '</div>';
     }
     html +=     '</div>'
       +       '</div>'
@@ -116,9 +116,10 @@
     style : '',
     timeout : 0,
     btn : [ '确定' ],
-    btnCancle : true,
+    btnCancle : null,
     callback : function(index) {
       //alert(index);
+      return true;
     }
   });
 
