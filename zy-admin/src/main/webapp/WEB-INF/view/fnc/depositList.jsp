@@ -139,7 +139,6 @@
             data: '',
             title: '充值情况',
             orderable: false,
-            width: '180px',
             render: function (data, type, full) {
               return 'sn: ' + full.sn + '<br /> 标题：' + full.title + '<br /> 支付类型：' + full.payType + '';
             }
@@ -147,14 +146,12 @@
           {
             data: 'payType',
             title: '支付类型',
-            orderable: false,
-            width: '80px'
+            orderable: false
           },
           {
             data: 'depositStatus',
             title: '充值状态',
             orderable: false,
-            width: '100px',
             render: function (data, type, full) {
               var result = '';
               if (data == '待充值') {
@@ -170,7 +167,6 @@
           {
             data: '',
             title: '用户信息',
-            width: '180px',
             orderable: false,
             render: function (data, type, full) {
               if (full.user) {
@@ -183,26 +179,22 @@
           {
             data: 'currencyType1',
             title: '货币类型',
-            width: '100px',
             orderable: false
           },
           {
             data: 'amount1',
             title: '本金',
-            orderable: true,
-            width: '100px'
+            orderable: true
           },
           {
             data: 'paidTime',
             title: '支付时间',
-            orderable: true,
-            width: '100px'
+            orderable: true
           },
           {
             data: 'offlineImage',
             title: '银行汇款截图',
             orderable: false,
-            width: '80px',
             render: function (data, type, full) {
               if (full.offlineImage) {
                 return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
@@ -215,19 +207,16 @@
           {
             data: 'offlineMemo',
             title: '银行汇款备注',
-            orderable: false,
-            width: '150px'
+            orderable: false
           },
           {
             data: 'outerSn',
             title: '外部sn',
-            orderable: true,
-            width: '100px'
+            orderable: true
           },
           {
             data: '',
             title: '操作',
-            width: '10%',
             orderable: false,
             render: function (data, type, full) {
               var optionHtml = '';
@@ -306,13 +295,13 @@
 
               <div class="form-group">
                 <label class="sr-only">支付时间起</label>
-                <input class="Wdate form-control" type="text" id="paidTime"
+                <input class="Wdate form-control" type="text"
                        onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="paidTimeGTE" value="" placeholder="支付时间起"/>
               </div>
 
               <div class="form-group">
                 <label class="sr-only">支付时间止</label>
-                <input class="Wdate form-control" type="text" id="paidTime"
+                <input class="Wdate form-control" type="text"
                        onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="paidTimeLT" value="" placeholder="支付时间止"/>
               </div>
 
