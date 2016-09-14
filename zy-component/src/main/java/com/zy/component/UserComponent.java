@@ -54,6 +54,7 @@ public class UserComponent {
 		if(parentId != null) {
 			userAdminVo.setParent(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(user.getParentId())));
 		}
+		userAdminVo.setUserRankLabel(GcUtils.getUserRankLabel(user.getUserRank()));
 		return userAdminVo;
 	}
 

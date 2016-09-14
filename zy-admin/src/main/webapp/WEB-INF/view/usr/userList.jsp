@@ -28,13 +28,8 @@
                   data : 'avatarThumbnail',
                   title : '昵称',
                   render : function(data, type, full) {
-                    return '<img src="' + data + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.nickname;
+                    return '<p><img src="' + data + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.nickname + '</p><p>手机: ' + full.phone + '</p>';
                   }
-                },
-                {
-                  data : 'phone',
-                  title : '手机号',
-                  orderable : false
                 },
                 {
                   data : 'qq',
@@ -42,7 +37,7 @@
                   orderable : false
                 },
                 {
-                  data : 'userRank',
+                  data : 'userRankLabel',
                   title : 'VIP',
                   orderable : false
                 },
@@ -73,8 +68,7 @@
                   orderable : false,
                   render : function(data, type, full) {
                     if (full.inviter) {
-                      return '<img src="' + full.inviter.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>'
-                          + full.inviter.nickname;
+                      return '<p><img src="' + full.inviter.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.inviter.nickname +'</p><p>手机: ' + full.inviter.phone + '</p>';
                     } else {
                       return '-';
                     }
@@ -86,7 +80,7 @@
                   orderable : false,
                   render : function(data, type, full) {
                     if(full.parent) {
-                      return '<p>昵称:' + full.parent.nickname + '</p><p>手机号:' + full.parent.phone + ' </p>';
+                      return '<p><img src="' + full.parent.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.parent.nickname + '</p><p>手机：' + full.parent.phone + '</p>';
                     }
                     return '-';
                   }
