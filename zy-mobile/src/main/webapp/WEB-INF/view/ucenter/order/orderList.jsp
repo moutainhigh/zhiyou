@@ -14,36 +14,6 @@
 <title>我的订单</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/order.css" />
-<style>
-.scroll-nav {
-  display: -moz-box; display: -webkit-box; display: box;
-  width: 100%; height: 48px;
-  background-color: #f9f9f9; border-bottom: 1px solid #ddd; z-index: 99; 
-}
-.scroll-nav-wrap {
-  -moz-box-flex: 1; -webkit-box-flex: 1; box-flex: 1;
-  height: 49px; position: relative; overflow: hidden; 
-}
-.scroll-nav-list {
-  position: absolute; left: 0; white-space: nowrap;
-}
-.scroll-nav-list li {
-  display: inline-block; padding: 0 10px;
-}
-.scroll-nav-list li a {
-  padding: 0 6px;
-  display: block; width: 100%; height: 100%;
-  color: #666; font-size: 14px; line-height: 49px; text-align: center; 
-}
-.scroll-nav-list li.current a {
-  color: #fb8604 !important;
-}
-.scroll-nav .current-line {
-  position: absolute; left: 0; bottom: 2px; margin-left: 10px;
-  display: block; height: 2px; 
-  border: 0; background-color: #fb8604; pointer-events: none;
-}
-</style>
 <script>
   $(function() {
     var itemWidth = $(".scroll-nav-list li.current").width();
