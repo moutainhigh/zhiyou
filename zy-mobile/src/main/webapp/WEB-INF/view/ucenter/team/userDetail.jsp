@@ -13,10 +13,17 @@
 
 <title>${user.nickname}</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<script type="text/javascript">
-  $(function() {
+<script src="${stccdn}/plugin/iscroll-5.2.0/iscroll.js"></script>
+<script>
 
-  });
+var myscroll;
+  function loaded() {
+    setTimeout(function() {
+      myscroll = new IScroll("#wrapper");
+    }, 100);
+  }
+  window.addEventListener("load", loaded, false);
+  
 </script>
 </head>
 <body>
@@ -26,7 +33,7 @@
   </header>
 
   <article>
-    
+    <div id="wrapper">
     <ul class="breadcrumb mt-10">
       <li><a href="${ctx}/u/team/"><i class="fa fa-home"></i> 我的团队</a></li>
       <c:if test="${not empty parentLv3 && principalUserId != parentLv3.id}">
@@ -40,6 +47,7 @@
       </c:if>
       <li><a href="javascript:;">${user.nickname}</a></li>
     </ul>
+    </div>
     
     <div class="list-group">
       <div class="list-item">
@@ -52,10 +60,10 @@
         <i class="list-icon fa fa-map-marker"></i>
         <div class="list-text">代理等级</div>
         <div class="list-unit">
-          <c:if test="${inviteUser.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
-          <c:if test="${inviteUser.userRank == 'V2'}"><label class="label blue">二级代理</label></c:if>
-          <c:if test="${inviteUser.userRank == 'V3'}"><label class="label orange">一级代理</label></c:if>
-          <c:if test="${inviteUser.userRank == 'V4'}"><label class="label red">特级代理</label></c:if>
+          <c:if test="${user.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
+          <c:if test="${user.userRank == 'V2'}"><label class="label blue">二级代理</label></c:if>
+          <c:if test="${user.userRank == 'V3'}"><label class="label orange">一级代理</label></c:if>
+          <c:if test="${user.userRank == 'V4'}"><label class="label red">特级代理</label></c:if>
         </div>
       </div>
       <div class="list-item">
