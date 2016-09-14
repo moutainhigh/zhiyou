@@ -45,35 +45,6 @@
   margin-left: 16px;
 }
 
-.scroll-nav {
-  display:box; display:-ms-box; display:-webkit-box;
-  display:flex; display:-ms-flex; display:-webkit-flex;
-  box-shadow: 0 -1px 0 #e6e5e5 inset;
-  background: #fafbfb; z-index: 100;
-}
-.scroll-nav > a {
-  position: relative; margin: 0 10px;
-  display: block; min-width: 120px; height: 49px; line-height: 48px;
-  border-bottom: 3px solid transparent;
-  text-align: center; font-size: 14px;
-}
-.scroll-nav > a::before {
-  content: " "; color: #eee;
-  position: absolute; top: 10px; left: -10px; bottom: 10px;
-  width: 1px; height: auto;
-  border-left: 1px solid #eee;
-}
-.scroll-nav > a:first-child::before {
-  display: none;
-}
-.scroll-nav > a.current {
-  border-bottom-color: #6cb92d; color: #6cb92d;
-}
-.tab-nav > a > .badge {
-  position: absolute; left: 50%; top: 5px;
-  margin-left: 16px;
-}
-
 
 /**
  * list

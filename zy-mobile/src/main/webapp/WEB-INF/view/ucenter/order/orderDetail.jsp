@@ -222,7 +222,7 @@
         </div>
       </c:if>
       <c:if test="${order.orderStatus == '已支付' && !order.isPlatformDeliver}">
-        <c:if test="${userRank == 'V4'}">
+        <c:if test="${userRank == 'V4' && buyerUserRank == 'V3'}">
           <div class="form-btn">
             <a id="btnPlatformDeliver" class="btn blue btn-block round-2"><i class="fa fa-share"></i> 转给公司发货</a>
           </div>

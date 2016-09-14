@@ -44,7 +44,7 @@
           title : '订单状态',
           orderable : false,
           render : function(data, type, full) {
-            return '<label class="label ' + full.orderStatusStyle + '">' + data + '</label>';
+            return '<label class="label label-' + full.orderStatusStyle + '">' + data + '</label>';
           }
         }, {
           data : '',

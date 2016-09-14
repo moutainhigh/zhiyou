@@ -38,6 +38,7 @@
 		<module>zy-admin</module>
 		<module>zy-mobile</module>
 		<module>zy-task</module>
+		<module>zy-consumer</module>
 	</modules>
 
 	<dependencyManagement>

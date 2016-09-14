@@ -134,6 +134,9 @@
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
 			</if>
+			<if test="paymentStatusEQ != null">
+				and payment_status = #{paymentStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
 			<if test="expiredTimeLT != null">
 				and expired_time &lt; #{expiredTimeLT}
 			</if>
@@ -168,6 +171,9 @@
 			</if>
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="paymentStatusEQ != null">
+				and payment_status = #{paymentStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="expiredTimeLT != null">
 				and expired_time &lt; #{expiredTimeLT}

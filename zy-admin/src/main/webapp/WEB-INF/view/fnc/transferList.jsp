@@ -50,7 +50,7 @@
           title : '转账状态',
           orderable: false,
           render : function(data, type, full) {
-            return '<label class="label ' + full.transferStatusStyle + '">' + data + '</label>';
+            return '<label class="label label-' + full.transferStatusStyle + '">' + data + '</label>';
           }
         },
         {

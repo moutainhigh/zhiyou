@@ -3,17 +3,15 @@ package com.zy.admin.controller.fnc;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
@@ -23,7 +21,7 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.PaymentComponent;
 import com.zy.entity.fnc.Payment;
-import com.zy.model.Principal;
+import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.model.query.PaymentQueryModel;
 import com.zy.service.PaymentService;
 import com.zy.vo.PaymentAdminVo;
@@ -40,7 +38,8 @@ public class PaymentController {
 	
 	@RequiresPermissions("payment:view")
 	@RequestMapping(method = RequestMethod.GET)
-	public String list() {
+	public String list(Model model) {
+		model.addAttribute("paymentStatuses", PaymentStatus.values());
 		return "fnc/paymentList";
 	}
 	

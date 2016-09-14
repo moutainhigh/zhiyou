@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.util.Date;
+import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
 
 @Getter
@@ -32,6 +33,8 @@ public class PaymentQueryModel implements Serializable {
 	private Date createdTimeGTE;
 
 	private Date expiredTimeLT;
+
+	private PaymentStatus paymentStatusEQ;
 
 	private Integer pageNumber;
 

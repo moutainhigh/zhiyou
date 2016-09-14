@@ -14,33 +14,85 @@
 <title>我的订单</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/order.css" />
-<script src="${stccdn}/plugin/iscroll-5.2.0/iscroll.js"></script>
 <script>
-
-var myScroll;
-
-function loaded () {
-	myScroll = new IScroll('#wrapper', { scrollX: true, scrollY: false, mouseWheel: true });
-}
-
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-  
+  $(function() {
+    var itemWidth = $(".scroll-nav-list li.current").width();
+    var listWidth = $(".scroll-nav-list").width();
+    var wrapWidth = $(".scroll-nav-wrap").width();
+    $(".current-line").width(itemWidth);
+    
+    $(".scroll-nav-list li").on('click', function() {
+      itemWidth = $(this).width();
+      $(".current-line").stop(true);
+      $(".current-line").animate({
+        left : $(this).position().left
+      }, 300);
+      $(".current-line").animate({
+        width : itemWidth
+      }, 100);
+      $(this).addClass("current").siblings().removeClass("current");
+      var leftHalf = ($(".scroll-nav").width() - itemWidth) / 2;
+      var posLeft = parseInt($(this).position().left);
+      var scrollLeft;
+      if (posLeft <= leftHalf) {
+        scrollLeft = 0;
+      } else if (leftHalf - posLeft <= wrapWidth - listWidth) {
+        scrollLeft = wrapWidth - listWidth;
+      } else {
+        scrollLeft = leftHalf - posLeft;
+      }
+      $(".scroll-nav-list").animate({
+        "left" : scrollLeft
+      }, 300);
+    });
+    
+    $(".scroll-nav-list li.current").click();
+    
+    $(".scroll-nav-list").on('touchstart', function(e) {
+      var touch1 = e.originalEvent.targetTouches[0];
+      x1 = touch1.pageX;
+      y1 = touch1.pageY;
+      cssLeft = parseInt($(this).css("left"));
+    });
+    
+    $(".scroll-nav-list").on('touchmove', function(e) {
+      var touch2 = e.originalEvent.targetTouches[0];
+      var x2 = touch2.pageX;
+      var y2 = touch2.pageY;
+      if (cssLeft + x2 - x1 >= 0) {
+        $(this).css("left", 0);
+      } else if (cssLeft + x2 - x1 <= wrapWidth - listWidth) {
+        $(this).css("left", wrapWidth - listWidth);
+      } else {
+        $(this).css("left", cssLeft + x2 - x1);
+      }
+      if (Math.abs(y2 - y1) > 0) {
+        e.preventDefault();
+      }
+    });
+  });
 </script>
 </head>
-<body onload="loaded()">
+<body>
 <body class="header-fixed footer-fixed">
   <header class="header">
     <h1>${inOut == 'out' ? '出货' : '进货'}订单</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
-  <div id="scrollWrapper">
-    <nav class="tab-nav scrollable">
-      <a href="${ctx}/u/order/${inOut}"<c:if test="${empty orderStatus}"> class="current"</c:if>>全部订单</a>
-      <a href="${ctx}/u/order/${inOut}?orderStatus=0"<c:if test="${orderStatus == '待支付'}"> class="current"</c:if>>待付款 (${waitForPayConut})</a>
-      <a href="${ctx}/u/order/${inOut}?orderStatus=1"<c:if test="${orderStatus == '已支付'}"> class="current"</c:if>>待发货 (${waitForDeliverConut})</a>
-      <a href="${ctx}/u/order/${inOut}?orderStatus=2"<c:if test="${orderStatus == '已发货'}"> class="current"</c:if>>待收货 (${waitForReceiveConut})</a>
-    </nav>
+  <div class="scroll-nav">
+    <div class="scroll-nav-wrap">
+      <ul class="scroll-nav-list">
+        <li<c:if test="${empty orderStatus}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}">全部订单 (${orderCount})</a></li>
+        <li<c:if test="${orderStatus == '待支付'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=0">待支付 (${orderCount0})</a></li>
+        <li<c:if test="${orderStatus == '已支付'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=1">已支付 (${orderCount1})</a></li>
+        <li<c:if test="${orderStatus == '已发货'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=2">已发货 (${orderCount2})</a></li>
+        <li<c:if test="${orderStatus == '已完成'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=3">已完成 (${orderCount3})</a></li>
+        <li<c:if test="${orderStatus == '已退款'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=4">已退款 (${orderCount4})</a></li>
+        <li<c:if test="${orderStatus == '已取消'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=5">已取消 (${orderCount5})</a></li>
+        <li class="current-line"></li>
+      </ul>
+    </div>
   </div>
   
   <article class="order-list">

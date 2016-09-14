@@ -137,6 +137,12 @@
         <p>输入信息有误，请先更正。</p>
       </div>
       <div class="list-group">
+        <div class="list-item">
+          <label class="list-label" for="realname">开户姓名</label>
+          <div class="list-text">
+            <input type="text" id="realname" name="realname" class="form-input" value="${bankCard.realname}" placeholder="填写开户姓名" readonly="readonly">
+          </div>
+        </div>
         <div class="list-item bank-info">
           <label class="list-label">开户银行</label>
           <div class="list-text">
@@ -147,13 +153,7 @@
           <i class="list-arrow"></i>
         </div>
         <div class="list-item">
-          <label class="list-label" for="accountName">开户姓名</label>
-          <div class="list-text">
-            <input type="text" id="realname" name="realname" class="form-input" value="${bankCard.realname}" placeholder="填写开户姓名" readonly="readonly">
-          </div>
-        </div>
-        <div class="list-item">
-          <label class="list-label" for="accountNo">银行卡号</label>
+          <label class="list-label" for="cardNumber">银行卡号</label>
           <div class="list-text">
             <input type="text" id="cardNumber" name="cardNumber" class="form-input" value="${bankCard.cardNumber}" placeholder="填写银行卡号">
           </div>

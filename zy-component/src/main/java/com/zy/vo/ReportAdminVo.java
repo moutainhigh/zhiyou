@@ -58,6 +58,8 @@ public class ReportAdminVo implements Serializable {
 	private Boolean isSettledUp;
 
 	/* 扩展 */
+	@Field(label = "用户id")
+	private UserAdminSimpleVo user;
 	@Field(label = "检测时间")
 	private String dateLabel;
 	@Field(label = "图片1")
@@ -84,5 +86,7 @@ public class ReportAdminVo implements Serializable {
 	private String image6Big;
 	@Field(label = "图片6")
 	private String image6Thumbnail;
+	@Field(label = "创建时间")
+	private String createdTimeLabel;
 
 }
