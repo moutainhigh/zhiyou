@@ -110,6 +110,7 @@ public interface Constants {
     Long SETTING_SETTING_ID = 1L;
     int SETTING_LOGIN_FAILURE_VALIDATE_TIMES = 5;
     String SETTING_DEFAULT_AVATAR = "http://image.zhi-you.net/avatar_default.jpg";
+    String SETTING_NOTIFY_VERSION = "1.0.0";
 
     BigDecimal SETTING_MAX_WITHDRAW_FEE_RATE = new BigDecimal("0.05"); // 提现最大费率 设置不可超过该值
     BigDecimal SETTING_MIN_MERCHANT_DEPOSIT_MONEY = new BigDecimal("100.00"); // 商家充值本金最小金额
