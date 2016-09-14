@@ -71,10 +71,6 @@
       <div class="list-unit">${report.age}岁</div>
     </div>
     <div class="list-item">
-      <div class="list-text">检测时间</div>
-      <div class="list-unit">${report.dateLabel}</div>
-    </div>
-    <div class="list-item">
       <div class="list-text">检测结果</div>
       <div class="list-unit">
         <c:choose>

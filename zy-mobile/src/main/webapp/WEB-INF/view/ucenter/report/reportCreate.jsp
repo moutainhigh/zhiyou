@@ -15,8 +15,11 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
+<script src="${stccdn}/js/area.js"></script>
 <script type="text/javascript">
   $(function() {
+    var area = new areaInit('province', 'city', 'district');
+    
     $('.image-multi .image-add').imageupload({
       width : 100,
       height : 100,
@@ -61,7 +64,13 @@
         'age' : {
           required : true
         },
-        'date' : {
+        'phone' : {
+          required : true
+        },
+        'areaId' : {
+          required : true
+        },
+        'jobId' : {
           required : true
         },
         'reportResult' : {
@@ -112,9 +121,40 @@
           </div>
         </div>
         <div class="list-item">
-          <label class="list-label" for="date">检测时间</label>
+          <label class="list-label" for="phone">手机号</label>
           <div class="list-text">
-            <input type="text" id="date" name="date" class="form-input" value="" placeholder="填写检测时间 2001-01-01" onfocus="this.type='date'">
+            <input type="number" name="phone" class="form-input" value="" placeholder="填写客户手机号">
+          </div>
+        </div>
+        <div class="list-item">
+          <label class="list-label">地区</label>
+          <div class="list-text">
+            <div class="form-select pb-10 bd-b">
+              <select name="" id="province">
+                <option value="">选择省</option>
+              </select>
+            </div>
+            <div class="form-select mt-10 pb-10 bd-b">
+              <select name="" id="city">
+                <option value="">选择市</option>
+              </select>
+            </div>
+            <div class="form-select mt-10">
+              <select name="areaId" id="district">
+                <option value="">选择区</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="list-item">
+          <label class="list-label">职业</label>
+          <div class="list-text form-select">
+            <select name="jobId">
+              <option value="">请选择</option>
+              <c:forEach items="${jobs}" var="job">
+                <option value="${job.id}">${job.jobName}</option>
+              </c:forEach>
+            </select>
           </div>
         </div>
         <div class="list-item">
