@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService {
 			insertAccount(user); // 初始化
 		}
 
-		producer.send(TOPIC_REGISTER_SUCCESS, user);
+		producer.send(TOPIC_REGISTER_SUCCESS, user.getId());
 		return user;
 	}
 
@@ -238,7 +238,7 @@ public class UserServiceImpl implements UserService {
 			String msg = userRank == null ? "减去" : "增加";
 			userLog.setRemark("管理员[" + operator.getNickname() + "]给用户[" + user.getNickname() + "]" + msg + "了VIP");
 			userLogMapper.insert(userLog);
-			producer.send(TOPIC_USER_RANK_CHANGED, user);
+			producer.send(TOPIC_USER_RANK_CHANGED, user.getId());
 		}
 
 	}
@@ -346,7 +346,7 @@ public class UserServiceImpl implements UserService {
 	public void loginSuccess(@NotNull Long id) {
 		User user = userMapper.findOne(id);
 		validate(user, NOT_NULL, "user id" + id + "not found");
-		producer.send(Constants.TOPIC_LOGIN_SUCCESS, user);
+		producer.send(Constants.TOPIC_LOGIN_SUCCESS, user.getId());
 	}
 
 	@Override
