@@ -1,11 +1,9 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
-
 import com.zy.entity.act.Report.ReportResult;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Portrait.Gender;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -62,8 +60,6 @@ public class ReportAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
-	@Field(label = "创建时间")
-	private String createdTimeLabel;
 	@Field(label = "检测时间")
 	private String dateLabel;
 	@Field(label = "图片1")
@@ -90,5 +86,7 @@ public class ReportAdminVo implements Serializable {
 	private String image6Big;
 	@Field(label = "图片6")
 	private String image6Thumbnail;
+	@Field(label = "创建时间")
+	private String createdTimeLabel;
 
 }
