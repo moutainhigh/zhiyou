@@ -202,10 +202,32 @@ public class GcUtils {
 	}
 
 	public static String getOrderStatusStyle (Order.OrderStatus orderStatus) {
-
-
-
-		return "alert";
+		
+		String labelClass = "label-default";
+		switch (orderStatus) {
+		case 待支付:
+			labelClass = "label-danger";
+			break;
+		case 已支付:
+			labelClass = "label-success";
+			break;
+		case 已发货:
+			labelClass = "label-info";
+			break;
+		case 已完成:
+			labelClass = "label-success";
+			break;
+		case 已退款:
+			labelClass = "label-warning";
+			break;
+		case 已取消:
+			labelClass = "label-default";
+			break;
+		default:
+			break;
+		}
+		
+		return labelClass;
 
 	}
 
