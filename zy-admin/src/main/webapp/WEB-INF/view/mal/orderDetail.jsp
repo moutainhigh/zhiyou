@@ -330,7 +330,7 @@
               <tbody>
                 <c:if test="${empty order.payments}">
                   <tr>
-                    <td colspan="6">暂无数据</td>
+                    <td colspan="18">暂无数据</td>
                   </tr>
                 </c:if>
                 <c:if test="${not empty order.payments}">
@@ -376,7 +376,7 @@
               <tbody>
                 <c:if test="${empty order.profits}">
                   <tr>
-                    <td colspan="3">暂无数据</td>
+                    <td colspan="7">暂无数据</td>
                   </tr>
                 </c:if>
                 <c:if test="${not empty order.profits}">
@@ -416,7 +416,7 @@
               <tbody>
                 <c:if test="${empty order.transfers}">
                   <tr>
-                    <td colspan="3">暂无数据</td>
+                    <td colspan="12">暂无数据</td>
                   </tr>
                 </c:if>
                 <c:if test="${not empty order.transfers}">

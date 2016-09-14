@@ -192,25 +192,25 @@ public class GcUtils {
 	}
 
 	public static String getOrderStatusStyle(Order.OrderStatus orderStatus) {
-		String labelClass = "label-default";
+		String labelClass = "default";
 		switch (orderStatus) {
 		case 待支付:
-			labelClass = "label-danger";
+			labelClass = "danger";
 			break;
 		case 已支付:
-			labelClass = "label-success";
+			labelClass = "success";
 			break;
 		case 已发货:
-			labelClass = "label-info";
+			labelClass = "info";
 			break;
 		case 已完成:
-			labelClass = "label-success";
+			labelClass = "success";
 			break;
 		case 已退款:
-			labelClass = "label-warning";
+			labelClass = "warning";
 			break;
 		case 已取消:
-			labelClass = "label-default";
+			labelClass = "default";
 			break;
 		default:
 			break;
@@ -219,16 +219,16 @@ public class GcUtils {
 	}
 
 	public static String getTransferStatusStyle(Transfer.TransferStatus transferStatus) {
-		String labelClass = "label-default";
+		String labelClass = "default";
 		switch (transferStatus) {
 		case 待转账:
-			labelClass = "label-danger";
+			labelClass = "danger";
 			break;
 		case 已转账:
-			labelClass = "label-success";
+			labelClass = "success";
 			break;
 		case 已取消:
-			labelClass = "label-default";
+			labelClass = "default";
 			break;
 		default:
 			break;
@@ -237,19 +237,78 @@ public class GcUtils {
 	}
 
 	public static String getProfitStatusStyle(Profit.ProfitStatus profitStatus) {
-		return null;
+		String labelClass = "default";
+		switch (profitStatus) {
+		case 待发放:
+			labelClass = "danger";
+			break;
+		case 已发放:
+			labelClass = "success";
+			break;
+		case 已取消:
+			labelClass = "default";
+			break;
+		default:
+			break;
+		}
+		return labelClass;
 	}
 
 	public static String getDepositStatusStyle(Deposit.DepositStatus depositStatus) {
-		return null;
+		String labelClass = "default";
+		switch (depositStatus) {
+		case 待充值:
+			labelClass = "danger";
+			break;
+		case 充值成功:
+			labelClass = "success";
+			break;
+		case 已取消:
+			labelClass = "default";
+			break;
+		default:
+			break;
+		}
+		return labelClass;
 	}
 
 	public static String getWithdrawStatusStyle(Withdraw.WithdrawStatus withdrawStatus) {
-		return null;
+		String labelClass = "default";
+		switch (withdrawStatus) {
+		case 已申请:
+			labelClass = "danger";
+			break;
+		case 提现成功:
+			labelClass = "success";
+			break;
+		case 已取消:
+			labelClass = "default";
+			break;
+		default:
+			break;
+		}
+		return labelClass;
 	}
 
 	public static String getPaymentStatusStyle(Payment.PaymentStatus paymentStatus) {
-		return null;
+		String labelClass = "default";
+		switch (paymentStatus) {
+		case 待支付:
+			labelClass = "danger";
+			break;
+		case 已支付:
+			labelClass = "success";
+			break;
+		case 已退款:
+			labelClass = "warning";
+			break;
+		case 已取消:
+			labelClass = "default";
+			break;
+		default:
+			break;
+		}
+		return labelClass;
 	}
 
 }
