@@ -5,14 +5,13 @@ import java.util.HashSet;
 import java.io.Serializable;
 
 import io.gd.generator.api.query.Direction;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-
 import java.util.Date;
-
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
 
@@ -25,8 +24,6 @@ public class PaymentQueryModel implements Serializable {
 
 	private Long userIdEQ;
 
-	private PaymentStatus paymentStatus;
-	
 	private PaymentType paymentTypeEQ;
 
 	private Long refIdEQ;
@@ -36,6 +33,8 @@ public class PaymentQueryModel implements Serializable {
 	private Date createdTimeGTE;
 
 	private Date expiredTimeLT;
+
+	private PaymentStatus paymentStatusEQ;
 
 	private Integer pageNumber;
 
