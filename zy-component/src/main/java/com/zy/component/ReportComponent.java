@@ -3,22 +3,25 @@ package com.zy.component;
 import static com.zy.util.GcUtils.formatDate;
 import static com.zy.util.GcUtils.getThumbnail;
 
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Report;
+import com.zy.service.JobService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.ReportAdminVo;
-import com.zy.vo.ReportVo;
+import com.zy.vo.ReportDetailVo;
 
 @Component
 public class ReportComponent {
 
 	@Autowired
 	private CacheComponent cacheComponent;
+	
+	@Autowired
+	private JobService jobService;
 
 	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 	private static final String SIMPLE_TIME_PATTERN = "yyyy-MM-dd";
@@ -29,7 +32,6 @@ public class ReportComponent {
 
 		reportAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(report.getUserId())));
 		reportAdminVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
-		reportAdminVo.setDateLabel(formatDate(report.getDate(), SIMPLE_TIME_PATTERN));
 		reportAdminVo.setImage1Thumbnail(getThumbnail(report.getImage1()));
 		reportAdminVo.setImage2Thumbnail(getThumbnail(report.getImage2()));
 		reportAdminVo.setImage3Thumbnail(getThumbnail(report.getImage3()));
@@ -45,10 +47,12 @@ public class ReportComponent {
 		return reportAdminVo;
 	}
 
-	public ReportVo buildVo(Report report) {
-		ReportVo reportVo = new ReportVo();
+	public ReportDetailVo buildVo(Report report) {
+		ReportDetailVo reportVo = new ReportDetailVo();
 		BeanUtils.copyProperties(report, reportVo);
 
+		reportVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
+		
 		reportVo.setImage1Thumbnail(GcUtils.getThumbnail(report.getImage1()));
 		reportVo.setImage2Thumbnail(GcUtils.getThumbnail(report.getImage2()));
 		reportVo.setImage3Thumbnail(GcUtils.getThumbnail(report.getImage3()));
