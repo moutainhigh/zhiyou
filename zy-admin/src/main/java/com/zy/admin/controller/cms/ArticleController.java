@@ -1,15 +1,17 @@
 package com.zy.admin.controller.cms;
 
-import com.zy.common.model.query.Page;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.model.ui.Grid;
-import com.zy.common.support.AliyunOssSupport;
-import com.zy.entity.cms.Article;
-import com.zy.entity.cms.ArticleCategory;
-import com.zy.model.query.ArticleQueryModel;
-import com.zy.service.ArticleCategoryService;
-import com.zy.service.ArticleService;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.ALIYUN_BUCKET_NAME_IMAGE;
+import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
 import io.gd.generator.api.query.Direction;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -24,16 +26,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
-import static com.zy.model.Constants.URL_PC;
-import static com.zy.model.Constants.URL_PC;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.*;
+import com.zy.common.model.query.Page;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.model.ui.Grid;
+import com.zy.common.support.AliyunOssSupport;
+import com.zy.entity.cms.Article;
+import com.zy.entity.cms.ArticleCategory;
+import com.zy.model.query.ArticleQueryModel;
+import com.zy.service.ArticleCategoryService;
+import com.zy.service.ArticleService;
 
 @Controller
 @RequestMapping("/article")
@@ -54,7 +55,6 @@ public class ArticleController {
 	public String list(Model model) {
 		List<ArticleCategory> articleCategories = articleCategoryService.findAllVisiable(false);
 		model.addAttribute("articleCategories", articleCategories);
-		model.addAttribute("rulPc", URL_PC);
 		return "cms/articleList";
 	}
 
