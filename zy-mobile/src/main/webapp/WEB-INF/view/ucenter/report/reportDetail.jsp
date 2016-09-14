@@ -82,6 +82,10 @@
       <div class="list-text">职业</div>
       <div class="list-unit">${report.jobName}</div>
     </div>
+  </div>
+  
+  <div class="list-group">
+    <div class="list-title">检测结果，照片</div>
     <div class="list-item">
       <div class="list-text">检测结果</div>
       <div class="list-unit">
@@ -101,10 +105,6 @@
         </c:choose>
       </div>
     </div>
-  </div>
-  
-  <div class="list-group">
-    <div class="list-title">检测结果图片</div>
     <div class="list-item">
       <div class="list-text list-image image-view">
         <img src="${report.image1Thumbnail}" data-src="${report.image1Big}">
