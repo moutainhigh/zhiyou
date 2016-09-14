@@ -80,13 +80,13 @@ public class AppearanceServiceImpl implements AppearanceService {
 			validate(confirmRemark, NOT_NULL, "审核不通过时,备注必须填写");
 			merge.setConfirmRemark(confirmRemark);
 			merge.setConfirmStatus(ConfirmStatus.未通过);
-			producer.send(Constants.TOPIC_APPEARANCE_REJECTED, appearance);
+			producer.send(Constants.TOPIC_APPEARANCE_REJECTED, appearance.getId());
 		} else {
 			merge.setConfirmRemark(confirmRemark);
 			merge.setConfirmStatus(ConfirmStatus.已通过);
 			merge.setConfirmedTime(new Date());
 			// 通过审核发送消息
-			producer.send(Constants.TOPIC_APPEARANCE_CONFIRMED, appearance);
+			producer.send(Constants.TOPIC_APPEARANCE_CONFIRMED, appearance.getId());
 		}
 		appearanceMapper.merge(merge, "confirmRemark", "confirmStatus", "confirmedTime");
 	}

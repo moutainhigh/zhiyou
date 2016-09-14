@@ -1,4 +1,4 @@
-package com.zy.job.extend;
+package com.zy.task.extend;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.BeansException;

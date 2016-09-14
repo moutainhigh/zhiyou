@@ -44,35 +44,21 @@
           title : '订单状态',
           orderable : false,
           render : function(data, type, full) {
-            var result = '';
-            if (data == '待支付') {
-              result = '<label class="label label-danger">待支付</label>';
-            } else if (data == '已支付') {
-              result = '<label class="label label-success">已支付</label>';
-            } else if (data == '已发货') {
-              result = '<label class="label label-default">已发货</label>';
-            } else if (data == '已完成') {
-              result = '<label class="label label-success">已完成</label>';
-            } else if (data == '已退款') {
-              result = '<label class="label label-default">已退款</label>';
-            } else if (data == '订单取消') {
-              result = '<label class="label label-default">订单取消</label>';
-            }
-            return result;
+            return '<label class="label ' + full.orderStatusStyle + '">' + data + '</label>';
           }
         }, {
           data : '',
           title : '用户信息',
           orderable : false,
           render : function(data, type, full) {
-            return '<p>昵称: ' + full.user.nickname + '</p><p>手机号: ' + full.user.phone + '</p><p>等级: ' + full.user.userRankLabel + '</p>';
+            return '<p><img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>: ' + full.user.nickname + '</p><p>手机号: ' + full.user.phone + '</p><p>等级: ' + full.user.userRankLabel + '</p>';
           }
         }, {
           data : '',
           title : '卖家信息',
           orderable : false,
           render : function(data, type, full) {
-            return '<p>昵称: ' + full.seller.nickname + '</p><p>手机号: ' + full.seller.phone + '</p><p>等级: ' + full.seller.userRankLabel + '</p>';
+            return '<p><img src="' + full.seller.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>: ' + full.seller.nickname + '</p><p>手机号: ' + full.seller.phone + '</p><p>等级: ' + full.seller.userRankLabel + '</p>';
           }
         },{
           data : 'price',
@@ -160,7 +146,7 @@
               <li class="active"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 全部</a></li>
               <li class="" data-order-status="0"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 待付款</a></li>
               <li class="" data-order-status="1"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已支付</a></li>
-              <li class="" data-order-status="1" data-is-platform-deliver="true"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"><strong> 已支付(平台发货) </strong></a></li>
+              <li class="" data-order-status="1" data-is-platform-deliver="true"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"><strong> 已支付(平台发货) </strong><span class="badge badge-primary"> ${count} </span></a></li>
               <li class="" data-order-status="2"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已发货</a></li>
               <li class="" data-order-status="3"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已完成</a></li>
               <li class="" data-order-status="4"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已退款</a></li>

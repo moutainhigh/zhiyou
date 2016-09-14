@@ -112,6 +112,7 @@ public class Order implements Serializable {
 	@Query(Predicate.EQ)
 	@Field(label = "订单状态")
 	@View
+	@View(name = "orderStatusStyle", type = String.class, groups = {"OrderAdminVo", "OrderAdminFullVo"})
 	private OrderStatus orderStatus;
 
 	@NotNull

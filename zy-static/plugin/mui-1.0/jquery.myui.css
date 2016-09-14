@@ -17,11 +17,11 @@
 }
 .mui-dialog .mui-dialog-shade {
   background-color: rgba(0, 0, 0, 0.7);
-  pointer-events: auto;
+  pointer-events: auto; z-index: 1201;
 }
 .mui-dialog .mui-dialog-wrap {
   display: table;
-  pointer-events: none;
+  pointer-events: none; z-index: 1202;
 }
 .mui-dialog .mui-dialog-inner {
   display: table-cell;
@@ -31,7 +31,7 @@
 .mui-dialog .mui-dialog-content {
   position: relative; overflow: hidden;
   color: #555; font-size: 14px;  text-align: center;
-  pointer-events: auto;
+  pointer-events: auto; z-index: 1203;
 }
 .mui-dialog .mui-dialog-title {
   padding: 20px;

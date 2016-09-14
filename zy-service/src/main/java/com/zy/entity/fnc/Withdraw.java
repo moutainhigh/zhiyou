@@ -98,6 +98,7 @@ public class Withdraw implements Serializable {
 	@Query(Predicate.EQ)
 	@Field(label = "提现单状态")
 	@View
+	@View(name = "withdrawStatusStyle", type = String.class, groups = {"WithdrawAdminVo"})
 	private WithdrawStatus withdrawStatus;
 
 	@Field(label = "操作者id")

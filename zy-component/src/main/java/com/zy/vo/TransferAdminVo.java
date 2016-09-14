@@ -45,6 +45,8 @@ public class TransferAdminVo implements Serializable {
 	private String remark;
 
 	/* 扩展 */
+	@Field(label = "转账状态")
+	private String transferStatusStyle;
 	@Field(label = "转出用户id")
 	private UserAdminSimpleVo fromUser;
 	@Field(label = "转入用户id")

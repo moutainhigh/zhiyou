@@ -2,6 +2,7 @@ package com.zy.util;
 
 import com.zy.common.exception.ValidationException;
 import com.zy.common.util.Identities;
+import com.zy.entity.mal.Order;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
@@ -198,6 +199,36 @@ public class GcUtils {
 		} else {
 			return null;
 		}
+	}
+
+	public static String getOrderStatusStyle (Order.OrderStatus orderStatus) {
+		
+		String labelClass = "label-default";
+		switch (orderStatus) {
+		case 待支付:
+			labelClass = "label-danger";
+			break;
+		case 已支付:
+			labelClass = "label-success";
+			break;
+		case 已发货:
+			labelClass = "label-info";
+			break;
+		case 已完成:
+			labelClass = "label-success";
+			break;
+		case 已退款:
+			labelClass = "label-warning";
+			break;
+		case 已取消:
+			labelClass = "label-default";
+			break;
+		default:
+			break;
+		}
+		
+		return labelClass;
+
 	}
 
 }

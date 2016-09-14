@@ -244,6 +244,7 @@
     <a id="btnShare" class="flex-1" href="javascript:;">
       <i class="fa fa-share-alt"></i><span>分享</span>
     </a>
+    
     <c:if test="${activity.status == '报名中' || activity.status == '进行中'}">
     <c:if test="${isApplied}">
     <a class="flex-3 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-check"></i> 您已报名</div></a>

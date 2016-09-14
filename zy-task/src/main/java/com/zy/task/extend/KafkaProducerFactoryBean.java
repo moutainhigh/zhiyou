@@ -1,4 +1,4 @@
-package com.zy.extend;
+package com.zy.task.extend;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import java.util.Properties;
  * having multiple instances.
  */
 
-public class KafkaProducerFactoryBean implements InitializingBean, FactoryBean<KafkaProducer>, DisposableBean {
+public class KafkaProducerFactoryBean implements InitializingBean, FactoryBean<KafkaProducer<String,String>>, DisposableBean {
 
     private final Logger logger = LoggerFactory.getLogger(KafkaProducerFactoryBean.class);
 
@@ -29,7 +29,7 @@ public class KafkaProducerFactoryBean implements InitializingBean, FactoryBean<K
     }
 
     @Override
-    public KafkaProducer getObject() throws Exception {
+    public KafkaProducer<String,String> getObject() throws Exception {
         return producer;
     }
 

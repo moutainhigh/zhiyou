@@ -56,6 +56,7 @@ public class Profit implements Serializable {
 	@Field(label = "收益单状态")
 	@Query(EQ)
 	@View
+	@View(name = "profitStatusStyle", type = String.class, groups = {"ProfitAdminVo"})
 	private ProfitStatus profitStatus;
 
 	@NotNull

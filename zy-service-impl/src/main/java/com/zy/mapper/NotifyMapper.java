@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.zy.entity.sys.Notify;
+import com.zy.model.query.NotifyQueryModel;
 
 
 public interface NotifyMapper {
@@ -19,6 +20,8 @@ public interface NotifyMapper {
 
 	Notify findOne(Long id);
 
-	List<Notify> findAll();
+	List<Notify> findAll(NotifyQueryModel notifyQueryModel);
+
+	long count(NotifyQueryModel notifyQueryModel);
 
 }

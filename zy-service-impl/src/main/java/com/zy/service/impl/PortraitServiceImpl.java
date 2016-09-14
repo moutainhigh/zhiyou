@@ -86,7 +86,7 @@ public class PortraitServiceImpl implements PortraitService {
         checkArea(areaId);
         portraitMapper.insert(portrait);
         // 完善画像发送消息
-        producer.send(TOPIC_PORTRAIT_COMPLETED, portrait);
+        producer.send(TOPIC_PORTRAIT_COMPLETED, portrait.getId());
         return portrait;
     }
 

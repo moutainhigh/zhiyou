@@ -93,6 +93,9 @@
 		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,last_upgraded_time
 		from `usr_user`
 		<where>
+			<if test="userRankEQ != null">
+				and user_rank = #{userRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
 				and id in
@@ -164,6 +167,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
 		select count(*) from `usr_user`
 		<where>
+			<if test="userRankEQ != null">
+				and user_rank = #{userRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
 				and id in

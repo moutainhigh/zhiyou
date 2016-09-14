@@ -30,7 +30,7 @@
     <ul class="breadcrumb mt-10">
       <li><a href="${ctx}/u/team/"><i class="fa fa-home"></i> 我的团队</a></li>
       <c:if test="${not empty parentLv3 && principalUserId != parentLv3.id}">
-      <li><a href="${ctx}/u/team/">${parentLv3.nickname}</a></li>
+      <li><a href="${ctx}/u/team/${parentLv3.id}">${parentLv3.nickname}</a></li>
       </c:if>
       <c:if test="${not empty parentLv2 && principalUserId != parentLv2.id}">
       <li><a href="${ctx}/u/team/${parentLv2.id}">${parentLv2.nickname}</a></li>
@@ -49,6 +49,16 @@
         <img class="image-40 round ml-10" src="${user.avatarThumbnail}">
       </div>
       <div class="list-item">
+        <i class="list-icon fa fa-map-marker"></i>
+        <div class="list-text">代理等级</div>
+        <div class="list-unit">
+          <c:if test="${user.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
+          <c:if test="${user.userRank == 'V2'}"><label class="label blue">二级代理</label></c:if>
+          <c:if test="${user.userRank == 'V3'}"><label class="label orange">一级代理</label></c:if>
+          <c:if test="${user.userRank == 'V4'}"><label class="label red">特级代理</label></c:if>
+        </div>
+      </div>
+      <div class="list-item">
         <i class="list-icon fa fa-phone"></i>
         <div class="list-text">手机</div>
         <div class="list-unit">${user.phone}</div>
@@ -62,7 +72,7 @@
     
     <c:if test="${not empty list}">
     <div class="list-group">
-      <div class="list-title">&lt;${user.nickname}&gt;的直接下级代理</div>
+      <div class="list-title">&lt;<span class="font-orange">${user.nickname}</span>&gt;的直接下级代理</div>
       <c:forEach items="${list}" var="inviteUser" varStatus="varStatus">
       <a class="list-item invite" href="${ctx}/u/team/${inviteUser.id}">
         <div class="avatar">
