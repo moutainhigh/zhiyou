@@ -114,6 +114,7 @@ public class OrderComponent {
 		
 		orderAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getUserId())));
 		orderAdminVo.setSeller(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getSellerId())));
+		orderAdminVo.setOrderStatusStyle(GcUtils.getOrderStatusStyle(order.getOrderStatus()));
 		return orderAdminVo;
 	}
 	
