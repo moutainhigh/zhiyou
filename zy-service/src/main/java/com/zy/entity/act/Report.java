@@ -3,20 +3,24 @@ package com.zy.entity.act;
 import com.zy.common.extend.StringBinder;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Portrait.Gender;
+
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
+import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -43,6 +47,7 @@ public class Report implements Serializable {
 	@Field(label = "用户id")
 	@Query({Predicate.EQ, Predicate.IN})
 	@View
+	@AssociationView(name = "user", groups = "ReportAdminVo", associationGroup = "UserAdminSimpleVo")
 	private Long userId;
 	
 	@NotNull
@@ -132,6 +137,7 @@ public class Report implements Serializable {
 	@NotNull
 	@Field(label = "创建时间")
 	@View(groups = {"ReportAdminVo"})
+	@View(name = "createdTimeLabel", type = String.class)
 	private Date createdTime;
 
 	@NotNull
