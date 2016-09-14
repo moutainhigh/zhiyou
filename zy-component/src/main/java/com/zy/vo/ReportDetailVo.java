@@ -94,6 +94,8 @@ public class ReportDetailVo implements Serializable {
 	private String image6Big;
 	@Field(label = "图片6")
 	private String image6Thumbnail;
+	@Field(label = "创建时间")
+	private String createdTimeLabel;
 	@Field(label = "标签")
 	private List<String> tagNames = new ArrayList<>();
 

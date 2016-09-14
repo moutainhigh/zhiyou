@@ -38,6 +38,8 @@ public class ReportListVo implements Serializable {
 	private String city;
 	@Field(label = "所在地")
 	private String district;
+	@Field(label = "创建时间")
+	private String createdTimeLabel;
 	@Field(label = "标签")
 	private List<String> tagNames = new ArrayList<>();
 
