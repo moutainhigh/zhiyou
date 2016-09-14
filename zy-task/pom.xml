@@ -67,6 +67,10 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -97,7 +101,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 
 
 		<dependency>

@@ -2,7 +2,7 @@ package com.zy.job;
 
 
 import com.zy.entity.usr.User;
-import com.zy.job.extend.AliyunOssSupport;
+import com.zy.task.extend.AliyunOssSupport;
 import com.zy.model.Constants;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;

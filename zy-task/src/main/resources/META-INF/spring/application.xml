@@ -2,12 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-       xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd
-       http://code.alibabatech.com/schema/dubbo http://static.1024ke.com/file/dubbo.xsd
-       ">
+       http://code.alibabatech.com/schema/dubbo http://static.1024ke.com/file/dubbo.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<context:property-placeholder location="file:${user.home}/zy.properties"/>
 
@@ -30,15 +28,14 @@
 	<dubbo:consumer cluster="failfast" timeout="10000"/>
 
 
-
-
 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<!--account log ack job -->
 				<bean id="accountLogAckJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="accountLogAckJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+						<bean id="accountLogAckJobDetail"
+						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.job.AccountLogAckJob"></property>
 						</bean>
@@ -50,7 +47,8 @@
 				<!--头像装换job-->
 				<bean id="conversionAvatarTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="conversionAvatarDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+						<bean id="conversionAvatarDetail"
+						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.job.ConversionAvatarJob"></property>
 						</bean>
@@ -60,9 +58,11 @@
 					</property>
 				</bean>
 				<!--订单结算job-->
-				<bean id="orderStatementJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+				<bean id="orderStatementJobTrigger"
+				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="orderStatementJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+						<bean id="orderStatementJobDetail"
+						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.job.OrderStatementJob"></property>
 						</bean>
@@ -75,7 +75,8 @@
 				<!--支付单取消job-->
 				<bean id="paymentCancelTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="paymentCancelDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+						<bean id="paymentCancelDetail"
+						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.job.PaymentCancelJob"></property>
 						</bean>
@@ -88,7 +89,8 @@
 				<!--收益单结算job-->
 				<bean id="profitGrantJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="profitGrantJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+						<bean id="profitGrantJobDetail"
+						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.job.ProfitGrantJob"></property>
 						</bean>
@@ -98,9 +100,11 @@
 					</property>
 				</bean>
 				<!--report 结算-->
-				<bean id="reportStatementJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+				<bean id="reportStatementJobTrigger"
+				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="reportStatementJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+						<bean id="reportStatementJobDetail"
+						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.job.ReportStatementJob"></property>
 						</bean>
@@ -140,7 +144,7 @@
 		<property name="waitForJobsToCompleteOnShutdown" value="true"/>
 		<property name="autoStartup" value="true"/>
 		<property name="jobFactory">
-			<bean class="com.zy.job.extend.SpringBeanJobFactory"/>
+			<bean class="com.zy.task.extend.SpringBeanJobFactory"/>
 		</property>
 		<property name="dataSource" ref="quartzDataSource"/>
 	</bean>
@@ -167,11 +171,28 @@
 	<bean id="closeableHttpClient" class="com.zy.common.extend.CloseableHttpClientFactoryBean"
 	      destroy-method="destroy"/>
 
-	<bean id="aliyunOssSupport" class="com.zy.job.extend.AliyunOssSupport">
+	<bean id="aliyunOssSupport" class="com.zy.task.extend.AliyunOssSupport">
 		<constructor-arg index="0" value="${aliyun.ossEndpoint}"/>
 		<constructor-arg index="1" value="${aliyun.accessKeyId}"/>
 		<constructor-arg index="2" value="${aliyun.accessKeySecret}"/>
 		<constructor-arg index="3" value="${aliyun.ossGroup}"/>
 	</bean>
+
+
+	<bean id="kafkaProducerFactoryBean" class="com.zy.task.extend.KafkaProducerFactoryBean">
+		<property name="properties">
+			<util:properties>
+				<prop key="bootstrap.servers">${kafka.servers}</prop>
+				<prop key="acks">1</prop>
+				<prop key="retries">0</prop>
+				<prop key="batch.size">16384</prop>
+				<prop key="linger.ms">1</prop>
+				<prop key="buffer.memory">33554432</prop>
+				<prop key="key.serializer">org.apache.kafka.common.serialization.StringSerializer</prop>
+				<prop key="value.serializer">org.apache.kafka.common.serialization.StringSerializer</prop>
+			</util:properties>
+		</property>
+	</bean>
+
 
 </beans>

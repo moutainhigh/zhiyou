@@ -1,4 +1,4 @@
-package com.zy.job.extend;
+package com.zy.task.extend;
 
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;

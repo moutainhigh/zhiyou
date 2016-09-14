@@ -2,6 +2,9 @@ package com.zy.entity.sys;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
+import io.gd.generator.annotation.query.Query;
+import io.gd.generator.annotation.query.QueryModel;
+import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
@@ -19,6 +22,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Type(label = "消息队列")
+@QueryModel
 public class Notify implements Serializable {
 
 	@Id
@@ -48,6 +52,7 @@ public class Notify implements Serializable {
 
 	@NotNull
 	@Field(label = "是否发送")
+	@Query(Predicate.EQ)
 	private Boolean isSent;
 
 	@Field(label = "发送时间")
