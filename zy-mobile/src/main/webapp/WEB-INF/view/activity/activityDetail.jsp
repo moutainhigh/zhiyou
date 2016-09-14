@@ -123,7 +123,7 @@
     <a class="right mt-10" href="javascript:;"><i class="fa fa-close"></i></a>
   </div>
   </c:if>
-  <a class="header-back"${not empty inviter ? ' style="margin-top: 70px;"' : ''} href="javascript:history.back();"><i class="fa fa-angle-left"></i></a>
+  <a class="header-back"${not empty inviter ? ' style="margin-top: 70px;"' : ''} href="${ctx}/activity"><i class="fa fa-angle-left"></i></a>
   <article>
     <figure class="image-wrap">
       <img class="abs-lt" src="${activity.imageBig}">
