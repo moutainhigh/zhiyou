@@ -127,7 +127,7 @@
               </div>
 
               <div class="form-group">
-                <select name=profitTypeEQ class="form-control">
+                <select name="profitTypeEQ" class="form-control">
                   <option value="">-- 收益类型 --</option>
                   <c:forEach items="${profitTypes}" var="profitType">
                     <option value="${profitType}">${profitType}</option>
