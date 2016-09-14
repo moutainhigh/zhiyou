@@ -2,12 +2,11 @@ package com.zy.util;
 
 import com.zy.common.exception.ValidationException;
 import com.zy.common.util.Identities;
-import com.zy.entity.fnc.Transfer;
+import com.zy.entity.fnc.*;
 import com.zy.entity.mal.Order;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -17,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -132,17 +130,6 @@ public class GcUtils {
 		return DateFormatUtils.format(date, pattern);
 	}
 
-	public static String formatDuration(Long duration) {
-		if (duration == null || duration <= 0) {
-			return "00:00";
-		}
-		int hours = (int) (duration / 3600);
-		int minutes = (int) (duration / 60 % 60);
-		int seconds = (int) (duration % 60);
-
-		return (hours > 0 ? (hours < 10 ? "0" : "") + hours + "小时" : "") + (minutes > 0 ? (minutes < 10 ? "0" : "") + minutes + "分" : "00分")
-				+ (seconds > 0 ? (seconds < 10 ? "0" : "") + seconds + "秒" : "00秒");
-	}
 
 	public static String formatCurreny(BigDecimal bigDecimal) {
 		if (bigDecimal == null) {
@@ -204,7 +191,7 @@ public class GcUtils {
 		}
 	}
 
-	public static String getOrderStatusStyle (Order.OrderStatus orderStatus) {
+	public static String getOrderStatusStyle(Order.OrderStatus orderStatus) {
 		String labelClass = "label-default";
 		switch (orderStatus) {
 		case 待支付:
@@ -231,7 +218,7 @@ public class GcUtils {
 		return labelClass;
 	}
 
-	public static String getTransferStatusStyle (Transfer.TransferStatus transferStatus) {
+	public static String getTransferStatusStyle(Transfer.TransferStatus transferStatus) {
 		String labelClass = "label-default";
 		switch (transferStatus) {
 		case 待转账:
@@ -248,4 +235,21 @@ public class GcUtils {
 		}
 		return labelClass;
 	}
+
+	public static String getProfitStatusStyle(Profit.ProfitStatus profitStatus) {
+		return null;
+	}
+
+	public static String getDepositStatusStyle(Deposit.DepositStatus depositStatus) {
+		return null;
+	}
+
+	public static String getWithdrawStatusStyle(Withdraw.WithdrawStatus withdrawStatus) {
+		return null;
+	}
+
+	public static String getPaymentStatusStyle(Payment.PaymentStatus paymentStatus) {
+		return null;
+	}
+
 }
