@@ -49,12 +49,19 @@ public class UcenterOrderController {
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent::buildListVo));
 		model.addAttribute("inOut", "in");
 		model.addAttribute("orderStatus", orderStatus);
+		model.addAttribute("orderCount", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.待支付);
-		model.addAttribute("waitForPayConut", orderService.count(orderQueryModel));
+		model.addAttribute("orderCount0", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.已支付);
-		model.addAttribute("waitForDeliverConut", orderService.count(orderQueryModel));
+		model.addAttribute("orderCount1", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.已发货);
-		model.addAttribute("waitForReceiveConut", orderService.count(orderQueryModel));
+		model.addAttribute("orderCount2", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已完成);
+		model.addAttribute("orderCount3", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已退款);
+		model.addAttribute("orderCount4", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已取消);
+		model.addAttribute("orderCount5", orderService.count(orderQueryModel));
 		return "ucenter/order/orderList";
 	}
 
@@ -66,12 +73,19 @@ public class UcenterOrderController {
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent::buildListVo));
 		model.addAttribute("inOut", "out");
 		model.addAttribute("orderStatus", orderStatus);
+		model.addAttribute("orderCount", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.待支付);
-		model.addAttribute("waitForPayConut", orderService.count(orderQueryModel));
+		model.addAttribute("orderCount0", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.已支付);
-		model.addAttribute("waitForDeliverConut", orderService.count(orderQueryModel));
+		model.addAttribute("orderCount1", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.已发货);
-		model.addAttribute("waitForReceiveConut", orderService.count(orderQueryModel));
+		model.addAttribute("orderCount2", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已完成);
+		model.addAttribute("orderCount3", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已退款);
+		model.addAttribute("orderCount4", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已取消);
+		model.addAttribute("orderCount5", orderService.count(orderQueryModel));
 		return "ucenter/order/orderList";
 	}
 
