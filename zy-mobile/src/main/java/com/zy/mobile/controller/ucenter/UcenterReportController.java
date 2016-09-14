@@ -60,8 +60,7 @@ public class UcenterReportController {
 
 	@RequestMapping()
 	public String list(Principal principal, Model model) {
-		Page<Report> page = reportService
-				.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(0).pageSize(6).build());
+		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(0).pageSize(6).build());
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, reportComponent::buildListVo));
 		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		return "ucenter/report/reportList";
@@ -69,15 +68,13 @@ public class UcenterReportController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> product(Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber,
-			Principal principal) {
+	public Result<?> product(Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber, Principal principal) {
 		if (timeLT == null) {
 			timeLT = new Date();
 		}
 
 		Map<String, Object> map = new HashMap<>();
-		Page<Report> page = reportService.findPage(
-				ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(pageNumber).pageSize(6).build());
+		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(pageNumber).pageSize(6).build());
 		map.put("page", PageBuilder.copyAndConvert(page, reportComponent::buildListVo));
 		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
 
@@ -122,7 +119,8 @@ public class UcenterReportController {
 	public String edit(@RequestParam Long id, Principal principal, Model model) {
 		Report report = findAndValidate(id, principal.getUserId());
 		validate(report, NOT_NULL, "report id" + id + " not found");
-
+		model.addAttribute("jobs", this.jobService.findAll());
+		model.addAttribute("tags", getTags());
 		model.addAttribute("report", reportComponent.buildDetailVo(report));
 		return "ucenter/report/reportEdit";
 	}

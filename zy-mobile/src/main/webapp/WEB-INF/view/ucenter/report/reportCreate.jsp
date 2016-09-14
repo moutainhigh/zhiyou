@@ -115,34 +115,24 @@
           </div>
         </div>
         <div class="list-item">
-          <label class="list-label" for="age">年龄</label>
-          <div class="list-text">
-            <input type="number" name="age" class="form-input" value="" placeholder="填写客户年龄">
-          </div>
-        </div>
-        <div class="list-item">
-          <label class="list-label" for="phone">手机号</label>
-          <div class="list-text">
-            <input type="number" name="phone" class="form-input" value="" placeholder="填写客户手机号">
-          </div>
-        </div>
-        <div class="list-item">
           <label class="list-label">地区</label>
           <div class="list-text">
-            <div class="form-select pb-10 bd-b">
-              <select name="" id="province">
-                <option value="">选择省</option>
-              </select>
-            </div>
-            <div class="form-select mt-10 pb-10 bd-b">
-              <select name="" id="city">
-                <option value="">选择市</option>
-              </select>
-            </div>
-            <div class="form-select mt-10">
-              <select name="areaId" id="district">
-                <option value="">选择区</option>
-              </select>
+            <div class="flex">
+              <div class="form-select flex-1">
+                <select name="" id="province">
+                  <option value="">省</option>
+                </select>
+              </div>
+              <div class="form-select flex-1">
+                <select name="" id="city">
+                  <option value="">市</option>
+                </select>
+              </div>
+              <div class="form-select flex-1">
+                <select name="areaId" id="district">
+                  <option value="">区</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -158,6 +148,22 @@
           </div>
         </div>
         <div class="list-item">
+          <label class="list-label" for="age">年龄</label>
+          <div class="list-text">
+            <input type="number" name="age" class="form-input" value="" placeholder="填写客户年龄">
+          </div>
+        </div>
+        <div class="list-item">
+          <label class="list-label" for="phone">手机号</label>
+          <div class="list-text">
+            <input type="number" name="phone" class="form-input" value="" placeholder="填写客户手机号">
+          </div>
+        </div>
+      </div>
+
+      <div class="list-group">
+        <div class="list-title">检测结果，至少需要上传1张检测图片</div>
+        <div class="list-item">
           <label class="list-label">检测结果</label>
           <div class="list-text form-select">
             <select name="reportResult">
@@ -169,10 +175,6 @@
             </select>
           </div>
         </div>
-      </div>
-
-      <div class="list-group">
-        <div class="list-title">您至少需要上传1张检测图片</div>
         <div class="list-item">
           <div class="list-text image-upload image-multi">
             <div class="image-add" data-limit="6">
