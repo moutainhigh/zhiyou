@@ -79,10 +79,10 @@
       +   '</div>'
       + '</aside>';
     var $dialog = $(html);
-    $('body').addClass('o-hidden').append($dialog);
+    $('body').css({'overflow':'hidden'}).append($dialog);
     $dialogContent = $dialog.find('.mui-dialog-content');
     var onClose = function(){
-      $('body').removeClass('o-hidden');
+      $('body').css({'overflow':'auto'});
       $dialog.remove();
     }
     
