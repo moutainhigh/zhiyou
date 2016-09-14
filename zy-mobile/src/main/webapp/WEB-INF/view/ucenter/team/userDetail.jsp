@@ -13,17 +13,10 @@
 
 <title>${user.nickname}</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<script src="${stccdn}/plugin/iscroll-5.2.0/iscroll.js"></script>
-<script>
+<script type="text/javascript">
+  $(function() {
 
-  var myscroll;
-  
-  function loaded() {
-     myscroll = new IScroll("#wrapper");
-  }
-  
-  window.addEventListener("load", loaded, false);
-  
+  });
 </script>
 </head>
 <body>
@@ -33,7 +26,7 @@
   </header>
 
   <article>
-    <div id="wrapper">
+    
     <ul class="breadcrumb mt-10">
       <li><a href="${ctx}/u/team/"><i class="fa fa-home"></i> 我的团队</a></li>
       <c:if test="${not empty parentLv3 && principalUserId != parentLv3.id}">
@@ -47,7 +40,6 @@
       </c:if>
       <li><a href="javascript:;">${user.nickname}</a></li>
     </ul>
-    </div>
     
     <div class="list-group">
       <div class="list-item">

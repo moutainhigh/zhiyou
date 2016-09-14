@@ -14,19 +14,34 @@
 <title>我的订单</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/order.css" />
+<script src="${stccdn}/plugin/iscroll-5.2.0/iscroll.js"></script>
+<script>
+
+var myScroll;
+
+function loaded () {
+	myScroll = new IScroll('#wrapper', { scrollX: true, scrollY: false, mouseWheel: true });
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+  
+</script>
 </head>
+<body onload="loaded()">
 <body class="header-fixed footer-fixed">
   <header class="header">
     <h1>${inOut == 'out' ? '出货' : '进货'}订单</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
-  <nav class="tab-nav">
-    <a href="${ctx}/u/order/${inOut}"<c:if test="${empty orderStatus}"> class="current"</c:if>>全部订单</a>
-    <a href="${ctx}/u/order/${inOut}?orderStatus=0"<c:if test="${orderStatus == '待支付'}"> class="current"</c:if>>待付款 (${waitForPayConut})</a>
-    <a href="${ctx}/u/order/${inOut}?orderStatus=1"<c:if test="${orderStatus == '已支付'}"> class="current"</c:if>>待发货 (${waitForDeliverConut})</a>
-    <a href="${ctx}/u/order/${inOut}?orderStatus=2"<c:if test="${orderStatus == '已发货'}"> class="current"</c:if>>待收货 (${waitForReceiveConut})</a>
-  </nav>
+  <div id="scrollWrapper">
+    <nav class="tab-nav scrollable">
+      <a href="${ctx}/u/order/${inOut}"<c:if test="${empty orderStatus}"> class="current"</c:if>>全部订单</a>
+      <a href="${ctx}/u/order/${inOut}?orderStatus=0"<c:if test="${orderStatus == '待支付'}"> class="current"</c:if>>待付款 (${waitForPayConut})</a>
+      <a href="${ctx}/u/order/${inOut}?orderStatus=1"<c:if test="${orderStatus == '已支付'}"> class="current"</c:if>>待发货 (${waitForDeliverConut})</a>
+      <a href="${ctx}/u/order/${inOut}?orderStatus=2"<c:if test="${orderStatus == '已发货'}"> class="current"</c:if>>待收货 (${waitForReceiveConut})</a>
+    </nav>
+  </div>
   
   <article class="order-list">
     <c:if test="${empty page.data}">
