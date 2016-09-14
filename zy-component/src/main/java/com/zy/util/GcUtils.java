@@ -2,6 +2,7 @@ package com.zy.util;
 
 import com.zy.common.exception.ValidationException;
 import com.zy.common.util.Identities;
+import com.zy.entity.mal.Order;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
@@ -198,6 +199,14 @@ public class GcUtils {
 		} else {
 			return null;
 		}
+	}
+
+	public static String getOrderStatusStyle (Order.OrderStatus orderStatus) {
+
+
+
+		return "alert";
+
 	}
 
 }

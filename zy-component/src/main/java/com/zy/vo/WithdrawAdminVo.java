@@ -50,6 +50,8 @@ public class WithdrawAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
+	@Field(label = "提现单状态")
+	private String withdrawStatusStyle;
 	@Field(label = "银行卡id")
 	private BankCardAdminVo bankCard;
 
