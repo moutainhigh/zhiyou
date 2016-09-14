@@ -1,14 +1,14 @@
 package com.zy.vo;
 
-import io.gd.generator.annotation.Field;
+import java.io.Serializable;
+
 import com.zy.entity.act.Report.ReportResult;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Portrait.Gender;
+
+import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -40,7 +40,7 @@ public class ReportListVo implements Serializable {
 	private String district;
 	@Field(label = "创建时间")
 	private String createdTimeLabel;
-	@Field(label = "标签")
-	private List<String> tagNames = new ArrayList<>();
+	@Field(label = "审核状态")
+	private ConfirmStatus confirmStatus;
 
 }

@@ -88,7 +88,7 @@
   });
 </script>
 </head>
-<body class="">
+<body>
   <header class="header">
     <h1>上传检测报告</h1>
     <a href="${ctx}/u/report" class="button-left"><i class="fa fa-angle-left"></i></a>

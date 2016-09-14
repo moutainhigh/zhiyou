@@ -120,7 +120,7 @@
             <span class="font-green">${report.reportResult}</span>
             </c:when>
             <c:when test="${report.reportResult == '干扰色'}">
-            <span class="ont-purple">${report.reportResult}</span>
+            <span class="font-purple">${report.reportResult}</span>
             </c:when>
           </c:choose>
           <c:choose>
