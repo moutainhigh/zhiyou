@@ -56,11 +56,15 @@ public class ReportComponent {
 		ReportDetailVo reportVo = new ReportDetailVo();
 		BeanUtils.copyProperties(report, reportVo);
 
-		AreaDto area = areaService.findOneDto(report.getAreaId());
-		reportVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
-		reportVo.setProvince(area.getProvince());
-		reportVo.setCity(area.getCity());
-		reportVo.setDistrict(area.getDistrict());
+		if(report.getAreaId() != null){
+			AreaDto area = areaService.findOneDto(report.getAreaId());
+			reportVo.setProvince(area.getProvince());
+			reportVo.setCity(area.getCity());
+			reportVo.setDistrict(area.getDistrict());
+		}
+		if(report.getJobId() != null){
+			reportVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
+		}
 		reportVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportVo.setImage1Thumbnail(GcUtils.getThumbnail(report.getImage1()));
 		reportVo.setImage2Thumbnail(GcUtils.getThumbnail(report.getImage2()));
@@ -82,11 +86,15 @@ public class ReportComponent {
 		ReportListVo reportVo = new ReportListVo();
 		BeanUtils.copyProperties(report, reportVo);
 
-		AreaDto area = areaService.findOneDto(report.getAreaId());
-		reportVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
-		reportVo.setProvince(area.getProvince());
-		reportVo.setCity(area.getCity());
-		reportVo.setDistrict(area.getDistrict());
+		if(report.getAreaId() != null){
+			AreaDto area = areaService.findOneDto(report.getAreaId());
+			reportVo.setProvince(area.getProvince());
+			reportVo.setCity(area.getCity());
+			reportVo.setDistrict(area.getDistrict());
+		}
+		if(report.getJobId() != null){
+			reportVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
+		}
 		reportVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		
 		return reportVo;
