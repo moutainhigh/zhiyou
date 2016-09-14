@@ -11,8 +11,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="keywords" content="微信分销">
-<meta name="description" content="帮助中心">
 
 <title>帮助中心</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
@@ -29,11 +27,11 @@
   </header>
   
   <article class="service-contact flex mb-15 bd-b">
-    <a class="flex-1 bd-r" href="https://static.meiqia.com/dist/standalone.html?eid=24872">
+    <a class="flex-1 bd-r" href="https://static.meiqia.com/dist/standalone.html?eid=32013">
       <i class="fa fa-headphones font-orange"></i>
       <span>在线客服</span>
     </a>
-    <a class="flex-1" href="tel:18221126610">
+    <a class="flex-1" href="tel:18017676668">
       <i class="fa fa-phone font-blue"></i>
       <span>服务热线</span>
     </a>
