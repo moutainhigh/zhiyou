@@ -213,11 +213,16 @@
             }
           },
           {
+            data: 'remark',
+            title: '备注',
+            orderable: false
+          },
+          {
             data: '',
             title: '操作',
             orderable: false,
             render: function (data, type, full) {
-              var optionHtml = '';
+              var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/order/detail?id='+full.refId+'"><i class="fa icon-control-forward "></i> 查看订单</a>';
               <shiro:hasPermission name="payment:confirmPaid">
               if (full.payType == '银行汇款' && full.paymentStatus == '待支付' && full.offlineImage) {
                 optionHtml += '<a class="btn btn-xs default yellow-stripe payment-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';

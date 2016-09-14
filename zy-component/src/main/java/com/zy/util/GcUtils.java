@@ -2,6 +2,7 @@ package com.zy.util;
 
 import com.zy.common.exception.ValidationException;
 import com.zy.common.util.Identities;
+import com.zy.entity.fnc.*;
 import com.zy.entity.mal.Order;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
@@ -129,17 +130,6 @@ public class GcUtils {
 		return DateFormatUtils.format(date, pattern);
 	}
 
-	public static String formatDuration(Long duration) {
-		if (duration == null || duration <= 0) {
-			return "00:00";
-		}
-		int hours = (int) (duration / 3600);
-		int minutes = (int) (duration / 60 % 60);
-		int seconds = (int) (duration % 60);
-
-		return (hours > 0 ? (hours < 10 ? "0" : "") + hours + "小时" : "") + (minutes > 0 ? (minutes < 10 ? "0" : "") + minutes + "分" : "00分")
-				+ (seconds > 0 ? (seconds < 10 ? "0" : "") + seconds + "秒" : "00秒");
-	}
 
 	public static String formatCurreny(BigDecimal bigDecimal) {
 		if (bigDecimal == null) {
@@ -201,12 +191,124 @@ public class GcUtils {
 		}
 	}
 
-	public static String getOrderStatusStyle (Order.OrderStatus orderStatus) {
+	public static String getOrderStatusStyle(Order.OrderStatus orderStatus) {
+		String labelClass = "default";
+		switch (orderStatus) {
+		case 待支付:
+			labelClass = "danger";
+			break;
+		case 已支付:
+			labelClass = "success";
+			break;
+		case 已发货:
+			labelClass = "info";
+			break;
+		case 已完成:
+			labelClass = "success";
+			break;
+		case 已退款:
+			labelClass = "warning";
+			break;
+		case 已取消:
+			labelClass = "default";
+			break;
+		default:
+			break;
+		}
+		return labelClass;
+	}
 
+	public static String getTransferStatusStyle(Transfer.TransferStatus transferStatus) {
+		String labelClass = "default";
+		switch (transferStatus) {
+		case 待转账:
+			labelClass = "danger";
+			break;
+		case 已转账:
+			labelClass = "success";
+			break;
+		case 已取消:
+			labelClass = "default";
+			break;
+		default:
+			break;
+		}
+		return labelClass;
+	}
 
+	public static String getProfitStatusStyle(Profit.ProfitStatus profitStatus) {
+		String labelClass = "default";
+		switch (profitStatus) {
+		case 待发放:
+			labelClass = "danger";
+			break;
+		case 已发放:
+			labelClass = "success";
+			break;
+		case 已取消:
+			labelClass = "default";
+			break;
+		default:
+			break;
+		}
+		return labelClass;
+	}
 
-		return "alert";
+	public static String getDepositStatusStyle(Deposit.DepositStatus depositStatus) {
+		String labelClass = "default";
+		switch (depositStatus) {
+		case 待充值:
+			labelClass = "danger";
+			break;
+		case 充值成功:
+			labelClass = "success";
+			break;
+		case 已取消:
+			labelClass = "default";
+			break;
+		default:
+			break;
+		}
+		return labelClass;
+	}
 
+	public static String getWithdrawStatusStyle(Withdraw.WithdrawStatus withdrawStatus) {
+		String labelClass = "default";
+		switch (withdrawStatus) {
+		case 已申请:
+			labelClass = "danger";
+			break;
+		case 提现成功:
+			labelClass = "success";
+			break;
+		case 已取消:
+			labelClass = "default";
+			break;
+		default:
+			break;
+		}
+		return labelClass;
+	}
+
+	public static String getPaymentStatusStyle(Payment.PaymentStatus paymentStatus) {
+		String labelClass = "default";
+		switch (paymentStatus) {
+		case 待支付:
+			labelClass = "danger";
+			break;
+		case 已支付:
+			labelClass = "success";
+			break;
+		case 已退款:
+			labelClass = "warning";
+			break;
+		case 已取消:
+			labelClass = "default";
+			break;
+		default:
+			break;
+		}
+		return labelClass;
 	}
 
 }

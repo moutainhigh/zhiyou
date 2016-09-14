@@ -47,6 +47,14 @@
       $('#form').submit();
     });
     
+    $('#btnShare').click(function(){
+        $('#asideShare').show();
+    });
+    
+    $(document).on('click', '#asideShare', function() {
+		$(this).hide();
+	});
+    
     <c:if test="${not empty inviter}">
     $('.inviter-alert > a').click(function(){
       $('.inviter-alert').slideUp(300, function(){
@@ -230,20 +238,26 @@
       <i class="fa fa-heart-o"></i><span>关注 (<em>${activity.collectedCount}</em>)</span>
       </c:if>
     </a>
+    <a class="flex-1" href="tencent://message/?Menu=yes&amp;uin=800102442&amp;Service=58&amp;SigT=A7F6FEA02730C9882638D3610BB966ED27B63F697C7027A4092535E33182DBC45BD6824B5FCADA09E93837E1D3A3D246B3AD2EF3DBC53236321E71938881FC2A6A4DC8B36819053C32516B16624A5B5DFA332F03A8F56AC4045411E9FF59FDE4D088E22EA3FEFBFEFC1D08AF1E5B0014E361B9778837F377&amp;SigU=30E5D5233A443AB2B7D58E1FC719D338070071ECBB5EC72A6618BECABC33DC1FEE6C0ED7B50D9C668460CB16EFB6240478BD37F9F2A3B8E2AC598C0ED33702CDF85AD30452456B6D">
+      <i class="fa fa-qq"></i><span>客服</span>
+    </a>
+    <a id="btnShare" class="flex-1" href="javascript:;">
+      <i class="fa fa-share-alt"></i><span>分享</span>
+    </a>
     
     <c:if test="${activity.status == '报名中' || activity.status == '进行中'}">
     <c:if test="${isApplied}">
-    <a class="flex-2 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-check"></i> 您已报名</div></a>
+    <a class="flex-3 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-check"></i> 您已报名</div></a>
     </c:if>
     <c:if test="${!isApplied}">
-    <a id="btnApply" class="flex-2 bg-blue fs-14 font-white" href="javascript:;">报名参与</a>
+    <a id="btnApply" class="flex-3 bg-blue fs-14 font-white" href="javascript:;">报名参与</a>
     </c:if>
     </c:if>
     <c:if test="${activity.status == '报名已结束'}">
-    <a class="flex-2 fs-14 disabled" href="javascript:;">报名已结束</a>
+    <a class="flex-3 fs-14 disabled" href="javascript:;">报名已结束</a>
     </c:if>
     <c:if test="${activity.status == '活动已结束'}">
-    <a class="flex-2 fs-14 disabled" href="javascript:;">活动已结束</a>
+    <a class="flex-3 fs-14 disabled" href="javascript:;">活动已结束</a>
     </c:if>
   </nav>
   
@@ -251,6 +265,12 @@
   
   <aside id="asideMap" class="abs-lt size-100p bg-white hide zindex-1000">
     <a class="header-back" href="javascript:closeMap();"><i class="fa fa-angle-left"></i></a>
+  </aside>
+  
+  <aside id="asideShare" class="hide fix-lt size-100p zindex-1000" style="background: rgba(0,0,0,.75);">
+    <img class="right width-50p m-30" src="${stccdn}/image/arrow.png">
+    <p class="left width-100p text-center font-white fs-24">点击右上角</p>
+    <p class="left width-100p text-center font-white fs-18 mt-10">发送给朋友 或 分享到朋友圈</p>
   </aside>
   
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>

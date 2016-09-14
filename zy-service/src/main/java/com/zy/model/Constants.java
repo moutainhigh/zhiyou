@@ -98,11 +98,8 @@ public interface Constants {
 
     /* domain and url */
     String DOMAIN_ROOT = "zhi-you.net";
-    String DOMAIN_MOBILE = "m.zhi-you.net";
-    String DOMAIN_PC = "www.zhi-you.net";
-    String URL_MOBILE = "http://m.zhi-you.net";
-    String URL_PC = "http://www.zhi-you.net";
-    String URL_PASSPORT = "http://passport.zhi-you.net";
+    String DOMAIN_MOBILE = "agentsystem.zhi-you.net";
+    String URL_MOBILE = "http://agentsystem.zhi-you.net";
 
     /* setting */
     String SETTING_SYS_NAME = "智优生物";
