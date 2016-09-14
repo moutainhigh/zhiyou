@@ -20,14 +20,21 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 
+import static com.zy.entity.usr.User.*;
+
 @Entity
 @Table(name = "usr_user")
 @Getter
 @Setter
 @QueryModel
 @Type(label = "用户")
-@ViewObject(groups = {"UserListVo", "UserSimpleVo", "UserAdminVo", "UserAdminSimpleVo"})
+@ViewObject(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE})
 public class User implements Serializable {
+
+	public static final String VO_ADMIN = "UserAdminVo";
+	public static final String VO_LIST = "UserListVo";
+	public static final String VO_SIMPLE = "UserSimpleVo";
+	public static final String VO_ADMIN_SIMPLE = "UserAdminSimpleVo";
 
 	@Type(label = "用户类型")
 	public enum UserType {
@@ -61,7 +68,7 @@ public class User implements Serializable {
 	@StringBinder
 	@Query(Predicate.EQ)
 	@Field(label = "手机号")
-	@View(groups = {"UserListVo", "UserAdminVo", "UserAdminSimpleVo"})
+	@View(groups = {VO_LIST, VO_ADMIN, VO_ADMIN_SIMPLE})
 	private String phone;
 
 	@Column(length = 60)
@@ -80,20 +87,20 @@ public class User implements Serializable {
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "用户类型")
-	@View(groups = {"UserAdminVo", "UserAdminSimpleVo"})
+	@View(groups = {VO_ADMIN, VO_ADMIN_SIMPLE})
 	private UserType userType;
 
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "用户等级")
-	@View(groups = {"UserListVo", "UserAdminVo", "UserAdminSimpleVo"})
-	@View(name = "userRankLabel", type = String.class, groups = {"UserAdminVo", "UserAdminSimpleVo"})
+	@View(groups = {VO_LIST, VO_ADMIN, VO_ADMIN_SIMPLE})
+	@View(name = "userRankLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_SIMPLE})
 	private UserRank userRank;
 
 	@Column(length = 11)
 	@Pattern(regexp = "^[\\d]{5,11}$")
 	@Field(label = "qq")
-	@View(groups = {"UserAdminVo"})
+	@View(groups = {VO_ADMIN})
 	private String qq;
 
 	@NotBlank
@@ -104,14 +111,14 @@ public class User implements Serializable {
 
 	@NotNull
 	@Field(label = "是否冻结")
-	@View(groups = {"UserAdminVo"})
+	@View(groups = {VO_ADMIN})
 	private Boolean isFrozen;
 
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@Query({Predicate.GTE, Predicate.LT})
 	@Field(label = "注册时间")
-	@View(groups = {"UserAdminVo"})
+	@View(groups = {VO_ADMIN})
 	private Date registerTime;
 
 	@NotNull
@@ -121,16 +128,16 @@ public class User implements Serializable {
 
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "邀请人id", description = "此用户不是最终上下级关系")
-	@AssociationView(name = "inviter", associationGroup = "UserAdminSimpleVo", groups = {"UserAdminVo"})
+	@AssociationView(name = "inviter", associationGroup = VO_ADMIN_SIMPLE, groups = {VO_ADMIN})
 	private Long inviterId;
 
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "上级id")
-	@AssociationView(name = "parent", associationGroup = "UserAdminSimpleVo", groups = {"UserAdminVo"})
+	@AssociationView(name = "parent", associationGroup = VO_ADMIN_SIMPLE, groups = {VO_ADMIN})
 	private Long parentId;
 
 	@Field(label = "remark")
-	@View(groups = {"UserAdminVo"})
+	@View(groups = {VO_ADMIN})
 	private String remark;
 
 	@Temporal(TemporalType.DATE)

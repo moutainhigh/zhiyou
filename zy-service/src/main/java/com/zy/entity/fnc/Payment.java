@@ -1,5 +1,6 @@
 package com.zy.entity.fnc;
 
+import com.zy.entity.usr.User;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -20,14 +21,18 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static com.zy.entity.fnc.Payment.VO_ADMIN;
+
 @Entity
 @Table(name = "fnc_payment")
 @Getter
 @Setter
 @QueryModel
 @Type(label = "支付订单")
-@ViewObject(groups = "PaymentAdminVo")
+@ViewObject(groups = VO_ADMIN)
 public class Payment implements Serializable {
+
+	public static final String VO_ADMIN = "PaymentAdminVo";
 
 	public enum PaymentType {
 		订单支付
@@ -53,7 +58,7 @@ public class Payment implements Serializable {
 	@Query(Predicate.EQ)
 	@Field(label = "用户id")
 	@View
-	@AssociationView(name = "user", groups = "PaymentAdminVo", associationGroup = "UserAdminSimpleVo")
+	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@NotBlank
