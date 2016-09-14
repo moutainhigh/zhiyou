@@ -53,7 +53,7 @@ public class Report implements Serializable {
 	private Long userId;
 
 	@Column(length = 60)
-	@NotBlank
+	//@NotBlank
 	@Pattern(regexp = "^1[\\d]{10}$")
 	@StringBinder
 	@Query(Predicate.EQ)
@@ -61,13 +61,13 @@ public class Report implements Serializable {
 	@View
 	private String phone;
 
-	@NotNull
+	//@NotNull
 	@Field(label = "职业")
 	@View(name = "jobName", type = String.class)
 	@View(groups = {"ReportVo", "ReportAdminVo"})
 	private Long jobId;
 
-	@NotNull
+	//@NotNull
 	@Field(label = "所在地")
 	@View(name = "province", type = String.class)
 	@View(name = "city", type = String.class)
@@ -75,6 +75,7 @@ public class Report implements Serializable {
 	@View(groups = {"ReportVo", "ReportAdminVo"})
 	private Long areaId;
 
+	//@NotBlank
 	@Field(label = "标签")
 	@CollectionView(name = "tagNames", elementType = String.class)
 	@View(groups = {"ReportVo", "ReportAdminVo"})
