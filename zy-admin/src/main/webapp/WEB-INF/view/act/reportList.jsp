@@ -149,15 +149,6 @@
             }
           },
           {
-            data: 'text',
-            title: '客户使用心得',
-            orderable: false,
-            width: '320px',
-            render : function (data, type, full) {
-              return '<div class="text" title=' + data + '>' + data +  '</div>';
-            }
-          },
-          {
             data: 'reportResult',
             title: '检测结果',
             orderable: false
@@ -174,6 +165,14 @@
                 html += '<img class="imagescan mr-10" data-url="' + full.image3Big + '" src="' + full.image3Thumbnail + '" >';
               }
               return html;
+            }
+          },
+          {
+            data: 'text',
+            title: '客户使用心得',
+            orderable: false,
+            render : function (data, type, full) {
+              return '<div class="text" title=' + data + '>' + data +  '</div>';
             }
           },
           {
