@@ -13,6 +13,11 @@
 
 <title>${user.nickname}</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
+<script type="text/javascript">
+  $(function() {
+
+  });
+</script>
 </head>
 <body>
   <header class="header">
@@ -21,21 +26,20 @@
   </header>
 
   <article>
-    <div id="scrollWrapper">
-      <ul class="breadcrumb mt-10">
-        <li><a href="${ctx}/u/team/"><i class="fa fa-home"></i> 我的团队</a></li>
-        <c:if test="${not empty parentLv3 && principalUserId != parentLv3.id}">
-        <li><a href="${ctx}/u/team/">${parentLv3.nickname}</a></li>
-        </c:if>
-        <c:if test="${not empty parentLv2 && principalUserId != parentLv2.id}">
-        <li><a href="${ctx}/u/team/${parentLv2.id}">${parentLv2.nickname}</a></li>
-        </c:if>
-        <c:if test="${not empty parentLv1 && principalUserId != parentLv1.id}">
-        <li><a href="${ctx}/u/team/${parentLv1.id}">${parentLv1.nickname}</a></li>
-        </c:if>
-        <li><a href="javascript:;">${user.nickname}</a></li>
-      </ul>
-    </div>
+    
+    <ul class="breadcrumb mt-10">
+      <li><a href="${ctx}/u/team/"><i class="fa fa-home"></i> 我的团队</a></li>
+      <c:if test="${not empty parentLv3 && principalUserId != parentLv3.id}">
+      <li><a href="${ctx}/u/team/">${parentLv3.nickname}</a></li>
+      </c:if>
+      <c:if test="${not empty parentLv2 && principalUserId != parentLv2.id}">
+      <li><a href="${ctx}/u/team/${parentLv2.id}">${parentLv2.nickname}</a></li>
+      </c:if>
+      <c:if test="${not empty parentLv1 && principalUserId != parentLv1.id}">
+      <li><a href="${ctx}/u/team/${parentLv1.id}">${parentLv1.nickname}</a></li>
+      </c:if>
+      <li><a href="javascript:;">${user.nickname}</a></li>
+    </ul>
     
     <div class="list-group">
       <div class="list-item">
