@@ -4,7 +4,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		">
 
-	<bean id="closeableHttpClient" class="com.zy.common.extend.CloseableHttpClientFactoryBean"/>
+	<bean id="closeableHttpClient" class="com.zy.common.extend.CloseableHttpClientFactoryBean" destroy-method="destroy"/>
 
 	<bean id="memcachedClient" class="com.zy.common.extend.MemcachedClientFactoryBean">
 		<property name="servers" value="${memcached.url}"/>
@@ -19,8 +19,16 @@
 		<property name="hashAlg">
 			<value type="net.spy.memcached.DefaultHashAlgorithm">KETAMA_HASH</value>
 		</property>
-		<property name="locatorType" value="CONSISTENT"/>
-		<property name="failureMode" value="Redistribute"/>
+		<property name="locatorType">
+			<bean id="CONSISTENT" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+				<property name="staticField" value="net.spy.memcached.ConnectionFactoryBuilder$Locator.CONSISTENT" />
+			</bean>
+		</property>
+		<property name="failureMode">
+			<bean id="Redistribute" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+				<property name="staticField" value="net.spy.memcached.FailureMode.Redistribute" />
+			</bean>
+		</property>
 		<property name="useNagleAlgorithm" value="false"/>
 
 		<property name="authDescriptor">
