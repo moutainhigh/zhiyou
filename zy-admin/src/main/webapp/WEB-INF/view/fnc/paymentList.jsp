@@ -1,25 +1,25 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<%@ include file="/WEB-INF/view/include/head.jsp" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script type="text/javascript" src="${ctx}/plugin/My97DatePicker/WdatePicker.js"></script>
 <style>
-  .imagescan {
-    cursor: pointer;
-    width: 80px;
-    height: 80px;
-  }
+.imagescan {
+  cursor: pointer;
+  width: 80px;
+  height: 80px;
+}
 
-  .mr-10 {
-    margin-left: 10px;
-  }
+.mr-10 {
+  margin-left: 10px;
+}
 
-  .text {
-    width: 320px;
-    height: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    cursor: pointer;
-  }
+.text {
+  width: 320px;
+  height: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
 </style>
 <!-- BEGIN JAVASCRIPTS -->
 <script id="confirmTmpl" type="text/x-handlebars-template">
@@ -62,41 +62,41 @@
   </form>
 </script>
 <script>
-  $(function () {
+  $(function() {
     var grid = new Datatable();
     var template = Handlebars.compile($('#confirmTmpl').html());
 
-    $('#dataTable').on('click', '.payment-confirm', function () {
+    $('#dataTable').on('click', '.payment-confirm', function() {
       var id = $(this).data('id');
       var data = {
-        id: id
+        id : id
       };
       var html = template(data);
       var index = layer.open({
-        type: 1,
+        type : 1,
         //skin: 'layui-layer-rim', //加上边框
-        area: ['600px', '360px'], //宽高
-        content: html
+        area : [ '600px', '360px' ], //宽高
+        content : html
       });
 
       $form = $('#confirmForm' + id);
       $form.validate({
-        rules: {
-          isSuccess: {
-            required: true
+        rules : {
+          isSuccess : {
+            required : true
           },
-          confirmRemark: {
-            required: true
+          confirmRemark : {
+            required : true
           }
         },
-        messages: {}
+        messages : {}
       });
 
-      $('#paymentConfirmSubmit' + id).bind('click', function () {
+      $('#paymentConfirmSubmit' + id).bind('click', function() {
         var result = $form.validate().form();
         if (result) {
           var url = '${ctx}/payment/confirmPaid';
-          $.post(url, $form.serialize(), function (data) {
+          $.post(url, $form.serialize(), function(data) {
             if (data.code === 0) {
               layer.close(index);
               grid.getDataTable().ajax.reload(null, false);
@@ -107,137 +107,133 @@
         }
       })
 
-      $('#paymentConfirmCancel' + id).bind('click', function () {
+      $('#paymentConfirmCancel' + id).bind('click', function() {
         layer.close(index);
       })
 
     });
 
     grid.init({
-      src: $('#dataTable'),
-      onSuccess: function (grid) {
+      src : $('#dataTable'),
+      onSuccess : function(grid) {
         // execute some code after table records loaded
       },
-      onError: function (grid) {
+      onError : function(grid) {
         // execute some code on network or other general error
       },
-      dataTable: {
+      dataTable : {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
-        lengthMenu: [
-          [10, 20, 50, 100, -1],
-          [10, 20, 50, 100, 'All'] // change per page values here
+        lengthMenu : [ [ 10, 20, 50, 100, -1 ], [ 10, 20, 50, 100, 'All' ] // change per page values here
         ],
-        pageLength: 20, // default record count per page
-        order: [], // set first column as a default sort by desc
-        ajax: {
-          url: '${ctx}/payment', // ajax source
+        pageLength : 20, // default record count per page
+        order : [], // set first column as a default sort by desc
+        ajax : {
+          url : '${ctx}/payment', // ajax source
         },
-        columns: [
-          {
-            data: 'id',
-            title: 'id'
-          },
-          {
-            data: 'sn',
-            title: '支付单sn',
-            orderable: false
-          },
-          {
-            data: 'title',
-            title: '标题',
-            orderable: false
-          },
-          {
-            data: 'createdTime',
-            title: '创建时间',
-            orderable: true
-          },
-          {
-            data: 'paidTime',
-            title: '支付时间',
-            orderable: true
-          },
-          {
-            data: 'payType',
-            title: '支付方式',
-            orderable: false
-          },
-          {
-            data: 'paymentStatus',
-            title: '支付状态',
-            orderable: false,
-            render: function (data, type, full) {
-              if (data == '待支付') {
-                return '<label class="label label-danger">待支付</label>';
-              } else if (data == '已支付') {
-                return '<label class="label label-success">已支付</label>';
-              } else if (data == '已退款') {
-                return '<label class="label label-primary">已退款</label>';
-              } else if (data == '已取消') {
-                return '<label class="label label-default">已取消</label>';
+        columns : [
+            {
+              data : 'sn',
+              title : '支付单sn',
+              orderable : false
+            },
+            {
+              data : 'title',
+              title : '标题',
+              orderable : false
+            },
+            {
+              data : 'createdTime',
+              title : '创建时间',
+              orderable : true
+            },
+            {
+              data : 'paidTime',
+              title : '支付时间',
+              orderable : true
+            },
+            {
+              data : 'payType',
+              title : '支付方式',
+              orderable : false
+            },
+            {
+              data : 'paymentStatus',
+              title : '支付状态',
+              orderable : false,
+              render : function(data, type, full) {
+                if (data == '待支付') {
+                  return '<label class="label label-danger">待支付</label>';
+                } else if (data == '已支付') {
+                  return '<label class="label label-success">已支付</label>';
+                } else if (data == '已退款') {
+                  return '<label class="label label-primary">已退款</label>';
+                } else if (data == '已取消') {
+                  return '<label class="label label-default">已取消</label>';
+                }
               }
-            }
-          },
-          {
-            data: 'amount1',
-            title: '应付金额',
-            orderable: false
-          },
-          {
-            data: 'offlineImage',
-            title: '银行汇款截图',
-            orderable: false,
-            render: function (data, type, full) {
-              if (full.offlineImage) {
-                return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
-              } else {
-                return '';
-              }
+            },
+            {
+              data : 'amount1',
+              title : '应付金额',
+              orderable : false
+            },
+            {
+              data : 'offlineImage',
+              title : '银行汇款截图',
+              orderable : false,
+              render : function(data, type, full) {
+                if (full.offlineImage) {
+                  return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
+                } else {
+                  return '';
+                }
 
-            }
-          },
-          {
-            data: 'offlineMemo',
-            title: '银行汇款备注',
-            orderable: false
-          },
-          {
-            data: '',
-            title: '昵称',
-            render: function (data, type, full) {
-              if (full.user) {
-                return '<img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname + '<br/>手机：' + full.user.phone;
-              } else {
-                return '-';
               }
-            }
-          },
-          {
-            data: 'remark',
-            title: '备注',
-            orderable: false
-          },
-          {
-            data: '',
-            title: '操作',
-            orderable: false,
-            render: function (data, type, full) {
-              var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/order/detail?id='+full.refId+'"><i class="fa icon-control-forward "></i> 查看订单</a>';
-              <shiro:hasPermission name="payment:confirmPaid">
-              if (full.payType == '银行汇款' && full.paymentStatus == '待支付' && full.offlineImage) {
-                optionHtml += '<a class="btn btn-xs default yellow-stripe payment-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';
+            },
+            {
+              data : 'offlineMemo',
+              title : '银行汇款备注',
+              orderable : false
+            },
+            {
+              data : '',
+              title : '昵称',
+              render : function(data, type, full) {
+                if (full.user) {
+                  return '<img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname
+                      + '<br/>手机：' + full.user.phone;
+                } else {
+                  return '-';
+                }
               }
-              </shiro:hasPermission>
-              return optionHtml;
-            }
-          }]
+            },
+            {
+              data : 'remark',
+              title : '备注',
+              orderable : false
+            },
+            {
+              data : '',
+              title : '操作',
+              orderable : false,
+              render : function(data, type, full) {
+                var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/order/detail?id=' + full.refId
+                    + '"><i class="fa icon-control-forward "></i> 查看订单</a>';
+                <shiro:hasPermission name="payment:confirmPaid">
+                if (full.payType == '银行汇款' && full.paymentStatus == '待支付' && full.offlineImage) {
+                  optionHtml += '<a class="btn btn-xs default yellow-stripe payment-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';
+                }
+                </shiro:hasPermission>
+                return optionHtml;
+              }
+            } ]
       }
     });
 
-    $('#dataTable').on('click', '.imagescan', function () {
+    $('#dataTable').on('click', '.imagescan', function() {
       var url = $(this).attr('data-url');
       $.imagescan({
-        url: url
+        url : url
       });
     });
 
@@ -263,57 +259,30 @@
         <div class="caption">
           <i class="fa fa-list"></i><span>支付单管理 </span>
         </div>
-        <div class="tools">
-          <a class="collapse" href="javascript:;"> </a> <a class="reload" href="javascript:;"> </a>
-        </div>
       </div>
       <div class="portlet-body clearfix">
         <div class="table-container">
           <div class="table-toolbar">
-            <div class="btn-group">
-              <%-- <button id="" class="btn green" data-href="${ctx}/order/create">
-                新增 <i class="fa fa-plus"></i>
-              </button> --%>
-            </div>
-            <!-- <div class="btn-group pull-right">
-              <button class="btn dropdown-toggle" data-toggle="dropdown">
-                工具 <i class="fa fa-angle-down"></i>
-              </button>
-              <ul class="dropdown-menu pull-right">
-                <li><a href="#"> 打印 </a></li>
-                <li><a href="javascript:void(0)" onClick="" class="easyui-linkbutton" data-options="iconCls:'icon-xls',plain:true">导出支付单数据</a></li>
-              </ul>
-            </div> -->
-          </div>
+            <form class="filter-form form-inline" id="searchForm">
+              <input id="_orderBy" name="orderBy" type="hidden" value="" /> <input id="_direction" name="direction" type="hidden" value="" /> <input id="_pageNumber"
+                name="pageNumber" type="hidden" value="0" /> <input id="_pageSize" name="pageSize" type="hidden" value="20" />
 
-          <div class="row">
-            <div class="col-md-3 table-actions">
-              <span class="table-row-checked"></span>
-            </div>
-            <div class="col-md-9">
-              <form class="filter-form pull-right" id="searchForm">
-                <input id="_orderBy" name="orderBy" type="hidden" value=""/>
-                <input id="_direction" name="direction" type="hidden" value=""/>
-                <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
-                <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
-                <div class="form-group input-inline">
+              <div class="form-group">
+                <select name="paymentStatusEQ" class="form-control">
+                  <option value="">--请选择支付状态--</option>
+                  <option value="待支付">待支付</option>
+                  <option value="已支付">已支付</option>
+                  <option value="已退款">已退款</option>
+                  <option value="已取消">已取消</option>
+                </select>
+              </div>
 
-                  <label class="sr-only">支付状态</label>
-                  <select name="paymentStatusEQ" class="form-control">
-                    <option value="">--请选择支付状态--</option>
-                    <option value="待支付">待支付</option>
-                    <option value="已支付">已支付</option>
-                    <option value="已退款">已退款</option>
-                    <option value="已取消">已取消</option>
-                  </select>
-                </div>
-                <div class="form-group input-inline">
-                  <button class="btn blue filter-submit">
-                    <i class="fa fa-check"></i> 查询
-                  </button>
-                </div>
-              </form>
-            </div>
+              <div class="form-group input-inline">
+                <button class="btn blue filter-submit">
+                  <i class="fa fa-search"></i> 查询
+                </button>
+              </div>
+            </form>
           </div>
           <table class="table table-striped table-bordered table-hover" id="dataTable">
           </table>
