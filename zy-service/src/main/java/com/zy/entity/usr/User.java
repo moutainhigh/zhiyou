@@ -84,6 +84,7 @@ public class User implements Serializable {
 	private UserType userType;
 
 	@NotNull
+	@Query(Predicate.EQ)
 	@Field(label = "用户等级")
 	@View(groups = {"UserListVo", "UserAdminVo", "UserAdminSimpleVo"})
 	@View(name = "userRankLabel", type = String.class, groups = {"UserAdminVo", "UserAdminSimpleVo"})

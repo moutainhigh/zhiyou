@@ -11,34 +11,15 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.zy.entity.mal.Order.OrderStatus;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderQueryModel implements Serializable {
+public class NotifyQueryModel implements Serializable {
 
-	private String snLK;
-
-	private Long userIdEQ;
-
-	private Long[] userIdIN;
-
-	private Long sellerIdEQ;
-
-	private Long[] sellerIdIN;
-
-	private OrderStatus orderStatusEQ;
-
-	private Boolean isSettledUpEQ;
-
-	private Boolean isPlatformDeliverEQ;
-
-	private String logisticsNameLK;
-
-	private String logisticsSnLK;
+	private Boolean isSentEQ;
 
 	private Integer pageNumber;
 
@@ -92,40 +73,14 @@ public class OrderQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
-		fieldNames.add("currencyType");
-		fieldNames.add("logisticsSn");
-		fieldNames.add("discountFee");
-		fieldNames.add("isPlatformDeliver");
-		fieldNames.add("orderStatus");
-		fieldNames.add("remark");
-		fieldNames.add("receiverProvince");
-		fieldNames.add("title");
-		fieldNames.add("receiverCity");
-		fieldNames.add("logisticsFeePayType");
-		fieldNames.add("isSettledUp");
-		fieldNames.add("sellerId");
-		fieldNames.add("receiverPhone");
-		fieldNames.add("refundedTime");
-		fieldNames.add("receiverDistrict");
-		fieldNames.add("refundRemark");
+		fieldNames.add("topic");
 		fieldNames.add("createdTime");
+		fieldNames.add("sentTime");
+		fieldNames.add("isSent");
 		fieldNames.add("id");
-		fieldNames.add("sn");
-		fieldNames.add("receiverAreaId");
-		fieldNames.add("amount");
-		fieldNames.add("paidTime");
-		fieldNames.add("userId");
+		fieldNames.add("refId");
 		fieldNames.add("version");
-		fieldNames.add("expiredTime");
-		fieldNames.add("receiverRealname");
-		fieldNames.add("logisticsName");
-		fieldNames.add("receiverAddress");
-		fieldNames.add("sellerMemo");
-		fieldNames.add("deliveredTime");
-		fieldNames.add("logisticsFee");
-		fieldNames.add("refund");
-		fieldNames.add("buyerMemo");
-		fieldNames.add("useLogistics");
+		fieldNames.add("token");
 	}
 
 }
