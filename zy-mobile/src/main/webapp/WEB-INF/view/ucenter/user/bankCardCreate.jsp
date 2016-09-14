@@ -129,6 +129,12 @@
   <article class="bank-card-create">
     <form id="bankCardForm" class="valid-form" action="${ctx}/u/bankCard/create" method="post">
       <div class="list-group">
+        <div class="list-item">
+          <label class="list-label" for="realname">开户姓名</label>
+          <div class="list-text">
+            <input type="text" id="realname" name="realname" class="form-input" value="${appearance.realname}" readonly="readonly">
+          </div>
+        </div>
         <div class="list-item bank-info">
           <label class="list-label">开户银行</label>
           <c:if test="${empty bankCard}">
@@ -148,13 +154,7 @@
           <i class="list-arrow"></i>
         </div>
         <div class="list-item">
-          <label class="list-label" for="accountName">开户姓名</label>
-          <div class="list-text">
-            <input type="text" id="realname" name="realname" class="form-input" value="${appearance.realname}" readonly="readonly">
-          </div>
-        </div>
-        <div class="list-item">
-          <label class="list-label" for="accountNo">银行卡号</label>
+          <label class="list-label" for="cardNumber">银行卡号</label>
           <div class="list-text">
             <input type="text" id="cardNumber" name="cardNumber" class="form-input" value="${bankCard.cardNumber}" placeholder="填写银行卡号">
           </div>
