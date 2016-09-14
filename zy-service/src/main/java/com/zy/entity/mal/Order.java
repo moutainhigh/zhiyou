@@ -154,7 +154,7 @@ public class Order implements Serializable {
 	private Integer version;
 
 	@Field(label = "是否已结算")
-	@View(groups = {"OrderAdminVo", "OrderAdminFullVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	@NotNull
 	@Query(Predicate.EQ)
 	private Boolean isSettledUp;
@@ -168,7 +168,7 @@ public class Order implements Serializable {
 	@View(groups = {"OrderAdminVo", "OrderAdminFullVo"})
 	private LogisticsFeePayType logisticsFeePayType;
 
-	@View(groups = {"OrderAdminVo", "OrderAdminFullVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	@NotNull
 	@Field(label = "是否平台发货")
 	@Query(Predicate.EQ)

@@ -73,6 +73,10 @@
         <div class="list-text">单据号</div>
         <div class="list-unit">${sn}</div>
      </div>
+     <div class="list-item">
+        <div class="list-text">转账金额</div>
+        <div class="list-unit">${amount}元</div>
+      </div>
     </div> 
     <div class="list-title">收款银行账户</div>
     <div class="list-group">
@@ -87,10 +91,6 @@
       <div class="list-item">
         <div class="list-text">收款人</div>
         <div class="list-unit">戴钟华</div>
-      </div>
-      <div class="list-item">
-        <div class="list-text">转账金额</div>
-        <div class="list-unit">${amount}元</div>
       </div>
     </div>
 

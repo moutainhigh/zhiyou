@@ -67,6 +67,13 @@
 
     //下单
     $('#btnOrder').click(function() {
+      <c:if test="${!isUpgrade && !isFirst}">
+      var quantity = $("#quantity").val();
+      if(quantity < 100) {
+        messageAlert('一级代理和特级代理每次入货不得少于100件');
+        return;
+      }
+      </c:if>
       $('#form').submit();
     });
 

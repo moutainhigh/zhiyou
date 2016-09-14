@@ -37,7 +37,7 @@
     </c:if>
     
     <c:forEach items="${page.data}" var="order">
-    <a class="order mt-15 bd-t bd-b" href="${ctx}/u/order/${order.sn}">
+    <a class="order mt-15 bd-t bd-b" href="${ctx}/u/order/${order.id}">
       <div class="order-sn pl-15 pr-15 font-777 fs-12">订单编号：${order.sn}</div>
       <label class="order-status label<c:if test="${order.orderStatus == '待支付'}"> red</c:if>
       <c:if test="${order.orderStatus == '已支付'}"> orange</c:if>

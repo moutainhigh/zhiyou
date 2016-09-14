@@ -29,6 +29,11 @@
         },
         'logisticsSn' : {
           required : true
+        },
+        'logisticsFee' : {
+          required : true,
+          number : true,
+          min : 0
         }
       },
       submitHandler : function(form) {
@@ -56,7 +61,7 @@
 <body>
   <header class="header">
     <h1>订单发货</h1>
-    <a href="${ctx}/u/order" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/order/${orderId}" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
   <article>
@@ -65,20 +70,20 @@
       
       <div class="list-group">
         <div class="list-title">请选择发货方式</div>
-        <label class="list-item form-radio" for="deliverType0">
-          <div class="list-text">面对面发货</div>
+        <div class="list-item form-radio">
+          <label class="list-text" for="deliverType0">面对面发货</label>
           <div class="list-unit">
             <input id="deliverType0" type="radio" name="useLogistics" value="false">
-            <em class="i-checked"></em>
+            <label class="i-checked" for="deliverType0"></label>
           </div>
-        </label>
-        <label class="list-item form-radio" for="deliverType1">
-          <div class="list-text">物流发货</div>
+        </div>
+        <div class="list-item form-radio">
+          <label class="list-text" for="deliverType1">物流发货</label>
           <div class="list-unit">
             <input id="deliverType1" type="radio" name="useLogistics" value="true">
-            <em class="i-checked"></em>
+            <label class="i-checked" for="deliverType1"></label>
           </div>
-        </label>
+        </div>
       </div>
       
       <div id="logistics" class="list-group hide">
@@ -93,6 +98,12 @@
           <label class="list-label" for="logisticsSn">物流单号</label>
           <div class="list-text">
             <input type="text" name="logisticsSn" class="form-input" value="" placeholder="填写物流单号">
+          </div>
+        </div>
+        <div class="list-item">
+          <label class="list-label" for="logisticsFee">物流费用</label>
+          <div class="list-text">
+            <input type="number" name="logisticsFee" class="form-input" value="" placeholder="填写物流费用">
           </div>
         </div>
       </div>

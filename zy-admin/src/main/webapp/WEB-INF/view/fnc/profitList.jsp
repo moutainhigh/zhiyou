@@ -24,6 +24,10 @@
         },
         columns: [
           {
+            data: 'id',
+            title: 'id'
+          },
+          {
             data: 'title',
             title: '收益基本信息',
             orderable: false,

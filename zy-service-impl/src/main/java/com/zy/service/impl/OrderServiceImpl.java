@@ -1,5 +1,22 @@
 package com.zy.service.impl;
 
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
@@ -18,27 +35,17 @@ import com.zy.entity.mal.Product;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
-import com.zy.mapper.*;
+import com.zy.mapper.AddressMapper;
+import com.zy.mapper.OrderItemMapper;
+import com.zy.mapper.OrderMapper;
+import com.zy.mapper.ProductMapper;
+import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
+import com.zy.model.Constants;
 import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
@@ -153,6 +160,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setSn(ServiceUtils.generateOrderSn());
 		order.setIsSettledUp(false);
 		order.setDiscountFee(new BigDecimal("0.00"));
+		order.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_ORDER_EXPIRE_IN_MINUTES));
 		if (StringUtils.isNotBlank(title)) {
 			order.setTitle(title);
 		} else {
@@ -210,12 +218,17 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void deliver(@NotNull OrderDeliverDto orderDeliverDto) {
 
-		validate(orderDeliverDto, "logisticsFeePayType", "id");
-		boolean useLogistics = orderDeliverDto.isUseLogistics();
+		validate(orderDeliverDto, "id", "useLogistics");
+		boolean useLogistics = orderDeliverDto.getUseLogistics();
 
 		Long id = orderDeliverDto.getId();
 		Order order = orderMapper.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " is not found");
+
+		if (order.getIsPlatformDeliver()) {
+			throw new BizException(BizCode.ERROR, "平台发货订单不能自己发货");
+		}
+
 		OrderStatus orderStatus = order.getOrderStatus();
 		if (orderStatus == OrderStatus.已发货) {
 			return; // 幂等处理
@@ -223,18 +236,84 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "只有已支付的订单才能发货");
 		}
 
+
 		if (useLogistics) {
 
 			String logisticsName = orderDeliverDto.getLogisticsName();
 			String logisticsSn = orderDeliverDto.getLogisticsSn();
 			BigDecimal logisticsFee = orderDeliverDto.getLogisticsFee();
-			LogisticsFeePayType logisticsFeePayType = orderDeliverDto.getLogisticsFeePayType();
 
 			validate(logisticsName, NOT_BLANK, "logistics name is blank");
 			validate(logisticsSn, NOT_BLANK, "logistics sn is blank");
 			validate(logisticsFee, NOT_NULL, "logistics fee is null");
-			validate(logisticsFeePayType, NOT_NULL, "logistics fee pay type is null");
 			validate(orderDeliverDto, "logisticsName", "logisticsSn", "logisticsFee");
+
+			order.setLogisticsName(logisticsName);
+			order.setLogisticsSn(logisticsSn);
+			order.setLogisticsFeePayType(LogisticsFeePayType.无);
+			order.setLogisticsFee(logisticsFee);
+
+		} else {
+			order.setLogisticsFee(null);
+			order.setLogisticsFeePayType(null);
+			order.setLogisticsName(null);
+			order.setLogisticsSn(null);
+		}
+
+		order.setUseLogistics(useLogistics);
+
+		order.setDeliveredTime(new Date());
+		order.setOrderStatus(OrderStatus.已发货);
+
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
+
+	}
+
+	@Override
+	public void platformDeliver(@NotNull OrderDeliverDto orderDeliverDto) {
+		validate(orderDeliverDto, "id", "useLogistics");
+		boolean useLogistics = orderDeliverDto.getUseLogistics();
+
+		Long id = orderDeliverDto.getId();
+		Order order = orderMapper.findOne(id);
+		validate(order, NOT_NULL, "order id" + id + " is not found");
+
+		if (!order.getIsPlatformDeliver()) {
+			throw new BizException(BizCode.ERROR, "非平台发货订单不能平台发货");
+		}
+
+		OrderStatus orderStatus = order.getOrderStatus();
+		if (orderStatus == OrderStatus.已发货) {
+			return; // 幂等处理
+		} else if (orderStatus != OrderStatus.已支付) {
+			throw new BizException(BizCode.ERROR, "只有已支付的订单才能发货");
+		}
+
+
+		if (useLogistics) {
+
+			String logisticsName = orderDeliverDto.getLogisticsName();
+			String logisticsSn = orderDeliverDto.getLogisticsSn();
+			BigDecimal logisticsFee = orderDeliverDto.getLogisticsFee();
+
+
+			validate(logisticsName, NOT_BLANK, "logistics name is blank");
+			validate(logisticsSn, NOT_BLANK, "logistics sn is blank");
+			validate(logisticsFee, NOT_NULL, "logistics fee is null");
+			validate(orderDeliverDto, "logisticsName", "logisticsSn", "logisticsFee");
+
+			LogisticsFeePayType logisticsFeePayType;
+
+			User seller = userMapper.findOne(order.getSellerId());
+			User.UserType sellerUserType = seller.getUserType();
+
+			if (sellerUserType == User.UserType.平台) {
+				logisticsFeePayType = LogisticsFeePayType.买家付;
+			} else {
+				logisticsFeePayType = LogisticsFeePayType.卖家付;
+			}
 
 			order.setLogisticsName(logisticsName);
 			order.setLogisticsSn(logisticsSn);
@@ -248,13 +327,14 @@ public class OrderServiceImpl implements OrderService {
 			order.setLogisticsSn(null);
 		}
 
+		order.setUseLogistics(useLogistics);
+
 		order.setDeliveredTime(new Date());
 		order.setOrderStatus(OrderStatus.已发货);
 
 		if (orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
 		}
-
 	}
 
 	@Override
@@ -349,7 +429,7 @@ public class OrderServiceImpl implements OrderService {
 						fncComponent.createTransfer(sellerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
 					}
 				} else {
-					Long sysUserId = config.getSysUserId();
+//					Long sysUserId = config.getSysUserId();
 					if (logisticsFeePayType == LogisticsFeePayType.买家付) {
 						fncComponent.createTransfer(buyerId, sellerId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
 					} else if (logisticsFeePayType == LogisticsFeePayType.卖家付) {

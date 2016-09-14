@@ -123,11 +123,11 @@
     <h1>新增银行卡</h1>
     <a href="${ctx}/u/bankCard" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
+  <div class="note note-warning mb-0">
+    <p><i class="fa fa-exclamation-circle"></i> 为了您的资金安全，您只能添加属于您本人的银行卡。</p>
+  </div>
   <article class="bank-card-create">
     <form id="bankCardForm" class="valid-form" action="${ctx}/u/bankCard/create" method="post">
-      <div class="form-message note note-warning mb-0 hide">
-        <p>输入信息有误，请先更正。</p>
-      </div>
       <div class="list-group">
         <div class="list-item bank-info">
           <label class="list-label">开户银行</label>
@@ -150,7 +150,7 @@
         <div class="list-item">
           <label class="list-label" for="accountName">开户姓名</label>
           <div class="list-text">
-            <input type="text" id="realname" name="realname" class="form-input" value="${bankCard.realname}" placeholder="填写开户姓名">
+            <input type="text" id="realname" name="realname" class="form-input" value="${appearance.realname}" readonly="readonly">
           </div>
         </div>
         <div class="list-item">

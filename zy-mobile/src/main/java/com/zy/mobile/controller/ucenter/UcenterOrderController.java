@@ -75,10 +75,10 @@ public class UcenterOrderController {
 		return "ucenter/order/orderList";
 	}
 
-	@RequestMapping("/{sn}")
-	public String detail(@PathVariable String sn, Principal principal, Model model) {
-		Order order = orderService.findBySn(sn);
-		validate(order, NOT_NULL, "order sn" + sn + " not found");
+	@RequestMapping("/{id}")
+	public String detail(@PathVariable Long id, Principal principal, Model model) {
+		Order order = orderService.findOne(id);
+		validate(order, NOT_NULL, "order id" + id + " not found");
 		if (principal != null) {
 			User user = userService.findOne(principal.getUserId());
 			model.addAttribute("userRank", user.getUserRank());
@@ -100,7 +100,7 @@ public class UcenterOrderController {
 		Long id = orderDeliverDto.getId();
 		Order persistence = orderService.findOne(id);
 		validate(persistence, NOT_NULL, "order id" + id + " not found");
-		if (principal.getUserId().equals(persistence.getSellerId())) {
+		if (!principal.getUserId().equals(persistence.getSellerId())) {
 			throw new UnauthorizedException("权限不足");
 		}
 		try {
@@ -110,7 +110,7 @@ public class UcenterOrderController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
 
-		return "redirect:/order/" + persistence.getSn();
+		return "redirect:/u/order/" + persistence.getId();
 	}
 
 	@RequestMapping("/confirmDelivery")
@@ -118,7 +118,7 @@ public class UcenterOrderController {
 
 		Order persistence = orderService.findOne(id);
 		validate(persistence, NOT_NULL, "order id" + id + " not found");
-		if (principal.getUserId().equals(persistence.getUserId())) {
+		if (!principal.getUserId().equals(persistence.getUserId())) {
 			throw new UnauthorizedException("权限不足");
 		}
 
@@ -129,23 +129,23 @@ public class UcenterOrderController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
 
-		return "redirect:/order/" + persistence.getSn();
+		return "redirect:/u/order/" + persistence.getId();
 	}
 	
 	@RequestMapping("/platformDeliver")
-	public String platformDeliver(Long id, boolean isPlatformDeliver, Principal principal, RedirectAttributes redirectAttributes) {
+	public String platformDeliver(Long id, Principal principal, RedirectAttributes redirectAttributes) {
 		Order order = orderService.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " not found");
 		if(!principal.getUserId().equals(order.getSellerId())) {
 			throw new UnauthorizedException("权限不足");
 		}
 		try {
-			orderService.modifyIsPlatformDeliver(id, isPlatformDeliver);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("设置成功"));
+			orderService.modifyIsPlatformDeliver(id, true);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("已成功转给公司发货"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
-		return "redirect:/u/order/" + order.getSn();
+		return "redirect:/u/order/" + order.getId();
 	}
 	
 }

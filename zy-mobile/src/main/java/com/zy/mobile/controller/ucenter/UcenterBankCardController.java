@@ -93,7 +93,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("只能添加您本人开户的银行卡"));
 			bankCard.setRealname(appearance.getRealname());
 			model.addAttribute("bankCard", bankCardComponent.buildVo(bankCard));
-			return "redirect:/u/bankCard/create";
+			return create(principal, model, redirectAttributes);
 		}
 		
 		try {
@@ -102,7 +102,8 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("银行卡保存成功"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return "redirect:/u/bankCard/create";
+			model.addAttribute("bankCard", bankCardComponent.buildVo(bankCard));
+			return create(principal, model, redirectAttributes);
 		}
 		
 		return "redirect:/u/bankCard";

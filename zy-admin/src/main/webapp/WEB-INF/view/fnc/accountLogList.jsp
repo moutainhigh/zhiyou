@@ -25,7 +25,8 @@
         },
         columns: [
           {
-            data: 'id'
+            data: 'id',
+            title: 'id'
           },
           {
             data: '',
@@ -55,7 +56,7 @@
             title: '交易前',
             orderable: false,
             render: function (data, type, full) {
-              if (typeof full.beforeAmount === 'undefined') {
+              if (full.beforeAmount === null) {
                 return '-';
               } else {
                 return '<p>' + full.beforeAmount.toFixed(2) + '</p>';
@@ -79,7 +80,7 @@
             title: '交易后(余额)',
             orderable: false,
             render: function (data, type, full) {
-              if (typeof full.afterAmount === 'undefined') {
+              if (full.afterAmount === null) {
                 return '-';
               } else {
                 return '<p>' + full.afterAmount.toFixed(2) + '</p>';

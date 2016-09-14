@@ -68,23 +68,24 @@ public class OrderComponent {
 			orderAdminFullVo.setPrice(orderItem.getPrice());
 			orderAdminFullVo.setQuantity(orderItem.getQuantity());
 		}
-
+		
+		Long orderId = order.getId();
 		orderAdminFullVo.setProfits(profitService
-				.findAll(ProfitQueryModel.builder().profitTypeIN(new Profit.ProfitType[] {Profit.ProfitType.特级平级奖, Profit.ProfitType.订单收款, Profit.ProfitType.销量奖}).build())
+				.findAll(ProfitQueryModel.builder().profitTypeIN(new Profit.ProfitType[] {Profit.ProfitType.特级平级奖, Profit.ProfitType.订单收款, Profit.ProfitType.销量奖}).refIdEQ(orderId).build())
 				.stream()
 				.map(profitComponent::buildAdminVo).collect(Collectors.toList())
 
 		);
 
 		orderAdminFullVo.setPayments(paymentService
-				.findAll(PaymentQueryModel.builder().paymentTypeEQ(Payment.PaymentType.订单支付).build())
+				.findAll(PaymentQueryModel.builder().paymentTypeEQ(Payment.PaymentType.订单支付).refIdEQ(orderId).build())
 				.stream()
 				.map(paymentComponent::buildAdminVo).collect(Collectors.toList())
 
 		);
 
 		orderAdminFullVo.setTransfers(transferService
-				.findAll(TransferQueryModel.builder().transferTypeIN(new Transfer.TransferType[] {Transfer.TransferType.一级平级奖, Transfer.TransferType.一级越级奖}).build())
+				.findAll(TransferQueryModel.builder().transferTypeIN(new Transfer.TransferType[] {Transfer.TransferType.一级平级奖, Transfer.TransferType.一级越级奖, Transfer.TransferType.邮费}).refIdEQ(orderId).build())
 				.stream()
 				.map(transferComponent::buildAdminVo).collect(Collectors.toList())
 

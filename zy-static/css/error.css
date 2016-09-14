@@ -6,7 +6,7 @@
   font-size: 100px;
 }
 .error .error-status {
-  color: #777; font-size: 72px;
+  color: #777; font-size: 72px; line-height: 120px;
 }
 .error-info p {
   margin-top: 10px;

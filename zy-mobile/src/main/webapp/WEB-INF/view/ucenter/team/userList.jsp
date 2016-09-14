@@ -10,8 +10,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="keywords" content="微信分销" />
-<meta name="description" content="我的团队" />
 
 <title>我的团队</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
@@ -69,12 +67,6 @@
         <i class="list-arrow"></i>
       </a>
       </c:forEach>
-    </div>
-    </c:if>
-    <c:if test="${empty list}">
-    <div class="empty-tip">
-      <i class="fa fa-map-marker"></i>
-      <span>您没有下级代理!</span>
     </div>
     </c:if>
 
