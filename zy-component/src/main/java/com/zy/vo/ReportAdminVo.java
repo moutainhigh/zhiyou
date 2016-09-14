@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Date;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -20,12 +22,18 @@ public class ReportAdminVo implements Serializable {
 	private Long userId;
 	@Field(label = "姓名")
 	private String realname;
-	@Field(label = "检测时间")
-	private Date date;
 	@Field(label = "年龄")
 	private Integer age;
 	@Field(label = "性别")
 	private Gender gender;
+	@Field(label = "手机号")
+	private String phone;
+	@Field(label = "职业")
+	private Long jobId;
+	@Field(label = "所在地")
+	private Long areaId;
+	@Field(label = "标签")
+	private String tagIds;
 	@Field(label = "检测结果")
 	private ReportResult reportResult;
 	@Field(label = "文字")
@@ -42,6 +50,8 @@ public class ReportAdminVo implements Serializable {
 	private String image5;
 	@Field(label = "图片6")
 	private String image6;
+	@Field(label = "申请时间")
+	private Date appliedTime;
 	@Field(label = "创建时间")
 	private Date createdTime;
 	@Field(label = "初审状态")
@@ -50,8 +60,6 @@ public class ReportAdminVo implements Serializable {
 	private ConfirmStatus confirmStatus;
 	@Field(label = "审核备注")
 	private String confirmRemark;
-	@Field(label = "申请时间")
-	private Date appliedTime;
 	@Field(label = "审核通过时间")
 	private Date confirmedTime;
 	@Field(label = "是否已结算")
@@ -60,8 +68,14 @@ public class ReportAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
-	@Field(label = "检测时间")
-	private String dateLabel;
+	@Field(label = "职业")
+	private String jobName;
+	@Field(label = "所在地")
+	private String province;
+	@Field(label = "所在地")
+	private String city;
+	@Field(label = "所在地")
+	private String district;
 	@Field(label = "图片1")
 	private String image1Big;
 	@Field(label = "图片1")
@@ -88,5 +102,7 @@ public class ReportAdminVo implements Serializable {
 	private String image6Thumbnail;
 	@Field(label = "创建时间")
 	private String createdTimeLabel;
+	@Field(label = "标签")
+	private List<String> tagNames = new ArrayList<>();
 
 }
