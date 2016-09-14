@@ -30,7 +30,7 @@
     <ul class="breadcrumb mt-10">
       <li><a href="${ctx}/u/team/"><i class="fa fa-home"></i> 我的团队</a></li>
       <c:if test="${not empty parentLv3 && principalUserId != parentLv3.id}">
-      <li><a href="${ctx}/u/team/">${parentLv3.nickname}</a></li>
+      <li><a href="${ctx}/u/team/${parentLv3.id}">${parentLv3.nickname}</a></li>
       </c:if>
       <c:if test="${not empty parentLv2 && principalUserId != parentLv2.id}">
       <li><a href="${ctx}/u/team/${parentLv2.id}">${parentLv2.nickname}</a></li>
