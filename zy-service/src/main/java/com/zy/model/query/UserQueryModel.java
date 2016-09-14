@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import com.zy.entity.usr.User.UserType;
 import java.util.Date;
+import com.zy.entity.usr.User.UserRank;
 
 @Getter
 @Setter
@@ -28,6 +29,8 @@ public class UserQueryModel implements Serializable {
 	private String nicknameLK;
 
 	private UserType userTypeEQ;
+
+	private UserRank userRankEQ;
 
 	private Date registerTimeGTE;
 

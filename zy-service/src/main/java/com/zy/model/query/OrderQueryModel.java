@@ -31,7 +31,7 @@ public class OrderQueryModel implements Serializable {
 	private Long[] sellerIdIN;
 
 	private OrderStatus orderStatusEQ;
-	
+
 	private Boolean isSettledUpEQ;
 
 	private Boolean isPlatformDeliverEQ;
