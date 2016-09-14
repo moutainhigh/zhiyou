@@ -16,12 +16,12 @@
 <script src="${stccdn}/plugin/iscroll-5.2.0/iscroll.js"></script>
 <script>
 
-var myscroll;
+  var myscroll;
+  
   function loaded() {
-    setTimeout(function() {
-      myscroll = new IScroll("#wrapper");
-    }, 100);
+     myscroll = new IScroll("#wrapper");
   }
+  
   window.addEventListener("load", loaded, false);
   
 </script>
