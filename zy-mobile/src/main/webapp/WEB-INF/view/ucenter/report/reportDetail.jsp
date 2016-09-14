@@ -71,6 +71,18 @@
       <div class="list-unit">${report.age}岁</div>
     </div>
     <div class="list-item">
+      <div class="list-text">手机号</div>
+      <div class="list-unit">${report.phone}</div>
+    </div>
+    <div class="list-item">
+      <div class="list-text">地区</div>
+      <div class="list-unit">${report.province} ${report.city} ${report.district}</div>
+    </div>
+    <div class="list-item">
+      <div class="list-text">职业</div>
+      <div class="list-unit">${report.jobName}</div>
+    </div>
+    <div class="list-item">
       <div class="list-text">检测结果</div>
       <div class="list-unit">
         <c:choose>
