@@ -7,6 +7,7 @@ import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
+import io.gd.generator.annotation.view.CollectionView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
@@ -17,6 +18,7 @@ import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -44,20 +46,41 @@ public class Report implements Serializable {
 	@Query({Predicate.EQ, Predicate.IN})
 	@View
 	private Long userId;
+
+	@Column(length = 60)
+	@NotBlank
+	@Pattern(regexp = "^1[\\d]{10}$")
+	@StringBinder
+	@Query(Predicate.EQ)
+	@Field(label = "手机号")
+	@View
+	private String phone;
+
+	@NotNull
+	@Field(label = "职业")
+	@View(name = "jobName", type = String.class)
+	@View(groups = {"ReportVo", "ReportAdminVo"})
+	private Long jobId;
+
+	@NotNull
+	@Field(label = "所在地")
+	@View(name = "province", type = String.class)
+	@View(name = "city", type = String.class)
+	@View(name = "district", type = String.class)
+	@View(groups = {"ReportVo", "ReportAdminVo"})
+	private Long areaId;
+
+	@Field(label = "标签")
+	@CollectionView(name = "tagNames", elementType = String.class)
+	@View(groups = {"ReportVo", "ReportAdminVo"})
+	private String tagIds;
 	
 	@NotNull
 	@Field(label = "姓名")
 	@Query({Predicate.LK})
 	@View
 	private String realname;
-	
-	@NotNull
-	@Temporal(TemporalType.DATE)
-	@Field(label = "检测时间")
-	@View
-	@View(name = "dateLabel", type = String.class)
-	private Date date;
-	
+
 	@NotNull
 	@Field(label = "年龄")
 	@View
@@ -130,6 +153,11 @@ public class Report implements Serializable {
 	private String image6;
 
 	@NotNull
+	@Field(label = "申请时间")
+	@View(groups = {"ReportVo", "ReportAdminVo"})
+	private Date appliedTime;
+
+	@NotNull
 	@Field(label = "创建时间")
 	@View(groups = {"ReportAdminVo"})
 	private Date createdTime;
@@ -150,11 +178,6 @@ public class Report implements Serializable {
 	@View
 	private String confirmRemark;
 
-	@NotNull
-	@Field(label = "申请时间")
-	@View(groups = {"ReportVo", "ReportAdminVo"})
-	private Date appliedTime;
-	
 	@Field(label = "审核通过时间")
 	@View(groups = {"ReportVo", "ReportAdminVo"})
 	private Date confirmedTime;

@@ -55,7 +55,6 @@ public class ReportServiceImpl implements ReportService {
 		}
 
 		Date now = new Date();
-		report.setCreatedTime(new Date());
 		report.setVersion(0);
 		report.setPreConfirmStatus(ConfirmStatus.待审核);
 		report.setConfirmStatus(ConfirmStatus.待审核);
@@ -182,7 +181,6 @@ public class ReportServiceImpl implements ReportService {
 		persistence.setConfirmRemark(null);
 		persistence.setConfirmStatus(ConfirmStatus.待审核);
 		persistence.setPreConfirmStatus(ConfirmStatus.待审核);
-		persistence.setDate(report.getDate());
 		persistence.setGender(report.getGender());
 		persistence.setImage1(report.getImage1());
 		persistence.setImage2(report.getImage2());

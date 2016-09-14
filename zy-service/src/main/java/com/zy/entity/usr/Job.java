@@ -2,18 +2,15 @@ package com.zy.entity.usr;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
-
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import lombok.Getter;
-import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "usr_job")
@@ -23,7 +20,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class Job implements Serializable {
 
 	@Id
-	@Field(label = "jobId")
+	@Field(label = "id")
 	private Long id;
 
 	@NotBlank

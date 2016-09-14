@@ -21,7 +21,6 @@ public class ReportComponent {
 		ReportAdminVo reportAdminVo = new ReportAdminVo();
 		BeanUtils.copyProperties(report, reportAdminVo);
 		
-		reportAdminVo.setDateLabel(formatDate(report.getDate(), SIMPLE_TIME_PATTERN));
 		reportAdminVo.setImage1Thumbnail(getThumbnail(report.getImage1()));
 		reportAdminVo.setImage2Thumbnail(getThumbnail(report.getImage2()));
 		reportAdminVo.setImage3Thumbnail(getThumbnail(report.getImage3()));
@@ -41,7 +40,6 @@ public class ReportComponent {
 		ReportVo reportVo = new ReportVo();
 		BeanUtils.copyProperties(report, reportVo);
 		
-		reportVo.setDateLabel(DateFormatUtils.format(report.getDate(), SIMPLE_TIME_PATTERN));
 		reportVo.setImage1Thumbnail(GcUtils.getThumbnail(report.getImage1()));
 		reportVo.setImage2Thumbnail(GcUtils.getThumbnail(report.getImage2()));
 		reportVo.setImage3Thumbnail(GcUtils.getThumbnail(report.getImage3()));
