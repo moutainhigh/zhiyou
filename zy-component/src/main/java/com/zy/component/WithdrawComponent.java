@@ -1,16 +1,16 @@
 package com.zy.component;
 
-import static java.util.Objects.isNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.fnc.Withdraw;
+import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.BankCardAdminVo;
 import com.zy.vo.WithdrawAdminVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import static java.util.Objects.isNull;
 
 @Component
 public class WithdrawComponent {
@@ -32,6 +32,7 @@ public class WithdrawComponent {
 				withdrawAdminVo.setBankCard(bankCardAdminVo);
 			}
 		}
+		withdrawAdminVo.setWithdrawStatusStyle(GcUtils.getWithdrawStatusStyle(withdraw.getWithdrawStatus()));
 		return withdrawAdminVo;
 	}
 	

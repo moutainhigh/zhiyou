@@ -1,15 +1,15 @@
 package com.zy.component;
 
-import static com.zy.util.GcUtils.formatDate;
-import static com.zy.util.GcUtils.getThumbnail;
-
+import com.zy.common.util.BeanUtils;
+import com.zy.entity.fnc.Payment;
+import com.zy.util.GcUtils;
+import com.zy.util.VoHelper;
+import com.zy.vo.PaymentAdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.zy.common.util.BeanUtils;
-import com.zy.entity.fnc.Payment;
-import com.zy.util.VoHelper;
-import com.zy.vo.PaymentAdminVo;
+import static com.zy.util.GcUtils.formatDate;
+import static com.zy.util.GcUtils.getThumbnail;
 
 @Component
 public class PaymentComponent {
@@ -29,6 +29,7 @@ public class PaymentComponent {
 		paymentAdminVo.setPaidTimeLabel(formatDate(payment.getPaidTime(), TIME_PATTERN));
 		paymentAdminVo.setRefundedTimeLabel(formatDate(payment.getRefundedTime(), TIME_PATTERN));
 		paymentAdminVo.setOfflineImageThumbnail(getThumbnail(payment.getOfflineImage()));
+		paymentAdminVo.setPaymentStatusStyle(GcUtils.getPaymentStatusStyle(payment.getPaymentStatus()));
 		return paymentAdminVo;
 	}
 }
