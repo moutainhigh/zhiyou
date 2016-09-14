@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd
+       http://code.alibabatech.com/schema/dubbo http://static.1024ke.com/file/dubbo.xsd
+       ">
+
+    <context:property-placeholder location="file:${user.home}/zy-consumer.properties"/>
+
+    <dubbo:annotation package="com.zy.consumer"/>
+
+    <dubbo:registry protocol="zookeeper" address="${dubbo.consumer.connect}" file="false"/>
+
+    <dubbo:application name="zy-consumer"/>
+
+    <dubbo:consumer cluster="failfast" timeout="5000"/>
+
+    <dubbo:reference interface="com.zy.service.AppearanceService" id="appearanceService"/>
+    <dubbo:reference interface="com.zy.service.PortraitService" id="portraitService"/>
+    <dubbo:reference interface="com.zy.service.UserService" id="userService"/>
+    <dubbo:reference interface="com.zy.service.MessageService" id="messageService"/>
+    <dubbo:reference interface="com.zy.Config" id="config"/>
+    <dubbo:reference interface="com.zy.service.UserSettingService" id="userSettingService"/>
+
+    <bean id="luosimaoSmsSupport" class="com.zy.common.support.sms.LuosimaoSmsSupport">
+        <constructor-arg index="0" value="${sms.apiKey}"/>
+        <constructor-arg index="1" value="${sms.sign}"/>
+    </bean>
+
+    <util:properties id="consumerConfig" scope="prototype">
+        <prop key="bootstrap.servers">${bootstrap.servers}</prop>
+        <prop key="enable.auto.commit">${enable.auto.commit}</prop>
+        <prop key="auto.offset.reset">earliest</prop>
+        <prop key="auto.commit.interval.ms">${auto.commit.interval.ms}</prop>
+        <prop key="session.timeout.ms">${session.timeout.ms}</prop>
+        <prop key="key.deserializer">${key.deserializer}</prop>
+        <prop key="value.deserializer">${value.deserializer}</prop>
+    </util:properties>
+
+
+
+</beans>

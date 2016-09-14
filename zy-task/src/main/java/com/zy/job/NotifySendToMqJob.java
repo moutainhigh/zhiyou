@@ -38,14 +38,14 @@ public class NotifySendToMqJob {
 		thread.setDaemon(true);
 		return thread;
 	});
-	private final static AtomicBoolean isRunning = new AtomicBoolean(true);
+	private final AtomicBoolean isRunning = new AtomicBoolean(true);
 	private final Runnable runnable = () -> {
 		while (isRunning.get()) {
 			notifyService.findAll(builder().isSentEQ(false).build()).forEach(this::sendToMq);
 			try {
 				TimeUnit.SECONDS.sleep(2);
 			} catch (InterruptedException e) {
-				logger.error(e.getMessage(),e);
+				logger.error(e.getMessage(), e);
 			}
 		}
 	};
