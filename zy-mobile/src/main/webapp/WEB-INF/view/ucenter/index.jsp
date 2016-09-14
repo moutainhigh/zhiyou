@@ -12,7 +12,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="keywords" content="微信分销">
 
 <title>微信分销-我的</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
@@ -122,7 +121,7 @@
       </a>
       <a class="list-item list-item-icon" href="${ctx}/about">
         <i class="list-icon icon icon-about"></i>
-        <div class="list-text">关于优检一生</div>
+        <div class="list-text">关于${sys}</div>
         <i class="list-arrow"></i>
       </a>
     </div>
