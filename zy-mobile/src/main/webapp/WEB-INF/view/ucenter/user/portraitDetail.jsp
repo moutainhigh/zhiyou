@@ -38,9 +38,7 @@
 
       <div class="list-item">
         <div class="list-text">职业</div>
-        <div class="list-unit">
-          <span>${portrait.jobName}</span>
-        </div>
+        <div class="list-unit">${portrait.jobName}</div>
       </div>
       
       <div class="list-item">

@@ -64,7 +64,7 @@
 <script id="rowTpl" type="text/html">
   <a class="list-item" href="${ctx}/u/report/{{ d.id }}">
     <div class="list-text report">
-      <div class="lh-30">{{ d.realname }}<span class="ml-10 fs-12 font-999">&lt;{{ d.gender }}  {{ d.age }}岁&gt;</span><span class="right fs-12 font-999">{{ d.dateLabel }}</span></div>
+      <div class="lh-30">{{ d.realname }}<span class="ml-10 fs-12 font-999">&lt;{{ d.gender }}  {{ d.age }}岁&gt;</span><span class="right fs-12 font-999">{{ d.phone }}</span></div>
       <div class="lh-30 fs-14">
       {{# if(d.reportResult == '阴性'){ }}
       <span class="font-red">阴性</span>
@@ -107,7 +107,7 @@
       <c:forEach items="${page.data}" var="report">
       <a class="list-item" href="${ctx}/u/report/${report.id}">
         <div class="list-text report">
-          <div class="lh-30">${report.realname}<span class="ml-10 fs-12 font-999">&lt;${report.gender}  ${report.age}岁&gt;</span><span class="right fs-12 font-999">${report.dateLabel}</span></div>
+          <div class="lh-30">${report.realname}<span class="ml-10 fs-12 font-999">&lt;${report.gender}  ${report.age}岁&gt;</span><span class="right fs-12 font-999">${report.phone}</span></div>
           <div class="lh-30 fs-14">
           <c:choose>
             <c:when test="${report.reportResult == '阴性'}">
@@ -120,7 +120,7 @@
             <span class="font-green">${report.reportResult}</span>
             </c:when>
             <c:when test="${report.reportResult == '干扰色'}">
-            <span class="ont-purple">${report.reportResult}</span>
+            <span class="font-purple">${report.reportResult}</span>
             </c:when>
           </c:choose>
           <c:choose>

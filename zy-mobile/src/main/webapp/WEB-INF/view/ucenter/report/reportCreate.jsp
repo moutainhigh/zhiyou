@@ -15,8 +15,11 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
+<script src="${stccdn}/js/area.js"></script>
 <script type="text/javascript">
   $(function() {
+    var area = new areaInit('province', 'city', 'district');
+    
     $('.image-multi .image-add').imageupload({
       width : 100,
       height : 100,
@@ -61,7 +64,13 @@
         'age' : {
           required : true
         },
-        'date' : {
+        'phone' : {
+          required : true
+        },
+        'areaId' : {
+          required : true
+        },
+        'jobId' : {
           required : true
         },
         'reportResult' : {
@@ -79,7 +88,7 @@
   });
 </script>
 </head>
-<body class="">
+<body>
   <header class="header">
     <h1>上传检测报告</h1>
     <a href="${ctx}/u/report" class="button-left"><i class="fa fa-angle-left"></i></a>
@@ -106,17 +115,54 @@
           </div>
         </div>
         <div class="list-item">
+          <label class="list-label">地区</label>
+          <div class="list-text">
+            <div class="flex">
+              <div class="form-select flex-1">
+                <select name="" id="province">
+                  <option value="">省</option>
+                </select>
+              </div>
+              <div class="form-select flex-1">
+                <select name="" id="city">
+                  <option value="">市</option>
+                </select>
+              </div>
+              <div class="form-select flex-1">
+                <select name="areaId" id="district">
+                  <option value="">区</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list-item">
+          <label class="list-label">职业</label>
+          <div class="list-text form-select">
+            <select name="jobId">
+              <option value="">请选择</option>
+              <c:forEach items="${jobs}" var="job">
+                <option value="${job.id}">${job.jobName}</option>
+              </c:forEach>
+            </select>
+          </div>
+        </div>
+        <div class="list-item">
           <label class="list-label" for="age">年龄</label>
           <div class="list-text">
             <input type="number" name="age" class="form-input" value="" placeholder="填写客户年龄">
           </div>
         </div>
         <div class="list-item">
-          <label class="list-label" for="date">检测时间</label>
+          <label class="list-label" for="phone">手机号</label>
           <div class="list-text">
-            <input type="text" id="date" name="date" class="form-input" value="" placeholder="填写检测时间 2001-01-01" onfocus="this.type='date'">
+            <input type="number" name="phone" class="form-input" value="" placeholder="填写客户手机号">
           </div>
         </div>
+      </div>
+
+      <div class="list-group">
+        <div class="list-title">检测结果，至少需要上传1张检测图片</div>
         <div class="list-item">
           <label class="list-label">检测结果</label>
           <div class="list-text form-select">
@@ -129,10 +175,6 @@
             </select>
           </div>
         </div>
-      </div>
-
-      <div class="list-group">
-        <div class="list-title">您至少需要上传1张检测图片</div>
         <div class="list-item">
           <div class="list-text image-upload image-multi">
             <div class="image-add" data-limit="6">
