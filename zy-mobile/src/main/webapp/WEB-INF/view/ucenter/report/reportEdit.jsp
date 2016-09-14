@@ -124,7 +124,7 @@
       </div>
 
       <div class="list-group">
-        <div class="list-title">您至少需要上传3张检测图片</div>
+        <div class="list-title">您至少需要上传1张检测图片</div>
         <div class="list-item">
           <div class="list-text image-upload image-multi">
             <div class="image-item">

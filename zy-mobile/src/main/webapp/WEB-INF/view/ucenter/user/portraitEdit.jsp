@@ -31,10 +31,10 @@
         'birthday' : {
           required : true
         },
-        'job' : {
+        'jobId' : {
           required : true
         },
-        'tags' : {
+        'tagIds' : {
           required : true
         }
       },
@@ -48,10 +48,10 @@
         'birthday' : {
           required : '请填写生日'
         },
-        'job' : {
+        'jobId' : {
           required : '请选择职业'
         },
-        'tags' : {
+        'tagIds' : {
           required : '请填写标签'
         }
       }

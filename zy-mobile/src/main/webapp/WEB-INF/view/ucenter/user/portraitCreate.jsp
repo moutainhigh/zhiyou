@@ -31,10 +31,10 @@
         'birthday' : {
           required : true
         },
-        'job' : {
+        'jobId' : {
           required : true
         },
-        'tags' : {
+        'tagIds' : {
           required : true
         }
       },
