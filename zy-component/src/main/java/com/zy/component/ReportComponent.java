@@ -4,23 +4,31 @@ import static com.zy.util.GcUtils.formatDate;
 import static com.zy.util.GcUtils.getThumbnail;
 
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Report;
 import com.zy.util.GcUtils;
+import com.zy.util.VoHelper;
 import com.zy.vo.ReportAdminVo;
 import com.zy.vo.ReportVo;
 
 @Component
 public class ReportComponent {
 
+	@Autowired
+	private CacheComponent cacheComponent;
+	
+	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 	private static final String SIMPLE_TIME_PATTERN = "yyyy-MM-dd";
 	
 	public ReportAdminVo buildAdminVo(Report report) {
 		ReportAdminVo reportAdminVo = new ReportAdminVo();
 		BeanUtils.copyProperties(report, reportAdminVo);
 		
+		reportAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(report.getUserId())));
+		reportAdminVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportAdminVo.setDateLabel(formatDate(report.getDate(), SIMPLE_TIME_PATTERN));
 		reportAdminVo.setImage1Thumbnail(getThumbnail(report.getImage1()));
 		reportAdminVo.setImage2Thumbnail(getThumbnail(report.getImage2()));

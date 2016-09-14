@@ -142,6 +142,13 @@
             }
           },
           {
+            data: '',
+            title: '代理信息',
+            render: function (data, type, full) {
+              return '<p><img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>: ' + full.user.nickname + '</p><p>手机号: ' + full.user.phone + '</p><p>等级: ' + full.user.userRankLabel + '</p>';
+            }
+          },
+          {
             data: 'text',
             title: '客户使用心得',
             orderable: false,
@@ -160,10 +167,19 @@
             title: '图片',
             orderable: false,
             render: function (data, type, full) {
-              return '<img class="imagescan mr-10" data-url="' + full.image1Big + '" src="' + full.image1Thumbnail + '" >'
-              		+'<img class="imagescan mr-10" data-url="' + full.image2Big + '" src="' + full.image2Thumbnail + '" >'
-              		+'<img class="imagescan mr-10" data-url="' + full.image3Big + '" src="' + full.image3Thumbnail + '" >';
+              var html = '<img class="imagescan mr-10" data-url="' + full.image1Big + '" src="' + full.image1Thumbnail + '" >';
+              if(full.image2Thumbnail != null) {
+                html += '<img class="imagescan mr-10" data-url="' + full.image2Big + '" src="' + full.image2Thumbnail + '" >';
+              } else if(!full.image3Thumbnail != null) {
+                html += '<img class="imagescan mr-10" data-url="' + full.image3Big + '" src="' + full.image3Thumbnail + '" >';
+              }
+              return html;
             }
+          },
+          {
+            data: 'createdTimeLabel',
+            title: '创建时间',
+            orderable: false
           },
           {
             data: 'preConfirmStatus',
