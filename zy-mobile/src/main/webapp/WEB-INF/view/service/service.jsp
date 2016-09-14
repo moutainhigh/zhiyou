@@ -31,7 +31,7 @@
       <i class="fa fa-headphones font-orange"></i>
       <span>在线客服</span>
     </a>
-    <a class="flex-1" href="tel:18017676668">
+    <a class="flex-1" href="tel:400-7282-999">
       <i class="fa fa-phone font-blue"></i>
       <span>服务热线</span>
     </a>
