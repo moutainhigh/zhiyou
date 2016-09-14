@@ -93,9 +93,11 @@ public class UcenterOrderController {
 	public String detail(@PathVariable Long id, Principal principal, Model model) {
 		Order order = orderService.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " not found");
-		if (principal != null) {
-			User user = userService.findOne(principal.getUserId());
-			model.addAttribute("userRank", user.getUserRank());
+		User user = userService.findOne(principal.getUserId());
+		model.addAttribute("userRank", user.getUserRank());
+		if(order.getSellerId().equals(principal.getUserId())){
+			User buyer = userService.findOne(order.getUserId());
+			model.addAttribute("buyerUserRank", buyer.getUserRank());
 		}
 		model.addAttribute("order", orderComponent.buildDetailVo(order));
 		model.addAttribute("inOut", order.getUserId().equals(principal.getUserId()) ? "in" : "out");
