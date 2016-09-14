@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<script type="text/javascript" src="${ctx}/plugin/My97DatePicker/WdatePicker.js"></script>
 <style>
 .imagescan {
   cursor: pointer;
@@ -257,15 +256,17 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-list"></i><span>支付单管理 </span>
+          <i class="icon-doc"></i><span>支付单管理 </span>
         </div>
       </div>
       <div class="portlet-body clearfix">
         <div class="table-container">
           <div class="table-toolbar">
             <form class="filter-form form-inline" id="searchForm">
-              <input id="_orderBy" name="orderBy" type="hidden" value="" /> <input id="_direction" name="direction" type="hidden" value="" /> <input id="_pageNumber"
-                name="pageNumber" type="hidden" value="0" /> <input id="_pageSize" name="pageSize" type="hidden" value="20" />
+              <input id="_orderBy" name="orderBy" type="hidden" value="" />
+              <input id="_direction" name="direction" type="hidden" value="" />
+              <input id="_pageNumber" name="pageNumber" type="hidden" value="0" />
+              <input id="_pageSize" name="pageSize" type="hidden" value="20" />
 
               <div class="form-group">
                 <select name="paymentStatusEQ" class="form-control">
