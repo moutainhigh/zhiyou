@@ -230,6 +230,7 @@
       <i class="fa fa-heart-o"></i><span>关注 (<em>${activity.collectedCount}</em>)</span>
       </c:if>
     </a>
+    
     <c:if test="${activity.status == '报名中' || activity.status == '进行中'}">
     <c:if test="${isApplied}">
     <a class="flex-2 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-check"></i> 您已报名</div></a>
