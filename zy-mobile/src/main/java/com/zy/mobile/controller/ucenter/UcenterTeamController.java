@@ -66,23 +66,24 @@ public class UcenterTeamController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String detail(@PathVariable Long id, Principal principal, Model model){
+		Long principalUserId = principal.getUserId();
 		validate(id, NOT_NULL, "user id is null");
 		User user = userService.findOne(id);
 		validate(user, NOT_NULL, "user id " + id + "is not found");
 		model.addAttribute("user", userComponent.buildListVo(user));
-		model.addAttribute("principalUserId", principal.getUserId());
+		model.addAttribute("principalUserId", principalUserId);
 		
-		if(user.getParentId() != null){
+		if(user.getParentId() != null && !principalUserId.equals(user.getParentId())){
 			User parentLv1 = userService.findOne(user.getParentId());
 			if(parentLv1.getUserRank() != UserRank.V0){
 				model.addAttribute("parentLv1", userComponent.buildListVo(parentLv1));
 			}
-			if(parentLv1.getParentId() != null){
+			if(parentLv1.getParentId() != null && !principalUserId.equals(parentLv1.getParentId())){
 				User parentLv2 = userService.findOne(parentLv1.getParentId());
 				if(parentLv2.getUserRank() != UserRank.V0){
 					model.addAttribute("parentLv2", userComponent.buildListVo(parentLv2));
 				}
-				if(parentLv2.getParentId() != null){
+				if(parentLv2.getParentId() != null && !principalUserId.equals(parentLv2.getParentId())){
 					User parentLv3 = userService.findOne(parentLv2.getParentId());
 					if(parentLv3.getUserRank() != UserRank.V0){
 						model.addAttribute("parentLv3", userComponent.buildListVo(parentLv3));

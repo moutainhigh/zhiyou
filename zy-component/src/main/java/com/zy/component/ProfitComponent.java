@@ -1,13 +1,14 @@
 package com.zy.component;
 
-import static com.zy.util.GcUtils.formatDate;
+import com.zy.common.util.BeanUtils;
+import com.zy.entity.fnc.Profit;
+import com.zy.util.GcUtils;
+import com.zy.util.VoHelper;
+import com.zy.vo.ProfitAdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.zy.common.util.BeanUtils;
-import com.zy.entity.fnc.Profit;
-import com.zy.util.VoHelper;
-import com.zy.vo.ProfitAdminVo;
+import static com.zy.util.GcUtils.formatDate;
 
 @Component
 public class ProfitComponent {
@@ -23,6 +24,7 @@ public class ProfitComponent {
 		profitAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(profit.getUserId())));
 		profitAdminVo.setCreatedTimeLabel(formatDate(profit.getCreatedTime(), TIME_PATTERN));
 		profitAdminVo.setGrantedTimeLabel(formatDate(profit.getGrantedTime(), TIME_PATTERN));
+		profitAdminVo.setProfitStatusStyle(GcUtils.getProfitStatusStyle(profit.getProfitStatus()));
 		return profitAdminVo;
 	}
 	

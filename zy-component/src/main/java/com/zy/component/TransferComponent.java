@@ -1,6 +1,7 @@
 package com.zy.component;
 
 import static com.zy.util.GcUtils.formatDate;
+import static com.zy.util.GcUtils.getTransferStatusStyle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,7 @@ public class TransferComponent {
 		transferAdminVo.setToUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(transfer.getToUserId())));
 		transferAdminVo.setCreatedTimeLabel(formatDate(transfer.getCreatedTime(), TIME_PATTERN));
 		transferAdminVo.setTransferredTimeLabel(formatDate(transfer.getTransferredTime(), TIME_PATTERN));
+		transferAdminVo.setTransferStatusStyle(getTransferStatusStyle(transfer.getTransferStatus()));
 		return transferAdminVo;
 	}
 }

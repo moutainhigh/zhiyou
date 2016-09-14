@@ -16,8 +16,6 @@ public class CommonRequestAttributeFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
 		request.setAttribute("stccdn", ALIYUN_URL_STATIC);
-		request.setAttribute("urlpassport", URL_PASSPORT);
-		request.setAttribute("urlpc", URL_PC);
 		request.setAttribute("urlmobile", URL_MOBILE);
 		request.setAttribute("sys", SETTING_SYS_NAME);
 		filterChain.doFilter(request, response);

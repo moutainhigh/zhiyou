@@ -89,7 +89,6 @@ public class Report implements Serializable {
 	@View(name = "image1Thumbnail")
 	private String image1;
 
-	@NotBlank
 	@URL
 	@StringBinder
 	@Field(label = "图片2")
@@ -98,7 +97,6 @@ public class Report implements Serializable {
 	@View(name = "image2Thumbnail")
 	private String image2;
 
-	@NotBlank
 	@URL
 	@StringBinder
 	@Field(label = "图片3")

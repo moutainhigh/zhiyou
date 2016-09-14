@@ -311,6 +311,11 @@
                 <a href="javascript:;" data-href="${ctx}/profit"><i class="icon-present"></i> 收益管理<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>
+            <shiro:hasPermission name="transfer:view">
+              <li>
+                <a href="javascript:;" data-href="${ctx}/transfer"><i class="icon-loop"></i> 转账单管理<span class="badge badge-danger"></span></a>
+              </li>
+            </shiro:hasPermission>
             <shiro:hasPermission name="accountLog:view">
               <li>
                 <a href="javascript:;" data-href="${ctx}/accountLog"><i class="icon-calculator"></i> 流水管理<span class="badge badge-danger"></span></a>
