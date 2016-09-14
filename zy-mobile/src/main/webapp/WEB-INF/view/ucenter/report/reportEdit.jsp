@@ -43,7 +43,7 @@
     //验证
     $(".valid-form").validate({
       rules : {
-        'name' : {
+        'realname' : {
           required : true
         },
         'gender' : {
