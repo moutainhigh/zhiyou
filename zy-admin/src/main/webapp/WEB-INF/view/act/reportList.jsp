@@ -135,11 +135,8 @@
         },
         columns: [
           {
-            data: '',
-            title: '客户信息',
-            render: function (data, type, full) {
-              return '<p>姓名: ' + full.realname + '</p><p>性别: ' + full.gender + '</p><p>年龄: ' + full.age + '</p>';
-            }
+            data: 'id',
+            title: 'id'
           },
           {
             data: '',
@@ -147,6 +144,17 @@
             render: function (data, type, full) {
               return '<p><img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>: ' + full.user.nickname + '</p><p>手机号: ' + full.user.phone + '</p><p>等级: ' + full.user.userRankLabel + '</p>';
             }
+          },
+          {
+            data: '',
+            title: '客户信息',
+            render: function (data, type, full) {
+              return '<p>姓名: ' + full.realname + '</p><p>性别: ' + full.gender + '</p><p>年龄: ' + full.age + '</p>';
+            }
+          },
+          {
+            data: 'phone',
+            title: '客户手机'
           },
           {
             data: 'reportResult',
