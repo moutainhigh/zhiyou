@@ -84,7 +84,7 @@
     var onClose = function(){
       $('body').css({'overflow':'auto'});
       $dialog.remove();
-    }
+    };
     
     if (options.timeout != 0) {
       setTimeout(function() {
