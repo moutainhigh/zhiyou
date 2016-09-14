@@ -41,6 +41,8 @@ public class ProfitAdminVo implements Serializable {
 	private String remark;
 
 	/* 扩展 */
+	@Field(label = "收益单状态")
+	private String profitStatusStyle;
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
 	@Field(label = "创建时间")

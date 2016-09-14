@@ -125,6 +125,7 @@ public class Deposit implements Serializable {
 	@Query(Predicate.EQ)
 	@Field(label = "提现单状态")
 	@View
+	@View(name = "depositStatusStyle", type = String.class, groups = {"DepositAdminVo"})
 	private DepositStatus depositStatus;
 
 	@View(groups = "DepositAdminVo")

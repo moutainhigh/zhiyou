@@ -100,6 +100,7 @@ public class Payment implements Serializable {
 	@NotNull
 	@Field(label = "支付状态")
 	@View
+	@View(name = "paymentStatusStyle", type = String.class, groups = {"PaymentAdminVo"})
 	private PaymentStatus paymentStatus;
 
 	@NotNull

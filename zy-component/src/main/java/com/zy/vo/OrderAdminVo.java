@@ -93,6 +93,8 @@ public class OrderAdminVo implements Serializable {
 	private String paidTimeLabel;
 	@Field(label = "退款时间")
 	private String refundedTimeLabel;
+	@Field(label = "订单状态")
+	private String orderStatusStyle;
 	@Field(label = "是否物流发货")
 	private Boolean useLogisticsLabel;
 	@Field(label = "发货时间")

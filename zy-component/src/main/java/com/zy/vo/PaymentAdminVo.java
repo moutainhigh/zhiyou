@@ -74,6 +74,8 @@ public class PaymentAdminVo implements Serializable {
 	private String expiredTimeLabel;
 	@Field(label = "支付时间")
 	private String paidTimeLabel;
+	@Field(label = "支付状态")
+	private String paymentStatusStyle;
 	@Field(label = "退款时间")
 	private String refundedTimeLabel;
 	@Field(label = "银行汇款截图")
