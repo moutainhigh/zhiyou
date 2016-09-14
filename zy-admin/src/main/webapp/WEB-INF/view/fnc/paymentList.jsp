@@ -269,11 +269,10 @@
 
               <div class="form-group">
                 <select name="paymentStatusEQ" class="form-control">
-                  <option value="">--请选择支付状态--</option>
-                  <option value="待支付">待支付</option>
-                  <option value="已支付">已支付</option>
-                  <option value="已退款">已退款</option>
-                  <option value="已取消">已取消</option>
+                  <option value="">-- 支付状态 --</option>
+                  <c:forEach items="${paymentStatuses}" var="paymentStatus">
+                  <option value="${paymentStatus}">${paymentStatus}</option>
+                  </c:forEach>
                 </select>
               </div>
 
