@@ -2,10 +2,12 @@ package com.zy.util;
 
 import com.zy.common.exception.ValidationException;
 import com.zy.common.util.Identities;
+import com.zy.entity.fnc.Transfer;
 import com.zy.entity.mal.Order;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -15,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -202,7 +205,6 @@ public class GcUtils {
 	}
 
 	public static String getOrderStatusStyle (Order.OrderStatus orderStatus) {
-		
 		String labelClass = "label-default";
 		switch (orderStatus) {
 		case 待支付:
@@ -226,9 +228,24 @@ public class GcUtils {
 		default:
 			break;
 		}
-		
 		return labelClass;
-
 	}
 
+	public static String getTransferStatusStyle (Transfer.TransferStatus transferStatus) {
+		String labelClass = "label-default";
+		switch (transferStatus) {
+		case 待转账:
+			labelClass = "label-danger";
+			break;
+		case 已转账:
+			labelClass = "label-success";
+			break;
+		case 已取消:
+			labelClass = "label-default";
+			break;
+		default:
+			break;
+		}
+		return labelClass;
+	}
 }

@@ -87,6 +87,7 @@ public class AdminConstants {
 			sub.put("bankCard:confirm", "绑定银行信息(审核)");
 			sub.put("payment:view", "支付单查看");
 			sub.put("payment:confirmPaid", "支付单确认支付");
+			sub.put("transfer:view", "转账单管理");
 	 		SETTING_PERMISSION_MAP.put("财务管理", sub);
 		}
 		{
