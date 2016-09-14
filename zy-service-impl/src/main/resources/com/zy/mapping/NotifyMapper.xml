@@ -5,15 +5,17 @@
 	<resultMap id="baseResultMap" type="com.zy.entity.sys.Notify">
 		<id column="id" property="id" />
 		<result column="topic" property="topic" />
-		<result column="payload" property="payload" />
-		<result column="is_sent" property="isSent" />
+		<result column="token" property="token" />
 		<result column="created_time" property="createdTime" />
+		<result column="ref_id" property="refId" />
+		<result column="version" property="version" />
+		<result column="is_sent" property="isSent" />
 		<result column="sent_time" property="sentTime" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.sys.Notify" useGeneratedKeys="true" keyProperty="id">
-	  insert into `sys_notify` (topic,payload,is_sent,created_time,sent_time)
-	  values (#{topic},#{payload},#{isSent},#{createdTime},#{sentTime})
+	  insert into `sys_notify` (topic,token,created_time,ref_id,version,is_sent,sent_time)
+	  values (#{topic},#{token},#{createdTime},#{refId},#{version},#{isSent},#{sentTime})
 	</insert>
 
 	<delete id="delete">
@@ -24,9 +26,11 @@
 		update `sys_notify`
 		<set>
 			topic = #{topic},
-			payload = #{payload},
-			is_sent = #{isSent},
+			token = #{token},
 			created_time = #{createdTime},
+			ref_id = #{refId},
+			version = #{version},
+			is_sent = #{isSent},
 			sent_time = #{sentTime},
 		</set>
 		where id = #{id}
@@ -38,9 +42,11 @@
 				<foreach collection="fields" item="field">
 				<choose>
 					<when test="field == 'topic'">topic = #{notify.topic},</when>
-					<when test="field == 'payload'">payload = #{notify.payload},</when>
-					<when test="field == 'isSent'">is_sent = #{notify.isSent},</when>
+					<when test="field == 'token'">token = #{notify.token},</when>
 					<when test="field == 'createdTime'">created_time = #{notify.createdTime},</when>
+					<when test="field == 'refId'">ref_id = #{notify.refId},</when>
+					<when test="field == 'version'">version = #{notify.version},</when>
+					<when test="field == 'isSent'">is_sent = #{notify.isSent},</when>
 					<when test="field == 'sentTime'">sent_time = #{notify.sentTime},</when>
 				</choose>
 				</foreach>
@@ -50,16 +56,40 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,topic,payload,is_sent,created_time,sent_time
+		id,topic,token,created_time,ref_id,version,is_sent,sent_time
 		from `sys_notify`
 		where id = #{id}
 	</select>
 
-	<select id="findAll" resultMap="baseResultMap">
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.NotifyQueryModel">
 		select
-		id,topic,payload,is_sent,created_time,sent_time
+		id,topic,token,created_time,ref_id,version,is_sent,sent_time
 		from `sys_notify`
-		order by id desc
+		<where>
+			<if test="isSentEQ != null">
+				and is_sent = #{isSentEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.NotifyQueryModel">
+		select count(*) from `sys_notify`
+		<where>
+			<if test="isSentEQ != null">
+				and is_sent = #{isSentEQ}
+			</if>
+		</where>
 	</select>
 
 </mapper>
