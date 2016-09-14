@@ -51,9 +51,7 @@ public class AccountComponent {
 					default:
 						break;
 					}
-					
 				}
-				
 			});
 			return accountAdminVo;
 		}).collect(Collectors.toList());

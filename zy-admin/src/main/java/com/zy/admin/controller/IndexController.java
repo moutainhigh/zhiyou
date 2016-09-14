@@ -1,18 +1,17 @@
 package com.zy.admin.controller;
 
-import com.zy.admin.model.AdminPrincipal;
-import com.zy.common.support.cache.CacheSupport;
-import com.zy.component.CacheComponent;
-import com.zy.component.UserComponent;
-import com.zy.entity.cms.Feedback.FeedbackStatus;
-import com.zy.entity.fnc.Profit;
-import com.zy.entity.fnc.Withdraw.WithdrawStatus;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.User.UserType;
-import com.zy.model.Constants;
-import com.zy.model.query.*;
-import com.zy.service.*;
+import static com.zy.model.Constants.CACHE_NAME_STATISTICS;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -25,13 +24,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.math.BigDecimal;
-import java.util.*;
-
-import static com.zy.model.Constants.CACHE_NAME_STATISTICS;
+import com.zy.admin.model.AdminPrincipal;
+import com.zy.common.support.cache.CacheSupport;
+import com.zy.component.CacheComponent;
+import com.zy.component.UserComponent;
+import com.zy.entity.cms.Feedback.FeedbackStatus;
+import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Withdraw.WithdrawStatus;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserType;
+import com.zy.model.Constants;
+import com.zy.model.query.BankCardQueryModel;
+import com.zy.model.query.FeedbackQueryModel;
+import com.zy.model.query.ProfitQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.model.query.WithdrawQueryModel;
+import com.zy.service.BankCardService;
+import com.zy.service.FeedbackService;
+import com.zy.service.ProfitService;
+import com.zy.service.UserService;
+import com.zy.service.WithdrawService;
 
 @Controller
 @RequestMapping
@@ -156,7 +169,6 @@ public class IndexController {
 			final String dateFmt = "yyyy-MM-dd";
 			Date date = null;
 			List<Long> userCountList = new ArrayList<Long>();
-			List<Long> buyerCountList = new ArrayList<Long>();
 			List<String> dataStrs = new ArrayList<String>();
 			while ((date = calendar.getTime()).before(now)) {
 				long agentCount = 0L;
@@ -175,7 +187,6 @@ public class IndexController {
 			}
 			dataMap = new LinkedHashMap<String, Object>();
 			dataMap.put("userCount", userCountList);
-			dataMap.put("buyerCount", buyerCountList);
 			dataMap.put("chartLabel", dataStrs);
 
 			cacheSupport.set(CACHE_NAME_STATISTICS, Constants.CACHE_NAME_REGISTER_CHART, dataMap, DEFAULT_EXPIRE);
