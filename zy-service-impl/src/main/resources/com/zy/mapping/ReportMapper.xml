@@ -6,9 +6,12 @@
 		<id column="id" property="id" />
 		<result column="user_id" property="userId" />
 		<result column="realname" property="realname" />
-		<result column="date" property="date" />
 		<result column="age" property="age" />
 		<result column="gender" property="gender" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="phone" property="phone" />
+		<result column="job_id" property="jobId" />
+		<result column="area_id" property="areaId" />
+		<result column="tag_ids" property="tagIds" />
 		<result column="report_result" property="reportResult" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="text" property="text" />
 		<result column="image1" property="image1" />
@@ -17,19 +20,19 @@
 		<result column="image4" property="image4" />
 		<result column="image5" property="image5" />
 		<result column="image6" property="image6" />
+		<result column="applied_time" property="appliedTime" />
 		<result column="created_time" property="createdTime" />
 		<result column="pre_confirm_status" property="preConfirmStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="confirm_status" property="confirmStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="confirm_remark" property="confirmRemark" />
-		<result column="applied_time" property="appliedTime" />
 		<result column="confirmed_time" property="confirmedTime" />
 		<result column="is_settled_up" property="isSettledUp" />
 		<result column="version" property="version" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.act.Report" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_report` (user_id,realname,date,age,gender,report_result,text,image1,image2,image3,image4,image5,image6,created_time,pre_confirm_status,confirm_status,confirm_remark,applied_time,confirmed_time,is_settled_up,version)
-	  values (#{userId},#{realname},#{date},#{age},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{text},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime},#{preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{appliedTime},#{confirmedTime},#{isSettledUp},#{version})
+	  insert into `act_report` (user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image1,image2,image3,image4,image5,image6,applied_time,created_time,pre_confirm_status,confirm_status,confirm_remark,confirmed_time,is_settled_up,version)
+	  values (#{userId},#{realname},#{age},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{jobId},#{areaId},#{tagIds},#{reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{text},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{appliedTime},#{createdTime},#{preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{confirmedTime},#{isSettledUp},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -41,9 +44,12 @@
 		<set>
 			user_id = #{userId},
 			realname = #{realname},
-			date = #{date},
 			age = #{age},
 			gender = #{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			phone = #{phone},
+			job_id = #{jobId},
+			area_id = #{areaId},
+			tag_ids = #{tagIds},
 			report_result = #{reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			text = #{text},
 			image1 = #{image1},
@@ -52,11 +58,11 @@
 			image4 = #{image4},
 			image5 = #{image5},
 			image6 = #{image6},
+			applied_time = #{appliedTime},
 			created_time = #{createdTime},
 			pre_confirm_status = #{preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			confirm_status = #{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			confirm_remark = #{confirmRemark},
-			applied_time = #{appliedTime},
 			confirmed_time = #{confirmedTime},
 			is_settled_up = #{isSettledUp},
 			version = version + 1,
@@ -71,9 +77,12 @@
 				<choose>
 					<when test="field == 'userId'">user_id = #{report.userId},</when>
 					<when test="field == 'realname'">realname = #{report.realname},</when>
-					<when test="field == 'date'">date = #{report.date},</when>
 					<when test="field == 'age'">age = #{report.age},</when>
 					<when test="field == 'gender'">gender = #{report.gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.Portrait$Gender},</when>
+					<when test="field == 'phone'">phone = #{report.phone},</when>
+					<when test="field == 'jobId'">job_id = #{report.jobId},</when>
+					<when test="field == 'areaId'">area_id = #{report.areaId},</when>
+					<when test="field == 'tagIds'">tag_ids = #{report.tagIds},</when>
 					<when test="field == 'reportResult'">report_result = #{report.reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.act.Report$ReportResult},</when>
 					<when test="field == 'text'">text = #{report.text},</when>
 					<when test="field == 'image1'">image1 = #{report.image1},</when>
@@ -82,11 +91,11 @@
 					<when test="field == 'image4'">image4 = #{report.image4},</when>
 					<when test="field == 'image5'">image5 = #{report.image5},</when>
 					<when test="field == 'image6'">image6 = #{report.image6},</when>
+					<when test="field == 'appliedTime'">applied_time = #{report.appliedTime},</when>
 					<when test="field == 'createdTime'">created_time = #{report.createdTime},</when>
 					<when test="field == 'preConfirmStatus'">pre_confirm_status = #{report.preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.sys.ConfirmStatus},</when>
 					<when test="field == 'confirmStatus'">confirm_status = #{report.confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.sys.ConfirmStatus},</when>
 					<when test="field == 'confirmRemark'">confirm_remark = #{report.confirmRemark},</when>
-					<when test="field == 'appliedTime'">applied_time = #{report.appliedTime},</when>
 					<when test="field == 'confirmedTime'">confirmed_time = #{report.confirmedTime},</when>
 					<when test="field == 'isSettledUp'">is_settled_up = #{report.isSettledUp},</when>
 				</choose>
@@ -97,14 +106,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,realname,date,age,gender,report_result,text,image1,image2,image3,image4,image5,image6,created_time,pre_confirm_status,confirm_status,confirm_remark,applied_time,confirmed_time,is_settled_up,version
+		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image1,image2,image3,image4,image5,image6,applied_time,created_time,pre_confirm_status,confirm_status,confirm_remark,confirmed_time,is_settled_up,version
 		from `act_report`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ReportQueryModel">
 		select
-		id,user_id,realname,date,age,gender,report_result,text,image1,image2,image3,image4,image5,image6,created_time,pre_confirm_status,confirm_status,confirm_remark,applied_time,confirmed_time,is_settled_up,version
+		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image1,image2,image3,image4,image5,image6,applied_time,created_time,pre_confirm_status,confirm_status,confirm_remark,confirmed_time,is_settled_up,version
 		from `act_report`
 		<where>
 			<if test="preConfirmStatusEQ != null">
@@ -123,6 +132,9 @@
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
+			</if>
+			<if test="phoneEQ != null">
+				and phone = #{phoneEQ}
 			</if>
 			<if test="confirmStatusEQ != null">
 				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
@@ -166,6 +178,9 @@
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
+			</if>
+			<if test="phoneEQ != null">
+				and phone = #{phoneEQ}
 			</if>
 			<if test="confirmStatusEQ != null">
 				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
