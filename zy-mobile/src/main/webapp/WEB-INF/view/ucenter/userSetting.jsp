@@ -28,7 +28,7 @@
         type : 'POST',
         dataType : 'JSON',
         success : function(result) {
-          if (result.data.checked) {
+          if (result.code == 0) {
             $this.attr('checked', 'checked');
           } else {
             $this.removeAttr('checked');
