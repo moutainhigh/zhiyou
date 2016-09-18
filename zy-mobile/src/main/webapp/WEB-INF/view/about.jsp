@@ -18,31 +18,31 @@
 </head>
 
 <body class="header-fixed">
-  
+
   <header class="header">
     <h1>关于我们</h1>
     <a href="javascript:history.back(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
-  
+
   <article class="about">
-     <h2><i class="icon icon-logo"></i> 关于智优生物</h2>
-     <div class="about-content">
-	 	<p>智优生物是xxxxxxxx。</p>
-	 	<p>第二段介绍。</p>
-	 	<p>第三段介绍。</p>
-	 	<p>第四段介绍。</p>
-     </div>
-     
-     <h2><i class="fa fa-phone font-blue"></i> 商务合作</h2>
-     <div class="about-content">
-         <h3>联系方式：</h3>
-         <ul>
-           <li>联系邮箱：3497804772@qq.com</li>
-           <li>公司地址：普陀区云岭东路599弄609号汇银铭尊一号楼10楼</li>
-           <li>在线客服QQ：3497804772</li>
-         </ul>
-     </div>
+    <h2><i class="icon icon-logo"></i> 关于智优生物</h2>
+    <div class="about-content">
+      <p>智优生物是xxxxxxxx。</p>
+      <p>第二段介绍。</p>
+      <p>第三段介绍。</p>
+      <p>第四段介绍。</p>
+    </div>
+
+    <h2><i class="fa fa-phone font-blue"></i> 商务合作</h2>
+    <div class="about-content">
+      <h3>联系方式：</h3>
+      <ul>
+        <li>联系邮箱：3497804772@qq.com</li>
+        <li>公司地址：普陀区云岭东路599弄609号汇银铭尊一号楼10楼</li>
+        <li>在线客服QQ：3497804772</li>
+      </ul>
+    </div>
   </article>
- 
+
 </body>
 </html>
