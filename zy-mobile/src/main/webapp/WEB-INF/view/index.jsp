@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/include/taglib.jsp"%>
 <c:set var="nav" value="0" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,33 +21,34 @@
 <script src="${stccdn}/plugin/swipe-2.0/swipe.js"></script>
 
 <script type="text/javascript">
-	window.onload = function() {
-		var swipeItems = $(".swipe .swipe-items a");
-		//var swipeTitle = $(".swipe .swipe-title");
-		var swipePos = $(".swipe .swipe-pos");
-		swipeItems.each(function(i) {
-			if (i == 0) {
-				swipePos.append('<li class="current"></li>');
-			} else {
-				swipePos.append('<li class=""></li>');
-			}
-		});
-		//swipeTitle.text(swipeItems.eq(0).find("img").attr("alt"));
 
-		$('.swipe').swipe({
-			startSlide : 0,
-			speed : 200,
-			auto : 5000,
-			continuous : true,
-			callback : function(pos) {
-				//console.debug(pos);
-			},
-			transitionEnd : function(index, elem) {
-				//swipeTitle.text($(elem).find("img").attr("alt"));
-				swipePos.find("li").removeClass('current').eq(swipeItems.length == 2 ? index % 2 : index).addClass('current');
-			}
-		});
-	};
+  window.onload = function() {
+    var swipeItems = $(".swipe .swipe-items a");
+    //var swipeTitle = $(".swipe .swipe-title");
+    var swipePos = $(".swipe .swipe-pos");
+    swipeItems.each(function(i) {
+      if (i == 0) {
+        swipePos.append('<li class="current"></li>');
+      } else {
+        swipePos.append('<li class=""></li>');
+      }
+    });
+    //swipeTitle.text(swipeItems.eq(0).find("img").attr("alt"));
+
+    $('.swipe').swipe({
+      startSlide : 0,
+      speed : 200,
+      auto : 5000,
+      continuous : true,
+      callback : function(pos) {
+        //console.debug(pos);
+      },
+      transitionEnd : function(index, elem) {
+        //swipeTitle.text($(elem).find("img").attr("alt"));
+        swipePos.find("li").removeClass('current').eq(swipeItems.length == 2 ? index % 2 : index).addClass('current');
+      }
+    });
+  };
 </script>
 
 </head>
