@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 import static com.zy.model.query.AccountLogQueryModel.builder;
@@ -26,12 +25,12 @@ public class AccountLogAckJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		logger.info("begin...{}", LocalDateTime.now());
+		logger.info("begin...");
 		accountLogService.findAll(builder().isAcknowledgedEQ(false).build())
 				.stream()
 				.map(accountLog -> accountLog.getId())
 				.forEach(this::acknowledge);
-		logger.info("end...{}", LocalDateTime.now());
+		logger.info("end...");
 	}
 
 	private void acknowledge(Long id) {

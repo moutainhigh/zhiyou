@@ -1,11 +1,11 @@
 package com.zy.service.impl;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import com.zy.entity.sys.Notify;
 import com.zy.mapper.NotifyMapper;
 import com.zy.model.query.NotifyQueryModel;
 import com.zy.service.NotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;

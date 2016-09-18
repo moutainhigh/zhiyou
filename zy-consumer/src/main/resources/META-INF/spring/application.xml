@@ -27,6 +27,9 @@
     <dubbo:reference interface="com.zy.service.MessageService" id="messageService"/>
     <dubbo:reference interface="com.zy.Config" id="config"/>
     <dubbo:reference interface="com.zy.service.UserSettingService" id="userSettingService"/>
+    <dubbo:reference interface="com.zy.service.BankCardService" id="bankCardService"/>
+    <dubbo:reference interface="com.zy.service.OrderService" id="orderService"/>
+
 
     <bean id="luosimaoSmsSupport" class="com.zy.common.support.sms.LuosimaoSmsSupport">
         <constructor-arg index="0" value="${sms.apiKey}"/>

@@ -22,6 +22,8 @@
 	<dubbo:reference interface="com.zy.service.AccountLogService" id="accountLogService"/>
 	<dubbo:reference interface="com.zy.service.ProfitService" id="profitService"/>
 	<dubbo:reference interface="com.zy.service.TransferService" id="transferService"/>
+	<dubbo:reference interface="com.zy.Config" id="config"/>
+	<dubbo:reference interface="com.zy.service.NotifyService" id="notifyService"/>
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
 
