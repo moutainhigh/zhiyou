@@ -95,10 +95,6 @@
     <c:if test="${order.orderStatus == '已完成'}">
     <div class="note note-success mb-0">
       <p><i class="fa fa-check fs-16"></i> 订单状态：已完成</p>
-      <%-- 结算信息 --%>
-      <c:if test="${order.isSettledUp}">
-      
-      </c:if>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已退款'}">
@@ -112,7 +108,22 @@
     </div>
     </c:if>
     
+    <%-- 结算信息 --%>
+    <c:if test="${order.isSettledUp && not empty profits}">
+    
     <div class="list-group mt-10">
+      <div class="list-title">我的收益</div>
+      <c:forEach items="${profits}" var="profit">
+      <div class="list-item lh-20">
+        <div class="list-text">${profit.title}</div>
+        <div class="list-unit font-orange">${profit.amount}元</div>
+      </div>
+      </c:forEach>
+    </div>
+    
+    </c:if>
+    
+    <div class="list-group">
       <div class="list-title">收件人信息</div>
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-map-marker fs-24"></i></div>
