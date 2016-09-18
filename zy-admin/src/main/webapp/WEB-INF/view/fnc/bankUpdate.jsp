@@ -75,7 +75,7 @@
               <div class="col-md-5">
                 <input type="text" class="form-control" name="orderNumber" value="${bank.orderNumber}"/>
               </div>
-              <span>数字越小排名越靠前</span>
+              <span class="help-inline">数字越小排名越靠前</span>
             </div>
             
           </div>

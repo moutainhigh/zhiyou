@@ -41,8 +41,7 @@
             },
             {
               data : 'orderNumber',
-              title : '排序数字',
-              orderable : false
+              title : '排序数字'
             },
             {
               data : 'id',
