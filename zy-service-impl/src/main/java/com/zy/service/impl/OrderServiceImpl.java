@@ -18,6 +18,7 @@ import com.zy.entity.mal.Product;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
+import com.zy.extend.Producer;
 import com.zy.mapper.*;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
@@ -66,6 +67,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private FncComponent fncComponent;
+	
+	@Autowired
+	private Producer producer;
 
 	@Override
 	public Order create(@NotNull OrderCreateDto orderCreateDto) {
@@ -261,6 +265,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new ConcurrentException();
 		}
 
+		producer.send(Constants.TOPIC_ORDER_DELIVERED, order.getId());
 	}
 
 	@Override
@@ -283,13 +288,10 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "只有已支付的订单才能发货");
 		}
 
-
 		if (useLogistics) {
-
 			String logisticsName = orderDeliverDto.getLogisticsName();
 			String logisticsSn = orderDeliverDto.getLogisticsSn();
 			BigDecimal logisticsFee = orderDeliverDto.getLogisticsFee();
-
 
 			validate(logisticsName, NOT_BLANK, "logistics name is blank");
 			validate(logisticsSn, NOT_BLANK, "logistics sn is blank");
@@ -327,6 +329,8 @@ public class OrderServiceImpl implements OrderService {
 		if (orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
 		}
+		
+		producer.send(Constants.TOPIC_ORDER_DELIVERED, order.getId());
 	}
 
 	@Override

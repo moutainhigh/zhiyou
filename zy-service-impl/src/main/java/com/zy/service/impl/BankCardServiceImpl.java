@@ -18,10 +18,12 @@ import com.zy.entity.fnc.Bank;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
+import com.zy.extend.Producer;
 import com.zy.mapper.BankCardMapper;
 import com.zy.mapper.BankMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
+import com.zy.model.Constants;
 import com.zy.model.query.BankCardQueryModel;
 import com.zy.service.BankCardService;
 
@@ -37,6 +39,9 @@ public class BankCardServiceImpl implements BankCardService {
 	
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private Producer producer;
 
 	@Override
 	public BankCard findOne(@NotNull Long id) {
@@ -152,11 +157,13 @@ public class BankCardServiceImpl implements BankCardService {
 			validate(confirmRemark, NOT_NULL, "审核不通过时,备注必须填写");
 			merge.setConfirmRemark(confirmRemark);
 			merge.setConfirmStatus(ConfirmStatus.未通过);
+			producer.send(Constants.TOPIC_BANKCARD_REJECTED, bankCard.getId());
 		} else {
 			merge.setConfirmStatus(ConfirmStatus.已通过);
 			merge.setConfirmedTime(new Date());
 		}
 		bankCardMapper.merge(merge, "confirmStatus", "confirmRemark", "confirmedTime");
+		producer.send(Constants.TOPIC_BANKCARD_CONFIRMED, bankCard.getId());
 	}
 
 }

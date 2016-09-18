@@ -117,13 +117,14 @@ public interface Constants {
      *
      * */
     String TOPIC_REGISTER_SUCCESS = "register-success"; // 注册成功
-    String TOPIC_LOGIN_SUCCESS = "login-success"; // 登录成功
-    String TOPIC_USER_RANK_CHANGED = "user-rank-changed";
+    String TOPIC_USER_RANK_CHANGED = "user-rank-changed"; // 代理等级更新
 
-    /* 用户信息 */
-    String TOPIC_PORTRAIT_COMPLETED = "portrait-completed"; // 完成自我画像
-    String TOPIC_APPEARANCE_CONFIRMED = "appearance-confirmed"; // 当颜值认证通过
-    String TOPIC_APPEARANCE_REJECTED = "appearance-rejected"; // 当颜值认证未通过
-    String TOPIC_PHONE_BOUND = "phone_bound"; //绑定手机成功
-
+    String TOPIC_APPEARANCE_CONFIRMED = "appearance-confirmed"; // 实名认证通过 
+    String TOPIC_APPEARANCE_REJECTED = "appearance-rejected"; // 实名认证未通过
+    String TOPIC_BANKCARD_CONFIRMED = "bankCard-confirmed"; // 银行卡审核通过
+    String TOPIC_BANKCARD_REJECTED = "bankCard-rejected"; // 银行卡审核未通过
+    
+    String TOPIC_ORDER_PAID = "order-paid"; // 订单已支付
+    String TOPIC_ORDER_DELIVERED = "order-delivered"; // 订单已发货
+    
 }

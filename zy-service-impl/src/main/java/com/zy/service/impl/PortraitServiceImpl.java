@@ -1,5 +1,16 @@
 package com.zy.service.impl;
 
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.sys.Area;
@@ -7,7 +18,6 @@ import com.zy.entity.sys.Area.AreaType;
 import com.zy.entity.usr.Job;
 import com.zy.entity.usr.Portrait;
 import com.zy.entity.usr.User;
-import com.zy.extend.Producer;
 import com.zy.mapper.AreaMapper;
 import com.zy.mapper.JobMapper;
 import com.zy.mapper.PortraitMapper;
@@ -15,18 +25,6 @@ import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.PortraitQueryModel;
 import com.zy.service.PortraitService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.TOPIC_PORTRAIT_COMPLETED;
 
 
 @Service
@@ -41,9 +39,6 @@ public class PortraitServiceImpl implements PortraitService {
 
     @Autowired
     private AreaMapper areaMapper;
-
-    @Autowired
-    private Producer producer;
 
     @Autowired
     private JobMapper jobMapper;
@@ -85,8 +80,6 @@ public class PortraitServiceImpl implements PortraitService {
         Long areaId = portrait.getAreaId();
         checkArea(areaId);
         portraitMapper.insert(portrait);
-        // 完善画像发送消息
-        producer.send(TOPIC_PORTRAIT_COMPLETED, portrait.getId());
         return portrait;
     }
 

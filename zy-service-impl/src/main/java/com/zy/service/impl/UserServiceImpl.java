@@ -31,7 +31,6 @@ import com.zy.mapper.AccountMapper;
 import com.zy.mapper.UserLogMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
-import com.zy.model.Constants;
 import com.zy.model.dto.AgentRegisterDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
@@ -336,7 +335,6 @@ public class UserServiceImpl implements UserService {
 	public void loginSuccess(@NotNull Long id) {
 		User user = userMapper.findOne(id);
 		validate(user, NOT_NULL, "user id" + id + "not found");
-		producer.send(Constants.TOPIC_LOGIN_SUCCESS, user.getId());
 	}
 
 	@Override

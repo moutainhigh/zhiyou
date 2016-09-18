@@ -26,11 +26,13 @@ import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
+import com.zy.extend.Producer;
 import com.zy.mapper.OrderItemMapper;
 import com.zy.mapper.OrderMapper;
 import com.zy.mapper.ProductMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
+import com.zy.model.Constants;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
@@ -59,6 +61,9 @@ public class MalComponent {
 
 	@Autowired
 	private UsrComponent usrComponent;
+	
+	@Autowired
+	private Producer producer;
 
 	public BigDecimal getPrice(@NotNull Long productId, @NotNull User.UserRank userRank, long quantity) {
 
@@ -170,7 +175,8 @@ public class MalComponent {
 		if (upgradeUserRank.getLevel() > userRank.getLevel()) {
 			usrComponent.upgrade(userId, userRank, upgradeUserRank);
 		}
-
+		
+		producer.send(Constants.TOPIC_ORDER_PAID, order.getId());
 	}
 
 }
