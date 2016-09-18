@@ -6,6 +6,9 @@
 .form-inline .form-group {
   margin-bottom: 15px !important;
 }
+.table-toolbar {
+  margin-bottom: 0px;
+}
 
 /* 图片尺寸 */
 .image-160 {
