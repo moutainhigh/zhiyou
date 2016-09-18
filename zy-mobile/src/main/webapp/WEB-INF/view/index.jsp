@@ -15,7 +15,7 @@
 <title>${sys}- 首页</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/index.css" rel="stylesheet" />
-<link href="${stccdn}/css/product.css" rel="stylesheet" />
+<link href="${stccdn}/css/article.css" rel="stylesheet" />
 <link href="${stccdn}/plugin/swipe-2.0/swipe.css" rel="stylesheet" />
 <script src="${stccdn}/plugin/swipe-2.0/swipe.js"></script>
 
@@ -86,19 +86,19 @@
       <div class="title">检测报告</div>
     </a>
   </nav>
-
-  <article class="product-list mb-15 clearfix">
-    <h2>
-      <i class="fa fa-heart-o"></i> 推荐商品<a href="javascript:;" class="right mr-10 fs-14 font-777">更多</a>
+  
+  <article class="article-list mb-15 clearfix">
+    <h2 class="page-title">
+      <i class="fa fa-photo"></i> 新闻资讯<a href="${ctx}/article?articleCategoryId=1" class="right mr-10 fs-14 font-777">更多</a>
     </h2>
-    <c:forEach items="${products}" var="product">
-    <a href="${ctx}/product/${product.id}" class="product">
+    <c:forEach items="${articles}" var="article">
+    <a href="${ctx}/article/${article.id}" class="article">
       <div class="image-box">
-        <img class="abs-lt" src="${product.image1Thumbnail}">
+        <img class="abs-lt" src="${article.imageThumbnail}">
       </div>
-      <h3>${product.title}</h3>
-      <div class="product-info">
-        <span class="fs-16 font-orange">¥ ${product.price}</span>
+      <h3>${article.title}</h3>
+      <div class="article-info">
+        <span class="fs-13 font-777">¥ ${article.releasedTimeLabel}</span>
       </div>
     </a>
     </c:forEach>

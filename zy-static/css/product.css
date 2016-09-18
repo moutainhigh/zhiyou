@@ -1,11 +1,4 @@
 /* product-list */
-.product-list {
-}
-.product-list > h2 {
-  padding-left: 2.8%;
-  color: #f0732f; font-size: 16px; line-height: 42px; font-weight: 500;
-  background-color: #fff;
-}
 .product {
   float: left; margin: 15px 0 0 2.8%;
   display: block; width: 45.8%;
