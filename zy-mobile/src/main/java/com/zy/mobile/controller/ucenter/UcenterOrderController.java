@@ -3,6 +3,8 @@ package com.zy.mobile.controller.ucenter;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.OrderComponent;
+import com.zy.entity.fnc.Profit;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.usr.User;
@@ -23,7 +26,9 @@ import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
+import com.zy.model.query.ProfitQueryModel;
 import com.zy.service.OrderService;
+import com.zy.service.ProfitService;
 import com.zy.service.UserService;
 
 import io.gd.generator.api.query.Direction;
@@ -37,6 +42,9 @@ public class UcenterOrderController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private ProfitService profitService;
 
 	@Autowired
 	private OrderComponent orderComponent;
@@ -99,6 +107,13 @@ public class UcenterOrderController {
 			User buyer = userService.findOne(order.getUserId());
 			model.addAttribute("buyerUserRank", buyer.getUserRank());
 		}
+		List<Profit> profits = profitService.findAll(
+				ProfitQueryModel.builder()
+				.profitTypeIN(new Profit.ProfitType[] {Profit.ProfitType.特级平级奖, Profit.ProfitType.订单收款, Profit.ProfitType.销量奖})
+				.refIdEQ(order.getId())
+				.userIdEQ(principal.getUserId())
+				.build());
+		model.addAttribute("profits", profits);
 		model.addAttribute("order", orderComponent.buildDetailVo(order));
 		model.addAttribute("inOut", order.getUserId().equals(principal.getUserId()) ? "in" : "out");
 		return "ucenter/order/orderDetail";
