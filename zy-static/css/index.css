@@ -30,3 +30,9 @@
   margin-top: 5px;
   text-align: center;
 }
+
+.page-title {
+  padding-left: 2.8%; padding-right: 2.8%;
+  color: #f0732f; font-size: 16px; line-height: 42px; font-weight: 500;
+  background-color: #fff;
+}

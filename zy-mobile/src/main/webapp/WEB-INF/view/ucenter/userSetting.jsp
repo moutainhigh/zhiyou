@@ -28,17 +28,10 @@
         type : 'POST',
         dataType : 'JSON',
         success : function(result) {
-          if (result.data.checked) {
-            $this.attr('checked', 'checked');
-          } else {
-            $this.removeAttr('checked');
-          }
         },
         error : function() {
-          $this.removeAttr('checked');
         }
       });
-
     });
   });
 </script>
