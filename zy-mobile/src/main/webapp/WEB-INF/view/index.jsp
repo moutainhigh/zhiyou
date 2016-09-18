@@ -98,7 +98,7 @@
       </div>
       <h3>${article.title}</h3>
       <div class="article-info">
-        <span class="fs-13 font-777">¥ ${article.releasedTimeLabel}</span>
+        <span class="fs-13 font-777">${article.releasedTimeLabel}</span>
       </div>
     </a>
     </c:forEach>
