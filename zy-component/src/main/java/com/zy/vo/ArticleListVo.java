@@ -15,11 +15,11 @@ public class ArticleListVo implements Serializable {
 	private Long id;
 	@Field(label = "标题")
 	private String title;
-	@Field(label = "发布时间")
-	private Date releasedTime;
 
 	/* 扩展 */
 	@Field(label = "主图")
 	private String imageThumbnail;
+	@Field(label = "发布时间")
+	private String releasedTimeLabel;
 
 }

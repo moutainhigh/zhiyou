@@ -19,8 +19,6 @@ public class ArticleDetailVo implements Serializable {
 	private String brief;
 	@Field(label = "作者")
 	private String author;
-	@Field(label = "发布时间")
-	private Date releasedTime;
 	@Field(label = "内容")
 	private String content;
 	@Field(label = "访问数")
@@ -31,5 +29,7 @@ public class ArticleDetailVo implements Serializable {
 	private String imageBig;
 	@Field(label = "主图")
 	private String imageThumbnail;
+	@Field(label = "发布时间")
+	private String releasedTimeLabel;
 
 }

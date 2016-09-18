@@ -58,7 +58,7 @@ public class Article implements Serializable {
 
 	@NotNull
 	@Field(label = "发布时间")
-	@View(groups = { "ArticleDetailVo", "ArticleListVo", "ArticleAdminVo"  })
+	@View(name = "releasedTimeLabel", type = String.class, groups = { "ArticleDetailVo", "ArticleListVo", "ArticleAdminVo"  })
 	private Date releasedTime;
 
 	@NotNull
