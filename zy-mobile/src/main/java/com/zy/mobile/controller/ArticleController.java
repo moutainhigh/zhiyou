@@ -30,11 +30,14 @@ public class ArticleController {
 		
 	@RequestMapping
 	public String list(Model model) {
-		Page<Article> page = articleService.findPage(ArticleQueryModel.builder().isReleasedEQ(true).build());
+		ArticleQueryModel articleQueryModel = new ArticleQueryModel();
+		articleQueryModel.setIsReleasedEQ(true);
+		articleQueryModel.setArticleCategoryIdEQ(1L);
+		Page<Article> page = articleService.findPage(articleQueryModel);
 		List<ArticleListVo> list = page.getData().stream().map(v -> {
 			return articleComponent.buildListVo(v);
 			}).collect(Collectors.toList());
-		model.addAttribute("activities", list);
+		model.addAttribute("articles", list);
 		return "article/articleList";
 	}
 
