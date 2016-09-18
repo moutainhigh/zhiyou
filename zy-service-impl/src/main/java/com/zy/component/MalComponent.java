@@ -1,5 +1,24 @@
 package com.zy.component;
 
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.entity.mal.Order.OrderStatus.已支付;
+import static com.zy.entity.mal.Order.OrderStatus.待支付;
+import static com.zy.entity.usr.User.UserRank.V4;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.validation.constraints.NotNull;
+
+import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.control.customizers.ImportCustomizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.Config;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
@@ -12,28 +31,10 @@ import com.zy.mapper.OrderMapper;
 import com.zy.mapper.ProductMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
+
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.customizers.ImportCustomizer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.Date;
-
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.mal.Order.OrderStatus.已支付;
-import static com.zy.entity.mal.Order.OrderStatus.待支付;
-import static com.zy.entity.usr.User.UserRank.V4;
-import static java.lang.String.join;
-import static java.lang.String.valueOf;
 
 @Component
 @Validated
@@ -144,7 +145,7 @@ public class MalComponent {
 
 	public void successOrder(@NotNull Long orderId) {
 		final Order order = orderMapper.findOne(orderId);
-		validate(order, NOT_NULL, join("order does not found, order id ").join(valueOf(orderId)));
+		validate(order, NOT_NULL, "order does not found, order id " + orderId);
 		Order.OrderStatus orderStatus = order.getOrderStatus();
 		if (orderStatus == 已支付) {
 			return; // 幂等操作
@@ -169,7 +170,6 @@ public class MalComponent {
 		if (upgradeUserRank.getLevel() > userRank.getLevel()) {
 			usrComponent.upgrade(userId, userRank, upgradeUserRank);
 		}
-
 
 	}
 

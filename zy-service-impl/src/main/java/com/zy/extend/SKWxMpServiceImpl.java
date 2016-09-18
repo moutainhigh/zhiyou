@@ -1,23 +1,7 @@
 package com.zy.extend;
 
-import com.zy.common.util.Identities;
-import com.thoughtworks.xstream.XStream;
-
-import me.chanjar.weixin.common.bean.result.WxError;
-import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.common.util.http.Utf8ResponseHandler;
-import me.chanjar.weixin.common.util.xml.XStreamInitializer;
-import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
-import me.chanjar.weixin.mp.api.WxMpServiceImpl;
-import me.chanjar.weixin.mp.bean.result.WxRedpackResult;
-
-import org.apache.http.Consts;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.SSLContexts;
-import org.apache.http.entity.StringEntity;
-import org.slf4j.helpers.MessageFormatter;
+import static java.lang.String.valueOf;
+import static me.chanjar.weixin.common.util.crypto.WxCryptUtil.createSign;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,9 +13,26 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import static java.lang.String.valueOf;
-import static me.chanjar.weixin.common.util.crypto.WxCryptUtil.createSign;
+import org.apache.http.Consts;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.entity.StringEntity;
+import org.slf4j.helpers.MessageFormatter;
 
+import com.thoughtworks.xstream.XStream;
+import com.zy.common.util.Identities;
+
+import me.chanjar.weixin.common.bean.result.WxError;
+import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.common.util.http.Utf8ResponseHandler;
+import me.chanjar.weixin.common.util.xml.XStreamInitializer;
+import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
+import me.chanjar.weixin.mp.api.WxMpServiceImpl;
+import me.chanjar.weixin.mp.bean.result.WxRedpackResult;
+
+@SuppressWarnings("deprecation")
 public class SKWxMpServiceImpl extends WxMpServiceImpl implements SKWxMpService {
 
     protected String ip;
@@ -95,7 +96,7 @@ public class SKWxMpServiceImpl extends WxMpServiceImpl implements SKWxMpService 
 
     public static class SkWxMpInMemoryConfigStorage extends WxMpInMemoryConfigStorage {
 
-        public SkWxMpInMemoryConfigStorage(String certPath, String password, boolean isDev) throws Exception {
+		public SkWxMpInMemoryConfigStorage(String certPath, String password, boolean isDev) throws Exception {
             if (isDev) return;
             KeyStore keyStore = KeyStore.getInstance("PKCS12");
             try (FileInputStream instream = new FileInputStream(new File(certPath))) {

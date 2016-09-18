@@ -1,11 +1,26 @@
 package com.zy.service.impl;
 
-import com.zy.Config;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.entity.fnc.CurrencyType.现金;
+import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
+import static com.zy.model.Constants.TOPIC_USER_RANK_CHANGED;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
-import com.zy.component.ActComponent;
-import com.zy.component.FncComponent;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
@@ -20,22 +35,6 @@ import com.zy.model.Constants;
 import com.zy.model.dto.AgentRegisterDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.fnc.CurrencyType.*;
-import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
-import static com.zy.model.Constants.TOPIC_USER_RANK_CHANGED;
 
 @Service
 @Validated
@@ -49,15 +48,6 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserLogMapper userLogMapper;
-
-	@Autowired
-	private FncComponent fncComponent;
-	
-	@Autowired
-	private ActComponent actComponent;
-
-	@Autowired
-	private Config config;
 
 	@Autowired
 	private Producer producer;

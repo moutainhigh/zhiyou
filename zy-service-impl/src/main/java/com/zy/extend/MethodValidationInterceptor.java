@@ -79,7 +79,6 @@ public class MethodValidationInterceptor implements MethodInterceptor {
 
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Object invoke(MethodInvocation invocation) throws Throwable {
 		Class<?>[] groups = determineValidationGroups(invocation);
 		Set<ConstraintViolation<Object>> result = this.validator.forExecutables().validateParameters(invocation.getThis(), invocation.getMethod(), invocation.getArguments(), groups);

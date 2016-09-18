@@ -66,6 +66,7 @@ import static org.hibernate.validator.internal.util.CollectionHelper.asSet;
  * @see MethodValidationInterceptor
  * @since 3.1
  */
+@SuppressWarnings("serial")
 @Component
 public class MethodValidationPostProcessor extends AbstractBeanFactoryAwareAdvisingPostProcessor
         implements InitializingBean {

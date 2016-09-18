@@ -1,22 +1,19 @@
 package com.zy.component;
 
-import com.zy.entity.sys.Area;
-import com.zy.mapper.AreaMapper;
-import com.zy.mapper.MessageMapper;
-import com.zy.model.dto.AreaDto;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotNull;
+import com.zy.entity.sys.Area;
+import com.zy.mapper.AreaMapper;
+import com.zy.model.dto.AreaDto;
 
 @Component
 public class SysComponent {
 
 	@Autowired
 	private AreaMapper areaMapper;
-	
-	@Autowired
-	private MessageMapper messageMapper;
 	
 	public AreaDto findOneDto(@NotNull Long id) {
 		Area area = areaMapper.findOne(id);
