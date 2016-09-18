@@ -66,6 +66,7 @@ public class ReportComponent {
 			reportVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
 		}
 		reportVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
+		reportVo.setAppliedTimeLabel(formatDate(report.getAppliedTime(), TIME_PATTERN));
 		reportVo.setImage1Thumbnail(GcUtils.getThumbnail(report.getImage1()));
 		reportVo.setImage2Thumbnail(GcUtils.getThumbnail(report.getImage2()));
 		reportVo.setImage3Thumbnail(GcUtils.getThumbnail(report.getImage3()));
@@ -96,6 +97,7 @@ public class ReportComponent {
 			reportVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
 		}
 		reportVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
+		reportVo.setAppliedTimeLabel(formatDate(report.getAppliedTime(), TIME_PATTERN));
 		
 		return reportVo;
 	}

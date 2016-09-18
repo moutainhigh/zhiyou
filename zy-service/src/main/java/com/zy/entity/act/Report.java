@@ -165,13 +165,13 @@ public class Report implements Serializable {
 	@NotNull
 	@Field(label = "申请时间")
 	@View(groups = {"ReportDetailVo", "ReportAdminVo"})
-	@View(name = "appliedTimeLabel", type = String.class, groups = {"ReportAdminVo"})
+	@View(name = "appliedTimeLabel", type = String.class, groups = {"ReportAdminVo", "ReportDetailVo", "ReportListVo"})
 	private Date appliedTime;
 
 	@NotNull
 	@Field(label = "创建时间")
 	@View(groups = {"ReportAdminVo"})
-	@View(name = "createdTimeLabel", type = String.class, groups = {"ReportAdminVo"})
+	@View(name = "createdTimeLabel", type = String.class, groups = {"ReportAdminVo", "ReportDetailVo", "ReportListVo"})
 	private Date createdTime;
 
 	@NotNull
