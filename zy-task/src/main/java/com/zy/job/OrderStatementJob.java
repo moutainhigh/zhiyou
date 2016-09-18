@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 import static com.zy.entity.mal.Order.OrderStatus.已完成;
@@ -27,12 +26,12 @@ public class OrderStatementJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		logger.info("begin...{}", LocalDateTime.now());
+		logger.info("begin...");
 		orderService.findAll(builder().orderStatusEQ(已完成).isSettledUpEQ(false).build())
 				.stream()
 				.map(order -> order.getId())
 				.forEach(this::settleUp);
-		logger.info("end...{}", LocalDateTime.now());
+		logger.info("end...");
 	}
 
 	private void settleUp(Long id) {

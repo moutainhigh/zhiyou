@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 import static com.zy.entity.fnc.Transfer.TransferStatus.待转账;
@@ -27,12 +26,12 @@ public class TransferJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		logger.info("begin...{}", LocalDateTime.now());
+		logger.info("begin...");
 		transferService.findAll(builder().transferStatusEQ(待转账).build())
 				.stream()
 				.map(transfer -> transfer.getId())
 				.forEach(this::transfer);
-		logger.info("end...{}", LocalDateTime.now());
+		logger.info("end...");
 
 	}
 

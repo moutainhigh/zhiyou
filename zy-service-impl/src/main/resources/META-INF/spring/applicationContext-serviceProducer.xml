@@ -54,4 +54,5 @@
 	<dubbo:service ref="bankServiceImpl" interface="com.zy.service.BankService"/>
 	<dubbo:service ref="transferServiceImpl" interface="com.zy.service.TransferService"/>
 	<dubbo:service ref="userUpgradeServiceImpl" interface="com.zy.service.UserUpgradeService"/>
+	<dubbo:service ref="notifyServiceImpl" interface="com.zy.service.NotifyService"/>
 </beans>

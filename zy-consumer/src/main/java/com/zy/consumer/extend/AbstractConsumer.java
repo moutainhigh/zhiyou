@@ -1,5 +1,6 @@
 package com.zy.consumer.extend;
 
+import com.zy.Config;
 import com.zy.common.support.sms.LuosimaoSmsSupport;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -18,6 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.zy.consumer.extend.Threads.exe;
+import static java.lang.Long.parseLong;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
 
@@ -29,6 +31,9 @@ public abstract class AbstractConsumer implements DisposableBean {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	private AtomicInteger POOL_SEQ = new AtomicInteger(1);
 	private AtomicBoolean runing = new AtomicBoolean(true);
+	protected AtomicBoolean isDev = new AtomicBoolean(false);
+
+
 	private java.util.List<String> topics;
 	private String group;
 
@@ -37,6 +42,9 @@ public abstract class AbstractConsumer implements DisposableBean {
 
 	@Autowired
 	private LuosimaoSmsSupport luosimaoSmsSupport;
+
+	@Autowired
+	private Config config;
 
 
 	@Resource(name = "consumerConfig")
@@ -55,6 +63,7 @@ public abstract class AbstractConsumer implements DisposableBean {
 
 	@PostConstruct
 	public void run() {
+		isDev.set(config.isDev());
 		consumerConfig.put("group.id", group);
 		consumer = new KafkaConsumer<>(consumerConfig);
 		logger.info("consumerConfig [{}]", this.consumerConfig);
@@ -83,10 +92,15 @@ public abstract class AbstractConsumer implements DisposableBean {
 						logger.debug("topic {},{}", topic, record.value());
 						final String[] split = record.value().split(",");
 						if (split.length == 3) {
-							final long refId = Long.parseLong(split[0]);
+							final long refId = parseLong(split[0]);
 							final String token = split[1];
 							final String version = split[2];
-							this.doHandle(topic, refId, token, version);
+							/*如果不是开发测试环境 版本中有dev 则跳过*/
+							if (!isDev.get() && version.contains("-dev")) {
+								this.doHandle(topic, refId, token, version);
+							} else {
+								logger.warn("正式环境 不消费 -dev 版本消息topic {}, refId {}, token {}, version {}", topic, refId, token, version);
+							}
 						} else {
 							logger.error("收到非法数据 {}", record.value());
 						}
@@ -95,11 +109,12 @@ public abstract class AbstractConsumer implements DisposableBean {
 				} else {
 					logger.warn(group + " value is null or {} : " + record);
 				}
+				final long offset = record.offset() + 1;
 				consumer.commitSync(singletonMap(
 						new TopicPartition(topic, record.partition()),
-						new OffsetAndMetadata(record.offset() + 1))
+						new OffsetAndMetadata(offset))
 				);
-				logger.warn("comsumer [{}] commit topic [{}] offset [{}]", this.group, topic, record.offset() + 1);
+				logger.warn("comsumer [{}] commit topic [{}] offset [{}]", this.group, topic, offset);
 				return;
 			} catch (Throwable e) {
 				String s = "error message :[" + e.getMessage() + "] consumer topic [" + topic + "] json data 【" + record.value() + "】";
@@ -119,8 +134,13 @@ public abstract class AbstractConsumer implements DisposableBean {
 		}
 	}
 
-	/*
-		此处交给对应具体消息处理器
+	/**
+	 * 此处交给对应具体消息处理器
+	 *
+	 * @param topic   主题
+	 * @param refId   业务id
+	 * @param token   幂等令牌
+	 * @param version 版本
 	 */
 	protected abstract void doHandle(String topic, long refId, String token, String version);
 
@@ -128,6 +148,9 @@ public abstract class AbstractConsumer implements DisposableBean {
 		return value != null && !"".equals(value);
 	}
 
+	protected void warn(String topic, long refId, String token, String version) {
+		logger.warn("业务系统查询不到的消息 topic {}, refId {}, token {}, version {}", topic, refId, token, version);
+	}
 
 	@Override
 	public void destroy() throws Exception {
