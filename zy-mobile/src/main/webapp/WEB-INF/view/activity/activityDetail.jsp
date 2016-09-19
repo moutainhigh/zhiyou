@@ -21,6 +21,10 @@
     wx.config(WeixinApi.getConfig([ 'onMenuShareTimeline', 'onMenuShareAppMessage' ]));
   });
   
+  wx.error(function (res) {
+    alert(res);
+  });
+  
   wx.ready(function() {
     wx.onMenuShareTimeline({
       title: '优检一生，为爱而生', // 分享标题
