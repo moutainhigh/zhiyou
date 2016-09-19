@@ -35,31 +35,45 @@
     };
     
     var quality = options.quality ? options.quality : 0.5;
-    var image = new Image(),   
+    var fileForUpload;
+    var needCompress = quality < 1;
+    var ua = window.navigator.userAgent.toLowerCase();
+    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+      needCompress = false;
+    }
+    
+    if(needCompress) {
+      var image = new Image(),   
       canvas = document.createElement("canvas"),   
       ctx = canvas.getContext('2d');
+    }
     
     var fileSelect = function(obj){
-      var file = obj.files[0];
-      if(!checkFileType(file)) {
+      fileForUpload = obj.files[0];
+      if(!checkFileType(fileForUpload)) {
         showError('您选择的文件类型不合法，请重新选择。');
         return;
       }
-      var reader = new FileReader();
-      reader.onload = function() {
-        var url = reader.result;
-        image.src = url;
-      };
-      image.onload = function() {
-        var w = image.naturalWidth,
-            h = image.naturalHeight;
-        canvas.width = w;
-        canvas.height = h;
-        ctx.drawImage(image, 0, 0, w, h, 0, 0, w, h);
-        
-        startUploadFile();
-      };
-      reader.readAsDataURL(file);
+      
+      if(needCompress){
+        var reader = new FileReader();
+        reader.onload = function() {
+          var url = reader.result;
+          image.src = url;
+        };
+        image.onload = function() {
+          var w = image.naturalWidth,
+              h = image.naturalHeight;
+          canvas.width = w;
+          canvas.height = h;
+          ctx.drawImage(image, 0, 0, w, h, 0, 0, w, h);
+          
+          startUploadFile();
+        };
+        reader.readAsDataURL(fileForUpload);
+      } else {
+        startUploadFile(fileForUpload);
+      }
     }
     var checkFileType = function(file) {
       var rFilter = /^(image\/bmp|image\/gif|image\/jpeg|image\/png|image\/tiff)$/i;
@@ -80,25 +94,26 @@
       }
       state.className = 'state state-loading';
       
-      var data = canvas.toDataURL('image/jpeg', quality);
-      data = data.split(',')[1];
-      data = window.atob(data);
-      var ia = new Uint8Array(data.length);
-      for (var i = 0; i < data.length; i++) {
-          ia[i] = data.charCodeAt(i);
-      };
-      //canvas.toDataURL 返回的默认格式就是 image/png
-      var file = new File([ia], 'file.jpg', {
-        type: 'image/jpeg'
-      });
-      
-      if (!checkFileSize(file)) {
+      if(needCompress){
+        var data = canvas.toDataURL('image/jpeg', quality);
+        data = data.split(',')[1];
+        data = window.atob(data);
+        var ia = new Uint8Array(data.length);
+        for (var i = 0; i < data.length; i++) {
+            ia[i] = data.charCodeAt(i);
+        };
+        //canvas.toDataURL 返回的默认格式就是 image/png
+        fileForUpload = new File([ia], 'file.jpg', {
+          type: 'image/jpeg'
+        });
+      }
+      if (!checkFileSize(fileForUpload)) {
         showError('您选择的文件超过' + options.maxFileSize + '，请重新选择。');
       }
       
       // get form data for POSTing
       var vFD = new FormData();
-      vFD.append("file", file);
+      vFD.append("file", fileForUpload);
       vFD.append("width", options.width *　options.retain);
       vFD.append("height", options.height * options.retain);
       // create XMLHttpRequest object, adding few event listeners, and POSTing our data
@@ -188,7 +203,7 @@
       if (bytes === 0) {
         return '0 B';
       }
-      var k = 1000, // or 1024
+      var k = 1024,
       units = [ 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ],
       i = Math.floor(Math.log(bytes) / Math.log(k));
 

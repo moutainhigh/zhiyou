@@ -1,10 +1,7 @@
 package com.zy.admin.extend;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.zy.common.support.cache.CacheSupport;
+import com.zy.model.Constants;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -15,8 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zy.common.support.cache.CacheSupport;
-import com.zy.model.Constants;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.FormAuthenticationFilter {
 
@@ -36,7 +35,8 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 	protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) {
 		String username = getUsername(request);
 		String password = getPassword(request);
-		boolean rememberMe = isRememberMe(request);
+		// boolean rememberMe = isRememberMe(request);
+		boolean rememberMe = true;
 		String host = getHost(request);
 		String captcha = getCaptcha(request);
 		return new UsernamePasswordCaptchaToken(StringEscapeUtils.escapeHtml4(username), StringEscapeUtils.escapeHtml4(password), rememberMe, host, captcha);
