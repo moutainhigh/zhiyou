@@ -80,7 +80,7 @@ public class ArticleServiceImpl implements ArticleService {
 		
 		persistence.setAuthor(article.getAuthor());
 		persistence.setBrief(article.getBrief());
-		persistence.setContent(article.getAuthor());
+		persistence.setContent(article.getContent());
 		persistence.setImage(article.getImage());
 		persistence.setTitle(article.getTitle());
 		persistence.setReleasedTime(article.getReleasedTime());
