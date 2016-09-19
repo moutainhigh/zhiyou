@@ -181,7 +181,7 @@
 		</dependency>
 
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<finalName>zy-consumer</finalName>
