@@ -7,7 +7,7 @@ target/
 .springBeans
 .idea/
 *Test.java
-
+.DS_Store
 /sk-service-impl/src/test/java/com/ke/
 /sk-service-impl/src/main/java/com/GeneratorRun.java
 /jvm.log

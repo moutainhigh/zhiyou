@@ -11,7 +11,7 @@
 
 	<dubbo:application name="zy-task"/>
 
-	<context:component-scan base-package="com.zy.job">
+	<context:component-scan base-package="com.zy.task.job">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 
@@ -39,7 +39,7 @@
 						<bean id="accountLogAckJobDetail"
 						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
-							<property name="jobClass" value="com.zy.job.AccountLogAckJob"></property>
+							<property name="jobClass" value="com.zy.task.job.AccountLogAckJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
@@ -52,7 +52,7 @@
 						<bean id="conversionAvatarDetail"
 						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
-							<property name="jobClass" value="com.zy.job.ConversionAvatarJob"></property>
+							<property name="jobClass" value="com.zy.task.job.ConversionAvatarJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
@@ -66,7 +66,7 @@
 						<bean id="orderStatementJobDetail"
 						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
-							<property name="jobClass" value="com.zy.job.OrderStatementJob"></property>
+							<property name="jobClass" value="com.zy.task.job.OrderStatementJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
@@ -80,7 +80,7 @@
 						<bean id="paymentCancelDetail"
 						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
-							<property name="jobClass" value="com.zy.job.PaymentCancelJob"></property>
+							<property name="jobClass" value="com.zy.task.job.PaymentCancelJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
@@ -94,7 +94,7 @@
 						<bean id="profitGrantJobDetail"
 						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
-							<property name="jobClass" value="com.zy.job.ProfitGrantJob"></property>
+							<property name="jobClass" value="com.zy.task.job.ProfitGrantJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
@@ -108,7 +108,7 @@
 						<bean id="reportStatementJobDetail"
 						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
-							<property name="jobClass" value="com.zy.job.ReportStatementJob"></property>
+							<property name="jobClass" value="com.zy.task.job.ReportStatementJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
@@ -120,7 +120,7 @@
 					<property name="jobDetail">
 						<bean id="transferJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
-							<property name="jobClass" value="com.zy.job.TransferJob"></property>
+							<property name="jobClass" value="com.zy.task.job.TransferJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">

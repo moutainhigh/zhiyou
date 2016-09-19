@@ -1,4 +1,4 @@
-package com.zy.job;
+package com.zy.task.job;
 
 
 import com.zy.entity.usr.User;
