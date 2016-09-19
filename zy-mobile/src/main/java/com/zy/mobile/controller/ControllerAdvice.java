@@ -64,6 +64,7 @@ public class ControllerAdvice {
 			if (queryStr != null){
 				pureUrl += "?" + queryStr;
 			}
+			
 			// 处理转发Url  加__u参数
 			if (principal != null) {
 				Long userId = principal.getUserId();
