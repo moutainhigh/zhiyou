@@ -37,10 +37,10 @@
 <div class="row">
   <div class="col-md-12">
     <!-- BEGIN VALIDATION STATES-->
-    <div class="portlet box green">
+    <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-plus-circle"></i><span> 角色创建</span>
+          <i class="icon-key"></i><span> 角色创建</span>
         </div>
       </div>
       <div class="portlet-body form">

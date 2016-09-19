@@ -28,13 +28,31 @@
         },
         columns: [
           {
+            data: 'imageBig',
+            title: '主图',
+            orderable: false,
+            render: function (data, type, full) {
+              return '<a target="_blank" href="' + data + '"><img style="width:180px;height:80px;"  src="' + full.imageThumbnail + '"/></a>';
+            }
+          },
+          {
             data: 'title',
             title: '标题',
             orderable: false
           },
           {
-            data: 'articleCategoryId',
-            title: '类别id',
+            data: 'brief',
+            title: '摘要',
+            orderable: false
+          },
+          {
+            data: 'visitCount',
+            title: '访问数',
+            orderable: false
+          },
+          {
+            data: 'author',
+            title: '作者',
             orderable: false
           },
           {
@@ -64,9 +82,6 @@
                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="release(' + full.id + ')"><i class="fa fa-check"></i> 发布 </a>';
               }
               </shiro:hasPermission>
-              if (full.isReleased) {
-                optionHtml += '<a class="btn btn-xs default green-stripe" href="' + urlPc + '/help/detail/' + full.id + '" target="_blank"><i class="fa fa-eye"></i> 查看</a>';
-              }
               return optionHtml;
             }
           }]
@@ -82,7 +97,7 @@
     releaseAjax(id, false);
   }
   function releaseAjax(id, isRelease) {
-    $.post('${ctx}/article/releaseAjax', {id: id, isRelease: isRelease}, function (result) {
+    $.post('${ctx}/article/release', {id: id, isRelease: isRelease}, function (result) {
       //grid.getDataTable().ajax.reload();
       grid.getDataTable().ajax.reload(null, false);
     });
@@ -95,7 +110,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/article">文章管理</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/article">新闻管理</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -103,68 +118,41 @@
 <div class="row">
   <div class="col-md-12">
     <!-- BEGIN ALERTS PORTLET-->
-    <div class="portlet box blue">
+    <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-user"></i> 文章管理
+          <i class="icon-book-open"></i> 新闻管理
         </div>
-        <div class="tools">
-          <a class="collapse" href="javascript:;"> </a> <a class="reload" href="javascript:;"> </a>
+        <div class="actions">
+          <a class="btn btn-circle green" data-href="${ctx}/article/create">
+            <i class="fa fa-plus"></i> 新增
+          </a>
         </div>
       </div>
       <div class="portlet-body clearfix">
         <div class="table-container">
           <div class="table-toolbar">
-            <div class="btn-group">
-              <button id="" class="btn green" data-href="${ctx}/article/create">
-                新增 <i class="fa fa-plus"></i>
-              </button>
-            </div>
-            <!-- <div class="btn-group pull-right">
-              <button class="btn dropdown-toggle" data-toggle="dropdown">
-                工具 <i class="fa fa-angle-down"></i>
-              </button>
-              <ul class="dropdown-menu pull-right">
-                <li><a href="#"> 打印 </a></li>
-                <li><a href="#"> 导出Excel </a></li>
-              </ul>
-            </div> -->
-          </div>
-
-          <div class="row">
-            <div class="col-md-3 table-actions">
-              <span class="table-row-checked"></span>
-            </div>
-            <div class="col-md-9">
-              <form class="filter-form form-inline pull-right">
+            <form class="filter-form form-inline">
                 <input id="_orderBy" name="orderBy" type="hidden" value=""/>
                 <input id="_direction" name="direction" type="hidden" value=""/>
                 <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
                 <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
-                <div class="form-group input-inline">
-
-                  <label class="sr-only"> 是否发布： </label>
+                
+                <div class="form-group">
                   <select name="isReleasedEQ" class="form-control">
                     <option value="">--请选择是否发布--</option>
                     <option value="true">--是--</option>
                     <option value="false">--否--</option>
                   </select>
-
-                  <label class="sr-only"> 文章类别： </label>
-                  <select name="articleCategoryIdEQ" class="form-control">
-                    <option value="">--请选择文章类别--</option>
-                    <c:forEach items="${articleCategories}" var="articleCategory">
-                      <option value="${articleCategory.id}">${articleCategory.name}</option>
-                    </c:forEach>
-                  </select>
-
                 </div>
-                <button class="btn purple filter-submit">
-                  <i class="fa fa-check"></i> 查询
-                </button>
+                
+                <div class="form-group">
+                  <button class="btn blue filter-submit">
+                    <i class="fa fa-search"></i> 查询
+                  </button>
+                </div>
               </form>
             </div>
-          </div>
           <table class="table table-striped table-bordered table-hover" id="dataTable">
           </table>
         </div>

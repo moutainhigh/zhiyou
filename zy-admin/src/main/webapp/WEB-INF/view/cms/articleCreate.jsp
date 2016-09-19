@@ -3,7 +3,11 @@
 <%@ include file="/WEB-INF/view/include/form.jsp"%>
 <!-- BEGIN JAVASCRIPTS -->
 <%@ include file="/WEB-INF/view/include/editor.jsp"%>
-
+<style>
+  #img {
+    cursor: pointer;
+  }
+</style>
 <script type="text/javascript">
 //编辑器
 	var ue;
@@ -35,36 +39,24 @@
 					required : true,
 					maxlength : 30
 				},
-				'releasedTime' : {
+				'image' : {
 					required : true
+				},
+				'brief' : {
+					required : true
+				},
+				'releasedTime' : {
+				  required : true
 				},
 				'author' : {
 					required : true
-				},
-				'articleCategoryId' : {
-					required : true
-				}
-			},
-			messages : {
-				'title' : {
-					required : '标题不能为空',
-					maxlength : '标题长度不超过40个字符, 20个汉字'
-				},
-				'releasedTime' : {
-					required : '请选择发布时间'
-				},
-				'author' : {
-					required : '请选择作者'
-				},
-				'articleCategoryId' : {
-					required : '请选择类别'
 				}
 			},
 			submitHandler : 
 				function(form){
 					var content = ue.getContent();
 					if(!content) {
-						alert('请填写文章详情');
+						alert('请填写新闻详情');
 						return false;
 					}
 					$(form).find(':submit').prop('disabled', true);
@@ -72,67 +64,40 @@
 				}
 		});
 
-		var mutex = (function() { //互斥上传类型
-			var m = {};
-			return {
-				set : function(t, xhr) {
-					m.xhr && m.xhr.abort();
-					m.type = t;
-					xhr && (m.xhr = xhr);
-				},
-				is : function(t) {
-					return m.type === t;
-				},
-				get : function() {
-					return m.type;
-				}
-			}
-		})();
-
-		$('#combatImage').bind('click', function() {
-			$('#inputUpload').click();
-		});
-
-		$("#inputUpload").bind("change", function(e) {
-			if (!this.value)
-				return;
-			mutex.set("local");
-			$('#uploadForm').submit();
-		});
-		$("#uploadtarget").on("load", function() {
-			if (!mutex.is("local"))
-				return;
-			var txt = $('#uploadtarget').contents().find('body').text();
-			var response = $.parseJSON(txt);
-			if (!response.imgpath) {
-				messagebox.error(response.message);
-				return;
-			}
-			setImage(response.imgpath);
-		});
+		var uploader = new ss.SimpleUpload({
+          button: $.makeArray($('.product-image')),
+          url: '${ctx}/image/upload',
+          name: 'file',
+          maxSize: 4096,
+          responseType: 'json',
+          allowedExtensions: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+          onSubmit: function (filename, extension, uploadBtn, fileSize) {
+            $(uploadBtn).data('origin', $(uploadBtn).attr('src'));
+            $(uploadBtn).attr('src', 'http://static.thsuan.com/image/loading_image.gif');
+          },
+          onComplete: function (filename, response, uploadBtn, fileSize) {
+            if (response.code == 0) {
+              $(uploadBtn).attr('src', response.data + '@150h_240w_1e_1c.jpg');
+              $('input[name="' + $(uploadBtn).data('target') + '"]').val(response.data);
+            } else {
+              $(uploadBtn).attr('src', $(uploadBtn).data('origin'));
+              layer.alert('上传失败' + response.message);
+            }
+          },
+          onError: function (filename, errorType, status, statusText, response, uploadBtn, fileSize) {
+            $(uploadBtn).attr('src', $(uploadBtn).data('origin'));
+            layer.alert('上传失败' + errorType);
+          },
+          onSizeError: function (filename, fileSize) {
+            layer.alert('图片大小超过4MB限制');
+          },
+          onExtError: function (filename, extension) {
+            layer.alert('图片文件格式错误, 仅限*.jpg, *.jpeg, *.png, *.gif, *.webp');
+          }
+        });
 		
 	});
 
-	 function setImage(result) {
-		  if(result.startWith('http')){
-			  $('#combatImage').attr('src', result);
-			  $('#image').val(result);
-		 }else{
-			 alert(result);
-		 } 
-		  
-	  }
-	 
-	 String.prototype.startWith=function(s){
-		if(s==null||s==""||this.length==0||s.length>this.length) 
-			return false; 
-		if(this.substr(0,s.length)==s) 
-			return true; 
-		else 
-			return false; 
-		return true; 
-	} 
-	
 </script>
 <!-- END JAVASCRIPTS -->
 
@@ -140,7 +105,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/article">文章管理</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/article">新闻管理</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -148,10 +113,10 @@
 <div class="row">
   <div class="col-md-12">
     <!-- BEGIN VALIDATION STATES-->
-    <div class="portlet box yellow">
+    <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-edit"></i><span> 创建文章 </span>
+          <i class="icon-book-open"></i><span> 创建新闻 </span>
         </div>
         <div class="tools">
           <a href="javascript:;" class="collapse"> </a> <a href="javascript:;" class="reload"> </a>
@@ -168,19 +133,6 @@
             </div>
             
             <div class="form-group">
-              <label class="control-label col-md-3">类别
-              </label>
-              <div class="col-md-4">
-              	<select name="articleCategoryId" class="form-control">
-              		<option value="">-请选择类别-</option>
-              		<c:forEach items="${articleCategories}" var="articleCategory">
-              			<option value="${articleCategory.id}">${articleCategory.name}</option>
-              		</c:forEach>
-              	</select>
-              </div>
-            </div>
-            
-            <div class="form-group">
               <label class="control-label col-md-3">标题
               </label>
               <div class="col-md-4">
@@ -189,27 +141,36 @@
               </div>
             </div>
             
-           <div class="form-group">
-              <label class="control-label col-md-3">文章摘要</label>
+            <div class="form-group">
+              <label class="control-label col-md-3">主图<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <img data-target="image" class="product-image bd" src="${ctx}/image/upload_240_150.jpg">
+                <input type="hidden" name="image" value=""/>
+                <p class="help-block">图片尺寸 750*450</p>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="control-label col-md-3">新闻摘要</label>
               <div class="col-md-4">
                 <textarea name="brief" id="brief" cols="30" rows="5" class="form-control">${article.brief}</textarea>
               </div>
             </div>
             
             <div class="form-group">
-              <label class="control-label col-md-3">文章详情
+              <label class="control-label col-md-3">新闻详情
               </label>
               <div class="col-md-4">
 				  <div><script id="editor" type="text/plain" style="width:840px; height:500px;"></script></div>
               </div>
             </div>
             
-             <div class="form-group">
+            <div class="form-group">
               <label class="control-label col-md-3">发布时间
               </label>
               <div class="col-md-4">
-				 <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
-                  	name="releasedTime" value="" placeholder="发布时间" />
+                <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                    name="releasedTime" value="<fmt:formatDate  pattern="yyyy-MM-dd HH:mm:ss" value="${article.releasedTime }"/>" placeholder="发布时间" />
               </div>
             </div>
             

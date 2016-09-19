@@ -2,6 +2,7 @@ package com.zy.mapper;
 
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.zy.entity.cms.Article;
@@ -23,5 +24,7 @@ public interface ArticleMapper {
 	List<Article> findAll(ArticleQueryModel articleQueryModel);
 
 	long count(ArticleQueryModel articleQueryModel);
+
+	void view(Long articleId);
 
 }

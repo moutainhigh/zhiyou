@@ -4,7 +4,6 @@
 
 	<resultMap id="baseResultMap" type="com.zy.entity.cms.Article">
 		<id column="id" property="id" />
-		<result column="article_category_id" property="articleCategoryId" />
 		<result column="title" property="title" />
 		<result column="brief" property="brief" />
 		<result column="author" property="author" />
@@ -17,8 +16,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.cms.Article" useGeneratedKeys="true" keyProperty="id">
-	  insert into `cms_article` (article_category_id,title,brief,author,released_time,is_released,image,content,created_time,visit_count)
-	  values (#{articleCategoryId},#{title},#{brief},#{author},#{releasedTime},#{isReleased},#{image},#{content},#{createdTime},#{visitCount})
+	  insert into `cms_article` (title,brief,author,released_time,is_released,image,content,created_time,visit_count)
+	  values (#{title},#{brief},#{author},#{releasedTime},#{isReleased},#{image},#{content},#{createdTime},#{visitCount})
 	</insert>
 
 	<delete id="delete">
@@ -28,7 +27,6 @@
 	<update id="update" parameterType="com.zy.entity.cms.Article">
 		update `cms_article`
 		<set>
-			article_category_id = #{articleCategoryId},
 			title = #{title},
 			brief = #{brief},
 			author = #{author},
@@ -47,7 +45,6 @@
 			<set>
 				<foreach collection="fields" item="field">
 				<choose>
-					<when test="field == 'articleCategoryId'">article_category_id = #{article.articleCategoryId},</when>
 					<when test="field == 'title'">title = #{article.title},</when>
 					<when test="field == 'brief'">brief = #{article.brief},</when>
 					<when test="field == 'author'">author = #{article.author},</when>
@@ -65,30 +62,16 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,article_category_id,title,brief,author,released_time,is_released,image,content,created_time,visit_count
+		id,title,brief,author,released_time,is_released,image,content,created_time,visit_count
 		from `cms_article`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ArticleQueryModel">
 		select
-		id,article_category_id,title,brief,author,released_time,is_released,image,content,created_time,visit_count
+		id,title,brief,author,released_time,is_released,image,content,created_time,visit_count
 		from `cms_article`
 		<where>
-			<if test="articleCategoryIdIN != null">
-				<if test="articleCategoryIdIN.length != 0">
-				and article_category_id in
-				<foreach collection="articleCategoryIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
-				</if>
-				<if test="articleCategoryIdIN.length == 0">
-				1 = 2
-				</if>
-			</if>
-			<if test="articleCategoryIdEQ != null">
-				and article_category_id = #{articleCategoryIdEQ}
-			</if>
 			<if test="isReleasedEQ != null">
 				and is_released = #{isReleasedEQ}
 			</if>
@@ -109,24 +92,16 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.ArticleQueryModel">
 		select count(*) from `cms_article`
 		<where>
-			<if test="articleCategoryIdIN != null">
-				<if test="articleCategoryIdIN.length != 0">
-				and article_category_id in
-				<foreach collection="articleCategoryIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
-				</if>
-				<if test="articleCategoryIdIN.length == 0">
-				1 = 2
-				</if>
-			</if>
-			<if test="articleCategoryIdEQ != null">
-				and article_category_id = #{articleCategoryIdEQ}
-			</if>
 			<if test="isReleasedEQ != null">
 				and is_released = #{isReleasedEQ}
 			</if>
 		</where>
 	</select>
 
+	<update id="view">
+		update `cms_article`
+		set visit_count = visit_count + 1
+		where id = #{id}
+	</update>
+	
 </mapper>

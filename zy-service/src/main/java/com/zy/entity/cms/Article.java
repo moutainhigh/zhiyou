@@ -36,12 +36,6 @@ public class Article implements Serializable {
 	@View
 	private Long id;
 
-	@NotNull
-	@Query({Predicate.EQ, Predicate.IN})
-	@Field(label = "文章类型id")
-	@View(groups = { "ArticleAdminVo"  })
-	private Long articleCategoryId;
-
 	@NotBlank
 	@Field(label = "标题")
 	@View(groups = { "ArticleDetailVo", "ArticleListVo", "ArticleAdminVo"  })

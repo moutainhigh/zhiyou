@@ -9,10 +9,12 @@ import com.zy.model.query.ArticleQueryModel;
 public interface ArticleService {
 
 	void delete(Long id);
+	void visit(Long id);
 	Article findOne(Long id);
 	Article create(Article article);
 	Article update(Article article);
-	Article merge(Article article, String... fields);
+	Article modify(Article article);
+	void release(Long id, boolean isReleased);
 	
 	Page<Article> findPage(ArticleQueryModel articleQueryModel);
 	List<Article> findAll(ArticleQueryModel articleQueryModel);
