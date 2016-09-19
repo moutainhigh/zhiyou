@@ -48,41 +48,32 @@
             title: '业务名',
             orderable: false
           },
+          ,
+          {
+            data: 'createdTime',
+            title: '创建时间',
+            orderable: false
+          },
           {
             data: 'profitStatus',
             title: '收益单状态',
             orderable: false
           },
           {
-            data: '',
-            title: '用户',
-            render: function (data, type, full) {
-              if (full.user) {
-                return '<p><img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname + '</p><p>手机: ' + full.user.phone + '</p>';
-              } else {
-                return '-';
-              }
-            }
+            data: 'grantedTime',
+            title: '收益时间',
+            orderable: false
           },
           {
             data: '',
-            title: '手机号',
+            title: '用户',
             render: function (data, type, full) {
-              if (full.user) {
-                return full.user.phone;
-              } else {
-                return '-';
-              }
+              return formatUser(data.user);
             }
           },
           {
             data: 'remark',
             title: '备注',
-            orderable: false
-          },
-          {
-            data: 'createdTime',
-            title: '收益时间',
             orderable: false
           }]
       }

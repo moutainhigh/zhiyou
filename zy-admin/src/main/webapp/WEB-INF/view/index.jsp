@@ -92,6 +92,7 @@
   <script src="${ctx}/plugin/My97DatePicker/WdatePicker.js"></script>
   <script src="${ctx}/plugin/handlebars/handlebars.min.js"></script>
   <script src="${ctx}/js/area.js"></script>
+  <script src="${ctx}/js/common.js"></script>
   <%@ include file="/WEB-INF/view/include/form.jsp" %>
 
   <!-- END PAGE LEVEL SCRIPTS -->
