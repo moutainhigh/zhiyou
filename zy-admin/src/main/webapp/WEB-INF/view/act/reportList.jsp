@@ -135,6 +135,11 @@
         },
         columns: [
           {
+            data: 'id',
+            title: 'id',
+            width: '20px'
+          },
+          {
             data: '',
             title: '代理信息',
             render: function (data, type, full) {
@@ -277,7 +282,7 @@
     
   });
   <shiro:hasPermission name="report:export">
-  function depositExport() {
+  function reportExport() {
     location.href = '${ctx}/report/export?' + $('#searchForm').serialize();
   }
   </shiro:hasPermission>
@@ -328,6 +333,13 @@
                   <i class="fa fa-search"></i> 查询
                 </button>
               </div>
+              <shiro:hasPermission name="report:export">
+              <div class="form-group">
+                <button class="btn yellow" onClick="reportExport()">
+                  <i class="fa fa-file-excel-o"></i> 导出Excel
+                </button>
+              </div>
+              </shiro:hasPermission>
             </form>
           </div>
           <table class="table table-striped table-bordered table-hover" id="dataTable">
