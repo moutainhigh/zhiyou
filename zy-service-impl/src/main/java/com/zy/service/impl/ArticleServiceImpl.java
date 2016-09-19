@@ -82,7 +82,6 @@ public class ArticleServiceImpl implements ArticleService {
 		persistence.setBrief(article.getBrief());
 		persistence.setContent(article.getAuthor());
 		persistence.setImage(article.getImage());
-		persistence.setIsReleased(article.getIsReleased());
 		persistence.setTitle(article.getTitle());
 		persistence.setReleasedTime(article.getReleasedTime());
 		articleMapper.update(persistence);

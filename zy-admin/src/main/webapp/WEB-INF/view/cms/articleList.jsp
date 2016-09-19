@@ -61,9 +61,9 @@
             orderable: false,
             render: function (data, type, full) {
               if (data) {
-                return '已发布';
+                return '<i class="fa fa-check font-green"></i> <span class="badge badge-success"> 已发布 </span>';
               }
-              return '未发布';
+              return '';
             }
           },
           {
@@ -141,8 +141,8 @@
                 <div class="form-group">
                   <select name="isReleasedEQ" class="form-control">
                     <option value="">--请选择是否发布--</option>
-                    <option value="true">--是--</option>
-                    <option value="false">--否--</option>
+                    <option value="true">是</option>
+                    <option value="false">否</option>
                   </select>
                 </div>
                 
