@@ -45,7 +45,7 @@ public class ArticleController {
 	public String detail(@PathVariable Long id, Long inviterId, Model model) {
 		Article article = articleService.findOne(id);
 		//浏览+1
-//		articleService.view(id);
+		articleService.visit(id);
 		model.addAttribute("article", articleComponent.buildDetailVo(article));
 		return "article/articleDetail";
 	}
