@@ -214,6 +214,7 @@ public class ReportServiceImpl implements ReportService {
 		} else {
 			validate(confirmRemark, NOT_BLANK, "confirm remark is null");
 			report.setPreConfirmStatus(ConfirmStatus.未通过);
+			report.setConfirmStatus(ConfirmStatus.未通过);
 			report.setConfirmRemark(confirmRemark);
 		}
 		if (reportMapper.update(report) == 0) {
