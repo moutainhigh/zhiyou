@@ -122,7 +122,7 @@ public class OrderController {
 		try {
 			orderService.platformDeliver(orderDeliverDto);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("发货成功"));
-			return "redirect:/order";
+			return "redirect:/order/platformDeliverList";
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			return "redirect:/order/deliver?id=" + orderDeliverDto.getId();
