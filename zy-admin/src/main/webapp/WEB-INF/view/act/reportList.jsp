@@ -276,7 +276,11 @@
     })
     
   });
-
+  <shiro:hasPermission name="report:export">
+  function depositExport() {
+    location.href = '${ctx}/report/export?' + $('#searchForm').serialize();
+  }
+  </shiro:hasPermission>
 </script>
 <!-- END JAVASCRIPTS -->
 
@@ -302,7 +306,7 @@
       <div class="portlet-body clearfix">
         <div class="table-container">
           <div class="table-toolbar">
-            <form class="filter-form form-inline">
+            <form id="searchForm" class="filter-form form-inline">
               <input id="_orderBy" name="orderBy" type="hidden" value=""/> <input id="_direction" name="direction" type="hidden" value=""/>
               <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/> <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 

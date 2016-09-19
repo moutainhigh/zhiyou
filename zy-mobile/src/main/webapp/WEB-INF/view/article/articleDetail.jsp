@@ -22,14 +22,14 @@
 <body>
   <header class="header">
     <h1>新闻资讯</h1>
-    <a href="${ctx}/u/article" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/article" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
-  <article class="p-15">
+  <article class="pl-15 pr-15 pt-10 pb-10">
     <h2 class="font-333 fs-16 text-center">${article.title}</h2>
     <div class="font-999 fs-12 lh-20 text-center">${article.author} &nbsp;&nbsp; ${article.releasedTimeLabel}</div>
-    <div class="mt-10"><img class="width-100p" src="${article.imageBig}"></div>
-    <div class="font-555 fs-14 lh-24 mt-10">${article.content}</div>
+    <div class="mt-10"><img class="block width-100p" src="${article.imageBig}"></div>
+    <div class="detail-wrap">${article.content}</div>
   </article>
 </body>
 </html>

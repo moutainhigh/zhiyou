@@ -162,7 +162,7 @@ public class Order implements Serializable {
 
 	@Field(label = "是否物流发货")
 	@View(name = "useLogisticsLabel", groups = {"OrderAdminVo", "OrderAdminFullVo"})
-	@View(groups = {"OrderAdminVo"})
+	@View(groups = {"OrderDetailVo", "OrderAdminVo"})
 	private Boolean useLogistics;
 
 	@Field(label = "物流费支付类型")

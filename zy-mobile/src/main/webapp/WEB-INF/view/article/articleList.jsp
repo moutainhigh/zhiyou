@@ -27,12 +27,12 @@
   <article class="mb-15 clearfix">
     <c:forEach items="${articles}" var="article">
     <a href="${ctx}/article/${article.id}" class="article">
-      <div class="image-box">
+      <figure class="image-box">
         <img class="abs-lt" src="${article.imageThumbnail}">
-      </div>
-      <h3>${article.title}</h3>
-      <div class="article-info">
-        <span class="fs-13 font-777">${article.releasedTimeLabel}</span>
+      </figure>
+      <div class="pl-5 pr-5">
+        <h3 class="font-333 fs-14 lh-30 text-ellipsis">${article.title}</h3>
+        <div class="font-777 fs-12 lh-24 text-ellipsis">${article.releasedTimeLabel}</div>
       </div>
     </a>
     </c:forEach>

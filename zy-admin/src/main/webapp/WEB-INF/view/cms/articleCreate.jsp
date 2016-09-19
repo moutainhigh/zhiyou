@@ -20,16 +20,23 @@
 			    contextMenu:[],
 			    saveInterval: 3600000,
 				toolbars:  [[
-				   'fullscreen',  
-				   'bold', 'italic', 'underline', '|', 
-		           'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 
-				   'insertorderedlist', 'insertunorderedlist', '|',
-				   'simpleupload'
+                  'fullscreen', 'source', '|', 'undo', 'redo', '|',
+                  'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+                  'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+                  'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+                  'directionalityltr', 'directionalityrtl', 'indent', '|',
+                  'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+                  'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+                  'simpleupload', 'insertimage', 'emotion', 'scrawl', 'insertvideo', 'music', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'webapp', 'pagebreak', 'template', 'background', '|',
+                  'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|',
+                  'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
+                  'print', 'preview', 'searchreplace', 'help', 'drafts'
 				 ]],
 				 'insertorderedlist':{'num':'1,2,3...' },
 				 'insertunorderedlist':{'disc' : ''},
 				 elementPathEnabled : false,     //去掉元素路径
 				 pasteplain: true,   //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+				 initialFrameWidth: 750,
 				 iframeCssUrl: '${ctx}/css/editor/default.css' 
 			});
 		
@@ -117,9 +124,6 @@
       <div class="portlet-title">
         <div class="caption">
           <i class="icon-book-open"></i><span> 创建新闻 </span>
-        </div>
-        <div class="tools">
-          <a href="javascript:;" class="collapse"> </a> <a href="javascript:;" class="reload"> </a>
         </div>
       </div>
       <div class="portlet-body form">
