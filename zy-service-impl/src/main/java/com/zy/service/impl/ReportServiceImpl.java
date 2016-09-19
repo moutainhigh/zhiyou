@@ -63,6 +63,7 @@ public class ReportServiceImpl implements ReportService {
 		report.setAppliedTime(now);
 		report.setCreatedTime(now);
 		report.setIsSettledUp(false);
+		report.setIsHot(false);
 		validate(report);
 		reportMapper.insert(report);
 		return report;

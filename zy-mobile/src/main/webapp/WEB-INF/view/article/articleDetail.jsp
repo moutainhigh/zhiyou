@@ -13,6 +13,7 @@
 
 <title>新闻资讯</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
+<link href="${stccdn}/css/dcss.css" rel="stylesheet" />
 <script type="text/javascript">
   $(function() {
 
@@ -26,7 +27,7 @@
   </header>
 
   <article>
-    <div class="detail-wrap">
+    <div class="detail-wrap dcss">
       <h2 class="font-333 fs-18 lh-30">${article.title}</h2>
       <div class="mt-10 font-999 fs-14 lh-20">${article.author} &nbsp;&nbsp; ${article.releasedTimeLabel}</div>
       <img class="mt-10" src="${article.imageBig}">
