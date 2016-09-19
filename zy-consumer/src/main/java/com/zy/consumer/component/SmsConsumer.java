@@ -138,13 +138,7 @@ public class SmsConsumer extends AbstractConsumer {
 		}
 	}
 
-	private static boolean is(BigDecimal value) {
-		return value != null && getAnInt(value) != -1 && getAnInt(value) != 0;
-	}
 
-	private static int getAnInt(BigDecimal value) {
-		return value.compareTo(ZERO);
-	}
 
 
 }
