@@ -83,7 +83,9 @@ public class NotifySendToMqJob {
     private void sendToMq(Notify notify) {
         String version = notify.getVersion();
         if (isDev.get()) {
-            version += "-dev";
+            if (!version.contains("-dev")) {
+                version += "-dev";
+            }
         }
         final String message = String.format("%s,%s,%s", notify.getRefId(), notify.getToken(), version);
         logger.info("send message {}", message);
