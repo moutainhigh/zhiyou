@@ -54,8 +54,9 @@ public class AdminConstants {
 			sub.put("banner:edit", "banner管理(编辑)");
 			sub.put("notice:view", "公告管理(查看)");
 			sub.put("notice:edit", "公告管理(编辑)");
-			sub.put("article:view", "文章查看");
-			sub.put("article:edit", "文章编辑");
+			sub.put("article:view", "新闻查看");
+			sub.put("article:edit", "新闻编辑");
+			sub.put("article:release", "新闻发布");
 			sub.put("feedback:view", "反馈管理");
 			sub.put("help:view", "帮助中心(查看)");
 			sub.put("help:edit", "帮助中心(编辑)");

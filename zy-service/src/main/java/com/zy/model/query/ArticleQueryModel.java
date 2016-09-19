@@ -19,10 +19,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ArticleQueryModel implements Serializable {
 
-	private Long articleCategoryIdEQ;
-
-	private Long[] articleCategoryIdIN;
-
 	private Boolean isReleasedEQ;
 
 	private Integer pageNumber;

@@ -32,11 +32,6 @@
                   }
                 },
                 {
-                  data : 'qq',
-                  title : 'QQ',
-                  orderable : false
-                },
-                {
                   data : 'userRankLabel',
                   title : 'VIP',
                   orderable : false

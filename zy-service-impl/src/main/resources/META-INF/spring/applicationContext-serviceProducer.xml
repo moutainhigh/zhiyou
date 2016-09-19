@@ -25,7 +25,6 @@
 	<dubbo:service ref="shortMessageServiceImpl" interface="com.zy.service.ShortMessageService" />
 	<dubbo:service ref="userServiceImpl" interface="com.zy.service.UserService" />
 	<dubbo:service ref="articleServiceImpl" interface="com.zy.service.ArticleService" />
-	<dubbo:service ref="articleCategoryServiceImpl" interface="com.zy.service.ArticleCategoryService" />
 	<dubbo:service ref="depositServiceImpl" interface="com.zy.service.DepositService" />
 	<dubbo:service ref="withdrawServiceImpl" interface="com.zy.service.WithdrawService" />
 	<dubbo:service ref="orderServiceImpl" interface="com.zy.service.OrderService" />

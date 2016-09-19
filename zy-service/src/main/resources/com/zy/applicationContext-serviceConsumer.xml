@@ -18,7 +18,6 @@
 	<dubbo:reference id="shortMessageService" interface="com.zy.service.ShortMessageService" />
 	<dubbo:reference id="userService" interface="com.zy.service.UserService" />
 	<dubbo:reference id="articleService" interface="com.zy.service.ArticleService" />
-	<dubbo:reference id="articleCategoryService" interface="com.zy.service.ArticleCategoryService" />
 	<dubbo:reference id="depositService" interface="com.zy.service.DepositService" />
 	<dubbo:reference id="withdrawService" interface="com.zy.service.WithdrawService" />
 	<dubbo:reference id="orderService" interface="com.zy.service.OrderService" />

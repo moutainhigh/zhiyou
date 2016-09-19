@@ -1,20 +1,22 @@
 package com.zy.service.impl;
 
-import com.zy.common.model.query.Page;
-import com.zy.entity.cms.Article;
-import com.zy.mapper.ArticleMapper;
-import com.zy.model.query.ArticleQueryModel;
-import com.zy.service.ArticleService;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotNull;
-
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.validate;
+import com.zy.common.model.query.Page;
+import com.zy.entity.cms.Article;
+import com.zy.mapper.ArticleMapper;
+import com.zy.model.query.ArticleQueryModel;
+import com.zy.service.ArticleService;
 
 @Service
 @Validated
@@ -35,6 +37,9 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public Article create(@NotNull Article article) {
+		article.setCreatedTime(new Date());
+		article.setVisitCount(0L);
+		article.setIsReleased(false);
 		validate(article);
 		articleMapper.insert(article);
 		return article;
@@ -68,11 +73,43 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public Article merge(@NotNull Article article, @NotNull
-			  String... fields) {
-		articleMapper.merge(article, fields);
-		return article;
+	public Article modify(@NotNull Article article) {
+		Long id = article.getId();
+		Article persistence = articleMapper.findOne(id);
+		validate(persistence, NOT_NULL, "article id " + id + " not found");
+		
+		persistence.setAuthor(article.getAuthor());
+		persistence.setBrief(article.getBrief());
+		persistence.setContent(article.getAuthor());
+		persistence.setImage(article.getImage());
+		persistence.setIsReleased(article.getIsReleased());
+		persistence.setTitle(article.getTitle());
+		persistence.setReleasedTime(article.getReleasedTime());
+		articleMapper.update(persistence);
+		return null;
 	}
 
+	@Override
+	public void release(@NotNull Long id, boolean isReleased) {
+		Article article = articleMapper.findOne(id);
+		validate(article, NOT_NULL, "article id " + id + " not found");
+		Article articleForMerge = new Article();
+		articleForMerge.setId(id);
+		articleForMerge.setIsReleased(isReleased);
+		
+		articleMapper.merge(articleForMerge, "isReleased");
+	}
 
+	@Override
+	public void visit(@NotNull Long articleId) {
+		checkAndFindArticle(articleId);
+		articleMapper.view(articleId);
+	}
+	
+	private Article checkAndFindArticle(Long articleId) {
+		validate(articleId, NOT_NULL, "article id is null");
+		Article article = articleMapper.findOne(articleId);
+		validate(article, NOT_NULL, "article id " + articleId + " is not found");
+		return article;
+	}
 }

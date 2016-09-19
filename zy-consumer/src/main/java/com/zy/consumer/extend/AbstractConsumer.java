@@ -99,11 +99,17 @@ public abstract class AbstractConsumer implements DisposableBean {
 							final long refId = parseLong(split[0]);
 							final String token = split[1];
 							final String version = split[2];
-							/*如果不是开发测试环境 版本中有dev 则跳过*/
-							if (!isDev.get() && version.contains("-dev")) {
-								this.doHandle(topic, refId, token, version);
+							/*如果不是开发测试环境 版本中有dev 则跳过
+							*     收到测试数
+							* */
+							if (version.contains("-dev") ) {
+								if (isDev.get()){
+									this.doHandle(topic, refId, token, version);
+								}else {
+									logger.warn("正式环境 不消费 -dev 版本消息topic {}, refId {}, token {}, version {}", topic, refId, token, version);
+								}
 							} else {
-								logger.warn("正式环境 不消费 -dev 版本消息topic {}, refId {}, token {}, version {}", topic, refId, token, version);
+								this.doHandle(topic, refId, token, version);
 							}
 						} else {
 							logger.error("收到非法数据 {}", record.value());

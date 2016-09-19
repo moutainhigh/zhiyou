@@ -7,8 +7,8 @@ import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
 import io.gd.generator.api.query.Direction;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,14 +27,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.common.support.AliyunOssSupport;
+import com.zy.component.ArticleComponent;
 import com.zy.entity.cms.Article;
-import com.zy.entity.cms.ArticleCategory;
+import com.zy.model.Constants;
 import com.zy.model.query.ArticleQueryModel;
-import com.zy.service.ArticleCategoryService;
 import com.zy.service.ArticleService;
+import com.zy.vo.ArticleAdminVo;
 
 @Controller
 @RequestMapping("/article")
@@ -44,66 +46,57 @@ public class ArticleController {
 
 	@Autowired
 	private ArticleService articleService;
-
+	
 	@Autowired
-	private ArticleCategoryService articleCategoryService;
+	private ArticleComponent articleComponent;
 	
 	@Autowired
 	private AliyunOssSupport aliyunOssSupport;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
-		List<ArticleCategory> articleCategories = articleCategoryService.findAllVisiable(false);
-		model.addAttribute("articleCategories", articleCategories);
 		return "cms/articleList";
 	}
 
 	@RequiresPermissions("article:view")
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Grid<Article> list(ArticleQueryModel articleQueryModel) {
+	public Grid<ArticleAdminVo> list(ArticleQueryModel articleQueryModel) {
 		articleQueryModel.setOrderBy("createdTime");
 		articleQueryModel.setDirection(Direction.DESC);
 		Page<Article> page = articleService.findPage(articleQueryModel);
-		return new Grid<Article>(page);
+		return new Grid<ArticleAdminVo>(PageBuilder.copyAndConvert(page, new ArrayList<ArticleAdminVo>()));
 	}
 
 	@RequiresPermissions("article:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create(Model model, RedirectAttributes redirectAttributes) {
-		List<ArticleCategory> articleCategories = articleCategoryService.findAllVisiable(false);
-		if(articleCategories.isEmpty()) {
-			redirectAttributes.addFlashAttribute(ResultBuilder.error("请先添加文章类别, 自动跳转"));
-			return "/articleCategory/create";
-		}
-		model.addAttribute("articleCategories", articleCategories);
+		
 		return "cms/articleCreate";
 	}
 
 	@RequiresPermissions("article:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String create(Article article, RedirectAttributes redirectAttributes) {
+	public String create(Article article, Model model, RedirectAttributes redirectAttributes) {
 
-		Date date = new Date();
-		article.setCreatedTime(date);
-		article.setVisitCount(0L);
-		article.setIsReleased(false);
-		validate(article);
-		articleService.create(article);
-		redirectAttributes.addFlashAttribute(ResultBuilder.ok("文章保存成功"));
-		return "redirect:/article";
+		try {
+			articleService.create(article);
+			redirectAttributes.addFlashAttribute(ResultBuilder.ok("新闻保存成功"));
+			return "redirect:/article";
+		} catch (Exception e) {
+			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			model.addAttribute("article", article);
+			return "cms/articleCreate";
+		}
 	}
 
-	@RequestMapping(value = {"/update"}, method = RequestMethod.GET)
-	public String update(Model model, Long id) {
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public String update(Model model, @RequestParam Long id) {
 		validate(id, NOT_NULL, "article id is null");
 
 		Article article = articleService.findOne(id);
 		validate(article, NOT_NULL, "article id " + id + " is not found");
 
-		List<ArticleCategory> articleCategories = articleCategoryService.findAllVisiable(false);
-		model.addAttribute("articleCategories", articleCategories);
-		
 		String content = article.getContent();
 		content = StringUtils.replaceEach(content, new String[] {"'", "\r\n", "\r", "\n"}, new String[] {"\\'", "", "", ""});
 		article.setContent(content);
@@ -115,37 +108,27 @@ public class ArticleController {
 	public String update(Article article, RedirectAttributes redirectAttributes) {
 		Long id = article.getId();
 		validate(id, NOT_NULL, "article id is null");
-		validate(article, "articleCategoryId", "title", "brief", "content", "releasedTime", "author");
 
-		articleService.merge(article, "articleCategoryId", "title", "brief", "content", "releasedTime", "author");
-		redirectAttributes.addFlashAttribute(ResultBuilder.ok("文章保存成功"));
-		return "redirect:/article";
+		try {
+			articleService.modify(article);
+			redirectAttributes.addFlashAttribute(ResultBuilder.ok("新闻编辑成功"));
+			return "redirect:/article";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return "redirect:/article/update?id=" + article.getId();
+		}
+		
 	}
 
 	@RequiresPermissions("article:edit")
-	@RequestMapping(value = "/releaseAjax", method = RequestMethod.POST)
+	@RequestMapping(value = "/release", method = RequestMethod.POST)
 	@ResponseBody
-	public boolean releaseAjax(@RequestParam Long id, @RequestParam boolean isRelease) {
+	public boolean release(@RequestParam Long id, @RequestParam boolean isRelease) {
 		Article article = articleService.findOne(id);
 		validate(article, NOT_NULL, "article not found, id is " + id);
 
-		Article articleForMerge = new Article();
-		articleForMerge.setIsReleased(isRelease);
-		articleForMerge.setId(id);
-		articleService.merge(articleForMerge, "isReleased");
+		articleService.release(id, isRelease);
 		return true;
 	}
 
-	@RequiresPermissions("article:edit")
-	@RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
-	public String uploadImage(MultipartFile file, HttpServletRequest request, Model model, String callback) throws IOException {
-		model.addAttribute("callback", callback);
-		try {
-			String imageUrl = aliyunOssSupport.putPublicObject(ALIYUN_BUCKET_NAME_IMAGE, "article/", file, ALIYUN_URL_IMAGE);
-			model.addAttribute("result", imageUrl);
-		} catch (Exception e) {
-			model.addAttribute("result", e.getMessage());
-		}
-		return "cms/imageCallback";
-	}
 }

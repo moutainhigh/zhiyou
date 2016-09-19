@@ -37,13 +37,10 @@
 <div class="row">
   <div class="col-md-12">
     <!-- BEGIN VALIDATION STATES-->
-    <div class="portlet box green">
+    <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-plus-circle"></i><span> 角色维护</span>
-        </div>
-        <div class="tools">
-          <a href="javascript:;" class="collapse"> </a> <a href="javascript:;" class="reload"> </a>
+          <i class="icon-key"></i><span> 角色维护</span>
         </div>
       </div>
       <div class="portlet-body form">

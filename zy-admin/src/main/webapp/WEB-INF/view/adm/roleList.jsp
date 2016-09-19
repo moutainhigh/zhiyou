@@ -73,50 +73,31 @@ $(function() {
 <div class="row">
   <div class="col-md-12">
     <!-- BEGIN ALERTS PORTLET-->
-    <div class="portlet box blue">
+    <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-user"></i><span> 角色管理 </span>
+          <i class="icon-key"></i><span> 角色管理 </span>
         </div>
-        <div class="tools">
-          <a class="collapse" href="javascript:;"> </a> <a class="reload" href="javascript:;"> </a>
+        <div class="actions">
+          <a class="btn btn-circle green" data-href="${ctx}/role/create">
+            <i class="fa fa-plus"></i> 新增
+          </a>
         </div>
       </div>
       <div class="portlet-body clearfix">
         <div class="table-container">
           <div class="table-toolbar">
-            <div class="btn-group">
-              <button id="" class="btn green" data-href="${ctx}/role/create">
-                新增 <i class="fa fa-plus"></i>
-              </button>
-            </div>
-            <!-- <div class="btn-group pull-right">
-              <button class="btn dropdown-toggle" data-toggle="dropdown">
-                工具 <i class="fa fa-angle-down"></i>
-              </button>
-              <ul class="dropdown-menu pull-right">
-                <li><a href="#"> 打印 </a></li>
-                <li><a href="#"> 导出Excel </a></li>
-              </ul>
-            </div> -->
-          </div>
-
-          <div class="row">
-            <div class="col-md-3 table-actions">
-              <span class="table-row-checked"></span>
-            </div>
-            <div class="col-md-9">
-              <form class="filter-form form-inline pull-right">
+              <form class="filter-form form-inline">
                 <input id="_sort" name="q.sort" type="hidden" value=""/>
                 <input id="_pageNumber" name="q.pageNumber" type="hidden" value="0"/>
                 <input id="_pageSize" name="q.pageSize" type="hidden" value="20"/>
-                <div class="form-group input-inline">
+                <!-- <div class="form-group input-inline">
                   <label class="sr-only">名称</label>
                   <input type="text" name="q.name" maxlength="50" class="form-control" placeholder="用户名" />
                 </div>
                 <button class="btn purple filter-submit">
                   <i class="fa fa-check"></i> 查询
-                </button>
+                </button> -->
               </form>
             </div>
           </div>
