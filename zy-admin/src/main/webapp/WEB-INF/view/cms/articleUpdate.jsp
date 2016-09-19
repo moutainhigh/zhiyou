@@ -16,11 +16,17 @@
 			    contextMenu:[],
 			    saveInterval: 3600000,
 				toolbars:  [[
-				   'fullscreen',  
-				   'bold', 'italic', 'underline', '|', 
-		           'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 
-				   'insertorderedlist', 'insertunorderedlist', '|',
-				   'simpleupload'
+                  'fullscreen', 'source', '|', 'undo', 'redo', '|',
+                  'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+                  'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+                  'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+                  'directionalityltr', 'directionalityrtl', 'indent', '|',
+                  'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+                  'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+                  'simpleupload', 'insertimage', 'emotion', 'scrawl', 'insertvideo', 'music', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'webapp', 'pagebreak', 'template', 'background', '|',
+                  'horizontal', 'date', 'time', 'spechars', 'snapscreen', 'wordimage', '|',
+                  'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
+                  'print', 'preview', 'searchreplace', 'help', 'drafts'
 				 ]],
 				 'insertorderedlist':{'num':'1,2,3...' },
 				 'insertunorderedlist':{'disc' : ''},
@@ -146,7 +152,7 @@
             <div class="form-group">
               <label class="control-label col-md-3">图片<span class="required"> * </span></label>
               <div class="col-md-5">
-                <img data-target="image" class="product-image bd" src="<c:if test='${not empty article.image}'>${article.imageBig}</c:if><c:if test='${empty article.image}'>${ctx}/image/upload_240_150.jpg</c:if>">
+                <img data-target="image" class="product-image bd" src="<c:if test='${not empty article.image}'>${article.imageThumbnail}</c:if><c:if test='${empty article.image}'>${ctx}/image/upload_240_150.jpg</c:if>">
                 <input type="hidden" name="image" value="${article.image}"/>
                 <p class="help-block">图片尺寸 750*450</p>
               </div>
@@ -172,7 +178,7 @@
               </label>
               <div class="col-md-4">
 				 <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
-                  	name="releasedTime" value="<fmt:formatDate  pattern="yyyy-MM-dd HH:mm:ss" value="${article.releasedTime }"/>" placeholder="发布时间" />
+                  	name="releasedTime" value="${article.releasedTimeLabel}" placeholder="发布时间" />
               </div>
             </div>
             

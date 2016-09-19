@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -17,9 +16,9 @@ public class ArticleListVo implements Serializable {
 	private String title;
 
 	/* 扩展 */
-	@Field(label = "主图")
-	private String imageThumbnail;
 	@Field(label = "发布时间")
 	private String releasedTimeLabel;
+	@Field(label = "主图")
+	private String imageThumbnail;
 
 }

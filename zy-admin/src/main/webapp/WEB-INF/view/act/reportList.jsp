@@ -138,7 +138,7 @@
             data: '',
             title: '代理信息',
             render: function (data, type, full) {
-              return '<p><img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>: ' + full.user.nickname + '</p><p>手机号: ' + full.user.phone + '</p><p>等级: ' + full.user.userRankLabel + '</p>';
+              return formatUser(full.user);
             }
           },
           {

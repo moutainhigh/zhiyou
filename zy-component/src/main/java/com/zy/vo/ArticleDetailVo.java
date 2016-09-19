@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -25,11 +24,11 @@ public class ArticleDetailVo implements Serializable {
 	private Long visitCount;
 
 	/* 扩展 */
+	@Field(label = "发布时间")
+	private String releasedTimeLabel;
 	@Field(label = "主图")
 	private String imageBig;
 	@Field(label = "主图")
 	private String imageThumbnail;
-	@Field(label = "发布时间")
-	private String releasedTimeLabel;
 
 }

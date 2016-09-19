@@ -1,6 +1,9 @@
 package com.zy.mobile.controller;
 
+import io.gd.generator.api.query.Direction;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.zy.common.support.cache.CacheSupport;
+import com.zy.component.ArticleComponent;
+import com.zy.entity.cms.Article;
 import com.zy.entity.cms.Banner;
 import com.zy.entity.cms.Banner.BannerPosition;
 import com.zy.model.Constants;
+import com.zy.model.query.ArticleQueryModel;
 import com.zy.model.query.BannerQueryModel;
+import com.zy.service.ArticleService;
 import com.zy.service.BannerService;
 
 @RequestMapping
@@ -24,6 +31,12 @@ public class IndexController {
 	
 	@Autowired
 	private BannerService bannerService;
+	
+	@Autowired
+	private ArticleService articleService;
+	
+	@Autowired
+	private ArticleComponent articleComponent;
 	
 	@Autowired
 	protected CacheSupport cacheSupport;
@@ -41,6 +54,17 @@ public class IndexController {
 		}
 		cacheSupport.set(Constants.CACHE_NAME_BANNER, bannerPosition.toString(), banners);
 		model.addAttribute("banners", banners);
+		
+		ArticleQueryModel articleQueryModel = new ArticleQueryModel();
+		articleQueryModel.setIsReleasedEQ(true);
+		articleQueryModel.setDirection(Direction.DESC);
+		articleQueryModel.setOrderBy("releasedTime");
+		articleQueryModel.setPageNumber(0);
+		articleQueryModel.setPageSize(6);
+		List<Article> articles = articleService.findAll(articleQueryModel);
+		if(!articles.isEmpty()) {
+			model.addAttribute("articles", articles.stream().map(articleComponent::buildListVo).collect(Collectors.toList()));
+		}
 		
 		return "index";
 	}

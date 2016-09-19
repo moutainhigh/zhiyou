@@ -78,6 +78,9 @@
 			<if test="contentLK != null">
 				<bind name="contentLK" value="'%' + contentLK + '%'"/> and content like #{contentLK}
 			</if>
+			<if test="tokenEQ != null">
+				and token = #{tokenEQ}
+			</if>
 			<if test="messageTypeEQ != null">
 				and message_type = #{messageTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -112,6 +115,9 @@
 			</if>
 			<if test="contentLK != null">
 				<bind name="contentLK" value="'%' + contentLK + '%'"/> and content like #{contentLK}
+			</if>
+			<if test="tokenEQ != null">
+				and token = #{tokenEQ}
 			</if>
 			<if test="messageTypeEQ != null">
 				and message_type = #{messageTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}

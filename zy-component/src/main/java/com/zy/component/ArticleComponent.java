@@ -24,9 +24,10 @@ public class ArticleComponent {
 		if (withDetail) {
 			articleAdminVo.setContent(article.getContent());
 		}
-		articleAdminVo.setImageBig(getThumbnail(article.getImage(), 300, 180));
-		articleAdminVo.setImageThumbnail(getThumbnail(article.getImage(), 150, 90));
+		articleAdminVo.setImageBig(getThumbnail(article.getImage(), 750, 450));
+		articleAdminVo.setImageThumbnail(getThumbnail(article.getImage(), 300, 180));
 		articleAdminVo.setCreatedTimeLabel(GcUtils.formatDate(article.getCreatedTime(), TIME_PATTERN));
+		articleAdminVo.setReleasedTimeLabel(GcUtils.formatDate(article.getCreatedTime(), TIME_PATTERN));
 		return articleAdminVo;
 	}
 	
@@ -34,7 +35,7 @@ public class ArticleComponent {
 		ArticleDetailVo articleDetailVo = new ArticleDetailVo();
 		BeanUtils.copyProperties(article, articleDetailVo);
 		articleDetailVo.setImageBig(getThumbnail(article.getImage(), 750, 450));
-		articleDetailVo.setImageThumbnail(getThumbnail(article.getImage(), 240, 160));
+		articleDetailVo.setImageThumbnail(getThumbnail(article.getImage(), 300, 180));
 		articleDetailVo.setReleasedTimeLabel(GcUtils.formatDate(article.getReleasedTime(), SIMPLE_TIME_PATTERN));
 		return articleDetailVo;
 	}
@@ -42,7 +43,7 @@ public class ArticleComponent {
 	public ArticleListVo buildListVo(Article article) {
 		ArticleListVo articleListVo = new ArticleListVo();
 		BeanUtils.copyProperties(article, articleListVo);
-		articleListVo.setImageThumbnail(getThumbnail(article.getImage(), 240, 160));
+		articleListVo.setImageThumbnail(getThumbnail(article.getImage(), 300, 180));
 		articleListVo.setReleasedTimeLabel(GcUtils.formatDate(article.getReleasedTime(), SIMPLE_TIME_PATTERN));
 		return articleListVo;
 	}

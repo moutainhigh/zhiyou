@@ -16,6 +16,9 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
+import static io.gd.generator.api.query.Predicate.EQ;
+import static io.gd.generator.api.query.Predicate.LK;
+
 @Entity
 @Table(name = "sys_message")
 @Getter
@@ -34,24 +37,24 @@ public class Message implements Serializable {
 	@View
 	private Long id;
 
-	@Query(Predicate.LK)
+	@Query(LK)
 	@Field(label = "标题")
 	@View
 	private String title;
 
-	@Query(Predicate.LK)
+	@Query(LK)
 	@Field(label = "类型")
 	@View(groups = {"MessageDetailVo", "MessageAdminVo"})
 	private String content;
 
 	@NotNull
-	@Query(Predicate.EQ)
+	@Query(EQ)
 	@Field(label = "用户id")
 	@AssociationView(name = "user", groups = "MessageAdminVo", associationGroup = "UserAdminSimpleVo")
 	private Long userId;
 
 	@NotNull
-	@Query(Predicate.EQ)
+	@Query(EQ)
 	@Field(label = "是否已读")
 	@View
 	private Boolean isRead;
@@ -60,6 +63,7 @@ public class Message implements Serializable {
 	@Field(label = "创建时间")
 	@View(groups = "MessageAdminVo")
 	@View(name = "createdTimeLabel", type = String.class, groups = {"MessageListVo", "MessageDetailVo"})
+	@NotNull
 	private Date createdTime;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -67,18 +71,20 @@ public class Message implements Serializable {
 	private Date readTime;
 
 
-	@Query(Predicate.EQ)
+	@Query(EQ)
 	@Field(label = "消息类型")
 	@View
 	private MessageType messageType;
 
-	@Query(Predicate.EQ)
+	@Query(EQ)
 	@Field(label = "批号")
 	@View(groups = "MessageAdminVo")
 	private String batchNumber;
 
 	@Field(label = "token")
 	@Column(length = 60, unique = true)
+	@Query(EQ)
+	@NotNull
 	private String token;
 
 }

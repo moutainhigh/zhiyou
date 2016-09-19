@@ -1,127 +1,140 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
-<%@ include file="/WEB-INF/view/include/head.jsp"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/view/include/head.jsp" %>
 <style>
-img {
-  cursor: pointer;
-}
+  img {
+    cursor: pointer;
+  }
 </style>
 <!-- BEGIN JAVASCRIPTS -->
 <script>
   var grid = new Datatable();
 
-  $(function() {
+  $(function () {
     grid.init({
-      src : $('#dataTable'),
-      onSuccess : function(grid) {
+      src: $('#dataTable'),
+      onSuccess: function (grid) {
         // execute some code after table records loaded
       },
-      onError : function(grid) {
+      onError: function (grid) {
         // execute some code on network or other general error  
       },
-      dataTable : {
+      dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>", 
-        lengthMenu : [ [ 10, 20, 50, 100, -1 ], [ 10, 20, 50, 100, 'All' ] // change per page values here
+        lengthMenu: [[10, 20, 50, 100, -1], [10, 20, 50, 100, 'All'] // change per page values here
         ],
-        pageLength : 20, // default record count per page
-        order : [], // set first column as a default sort by desc
-        ajax : {
-          url : '${ctx}/appearance', // ajax source
+        pageLength: 20, // default record count per page
+        order: [], // set first column as a default sort by desc
+        ajax: {
+          url: '${ctx}/appearance', // ajax source
         },
-        columns : [ {
-          data : '',
-          title : '基本信息',
-          orderable : false,
-          render : function(data, type, full) {
-            return '<p>姓名:' + full.realname + '</p><p>昵称:' + full.user.nickname + '</p><p>手机号:' + full.user.phone + '</p>';
-          }
-        }, {
-          data : 'idCardNumber',
-          title : '身份证号',
-          orderable : false
-        }, {
-          data : 'image1Thumbnail',
-          title : '身份证正面照',
-          orderable : false,
-          render : function(data, type, full) {
-            return '<img class="imagescan" data-url="' + full.image1 + '" src="'+ data +'" style="width: 80px; height: 80px;">';
-          }
-        },  {
-          data : 'image2Thumbnail',
-          title : '身份证背面照',
-          orderable : false,
-          render : function(data, type, full) {
-            return '<img class="imagescan" data-url="' + full.image2 + '" src="'+ data +'" style="width: 80px; height: 80px;">';
-          }
-        },  {
-          data : 'appliedTime',
-          title : '申请时间',
-          orderable : false,
-          width : '130px'
-        }, {
-          data : 'confirmStatus',
-          title : '审核状态',
-          orderable : false,
-          width : '120px',
-          render : function(data, type, full) {
-            if (data == '待审核') {
-              return '<label class="label label-danger">' + data + '</label>';
-            } else if (data == '已通过') {
-              return '<label class="label label-success">' + data + '</label>';
-            } else if (data == '未通过') {
-              return '<label class="label label-default">' + data + '</label>';
+        columns: [
+          {
+            data: '',
+            title: '用户信息',
+            orderable: false,
+            render: function (data, type, full) {
+              return formatUser(full.user);
             }
-          }
-        }, {
-          data : 'confirmRemark',
-          title : '审核备注',
-          orderable : false,
-          width : '120px'
-        }, {
-          data : 'id',
-          title : '操作',
-          width : '80px',
-          orderable : false,
-          render : function(data, type, full) {
-            var optionHtml = '';
-            if (full.confirmStatus == '待审核') {
-              <shiro:hasPermission name="appearance:confirm">
-              optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="confirm(' + full.id + ')"><i class="fa fa-edit"></i> 审核 </a>';
-              </shiro:hasPermission>
+          },
+          {
+            data: 'realname',
+            title: '真实姓名',
+            orderable: false
+          },
+          {
+            data: 'idCardNumber',
+            title: '身份证号',
+            orderable: false
+          },
+          {
+            data: 'image1Thumbnail',
+            title: '身份证正面照',
+            orderable: false,
+            render: function (data, type, full) {
+              return '<img class="imagescan" data-url="' + full.image1 + '" src="' + data + '" style="width: 80px; height: 80px;">';
             }
-            return optionHtml;
-          }
-        } ]
+          },
+          {
+            data: 'image2Thumbnail',
+            title: '身份证背面照',
+            orderable: false,
+            render: function (data, type, full) {
+              return '<img class="imagescan" data-url="' + full.image2 + '" src="' + data + '" style="width: 80px; height: 80px;">';
+            }
+          },
+          {
+            data: 'appliedTime',
+            title: '申请时间',
+            orderable: false,
+            width: '130px'
+          },
+          {
+            data: 'confirmStatus',
+            title: '审核状态',
+            orderable: false,
+            width: '120px',
+            render: function (data, type, full) {
+              if (data == '待审核') {
+                return '<label class="label label-danger">' + data + '</label>';
+              } else if (data == '已通过') {
+                return '<label class="label label-success">' + data + '</label>';
+              } else if (data == '未通过') {
+                return '<label class="label label-default">' + data + '</label>';
+              }
+            }
+          },
+          {
+            data: 'confirmRemark',
+            title: '审核备注',
+            orderable: false,
+            width: '120px'
+          },
+          {
+            data: 'id',
+            title: '操作',
+            width: '80px',
+            orderable: false,
+            render: function (data, type, full) {
+              var optionHtml = '';
+              if (full.confirmStatus == '待审核') {
+                <shiro:hasPermission name="appearance:confirm">
+                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="confirm(' + full.id + ')"><i class="fa fa-edit"></i> 审核 </a>';
+                </shiro:hasPermission>
+              }
+              return optionHtml;
+            }
+          }]
       }
     });
-    $('#dataTable').on('click', '.imagescan', function() {
+    $('#dataTable').on('click', '.imagescan', function () {
       var url = $(this).attr('data-url');
       $.imagescan({
-        url : url
+        url: url
       });
     });
   });
   var $confirmDialog;
   function confirm(id) {
     $confirmDialog = $.window({
-      content : "<form action='' class='form-horizontal' style='margin-top: 20px;'>" + "<div class='form-body'>" + "<div class='form-group'>"
-          + "<label class='control-label col-md-3'>审核状态:</label>" + "<div class='col-md-5'><select name='confirmSelect' class='form-control' style='width: 220px'>"
-          + "<option value=''>请选择审核状态</option>" + "<option value='true'>审核通过</option>" + "<option value='false'>审核拒绝</option>" + "</select></div>" + "</div>"
-          + "<div class='form-group'>" + "<label class='control-label col-md-3'>审核信息:</label>"
-          + "<div class='col-md-5'><textarea class='form-control' style='width: 220px;height: 120px;' id='confirmRemark'></textarea></div>"
-          + "</div>" 
-          + "<div class='form-actions fluid'>"
-          + "<div class='col-md-offset-3 col-md-9'>" 
-          + "<button type='button' class='btn green' onclick='submitBtn(" + id + ")'>" 
-          + "保存</button>"
-          + "<button type='button' class='btn default' onclick='closeBtn()' style='margin-left: 20px;'>" 
-          + "取消</button>" 
-          + "</div>" 
-          + "</div>"
-          + "</form>",
-      title : '颜值认证审核',
-      width : 500,
-      height : 360,
-      button : false
+      content: "<form action='' class='form-horizontal' style='margin-top: 20px;'>" + "<div class='form-body'>" + "<div class='form-group'>"
+      + "<label class='control-label col-md-3'>审核状态:</label>" + "<div class='col-md-5'><select name='confirmSelect' class='form-control' style='width: 220px'>"
+      + "<option value=''>请选择审核状态</option>" + "<option value='true'>审核通过</option>" + "<option value='false'>审核拒绝</option>" + "</select></div>" + "</div>"
+      + "<div class='form-group'>" + "<label class='control-label col-md-3'>审核信息:</label>"
+      + "<div class='col-md-5'><textarea class='form-control' style='width: 220px;height: 120px;' id='confirmRemark'></textarea></div>"
+      + "</div>"
+      + "<div class='form-actions fluid'>"
+      + "<div class='col-md-offset-3 col-md-9'>"
+      + "<button type='button' class='btn green' onclick='submitBtn(" + id + ")'>"
+      + "保存</button>"
+      + "<button type='button' class='btn default' onclick='closeBtn()' style='margin-left: 20px;'>"
+      + "取消</button>"
+      + "</div>"
+      + "</div>"
+      + "</form>",
+      title: '颜值认证审核',
+      width: 500,
+      height: 360,
+      button: false
     });
   }
   function submitBtn(id) {
@@ -133,11 +146,11 @@ img {
 
     var confirmRemark = $('#confirmRemark').val();
     $.post('${ctx}/appearance/confirm', {
-      id : id,
-      isSuccess : isSuccess,
-      confirmRemark : confirmRemark
-    }, function(result) {
-      if(result.code == 0) {
+      id: id,
+      isSuccess: isSuccess,
+      confirmRemark: confirmRemark
+    }, function (result) {
+      if (result.code == 0) {
         toastr.success(result.message, '提示信息');
       } else {
         toastr.error(result.message, '提示信息');
@@ -175,15 +188,17 @@ img {
         <div class="table-container">
           <div class="table-toolbar">
             <form class="filter-form form-inline">
-              <input id="_orderBy" name="orderBy" type="hidden" value="" /> <input id="_direction" name="direction" type="hidden" value="" /> <input id="_pageNumber"
-                name="pageNumber" type="hidden" value="0" /> <input id="_pageSize" name="pageSize" type="hidden" value="20" />
+              <input id="_orderBy" name="orderBy" type="hidden" value=""/>
+              <input id="_direction" name="direction" type="hidden" value=""/>
+              <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
+              <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
               <div class="form-group">
-                <input type="text" name="userPhoneEQ" class="form-control" placeholder="手机号" />
+                <input type="text" name="userPhoneEQ" class="form-control" placeholder="手机号"/>
               </div>
-              
+
               <div class="form-group">
-                <input type="text" name="userNicknameLK" class="form-control" placeholder="昵称" />
+                <input type="text" name="userNicknameLK" class="form-control" placeholder="昵称"/>
               </div>
 
               <div class="form-group input-inline">
