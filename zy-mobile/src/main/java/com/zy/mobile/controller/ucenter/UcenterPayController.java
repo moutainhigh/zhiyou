@@ -174,14 +174,14 @@ public class UcenterPayController {
 	}
 
 	@RequestMapping(path = "/payment", method = RequestMethod.POST)
-	public String paymentPay(Long refId, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes,
+	public String paymentPay(Long paymentId, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes,
 			Principal principal) {
-		validate(refId, NOT_NULL, "payment id " + refId + " is null");
-		Payment payment = paymentService.findOne(refId);
-		validate(payment, NOT_NULL, "payment id" + refId + " not found");
+		validate(paymentId, NOT_NULL, "payment id " + paymentId + " is null");
+		Payment payment = paymentService.findOne(paymentId);
+		validate(payment, NOT_NULL, "payment id" + paymentId + " not found");
 		Long orderId = payment.getRefId();
 		if (payment.getPayType() == PayType.余额) {
-			paymentService.balancePay(refId, true);
+			paymentService.balancePay(paymentId, true);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("余额支付成功"));
 			return "redirect:/u/order/" + orderId;
 		} else if (payment.getPayType() == PayType.银行汇款) {
@@ -189,7 +189,7 @@ public class UcenterPayController {
 			validate(offlineMemo, NOT_BLANK, "payment offlineMemo is blank");
 			payment.setOfflineImage(offlineImage);
 			payment.setOfflineMemo(offlineMemo);
-			paymentService.modifyOffline(refId, offlineImage, offlineMemo);
+			paymentService.modifyOffline(paymentId, offlineImage, offlineMemo);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT,
 					ResultBuilder.ok("转账汇款信息提交成功，请等待工作人员确认"));
 			return "redirect:/u/order/" + orderId;
@@ -199,17 +199,17 @@ public class UcenterPayController {
 	}
 	
 	@RequestMapping(path = "/deposit", method = RequestMethod.POST)
-	public String depositPay(Long refId, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes,
+	public String depositPay(Long depositId, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes,
 			Principal principal) {
-		validate(refId, NOT_NULL, "deposit id " + refId + " is null");
-		Deposit deposit = depositService.findOne(refId);
-		validate(deposit, NOT_NULL, "deposit id" + refId + " not found");
+		validate(depositId, NOT_NULL, "deposit id " + depositId + " is null");
+		Deposit deposit = depositService.findOne(depositId);
+		validate(deposit, NOT_NULL, "deposit id" + depositId + " not found");
 		if (deposit.getPayType() == PayType.银行汇款) {
 			validate(offlineImage, NOT_BLANK, "deposit offlineImage is blank");
 			validate(offlineMemo, NOT_BLANK, "deposit offlineMemo is blank");
 			deposit.setOfflineImage(offlineImage);
 			deposit.setOfflineMemo(offlineMemo);
-			depositService.modifyOffline(refId, offlineImage, offlineMemo);
+			depositService.modifyOffline(depositId, offlineImage, offlineMemo);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT,
 					ResultBuilder.ok("转账汇款信息提交成功，请等待工作人员确认"));
 			return "redirect:/u";
