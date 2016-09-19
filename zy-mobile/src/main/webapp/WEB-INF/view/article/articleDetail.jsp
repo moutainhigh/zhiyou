@@ -31,6 +31,7 @@
       <div class="mt-10 font-999 fs-14 lh-20">${article.author} &nbsp;&nbsp; ${article.releasedTimeLabel}</div>
       <img class="mt-10" src="${article.imageBig}">
       ${article.content}
+      <div class="text-right"><i class="fa fa-eye font-999"></i> <span class="font-777">${article.visitCount}</span></div>
     </div>
   </article>
 </body>
