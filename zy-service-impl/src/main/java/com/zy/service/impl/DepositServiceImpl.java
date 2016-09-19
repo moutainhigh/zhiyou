@@ -1,24 +1,5 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
@@ -36,6 +17,20 @@ import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.DepositQueryModel;
 import com.zy.service.DepositService;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
@@ -235,7 +230,6 @@ public class DepositServiceImpl implements DepositService {
 
 	@Override
 	public List<Deposit> findAll(@NotNull DepositQueryModel depositQueryModel) {
-		validate(depositQueryModel, NOT_NULL, "deposit query model is null");
 		return depositMapper.findAll(depositQueryModel);
 	}
 

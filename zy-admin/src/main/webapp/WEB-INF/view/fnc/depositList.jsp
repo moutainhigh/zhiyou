@@ -189,7 +189,6 @@
               } else {
                 return '';
               }
-
             }
           },
           {
@@ -304,9 +303,9 @@
               </div>
 
               <div class="form-group">
-                <button class="btn yellow" onClick="depositExport()">
+                <a class="btn yellow" onClick="depositExport()">
                   <i class="fa fa-file-excel-o"></i> 导出Excel
-                </button>
+                </a>
               </div>
             </form>
           </div>
