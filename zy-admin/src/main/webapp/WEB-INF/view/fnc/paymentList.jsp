@@ -148,7 +148,10 @@
           {
             data: 'amount1',
             title: '应付金额',
-            orderable: false
+            orderable: false,
+            render: function (data, type, full) {
+          		return data.toFixed(2);
+            }
           },
           {
             data: 'createdTime',
