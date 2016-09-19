@@ -52,6 +52,7 @@ public class Payment implements Serializable {
 	@Field(label = "支付订单号")
 	@View
 	@Length(max = 60)
+	@Query({Predicate.EQ})
 	private String sn;
 
 	@NotNull
@@ -100,6 +101,7 @@ public class Payment implements Serializable {
 	@Field(label = "支付时间")
 	@View
 	@View(name = "paidTimeLabel", type = String.class)
+	@Query({Predicate.LT, Predicate.GTE})
 	private Date paidTime;
 
 	@NotNull

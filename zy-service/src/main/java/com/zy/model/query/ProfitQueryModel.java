@@ -24,6 +24,8 @@ public class ProfitQueryModel implements Serializable {
 
 	private ProfitStatus profitStatusEQ;
 
+	private String snEQ;
+	
 	private Long userIdEQ;
 
 	private Long[] userIdIN;

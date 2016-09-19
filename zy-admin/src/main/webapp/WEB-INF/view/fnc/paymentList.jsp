@@ -132,8 +132,7 @@
         columns: [
           {
             data: 'id',
-            title: 'id',
-            orderable: false
+            title: 'id'
           },
           {
             data: 'sn',
@@ -264,12 +263,32 @@
               <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
               <div class="form-group">
+                <input type="text" name="snEQ"class="form-control" placeholder="支付单号" />
+              </div>
+              
+              <div class="form-group">
                 <select name="paymentStatusEQ" class="form-control">
                   <option value="">-- 支付单状态 --</option>
                   <c:forEach items="${paymentStatuses}" var="paymentStatus">
                     <option value="${paymentStatus}">${paymentStatus}</option>
                   </c:forEach>
                 </select>
+              </div>
+
+              <div class="form-group">
+                <select name="paymentTypeEQ" class="form-control">
+                  <option value="">-- 支付单类型 --</option>
+                  <option value="0">订单支付</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" id="beginDate"
+                  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="paidTimeGTE" value="" placeholder="支付时间起" />
+              </div>
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" id="endDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                  name="paidTimeLT" value="" placeholder="支付时间止" />
               </div>
 
               <div class="form-group input-inline">

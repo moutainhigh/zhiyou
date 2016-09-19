@@ -264,6 +264,10 @@
               </div>
 
               <div class="form-group">
+                <input type="text" name="snEQ" class="form-control" placeholder="充值单号"/>
+              </div>
+
+              <div class="form-group">
                 <select name="depositStatusEQ" class="form-control">
                   <option value="">-- 充值状态 --</option>
                   <option value="0">待充值</option>

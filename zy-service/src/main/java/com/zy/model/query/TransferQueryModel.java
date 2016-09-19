@@ -22,6 +22,8 @@ import com.zy.entity.fnc.Transfer.TransferStatus;
 @AllArgsConstructor
 public class TransferQueryModel implements Serializable {
 
+	private String snEQ;
+	
 	private TransferStatus transferStatusEQ;
 
 	private Long fromUserIdEQ;
