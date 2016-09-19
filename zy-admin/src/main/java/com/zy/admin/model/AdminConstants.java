@@ -46,6 +46,7 @@ public class AdminConstants {
 			sub.put("report:view", "检测报告查看");
 			sub.put("report:preConfirm", "检测报告预审");
 			sub.put("report:confirm", "检测报告终审");
+			sub.put("report:export", "检测报告导出");
 			SETTING_PERMISSION_MAP.put("活动管理", sub);
 		}
 		{

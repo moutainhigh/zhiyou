@@ -1,19 +1,13 @@
 package com.zy.admin.controller.act;
 
-import com.zy.common.model.query.Page;
-import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.model.ui.Grid;
-import com.zy.component.ReportComponent;
-import com.zy.entity.act.Report;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.User;
-import com.zy.model.query.ReportQueryModel;
-import com.zy.model.query.UserQueryModel;
-import com.zy.service.ReportService;
-import com.zy.service.UserService;
-import com.zy.vo.ReportAdminVo;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +18,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.model.ui.Grid;
+import com.zy.common.util.ExcelUtils;
+import com.zy.common.util.WebUtils;
+import com.zy.component.ReportComponent;
+import com.zy.entity.act.Report;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.User;
+import com.zy.model.query.ReportQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.ReportService;
+import com.zy.service.UserService;
+import com.zy.vo.ReportAdminVo;
 
 @RequestMapping("/report")
 @Controller
@@ -83,4 +92,37 @@ public class ReportController {
 		return ResultBuilder.ok("操作成功");
 	}
 
+	@RequiresPermissions("report:export")
+	@RequestMapping("/export")
+	public String export(ReportQueryModel reportQueryModel, String phoneEQ, String nicknameLK,
+			HttpServletResponse response) throws IOException {
+
+		List<Report> reports = new ArrayList<>();
+		boolean empty = false;
+		if(StringUtils.isNotBlank(phoneEQ) || StringUtils.isNotBlank(nicknameLK)) {
+			UserQueryModel userQueryModel = new UserQueryModel();
+			userQueryModel.setPhoneEQ(phoneEQ);
+			userQueryModel.setNicknameLK(nicknameLK);
+			List<User> users = userService.findAll(userQueryModel);
+			if(users.isEmpty()) {
+				empty = true;
+			}
+			Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
+
+			reportQueryModel.setUserIdIN(userIds);
+		}
+		if (! empty) {
+			reportQueryModel.setPageSize(null);
+			reportQueryModel.setPageNumber(null);
+			reports = reportService.findAll(reportQueryModel);
+		}
+		String fileName = "检测报告.xlsx";
+		WebUtils.setFileDownloadHeader(response, fileName);
+
+		List<ReportAdminVo> reportAdminVos = reports.stream().map(reportComponent::buildAdminVo).collect(Collectors.toList());
+		OutputStream os = response.getOutputStream();
+		ExcelUtils.exportExcel(reportAdminVos, ReportAdminVo.class, os);
+
+		return null;
+	}
 }
