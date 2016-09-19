@@ -123,6 +123,9 @@
 			<if test="transferTypeEQ != null">
 				and transfer_type = #{transferTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
+			<if test="snEQ != null">
+				and sn = #{snEQ}
+			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
 			</if>
@@ -199,6 +202,9 @@
 			</if>
 			<if test="transferTypeEQ != null">
 				and transfer_type = #{transferTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="snEQ != null">
+				and sn = #{snEQ}
 			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}

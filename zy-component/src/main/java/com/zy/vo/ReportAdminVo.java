@@ -64,6 +64,8 @@ public class ReportAdminVo implements Serializable {
 	private Date confirmedTime;
 	@Field(label = "是否已结算")
 	private Boolean isSettledUp;
+	@Field(label = "是否热门")
+	private Boolean isHot;
 
 	/* 扩展 */
 	@Field(label = "用户id")

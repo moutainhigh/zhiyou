@@ -23,7 +23,7 @@ import com.zy.entity.fnc.Payment.PaymentType;
 public class PaymentQueryModel implements Serializable {
 
 	private String snEQ;
-	
+
 	private Long userIdEQ;
 
 	private PaymentType paymentTypeEQ;
@@ -39,7 +39,7 @@ public class PaymentQueryModel implements Serializable {
 	private Date paidTimeLT;
 
 	private Date paidTimeGTE;
-	
+
 	private PaymentStatus paymentStatusEQ;
 
 	private Integer pageNumber;

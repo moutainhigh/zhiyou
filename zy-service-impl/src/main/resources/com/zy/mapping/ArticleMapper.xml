@@ -13,11 +13,13 @@
 		<result column="content" property="content" />
 		<result column="created_time" property="createdTime" />
 		<result column="visit_count" property="visitCount" />
+		<result column="order_number" property="orderNumber" />
+		<result column="is_hot" property="isHot" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.cms.Article" useGeneratedKeys="true" keyProperty="id">
-	  insert into `cms_article` (title,brief,author,released_time,is_released,image,content,created_time,visit_count)
-	  values (#{title},#{brief},#{author},#{releasedTime},#{isReleased},#{image},#{content},#{createdTime},#{visitCount})
+	  insert into `cms_article` (title,brief,author,released_time,is_released,image,content,created_time,visit_count,order_number,is_hot)
+	  values (#{title},#{brief},#{author},#{releasedTime},#{isReleased},#{image},#{content},#{createdTime},#{visitCount},#{orderNumber},#{isHot})
 	</insert>
 
 	<delete id="delete">
@@ -36,6 +38,8 @@
 			content = #{content},
 			created_time = #{createdTime},
 			visit_count = #{visitCount},
+			order_number = #{orderNumber},
+			is_hot = #{isHot},
 		</set>
 		where id = #{id}
 	</update>
@@ -54,6 +58,8 @@
 					<when test="field == 'content'">content = #{article.content},</when>
 					<when test="field == 'createdTime'">created_time = #{article.createdTime},</when>
 					<when test="field == 'visitCount'">visit_count = #{article.visitCount},</when>
+					<when test="field == 'orderNumber'">order_number = #{article.orderNumber},</when>
+					<when test="field == 'isHot'">is_hot = #{article.isHot},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -62,16 +68,19 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,title,brief,author,released_time,is_released,image,content,created_time,visit_count
+		id,title,brief,author,released_time,is_released,image,content,created_time,visit_count,order_number,is_hot
 		from `cms_article`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ArticleQueryModel">
 		select
-		id,title,brief,author,released_time,is_released,image,content,created_time,visit_count
+		id,title,brief,author,released_time,is_released,image,content,created_time,visit_count,order_number,is_hot
 		from `cms_article`
 		<where>
+			<if test="isHotEQ != null">
+				and is_hot = #{isHotEQ}
+			</if>
 			<if test="isReleasedEQ != null">
 				and is_released = #{isReleasedEQ}
 			</if>
@@ -92,6 +101,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.ArticleQueryModel">
 		select count(*) from `cms_article`
 		<where>
+			<if test="isHotEQ != null">
+				and is_hot = #{isHotEQ}
+			</if>
 			<if test="isReleasedEQ != null">
 				and is_released = #{isReleasedEQ}
 			</if>

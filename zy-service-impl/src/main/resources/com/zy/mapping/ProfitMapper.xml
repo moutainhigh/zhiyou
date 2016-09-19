@@ -78,6 +78,9 @@
 		id,profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark
 		from `fnc_profit`
 		<where>
+			<if test="snEQ != null">
+				and sn = #{snEQ}
+			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
 			</if>
@@ -141,6 +144,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.ProfitQueryModel">
 		select count(*) from `fnc_profit`
 		<where>
+			<if test="snEQ != null">
+				and sn = #{snEQ}
+			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
 			</if>
