@@ -89,6 +89,7 @@ public class MessageConsumer extends AbstractConsumer {
 		message.setUserId(userId);
 		message.setTitle(title);
 		message.setContent(content);
+		message.setMessageType(Message.MessageType.系统消息);
 		return message;
 	}
 
