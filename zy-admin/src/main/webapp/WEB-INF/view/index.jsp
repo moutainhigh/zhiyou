@@ -48,7 +48,6 @@
   <link href="${stc}/assets/admin/layout/css/themes/grey.css" rel="stylesheet" id="style_color"/>
   <link href="${stc}/assets/admin/layout/css/custom.css" rel="stylesheet"/>
 
-  <link href="${stc}/css/icon.css" rel="stylesheet"/>
   <link rel="stylesheet" href="${stc}/plugin/editor/kindeditor-4.1.7/themes/default/default.css"/>
   <link rel="stylesheet" href="${stc}/plugin/myui-1.0/jquery.myui.css"/>
 
