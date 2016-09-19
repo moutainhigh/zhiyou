@@ -19,41 +19,57 @@
   });
 </script>
 <style>
+  .body-bg{
+    height: 100%; overflow: hidden;  min-height: 480px;
+    background-image: url('http://state.zhi-you.net/image/tmp/bg.png'); 
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-color: #faac0c;
+  }
   .m-img {
-    max-width: 557px; min-width: 320px;  min-height: 480px; margin: 0 auto;
+    max-width: 600px; min-width: 320px;   
+    margin: 0 auto;
+    background: #f00;
   }
   .header-img{
-    top: 20px; left: 20%;  width: 60%;
+    width: 90%;
+    margin: 10% auto 5% auto;
+  }
+  .user-info{
+    position: absolute; left: 0; top: -10px;
+    width: 100%;
+    text-align: center;
   }
   .user-head{
-    top: 0px; left: 40%;  width: 20%;  border-radius: 100%;
-  }
-  .name{
-     top: 24%; left: 0;  text-align: center;
+    width: 20%;  border-radius: 100%;
+    border: solid 3px #fff;
   }
   .link{
-    left: 30%;bottom: 40%;
     width: 40%;  margin: 0 auto;
   }
   .footer-img{
-     bottom: 10px; left: 26%;
+    bottom: 1%; left: 26%;
     width: 48%;  margin: 0 auto;
+    max-width: 290px;
   }
 </style>
 </head>
-<body class="height-100p">
-  <div class="m-img relative size-100p o-hidden">
-    <img src="${stccdn}/image/tmp/bg.png" class="size-100p" />
-    <div class="header-img absolute block">
+<body class="body-bg">
+    
+    <div class="header-img relative block">
       <img src="${stccdn}/image/tmp/header.png" class="width-100p"/>
-      <img class="user-head absolute" src="${stccdn}/image/tmp/3.jpg"/>
-      <p class="name absolute width-100p fs-12">昵称昵称昵称</p>
+      <div class="user-info">
+        <img class="user-head " src="http://image.zhi-you.net/avatar/ed673dc0-9e83-4e99-9206-1f33064dc099@240h_240w_1e_1c.jpg"/>
+        <p class="width-100p fs-15">昵称昵称昵称</p>
+      </div>
     </div>
+    
     <a href="#">
-      <img src="${stccdn}/image/tmp/enter_03.png" class="link absolute block"/>
+      <img src="${stccdn}/image/tmp/enter_03.png" class="link block"/>
     </a>
+    
     <img src="${stccdn}/image/tmp/footer.png" class="footer-img absolute block" />
-  </div>
+  
 </body>
 </html>
-
+ 
