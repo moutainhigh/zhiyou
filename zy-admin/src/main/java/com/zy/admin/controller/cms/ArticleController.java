@@ -78,7 +78,7 @@ public class ArticleController {
 
 		try {
 			articleService.create(article);
-			redirectAttributes.addFlashAttribute(ResultBuilder.ok("新闻保存成功"));
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("新闻创建成功"));
 			return "redirect:/article";
 		} catch (Exception e) {
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
@@ -108,7 +108,7 @@ public class ArticleController {
 
 		try {
 			articleService.modify(article);
-			redirectAttributes.addFlashAttribute(ResultBuilder.ok("新闻编辑成功"));
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("新闻保存成功"));
 			return "redirect:/article";
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));

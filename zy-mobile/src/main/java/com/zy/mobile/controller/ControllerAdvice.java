@@ -60,6 +60,11 @@ public class ControllerAdvice {
 		if (requestUrl.startsWith("/activity")) {
 			String url = request.getRequestURL().toString();
 			String queryStr = request.getQueryString();
+			
+			if(queryStr != null){
+				url += "?" + queryStr;
+			}
+			
 			/*if (principal != null) {
 				Long userId = principal.getUserId();
 				if (queryStr != null){
@@ -72,11 +77,6 @@ public class ControllerAdvice {
 					url += "?" + queryStr;
 				}
 			}*/
-			if (queryStr != null){
-				url += "?" + queryStr;
-			} else {
-				url += "?" + "a=1&b=2";
-			}
 			
 			model.addAttribute("url", url);
 			model.addAttribute("weixinJsModel", getWeixinJsModel(url));
