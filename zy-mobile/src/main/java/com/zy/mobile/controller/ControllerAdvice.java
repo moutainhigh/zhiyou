@@ -60,18 +60,9 @@ public class ControllerAdvice {
 		if (requestUrl.startsWith("/activity")) {
 			String pureUrl = request.getRequestURL().toString();
 			String url = pureUrl;
-			String queryStr = request.getQueryString();
 			if (principal != null) {
 				Long userId = principal.getUserId();
-				if (queryStr != null){
-					url += "?" + queryStr + "&__u=" + userId;
-				} else {
-					url += "?__u=" + userId;
-				}
-			} else {
-				if (queryStr != null){
-					url += "?" + queryStr;
-				}
+				url += "?__u=" + userId;
 			}
 			
 			model.addAttribute("url", url);
