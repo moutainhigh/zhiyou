@@ -23,7 +23,22 @@ public class ExcelUtils {
 	public static <T> void exportExcel(List<T> dataList, Class<T> dataClass, OutputStream os) throws IOException {
 
 		Workbook wb = new SXSSFWorkbook(1000); // 创建wb
-		List<Field> fields = Reflections.getFields(dataClass).stream().filter(Reflections::isNotStaticField).collect(Collectors.toList());
+		List<Field> fields = Reflections.getFields(dataClass).stream()
+				.filter(Reflections::isNotStaticField)
+				.sorted((u, v) -> {
+					io.gd.generator.annotation.Field fu = u.getAnnotation(io.gd.generator.annotation.Field.class);
+					io.gd.generator.annotation.Field fv = v.getAnnotation(io.gd.generator.annotation.Field.class);
+					int nu = fu == null ? Integer.MAX_VALUE : fu.order();
+					int nv = fv == null ? Integer.MAX_VALUE : fv.order();
+					if (nu == nv) {
+						return 0;
+					} else if (nu > nv) {
+						return -1;
+					} else {
+						return 1;
+					}
+				})
+				.collect(Collectors.toList());
 		createStyles(wb, fields); // 创建样式
 		Sheet sheet = wb.createSheet(); // 创建sheet
 

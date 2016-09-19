@@ -34,6 +34,7 @@ import com.zy.model.query.UserQueryModel;
 import com.zy.service.ReportService;
 import com.zy.service.UserService;
 import com.zy.vo.ReportAdminVo;
+import com.zy.vo.ReportExportVo;
 
 @RequestMapping("/report")
 @Controller
@@ -119,9 +120,9 @@ public class ReportController {
 		String fileName = "检测报告.xlsx";
 		WebUtils.setFileDownloadHeader(response, fileName);
 
-		List<ReportAdminVo> reportAdminVos = reports.stream().map(reportComponent::buildAdminVo).collect(Collectors.toList());
+		List<ReportExportVo> reportExportVos = reports.stream().map(reportComponent::buildExportVo).collect(Collectors.toList());
 		OutputStream os = response.getOutputStream();
-		ExcelUtils.exportExcel(reportAdminVos, ReportAdminVo.class, os);
+		ExcelUtils.exportExcel(reportExportVos, ReportExportVo.class, os);
 
 		return null;
 	}
