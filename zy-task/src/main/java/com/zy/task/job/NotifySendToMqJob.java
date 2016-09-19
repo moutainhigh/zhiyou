@@ -88,7 +88,7 @@ public class NotifySendToMqJob {
             }
         }
         final String message = String.format("%s,%s,%s", notify.getRefId(), notify.getToken(), version);
-        logger.info("send message {}", message);
+        logger.info("send message {} {}",notify.getTopic(), message);
         kafkaProducer.send(new ProducerRecord<String, String>(notify.getTopic(), message));
         this.notifyService.sendSuccess(notify.getId());
     }
