@@ -76,7 +76,6 @@
         <i class="list-arrow"></i>
       </a>
       </c:if>
-      <c:if test="${not empty user.userRank}">
       <c:if test="${user.userRank == 'V1' || user.userRank == 'V2'}">
       <a class="list-item" href="${ctx}/product/1?isAgent=true">
         <i class="list-icon icon icon-upgrade"></i>
@@ -84,6 +83,7 @@
         <i class="list-arrow"></i>
       </a>
       </c:if>
+      <c:if test="${user.userRank != 'V0'}">
       <a class="list-item list-item-icon" href="${ctx}/u/team">
         <i class="list-icon icon icon-users"></i>
         <div class="list-text">我的团队</div>
