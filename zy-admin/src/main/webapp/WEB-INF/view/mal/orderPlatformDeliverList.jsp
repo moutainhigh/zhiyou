@@ -30,7 +30,7 @@
         pageLength : 20, // default record count per page
         order : [], // set first column as a default sort by desc
         ajax : {
-          url : '${ctx}/order', // ajax source
+          url : '${ctx}/order/platformDeliverList', // ajax source
         },
         columns : [ {
           data : 'sn',
@@ -123,7 +123,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/order">订单管理</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/order/platformDeliverList">平台发货订单管理</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -134,7 +134,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-docs"></i><span>订单管理 </span>
+          <i class="icon-docs"></i><span>平台发货订单管理 </span>
         </div>
         <div class="tools"></div>
       </div>
@@ -144,7 +144,6 @@
             <form class="filter-form form-inline" id="searchForm">
              <ul id="statusTab" class="nav nav-tabs">
               <li class="active"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 全部</a></li>
-              <li class="" data-order-status="0"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 待付款</a></li>
               <li class="" data-order-status="1"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已支付</a></li>
               <li class="" data-order-status="2"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已发货</a></li>
               <li class="" data-order-status="3"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已完成</a></li>

@@ -1,5 +1,17 @@
 package com.zy.admin.controller.fnc;
 
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.math.BigDecimal;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.zy.common.extend.BigDecimalBinder;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
@@ -10,23 +22,10 @@ import com.zy.component.AccountComponent;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
-import com.zy.model.Constants;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.ProfitService;
 import com.zy.service.UserService;
 import com.zy.vo.AccountAdminVo;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.math.BigDecimal;
-
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
 
 @RequestMapping("/account")
 @Controller

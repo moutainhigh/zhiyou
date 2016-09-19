@@ -253,6 +253,9 @@
               <li>
                 <a href="javascript:;" data-href="${ctx}/order"><i class="icon-docs"></i> 订单管理<span class="badge badge-danger"></span></a>
               </li>
+              <li>
+                <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 平台发货订单管理<span class="badge badge-danger"></span></a>
+              </li>
             </shiro:hasPermission>
           </ul>
         </li>
