@@ -41,15 +41,7 @@
               title: '提现状态',
               orderable: false,
               render: function (data, type, full) {
-                var result = '';
-                if (data == '已申请') {
-                  result = '<label class="label label-danger">已申请</label>';
-                } else if (data == '提现成功') {
-                  result = '<label class="label label-success">提现成功</label>';
-                } else if (data == '已取消') {
-                  result = '<label class="label label-default">已取消</label>';
-                }
-                return result;
+                return '<label class="label label-' + full.withdrawStatusStyle +'">' + data + '</label>';
               }
             },
             {
@@ -57,11 +49,7 @@
               title: '用户信息',
               orderable: false,
               render: function (data, type, full) {
-                if (full.user) {
-                  return '<p><img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname + '</p><p>手机: ' + full.user.phone + '</p>';
-                } else {
-                  return '-';
-                }
+                return formatUser(full.user);
               }
             },
             {
