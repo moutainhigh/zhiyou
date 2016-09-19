@@ -35,27 +35,27 @@
     };
     
     var quality = options.quality ? options.quality : 0.5;
-    
-    var compress = quality < 1;
+    var fileForUpload;
+    var needCompress = quality < 1;
     var ua = window.navigator.userAgent.toLowerCase();
     if(ua.match(/MicroMessenger/i) == 'micromessenger'){
-      compress = false;
+      needCompress = false;
     }
     
-    if(compress) {
+    if(needCompress) {
       var image = new Image(),   
       canvas = document.createElement("canvas"),   
       ctx = canvas.getContext('2d');
     }
     
     var fileSelect = function(obj){
-      var file = obj.files[0];
-      if(!checkFileType(file)) {
+      fileForUpload = obj.files[0];
+      if(!checkFileType(fileForUpload)) {
         showError('您选择的文件类型不合法，请重新选择。');
         return;
       }
       
-      if(compress){
+      if(needCompress){
         var reader = new FileReader();
         reader.onload = function() {
           var url = reader.result;
@@ -70,9 +70,9 @@
           
           startUploadFile();
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(fileForUpload);
       } else {
-        startUploadFile(file);
+        startUploadFile(fileForUpload);
       }
     }
     var checkFileType = function(file) {
@@ -94,7 +94,7 @@
       }
       state.className = 'state state-loading';
       
-      if(compress){
+      if(needCompress){
         var data = canvas.toDataURL('image/jpeg', quality);
         data = data.split(',')[1];
         data = window.atob(data);
@@ -103,17 +103,17 @@
             ia[i] = data.charCodeAt(i);
         };
         //canvas.toDataURL 返回的默认格式就是 image/png
-        var file = new File([ia], 'file.jpg', {
+        fileForUpload = new File([ia], 'file.jpg', {
           type: 'image/jpeg'
         });
       }
-      if (!checkFileSize(file)) {
+      if (!checkFileSize(fileForUpload)) {
         showError('您选择的文件超过' + options.maxFileSize + '，请重新选择。');
       }
       
       // get form data for POSTing
       var vFD = new FormData();
-      vFD.append("file", file);
+      vFD.append("file", fileForUpload);
       vFD.append("width", options.width *　options.retain);
       vFD.append("height", options.height * options.retain);
       // create XMLHttpRequest object, adding few event listeners, and POSTing our data
