@@ -218,16 +218,6 @@
                 <a href="javascript:;" data-href="${ctx}/portrait"><i class="icon-graduation"></i> 完善资料管理<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>
-            <shiro:hasPermission name="tag:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/tag"><i class="icon-tag"></i> 标签库管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="job:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/job"><i class="icon-badge"></i> 职位管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
 
           </ul>
         </li>
@@ -325,11 +315,6 @@
                 <a href="javascript:;" data-href="${ctx}/accountLog"><i class="icon-calculator"></i> 流水管理<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>
-            <shiro:hasPermission name="bank:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/bank"><i class="icon-home"></i> 银行信息<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
             <shiro:hasPermission name="bankCard:view">
               <li>
                 <a href="javascript:;" data-href="${ctx}/bankCard"><i class="icon-credit-card"></i> 银行卡信息<span class="badge badge-danger"></span></a>
@@ -410,6 +395,21 @@
             <li>
               <a href="javascript:;" data-href="${ctx}/dev"><i class="icon-briefcase"></i> 开发者工具<span class="badge badge-danger"></span></a>
             </li>
+            <shiro:hasPermission name="tag:view">
+              <li>
+                <a href="javascript:;" data-href="${ctx}/tag"><i class="icon-tag"></i> 标签库管理<span class="badge badge-danger"></span></a>
+              </li>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="job:view">
+              <li>
+                <a href="javascript:;" data-href="${ctx}/job"><i class="icon-badge"></i> 职位管理<span class="badge badge-danger"></span></a>
+              </li>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="bank:view">
+              <li>
+                <a href="javascript:;" data-href="${ctx}/bank"><i class="icon-home"></i> 银行信息<span class="badge badge-danger"></span></a>
+              </li>
+            </shiro:hasPermission>
           </ul>
         </li>
       </ul>
