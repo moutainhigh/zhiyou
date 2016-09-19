@@ -4,7 +4,7 @@
 	WeixinApi = {
 		getConfig: function (apiList) {
 			var config = {
-				debug: false,
+				debug: true,
 				appId: '${weixinJsModel.appId}',
 				timestamp: ${weixinJsModel.timestamp},
 				nonceStr: '${weixinJsModel.nonceStr}',
