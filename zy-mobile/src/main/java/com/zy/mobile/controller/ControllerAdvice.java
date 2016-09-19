@@ -55,7 +55,7 @@ public class ControllerAdvice {
 		logger.debug("REQUEST getServletPath = " + request.getServletPath());
 
 		String requestUrl = request.getServletPath().toString();
-		if (requestUrl.startsWith("/u/activity")) {
+		if (requestUrl.startsWith("/activity")) {
 			String url = request.getRequestURL().toString();
 			String queryStr = request.getQueryString();
 			if (queryStr != null)
