@@ -119,12 +119,10 @@
         <div class="table-container">
           <div class="table-toolbar">
             <form class="filter-form form-inline">
-              <input id="_orderBy" name="orderBy" type="hidden" value=""/> <input id="_direction" name="direction" type="hidden" value=""/> <input id="_pageNumber"
-                                                                                                                                                   name="pageNumber" type="hidden"
-                                                                                                                                                   value="0"/> <input id="_pageSize"
-                                                                                                                                                                      name="pageSize"
-                                                                                                                                                                      type="hidden"
-                                                                                                                                                                      value="20"/>
+              <input id="_orderBy" name="orderBy" type="hidden" value=""/>
+              <input id="_direction" name="direction" type="hidden" value=""/>
+              <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
+              <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
               <div class="form-group">
                 <input type="text" name="titleLK" class="form-control" placeholder="商品名"/>
