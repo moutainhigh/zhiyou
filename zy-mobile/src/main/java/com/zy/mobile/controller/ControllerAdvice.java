@@ -58,28 +58,33 @@ public class ControllerAdvice {
 		Principal principal = GcUtils.getPrincipal();
 		String requestUrl = request.getServletPath().toString();
 		if (requestUrl.startsWith("/activity")) {
-			String url = request.getRequestURL().toString();
+			String pureUrl = request.getRequestURL().toString();
 			String queryStr = request.getQueryString();
-			
-			if(queryStr != null){
-				url += "?" + queryStr;
+			String url = pureUrl;
+			if (queryStr != null){
+				pureUrl += "?" + queryStr;
 			}
 			
-			/*if (principal != null) {
+			/* 处理转发Url  加__u参数 */
+			if (principal != null) {
 				Long userId = principal.getUserId();
-				if (queryStr != null){
+				if (queryStr != null && !queryStr.contains("__u")){
 					url += "?" + queryStr + "&__u=" + userId;
-				} else {
+				} else if (queryStr != null && queryStr.contains("__u")){
+					String reg = "__u=\\d*(&|$)";
+					queryStr.replaceAll(reg, "__u=" + userId);
+					url += "?" + queryStr + "&__u=" + userId;
+				}else {
 					url += "?__u=" + userId;
 				}
 			} else {
 				if (queryStr != null){
 					url += "?" + queryStr;
 				}
-			}*/
+			}
 			
 			model.addAttribute("url", url);
-			model.addAttribute("weixinJsModel", getWeixinJsModel(url));
+			model.addAttribute("weixinJsModel", getWeixinJsModel(pureUrl));
 		}
 	}
 
