@@ -27,6 +27,7 @@ public class ArticleComponent {
 		articleAdminVo.setImageBig(getThumbnail(article.getImage(), 750, 450));
 		articleAdminVo.setImageThumbnail(getThumbnail(article.getImage(), 300, 180));
 		articleAdminVo.setCreatedTimeLabel(GcUtils.formatDate(article.getCreatedTime(), TIME_PATTERN));
+		articleAdminVo.setReleasedTimeLabel(GcUtils.formatDate(article.getCreatedTime(), TIME_PATTERN));
 		return articleAdminVo;
 	}
 	
