@@ -87,6 +87,9 @@ public abstract class AbstractConsumer implements DisposableBean {
 			final String topic = record.topic();
 			try {
 				if (isNotBlank(record.value())) {
+					if(isDev.get()){
+						logger.info("is dev on message {}",record.value());
+					}
 					if ("{}".equals(record.value()))
 						logger.warn(group + " message body is {}");
 					else {

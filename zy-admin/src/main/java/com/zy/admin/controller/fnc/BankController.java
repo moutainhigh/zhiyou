@@ -1,7 +1,7 @@
 package com.zy.admin.controller.fnc;
 
-import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.query.Page;
-import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.entity.fnc.Bank;

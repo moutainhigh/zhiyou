@@ -33,10 +33,6 @@ public class MessageConsumer extends AbstractConsumer {
 	@Autowired
 	private MessageService messageService;
 
-	@Autowired
-	private AppearanceService appearanceService;
-
-
 	public MessageConsumer() {
 		super(MessageConsumer.class.getSimpleName()
 				, TOPIC_REGISTER_SUCCESS
@@ -53,7 +49,7 @@ public class MessageConsumer extends AbstractConsumer {
 			if (isNull(user)) {
 				warn(topic, refId, token, version);
 			} else {
-				message(user.getId(), "注册成功", "恭喜你已成功注册成为智优生物的一员", token);
+				messageService.create(message(user.getId(), "注册成功", "恭喜你已成功注册成为智优生物的一员", token));
 			}
 
 		} else if (TOPIC_USER_RANK_CHANGED.intern() == intern) {
@@ -73,7 +69,7 @@ public class MessageConsumer extends AbstractConsumer {
 					desc = "三级代理";
 				}
 				if (isNotBlank(desc)) {
-					message(user.getId(), "注册成功", String.format("恭喜你已成功升级为【%s】", desc), token);
+					messageService.create(message(user.getId(), "注册成功", String.format("恭喜你已成功升级为【%s】", desc), token));
 				}
 			}
 		}

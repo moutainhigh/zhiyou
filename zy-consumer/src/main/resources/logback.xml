@@ -24,11 +24,12 @@
 		</encoder>
 	</appender>
 
-	<logger name="com.zy" level="${log.packageLevel}"/>
+	<logger name="com.zy" level="info"/>
 
 	<!-- 日志输出级别 -->
-	<root level="${log.rootLevel}">
+	<root level="info">
 		<appender-ref ref="${log.appender}"/>
 	</root>
+
 
 </configuration>
