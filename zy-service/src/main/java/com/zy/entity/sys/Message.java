@@ -63,6 +63,7 @@ public class Message implements Serializable {
 	@Field(label = "创建时间")
 	@View(groups = "MessageAdminVo")
 	@View(name = "createdTimeLabel", type = String.class, groups = {"MessageListVo", "MessageDetailVo"})
+	@NotNull
 	private Date createdTime;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -83,6 +84,7 @@ public class Message implements Serializable {
 	@Field(label = "token")
 	@Column(length = 60, unique = true)
 	@Query(EQ)
+	@NotNull
 	private String token;
 
 }

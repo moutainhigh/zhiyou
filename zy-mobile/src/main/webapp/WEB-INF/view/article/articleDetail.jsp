@@ -22,7 +22,7 @@
 <body>
   <header class="header">
     <h1>新闻资讯</h1>
-    <a href="${ctx}/u/article" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/article" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
   <article class="pl-15 pr-15 pt-10 pb-10">

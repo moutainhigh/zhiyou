@@ -135,6 +135,27 @@
     </div>
     
     <div class="list-group">
+      <c:if test="${order.useLogistics}">
+      <div class="list-title">发货信息</div>
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">物流公司</div>
+        <div class="list-unit fs-12">${order.logisticsName}</div>
+      </div>
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">物流单号</div>
+        <div class="list-unit fs-12">${order.logisticsNo}</div>
+      </div>
+      </c:if>
+      <c:if test="${!order.useLogistics}">
+      <div class="list-title">发货信息</div>
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">发货方式</div>
+        <div class="list-unit fs-12">面对面发货</div>
+      </div>
+      </c:if>
+    </div>
+    
+    <div class="list-group">
       <div class="list-title">商品信息</div>
       <c:forEach items="${order.orderItems}" var="orderItem">
       <div class="list-item">
@@ -153,7 +174,7 @@
         </div>
       </div>
     </div>
-      
+    
     <div class="list-group">
       <div class="list-item lh-20">
         <div class="list-text fs-14">下单时间</div>
