@@ -58,15 +58,28 @@ public class ControllerAdvice {
 		Principal principal = GcUtils.getPrincipal();
 		String requestUrl = request.getServletPath().toString();
 		if (requestUrl.startsWith("/activity")) {
-			String pureUrl = request.getRequestURL().toString();
-			String url = pureUrl;
-			if (principal != null) {
-				Long userId = principal.getUserId();
-				url += "?__u=" + userId;
+			String url = request.getRequestURL().toString();
+			String queryStr = request.getQueryString();
+			
+			if(queryStr != null){
+				url += "?" + queryStr;
 			}
 			
+			/*if (principal != null) {
+				Long userId = principal.getUserId();
+				if (queryStr != null){
+					url += "?" + queryStr + "&__u=" + userId;
+				} else {
+					url += "?__u=" + userId;
+				}
+			} else {
+				if (queryStr != null){
+					url += "?" + queryStr;
+				}
+			}*/
+			
 			model.addAttribute("url", url);
-			model.addAttribute("weixinJsModel", getWeixinJsModel(pureUrl));
+			model.addAttribute("weixinJsModel", getWeixinJsModel(url));
 		}
 	}
 
