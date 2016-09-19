@@ -357,7 +357,7 @@
             </shiro:hasPermission>
             <shiro:hasPermission name="article:view">
               <li>
-                <a href="javascript:;" data-href="${ctx}/article"><i class="icon-book-open"></i> 文章管理<span class="badge badge-danger"></span></a>
+                <a href="javascript:;" data-href="${ctx}/article"><i class="icon-book-open"></i> 新闻管理<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>
             <shiro:hasPermission name="help:view">
