@@ -114,10 +114,6 @@
               <input type="file">
             </div>
           </div>
-          <div class="list-unit">
-            <a href="javascript:;" class="image-view font-blue fs-14" data-src="http://image.mayishike.com/image/1e27766d-62b3-496a-b442-15f512caaff5" data-title="转账汇款截图示例图"><i
-              class="fa fa-question-circle-o"></i> 示意图</a>
-          </div>
         </div>
         <div class="list-item">
           <div class="list-text">
