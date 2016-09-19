@@ -29,7 +29,7 @@
     <div class="error-status">400</div>
     <div class="error-info">
       <p class="font-orange fs-16">参数错误</p>
-      <p class="">请不要非法攻击本站</p>
+      <p class="">您的输入有误请重试</p>
     </div>
     <div class="error-btn">
       <a class="btn green" href="javascript:history.go(-1);">返回上一页</a>
