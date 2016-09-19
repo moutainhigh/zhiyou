@@ -135,10 +135,6 @@
         },
         columns: [
           {
-            data: 'id',
-            title: 'id'
-          },
-          {
             data: '',
             title: '代理信息',
             render: function (data, type, full) {
