@@ -40,13 +40,10 @@
 <div class="row">
   <div class="col-md-12">
     <!-- BEGIN VALIDATION STATES-->
-    <div class="portlet box yellow">
+    <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-edit"></i><span> 用户信息修改 </span>
-        </div>
-        <div class="tools">
-          <a href="javascript:;" class="collapse"> </a> <a href="javascript:;" class="reload"> </a>
+          <i class="fa fa-user"></i><span> 用户信息修改 </span>
         </div>
       </div>
       <div class="portlet-body form">
@@ -67,7 +64,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label col-md-3">手机号<span class="required">*</span>
+              <label class="control-label col-md-3">手机号
               </label>
               <div class="col-md-4">
                 <div class="input-icon right">
@@ -79,26 +76,24 @@
               <label class="control-label col-md-3">密码
               </label>
               <div class="col-md-4">
-                <div class="input-icon right">
-                  <i class="fa fa-lock"></i> <input type="password" id="newPassword" class="form-control" name="newPassword" value="" />
-                </div>
+                <input type="password" id="newPassword" class="form-control" name="newPassword" value="" />
               </div>
             </div>
             <div class="form-group">
               <label class="control-label col-md-3">确认密码
               </label>
               <div class="col-md-4">
-                <div class="input-icon right">
-                  <i class="fa fa-lock"></i> <input type="password" class="form-control" name="rePassword" value="" />
-                </div>
+                <input type="password" class="form-control" name="rePassword" value="" />
               </div>
             </div>
           </div>
           <div class="form-actions fluid">
             <div class="col-md-offset-3 col-md-9">
-              <button type="submit" class="btn green">保存</button>
+              <button type="submit" class="btn green">
+                <i class="fa fa-save"></i> 保存
+              </button>
               <button class="btn default" data-href="${ctx}/user">
-                <i class="fa fa-arrow-left"></i> 返回
+                <i class="fa fa-chevron-left"></i> 返回
               </button>
             </div>
           </div>
