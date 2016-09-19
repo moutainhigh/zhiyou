@@ -69,7 +69,7 @@ public class MessageConsumer extends AbstractConsumer {
 					desc = "三级代理";
 				}
 				if (isNotBlank(desc)) {
-					messageService.create(message(user.getId(), "注册成功", String.format("恭喜你已成功升级为【%s】", desc), token));
+					messageService.create(message(user.getId(), "等级变动", String.format("恭喜你已成功升级为【%s】", desc), token));
 				}
 			}
 		}
