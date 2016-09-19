@@ -57,6 +57,12 @@
 				},
 				'author' : {
 					required : true
+				},
+				'orderNumber' : {
+				  	required : true
+				},
+				'isHot' : {
+			  	required : true
 				}
 			},
 			submitHandler : 
@@ -140,7 +146,7 @@
               <label class="control-label col-md-3">标题
               </label>
               <div class="col-md-4">
-                  <input type="text" name="title" id="title" class="form-control" maxlength="40"
+                  <input type="text" name="title" id="title" class="form-control"
                       value="${article.title}" placeholder="请输入标题" />
               </div>
             </div>
@@ -182,8 +188,29 @@
               <label class="control-label col-md-3">作者
               </label>
               <div class="col-md-4">
-				 <input type="text" name="author" id="author" class="form-control" maxlength="40"
+				 <input type="text" name="author" id="author" class="form-control"
                       value="${article.author}" placeholder="请填写作者" />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="control-label col-md-3">排序数字
+              </label>
+              <div class="col-md-4">
+                  <input type="text" name="orderNumber" id="orderNumber" class="form-control"
+                      value="${article.orderNumber}" placeholder="请输入排序数字" />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="control-label col-md-3">是否首页展示
+              </label>
+              <div class="col-md-4">
+                <select name="isHot" class="form-control">
+                  <option value="">-- 是否首页展示 --</option>
+                  <option value="1">是</option>
+                  <option value="0">否</option>
+                </select>
               </div>
             </div>
             
