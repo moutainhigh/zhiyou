@@ -48,7 +48,6 @@
             title: '业务名',
             orderable: false
           },
-          ,
           {
             data: 'createdTime',
             title: '创建时间',
@@ -64,7 +63,10 @@
           {
             data: 'profitStatus',
             title: '收益单状态',
-            orderable: false
+            orderable: false,
+            render: function (data, type, full) {
+              return '<label class="label label-' + full.profitStatusStyle + '">' + data + '</label>';
+            }
           },
           {
             data: 'grantedTime',
