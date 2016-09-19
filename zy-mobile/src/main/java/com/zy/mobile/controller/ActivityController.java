@@ -82,8 +82,9 @@ public class ActivityController {
 		model.addAttribute("activity", activityComponent.buildDetailVo(activity));
 		
 		Principal principal = GcUtils.getPrincipal();
+		Long userId = null;
 		if(principal != null) {
-			
+			userId = principal.getUserId();
 			ActivityCollectQueryModel activityCollectQueryModel = new ActivityCollectQueryModel();
 			activityCollectQueryModel.setActivityIdEQ(id);
 			activityCollectQueryModel.setUserIdEQ(principal.getUserId());
@@ -99,8 +100,7 @@ public class ActivityController {
 			activitySignInQueryModel.setUserIdEQ(principal.getUserId());
 			model.addAttribute("isSigned", !activitySignInService.findPage(activitySignInQueryModel).getData().isEmpty());
 		}
-		
-		return "activity/activityDetail";
+		return "activity/activityDetail" + userId == null ? "" : "?__u=" + userId;
 	}
 
 }
