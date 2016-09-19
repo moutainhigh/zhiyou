@@ -82,8 +82,8 @@ public class ControllerAdvice {
 				}
 			}
 			
-			model.addAttribute("url", pureUrl);
-			model.addAttribute("weixinJsModel", getWeixinJsModel(url));
+			model.addAttribute("url", url);
+			model.addAttribute("weixinJsModel", getWeixinJsModel(pureUrl));
 		}
 	}
 
