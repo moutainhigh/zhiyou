@@ -56,7 +56,7 @@
 				function(form){
 					var content = ue.getContent();
 					if(!content) {
-						alert('请填写新闻详情');
+					    layer.alert('请填写新闻详情');
 						return false;
 					}
 					$(form).find(':submit').prop('disabled', true);
