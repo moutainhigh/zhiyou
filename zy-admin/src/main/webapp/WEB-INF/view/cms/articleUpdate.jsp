@@ -178,7 +178,7 @@
               </label>
               <div class="col-md-4">
 				 <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
-                  	name="releasedTime" value="<fmt:formatDate  pattern="yyyy-MM-dd HH:mm:ss" value="${article.releasedTime }"/>" placeholder="发布时间" />
+                  	name="releasedTime" value="${article.releasedTimeLabel}" placeholder="发布时间" />
               </div>
             </div>
             
