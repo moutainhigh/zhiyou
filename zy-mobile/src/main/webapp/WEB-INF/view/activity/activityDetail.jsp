@@ -21,6 +21,10 @@
     wx.config(WeixinApi.getConfig([ 'onMenuShareTimeline', 'onMenuShareAppMessage' ]));
   });
   
+  wx.error(function (res) {
+    alert(res);
+  });
+  
   wx.ready(function() {
     wx.onMenuShareTimeline({
       title: '优检一生，为爱而生', // 分享标题
@@ -309,7 +313,6 @@
     <p class="left width-100p text-center font-white fs-24">点击右上角</p>
     <p class="left width-100p text-center font-white fs-18 mt-10">发送给朋友 或 分享到朋友圈</p>
   </aside>
-  <span>${url}</span>
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
 </html>

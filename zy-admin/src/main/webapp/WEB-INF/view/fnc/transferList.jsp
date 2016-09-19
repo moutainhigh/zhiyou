@@ -24,6 +24,10 @@
         },
         columns: [
           {
+            data: 'id',
+            title: 'id'
+          },
+          {
             data: 'sn',
             title: '转账单号'
           },
@@ -32,11 +36,11 @@
             title: '转账标题',
             orderable: false
           },
-          {
-            data: 'currencyType',
-            title: '币中',
-            orderable: false
-          },
+          /* {
+           data: 'currencyType',
+           title: '币种',
+           orderable: false
+           },*/
           {
             data: 'amount',
             title: '金额',
@@ -46,12 +50,9 @@
             }
           },
           {
-            data: 'transferStatus',
-            title: '转账状态',
-            orderable: false,
-            render: function (data, type, full) {
-              return '<label class="label label-' + full.transferStatusStyle + '">' + data + '</label>';
-            }
+            data: 'createdTimeLabel',
+            title: '创建时间',
+            orderable: false
           },
           {
             data: '',
@@ -75,6 +76,19 @@
             orderable: false
           },
           {
+            data: 'transferStatus',
+            title: '转账单状态',
+            orderable: false,
+            render: function (data, type, full) {
+              return '<label class="label label-' + full.transferStatusStyle + '">' + data + '</label>';
+            }
+          },
+          {
+            data: 'transferredTimeLabel',
+            title: '转账时间',
+            orderable: false
+          },
+          {
             data: 'transferRemark',
             title: '转账备注',
             orderable: false
@@ -83,17 +97,8 @@
             data: 'remark',
             title: '备注',
             orderable: false
-          },
-          {
-            data: 'createdTimeLabel',
-            title: '创建时间',
-            orderable: false
-          },
-          {
-            data: 'transferredTimeLabel',
-            title: '转账时间',
-            orderable: false
-          }]
+          }
+        ]
       }
     });
 
@@ -105,7 +110,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/account">资金账户管理</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/account">转账单管理</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -116,7 +121,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-loop"></i><span>资金账户管理 </span>
+          <i class="icon-loop"></i><span>转账单管理 </span>
         </div>
       </div>
       <div class="portlet-body clearfix">
@@ -129,8 +134,12 @@
               <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
               <div class="form-group">
+                <input type="text" name="snEQ" class="form-control" placeholder="转账单号"/>
+              </div>
+
+              <div class="form-group">
                 <select name="transferStatusEQ" class="form-control">
-                  <option value="">-- 转账状态 --</option>
+                  <option value="">-- 转账单状态 --</option>
                   <c:forEach items="${transferStatuses}" var="transferStatus">
                     <option value="${transferStatus}">${transferStatus}</option>
                   </c:forEach>
