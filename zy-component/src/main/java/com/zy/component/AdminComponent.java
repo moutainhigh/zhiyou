@@ -8,8 +8,6 @@ import com.zy.vo.AdminAdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static org.apache.shiro.web.filter.mgt.DefaultFilter.user;
-
 @Component
 public class AdminComponent {
 
@@ -18,7 +16,7 @@ public class AdminComponent {
 
 	public AdminAdminVo buildAdminVo(Admin admin) {
 		AdminAdminVo adminAdminVo = new AdminAdminVo();
-		BeanUtils.copyProperties(user, adminAdminVo);
+		BeanUtils.copyProperties(admin, adminAdminVo);
 		Long userId = admin.getUserId();
 
 		if (userId != null) {
