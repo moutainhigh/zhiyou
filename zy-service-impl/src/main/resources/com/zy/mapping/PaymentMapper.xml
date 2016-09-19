@@ -119,6 +119,9 @@
 		id,sn,user_id,title,pay_type,payment_type,ref_id,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,offline_image,offline_memo,operator_id,version
 		from `fnc_payment`
 		<where>
+			<if test="snEQ != null">
+				and sn = #{snEQ}
+			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
 			</if>
@@ -131,6 +134,9 @@
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
 			</if>
+			<if test="paidTimeLT != null">
+				and paid_time &lt; #{paidTimeLT}
+			</if>
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
 			</if>
@@ -139,6 +145,9 @@
 			</if>
 			<if test="expiredTimeLT != null">
 				and expired_time &lt; #{expiredTimeLT}
+			</if>
+			<if test="paidTimeGTE != null">
+				and paid_time &gt;= #{paidTimeGTE}
 			</if>
 		</where>
 		<choose>
@@ -157,6 +166,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.PaymentQueryModel">
 		select count(*) from `fnc_payment`
 		<where>
+			<if test="snEQ != null">
+				and sn = #{snEQ}
+			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
 			</if>
@@ -169,6 +181,9 @@
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
 			</if>
+			<if test="paidTimeLT != null">
+				and paid_time &lt; #{paidTimeLT}
+			</if>
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
 			</if>
@@ -177,6 +192,9 @@
 			</if>
 			<if test="expiredTimeLT != null">
 				and expired_time &lt; #{expiredTimeLT}
+			</if>
+			<if test="paidTimeGTE != null">
+				and paid_time &gt;= #{paidTimeGTE}
 			</if>
 		</where>
 	</select>

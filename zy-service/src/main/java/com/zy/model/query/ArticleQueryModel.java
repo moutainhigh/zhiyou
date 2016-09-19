@@ -21,6 +21,8 @@ public class ArticleQueryModel implements Serializable {
 
 	private Boolean isReleasedEQ;
 
+	private Boolean isHotEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
@@ -76,6 +78,7 @@ public class ArticleQueryModel implements Serializable {
 		fieldNames.add("brief");
 		fieldNames.add("image");
 		fieldNames.add("visitCount");
+		fieldNames.add("orderNumber");
 		fieldNames.add("author");
 		fieldNames.add("releasedTime");
 		fieldNames.add("createdTime");
@@ -83,6 +86,7 @@ public class ArticleQueryModel implements Serializable {
 		fieldNames.add("title");
 		fieldNames.add("isReleased");
 		fieldNames.add("content");
+		fieldNames.add("isHot");
 	}
 
 }

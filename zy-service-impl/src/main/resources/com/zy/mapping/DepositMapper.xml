@@ -110,6 +110,9 @@
 		id,user_id,title,sn,currency_type1,amount1,currency_type2,amount2,total_amount,is_outer_created,outer_sn,qr_code_url,weixin_open_id,pay_type,paid_time,created_time,expired_time,deposit_status,remark,offline_image,offline_memo,operator_id,version
 		from `fnc_deposit`
 		<where>
+			<if test="snEQ != null">
+				and sn = #{snEQ}
+			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
 			</if>
@@ -162,6 +165,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.DepositQueryModel">
 		select count(*) from `fnc_deposit`
 		<where>
+			<if test="snEQ != null">
+				and sn = #{snEQ}
+			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
 			</if>

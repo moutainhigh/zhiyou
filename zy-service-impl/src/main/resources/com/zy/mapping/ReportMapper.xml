@@ -27,12 +27,13 @@
 		<result column="confirm_remark" property="confirmRemark" />
 		<result column="confirmed_time" property="confirmedTime" />
 		<result column="is_settled_up" property="isSettledUp" />
+		<result column="is_hot" property="isHot" />
 		<result column="version" property="version" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.act.Report" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_report` (user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image1,image2,image3,image4,image5,image6,applied_time,created_time,pre_confirm_status,confirm_status,confirm_remark,confirmed_time,is_settled_up,version)
-	  values (#{userId},#{realname},#{age},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{jobId},#{areaId},#{tagIds},#{reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{text},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{appliedTime},#{createdTime},#{preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{confirmedTime},#{isSettledUp},#{version})
+	  insert into `act_report` (user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image1,image2,image3,image4,image5,image6,applied_time,created_time,pre_confirm_status,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version)
+	  values (#{userId},#{realname},#{age},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{jobId},#{areaId},#{tagIds},#{reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{text},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{appliedTime},#{createdTime},#{preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{confirmedTime},#{isSettledUp},#{isHot},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -65,6 +66,7 @@
 			confirm_remark = #{confirmRemark},
 			confirmed_time = #{confirmedTime},
 			is_settled_up = #{isSettledUp},
+			is_hot = #{isHot},
 			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
@@ -98,6 +100,7 @@
 					<when test="field == 'confirmRemark'">confirm_remark = #{report.confirmRemark},</when>
 					<when test="field == 'confirmedTime'">confirmed_time = #{report.confirmedTime},</when>
 					<when test="field == 'isSettledUp'">is_settled_up = #{report.isSettledUp},</when>
+					<when test="field == 'isHot'">is_hot = #{report.isHot},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -106,14 +109,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image1,image2,image3,image4,image5,image6,applied_time,created_time,pre_confirm_status,confirm_status,confirm_remark,confirmed_time,is_settled_up,version
+		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image1,image2,image3,image4,image5,image6,applied_time,created_time,pre_confirm_status,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version
 		from `act_report`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ReportQueryModel">
 		select
-		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image1,image2,image3,image4,image5,image6,applied_time,created_time,pre_confirm_status,confirm_status,confirm_remark,confirmed_time,is_settled_up,version
+		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image1,image2,image3,image4,image5,image6,applied_time,created_time,pre_confirm_status,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version
 		from `act_report`
 		<where>
 			<if test="preConfirmStatusEQ != null">
@@ -129,6 +132,9 @@
 				<if test="userIdIN.length == 0">
 				1 = 2
 				</if>
+			</if>
+			<if test="isHotEQ != null">
+				and is_hot = #{isHotEQ}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
@@ -175,6 +181,9 @@
 				<if test="userIdIN.length == 0">
 				1 = 2
 				</if>
+			</if>
+			<if test="isHotEQ != null">
+				and is_hot = #{isHotEQ}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
