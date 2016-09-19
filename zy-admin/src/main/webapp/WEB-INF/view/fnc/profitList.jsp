@@ -120,6 +120,10 @@
               </div>
 
               <div class="form-group">
+                <input type="text" name="snEQ" class="form-control" placeholder="收益单号"/>
+              </div>
+
+              <div class="form-group">
                 <select name="profitTypeEQ" class="form-control">
                   <option value="">-- 收益类型 --</option>
                   <c:forEach items="${profitTypes}" var="profitType">

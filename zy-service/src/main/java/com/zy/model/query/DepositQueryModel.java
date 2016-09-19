@@ -22,6 +22,8 @@ import com.zy.entity.fnc.PayType;
 @AllArgsConstructor
 public class DepositQueryModel implements Serializable {
 
+	private String snEQ;
+	
 	private Long userIdEQ;
 
 	private Long[] userIdIN;

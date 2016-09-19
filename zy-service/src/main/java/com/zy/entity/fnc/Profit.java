@@ -69,6 +69,7 @@ public class Profit implements Serializable {
 	@Column(length = 60, unique = true)
 	@NotBlank
 	@Field(label = "收益单号")
+	@Query(EQ)
 	@View
 	private String sn;
 

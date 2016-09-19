@@ -129,6 +129,10 @@
               <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
               <div class="form-group">
+                <input type="text" name="snEQ" class="form-control" placeholder="转账单号"/>
+              </div>
+
+              <div class="form-group">
                 <select name="transferStatusEQ" class="form-control">
                   <option value="">-- 转账状态 --</option>
                   <c:forEach items="${transferStatuses}" var="transferStatus">
