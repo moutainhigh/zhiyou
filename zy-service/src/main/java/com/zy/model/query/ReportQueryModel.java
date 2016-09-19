@@ -34,6 +34,8 @@ public class ReportQueryModel implements Serializable {
 
 	private Boolean isSettledUpEQ;
 
+	private Boolean isHotEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
@@ -111,6 +113,7 @@ public class ReportQueryModel implements Serializable {
 		fieldNames.add("areaId");
 		fieldNames.add("phone");
 		fieldNames.add("age");
+		fieldNames.add("isHot");
 	}
 
 }

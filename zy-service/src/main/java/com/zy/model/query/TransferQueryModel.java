@@ -22,8 +22,6 @@ import com.zy.entity.fnc.Transfer.TransferStatus;
 @AllArgsConstructor
 public class TransferQueryModel implements Serializable {
 
-	private String snEQ;
-	
 	private TransferStatus transferStatusEQ;
 
 	private Long fromUserIdEQ;
@@ -33,6 +31,8 @@ public class TransferQueryModel implements Serializable {
 	private Long toUserIdEQ;
 
 	private Long[] toUserIdIN;
+
+	private String snEQ;
 
 	private Date createdTimeGTE;
 

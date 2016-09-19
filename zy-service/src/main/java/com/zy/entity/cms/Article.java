@@ -7,21 +7,14 @@ import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
-
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
 import lombok.Getter;
 import lombok.Setter;
-
 import org.hibernate.validator.constraints.NotBlank;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "cms_article")
@@ -84,5 +77,16 @@ public class Article implements Serializable {
 	@View(groups = { "ArticleDetailVo", "ArticleAdminVo"  })
 	@Field(label = "访问数")
 	private Long visitCount;
+
+	@NotNull
+	@Field(label = "排序")
+	@View(groups = { "ArticleAdminVo"  })
+	private Integer orderNumber;
+
+	@Field(label = "是否热门")
+	@View(groups = {"ReportAdminVo"})
+	@NotNull
+	@Query(Predicate.EQ)
+	private Boolean isHot;
 
 }
