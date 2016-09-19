@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -13,16 +12,12 @@ public class ArticleAdminVo implements Serializable {
 	/* 原生 */
 	@Field(label = "id")
 	private Long id;
-	@Field(label = "文章类型id")
-	private Long articleCategoryId;
 	@Field(label = "标题")
 	private String title;
 	@Field(label = "摘要")
 	private String brief;
 	@Field(label = "作者")
 	private String author;
-	@Field(label = "发布时间")
-	private Date releasedTime;
 	@Field(label = "是否发布")
 	private Boolean isReleased;
 	@Field(label = "主图")
@@ -33,6 +28,8 @@ public class ArticleAdminVo implements Serializable {
 	private Long visitCount;
 
 	/* 扩展 */
+	@Field(label = "发布时间")
+	private String releasedTimeLabel;
 	@Field(label = "主图")
 	private String imageBig;
 	@Field(label = "主图")

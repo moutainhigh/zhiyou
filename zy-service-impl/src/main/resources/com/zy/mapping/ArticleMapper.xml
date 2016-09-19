@@ -103,5 +103,5 @@
 		set visit_count = visit_count + 1
 		where id = #{id}
 	</update>
-	
+
 </mapper>

@@ -78,7 +78,6 @@ public class ArticleQueryModel implements Serializable {
 		fieldNames.add("visitCount");
 		fieldNames.add("author");
 		fieldNames.add("releasedTime");
-		fieldNames.add("articleCategoryId");
 		fieldNames.add("createdTime");
 		fieldNames.add("id");
 		fieldNames.add("title");
