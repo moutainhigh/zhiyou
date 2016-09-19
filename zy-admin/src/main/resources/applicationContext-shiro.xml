@@ -27,7 +27,6 @@
 			<value>
 				/login = authc
 		        /logout = logout
-		        /siteAdmin/** = authc, roles[siteAdmin]
 		        /captcha = anon
 		        /callback/** = anon
 		        /assets/** = anon
@@ -36,7 +35,7 @@
 		        /js/** = anon
 		        /plugin/** = anon
 		        /swf/** = anon
-		        /** = authc
+		        /** = user
 		 	</value>
 		</property>
 	</bean>
