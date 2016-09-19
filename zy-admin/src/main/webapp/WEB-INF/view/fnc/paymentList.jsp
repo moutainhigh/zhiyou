@@ -131,8 +131,13 @@
         },
         columns : [
             {
+              data : 'id',
+              title : 'id',
+              orderable : false
+            },
+            {
               data : 'sn',
-              title : '支付单sn',
+              title : '支付单号',
               orderable : false
             },
             {
