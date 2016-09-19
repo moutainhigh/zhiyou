@@ -55,6 +55,13 @@
             orderable: false
           },
           {
+            data: '',
+            title: '用户',
+            render: function (data, type, full) {
+              return formatUser(data.user);
+            }
+          },
+          {
             data: 'profitStatus',
             title: '收益单状态',
             orderable: false
@@ -63,13 +70,6 @@
             data: 'grantedTime',
             title: '收益时间',
             orderable: false
-          },
-          {
-            data: '',
-            title: '用户',
-            render: function (data, type, full) {
-              return formatUser(data.user);
-            }
           },
           {
             data: 'remark',
