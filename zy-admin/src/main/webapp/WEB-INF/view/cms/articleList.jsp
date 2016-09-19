@@ -61,7 +61,7 @@
             orderable: false,
             render: function (data, type, full) {
               if (data) {
-                return '<i class="fa fa-check font-green"></i> <span class="badge badge-success"> 已上架 </span>';
+                return '<i class="fa fa-check font-green"></i> <span class="badge badge-success"> 已发布 </span>';
               }
               return '';
             }
