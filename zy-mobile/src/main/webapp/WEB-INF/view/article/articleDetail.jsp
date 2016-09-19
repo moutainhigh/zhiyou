@@ -25,11 +25,13 @@
     <a href="${ctx}/article" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
-  <article class="pl-15 pr-15 pt-10 pb-10">
-    <h2 class="font-333 fs-16 text-center">${article.title}</h2>
-    <div class="font-999 fs-12 lh-20 text-center">${article.author} &nbsp;&nbsp; ${article.releasedTimeLabel}</div>
-    <div class="mt-10"><img class="block width-100p" src="${article.imageBig}"></div>
-    <div class="detail-wrap">${article.content}</div>
+  <article>
+    <div class="detail-wrap mt-10">
+      <h2 class="font-333 fs-18 lh-30">${article.title}</h2>
+      <div class="mt-10 font-999 fs-14 lh-20">${article.author} &nbsp;&nbsp; ${article.releasedTimeLabel}</div>
+      <img class="mt-10" src="${article.imageBig}">
+      ${article.content}
+    </div>
   </article>
 </body>
 </html>
