@@ -36,6 +36,7 @@
 				 'insertunorderedlist':{'disc' : ''},
 				 elementPathEnabled : false,     //去掉元素路径
 				 pasteplain: true,   //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+				 initialFrameWidth: 750,
 				 iframeCssUrl: '${ctx}/css/editor/default.css' 
 			});
 		
@@ -123,9 +124,6 @@
       <div class="portlet-title">
         <div class="caption">
           <i class="icon-book-open"></i><span> 创建新闻 </span>
-        </div>
-        <div class="tools">
-          <a href="javascript:;" class="collapse"> </a> <a href="javascript:;" class="reload"> </a>
         </div>
       </div>
       <div class="portlet-body form">
