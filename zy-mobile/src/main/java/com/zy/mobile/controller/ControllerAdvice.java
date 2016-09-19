@@ -36,6 +36,7 @@ import com.zy.common.util.JsonUtils;
 import com.zy.common.util.WebUtils;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
+import com.zy.model.Principal;
 import com.zy.util.GcUtils;
 
 import me.chanjar.weixin.common.api.WxConsts;
@@ -54,17 +55,26 @@ public class ControllerAdvice {
 	void pre(HttpServletRequest request, Model model) {
 		logger.debug("REQUEST getServletPath = " + request.getServletPath());
 
+		Principal principal = GcUtils.getPrincipal();
 		String requestUrl = request.getServletPath().toString();
 		if (requestUrl.startsWith("/activity")) {
 			String url = request.getRequestURL().toString();
 			String queryStr = request.getQueryString();
-			if (queryStr != null)
-				url = url + '?' + queryStr;
-			
+			if (principal != null) {
+				Long userId = principal.getUserId();
+				if (queryStr != null){
+					url += "?" + queryStr + "&__u=" + userId;
+				} else {
+					url += "?__u=" + userId;
+				}
+			} else {
+				if (queryStr != null){
+					url += "?" + queryStr;
+				}
+			}
 			model.addAttribute("url", url);
 			model.addAttribute("weixinJsModel", getWeixinJsModel(url));
 		}
-
 	}
 
 	private Map<String, String> getWeixinJsModel(String url) {
