@@ -26,7 +26,7 @@
   </header>
 
   <article>
-    <div class="detail-wrap mt-10">
+    <div class="detail-wrap">
       <h2 class="font-333 fs-18 lh-30">${article.title}</h2>
       <div class="mt-10 font-999 fs-14 lh-20">${article.author} &nbsp;&nbsp; ${article.releasedTimeLabel}</div>
       <img class="mt-10" src="${article.imageBig}">
