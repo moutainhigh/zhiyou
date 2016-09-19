@@ -53,6 +53,7 @@ public class Deposit implements Serializable {
 	@NotBlank
 	@Field(label = "充值单号")
 	@View
+	@Query(Predicate.EQ)
 	private String sn;
 
 	@NotNull

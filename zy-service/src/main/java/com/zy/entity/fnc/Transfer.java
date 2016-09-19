@@ -76,6 +76,7 @@ public class Transfer implements Serializable {
 	@Column(length = 60, unique = true)
 	@NotBlank
 	@Field(label = "转账单号")
+	@Query(EQ)
 	@View
 	private String sn;
 
