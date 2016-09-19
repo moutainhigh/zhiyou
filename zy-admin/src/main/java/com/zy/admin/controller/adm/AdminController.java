@@ -78,8 +78,8 @@ public class AdminController {
 		return "redirect:/admin";
 	}
 
-	@RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
-	public String update(@PathVariable Long id, Model model) {
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public String update(Long id, Model model) {
 		Admin admin = adminService.findOne(id);
 		model.addAttribute("roles", roleService.findAll());
 		model.addAttribute("admin", admin);
@@ -87,14 +87,14 @@ public class AdminController {
 		return "adm/adminUpdate";
 	}
 	
-	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String update(Admin admin, Long[] roleIds) {
 		adminService.update(admin, roleIds);
 		return "redirect:/admin";
 	}
 	
-	@RequestMapping("/delete/{id}")
-	public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+	@RequestMapping("/delete")
+	public String delete(Long id, RedirectAttributes redirectAttributes) {
 		adminService.delete(id);
 		redirectAttributes.addFlashAttribute(ResultBuilder.ok("管理员删除成功"));
 		return "redirect:/admin";
