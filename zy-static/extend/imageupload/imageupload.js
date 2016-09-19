@@ -35,9 +35,18 @@
     };
     
     var quality = options.quality ? options.quality : 0.5;
-    var image = new Image(),   
+    
+    var compress = quality < 1;
+    var ua = window.navigator.userAgent.toLowerCase();
+    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+      compress = false;
+    }
+    
+    if(compress) {
+      var image = new Image(),   
       canvas = document.createElement("canvas"),   
       ctx = canvas.getContext('2d');
+    }
     
     var fileSelect = function(obj){
       var file = obj.files[0];
@@ -45,21 +54,26 @@
         showError('您选择的文件类型不合法，请重新选择。');
         return;
       }
-      var reader = new FileReader();
-      reader.onload = function() {
-        var url = reader.result;
-        image.src = url;
-      };
-      image.onload = function() {
-        var w = image.naturalWidth,
-            h = image.naturalHeight;
-        canvas.width = w;
-        canvas.height = h;
-        ctx.drawImage(image, 0, 0, w, h, 0, 0, w, h);
-        
-        startUploadFile();
-      };
-      reader.readAsDataURL(file);
+      
+      if(compress){
+        var reader = new FileReader();
+        reader.onload = function() {
+          var url = reader.result;
+          image.src = url;
+        };
+        image.onload = function() {
+          var w = image.naturalWidth,
+              h = image.naturalHeight;
+          canvas.width = w;
+          canvas.height = h;
+          ctx.drawImage(image, 0, 0, w, h, 0, 0, w, h);
+          
+          startUploadFile();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        startUploadFile(file);
+      }
     }
     var checkFileType = function(file) {
       var rFilter = /^(image\/bmp|image\/gif|image\/jpeg|image\/png|image\/tiff)$/i;
@@ -80,18 +94,19 @@
       }
       state.className = 'state state-loading';
       
-      var data = canvas.toDataURL('image/jpeg', quality);
-      data = data.split(',')[1];
-      data = window.atob(data);
-      var ia = new Uint8Array(data.length);
-      for (var i = 0; i < data.length; i++) {
-          ia[i] = data.charCodeAt(i);
-      };
-      //canvas.toDataURL 返回的默认格式就是 image/png
-      var file = new File([ia], 'file.jpg', {
-        type: 'image/jpeg'
-      });
-      
+      if(compress){
+        var data = canvas.toDataURL('image/jpeg', quality);
+        data = data.split(',')[1];
+        data = window.atob(data);
+        var ia = new Uint8Array(data.length);
+        for (var i = 0; i < data.length; i++) {
+            ia[i] = data.charCodeAt(i);
+        };
+        //canvas.toDataURL 返回的默认格式就是 image/png
+        var file = new File([ia], 'file.jpg', {
+          type: 'image/jpeg'
+        });
+      }
       if (!checkFileSize(file)) {
         showError('您选择的文件超过' + options.maxFileSize + '，请重新选择。');
       }
@@ -188,7 +203,7 @@
       if (bytes === 0) {
         return '0 B';
       }
-      var k = 1000, // or 1024
+      var k = 1024,
       units = [ 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ],
       i = Math.floor(Math.log(bytes) / Math.log(k));
 
