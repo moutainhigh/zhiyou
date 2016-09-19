@@ -1,8 +1,15 @@
 package com.zy.admin.controller.mal;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-
+import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.model.ui.Grid;
+import com.zy.component.ProductComponent;
+import com.zy.entity.mal.Product;
+import com.zy.model.Constants;
+import com.zy.model.query.ProductQueryModel;
+import com.zy.service.ProductService;
+import com.zy.vo.ProductAdminVo;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -15,16 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.zy.common.model.query.Page;
-import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.model.ui.Grid;
-import com.zy.component.ProductComponent;
-import com.zy.entity.mal.Product;
-import com.zy.model.Constants;
-import com.zy.model.query.ProductQueryModel;
-import com.zy.service.ProductService;
-import com.zy.vo.ProductAdminVo;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 @RequestMapping("/product")
 @Controller
@@ -98,7 +97,7 @@ public class ProductController {
 		}
 	}
 	
-	@RequiresPermissions("product:edit")
+	@RequiresPermissions("product:modifyPrice")
 	@RequestMapping(value = "/modifyPrice", method = RequestMethod.GET)
 	public String modifyPrice(@RequestParam Long id, Model model) {
 		Product product = productService.findOne(id);
@@ -107,7 +106,7 @@ public class ProductController {
 		return "mal/productModify";
 	}
 	
-	@RequiresPermissions("product:edit")
+	@RequiresPermissions("product:modifyPrice")
 	@RequestMapping(value = "/modifyPrice", method = RequestMethod.POST)
 	public String modifyPrice(Product product, RedirectAttributes redirectAttributes) {
 		try {
@@ -120,7 +119,7 @@ public class ProductController {
 		}
 	}
 	
-	@RequiresPermissions("product:edit")
+	@RequiresPermissions("product:on")
 	@RequestMapping(value = "/on")
 	public String on(@RequestParam Long id, RedirectAttributes redirectAttributes, @RequestParam boolean isOn) {
 		
