@@ -335,7 +335,7 @@
               </div>
               <shiro:hasPermission name="report:export">
               <div class="form-group">
-                <button class="btn yellow" onClick="reportExport()">
+                <button type="button" class="btn yellow" onClick="reportExport()">
                   <i class="fa fa-file-excel-o"></i> 导出Excel
                 </button>
               </div>

@@ -15,6 +15,7 @@ import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.ReportAdminVo;
 import com.zy.vo.ReportDetailVo;
+import com.zy.vo.ReportExportVo;
 import com.zy.vo.ReportListVo;
 
 @Component
@@ -102,4 +103,10 @@ public class ReportComponent {
 		return reportVo;
 	}
 	
+	public ReportExportVo buildExportVo(Report report) {
+		ReportExportVo reportExportVo = new ReportExportVo();
+		BeanUtils.copyProperties(report, reportExportVo);
+
+		return reportExportVo;
+	}
 }
