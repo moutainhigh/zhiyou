@@ -11,6 +11,7 @@ import io.gd.generator.api.query.Predicate;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -37,6 +38,7 @@ public class Article implements Serializable {
 	private Long id;
 
 	@NotBlank
+	@Column(length = 100)
 	@Field(label = "标题")
 	@View(groups = { "ArticleDetailVo", "ArticleListVo", "ArticleAdminVo"  })
 	private String title;

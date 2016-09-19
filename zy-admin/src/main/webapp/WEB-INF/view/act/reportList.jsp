@@ -169,7 +169,8 @@
               var html = '<img class="imagescan mr-10" data-url="' + full.image1Big + '" src="' + full.image1Thumbnail + '" >';
               if(full.image2Thumbnail != null) {
                 html += '<img class="imagescan mr-10" data-url="' + full.image2Big + '" src="' + full.image2Thumbnail + '" >';
-              } else if(!full.image3Thumbnail != null) {
+              }
+              if(full.image3Thumbnail != null) {
                 html += '<img class="imagescan mr-10" data-url="' + full.image3Big + '" src="' + full.image3Thumbnail + '" >';
               }
               return html;
