@@ -32,7 +32,6 @@ public class ArticleController {
 	public String list(Model model) {
 		ArticleQueryModel articleQueryModel = new ArticleQueryModel();
 		articleQueryModel.setIsReleasedEQ(true);
-		articleQueryModel.setArticleCategoryIdEQ(1L);
 		Page<Article> page = articleService.findPage(articleQueryModel);
 		List<ArticleListVo> list = page.getData().stream().map(v -> {
 			return articleComponent.buildListVo(v);
@@ -44,10 +43,10 @@ public class ArticleController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public String detail(@PathVariable Long id, Long inviterId, Model model) {
-		
+		Article article = articleService.findOne(id);
 		//浏览+1
-		//articleService.view(id);
-		
+//		articleService.view(id);
+		model.addAttribute("article", articleComponent.buildDetailVo(article));
 		return "article/articleDetail";
 	}
 
