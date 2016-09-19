@@ -73,7 +73,9 @@ public class ControllerAdvice {
 				}
 			}*/
 			if (queryStr != null){
-				url += "?" + queryStr + "&a=1&b=2";
+				url += "?" + queryStr;
+			} else {
+				url += "?" + "a=1&b=2";
 			}
 			
 			model.addAttribute("url", url);
