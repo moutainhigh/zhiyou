@@ -41,11 +41,6 @@
             orderable: false
           },
           {
-            data: 'brief',
-            title: '摘要',
-            orderable: false
-          },
-          {
             data: 'visitCount',
             title: '访问数',
             orderable: false
