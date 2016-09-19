@@ -25,7 +25,7 @@
   </header>
 
   <article class="about">
-    <h2><i class="icon icon-logo"></i> 关于智优生物</h2>
+    <h2><i class="icon icon-logo"></i> 关于${sys}</h2>
     <div class="about-content">
       <p>智优生物是xxxxxxxx。</p>
       <p>第二段介绍。</p>

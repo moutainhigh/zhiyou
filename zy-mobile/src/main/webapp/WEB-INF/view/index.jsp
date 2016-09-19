@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>${sys}- 首页</title>
+<title>${sys} - 首页</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/index.css" rel="stylesheet" />
 <link href="${stccdn}/css/article.css" rel="stylesheet" />
