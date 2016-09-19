@@ -37,7 +37,7 @@
 			rules : {
 				'title' : {
 					required : true,
-					maxlength : 30
+					maxlength : 100
 				},
 				'image' : {
 					required : true
