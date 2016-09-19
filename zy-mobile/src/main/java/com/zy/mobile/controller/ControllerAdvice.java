@@ -73,6 +73,7 @@ public class ControllerAdvice {
 				} else if (queryStr != null && queryStr.contains("__u")){
 					String reg = "__u=\\d*(&|$)";
 					queryStr.replaceAll(reg, "__u=" + userId);
+					url += "?" + queryStr + "&__u=" + userId;
 				}else {
 					url += "?__u=" + userId;
 				}
