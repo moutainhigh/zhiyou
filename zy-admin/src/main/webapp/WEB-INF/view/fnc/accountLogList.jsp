@@ -25,10 +25,6 @@
         },
         columns: [
           {
-            data: 'id',
-            title: 'id'
-          },
-          {
             data: '',
             title: '流水情况',
             orderable: false,
@@ -147,7 +143,7 @@
                 </div>
 
                 <div class="form-group">
-                  <select name="transactionRefTypeEQ" class="form-control">
+                  <select name="accountLogTypeEQ" class="form-control">
                     <option value="">-- 择单据类型 --</option>
                     <option value="0">充值单</option>
                     <option value="1">订单</option>
@@ -162,7 +158,7 @@
                 </div>
 
                 <div class="form-group">
-                  <select name="transactionTypeEQ" class="form-control">
+                  <select name="inOutEQ" class="form-control">
                     <option value="">-- 资金流向 --</option>
                     <option value="0">收入</option>
                     <option value="1">支出</option>

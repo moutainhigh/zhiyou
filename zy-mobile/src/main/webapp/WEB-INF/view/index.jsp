@@ -91,7 +91,7 @@
   
   <article class="article-list mb-15 clearfix">
     <h2 class="page-title">
-      <i class="fa fa-photo"></i> 新闻资讯<a href="${ctx}/article?articleCategoryId=1" class="right mr-10 fs-14 font-777">更多</a>
+      <i class="fa fa-photo"></i> 新闻资讯<a href="${ctx}/article" class="right mr-10 fs-14 font-777">更多</a>
     </h2>
     <c:forEach items="${articles}" var="article">
     <a href="${ctx}/article/${article.id}" class="article">
