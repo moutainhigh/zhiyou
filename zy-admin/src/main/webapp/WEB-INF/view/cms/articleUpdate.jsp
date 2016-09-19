@@ -146,8 +146,8 @@
             <div class="form-group">
               <label class="control-label col-md-3">图片<span class="required"> * </span></label>
               <div class="col-md-5">
-                <img data-target="image" class="product-image bd" src="<c:if test='${not empty activity.image}'>${activity.imageBig}</c:if><c:if test='${empty activity.image}'>${ctx}/image/upload_240_150.jpg</c:if>">
-                <input type="hidden" name="image" value="${activity.image}"/>
+                <img data-target="image" class="product-image bd" src="<c:if test='${not empty article.image}'>${article.imageBig}</c:if><c:if test='${empty article.image}'>${ctx}/image/upload_240_150.jpg</c:if>">
+                <input type="hidden" name="image" value="${article.image}"/>
                 <p class="help-block">图片尺寸 750*450</p>
               </div>
             </div>
