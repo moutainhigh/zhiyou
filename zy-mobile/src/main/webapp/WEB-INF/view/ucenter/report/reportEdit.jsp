@@ -29,7 +29,7 @@
         var imageItems = $this.siblings('.image-item');
         var inputHidden = $this.children('input:hidden');
         var inputName = inputHidden.val('').attr('name');
-        inputName = inputName.replace((imageItems.length + 1), '');
+        //inputName = inputName.replace((imageItems.length + 1), '');
         var image = result.image;
         var imageThumbnail = result.imageThumbnail;
         var imageItem = '<div class="image-item">' + '<input type="hidden" name="' + inputName + (imageItems.length + 1) + '" value="' + image + '">'
