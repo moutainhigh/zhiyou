@@ -179,10 +179,11 @@ public class UcenterPayController {
 		validate(refId, NOT_NULL, "payment id " + refId + " is null");
 		Payment payment = paymentService.findOne(refId);
 		validate(payment, NOT_NULL, "payment id" + refId + " not found");
+		Long orderId = payment.getRefId();
 		if (payment.getPayType() == PayType.余额) {
 			paymentService.balancePay(refId, true);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("余额支付成功"));
-			return "redirect:/u/order/" + refId;
+			return "redirect:/u/order/" + orderId;
 		} else if (payment.getPayType() == PayType.银行汇款) {
 			validate(offlineImage, NOT_BLANK, "payment offlineImage is blank");
 			validate(offlineMemo, NOT_BLANK, "payment offlineMemo is blank");
@@ -191,7 +192,7 @@ public class UcenterPayController {
 			paymentService.modifyOffline(refId, offlineImage, offlineMemo);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT,
 					ResultBuilder.ok("转账汇款信息提交成功，请等待工作人员确认"));
-			return "redirect:/u/order/" + refId;
+			return "redirect:/u/order/" + orderId;
 		} else {
 			throw new BizException(BizCode.ERROR, "不支持的付款方式");
 		}
