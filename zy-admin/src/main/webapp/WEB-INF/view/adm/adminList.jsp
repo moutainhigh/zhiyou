@@ -30,7 +30,7 @@
             data: '',
             title: '用户信息',
             render: function (data, type, full) {
-              return formatUser(data.user);
+              return formatUser(full.user);
             }
           },
           {
