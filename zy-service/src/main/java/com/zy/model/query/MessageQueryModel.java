@@ -32,6 +32,8 @@ public class MessageQueryModel implements Serializable {
 
 	private String batchNumberEQ;
 
+	private String tokenEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;

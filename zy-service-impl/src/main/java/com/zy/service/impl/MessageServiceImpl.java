@@ -32,8 +32,9 @@ public class MessageServiceImpl implements MessageService {
 	
 	@Override
 	public Message create(@NotNull Message message) {
-		messageMapper.insert(message);
 		validate(message);
+//		messageMapper.count(MessageQueryModel.builder().)
+		messageMapper.insert(message);
 		return message;
 	}
 	

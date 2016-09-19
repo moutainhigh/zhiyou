@@ -77,9 +77,6 @@ public class MessageConsumer extends AbstractConsumer {
 
 
 
-	private static int getAnInt(BigDecimal value) {
-		return value.compareTo(ZERO);
-	}
 
 	Message message(Long userId, String title, String content, String token) {
 		final Message message = new Message();
