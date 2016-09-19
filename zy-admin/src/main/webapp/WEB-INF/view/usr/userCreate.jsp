@@ -75,10 +75,10 @@
 <div class="row">
   <div class="col-md-12">
     <!-- BEGIN VALIDATION STATES-->
-    <div class="portlet box yellow">
+    <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-edit"></i><span> 新增用户 </span>
+          <i class="fa fa-user"></i><span> 新增用户 </span>
         </div>
         <div class="tools">
           <a href="javascript:;" class="collapse"> </a> <a href="javascript:;" class="reload"> </a>
