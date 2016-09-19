@@ -1,18 +1,17 @@
 package com.zy.mobile.controller;
 
-import com.zy.common.exception.BizException;
-import com.zy.common.exception.UnauthenticatedException;
-import com.zy.common.exception.UnauthorizedException;
-import com.zy.common.exception.ValidationException;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.util.JsonUtils;
-import com.zy.common.util.WebUtils;
-import com.zy.model.BizCode;
-import com.zy.model.Constants;
-import com.zy.model.Principal;
-import com.zy.util.GcUtils;
-import me.chanjar.weixin.common.api.WxConsts;
-import me.chanjar.weixin.mp.api.WxMpService;
+import static com.zy.model.Constants.SESSION_ATTRIBUTE_REDIRECT_URL;
+
+import java.beans.PropertyEditorSupport;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -28,14 +27,20 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.beans.PropertyEditorSupport;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
+import com.zy.common.exception.BizException;
+import com.zy.common.exception.UnauthenticatedException;
+import com.zy.common.exception.UnauthorizedException;
+import com.zy.common.exception.ValidationException;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.util.JsonUtils;
+import com.zy.common.util.WebUtils;
+import com.zy.model.BizCode;
+import com.zy.model.Constants;
+import com.zy.util.GcUtils;
 
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_REDIRECT_URL;
+import me.chanjar.weixin.common.api.WxConsts;
+import me.chanjar.weixin.common.bean.WxJsapiSignature;
+import me.chanjar.weixin.mp.api.WxMpService;
 
 @org.springframework.web.bind.annotation.ControllerAdvice
 public class ControllerAdvice {
@@ -49,18 +54,34 @@ public class ControllerAdvice {
 	void pre(HttpServletRequest request, Model model) {
 		logger.debug("REQUEST getServletPath = " + request.getServletPath());
 
-		Principal principal = GcUtils.getPrincipal();
-		if (principal != null) {
-
-		}
-
 		String requestUrl = request.getServletPath().toString();
-		if (requestUrl.startsWith("/u")) {
-
+		if (requestUrl.startsWith("/u/activity")) {
+			String url = request.getRequestURL().toString();
+			String queryStr = request.getQueryString();
+			if (queryStr != null)
+				url = url + '?' + queryStr;
+			
+			model.addAttribute("url", url);
+			model.addAttribute("weixinJsModel", getWeixinJsModel(url));
 		}
 
 	}
 
+	private Map<String, String> getWeixinJsModel(String url) {
+		WxJsapiSignature wxJsapiSignature;
+		Map<String, String> params = new HashMap<>();
+		try {
+			wxJsapiSignature = wxMpService.createJsapiSignature(url);
+			params.put("appId", wxJsapiSignature.getAppid());
+			params.put("timestamp", wxJsapiSignature.getTimestamp() + "");
+			params.put("nonceStr", wxJsapiSignature.getNoncestr());
+			params.put("signature", wxJsapiSignature.getSignature());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		return params;
+	}
+	
 	@ExceptionHandler(UnauthenticatedException.class)
 	public String handleUnauthenticatedException(UnauthenticatedException e, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		logger.info("UnauthenticatedException");
