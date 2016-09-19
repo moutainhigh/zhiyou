@@ -1,7 +1,7 @@
-package com.zy.job;
+package com.zy.task.job;
 
 import com.zy.common.exception.ConcurrentException;
-import com.zy.service.OrderService;
+import com.zy.service.AccountLogService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -11,42 +11,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.zy.entity.mal.Order.OrderStatus.已完成;
-import static com.zy.model.query.OrderQueryModel.builder;
+import static com.zy.model.query.AccountLogQueryModel.builder;
 
 /**
  * Created by freeman on 16/9/8.
  */
-public class OrderStatementJob implements Job {
+public class AccountLogAckJob implements Job {
 
-	private Logger logger = LoggerFactory.getLogger(OrderStatementJob.class);
+	private Logger logger = LoggerFactory.getLogger(AccountLogAckJob.class);
 
 	@Autowired
-	private OrderService orderService;
+	private AccountLogService accountLogService;
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		logger.info("begin...");
-		orderService.findAll(builder().orderStatusEQ(已完成).isSettledUpEQ(false).build())
+		accountLogService.findAll(builder().isAcknowledgedEQ(false).build())
 				.stream()
-				.map(order -> order.getId())
-				.forEach(this::settleUp);
+				.map(accountLog -> accountLog.getId())
+				.forEach(this::acknowledge);
 		logger.info("end...");
 	}
 
-	private void settleUp(Long id) {
+	private void acknowledge(Long id) {
 		try {
 			try {
 				TimeUnit.SECONDS.sleep(2);
 			} catch (InterruptedException e) {
-
 			}
-			this.orderService.settleUp(id);
-			logger.info("结算 {} 成功", id);
+			this.accountLogService.acknowledge(id);
+			logger.info(" acknowledge {} success", id);
 		} catch (ConcurrentException e) {
-			settleUp(id);
+			acknowledge(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 	}
+
+
 }

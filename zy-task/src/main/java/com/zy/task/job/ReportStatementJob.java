@@ -1,4 +1,4 @@
-package com.zy.job;
+package com.zy.task.job;
 
 import com.zy.common.exception.ConcurrentException;
 import com.zy.entity.sys.ConfirmStatus;

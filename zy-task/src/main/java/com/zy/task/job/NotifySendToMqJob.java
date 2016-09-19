@@ -1,4 +1,4 @@
-package com.zy.job;
+package com.zy.task.job;
 
 import com.zy.Config;
 import com.zy.entity.sys.Notify;

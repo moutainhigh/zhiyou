@@ -1,7 +1,7 @@
-package com.zy.job;
+package com.zy.task.job;
 
 import com.zy.common.exception.ConcurrentException;
-import com.zy.service.TransferService;
+import com.zy.service.OrderService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -11,40 +11,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.zy.entity.fnc.Transfer.TransferStatus.待转账;
-import static com.zy.model.query.TransferQueryModel.builder;
+import static com.zy.entity.mal.Order.OrderStatus.已完成;
+import static com.zy.model.query.OrderQueryModel.builder;
 
 /**
- * Created by freeman on 16/9/13.
+ * Created by freeman on 16/9/8.
  */
-public class TransferJob implements Job {
+public class OrderStatementJob implements Job {
 
-	private Logger logger = LoggerFactory.getLogger(TransferJob.class);
+	private Logger logger = LoggerFactory.getLogger(OrderStatementJob.class);
 
 	@Autowired
-	private TransferService transferService;
+	private OrderService orderService;
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		logger.info("begin...");
-		transferService.findAll(builder().transferStatusEQ(待转账).build())
+		orderService.findAll(builder().orderStatusEQ(已完成).isSettledUpEQ(false).build())
 				.stream()
-				.map(transfer -> transfer.getId())
-				.forEach(this::transfer);
+				.map(order -> order.getId())
+				.forEach(this::settleUp);
 		logger.info("end...");
-
 	}
 
-	private void transfer(Long transferId) {
+	private void settleUp(Long id) {
 		try {
 			try {
 				TimeUnit.SECONDS.sleep(2);
 			} catch (InterruptedException e) {
+
 			}
-			this.transferService.transfer(transferId, "");
-			logger.info("transferId {} success", transferId);
+			this.orderService.settleUp(id);
+			logger.info("结算 {} 成功", id);
 		} catch (ConcurrentException e) {
-			transfer(transferId);
+			settleUp(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
