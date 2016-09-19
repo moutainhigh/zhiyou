@@ -31,6 +31,7 @@ public class Notify implements Serializable {
 
 	@NotBlank
 	@Field(label = "主题")
+	@NotNull
 	private String topic;
 
 	@NotBlank

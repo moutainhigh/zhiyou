@@ -1,7 +1,7 @@
-package com.zy.job;
+package com.zy.task.job;
 
 import com.zy.common.exception.ConcurrentException;
-import com.zy.service.AccountLogService;
+import com.zy.service.TransferService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -11,42 +11,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.zy.model.query.AccountLogQueryModel.builder;
+import static com.zy.entity.fnc.Transfer.TransferStatus.待转账;
+import static com.zy.model.query.TransferQueryModel.builder;
 
 /**
- * Created by freeman on 16/9/8.
+ * Created by freeman on 16/9/13.
  */
-public class AccountLogAckJob implements Job {
+public class TransferJob implements Job {
 
-	private Logger logger = LoggerFactory.getLogger(AccountLogAckJob.class);
+	private Logger logger = LoggerFactory.getLogger(TransferJob.class);
 
 	@Autowired
-	private AccountLogService accountLogService;
+	private TransferService transferService;
 
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		logger.info("begin...");
-		accountLogService.findAll(builder().isAcknowledgedEQ(false).build())
+		transferService.findAll(builder().transferStatusEQ(待转账).build())
 				.stream()
-				.map(accountLog -> accountLog.getId())
-				.forEach(this::acknowledge);
+				.map(transfer -> transfer.getId())
+				.forEach(this::transfer);
 		logger.info("end...");
+
 	}
 
-	private void acknowledge(Long id) {
+	private void transfer(Long transferId) {
 		try {
 			try {
 				TimeUnit.SECONDS.sleep(2);
 			} catch (InterruptedException e) {
 			}
-			this.accountLogService.acknowledge(id);
-			logger.info(" acknowledge {} success", id);
+			this.transferService.transfer(transferId, "");
+			logger.info("transferId {} success", transferId);
 		} catch (ConcurrentException e) {
-			acknowledge(id);
+			transfer(transferId);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 	}
-
-
 }

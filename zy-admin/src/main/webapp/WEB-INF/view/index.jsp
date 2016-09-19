@@ -153,7 +153,7 @@
         </li>
         <!-- END USER LOGIN DROPDOWN -->
         <!-- BEGIN QUICK SIDEBAR TOGGLER -->
-        <%--	<li class="dropdown dropdown-logout tooltips" data-original-title="退出系统" data-container="body" data-placement="bottom" data-html="true">
+        <%--  <li class="dropdown dropdown-logout tooltips" data-original-title="退出系统" data-container="body" data-placement="bottom" data-html="true">
             <a href="${ctx}/logout" class="dropdown-toggle"> <i class="icon-logout"></i></a>
           </li>--%>
         <!-- END QUICK SIDEBAR TOGGLER -->
@@ -252,6 +252,9 @@
             <shiro:hasPermission name="order:view">
               <li>
                 <a href="javascript:;" data-href="${ctx}/order"><i class="icon-docs"></i> 订单管理<span class="badge badge-danger"></span></a>
+              </li>
+              <li>
+                <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 平台发货订单管理<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>
           </ul>
@@ -354,7 +357,7 @@
             </shiro:hasPermission>
             <shiro:hasPermission name="article:view">
               <li>
-                <a href="javascript:;" data-href="${ctx}/article"><i class="icon-book-open"></i> 新闻管理<span class="badge badge-danger"></span></a>
+                <a href="javascript:;" data-href="${ctx}/article"><i class="icon-book-open"></i> 文章管理<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>
             <shiro:hasPermission name="help:view">

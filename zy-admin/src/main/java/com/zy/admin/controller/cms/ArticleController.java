@@ -2,9 +2,15 @@ package com.zy.admin.controller.cms;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.ALIYUN_BUCKET_NAME_IMAGE;
+import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
 import io.gd.generator.api.query.Direction;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.query.Page;
@@ -123,6 +130,5 @@ public class ArticleController {
 		articleService.release(id, isRelease);
 		return true;
 	}
-
 
 }

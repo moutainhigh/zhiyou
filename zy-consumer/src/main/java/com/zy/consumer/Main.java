@@ -1,4 +1,4 @@
-package com.zy;
+package com.zy.consumer;
 
 /**
  * 启动类
