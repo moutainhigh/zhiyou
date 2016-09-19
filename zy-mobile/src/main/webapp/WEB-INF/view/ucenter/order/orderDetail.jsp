@@ -143,7 +143,7 @@
       </div>
       <div class="list-item lh-20">
         <div class="list-text fs-14">物流单号</div>
-        <div class="list-unit fs-12">${order.logisticsNo}</div>
+        <div class="list-unit fs-12">${order.logisticsSn}</div>
       </div>
       </c:if>
       <c:if test="${!order.useLogistics}">
