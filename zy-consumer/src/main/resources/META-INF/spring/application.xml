@@ -31,9 +31,9 @@
     <dubbo:reference interface="com.zy.service.OrderService" id="orderService"/>
 
 
-    <bean id="luosimaoSmsSupport" class="com.zy.common.support.sms.LuosimaoSmsSupport">
-        <constructor-arg index="0" value="${sms.apiKey}"/>
-        <constructor-arg index="1" value="${sms.sign}"/>
+    <bean id="smsSupport" class="com.zy.common.support.sms.ZtinfoSmsSupport">
+        <constructor-arg index="0" value="${sms.ztinfo.username}"/>
+        <constructor-arg index="1" value="${sms.ztinfo.password}"/>
     </bean>
 
     <util:properties id="consumerConfig" scope="prototype">
@@ -45,7 +45,6 @@
         <prop key="key.deserializer">${key.deserializer}</prop>
         <prop key="value.deserializer">${value.deserializer}</prop>
     </util:properties>
-
 
 
 </beans>

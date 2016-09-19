@@ -2,6 +2,7 @@ package com.zy.consumer.extend;
 
 import com.zy.Config;
 import com.zy.common.support.sms.LuosimaoSmsSupport;
+import com.zy.common.support.sms.SmsSupport;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
@@ -41,7 +42,7 @@ public abstract class AbstractConsumer implements DisposableBean {
 
 
 	@Autowired
-	private LuosimaoSmsSupport luosimaoSmsSupport;
+	private SmsSupport smsSupport;
 
 	@Autowired
 	private Config config;
@@ -126,7 +127,7 @@ public abstract class AbstractConsumer implements DisposableBean {
 						runing.set(false);
 						logger.error("重试10次后停止当前线程");
 						consumer.close();
-						luosimaoSmsSupport.send("18508289695", "consumer error plase handle reset 10 ", "");
+						smsSupport.send("18508289695", "consumer error plase handle reset 10 ", "");
 					}
 				} catch (InterruptedException e1) {
 				}

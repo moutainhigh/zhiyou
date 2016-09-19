@@ -1,6 +1,7 @@
 package com.zy.consumer.component;
 
 import com.zy.common.support.sms.LuosimaoSmsSupport;
+import com.zy.common.support.sms.SmsSupport;
 import com.zy.consumer.extend.AbstractConsumer;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.mal.Order;
@@ -32,14 +33,12 @@ public class SmsConsumer extends AbstractConsumer {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private MessageService messageService;
 
 	@Autowired
 	private AppearanceService appearanceService;
 
 	@Autowired
-	private LuosimaoSmsSupport luosimaoSmsSupport;
+	private SmsSupport smsSupport;
 
 	@Autowired
 	private BankCardService bankCardService;
@@ -134,7 +133,7 @@ public class SmsConsumer extends AbstractConsumer {
 			final User user = userService.findOne(userId);
 			final String phone = user.getPhone();
 			if (isNotBlank(phone)) {
-				luosimaoSmsSupport.send(phone, message, "智优生物");
+				smsSupport.send(phone, message, "智优生物");
 			}
 		}
 	}
