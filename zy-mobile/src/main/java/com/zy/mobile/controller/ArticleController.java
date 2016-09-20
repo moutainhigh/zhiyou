@@ -1,5 +1,7 @@
 package com.zy.mobile.controller;
 
+import io.gd.generator.api.query.Direction;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,8 @@ public class ArticleController {
 	public String list(Model model) {
 		ArticleQueryModel articleQueryModel = new ArticleQueryModel();
 		articleQueryModel.setIsReleasedEQ(true);
+		articleQueryModel.setDirection(Direction.DESC);
+		articleQueryModel.setOrderBy("releasedTime");
 		Page<Article> page = articleService.findPage(articleQueryModel);
 		List<ArticleListVo> list = page.getData().stream().map(v -> {
 			return articleComponent.buildListVo(v);
