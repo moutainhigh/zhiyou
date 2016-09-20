@@ -7,7 +7,7 @@
 
   $(function () {
     $(".select2-multiple").select2({
-      placeholder: placeholder,
+      placeholder: '- 选择单据类型 -',
       width: null
   	});
     
@@ -148,7 +148,6 @@
 
                 <div class="form-group">
                   <select name="accountLogTypeEQ" class="form-control select2-multiple" multiple="multiple">
-                    <option value="" disabled="disabled">- 选择单据类型 -</option>
                     <option value="0">充值单</option>
                     <option value="1">订单</option>
                     <option value="2">提现单</option>
