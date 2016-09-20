@@ -525,7 +525,7 @@ var Layout = function () {
         
         var $this = $(this);
         var url = $this.attr('data-action');
-        var data = $this.serialize();
+        var data = $this.serializeObject();
         
         Layout.ajax(url, 'POST', data);
         
@@ -564,7 +564,7 @@ var Layout = function () {
         
         postForm: function(form){
           var url = $(form).attr('data-action');
-          var data = $(form).serialize();
+          var data = $(form).serializeObject();
           Layout.ajax(url, 'POST', data);
         },
 
