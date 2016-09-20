@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import com.zy.entity.mal.Order.OrderStatus;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -29,6 +30,14 @@ public class OrderQueryModel implements Serializable {
 	private Long sellerIdEQ;
 
 	private Long[] sellerIdIN;
+
+	private Date createdTimeLT;
+
+	private Date createdTimeGTE;
+
+	private Date paidTimeLT;
+
+	private Date paidTimeGTE;
 
 	private OrderStatus orderStatusEQ;
 

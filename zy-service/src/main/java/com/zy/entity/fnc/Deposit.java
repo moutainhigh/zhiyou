@@ -1,5 +1,6 @@
 package com.zy.entity.fnc;
 
+import com.zy.entity.usr.User;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -19,14 +20,18 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static com.zy.entity.fnc.Deposit.VO_ADMIN;
+
 @Entity
 @Table(name = "fnc_deposit")
 @Getter
 @Setter
 @QueryModel
 @Type(label = "充值单")
-@ViewObject(groups = "DepositAdminVo")
+@ViewObject(groups = VO_ADMIN)
 public class Deposit implements Serializable {
+
+	public static final String VO_ADMIN = "DepositAdminVo";
 
 	public enum DepositStatus {
 		待充值, 充值成功, 已取消
@@ -41,7 +46,7 @@ public class Deposit implements Serializable {
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "用户id")
 	@View
-	@AssociationView(name = "user", groups = "DepositAdminVo", associationGroup = "UserAdminSimpleVo")
+	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@NotBlank
@@ -65,6 +70,7 @@ public class Deposit implements Serializable {
 	@DecimalMin("0.01")
 	@Field(label = "充值货币1金额")
 	@View
+	@View(name = "amount1Label", type = String.class, groups = VO_ADMIN)
 	private BigDecimal amount1;
 
 	@Field(label = "充值货币2")
@@ -74,12 +80,14 @@ public class Deposit implements Serializable {
 	@DecimalMin("0.01")
 	@Field(label = "充值货币2金额")
 	@View
+	@View(name = "amount2Label", type = String.class, groups = VO_ADMIN)
 	private BigDecimal amount2;
 
 	@NotNull
 	@DecimalMin("0.01")
 	@Field(label = "充值总金额")
 	@View
+	@View(name = "totalAmountLabel", type = String.class, groups = VO_ADMIN)
 	private BigDecimal totalAmount;
 
 	@NotNull
@@ -126,7 +134,7 @@ public class Deposit implements Serializable {
 	@Query(Predicate.EQ)
 	@Field(label = "提现单状态")
 	@View
-	@View(name = "depositStatusStyle", type = String.class, groups = {"DepositAdminVo"})
+	@View(name = "depositStatusStyle", type = String.class, groups = {VO_ADMIN})
 	private DepositStatus depositStatus;
 
 	@View(groups = "DepositAdminVo")

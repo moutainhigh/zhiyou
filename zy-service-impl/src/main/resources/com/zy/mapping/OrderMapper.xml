@@ -143,8 +143,32 @@
 		id,sn,user_id,seller_id,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_fee_pay_type,is_platform_deliver,delivered_time,logistics_name,logistics_sn,logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,version
 		from `mal_order`
 		<where>
+			<if test="orderStatusEQ != null">
+				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="sellerIdEQ != null">
+				and seller_id = #{sellerIdEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="paidTimeLT != null">
+				and paid_time &lt; #{paidTimeLT}
+			</if>
+			<if test="snLK != null">
+				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
+			</if>
+			<if test="paidTimeGTE != null">
+				and paid_time &gt;= #{paidTimeGTE}
+			</if>
+			<if test="isSettledUpEQ != null">
+				and is_settled_up = #{isSettledUpEQ}
+			</if>
 			<if test="isPlatformDeliverEQ != null">
 				and is_platform_deliver = #{isPlatformDeliverEQ}
+			</if>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
@@ -157,23 +181,14 @@
 				1 = 2
 				</if>
 			</if>
-			<if test="orderStatusEQ != null">
-				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
-			</if>
 			<if test="logisticsNameLK != null">
 				<bind name="logisticsNameLK" value="'%' + logisticsNameLK + '%'"/> and logistics_name like #{logisticsNameLK}
 			</if>
-			<if test="sellerIdEQ != null">
-				and seller_id = #{sellerIdEQ}
-			</if>
-			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 			<if test="logisticsSnLK != null">
 				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
-			</if>
-			<if test="snLK != null">
-				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
 			</if>
 			<if test="sellerIdIN != null">
 				<if test="sellerIdIN.length != 0">
@@ -185,9 +200,6 @@
 				<if test="sellerIdIN.length == 0">
 				1 = 2
 				</if>
-			</if>
-			<if test="isSettledUpEQ != null">
-				and is_settled_up = #{isSettledUpEQ}
 			</if>
 		</where>
 		<choose>
@@ -206,8 +218,32 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.OrderQueryModel">
 		select count(*) from `mal_order`
 		<where>
+			<if test="orderStatusEQ != null">
+				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="sellerIdEQ != null">
+				and seller_id = #{sellerIdEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="paidTimeLT != null">
+				and paid_time &lt; #{paidTimeLT}
+			</if>
+			<if test="snLK != null">
+				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
+			</if>
+			<if test="paidTimeGTE != null">
+				and paid_time &gt;= #{paidTimeGTE}
+			</if>
+			<if test="isSettledUpEQ != null">
+				and is_settled_up = #{isSettledUpEQ}
+			</if>
 			<if test="isPlatformDeliverEQ != null">
 				and is_platform_deliver = #{isPlatformDeliverEQ}
+			</if>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
@@ -220,23 +256,14 @@
 				1 = 2
 				</if>
 			</if>
-			<if test="orderStatusEQ != null">
-				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
-			</if>
 			<if test="logisticsNameLK != null">
 				<bind name="logisticsNameLK" value="'%' + logisticsNameLK + '%'"/> and logistics_name like #{logisticsNameLK}
 			</if>
-			<if test="sellerIdEQ != null">
-				and seller_id = #{sellerIdEQ}
-			</if>
-			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 			<if test="logisticsSnLK != null">
 				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
-			</if>
-			<if test="snLK != null">
-				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
 			</if>
 			<if test="sellerIdIN != null">
 				<if test="sellerIdIN.length != 0">
@@ -248,9 +275,6 @@
 				<if test="sellerIdIN.length == 0">
 				1 = 2
 				</if>
-			</if>
-			<if test="isSettledUpEQ != null">
-				and is_settled_up = #{isSettledUpEQ}
 			</if>
 		</where>
 	</select>

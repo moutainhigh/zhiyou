@@ -20,6 +20,8 @@ public class AccountLogSimpleVo implements Serializable {
 	private String title;
 	@Field(label = "所属用户")
 	private Long userId;
+	@Field(label = "对应用户id")
+	private Long refUserId;
 	@Field(label = "交易金额")
 	private BigDecimal transAmount;
 	@Field(label = "交易完成后金额")

@@ -1,5 +1,6 @@
 package com.zy.entity.fnc;
 
+import com.zy.entity.usr.User;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -10,7 +11,6 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
@@ -19,11 +19,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static com.zy.entity.fnc.Profit.VO_ADMIN;
 import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
@@ -32,8 +32,10 @@ import static io.gd.generator.api.query.Predicate.*;
 @Setter
 @QueryModel
 @Type(label = "收益单")
-@ViewObject(groups = "ProfitAdminVo")
+@ViewObject(groups = VO_ADMIN)
 public class Profit implements Serializable {
+
+	public static final String VO_ADMIN = "ProfitAdminVo";
 
 	public enum ProfitType {
 		补偿,
@@ -59,14 +61,14 @@ public class Profit implements Serializable {
 	@Field(label = "收益单状态")
 	@Query(EQ)
 	@View
-	@View(name = "profitStatusStyle", type = String.class, groups = {"ProfitAdminVo"})
+	@View(name = "profitStatusStyle", type = String.class, groups = {VO_ADMIN})
 	private ProfitStatus profitStatus;
 
 	@NotNull
 	@Query({EQ,IN})
 	@Field(label = "用户id")
 	@View
-	@AssociationView(name = "user", groups = "ProfitAdminVo", associationGroup = "UserAdminSimpleVo")
+	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@Column(length = 60, unique = true)
@@ -90,6 +92,7 @@ public class Profit implements Serializable {
 	@DecimalMin("0.01")
 	@Field(label = "金额")
 	@View
+	@View(name = "amountLabel", type = String.class, groups = VO_ADMIN)
 	private BigDecimal amount;
 
 	@NotNull

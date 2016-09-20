@@ -4,6 +4,7 @@ import com.zy.entity.fnc.Account;
 import com.zy.entity.usr.User;
 import com.zy.model.query.AccountQueryModel;
 import com.zy.service.AccountService;
+import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.AccountAdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +42,15 @@ public class AccountComponent {
 					switch (u.getCurrencyType()) {
 					case 现金:
 						accountAdminVo.setMoney(amount);
+						accountAdminVo.setMoneyLabel(GcUtils.formatCurreny(amount));
 						break;
 					case 金币:
 						accountAdminVo.setCoin(amount);
+						accountAdminVo.setCoinLabel(GcUtils.formatCurreny(amount));
 						break;
 					case 积分:
 						accountAdminVo.setPoint(amount);
+						accountAdminVo.setPointLabel(GcUtils.formatCurreny(amount));
 						break;
 					default:
 						break;

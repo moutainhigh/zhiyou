@@ -23,6 +23,8 @@ public class AccountLogAdminVo implements Serializable {
 	private String title;
 	@Field(label = "所属用户")
 	private Long userId;
+	@Field(label = "对应用户id")
+	private Long refUserId;
 	@Field(label = "资金账户日志类型")
 	private AccountLogType accountLogType;
 	@Field(label = "对应单据id")
@@ -43,5 +45,13 @@ public class AccountLogAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "所属用户")
 	private UserAdminSimpleVo user;
+	@Field(label = "对应用户id")
+	private UserAdminSimpleVo refUser;
+	@Field(label = "交易前余额")
+	private String beforeAmountLabel;
+	@Field(label = "交易金额")
+	private String transAmountLabel;
+	@Field(label = "交易完成后金额")
+	private String afterAmountLabel;
 
 }

@@ -1,5 +1,6 @@
 package com.zy.entity.fnc;
 
+import com.zy.entity.usr.User;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -19,14 +20,18 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static com.zy.entity.fnc.Withdraw.VO_ADMIN;
+
 @Entity
 @Table(name = "fnc_withdraw")
 @Getter
 @Setter
 @QueryModel
 @Type(label = "提现")
-@ViewObject(groups = "WithdrawAdminVo")
+@ViewObject(groups = VO_ADMIN)
 public class Withdraw implements Serializable {
+
+	public static final String VO_ADMIN = "WithdrawAdminVo";
 
 	public enum WithdrawStatus {
 		已申请, 提现成功, 已取消
@@ -39,7 +44,7 @@ public class Withdraw implements Serializable {
 
 	@NotNull
 	@Field(label = "用户id")
-	@AssociationView(name = "user", associationGroup = "UserAdminSimpleVo", groups = {"WithdrawAdminVo"})
+	@AssociationView(name = "user", associationGroup = User.VO_ADMIN_SIMPLE, groups = {VO_ADMIN})
 	@Query({Predicate.EQ, Predicate.IN})
 	private Long userId;
 
@@ -63,6 +68,7 @@ public class Withdraw implements Serializable {
 	@DecimalMin("0.01")
 	@Field(label = "提现金额")
 	@View
+	@View(name = "amountLabel", type = String.class, groups = VO_ADMIN)
 	private BigDecimal amount;
 
 	@NotNull
@@ -73,11 +79,13 @@ public class Withdraw implements Serializable {
 	@NotNull
 	@Field(label = "提现手续费")
 	@View
+	@View(name = "feeLabel", type = String.class, groups = VO_ADMIN)
 	private BigDecimal fee;
 
 	@NotNull
 	@Field(label = "实际到账总金额", description = "实际到账总金额 = 提现金额 - 提现手续费")
 	@View
+	@View(name = "realAmountLabel", type = String.class, groups = VO_ADMIN)
 	private BigDecimal realAmount;
 
 	@DecimalMin("0.00")
@@ -98,7 +106,7 @@ public class Withdraw implements Serializable {
 	@Query(Predicate.EQ)
 	@Field(label = "提现单状态")
 	@View
-	@View(name = "withdrawStatusStyle", type = String.class, groups = {"WithdrawAdminVo"})
+	@View(name = "withdrawStatusStyle", type = String.class, groups = {VO_ADMIN})
 	private WithdrawStatus withdrawStatus;
 
 	@Field(label = "操作者id")
@@ -111,7 +119,7 @@ public class Withdraw implements Serializable {
 
 	@Field(label = "银行卡id", description = "如果提现到银行卡必填")
 	@View
-	@AssociationView(name = "bankCard", groups = "WithdrawAdminVo", associationGroup = "BankCardAdminVo")
+	@AssociationView(name = "bankCard", groups = VO_ADMIN, associationGroup = "BankCardAdminVo")
 	private Long bankCardId;
 
 	@Field(label = "微信openId", description = "如果提现到微信必填")

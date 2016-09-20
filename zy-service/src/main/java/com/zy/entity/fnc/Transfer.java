@@ -1,5 +1,6 @@
 package com.zy.entity.fnc;
 
+import com.zy.entity.usr.User;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -10,21 +11,16 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static com.zy.entity.fnc.Transfer.VO_ADMIN;
 import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
@@ -33,8 +29,10 @@ import static io.gd.generator.api.query.Predicate.*;
 @Setter
 @QueryModel
 @Type(label = "转账单")
-@ViewObject(groups = "TransferAdminVo")
+@ViewObject(groups = VO_ADMIN)
 public class Transfer implements Serializable {
+
+	public static final String VO_ADMIN = "TransferAdminVo";
 
 	public enum TransferType {
 		数据奖,
@@ -56,21 +54,21 @@ public class Transfer implements Serializable {
 	@Field(label = "转账状态")
 	@Query(EQ)
 	@View
-	@View(name = "transferStatusStyle", type = String.class, groups = {"TransferAdminVo"})
+	@View(name = "transferStatusStyle", type = String.class, groups = {VO_ADMIN})
 	private TransferStatus transferStatus;
 
 	@NotNull
 	@Query({EQ,IN})
 	@Field(label = "转出用户id")
 	@View
-	@AssociationView(name = "fromUser", groups = "TransferAdminVo", associationGroup = "UserAdminSimpleVo")
+	@AssociationView(name = "fromUser", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long fromUserId;
 
 	@NotNull
 	@Query({EQ,IN})
 	@Field(label = "转入用户id")
 	@View
-	@AssociationView(name = "toUser", groups = "TransferAdminVo", associationGroup = "UserAdminSimpleVo")
+	@AssociationView(name = "toUser", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long toUserId;
 
 	@Column(length = 60, unique = true)
@@ -94,6 +92,7 @@ public class Transfer implements Serializable {
 	@DecimalMin("0.01")
 	@Field(label = "金额")
 	@View
+	@View(name = "amountLabel", type = String.class, groups = VO_ADMIN)
 	private BigDecimal amount;
 
 	@NotNull

@@ -102,6 +102,17 @@
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
 			</if>
+			<if test="accountLogTypeIN != null">
+				<if test="accountLogTypeIN.length != 0">
+				and account_log_type in
+				<foreach collection="accountLogTypeIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+				</if>
+				<if test="accountLogTypeIN.length == 0">
+				1 = 2
+				</if>
+			</if>
 			<if test="refUserIdEQ != null">
 				and ref_user_id = #{refUserIdEQ}
 			</if>
@@ -170,6 +181,17 @@
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
+			</if>
+			<if test="accountLogTypeIN != null">
+				<if test="accountLogTypeIN.length != 0">
+				and account_log_type in
+				<foreach collection="accountLogTypeIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+				</if>
+				<if test="accountLogTypeIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="refUserIdEQ != null">
 				and ref_user_id = #{refUserIdEQ}

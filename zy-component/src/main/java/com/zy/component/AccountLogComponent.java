@@ -4,6 +4,7 @@ import com.zy.common.util.BeanUtils;
 import com.zy.entity.fnc.AccountLog;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.usr.User;
+import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.AccountLogAdminVo;
 import com.zy.vo.AccountLogSimpleVo;
@@ -35,14 +36,24 @@ public class AccountLogComponent {
 			accountLogSimpleVo.setTransAmount(transAmount);
 			accountLogSimpleVo.setAfterAmount(afterAmount);
 		}
+
 		return accountLogSimpleVo;
 	}
 
 	public AccountLogAdminVo buildAdminVo(AccountLog accountLog) {
 		AccountLogAdminVo accountLogAdminVo = new AccountLogAdminVo();
 		BeanUtils.copyProperties(accountLog, accountLogAdminVo);
+
 		User user = cacheComponent.getUser(accountLog.getUserId());
 		accountLogAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
+
+		User refUser = cacheComponent.getUser(accountLog.getRefUserId());
+		accountLogAdminVo.setRefUser(VoHelper.buildUserAdminSimpleVo(refUser));
+
+		accountLogAdminVo.setAfterAmountLabel(GcUtils.formatCurreny(accountLog.getAfterAmount()));
+		accountLogAdminVo.setBeforeAmountLabel(GcUtils.formatCurreny(accountLog.getBeforeAmount()));
+		accountLogAdminVo.setTransAmountLabel(GcUtils.formatCurreny(accountLog.getTransAmount()));
+
 		return accountLogAdminVo;
 	}
 }

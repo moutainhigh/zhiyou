@@ -30,6 +30,11 @@ public class PaymentComponent {
 		paymentAdminVo.setRefundedTimeLabel(formatDate(payment.getRefundedTime(), TIME_PATTERN));
 		paymentAdminVo.setOfflineImageThumbnail(getThumbnail(payment.getOfflineImage()));
 		paymentAdminVo.setPaymentStatusStyle(GcUtils.getPaymentStatusStyle(payment.getPaymentStatus()));
+
+		paymentAdminVo.setAmount1Label(GcUtils.formatCurreny(payment.getAmount1()));
+		paymentAdminVo.setAmount2Label(GcUtils.formatCurreny(payment.getAmount2()));
+
+
 		return paymentAdminVo;
 	}
 }

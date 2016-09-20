@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static com.zy.entity.fnc.AccountLog.VO_ADMIN;
+import static com.zy.entity.fnc.AccountLog.VO_SIMPLE;
 import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
@@ -28,9 +30,12 @@ import static io.gd.generator.api.query.Predicate.*;
 @Getter
 @Setter
 @QueryModel
-@ViewObject(groups = {"AccountLogSimpleVo", "AccountLogAdminVo"})
+@ViewObject(groups = {VO_ADMIN, VO_SIMPLE})
 @Type(label = "资金流水")
 public class AccountLog implements Serializable {
+
+	public static final String VO_ADMIN = "AccountLogAdminVo";
+	public static final String VO_SIMPLE = "AccountLogSimpleVo";
 
 	public enum InOut {
 		收入, 支出
@@ -61,60 +66,63 @@ public class AccountLog implements Serializable {
 	@Query({EQ, IN})
 	@Field(label = "所属用户")
 	@View
-	@AssociationView(name = "user", groups = "AccountLogAdminVo", associationGroup = User.VO_ADMIN_SIMPLE)
+	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@NotNull
 	@Query({EQ, IN})
 	@Field(label = "对应用户id")
 	@View
-	@AssociationView(name = "refUser", groups = "AccountLogAdminVo", associationGroup = User.VO_ADMIN_SIMPLE)
+	@AssociationView(name = "refUser", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long refUserId;
 
 	@NotNull
-	@Query(EQ)
+	@Query({EQ, IN})
 	@Field(label = "资金账户日志类型")
-	@View(groups = {"AccountLogAdminVo"})
+	@View(groups = {VO_ADMIN})
 	private AccountLogType accountLogType;
 
 	@NotNull
 	@Field(label = "对应单据id")
-	@View(groups = {"AccountLogAdminVo"})
+	@View(groups = {VO_ADMIN})
 	private Long refId;
 
 	@NotNull
 	@Query(EQ)
 	@Field(label = "对应单据sn")
-	@View(groups = {"AccountLogAdminVo"})
+	@View(groups = {VO_ADMIN})
 	private String refSn;
 
 	@NotNull
 	@Query(EQ)
 	@Field(label = "币种")
-	@View(groups = {"AccountLogAdminVo"})
+	@View(groups = {VO_ADMIN})
 	private CurrencyType currencyType;
 
 	@NotNull
 	@Query({GTE, LT})
 	@Field(label = " 交易产生时间")
-	@View(groups = {"AccountLogAdminVo"})
-	@View(name = "transTimeLabel", type = String.class, groups = {"AccountLogSimpleVo"})
+	@View(groups = {VO_ADMIN})
+	@View(name = "transTimeLabel", type = String.class, groups = {VO_SIMPLE})
 	private Date transTime;
 
 	//@NotNull
 	@Field(label = "交易前余额")
-	@View(groups = {"AccountLogAdminVo"})
+	@View(groups = {VO_ADMIN})
+	@View(name = "beforeAmountLabel", type = String.class, groups = VO_ADMIN)
 	private BigDecimal beforeAmount;
 
 	@NotNull
 	@DecimalMin("0.01")
 	@Field(label = "交易金额")
 	@View
+	@View(name = "transAmountLabel", type = String.class, groups = VO_ADMIN)
 	private BigDecimal transAmount;
 
 	//@NotNull
 	@Field(label = "交易完成后金额")
 	@View
+	@View(name = "afterAmountLabel", type = String.class, groups = VO_ADMIN)
 	private BigDecimal afterAmount;
 
 	@NotNull
