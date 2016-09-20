@@ -110,7 +110,7 @@
           </div>
           <img class="image-80 block mr-10" src="${product.image1Thumbnail}">
           <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity1}</span>盒</h2>
+            <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity1}</span>支</h2>
             <div class="lh-30"><label class="label red">一级代理</label></div>
             <div class="font-orange lh-24">¥ ${amount1}</div>
           </div>
@@ -124,7 +124,7 @@
           </div>
           <img class="image-80 block mr-10" src="${product.image1Thumbnail}">
           <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity2}</span>盒</h2>
+            <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity2}</span>支</h2>
             <div class="lh-30"><label class="label yellow">二级代理</label></div>
             <div class="font-orange lh-24">¥ ${amount2}</div>
           </div>
@@ -138,7 +138,7 @@
           </div>
           <img class="image-80 block mr-10" src="${product.image1Thumbnail}">
           <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity3}</span>盒</h2>
+            <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity3}</span>支</h2>
             <div class="lh-30"><label class="label green">三级代理</label></div>
             <div class="font-orange lh-24">¥ ${amount3}</div>
           </div>
