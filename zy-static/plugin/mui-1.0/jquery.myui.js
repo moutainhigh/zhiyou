@@ -230,7 +230,8 @@
     };
     if(options.shadeClose){
       $imageWrap.click(function(){
-        onClose();
+        //onClose();
+        $imageview.find(".header").slideToggle(300);
       });
     }
     $imageview.find(".btn-close").click(onClose);;
