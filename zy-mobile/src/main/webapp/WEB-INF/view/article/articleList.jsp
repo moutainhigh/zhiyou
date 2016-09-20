@@ -15,6 +15,14 @@
 <title>新闻资讯</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
+<style>
+.article img {
+  width: 120px; height: 72px;
+}
+.article h2 {
+  max-height: 48px;
+}
+</style>
 <script type="text/javascript">
   $(function() {
     if (!$('.list-more').hasClass('disabled')) {
@@ -64,9 +72,9 @@
 </script>
 <script id="rowTpl" type="text/html">
   <a class="list-item article" href="${ctx}/article/{{ d.id }}">
-    <img class="mr-10" style="width:120px;height:72px" src="{{ d.imageThumbnail }}">
+    <img class="mr-10" src="{{ d.imageThumbnail }}">
     <div class="list-text">
-      <h2>{{ d.title }}</h2>
+      <h2 class="fs-15 lh-24 o-hidden">{{ d.title }}</h2>
       <div class="font-777 fs-12">{{ d.releasedTimeLabel }} &nbsp; {{ d.author }}</div>
     </div>
   </a>
@@ -83,9 +91,9 @@
     <div class="list-group mb-0">
       <c:forEach items="${page.data}" var="article">
       <a class="list-item article" href="${ctx}/article/${article.id}">
-        <img class="mr-10" style="width:120px;height:72px" src="${article.imageThumbnail}">
+        <img class="mr-10" src="${article.imageThumbnail}">
         <div class="list-text">
-          <h2>${article.title}</h2>
+          <h2 class="fs-15 lh-24 o-hidden">${article.title}</h2>
           <div class="font-777 fs-12">${article.releasedTimeLabel} &nbsp; ${article.author}</div>
         </div>
       </a>
