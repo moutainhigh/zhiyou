@@ -72,19 +72,19 @@
       <div class="text-center">
         <img class="round" src="${stccdn}/image/icon/icon_about.png">
       </div>
-      <div class="lh-30 text-center">商品</div>
+      <div class="mt-5 text-center">商品</div>
     </a>
     <a class="flex-1" href="${ctx}/activity">
       <div class="text-center">
         <img class="round" src="${stccdn}/image/icon/icon_bag.png">
       </div>
-      <div class="lh-30 text-center">活动</div>
+      <div class="mt-5 text-center">活动</div>
     </a>
     <a class="flex-1" href="${ctx}/u/report">
       <div class="text-center">
         <img class="round" src="${stccdn}/image/icon/icon_report.png">
       </div>
-      <div class="lh-30 text-center">检测报告</div>
+      <div class="mt-5 text-center">检测报告</div>
     </a>
   </nav>
   
