@@ -75,8 +75,10 @@ public class ProfitServiceImpl implements ProfitService {
 		BigDecimal amount = profit.getAmount();
 		Long userId = profit.getUserId();
 		Long sysUserId = config.getSysUserId();
-		fncComponent.recordAccountLog(sysUserId, title, currencyType, amount, 支出, profit, userId);
-		fncComponent.recordAccountLog(userId, title, currencyType, amount, 收入, profit, sysUserId);
+		if (!sysUserId.equals(userId)) {
+			fncComponent.recordAccountLog(sysUserId, title, currencyType, amount, 支出, profit, userId);
+			fncComponent.recordAccountLog(userId, title, currencyType, amount, 收入, profit, sysUserId);
+		}
 		profit.setGrantedTime(new Date());
 		profit.setProfitStatus(Profit.ProfitStatus.已发放);
 		if (profitMapper.update(profit) == 0) {

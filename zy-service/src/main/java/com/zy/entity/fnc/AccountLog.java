@@ -1,5 +1,6 @@
 package com.zy.entity.fnc;
 
+import com.zy.entity.usr.User;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -60,12 +61,14 @@ public class AccountLog implements Serializable {
 	@Query({EQ, IN})
 	@Field(label = "所属用户")
 	@View
-	@AssociationView(name = "user", groups = "AccountLogAdminVo", associationGroup = "UserAdminSimpleVo")
+	@AssociationView(name = "user", groups = "AccountLogAdminVo", associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@NotNull
 	@Query({EQ, IN})
 	@Field(label = "对应用户id")
+	@View
+	@AssociationView(name = "refUser", groups = "AccountLogAdminVo", associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long refUserId;
 
 	@NotNull

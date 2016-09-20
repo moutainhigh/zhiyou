@@ -122,7 +122,8 @@
       },
       dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
-        lengthMenu : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here
+        lengthMenu: [[10, 20, 50, 100, -1], [10, 20, 50, 100, 'All'] // change per page values here
+        ],
         pageLength: 20, // default record count per page
         order: [], // set first column as a default sort by desc
         ajax: {
@@ -135,26 +136,12 @@
           },
           {
             data: 'sn',
-            title: '支付单号',
-            orderable: false
-          },
-          {
-            data: 'title',
-            title: '标题',
-            orderable: false
-          },
-          {
-            data: 'amount1',
-            title: '应付金额',
+            title: '支付单信息',
             orderable: false,
             render: function (data, type, full) {
-          		return data.toFixed(2);
+              return '<p>支付单号:' + full.sn +'</p>'
+                + '<p>标题:' + full.title +'</p>';
             }
-          },
-          {
-            data: 'createdTime',
-            title: '创建时间',
-            orderable: true
           },
           {
             data: '',
@@ -165,9 +152,22 @@
             }
           },
           {
+            data: 'amount1',
+            title: '应付金额',
+            orderable: false,
+            render: function (data, type, full) {
+          		return data.toFixed(2);
+            }
+          },
+          {
             data: 'payType',
             title: '支付方式',
             orderable: false
+          },
+          {
+            data: 'createdTime',
+            title: '创建时间',
+            orderable: true
           },
           {
             data: 'paymentStatus',
