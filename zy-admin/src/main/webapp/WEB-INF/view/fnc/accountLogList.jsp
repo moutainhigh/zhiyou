@@ -8,8 +8,7 @@
   $(function () {
     $(".select2-multiple").select2({
       placeholder: '- 选择单据类型 -',
-      allowClear: true,
-      width: '200px'
+      allowClear: true
     });
 
     grid.init({
@@ -136,7 +135,7 @@
                 </div>
 
                 <div class="form-group">
-                  <select name="accountLogTypeIN" class="form-control select2-multiple" multiple="multiple">
+                  <select name="accountLogTypeIN" class="form-control select2-multiple" multiple="multiple" style="min-width: 200px;">
                     <option value="0">充值单</option>
                     <option value="1">订单</option>
                     <option value="2">提现单</option>
