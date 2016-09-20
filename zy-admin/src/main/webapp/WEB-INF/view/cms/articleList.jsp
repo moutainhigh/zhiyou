@@ -75,6 +75,11 @@
             }
           },
           {
+            data: 'releasedTimeLabel',
+            title: '发布时间',
+            orderable: false
+          },
+          {
             data: 'id',
             title: '操作',
             orderable: false,
@@ -159,6 +164,15 @@
                 
                 <div class="form-group">
                   <input type="text" name="titleLK" class="form-control" placeholder="标题"/>
+                </div>
+                
+                <div class="form-group input-inline">
+                  <input class="Wdate form-control" type="text" id="releasedTime"
+                         onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="releasedTimeGTE" value="" placeholder="发布时间起"/>
+                </div>
+                <div class="form-group input-inline">
+                  <input class="Wdate form-control" type="text" id="releasedTime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                         name="releasedTimeLT" value="" placeholder="发布时间止"/>
                 </div>
                 
                 <div class="form-group">
