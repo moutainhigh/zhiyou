@@ -47,5 +47,11 @@ public class AccountLogAdminVo implements Serializable {
 	private UserAdminSimpleVo user;
 	@Field(label = "对应用户id")
 	private UserAdminSimpleVo refUser;
+	@Field(label = "交易前余额")
+	private String beforeAmountLabel;
+	@Field(label = "交易金额")
+	private String transAmountLabel;
+	@Field(label = "交易完成后金额")
+	private String afterAmountLabel;
 
 }

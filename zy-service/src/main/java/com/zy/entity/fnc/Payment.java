@@ -108,7 +108,7 @@ public class Payment implements Serializable {
 	@Field(label = "支付状态")
 	@Query(Predicate.EQ)
 	@View
-	@View(name = "paymentStatusStyle", type = String.class, groups = {"PaymentAdminVo"})
+	@View(name = "paymentStatusStyle", type = String.class, groups = {VO_ADMIN})
 	private PaymentStatus paymentStatus;
 
 	@NotNull
@@ -120,6 +120,7 @@ public class Payment implements Serializable {
 	@DecimalMin("0.01")
 	@Field(label = "货币1支付金额")
 	@View
+	@View(name = "amount1Label", type = String.class, groups = VO_ADMIN)
 	private BigDecimal amount1;
 
 	@Field(label = "货币2")
@@ -129,6 +130,7 @@ public class Payment implements Serializable {
 	@DecimalMin("0.01")
 	@Field(label = " 货币2支付金额")
 	@View
+	@View(name = "amount2Label", type = String.class, groups = VO_ADMIN)
 	private BigDecimal amount2;
 
 	@DecimalMin("0.00")

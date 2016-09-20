@@ -61,6 +61,12 @@ public class DepositAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
+	@Field(label = "充值货币1金额")
+	private String amount1Label;
+	@Field(label = "充值货币2金额")
+	private String amount2Label;
+	@Field(label = "充值总金额")
+	private String totalAmountLabel;
 	@Field(label = "提现单状态")
 	private String depositStatusStyle;
 	@Field(label = "银行汇款截图")

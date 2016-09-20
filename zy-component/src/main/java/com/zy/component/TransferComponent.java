@@ -1,15 +1,15 @@
 package com.zy.component;
 
-import static com.zy.util.GcUtils.formatDate;
-import static com.zy.util.GcUtils.getTransferStatusStyle;
-
+import com.zy.common.util.BeanUtils;
+import com.zy.entity.fnc.Transfer;
+import com.zy.util.GcUtils;
+import com.zy.util.VoHelper;
+import com.zy.vo.TransferAdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.zy.common.util.BeanUtils;
-import com.zy.entity.fnc.Transfer;
-import com.zy.util.VoHelper;
-import com.zy.vo.TransferAdminVo;
+import static com.zy.util.GcUtils.formatDate;
+import static com.zy.util.GcUtils.getTransferStatusStyle;
 
 @Component
 public class TransferComponent {
@@ -28,6 +28,9 @@ public class TransferComponent {
 		transferAdminVo.setCreatedTimeLabel(formatDate(transfer.getCreatedTime(), TIME_PATTERN));
 		transferAdminVo.setTransferredTimeLabel(formatDate(transfer.getTransferredTime(), TIME_PATTERN));
 		transferAdminVo.setTransferStatusStyle(getTransferStatusStyle(transfer.getTransferStatus()));
+
+		transferAdminVo.setAmountLabel(GcUtils.formatCurreny(transfer.getAmount()));
+
 		return transferAdminVo;
 	}
 }

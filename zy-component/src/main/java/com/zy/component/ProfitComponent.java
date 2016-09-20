@@ -21,10 +21,14 @@ public class ProfitComponent {
 	public ProfitAdminVo buildAdminVo(Profit profit) {
 		ProfitAdminVo profitAdminVo = new ProfitAdminVo();
 		BeanUtils.copyProperties(profit, profitAdminVo);
+
 		profitAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(profit.getUserId())));
 		profitAdminVo.setCreatedTimeLabel(formatDate(profit.getCreatedTime(), TIME_PATTERN));
 		profitAdminVo.setGrantedTimeLabel(formatDate(profit.getGrantedTime(), TIME_PATTERN));
 		profitAdminVo.setProfitStatusStyle(GcUtils.getProfitStatusStyle(profit.getProfitStatus()));
+
+		profitAdminVo.setAmountLabel(GcUtils.formatCurreny(profit.getAmount()));
+
 		return profitAdminVo;
 	}
 	

@@ -20,10 +20,16 @@ public class DepositComponent {
 	public DepositAdminVo buildAdminVo(Deposit deposit) {
 		DepositAdminVo depositAdminVo = new DepositAdminVo();
 		BeanUtils.copyProperties(deposit, depositAdminVo);
+
 		User user = cacheComponent.getUser(deposit.getUserId());
 		depositAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
+
 		depositAdminVo.setOfflineImageThumbnail(getThumbnail(deposit.getOfflineImage()));
 		depositAdminVo.setDepositStatusStyle(GcUtils.getDepositStatusStyle(deposit.getDepositStatus()));
+		depositAdminVo.setAmount1Label(GcUtils.formatCurreny(deposit.getAmount1()));
+		depositAdminVo.setAmount2Label(GcUtils.formatCurreny(deposit.getAmount2()));
+		depositAdminVo.setTotalAmountLabel(GcUtils.formatCurreny(deposit.getTotalAmount()));
+
 		return depositAdminVo;
 	}
 	

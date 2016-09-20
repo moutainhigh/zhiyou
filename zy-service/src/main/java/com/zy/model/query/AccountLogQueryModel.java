@@ -35,6 +35,8 @@ public class AccountLogQueryModel implements Serializable {
 
 	private Long[] refUserIdIN;
 
+	private AccountLogType accountLogTypeEQ;
+
 	private AccountLogType[] accountLogTypeIN;
 
 	private String refSnEQ;

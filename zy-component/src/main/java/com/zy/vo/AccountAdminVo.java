@@ -21,6 +21,12 @@ public class AccountAdminVo implements Serializable {
 	private BigDecimal coin;
 	@Field(label = "point")
 	private BigDecimal point;
+	@Field(label = "moneyLabel")
+	private String moneyLabel;
+	@Field(label = "coinLabel")
+	private String coinLabel;
+	@Field(label = "pointLabel")
+	private String pointLabel;
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
 

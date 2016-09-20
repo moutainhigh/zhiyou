@@ -21,7 +21,7 @@ public class WithdrawComponent {
 	public WithdrawAdminVo buildAdminVo(Withdraw withdraw) {
 		WithdrawAdminVo withdrawAdminVo = new WithdrawAdminVo();
 		BeanUtils.copyProperties(withdraw, withdrawAdminVo);
-		withdrawAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(withdraw.getUserId())));
+
 		
 		if(withdraw.getIsToBankCard()) {
 			Long bankCardId = withdraw.getBankCardId();
@@ -33,6 +33,11 @@ public class WithdrawComponent {
 			}
 		}
 		withdrawAdminVo.setWithdrawStatusStyle(GcUtils.getWithdrawStatusStyle(withdraw.getWithdrawStatus()));
+		withdrawAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(withdraw.getUserId())));
+		withdrawAdminVo.setAmountLabel(GcUtils.formatCurreny(withdraw.getAmount()));
+		withdrawAdminVo.setFeeLabel(GcUtils.formatCurreny(withdraw.getFee()));
+		withdrawAdminVo.setRealAmountLabel(GcUtils.formatCurreny(withdraw.getRealAmount()));
+
 		return withdrawAdminVo;
 	}
 	

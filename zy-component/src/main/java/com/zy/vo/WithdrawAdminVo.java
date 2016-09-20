@@ -50,6 +50,12 @@ public class WithdrawAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
+	@Field(label = "提现金额")
+	private String amountLabel;
+	@Field(label = "提现手续费")
+	private String feeLabel;
+	@Field(label = "实际到账总金额")
+	private String realAmountLabel;
 	@Field(label = "提现单状态")
 	private String withdrawStatusStyle;
 	@Field(label = "银行卡id")
