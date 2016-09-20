@@ -130,10 +130,10 @@
           url: '${ctx}/deposit', // ajax source
         },
         columns: [
-          {
+         /* {
             data: 'id',
             title: 'id'
-          },
+          },*/
           {
             data: 'sn',
             title: '充值单号',

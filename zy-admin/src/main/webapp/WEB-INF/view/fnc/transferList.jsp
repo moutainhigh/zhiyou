@@ -22,10 +22,10 @@
           url: '${ctx}/transfer', // ajax source
         },
         columns: [
-          {
+         /* {
             data: 'id',
             title: 'id'
-          },
+          },*/
           {
             data: 'sn',
             title: '转账单号'
