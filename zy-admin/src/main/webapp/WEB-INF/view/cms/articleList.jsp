@@ -150,6 +150,10 @@
                 <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
                 
                 <div class="form-group">
+                  <input type="text" name="titleLK" class="form-control" placeholder="标题"/>
+                </div>
+                
+                <div class="form-group">
                   <select name="isReleasedEQ" class="form-control">
                     <option value="">-- 是否发布 --</option>
                     <option value="true">是</option>

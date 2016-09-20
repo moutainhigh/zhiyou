@@ -167,14 +167,14 @@
             title: '图片',
             orderable: false,
             render: function (data, type, full) {
-              var html = '<img class="imagescan mr-10" data-url="' + full.image1Big + '" src="' + full.image1Thumbnail + '" >';
+              var html = '<span class="layer-phote-' + full.id + '"><img class="imagescan mr-10" layer-src="' + full.image1Big + '" src="' + full.image1Thumbnail + '" >';
               if(full.image2Thumbnail != null) {
-                html += '<img class="imagescan mr-10" data-url="' + full.image2Big + '" src="' + full.image2Thumbnail + '" >';
+                html += '<img class="imagescan mr-10" layer-src="' + full.image2Big + '" src="' + full.image2Thumbnail + '" >';
               }
               if(full.image3Thumbnail != null) {
-                html += '<img class="imagescan mr-10" data-url="' + full.image3Big + '" src="' + full.image3Thumbnail + '" >';
+                html += '<img class="imagescan mr-10" layer-src="' + full.image3Big + '" src="' + full.image3Thumbnail + '" >';
               }
-              return html;
+              return html + '</span>';
             }
           },
           {
@@ -266,11 +266,13 @@
       }
     });
     
-    $('#dataTable').on('click', '.imagescan', function () {
-      var url = $(this).attr('data-url');
-      $.imagescan({
-        url: url
+    $('#dataTable').on('click', '.imagescan', function() {
+      var $this = $(this);
+      alert(0);
+      layer.photos({
+        photos: '.' + $this.parent().attr('class')
       });
+      alert(1);
     });
     
     $('#dataTable').on('click', '.text', function() {
@@ -307,6 +309,13 @@
         <div class="caption">
           <i class="icon-volume-1"></i> 检测报告
         </div>
+        <shiro:hasPermission name="report:edit">
+        <div class="actions">
+          <a class="btn btn-circle green" data-href="${ctx}/report/create">
+            <i class="fa fa-plus"></i> 新增
+          </a>
+        </div>
+        </shiro:hasPermission>
       </div>
       <div class="portlet-body clearfix">
         <div class="table-container">

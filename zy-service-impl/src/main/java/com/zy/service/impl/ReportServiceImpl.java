@@ -70,6 +70,28 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
+	public Report adminCreate(@NotNull Report report) {
+		Long userId = report.getUserId();
+		validate(userId, NOT_NULL, "user id is null");
+		User user = userMapper.findOne(userId);
+		validate(user, NOT_NULL, "user id " + userId + "  is not found");
+
+		Date now = new Date();
+		report.setVersion(0);
+		report.setPreConfirmStatus(ConfirmStatus.已通过);
+		report.setConfirmStatus(ConfirmStatus.已通过);
+		report.setConfirmRemark(null);
+		report.setConfirmedTime(null);
+		report.setAppliedTime(now);
+		report.setCreatedTime(now);
+		report.setIsSettledUp(true);
+		report.setIsHot(false);
+		validate(report);
+		reportMapper.insert(report);
+		return report;
+	}
+	
+	@Override
 	public Page<Report> findPage(@NotNull ReportQueryModel reportQueryModel) {
 		if (reportQueryModel.getPageNumber() == null)
 			reportQueryModel.setPageNumber(0);

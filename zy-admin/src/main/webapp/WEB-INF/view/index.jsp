@@ -87,7 +87,7 @@
   <script src="${stc}/assets/scripts/datatable.js?v=20160408"></script>
   <script src="${stc}/assets/admin/layout/scripts/layout.js"></script>
   <script src="${stc}/plugin/myui-1.0/jquery.myui.js"></script>
-  <script src="${stc}/plugin/layer-2.2/layer.js"></script>
+  <script src="${stc}/plugin/layer-2.4/layer.js"></script>
   <script src="${ctx}/plugin/My97DatePicker/WdatePicker.js"></script>
   <script src="${ctx}/plugin/handlebars/handlebars.min.js"></script>
   <script src="${ctx}/js/area.js"></script>

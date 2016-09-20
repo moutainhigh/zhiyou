@@ -34,6 +34,7 @@ public class Article implements Serializable {
 	@Column(length = 100)
 	@Field(label = "标题")
 	@View(groups = { "ArticleDetailVo", "ArticleListVo", "ArticleAdminVo"  })
+	@Query(Predicate.LK)
 	private String title;
 
 	@Field(label = "摘要")

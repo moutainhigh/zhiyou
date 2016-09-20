@@ -84,6 +84,9 @@
 			<if test="isReleasedEQ != null">
 				and is_released = #{isReleasedEQ}
 			</if>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
