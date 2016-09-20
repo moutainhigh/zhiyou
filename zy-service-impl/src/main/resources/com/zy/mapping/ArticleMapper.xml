@@ -81,11 +81,11 @@
 			<if test="isHotEQ != null">
 				and is_hot = #{isHotEQ}
 			</if>
-			<if test="isReleasedEQ != null">
-				and is_released = #{isReleasedEQ}
-			</if>
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
+			<if test="isReleasedEQ != null">
+				and is_released = #{isReleasedEQ}
 			</if>
 		</where>
 		<choose>
@@ -106,6 +106,9 @@
 		<where>
 			<if test="isHotEQ != null">
 				and is_hot = #{isHotEQ}
+			</if>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
 			<if test="isReleasedEQ != null">
 				and is_released = #{isReleasedEQ}

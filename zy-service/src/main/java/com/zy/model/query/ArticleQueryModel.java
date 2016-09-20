@@ -19,12 +19,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ArticleQueryModel implements Serializable {
 
+	private String titleLK;
+
 	private Boolean isReleasedEQ;
 
 	private Boolean isHotEQ;
 
-	private String titleLK;
-	
 	private Integer pageNumber;
 
 	private Integer pageSize;
