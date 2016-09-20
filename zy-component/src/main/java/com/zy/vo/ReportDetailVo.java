@@ -60,6 +60,8 @@ public class ReportDetailVo implements Serializable {
 	private String confirmRemark;
 	@Field(label = "审核通过时间")
 	private Date confirmedTime;
+	@Field(label = "是否已结算")
+	private Boolean isSettledUp;
 
 	/* 扩展 */
 	@Field(label = "职业")
