@@ -55,6 +55,7 @@ public class Article implements Serializable {
 	@NotNull
 	@Field(label = "发布时间")
 	@View(name = "releasedTimeLabel", type = String.class, groups = { "ArticleDetailVo", "ArticleListVo", "ArticleAdminVo" })
+	@Query({Predicate.LT, Predicate.GTE})
 	private Date releasedTime;
 
 	@NotNull
