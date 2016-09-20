@@ -16,7 +16,6 @@
 <title>${sys} - 首页</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/index.css" rel="stylesheet" />
-<link href="${stccdn}/css/article.css" rel="stylesheet" />
 <link href="${stccdn}/plugin/swipe-2.0/swipe.css" rel="stylesheet" />
 <script src="${stccdn}/plugin/swipe-2.0/swipe.js"></script>
 
