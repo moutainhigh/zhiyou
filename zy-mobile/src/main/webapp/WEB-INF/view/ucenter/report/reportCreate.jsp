@@ -21,10 +21,6 @@
     var area = new areaInit('province', 'city', 'district');
     
     $('.image-multi .image-add').imageupload({
-      width : 100,
-      height : 100,
-      url : '${ctx}/image/upload',
-      maxFileSize : '4MB',
       progress : function() {
       },
       success : function(result) {
@@ -43,12 +39,7 @@
         if (limit && limit <= imageItems.length + 1) {
           $this.remove();
         }
-        $this.siblings('.image-item').eq(imageItems.length).imageupload({
-          width : 100,
-          height : 100,
-          url : '${ctx}/image/upload',
-          maxFileSize : '4MB'
-        });
+        $this.siblings('.image-item').eq(imageItems.length).imageupload();
       }
     });
 
