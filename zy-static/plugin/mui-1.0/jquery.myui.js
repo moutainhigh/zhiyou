@@ -231,12 +231,12 @@
     if(options.shadeClose){
       $imageWrap.click(function(){
         //onClose();
-        $imageview.find(".header").slideToggle(300);
+        $imageview.find('.header').slideToggle(300);
       });
     }
     $imageview.find(".btn-close").click(onClose);;
     
-    var maxWidth = $imageWrap.width(), maxHeight = $imageWrap.height();
+    var maxWidth = $(window).width(), maxHeight = $(window).height() - (options.title ? 48 : 0);
     $image = $('<div class="myui-imageview-inner"><img style="display:none" src="' + options.url + '"></div>');
     $image.appendTo($imageWrap);
     $image.find('img').bind('load', function(){
