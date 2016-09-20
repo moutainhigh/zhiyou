@@ -50,7 +50,7 @@
             title: '身份证正面照',
             orderable: false,
             render: function (data, type, full) {
-              return '<a target="_blank" href="' + full.image1 + '"><img class="imagescan" data-url="' + full.image1 + '" src="' + data + '" style="width: 80px; height: 80px;"></a>';
+              return '<img class="image-view" data-title="身份证正面照" data-src="' + full.image1 + '" src="' + data + '" style="width: 80px; height: 80px;">';
             }
           },
           {
@@ -58,7 +58,7 @@
             title: '身份证背面照',
             orderable: false,
             render: function (data, type, full) {
-              return '<a target="_blank" href="' + full.image2 + '"><img class="imagescan" data-url="' + full.image2 + '" src="' + data + '" style="width: 80px; height: 80px;"></a>';
+              return '<img class="image-view" data-title="身份证反面照" data-src="' + full.image2 + '" src="' + data + '" style="width: 80px; height: 80px;">';
             }
           },
           {
@@ -104,6 +104,14 @@
             }
           }]
       }
+    });
+    $('#dataTable').on('click', '.image-view', function () {
+      var url = $(this).attr('data-src');
+      var title = $(this).attr('data-title');
+      $.imageview({
+        url: url,
+        title: title
+      });
     });
   });
   var $confirmDialog;
