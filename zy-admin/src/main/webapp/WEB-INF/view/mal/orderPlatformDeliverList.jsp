@@ -204,7 +204,7 @@
               <div class="form-group input-inline">
                 <input type="text" name="logisticsSnLK" class="form-control" placeholder="物流单号"/>
               </div>               
-              <br/>
+              
               <div class="form-group">
                 <input class="Wdate form-control" type="text" id="beginDate"
                   onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="createdTimeGTE" value="" placeholder="下单时间起" />
