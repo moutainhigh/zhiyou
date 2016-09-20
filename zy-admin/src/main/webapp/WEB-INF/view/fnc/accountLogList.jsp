@@ -159,7 +159,7 @@
                 </div>
 
                 <div class="form-group">
-                  <input type="text" id="accountLogTypeIN" name="accountLogTypeIN" class="form-control"/>
+                  <input type="text" id="accountLogTypeIN" name="accountLogTypeIN" class="form-control input-medium"/>
                 </div>
 
                 <div class="form-group">
