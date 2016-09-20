@@ -27,7 +27,7 @@
             data: 'nickname',
             title: '昵称',
             render: function (data, type, full) {
-              return '<p><img src="' + data + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.nickname + '</p>';
+              return '<p><img src="' + full.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.nickname + '</p>';
             }
           },
           {
