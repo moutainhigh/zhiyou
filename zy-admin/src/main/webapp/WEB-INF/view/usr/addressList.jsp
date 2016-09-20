@@ -78,55 +78,30 @@ $(function() {
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-institution"></i> 收货地址管理
-        </div>
-        <div class="tools">
-          <a class="collapse" href="javascript:;"> </a> <a class="reload" href="javascript:;"> </a>
+          <i class="fa icon-home"></i> 收货地址管理
         </div>
       </div>
       <div class="portlet-body clearfix">
         <div class="table-container">
           <div class="table-toolbar">
-            <%-- <div class="btn-group">
-               <button id="" class="btn green" data-href="${ctx}/gift/create">
-                新增 <i class="fa fa-plus"></i>
-              </button>
-            </div> --%>
-            <!-- <div class="btn-group pull-right">
-              <button class="btn dropdown-toggle" data-toggle="dropdown">
-                工具 <i class="fa fa-angle-down"></i>
-              </button>
-              <ul class="dropdown-menu pull-right">
-                <li><a href="#"> 打印 </a></li>
-                <li><a href="#"> 导出Excel </a></li>
-              </ul>
-            </div> -->
-          </div>
-
-          <div class="row">
-            <div class="col-md-3 table-actions">
-              <span class="table-row-checked"></span>
-            </div>
-            <div class="col-md-9">
-              <form class="filter-form pull-right">
+          <form class="filter-form form-inline">
                 <input id="_orderBy" name="orderBy" type="hidden" value=""/>
                 <input id="_direction" name="direction" type="hidden" value=""/>
                 <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
                 <input id="_pageSize" name="pageSize" type="hidden" value="20" />
                 
-                <div class="form-group input-inline">
-                  <label class="sr-only"> 姓名： </label>
+                <div class="form-group">
                   <input type="text" class="form-control" name="realnameLK" placeholder="姓名"/>
                 </div>
                 
                 <div class="form-group input-inline">
-                <button class="btn purple filter-submit">
-                  <i class="fa fa-check"></i> 查询
+                <button class="btn blue filter-submit">
+                  <i class="fa fa-search"></i> 查询
                 </button>
                 </div>
               </form>
-            </div>
           </div>
+
           <table class="table table-striped table-bordered table-hover" id="dataTable">
           </table>
         </div>
