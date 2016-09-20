@@ -172,11 +172,11 @@
 .myui-imageview {
   position: fixed; top: 0px; left: 0px;
   width: 100%; height: 100%;
-  z-index: 1000; overflow: hidden;
+  z-index: 10000; overflow: hidden;
 }
 .myui-imageview .button-right {
   position: absolute; top: 6px; right: 6px;
-  height: 36px; z-index: 1002;
+  height: 36px; z-index: 10002;
   color: #fff; font-size: 14px; line-height: 36px;
 }
 .myui-imageview .button-right > i {
@@ -184,11 +184,11 @@
   font-size: 20px; line-height: 36px; text-align: center; vertical-align: middle;
 }
 .myui-imageview .header {
-  position: absolute; z-index: 1001;
-  background-color: rgba(0, 0, 0, 0.9);
+  width: 100%; height: 48px;
+  background-color: rgba(0, 0, 0, 0.9); z-index: 10001;
 }
 .myui-imageview .header h2 {
-  font-size: 15px; line-height: 48px; text-align: center;
+  color: #fff; font-size: 15px; line-height: 48px; text-align: center;
 }
 .myui-imageview-wrap {
   position: relative;

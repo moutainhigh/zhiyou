@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/view/include/editor.jsp"%>
 <!-- BEGIN JAVASCRIPTS -->
 <style>
-.imagescan {
+.imageview {
     cursor: pointer;
     width : 80px; height: 80px;
   }
@@ -11,10 +11,11 @@
 <script>
   $(function() {
     
-    $('.imagescan').click(function(){
+    $('.imageview').click(function(){
       var url = $(this).attr('data-url');
-      $.imagescan({
-        url: url
+      $.imageview({
+        url: url,
+        title: '支付凭证图片'
       });
     });
 
@@ -382,7 +383,7 @@
                   <td>${payment.cancelRemark}</td>
                   <td>${payment.remark}</td>
                   <td>${payment.outerSn}</td>
-                  <td><c:if test="${not empty payment.offlineImage}"><img class="imagescan" data-url="${payment.offlineImage}" src="${payment.offlineImage}" /></c:if></td>
+                  <td><c:if test="${not empty payment.offlineImage}"><img class="imageview" data-url="${payment.offlineImage}" src="${payment.offlineImage}" /></c:if></td>
                   <td>${payment.offlineMemo}</td>
                 </tr>
               </c:forEach>

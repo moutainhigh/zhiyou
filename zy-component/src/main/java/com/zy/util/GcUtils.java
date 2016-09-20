@@ -187,7 +187,7 @@ public class GcUtils {
 		} else if (userRank == User.UserRank.V4) {
 			return "特级代理";
 		} else {
-			return null;
+			return "-";
 		}
 	}
 

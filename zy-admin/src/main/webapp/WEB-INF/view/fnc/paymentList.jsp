@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 <style>
-  .imagescan {
+  .imageview {
     cursor: pointer;
     width: 80px;
     height: 80px;
@@ -180,7 +180,7 @@
             orderable: false,
             render: function (data, type, full) {
               if (full.offlineImage) {
-                return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
+                return '<img class="imageview mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
               } else {
                 return '';
               }
@@ -219,10 +219,11 @@
       }
     });
 
-    $('#dataTable').on('click', '.imagescan', function () {
+    $('#dataTable').on('click', '.imageview', function () {
       var url = $(this).attr('data-url');
-      $.imagescan({
-        url: url
+      $.imageview({
+        url: url,
+        title: '支付凭证图片'
       });
     });
 
