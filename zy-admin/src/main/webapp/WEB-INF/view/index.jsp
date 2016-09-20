@@ -119,7 +119,7 @@
 <!-- BEGIN BODY -->
 <body class="page-header-fixed page-sidebar-fixed page-quick-sidebar-over-content">
 <!-- BEGIN HEADER -->
-<div class="page-header navbar">
+<div class="page-header navbar navbar-static-top">
   <!-- BEGIN HEADER INNER -->
   <div class="page-header-inner">
     <!-- BEGIN LOGO -->
