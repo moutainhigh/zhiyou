@@ -130,10 +130,10 @@
           url: '${ctx}/payment', // ajax source
         },
         columns: [
-          {
+         /* {
             data: 'id',
             title: 'id'
-          },
+          },*/
           {
             data: 'sn',
             title: '支付单信息',
