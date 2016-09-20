@@ -188,7 +188,9 @@
                 <input class="Wdate form-control" type="text" id="endDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
                        name="registerTimeLT" value="" placeholder="注册时间止"/>
               </div>
-
+              <div class="form-group">
+                <input type="text" name="inviterNicknameLK" class="form-control" placeholder="邀请人昵称"/>
+              </div>
               <div class="form-group input-inline">
                 <button class="btn blue filter-submit">
                   <i class="fa fa-search"></i> 查询

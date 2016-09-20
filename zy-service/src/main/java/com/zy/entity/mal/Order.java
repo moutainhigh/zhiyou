@@ -89,6 +89,7 @@ public class Order implements Serializable {
 	@NotNull
 	@View(name = "createdTimeLabel", type = String.class)
 	@Field(label = "下单时间")
+	@Query({Predicate.LT, Predicate.GTE})
 	private Date createdTime;
 
 	@Field(label = "过期时间")
@@ -97,6 +98,7 @@ public class Order implements Serializable {
 
 	@View(name = "paidTimeLabel", type = String.class, groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
 	@Field(label = "支付时间")
+	@Query({Predicate.LT, Predicate.GTE})
 	private Date paidTime;
 
 	@View(name = "refundedTimeLabel", type = String.class, groups = {"OrderDetailVo", "OrderAdminVo", "OrderAdminFullVo"})
