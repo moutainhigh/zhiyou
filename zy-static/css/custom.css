@@ -366,6 +366,7 @@ a.disabled, a.disabled:hover, a.disabled:focus {
 }
 .detail-wrap img {
   width: 100% !important;
+  background: #efefef url("../image/image_placeholder.jpg") no-repeat scroll center center;
 }
 .detail-wrap > p,
 .detail-wrap ul,

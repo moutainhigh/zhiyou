@@ -50,14 +50,18 @@ public class NotifySendToMqJob {
 
     private final Runnable runnable = () -> {
         while (isRunning.get()) {
-            List<Notify> notifies = notifyService.findAll(builder().isSentEQ(false).build());
-            notifies.forEach(this::sendToMq);
-            if (isDev.get()) {
-                logger.info("handle {} 条message", notifies.size());
-            }
             try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
+                List<Notify> notifies = notifyService.findAll(builder().isSentEQ(false).build());
+                notifies.forEach(this::sendToMq);
+                if (isDev.get()) {
+                    logger.info("handle {} 条message", notifies.size());
+                }
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            } catch (Throwable e) {
                 logger.error(e.getMessage(), e);
             }
         }
@@ -88,7 +92,7 @@ public class NotifySendToMqJob {
             }
         }
         final String message = String.format("%s,%s,%s", notify.getRefId(), notify.getToken(), version);
-        logger.info("send message {} {}",notify.getTopic(), message);
+        logger.info("send message {} {}", notify.getTopic(), message);
         kafkaProducer.send(new ProducerRecord<String, String>(notify.getTopic(), message));
         this.notifyService.sendSuccess(notify.getId());
     }

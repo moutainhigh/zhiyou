@@ -1,6 +1,5 @@
 package com.zy.consumer.component;
 
-import com.zy.common.support.sms.LuosimaoSmsSupport;
 import com.zy.common.support.sms.SmsSupport;
 import com.zy.consumer.extend.AbstractConsumer;
 import com.zy.entity.fnc.BankCard;
@@ -13,10 +12,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-
 import static com.zy.model.Constants.*;
-import static java.math.BigDecimal.ZERO;
 import static java.util.Objects.isNull;
 import static org.slf4j.LoggerFactory.getLogger;
 
