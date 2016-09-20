@@ -70,6 +70,13 @@
         <div class="list-unit font-orange">${profit.amount}元</div>
       </div>
       </c:forEach>
+      <c:forEach items="${transfers}" var="transfer">
+      <div class="list-item">
+        <i class="list-icon fa fa-cny"></i>
+        <div class="list-text">${transfer.transferType}</div>
+        <div class="list-unit font-orange">${transfer.amount}元</div>
+      </div>
+      </c:forEach>
     </div>
     
     </c:if>
