@@ -49,12 +49,13 @@ public class ArticleController {
 		articleQueryModel.setPageSize(10);
 		Page<Article> page = articleService.findPage(articleQueryModel);
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, articleComponent::buildListVo));
+		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		return "article/articleList";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> product(Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
+	public Result<?> ajax(Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
 		if (timeLT == null) {
 			timeLT = new Date();
 		}
