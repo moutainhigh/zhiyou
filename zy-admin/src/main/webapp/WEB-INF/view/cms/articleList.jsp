@@ -16,10 +16,7 @@
       },
       dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
-        lengthMenu: [
-          [10, 20, 50, 100, -1],
-          [10, 20, 50, 100, 'All'] // change per page values here
-        ],
+        lengthMenu : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here
         pageLength: 20, // default record count per page
         order: [
         ], // set first column as a default sort by desc
@@ -85,13 +82,12 @@
               var optionHtml = '';
               <shiro:hasPermission name="article:edit">
               optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/article/update?id=' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
-              </shiro:hasPermission>
-              <shiro:hasPermission name="article:edit">
               if (full.isReleased) {
                 optionHtml += '<a class="btn btn-xs default red-stripe" href="javascript:;" onclick="unrelease(' + full.id + ')"><i class="fa fa-times X"></i> 取消发布 </a>';
               } else {
                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="release(' + full.id + ')"><i class="fa fa-check"></i> 发布 </a>';
               }
+              optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="deleteAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 删除 </a>';
               </shiro:hasPermission>
               return optionHtml;
             }
@@ -111,6 +107,18 @@
     $.post('${ctx}/article/release', {id: id, isRelease: isRelease}, function (result) {
       //grid.getDataTable().ajax.reload();
       grid.getDataTable().ajax.reload(null, false);
+    });
+  }
+  function deleteAjax(id) {
+    layer.confirm('新闻删除不可恢复，您确认删除此新闻么?', {
+      btn: ['删除','取消'] //按钮
+    }, function(){
+      $.post('${ctx}/article/delete', {id: id}, function (result) {
+        grid.getDataTable().ajax.reload(null, false);
+      });
+      layer.msg('删除成功！');
+    }, function(){
+      
     });
   }
   </shiro:hasPermission>
@@ -148,6 +156,10 @@
                 <input id="_direction" name="direction" type="hidden" value=""/>
                 <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
                 <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
+                
+                <div class="form-group">
+                  <input type="text" name="titleLK" class="form-control" placeholder="标题"/>
+                </div>
                 
                 <div class="form-group">
                   <select name="isReleasedEQ" class="form-control">

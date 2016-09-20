@@ -23,6 +23,8 @@ public class ArticleQueryModel implements Serializable {
 
 	private Boolean isHotEQ;
 
+	private String titleLK;
+	
 	private Integer pageNumber;
 
 	private Integer pageSize;

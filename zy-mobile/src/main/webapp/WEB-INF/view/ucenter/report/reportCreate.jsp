@@ -33,7 +33,7 @@
         var imageItems = $this.siblings('.image-item');
         var inputHidden = $this.children('input:hidden');
         var inputName = inputHidden.val('').attr('name');
-        //inputName = inputName.replace((imageItems.length + 1), '');
+        inputName = inputName.replace((imageItems.length + 1), '');
         var image = result.image;
         var imageThumbnail = result.imageThumbnail;
         var imageItem = '<div class="image-item">' + '<input type="hidden" name="' + inputName + (imageItems.length + 1) + '" value="' + image + '">'
@@ -65,7 +65,8 @@
           required : true
         },
         'phone' : {
-          required : true
+          required : true,
+          phone : true
         },
         'areaId' : {
           required : true
@@ -178,7 +179,7 @@
         <div class="list-item">
           <div class="list-text image-upload image-multi">
             <div class="image-add" data-limit="6">
-              <input type="hidden" name="image" value="">
+              <input type="hidden" name="image1" value="">
               <input type="file">
               <em class="state state-add"></em>
             </div>

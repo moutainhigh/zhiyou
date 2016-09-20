@@ -82,7 +82,7 @@
           <div class="list-text image-upload">
             <div class="image-item image-single ">
               <input type="hidden" name="image1" id="image1" value="">
-              <img src="${stccdn}/image/defaultImage_240_150.png">
+              <img src="${stccdn}/image/upload_240_150.png">
               <input type="file">
             </div>
           </div>
@@ -95,7 +95,7 @@
           <div class="list-text image-upload">
             <div class="image-item image-single">
               <input type="hidden" name="image2" id="image2" value="">
-              <img src="${stccdn}/image/defaultImage_240_150.png">
+              <img src="${stccdn}/image/upload_240_150.png">
               <input type="file">
             </div>
           </div>

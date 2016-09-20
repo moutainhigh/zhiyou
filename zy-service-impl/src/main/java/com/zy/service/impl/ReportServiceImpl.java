@@ -70,6 +70,28 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
+	public Report adminCreate(@NotNull Report report) {
+		Long userId = report.getUserId();
+		validate(userId, NOT_NULL, "user id is null");
+		User user = userMapper.findOne(userId);
+		validate(user, NOT_NULL, "user id " + userId + "  is not found");
+
+		Date now = new Date();
+		report.setVersion(0);
+		report.setPreConfirmStatus(ConfirmStatus.已通过);
+		report.setConfirmStatus(ConfirmStatus.已通过);
+		report.setConfirmRemark(null);
+		report.setConfirmedTime(null);
+		report.setAppliedTime(now);
+		report.setCreatedTime(now);
+		report.setIsSettledUp(true);
+		report.setIsHot(false);
+		validate(report);
+		reportMapper.insert(report);
+		return report;
+	}
+	
+	@Override
 	public Page<Report> findPage(@NotNull ReportQueryModel reportQueryModel) {
 		if (reportQueryModel.getPageNumber() == null)
 			reportQueryModel.setPageNumber(0);
@@ -148,7 +170,7 @@ public class ReportServiceImpl implements ReportService {
 		}
 
 		/* 全额给一个人 */
-		fncComponent.createProfit(userId, ProfitType.数据奖, id, title, CurrencyType.现金, new BigDecimal("18.00")); // TODO	 写死
+		fncComponent.createProfit(topId, ProfitType.数据奖, id, title, CurrencyType.现金, new BigDecimal("18.00")); // TODO	 写死
 
 		if (!topId.equals(userId)) {
 			fncComponent.createTransfer(topId, userId, Transfer.TransferType.数据奖, id, title, CurrencyType.现金, new BigDecimal("15.00"));

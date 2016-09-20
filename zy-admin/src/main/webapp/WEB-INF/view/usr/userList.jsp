@@ -15,9 +15,6 @@
       },
       dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
-        lengthMenu: [[10, 20, 50, 100, -1], [10, 20, 50, 100, 'All'] // change per page values here
-        ],
-        pageLength: 20, // default record count per page
         order: [], // set first column as a default sort by desc
         ajax: {
           url: '${ctx}/user', // ajax source
@@ -27,7 +24,7 @@
             data: 'nickname',
             title: '昵称',
             render: function (data, type, full) {
-              return '<p><img src="' + data + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.nickname + '</p>';
+              return '<p><img src="' + full.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.nickname + '</p>';
             }
           },
           {
@@ -110,7 +107,7 @@
     $addVipDialog = $.window({
       content: "<form action='' class='form-horizontal' style='margin-top: 20px;'>" + "<div class='form-body'>" + "<div class='form-group'>"
       + "<label class='control-label col-md-3'>加VIP等级:</label>" + "<div class='col-md-5'>"
-      + "<select class='form-control' id='userRank'><option value=''>不加VIP</option><option value='V1'>V1</option><option value='V2'>V2</option><option value='V3'>V3</option><option value='V4'>V4</option></select>" + "</div>" + "</div>"
+      + "<select class='form-control' id='userRank'><option value='V0'>普通用户</option><option value='V1'>三级代理</option><option value='V2'>二级代理</option><option value='V3'>一级代理</option><option value='V4'>特级代理</option></select>" + "</div>" + "</div>"
       + "<div class='form-group'>" + "<label class='control-label col-md-3'>备注信息:</label>"
       + "<div class='col-md-5'><textarea class='form-control' style='width: 220px;height: 120px;' id='remark'></textarea></div>" + "</div>" + "</div>"
       + "<div class='form-actions fluid'>" + "<div class='col-md-offset-3 col-md-9'>" + "<button type='button' class='btn green' onclick='submitBtn(" + id + ")'>"

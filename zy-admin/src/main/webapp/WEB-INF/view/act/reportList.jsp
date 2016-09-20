@@ -126,8 +126,7 @@
       },
       dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
-        lengthMenu: [[10, 20, 50, 100, -1], [10, 20, 50, 100, 'All'] // change per page values here
-        ],
+        lengthMenu : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here
         pageLength: 20, // default record count per page
         order: [], // set first column as a default sort by desc
         ajax: {
@@ -167,14 +166,14 @@
             title: '图片',
             orderable: false,
             render: function (data, type, full) {
-              var html = '<img class="imagescan mr-10" data-url="' + full.image1Big + '" src="' + full.image1Thumbnail + '" >';
+              var html = '<span class="layer-phote-' + full.id + '"><img class="imagescan mr-10" layer-src="' + full.image1Big + '" src="' + full.image1Thumbnail + '" >';
               if(full.image2Thumbnail != null) {
-                html += '<img class="imagescan mr-10" data-url="' + full.image2Big + '" src="' + full.image2Thumbnail + '" >';
+                html += '<img class="imagescan mr-10" layer-src="' + full.image2Big + '" src="' + full.image2Thumbnail + '" >';
               }
               if(full.image3Thumbnail != null) {
-                html += '<img class="imagescan mr-10" data-url="' + full.image3Big + '" src="' + full.image3Thumbnail + '" >';
+                html += '<img class="imagescan mr-10" layer-src="' + full.image3Big + '" src="' + full.image3Thumbnail + '" >';
               }
-              return html;
+              return html + '</span>';
             }
           },
           {
@@ -266,10 +265,10 @@
       }
     });
     
-    $('#dataTable').on('click', '.imagescan', function () {
-      var url = $(this).attr('data-url');
-      $.imagescan({
-        url: url
+    $('#dataTable').on('click', '.imagescan', function() {
+      var $this = $(this);
+      layer.photos({
+        photos: '.' + $this.parent().attr('class')
       });
     });
     
@@ -307,6 +306,13 @@
         <div class="caption">
           <i class="icon-volume-1"></i> 检测报告
         </div>
+        <shiro:hasPermission name="report:edit">
+        <div class="actions">
+          <a class="btn btn-circle green" data-href="${ctx}/report/create">
+            <i class="fa fa-plus"></i> 新增
+          </a>
+        </div>
+        </shiro:hasPermission>
       </div>
       <div class="portlet-body clearfix">
         <div class="table-container">

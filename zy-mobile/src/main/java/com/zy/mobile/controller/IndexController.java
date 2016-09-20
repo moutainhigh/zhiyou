@@ -59,7 +59,7 @@ public class IndexController {
 		articleQueryModel.setIsReleasedEQ(true);
 		articleQueryModel.setIsHotEQ(true);
 		articleQueryModel.setDirection(Direction.DESC);
-		articleQueryModel.setOrderBy("releasedTime");
+		articleQueryModel.setOrderBy("orderNumber");
 		articleQueryModel.setPageNumber(0);
 		articleQueryModel.setPageSize(6);
 		List<Article> articles = articleService.findAll(articleQueryModel);

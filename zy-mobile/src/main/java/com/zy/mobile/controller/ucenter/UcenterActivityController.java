@@ -3,6 +3,8 @@ package com.zy.mobile.controller.ucenter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,9 +58,10 @@ public class UcenterActivityController {
 	private CacheComponent cacheComponent;
 
 	@RequestMapping(value = "/apply", method = RequestMethod.POST)
-	public String apply(Long id, String inviterPhone, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+	public String apply(Long id, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		try {
-			activityService.apply(id, principal.getUserId(), null);
+			Long inviterId = (Long)request.getAttribute(Constants.REQUEST_ATTRIBUTE_INVITER_ID);
+			activityService.apply(id, principal.getUserId(), inviterId);
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功!"));
 			model.addAttribute("activity", activityComponent.buildListVo(activityService.findOne(id)));
 			model.addAttribute("user", userComponent.buildSimpleVo(userService.findOne(principal.getUserId())));

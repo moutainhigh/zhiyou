@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -27,11 +30,15 @@ import com.zy.common.util.ExcelUtils;
 import com.zy.common.util.WebUtils;
 import com.zy.component.ReportComponent;
 import com.zy.entity.act.Report;
+import com.zy.entity.act.Report.ReportResult;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
+import com.zy.model.Constants;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.model.query.UserQueryModel;
+import com.zy.service.JobService;
 import com.zy.service.ReportService;
+import com.zy.service.TagService;
 import com.zy.service.UserService;
 import com.zy.vo.ReportAdminVo;
 import com.zy.vo.ReportExportVo;
@@ -46,6 +53,12 @@ public class ReportController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private TagService tagService;
+
+	@Autowired
+	private JobService jobService;
+	
 	@Autowired
 	private ReportComponent reportComponent;
 
@@ -77,6 +90,30 @@ public class ReportController {
 		return new Grid<ReportAdminVo>(PageBuilder.copyAndConvert(page, reportComponent::buildAdminVo));
 	}
 
+	@RequiresPermissions("report:edit")
+	@RequestMapping(value = "create", method = RequestMethod.GET)
+	public String create(Model model) {
+		model.addAttribute("jobs", jobService.findAll());
+		model.addAttribute("reportResults", ReportResult.values());
+		return "act/reportCreate";
+	}
+
+	@RequiresPermissions("report:edit")
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public String create(Report report, Model model, RedirectAttributes redirectAttributes) {
+		AdminPrincipal principal = (AdminPrincipal) SecurityUtils.getSubject().getPrincipal();
+		report.setUserId(principal.getUserId());
+		try {
+			reportService.adminCreate(report);
+		} catch (Exception e) {
+			model.addAttribute("report", report);
+			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return create(model);
+		}
+		redirectAttributes.addFlashAttribute(ResultBuilder.ok("上传检测报告成功"));
+		return "redirect:/report";
+	}
+	
 	@RequiresPermissions("report:confirm")
 	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
 	@ResponseBody
@@ -126,4 +163,5 @@ public class ReportController {
 
 		return null;
 	}
+	
 }

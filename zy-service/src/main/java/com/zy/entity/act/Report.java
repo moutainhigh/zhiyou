@@ -201,7 +201,7 @@ public class Report implements Serializable {
 	private Date confirmedTime;
 	
 	@Field(label = "是否已结算")
-	@View(groups = {VO_ADMIN})
+	@View(groups = {VO_DETAIL, VO_ADMIN})
 	@NotNull
 	@Query(Predicate.EQ)
 	private Boolean isSettledUp;

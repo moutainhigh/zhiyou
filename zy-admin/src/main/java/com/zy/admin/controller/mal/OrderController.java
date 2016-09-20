@@ -23,6 +23,7 @@ import com.zy.common.model.ui.Grid;
 import com.zy.component.OrderComponent;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.LogisticsFeePayType;
+import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.dto.OrderDeliverDto;
@@ -49,6 +50,8 @@ public class OrderController {
 	@RequiresPermissions("order:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
+		long count = orderService.count(OrderQueryModel.builder().isPlatformDeliverEQ(true).orderStatusEQ(OrderStatus.已支付).build());
+		model.addAttribute("count", count);
 		return "mal/orderList";
 	}
 	
@@ -74,6 +77,8 @@ public class OrderController {
 	@RequiresPermissions("order:view")
 	@RequestMapping(value = "/platformDeliverList", method = RequestMethod.GET)
 	public String platformDeliverList(Model model) {
+		long count = orderService.count(OrderQueryModel.builder().isPlatformDeliverEQ(true).orderStatusEQ(OrderStatus.已支付).build());
+		model.addAttribute("count", count);
 		return "mal/orderPlatformDeliverList";
 	}
 	

@@ -11,6 +11,8 @@ public interface ReportService {
 	Report findOne(Long id);
 	
 	Report create(Report report);
+	
+	Report adminCreate(Report report);
 
 	Report modify(Report report);
 

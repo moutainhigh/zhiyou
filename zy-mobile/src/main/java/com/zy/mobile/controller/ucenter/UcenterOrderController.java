@@ -18,6 +18,7 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.OrderComponent;
+import com.zy.component.UserComponent;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
@@ -49,6 +50,9 @@ public class UcenterOrderController {
 	@Autowired
 	private OrderComponent orderComponent;
 
+	@Autowired
+	private UserComponent userComponent;
+	
 	@RequestMapping("/in")
 	public String in(Principal principal, Model model, OrderStatus orderStatus) {
 		OrderQueryModel orderQueryModel = OrderQueryModel.builder().userIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).build();
@@ -101,21 +105,23 @@ public class UcenterOrderController {
 	public String detail(@PathVariable Long id, Principal principal, Model model) {
 		Order order = orderService.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " not found");
-		User user = userService.findOne(principal.getUserId());
-		model.addAttribute("userRank", user.getUserRank());
-		if(order.getSellerId().equals(principal.getUserId())){
-			User buyer = userService.findOne(order.getUserId());
-			model.addAttribute("buyerUserRank", buyer.getUserRank());
-		}
-		List<Profit> profits = profitService.findAll(
-				ProfitQueryModel.builder()
-				.profitTypeIN(new Profit.ProfitType[] {Profit.ProfitType.特级平级奖, Profit.ProfitType.订单收款, Profit.ProfitType.销量奖})
-				.refIdEQ(order.getId())
-				.userIdEQ(principal.getUserId())
-				.build());
-		model.addAttribute("profits", profits);
-		model.addAttribute("order", orderComponent.buildDetailVo(order));
+		
 		model.addAttribute("inOut", order.getUserId().equals(principal.getUserId()) ? "in" : "out");
+		User buyer = userService.findOne(order.getUserId());
+		model.addAttribute("buyer", userComponent.buildListVo(buyer));
+		User seller = userService.findOne(order.getSellerId());
+		model.addAttribute("seller", userComponent.buildListVo(seller));
+		
+		if(order.getIsSettledUp()) {
+			List<Profit> profits = profitService.findAll(
+					ProfitQueryModel.builder()
+					.profitTypeIN(new Profit.ProfitType[] {Profit.ProfitType.特级平级奖, Profit.ProfitType.订单收款, Profit.ProfitType.销量奖})
+					.refIdEQ(order.getId())
+					.userIdEQ(principal.getUserId())
+					.build());
+			model.addAttribute("profits", profits);
+		}
+		model.addAttribute("order", orderComponent.buildDetailVo(order));
 		return "ucenter/order/orderDetail";
 	}
 
