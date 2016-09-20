@@ -106,6 +106,7 @@ public class Report implements Serializable {
 	private String tagIds;
 	
 	@NotNull
+	@Query(Predicate.EQ)
 	@Field(label = "检测结果")
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(groups = VO_EXPORT, field = @Field(label = "检测结果", order = 60))
@@ -175,6 +176,7 @@ public class Report implements Serializable {
 	private Date appliedTime;
 
 	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
 	@Field(label = "创建时间")
 	@View(groups = {VO_ADMIN})
 	@View(name = "createdTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST})

@@ -18,7 +18,7 @@
 
 <div class="row">
 	<div class="col-md-12">
-		<div class="portlet box blue">
+		<div class="portlet light bordered">
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="fa"></i> 区域管理

@@ -371,11 +371,6 @@
                 <a href="javascript:;" data-href="${ctx}/role"><i class="icon-key"></i> 角色管理<span class="badge badge-danger"></span></a>
               </li>
             </shiro:hasPermission>
-            <shiro:hasPermission name="site:*">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/site"><i class="icon-clock"></i> 站点管理</a>
-              </li>
-            </shiro:hasPermission>
             <shiro:hasPermission name="message:view">
               <li>
                 <a href="javascript:;" data-href="${ctx}/message"><i class="icon-bulb"></i> 消息管理<span class="badge badge-danger"></span></a>
