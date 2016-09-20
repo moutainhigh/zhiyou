@@ -213,7 +213,7 @@
         <div class="portlet-title">
           <div class="caption">
               <i class="icon-speech"></i>
-              <span class="caption-subject bold uppercase"> 物流信息</span>
+              <span class="caption-subject bold uppercase"> 发货信息</span>
               <span class="caption-helper"></span>
           </div>
         </div>
@@ -400,6 +400,7 @@
               <th>金额</th>
               <th>用户</th>
               <th>创建时间</th>
+              <th>收益时间</th>
               <th>收益单类型</th>
             </tr>
           </thead>
@@ -415,9 +416,10 @@
                   <td>${profit.sn}</td>
                   <td>${profit.title}</td>
                   <td>${profit.currencyType}</td>
-                  <td>${profit.amount}</td>
-                  <td>${profit.user.nickname}</td>
+                  <td>${profit.amountLabel}</td>
+                  <td><p><img src="${profit.user.avatarThumbnail}" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>: ${profit.user.nickname}</p><p>手机号: ${profit.user.phone}</p><p>等级: ${profit.user.userRankLabel}</p></td>
                   <td>${profit.createdTimeLabel}</td>
+                  <td>${profit.grantedTimeLabel}</td>
                   <td>${profit.profitType}</td>
                 </tr>
               </c:forEach>
@@ -432,10 +434,10 @@
               <th>单号</th>
               <th>标题</th>
               <th>状态</th>
-              <th>转出用户</th>
-              <th>转入用户</th>
               <th>币种</th>
               <th>金额</th>
+              <th>转出用户</th>
+              <th>转入用户</th>
               <th>创建时间</th>
               <th>转账时间</th>
               <th>转账类型</th>
@@ -455,10 +457,10 @@
                   <td>${transfer.sn}</td>
                   <td>${transfer.title}</td>
                   <td><label class="label label-${transfer.transferStatusStyle}">${transfer.transferStatus}</label></td>
-                  <td>${transfer.fromUser.nickname}</td>
-                  <td>${transfer.toUser.nickname}</td>
                   <td>${transfer.currencyType}</td>
                   <td>${transfer.amount}</td>
+                  <td><p><img src="${transfer.fromUser.avatarThumbnail}" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>: ${transfer.fromUser.nickname}</p><p>手机号: ${transfer.fromUser.phone}</p><p>等级: ${transfer.fromUser.userRankLabel}</p></td>
+                  <td><p><img src="${transfer.toUser.avatarThumbnail}" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>: ${transfer.toUser.nickname}</p><p>手机号: ${transfer.toUser.phone}</p><p>等级: ${transfer.toUser.userRankLabel}</p></td>
                   <td>${transfer.createdTimeLabel}</td>
                   <td>${transfer.transferredTimeLabel}</td>
                   <td>${transfer.transferType}</td>
