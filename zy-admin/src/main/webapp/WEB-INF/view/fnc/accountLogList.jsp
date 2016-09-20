@@ -8,7 +8,8 @@
   $(function () {
     $(".select2-multiple").select2({
       placeholder: '- 选择单据类型 -',
-      width: null
+      allowClear: true,
+      width: '200px'
   	});
     
     grid.init({
