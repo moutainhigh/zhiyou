@@ -16,10 +16,7 @@ $(function() {
         },
         dataTable : {
           //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>", 
-          lengthMenu: [
-                         [10, 20, 50, 100, -1],
-                         [10, 20, 50, 100, 'All'] // change per page values here
-                         ],
+          lengthMenu : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here
           pageLength: 20, // default record count per page
           order: [
                     [1, 'desc']
