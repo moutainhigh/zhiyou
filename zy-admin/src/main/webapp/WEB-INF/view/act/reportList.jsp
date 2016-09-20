@@ -274,7 +274,7 @@
     
     $('#dataTable').on('click', '.text', function() {
       var text = $(this).text();
-      if(text != '') {
+      if (text != '') {
         layer.alert($(this).text());
       }
     })
