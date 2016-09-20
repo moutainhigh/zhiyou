@@ -64,8 +64,9 @@
     <div class="list-group mt-10">
       <div class="list-title">我的收益</div>
       <c:forEach items="${profits}" var="profit">
-      <div class="list-item lh-20">
-        <div class="list-text">${profit.title}</div>
+      <div class="list-item">
+        <i class="list-icon fa fa-cny"></i>
+        <div class="list-text">${profit.profitType}</div>
         <div class="list-unit font-orange">${profit.amount}元</div>
       </div>
       </c:forEach>
