@@ -56,7 +56,8 @@
           required : true
         },
         'phone' : {
-          required : true
+          required : true,
+          phone : true
         },
         'areaId' : {
           required : true

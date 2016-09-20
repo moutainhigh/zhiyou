@@ -15,9 +15,6 @@
       },
       dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
-        lengthMenu: [[10, 20, 50, 100, -1], [10, 20, 50, 100, 'All'] // change per page values here
-        ],
-        pageLength: 20, // default record count per page
         order: [], // set first column as a default sort by desc
         ajax: {
           url: '${ctx}/user', // ajax source
@@ -27,7 +24,7 @@
             data: 'nickname',
             title: '昵称',
             render: function (data, type, full) {
-              return '<p><img src="' + data + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.nickname + '</p>';
+              return '<p><img src="' + full.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.nickname + '</p>';
             }
           },
           {

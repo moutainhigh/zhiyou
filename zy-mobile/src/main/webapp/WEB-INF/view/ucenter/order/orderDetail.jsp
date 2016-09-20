@@ -135,7 +135,7 @@
     </div>
     
     <div class="list-group">
-      <c:if test="${order.useLogistics}">
+      <c:if test="${order.useLogistics == true}">
       <div class="list-title">发货信息</div>
       <div class="list-item lh-20">
         <div class="list-text fs-14">物流公司</div>
@@ -146,7 +146,7 @@
         <div class="list-unit fs-12">${order.logisticsSn}</div>
       </div>
       </c:if>
-      <c:if test="${!order.useLogistics}">
+      <c:if test="${order.useLogistics == false}">
       <div class="list-title">发货信息</div>
       <div class="list-item lh-20">
         <div class="list-text fs-14">发货方式</div>
@@ -176,6 +176,10 @@
     </div>
     
     <div class="list-group">
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">订单编号</div>
+        <div class="list-unit fs-12">${order.sn}</div>
+      </div>
       <div class="list-item lh-20">
         <div class="list-text fs-14">下单时间</div>
         <div class="list-unit fs-12">${order.createdTimeLabel}</div>

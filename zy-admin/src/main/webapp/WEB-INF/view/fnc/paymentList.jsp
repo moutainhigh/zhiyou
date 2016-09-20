@@ -136,26 +136,12 @@
           },
           {
             data: 'sn',
-            title: '支付单号',
-            orderable: false
-          },
-          {
-            data: 'title',
-            title: '标题',
-            orderable: false
-          },
-          {
-            data: 'amount1',
-            title: '应付金额',
+            title: '支付单信息',
             orderable: false,
             render: function (data, type, full) {
-          		return data.toFixed(2);
+              return '<p>支付单号:' + full.sn +'</p>'
+                + '<p>标题:' + full.title +'</p>';
             }
-          },
-          {
-            data: 'createdTime',
-            title: '创建时间',
-            orderable: true
           },
           {
             data: '',
@@ -166,9 +152,22 @@
             }
           },
           {
+            data: 'amount1',
+            title: '应付金额',
+            orderable: false,
+            render: function (data, type, full) {
+          		return data.toFixed(2);
+            }
+          },
+          {
             data: 'payType',
             title: '支付方式',
             orderable: false
+          },
+          {
+            data: 'createdTime',
+            title: '创建时间',
+            orderable: true
           },
           {
             data: 'paymentStatus',

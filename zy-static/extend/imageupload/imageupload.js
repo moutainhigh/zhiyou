@@ -109,6 +109,11 @@
       }
       if (!checkFileSize(fileForUpload)) {
         showError('您选择的文件超过' + options.maxFileSize + '，请重新选择。');
+        if(element.className.indexOf('image-add') != -1) {
+          state.className = 'state state-add';
+        } else {
+          element.removeChild(state);
+        }
       }
       
       // get form data for POSTing

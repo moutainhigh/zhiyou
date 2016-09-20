@@ -46,8 +46,8 @@ var Datatable = function() {
 					// pull-right'>>r><'table-scrollable't><'row'<'col-md-8
 					// col-sm-12'pli><'col-md-4 col-sm-12'>>", // datatable layout
 					"dom" : "<'table-responsive't><'row'<'col-md-6 col-sm-12'<'margin-top-10'li>><'col-md-6 col-sm-12'<'pull-right'p>>r>", // datatable
-																																																																	// layout
-					"pageLength" : 10, // default records per page
+					"lengthMenu" : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here																																																							// layout
+					"pageLength" : 20, // default records per page
 					"language" : { // language settings
 						// metronic spesific
 						"metronicGroupActions" : "选中_TOTAL_条记录.",
