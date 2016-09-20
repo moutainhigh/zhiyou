@@ -88,6 +88,14 @@
             orderable: false
           },
           {
+            data: 'isPlatformDeliver',
+            title: '平台发货',
+            orderable: false,
+            render: function (data, type, full) {
+              return data ? '是' : '否';
+            }
+          },
+          {
             data: 'buyerMemo',
             title: '买家留言',
             orderable: false
@@ -123,11 +131,6 @@
             orderable: false,
             render: function (data, type, full) {
               var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/order/detail?id=' + data + '"><i class="fa fa-search"></i> 查看 </a>';
-              <shiro:hasPermission name="order:deliver">
-              if (full.orderStatus == '已支付' && full.isPlatformDeliver) {
-                optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/order/deliver?id=' + data + '"><i class="fa fa-car"></i> 发货 </a>';
-              }
-              </shiro:hasPermission>
               return optionHtml;
             }
           }]
