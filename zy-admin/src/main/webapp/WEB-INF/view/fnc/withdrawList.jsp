@@ -56,8 +56,10 @@
               title: '申请金额',
               orderable: false,
               render: function (data, type, full) {
-                return '<p>总金额：' + full.amount.toFixed(2) + '</p><p> 手续费率：' + full.feeRate + '</p><p>手续费：' + full.fee.toFixed(2) + '</p><p>实际到账：<span style="color: red;">'
-                  + full.realAmount.toFixed(2) + '</span></p>';
+                return '<p>总金额：' + full.amountLabel + '</p>'
+                  + '<p> 手续费率：' + full.feeRate + '</p>'
+                  + '<p>手续费：' + full.feeLabel + '</p>'
+                  + '<p>实际到账：<span class="font-red">' + full.realAmountLabel + '</span></p>';
               }
             },
             {

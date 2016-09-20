@@ -152,12 +152,9 @@
             }
           },
           {
-            data: 'amount1',
+            data: 'amount1Label',
             title: '应付金额',
-            orderable: false,
-            render: function (data, type, full) {
-          		return data.toFixed(2);
-            }
+            orderable: false
           },
           {
             data: 'payType',

@@ -169,9 +169,9 @@
             orderable: false
           },*/
           {
-            data: 'amount1',
+            data: 'amount1Label',
             title: '金额',
-            orderable: true
+            orderable: false
           },
           {
             data: 'paidTime',

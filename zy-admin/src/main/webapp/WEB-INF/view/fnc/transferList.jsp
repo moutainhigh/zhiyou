@@ -41,12 +41,9 @@
            orderable: false
            },*/
           {
-            data: 'amount',
+            data: 'amountLabel',
             title: '金额',
-            orderable: false,
-            render: function (data, type, full) {
-              return data.toFixed(2);
-            }
+            orderable: false
           },
           {
             data: 'createdTimeLabel',

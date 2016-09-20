@@ -15,7 +15,7 @@
       },
       dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>", 
-        lengthMenu : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here
+        lengthMenu: [[10, 20, 50, 100], [10, 20, 50, 100]],// change per page values here
         pageLength: 20, // default record count per page
         order: [], // set first column as a default sort by desc
         ajax: {
@@ -35,12 +35,17 @@
             }
           },
           {
-            data: '',
-            title: '收益',
+            data: 'user',
+            title: '用户信息',
             orderable: false,
             render: function (data, type, full) {
-              return '<p>收益类型：' + full.currencyType + '</p><p>金额: ' + full.amount + '</p>';
+              return formatUser(full.user);
             }
+          },
+          {
+            data: 'amountLabel',
+            title: '收益',
+            orderable: false
           },
           {
             data: 'profitType',
@@ -50,15 +55,9 @@
           {
             data: 'createdTime',
             title: '创建时间',
-            orderable: false
+            orderable: true
           },
-          {
-            data: '',
-            title: '用户',
-            render: function (data, type, full) {
-              return formatUser(full.user);
-            }
-          },
+
           {
             data: 'profitStatus',
             title: '收益单状态',
@@ -70,7 +69,7 @@
           {
             data: 'grantedTime',
             title: '收益时间',
-            orderable: false
+            orderable: true
           },
           {
             data: 'remark',
