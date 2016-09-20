@@ -13,8 +13,6 @@
 
 <title>余额支付</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
-<link rel="stylesheet" href="${stccdn}/css/activity.css">
 <script type="text/javascript">
   $(function() {
 	  $("#btnSubmit").click(function(){
