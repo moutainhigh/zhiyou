@@ -6,6 +6,11 @@
   var grid = new Datatable();
 
   $(function () {
+    $(".select2-multiple").select2({
+      placeholder: placeholder,
+      width: null
+  	});
+    
     grid.init({
       src: $('#dataTable'),
       onSuccess: function (grid) {
@@ -142,8 +147,8 @@
                 </div>
 
                 <div class="form-group">
-                  <select name="accountLogTypeEQ" class="form-control">
-                    <option value="">-- 择单据类型 --</option>
+                  <select name="accountLogTypeEQ" class="form-control select2-multiple" multiple="multiple">
+                    <option value="" disabled="disabled">- 选择单据类型 -</option>
                     <option value="0">充值单</option>
                     <option value="1">订单</option>
                     <option value="2">提现单</option>
@@ -151,7 +156,7 @@
                     <option value="4">转账单</option>
                   </select>
                 </div>
-
+                
                 <div class="form-group">
                   <input type="text" name="refSnEQ" class="form-control" placeholder="单据号"/>
                 </div>
