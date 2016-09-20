@@ -16,10 +16,7 @@
       },
       dataTable: {
         "sDom": "<'table-responsive't><'row'>",
-        lengthMenu: [
-          [10, 20, 50, 100, -1],
-          [10, 20, 50, 100, 'All'] // change per page values here
-        ],
+        lengthMenu : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here
         pageLength: 20, // default record count per page
         order: [], // set first column as a default sort by desc
         ajax: {

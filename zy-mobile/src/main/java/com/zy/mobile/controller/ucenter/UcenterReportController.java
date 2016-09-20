@@ -28,13 +28,16 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.ReportComponent;
 import com.zy.entity.act.Report;
+import com.zy.entity.fnc.Profit;
 import com.zy.entity.usr.Tag;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
+import com.zy.model.query.ProfitQueryModel;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.service.JobService;
+import com.zy.service.ProfitService;
 import com.zy.service.ReportService;
 import com.zy.service.TagService;
 import com.zy.service.UserService;
@@ -48,6 +51,9 @@ public class UcenterReportController {
 
 	@Autowired
 	private ReportService reportService;
+	
+	@Autowired
+	private ProfitService profitService;
 
 	@Autowired
 	private TagService tagService;
@@ -111,7 +117,17 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "/{id}", method = GET)
 	public String detail(@PathVariable Long id, Principal principal, Model model) {
-		model.addAttribute("report", reportComponent.buildDetailVo(findAndValidate(id, principal.getUserId())));
+		Report report = findAndValidate(id, principal.getUserId());
+		model.addAttribute("report", reportComponent.buildDetailVo(report));
+		if(report.getIsSettledUp()){
+			List<Profit> profits = profitService.findAll(
+					ProfitQueryModel.builder()
+					.profitTypeEQ(Profit.ProfitType.数据奖)
+					.refIdEQ(id)
+					.userIdEQ(principal.getUserId())
+					.build());
+			model.addAttribute("profits", profits);
+		}
 		return "ucenter/report/reportDetail";
 	}
 

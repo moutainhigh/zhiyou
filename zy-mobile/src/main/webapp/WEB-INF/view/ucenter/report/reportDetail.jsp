@@ -41,97 +41,115 @@
     </c:if>
   </header>
   
-  <c:if test="${report.confirmStatus == '待审核'}">
-  <div class="note note-warning mb-0">
-    <i class="fa fa-clock-o"></i> 审核信息：待审核
-  </div>
-  </c:if>
-  <c:if test="${report.confirmStatus == '未通过'}">
-  <div class="note note-danger mb-0">
-    <i class="fa fa-close"></i> 审核信息：未通过, ${report.confirmRemark}
-  </div>
-  </c:if>
-  <c:if test="${report.confirmStatus == '已通过'}">
-  <div class="note note-success mb-0">
-    <i class="fa fa-check"></i> 审核信息：已通过
-  </div>
-  </c:if>
+  <article>
+    <c:if test="${report.confirmStatus == '待审核'}">
+    <div class="note note-warning mb-0">
+      <i class="fa fa-clock-o"></i> 审核信息：待审核
+    </div>
+    </c:if>
+    <c:if test="${report.confirmStatus == '未通过'}">
+    <div class="note note-danger mb-0">
+      <i class="fa fa-close"></i> 审核信息：未通过, ${report.confirmRemark}
+    </div>
+    </c:if>
+    <c:if test="${report.confirmStatus == '已通过'}">
+    <div class="note note-success mb-0">
+      <i class="fa fa-check"></i> 审核信息：已通过
+    </div>
+    </c:if>
   
-  <div class="list-group">
-    <div class="list-item">
-      <div class="list-text">客户姓名</div>
-      <div class="list-unit">${report.realname}</div>
+    <%-- 结算信息 --%>
+    <c:if test="${report.isSettledUp && not empty profits}">
+    
+    <div class="list-group mt-10">
+      <div class="list-title">我的收益</div>
+      <c:forEach items="${profits}" var="profit">
+      <div class="list-item lh-20">
+        <div class="list-text">${profit.title}</div>
+        <div class="list-unit font-orange">${profit.amount}元</div>
+      </div>
+      </c:forEach>
     </div>
-    <div class="list-item">
-      <div class="list-text">性别</div>
-      <div class="list-unit">${report.gender}</div>
-    </div>
-    <div class="list-item">
-      <div class="list-text">年龄</div>
-      <div class="list-unit">${report.age}岁</div>
-    </div>
-    <div class="list-item">
-      <div class="list-text">手机号</div>
-      <div class="list-unit">${report.phone}</div>
-    </div>
-    <div class="list-item">
-      <div class="list-text">地区</div>
-      <div class="list-unit">${report.province} ${report.city} ${report.district}</div>
-    </div>
-    <div class="list-item">
-      <div class="list-text">职业</div>
-      <div class="list-unit">${report.jobName}</div>
-    </div>
-  </div>
+    
+    </c:if>
   
-  <div class="list-group">
-    <div class="list-title">检测结果，照片</div>
-    <div class="list-item">
-      <div class="list-text">检测结果</div>
-      <div class="list-unit">
-        <c:choose>
-          <c:when test="${report.reportResult == '阴性'}">
-          <span class="font-red">${report.reportResult}</span>
-          </c:when>
-          <c:when test="${report.reportResult == '弱阳性'}">
-          <span class="font-orange">${report.reportResult}</span>
-          </c:when>
-          <c:when test="${report.reportResult == '阳性'}">
-          <span class="font-green">${report.reportResult}</span>
-          </c:when>
-          <c:when test="${report.reportResult == '干扰色'}">
-          <span class="font-purple">${report.reportResult}</span>
-          </c:when>
-        </c:choose>
+    <div class="list-group">
+      <div class="list-title">客户资料</div>
+      <div class="list-item">
+        <div class="list-text">客户姓名</div>
+        <div class="list-unit">${report.realname}</div>
+      </div>
+      <div class="list-item">
+        <div class="list-text">性别</div>
+        <div class="list-unit">${report.gender}</div>
+      </div>
+      <div class="list-item">
+        <div class="list-text">年龄</div>
+        <div class="list-unit">${report.age}岁</div>
+      </div>
+      <div class="list-item">
+        <div class="list-text">手机号</div>
+        <div class="list-unit">${report.phone}</div>
+      </div>
+      <div class="list-item">
+        <div class="list-text">地区</div>
+        <div class="list-unit">${report.province} ${report.city} ${report.district}</div>
+      </div>
+      <div class="list-item">
+        <div class="list-text">职业</div>
+        <div class="list-unit">${report.jobName}</div>
       </div>
     </div>
-    <div class="list-item">
-      <div class="list-text list-image image-view">
-        <img src="${report.image1Thumbnail}" data-src="${report.image1Big}">
-        <c:if test="${not empty report.image2Thumbnail}">
-        <img src="${report.image2Thumbnail}" data-src="${report.image2Big}">
-        </c:if>
-        <c:if test="${not empty report.image3Thumbnail}">
-        <img src="${report.image3Thumbnail}" data-src="${report.image3Big}">
-        </c:if>
-        <c:if test="${not empty report.image4Thumbnail}">
-          <img src="${report.image4Thumbnail}" data-src="${report.image4Big}">
-        </c:if>
-        <c:if test="${not empty report.image5Thumbnail}">
-          <img src="${report.image5Thumbnail}" data-src="${report.image5Big}">
-        </c:if>
-        <c:if test="${not empty report.image6Thumbnail}">
-          <img src="${report.image6Thumbnail}" data-src="${report.image6Big}">
-        </c:if>
+    
+    <div class="list-group">
+      <div class="list-title">检测结果，照片</div>
+      <div class="list-item">
+        <div class="list-text">检测结果</div>
+        <div class="list-unit">
+          <c:choose>
+            <c:when test="${report.reportResult == '阴性'}">
+            <span class="font-red">${report.reportResult}</span>
+            </c:when>
+            <c:when test="${report.reportResult == '弱阳性'}">
+            <span class="font-orange">${report.reportResult}</span>
+            </c:when>
+            <c:when test="${report.reportResult == '阳性'}">
+            <span class="font-green">${report.reportResult}</span>
+            </c:when>
+            <c:when test="${report.reportResult == '干扰色'}">
+            <span class="font-purple">${report.reportResult}</span>
+            </c:when>
+          </c:choose>
+        </div>
+      </div>
+      <div class="list-item">
+        <div class="list-text list-image image-view">
+          <img src="${report.image1Thumbnail}" data-src="${report.image1Big}">
+          <c:if test="${not empty report.image2Thumbnail}">
+          <img src="${report.image2Thumbnail}" data-src="${report.image2Big}">
+          </c:if>
+          <c:if test="${not empty report.image3Thumbnail}">
+          <img src="${report.image3Thumbnail}" data-src="${report.image3Big}">
+          </c:if>
+          <c:if test="${not empty report.image4Thumbnail}">
+            <img src="${report.image4Thumbnail}" data-src="${report.image4Big}">
+          </c:if>
+          <c:if test="${not empty report.image5Thumbnail}">
+            <img src="${report.image5Thumbnail}" data-src="${report.image5Big}">
+          </c:if>
+          <c:if test="${not empty report.image6Thumbnail}">
+            <img src="${report.image6Thumbnail}" data-src="${report.image6Big}">
+          </c:if>
+        </div>
       </div>
     </div>
-  </div>
-  
-  <div class="list-group">
-    <div class="list-title">客户使用心得</div>
-    <div class="list-item">
-      <div class="list-text font-777">${report.text}</div>
+    
+    <div class="list-group">
+      <div class="list-title">客户使用心得</div>
+      <div class="list-item">
+        <div class="list-text font-777">${report.text}</div>
+      </div>
     </div>
-  </div>
+  </article>
 </body>
 </html>
