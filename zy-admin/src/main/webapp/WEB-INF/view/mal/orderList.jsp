@@ -201,6 +201,24 @@
                 <input type="text" name="logisticsSnLK" class="form-control" placeholder="物流单号"/>
               </div>              
 
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" id="beginDate"
+                  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="createdTimeGTE" value="" placeholder="下单时间起" />
+              </div>
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" id="endDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                  name="createdTimeLT" value="" placeholder="下单时间止" />
+              </div>
+
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" id="beginDate"
+                  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="paidTimeGTE" value="" placeholder="支付时间起" />
+              </div>
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" id="endDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                  name="paidTimeLT" value="" placeholder="支付时间止" />
+              </div>
+
               <div class="form-group input-inline">
                 <button class="btn blue filter-submit">
                   <i class="fa fa-search"></i> 查询

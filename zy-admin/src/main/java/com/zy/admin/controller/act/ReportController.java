@@ -66,6 +66,7 @@ public class ReportController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
 		model.addAttribute("confirmStatus", ConfirmStatus.values());
+		model.addAttribute("reportResults", ReportResult.values());
 		return "act/reportList";
 	}
 

@@ -326,6 +326,28 @@
               </div>
 
               <div class="form-group">
+                <input type="text" name="phoneEQ" class="form-control" placeholder="手机号"/>
+              </div>
+
+              <div class="form-group">
+                <select name="reportResultEQ" class="form-control">
+                  <option value="">-- 检测结果 --</option>
+                  <c:forEach items="${reportResults}" var="reportResult">
+                    <option value="${reportResult}">${reportResult}</option>
+                  </c:forEach>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <select name="preConfirmStatusEQ" class="form-control">
+                  <option value="">-- 预审核状态 --</option>
+                  <c:forEach items="${confirmStatus}" var="confirmStatus">
+                    <option value="${confirmStatus}">${confirmStatus}</option>
+                  </c:forEach>
+                </select>
+              </div>
+
+              <div class="form-group">
                 <select name="confirmStatusEQ" class="form-control">
                   <option value="">-- 审核状态 --</option>
                   <c:forEach items="${confirmStatus}" var="confirmStatus">
