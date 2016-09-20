@@ -47,6 +47,7 @@ public class UserComponent {
 				UserAdminSimpleVo userAdminSimpleVo = new UserAdminSimpleVo();
 				BeanUtils.copyProperties(inviter, userAdminSimpleVo);
 				userAdminSimpleVo.setAvatarThumbnail(GcUtils.getThumbnail(inviter.getAvatar()));
+				userAdminSimpleVo.setUserRankLabel(GcUtils.getUserRankLabel(inviter.getUserRank()));
 				userAdminVo.setInviter(userAdminSimpleVo);
 			}
 		}
