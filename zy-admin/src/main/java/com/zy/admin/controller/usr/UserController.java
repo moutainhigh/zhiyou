@@ -1,5 +1,26 @@
 package com.zy.admin.controller.usr;
 
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
+
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
@@ -14,17 +35,6 @@ import com.zy.entity.usr.User.UserType;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
 import com.zy.vo.UserAdminVo;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import static com.zy.common.util.ValidateUtils.*;
-import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
 @RequestMapping("/user")
 @Controller
@@ -46,7 +56,19 @@ public class UserController {
 	@RequiresPermissions("user:view")
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Grid<UserAdminVo> list(UserQueryModel userQueryModel) {
+	public Grid<UserAdminVo> list(UserQueryModel userQueryModel, String inviterNicknameLK) {
+		if(StringUtils.isNotBlank(inviterNicknameLK)) {
+			UserQueryModel inviterQueryModel = new UserQueryModel();
+			inviterQueryModel.setNicknameLK(inviterNicknameLK);
+			List<User> inviters = userService.findAll(inviterQueryModel);
+			if(inviters.isEmpty()) {
+				return new Grid<UserAdminVo>(PageBuilder.empty(userQueryModel.getPageSize(), userQueryModel.getPageNumber()));
+			}
+			if(inviters != null && inviters.size() > 0) {
+				Long[] inviterIds = inviters.stream().map(v -> v.getId()).toArray(Long[]::new);
+				userQueryModel.setInviterIdIN(inviterIds);
+			}
+		}
 		Page<User> page = userService.findPage(userQueryModel);
 		Page<UserAdminVo> voPage = PageBuilder.copyAndConvert(page, userComponent::buildAdminVo);
 		return new Grid<>(voPage);
