@@ -109,7 +109,7 @@
                 <img src="${offlineImage}">
               </c:if>
               <c:if test="${empty offlineImage}">
-                <img src="${stccdn}/image/defaultImage_240_150.png">
+                <img src="${stccdn}/image/upload_240_150.png">
               </c:if>
               <input type="file">
             </div>

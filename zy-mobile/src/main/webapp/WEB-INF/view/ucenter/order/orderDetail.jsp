@@ -124,7 +124,7 @@
     </c:if>
     
     <div class="list-group">
-      <div class="list-title">收件人信息</div>
+      <div class="list-title">收货人信息</div>
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-map-marker fs-24"></i></div>
         <div class="list-text fs-14 font-333 pl-5 pr-5">
@@ -135,8 +135,21 @@
     </div>
     
     <div class="list-group">
-      <c:if test="${order.useLogistics == true}">
       <div class="list-title">发货信息</div>
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">发货人</div>
+        
+        <c:if test="${order.isPlatformDeliver}">
+        <div class="list-unit fs-12">公司发货</div>
+        </c:if>
+        
+        <c:if test="${!order.isPlatformDeliver}">
+        <div class="list-unit">${seller.nickname}</div>
+        <img class="image-40 round ml-10" src="${seller.avatarThumbnail}">
+        </c:if>
+        
+      </div>
+      <c:if test="${order.useLogistics == true}">
       <div class="list-item lh-20">
         <div class="list-text fs-14">物流公司</div>
         <div class="list-unit fs-12">${order.logisticsName}</div>
@@ -147,7 +160,6 @@
       </div>
       </c:if>
       <c:if test="${order.useLogistics == false}">
-      <div class="list-title">发货信息</div>
       <div class="list-item lh-20">
         <div class="list-text fs-14">发货方式</div>
         <div class="list-unit fs-12">面对面发货</div>
@@ -258,7 +270,7 @@
         </div>
       </c:if>
       <c:if test="${order.orderStatus == '已支付' && !order.isPlatformDeliver}">
-        <c:if test="${userRank == 'V4' && buyerUserRank == 'V3'}">
+        <c:if test="${seller.userRank == 'V4' && buyer.userRank == 'V3'}">
           <div class="form-btn">
             <a id="btnPlatformDeliver" class="btn blue btn-block round-2"><i class="fa fa-share"></i> 转给公司发货</a>
           </div>

@@ -289,7 +289,7 @@
           <div class="list-text image-upload image-single">
             <div class="image-item">
               <input type="hidden" name="simage" id="simage" value="">
-              <img src="${stccdn}/image/defaultImage_240_150.png">
+              <img src="${stccdn}/image/upload_240_150.png">
               <input type="file">
             </div>
           </div>
