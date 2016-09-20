@@ -14,65 +14,30 @@
 
 <title>签到失败</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
+<link href="${stccdn}/css/signIn.css" rel="stylesheet">
 <script type="text/javascript">
   $(function() {
 
   });
 </script>
-<style>
-  * { margin: 0; outline: 0; padding: 0; font-size: 100%; }
-  html { height: 100%;  }
-  .m-img {
-    max-width: 420px; min-width: 320px;  min-height: 480px;
-    margin: 0 auto;background: #78C8B4;
-  }
-  .header-img{
-    top: 20px; left: 20%;
-    width: 60%;
-  }
-  .user-head{
-    top: 20px; left: 40%;
-    width: 20%;
-    border-radius: 100%;
-  }
-  .name{
-   top: 0px; left: 0;margin-top: 32%;
-    text-align: center;
-  }
-  .link{
-    left: 40%;bottom: 22%;
-    width: 20%;
-    margin: 0 auto;
-  }
-  .footer-img{
-     bottom: 10px; left: 29%;
-    width: 42%;
-    margin: 0 auto;
-  }
-  .middle{
-   top: 0px; left: 0;
-    margin: 0 auto;
-  }
-  .middle1{
-    top: 43%; left: 37%;
-    width: 28%;
-    margin: 0 auto;
-  }
-</style>
+ 
 </head>
-<body>
-    <div class="m-img relative size-100p o-hidden">
-      <img src="${stccdn}/image/tmp/middle.png" class="middle absolute block width-100p"/>
-      <img src="${stccdn}/image/tmp/middle1.png" class="middle1 absolute block" />
-      <div class="header-img absolute block">
-        <img class="user-head absolute" src="${stccdn}/image/tmp/3.jpg"/>
-        <p class="name absolute width-100p fs-12">昵称昵称昵称</p>
+<body class="body-bg signInFail pb-15">
+    
+    <div style="margin-top: 5%;">
+      <div class="width-100p text-center">
+        <img class="user-head " src="http://image.zhi-you.net/avatar/ed673dc0-9e83-4e99-9206-1f33064dc099@240h_240w_1e_1c.jpg"/>
+        <p class="width-100p fs-16 font-white mt-5">昵称昵称昵称</p>
       </div>
-        <a href="#">
-            <img src="${stccdn}/image/tmp/sign.png" class="link absolute block"/>
-        </a>
-      <img src="${stccdn}/image/tmp/logo.png" class="footer-img absolute block" />
     </div>
+    
+    <img src="${stccdn}/image/tmp/failImg.png" class="width-50p block center" style="margin-top: 33%;" />
+    
+    <a href="#">
+      <img src="${stccdn}/image/tmp/sign.png" class="width-25p block center" style="margin-top: 5%;"/>
+    </a>
+    
+    <img src="${stccdn}/image/tmp/footer.png" class="block center" style="width: 40%; margin-top: 50px;" />
 </body>
 </html>
-
+ 

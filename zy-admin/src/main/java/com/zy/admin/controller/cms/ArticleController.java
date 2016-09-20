@@ -43,9 +43,6 @@ public class ArticleController {
 	
 	@Autowired
 	private ArticleComponent articleComponent;
-	
-	@Autowired
-	private AliyunOssSupport aliyunOssSupport;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
@@ -125,6 +122,16 @@ public class ArticleController {
 		validate(article, NOT_NULL, "article not found, id is " + id);
 
 		articleService.release(id, isRelease);
+		return true;
+	}
+	
+	@RequiresPermissions("article:edit")
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean delete(@RequestParam Long id) {
+		Article article = articleService.findOne(id);
+		validate(article, NOT_NULL, "article not found, id is " + id);
+		articleService.delete(id);
 		return true;
 	}
 
