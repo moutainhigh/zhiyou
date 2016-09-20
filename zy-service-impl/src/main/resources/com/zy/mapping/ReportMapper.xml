@@ -119,6 +119,9 @@
 		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image1,image2,image3,image4,image5,image6,applied_time,created_time,pre_confirm_status,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version
 		from `act_report`
 		<where>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
+			</if>
 			<if test="preConfirmStatusEQ != null">
 				and pre_confirm_status = #{preConfirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -133,6 +136,9 @@
 				1 = 2
 				</if>
 			</if>
+			<if test="reportResultEQ != null">
+				and report_result = #{reportResultEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
 			<if test="isHotEQ != null">
 				and is_hot = #{isHotEQ}
 			</if>
@@ -141,6 +147,9 @@
 			</if>
 			<if test="phoneEQ != null">
 				and phone = #{phoneEQ}
+			</if>
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 			<if test="confirmStatusEQ != null">
 				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
@@ -168,6 +177,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.ReportQueryModel">
 		select count(*) from `act_report`
 		<where>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
+			</if>
 			<if test="preConfirmStatusEQ != null">
 				and pre_confirm_status = #{preConfirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -182,6 +194,9 @@
 				1 = 2
 				</if>
 			</if>
+			<if test="reportResultEQ != null">
+				and report_result = #{reportResultEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
 			<if test="isHotEQ != null">
 				and is_hot = #{isHotEQ}
 			</if>
@@ -190,6 +205,9 @@
 			</if>
 			<if test="phoneEQ != null">
 				and phone = #{phoneEQ}
+			</if>
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 			<if test="confirmStatusEQ != null">
 				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
