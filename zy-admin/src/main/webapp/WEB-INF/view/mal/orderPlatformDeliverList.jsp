@@ -170,7 +170,7 @@
             <form class="filter-form form-inline" id="searchForm">
               <ul id="statusTab" class="nav nav-tabs">
                 <li class="active"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 全部</a></li>
-                <li class="" data-order-status="1"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已支付</a></li>
+                <li class="" data-order-status="1" data-is-platform-deliver="true"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"><strong> 已支付 </strong><span class="badge badge-primary"> ${count} </span></a></li>
                 <li class="" data-order-status="2"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已发货</a></li>
                 <li class="" data-order-status="3"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已完成</a></li>
                 <li class="" data-order-status="4"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已退款</a></li>

@@ -14,6 +14,12 @@ public class ArticleListVo implements Serializable {
 	private Long id;
 	@Field(label = "标题")
 	private String title;
+	@Field(label = "作者")
+	private String author;
+	@Field(label = "访问数")
+	private Long visitCount;
+	@Field(label = "是否热门")
+	private Boolean isHot;
 
 	/* 扩展 */
 	@Field(label = "发布时间")
