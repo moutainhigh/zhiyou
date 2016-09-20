@@ -48,12 +48,28 @@
             orderable: false
           },
           {
+            data: 'orderNumber',
+            title: '排序数字',
+            orderable: false
+          },
+          {
             data: 'isReleased',
             title: '是否发布',
             orderable: false,
             render: function (data, type, full) {
               if (data) {
                 return '<i class="fa fa-check font-green"></i> <span class="badge badge-success"> 已发布 </span>';
+              }
+              return '';
+            }
+          },
+          {
+            data: 'isHot',
+            title: '是否首页展示',
+            orderable: false,
+            render: function (data, type, full) {
+              if (data) {
+                return '<i class="fa fa-check font-red"></i>';
               }
               return '';
             }
@@ -132,7 +148,15 @@
                 
                 <div class="form-group">
                   <select name="isReleasedEQ" class="form-control">
-                    <option value="">--请选择是否发布--</option>
+                    <option value="">-- 是否发布 --</option>
+                    <option value="true">是</option>
+                    <option value="false">否</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <select name="isHotEQ" class="form-control">
+                    <option value="">-- 是否首页展示 --</option>
                     <option value="true">是</option>
                     <option value="false">否</option>
                   </select>

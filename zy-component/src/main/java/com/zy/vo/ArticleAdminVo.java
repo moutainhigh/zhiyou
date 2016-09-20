@@ -26,7 +26,11 @@ public class ArticleAdminVo implements Serializable {
 	private String content;
 	@Field(label = "访问数")
 	private Long visitCount;
-
+	@Field(label = "排序")
+	private Integer orderNumber;
+	@Field(label = "是否热门")
+	private Boolean isHot;
+	
 	/* 扩展 */
 	@Field(label = "发布时间")
 	private String releasedTimeLabel;
