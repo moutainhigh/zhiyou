@@ -72,7 +72,7 @@ public class AccountLog implements Serializable {
 	private Long refUserId;
 
 	@NotNull
-	@Query(EQ)
+	@Query(IN)
 	@Field(label = "资金账户日志类型")
 	@View(groups = {"AccountLogAdminVo"})
 	private AccountLogType accountLogType;
