@@ -29,6 +29,7 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.ReportComponent;
 import com.zy.entity.act.Report;
 import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Transfer;
 import com.zy.entity.usr.Tag;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
@@ -36,10 +37,12 @@ import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.ProfitQueryModel;
 import com.zy.model.query.ReportQueryModel;
+import com.zy.model.query.TransferQueryModel;
 import com.zy.service.JobService;
 import com.zy.service.ProfitService;
 import com.zy.service.ReportService;
 import com.zy.service.TagService;
+import com.zy.service.TransferService;
 import com.zy.service.UserService;
 
 @RequestMapping("/u/report")
@@ -55,6 +58,9 @@ public class UcenterReportController {
 	@Autowired
 	private ProfitService profitService;
 
+	@Autowired
+	private TransferService transferService;
+	
 	@Autowired
 	private TagService tagService;
 
@@ -127,6 +133,14 @@ public class UcenterReportController {
 					.userIdEQ(principal.getUserId())
 					.build());
 			model.addAttribute("profits", profits);
+			
+			List<Transfer> transfers = transferService.findAll(
+					TransferQueryModel.builder()
+					.transferTypeEQ(Transfer.TransferType.数据奖)
+					.refIdEQ(id)
+					.toUserIdEQ(principal.getUserId())
+					.build());
+			model.addAttribute("transfers", transfers);
 		}
 		return "ucenter/report/reportDetail";
 	}
