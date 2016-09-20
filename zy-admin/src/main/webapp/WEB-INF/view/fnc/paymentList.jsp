@@ -180,7 +180,7 @@
             orderable: false,
             render: function (data, type, full) {
               if (full.offlineImage) {
-                return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
+                return '<a target="_blank" href="' + full.offlineImage + '"><img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" ></a>';
               } else {
                 return '';
               }
@@ -217,13 +217,6 @@
             }
           }]
       }
-    });
-
-    $('#dataTable').on('click', '.imagescan', function () {
-      var url = $(this).attr('data-url');
-      $.imagescan({
-        url: url
-      });
     });
 
   });
