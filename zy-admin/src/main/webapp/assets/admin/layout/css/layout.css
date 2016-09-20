@@ -64,10 +64,10 @@ Page Header
   /* Top menu */
 }
 .page-header.navbar.navbar-fixed-top {
-  z-index: 9995;
+  z-index: 1095;
 }
 .page-header.navbar.navbar-static-top {
-  z-index: 9995;
+  z-index: 1095;
 }
 .page-header.navbar .page-logo {
   float: left;
