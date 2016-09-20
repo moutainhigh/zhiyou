@@ -64,7 +64,13 @@
 </script>
 <script id="rowTpl" type="text/html">
   <a class="list-item article" href="${ctx}/article/{{ d.id }}">
-    
+    <figure class="image-wrap" style="width:120px;height:72px">
+      <img class="abs-lt" src="{{ d.imageThumbnail }}">
+    </figure>
+    <div class="list-text">
+      <h2>{{ d.title }}</h2>
+      <div class="font-777 fs-12">{{ d.releasedTimeLabel }} &nbsp; {{ d.author }}</div>
+    </div>
   </a>
 </script>
 </head>
