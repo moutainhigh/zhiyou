@@ -14,8 +14,59 @@
 
 <title>新闻资讯</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<link href="${stccdn}/css/article.css" rel="stylesheet" />
+<script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
+<script type="text/javascript">
+  $(function() {
+    if (!$('.list-more').hasClass('disabled')) {
+      $('.list-more').click(loadMore);
+    }
+  });
+  
+  var timeLT = '${timeLT}';
+  var pageNumber = 0;
 
+  function loadMore() {
+    $.ajax({
+      url : '${ctx}/uarticle',
+      data : {
+        pageNumber : pageNumber + 1,
+        timeLT : timeLT
+      },
+      dataType : 'json',
+      type : 'POST',
+      success : function(result) {
+        if(result.code != 0) {
+          return;
+        }
+        var page = result.data.page;
+        if (page.data.length) {
+          timeLT = result.data.timeLT;
+          pageNumber = page.pageNumber;
+          var pageData = page.data;
+          for ( var i in pageData) {
+            var row = pageData[i];
+            buildRow(row);
+          }
+        }
+        if (!page.data.length || page.data.length < page.pageSize) {
+          $('.list-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
+        }
+      }
+    });
+  }
+  
+  function buildRow(row){
+    var rowTpl = document.getElementById('rowTpl').innerHTML;
+    laytpl(rowTpl).render(row, function(html) {
+      $(html).insertBefore($('.list-more'));
+    });
+  }
+</script>
+<script id="rowTpl" type="text/html">
+  <a class="list-item article" href="${ctx}/article/{{ d.id }}">
+    
+  </a>
+</script>
 </head>
 <body class="article-list">
 
@@ -24,7 +75,28 @@
     <h1>新闻资讯</h1>
   </header>
 
-  <article class="mb-15 clearfix">
+  <article>
+    <div class="list-group mb-0">
+      <c:forEach items="${page.data}" var="article">
+      <a class="list-item article" href="${ctx}/article/${article.id}">
+        <figure class="image-wrap" style="width:120px;height:72px">
+          <img class="abs-lt" src="${article.imageThumbnail}">
+        </figure>
+        <div class="list-text">
+          <h2>${article.title}</h2>
+          <div class="font-777 fs-12">${article.releasedTimeLabel} &nbsp; ${article.author}</div>
+        </div>
+      </a>
+      </c:forEach>
+      <c:if test="${page.total > page.pageSize}">
+      <a class="list-item list-more" href="javascript:;"><span>点击加载更多</span></a>
+      </c:if>
+      <c:if test="${page.total <= page.pageSize}">
+      <a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>
+      </c:if>
+    </div>
+    
+  
     <c:forEach items="${articles}" var="article">
     <a href="${ctx}/article/${article.id}" class="article">
       <figure class="image-box">
