@@ -6,7 +6,10 @@ import com.zy.service.NotifyService;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -24,7 +27,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * Created by freeman on 16/9/14.
  */
 @Component
-public class NotifySendToMqJob {
+public class NotifySendToMqJob implements ApplicationContextAware {
 
     Logger logger = getLogger(NotifySendToMqJob.class);
 
@@ -33,6 +36,8 @@ public class NotifySendToMqJob {
 
     @Autowired
     private NotifyService notifyService;
+
+    private ApplicationContext applicationContext;
 
     @Autowired
     private Config config;
@@ -62,7 +67,13 @@ public class NotifySendToMqJob {
                     logger.error(e.getMessage(), e);
                 }
             } catch (Throwable e) {
-                logger.error(e.getMessage(), e);
+                logger.error("服务重启 睡眠10秒 后获取新的 notifyService");
+                try {
+                    TimeUnit.SECONDS.sleep(10);
+                } catch (InterruptedException e1) {
+                    logger.error(e.getMessage(), e1);
+                }
+                notifyService = (NotifyService) applicationContext.getBean("notifyService");
             }
         }
     };
@@ -97,4 +108,8 @@ public class NotifySendToMqJob {
         this.notifyService.sendSuccess(notify.getId());
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 }
