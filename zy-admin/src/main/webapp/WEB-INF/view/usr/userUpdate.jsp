@@ -57,30 +57,30 @@
               <span class="form-errors">您填写的信息有误，请检查。</span>
             </div>
             <div class="form-group">
-              <label class="control-label col-md-3">昵称
+              <label class="control-label col-md-3">昵称:
               </label>
               <div class="col-md-4">
-                  <div>${user.nickname}</div>
+                  <div class="form-control-static">${user.nickname}</div>
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label col-md-3">手机号
+              <label class="control-label col-md-3">手机号:
               </label>
               <div class="col-md-4">
                 <div class="input-icon right">
-                 <div> ${user.phone}</div> <input type="hidden" id="phone" class="form-control" name="phone" value="${user.phone}" />
+                 <div class="form-control-static"> ${user.phone}</div> <input type="hidden" id="phone" class="form-control" name="phone" value="${user.phone}" />
                 </div>
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label col-md-3">密码
+              <label class="control-label col-md-3">密码:
               </label>
               <div class="col-md-4">
                 <input type="password" id="newPassword" class="form-control" name="newPassword" value="" />
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label col-md-3">确认密码
+              <label class="control-label col-md-3">确认密码:
               </label>
               <div class="col-md-4">
                 <input type="password" class="form-control" name="rePassword" value="" />

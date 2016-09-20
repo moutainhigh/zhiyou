@@ -40,11 +40,11 @@
               <span class="form-errors">您填写的信息有误，请检查。</span>
             </div>
             <div class="form-group">
-              <label class="control-label col-md-3">花名 <span class="required"> * </span>
+              <label class="control-label col-md-3">昵称 <span class="required"> * </span>
               </label>
               <div class="col-md-4">
                 <div class="input-icon right">
-                  <i class="fa"></i> <input type="text" class="form-control" name="nickname" value="${adminModel.nickname}" disabled="disabled" />
+                  <i class="fa"></i> <input type="text" class="form-control" name="nickname" value="${admin.user.nickname}" disabled="disabled" />
                 </div>
               </div>
             </div>
@@ -54,9 +54,9 @@
               <div class="col-md-5">
                 <div class="checkbox-list">
                   <c:forEach items="${roles}" var="role">
-                    <label> 
+                    <label class="form-control-static"> 
                     	<input type="checkbox" value="${role.id}" name="roleIds"
-                    	<c:forEach items="${userRoles}" var="userRole">
+                    	<c:forEach items="${adminRoles}" var="userRole">
                     	<c:if test="${userRole.roleId == role.id}"> checked="checked"</c:if>
                     	</c:forEach>
                     	> ${role.name}
