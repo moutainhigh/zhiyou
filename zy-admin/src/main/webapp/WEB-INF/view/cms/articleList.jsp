@@ -82,13 +82,12 @@
               var optionHtml = '';
               <shiro:hasPermission name="article:edit">
               optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/article/update?id=' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
-              </shiro:hasPermission>
-              <shiro:hasPermission name="article:edit">
               if (full.isReleased) {
                 optionHtml += '<a class="btn btn-xs default red-stripe" href="javascript:;" onclick="unrelease(' + full.id + ')"><i class="fa fa-times X"></i> 取消发布 </a>';
               } else {
                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="release(' + full.id + ')"><i class="fa fa-check"></i> 发布 </a>';
               }
+              optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="deleteAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 删除 </a>';
               </shiro:hasPermission>
               return optionHtml;
             }
@@ -108,6 +107,18 @@
     $.post('${ctx}/article/release', {id: id, isRelease: isRelease}, function (result) {
       //grid.getDataTable().ajax.reload();
       grid.getDataTable().ajax.reload(null, false);
+    });
+  }
+  function deleteAjax(id) {
+    layer.confirm('新闻删除不可恢复，您确认删除此新闻么?', {
+      btn: ['删除','取消'] //按钮
+    }, function(){
+      $.post('${ctx}/article/delete', {id: id}, function (result) {
+        grid.getDataTable().ajax.reload(null, false);
+      });
+      layer.msg('删除成功！');
+    }, function(){
+      
     });
   }
   </shiro:hasPermission>
