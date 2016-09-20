@@ -40,19 +40,10 @@ public class UserComponent {
 		UserAdminVo userAdminVo = new UserAdminVo();
 		BeanUtils.copyProperties(user, userAdminVo);
 		userAdminVo.setAvatarThumbnail(GcUtils.getThumbnail(user.getAvatar()));
-		Long inviterId = user.getInviterId();
-		if (inviterId != null) {
-			User inviter = cacheComponent.getUser(inviterId);
-			if (inviter != null) {
-				UserAdminSimpleVo userAdminSimpleVo = new UserAdminSimpleVo();
-				BeanUtils.copyProperties(inviter, userAdminSimpleVo);
-				userAdminSimpleVo.setAvatarThumbnail(GcUtils.getThumbnail(inviter.getAvatar()));
-				userAdminSimpleVo.setUserRankLabel(GcUtils.getUserRankLabel(inviter.getUserRank()));
-				userAdminVo.setInviter(userAdminSimpleVo);
-			}
+		if (user.getInviterId() != null) {
+			userAdminVo.setInviter(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(user.getInviterId())));
 		}
-		Long parentId = user.getParentId();
-		if(parentId != null) {
+		if(user.getParentId() != null) {
 			userAdminVo.setParent(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(user.getParentId())));
 		}
 		userAdminVo.setUserRankLabel(GcUtils.getUserRankLabel(user.getUserRank()));
