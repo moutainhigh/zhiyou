@@ -197,7 +197,7 @@
    * Image view
    */
   $.imageview = function(options) {
-  	if(typeof(options) == 'string') {
+    if(typeof(options) == 'string') {
       options = {url: options};
     } else if(typeof(options) == 'Array') {
       options = {url: options};
@@ -209,35 +209,52 @@
     }
     
     var str = '<aside class="myui-imageview">'
-    	+ '<a href="javascript:;" class="btn-close button-right"><i class="fa fa-times-circle"></i></a>'
-    	+ '<header class="header">'
-      + '<h2>' + options.title + '</h2>'
-      + '</header>'
-      + '<div class="myui-imageview-wrap"><div class="loading"></div></div>';
-      + '</aside>';
+          +   '<a href="javascript:;" class="btn-close button-right"><i class="fa fa-times-circle"></i></a>';
+    if(options.title){
+      str +=  '<header class="header">'
+          +   '<h2>' + options.title + '</h2>'
+          +   '</header>';
+    }
+    str +=    '<div class="myui-imageview-wrap"><div class="loading"></div></div>';
+          +   '</aside>';
     $imageview = $(str);
     $('body').css({'overflow': 'hidden'}).append($imageview);
     $imageWrap = $imageview.find(".myui-imageview-wrap");
     $loading = $imageview.find(".loading");
     
     var onClose = function(){
-    	$imageview.animate({opacity: 0}, 300, function(){
-    		$imageview.remove();
-    	})
-    	$('body').css({'overflow': 'auto'});
+      $imageview.animate({opacity: 0}, 300, function(){
+        $imageview.remove();
+      })
+      $('body').css({'overflow': 'auto'});
     };
-    $imageWrap.click(function(){
-    	$imageview.find(".header").slideToggle(300);
-    });
+    if(options.shadeClose){
+      $imageWrap.click(function(){
+        onClose();
+      });
+    }
     $imageview.find(".btn-close").click(onClose);;
     
-    var scrWidth = $(window).width(), scrHeight = $(window).height();
-    $image = $('<div class="myui-imageview-inner"><img src="' + options.url + '"></div>');
+    var maxWidth = $imageWrap.width(), maxHeight = $imageWrap.height();
+    $image = $('<div class="myui-imageview-inner"><img style="display:none" src="' + options.url + '"></div>');
     $image.appendTo($imageWrap);
-    // $image.css({'position': 'relative', 'top': '50%', 'margin-top': '-' +
-    // $image.height() / 2 + 'px'});
     $image.find('img').bind('load', function(){
-    	$loading.remove();
+      var $this = $(this);
+      w = $this.width();
+      h = $this.height();
+      if (w / h >= maxWidth / maxHeight) {
+        if (w > maxWidth) {
+          h = (h * maxWidth) / w;
+          w = maxWidth;
+        }
+      } else {
+        if (h > maxHeight) {
+          w = (w * maxHeight) / h;
+          h = maxHeight;
+        }
+      }
+      $this.width(w).height(h).show();
+      $loading.remove();
     });
     
   }
@@ -245,6 +262,7 @@
   $.imageview.defaults = $.extend({}, {
     url : '',
     title : '',
+    shadeClose : true
   });
 
   $.fn.placeholder = function (config) {

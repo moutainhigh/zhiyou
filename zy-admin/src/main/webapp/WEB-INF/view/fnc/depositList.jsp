@@ -184,7 +184,7 @@
             orderable: false,
             render: function (data, type, full) {
               if (full.offlineImage) {
-                return '<img class="imagescan mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
+                return '<img class="imageview mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
               } else {
                 return '';
               }
@@ -217,6 +217,14 @@
       }
     });
 
+    $('#dataTable').on('click', '.imageview', function () {
+      var url = $(this).attr('data-url');
+      $.imageview({
+        url: url,
+        title: '支付凭证图片'
+      });
+    });
+    
   });
 
   <shiro:hasPermission name="deposit:export">

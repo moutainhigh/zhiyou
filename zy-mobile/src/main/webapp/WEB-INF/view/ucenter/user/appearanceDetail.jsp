@@ -15,12 +15,10 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script type="text/javascript">
   $(function() {
-    $('.user-image img').click(function() {
+    $('.image-view').click(function() {
       var url = $(this).attr('data-src');
-      var title = '我的美照';
       $.imageview({
-        url : url,
-        title : title
+        url : url
       });
     });
   });
@@ -66,13 +64,13 @@
       <div class="list-item">
         <div class="list-text">身份证正面照</div>
         <div class="list-unit">
-          <img class="image-120-75" src="${appearance.image1Thumbnail}" data-src="${appearance.image1}">
+          <img class="image-view image-120-75" src="${appearance.image1Thumbnail}" data-src="${appearance.image1}">
         </div>
       </div>
       <div class="list-item">
         <div class="list-text">身份证反面照</div>
         <div class="list-unit">
-          <img class="image-120-75" src="${appearance.image2Thumbnail}" data-src="${appearance.image2}">
+          <img class="image-view image-120-75" src="${appearance.image2Thumbnail}" data-src="${appearance.image2}">
         </div>
       </div>
     </div>

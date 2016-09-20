@@ -82,7 +82,7 @@ public class AdminController {
 	public String update(Long id, Model model) {
 		Admin admin = adminService.findOne(id);
 		model.addAttribute("roles", roleService.findAll());
-		model.addAttribute("admin", admin);
+		model.addAttribute("admin", adminComponent.buildAdminVo(admin));
 		model.addAttribute("adminRoles", adminService.findAdminRoles(admin.getId()));
 		return "adm/adminUpdate";
 	}
