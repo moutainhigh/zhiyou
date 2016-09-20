@@ -35,6 +35,7 @@
 		        /js/** = anon
 		        /plugin/** = anon
 		        /swf/** = anon
+				/favicon.ico = anon
 		        /** = user
 		 	</value>
 		</property>
