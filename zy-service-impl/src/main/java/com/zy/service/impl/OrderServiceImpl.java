@@ -409,14 +409,20 @@ public class OrderServiceImpl implements OrderService {
 		User seller = userMapper.findOne(sellerId);
 		UserRank buyerUserRank = buyer.getUserRank();
 		UserRank sellerUserRank = seller.getUserRank();
+		Long sysUserId = config.getSysUserId();
+		CurrencyType currencyType = order.getCurrencyType();
 
 		/* 订单收款 */
-		if (buyerUserRank != UserRank.V4) {
-			BigDecimal amount = order.getAmount();
-			if (sellerUserRank == UserRank.V4 && order.getIsPlatformDeliver()) {
-				amount = amount.subtract(malComponent.getPrice(productId, UserRank.V4, quantity).multiply(BigDecimal.valueOf(quantity))).setScale(2, BigDecimal.ROUND_HALF_UP);
+		BigDecimal amount = order.getAmount();
+		if (sellerId.equals(sysUserId)) {
+			fncComponent.createAndGrantProfit(sysUserId, Profit.ProfitType.平台收款, orderId, "订单" + order.getSn() + "平台收款", currencyType, amount);
+		} else {
+			BigDecimal v4Amount = malComponent.getPrice(productId, UserRank.V4, quantity).multiply(BigDecimal.valueOf(quantity)).setScale(2, BigDecimal.ROUND_HALF_UP);
+			if (order.getIsPlatformDeliver()) {
+				amount = amount.subtract(v4Amount);
+				fncComponent.createAndGrantProfit(sysUserId, Profit.ProfitType.平台收款, orderId, "订单" + order.getSn() + "平台收款", currencyType, v4Amount);
 			}
-			fncComponent.createProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单收款", CurrencyType.现金, amount);
+			fncComponent.createAndGrantProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单" + order.getSn() + "收款", CurrencyType.现金, amount);
 		}
 
 		/* 邮费 */
@@ -426,14 +432,12 @@ public class OrderServiceImpl implements OrderService {
 			Boolean isPlatformDeliver = order.getIsPlatformDeliver();
 			if (logisticsFee.compareTo(new BigDecimal("0.00")) > 0) {
 				if (isPlatformDeliver) {
-					Long sysUserId = config.getSysUserId();
 					if (logisticsFeePayType == LogisticsFeePayType.买家付) {
 						fncComponent.createTransfer(buyerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
 					} else if (logisticsFeePayType == LogisticsFeePayType.卖家付) {
 						fncComponent.createTransfer(sellerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
 					}
 				} else {
-//					Long sysUserId = config.getSysUserId();
 					if (logisticsFeePayType == LogisticsFeePayType.买家付) {
 						fncComponent.createTransfer(buyerId, sellerId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
 					} else if (logisticsFeePayType == LogisticsFeePayType.卖家付) {
@@ -447,7 +451,7 @@ public class OrderServiceImpl implements OrderService {
 		if (buyerUserRank == UserRank.V4) {
 			final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
 			fncComponent.createProfit(buyerId, Profit.ProfitType.销量奖, orderId, "销量奖", CurrencyType.现金, saleBonus);
-		} else if (sellerUserRank == UserRank.V4 && order.getIsPlatformDeliver()) {
+		} else if (!sellerId.equals(sysUserId) && sellerUserRank == UserRank.V4 && order.getIsPlatformDeliver()) {
 			final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
 			fncComponent.createProfit(sellerId, Profit.ProfitType.销量奖, orderId, "销量奖", CurrencyType.现金, saleBonus);
 		}
@@ -463,7 +467,6 @@ public class OrderServiceImpl implements OrderService {
 				}
 			}
 		}
-
 
 		/* 特级平级奖 + 一级越级奖 */
 		if (buyerUserRank == UserRank.V4) {
