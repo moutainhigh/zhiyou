@@ -267,11 +267,9 @@
     
     $('#dataTable').on('click', '.imagescan', function() {
       var $this = $(this);
-      alert(0);
       layer.photos({
         photos: '.' + $this.parent().attr('class')
       });
-      alert(1);
     });
     
     $('#dataTable').on('click', '.text', function() {
