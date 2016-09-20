@@ -150,7 +150,7 @@
 <!-- BEGIN PAGE HEADER-->
 <div class="page-bar">
   <ul class="page-breadcrumb">
-    <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
+    <li><i class="icon-user"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
     <li><a href="javascript:;" data-href="${ctx}/user">用户管理</a></li>
   </ul>
 </div>
