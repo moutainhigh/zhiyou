@@ -61,11 +61,13 @@ public class OrderComponent {
 		orderAdminFullVo.setPaidTimeLabel(formatDate(order.getPaidTime(), TIME_PATTERN));
 		orderAdminFullVo.setRefundedTimeLabel(formatDate(order.getRefundedTime(), TIME_PATTERN));
 		orderAdminFullVo.setDeliveredTimeLabel(formatDate(order.getDeliveredTime(), TIME_PATTERN));
+		orderAdminFullVo.setAmountLabel(GcUtils.formatCurreny(order.getAmount()));
 		
 		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
 		if (orderItem != null) {
 			orderAdminFullVo.setImageThumbnail(GcUtils.getThumbnail(orderItem.getImage()));
 			orderAdminFullVo.setPrice(orderItem.getPrice());
+			orderAdminFullVo.setPriceLabel(GcUtils.formatCurreny(orderItem.getPrice()));
 			orderAdminFullVo.setQuantity(orderItem.getQuantity());
 		}
 		
@@ -105,11 +107,13 @@ public class OrderComponent {
 		orderAdminVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), TIME_PATTERN));
 		orderAdminVo.setPaidTimeLabel(formatDate(order.getPaidTime(), TIME_PATTERN));
 		orderAdminVo.setRefundedTimeLabel(formatDate(order.getRefundedTime(), TIME_PATTERN));
+		orderAdminVo.setAmountLabel(GcUtils.formatCurreny(order.getAmount()));
 		
 		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
 		if (orderItem != null) {
 			orderAdminVo.setImageThumbnail(GcUtils.getThumbnail(orderItem.getImage()));
 			orderAdminVo.setPrice(orderItem.getPrice());
+			orderAdminVo.setPriceLabel(GcUtils.formatCurreny(orderItem.getPrice()));
 			orderAdminVo.setQuantity(orderItem.getQuantity());
 		}
 		
@@ -127,6 +131,7 @@ public class OrderComponent {
 		orderListVo.setCreatedTimeLabel(formatDate(order.getCreatedTime(), SIMPLE_TIME_PATTERN));
 		orderListVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), SIMPLE_TIME_PATTERN));
 		orderListVo.setAmount(order.getAmount());
+		orderListVo.setAmountLabel(GcUtils.formatCurreny(order.getAmount()));
 		
 		List<OrderItem> orderItems = orderItemService.findByOrderId(order.getId());
 		List<OrderItemVo> orderItemVos = orderItems.stream().map(v ->{
@@ -146,6 +151,7 @@ public class OrderComponent {
 	public OrderDetailVo buildDetailVo(Order order) {
 		OrderDetailVo orderDetailVo = new OrderDetailVo();
 		BeanUtils.copyProperties(order, orderDetailVo);
+		orderDetailVo.setAmountLabel(GcUtils.formatCurreny(order.getAmount()));
 		
 		orderDetailVo.setCreatedTimeLabel(formatDate(order.getCreatedTime(), TIME_PATTERN));
 		if(order.getExpiredTime() != null){

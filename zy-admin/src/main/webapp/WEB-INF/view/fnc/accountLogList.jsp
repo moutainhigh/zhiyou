@@ -10,8 +10,8 @@
       placeholder: '- 选择单据类型 -',
       allowClear: true,
       width: '200px'
-  	});
-    
+    });
+
     grid.init({
       src: $('#dataTable'),
       onSuccess: function (grid) {
@@ -22,7 +22,7 @@
       },
       dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>", 
-        lengthMenu : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here
+        lengthMenu: [[10, 20, 50, 100], [10, 20, 50, 100]],// change per page values here
         pageLength: 20, // default record count per page
         order: [], // set first column as a default sort by desc
         ajax: {
@@ -34,65 +34,53 @@
             title: '流水情况',
             orderable: false,
             render: function (data, type, full) {
-              return '<p>标题：' + full.title + '</p><p>对应单据：' + full.accountLogType + ' ' + full.refSn + '</p>';
+              return '<p>标题：' + full.title + '</p>'
+                +'<p>对应单据：' + full.accountLogType + ' ' + full.refSn + '</p>';
             }
           },
           {
-            data: 'userPhone',
+            data: 'user',
             title: '用户信息',
+            orderable: false,
             render: function (data, type, full) {
-              if (full.user) {
-                return '<p><img src="' + full.user.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.user.nickname + '</p><p>手机: ' + full.user.phone + '</p>';
-              } else {
-                return '-';
-              }
+              return formatUser(full.user)
+            }
+          },
+          {
+            data: 'refUser',
+            title: '关联用户',
+            orderable: false,
+            render: function (data, type, full) {
+              return formatUser(full.refUser)
             }
           },
           {
             data: 'currencyType',
-            title: '货币类型'
+            title: '货币类型',
+            orderable: false
+
           },
           {
-            data: '',
+            data: 'beforeAmountLabel',
             title: '交易前',
-            orderable: false,
-            render: function (data, type, full) {
-              if (full.beforeAmount === null) {
-                return '-';
-              } else {
-                return '<p>' + full.beforeAmount.toFixed(2) + '</p>';
-              }
-            }
+            orderable: false
           },
           {
-            data: 'transAmount',
+            data: 'transAmountLabel',
             title: '交易金额',
-            orderable: false,
-            render: function (data, type, full) {
-              if (full.inOut == '收入') {
-                return '<p><span class="currency-in">' + full.transAmount.toFixed(2) + '</span></p>';
-              } else {
-                return '<p><span class="currency-out">' + full.transAmount.toFixed(2) + '</span></p>';
-              }
-            }
+            orderable: false
           },
           {
-            data: 'afterAmount',
+            data: 'afterAmountLabel',
             title: '交易后(余额)',
-            orderable: false,
-            render: function (data, type, full) {
-              if (full.afterAmount === null) {
-                return '-';
-              } else {
-                return '<p>' + full.afterAmount.toFixed(2) + '</p>';
-              }
-            }
+            orderable: false
           },
           {
             data: 'transTime',
             title: '流水时间',
             orderable: false
-          }]
+          }
+        ]
       }
     });
 
@@ -156,7 +144,7 @@
                     <option value="4">转账单</option>
                   </select>
                 </div>
-                
+
                 <div class="form-group">
                   <input type="text" name="refSnEQ" class="form-control" placeholder="单据号"/>
                 </div>

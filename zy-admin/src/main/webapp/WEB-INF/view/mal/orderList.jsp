@@ -65,21 +65,15 @@
             }
           },
           {
-            data: 'price',
-            title: '单价',
-            orderable: false
-          },
-          {
-            data: 'quantity',
-            title: '数量',
-            orderable: false
-          },
-          {
-            data: 'totalMoney',
-            title: '总金额',
+            data: '',
+            title: '金额信息',
             orderable: false,
             render: function (data, type, full) {
-              return full.amount.toFixed(2);
+              if(full.amountLabel){
+                return '<p>单价：' + full.priceLabel + '</p>' + '<p>数量：' + full.quantity + '</p>' + '<p>总金额：' + full.amountLabel + '</p>';
+              } else {
+                return '-';
+              }
             }
           },
           {
@@ -93,6 +87,18 @@
             orderable: false,
             render: function (data, type, full) {
               return data ? '是' : '否';
+            }
+          },
+          {
+            data: '',
+            title: '物流信息',
+            orderable: false,
+            render: function (data, type, full) {
+              if(full.logisticsName){
+                return '<p>物流公司：' + full.logisticsName + '</p>' + '<p>物流单号：' + full.logisticsSn + '</p>';
+              } else {
+                return '-';
+              }
             }
           },
           {
@@ -111,7 +117,7 @@
             title: '备注',
             orderable: false
           },
-          {
+          /* {
             data: 'refund',
             title: '退款金额',
             orderable: true
@@ -125,7 +131,7 @@
             data: 'refundRemark',
             title: '退款备注',
             orderable: false
-          }, {
+          }, */ {
             data: 'id',
             title: '操作',
             orderable: false,
@@ -167,7 +173,6 @@
                 <li class="active"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 全部</a></li>
                 <li class="" data-order-status="0"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 待付款</a></li>
                 <li class="" data-order-status="1"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已支付</a></li>
-                <li class="" data-order-status="1" data-is-platform-deliver="true"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"><strong> 已支付(平台发货) </strong><span class="badge badge-primary"> ${count} </span></a></li>
                 <li class="" data-order-status="2"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已发货</a></li>
                 <li class="" data-order-status="3"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已完成</a></li>
                 <li class="" data-order-status="4"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已退款</a></li>
@@ -191,6 +196,10 @@
               <div class="form-group input-inline">
                 <input type="text" name="snLK" class="form-control" placeholder="订单号"/>
               </div>
+              
+              <div class="form-group input-inline">
+                <input type="text" name="logisticsSnLK" class="form-control" placeholder="物流单号"/>
+              </div>              
 
               <div class="form-group input-inline">
                 <button class="btn blue filter-submit">

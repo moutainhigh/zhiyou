@@ -96,16 +96,8 @@
 			<if test="inOutEQ != null">
 				and in_out = #{inOutEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
-			<if test="accountLogTypeIN != null">
-				<if test="accountLogTypeIN.length != 0">
-				and user_id in
-				<foreach collection="accountLogTypeIN" item="item" open="(" separator="," close=")">
-				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
-				</foreach>
-				</if>
-				<if test="accountLogTypeIN.length == 0">
-				1 = 2
-				</if>
+			<if test="accountLogTypeEQ != null">
+				and account_log_type = #{accountLogTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
@@ -184,16 +176,8 @@
 			<if test="inOutEQ != null">
 				and in_out = #{inOutEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
-			<if test="accountLogTypeIN != null">
-				<if test="accountLogTypeIN != 0">
-				and account_log_type in
-				<foreach collection="accountLogTypeIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
-				</if>
-				<if test="accountLogTypeIN.length == 0">
-				1 = 2
-				</if>
+			<if test="accountLogTypeEQ != null">
+				and account_log_type = #{accountLogTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}

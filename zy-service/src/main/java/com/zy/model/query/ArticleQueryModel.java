@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -20,6 +21,10 @@ import lombok.AllArgsConstructor;
 public class ArticleQueryModel implements Serializable {
 
 	private String titleLK;
+
+	private Date releasedTimeLT;
+
+	private Date releasedTimeGTE;
 
 	private Boolean isReleasedEQ;
 

@@ -72,6 +72,8 @@ public class OrderAdminFullVo implements Serializable {
 	private String imageThumbnail;
 	@Field(label = "price")
 	private BigDecimal price;
+	@Field(label = "priceLabel")
+	private String priceLabel;
 	@Field(label = "quantity")
 	private Long quantity;
 	@Field(label = "用户id")
@@ -88,6 +90,8 @@ public class OrderAdminFullVo implements Serializable {
 	private String refundedTimeLabel;
 	@Field(label = "订单状态")
 	private String orderStatusStyle;
+	@Field(label = "应付总金额")
+	private String amountLabel;
 	@Field(label = "是否物流发货")
 	private Boolean useLogisticsLabel;
 	@Field(label = "发货时间")

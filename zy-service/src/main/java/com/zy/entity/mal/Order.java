@@ -38,6 +38,7 @@ import java.util.Date;
 		views = {
 				@View(name = "imageThumbnail", type = String.class, groups = {"OrderAdminVo", "OrderAdminFullVo"}),
 				@View(name = "price", type = BigDecimal.class, groups = {"OrderAdminVo", "OrderAdminFullVo"}),
+				@View(name = "priceLabel", type = String.class, groups = {"OrderAdminVo", "OrderAdminFullVo"}),
 				@View(name = "quantity", type = Long.class, groups = {"OrderAdminVo", "OrderAdminFullVo"})
 		}
 
@@ -125,6 +126,7 @@ public class Order implements Serializable {
 
 	@NotNull
 	@DecimalMin("0.00")
+	@View(name = "amountLabel", type = String.class)
 	@View
 	@Field(label = "应付总金额", description = "应付总金额 = Σ订单子项金额 - 优惠金额")
 	private BigDecimal amount;
