@@ -6,11 +6,6 @@
   var grid = new Datatable();
 
   $(function () {
-    $(".select2-multiple").select2({
-      placeholder: '- 选择单据类型 -',
-      allowClear: true,
-      width: '200px'
-    });
 
     grid.init({
       src: $('#dataTable'),

@@ -49,9 +49,7 @@ public class OrderController {
 	
 	@RequiresPermissions("order:view")
 	@RequestMapping(method = RequestMethod.GET)
-	public String list(Model model) {
-		long count = orderService.count(OrderQueryModel.builder().isPlatformDeliverEQ(true).orderStatusEQ(OrderStatus.已支付).build());
-		model.addAttribute("count", count);
+	public String list() {
 		return "mal/orderList";
 	}
 	

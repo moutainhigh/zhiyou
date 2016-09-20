@@ -2,11 +2,11 @@
  * Common js
  */
 
-window.messageShow = function(message, icon) {
+window.messageShow = function(message, icon, timeout) {
   $.message({
     type : icon || 'info',
     content : message,
-    timeout : 2
+    timeout : timeout
   });
 };
 

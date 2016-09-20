@@ -1,15 +1,8 @@
 package com.zy.admin.controller;
 
-import com.zy.common.exception.ValidationException;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.support.AliyunOssSupport;
-import com.zy.model.Constants;
-import com.zy.model.Principal;
-import com.zy.util.GcUtils;
-import org.apache.commons.io.FilenameUtils;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.support.AliyunOssSupport;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
+import com.zy.util.GcUtils;
 
 @Controller
 @RequestMapping("/image")
