@@ -84,6 +84,34 @@
       }
     });
 
+    $('#accountLogTypeIN').select2({
+      multiple: true,
+      placeholder: '-单据类型-',
+      data: [
+        {
+          id: '0',
+          text: '充值单'
+        },
+        {
+          id: '1',
+          text: '支付单'
+        },
+        {
+          id: '2',
+          text: '提现单'
+        },
+        {
+          id: '3',
+          text: '收益单'
+        },
+        {
+          id: '4',
+          text: '转账单'
+        }
+      ]
+
+    });
+
   });
 </script>
 <script type="text/javascript">
@@ -136,13 +164,7 @@
                 </div>
 
                 <div class="form-group">
-                  <select name="accountLogTypeIN" class="form-control select2-multiple" multiple="multiple">
-                    <option value="0">充值单</option>
-                    <option value="1">订单</option>
-                    <option value="2">提现单</option>
-                    <option value="3">收益单</option>
-                    <option value="4">转账单</option>
-                  </select>
+                  <input type="text" id="accountLogTypeIN" name="accountLogTypeIN" class="form-control"/>
                 </div>
 
                 <div class="form-group">
