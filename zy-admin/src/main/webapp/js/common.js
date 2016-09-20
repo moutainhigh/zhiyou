@@ -7,3 +7,17 @@ function formatUser(user) {
 		return '-';
 	}
 }
+
+/**
+ * Debug print
+ * @param object
+ */
+function log(object) {
+  var s = '{';
+  for ( var k in object) {
+    s += '\n\t' + k + ': \'' + object[k] + '\'';
+  }
+  s += '\n}';
+  console.log(s);
+}
+

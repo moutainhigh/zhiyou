@@ -11,7 +11,9 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import com.zy.entity.act.Report.ReportResult;
 import com.zy.entity.sys.ConfirmStatus;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -27,6 +29,12 @@ public class ReportQueryModel implements Serializable {
 	private String realnameLK;
 
 	private String phoneEQ;
+
+	private ReportResult reportResultEQ;
+
+	private Date createdTimeGTE;
+
+	private Date createdTimeLT;
 
 	private ConfirmStatus preConfirmStatusEQ;
 
