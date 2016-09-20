@@ -93,17 +93,17 @@
     <h2 class="page-title">
       <i class="fa fa-photo"></i> 新闻资讯<a href="${ctx}/article" class="right mr-10 fs-14 font-777">更多</a>
     </h2>
-    <c:forEach items="${articles}" var="article">
-    <a href="${ctx}/article/${article.id}" class="article">
-      <figure class="image-box">
-        <img class="abs-lt" src="${article.imageThumbnail}">
-      </figure>
-      <div class="pl-5 pr-5">
-        <h3 class="font-333 fs-14 lh-30 text-ellipsis">${article.title}</h3>
-        <div class="font-777 fs-12 lh-24 text-ellipsis">${article.releasedTimeLabel}</div>
-      </div>
-    </a>
-    </c:forEach>
+    <div class="list-group mb-0">
+      <c:forEach items="${articles}" var="article">
+      <a class="list-item article" href="${ctx}/article/${article.id}">
+        <img class="mr-10" src="${article.imageThumbnail}">
+        <div class="list-text">
+          <h2 class="fs-15 lh-24 o-hidden">${article.title}</h2>
+          <div class="font-777 fs-12">${article.releasedTimeLabel} &nbsp; ${article.author}</div>
+        </div>
+      </a>
+      </c:forEach>
+    </div>
   </article>
 
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>

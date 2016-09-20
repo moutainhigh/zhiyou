@@ -36,3 +36,10 @@
   color: #f0732f; font-size: 16px; line-height: 42px; font-weight: 500;
   background-color: #fff;
 }
+
+.article img {
+  width: 120px; height: 72px;
+}
+.article h2 {
+  max-height: 48px;
+}
