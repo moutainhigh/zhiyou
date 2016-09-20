@@ -27,7 +27,7 @@
 
   function loadMore() {
     $.ajax({
-      url : '${ctx}/uarticle',
+      url : '${ctx}/article',
       data : {
         pageNumber : pageNumber + 1,
         timeLT : timeLT
@@ -64,9 +64,7 @@
 </script>
 <script id="rowTpl" type="text/html">
   <a class="list-item article" href="${ctx}/article/{{ d.id }}">
-    <figure class="image-wrap" style="width:120px;height:72px">
-      <img class="abs-lt" src="{{ d.imageThumbnail }}">
-    </figure>
+    <img class="mr-10" style="width:120px;height:72px" src="{{ d.imageThumbnail }}">
     <div class="list-text">
       <h2>{{ d.title }}</h2>
       <div class="font-777 fs-12">{{ d.releasedTimeLabel }} &nbsp; {{ d.author }}</div>
@@ -85,9 +83,7 @@
     <div class="list-group mb-0">
       <c:forEach items="${page.data}" var="article">
       <a class="list-item article" href="${ctx}/article/${article.id}">
-        <figure class="image-wrap" style="width:120px;height:72px">
-          <img class="abs-lt" src="${article.imageThumbnail}">
-        </figure>
+        <img class="mr-10" style="width:120px;height:72px" src="${article.imageThumbnail}">
         <div class="list-text">
           <h2>${article.title}</h2>
           <div class="font-777 fs-12">${article.releasedTimeLabel} &nbsp; ${article.author}</div>
