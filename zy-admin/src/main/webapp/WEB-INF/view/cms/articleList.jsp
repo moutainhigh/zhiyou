@@ -129,7 +129,7 @@
   </shiro:hasPermission>
   function qrCode(id) {
     layer.open({
-      area: ['500'],
+      area: ['300', '400'],
       content:'<img src="${ctx}/article/detailQrCode?id='+ id +'" >'
     });
   }
