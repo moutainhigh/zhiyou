@@ -137,7 +137,7 @@
 	    myChart.setOption({
 		    tooltip: {},
 		    legend: {
-		        data:['试客注册人数','商家注册人数','总注册人数']
+		        data:['代理注册人数']
 		    },
 		    xAxis: {
 		        data: []
@@ -145,23 +145,13 @@
 		    yAxis: {},
 		    series: [
 		    {
-		        name: '试客注册人数',
-		        type: 'line',
-		        data: []
-		    },
-		    {
-		        name: '商家注册人数',
-		        type: 'line',
-		        data: []
-		    },
-		    {
-		        name: '总注册人数',
+		        name: '代理注册人数',
 		        type: 'line',
 		        data: []
 		    }]
 		});
 	 	// 异步加载数据
-	   /*$.post('${ctx}/main/ajaxChart/register',{},function(result) {
+	   $.post('${ctx}/main/ajaxChart/register',{},function(result) {
 	       myChart.setOption({
 	           xAxis: {
 	               data: result.chartLabel
@@ -171,21 +161,11 @@
 	           },
 	           series: [{
 	               // 根据名字对应到相应的系列
-	               name: '试客注册人数',
-	               data: result.buyerCount
-	           },
-	           {
-	               // 根据名字对应到相应的系列
-	               name: '商家注册人数',
-	               data: result.merchantCount
-	           },
-	           {
-	               // 根据名字对应到相应的系列
-	               name: '总注册人数',
+	               name: '代理注册人数',
 	               data: result.userCount
 	           }]
 	       });
-	   });*/
+	   });
 	})
 	</script>
 	
