@@ -17,5 +17,6 @@ public interface AppearanceService {
 	Appearance create(Appearance appearance);
 
 	void update(Appearance appearance);
-
+	
+	long count(AppearanceQueryModel appearanceQueryModel);
 }
