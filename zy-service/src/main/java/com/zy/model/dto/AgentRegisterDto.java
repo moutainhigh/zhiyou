@@ -15,6 +15,8 @@ public class AgentRegisterDto implements Serializable {
 	@NotBlank
 	private String openId;
 
+	private String unionId;
+
 	@NotBlank
 	@URL
 	private String avatar;
