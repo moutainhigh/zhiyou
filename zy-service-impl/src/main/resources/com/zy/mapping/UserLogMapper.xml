@@ -4,6 +4,7 @@
 
 	<resultMap id="baseResultMap" type="com.zy.entity.usr.UserLog">
 		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
 		<result column="operation" property="operation" />
 		<result column="operator_id" property="operatorId" />
 		<result column="operated_time" property="operatedTime" />
@@ -11,8 +12,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.UserLog" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user_log` (operation,operator_id,operated_time,remark)
-	  values (#{operation},#{operatorId},#{operatedTime},#{remark})
+	  insert into `usr_user_log` (user_id,operation,operator_id,operated_time,remark)
+	  values (#{userId},#{operation},#{operatorId},#{operatedTime},#{remark})
 	</insert>
 
 	<delete id="delete">
@@ -22,6 +23,7 @@
 	<update id="update" parameterType="com.zy.entity.usr.UserLog">
 		update `usr_user_log`
 		<set>
+			user_id = #{userId},
 			operation = #{operation},
 			operator_id = #{operatorId},
 			operated_time = #{operatedTime},
@@ -35,6 +37,7 @@
 			<set>
 				<foreach collection="fields" item="field">
 				<choose>
+					<when test="field == 'userId'">user_id = #{userLog.userId},</when>
 					<when test="field == 'operation'">operation = #{userLog.operation},</when>
 					<when test="field == 'operatorId'">operator_id = #{userLog.operatorId},</when>
 					<when test="field == 'operatedTime'">operated_time = #{userLog.operatedTime},</when>
@@ -47,14 +50,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,operation,operator_id,operated_time,remark
+		id,user_id,operation,operator_id,operated_time,remark
 		from `usr_user_log`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap">
 		select
-		id,operation,operator_id,operated_time,remark
+		id,user_id,operation,operator_id,operated_time,remark
 		from `usr_user_log`
 		order by id desc
 	</select>
