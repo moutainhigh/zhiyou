@@ -81,6 +81,7 @@ public class WeixinCodeValidationFilter implements Filter {
 					}
 					agentRegisterDto.setAvatar(avatar);
 					agentRegisterDto.setOpenId(wxMpUser.getOpenId());
+					agentRegisterDto.setUnionId(wxMpUser.getUnionId());
 					agentRegisterDto.setNickname(wxMpUser.getNickname());
 
 					session.setAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO, agentRegisterDto);

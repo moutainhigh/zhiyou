@@ -148,6 +148,10 @@ public class User implements Serializable {
 	@Field(label = "微信openId")
 	private String openId;
 
+	@Column(length = 60, unique = true)
+	@Field(label = "微信unionId")
+	private String unionId;
+
 	@Field(label = "上次升级时间")
 	private Date lastUpgradedTime;
 
