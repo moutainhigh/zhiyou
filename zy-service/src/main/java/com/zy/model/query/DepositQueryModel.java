@@ -42,6 +42,8 @@ public class DepositQueryModel implements Serializable {
 
 	private DepositStatus depositStatusEQ;
 
+	private DepositStatus[] depositStatusIN;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;

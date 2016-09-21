@@ -24,6 +24,8 @@ public interface DepositService {
 	
 	Deposit findBySn(String sn);
 
+	long count(DepositQueryModel depositQueryModel);
+	
 	Page<Deposit> findPage(DepositQueryModel depositQueryModel);
 	
 	List<Deposit> findAll(DepositQueryModel depositQueryModel);

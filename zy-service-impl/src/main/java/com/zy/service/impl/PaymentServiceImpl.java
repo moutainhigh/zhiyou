@@ -1,5 +1,26 @@
 package com.zy.service.impl;
 
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.entity.fnc.Payment.PaymentStatus.已支付;
+import static com.zy.entity.fnc.Payment.PaymentStatus.待支付;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
@@ -7,7 +28,11 @@ import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
 import com.zy.component.MalComponent;
-import com.zy.entity.fnc.*;
+import com.zy.entity.fnc.Account;
+import com.zy.entity.fnc.AccountLog;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.PayType;
+import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.usr.User;
 import com.zy.mapper.AccountMapper;
@@ -16,22 +41,6 @@ import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.PaymentQueryModel;
 import com.zy.service.PaymentService;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.*;
-import static com.zy.entity.fnc.Payment.PaymentStatus.已支付;
-import static com.zy.entity.fnc.Payment.PaymentStatus.待支付;
 
 @Service
 @Validated
@@ -290,19 +299,26 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 	
 	@Override
-	public void modifyOffline(Long paymentId, String offlineImage, String offlineMemo) {
+	public void modifyOffline(@NotNull Long paymentId, @NotBlank @URL String offlineImage, @NotBlank String offlineMemo) {
 		Payment persistance = paymentMapper.findOne(paymentId);
 		validate(persistance, NOT_NULL, "payment id " + paymentId + " is not found");
-		validate(offlineImage, NOT_BLANK, "payment offlineImage is blank");
-		validate(offlineMemo, NOT_BLANK, "payment offlineMemo is blank");
+		
+		if (persistance.getPayType() != PayType.银行汇款) {
+			throw new BizException(BizCode.ERROR, "支付方式只能为银行汇款");
+		}
+
+		PaymentStatus paymentStatus = persistance.getPaymentStatus();
+		if (paymentStatus != PaymentStatus.待支付 && paymentStatus != PaymentStatus.待确认)  {
+			throw new BizException(BizCode.ERROR, "只有待支付或者待确认状态的支付单才能操作");
+		}
 		
 		persistance.setOfflineMemo(offlineMemo);
 		persistance.setOfflineImage(offlineImage);
+		persistance.setPaymentStatus(PaymentStatus.待确认);
 		if (paymentMapper.update(persistance) == 0) {
 			throw new ConcurrentException();
 		}
 	}
-
 
 	@Override
 	public void cancel(@NotNull Long id) {
@@ -364,6 +380,11 @@ public class PaymentServiceImpl implements PaymentService {
 		} else {
 			throw new BizException(BizCode.ERROR, "暂不支持余额以外其他支付方式退款");
 		}
+	}
+
+	@Override
+	public long count(PaymentQueryModel paymentQueryModel) {
+		return paymentMapper.count(paymentQueryModel);
 	}
 
 }

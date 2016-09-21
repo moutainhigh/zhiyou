@@ -1,5 +1,22 @@
 package com.zy.service.impl;
 
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
@@ -19,26 +36,17 @@ import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.extend.Producer;
-import com.zy.mapper.*;
+import com.zy.mapper.AddressMapper;
+import com.zy.mapper.OrderItemMapper;
+import com.zy.mapper.OrderMapper;
+import com.zy.mapper.ProductMapper;
+import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
@@ -182,7 +190,18 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void cancel(@NotNull Long id) {
-		throw new BizException(BizCode.ERROR, "暂不支持主动取消订单");
+		Order order = orderMapper.findOne(id);
+		validate(order, NOT_NULL, "order id " + id + "is not found");
+		OrderStatus orderStatus = order.getOrderStatus();
+		if (orderStatus == OrderStatus.已取消) {
+			return; // 幂等处理
+		} else if (orderStatus != OrderStatus.待支付) {
+			throw new BizException(BizCode.ERROR, "只有待支付状态的支付订单才能取消");
+		}
+		order.setOrderStatus(OrderStatus.已取消);
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
 	}
 
 	@Override

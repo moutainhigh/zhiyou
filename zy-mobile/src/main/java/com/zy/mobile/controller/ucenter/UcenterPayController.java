@@ -77,12 +77,12 @@ public class UcenterPayController {
 
 		DepositQueryModel depositQueryModel = new DepositQueryModel();
 		depositQueryModel.setUserIdEQ(principal.getUserId());
-		depositQueryModel.setDepositStatusEQ(DepositStatus.待充值);
+		depositQueryModel.setDepositStatusIN(new DepositStatus[] {DepositStatus.待充值, DepositStatus.待确认});
 		depositQueryModel.setOrderBy("createdTime");
 		depositQueryModel.setDirection(Direction.DESC);
 		List<Deposit> deposits = depositService.findAll(depositQueryModel);
 		Deposit deposit = deposits.stream().filter(v -> v.getPayType() == payType)
-				.filter(v -> v.getDepositStatus() == DepositStatus.待充值)
+				.filter(v -> (v.getDepositStatus() == DepositStatus.待充值 || v.getDepositStatus() == DepositStatus.待确认))
 				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
 				.filter(v -> v.getAmount1().equals(money) && v.getCurrencyType1() == CurrencyType.现金
 						&& v.getCurrencyType2() == null)
@@ -133,7 +133,7 @@ public class UcenterPayController {
 		}
 		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(order.getId()).build());
 		Payment payment = payments.stream().filter(v -> v.getPayType() == payType)
-				.filter(v -> v.getPaymentStatus() == PaymentStatus.待支付)
+				.filter(v -> (v.getPaymentStatus() == PaymentStatus.待支付 || v.getPaymentStatus() == PaymentStatus.待确认))
 				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
 				.filter(v -> v.getRefId() == orderId).filter(v -> v.getAmount1().equals(order.getAmount()))
 				.filter(v -> v.getCurrencyType1() == order.getCurrencyType()).filter(v -> v.getAmount2() == null)

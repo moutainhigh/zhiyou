@@ -1,6 +1,15 @@
 package com.zy.admin.controller;
 
 import static com.zy.model.Constants.CACHE_NAME_STATISTICS;
+import static com.zy.model.Constants.CACHE_NAME_APPEARANCE_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_REPORT_PRE_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_REPORT_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_USER_BANK_INFO_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_WITHDRAW_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_PROFIT_CHART;
+import static com.zy.model.Constants.CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_PAYMENT_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_DEPOSIT_COUNT;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,21 +37,32 @@ import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.support.cache.CacheSupport;
 import com.zy.component.CacheComponent;
 import com.zy.component.UserComponent;
-import com.zy.entity.cms.Feedback.FeedbackStatus;
+import com.zy.entity.fnc.Deposit.DepositStatus;
+import com.zy.entity.fnc.PayType;
+import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Withdraw.WithdrawStatus;
+import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
 import com.zy.model.Constants;
+import com.zy.model.query.AppearanceQueryModel;
 import com.zy.model.query.BankCardQueryModel;
-import com.zy.model.query.FeedbackQueryModel;
+import com.zy.model.query.DepositQueryModel;
+import com.zy.model.query.OrderQueryModel;
+import com.zy.model.query.PaymentQueryModel;
 import com.zy.model.query.ProfitQueryModel;
+import com.zy.model.query.ReportQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.WithdrawQueryModel;
+import com.zy.service.AppearanceService;
 import com.zy.service.BankCardService;
-import com.zy.service.FeedbackService;
+import com.zy.service.DepositService;
+import com.zy.service.OrderService;
+import com.zy.service.PaymentService;
 import com.zy.service.ProfitService;
+import com.zy.service.ReportService;
 import com.zy.service.UserService;
 import com.zy.service.WithdrawService;
 
@@ -57,14 +77,26 @@ public class IndexController {
 	private BankCardService userBankInfoService;
 
 	@Autowired
+	private PaymentService paymentService;
+	
+	@Autowired
+	private DepositService depositService;
+	
+	@Autowired
+	private ProfitService profitService;
+	
+	@Autowired
 	private WithdrawService withdrawService;
 
 	@Autowired
-	private FeedbackService feedbackService;
+	private AppearanceService appearanceService;
 
 	@Autowired
-	private ProfitService profitService;
-
+	private ReportService reportService;
+	
+	@Autowired
+	private OrderService orderService;
+	
 	@Autowired
 	private CacheSupport cacheSupport;
 
@@ -75,12 +107,6 @@ public class IndexController {
 	private UserComponent userComponent;
 
 	private static final int DEFAULT_EXPIRE = 300;
-
-	private static final String USER_BANK_INFO_COUNT = "userBankInfoCount";
-	private static final String WITHDRAW_COUNT = "withdrawCount";
-	private static final String FEEDBACK_COUNT = "feedbackCount";
-
-	private static final String PROFIT_CHART = "profitChart";
 
 	@RequestMapping("/index")
 	public String index(Model model, AdminPrincipal principal) {
@@ -101,44 +127,79 @@ public class IndexController {
 				cacheSupport.set(CACHE_NAME_STATISTICS, Constants.CACHE_NAME_AGENT_REGISTER_COUNT, agentCount, DEFAULT_EXPIRE);
 			}
 			model.addAttribute("agentCount", agentCount);
+		
 		}
+			
+		/* 统计待处理信息 */
 		{
-			Long userBankInfoUnconfirmCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, USER_BANK_INFO_COUNT);
+			Long userBankInfoUnconfirmCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_USER_BANK_INFO_COUNT);
 			if (userBankInfoUnconfirmCount == null) {
 				BankCardQueryModel userBankInfoQueryModel = new BankCardQueryModel();
 				userBankInfoQueryModel.setConfirmStatusEQ(ConfirmStatus.待审核);
 				userBankInfoUnconfirmCount = userBankInfoService.count(userBankInfoQueryModel);
 
-				cacheSupport.set(CACHE_NAME_STATISTICS, USER_BANK_INFO_COUNT, userBankInfoUnconfirmCount, DEFAULT_EXPIRE);
+				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_USER_BANK_INFO_COUNT, userBankInfoUnconfirmCount, DEFAULT_EXPIRE);
 			}
 			model.addAttribute("userBankInfoCount", userBankInfoUnconfirmCount);
-		}
-		{
-			Long withdrawCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, WITHDRAW_COUNT);
+	
+			Long appearanceCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_APPEARANCE_COUNT);
+			if(appearanceCount == null) {
+				appearanceCount = appearanceService.count(AppearanceQueryModel.builder().confirmStatusEQ(ConfirmStatus.未通过).build());
+				
+				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_APPEARANCE_COUNT, appearanceCount, DEFAULT_EXPIRE);
+			}
+			model.addAttribute("appearanceCount", appearanceCount);
+
+			Long reportPreCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_PRE_COUNT);
+			if(reportPreCount == null) {
+				reportPreCount = reportService.count(ReportQueryModel.builder().preConfirmStatusEQ(ConfirmStatus.未通过).build());
+				
+				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_PRE_COUNT, reportPreCount, DEFAULT_EXPIRE);
+			}
+			model.addAttribute("reportPreCount", reportPreCount);
+			
+			Long reportCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_COUNT);
+			if(reportCount == null) {
+				reportCount = reportService.count(ReportQueryModel.builder().confirmStatusEQ(ConfirmStatus.未通过).build());
+				
+				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_COUNT, reportCount, DEFAULT_EXPIRE);
+			}
+			model.addAttribute("reportCount", reportCount);
+			
+			Long orderPlatformDeliverCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT);
+			if(orderPlatformDeliverCount == null) {
+				orderPlatformDeliverCount = orderService.count(OrderQueryModel.builder().isPlatformDeliverEQ(true).orderStatusEQ(OrderStatus.已支付).build());
+				
+				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT, orderPlatformDeliverCount, DEFAULT_EXPIRE);
+			}
+			model.addAttribute("orderPlatformDeliverCount", orderPlatformDeliverCount);
+			
+			/* 财务相关 */
+			Long withdrawCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_WITHDRAW_COUNT);
 			if (withdrawCount == null) {
 				WithdrawQueryModel withdrawQueryModel = new WithdrawQueryModel();
 				withdrawQueryModel.setWithdrawStatusEQ(WithdrawStatus.已申请);
 				withdrawCount = withdrawService.count(withdrawQueryModel);
 
-				cacheSupport.set(CACHE_NAME_STATISTICS, WITHDRAW_COUNT, withdrawCount, DEFAULT_EXPIRE);
+				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_WITHDRAW_COUNT, withdrawCount, DEFAULT_EXPIRE);
 			}
-
 			model.addAttribute("withdrawCount", withdrawCount);
-		}
-		/* 统计财务信息 */
-
-		/* 统计待处理信息 */
-		{
-			Long feedbackCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, FEEDBACK_COUNT);
-			if (feedbackCount == null) {
-				FeedbackQueryModel feedbackQueryModel = new FeedbackQueryModel();
-				feedbackQueryModel.setFeedbackStatusEQ(FeedbackStatus.等待客服接手);
-				feedbackCount = feedbackService.count(feedbackQueryModel);
-
-				cacheSupport.set(CACHE_NAME_STATISTICS, FEEDBACK_COUNT, feedbackCount, DEFAULT_EXPIRE);
+			
+			Long paymentCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_PAYMENT_COUNT);
+			if(paymentCount == null) {
+				paymentCount = paymentService.count(PaymentQueryModel.builder().paymentStatusEQ(PaymentStatus.待确认).payTypeEQ(PayType.银行汇款).build());
+				
+				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_PAYMENT_COUNT, paymentCount, DEFAULT_EXPIRE);
 			}
-
-			model.addAttribute("feedbackCount", feedbackCount);
+			model.addAttribute("paymentCount", paymentCount);
+			
+			Long depositCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_DEPOSIT_COUNT);
+			if(depositCount == null) {
+				depositCount = depositService.count(DepositQueryModel.builder().depositStatusEQ(DepositStatus.待确认).payTypeEQ(PayType.银行汇款).build());
+				
+				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_DEPOSIT_COUNT, depositCount, DEFAULT_EXPIRE);
+			}
+			model.addAttribute("depositCount", depositCount);
 		}
 		return "main";
 	}
@@ -199,7 +260,7 @@ public class IndexController {
 	@ResponseBody
 	public Map<String, Object> getpRrofitChart() {
 		@SuppressWarnings("unchecked")
-		Map<String, Object> dataMap = (Map<String, Object>) cacheSupport.get(CACHE_NAME_STATISTICS, PROFIT_CHART);
+		Map<String, Object> dataMap = (Map<String, Object>) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_PROFIT_CHART);
 		if (dataMap == null) {
 			Date now = new Date();
 
@@ -260,7 +321,7 @@ public class IndexController {
 			dataMap.put("teamAmount", teamAmountList);
 			dataMap.put("chartLabel", dataStrs);
 
-			cacheSupport.set(CACHE_NAME_STATISTICS, PROFIT_CHART, dataMap, DEFAULT_EXPIRE);
+			cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_PROFIT_CHART, dataMap, DEFAULT_EXPIRE);
 		}
 		return dataMap;
 	}

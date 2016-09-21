@@ -77,6 +77,7 @@ public class OrderController {
 	public String platformDeliverList(Model model) {
 		long count = orderService.count(OrderQueryModel.builder().isPlatformDeliverEQ(true).orderStatusEQ(OrderStatus.已支付).build());
 		model.addAttribute("count", count);
+		model.addAttribute("orderStatuses", OrderStatus.values());
 		return "mal/orderPlatformDeliverList";
 	}
 	

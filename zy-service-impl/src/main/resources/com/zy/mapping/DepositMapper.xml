@@ -127,6 +127,17 @@
 				1 = 2
 				</if>
 			</if>
+			<if test="depositStatusIN != null">
+				<if test="depositStatusIN.length != 0">
+				and deposit_status in
+				<foreach collection="depositStatusIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+				</if>
+				<if test="depositStatusIN.length == 0">
+				1 = 2
+				</if>
+			</if>
 			<if test="payTypeEQ != null">
 				and pay_type = #{payTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -179,6 +190,17 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="depositStatusIN != null">
+				<if test="depositStatusIN.length != 0">
+				and deposit_status in
+				<foreach collection="depositStatusIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+				</if>
+				<if test="depositStatusIN.length == 0">
 				1 = 2
 				</if>
 			</if>

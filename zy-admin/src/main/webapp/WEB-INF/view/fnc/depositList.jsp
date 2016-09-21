@@ -207,7 +207,7 @@
             render: function (data, type, full) {
               var optionHtml = '';
               <shiro:hasPermission name="deposit:confirmPaid">
-              if (full.payType == '银行汇款' && full.depositStatus == '待充值' && full.offlineImage) {
+              if (full.payType == '银行汇款' && full.depositStatus == '待确认' && full.offlineImage) {
                 optionHtml += '<a class="btn btn-xs default yellow-stripe deposit-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';
               }
               </shiro:hasPermission>
@@ -275,10 +275,10 @@
 
               <div class="form-group">
                 <select name="depositStatusEQ" class="form-control">
-                  <option value="">-- 充值状态 --</option>
-                  <option value="0">待充值</option>
-                  <option value="1">充值成功</option>
-                  <option value="2">已取消</option>
+                  <option value="">-- 充值单状态 --</option>
+                  <c:forEach items="${depositStatuses}" var="depositStatus">
+                    <option value="${depositStatus}">${depositStatus}</option>
+                  </c:forEach>
                 </select>
               </div>
 

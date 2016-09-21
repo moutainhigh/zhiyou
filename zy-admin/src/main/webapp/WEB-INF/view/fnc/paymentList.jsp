@@ -122,7 +122,7 @@
       },
       dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
-        lengthMenu: [[10, 20, 50, 100, -1], [10, 20, 50, 100, 'All'] // change per page values here
+        lengthMenu: [[10, 20, 50, 100], [10, 20, 50, 100] // change per page values here
         ],
         pageLength: 20, // default record count per page
         order: [], // set first column as a default sort by desc
@@ -209,7 +209,7 @@
               var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/order/detail?id=' + full.refId
                 + '"><i class="fa icon-control-forward "></i> 查看订单</a>';
               <shiro:hasPermission name="payment:confirmPaid">
-              if (full.payType == '银行汇款' && full.paymentStatus == '待支付' && full.offlineImage) {
+              if (full.payType == '银行汇款' && full.paymentStatus == '待确认' && full.offlineImage) {
                 optionHtml += '<a class="btn btn-xs default yellow-stripe payment-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';
               }
               </shiro:hasPermission>
@@ -275,9 +275,20 @@
               <div class="form-group">
                 <select name="paymentTypeEQ" class="form-control">
                   <option value="">-- 支付单类型 --</option>
-                  <option value="0">订单支付</option>
+                  <c:forEach items="${paymentTypes}" var="paymentType">
+                    <option value="${paymentType}">${paymentType}</option>
+                  </c:forEach>
                 </select>
               </div>
+              
+              <div class="form-group">
+                <select name="payTypeEQ" class="form-control">
+                  <option value="">-- 支付类型 --</option>
+                  <c:forEach items="${payTypes}" var="payType">
+                    <option value="${payType}">${payType}</option>
+                  </c:forEach>
+                </select>
+              </div>              
 
               <div class="form-group">
                 <input class="Wdate form-control" type="text" id="beginDate"
