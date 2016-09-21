@@ -292,7 +292,7 @@ a.disabled, a.disabled:hover, a.disabled:focus {
   position: absolute; left: 0; white-space: nowrap;
 }
 .scroll-nav-list li {
-  display: inline-block; padding: 0 10px;
+  display: inline-block; margin: 0 10px;
 }
 .scroll-nav-list li a {
   padding: 0 6px;
