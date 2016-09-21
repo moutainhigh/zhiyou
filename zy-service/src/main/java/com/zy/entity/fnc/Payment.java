@@ -71,6 +71,7 @@ public class Payment implements Serializable {
 	@NotNull
 	@Field(label = "支付方式", description = "目前固定为余额")
 	@View
+	@Query({Predicate.EQ, Predicate.IN})
 	private PayType payType;
 
 	@Query(Predicate.EQ)
