@@ -155,7 +155,7 @@ public class ArticleController {
 		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 		Map<EncodeHintType, String> hints = new HashMap<>();
 		hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-		BitMatrix bitMatrix = multiFormatWriter.encode(qrCodeUrl, BarcodeFormat.QR_CODE, 480, 480, hints);
+		BitMatrix bitMatrix = multiFormatWriter.encode(qrCodeUrl, BarcodeFormat.QR_CODE, 240, 240, hints);
 		return MatrixToImageWriter.toBufferedImage(bitMatrix);
 	}
 }
