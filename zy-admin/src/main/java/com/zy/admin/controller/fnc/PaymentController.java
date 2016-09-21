@@ -3,6 +3,8 @@ package com.zy.admin.controller.fnc;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 
+import java.util.Arrays;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,10 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.PaymentComponent;
+import com.zy.entity.fnc.PayType;
 import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Payment.PaymentStatus;
+import com.zy.entity.fnc.Payment.PaymentType;
 import com.zy.model.query.PaymentQueryModel;
 import com.zy.service.PaymentService;
 import com.zy.vo.PaymentAdminVo;
@@ -40,6 +44,8 @@ public class PaymentController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
 		model.addAttribute("paymentStatuses", PaymentStatus.values());
+		model.addAttribute("paymentTypes", PaymentType.values());
+		model.addAttribute("payTypes", Arrays.asList(PayType.values()));
 		return "fnc/paymentList";
 	}
 	
