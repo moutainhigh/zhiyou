@@ -275,9 +275,20 @@
               <div class="form-group">
                 <select name="paymentTypeEQ" class="form-control">
                   <option value="">-- 支付单类型 --</option>
-                  <option value="0">订单支付</option>
+                  <c:forEach items="${paymentTypes}" var="paymentType">
+                    <option value="${paymentType}">${paymentType}</option>
+                  </c:forEach>
                 </select>
               </div>
+              
+              <div class="form-group">
+                <select name="payTypeEQ" class="form-control">
+                  <option value="">-- 支付类型 --</option>
+                  <c:forEach items="${payTypes}" var="payType">
+                    <option value="${payType}">${payType}</option>
+                  </c:forEach>
+                </select>
+              </div>              
 
               <div class="form-group">
                 <input class="Wdate form-control" type="text" id="beginDate"

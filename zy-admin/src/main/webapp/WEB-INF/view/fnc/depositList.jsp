@@ -275,10 +275,10 @@
 
               <div class="form-group">
                 <select name="depositStatusEQ" class="form-control">
-                  <option value="">-- 充值状态 --</option>
-                  <option value="0">待充值</option>
-                  <option value="1">充值成功</option>
-                  <option value="2">已取消</option>
+                  <option value="">-- 充值单状态 --</option>
+                  <c:forEach items="${depositStatuses}" var="depositStatus">
+                    <option value="${depositStatus}">${depositStatus}</option>
+                  </c:forEach>
                 </select>
               </div>
 
