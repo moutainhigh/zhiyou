@@ -240,7 +240,7 @@
       }
     };
     var loginfo = function(message){
-      console.info(info);
+      console.info(message);
       //alert(message);
     }
   }
