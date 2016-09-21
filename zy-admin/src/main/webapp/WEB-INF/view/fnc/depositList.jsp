@@ -207,7 +207,7 @@
             render: function (data, type, full) {
               var optionHtml = '';
               <shiro:hasPermission name="deposit:confirmPaid">
-              if (full.payType == '银行汇款' && full.depositStatus == '待充值' && full.offlineImage) {
+              if (full.payType == '银行汇款' && full.depositStatus == '待确认' && full.offlineImage) {
                 optionHtml += '<a class="btn btn-xs default yellow-stripe deposit-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';
               }
               </shiro:hasPermission>
