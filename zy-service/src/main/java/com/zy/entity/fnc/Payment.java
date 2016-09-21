@@ -1,6 +1,6 @@
 package com.zy.entity.fnc;
 
-import com.zy.entity.usr.User;
+import static com.zy.entity.fnc.Payment.VO_ADMIN;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -9,19 +9,26 @@ import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import static com.zy.entity.fnc.Payment.VO_ADMIN;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.zy.entity.usr.User;
 
 @Entity
 @Table(name = "fnc_payment")
@@ -69,9 +76,9 @@ public class Payment implements Serializable {
 	private String title;
 
 	@NotNull
-	@Query(Predicate.EQ)
 	@Field(label = "支付方式", description = "目前固定为余额")
 	@View
+	@Query({Predicate.EQ, Predicate.IN})
 	private PayType payType;
 
 	@Query(Predicate.EQ)

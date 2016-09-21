@@ -1,18 +1,17 @@
 package com.zy.model.query;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.io.Serializable;
-
 import io.gd.generator.api.query.Direction;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import com.zy.entity.fnc.PayType;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
@@ -29,7 +28,9 @@ public class PaymentQueryModel implements Serializable {
 	private Long userIdEQ;
 
 	private PayType payTypeEQ;
-	
+
+	private PayType[] payTypeIN;
+
 	private PaymentType paymentTypeEQ;
 
 	private Long refIdEQ;
