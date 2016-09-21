@@ -30,7 +30,6 @@
     <div class="detail-wrap dcss">
       <h2 class="font-333 fs-18 lh-30">${article.title}</h2>
       <div class="mt-10 font-999 fs-14 lh-20">${article.author} &nbsp;&nbsp; ${article.releasedTimeLabel}</div>
-      <img class="mt-10" src="${article.imageBig}">
       ${article.content}
       <div class="text-right"><span class="fa fa-eye font-999"></span> <span class="font-777">${article.visitCount}</span></div>
     </div>

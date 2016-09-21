@@ -188,7 +188,7 @@
     type : 'info', // info, success, error
     content : '',
     closable : true,
-    timeout : 3,
+    timeout : 0,
     callback : function(message) {
     }
   });
@@ -302,6 +302,14 @@
         if (this.value == this.getAttribute('placeholder')) this.value = '';
     });
   }
+  
+  $.fn.nav = function(tabContent) {
+    
+  };
+  
+  $.fn.nav.defaults = $.extend({}, {
+    scrollable : true
+  });
 
   $.fn.tabs = function(tabContent, eventName) {
   	eventName = !eventName ? 'click' : eventName;
