@@ -42,7 +42,7 @@
     
     $('#btnConfirm').click(function() {
       $.dialog({
-        content : '请确认您已收到该订单商品，您确定要确认收货吗？',
+        content : '您确定已收到该订单的商品吗？',
         callback : function(index) {
           if (index == 1) {
             location.href = '${ctx}/u/order/confirmDelivery?id=${order.id}';
@@ -125,9 +125,16 @@
     
     <div class="list-group">
       <div class="list-title">收货人信息</div>
+      <c:if test="${inOut == 'out'}">
+        <div class="list-item">
+          <img class="image-40 round mr-10" src="${buyer.avatarThumbnail}">
+          <div class="list-text fs-14">${buyer.nickname}</div>
+          <div class="list-unit">${buyer.phone}</div>
+        </div>
+      </c:if>
       <div class="list-item">
-        <div class="list-icon"><i class="fa fa-map-marker fs-24"></i></div>
-        <div class="list-text fs-14 font-333 pl-5 pr-5">
+        <div class="list-icon"><i class="fa fa-map-marker font-orange fs-24"></i></div>
+        <div class="list-text fs-14 font-333 pl-5">
           <div>${order.receiverRealname}<span class="right">${order.receiverPhone}</span></div>
           <div class="fs-14 font-777">${order.receiverProvince} ${order.receiverCity} ${order.receiverDistrict} ${order.receiverAddress}</div>
         </div>
@@ -138,16 +145,18 @@
       <div class="list-title">发货信息</div>
       <div class="list-item lh-20">
         <div class="list-text fs-14">发货人</div>
-        
         <c:if test="${order.isPlatformDeliver}">
-        <div class="list-unit fs-12">公司发货</div>
+          <div class="list-unit fs-12">公司发货</div>
         </c:if>
-        
         <c:if test="${!order.isPlatformDeliver}">
-        <div class="list-unit">${seller.nickname}</div>
-        <img class="image-40 round ml-10" src="${seller.avatarThumbnail}">
+          <c:if test="${inOut == 'in'}">
+            <div class="list-unit">${seller.nickname} <small>${seller.phone}</small></div>
+            <img class="image-40 round ml-10" src="${seller.avatarThumbnail}">
+          </c:if>
+          <c:if test="${inOut == 'out'}">
+            <div class="list-unit">自己发货</div>
+          </c:if>
         </c:if>
-        
       </div>
       <c:if test="${order.useLogistics == true}">
       <div class="list-item lh-20">
