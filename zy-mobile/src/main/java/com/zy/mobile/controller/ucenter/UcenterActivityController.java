@@ -117,17 +117,14 @@ public class UcenterActivityController {
 	}
 
 	@RequestMapping(value = "/signIn")
-	@ResponseBody
-	public Result<?> signIn(Long id, Principal principal) {
+	public String signIn(Long id, Principal principal) {
 		
-		ActivityApplyQueryModel activityApplyQueryModel = new ActivityApplyQueryModel();
-		activityApplyQueryModel.setUserIdEQ(principal.getUserId());
-		Page<ActivityApply> page = activityApplyService.findPage(activityApplyQueryModel);
-		if(!page.getData().isEmpty()) {
-			return ResultBuilder.ok("请先报名参加活动,再签到");
+		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(id, principal.getUserId());
+		if(activityApply == null) {
+			return "not";
 		}
 		
 		activityService.signIn(id, principal.getUserId());
-		return ResultBuilder.ok("ok");
+		return "ok";
 	}
 }

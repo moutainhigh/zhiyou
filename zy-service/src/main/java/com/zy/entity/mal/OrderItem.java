@@ -4,9 +4,9 @@ import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,19 +14,22 @@ import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
+import static com.zy.entity.mal.OrderItem.VO;
+import static com.zy.entity.mal.OrderItem.VO_ADMIN;
 
 @Entity
 @Table(name = "mal_order_item")
 @Getter
 @Setter
-@ViewObject(groups = { "OrderItemVo", "OrderItemAdminVo" })
+@ViewObject(groups = {VO, VO_ADMIN})
 @Type(label = "订单子项")
 public class OrderItem implements Serializable {
+
+	public static final String VO = "OrderItemVo";
+	public static final String VO_ADMIN = "OrderItemAdminVo";
 
 	@Id
 	@Field(label = "id")
@@ -51,7 +54,7 @@ public class OrderItem implements Serializable {
 	@NotBlank
 	@View(name = "imageThumbnail")
 	@Field(label = "商品图")
-	@View(groups = "OrderItemAdminVo")
+	@View(groups = VO_ADMIN)
 	private String image;
 
 	@NotNull

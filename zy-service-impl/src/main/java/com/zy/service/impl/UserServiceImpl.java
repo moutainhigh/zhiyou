@@ -3,14 +3,13 @@ package com.zy.service.impl;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
+import com.zy.component.UsrComponent;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
-import com.zy.entity.usr.UserLog;
 import com.zy.extend.Producer;
 import com.zy.mapper.AccountMapper;
-import com.zy.mapper.UserLogMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.dto.AgentRegisterDto;
@@ -18,6 +17,7 @@ import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -44,18 +44,18 @@ public class UserServiceImpl implements UserService {
 	private AccountMapper accountMapper;
 
 	@Autowired
-	private UserLogMapper userLogMapper;
+	private UsrComponent usrComponent;
 
 	@Autowired
 	private Producer producer;
 
 	@Override
-	public User findOne(@NotNull(message = "user is cannot be null") Long id) {
+	public User findOne(@NotNull Long id) {
 		return userMapper.findOne(id);
 	}
 
 	@Override
-	public User findByPhone(@NotNull(message = "user phone cannot be  null") String phone) {
+	public User findByPhone(@NotBlank String phone) {
 		return userMapper.findByPhone(phone);
 	}
 
@@ -161,75 +161,61 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String hashPassword(@NotNull(message = "plain password is blank") String plainPassword) {
+	public String hashPassword(@NotBlank String plainPassword) {
 		return ServiceUtils.hashPassword(plainPassword);
 	}
 
 	@Override
-	public void freeze(@NotNull(message = "id is null") Long id, @NotNull(message = "operatorId is null") Long operatorId) {
-		User frozenUser = userMapper.findOne(id);
-		validate(frozenUser, NOT_NULL, "add vip user is null, id = " + id);
-		User operatorUser = userMapper.findOne(operatorId);
-		validate(operatorUser, NOT_NULL, "operator user is null, id = " + id);
+	public void freeze(@NotNull Long id, @NotNull Long operatorId) {
+		User user = userMapper.findOne(id);
+		validate(user, NOT_NULL, "user id " + id + " is not found");
+		User operator = userMapper.findOne(operatorId);
+		validate(operator, NOT_NULL, "operator id " + id + " is not found");
+
+		if (user.getIsFrozen()) {
+			return; // 幂等操作
+		}
 
 		User userForMerge = new User();
 		userForMerge.setId(id);
 		userForMerge.setIsFrozen(true);
-		if (userMapper.merge(userForMerge, "isFrozen") > 0) {
-			UserLog userLog = new UserLog();
-			userLog.setOperatorId(operatorId);
-			userLog.setOperatedTime(new Date());
-			userLog.setOperation("冻结");
-			userLog.setRemark("管理员[" + operatorUser.getNickname() + "]冻结了用户[" + frozenUser.getNickname() + "]");
-			userLogMapper.insert(userLog);
-		}
-		;
+		userMapper.merge(userForMerge, "isFrozen");
+		usrComponent.recordUserLog(id, operatorId, "冻结", null);
 	}
 
 	@Override
-	public void unfreeze(@NotNull(message = "id is null") Long id, @NotNull(message = "operatorId is null") Long operatorId) {
+	public void unfreeze(@NotNull Long id, @NotNull Long operatorId) {
 
-		User frozenUser = userMapper.findOne(id);
-		validate(frozenUser, NOT_NULL, "add vip user is null, id = " + id);
-		User operatorUser = userMapper.findOne(operatorId);
-		validate(operatorUser, NOT_NULL, "operator user is null, id = " + id);
+		User user = userMapper.findOne(id);
+		validate(user, NOT_NULL, "user id " + id + " is not found");
+		User operator = userMapper.findOne(operatorId);
+		validate(operator, NOT_NULL, "operator id " + id + " is not found");
+
 
 		User userForMerge = new User();
 		userForMerge.setId(id);
 		userForMerge.setIsFrozen(false);
-		if (userMapper.merge(userForMerge, "isFrozen") > 0) {
-			UserLog userLog = new UserLog();
-			userLog.setOperatorId(operatorId);
-			userLog.setOperatedTime(new Date());
-			userLog.setOperation("解冻");
-			userLog.setRemark("管理员[" + operatorUser.getNickname() + "]解冻了用户[" + frozenUser.getNickname() + "]");
-			userLogMapper.insert(userLog);
-		}
-		;
-
+		userMapper.merge(userForMerge, "isFrozen");
+		usrComponent.recordUserLog(id, operatorId, "解冻", null);
 	}
 
 	@Override
-	public void modifyUserRank(@NotNull(message = "id is null") Long id, @NotNull(message = "remark is null") UserRank userRank, String remark,
-			@NotNull(message = "operator Id is null") Long operatorId) {
+	public void modifyUserRank(@NotNull Long id, @NotNull UserRank userRank, String remark,
+			@NotNull Long operatorId) {
 
 		User user = userMapper.findOne(id);
-		validate(user, NOT_NULL, "add vip user is null, id = " + id);
+		validate(user, NOT_NULL, "user id " + id + " is not found");
 		User operator = userMapper.findOne(operatorId);
-		validate(operator, NOT_NULL, "operator user is null, id = " + id);
+		validate(operator, NOT_NULL, "operator id " + id + " is not found");
 
-		user.setUserRank(userRank);
-		if (userMapper.update(user) > 0) {
-			UserLog userLog = new UserLog();
-			userLog.setOperatorId(operatorId);
-			userLog.setOperatedTime(new Date());
-			userLog.setOperation("加VIP");
-			String msg = userRank == null ? "减去" : "增加";
-			userLog.setRemark("管理员[" + operator.getNickname() + "]给用户[" + user.getNickname() + "]" + msg + "了VIP");
-			userLogMapper.insert(userLog);
-			producer.send(TOPIC_USER_RANK_CHANGED, user.getId());
+		if (userRank == user.getUserRank()) {
+			return; // 幂等操作
 		}
 
+		user.setUserRank(userRank);
+		userMapper.update(user);
+		usrComponent.recordUserLog(id, operatorId, "设置用户等级", remark);
+		producer.send(TOPIC_USER_RANK_CHANGED, user.getId());
 	}
 
 	@Override
@@ -285,7 +271,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyNickname(Long userId, @NotBlank(message = "nickname is null") String nickname) {
+	public void modifyNickname(Long userId, @NotBlank String nickname) {
 		findAndValidate(userId);
 
 		User userForMerge = new User();
@@ -296,7 +282,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyAvatar(Long userId, @NotBlank(message = "avatar is null") String avatar) {
+	public void modifyAvatar(Long userId, @NotBlank @URL String avatar) {
 		findAndValidate(userId);
 
 		User userForMerge = new User();
@@ -307,7 +293,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyPasswordAndPhone(Long id, String password, @NotBlank(message = "phone is null") String phone) {
+	public void modifyPasswordAndPhone(Long id, String password, @NotBlank String phone) {
 		findAndValidate(id);
 
 		User userForMerge = new User();
@@ -322,7 +308,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyPassword(Long id, @NotBlank(message = "password is null") String password) {
+	public void modifyPassword(Long id, @NotBlank String password) {
 		findAndValidate(id);
 
 		User userForMerge = new User();
@@ -338,10 +324,29 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public void unbind(@NotNull Long id, @NotNull Long operatorId, String remark) {
+		User user = findAndValidate(id);
+		if (user.getOpenId() == null) {
+			return; // 幂等
+		}
+		User operator = userMapper.findOne(operatorId);
+		validate(operator, NOT_NULL, "operator id " + id + " is not found");
+
+		user.setOpenId(null);
+		user.setUnionId(null);
+		userMapper.update(user);
+		usrComponent.recordUserLog(id, operatorId, "微信解绑", remark);
+	}
+
+	@Override
+	public void modifyParentId(@NotNull Long id, @NotNull Long parentId, @NotNull Long operatorId, String remark) {
+		// TODO
+	}
+
+	@Override
 	public void modifyInfo(@NotNull User user) {
 		findAndValidate(user.getId());
-
-		userMapper.merge(user, "nickname", "qq", "isInfoCompleted");
+		userMapper.merge(user, "nickname", "qq");
 	}
 
 	private User findAndValidate(Long userId) {
