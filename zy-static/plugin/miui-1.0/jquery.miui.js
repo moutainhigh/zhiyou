@@ -7,7 +7,7 @@
 ;
 (function() {
 
-  var _myui_dialog_index = 0; // 弹出窗口id
+  var _miui_dialog_index = 0; // 弹出窗口id
 
   /**
    * 弹出窗口
@@ -46,32 +46,32 @@
       options.shadeClose = false;
     }
     
-    options.id = 'mui_dialog_' + (_myui_dialog_index++);
-    var html = '<aside id="' + options.id + '" class="mui-dialog" data-index="' + _myui_dialog_index++ + '">';
+    options.id = 'miui_dialog_' + (_miui_dialog_index++);
+    var html = '<aside id="' + options.id + '" class="miui-dialog" data-index="' + _miui_dialog_index++ + '">';
     if(options.shade){
-      html += '<div class="mui-dialog-shade"></div>';
+      html += '<div class="miui-dialog-shade"></div>';
     }
-    html += '<div class="mui-dialog-wrap">'
-      +     '<div class="mui-dialog-inner">';
+    html += '<div class="miui-dialog-wrap">'
+      +     '<div class="miui-dialog-inner">';
     var skinClass = '';
     if(options.skin == 'footer') {
-      skinClass = ' mui-dialog-footer mui-animation-up';
+      skinClass = ' miui-dialog-footer miui-animation-up';
     } else if(options.skin == 'center') {
-      skinClass = ' mui-dialog-center mui-animation-scale';
+      skinClass = ' miui-dialog-center miui-animation-scale';
     } else if(options.skin == 'message') {
-      skinClass = ' mui-dialog-message mui-animation-up';
+      skinClass = ' miui-dialog-message miui-animation-up';
     }
     var style = (options.style ? ' style="' + options.style + '"' : '')
-    html +=   '<div class="mui-dialog-content' + skinClass + '"' + style + '>';
+    html +=   '<div class="miui-dialog-content' + skinClass + '"' + style + '>';
     if(options.content){
-      html +=   '<div class="mui-dialog-title">' + options.content + '</div>';
+      html +=   '<div class="miui-dialog-title">' + options.content + '</div>';
     }
-    html +=     '<div class="mui-dialog-buttons">';
+    html +=     '<div class="miui-dialog-buttons">';
     $.each(options.btn, function(index){
-      html +=     '<div class="mui-dialog-button" data-index="' + (index + 1) + '">' + options.btn[index] + '</div>';
+      html +=     '<div class="miui-dialog-button" data-index="' + (index + 1) + '">' + options.btn[index] + '</div>';
     });
     if(options.btnCancel){
-      html +=     '<div class="mui-dialog-button mui-dialog-button-cancle" data-index="0">' + options.btnCancel + '</div>';
+      html +=     '<div class="miui-dialog-button miui-dialog-button-cancle" data-index="0">' + options.btnCancel + '</div>';
     }
     html +=     '</div>'
       +       '</div>'
@@ -80,7 +80,7 @@
       + '</aside>';
     var $dialog = $(html);
     $('body').css({'overflow':'hidden'}).append($dialog);
-    $dialogContent = $dialog.find('.mui-dialog-content');
+    $dialogContent = $dialog.find('.miui-dialog-content');
     var onClose = function(){
       $('body').css({'overflow':'auto'});
       $dialog.remove();
@@ -92,14 +92,14 @@
       }, options.timeout * 1000);
     }
     if(options.shadeClose) {
-      $dialog.find('.mui-dialog-shade').click(function(){
+      $dialog.find('.miui-dialog-shade').click(function(){
         onClose();
       });
     }
-    $dialog.find('.mui-dialog-button-cancle').click(function(){
+    $dialog.find('.miui-dialog-button-cancle').click(function(){
       onClose();
     });
-    $dialog.find('.mui-dialog-button').click(function(){
+    $dialog.find('.miui-dialog-button').click(function(){
       var index = $(this).attr('data-index');
       if ($.isFunction(options.callback)) {
         if(options.callback.call($dialog, index)) {
@@ -208,18 +208,18 @@
       return;
     }
     
-    var str = '<aside class="myui-imageview">'
+    var str = '<aside class="miui-imageview">'
           +   '<a href="javascript:;" class="btn-close button-right"><i class="fa fa-times-circle"></i></a>';
     if(options.title){
       str +=  '<header class="header">'
           +   '<h2>' + options.title + '</h2>'
           +   '</header>';
     }
-    str +=    '<div class="myui-imageview-wrap"><div class="loading"></div></div>';
+    str +=    '<div class="miui-imageview-wrap"><div class="loading"></div></div>';
           +   '</aside>';
     $imageview = $(str);
     $('body').css({'overflow': 'hidden'}).append($imageview);
-    $imageWrap = $imageview.find(".myui-imageview-wrap");
+    $imageWrap = $imageview.find(".miui-imageview-wrap");
     $loading = $imageview.find(".loading");
     
     var onClose = function(){
@@ -237,7 +237,7 @@
     $imageview.find(".btn-close").click(onClose);;
     
     var maxWidth = $(window).width(), maxHeight = $(window).height() - (options.title ? 48 : 0);
-    $image = $('<div class="myui-imageview-inner"><img style="display:none" src="' + options.url + '"></div>');
+    $image = $('<div class="miui-imageview-inner"><img style="display:none" src="' + options.url + '"></div>');
     $image.appendTo($imageWrap);
     $image.find('img').bind('load', function(){
       var $this = $(this);

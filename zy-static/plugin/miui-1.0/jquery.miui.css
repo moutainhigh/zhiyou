@@ -7,114 +7,114 @@
 
 /* ---------- Dialog ---------- */
 
-.mui-dialog {
+.miui-dialog {
   z-index: 1200;
 }
-.mui-dialog .mui-dialog-shade,
-.mui-dialog .mui-dialog-wrap {
+.miui-dialog .miui-dialog-shade,
+.miui-dialog .miui-dialog-wrap {
   position: fixed; left: 0; top: 0;
   width: 100%; height: 100%;
 }
-.mui-dialog .mui-dialog-shade {
+.miui-dialog .miui-dialog-shade {
   background-color: rgba(0, 0, 0, 0.7);
   pointer-events: auto; z-index: 1201;
 }
-.mui-dialog .mui-dialog-wrap {
+.miui-dialog .miui-dialog-wrap {
   display: table;
   pointer-events: none; z-index: 1202;
 }
-.mui-dialog .mui-dialog-inner {
+.miui-dialog .miui-dialog-inner {
   display: table-cell;
   text-align: center; vertical-align: middle;
   pointer-events: none;
 }
-.mui-dialog .mui-dialog-content {
+.miui-dialog .miui-dialog-content {
   position: relative; overflow: hidden;
   color: #555; font-size: 14px;  text-align: center;
   pointer-events: auto; z-index: 1203;
 }
-.mui-dialog .mui-dialog-title {
+.miui-dialog .miui-dialog-title {
   padding: 20px;
   color: #333; font-size: 15px; line-height: 24px;
   background-color: #f7f7f7;
 }
-.mui-dialog .mui-dialog-buttons {
+.miui-dialog .miui-dialog-buttons {
   display: block; width: 100%; height: auto;
 }
-.mui-dialog .mui-dialog-button {
+.miui-dialog .miui-dialog-button {
   position: relative; padding: 10px 15px;
   font-size: 14px; line-height: 24px; cursor: pointer;
   background-color: #f7f7f7;
 }
 
-.mui-dialog .mui-dialog-center {
+.miui-dialog .miui-dialog-center {
   display: inline-block; min-width: 70%; max-width: 90%;
   background-color: #fff; border-radius: 5px;
 }
-.mui-dialog .mui-dialog-center .mui-dialog-buttons {
+.miui-dialog .miui-dialog-center .miui-dialog-buttons {
   display: box; display: -moz-box; display: -webkit-box;
   border-top: 1px solid #e1e1e1;
 }
-.mui-dialog .mui-dialog-center .mui-dialog-button {
+.miui-dialog .miui-dialog-center .miui-dialog-button {
   -moz-box-flex: 1; box-flex: 1; -webkit-box-flex: 1;
   padding: 10px 5px;
   border-right: 1px solid #e1e1e1;
 }
-.mui-dialog .mui-dialog-center .mui-dialog-button:last-child {
+.miui-dialog .miui-dialog-center .miui-dialog-button:last-child {
   border-right: none;
 }
 
-.mui-dialog .mui-dialog-footer {
+.miui-dialog .miui-dialog-footer {
   position: fixed; left: 0; right: 0; bottom: 0;
   margin: 0 auto; width: 100%;
 }
-.mui-dialog .mui-dialog-footer .mui-dialog-buttons {
+.miui-dialog .miui-dialog-footer .miui-dialog-buttons {
 }
-.mui-dialog .mui-dialog-footer .mui-dialog-button {
+.miui-dialog .miui-dialog-footer .miui-dialog-button {
   border-top: 1px solid #e1e1e1;
 }
-.mui-dialog .mui-dialog-footer .mui-dialog-button-cancle {
+.miui-dialog .miui-dialog-footer .miui-dialog-button-cancle {
   margin-top: 5px;
   color: #777; border-top: none;
 }
 
-.mui-dialog .mui-dialog-message {
+.miui-dialog .miui-dialog-message {
   display: inline-block; max-width: 80%; bottom: -150px;
   border-radius: 5px;
 }
-.mui-dialog .mui-dialog-message .mui-dialog-title {
+.miui-dialog .miui-dialog-message .miui-dialog-title {
   padding: 10px 20px;
   background-color: rgba(0, 0, 0, 0.7); border-radius: 5px;
   color: #fff;
 }
-.mui-dialog .mui-dialog-message .mui-dialog-buttons {
+.miui-dialog .miui-dialog-message .miui-dialog-buttons {
   display: none;
 }
 
-@-webkit-keyframes mui-animation-scale {
+@-webkit-keyframes miui-animation-scale {
   0% {opacity: 0; -webkit-transform: scale(.5); transform: scale(.5)}
   100% {opacity: 1; -webkit-transform: scale(1); transform: scale(1)}
 }
-@keyframes mui-animation-scale {
+@keyframes miui-animation-scale {
   0% {opacity: 0; -webkit-transform: scale(.5); transform: scale(.5)}
   100% {opacity: 1; -webkit-transform: scale(1); transform: scale(1)}
 }
-.mui-animation-scale {
-  animation-name:  mui-animation-scale; -webkit-animation-name:  mui-animation-scale;
+.miui-animation-scale {
+  animation-name:  miui-animation-scale; -webkit-animation-name:  miui-animation-scale;
   animation-duration: 0.2s; -webkit-animation-duration: 0.2s;
   animation-fill-mode: both; -webkit-animation-fill-mode: both;
 }
 
-@-webkit-keyframes mui-animation-up {
+@-webkit-keyframes miui-animation-up {
   0%{opacity: 0; -webkit-transform: translateY(800px); transform: translateY(800px)}
   100%{opacity: 1; -webkit-transform: translateY(0); transform: translateY(0)}
 }
-@keyframes mui-animation-up {
+@keyframes miui-animation-up {
   0%{opacity: 0; -webkit-transform: translateY(800px); transform: translateY(800px)}
   100%{opacity: 1; -webkit-transform: translateY(0); transform: translateY(0)}
 }
-.mui-animation-up {
-  animation-name: mui-animation-up; -webkit-animation-name: mui-animation-up;
+.miui-animation-up {
+  animation-name: miui-animation-up; -webkit-animation-name: miui-animation-up;
   animation-duration: 0.2s; -webkit-animation-duration: 0.2s;
   animation-fill-mode: both; -webkit-animation-fill-mode: both;
 }
@@ -169,41 +169,41 @@
 
 /* ---------- image view ---------- */
 
-.myui-imageview {
+.miui-imageview {
   position: fixed; top: 0px; left: 0px;
   width: 100%; height: 100%;
   z-index: 10000; overflow: hidden;
 }
-.myui-imageview .button-right {
+.miui-imageview .button-right {
   position: absolute; top: 6px; right: 6px;
   height: 36px; z-index: 10002;
   color: #fff; font-size: 14px; line-height: 36px;
 }
-.myui-imageview .button-right > i {
+.miui-imageview .button-right > i {
   display: inline-block; min-width: 36px; height: 36px;
   font-size: 20px; line-height: 36px; text-align: center; vertical-align: middle;
 }
-.myui-imageview .header {
+.miui-imageview .header {
   position: absolute; width: 100%; height: 48px;
   background-color: rgba(0, 0, 0, 0.9); z-index: 10001;
 }
-.myui-imageview .header h2 {
+.miui-imageview .header h2 {
   color: #fff; font-size: 15px; line-height: 48px; text-align: center;
 }
-.myui-imageview-wrap {
+.miui-imageview-wrap {
   position: relative;
   display: table; width: 100%; height: 100%;
   background: rgba(0, 0, 0, 0.9); 
 }
-.myui-imageview-inner {
+.miui-imageview-inner {
   display: table-cell; width: 100%; height: 100%;
   text-align: center; vertical-align: middle;
 }
-.myui-imageview .loading {
+.miui-imageview .loading {
   position: absolute;
   background: #000; border: none;
 }
-.myui-imageview-wrap img {
+.miui-imageview-wrap img {
   margin: 0 auto;
   max-width: 100%; height: auto;
 }

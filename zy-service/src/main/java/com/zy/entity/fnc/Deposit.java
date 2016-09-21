@@ -34,7 +34,7 @@ public class Deposit implements Serializable {
 	public static final String VO_ADMIN = "DepositAdminVo";
 
 	public enum DepositStatus {
-		待充值, 充值成功, 已取消
+		待充值, 充值成功, 已取消, 待确认
 	}
 
 	@Id
@@ -131,7 +131,7 @@ public class Deposit implements Serializable {
 	private Date expiredTime;
 
 	@NotNull
-	@Query(Predicate.EQ)
+	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "提现单状态")
 	@View
 	@View(name = "depositStatusStyle", type = String.class, groups = {VO_ADMIN})

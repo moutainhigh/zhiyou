@@ -144,7 +144,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 			bankCardService.update(bankCard);
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return "redirect:/u/bankCard/edit";
+			return "redirect:/u/bankCard/" + bankCardId;
 		}
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("银行卡修改成功"));
 		return "redirect:/u/bankCard";
