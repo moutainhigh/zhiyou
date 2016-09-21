@@ -14,7 +14,17 @@
 <title>MiUI</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
-<%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
+<script src="${stccdn}/extend/imageupload/imageupload.wx.js"></script>
+<link rel="stylesheet" href="${stccdn}/extend/imageupload/imageupload.css" />
+<script>
+  $.fn.imageupload.setDefaults({
+    url : '${ctx}/image/upload',
+    width : 100,
+    height : 100,
+    retain : 2,
+    maxFileSize : '6MB'
+  });
+</script>
 <script type="text/javascript">
   $(function() {
     $('#deliverType0').click(function(){
@@ -121,13 +131,28 @@
 </script>
 </head>
 <body class="">
+
   <header class="header">
     <h1>MiUI</h1>
     <a href="${ctx}/" class="button-left"><i class="fa fa-home"></i></a>
     <a href="${ctx}/superLogin/11" class="button-right"><i class="fa fa-user"></i></a>
   </header>
   
-  <article>
+  <nav class="miui-scroll-nav">
+    <ul class="miui-scroll-nav-list">
+      <li>全部</li>
+      <li class="current">分类1</li>
+      <li>分类2</li>
+      <li>分类3</li>
+      <li>分类4</li>
+      <li>分类5</li>
+      <li>分类6</li>
+      <li>分类7</li>
+      <li>分类8</li>
+    </ul>
+  </nav>
+  
+  <article class="">
     <div class="list-title">信息提示</div>
     <div class="btn-dialog form-btn flex">
       <a class="flex-1 btn red round-2">提示信息</a>
@@ -334,6 +359,21 @@
       
     </form>
   </article>
+
+  <aside class="miui-imageview hide">
+    <a class="btn-close button-right" href="javascript:;"><i class="fa fa-times-circle"></i></a>
+    <header class="header">
+      <h2>检测结果图片  <em>1</em>/3</h2>
+    </header>
+    <div class="miui-imageview-wrap">
+      <div class="miui-imageview-inner">
+        <img src="${stccdn}/image/example/cube.png" style="width: 320px; height: 320px;">
+        <img src="${stccdn}/image/example/cube.png" style="width: 320px; height: 320px;">
+        <img src="${stccdn}/image/example/cube.png" style="width: 320px; height: 320px;">
+      </div>
+    </div>
+  </aside>
+
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
 </html>

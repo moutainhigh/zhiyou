@@ -1,21 +1,7 @@
 package com.zy.util;
 
-import com.zy.common.exception.ValidationException;
-import com.zy.common.util.Identities;
-import com.zy.entity.fnc.*;
-import com.zy.entity.mal.Order;
-import com.zy.entity.usr.User;
-import com.zy.model.Constants;
-import com.zy.model.Principal;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MultipartFile;
+import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -23,7 +9,26 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.zy.common.exception.ValidationException;
+import com.zy.common.util.Identities;
+import com.zy.entity.fnc.Deposit;
+import com.zy.entity.fnc.Payment;
+import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Transfer;
+import com.zy.entity.fnc.Withdraw;
+import com.zy.entity.mal.Order;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
 
 public class GcUtils {
 
@@ -155,23 +160,24 @@ public class GcUtils {
 	}
 
 	public static void checkImage(MultipartFile file) {
-
 		if (file == null || file.isEmpty()) {
-			throw new ValidationException("图片不能为空");
+			throw new ValidationException("[上传图片]图片不能为空");
 		}
+		
+		String[] typeAllowed = new String[] { "image/jpeg", "image/png", "image/bmp", "image/gif" };
+		String contentType = file.getContentType();
+		List<String> types = new ArrayList<String>();
+		for (String type : typeAllowed) {
+			types.add(type);
+		}
+		if (!types.contains(contentType)) {
+			throw new ValidationException("[上传图片]文件类型必须为" + StringUtils.join(typeAllowed, ","));
+		}
+		
+		int maxSize = 10;
 		long fileSize = file.getSize();
-		String originalFilename = file.getOriginalFilename();
-		String ext = StringUtils.lowerCase(FilenameUtils.getExtension(originalFilename));
-		String[] allowedExts = new String[] { "jpg", "png", "jpeg", "gif", "webp" };
-		List<String> exts = new ArrayList<String>();
-		for (String str : allowedExts) {
-			exts.add(str);
-		}
-		if (!exts.contains(ext)) {
-			throw new ValidationException("图片后缀错误,必须为" + StringUtils.join(allowedExts, ","));
-		}
-		if (fileSize > 10 * 1024 * 1024) {
-			throw new ValidationException("图片大小不能超过10MB");
+		if (fileSize > maxSize * 1024 * 1024) {
+			throw new ValidationException("[上传图片]文件大小不能超过" + maxSize + "MB");
 		}
 	}
 

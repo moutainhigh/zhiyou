@@ -45,5 +45,9 @@ public interface UserService {
 	void modifyInfo(User user);
 	
 	void loginSuccess(Long id);
+
+	void unbind(Long id, Long operatorId, String remark);
+
+	void modifyParentId(Long id, Long parentId, Long operatorId, String remark);
 	
 }

@@ -25,6 +25,10 @@ public class UserLog implements Serializable {
 	@Field(label = "id")
 	private Long id;
 
+	@NotNull
+	@Field(label = "用户id")
+	private Long userId;
+
 	@NotBlank
 	@Field(label = "操作",description = "加VIP,冻结,解冻,回访 等")
 	private String operation;
@@ -37,7 +41,6 @@ public class UserLog implements Serializable {
 	@Field(label = "操作时间")
 	private Date operatedTime;
 
-	@NotBlank
 	@Column(length = 1000)
 	@Field(label = "备注")
 	private String remark;

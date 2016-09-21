@@ -27,35 +27,94 @@
     
     element.style.width = options.width + 'px';
     element.style.height = options.height + 'px';
-
+    
     var fileInput = element.getElementsByTagName('input')[1];
     
     fileInput.onchange = function(evt) {
       fileSelect(fileInput);
     };
     
+    var quality = options.quality ? options.quality : 0.5;
+    var fileOrigin, fileData;
+    var needCompress = quality < 1;
+    var ua = window.navigator.userAgent.toLowerCase();
+    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+      //needCompress = false;
+    }
+    
     var fileSelect = function(obj){
-      var file = obj.files[0];
-      if(!checkFileType(file)) {
+      fileOrigin = obj.files[0];
+      
+      loginfo('Origin File type : ' + fileOrigin.type);
+      loginfo('Origin File size : ' + fileOrigin.size + 'Byte');
+      
+      if(!checkFileType(fileOrigin)) {
         showError('您选择的文件类型不合法，请重新选择。');
         return;
       }
-      startUploadFile(file);
+      
+      if(needCompress){
+        compressFile(fileOrigin)
+      } else {
+        fileData = fileOrigin;
+        startUploadFile();
+      }
     }
+    
+    /** compress method */
+    var compressFile = function(file) {
+      if (typeof FileReader === 'undefined') {
+        console('Your browser does not support FileReader...');
+        fileData = file;
+        startUploadFile();
+        return;
+      }
+      var image = new Image();
+      var reader = new FileReader();
+      reader.onload = function() {
+        var url = reader.result;
+        image.src = url;
+      };
+      var canvas = document.createElement("canvas"),
+      ctx = canvas.getContext('2d');
+      image.onload = function() {
+        var w = image.naturalWidth,
+            h = image.naturalHeight;
+        canvas.width = w;
+        canvas.height = h;
+        ctx.drawImage(image, 0, 0, w, h, 0, 0, w, h);
+        
+        var format = "image/jpeg";
+        var base64 = canvas.toDataURL(format, quality);
+        var code = window.atob(base64.split(',')[1]);
 
+        var aBuffer = new window.ArrayBuffer(code.length);
+        var uBuffer = new window.Uint8Array(aBuffer);
+        for(var i = 0; i < code.length; i++){
+          uBuffer[i] = code.charCodeAt(i) & 0xff ;
+        }
+        fileData = new Blob([uBuffer], {
+          type: format
+        });
+        
+        loginfo('Compressed File size : ' + fileData.size + 'Byte');
+        startUploadFile();
+      };
+      reader.readAsDataURL(file);
+    }
+    
+    /** file type check method */
     var checkFileType = function(file) {
       var rFilter = /^(image\/bmp|image\/gif|image\/jpeg|image\/png|image\/tiff)$/i;
       return rFilter.test(file.type);
     }
-    var checkFileSize = function(file) {
-      return !options.maxFileSize || file.size <= sizeToBytes(options.maxFileSize);
-    };
-
-    var startUploadFile = function(file) {
-      /*var imageObj = element.getElementsByTagName('img')[0];
-      if(imageObj){
-        imageObj.src = Config.stccdn + '/image/loading_circle.gif';
-      }*/
+    
+    /** real upload method */
+    var startUploadFile = function() {
+      /*
+       * var imageObj = element.getElementsByTagName('img')[0]; if(imageObj){
+       * imageObj.src = Config.stccdn + '/image/loading_circle.gif'; }
+       */
       var state = element.getElementsByClassName('state')[0];
       if(!state){
         var state = document.createElement('em');
@@ -63,14 +122,22 @@
       }
       state.className = 'state state-loading';
       
-      if (!checkFileSize(file)) {
+      if (options.maxFileSize && fileData.size > sizeToBytes(options.maxFileSize)) {
         showError('您选择的文件超过' + options.maxFileSize + '，请重新选择。');
+        if(element.className.indexOf('image-add') != -1) {
+          state.className = 'state state-add';
+        } else {
+          element.removeChild(state);
+        }
       }
+      
+      // get form data for POSTing
       var vFD = new FormData();
-      vFD.append("file", file);
+      vFD.append("file", fileData);
       vFD.append("width", options.width *　options.retain);
       vFD.append("height", options.height * options.retain);
-      // create XMLHttpRequest object, adding few event listeners, and POSTing our data
+      // create XMLHttpRequest object, adding few event listeners, and POSTing
+      // our data
       var oXHR = new XMLHttpRequest();
       oXHR.addEventListener('load', uploadSuccess, false);
       oXHR.addEventListener('error', uploadError, false);
@@ -82,9 +149,7 @@
       }
       oXHR.open('POST', options.url);
       oXHR.send(vFD);
-      
-    }
-
+    };
     var uploadProgress = function(e) {
       if (options.progress) {
         options.progress.call(element, e);
@@ -107,6 +172,8 @@
         options.error.call(element, e);
       }
     }
+    
+    /** upload success callback */
     var uploadSuccess = function(e) {
       if(e.target.status != 200){
         alert('图片上传失败，请重试' + '[' + e.target.status + ']');
@@ -118,13 +185,13 @@
         return;
       }
       var resultData = result.data;
-      //alert(result);
+      // alert(result);
       
       var imageObj = element.getElementsByTagName('img')[0];
       var state = element.getElementsByClassName('state')[0];
       
       if(element.className.indexOf('image-add') != -1) {
-        //多图上传
+        // 多图上传
         state.className = 'state state-add';
       } else {
         imageObj.src = resultData.imageThumbnail;
@@ -172,7 +239,10 @@
         alert(message);
       }
     };
-
+    var loginfo = function(message){
+      console.info(message);
+      //alert(message);
+    }
   }
 
   window.imageupload = imageupload;
