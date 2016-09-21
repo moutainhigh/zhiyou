@@ -4,7 +4,10 @@ import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 import io.gd.generator.api.query.Direction;
 
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -20,12 +23,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.common.support.AliyunOssSupport;
 import com.zy.component.ArticleComponent;
+import com.zy.entity.act.Activity;
 import com.zy.entity.cms.Article;
 import com.zy.model.Constants;
 import com.zy.model.query.ArticleQueryModel;
@@ -135,4 +145,17 @@ public class ArticleController {
 		return true;
 	}
 
+	@RequestMapping(value = "/detailQrCode", produces = "image/jpeg")
+	@ResponseBody
+	public BufferedImage detailQrCode(@RequestParam Long id) throws WriterException {
+		Article article = articleService.findOne(id);
+		validate(article, NOT_NULL, "article not found, id is " + id);
+		
+		String qrCodeUrl = Constants.URL_MOBILE + "/article/" + id;
+		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+		Map<EncodeHintType, String> hints = new HashMap<>();
+		hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+		BitMatrix bitMatrix = multiFormatWriter.encode(qrCodeUrl, BarcodeFormat.QR_CODE, 480, 480, hints);
+		return MatrixToImageWriter.toBufferedImage(bitMatrix);
+	}
 }

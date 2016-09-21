@@ -54,10 +54,20 @@ public interface Constants {
     String CACHE_NAME_JOB = "job";
     String CACHE_NAME_ACTIVITY = "activity";
 
-	String CACHE_NAME_AGENT_REGISTER_COUNT = "agentRegisterCount";
 	String CACHE_NAME_REGISTER_CHART = "registerChart";
+	String CACHE_NAME_ORDER_CHART = "orderChart";
+	String CACHE_NAME_AGENT_REGISTER_COUNT = "agentRegisterCount";
+	String CACHE_NAME_USER_BANK_INFO_COUNT = "userBankInfoCount";
 	String CACHE_NAME_BANK = "bank";
-    
+    String CACHE_NAME_APPEARANCE_COUNT = "appearanceCount";
+    String CACHE_NAME_REPORT_PRE_COUNT = "reportPreCount";
+    String CACHE_NAME_REPORT_COUNT = "reportCount";
+	String CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT = "orderPlatformDeliverCount";
+	String CACHE_NAME_PROFIT_CHART = "profitChart";
+	String CACHE_NAME_WITHDRAW_COUNT = "withdrawCount";
+	String CACHE_NAME_PAYMENT_COUNT = "paymentCount";
+	String CACHE_NAME_DEPOSIT_COUNT = "depositCount";
+	
     /* order */
     int SETTING_ORDER_EXPIRE_IN_MINUTES = 60 * 24 * 30; // 订单过期 30天
     int SETTING_PAYMENT_EXPIRE_IN_MINUTES = 60 * 24 * 7; // 支付单过期时间 7天
@@ -126,5 +136,12 @@ public interface Constants {
     
     String TOPIC_ORDER_PAID = "order-paid"; // 订单已支付
     String TOPIC_ORDER_DELIVERED = "order-delivered"; // 订单已发货
+
+    String TOPIC_ORDER_RECEIVED = "order-received";
+
+    String TOPIC_DEPOSIT_SUCCESS = "deposit-success";
+    String TOPIC_DEPOSIT_OFFLINE_REJECTED = "deposit-offline-rejected";
+
+    String TOPIC_PAYMENT_OFFLINE_REJECTED = "payment-offline-rejected";
     
 }

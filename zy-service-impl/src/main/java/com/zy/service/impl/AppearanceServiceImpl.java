@@ -130,4 +130,9 @@ public class AppearanceServiceImpl implements AppearanceService {
 		appearanceMapper.update(persistence);
 	}
 
+	@Override
+	public long count(@NotNull AppearanceQueryModel appearanceQueryModel) {
+		return appearanceMapper.count(appearanceQueryModel);
+	}
+
 }

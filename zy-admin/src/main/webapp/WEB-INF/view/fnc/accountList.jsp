@@ -46,7 +46,8 @@
           },
           {
             data: 'moneyLabel',
-            title: '<i class="fa fa-money"></i> 余额'
+            title: '<i class="fa fa-money"></i> 余额',
+            orderable: false
           },
           {
             data: '',

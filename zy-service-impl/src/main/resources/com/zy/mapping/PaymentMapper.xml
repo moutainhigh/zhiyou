@@ -119,17 +119,14 @@
 		id,sn,user_id,title,pay_type,payment_type,ref_id,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,offline_image,offline_memo,operator_id,version
 		from `fnc_payment`
 		<where>
-			<if test="snEQ != null">
-				and sn = #{snEQ}
-			</if>
-			<if test="createdTimeLT != null">
-				and created_time &lt; #{createdTimeLT}
-			</if>
 			<if test="paymentTypeEQ != null">
 				and payment_type = #{paymentTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="refIdEQ != null">
 				and ref_id = #{refIdEQ}
+			</if>
+			<if test="payTypeEQ != null">
+				and pay_type = #{payTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
@@ -137,17 +134,34 @@
 			<if test="paidTimeLT != null">
 				and paid_time &lt; #{paidTimeLT}
 			</if>
-			<if test="createdTimeGTE != null">
-				and created_time &gt;= #{createdTimeGTE}
-			</if>
-			<if test="paymentStatusEQ != null">
-				and payment_status = #{paymentStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			<if test="payTypeIN != null">
+				<if test="payTypeIN.length != 0">
+				and pay_type in
+				<foreach collection="payTypeIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+				</if>
+				<if test="payTypeIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="expiredTimeLT != null">
 				and expired_time &lt; #{expiredTimeLT}
 			</if>
 			<if test="paidTimeGTE != null">
 				and paid_time &gt;= #{paidTimeGTE}
+			</if>
+			<if test="snEQ != null">
+				and sn = #{snEQ}
+			</if>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
+			</if>
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="paymentStatusEQ != null">
+				and payment_status = #{paymentStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 		<choose>
@@ -166,17 +180,14 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.PaymentQueryModel">
 		select count(*) from `fnc_payment`
 		<where>
-			<if test="snEQ != null">
-				and sn = #{snEQ}
-			</if>
-			<if test="createdTimeLT != null">
-				and created_time &lt; #{createdTimeLT}
-			</if>
 			<if test="paymentTypeEQ != null">
 				and payment_type = #{paymentTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="refIdEQ != null">
 				and ref_id = #{refIdEQ}
+			</if>
+			<if test="payTypeEQ != null">
+				and pay_type = #{payTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
@@ -184,17 +195,34 @@
 			<if test="paidTimeLT != null">
 				and paid_time &lt; #{paidTimeLT}
 			</if>
-			<if test="createdTimeGTE != null">
-				and created_time &gt;= #{createdTimeGTE}
-			</if>
-			<if test="paymentStatusEQ != null">
-				and payment_status = #{paymentStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			<if test="payTypeIN != null">
+				<if test="payTypeIN.length != 0">
+				and pay_type in
+				<foreach collection="payTypeIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+				</if>
+				<if test="payTypeIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="expiredTimeLT != null">
 				and expired_time &lt; #{expiredTimeLT}
 			</if>
 			<if test="paidTimeGTE != null">
 				and paid_time &gt;= #{paidTimeGTE}
+			</if>
+			<if test="snEQ != null">
+				and sn = #{snEQ}
+			</if>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
+			</if>
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="paymentStatusEQ != null">
+				and payment_status = #{paymentStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 	</select>

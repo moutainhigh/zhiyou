@@ -131,7 +131,7 @@ public class Deposit implements Serializable {
 	private Date expiredTime;
 
 	@NotNull
-	@Query(Predicate.EQ)
+	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "提现单状态")
 	@View
 	@View(name = "depositStatusStyle", type = String.class, groups = {VO_ADMIN})

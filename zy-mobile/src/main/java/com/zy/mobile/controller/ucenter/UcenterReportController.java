@@ -98,7 +98,7 @@ public class UcenterReportController {
 		User user = userService.findOne(principal.getUserId());
 		model.addAttribute("userRank", user.getUserRank());
 		model.addAttribute("jobs", this.jobService.findAll());
-		model.addAttribute("tags", getTags());
+		//model.addAttribute("tags", getTags());
 		return "ucenter/report/reportCreate";
 	}
 
@@ -150,7 +150,7 @@ public class UcenterReportController {
 		Report report = findAndValidate(id, principal.getUserId());
 		validate(report, NOT_NULL, "report id" + id + " not found");
 		model.addAttribute("jobs", this.jobService.findAll());
-		model.addAttribute("tags", getTags());
+		//model.addAttribute("tags", getTags());
 		model.addAttribute("report", reportComponent.buildDetailVo(report));
 		return "ucenter/report/reportEdit";
 	}
@@ -179,7 +179,7 @@ public class UcenterReportController {
 		return report;
 	}
 
-	private Map<String, List<Tag>> getTags() {
+	/*private Map<String, List<Tag>> getTags() {
 		Map<String, List<Tag>> tags = new HashMap<>();
 		this.tagService.findAll().parallelStream().forEach(tag -> {
 			if (!tags.containsKey(tag.getTagType())) {
@@ -188,5 +188,5 @@ public class UcenterReportController {
 			tags.get(tag.getTagType()).add(tag);
 		});
 		return tags;
-	}
+	}*/
 }

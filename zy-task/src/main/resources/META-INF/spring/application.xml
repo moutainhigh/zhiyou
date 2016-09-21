@@ -127,6 +127,18 @@
 						<value>0 0/1 * * * ?</value>
 					</property>
 				</bean>
+				<!--订单取消-->
+				<bean id="orderCancelJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id="orderCancelJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.OrderCancelJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/1 * * * ?</value>
+					</property>
+				</bean>
 
 			</list>
 		</property>

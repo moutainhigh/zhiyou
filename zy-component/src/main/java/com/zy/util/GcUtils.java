@@ -198,7 +198,7 @@ public class GcUtils {
 			labelClass = "danger";
 			break;
 		case 已支付:
-			labelClass = "success";
+			labelClass = "warning";
 			break;
 		case 已发货:
 			labelClass = "info";
@@ -207,7 +207,7 @@ public class GcUtils {
 			labelClass = "success";
 			break;
 		case 已退款:
-			labelClass = "warning";
+			labelClass = "default";
 			break;
 		case 已取消:
 			labelClass = "default";
@@ -266,6 +266,8 @@ public class GcUtils {
 		case 已取消:
 			labelClass = "default";
 			break;
+		case 待确认:
+			labelClass = "warning";
 		default:
 			break;
 		}
@@ -300,11 +302,13 @@ public class GcUtils {
 			labelClass = "success";
 			break;
 		case 已退款:
-			labelClass = "warning";
+			labelClass = "default";
 			break;
 		case 已取消:
 			labelClass = "default";
 			break;
+		case 待确认:
+			labelClass = "warning";
 		default:
 			break;
 		}
