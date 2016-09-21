@@ -5,7 +5,12 @@ import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -34,6 +39,7 @@ import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
+import com.zy.util.GcUtils;
 import com.zy.vo.UserAdminVo;
 
 @RequestMapping("/user")
@@ -49,7 +55,8 @@ public class UserController {
 	
 	@RequiresPermissions("user:view")
 	@RequestMapping(method = RequestMethod.GET)
-	public String list() {
+	public String list(Model model) {
+		model.addAttribute("userRankMap", Arrays.asList(UserRank.values()).stream().collect(Collectors.toMap(v->v, v->GcUtils.getUserRankLabel(v),(u,v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new)) );
 		return "usr/userList";
 	}
 	

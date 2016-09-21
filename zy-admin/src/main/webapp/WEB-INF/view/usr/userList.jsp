@@ -191,6 +191,24 @@
               <div class="form-group">
                 <input type="text" name="inviterNicknameLK" class="form-control" placeholder="邀请人昵称"/>
               </div>
+              
+              <div class="form-group">
+                <select name="userRankEQ" class="form-control">
+                  <option value="">-- 是否冻结 --</option>
+                  <option value="1">是</option>
+                  <option value="0">否</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <select name="userRankEQ" class="form-control">
+                  <option value="">-- 用户等级 --</option>
+                  <c:forEach items="${userRankMap}" var="userRankMap">
+                  <option value="${userRankMap.key}">${userRankMap.value}</option>
+                  </c:forEach>
+                </select>
+              </div>
+              
               <div class="form-group input-inline">
                 <button class="btn blue filter-submit">
                   <i class="fa fa-search"></i> 查询

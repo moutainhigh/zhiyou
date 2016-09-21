@@ -110,6 +110,7 @@ public class User implements Serializable {
 	private String avatar;
 
 	@NotNull
+	@Query(Predicate.EQ)
 	@Field(label = "是否冻结")
 	@View(groups = {VO_ADMIN})
 	private Boolean isFrozen;
