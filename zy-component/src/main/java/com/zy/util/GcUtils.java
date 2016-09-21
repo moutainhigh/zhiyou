@@ -170,8 +170,8 @@ public class GcUtils {
 		if (!exts.contains(ext)) {
 			throw new ValidationException("图片后缀错误,必须为" + StringUtils.join(allowedExts, ","));
 		}
-		if (fileSize > 4 * 1024 * 1024) {
-			throw new ValidationException("图片大小不能超过4MB");
+		if (fileSize > 10 * 1024 * 1024) {
+			throw new ValidationException("图片大小不能超过10MB");
 		}
 	}
 

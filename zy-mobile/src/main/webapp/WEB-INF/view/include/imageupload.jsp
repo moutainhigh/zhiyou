@@ -7,6 +7,6 @@
     width : 100,
     height : 100,
     retain : 2,
-    maxFileSize : '4MB'
+    maxFileSize : '6MB'
   });
 </script>

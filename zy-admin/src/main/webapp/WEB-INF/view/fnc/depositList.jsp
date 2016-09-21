@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 <style>
-  .imagescan {
+  .imageview {
     cursor: pointer;
     width: 80px;
     height: 80px;
