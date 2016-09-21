@@ -42,6 +42,7 @@ import com.zy.entity.fnc.PayType;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Withdraw.WithdrawStatus;
+import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
@@ -256,11 +257,12 @@ public class IndexController {
 		return dataMap;
 	}
 
-	@RequestMapping("/main/ajaxChart/profit")
+	@RequestMapping("/main/ajaxChart/order")
 	@ResponseBody
-	public Map<String, Object> getpRrofitChart() {
+	public Map<String, Object> getOrderChart() {
+
 		@SuppressWarnings("unchecked")
-		Map<String, Object> dataMap = (Map<String, Object>) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_PROFIT_CHART);
+		Map<String, Object> dataMap = (Map<String, Object>) cacheSupport.get(CACHE_NAME_STATISTICS, Constants.CACHE_NAME_ORDER_CHART);
 		if (dataMap == null) {
 			Date now = new Date();
 
@@ -272,60 +274,36 @@ public class IndexController {
 			calendar.set(Calendar.MILLISECOND, 0);
 			calendar.add(Calendar.DATE, -15);
 
-			ProfitQueryModel profitQueryModel = new ProfitQueryModel();
-			profitQueryModel.setCreatedTimeGTE(calendar.getTime());
-			List<Profit> profits = profitService.findAll(profitQueryModel);
-
+			List<Order> orders = orderService.findAll(OrderQueryModel.builder().createdTimeGTE(calendar.getTime()).build());
+			
 			final String dateFmt = "yyyy-MM-dd";
 			Date date = null;
-			List<BigDecimal> feeAmountList = new ArrayList<BigDecimal>();
-			List<BigDecimal> accountAmountList = new ArrayList<BigDecimal>();
-			List<BigDecimal> teamAmountList = new ArrayList<BigDecimal>();
+			List<Long> orderList = new ArrayList<Long>();
 			List<String> dataStrs = new ArrayList<String>();
 			while ((date = calendar.getTime()).before(now)) {
-				BigDecimal feeAmount = new BigDecimal("0.00");
-				BigDecimal accountAmount = new BigDecimal("0.00");
-				BigDecimal teamAmount = new BigDecimal("0.00");
-
 				String dateStr = DateFormatUtils.format(date, dateFmt);
-
-				for (Profit profit : profits) {
-				/*	if (DateFormatUtils.format(profit.getCreatedTime(), dateFmt).equals(dateStr)) {
-						switch (profit.getBizName()) {
-						case 任务奖励:
-							User user = cacheComponent.getUser(profit.getUserId());
-							if (user.getUserType() == UserType.平台) {
-								feeAmount = feeAmount.add(profit.getAmount());
-							} else {
-								accountAmount = accountAmount.add(profit.getAmount());
-							}
-							break;
-						case 团队收益:
-							teamAmount = teamAmount.add(profit.getAmount());
-							break;
-						default:
-							break;
-						}
-					}*/
+				Long count = 0L;
+				for (Order order : orders) {
+					if (DateFormatUtils.format(order.getCreatedTime(), dateFmt).equals(dateStr)) {
+						count++;
+					}
 				}
 
-				feeAmountList.add(feeAmount);
-				accountAmountList.add(accountAmount);
-				teamAmountList.add(teamAmount);
+				orderList.add(count);
 				dataStrs.add(StringUtils.right(dateStr, 5));
+
 				calendar.add(Calendar.DATE, 1);
 			}
 			dataMap = new LinkedHashMap<String, Object>();
-			dataMap.put("feeAmount", feeAmountList);
-			dataMap.put("accountAmount", accountAmountList);
-			dataMap.put("teamAmount", teamAmountList);
+			dataMap.put("orderCount", orderList);
 			dataMap.put("chartLabel", dataStrs);
 
-			cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_PROFIT_CHART, dataMap, DEFAULT_EXPIRE);
+			cacheSupport.set(CACHE_NAME_STATISTICS, Constants.CACHE_NAME_ORDER_CHART, dataMap, DEFAULT_EXPIRE);
 		}
+
 		return dataMap;
 	}
-
+	
 	@RequestMapping("/dev")
 	public String dev() {
 		return "dev";

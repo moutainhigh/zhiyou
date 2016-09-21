@@ -54,8 +54,9 @@ public interface Constants {
     String CACHE_NAME_JOB = "job";
     String CACHE_NAME_ACTIVITY = "activity";
 
-	String CACHE_NAME_AGENT_REGISTER_COUNT = "agentRegisterCount";
 	String CACHE_NAME_REGISTER_CHART = "registerChart";
+	String CACHE_NAME_ORDER_CHART = "orderChart";
+	String CACHE_NAME_AGENT_REGISTER_COUNT = "agentRegisterCount";
 	String CACHE_NAME_USER_BANK_INFO_COUNT = "userBankInfoCount";
 	String CACHE_NAME_BANK = "bank";
     String CACHE_NAME_APPEARANCE_COUNT = "appearanceCount";
