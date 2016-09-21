@@ -1,23 +1,17 @@
 package com.zy.admin.controller.fnc;
 
 
-import com.zy.admin.model.AdminPrincipal;
-import com.zy.common.model.query.Page;
-import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.model.ui.Grid;
-import com.zy.common.util.ExcelUtils;
-import com.zy.common.util.WebUtils;
-import com.zy.component.DepositComponent;
-import com.zy.entity.fnc.Deposit;
-import com.zy.entity.fnc.PayType;
-import com.zy.entity.usr.User;
-import com.zy.model.query.DepositQueryModel;
-import com.zy.model.query.UserQueryModel;
-import com.zy.service.DepositService;
-import com.zy.service.UserService;
-import com.zy.vo.DepositAdminVo;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -30,15 +24,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
+import com.zy.admin.model.AdminPrincipal;
+import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.model.ui.Grid;
+import com.zy.common.util.ExcelUtils;
+import com.zy.common.util.WebUtils;
+import com.zy.component.DepositComponent;
+import com.zy.entity.fnc.Deposit;
+import com.zy.entity.fnc.Deposit.DepositStatus;
+import com.zy.entity.fnc.PayType;
+import com.zy.entity.usr.User;
+import com.zy.model.query.DepositQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.DepositService;
+import com.zy.service.UserService;
+import com.zy.vo.DepositAdminVo;
 
 @RequestMapping("/deposit")
 @Controller
@@ -57,6 +60,7 @@ public class DepositController {
 	@RequiresPermissions("deposit:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
+		model.addAttribute("depositStatuses", Arrays.asList(DepositStatus.values()));
 		model.addAttribute("payTypes", Arrays.asList(PayType.values()));
 		return "fnc/depositList";
 	}

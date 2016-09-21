@@ -10,6 +10,8 @@ public interface PaymentService {
 
 	Payment findOne(Long id);
 
+	long count(PaymentQueryModel paymentQueryModel);
+	
 	Page<Payment> findPage(PaymentQueryModel paymentQueryModel);
 
 	List<Payment> findAll(PaymentQueryModel paymentQueryModel);
