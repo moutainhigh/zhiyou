@@ -382,4 +382,9 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 	}
 
+	@Override
+	public long count(PaymentQueryModel paymentQueryModel) {
+		return paymentMapper.count(paymentQueryModel);
+	}
+
 }

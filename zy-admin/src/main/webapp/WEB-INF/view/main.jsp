@@ -54,21 +54,31 @@
                             <td> ${reportPreCount} </td>
                             <td><c:if test="${reportPreCount > 0}"><a data-href="${ctx}/report" class="btn green btn-xs"><i class="fa fa-edit"></i>去审核</a></c:if></td>
                         </tr>
-                          <tr>
-                              <td> 待审核检测报告 </td>
-                              <td> ${reportCount} </td>
-                              <td><c:if test="${reportCount > 0}"><a data-href="${ctx}/report" class="btn green btn-xs"><i class="fa fa-edit"></i>去审核</a></c:if></td>
-                          </tr>
                         <tr>
-                              <td> 待处理提现 </td>
+                            <td> 待审核检测报告 </td>
+                            <td> ${reportCount} </td>
+                            <td><c:if test="${reportCount > 0}"><a data-href="${ctx}/report" class="btn green btn-xs"><i class="fa fa-edit"></i>去审核</a></c:if></td>
+                        </tr>
+                        <tr>
+                            <td> 待处理提现 </td>
                             <td> ${withdrawCount} </td>
                             <td><c:if test="${withdrawCount > 0}"><a data-href="${ctx}/withdraw" class="btn green btn-xs"><i class="fa fa-edit"></i>去审核</a></c:if></td>
                         </tr>
-                          <tr>
-                                <td> 待平台发货订单 </td>
-                              <td> ${orderPlatformDeliverCount} </td>
-                              <td><c:if test="${orderPlatformDeliverCount > 0}"><a data-href="${ctx}/order/platformDeliverList" class="btn green btn-xs"><i class="fa fa-edit"></i>去发货</a></c:if></td>
-                          </tr>
+                        <tr>
+                            <td> 待处理充值 </td>
+                            <td> ${depositCount} </td>
+                            <td><c:if test="${depositCount > 0}"><a data-href="${ctx}/deposit" class="btn green btn-xs"><i class="fa fa-edit"></i>去审核</a></c:if></td>
+                        </tr>
+                        <tr>
+                            <td> 待确认支付 </td>
+                            <td> ${paymentCount} </td>
+                            <td><c:if test="${paymentCount > 0}"><a data-href="${ctx}/payment" class="btn green btn-xs"><i class="fa fa-edit"></i>去确认</a></c:if></td>
+                        </tr>
+                        <tr>
+                            <td> 待平台发货订单 </td>
+                            <td> ${orderPlatformDeliverCount} </td>
+                            <td><c:if test="${orderPlatformDeliverCount > 0}"><a data-href="${ctx}/order/platformDeliverList" class="btn green btn-xs"><i class="fa fa-edit"></i>去发货</a></c:if></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

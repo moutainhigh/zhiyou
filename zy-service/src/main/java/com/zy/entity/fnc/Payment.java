@@ -69,6 +69,7 @@ public class Payment implements Serializable {
 	private String title;
 
 	@NotNull
+	@Query(Predicate.EQ)
 	@Field(label = "支付方式", description = "目前固定为余额")
 	@View
 	private PayType payType;

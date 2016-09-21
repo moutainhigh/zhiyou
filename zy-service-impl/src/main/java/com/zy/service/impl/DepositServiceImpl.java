@@ -266,4 +266,9 @@ public class DepositServiceImpl implements DepositService {
 		}
 	}
 
+	@Override
+	public long count(DepositQueryModel depositQueryModel) {
+		return depositMapper.count(depositQueryModel);
+	}
+
 }

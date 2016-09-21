@@ -61,9 +61,11 @@ public interface Constants {
     String CACHE_NAME_APPEARANCE_COUNT = "appearanceCount";
     String CACHE_NAME_REPORT_PRE_COUNT = "reportPreCount";
     String CACHE_NAME_REPORT_COUNT = "reportCount";
-	String CACHE_NAME_WITHDRAW_COUNT = "withdrawCount";
 	String CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT = "orderPlatformDeliverCount";
 	String CACHE_NAME_PROFIT_CHART = "profitChart";
+	String CACHE_NAME_WITHDRAW_COUNT = "withdrawCount";
+	String CACHE_NAME_PAYMENT_COUNT = "paymentCount";
+	String CACHE_NAME_DEPOSIT_COUNT = "depositCount";
 	
     /* order */
     int SETTING_ORDER_EXPIRE_IN_MINUTES = 60 * 24 * 30; // 订单过期 30天
