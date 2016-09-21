@@ -5,11 +5,13 @@ import com.zy.entity.act.ActivityCollect;
 import com.zy.mapper.ActivityCollectMapper;
 import com.zy.model.query.ActivityCollectQueryModel;
 import com.zy.service.ActivityCollectService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+
 import java.util.List;
 
 @Service
@@ -41,6 +43,11 @@ public class ActivityCollectServiceImpl implements ActivityCollectService {
 	public List<ActivityCollect> findAll(@NotNull ActivityCollectQueryModel activityCollectQueryModel) {
 		return activityCollectMapper
 				.findAll(activityCollectQueryModel);
+	}
+
+	@Override
+	public ActivityCollect findByActivityIdAndUserId(@NotNull Long activityId, @NotNull Long userId) {
+		return activityCollectMapper.findByActivityIdAndUserId(activityId, userId);
 	}
 
 }
