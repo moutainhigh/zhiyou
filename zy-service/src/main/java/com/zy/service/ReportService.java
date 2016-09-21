@@ -22,6 +22,8 @@ public interface ReportService {
 
 	List<Report> findAll(ReportQueryModel reportQueryModel);
 
+	long count(ReportQueryModel reportQueryModel);
+	
 	void confirm(Long id, boolean isSuccess, String confirmRemark);
 
 	void settleUp(Long id);

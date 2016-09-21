@@ -49,12 +49,12 @@ public class ProfitController {
     @RequiresPermissions("profit:view")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public Grid<ProfitAdminVo> list(ProfitQueryModel profitQueryModel, String userPhoneEQ, String userNicknameLK) {
+    public Grid<ProfitAdminVo> list(ProfitQueryModel profitQueryModel, String phoneEQ, String nicknameLK) {
 
-        if (StringUtils.isNotBlank(userPhoneEQ) || StringUtils.isNotBlank(userNicknameLK)) {
+        if (StringUtils.isNotBlank(phoneEQ) || StringUtils.isNotBlank(nicknameLK)) {
         	UserQueryModel userQueryModel = new UserQueryModel();
-        	userQueryModel.setPhoneEQ(userPhoneEQ);
-        	userQueryModel.setNicknameLK(userNicknameLK);
+        	userQueryModel.setPhoneEQ(phoneEQ);
+        	userQueryModel.setNicknameLK(nicknameLK);
         	
             List<User> users = userService.findAll(userQueryModel);
             if (users == null || users.size() == 0) {

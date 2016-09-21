@@ -251,4 +251,9 @@ public class ReportServiceImpl implements ReportService {
 		return reportMapper.findAll(reportQueryModel);
 	}
 
+	@Override
+	public long count(ReportQueryModel reportQueryModel) {
+		return reportMapper.count(reportQueryModel);
+	}
+
 }

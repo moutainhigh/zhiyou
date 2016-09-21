@@ -56,8 +56,15 @@ public interface Constants {
 
 	String CACHE_NAME_AGENT_REGISTER_COUNT = "agentRegisterCount";
 	String CACHE_NAME_REGISTER_CHART = "registerChart";
+	String CACHE_NAME_USER_BANK_INFO_COUNT = "userBankInfoCount";
 	String CACHE_NAME_BANK = "bank";
-    
+    String CACHE_NAME_APPEARANCE_COUNT = "appearanceCount";
+    String CACHE_NAME_REPORT_PRE_COUNT = "reportPreCount";
+    String CACHE_NAME_REPORT_COUNT = "reportCount";
+	String CACHE_NAME_WITHDRAW_COUNT = "withdrawCount";
+	String CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT = "orderPlatformDeliverCount";
+	String CACHE_NAME_PROFIT_CHART = "profitChart";
+	
     /* order */
     int SETTING_ORDER_EXPIRE_IN_MINUTES = 60 * 24 * 30; // 订单过期 30天
     int SETTING_PAYMENT_EXPIRE_IN_MINUTES = 60 * 24 * 7; // 支付单过期时间 7天
