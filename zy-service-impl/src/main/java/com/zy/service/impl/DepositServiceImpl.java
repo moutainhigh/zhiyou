@@ -19,6 +19,7 @@ import com.zy.model.query.DepositQueryModel;
 import com.zy.service.DepositService;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -244,15 +245,23 @@ public class DepositServiceImpl implements DepositService {
 	}
 
 	@Override
-	public void modifyOffline(Long depositId, String offlineImage, String offlineMemo) {
-		Deposit persistance = depositMapper.findOne(depositId);
-		validate(persistance, NOT_NULL, "deposit id " + depositId + " is not found");
-		validate(offlineImage, NOT_BLANK, "deposit offlineImage is blank");
-		validate(offlineMemo, NOT_BLANK, "deposit offlineMemo is blank");
-		
-		persistance.setOfflineMemo(offlineMemo);
-		persistance.setOfflineImage(offlineImage);
-		if (depositMapper.update(persistance) == 0) {
+	public void modifyOffline(@NotNull Long depositId, @NotBlank @URL String offlineImage, @NotBlank String offlineMemo) {
+
+		Deposit deposit = depositMapper.findOne(depositId);
+		validate(deposit, NOT_NULL, "deposit id " + depositId + " is not found");
+
+		if (deposit.getPayType() != PayType.银行汇款) {
+			throw new BizException(BizCode.ERROR, "支付方式只能为银行汇款");
+		}
+
+		DepositStatus depositStatus = deposit.getDepositStatus();
+		if (depositStatus != DepositStatus.待充值 && depositStatus != DepositStatus.待确认)  {
+			throw new BizException(BizCode.ERROR, "只有待充值或者待确认状态的充值单才能操作");
+		}
+		deposit.setOfflineMemo(offlineMemo);
+		deposit.setOfflineImage(offlineImage);
+		deposit.setDepositStatus(DepositStatus.待确认);
+		if (depositMapper.update(deposit) == 0) {
 			throw new ConcurrentException();
 		}
 	}
