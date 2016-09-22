@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 import static com.zy.model.Constants.*;
 import static java.util.Objects.isNull;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -135,6 +137,12 @@ public class SmsConsumer extends AbstractConsumer {
                 smsSupport.send(phone, message, "智优生物");
             }
         }
+    }
+
+    public static void main(String[] args) {
+         //114.55.253.206
+        //32a4dae432844F71aa1A300aac5dY4
+        System.out.println(UUID.randomUUID().toString().replace("-",""));
     }
 
 
