@@ -17,38 +17,42 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
+import static com.zy.entity.usr.UserUpgrade.VO_ADMIN;
+
 @Entity
 @Table(name = "usr_user_upgrade")
 @Getter
 @Setter
 @Type(label = "用户升级")
-@ViewObject(groups = "UserUpgradeAdminVo")
+@ViewObject(groups = VO_ADMIN)
 @QueryModel
 public class UserUpgrade implements Serializable {
 
+	public static final String VO_ADMIN = "UserUpgradeAdminVo";
+
 	@Id
 	@Field(label = "id")
-	@View(groups = "UserUpgradeAdminVo")
+	@View(groups = VO_ADMIN)
 	private Long id;
 
 	@NotNull
 	@Field(label = "用户")
-	@View(groups = "UserUpgradeAdminVo")
+	@View(groups = VO_ADMIN)
 	private Long userId;
 
 	@NotNull
 	@Field(label = "升级前等级")
-	@View(groups = "UserUpgradeAdminVo")
+	@View(groups = VO_ADMIN)
 	private User.UserRank fromUserRank;
 
 	@NotNull
 	@Field(label = "升级后等级")
-	@View(groups = "UserUpgradeAdminVo")
+	@View(groups = VO_ADMIN)
 	private User.UserRank toUserRank;
 
 	@NotNull
 	@Field(label = "升级时间")
-	@View(groups = "UserUpgradeAdminVo")
+	@View(groups = VO_ADMIN)
 	@Query({Predicate.GTE, Predicate.LT})
 	private Date upgradedTime;
 
