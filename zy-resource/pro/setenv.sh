@@ -12,5 +12,7 @@ JAVA_OPTS="
 -XX:+OptimizeStringConcat
 -XX:CICompilerCount=8
 -XX:+ScavengeBeforeFullGC
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=/opt/heapError/
 "
 
