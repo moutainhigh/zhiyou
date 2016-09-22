@@ -233,8 +233,8 @@
   display: block; width: 1px; height: auto;
   content: ""; background-color: #eee;
 }
-.miui-scroll-nav > ul > li.current {
-  color: #fb8604 !important;
+.miui-scroll-nav > ul > li.current, .miui-scroll-nav > ul > li.current > a {
+  color: #fb8604;
 }
 .miui-scroll-nav > ul > li.cur-line {
   position: absolute; left: 0; bottom: 0; margin-left: 10px;
