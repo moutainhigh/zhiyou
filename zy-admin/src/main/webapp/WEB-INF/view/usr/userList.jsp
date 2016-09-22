@@ -47,7 +47,7 @@
           },
           {
             data: '',
-            title: '邀请人',
+            title: '注册邀请人',
             orderable: false,
             render: function (data, type, full) {
               return formatUser(full.inviter);
@@ -55,7 +55,7 @@
           },
           {
             data: '',
-            title: '上级信息',
+            title: '直属上级',
             orderable: false,
             render: function (data, type, full) {
               return formatUser(full.parent);

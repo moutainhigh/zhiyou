@@ -59,11 +59,21 @@
             data: 'beforeAmountLabel',
             title: '交易前',
             orderable: false
+
           },
           {
             data: 'transAmountLabel',
             title: '交易金额',
-            orderable: false
+            orderable: false,
+            render: function (data, type, full) {
+              var result;
+              if (full.inOut == '收入') {
+                result = '<span class="currency-in">' + data + '</span>';
+              } else {
+                result = '<span class="currency-out">' + data + '</span>';
+              }
+              return result;
+            }
           },
           {
             data: 'afterAmountLabel',
@@ -81,7 +91,7 @@
 
     $('#accountLogTypeIN').select2({
       multiple: true,
-      placeholder: '-单据类型-',
+      placeholder: '-- 单据类型 --',
       data: [
         {
           id: '0',

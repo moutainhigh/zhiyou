@@ -33,9 +33,9 @@ public class ExcelUtils {
 					if (nu == nv) {
 						return 0;
 					} else if (nu > nv) {
-						return -1;
-					} else {
 						return 1;
+					} else {
+						return -1;
 					}
 				})
 				.collect(Collectors.toList());

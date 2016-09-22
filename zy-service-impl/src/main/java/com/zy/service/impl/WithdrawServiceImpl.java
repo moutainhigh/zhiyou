@@ -142,12 +142,12 @@ public class WithdrawServiceImpl implements WithdrawService {
 
 		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw, withdraw.getUserId());
 
-		/* 提现手续费 */
-		BigDecimal fee = withdraw.getFee();
+		/* 提现手续费 暂不记录 */
+	/*	BigDecimal fee = withdraw.getFee();
 		if (fee.compareTo(new BigDecimal("0.00")) > 0) {
 			String title = "提现单" + withdraw.getSn() + "收益";
 			fncComponent.createAndGrantProfit(sysUserId, Profit.ProfitType.提现手续费, id, title, currencyType, fee);
-		}
+		}*/
 	}
 
 	@Override

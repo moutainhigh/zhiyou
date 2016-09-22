@@ -16,31 +16,23 @@
         },
         dataTable: {
           //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
-          lengthMenu : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here
+          lengthMenu: [[10, 20, 50, 100], [10, 20, 50, 100]],// change per page values here
           pageLength: 20, // default record count per page
           order: [], // set first column as a default sort by desc
           ajax: {
             url: '${ctx}/withdraw', // ajax source
           },
           columns: [
-          /*  {
-              data: 'id',
-              title: 'id'
-            },*/
+            /*  {
+             data: 'id',
+             title: 'id'
+             },*/
             {
               data: 'title',
-              title: '提现情况',
+              title: '提现信息',
               orderable: false,
               render: function (data, type, full) {
                 return '<p>sn: ' + full.sn + '</p><p>标题：' + full.title + '</p>';
-              }
-            },
-            {
-              data: 'withdrawStatus',
-              title: '提现状态',
-              orderable: false,
-              render: function (data, type, full) {
-                return '<label class="label label-' + full.withdrawStatusStyle +'">' + data + '</label>';
               }
             },
             {
@@ -58,13 +50,30 @@
               render: function (data, type, full) {
                 return '<p>总金额：' + full.amountLabel + '</p>'
                   + '<p> 手续费率：' + full.feeRate + '</p>'
-                  + '<p>手续费：' + full.feeLabel + '</p>'
-                  + '<p>实际到账：<span class="font-red">' + full.realAmountLabel + '</span></p>';
+                  + '<p>手续费：' + full.feeLabel + '</p>';
+              }
+            },
+            {
+              data: 'realAmountLabel',
+              title: '实际到账',
+              orderable: false
+            },
+            {
+              data: 'createdTime',
+              title: '创建时间',
+              orderable: false
+            },
+            {
+              data: 'withdrawStatus',
+              title: '提现状态',
+              orderable: false,
+              render: function (data, type, full) {
+                return '<label class="label label-' + full.withdrawStatusStyle + '">' + data + '</label>';
               }
             },
             {
               data: 'isToBankCard',
-              title: '提现到哪里',
+              title: '提现到',
               orderable: false,
               render: function (data, type, full) {
                 return data ? '<i class="fa fa-credit-card"></i> 银行卡' : '<i class="fa fa-weixin "></i> 微信';
@@ -82,11 +91,7 @@
                 return '';
               }
             },
-            {
-              data: 'createdTime',
-              title: '创建时间',
-              orderable: false
-            },
+
             {
               data: 'withdrawedTime',
               title: '提现时间',
@@ -94,7 +99,7 @@
             },
             {
               data: 'remark',
-              title: '提现备注',
+              title: '备注',
               orderable: false
             },
             {

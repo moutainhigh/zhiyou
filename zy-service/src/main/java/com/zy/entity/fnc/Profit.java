@@ -43,9 +43,9 @@ public class Profit implements Serializable {
 		数据奖,
 		销量奖,
 		特级平级奖,
-		/* 下述为平台用 */
-		平台收款,
-		提现手续费
+		/* 下述为平台用 暂不使用 */
+		/*平台收款,
+		提现手续费*/
 	}
 
 	public enum ProfitStatus {

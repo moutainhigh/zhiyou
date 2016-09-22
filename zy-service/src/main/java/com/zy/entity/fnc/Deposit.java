@@ -145,6 +145,7 @@ public class Deposit implements Serializable {
 	@Field(label = "银行汇款截图")
 	@View
 	@View(name = "offlineImageThumbnail")
+	@Column(length = 1000)
 	private String offlineImage;
 	
 	@Field(label = "银行汇款备注")
