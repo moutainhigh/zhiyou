@@ -3,6 +3,8 @@ package com.zy.admin.controller.mal;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.OrderComponent;
@@ -131,5 +134,17 @@ public class OrderController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			return "redirect:/order/deliver?id=" + orderDeliverDto.getId();
 		}
+	}
+	
+	@RequestMapping(value = "/sum", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> sum(OrderStatus orderStatus) {
+		OrderStatus[] orderStatusIN = null;
+		if(orderStatus == null) {
+			orderStatusIN = new OrderStatus[0];
+		} else {
+			orderStatusIN = new OrderStatus[]{orderStatus};
+		}
+		return ResultBuilder.result(orderService.sum(orderStatusIN));
 	}
 }

@@ -45,6 +45,7 @@ import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
+import com.zy.model.dto.OrderSumDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
 
@@ -556,5 +557,10 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public long count(OrderQueryModel build) {
 		return orderMapper.count(build);
+	}
+
+	@Override
+	public OrderSumDto sum(OrderStatus[] orderStatusIN) {
+		return orderMapper.orderSum(orderStatusIN);
 	}
 }

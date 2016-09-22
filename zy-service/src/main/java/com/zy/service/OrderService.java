@@ -2,8 +2,10 @@ package com.zy.service;
 
 import com.zy.common.model.query.Page;
 import com.zy.entity.mal.Order;
+import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
+import com.zy.model.dto.OrderSumDto;
 import com.zy.model.query.OrderQueryModel;
 
 import java.util.List;
@@ -35,4 +37,6 @@ public interface OrderService {
 	List<Order> findAll(OrderQueryModel build);
 	
 	long count(OrderQueryModel build);
+	
+	OrderSumDto sum(OrderStatus[] orderStatusIN);
 }

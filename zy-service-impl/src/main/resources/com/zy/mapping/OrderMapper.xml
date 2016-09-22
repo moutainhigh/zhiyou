@@ -286,4 +286,28 @@
 		where sn = #{sn}
 	</select>
 
+	<resultMap id="sumResultMap" type="com.zy.model.dto.OrderSumDto">
+		<result column="count_number" property="countNumber" />
+		<result column="quantity" property="sumQuantity" />
+		<result column="amount" property="sumAmount" />
+	</resultMap>
+
+	<select id="orderSum" resultMap="sumResultMap">
+		select ot.countNumber, ot.quantity, ot.amount 
+		from mal_order o, 
+		(select count(id) countNumber, sum(quantity) quantity, sum(amount) amount 
+		from mal_order_item where order_id in 
+		(select id from mal_order where
+			<if test="array.length != 0">
+			order_status in
+			<foreach collection="array" item="orderStatus" open="(" separator="," close=")">
+			#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.mal.Order$OrderStatus}
+			</foreach>
+			</if>
+			<if test="array.length == 0">
+			order_status is not null
+			</if>
+		)) ot group by countNumber
+	</select>
+
 </mapper>
