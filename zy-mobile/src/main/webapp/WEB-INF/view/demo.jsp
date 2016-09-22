@@ -55,10 +55,6 @@
     $('.image-multi .image-item').imageupload();
 
     $('.image-multi .image-add').imageupload({
-      width : 100,
-      height : 100,
-      url : '${ctx}/image/upload',
-      maxFileSize : '4MB',
       success : function(result) {
         var $this = $(this);
         var limit = $this.attr('data-limit');
@@ -75,12 +71,7 @@
         if (limit && limit <= imageItems.length + 1) {
           $this.remove();
         }
-        $this.siblings('.image-item').eq(imageItems.length).imageupload({
-          width : 100,
-          height : 100,
-          url : '${ctx}/image/upload',
-          maxFileSize : '4MB'
-        });
+        $this.siblings('.image-item').eq(imageItems.length).imageupload();
       }
     });
     
@@ -127,6 +118,8 @@
         btn : ['确定1', '确定2']
       });
     });
+    
+    $('.miui-scroll-nav').scrollableNav();
   
   });
 </script>
@@ -140,11 +133,11 @@
   </header>
   
   <nav class="miui-scroll-nav">
-    <ul class="miui-scroll-nav-list">
+    <ul>
       <li>全部</li>
-      <li class="current">分类1</li>
+      <li>分类1</li>
       <li>分类2</li>
-      <li>分类3</li>
+      <li class="current">分类3</li>
       <li>分类4</li>
       <li>分类5</li>
       <li>分类6</li>

@@ -208,3 +208,38 @@
   max-width: 100%; height: auto;
 }
 
+/* scroll nav */
+.miui-scroll-nav {
+  position: relative; z-index: 99; overflow: hidden; 
+  display: block; width: 100%; height: 48px;
+  background-color: #f9f9f9;
+}
+.miui-scroll-nav::after {
+  position: absolute; left: 0; bottom: 0;
+  display: block; width: 100%; height: 1px; content: "";
+  background-color: #ddd;
+}
+.miui-scroll-nav > ul {
+  position: absolute; left: 0; white-space: nowrap;
+}
+.miui-scroll-nav > ul > li {
+  position: relative; margin: 0 10px; padding: 0 6px;
+  display: inline-block; height: 100%;
+  color: #666; font-size: 15px; line-height: 47px; text-align: center; 
+  cursor: pointer;
+}
+.miui-scroll-nav > ul > li::after {
+  position: absolute; top: 12px; right: -12px; bottom: 12px;
+  display: block; width: 1px; height: auto;
+  content: ""; background-color: #eee;
+}
+.miui-scroll-nav > ul > li.current {
+  color: #fb8604 !important;
+}
+.miui-scroll-nav > ul > li.cur-line {
+  position: absolute; left: 0; bottom: 0; margin-left: 10px;
+  display: block; height: 2px; content: "";
+  border: 0; background-color: #fb8604;
+  pointer-events: none; z-index: 100;
+}
+
