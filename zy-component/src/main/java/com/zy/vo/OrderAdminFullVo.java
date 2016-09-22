@@ -93,7 +93,7 @@ public class OrderAdminFullVo implements Serializable {
 	@Field(label = "应付总金额")
 	private String amountLabel;
 	@Field(label = "是否物流发货")
-	private Boolean useLogisticsLabel;
+	private String useLogisticsLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
 	@Field(label = "payments")
