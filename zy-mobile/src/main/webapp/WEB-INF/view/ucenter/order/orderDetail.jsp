@@ -143,21 +143,29 @@
     
     <div class="list-group">
       <div class="list-title">发货信息</div>
-      <div class="list-item lh-20">
-        <div class="list-text fs-14">发货人</div>
-        <c:if test="${order.isPlatformDeliver}">
-          <div class="list-unit fs-12">公司发货</div>
-        </c:if>
-        <c:if test="${!order.isPlatformDeliver}">
-          <c:if test="${inOut == 'in'}">
+      <c:if test="${inOut == 'in'}">
+        <div class="list-item lh-20">
+          <div class="list-text fs-14">发货人</div>
+          <c:if test="${order.isPlatformDeliver}">
+            <div class="list-unit fs-12">公司发货</div>
+          </c:if>
+          <c:if test="${!order.isPlatformDeliver}">
             <div class="list-unit">${seller.nickname} <small>${seller.phone}</small></div>
             <img class="image-40 round ml-10" src="${seller.avatarThumbnail}">
           </c:if>
-          <c:if test="${inOut == 'out'}">
+        </div>
+      </c:if>
+      <c:if test="${inOut == 'out'}">
+        <div class="list-item lh-20">
+          <div class="list-text fs-14">发货人</div>
+          <c:if test="${order.isPlatformDeliver}">
+            <div class="list-unit fs-12">公司发货</div>
+          </c:if>
+          <c:if test="${!order.isPlatformDeliver}">
             <div class="list-unit">自己发货</div>
           </c:if>
-        </c:if>
-      </div>
+        </div>
+      </c:if>
       <c:if test="${order.useLogistics == true}">
       <div class="list-item lh-20">
         <div class="list-text fs-14">物流公司</div>
