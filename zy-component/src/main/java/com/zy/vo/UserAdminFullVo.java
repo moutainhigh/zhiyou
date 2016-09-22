@@ -37,6 +37,10 @@ public class UserAdminFullVo implements Serializable {
 	private String remark;
 
 	/* 扩展 */
+	@Field(label = "portrait")
+	private PortraitAdminVo portrait;
+	@Field(label = "appearance")
+	private AppearanceAdminVo appearance;
 	@Field(label = "用户等级")
 	private String userRankLabel;
 	@Field(label = "头像")
