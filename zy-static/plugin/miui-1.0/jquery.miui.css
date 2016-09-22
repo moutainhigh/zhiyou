@@ -225,7 +225,7 @@
 .miui-scroll-nav > ul > li {
   position: relative; margin: 0 10px; padding: 0 6px;
   display: inline-block; height: 100%;
-  color: #666; font-size: 15px; line-height: 47px; text-align: center; 
+  color: #666; font-size: 15px; line-height: 48px; text-align: center; 
   cursor: pointer;
 }
 .miui-scroll-nav > ul > li::after {
@@ -233,11 +233,11 @@
   display: block; width: 1px; height: auto;
   content: ""; background-color: #eee;
 }
-.miui-scroll-nav > ul > li.current {
-  color: #fb8604 !important;
+.miui-scroll-nav > ul > li.current, .miui-scroll-nav > ul > li.current > a {
+  color: #fb8604;
 }
 .miui-scroll-nav > ul > li.cur-line {
-  position: absolute; left: 0; bottom: 0; margin-left: 10px;
+  position: absolute; left: 0; bottom: -1px; margin-left: 10px;
   display: block; height: 2px; content: "";
   border: 0; background-color: #fb8604;
   pointer-events: none; z-index: 100;

@@ -36,7 +36,6 @@
       <li<c:if test="${orderStatus == '已完成'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=3">已完成 (${orderCount3})</a></li>
       <li<c:if test="${orderStatus == '已退款'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=4">已退款 (${orderCount4})</a></li>
       <li<c:if test="${orderStatus == '已取消'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=5">已取消 (${orderCount5})</a></li>
-      <li class="current-line"></li>
     </ul>
   </nav>
   
