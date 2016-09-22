@@ -308,9 +308,9 @@
       }
     }).on('touchend', function(e) {
       //var touch3 = e.originalEvent.changedTouches[0];
-      if(x2 - x1 > 0) {
+      if(x2 - x1 > 10) {
         prev();
-      } else if(x2 - x1 < 0){
+      } else if(x2 - x1 < 10){
         next();
       }
     });
