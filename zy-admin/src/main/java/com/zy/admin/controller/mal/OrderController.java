@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.OrderComponent;
@@ -131,5 +132,21 @@ public class OrderController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			return "redirect:/order/deliver?id=" + orderDeliverDto.getId();
 		}
+	}
+	
+	@RequestMapping(value = "/sum", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> sum(OrderQueryModel orderQueryModel, String userPhoneEQ, String userNicknameLK) {
+		
+		if (StringUtils.isNotBlank(userPhoneEQ) || StringUtils.isNotBlank(userNicknameLK)) {
+        	UserQueryModel userQueryModel = new UserQueryModel();
+        	userQueryModel.setPhoneEQ(userPhoneEQ);
+        	userQueryModel.setNicknameLK(userNicknameLK);
+            List<User> users = userService.findAll(userQueryModel);
+            Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
+            orderQueryModel.setUserIdIN(userIds);
+        }
+		
+		return ResultBuilder.result(orderService.sum(orderQueryModel));
 	}
 }

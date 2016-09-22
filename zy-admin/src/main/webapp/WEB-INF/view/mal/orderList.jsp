@@ -3,9 +3,25 @@
 <!-- BEGIN JAVASCRIPTS -->
 <script>
 
+  function sum() {
+    $.post("${ctx}/order/sum", $('#searchForm').serialize(), function(result) {
+      if(result.code == 0) {
+        var data = result.data;
+        $('#countNumber').text(data.countNumber + '个');
+        $('#sumQuantity').text(data.sumQuantity == null? 0 + '支' : data.sumQuantity + '支');
+        $('#sumAmount').text(data.sumAmount == null? 0.00 + '元' : data.sumAmount.toFixed(2) + '元');
+      }
+    });
+  }
 
   $(function () {
 
+    sum();
+    
+    $('.filter-submit').click(function(){
+      sum();
+    })
+    
     var grid = new Datatable();
 
     $('#statusTab li').bind('click', function () {
@@ -13,6 +29,9 @@
       $('input[name="orderStatusEQ"]').val($this.data('order-status'));
       $('input[name="isPlatformDeliverEQ"]').val($this.data('is-platform-deliver'));
       grid.getDataTable().ajax.reload(null, false);
+      
+      sum();
+      
     });
 
     grid.init({
@@ -164,6 +183,26 @@
           <i class="icon-docs"></i><span>订单管理 </span>
         </div>
         <div class="tools"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+            <div class="note note-info">
+                <h4 class="block">订单数</h4>
+                <p id="countNumber">0 个</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="note note-success">
+                <h4 class="block">订单支数</h4>
+                <p id="sumQuantity">0 支</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="note note-danger">
+                <h4 class="block">订单总额</h4>
+                <p id="sumAmount">0.00 元</p>
+            </div>
+        </div>
       </div>
       <div class="portlet-body clearfix">
         <div class="table-container">

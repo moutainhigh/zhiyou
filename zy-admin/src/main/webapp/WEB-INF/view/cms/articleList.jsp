@@ -130,7 +130,7 @@
   function qrCode(id) {
     layer.open({
       area: ['300', '400'],
-      content:'<img src="${ctx}/article/detailQrCode?id='+ id +'" >'
+      content:'<div style="width: 240px; height: 240px;"><img src="${ctx}/article/detailQrCode?id='+ id +'" ></div>'
     });
   }
 </script>

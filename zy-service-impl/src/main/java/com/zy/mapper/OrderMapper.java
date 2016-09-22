@@ -2,9 +2,11 @@ package com.zy.mapper;
 
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.zy.entity.mal.Order;
+import com.zy.model.dto.OrderSumDto;
 import com.zy.model.query.OrderQueryModel;
 
 
@@ -25,5 +27,7 @@ public interface OrderMapper {
 	long count(OrderQueryModel orderQueryModel);
 
 	Order findBySn(String sn);
+
+	OrderSumDto orderSum(OrderQueryModel orderQueryModel);
 
 }

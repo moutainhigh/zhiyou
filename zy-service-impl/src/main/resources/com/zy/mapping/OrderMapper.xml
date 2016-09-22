@@ -286,4 +286,77 @@
 		where sn = #{sn}
 	</select>
 
+	<resultMap id="sumResultMap" type="com.zy.model.dto.OrderSumDto">
+		<result column="count_number" property="countNumber" />
+		<result column="quantity" property="sumQuantity" />
+		<result column="amount" property="sumAmount" />
+	</resultMap>
+
+	<select id="orderSum" resultMap="sumResultMap" parameterType="com.zy.model.query.OrderQueryModel">
+		select count(id) countNumber, sum(quantity) quantity, sum(amount) amount 
+		from mal_order_item where order_id in 
+		(select id from mal_order 
+		<where>
+			<if test="orderStatusEQ != null">
+				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="sellerIdEQ != null">
+				and seller_id = #{sellerIdEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="paidTimeLT != null">
+				and paid_time &lt; #{paidTimeLT}
+			</if>
+			<if test="snLK != null">
+				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
+			</if>
+			<if test="paidTimeGTE != null">
+				and paid_time &gt;= #{paidTimeGTE}
+			</if>
+			<if test="isSettledUpEQ != null">
+				and is_settled_up = #{isSettledUpEQ}
+			</if>
+			<if test="isPlatformDeliverEQ != null">
+				and is_platform_deliver = #{isPlatformDeliverEQ}
+			</if>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+				and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="logisticsNameLK != null">
+				<bind name="logisticsNameLK" value="'%' + logisticsNameLK + '%'"/> and logistics_name like #{logisticsNameLK}
+			</if>
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="logisticsSnLK != null">
+				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
+			</if>
+			<if test="sellerIdIN != null">
+				<if test="sellerIdIN.length != 0">
+				and seller_id in
+				<foreach collection="sellerIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="sellerIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+		</where>
+		)
+	</select>
+
 </mapper>
