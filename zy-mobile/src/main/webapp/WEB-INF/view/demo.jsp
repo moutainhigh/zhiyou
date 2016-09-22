@@ -368,27 +368,6 @@
     </form>
   </article>
 
-  <aside class="miui-imageview hide">
-    <a class="btn-close button-right" href="javascript:;"><i class="fa fa-times-circle"></i></a>
-    <header class="header">
-      <h2>检测结果图片  <em>1</em>/3</h2>
-    </header>
-    <ul>
-      <li>
-        <img src="${stccdn}/image/example/cube.png" style="width: 320px; height: 320px;">
-      </li>
-      <li>
-        <img src="${stccdn}/image/example/cube.png" style="width: 320px; height: 320px;">
-      </li>
-      <li>
-        <img src="${stccdn}/image/example/cube.png" style="width: 320px; height: 320px;">
-      </li>
-    </ul>
-    <div class="loading"></div>
-    <div class="control-left"></div>
-    <div class="control-right"></div>
-  </aside>
-
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
 </html>

@@ -174,17 +174,17 @@
   100% {opacity: 1; -webkit-transform: scale(1); transform: scale(1)}
 }
 .miui-animation-scale {
-  animation-name:  miui-animation-scale; -webkit-animation-name:  miui-animation-scale;
+  animation-name: miui-animation-scale; -webkit-animation-name: miui-animation-scale;
   animation-duration: 0.2s; -webkit-animation-duration: 0.2s;
   animation-fill-mode: both; -webkit-animation-fill-mode: both;
 }
 
 @-webkit-keyframes miui-animation-up {
-  0%{opacity: 0; -webkit-transform: translateY(800px); transform: translateY(800px)}
+  0%{opacity: 0; -webkit-transform: translateY(1200px); transform: translateY(1200px)}
   100%{opacity: 1; -webkit-transform: translateY(0); transform: translateY(0)}
 }
 @keyframes miui-animation-up {
-  0%{opacity: 0; -webkit-transform: translateY(800px); transform: translateY(800px)}
+  0%{opacity: 0; -webkit-transform: translateY(1200px); transform: translateY(1200px)}
   100%{opacity: 1; -webkit-transform: translateY(0); transform: translateY(0)}
 }
 .miui-animation-up {
