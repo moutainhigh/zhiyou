@@ -182,7 +182,7 @@
                   <label class="control-label col-md-3">卖家昵称:</label>
                   <div class="col-md-9">
                     <p class="form-control-static"><img src="${order.seller.avatarThumbnail}" width="30" height="30"
-                                                        style="border-radius:40px !important;margin-right:5px"/>${order.user.nickname}</p>
+                                                        style="border-radius:40px !important;margin-right:5px"/>${order.seller.nickname}</p>
                   </div>
                 </div>
               </div>
