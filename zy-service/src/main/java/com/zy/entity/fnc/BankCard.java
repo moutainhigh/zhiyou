@@ -1,5 +1,8 @@
 package com.zy.entity.fnc;
 
+import com.zy.common.extend.StringBinder;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.User;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -8,23 +11,20 @@ import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
-
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
-
-import com.zy.common.extend.StringBinder;
-import com.zy.entity.sys.ConfirmStatus;
+import static com.zy.entity.fnc.BankCard.VO;
+import static com.zy.entity.fnc.BankCard.VO_ADMIN;
 
 @Entity
 @Table(name = "fnc_bank_card")
@@ -32,8 +32,11 @@ import com.zy.entity.sys.ConfirmStatus;
 @Setter
 @QueryModel
 @Type(label = "银行卡信息")
-@ViewObject(groups = {"BankCardVo", "BankCardAdminVo"})
+@ViewObject(groups = {VO, VO_ADMIN})
 public class BankCard implements Serializable {
+
+	public static final String VO = "BankCardVo";
+	public static final String VO_ADMIN = "BankCardAdminVo";
 
 	@Id
 	@Field(label = "id")
@@ -45,7 +48,7 @@ public class BankCard implements Serializable {
 	@Query(Predicate.EQ)
 	@Field(label = "用户id")
 	@View
-	@AssociationView(name = "user", groups = "BankCardAdminVo", associationGroup = "UserAdminSimpleVo")
+	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@NotBlank
@@ -59,7 +62,7 @@ public class BankCard implements Serializable {
 	@StringBinder
 	@Field(label = "银行卡号")
 	@View
-	@View(name = "cardNumberLabel", groups = "BankCardVo", field = @Field(label = "银行卡号密文"))
+	@View(name = "cardNumberLabel", groups = VO, field = @Field(label = "银行卡号密文"))
 	private String cardNumber;
 
 	@NotNull

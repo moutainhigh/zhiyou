@@ -33,9 +33,9 @@ import static com.zy.entity.act.Activity.*;
 				@View(name = "status", type = String.class, field = @Field(label = "活动状态"))
 		},
 		collectionViews = {
-				@CollectionView(name = "activityApplies", elementGroup = "ActivityApplyAdminVo", groups = VO_ADMIN_FULL, field = @Field(label = "活动报名")),
-				@CollectionView(name = "activityCollects", elementGroup = "ActivityCollectAdminVo", groups = VO_ADMIN_FULL, field = @Field(label = "活动关注")),
-				@CollectionView(name = "activitySignIns", elementGroup = "ActivitySignInAdminVo", groups = VO_ADMIN_FULL, field = @Field(label = "活动签到")),
+				@CollectionView(name = "activityApplies", elementGroup = ActivityApply.VO_ADMIN, groups = VO_ADMIN_FULL, field = @Field(label = "活动报名")),
+				@CollectionView(name = "activityCollects", elementGroup = ActivityCollect.VO_ADMIN, groups = VO_ADMIN_FULL, field = @Field(label = "活动关注")),
+				@CollectionView(name = "activitySignIns", elementGroup = ActivitySignIn.VO_ADMIN, groups = VO_ADMIN_FULL, field = @Field(label = "活动签到")),
 				@CollectionView(name = "appliedUsers", elementGroup = User.VO_SIMPLE, groups = VO_DETAIL),
 		}
 )

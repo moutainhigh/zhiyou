@@ -1,5 +1,6 @@
 package com.zy.entity.adm;
 
+import com.zy.entity.usr.User;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -17,14 +18,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import static com.zy.entity.adm.Admin.VO_ADMIN;
+
 @Entity
 @Table(name = "adm_admin")
 @Getter
 @Setter
 @QueryModel
 @Type(label = "管理员")
-@ViewObject(groups = "AdminAdminVo")
+@ViewObject(groups = VO_ADMIN)
 public class Admin implements Serializable {
+
+	public static final String VO_ADMIN = "AdminAdminVo";
 
 	@Id
 	@Field(label = "id")
@@ -35,7 +40,7 @@ public class Admin implements Serializable {
 	@Field(label = "用户id")
 	@Column(unique = true)
 	@View
-	@AssociationView(name = "user", associationGroup = "UserAdminSimpleVo", groups = {"AdminAdminVo"})
+	@AssociationView(name = "user", associationGroup = User.VO_ADMIN_SIMPLE, groups = {VO_ADMIN})
 	private Long userId;
 
 	@Field(label = "角色名", description = "角色名冗余")

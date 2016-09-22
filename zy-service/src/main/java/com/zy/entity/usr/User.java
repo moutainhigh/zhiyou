@@ -33,6 +33,10 @@ import static com.zy.entity.usr.User.*;
 	collectionViews = {
 		@CollectionView(name = "userUpgrades", elementGroup = UserUpgrade.VO_ADMIN, groups = VO_ADMIN_FULL),
 		@CollectionView(name = "teammates", elementGroup = VO_ADMIN_SIMPLE, groups = VO_ADMIN_FULL)
+	},
+	associationViews = {
+		@AssociationView(name = "portrait", associationGroup = Portrait.VO_ADMIN, groups = VO_ADMIN_FULL),
+		@AssociationView(name = "appearance", associationGroup = Appearance.VO_ADMIN, groups = VO_ADMIN_FULL)
 	}
 
 )

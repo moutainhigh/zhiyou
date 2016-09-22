@@ -16,6 +16,8 @@ public class BankAdminVo implements Serializable {
 	private String name;
 	@Field(label = "代码")
 	private String code;
+	@Field(label = "是否删除")
+	private Boolean isDeleted;
 	@Field(label = "排序")
 	private Integer orderNumber;
 

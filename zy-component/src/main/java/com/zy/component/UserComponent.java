@@ -1,5 +1,6 @@
 package com.zy.component;
 
+import com.zy.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -7,10 +8,6 @@ import com.zy.common.util.BeanUtils;
 import com.zy.entity.usr.User;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
-import com.zy.vo.UserAdminSimpleVo;
-import com.zy.vo.UserAdminVo;
-import com.zy.vo.UserListVo;
-import com.zy.vo.UserSimpleVo;
 
 @Component
 public class UserComponent {
@@ -48,6 +45,10 @@ public class UserComponent {
 		}
 		userAdminVo.setUserRankLabel(GcUtils.getUserRankLabel(user.getUserRank()));
 		return userAdminVo;
+	}
+
+	public UserAdminFullVo buildAdminFullVo(User user) {
+		return null;
 	}
 
 }
