@@ -147,7 +147,7 @@
         <div class="list-item lh-20">
           <div class="list-text fs-14">发货人</div>
           <c:if test="${order.isPlatformDeliver}">
-            <div class="list-unit fs-12">公司发货</div>
+            <div class="list-unit">公司发货</div>
           </c:if>
           <c:if test="${!order.isPlatformDeliver}">
             <div class="list-unit">${seller.nickname} <small>${seller.phone}</small></div>
@@ -159,7 +159,7 @@
         <div class="list-item lh-20">
           <div class="list-text fs-14">发货人</div>
           <c:if test="${order.isPlatformDeliver}">
-            <div class="list-unit fs-12">公司发货</div>
+            <div class="list-unit">公司发货</div>
           </c:if>
           <c:if test="${!order.isPlatformDeliver}">
             <div class="list-unit">自己发货</div>
@@ -169,7 +169,7 @@
       <c:if test="${order.useLogistics == true}">
       <div class="list-item lh-20">
         <div class="list-text fs-14">物流公司</div>
-        <div class="list-unit fs-12">${order.logisticsName}</div>
+        <div class="list-unit">${order.logisticsName}</div>
       </div>
       <div class="list-item lh-20">
         <div class="list-text fs-14">物流单号</div>
@@ -179,7 +179,7 @@
       <c:if test="${order.useLogistics == false}">
       <div class="list-item lh-20">
         <div class="list-text fs-14">发货方式</div>
-        <div class="list-unit fs-12">面对面发货</div>
+        <div class="list-unit">面对面发货</div>
       </div>
       </c:if>
     </div>
