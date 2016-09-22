@@ -36,9 +36,9 @@
       cancel: function() {
        // 用户取消分享后执行的回调函数
       }
-      });
+    });
      
-      wx.onMenuShareAppMessage({
+    wx.onMenuShareAppMessage({
       title: '优检一生，为爱而生', // 分享标题
       desc: '${activity.title}', // 分享描述
       link: '${url}', // 分享链接
@@ -49,11 +49,10 @@
        // 用户确认分享后执行的回调函数
       },
       cancel: function() {
-       // 用户取消分享后执行的回调函数
+      // 用户取消分享后执行的回调函数
       }
-      });
-   
-   });
+    });
+  });
 </script>
 <script>
   $(function() {
@@ -85,7 +84,15 @@
     });
     
     $('#btnApply').click(function(){
-      $('#form').submit();
+      $.dialog({
+        content : '您确定要参与此次活动吗？',
+        callback : function(index) {
+          if (index == 1) {
+            $('#form').submit();
+          }
+        }
+      });
+      
     });
     
     $('#btnShare').click(function(){
