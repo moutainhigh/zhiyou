@@ -28,6 +28,16 @@
 </script>
 <script type="text/javascript">
   $(function() {
+    
+    $.message('你好', 'info', 2);
+    
+    $.imageview({
+      url : ['http://image.zhi-you.net/image/223caec3-7bb3-483c-8310-497d6db7ac86@100w_100h.jpg',
+             'http://image.zhi-you.net/image/223caec3-7bb3-483c-8310-497d6db7ac86@200w_200h.jpg',
+             'http://image.zhi-you.net/image/223caec3-7bb3-483c-8310-497d6db7ac86@300w_300h.jpg'],
+      title : '图片列表'
+    });
+    
     $('#deliverType0').click(function(){
       $('#logistics').slideUp(300);
     });
@@ -115,7 +125,11 @@
       $.dialog({
         content : '底部对话框，可以不要标题，点遮罩层消失',
         skin: 'footer',
-        btn : ['确定1', '确定2']
+        btn : ['确定1', '确定2'],
+        callback : function(index){
+          alert('按钮index=' + index);
+          return true;
+        }
       });
     });
     
@@ -359,13 +373,20 @@
     <header class="header">
       <h2>检测结果图片  <em>1</em>/3</h2>
     </header>
-    <div class="miui-imageview-wrap">
-      <div class="miui-imageview-inner">
+    <ul>
+      <li>
         <img src="${stccdn}/image/example/cube.png" style="width: 320px; height: 320px;">
+      </li>
+      <li>
         <img src="${stccdn}/image/example/cube.png" style="width: 320px; height: 320px;">
+      </li>
+      <li>
         <img src="${stccdn}/image/example/cube.png" style="width: 320px; height: 320px;">
-      </div>
-    </div>
+      </li>
+    </ul>
+    <div class="loading"></div>
+    <div class="control-left"></div>
+    <div class="control-right"></div>
   </aside>
 
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
