@@ -3,8 +3,8 @@
 <!-- BEGIN JAVASCRIPTS -->
 <script>
 
-  function sum(orderStatus) {
-    $.post("${ctx}/order/sum",{orderStatus: orderStatus}, function(result) {
+  function sum() {
+    $.post("${ctx}/order/sum", $('#searchForm').serialize(), function(result) {
       if(result.code == 0) {
         var data = result.data;
         $('#countNumber').text(data.countNumber + '个');
@@ -16,7 +16,11 @@
 
   $(function () {
 
-    sum(null);
+    sum();
+    
+    $('.filter-submit').click(function(){
+      sum();
+    })
     
     var grid = new Datatable();
 
@@ -26,7 +30,7 @@
       $('input[name="isPlatformDeliverEQ"]').val($this.data('is-platform-deliver'));
       grid.getDataTable().ajax.reload(null, false);
       
-      sum($this.data('order-status'));
+      sum();
       
     });
 

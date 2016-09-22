@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.zy.entity.mal.Order;
-import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.model.dto.OrderSumDto;
 import com.zy.model.query.OrderQueryModel;
 
@@ -29,6 +28,6 @@ public interface OrderMapper {
 
 	Order findBySn(String sn);
 
-	OrderSumDto orderSum(OrderStatus[] orderStatusIN);
+	OrderSumDto orderSum(OrderQueryModel orderQueryModel);
 
 }

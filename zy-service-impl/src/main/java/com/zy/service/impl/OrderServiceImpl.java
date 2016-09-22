@@ -560,7 +560,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public OrderSumDto sum(OrderStatus[] orderStatusIN) {
-		return orderMapper.orderSum(orderStatusIN);
+	public OrderSumDto sum(OrderQueryModel orderQueryModel) {
+		return orderMapper.orderSum(orderQueryModel);
 	}
 }

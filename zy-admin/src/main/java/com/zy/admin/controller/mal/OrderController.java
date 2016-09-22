@@ -3,8 +3,6 @@ package com.zy.admin.controller.mal;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -138,13 +136,17 @@ public class OrderController {
 	
 	@RequestMapping(value = "/sum", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> sum(OrderStatus orderStatus) {
-		OrderStatus[] orderStatusIN = null;
-		if(orderStatus == null) {
-			orderStatusIN = new OrderStatus[0];
-		} else {
-			orderStatusIN = new OrderStatus[]{orderStatus};
-		}
-		return ResultBuilder.result(orderService.sum(orderStatusIN));
+	public Result<?> sum(OrderQueryModel orderQueryModel, String userPhoneEQ, String userNicknameLK) {
+		
+		if (StringUtils.isNotBlank(userPhoneEQ) || StringUtils.isNotBlank(userNicknameLK)) {
+        	UserQueryModel userQueryModel = new UserQueryModel();
+        	userQueryModel.setPhoneEQ(userPhoneEQ);
+        	userQueryModel.setNicknameLK(userNicknameLK);
+            List<User> users = userService.findAll(userQueryModel);
+            Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
+            orderQueryModel.setUserIdIN(userIds);
+        }
+		
+		return ResultBuilder.result(orderService.sum(orderQueryModel));
 	}
 }
