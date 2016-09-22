@@ -110,6 +110,7 @@ public class User implements Serializable {
 	private String avatar;
 
 	@NotNull
+	@Query(Predicate.EQ)
 	@Field(label = "是否冻结")
 	@View(groups = {VO_ADMIN})
 	private Boolean isFrozen;
@@ -147,6 +148,10 @@ public class User implements Serializable {
 	@Column(length = 60, unique = true)
 	@Field(label = "微信openId")
 	private String openId;
+
+	@Column(length = 60, unique = true)
+	@Field(label = "微信unionId")
+	private String unionId;
 
 	@Field(label = "上次升级时间")
 	private Date lastUpgradedTime;

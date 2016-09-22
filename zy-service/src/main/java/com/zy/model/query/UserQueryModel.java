@@ -32,6 +32,8 @@ public class UserQueryModel implements Serializable {
 
 	private UserRank userRankEQ;
 
+	private Boolean isFrozenEQ;
+
 	private Date registerTimeGTE;
 
 	private Date registerTimeLT;
@@ -98,6 +100,7 @@ public class UserQueryModel implements Serializable {
 	static {
 		fieldNames.add("qq");
 		fieldNames.add("registerIp");
+		fieldNames.add("unionId");
 		fieldNames.add("registerTime");
 		fieldNames.add("openId");
 		fieldNames.add("remark");

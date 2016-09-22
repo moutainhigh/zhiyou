@@ -29,14 +29,11 @@
     
     <ul class="breadcrumb mt-10">
       <li><a href="${ctx}/u/team/"><i class="fa fa-home"></i> 我的团队</a></li>
-      <c:if test="${not empty parentLv3 && principalUserId != parentLv3.id}">
-      <li><a href="${ctx}/u/team/${parentLv3.id}">${parentLv3.nickname}</a></li>
-      </c:if>
       <c:if test="${not empty parentLv2 && principalUserId != parentLv2.id}">
-      <li><a href="${ctx}/u/team/${parentLv2.id}">${parentLv2.nickname}</a></li>
+      <li><a href="${ctx}/u/team/${parentLv2.id}?level=1">${parentLv2.nickname}</a></li>
       </c:if>
       <c:if test="${not empty parentLv1 && principalUserId != parentLv1.id}">
-      <li><a href="${ctx}/u/team/${parentLv1.id}">${parentLv1.nickname}</a></li>
+      <li><a href="${ctx}/u/team/${parentLv1.id}?level=2">${parentLv1.nickname}</a></li>
       </c:if>
       <li><a href="javascript:;">${user.nickname}</a></li>
     </ul>
@@ -70,11 +67,11 @@
       </div>
     </div>
     
-    <c:if test="${not empty list}">
+    <c:if test="${not empty list && level < 3}">
     <div class="list-group">
       <div class="list-title">&lt;<span class="font-orange">${user.nickname}</span>&gt;的直接下级代理</div>
       <c:forEach items="${list}" var="inviteUser" varStatus="varStatus">
-      <a class="list-item invite" href="${ctx}/u/team/${inviteUser.id}">
+      <a class="list-item invite" href="${ctx}/u/team/${inviteUser.id}?level=${level+1}">
         <div class="avatar">
           <img class="image-40 round mr-10" src="${inviteUser.avatarThumbnail}">
         </div>

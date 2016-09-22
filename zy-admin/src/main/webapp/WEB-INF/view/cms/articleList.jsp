@@ -84,7 +84,7 @@
             title: '操作',
             orderable: false,
             render: function (data, type, full) {
-              var optionHtml = '';
+              var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" onclick="qrCode(' + full.id + ')"><i class="fa fa-search"></i> 二维码 </a>';
               <shiro:hasPermission name="article:edit">
               optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/article/update?id=' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
               if (full.isReleased) {
@@ -127,6 +127,12 @@
     });
   }
   </shiro:hasPermission>
+  function qrCode(id) {
+    layer.open({
+      area: ['300', '400'],
+      content:'<img src="${ctx}/article/detailQrCode?id='+ id +'" >'
+    });
+  }
 </script>
 <!-- END JAVASCRIPTS -->
 

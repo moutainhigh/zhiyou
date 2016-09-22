@@ -60,21 +60,6 @@
                             <td><c:if test="${reportCount > 0}"><a data-href="${ctx}/report" class="btn green btn-xs"><i class="fa fa-edit"></i>去审核</a></c:if></td>
                         </tr>
                         <tr>
-                            <td> 待处理提现 </td>
-                            <td> ${withdrawCount} </td>
-                            <td><c:if test="${withdrawCount > 0}"><a data-href="${ctx}/withdraw" class="btn green btn-xs"><i class="fa fa-edit"></i>去审核</a></c:if></td>
-                        </tr>
-                        <tr>
-                            <td> 待处理充值 </td>
-                            <td> ${depositCount} </td>
-                            <td><c:if test="${depositCount > 0}"><a data-href="${ctx}/deposit" class="btn green btn-xs"><i class="fa fa-edit"></i>去审核</a></c:if></td>
-                        </tr>
-                        <tr>
-                            <td> 待确认支付 </td>
-                            <td> ${paymentCount} </td>
-                            <td><c:if test="${paymentCount > 0}"><a data-href="${ctx}/payment" class="btn green btn-xs"><i class="fa fa-edit"></i>去确认</a></c:if></td>
-                        </tr>
-                        <tr>
                             <td> 待平台发货订单 </td>
                             <td> ${orderPlatformDeliverCount} </td>
                             <td><c:if test="${orderPlatformDeliverCount > 0}"><a data-href="${ctx}/order/platformDeliverList" class="btn green btn-xs"><i class="fa fa-edit"></i>去发货</a></c:if></td>
@@ -111,6 +96,38 @@
         </div>
       </div>
     
+      <div class="col-md-6">
+        <div class="portlet light bordered">
+          <div class="portlet-title">
+              <div class="caption">
+                <i class="icon-diamond"></i>
+                <span class="caption-subject bold uppercase"> 待处理财务相关</span>
+              </div>
+          </div>
+          <div class="portlet-body">
+            <table class="table table-bordered table-hover">
+              <tbody>
+              <tr>
+                  <td> 待处理提现 </td>
+                  <td> ${withdrawCount} </td>
+                  <td><c:if test="${withdrawCount > 0}"><a data-href="${ctx}/withdraw" class="btn green btn-xs"><i class="fa fa-edit"></i>去审核</a></c:if></td>
+              </tr>
+              <tr>
+                  <td> 待处理充值 </td>
+                  <td> ${depositCount} </td>
+                  <td><c:if test="${depositCount > 0}"><a data-href="${ctx}/deposit" class="btn green btn-xs"><i class="fa fa-edit"></i>去审核</a></c:if></td>
+              </tr>
+              <tr>
+                  <td> 待确认支付 </td>
+                  <td> ${paymentCount} </td>
+                  <td><c:if test="${paymentCount > 0}"><a data-href="${ctx}/payment" class="btn green btn-xs"><i class="fa fa-edit"></i>去确认</a></c:if></td>
+              </tr>
+              </tbody>
+             </table>
+            </div>
+          </div>
+      </div>
+      
 	</div>
 	
 	<div class="row">
@@ -175,25 +192,25 @@
 	          <div class="portlet-title">
 	              <div class="caption">
 	                  <i class="icon-graph"></i>
-	                  <span class="caption-subject bold uppercase"> 收益日统计报表</span>
+	                  <span class="caption-subject bold uppercase"> 订单日统计报表</span>
 	              </div>
 	          </div>
 	          <div class="portlet-body">
-	              <div id="profitChart" style="height:400px;">
+	              <div id="orderChart" style="height:400px;">
 	                  
 	              </div>
 	          </div>
 	      </div>
 		</div>
-	</div>
+	</div> 
 	<script>
 	$(function(){
-		var myChart = echarts.init(document.getElementById('profitChart'));
+		var myChart = echarts.init(document.getElementById('orderChart'));
 		// 指定图表的配置项和数据
 	    myChart.setOption({
 		    tooltip: {},
 		    legend: {
-		        data:['平台收益总金额','用户收益总金额','团队收益总金额']
+		        data:['订单数']
 		    },
 		    xAxis: {
 		        data: []
@@ -201,23 +218,13 @@
 		    yAxis: {},
 		    series: [
 		    {
-		        name: '平台收益总金额',
-		        type: 'line',
-		        data: []
-		    },
-		    {
-		        name: '用户收益总金额',
-		        type: 'line',
-		        data: []
-		    },
-		    {
-		        name: '团队收益总金额',
+		        name: '订单数',
 		        type: 'line',
 		        data: []
 		    }]
 		});
 	 	// 异步加载数据
-	  /* $.post('${ctx}/main/ajaxChart/profit',{},function(result) {
+	   $.post('${ctx}/main/ajaxChart/order',{},function(result) {
 	       myChart.setOption({
 	           xAxis: {
 	               data: result.chartLabel
@@ -227,179 +234,12 @@
 	           },
 	           series: [{
 	               // 根据名字对应到相应的系列
-	               name: '平台收益总金额',
-	               data: result.feeAmount
-	           },
-	           {
-	               // 根据名字对应到相应的系列
-	               name: '用户收益总金额',
-	               data: result.accountAmount
-	           },
-	           {
-	               // 根据名字对应到相应的系列
-	               name: '团队收益总金额',
-	               data: result.teamAmount
-	           }]
+	               name: '订单数',
+	               data: result.orderCount
+	           },]
 	       });
-	   });*/
+	   });
 	})
 	</script>
 	
-	<div class="row">
-		<div class="col-md-12">
-			<div class="portlet light bordered">
-	          <div class="portlet-title">
-	              <div class="caption">
-	                  <i class="icon-graph"></i>
-	                  <span class="caption-subject bold uppercase"> 计划/任务日统计报表</span>
-	              </div>
-	          </div>
-	          <div class="portlet-body">
-	              <div id="taskChart" style="height:400px;">
-	                  
-	              </div>
-	          </div>
-	      </div>
-		</div>
-	</div>
-	
-	<script>
-	$(function(){
-		var myChart = echarts.init(document.getElementById('taskChart'));
-		// 指定图表的配置项和数据
-	    myChart.setOption({
-		    tooltip: {},
-		    legend: {
-		        data:['商家发布计划数','试客接手任务数']
-		    },
-		    xAxis: {
-		        data: []
-		    },
-		    yAxis: {},
-		    series: [
-		    {
-		        name: '商家发布计划数',
-		        type: 'line',
-		        data: []
-		    },
-		    {
-		        name: '试客接手任务数',
-		        type: 'line',
-		        data: []
-		    }]
-		});
-	 	// 异步加载数据
-	   /*$.post('${ctx}/main/ajaxChart/task/daily',{},function(result) {
-	       myChart.setOption({
-	           xAxis: {
-	               data: result.chartLabel
-	           },
-	           yAxis: {
-	        	   splitNumber : 5
-	           },
-	           series: [{
-	               // 根据名字对应到相应的系列
-	               name: '商家发布计划数',
-	               data: result.taskCount
-	           },
-	           {
-	               // 根据名字对应到相应的系列
-	               name: '试客接手任务数',
-	               data: result.taskItemCount
-	           }]
-	       });
-	   });*/
-	})
-	</script>
-	
-	<div class="row">
-		<div class="col-md-12">
-			<div class="portlet light bordered">
-	          <div class="portlet-title">
-	              <div class="caption">
-	                  <i class="icon-graph"></i>
-	                  <span class="caption-subject bold uppercase"> 计划/任务分时统计报表</span>
-	              </div>
-	          </div>
-	          <div class="portlet-body">
-	              <div id="taskTimeChart" style="height:400px;">
-	                  
-	              </div>
-	          </div>
-	      </div>
-		</div>
-	</div>
-	
-	<script>
-	$(function(){
-		var myChart = echarts.init(document.getElementById('taskTimeChart'));
-		// 指定图表的配置项和数据
-	    myChart.setOption({
-		    tooltip: {},
-		    legend: {
-		        data:['商家昨日发布计划数','商家今日发布计划数','试客昨日接手任务数','试客今日接手任务数']
-		    },
-		    xAxis: {
-		        data: []
-		    },
-		    yAxis: {},
-		    series: [
-		    {
-		        name: '商家昨日发布计划数',
-		        type: 'line',
-		        data: []
-		    },
-		    {
-		        name: '商家今日发布计划数',
-		        type: 'line',
-		        data: []
-		    },
-		    {
-		        name: '试客昨日接手任务数',
-		        type: 'line',
-		        data: []
-		    },
-		    {
-		        name: '试客今日接手任务数',
-		        type: 'line',
-		        data: []
-		    }]
-		});
-	 	// 异步加载数据
-		/*$.post('
-		${ctx}/main/ajaxChart/task/time',{},function(result) {
-		 myChart.setOption({
-		 xAxis: {
-		 data: result.chartLabel,
-		 axisLabel: {
-		 interval: 0,
-		 rotate: 60
-		 }
-		 },
-		 yAxis: {
-		 splitNumber : 5
-		 },
-		 series: [{
-		 // 根据名字对应到相应的系列
-		 name: '商家昨日发布计划数',
-		 data: result.yesterdayTaskCount
-		 },
-		 {
-		 // 根据名字对应到相应的系列
-		 name: '商家今日发布计划数',
-		 data: result.taskCount
-		 },
-		 {
-		 // 根据名字对应到相应的系列
-		 name: '试客昨日接手任务数',
-		 data: result.yesterdayTaskItemCount
-		 },
-		 {
-		 // 根据名字对应到相应的系列
-		 name: '试客今日接手任务数',
-		 data: result.taskItemCount
-		 }]
-		 });
-		 });*/
-	})
 	</script>

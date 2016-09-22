@@ -11,5 +11,7 @@ public interface ActivityApplyService {
 	Page<ActivityApply> findPage(ActivityApplyQueryModel activityApplyQueryModel);
 
 	List<ActivityApply> findAll(ActivityApplyQueryModel activityApplyQueryModel);
+	
+	ActivityApply findByActivityIdAndUserId(Long activityId, Long userId);
 
 }

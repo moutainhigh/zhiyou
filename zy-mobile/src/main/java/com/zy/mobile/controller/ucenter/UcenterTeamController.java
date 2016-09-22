@@ -65,7 +65,10 @@ public class UcenterTeamController {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String detail(@PathVariable Long id, Principal principal, Model model){
+	public String detail(@PathVariable Long id, Long level, Principal principal, Model model){
+		if(level == null){
+			level = 1L;
+		}
 		Long principalUserId = principal.getUserId();
 		validate(id, NOT_NULL, "user id is null");
 		User user = userService.findOne(id);
@@ -83,12 +86,6 @@ public class UcenterTeamController {
 				if(parentLv2.getUserRank() != UserRank.V0){
 					model.addAttribute("parentLv2", userComponent.buildListVo(parentLv2));
 				}
-				if(parentLv2.getParentId() != null && !principalUserId.equals(parentLv2.getParentId())){
-					User parentLv3 = userService.findOne(parentLv2.getParentId());
-					if(parentLv3.getUserRank() != UserRank.V0){
-						model.addAttribute("parentLv3", userComponent.buildListVo(parentLv3));
-					}
-				}
 			}
 		}
 		
@@ -100,6 +97,8 @@ public class UcenterTeamController {
 		List<User> agents = userService.findAll(userQueryModel);
 		agents = agents.stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList());
 		model.addAttribute("list", agents.stream().map(userComponent::buildListVo).collect(Collectors.toList()));
+		
+		model.addAttribute("level", level);
 		return "ucenter/team/userDetail";
 	}
 	

@@ -11,5 +11,7 @@ public interface ActivityCollectService {
 	Page<ActivityCollect> findPage(ActivityCollectQueryModel activityCollectQueryModel);
 
 	List<ActivityCollect> findAll(ActivityCollectQueryModel activityCollectQueryModel);
+	
+	ActivityCollect findByActivityIdAndUserId(Long activityId, Long userId);
 
 }

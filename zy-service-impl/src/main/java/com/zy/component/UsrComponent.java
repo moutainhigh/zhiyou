@@ -2,7 +2,10 @@ package com.zy.component;
 
 import com.zy.common.exception.BizException;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserLog;
 import com.zy.entity.usr.UserUpgrade;
+import com.zy.extend.Producer;
+import com.zy.mapper.UserLogMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.mapper.UserUpgradeMapper;
 import com.zy.model.BizCode;
@@ -15,13 +18,20 @@ import java.util.Date;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.TOPIC_USER_RANK_CHANGED;
 
 @Component
 @Validated
 public class UsrComponent {
 
 	@Autowired
+	private Producer producer;
+
+	@Autowired
 	private UserMapper userMapper;
+
+	@Autowired
+	private UserLogMapper userLogMapper;
 
 	@Autowired
 	private UserUpgradeMapper userUpgradeMapper;
@@ -45,6 +55,17 @@ public class UsrComponent {
 		user.setLastUpgradedTime(new Date());
 		user.setUserRank(to);
 		userMapper.update(user);
+		producer.send(TOPIC_USER_RANK_CHANGED, user.getId());
+	}
+
+	public void recordUserLog(Long userId, Long operatorId, String operation, String remark) {
+		UserLog userLog = new UserLog();
+		userLog.setUserId(userId);
+		userLog.setOperatorId(operatorId);
+		userLog.setOperatedTime(new Date());
+		userLog.setOperation(operation);
+		userLog.setRemark(remark);
+		userLogMapper.insert(userLog);
 	}
 
 }
