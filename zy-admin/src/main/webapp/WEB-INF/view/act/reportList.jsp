@@ -135,8 +135,7 @@
         columns: [
           {
             data: 'id',
-            title: 'id',
-            width: '20px'
+            title: '编号'
           },
           {
             data: '',

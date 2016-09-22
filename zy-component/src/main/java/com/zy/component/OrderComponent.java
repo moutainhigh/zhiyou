@@ -96,6 +96,14 @@ public class OrderComponent {
 		orderAdminFullVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getUserId())));
 		orderAdminFullVo.setSeller(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getSellerId())));
 		orderAdminFullVo.setOrderStatusStyle(GcUtils.getOrderStatusStyle(order.getOrderStatus()));
+		Boolean useLogistics = order.getUseLogistics();
+		if (useLogistics == null) {
+			orderAdminFullVo.setUseLogisticsLabel(null);
+		} else if (useLogistics) {
+			orderAdminFullVo.setUseLogisticsLabel("物流发货");
+		} else {
+			orderAdminFullVo.setUseLogisticsLabel("面对面发货");
+		}
 		return orderAdminFullVo;
 	}
 	
@@ -120,6 +128,15 @@ public class OrderComponent {
 		orderAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getUserId())));
 		orderAdminVo.setSeller(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getSellerId())));
 		orderAdminVo.setOrderStatusStyle(GcUtils.getOrderStatusStyle(order.getOrderStatus()));
+
+		Boolean useLogistics = order.getUseLogistics();
+		if (useLogistics == null) {
+			orderAdminVo.setUseLogisticsLabel(null);
+		} else if (useLogistics) {
+			orderAdminVo.setUseLogisticsLabel("物流发货");
+		} else {
+			orderAdminVo.setUseLogisticsLabel("面对面发货");
+		}
 		return orderAdminVo;
 	}
 	
