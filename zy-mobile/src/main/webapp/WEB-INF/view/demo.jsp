@@ -14,7 +14,7 @@
 <title>MiUI</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
-<script src="${stccdn}/extend/imageupload/imageupload.wx.js"></script>
+<script src="${stccdn}/extend/imageupload/imageupload.js"></script>
 <link rel="stylesheet" href="${stccdn}/extend/imageupload/imageupload.css" />
 <script>
   $.fn.imageupload.setDefaults({
@@ -22,6 +22,7 @@
     width : 100,
     height : 100,
     retain : 2,
+    fileTypes : ['image/bmp', 'image/gif', 'image/jpeg', 'image/png'],
     maxFileSize : '6MB'
   });
 </script>
