@@ -171,7 +171,7 @@
     };
     
     if (options.closable){
-      var $messageClose = $message.find(".message-close");
+      var $messageClose = $message.find('.message-close');
       $messageClose.click(onClose);
     }
     
@@ -219,8 +219,8 @@
           +   '</aside>';
     $imageview = $(str);
     $('body').css({'overflow': 'hidden'}).append($imageview);
-    $imageWrap = $imageview.find(".miui-imageview-wrap");
-    $loading = $imageview.find(".loading");
+    $imageWrap = $imageview.find('.miui-imageview-wrap');
+    $loading = $imageview.find('.loading');
     
     var onClose = function(){
       $imageview.animate({opacity: 0}, 300, function(){
@@ -234,7 +234,7 @@
         $imageview.find('.header').slideToggle(300);
       });
     }
-    $imageview.find(".btn-close").click(onClose);;
+    $imageview.find('.btn-close').click(onClose);;
     
     var maxWidth = $(window).width(), maxHeight = $(window).height() - (options.title ? 48 : 0);
     $image = $('<div class="miui-imageview-inner"><img style="display:none" src="' + options.url + '"></div>');
@@ -303,11 +303,67 @@
     });
   }
   
-  $.fn.nav = function(tabContent) {
+  $.fn.scrollableNav = function() {
+    var $this = $(this);
+    var $cur = $('<li class="cur-line">').appendTo($this.find('ul'));
+    var itemWidth = $this.find('li.current').width();
+    $cur.width(itemWidth);
+    var wrapWidth = $this.width();
+    var listWidth = $this.find('ul').width();
+    console.info('itemWidth : ' + itemWidth);
+    console.info('wrapWidth : ' + wrapWidth);
+    console.info('listWidth : ' + listWidth);
+    $this.find('li').on('click', function() {
+      var $li = $(this);
+      itemWidth = $li.outerWidth();
+      var leftHalf = (wrapWidth - itemWidth) / 2;
+      var posLeft = parseInt($li.position().left);
+      var scrollLeft;
+      if (posLeft <= leftHalf) {
+        scrollLeft = 0;
+      } else if (leftHalf - posLeft <= wrapWidth - listWidth) {
+        scrollLeft = wrapWidth - listWidth;
+      } else {
+        scrollLeft = leftHalf - posLeft;
+      }
+      $this.find('ul').animate({
+        'left' : scrollLeft
+      }, 300, function(){
+        $li.addClass('current').siblings().removeClass('current');
+      });
+      $cur.stop(true).animate({
+        left : $li.position().left
+      }, 300).animate({
+        width : itemWidth
+      }, 100);
+    });
     
+    $this.find('li.current').click();
+    
+    var x1, x2, y1, y2;
+    $this.find('ul').on('touchstart', function(e) {
+      var touch1 = e.originalEvent.targetTouches[0];
+      x1 = touch1.pageX;
+      y1 = touch1.pageY;
+      cssLeft = parseInt($(this).css('left'));
+    }).on('touchmove', function(e) {
+      var touch2 = e.originalEvent.targetTouches[0];
+      var x2 = touch2.pageX;
+      var y2 = touch2.pageY;
+      if (cssLeft + x2 - x1 >= 0) {
+        $(this).css('left', 0);
+      } else if (cssLeft + x2 - x1 <= wrapWidth - listWidth) {
+        $(this).css('left', wrapWidth - listWidth);
+      } else {
+        $(this).css('left', cssLeft + x2 - x1);
+      }
+      if (Math.abs(y2 - y1) > 0) {
+        e.preventDefault();
+      }
+    });
   };
   
-  $.fn.nav.defaults = $.extend({}, {
+  $.fn.scrollableNav.defaults = $.extend({}, {
     scrollable : true
   });
 
