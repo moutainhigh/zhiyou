@@ -1,5 +1,6 @@
 package com.zy.entity.sys;
 
+import com.zy.entity.usr.User;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -7,7 +8,6 @@ import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
-import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
+import static com.zy.entity.sys.Message.*;
 import static io.gd.generator.api.query.Predicate.EQ;
 import static io.gd.generator.api.query.Predicate.LK;
 
@@ -25,11 +26,15 @@ import static io.gd.generator.api.query.Predicate.LK;
 @Setter
 @QueryModel
 @Type(label = "消息")
-@ViewObject(groups = {"MessageListVo", "MessageDetailVo", "MessageAdminVo"})
+@ViewObject(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 public class Message implements Serializable {
 
+	public static final String VO_ADMIN = "MessageAdminVo";
+	public static final String VO_LIST = "MessageListVo";
+	public static final String VO_DETAIL = "MessageDetailVo";
+
 	public enum MessageType {
-		系统消息, 任务通知, 资金变动, 活动通知;
+		系统消息, 资金变动, 活动通知;
 	}
 
 	@Id
@@ -44,13 +49,13 @@ public class Message implements Serializable {
 
 	@Query(LK)
 	@Field(label = "类型")
-	@View(groups = {"MessageDetailVo", "MessageAdminVo"})
+	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private String content;
 
 	@NotNull
 	@Query(EQ)
 	@Field(label = "用户id")
-	@AssociationView(name = "user", groups = "MessageAdminVo", associationGroup = "UserAdminSimpleVo")
+	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@NotNull
@@ -61,13 +66,13 @@ public class Message implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Field(label = "创建时间")
-	@View(groups = "MessageAdminVo")
-	@View(name = "createdTimeLabel", type = String.class, groups = {"MessageListVo", "MessageDetailVo"})
+	@View(groups = VO_ADMIN)
+	@View(name = "createdTimeLabel", type = String.class, groups = {VO_LIST, VO_DETAIL})
 	@NotNull
 	private Date createdTime;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@View(groups = "MessageAdminVo")
+	@View(groups = VO_ADMIN)
 	private Date readTime;
 
 
@@ -78,7 +83,7 @@ public class Message implements Serializable {
 
 	@Query(EQ)
 	@Field(label = "批号")
-	@View(groups = "MessageAdminVo")
+	@View(groups = VO_ADMIN)
 	private String batchNumber;
 
 	@Field(label = "token")

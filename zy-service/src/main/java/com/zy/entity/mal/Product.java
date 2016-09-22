@@ -20,16 +20,23 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static com.zy.entity.mal.Product.VO_ADMIN;
+import static com.zy.entity.mal.Product.VO_DETAIL;
+import static com.zy.entity.mal.Product.VO_LIST;
 import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
 @Table(name = "mal_product")
 @Getter
 @Setter
-@ViewObject(groups = { "ProductListVo", "ProductDetailVo", "ProductAdminVo" })
+@ViewObject(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 @QueryModel
 @Type(label = "商品")
 public class Product implements Serializable {
+
+	public static final String VO_ADMIN = "ProductAdminVo";
+	public static final String VO_LIST = "ProductListVo";
+	public static final String VO_DETAIL = "ProductDetailVo";
 
 	@Type(label = "商品价格类型")
 	public enum ProductPriceType {
@@ -50,12 +57,12 @@ public class Product implements Serializable {
 
 	@Lob
 	@NotBlank
-	@View(groups = { "ProductDetailVo", "ProductAdminVo" })
+	@View(groups = { VO_DETAIL, VO_ADMIN })
 	@Field(label = "商品详情")
 	private String detail;
 
 	@Field(label = "商品价格类型")
-	@View(groups = { "ProductAdminVo" })
+	@View(groups = { VO_ADMIN })
 	private ProductPriceType productPriceType;
 
 	@Field(label = "价格")
@@ -63,7 +70,7 @@ public class Product implements Serializable {
 	private BigDecimal price;
 
 	@Field(label = "价格脚本")
-	@View(groups = { "ProductAdminVo" })
+	@View(groups = { VO_ADMIN })
 	@Column(length = 3000)
 	private String priceScript;
 
@@ -72,20 +79,20 @@ public class Product implements Serializable {
 	@View
 	private BigDecimal marketPrice;
 
-	@View(groups = { "ProductDetailVo", "ProductAdminVo" })
+	@View(groups = { VO_DETAIL, VO_ADMIN })
 	@Field(label = "商品编码")
 	private String skuCode;
 
 	@Query(EQ)
 	@Field(label = "是否上架")
 	@NotNull
-	@View(groups = { "ProductAdminVo" })
+	@View(groups = { VO_ADMIN })
 	private Boolean isOn;
 
 	@NotBlank
-	@View(name = "image1Big", groups = { "ProductDetailVo", "ProductAdminVo"  })
+	@View(name = "image1Big", groups = { VO_DETAIL, VO_ADMIN  })
 	@View(name = "image1Thumbnail" )
-	@View(groups = { "ProductAdminVo" })
+	@View(groups = { VO_ADMIN })
 	@Field(label = "主图")
 	private String image1;
 
@@ -108,7 +115,7 @@ public class Product implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Query({GTE,LT})
 	@Field(label = "创建时间")
-	@View(groups = { "ProductAdminVo" })
+	@View(groups = { VO_ADMIN })
 	private Date createdTime;
 
 }
