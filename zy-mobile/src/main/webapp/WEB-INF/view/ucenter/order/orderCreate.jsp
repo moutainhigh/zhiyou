@@ -11,7 +11,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<link href="${stccdn}/css/ucenter/order.css" rel="stylesheet"> 
 <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
 
 <title>确认订单信息</title>

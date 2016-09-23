@@ -33,7 +33,7 @@
   <article class="user-info">
     <div class="list-group mt-10">
       <div class="list-title">基本信息</div>
-      <a class="list-item list-item-avatar" href="${ctx}/u/avatar">
+      <a class="list-item" href="${ctx}/u/avatar">
         <div class="list-text">头像</div>
         <div class="list-unit">
           <img class="image-60 round bd" src="${userAvatarSmall}">

@@ -45,6 +45,91 @@
   margin-left: 16px;
 }
 
+/* breadcrumb */
+
+/* #2980b9 #3498db #1abc9c */
+
+.breadcrumb {
+  list-style: none; margin-bottom: 10px;
+  display:flex;display:-ms-flex;display:-webkit-flex; width: 100%;
+  background: #fedfbc;
+}
+.breadcrumb li {
+  float: left;
+}
+.breadcrumb li a {
+  position: relative; margin-right: 18px; padding: 0 10px 0 5px;
+  display: block; height: 40px;
+  color: #fff; line-height: 40px; text-align: center; text-decoration: none;
+  background: #fc992c;
+}
+.breadcrumb li:nth-child(even) a {
+  background-color: #fb8604;
+}
+.breadcrumb li:nth-child(even) a:before {
+  border-color: #fb8604;
+  border-left-color: transparent;
+}
+.breadcrumb li:nth-child(even) a:after {
+  border-left-color: #fb8604;
+}
+.breadcrumb li:first-child a {
+  padding-left: 15px;
+  /* -moz-border-radius: 4px 0 0 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px 0 0 4px; */
+}
+.breadcrumb li:first-child a:before {
+  border: none;
+}
+.breadcrumb li:last-child a {
+  /* -moz-border-radius: 0 4px 4px 0;
+  -webkit-border-radius: 0;
+  border-radius: 0 4px 4px 0; */
+}
+/*
+.breadcrumb li:last-child a:after {
+  border: none;
+}
+*/
+.breadcrumb li a:before, .breadcrumb li a:after {
+  content: ""; width: 0; height: 0;
+  position: absolute; top: 0;
+  border: 0 solid #fc992c;
+  border-width: 20px 10px;
+}
+.breadcrumb li a:before {
+  left: -15px;
+  border-left-color: transparent;
+}
+.breadcrumb li a:after {
+  left: 100%;
+  border-color: transparent;
+  border-left-color: #fc992c;
+}
+
+.breadcrumb li a:hover {
+  background-color: #e95458;
+}
+.breadcrumb li a:hover:before {
+  border-color: #e95458;
+  border-left-color: transparent;
+}
+.breadcrumb li a:hover:after {
+  border-left-color: #e95458;
+}
+
+.breadcrumb li a:active {
+  background-color: #e95458;
+}
+.breadcrumb li a:active:before {
+  border-color: #e95458;
+  border-left-color: transparent;
+}
+.breadcrumb li a:active:after {
+  border-left-color: #e95458;
+}
+
 
 /**
  * list
@@ -694,6 +779,51 @@ h1 .label, h2 .label, h3 .label, h4 .label, h5 .label, h6 .label {
 }
 
 /**
+ * Custom Bootstrap Badges
+ **/
+.badge {
+  padding: 3px 6px 3px 6px;
+  display: inline-block; min-width: 18px; height: 18px;
+  color: #fff; font-size: 11px !important; font-weight: 300; line-height: 12px;
+  text-align: center; vertical-align: middle; text-shadow: none !important; white-space: nowrap;
+  border-radius: 9px !important; -moz-border-radius: 9px !important; -webkit-border-radius: 9px !important;
+}
+.badge.badge-roundless {
+  border-radius: 0 !important; -webkit-border-radius: 0 !important; -moz-border-radius: 0 !important;
+}
+
+/* Badge color */
+
+/* gray */
+.gray.badge {
+  background-color: #c6c6c6;
+}
+/* red */
+.red.badge {
+  background-color: #e35b5a;
+}
+/* green */
+.green.badge {
+  background-color: #6cb92d;
+}
+/* blue */
+.blue.badge {
+  background-color: #46a7bf;
+}
+/* yellow */
+.yellow.badge {
+  background-color: #f4d03f;
+}
+/* orange */
+.orange.badge {
+  background-color: #fb8604;
+}
+/* purple */
+.purple.badge {
+  background-color: #8a3f8a;
+}
+
+/**
  * Customized Bootstrap Notes
  */
 .note {
@@ -862,133 +992,3 @@ h1 .label, h2 .label, h3 .label, h4 .label, h5 .label, h6 .label {
   color: #843534;
 }
 
-/**
- * Custom Bootstrap Badges
- **/
-.badge {
-  padding: 3px 6px 3px 6px;
-  display: inline-block; min-width: 18px; height: 18px;
-  color: #fff; font-size: 11px !important; font-weight: 300; line-height: 12px;
-  text-align: center; vertical-align: middle; text-shadow: none !important; white-space: nowrap;
-  border-radius: 9px !important; -moz-border-radius: 9px !important; -webkit-border-radius: 9px !important;
-}
-.badge.badge-roundless {
-  border-radius: 0 !important; -webkit-border-radius: 0 !important; -moz-border-radius: 0 !important;
-}
-
-/* Badge color */
-
-/* gray */
-.gray.badge {
-  background-color: #c6c6c6;
-}
-/* red */
-.red.badge {
-  background-color: #e35b5a;
-}
-/* green */
-.green.badge {
-  background-color: #6cb92d;
-}
-/* blue */
-.blue.badge {
-  background-color: #46a7bf;
-}
-/* yellow */
-.yellow.badge {
-  background-color: #f4d03f;
-}
-/* orange */
-.orange.badge {
-  background-color: #fb8604;
-}
-/* purple */
-.purple.badge {
-  background-color: #8a3f8a;
-}
-
-
-/* breadcrumb */
-
-/* #2980b9 #3498db #1abc9c */
-
-.breadcrumb {
-  list-style: none; margin-bottom: 10px;
-  display:flex;display:-ms-flex;display:-webkit-flex; width: 100%;
-  background: #fedfbc;
-}
-.breadcrumb li {
-  float: left;
-}
-.breadcrumb li a {
-  position: relative; margin-right: 18px; padding: 0 10px 0 5px;
-  display: block; height: 40px;
-  color: #fff; line-height: 40px; text-align: center; text-decoration: none;
-  background: #fc992c;
-}
-.breadcrumb li:nth-child(even) a {
-  background-color: #fb8604;
-}
-.breadcrumb li:nth-child(even) a:before {
-  border-color: #fb8604;
-  border-left-color: transparent;
-}
-.breadcrumb li:nth-child(even) a:after {
-  border-left-color: #fb8604;
-}
-.breadcrumb li:first-child a {
-  padding-left: 15px;
-  /* -moz-border-radius: 4px 0 0 4px;
-  -webkit-border-radius: 4px;
-  border-radius: 4px 0 0 4px; */
-}
-.breadcrumb li:first-child a:before {
-  border: none;
-}
-.breadcrumb li:last-child a {
-  /* -moz-border-radius: 0 4px 4px 0;
-  -webkit-border-radius: 0;
-  border-radius: 0 4px 4px 0; */
-}
-/*
-.breadcrumb li:last-child a:after {
-  border: none;
-}
-*/
-.breadcrumb li a:before, .breadcrumb li a:after {
-  content: ""; width: 0; height: 0;
-  position: absolute; top: 0;
-  border: 0 solid #fc992c;
-  border-width: 20px 10px;
-}
-.breadcrumb li a:before {
-  left: -15px;
-  border-left-color: transparent;
-}
-.breadcrumb li a:after {
-  left: 100%;
-  border-color: transparent;
-  border-left-color: #fc992c;
-}
-
-.breadcrumb li a:hover {
-  background-color: #e95458;
-}
-.breadcrumb li a:hover:before {
-  border-color: #e95458;
-  border-left-color: transparent;
-}
-.breadcrumb li a:hover:after {
-  border-left-color: #e95458;
-}
-
-.breadcrumb li a:active {
-  background-color: #e95458;
-}
-.breadcrumb li a:active:before {
-  border-color: #e95458;
-  border-left-color: transparent;
-}
-.breadcrumb li a:active:after {
-  border-left-color: #e95458;
-}

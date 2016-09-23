@@ -312,6 +312,9 @@ h5 { font-size: 14px; line-height: 28px; }
 .bold { font-weight: 600 !important; }
 .thin { font-weight: 300 !important; }
 
+.underline { text-decoration: underline; }
+.line-through { text-decoration: line-through; }
+
 .uppercase { text-transform: uppercase !important; }
 .lowercase { text-transform: lowercase !important; }
 
@@ -347,26 +350,6 @@ h5 { font-size: 14px; line-height: 28px; }
 .lh-36 { line-height: 36px !important }
 .lh-48 { line-height: 48px !important }
 .lh-60 { line-height: 60px !important }
-
-/* Line through */
-.line-through {
-  display: block; width: 100%;
-  position: relative; margin-bottom: 1em; z-index: 1;
-  text-align: center; font-size: .875em;
-}
-.line-through:before {
-  position: absolute; top: 50%; left: 50%;
-  margin: -5px 0 0 -20px;
-  width: 40px; height: 10px;
-  background-color: #ebedf2;
-  content: ''; z-index: -1;
-}
-.line-through:after {
-  position: absolute; top: 49%;
-  display: block; width: 100%;
-  content: ''; z-index: -2;
-  border-bottom: 1px solid #dfe0e6;
-}
 
 /* placeholder  color */
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
