@@ -1,16 +1,5 @@
 package com.zy.entity.usr;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -23,14 +12,25 @@ import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
+
+import static com.zy.entity.usr.Portrait.VO;
+import static com.zy.entity.usr.Portrait.VO_ADMIN;
+
 @Entity
 @Table(name = "usr_portrait")
 @Getter
 @Setter
 @QueryModel
 @Type(label = "用户画像")
-@ViewObject(groups = {"PortraitVo", "PortraitAdminVo"})
+@ViewObject(groups = {VO, VO_ADMIN})
 public class Portrait implements Serializable {
+
+	public static final String VO = "PortraitVo";
+	public static final String VO_ADMIN = "PortraitAdminVo";
 
 	@Type(label = "性别")
 	public enum Gender {
@@ -93,7 +93,7 @@ public class Portrait implements Serializable {
 
 	@Id
 	@Field(label = "id")
-	@View(groups = "PortraitAdminVo")
+	@View(groups = VO_ADMIN)
 	private Long id;
 
 	@NotNull
@@ -101,7 +101,7 @@ public class Portrait implements Serializable {
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "用户id")
 	@View
-	@AssociationView(name = "user", groups = "PortraitAdminVo", associationGroup = "UserAdminSimpleVo")
+	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@NotNull
@@ -126,7 +126,7 @@ public class Portrait implements Serializable {
 	@View(name = "province", type = String.class)
 	@View(name = "city", type = String.class)
 	@View(name = "district", type = String.class)
-	@View(groups = {"PortraitAdminVo", "PortraitVo"})
+	@View(groups = {VO_ADMIN, VO})
 	private Long areaId;
 
 	@Field(label = "家乡所在地")
@@ -137,7 +137,7 @@ public class Portrait implements Serializable {
 
 	@Field(label = "标签")
 	@CollectionView(name = "tagNames", elementType = String.class)
-	@View(groups = "PortraitVo")
+	@View(groups = VO)
 	private String tagIds;
 
 }

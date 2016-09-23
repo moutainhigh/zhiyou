@@ -96,7 +96,7 @@ public class MessageController {
 		Message messageForCreate = new Message();
 		messageForCreate.setBatchNumber(batchNumber);
 		messageForCreate.setContent(content);
-		messageForCreate.setMessageType(MessageType.任务通知);
+		messageForCreate.setMessageType(MessageType.系统消息);
 		messageService.send(messageForCreate, userIds);
 		return "redirect:/message";
 	}

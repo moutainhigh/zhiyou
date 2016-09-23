@@ -176,7 +176,7 @@ public class Order implements Serializable {
 	private Boolean isSettledUp;
 
 	@Field(label = "是否物流发货")
-	@View(name = "useLogisticsLabel", groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(name = "useLogisticsLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Boolean useLogistics;
 

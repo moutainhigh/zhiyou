@@ -189,223 +189,235 @@
           <!-- END RESPONSIVE QUICK SEARCH FORM -->
         </li>
 
-        <li class="start active open">
-          <a href="javascript:;">
-            <i class="icon-users"></i>
-            <span class="title">用户中心</span>
-            <span class="selected"></span>
-            <span class="arrow"></span>
-          </a>
-          <ul class="sub-menu">
-            <shiro:hasPermission name="user:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/user"><i class="icon-user"></i> 用户信息<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="appearance:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/appearance"><i class="icon-user-female"></i> 实名认证管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="address:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/address"><i class="icon-home"></i> 收货地址管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="portrait:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/portrait"><i class="icon-graduation"></i> 完善资料管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
+        <shiro:hasAnyPermissions name="user:view,appearance:view,address:view,portrait:view">
+          <li class="start active open">
+            <a href="javascript:;">
+              <i class="icon-users"></i>
+              <span class="title">用户中心</span>
+              <span class="selected"></span>
+              <span class="arrow"></span>
+            </a>
+            <ul class="sub-menu">
+              <shiro:hasPermission name="user:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/user"><i class="icon-user"></i> 用户信息<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="appearance:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/appearance"><i class="icon-user-female"></i> 实名认证管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="address:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/address"><i class="icon-home"></i> 收货地址管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="portrait:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/portrait"><i class="icon-graduation"></i> 完善资料管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
 
-          </ul>
-        </li>
+        <shiro:hasAnyPermissions name="product:view,order:view">
+          <li>
+            <a href="javascript:;">
+              <i class="icon-basket"></i>
+              <span class="title">下单管理</span>
+              <span class="selected"></span>
+              <span class="arrow "></span>
+            </a>
+            <ul class="sub-menu">
+              <shiro:hasPermission name="product:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/product"><i class="icon-present"></i> 商品管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+                <%--<shiro:hasPermission name="gift:view">
+                  <li>
+                    <a href="javascript:;" data-href="${ctx}/gift"><i class="icon-game-controller"></i> 礼品管理<span class="badge badge-danger"></span></a>
+                  </li>
+                </shiro:hasPermission>--%>
+              <shiro:hasPermission name="order:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/order"><i class="icon-docs"></i> 全部订单管理<span class="badge badge-danger"></span></a>
+                </li>
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 平台发货订单<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
 
-        <li>
-          <a href="javascript:;">
-            <i class="icon-basket"></i>
-            <span class="title">下单管理</span>
-            <span class="selected"></span>
-            <span class="arrow "></span>
-          </a>
-          <ul class="sub-menu">
-            <shiro:hasPermission name="product:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/product"><i class="icon-present"></i> 商品管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <%--<shiro:hasPermission name="gift:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/gift"><i class="icon-game-controller"></i> 礼品管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>--%>
-            <shiro:hasPermission name="order:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/order"><i class="icon-docs"></i> 全部订单管理<span class="badge badge-danger"></span></a>
-              </li>
-              <li>
-                <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 平台发货订单<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-          </ul>
-        </li>
+        <shiro:hasAnyPermissions name="activity:view,report:view">
+          <li>
+            <a href="javascript:;">
+              <i class="icon-globe"></i>
+              <span class="title">活动管理</span>
+              <span class="selected"></span>
+              <span class="arrow "></span>
+            </a>
+            <ul class="sub-menu">
+              <shiro:hasPermission name="activity:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/activity"><i class="icon-social-dropbox"></i> 活动管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="report:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report"><i class="icon-volume-1"></i> 检测报告<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
 
-        <li>
-          <a href="javascript:;">
-            <i class="icon-globe"></i>
-            <span class="title">活动管理</span>
-            <span class="selected"></span>
-            <span class="arrow "></span>
-          </a>
-          <ul class="sub-menu">
-            <shiro:hasPermission name="activity:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/activity"><i class="icon-social-dropbox"></i> 活动管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="report:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/report"><i class="icon-volume-1"></i> 检测报告<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-          </ul>
-        </li>
+        <shiro:hasAnyPermissions name="account:view,payment:view,deposit:view,withdraw:view,profit:view,transfer:view,accountLog:view,bankCard:view">
+          <li>
+            <a href="javascript:;">
+              <i class="icon-diamond"></i>
+              <span class="title">财务管理</span>
+              <span class="selected"></span>
+              <span class="arrow "></span>
+            </a>
+            <ul class="sub-menu">
+              <shiro:hasPermission name="account:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/account"><i class="icon-wallet"></i> 资金账户管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="payment:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/payment"><i class="icon-doc"></i> 支付单管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="deposit:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/deposit"><i class="icon-login"></i> 充值管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="withdraw:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/withdraw"><i class="icon-logout"></i> 提现管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="profit:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/profit"><i class="icon-present"></i> 收益管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="transfer:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/transfer"><i class="icon-loop"></i> 转账单管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="accountLog:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/accountLog"><i class="icon-calculator"></i> 流水管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="bankCard:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/bankCard"><i class="icon-credit-card"></i> 银行卡信息<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
 
-        <li>
-          <a href="javascript:;">
-            <i class="icon-diamond"></i>
-            <span class="title">财务管理</span>
-            <span class="selected"></span>
-            <span class="arrow "></span>
-          </a>
-          <ul class="sub-menu">
-            <shiro:hasPermission name="account:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/account"><i class="icon-wallet"></i> 资金账户管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="payment:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/payment"><i class="icon-doc"></i> 支付单管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="deposit:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/deposit"><i class="icon-login"></i> 充值管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="withdraw:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/withdraw"><i class="icon-logout"></i> 提现管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="profit:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/profit"><i class="icon-present"></i> 收益管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="transfer:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/transfer"><i class="icon-loop"></i> 转账单管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="accountLog:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/accountLog"><i class="icon-calculator"></i> 流水管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="bankCard:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/bankCard"><i class="icon-credit-card"></i> 银行卡信息<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-          </ul>
-        </li>
+        <shiro:hasAnyPermissions name="banner:view,notice:view,article:view,help:view">
+          <li>
+            <a href="javascript:;">
+              <i class="icon-screen-desktop"></i>
+              <span class="title">内容管理</span>
+              <span class="selected"></span>
+              <span class="arrow "></span>
+            </a>
+            <ul class="sub-menu">
+              <shiro:hasPermission name="banner:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/banner"><i class="icon-directions"></i> Banner管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="notice:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/notice"><i class="icon-volume-1"></i> 公告管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="article:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/article"><i class="icon-book-open"></i> 新闻管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="help:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/helpCategory"><i class="icon-speech"></i> 帮助管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
 
-        <li>
-          <a href="javascript:;">
-            <i class="icon-screen-desktop"></i>
-            <span class="title">内容管理</span>
-            <span class="selected"></span>
-            <span class="arrow "></span>
-          </a>
-          <ul class="sub-menu">
-            <shiro:hasPermission name="banner:view">
+        <shiro:hasAnyPermissions name="admin:*,role:*,message:view,setting:*,area:*,tag:view,job:view,bank:view">
+          <li>
+            <a href="javascript:;">
+              <i class="icon-settings"></i>
+              <span class="title">系统管理</span>
+              <span class="selected"></span>
+              <span class="arrow open"></span>
+            </a>
+            <ul class="sub-menu">
+              <shiro:hasPermission name="admin:*">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/admin"><i class="icon-user"></i> 管理员管理<span class="badge badge-roundless badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="role:*">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/role"><i class="icon-key"></i> 角色管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="message:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/message"><i class="icon-bulb"></i> 消息管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="setting:*">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/setting/edit"><i class="icon-speedometer"></i> 系统设置<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="area:*">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/area"><i class="icon-bar-chart"></i> 区域管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="tag:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/tag"><i class="icon-tag"></i> 标签库管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="job:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/job"><i class="icon-badge"></i> 职位管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="bank:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/bank"><i class="icon-home"></i> 银行信息<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
               <li>
-                <a href="javascript:;" data-href="${ctx}/banner"><i class="icon-directions"></i> Banner管理<span class="badge badge-danger"></span></a>
+                <a href="javascript:;" data-href="${ctx}/dev"><i class="icon-briefcase"></i> 开发者工具<span class="badge badge-danger"></span></a>
               </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="notice:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/notice"><i class="icon-volume-1"></i> 公告管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="article:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/article"><i class="icon-book-open"></i> 新闻管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="help:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/helpCategory"><i class="icon-speech"></i> 帮助管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-          </ul>
-        </li>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
 
-        <li>
-          <a href="javascript:;">
-            <i class="icon-settings"></i>
-            <span class="title">系统管理</span>
-            <span class="selected"></span>
-            <span class="arrow open"></span>
-          </a>
-          <ul class="sub-menu">
-            <shiro:hasPermission name="admin:*">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/admin"><i class="icon-user"></i> 管理员管理<span class="badge badge-roundless badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="role:*">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/role"><i class="icon-key"></i> 角色管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="message:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/message"><i class="icon-bulb"></i> 消息管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="setting:*">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/setting/edit"><i class="icon-speedometer"></i> 系统设置<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="area:*">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/area"><i class="icon-bar-chart"></i> 区域管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="tag:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/tag"><i class="icon-tag"></i> 标签库管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="job:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/job"><i class="icon-badge"></i> 职位管理<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="bank:view">
-              <li>
-                <a href="javascript:;" data-href="${ctx}/bank"><i class="icon-home"></i> 银行信息<span class="badge badge-danger"></span></a>
-              </li>
-            </shiro:hasPermission>
-            <li>
-              <a href="javascript:;" data-href="${ctx}/dev"><i class="icon-briefcase"></i> 开发者工具<span class="badge badge-danger"></span></a>
-            </li>
-          </ul>
-        </li>
       </ul>
       <!-- END SIDEBAR MENU -->
     </div>

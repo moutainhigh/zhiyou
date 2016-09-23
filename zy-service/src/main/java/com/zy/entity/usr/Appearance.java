@@ -1,7 +1,7 @@
 package com.zy.entity.usr;
 
-import static io.gd.generator.api.query.Predicate.EQ;
-import static io.gd.generator.api.query.Predicate.IN;
+import com.zy.common.extend.StringBinder;
+import com.zy.entity.sys.ConfirmStatus;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -10,33 +10,35 @@ import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
-
-import java.io.Serializable;
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.URL;
-
-import com.zy.common.extend.StringBinder;
-import com.zy.entity.sys.ConfirmStatus;
+import static com.zy.entity.usr.Appearance.VO;
+import static com.zy.entity.usr.Appearance.VO_ADMIN;
+import static io.gd.generator.api.query.Predicate.EQ;
+import static io.gd.generator.api.query.Predicate.IN;
 
 @Entity
 @Table(name = "usr_appearance")
 @Getter
 @Setter
 @QueryModel
-@ViewObject(groups = {"AppearanceVo", "AppearanceAdminVo"})
+@ViewObject(groups = {VO, VO_ADMIN})
 @Type(label = "实名认证")
 public class Appearance implements Serializable {
+
+	public static final String VO = "AppearanceVo";
+	public static final String VO_ADMIN = "AppearanceAdminVo";
 
 	@Id
 	@Field(label = "实名认证id")
@@ -48,7 +50,7 @@ public class Appearance implements Serializable {
 	@Column(unique = true)
 	@Field(label = "用户id")
 	@View
-	@AssociationView(name = "user", groups = "AppearanceAdminVo", associationGroup = "UserAdminSimpleVo")
+	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@NotBlank
@@ -89,11 +91,11 @@ public class Appearance implements Serializable {
 
 	@NotNull
 	@Field(label = "申请时间")
-	@View(groups = "AppearanceAdminVo")
+	@View(groups = VO_ADMIN)
 	private Date appliedTime;
 	
 	@Field(label = "审核通过时间")
-	@View(groups = "AppearanceAdminVo")
+	@View(groups = VO_ADMIN)
 	private Date confirmedTime;
 
 }

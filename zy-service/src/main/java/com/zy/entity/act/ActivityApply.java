@@ -1,5 +1,6 @@
 package com.zy.entity.act;
 
+import com.zy.entity.usr.User;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -19,56 +20,60 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
+import static com.zy.entity.act.ActivityApply.VO_ADMIN;
+
 @Entity
 @Table(name = "act_activity_apply", uniqueConstraints = @UniqueConstraint(columnNames = {"activityId", "userId"}))
 @Getter
 @Setter
 @Type(label = "活动报名")
 @QueryModel
-@ViewObject(groups = "ActivityApplyAdminVo")
+@ViewObject(groups = VO_ADMIN)
 public class ActivityApply implements Serializable {
+
+	public static final String VO_ADMIN = "ActivityApplyAdminVo";
 
 	@Id
 	@Field(label = "id")
-	@View(groups = "ActivityApplyAdminVo")
+	@View(groups = VO_ADMIN)
 	private Long id;
 
 	@NotNull
 	@Field(label = "用户id")
 	@Query({Predicate.IN, Predicate.EQ})
-	@View(groups = "ActivityApplyAdminVo")
-	@AssociationView(name = "user", associationGroup = "UserAdminSimpleVo", groups = "ActivityApplyAdminVo")
+	@View(groups = VO_ADMIN)
+	@AssociationView(name = "user", associationGroup = User.VO_ADMIN_SIMPLE, groups = VO_ADMIN)
 	private Long userId;
 
 	@NotNull
 	@Field(label = "活动id")
 	@Query({Predicate.IN, Predicate.EQ})
-	@View(groups = "ActivityApplyAdminVo")
+	@View(groups = VO_ADMIN)
 	private Long activityId;
 
 	@NotNull
 	@Field(label = "报名时间")
 	@Query({Predicate.GTE, Predicate.LT})
-	@View(groups = "ActivityApplyAdminVo")
-	@View(name = "appliedTimeLabel", type = String.class, groups = "ActivityApplyAdminVo")
+	@View(groups = VO_ADMIN)
+	@View(name = "appliedTimeLabel", type = String.class, groups = VO_ADMIN)
 	private Date appliedTime;
 
 	@NotNull
 	@Field(label = "是否取消")
 	@Query(Predicate.EQ)
-	@View(groups = "ActivityApplyAdminVo")
+	@View(groups = VO_ADMIN)
 	private Boolean isCancelled;
 
 	@Field(label = "邀请人id")
 	@Query({Predicate.IN, Predicate.EQ})
-	@View(groups = "ActivityApplyAdminVo")
-	@AssociationView(name = "inviter", associationGroup = "UserAdminSimpleVo", groups = "ActivityApplyAdminVo")
+	@View(groups = VO_ADMIN)
+	@AssociationView(name = "inviter", associationGroup = User.VO_ADMIN_SIMPLE, groups = VO_ADMIN)
 	private Long inviterId;
 
 
 	@Field(label = "短信通知是否已发送")
 	@Query({Predicate.EQ})
-	@View(groups = "ActivityApplyAdminVo")
+	@View(groups = VO_ADMIN)
 	@NotNull
 	private Boolean isSmsSent;
 

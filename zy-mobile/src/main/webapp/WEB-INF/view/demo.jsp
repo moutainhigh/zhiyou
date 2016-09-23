@@ -14,7 +14,7 @@
 <title>MiUI</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
-<script src="${stccdn}/extend/imageupload/imageupload.wx.js"></script>
+<script src="${stccdn}/extend/imageupload/imageupload.js"></script>
 <link rel="stylesheet" href="${stccdn}/extend/imageupload/imageupload.css" />
 <script>
   $.fn.imageupload.setDefaults({
@@ -22,11 +22,22 @@
     width : 100,
     height : 100,
     retain : 2,
+    fileTypes : ['image/bmp', 'image/gif', 'image/jpeg', 'image/png'],
     maxFileSize : '6MB'
   });
 </script>
 <script type="text/javascript">
   $(function() {
+    
+    $.message('你好', 'info', 2);
+    
+    $.imageview({
+      url : ['http://image.zhi-you.net/image/223caec3-7bb3-483c-8310-497d6db7ac86@100w_100h.jpg',
+             'http://image.zhi-you.net/image/223caec3-7bb3-483c-8310-497d6db7ac86@200w_200h.jpg',
+             'http://image.zhi-you.net/image/223caec3-7bb3-483c-8310-497d6db7ac86@300w_300h.jpg'],
+      title : '图片列表'
+    });
+    
     $('#deliverType0').click(function(){
       $('#logistics').slideUp(300);
     });
@@ -54,10 +65,6 @@
     $('.image-multi .image-item').imageupload();
 
     $('.image-multi .image-add').imageupload({
-      width : 100,
-      height : 100,
-      url : '${ctx}/image/upload',
-      maxFileSize : '4MB',
       success : function(result) {
         var $this = $(this);
         var limit = $this.attr('data-limit');
@@ -74,12 +81,7 @@
         if (limit && limit <= imageItems.length + 1) {
           $this.remove();
         }
-        $this.siblings('.image-item').eq(imageItems.length).imageupload({
-          width : 100,
-          height : 100,
-          url : '${ctx}/image/upload',
-          maxFileSize : '4MB'
-        });
+        $this.siblings('.image-item').eq(imageItems.length).imageupload();
       }
     });
     
@@ -123,9 +125,15 @@
       $.dialog({
         content : '底部对话框，可以不要标题，点遮罩层消失',
         skin: 'footer',
-        btn : ['确定1', '确定2']
+        btn : ['确定1', '确定2'],
+        callback : function(index){
+          alert('按钮index=' + index);
+          return true;
+        }
       });
     });
+    
+    $('.miui-scroll-nav').scrollableNav();
   
   });
 </script>
@@ -139,11 +147,11 @@
   </header>
   
   <nav class="miui-scroll-nav">
-    <ul class="miui-scroll-nav-list">
+    <ul>
       <li>全部</li>
-      <li class="current">分类1</li>
+      <li>分类1</li>
       <li>分类2</li>
-      <li>分类3</li>
+      <li class="current">分类3</li>
       <li>分类4</li>
       <li>分类5</li>
       <li>分类6</li>
@@ -359,20 +367,6 @@
       
     </form>
   </article>
-
-  <aside class="miui-imageview hide">
-    <a class="btn-close button-right" href="javascript:;"><i class="fa fa-times-circle"></i></a>
-    <header class="header">
-      <h2>检测结果图片  <em>1</em>/3</h2>
-    </header>
-    <div class="miui-imageview-wrap">
-      <div class="miui-imageview-inner">
-        <img src="${stccdn}/image/example/cube.png" style="width: 320px; height: 320px;">
-        <img src="${stccdn}/image/example/cube.png" style="width: 320px; height: 320px;">
-        <img src="${stccdn}/image/example/cube.png" style="width: 320px; height: 320px;">
-      </div>
-    </div>
-  </aside>
 
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>

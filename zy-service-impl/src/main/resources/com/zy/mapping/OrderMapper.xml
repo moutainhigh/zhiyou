@@ -287,9 +287,9 @@
 	</select>
 
 	<resultMap id="sumResultMap" type="com.zy.model.dto.OrderSumDto">
-		<result column="count_number" property="countNumber" />
-		<result column="quantity" property="sumQuantity" />
-		<result column="amount" property="sumAmount" />
+		<result column="count_number" property="countNumber"/>
+		<result column="quantity" property="sumQuantity"/>
+		<result column="amount" property="sumAmount"/>
 	</resultMap>
 
 	<select id="orderSum" resultMap="sumResultMap" parameterType="com.zy.model.query.OrderQueryModel">

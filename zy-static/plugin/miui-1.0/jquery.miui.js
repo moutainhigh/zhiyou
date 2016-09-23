@@ -105,6 +105,8 @@
         if(options.callback.call($dialog, index)) {
           onClose();
         }
+      } else {
+        onClose();
       }
     });
     return $dialog;
@@ -163,15 +165,19 @@
     var onClose = function() {
       if ($.isFunction(options.callback)) {
         if (options.callback.call($message, window.jQuery || window.Zepto) != false) {
-          $message.slideUp(300);
+          $message.slideUp(300, function(){
+            $message.remove();
+          });
         }
       } else {
-        $message.slideUp(300);
+        $message.slideUp(300, function(){
+          $message.remove();
+        });
       }
     };
     
     if (options.closable){
-      var $messageClose = $message.find(".message-close");
+      var $messageClose = $message.find('.message-close');
       $messageClose.click(onClose);
     }
     
@@ -203,11 +209,17 @@
       options = {url: options};
     }
     options = $.extend({}, $.imageview.defaults, options || {});
-    if (options.url == null) {
+    if (options.url == null || options.url.length == 0) {
       alert('缺少参数[图片URL]!');
       return;
     }
+    if(typeof(options.url) == 'string') {
+      var arr = [];
+      arr.push(options.url);
+      options.url = arr;
+    }
     
+    var ths = this;
     var str = '<aside class="miui-imageview">'
           +   '<a href="javascript:;" class="btn-close button-right"><i class="fa fa-times-circle"></i></a>';
     if(options.title){
@@ -215,12 +227,19 @@
           +   '<h2>' + options.title + '</h2>'
           +   '</header>';
     }
-    str +=    '<div class="miui-imageview-wrap"><div class="loading"></div></div>';
-          +   '</aside>';
+    str +=    '<ul></ul>'
+          +   '<div class="loading"></div>';
+    if(options.url.length > 1) {
+      str +=  '<div class="view-control control-left"></div>'
+          +   '<div class="view-control control-right"></div>'
+          +   '<div class="view-index"><em>1</em> / ' + options.url.length + '</div>';
+    }
+    str +=    '</aside>';
     $imageview = $(str);
     $('body').css({'overflow': 'hidden'}).append($imageview);
-    $imageWrap = $imageview.find(".miui-imageview-wrap");
-    $loading = $imageview.find(".loading");
+    $imageList = $imageview.find('ul');
+    $loading = $imageview.find('.loading');
+    $index = $imageview.find('.view-index');
     
     var onClose = function(){
       $imageview.animate({opacity: 0}, 300, function(){
@@ -229,40 +248,95 @@
       $('body').css({'overflow': 'auto'});
     };
     if(options.shadeClose){
-      $imageWrap.click(function(){
+      $imageList.click(function(){
         //onClose();
+        $index.slideToggle(300);
+        $imageview.find('.view-control').toggle(300);
         $imageview.find('.header').slideToggle(300);
       });
     }
-    $imageview.find(".btn-close").click(onClose);;
+    $imageview.find('.btn-close').click(onClose);
     
-    var maxWidth = $(window).width(), maxHeight = $(window).height() - (options.title ? 48 : 0);
-    $image = $('<div class="miui-imageview-inner"><img style="display:none" src="' + options.url + '"></div>');
-    $image.appendTo($imageWrap);
-    $image.find('img').bind('load', function(){
-      var $this = $(this);
-      w = $this.width();
-      h = $this.height();
-      if (w / h >= maxWidth / maxHeight) {
-        if (w > maxWidth) {
-          h = (h * maxWidth) / w;
-          w = maxWidth;
+    var wrapWidth = $(window).width(), wrapHeight = $(window).height() - (options.title ? 48 : 0);
+    var listWidth = $imageList.width();
+    
+    
+    ths.current = options.current;
+    ths.size = options.url.length;
+    
+    $.each(options.url, function(n, url){
+      $image = $('<li' + (options.current == n ? ' class="current"' : '') + '><div><img style="display:none" src="' + url + '"></div></li>');
+      $image.width(wrapWidth).appendTo($imageList);
+      $image.find('img').bind('load', function(){
+        var $this = $(this);
+        w = $this.width();
+        h = $this.height();
+        if (w / h >= wrapWidth / wrapHeight) {
+          if (w > wrapWidth) {
+            h = (h * wrapWidth) / w;
+            w = wrapWidth;
+          }
+        } else {
+          if (h > wrapHeight) {
+            w = (w * wrapHeight) / h;
+            h = wrapHeight;
+          }
         }
-      } else {
-        if (h > maxHeight) {
-          w = (w * maxHeight) / h;
-          h = maxHeight;
-        }
-      }
-      $this.width(w).height(h).show();
-      $loading.remove();
+        $this.width(w).height(h).show();
+        $loading.remove();
+      });
     });
     
+    $imageview.find('.control-left').bind('click', function(){
+      prev();
+    });
+    $imageview.find('.control-right').bind('click', function(){
+      next();
+    });
+    
+    var x1, y1, x2, y2, x3, y3;
+    $imageList.on('touchstart', function(event) {
+      var touch1 = event.originalEvent.targetTouches[0];
+      x1 = touch1.pageX;
+      y1 = touch1.pageY;
+    }).on('touchmove', function(event) {
+      var touch2 = event.originalEvent.targetTouches[0];
+      x2 = touch2.pageX;
+      y2 = touch2.pageY;
+      if (Math.abs(y2 - y1) > 0) {
+        event.preventDefault();
+      }
+    }).on('touchend', function(e) {
+      //var touch3 = e.originalEvent.changedTouches[0];
+      if(x2 - x1 > 10) {
+        prev();
+      } else if(x2 - x1 < 10){
+        next();
+      }
+    });
+    
+    var next = function() {
+      if(ths.current == ths.size - 1) {
+        return;
+      }
+      $imageList.stop(true).animate({'left' : - wrapWidth * (++ths.current)}, 300, function(){
+        $index.find('em').text(ths.current + 1);
+      });
+    };
+    var prev = function() {
+      if(ths.current == 0) {
+        return;
+      }
+      $imageList.stop(true).animate({'left' : - wrapWidth * (--ths.current)}, 300, function(){
+        $index.find('em').text(ths.current + 1);
+      });
+    }
   }
   
   $.imageview.defaults = $.extend({}, {
     url : '',
     title : '',
+    current : 0,
     shadeClose : true
   });
 
@@ -303,11 +377,67 @@
     });
   }
   
-  $.fn.nav = function(tabContent) {
+  $.fn.scrollableNav = function() {
+    var $this = $(this);
+    var $cur = $('<li class="cur-line">').appendTo($this.find('ul'));
+    var itemWidth = $this.find('li.current').width();
+    $cur.width(itemWidth);
+    var wrapWidth = $this.width();
+    var listWidth = $this.find('ul').width();
+    //console.info('itemWidth : ' + itemWidth);
+    //console.info('wrapWidth : ' + wrapWidth);
+    //console.info('listWidth : ' + listWidth);
+    $this.find('li').on('click', function() {
+      var $li = $(this);
+      itemWidth = $li.outerWidth();
+      var leftHalf = (wrapWidth - itemWidth) / 2;
+      var posLeft = parseInt($li.position().left);
+      var scrollLeft;
+      if (posLeft <= leftHalf) {
+        scrollLeft = 0;
+      } else if (leftHalf - posLeft <= wrapWidth - listWidth) {
+        scrollLeft = wrapWidth - listWidth;
+      } else {
+        scrollLeft = leftHalf - posLeft;
+      }
+      $this.find('ul').animate({
+        'left' : scrollLeft
+      }, 300, function(){
+        $li.addClass('current').siblings().removeClass('current');
+      });
+      $cur.stop(true).animate({
+        left : $li.position().left
+      }, 300).animate({
+        width : itemWidth
+      }, 100);
+    });
     
+    $this.find('li.current').click();
+    
+    var x1, x2, y1, y2;
+    $this.find('ul').on('touchstart', function(e) {
+      var touch1 = e.originalEvent.targetTouches[0];
+      x1 = touch1.pageX;
+      y1 = touch1.pageY;
+      cssLeft = parseInt($(this).css('left'));
+    }).on('touchmove', function(e) {
+      var touch2 = e.originalEvent.targetTouches[0];
+      x2 = touch2.pageX;
+      y2 = touch2.pageY;
+      if (cssLeft + x2 - x1 >= 0) {
+        $(this).css('left', 0);
+      } else if (cssLeft + x2 - x1 <= wrapWidth - listWidth) {
+        $(this).css('left', wrapWidth - listWidth);
+      } else {
+        $(this).css('left', cssLeft + x2 - x1);
+      }
+      if (Math.abs(y2 - y1) > 0) {
+        e.preventDefault();
+      }
+    });
   };
   
-  $.fn.nav.defaults = $.extend({}, {
+  $.fn.scrollableNav.defaults = $.extend({}, {
     scrollable : true
   });
 
