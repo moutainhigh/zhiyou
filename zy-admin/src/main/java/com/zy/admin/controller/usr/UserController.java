@@ -108,7 +108,7 @@ public class UserController {
 			}
 		}
 		try {
-			userService.modifyPasswordAndPhone(userId, newPassword, phone);
+			userService.modifyPassword(userId, newPassword, getPrincipalUserId());
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error("保存失败: " + e.getMessage()));
 			return "redirect:/user";
@@ -123,7 +123,7 @@ public class UserController {
 	public Result<?> addVip(Long id, UserRank userRank, String remark) {
 		checkAndValidateIsPlatform(id);
 		try {
-			userService.modifyUserRank(id, userRank, remark, getPrincipalUserId());
+			userService.modifyUserRank(id, userRank, getPrincipalUserId(), remark);
 		} catch (Exception e) {
 			return new ResultBuilder<>().message(e.getMessage()).build();
 		}
