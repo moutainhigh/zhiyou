@@ -1,6 +1,7 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
+import com.zy.model.ImageVo;
 import com.zy.entity.mal.Order.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -90,8 +91,6 @@ public class OrderDetailVo implements Serializable {
 	@Field(label = "orderItems")
 	private List<OrderItemVo> orderItems = new ArrayList<>();
 	@Field(label = "银行汇款截图")
-	private List<String> offlineImages = new ArrayList<>();
-	@Field(label = "银行汇款截图")
-	private List<String> offlineImageThumbnails = new ArrayList<>();
+	private List<ImageVo> offlineImages = new ArrayList<>();
 
 }
