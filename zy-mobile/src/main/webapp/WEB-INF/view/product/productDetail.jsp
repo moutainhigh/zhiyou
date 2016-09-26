@@ -33,6 +33,8 @@
         quantity = MIN_QUANTITY;
       } else if (quantity > MAX_QUANTITY) {
         quantity = MAX_QUANTITY;
+      } else if(quantity % MIN_QUANTITY != 0) {
+        quantity = quantity - quantity % MIN_QUANTITY;
       }
       if (quantity == MIN_QUANTITY) {
         $(".fa-minus").addClass('disabled');
@@ -55,12 +57,12 @@
 
     $('.fa-plus').click(function() {
       var quantity = $("#quantity").val();
-      editQuantity(parseInt(quantity) + 1);
+      editQuantity(parseInt(quantity) + MIN_QUANTITY);
     });
 
     $('.fa-minus').click(function() {
       var quantity = $("#quantity").val();
-      editQuantity(parseInt(quantity) - 1);
+      editQuantity(parseInt(quantity) - MIN_QUANTITY);
     });
     
     </c:if>
@@ -69,8 +71,8 @@
     $('#btnOrder').click(function() {
       <c:if test="${!isUpgrade && !isFirst}">
       var quantity = $("#quantity").val();
-      if(quantity < MIN_QUANTITY) {
-        messageAlert('一级服务商和特级服务商每次入货不得少于' + MIN_QUANTITY + '件');
+      if(quantity < MIN_QUANTITY || quantity % MIN_QUANTITY != 0) {
+        messageAlert('一级服务商和特级服务商每次入货最小单位' + MIN_QUANTITY + '件');
         return;
       }
       </c:if>

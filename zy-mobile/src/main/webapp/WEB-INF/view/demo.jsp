@@ -17,26 +17,37 @@
 <script src="${stccdn}/extend/imageupload/imageupload.js"></script>
 <link rel="stylesheet" href="${stccdn}/extend/imageupload/imageupload.css" />
 <script>
-  $.fn.imageupload.setDefaults({
-    url : '${ctx}/image/upload',
-    width : 100,
-    height : 100,
-    retain : 2,
-    fileTypes : ['image/bmp', 'image/gif', 'image/jpeg', 'image/png'],
-    maxFileSize : '6MB'
-  });
+$.fn.imageupload.setDefaults({
+  url : '${ctx}/image/upload',
+  width : 100,
+  height : 100,
+  retain : 2,
+  maxFileSize : '6MB',
+  isMultipart : false,
+  success : function(result){
+    var $this = $(this);
+    if($this.hasClass('image-add')){
+      var limit = $this.attr('data-limit');
+      var name = $this.attr('data-name');
+      var imageItem = '<div class="image-item">' 
+                    + '<input type="hidden" name="' + name + '" value="' + result.image + '">'
+                    + '<img src="' + result.imageThumbnail + '">' 
+                    + '<input type="file">' 
+                    + '</div>';
+      $(imageItem).insertBefore($this);
+      var imageItems = $this.siblings('.image-item');
+      if (limit && limit <= imageItems.length) {
+        $this.remove();
+      }
+      imageItems.last().imageupload();
+    }
+  }
+});
 </script>
 <script type="text/javascript">
   $(function() {
     
     $.message('你好', 'info', 2);
-    
-    $.imageview({
-      url : ['http://image.zhi-you.net/image/223caec3-7bb3-483c-8310-497d6db7ac86@100w_100h.jpg',
-             'http://image.zhi-you.net/image/223caec3-7bb3-483c-8310-497d6db7ac86@200w_200h.jpg',
-             'http://image.zhi-you.net/image/223caec3-7bb3-483c-8310-497d6db7ac86@300w_300h.jpg'],
-      title : '图片列表'
-    });
     
     $('#deliverType0').click(function(){
       $('#logistics').slideUp(300);
@@ -46,15 +57,25 @@
     });
 
     $('.image-view').click(function() {
-      var url = $(this).attr('data-src');
-      var title = $(this).attr('data-title');
-      if (!url) {
-        return;
+      var images = $(this).find('img');
+      if (images.length == 0) {
+        var url = $(this).attr('data-src');
+        var title = $(this).attr('data-title');
+        $.imageview({
+          url : url,
+          title : title
+        });
+      } else {
+        var title = $(this).attr('data-title');
+        var imageUrls = [];
+        $.each(images, function(n, image) {
+          imageUrls.push($(image).attr('data-src'));
+        })
+        $.imageview({
+          url : imageUrls,
+          title : title
+        });
       }
-      $.imageview({
-        url : url,
-        title : title
-      });
     });
 
     $('.image-single .image-item').imageupload({
@@ -65,24 +86,7 @@
     $('.image-multi .image-item').imageupload();
 
     $('.image-multi .image-add').imageupload({
-      success : function(result) {
-        var $this = $(this);
-        var limit = $this.attr('data-limit');
-        var imageItems = $this.siblings('.image-item');
-        var inputHidden = $this.children('input:hidden');
-        var inputName = inputHidden.val('').attr('name');
-        inputName = inputName.replace((imageItems.length + 1), '');
-        var image = result.image;
-        var imageThumbnail = result.imageThumbnail;
-        var imageItem = '<div class="image-item">' + '<input type="hidden" name="' + inputName + (imageItems.length + 1) + '" value="' + image + '">'
-            + '<img src="' + imageThumbnail + '">' + '<input type="file">' + '</div>';
-        $(imageItem).insertBefore($this);
-        $this.children('input:hidden').attr('name', inputName + (imageItems.length + 2));
-        if (limit && limit <= imageItems.length + 1) {
-          $this.remove();
-        }
-        $this.siblings('.image-item').eq(imageItems.length).imageupload();
-      }
+      isMultipart : true
     });
     
     $('.valid-form').validate({
@@ -102,6 +106,13 @@
         'simage' : {
           required : true
         }
+      },
+      submitHandler : function(form) {
+        if($('input[name="image"]').length == 0) {
+          messageFlash('请上传图片');
+          return;
+        }
+        form.submit();
       }
     });
     
@@ -336,18 +347,8 @@
         <div class="list-title"><span class="font-red">多图</span>上传插件</div>
         <div class="list-item">
           <div class="list-text image-upload image-multi">
-            <div class="image-item">
-              <img src="${stccdn}/image/example/cube.png">
-              <input type="hidden" name="image1" value="">
-              <input type="file">
-            </div>
-            <div class="image-item">
-              <img src="${stccdn}/image/example/cube.png">
-              <input type="hidden" name="image2" value="">
-              <input type="file">
-            </div>
-            <div class="image-add" data-limit="6">
-              <input type="hidden" name="image3" value="">
+            <div class="image-add" data-limit="6" data-name="image">
+              <input type="hidden" value="">
               <input type="file">
               <em class="state state-add"></em>
             </div>
@@ -358,9 +359,9 @@
       <div class="list-group">
         <div class="list-title">图片布局</div>
         <div class="list-item">
-          <div class="list-text list-image">
-            <img class="image-view" data-title="照片名字" data-src="${stccdn}/image/example/cube.png" src="${stccdn}/image/example/cube.png">
-            <img class="image-view" data-title="我的美照" data-src="${stccdn}/image/example/cube.png" src="${stccdn}/image/example/cube.png">
+          <div class="list-text list-image image-view" data-title="我的美照">
+            <img src="${stccdn}/image/example/cube.png" data-src="${stccdn}/image/example/cube.png">
+            <img src="${stccdn}/image/example/cube.png" data-src="${stccdn}/image/example/cube.png">
           </div>
         </div>
       </div>

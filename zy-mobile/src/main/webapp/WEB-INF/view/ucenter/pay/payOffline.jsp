@@ -17,21 +17,9 @@
 <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
 <script type="text/javascript">
   $(function() {
-    $('.image-view > img').click(function() {
-      var url = $(this).attr('data-src');
-      var title = $(this).attr('data-title');
-      if (!url) {
-        return;
-      }
-      $.imageview({
-        url : url,
-        title : title
-      });
-    });
 
-    $('.image-single .image-item').imageupload({
-      width : 120,
-      height : 75,
+    $('.image-multi .image-add').imageupload({
+      isMultipart : true
     });
 
     $(".valid-form").validate({
@@ -42,6 +30,13 @@
         'offlineMemo' : {
           required : true
         }
+      },
+      submitHandler : function(form) {
+        if($('input[name="image"]').length < 1) {
+          messageFlash('请至少上传一张图片');
+          return;
+        }
+        form.submit();
       }
     });
 
@@ -101,17 +96,11 @@
       <div class="list-group">
         <div class="list-title">上传汇款凭证</div>
         <div class="list-item">
-          <label class="list-label">汇款凭证</label>
-          <div class="list-text image-upload image-single">
-            <div class="image-item">
-              <input type="hidden" name="offlineImage" id="offlineImage" value="${offlineImage}">
-              <c:if test="${not empty offlineImage}">
-                <img src="${offlineImage}">
-              </c:if>
-              <c:if test="${empty offlineImage}">
-                <img src="${stccdn}/image/upload_240_150.png">
-              </c:if>
+          <div class="list-text image-upload image-multi">
+            <div class="image-add" data-limit="6" data-name="offlineImage">
+              <input type="hidden" value="">
               <input type="file">
+              <em class="state state-add"></em>
             </div>
           </div>
         </div>

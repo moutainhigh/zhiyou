@@ -16,16 +16,26 @@
 <script>
 
   $(function() {
-    
-    $('.image-view img').click(function() {
-      var url = $(this).attr('data-src');
-      if (!url) {
-        return;
+    $('.image-view').click(function() {
+      var images = $(this).find('img');
+      if (images.length == 0) {
+        var url = $(this).attr('data-src');
+        var title = $(this).attr('data-title');
+        $.imageview({
+          url : url,
+          title : title
+        });
+      } else {
+        var title = $(this).attr('data-title');
+        var imageUrls = [];
+        $.each(images, function(n, image) {
+          imageUrls.push($(image).attr('data-src'));
+        })
+        $.imageview({
+          url : imageUrls,
+          title : title
+        });
       }
-      $.imageview({
-        url : url,
-        title : '检测结果图片'
-      });
     });
     
   });
@@ -131,23 +141,10 @@
         </div>
       </div>
       <div class="list-item">
-        <div class="list-text list-image image-view">
-          <img src="${report.image1Thumbnail}" data-src="${report.image1Big}">
-          <c:if test="${not empty report.image2Thumbnail}">
-          <img src="${report.image2Thumbnail}" data-src="${report.image2Big}">
-          </c:if>
-          <c:if test="${not empty report.image3Thumbnail}">
-          <img src="${report.image3Thumbnail}" data-src="${report.image3Big}">
-          </c:if>
-          <c:if test="${not empty report.image4Thumbnail}">
-            <img src="${report.image4Thumbnail}" data-src="${report.image4Big}">
-          </c:if>
-          <c:if test="${not empty report.image5Thumbnail}">
-            <img src="${report.image5Thumbnail}" data-src="${report.image5Big}">
-          </c:if>
-          <c:if test="${not empty report.image6Thumbnail}">
-            <img src="${report.image6Thumbnail}" data-src="${report.image6Big}">
-          </c:if>
+        <div class="list-text list-image image-view" data-title="检测报告图片">
+        <c:forEach items="${report.images}" var="image">
+          <img src="${image.imageThumbnail}" data-src="${image.imageBig}">
+        </c:forEach>
         </div>
       </div>
     </div>

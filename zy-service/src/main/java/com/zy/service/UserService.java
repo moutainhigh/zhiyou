@@ -24,7 +24,7 @@ public interface UserService {
 	
 	void unfreeze(Long id, Long operatorId);
 
-	void modifyUserRank(Long id, UserRank userRank, String remark, Long operatorId);
+	void modifyUserRank(Long id, UserRank userRank, Long operatorId, String remark);
 	
 	User registerAgent(AgentRegisterDto agentRegisterDto);
 
@@ -32,11 +32,9 @@ public interface UserService {
 	
 	String hashPassword(String plainPassword);
 	
-	void modifyPasswordAndPhone(Long id, String password, String phone);
+	void modifyPassword(Long id, String password, Long operatorId);
 	
-	void modifyPassword(Long id, String password);
-	
-	void modifyPhone(Long id, String phone);
+	void modifyPhone(Long id, String phone, Long operatorId);
 	
 	void modifyNickname(Long id, String nickname);
 	

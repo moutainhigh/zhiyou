@@ -23,24 +23,7 @@
     $('.image-multi .image-item').imageupload();
     
     $('.image-multi .image-add').imageupload({
-      success : function(result) {
-        var $this = $(this);
-        var limit = $this.attr('data-limit');
-        var imageItems = $this.siblings('.image-item');
-        var inputHidden = $this.children('input:hidden');
-        var inputName = inputHidden.val('').attr('name');
-        //inputName = inputName.replace((imageItems.length + 1), '');
-        var image = result.image;
-        var imageThumbnail = result.imageThumbnail;
-        var imageItem = '<div class="image-item">' + '<input type="hidden" name="' + inputName + (imageItems.length + 1) + '" value="' + image + '">'
-            + '<img src="' + imageThumbnail + '">' + '<input type="file">' + '</div>';
-        $(imageItem).insertBefore($this);
-        $this.children('input:hidden').attr('name', inputName + (imageItems.length + 2));
-        if (limit && limit <= imageItems.length + 1) {
-          $this.remove();
-        }
-        $this.siblings('.image-item').eq(imageItems.length).imageupload();
-      }
+      isMultipart : true
     });
 
     //验证
@@ -68,12 +51,16 @@
         'reportResult' : {
           required : true
         },
-        'image1' : {
-          required : true
-        },
         'text' : {
           required : true
         }
+      },
+      submitHandler : function(form) {
+        if($('input[name="image"]').length < 1) {
+          messageFlash('请至少上传一张图片');
+          return;
+        }
+        form.submit();
       }
     });
 
@@ -211,8 +198,8 @@
             </div>
             </c:if>
             <c:if test="${empty report.image6}">
-            <div class="image-add" data-limit="6">
-              <input type="hidden" name="image" value="">
+            <div class="image-add" data-limit="6" data-name="image">
+              <input type="hidden" value="">
               <input type="file">
               <em class="state state-add"></em>
             </div>
