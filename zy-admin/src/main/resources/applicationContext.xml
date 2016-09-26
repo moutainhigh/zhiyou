@@ -19,6 +19,10 @@
 	<aop:config proxy-target-class="true" />
 
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+	
+	<bean id="collectionToStringConverter" class="com.zy.common.extend.CollectionToStringConverter" />
+	
+	<bean id="arrayToStringConverter" class="com.zy.common.extend.ArrayToStringConverter" />
 
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="converters">
@@ -28,9 +32,13 @@
 				<bean class="com.zy.common.extend.StringToEnumConverterFactory" />
 				<bean class="com.zy.common.extend.StringToDateConverter" />
 				<bean class="com.zy.common.extend.NumberToBooleanConverter" />
+				<ref bean="collectionToStringConverter" />
+				<ref bean="arrayToStringConverter" />
 			</set>
 		</property>
 	</bean>
+	
+	
 	
 	<import resource="classpath:applicationContext-support.xml"/>
 	<import resource="classpath:applicationContext-shiro.xml"/>

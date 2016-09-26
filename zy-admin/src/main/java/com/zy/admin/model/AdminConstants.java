@@ -22,6 +22,7 @@ public class AdminConstants {
 			sub.put("user:edit", "用户信息(编辑)");
 			sub.put("user:addVip", "用户信息(加VIP)");
 			sub.put("user:freeze", "用户信息(冻结账号)");
+			sub.put("user:modifyParent", "用户信息(修改上级)");
 			sub.put("user:export", "用户信息(导出)");
 			sub.put("portrait:view", "用户画像(查看)");
 			sub.put("appearance:view", "实名认证(查看)");

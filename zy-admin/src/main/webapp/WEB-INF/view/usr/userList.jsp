@@ -47,14 +47,6 @@
           },
           {
             data: '',
-            title: '注册邀请人',
-            orderable: false,
-            render: function (data, type, full) {
-              return formatUser(full.inviter);
-            }
-          },
-          {
-            data: '',
             title: '直属上级',
             orderable: false,
             render: function (data, type, full) {
@@ -82,6 +74,11 @@
               if (full.userType != '平台') {
                 <shiro:hasPermission name="user:edit">
                 optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
+                </shiro:hasPermission>
+                <shiro:hasPermission name="user:modifyParent">
+                if(full.parent != null) {
+                  optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/user/modifyParent?id=' + data + '"><i class="fa fa-edit"></i> 修改上级 </a>';
+                }
                 </shiro:hasPermission>
                 <shiro:hasPermission name="user:addVip">
                 optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="addVip(' + full.id + ')"><i class="fa fa-user"></i> 加VIP </a>';

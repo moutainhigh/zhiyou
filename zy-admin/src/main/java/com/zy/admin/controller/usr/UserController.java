@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.aspectj.apache.bcel.classfile.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.alibaba.druid.Constants;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
@@ -33,6 +35,7 @@ import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
+import com.zy.common.util.ValidateUtils;
 import com.zy.component.UserComponent;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
@@ -178,6 +181,37 @@ public class UserController {
 			}
 		}
 		return true;
+	}
+	
+	@RequiresPermissions("user:modifyParent")
+	@RequestMapping(value = "/modifyParent", method = RequestMethod.GET)
+	public String modifyParent(Long id, Model model, RedirectAttributes redirectAttributes) {
+		User user = userService.findOne(id);
+		validate(user, NOT_NULL, "user id" + id + " not fount");
+		if(user.getParentId() == null) {
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, "上级为空不允许修改");
+			return "redirect:/user";
+		}
+		model.addAttribute("user", userComponent.buildAdminVo(user));
+		return "usr/modifyParent";
+	}
+	
+	@RequiresPermissions("user:modifyParent")
+	@RequestMapping(value = "/modifyParent", method = RequestMethod.POST)
+	public String modifyParent(Long id, String parentPhone, String remark, RedirectAttributes redirectAttributes) {
+		User user = userService.findOne(id);
+		validate(user, NOT_NULL, "user id" + id + " not fount");
+		
+		User parentUser = userService.findByPhone(parentPhone);
+		validate(parentUser, NOT_NULL, "user phone" + parentPhone + " not fount");
+		try {
+			userService.modifyParentId(id, parentUser.getId(), getPrincipalUserId(), remark);
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("修改上级成功"));
+			return "redirect:/user";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return "redirect:/user/modifyParent?id=" + id;
+		}
 	}
 	
 	private void checkAndValidateIsPlatform(Long userId) {
