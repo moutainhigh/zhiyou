@@ -9,7 +9,9 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Date;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -70,6 +72,8 @@ public class DepositAdminVo implements Serializable {
 	@Field(label = "提现单状态")
 	private String depositStatusStyle;
 	@Field(label = "银行汇款截图")
-	private String offlineImageThumbnail;
+	private List<String> offlineImages = new ArrayList<>();
+	@Field(label = "银行汇款截图")
+	private List<String> offlineImageThumbnails = new ArrayList<>();
 
 }

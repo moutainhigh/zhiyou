@@ -28,6 +28,10 @@ public class OrderListVo implements Serializable {
 	private OrderStatus orderStatus;
 	@Field(label = "应付总金额")
 	private BigDecimal amount;
+	@Field(label = "银行汇款截图")
+	private String offlineImage;
+	@Field(label = "银行汇款备注")
+	private String offlineMemo;
 
 	/* 扩展 */
 	@Field(label = "下单时间")
@@ -40,5 +44,9 @@ public class OrderListVo implements Serializable {
 	private String deliveredTimeLabel;
 	@Field(label = "orderItems")
 	private List<OrderItemVo> orderItems = new ArrayList<>();
+	@Field(label = "银行汇款截图")
+	private List<String> offlineImages = new ArrayList<>();
+	@Field(label = "银行汇款截图")
+	private List<String> offlineImageThumbnails = new ArrayList<>();
 
 }

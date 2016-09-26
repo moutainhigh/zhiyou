@@ -140,7 +140,7 @@
                 <div class="form-group">
                   <label class="control-label col-md-3">是否已结算:</label>
                   <div class="col-md-9">
-                    <p class="form-control-static">${order.isSettledUp?"是":"否"}</p>
+                    <p class="form-control-static">${order.isSettledUp ? '是' : '否'}</p>
                   </div>
                 </div>
               </div>

@@ -66,6 +66,10 @@ public class OrderAdminFullVo implements Serializable {
 	private String receiverDistrict;
 	@Field(label = "收件人详细地址")
 	private String receiverAddress;
+	@Field(label = "银行汇款截图")
+	private String offlineImage;
+	@Field(label = "银行汇款备注")
+	private String offlineMemo;
 
 	/* 扩展 */
 	@Field(label = "imageThumbnail")
@@ -102,5 +106,9 @@ public class OrderAdminFullVo implements Serializable {
 	private List<ProfitAdminVo> profits = new ArrayList<>();
 	@Field(label = "transfers")
 	private List<TransferAdminVo> transfers = new ArrayList<>();
+	@Field(label = "银行汇款截图")
+	private List<String> offlineImages = new ArrayList<>();
+	@Field(label = "银行汇款截图")
+	private List<String> offlineImageThumbnails = new ArrayList<>();
 
 }
