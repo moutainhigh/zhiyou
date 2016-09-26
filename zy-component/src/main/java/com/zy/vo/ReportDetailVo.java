@@ -38,18 +38,10 @@ public class ReportDetailVo implements Serializable {
 	private ReportResult reportResult;
 	@Field(label = "文字")
 	private String text;
-	@Field(label = "图片1")
-	private String image1;
-	@Field(label = "图片2")
-	private String image2;
-	@Field(label = "图片3")
-	private String image3;
-	@Field(label = "图片4")
-	private String image4;
-	@Field(label = "图片5")
-	private String image5;
-	@Field(label = "图片6")
-	private String image6;
+	@Field(label = "图片")
+	private String image;
+	@Field(label = "检测次数")
+	private Integer times;
 	@Field(label = "申请时间")
 	private Date appliedTime;
 	@Field(label = "初审状态")
@@ -72,35 +64,17 @@ public class ReportDetailVo implements Serializable {
 	private String city;
 	@Field(label = "所在地")
 	private String district;
-	@Field(label = "图片1")
-	private String image1Big;
-	@Field(label = "图片1")
-	private String image1Thumbnail;
-	@Field(label = "图片2")
-	private String image2Big;
-	@Field(label = "图片2")
-	private String image2Thumbnail;
-	@Field(label = "图片3")
-	private String image3Big;
-	@Field(label = "图片3")
-	private String image3Thumbnail;
-	@Field(label = "图片4")
-	private String image4Big;
-	@Field(label = "图片4")
-	private String image4Thumbnail;
-	@Field(label = "图片5")
-	private String image5Big;
-	@Field(label = "图片5")
-	private String image5Thumbnail;
-	@Field(label = "图片6")
-	private String image6Big;
-	@Field(label = "图片6")
-	private String image6Thumbnail;
 	@Field(label = "申请时间")
 	private String appliedTimeLabel;
 	@Field(label = "创建时间")
 	private String createdTimeLabel;
 	@Field(label = "标签")
 	private List<String> tagNames = new ArrayList<>();
+	@Field(label = "图片")
+	private List<String> images = new ArrayList<>();
+	@Field(label = "图片")
+	private List<String> imageThumbnails = new ArrayList<>();
+	@Field(label = "图片")
+	private List<String> imageBigs = new ArrayList<>();
 
 }

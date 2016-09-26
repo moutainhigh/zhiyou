@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -28,5 +30,11 @@ public class ReportExportVo implements Serializable {
 	private String text;
 
 	/* 扩展 */
+	@Field(label = "图片")
+	private List<String> images = new ArrayList<>();
+	@Field(label = "图片")
+	private List<String> imageThumbnails = new ArrayList<>();
+	@Field(label = "图片")
+	private List<String> imageBigs = new ArrayList<>();
 
 }

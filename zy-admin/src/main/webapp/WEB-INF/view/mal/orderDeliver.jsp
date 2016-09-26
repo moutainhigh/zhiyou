@@ -11,21 +11,21 @@
       },
       submitHandler : 
         function(form){
-          var val = $('#useLogistics').find("option:selected").val();
+          var val = $('#useLogistics').find('option:selected').val();
           if(val == 'true') {
             var logisticsName = $('#logisticsName').val();
             var logisticsSn = $('#logisticsSn').val();
             var logisticsFee = $('#logisticsFee').val();
             if(!logisticsName) {
-              layer.alert("请填写物流公司名称");
+              layer.alert('请填写物流公司名称');
               return;
             }
             if(!logisticsSn) {
-              layer.alert("请填写物流单号");
+              layer.alert('请填写物流单号');
               return;
             }
             if(!logisticsFee) {
-              layer.alert("请填写物流费");
+              layer.alert('请填写物流费');
               return;
             }
           }
@@ -36,7 +36,7 @@
     });
     
     $('#useLogistics').change(function(){
-      var val = $(this).find("option:selected").val();
+      var val = $(this).find('option:selected').val();
       if(val == 'true') {
         $('#logistics').show();
       } else if(val == 'false') {

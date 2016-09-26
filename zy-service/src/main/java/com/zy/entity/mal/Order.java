@@ -59,7 +59,7 @@ public class Order implements Serializable {
 
 	@Type(label = "订单状态")
 	public enum OrderStatus {
-		待支付, 已支付, 已发货, 已完成, 已退款, 已取消
+		待支付, 已支付, 已发货, 已完成, 已退款, 已取消, 待确认
 	}
 
 	@Type(label = "物流费支付方式")
@@ -249,5 +249,18 @@ public class Order implements Serializable {
 	@Field(label = "收件人详细地址")
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	private String receiverAddress;
+
+	@Field(label = "银行汇款截图")
+	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
+	@Column(length = 1000)
+	@StringBinder
+	@CollectionView(name= "offlineImages", type = ArrayList.class, elementType = String.class, groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
+	@CollectionView(name= "offlineImageThumbnails", type = ArrayList.class, elementType = String.class, groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
+	private String offlineImage;
+
+	@Field(label = "银行汇款备注")
+	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
+	@StringBinder
+	private String offlineMemo;
 
 }

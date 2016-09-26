@@ -10,7 +10,9 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Date;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -83,6 +85,8 @@ public class PaymentAdminVo implements Serializable {
 	@Field(label = "退款时间")
 	private String refundedTimeLabel;
 	@Field(label = "银行汇款截图")
-	private String offlineImageThumbnail;
+	private List<String> offlineImages = new ArrayList<>();
+	@Field(label = "银行汇款截图")
+	private List<String> offlineImageThumbnails = new ArrayList<>();
 
 }
