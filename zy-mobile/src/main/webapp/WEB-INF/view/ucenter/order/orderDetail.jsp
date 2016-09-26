@@ -234,7 +234,7 @@
       </div>
       </c:if>
       <div class="list-item lh-20">
-        <div class="list-text fs-14">支付给</div>
+        <div class="list-text fs-14">付款给</div>
         <c:if test="${order.isPayToPlatform}">
         <div class="list-unit fs-12">平台</div>
         </c:if>
@@ -262,9 +262,16 @@
     <%-- 买家操作(进货) --%>
     <c:if test="${inOut == 'in'}">
       <c:if test="${order.orderStatus == '待支付'}">
+        <c:if test="${order.isPayToPlatform}">
         <div class="form-btn">
           <a id="btnPay" class="btn btn-block green round-2" href="javascript:;"><i class="fa fa-cny"></i> 立即支付</a>
         </div>
+        </c:if>
+        <c:if test="${!order.isPayToPlatform}">
+        <div class="form-btn">
+          <a id="btnPayOffline" class="btn btn-block green round-2" href="${ctx}/u/pay/order/${order.id}?payType=1"><i class="fa fa-cny"></i> 立即支付</a>
+        </div>
+        </c:if>
       </c:if>
       <c:if test="${order.orderStatus == '已发货'}">
         <div class="form-btn">

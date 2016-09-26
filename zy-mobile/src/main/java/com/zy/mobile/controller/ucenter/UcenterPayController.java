@@ -158,8 +158,6 @@ public class UcenterPayController {
 		model.addAttribute("payType", payType);
 		model.addAttribute("refId", payment == null ? order.getId() : payment.getId());
 		if (payType == PayType.银行汇款) {
-			model.addAttribute("offlineImage", payment.getOfflineImage());
-			model.addAttribute("offlineMemo", payment.getOfflineMemo());
 			return "ucenter/pay/payOffline";
 		} else if (payment.getPayType() == PayType.余额) {
 			Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.现金);
@@ -171,30 +169,26 @@ public class UcenterPayController {
 	}
 
 	@RequestMapping(path = "/order", method = RequestMethod.POST)
-	public String orderPay(Long orderId, String offlineImage, String offlineMemo, PayType payType, RedirectAttributes redirectAttributes, Principal principal) {
-		validate(orderId, NOT_NULL, "order id " + orderId + " is null");
-		Order order = orderService.findOne(orderId);
-		validate(order, NOT_NULL, "order id" + orderId + " not found");
-		
-		if(payType != PayType.银行汇款) {
-			throw new BizException(BizCode.ERROR, "不支持的付款方式");
-		}
+	public String orderPay(Long refId, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes, Principal principal) {
+		validate(refId, NOT_NULL, "order id " + refId + " is null");
+		Order order = orderService.findOne(refId);
+		validate(order, NOT_NULL, "order id" + refId + " not found");
 		validate(offlineImage, NOT_BLANK, "order offlineImage is blank");
 		validate(offlineMemo, NOT_BLANK, "order offlineMemo is blank");
-		orderService.modifyOffline(orderId, offlineImage, offlineMemo);
+		orderService.modifyOffline(refId, offlineImage, offlineMemo);
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("转账汇款凭证提交成功，请等待确认"));
-		return "redirect:/u/order/" + orderId;
+		return "redirect:/u/order/" + refId;
 	}
 	
 	@RequestMapping(path = "/payment", method = RequestMethod.POST)
-	public String paymentPay(Long paymentId, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes,
+	public String paymentPay(Long refId, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes,
 			Principal principal) {
-		validate(paymentId, NOT_NULL, "payment id " + paymentId + " is null");
-		Payment payment = paymentService.findOne(paymentId);
-		validate(payment, NOT_NULL, "payment id" + paymentId + " not found");
+		validate(refId, NOT_NULL, "payment id " + refId + " is null");
+		Payment payment = paymentService.findOne(refId);
+		validate(payment, NOT_NULL, "payment id" + refId + " not found");
 		Long orderId = payment.getRefId();
 		if (payment.getPayType() == PayType.余额) {
-			paymentService.balancePay(paymentId, true);
+			paymentService.balancePay(refId, true);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("余额支付成功"));
 			return "redirect:/u/order/" + orderId;
 		} else if (payment.getPayType() == PayType.银行汇款) {
@@ -202,7 +196,7 @@ public class UcenterPayController {
 			validate(offlineMemo, NOT_BLANK, "payment offlineMemo is blank");
 			payment.setOfflineImage(offlineImage);
 			payment.setOfflineMemo(offlineMemo);
-			paymentService.modifyOffline(paymentId, offlineImage, offlineMemo);
+			paymentService.modifyOffline(refId, offlineImage, offlineMemo);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT,
 					ResultBuilder.ok("转账汇款信息提交成功，请等待工作人员确认"));
 			return "redirect:/u/order/" + orderId;
