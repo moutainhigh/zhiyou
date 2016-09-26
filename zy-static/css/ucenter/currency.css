@@ -1,0 +1,28 @@
+.currency{
+  background-color: #e9eaed;  
+}
+.currency .header {
+  background-color: #666d79;
+}
+.currency-nav {
+  background-color: #666d79;
+}
+.currency-nav div {
+  color: #fff;
+}
+.currency-nav .icon {
+  width: 36px; height: 36px;
+}
+
+
+.currency-link {
+  
+}
+.currency-link a {
+  float: left; padding-top: 15px; padding-bottom: 15px;
+  display: block; width: 33.333333%;
+  text-align: center;
+}
+.currency-link a .icon {
+  width: 24px; height: 24px;
+}
