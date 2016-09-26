@@ -97,7 +97,7 @@ public class Order implements Serializable {
 	@NotNull
 	@Field(label = "是否支付给平台")
 	@Query(Predicate.EQ)
-	private Boolean payToPlatform;
+	private Boolean isPayToPlatform;
 
 	@NotBlank
 	@Field(label = "标题")
