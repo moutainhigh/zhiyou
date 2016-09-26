@@ -272,6 +272,7 @@ public class Order implements Serializable {
 	@Field(label = "是否删除")
 	@View(groups = {VO_ADMIN_FULL})
 	@NotNull
+	@Query(Predicate.EQ)
 	private Boolean isDeleted;
 
 }

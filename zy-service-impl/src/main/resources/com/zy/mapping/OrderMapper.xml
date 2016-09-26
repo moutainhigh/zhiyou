@@ -39,12 +39,13 @@
 		<result column="receiver_address" property="receiverAddress" />
 		<result column="offline_image" property="offlineImage" />
 		<result column="offline_memo" property="offlineMemo" />
+		<result column="is_deleted" property="isDeleted" />
 		<result column="version" property="version" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.Order" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_order` (sn,user_id,seller_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_fee_pay_type,is_platform_deliver,delivered_time,logistics_name,logistics_sn,logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,version)
-	  values (#{sn},#{userId},#{sellerId},#{isPayToPlatform},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{discountFee},#{amount},#{refund},#{refundRemark},#{buyerMemo},#{sellerMemo},#{remark},#{isSettledUp},#{useLogistics},#{logisticsFeePayType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{isPlatformDeliver},#{deliveredTime},#{logisticsName},#{logisticsSn},#{logisticsFee},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{offlineImage},#{offlineMemo},#{version})
+	  insert into `mal_order` (sn,user_id,seller_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_fee_pay_type,is_platform_deliver,delivered_time,logistics_name,logistics_sn,logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,version)
+	  values (#{sn},#{userId},#{sellerId},#{isPayToPlatform},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{discountFee},#{amount},#{refund},#{refundRemark},#{buyerMemo},#{sellerMemo},#{remark},#{isSettledUp},#{useLogistics},#{logisticsFeePayType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{isPlatformDeliver},#{deliveredTime},#{logisticsName},#{logisticsSn},#{logisticsFee},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{offlineImage},#{offlineMemo},#{isDeleted},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -89,6 +90,7 @@
 			receiver_address = #{receiverAddress},
 			offline_image = #{offlineImage},
 			offline_memo = #{offlineMemo},
+			is_deleted = #{isDeleted},
 			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
@@ -134,6 +136,7 @@
 					<when test="field == 'receiverAddress'">receiver_address = #{order.receiverAddress},</when>
 					<when test="field == 'offlineImage'">offline_image = #{order.offlineImage},</when>
 					<when test="field == 'offlineMemo'">offline_memo = #{order.offlineMemo},</when>
+					<when test="field == 'isDeleted'">is_deleted = #{order.isDeleted},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -142,16 +145,19 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,sn,user_id,seller_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_fee_pay_type,is_platform_deliver,delivered_time,logistics_name,logistics_sn,logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,version
+		id,sn,user_id,seller_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_fee_pay_type,is_platform_deliver,delivered_time,logistics_name,logistics_sn,logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,version
 		from `mal_order`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderQueryModel">
 		select
-		id,sn,user_id,seller_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_fee_pay_type,is_platform_deliver,delivered_time,logistics_name,logistics_sn,logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,version
+		id,sn,user_id,seller_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_settled_up,use_logistics,logistics_fee_pay_type,is_platform_deliver,delivered_time,logistics_name,logistics_sn,logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,version
 		from `mal_order`
 		<where>
+			<if test="isDeletedEQ != null">
+				and is_deleted = #{isDeletedEQ}
+			</if>
 			<if test="orderStatusEQ != null">
 				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -230,6 +236,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.OrderQueryModel">
 		select count(*) from `mal_order`
 		<where>
+			<if test="isDeletedEQ != null">
+				and is_deleted = #{isDeletedEQ}
+			</if>
 			<if test="orderStatusEQ != null">
 				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>

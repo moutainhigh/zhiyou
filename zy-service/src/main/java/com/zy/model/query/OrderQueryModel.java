@@ -51,6 +51,8 @@ public class OrderQueryModel implements Serializable {
 
 	private String logisticsSnLK;
 
+	private Boolean isDeletedEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
@@ -116,6 +118,7 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("isSettledUp");
 		fieldNames.add("sellerId");
 		fieldNames.add("receiverPhone");
+		fieldNames.add("isDeleted");
 		fieldNames.add("refundedTime");
 		fieldNames.add("receiverDistrict");
 		fieldNames.add("refundRemark");
