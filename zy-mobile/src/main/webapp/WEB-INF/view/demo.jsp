@@ -154,7 +154,12 @@ $.fn.imageupload.setDefaults({
   <header class="header">
     <h1>MiUI</h1>
     <a href="${ctx}/" class="button-left"><i class="fa fa-home"></i></a>
-    <a href="${ctx}/superLogin/11" class="button-right"><i class="fa fa-user"></i></a>
+    <a href="javascript:;" class="button-right popmenu"><i class="fa fa-ellipsis-h"></i></a>
+    <nav class="header-popmenu hide">
+      <a class="${ctx}/u"><i class="fa fa-user"></i>用户中心</a>
+      <a class="${ctx}/superLogin/24"><i class="fa fa-sign-in"></i>一键登录</a>
+      <a class="${ctx}/logout"><i class="fa fa-sign-out"></i>退出</a>
+    </nav>
   </header>
   
   <nav class="miui-scroll-nav">

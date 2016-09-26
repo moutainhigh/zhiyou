@@ -67,6 +67,13 @@ $(function() {
     });
   };
   
+  /* header pop menu */
+  if($('.header .button-right.popmenu').length > 0) {
+    $('.header .button-right.popmenu').click(function(){
+      $('.header-popmenu').slideToggle(300);
+    });
+  }
+  
   /* 回到顶部按钮 */
   if($('.go-top').length > 0) {
     

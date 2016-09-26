@@ -93,6 +93,10 @@
   <header class="header">
     <h1>订单详情</h1>
     <a href="${ctx}/u/order/${inOut}" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="javascript:;" class="button-right popmenu"><i class="fa fa-ellipsis-h"></i></a>
+    <nav class="header-popmenu hide">
+      <a class="${ctx}/u/order/delete/${order.id}"><i class="fa fa-trash-o"></i>删除</a>
+    </nav>
   </header>
   
   <article>

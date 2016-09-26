@@ -91,6 +91,18 @@ a.disabled, a.disabled:hover, a.disabled:focus {
   position: absolute; left: -8px; top: 3px;
 }
 
+.header-popmenu {
+  position: absolute; right: 0; top: 48px;
+  z-index: 999;
+}
+.header-popmenu > a {
+  display: block; width: 120px; height: 36px;
+  color: #fff; font-size: 14px; line-height: 35px; text-align: center;
+  border-top: 1px solid #fff; background-color: #6cb92d;
+}
+.header-popmenu > a > i {
+  font-size: 16px; margin-right: 5px;
+}
 .header-nav {
   margin: 10px auto;
   display: inline-block; height: 28px;
