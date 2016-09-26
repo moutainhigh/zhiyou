@@ -37,7 +37,7 @@ public class PaymentComponent {
 		
 		String offlineImage = payment.getOfflineImage();
 		if (StringUtils.isNotBlank(offlineImage)) {
-			String[] offlineImages = StringUtils.split(offlineImage);
+			String[] offlineImages = StringUtils.split(offlineImage, ",");
 			List<ImageVo> images = Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).map(v -> {
 				ImageVo imageVo = new ImageVo();
 				imageVo.setImage(v);

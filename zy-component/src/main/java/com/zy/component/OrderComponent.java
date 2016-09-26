@@ -54,6 +54,8 @@ public class OrderComponent {
 	
 	private static final String SIMPLE_TIME_PATTERN = "M月d日 HH:mm";
 
+	private static final String SPLIT = ",";
+
 
 	public OrderAdminFullVo buildAdminFullVo(Order order) {
 		OrderAdminFullVo orderAdminFullVo = new OrderAdminFullVo();
@@ -102,7 +104,7 @@ public class OrderComponent {
 		
 		String offlineImage = order.getOfflineImage();
 		if (StringUtils.isNotBlank(offlineImage)) {
-			String[] offlineImages = StringUtils.split(offlineImage);
+			String[] offlineImages = StringUtils.split(offlineImage, SPLIT);
 			List<ImageVo> images = Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).map(v -> {
 				ImageVo imageVo = new ImageVo();
 				imageVo.setImage(v);
@@ -147,7 +149,7 @@ public class OrderComponent {
 		
 		String offlineImage = order.getOfflineImage();
 		if (StringUtils.isNotBlank(offlineImage)) {
-			String[] offlineImages = StringUtils.split(offlineImage);
+			String[] offlineImages = StringUtils.split(offlineImage, SPLIT);
 			List<ImageVo> images = Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).map(v -> {
 				ImageVo imageVo = new ImageVo();
 				imageVo.setImage(v);
@@ -225,7 +227,7 @@ public class OrderComponent {
 		
 		String offlineImage = order.getOfflineImage();
 		if (StringUtils.isNotBlank(offlineImage)) {
-			String[] offlineImages = StringUtils.split(offlineImage);
+			String[] offlineImages = StringUtils.split(offlineImage, SPLIT);
 			List<ImageVo> images = Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).map(v -> {
 				ImageVo imageVo = new ImageVo();
 				imageVo.setImage(v);
