@@ -5,7 +5,6 @@ import static com.zy.common.util.ValidateUtils.validate;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +29,6 @@ import com.zy.component.ReportComponent;
 import com.zy.entity.act.Report;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Transfer;
-import com.zy.entity.usr.Tag;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Constants;

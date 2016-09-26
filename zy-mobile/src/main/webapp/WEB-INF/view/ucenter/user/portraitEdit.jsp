@@ -87,6 +87,10 @@
 
     $('#formTags').click(function() {
       showTagAside();
+      var tagIds = $('#tagIds').val();
+      $.each(tagIds.split(','), function(n, tag){
+        $('#tagAside').find('.tag-option[data-id="' + tag + '"]').addClass('checked');
+      });
     });
 
     var MAX_TAG_SIZE = 5;
@@ -217,7 +221,7 @@
                         <c:if test="${index.index % 5 == 3 }"> green</c:if>
                         <c:if test="${index.index % 5 == 4 }"> yellow</c:if>">${tag}</em>
             </c:forEach>
-            <input type="hidden" name="tagIds" value="${portrait.tagIds}">
+            <input type="hidden" id="tagIds" name="tagIds" value="${portrait.tagIds}">
           </div>
           <i class="i-arrow"></i>
         </div>
