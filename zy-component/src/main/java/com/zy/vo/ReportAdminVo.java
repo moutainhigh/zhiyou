@@ -76,6 +76,10 @@ public class ReportAdminVo implements Serializable {
 	private String appliedTimeLabel;
 	@Field(label = "创建时间")
 	private String createdTimeLabel;
+	@Field(label = "初审通过时间")
+	private String preConfirmedTimeLabel;
+	@Field(label = "审核通过时间")
+	private String confirmedTimeLabel;
 	@Field(label = "标签")
 	private List<String> tagNames = new ArrayList<>();
 	@Field(label = "图片")

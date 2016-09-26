@@ -2,6 +2,11 @@ package com.zy.component;
 
 import static com.zy.util.GcUtils.formatDate;
 import static com.zy.util.GcUtils.getThumbnail;
+import static java.util.stream.Collectors.toList;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,18 +43,11 @@ public class ReportComponent {
 
 		reportAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(report.getUserId())));
 		reportAdminVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
-		reportAdminVo.setImage1Thumbnail(getThumbnail(report.getImage1()));
-		reportAdminVo.setImage2Thumbnail(getThumbnail(report.getImage2()));
-		reportAdminVo.setImage3Thumbnail(getThumbnail(report.getImage3()));
-		reportAdminVo.setImage4Thumbnail(getThumbnail(report.getImage4()));
-		reportAdminVo.setImage5Thumbnail(getThumbnail(report.getImage5()));
-		reportAdminVo.setImage6Thumbnail(getThumbnail(report.getImage6()));
-		reportAdminVo.setImage1Big(report.getImage1());
-		reportAdminVo.setImage2Big(report.getImage2());
-		reportAdminVo.setImage3Big(report.getImage3());
-		reportAdminVo.setImage4Big(report.getImage4());
-		reportAdminVo.setImage5Big(report.getImage5());
-		reportAdminVo.setImage6Big(report.getImage6());
+		reportAdminVo.setConfirmedTimeLabel(formatDate(report.getConfirmedTime(), TIME_PATTERN));
+		reportAdminVo.setPreConfirmedTimeLabel(formatDate(report.getPreConfirmedTime(), TIME_PATTERN));
+		List<String> images = Arrays.stream(report.getImage().split(",")).map(v -> v).collect(Collectors.toList());
+		reportAdminVo.setImageBigs(images.stream().map(v -> getThumbnail(v, 640, 640)).collect(Collectors.toList()));
+		reportAdminVo.setImageThumbnails(images.stream().map(v -> getThumbnail(v)).collect(Collectors.toList()));
 		return reportAdminVo;
 	}
 
@@ -68,19 +66,9 @@ public class ReportComponent {
 		}
 		reportVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportVo.setAppliedTimeLabel(formatDate(report.getAppliedTime(), TIME_PATTERN));
-		reportVo.setImage1Thumbnail(GcUtils.getThumbnail(report.getImage1()));
-		reportVo.setImage2Thumbnail(GcUtils.getThumbnail(report.getImage2()));
-		reportVo.setImage3Thumbnail(GcUtils.getThumbnail(report.getImage3()));
-		reportVo.setImage4Thumbnail(GcUtils.getThumbnail(report.getImage4()));
-		reportVo.setImage5Thumbnail(GcUtils.getThumbnail(report.getImage5()));
-		reportVo.setImage6Thumbnail(GcUtils.getThumbnail(report.getImage6()));
-		reportVo.setImage1Big(GcUtils.getThumbnail(report.getImage1(), 640, 640));
-		reportVo.setImage2Big(GcUtils.getThumbnail(report.getImage2(), 640, 640));
-		reportVo.setImage3Big(GcUtils.getThumbnail(report.getImage3(), 640, 640));
-		reportVo.setImage4Big(GcUtils.getThumbnail(report.getImage4(), 640, 640));
-		reportVo.setImage5Big(GcUtils.getThumbnail(report.getImage5(), 640, 640));
-		reportVo.setImage6Big(GcUtils.getThumbnail(report.getImage6(), 640, 640));
-		
+		List<String> images = Arrays.stream(report.getImage().split(",")).map(v -> v).collect(Collectors.toList());
+		reportVo.setImageBigs(images.stream().map(v -> getThumbnail(v, 640, 640)).collect(Collectors.toList()));
+		reportVo.setImageThumbnails(images.stream().map(v -> getThumbnail(v)).collect(Collectors.toList()));
 		return reportVo;
 	}
 

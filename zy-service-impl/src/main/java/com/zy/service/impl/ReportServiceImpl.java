@@ -205,12 +205,6 @@ public class ReportServiceImpl implements ReportService {
 		persistence.setConfirmStatus(ConfirmStatus.待审核);
 		persistence.setPreConfirmStatus(ConfirmStatus.待审核);
 		persistence.setGender(report.getGender());
-		persistence.setImage1(report.getImage1());
-		persistence.setImage2(report.getImage2());
-		persistence.setImage3(report.getImage3());
-		persistence.setImage4(report.getImage4());
-		persistence.setImage5(report.getImage5());
-		persistence.setImage6(report.getImage6());
 		persistence.setRealname(report.getRealname());
 		persistence.setAge(report.getAge());
 		persistence.setText(report.getText());
