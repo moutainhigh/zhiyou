@@ -15,6 +15,61 @@
 <title>本金记录</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script type="text/javascript">
+  $(function() {
+    if (!$('.list-more').hasClass('disabled')) {
+      $('.list-more').click(loadMore);
+    }
+  });
+  
+  var url = '${ctx}/u/money/log';
+  
+  var timeLT = '${timeLT}';
+  var pageNumber = 0;
+  
+  function loadMore() {
+    $.ajax({
+      url : url,
+      data : {
+        pageNumber : pageNumber + 1,
+        timeLT : timeLT
+      },
+      dataType : 'json',
+      type : 'POST',
+      success : function(result) {
+        if(result.code != 0) {
+          return;
+        }
+        var page = result.data.page;
+        if (page.data.length) {
+          timeLT = result.data.timeLT;
+          pageNumber = page.pageNumber;
+          var pageData = page.data;
+          for ( var i in pageData) {
+            var row = pageData[i];
+            buildRow(row);
+          }
+        }
+        if (!page.data.length || page.data.length < page.pageSize) {
+          $('.list-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
+        }
+      }
+    });
+  }
+  
+  function buildRow(row){
+    var html = '<div class="list-item">' 
+    	+ '<div class="list-text pl-5">' 
+    	+ '<div class="fs-14">' + row.title + '</div>'
+    	+ '<div class="fs-12 font-999">' + row.transTimeLabel + '</div>'
+    	+ '</div>' 
+    	+ '<div class="list-unit width-100 text-right">'
+      	+ '<div class="' + (row.inOut == '收入' ? 'currency-in' : 'currency-out') + '">' + row.transAmount.toFixed(2) + '</div>'
+      	+ '<div class="fs-12 font-999">余额: ' + row.afterAmount.toFixed(2) + '</div>'
+    	+ '</div>'
+      	+ '</div>';
+    $(html).insertBefore($('.list-more'));
+  }
+
 </script>
 </head>
  
@@ -26,17 +81,17 @@
   </header>
   
   <article>
-    <c:if test="${empty accountLogs}">
+    <c:if test="${empty page.data}">
       <div class="empty-tip">
         <i class="fa fa-file-o"></i>
         <span>暂无记录</span>
       </div>
     </c:if>
     
-    <c:if test="${not empty accountLogs}">
+    <c:if test="${not empty page.data}">
     <div class="list-group mb-0">
       
-      <c:forEach items="${accountLogs}" var="accountLog">
+      <c:forEach items="${page.data}" var="accountLog">
       <div class="list-item">
         <div class="list-text pl-5">
           <div class="fs-14">${accountLog.title}</div>
@@ -48,6 +103,14 @@
         </div>
       </div>
       </c:forEach>
+      
+      <c:if test="${page.total > page.pageSize}">
+      <a class="list-item list-more" href="javascript:;"><span>点击加载更多</span></a>
+      </c:if>
+      <c:if test="${page.total <= page.pageSize}">
+      <a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>
+      </c:if>
+      
     </div>
     </c:if>
     
