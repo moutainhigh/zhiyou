@@ -139,13 +139,9 @@ public class UcenterPayController {
 				.filter(v -> v.getCurrencyType1() == order.getCurrencyType()).filter(v -> v.getAmount2() == null)
 				.filter(v -> v.getCurrencyType2() == null).findFirst().orElse(null);
 
-		if (payment == null) {
+		if (payment == null && payType != PayType.银行汇款) {
 			payment = new Payment();
-			if(payType == PayType.银行汇款){
-				payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_OFFLINE_EXPIRE_IN_MINUTES));
-			} else {
-				payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
-			}
+			payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
 			payment.setAmount1(order.getAmount());
 			payment.setCurrencyType1(order.getCurrencyType());
 			payment.setPaymentType(PaymentType.订单支付);
@@ -159,7 +155,8 @@ public class UcenterPayController {
 		model.addAttribute("title", order.getTitle());
 		model.addAttribute("sn", order.getSn());
 		model.addAttribute("amount", order.getAmount());
-		model.addAttribute("refId", payment.getId());
+		model.addAttribute("payType", payType);
+		model.addAttribute("refId", payment == null ? order.getId() : payment.getId());
 		if (payType == PayType.银行汇款) {
 			model.addAttribute("offlineImage", payment.getOfflineImage());
 			model.addAttribute("offlineMemo", payment.getOfflineMemo());
@@ -173,6 +170,22 @@ public class UcenterPayController {
 		}
 	}
 
+	@RequestMapping(path = "/order", method = RequestMethod.POST)
+	public String orderPay(Long orderId, String offlineImage, String offlineMemo, PayType payType, RedirectAttributes redirectAttributes, Principal principal) {
+		validate(orderId, NOT_NULL, "order id " + orderId + " is null");
+		Order order = orderService.findOne(orderId);
+		validate(order, NOT_NULL, "order id" + orderId + " not found");
+		
+		if(payType != PayType.银行汇款) {
+			throw new BizException(BizCode.ERROR, "不支持的付款方式");
+		}
+		validate(offlineImage, NOT_BLANK, "order offlineImage is blank");
+		validate(offlineMemo, NOT_BLANK, "order offlineMemo is blank");
+		orderService.modifyOffline(orderId, offlineImage, offlineMemo);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("转账汇款凭证提交成功，请等待确认"));
+		return "redirect:/u/order/" + orderId;
+	}
+	
 	@RequestMapping(path = "/payment", method = RequestMethod.POST)
 	public String paymentPay(Long paymentId, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes,
 			Principal principal) {

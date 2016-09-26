@@ -68,6 +68,8 @@ public class ReportDetailVo implements Serializable {
 	private String appliedTimeLabel;
 	@Field(label = "创建时间")
 	private String createdTimeLabel;
+	@Field(label = "审核通过时间")
+	private String confirmedTimeLabel;
 	@Field(label = "标签")
 	private List<String> tagNames = new ArrayList<>();
 	@Field(label = "图片")

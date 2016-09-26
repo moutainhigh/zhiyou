@@ -80,8 +80,9 @@ public class ReportServiceImpl implements ReportService {
 		report.setVersion(0);
 		report.setPreConfirmStatus(ConfirmStatus.已通过);
 		report.setConfirmStatus(ConfirmStatus.已通过);
-		report.setConfirmRemark(null);
-		report.setConfirmedTime(null);
+		report.setConfirmRemark("管理后台新增");
+		report.setConfirmedTime(now);
+		report.setPreConfirmedTime(now);
 		report.setAppliedTime(now);
 		report.setCreatedTime(now);
 		report.setIsSettledUp(true);
@@ -201,16 +202,11 @@ public class ReportServiceImpl implements ReportService {
 
 		persistence.setAppliedTime(new Date());
 		persistence.setConfirmedTime(null);
+		persistence.setPreConfirmedTime(null);
 		persistence.setConfirmRemark(null);
 		persistence.setConfirmStatus(ConfirmStatus.待审核);
 		persistence.setPreConfirmStatus(ConfirmStatus.待审核);
 		persistence.setGender(report.getGender());
-		persistence.setImage1(report.getImage1());
-		persistence.setImage2(report.getImage2());
-		persistence.setImage3(report.getImage3());
-		persistence.setImage4(report.getImage4());
-		persistence.setImage5(report.getImage5());
-		persistence.setImage6(report.getImage6());
 		persistence.setRealname(report.getRealname());
 		persistence.setAge(report.getAge());
 		persistence.setText(report.getText());
@@ -230,7 +226,7 @@ public class ReportServiceImpl implements ReportService {
 			throw new BizException(BizCode.ERROR, "状态不匹配");
 		}
 
-		report.setConfirmedTime(new Date());
+		report.setPreConfirmedTime(new Date());
 		if(isSuccess) {
 			report.setPreConfirmStatus(ConfirmStatus.已通过);
 			report.setConfirmRemark(confirmRemark);

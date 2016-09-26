@@ -158,6 +158,7 @@ public class Report implements Serializable {
 
 	@Field(label = "初审通过时间")
 	@View(groups = {VO_ADMIN})
+	@View(name = "preConfirmedTimeLabel", type = String.class, groups = {VO_ADMIN})
 	private Date preConfirmedTime;
 
 	@NotNull
@@ -172,6 +173,7 @@ public class Report implements Serializable {
 
 	@Field(label = "审核通过时间")
 	@View(groups = {VO_DETAIL, VO_ADMIN})
+	@View(name = "confirmedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL})
 	private Date confirmedTime;
 	
 	@Field(label = "是否已结算")

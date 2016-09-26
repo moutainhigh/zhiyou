@@ -140,6 +140,7 @@
           {
             data: '',
             title: '服务商信息',
+            orderable: false,
             render: function (data, type, full) {
               return formatUser(full.user);
             }
@@ -147,13 +148,16 @@
           {
             data: '',
             title: '客户信息',
+            orderable: false,
             render: function (data, type, full) {
-              return '<p>姓名: ' + full.realname + '</p><p>性别: ' + full.gender + '</p><p>年龄: ' + full.age + '</p>';
+              return '<p>姓名: ' + full.realname + '</p><p>性别: ' + full.gender + '</p><p>年龄: ' + full.age + '</p>'
+              	+'<p>地区:' + full.province + '-' + full.city + '-' + full.district + '</p>';
             }
           },
           {
             data: 'phone',
-            title: '客户手机'
+            title: '客户手机',
+            orderable: false
           },
           {
             data: 'reportResult',
@@ -161,73 +165,67 @@
             orderable: false
           },
           {
-            data: 'image1Thumbnail',
+            data: '',
             title: '图片',
             orderable: false,
+            width: '200px',
             render: function (data, type, full) {
-              var html = '<span class="layer-phote-' + full.id + '"><img class="imagescan mr-10" layer-src="' + full.image1Big + '" src="' + full.image1Thumbnail + '" >';
-              if(full.image2Thumbnail != null) {
-                html += '<img class="imagescan mr-10" layer-src="' + full.image2Big + '" src="' + full.image2Thumbnail + '" >';
-              }
-              if(full.image3Thumbnail != null) {
-                html += '<img class="imagescan mr-10" layer-src="' + full.image3Big + '" src="' + full.image3Thumbnail + '" >';
+              var html = '<span class="layer-phote-' + full.id + '">';
+              var imageBigs = full.imageBigs;
+              var imageThumbnails = full.imageThumbnails;
+              for(var i=0; i < imageThumbnails.length; i++) {
+                html += '<img class="imagescan mr-10" layer-src="' + imageBigs[i] + '" src="' + imageThumbnails[i] + '" >';
               }
               return html + '</span>';
             }
           },
           {
             data: 'text',
-            title: '客户使用心得',
+            title: '客户检测',
             orderable: false,
             render : function (data, type, full) {
-              return '<div class="text" title=' + data + '>' + data +  '</div>';
+              return '<p>时间: ' + full.createdTimeLabel + '</p><p>心得: <div class="text" style="width: 200px;" title=' + data + '>' + data +  '</div></p>';
             }
-          },
-          {
-            data: 'createdTimeLabel',
-            title: '创建时间',
-            orderable: false
           },
           {
             data: 'preConfirmStatus',
-            title: '预审核状态',
+            title: '审核状态',
             orderable: false,
+            width: '120px',
             render: function (data, type, full) {
-              var result = '';
+              var result = '<p>初审: ';
               if (data == '待审核') {
-                result = '<label class="label label-danger">待审核</label>';
+                result += '<label class="label label-danger">' + data + '</label>';
               } else if (data == '已通过') {
-                result = '<label class="label label-success">已通过</label>';
+                result += '<label class="label label-success">' + data + '</label>';
               } else if (data == '未通过') {
-                result = '<label class="label label-default">未通过</label>';
+                result += '<label class="label label-default">' + data + '</label>';
               }
-              return result;
+              var confirmStatus = full.confirmStatus;
+              result += '</p><p>终审: ';
+              if (confirmStatus == '待审核') {
+                result += '<label class="label label-danger">' + confirmStatus + '</label>';
+              } else if (confirmStatus == '已通过') {
+                result += '<label class="label label-success">' + confirmStatus + '</label>';
+              } else if (confirmStatus == '未通过') {
+                result += '<label class="label label-default">' + confirmStatus + '</label>';
+              }
+              return result + '</p>';
             }
           },
           {
-            data: 'confirmStatus',
-            title: '最终审核状态',
+            data: 'preConfirmedTimeLabel',
+            title: '审核时间',
             orderable: false,
             render: function (data, type, full) {
-              var result = '';
-              if (data == '待审核') {
-                result = '<label class="label label-danger">待审核</label>';
-              } else if (data == '已通过') {
-                result = '<label class="label label-success">已通过</label>';
-              } else if (data == '未通过') {
-                result = '<label class="label label-default">未通过</label>';
-              }
-              return result;
+              var preConfirmedTimeLabel = data==null?'-':data;
+              var confirmedTimeLabel = full.confirmedTimeLabel==null?'-':full.confirmedTimeLabel;
+              return '<p>初审: ' + preConfirmedTimeLabel + '</p><p>终审: ' + confirmedTimeLabel + '</p>';
             }
           },
           {
             data: 'confirmRemark',
             title: '审核备注',
-            orderable: false
-          },
-          {
-            data: 'confirmedTime',
-            title: '审核时间',
             orderable: false
           },
           {

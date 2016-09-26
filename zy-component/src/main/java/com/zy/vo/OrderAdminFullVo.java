@@ -26,7 +26,7 @@ public class OrderAdminFullVo implements Serializable {
 	@Field(label = "卖家id")
 	private Long sellerId;
 	@Field(label = "是否支付给平台")
-	private Boolean payToPlatform;
+	private Boolean isPayToPlatform;
 	@Field(label = "标题")
 	private String title;
 	@Field(label = "订单状态")

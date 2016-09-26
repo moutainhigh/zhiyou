@@ -38,4 +38,6 @@ public interface OrderService {
 	long count(OrderQueryModel build);
 	
 	OrderSumDto sum(OrderQueryModel orderQueryModel);
+	
+	void modifyOffline(Long orderId, String offlineImage, String offlineMemo);
 }
