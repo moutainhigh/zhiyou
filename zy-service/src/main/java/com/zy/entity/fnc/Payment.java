@@ -42,7 +42,7 @@ public class Payment implements Serializable {
 	}
 
 	public enum PaymentStatus {
-		待支付, 已支付, 已退款, 已取消, 待确认
+		待支付, 待确认, 已支付, 已退款, 已取消
 	}
 
 	@Id

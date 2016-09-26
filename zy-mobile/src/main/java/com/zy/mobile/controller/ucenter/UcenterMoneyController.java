@@ -6,9 +6,7 @@ import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -20,14 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.Config;
-import com.zy.common.model.query.Page;
-import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.AccountLogComponent;
 import com.zy.component.BankCardComponent;
@@ -89,35 +82,16 @@ public class UcenterMoneyController {
 	
 	@RequestMapping(value = "/log", method = RequestMethod.GET)
 	public String log(Principal principal, Model model) {
+		Date date = new Date();
+		Date beginDate = DateUtils.setSeconds(DateUtils.setMinutes(DateUtils.setHours(date, 0), 0), 0);
 		AccountLogQueryModel accountLogQueryModel = new AccountLogQueryModel();
 		accountLogQueryModel.setCurrencyTypeEQ(现金);
 		accountLogQueryModel.setUserIdEQ(principal.getUserId());
-		accountLogQueryModel.setPageSize(10);
-		accountLogQueryModel.setPageNumber(0);
-		Page<AccountLog> page  = accountLogService.findPage(accountLogQueryModel);
-		
-		model.addAttribute("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
-		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		accountLogQueryModel.setTransTimeGTE(beginDate);
+		accountLogQueryModel.setTransTimeLT(date);
+		List<AccountLog> accountLogs  = accountLogService.findAll(accountLogQueryModel);
+		model.addAttribute("accountLogs", accountLogs.stream().map(accountLogComponent::buildAdminVo).collect(Collectors.toList()));
 		return "ucenter/currency/moneyLog";
-	}
-	
-	@RequestMapping(value = "/log", method = RequestMethod.POST)
-	@ResponseBody
-	public Result<?> log(Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
-		if (timeLT == null) {
-			timeLT = new Date();
-		}
-		AccountLogQueryModel accountLogQueryModel = new AccountLogQueryModel();
-		accountLogQueryModel.setCurrencyTypeEQ(现金);
-		accountLogQueryModel.setTransTimeLT(timeLT);
-		accountLogQueryModel.setUserIdEQ(principal.getUserId());
-		accountLogQueryModel.setPageSize(10);
-		accountLogQueryModel.setPageNumber(pageNumber);
-		Page<AccountLog> page  = accountLogService.findPage(accountLogQueryModel);
-		Map<String, Object> map = new HashMap<>();
-		map.put("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
-		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
-		return ResultBuilder.result(map);
 	}
 	
 	@RequestMapping(value = "/withdraw", method = RequestMethod.GET)
