@@ -312,7 +312,7 @@
         <div class="list-item form-radio">
           <label class="list-text" for="isPayToPlatform0">支付给上级</label>
           <div class="list-unit">
-            <input id="isPayToPlatform" type="radio" name="isPayToPlatform" value="false" checked="checked">
+            <input id="isPayToPlatform" type="radio" name="isPayToPlatform" value="false" <c:if test="${userRank != 'V3'}">checked="checked"</c:if>>
             <label class="i-checked" for="isPayToPlatform0"></label>
           </div>
         </div>
@@ -321,7 +321,7 @@
         <div class="list-item form-radio">
           <label class="list-text" for="isPayToPlatform1">支付给平台</label>
           <div class="list-unit">
-            <input id="isPayToPlatform" type="radio" name="isPayToPlatform" value="true" checked="checked">
+            <input id="isPayToPlatform" type="radio" name="isPayToPlatform" value="true" <c:if test="${userRank != 'V3'}">checked="checked"</c:if>>
             <label class="i-checked" for="isPayToPlatform1"></label>
           </div>
         </div>

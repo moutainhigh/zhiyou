@@ -233,6 +233,16 @@
         <div class="list-unit fs-12">${order.refundedTimeLabel}</div>
       </div>
       </c:if>
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">支付给</div>
+        <c:if test="${order.isPayToPlatform}">
+        <div class="list-unit fs-12">平台</div>
+        </c:if>
+        <c:if test="${!order.isPayToPlatform}">
+        <div class="list-unit">${seller.nickname} <small>${seller.phone}</small></div>
+        <img class="image-40 round ml-10" src="${seller.avatarThumbnail}">
+        </c:if>
+      </div>
     </div>
     
     <div class="list-title">买家留言</div>

@@ -110,6 +110,26 @@
 		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image,times,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version
 		from `act_report`
 		<where>
+			<if test="realnameIN != null">
+				<if test="realnameIN.length != 0">
+				and realname in
+				<foreach collection="realnameIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="realnameIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="confirmStatusEQ != null">
+				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="isSettledUpEQ != null">
+				and is_settled_up = #{isSettledUpEQ}
+			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
 			</if>
@@ -127,14 +147,14 @@
 				1 = 2
 				</if>
 			</if>
+			<if test="realnameEQ != null">
+				and realname = #{realnameEQ}
+			</if>
 			<if test="reportResultEQ != null">
 				and report_result = #{reportResultEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="isHotEQ != null">
 				and is_hot = #{isHotEQ}
-			</if>
-			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
 			</if>
 			<if test="phoneEQ != null">
 				and phone = #{phoneEQ}
@@ -142,14 +162,8 @@
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
 			</if>
-			<if test="confirmStatusEQ != null">
-				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
-			</if>
-			<if test="realnameLK != null">
-				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
-			</if>
-			<if test="isSettledUpEQ != null">
-				and is_settled_up = #{isSettledUpEQ}
+			<if test="timesEQ != null">
+				and times = #{timesEQ}
 			</if>
 		</where>
 		<choose>
@@ -168,6 +182,26 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.ReportQueryModel">
 		select count(*) from `act_report`
 		<where>
+			<if test="realnameIN != null">
+				<if test="realnameIN.length != 0">
+				and realname in
+				<foreach collection="realnameIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="realnameIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="confirmStatusEQ != null">
+				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="isSettledUpEQ != null">
+				and is_settled_up = #{isSettledUpEQ}
+			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
 			</if>
@@ -185,14 +219,14 @@
 				1 = 2
 				</if>
 			</if>
+			<if test="realnameEQ != null">
+				and realname = #{realnameEQ}
+			</if>
 			<if test="reportResultEQ != null">
 				and report_result = #{reportResultEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="isHotEQ != null">
 				and is_hot = #{isHotEQ}
-			</if>
-			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
 			</if>
 			<if test="phoneEQ != null">
 				and phone = #{phoneEQ}
@@ -200,14 +234,8 @@
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
 			</if>
-			<if test="confirmStatusEQ != null">
-				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
-			</if>
-			<if test="realnameLK != null">
-				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
-			</if>
-			<if test="isSettledUpEQ != null">
-				and is_settled_up = #{isSettledUpEQ}
+			<if test="timesEQ != null">
+				and times = #{timesEQ}
 			</if>
 		</where>
 	</select>
