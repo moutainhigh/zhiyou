@@ -1,20 +1,20 @@
 package com.zy.model.query;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.zy.entity.fnc.AccountLog.AccountLogType;
+import com.zy.entity.fnc.AccountLog.InOut;
+import com.zy.entity.fnc.CurrencyType;
 
 import io.gd.generator.api.query.Direction;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.zy.entity.fnc.AccountLog.InOut;
-import java.util.Date;
-import com.zy.entity.fnc.AccountLog.AccountLogType;
-import com.zy.entity.fnc.CurrencyType;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
