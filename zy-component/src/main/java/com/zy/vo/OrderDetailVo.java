@@ -23,6 +23,8 @@ public class OrderDetailVo implements Serializable {
 	private Long userId;
 	@Field(label = "卖家id")
 	private Long sellerId;
+	@Field(label = "是否支付给平台")
+	private Boolean payToPlatform;
 	@Field(label = "标题")
 	private String title;
 	@Field(label = "订单状态")
@@ -67,6 +69,10 @@ public class OrderDetailVo implements Serializable {
 	private String receiverDistrict;
 	@Field(label = "收件人详细地址")
 	private String receiverAddress;
+	@Field(label = "银行汇款截图")
+	private String offlineImage;
+	@Field(label = "银行汇款备注")
+	private String offlineMemo;
 
 	/* 扩展 */
 	@Field(label = "下单时间")
@@ -83,5 +89,9 @@ public class OrderDetailVo implements Serializable {
 	private String deliveredTimeLabel;
 	@Field(label = "orderItems")
 	private List<OrderItemVo> orderItems = new ArrayList<>();
+	@Field(label = "银行汇款截图")
+	private List<String> offlineImages = new ArrayList<>();
+	@Field(label = "银行汇款截图")
+	private List<String> offlineImageThumbnails = new ArrayList<>();
 
 }

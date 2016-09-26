@@ -16,12 +16,13 @@ import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 @Entity
@@ -121,53 +122,20 @@ public class Report implements Serializable {
 	private String text;
 
 	@NotBlank
-	@URL
 	@StringBinder
-	@Field(label = "图片1")
+	@Field(label = "图片")
 	@View(groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "image1Big", groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "image1Thumbnail", groups = {VO_DETAIL, VO_ADMIN})
-	private String image1;
+	@Column(length = 2000)
+	@CollectionView(name= "images", type = ArrayList.class, elementType = String.class)
+	@CollectionView(name= "imageThumbnails", type = ArrayList.class, elementType = String.class)
+	@CollectionView(name= "imageBigs", type = ArrayList.class, elementType = String.class)
+	private String image;
 
-	@URL
-	@StringBinder
-	@Field(label = "图片2")
+	@Field(label = "检测次数")
+	@NotNull
+	@Min(1)
 	@View(groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "image2Big", groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "image2Thumbnail", groups = {VO_DETAIL, VO_ADMIN})
-	private String image2;
-
-	@URL
-	@StringBinder
-	@Field(label = "图片3")
-	@View(groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "image3Big", groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "image3Thumbnail", groups = {VO_DETAIL, VO_ADMIN})
-	private String image3;
-
-	@StringBinder
-	@URL
-	@Field(label = "图片4")
-	@View(groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "image4Big", groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "image4Thumbnail", groups = {VO_DETAIL, VO_ADMIN})
-	private String image4;
-
-	@StringBinder
-	@Field(label = "图片5")
-	@URL
-	@View(groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "image5Big", groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "image5Thumbnail", groups = {VO_DETAIL, VO_ADMIN})
-	private String image5;
-
-	@StringBinder
-	@URL
-	@View(groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "image6Big", groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "image6Thumbnail", groups = {VO_DETAIL, VO_ADMIN})
-	@Field(label = "图片6")
-	private String image6;
+	private Integer times;
 
 	@NotNull
 	@Field(label = "申请时间")
@@ -188,6 +156,11 @@ public class Report implements Serializable {
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private ConfirmStatus preConfirmStatus;
 
+	@Field(label = "初审通过时间")
+	@View(groups = {VO_ADMIN})
+	@View(name = "preConfirmedTimeLabel", type = String.class, groups = {VO_ADMIN})
+	private Date preConfirmedTime;
+
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "审核状态")
@@ -200,6 +173,7 @@ public class Report implements Serializable {
 
 	@Field(label = "审核通过时间")
 	@View(groups = {VO_DETAIL, VO_ADMIN})
+	@View(name = "confirmedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL})
 	private Date confirmedTime;
 	
 	@Field(label = "是否已结算")

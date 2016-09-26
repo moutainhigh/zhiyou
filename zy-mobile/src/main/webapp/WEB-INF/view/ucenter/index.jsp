@@ -35,10 +35,10 @@
       <img class="avatar round mr-20 ml-10" src="${userAvatarSmall}">
       <div class="list-text font-white lh-30">
         <div class="fs-18 bold">${user.nickname}</div>
-        <c:if test="${user.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
-        <c:if test="${user.userRank == 'V2'}"><label class="label blue">二级代理</label></c:if>
-        <c:if test="${user.userRank == 'V3'}"><label class="label orange">一级代理</label></c:if>
-        <c:if test="${user.userRank == 'V4'}"><label class="label red">特级代理</label></c:if>
+        <c:if test="${user.userRank == 'V1'}"><label class="label purple">三级服务商</label></c:if>
+        <c:if test="${user.userRank == 'V2'}"><label class="label blue">二级服务商</label></c:if>
+        <c:if test="${user.userRank == 'V3'}"><label class="label orange">一级服务商</label></c:if>
+        <c:if test="${user.userRank == 'V4'}"><label class="label red">特级服务商</label></c:if>
       </div>
       <i class="list-arrow"></i>
     </a>
@@ -72,14 +72,14 @@
       <c:if test="${user.userRank == 'V0'}">
       <a class="list-item" href="${ctx}/product/1?isAgent=true">
         <i class="list-icon icon icon-agent"></i>
-        <div class="list-text">成为代理</div>
+        <div class="list-text">成为服务商</div>
         <i class="list-arrow"></i>
       </a>
       </c:if>
       <c:if test="${user.userRank == 'V1' || user.userRank == 'V2'}">
       <a class="list-item" href="${ctx}/product/1?isAgent=true">
         <i class="list-icon icon icon-upgrade"></i>
-        <div class="list-text">升级代理</div>
+        <div class="list-text">升级服务商</div>
         <i class="list-arrow"></i>
       </a>
       </c:if>

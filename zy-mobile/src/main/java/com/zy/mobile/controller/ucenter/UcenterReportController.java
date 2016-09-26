@@ -104,7 +104,7 @@ public class UcenterReportController {
 	public String create(Report report, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		User user = userService.findOne(principal.getUserId());
 		if (user.getUserRank() == UserRank.V0) {
-			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("只有成为代理后才能提交检测报告"));
+			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("只有成为服务商后才能提交检测报告"));
 			return "redirect:/u/report";
 		}
 		report.setUserId(principal.getUserId());

@@ -21,7 +21,7 @@
     }
   });
   
-  var url = '${ctx}/u/money';
+  var url = '${ctx}/u/money/log';
   
   var timeLT = '${timeLT}';
   var pageNumber = 0;
@@ -57,10 +57,16 @@
   }
   
   function buildRow(row){
-    var html = '<div class="list-item">' + '<div class="title lh-24 text-ellipsis">' + row.title + '</div>' + '<div class="inout '
-      + (row.inOut == '收入' ? 'currency-in' : 'currency-out') + ' lh-24 text-right">' + row.transAmount.toFixed(2) + '</div>' + '<div class="clearfix lh-24">'
-      + '<span class="left fs-12 font-999">' + row.transTimeLabel + '</span>' + '<span class="right fs-12 font-999">余额: ' + row.afterAmount.toFixed(2) + '</span>'
-      + '</div></div>';
+    var html = '<div class="list-item">' 
+    	+ '<div class="list-text pl-5">' 
+    	+ '<div class="fs-14">' + row.title + '</div>'
+    	+ '<div class="fs-12 font-999">' + row.transTimeLabel + '</div>'
+    	+ '</div>' 
+    	+ '<div class="list-unit width-100 text-right">'
+      	+ '<div class="' + (row.inOut == '收入' ? 'currency-in' : 'currency-out') + '">' + row.transAmount.toFixed(2) + '</div>'
+      	+ '<div class="fs-12 font-999">余额: ' + row.afterAmount.toFixed(2) + '</div>'
+    	+ '</div>'
+      	+ '</div>';
     $(html).insertBefore($('.list-more'));
   }
 

@@ -17,12 +17,14 @@ import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.*;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.zy.util.GcUtils.formatDate;
 
@@ -96,6 +98,14 @@ public class OrderComponent {
 		orderAdminFullVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getUserId())));
 		orderAdminFullVo.setSeller(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getSellerId())));
 		orderAdminFullVo.setOrderStatusStyle(GcUtils.getOrderStatusStyle(order.getOrderStatus()));
+		
+		String offlineImage = order.getOfflineImage();
+		if (StringUtils.isNotBlank(offlineImage)) {
+			String[] offlineImages = StringUtils.split(offlineImage);
+			orderAdminFullVo.getOfflineImages().addAll(Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).collect(Collectors.toList()));
+			orderAdminFullVo.getOfflineImageThumbnails().addAll(Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).map(v -> GcUtils.getThumbnail(v)).collect(Collectors.toList()));
+		}
+		
 		Boolean useLogistics = order.getUseLogistics();
 		if (useLogistics == null) {
 			orderAdminFullVo.setUseLogisticsLabel(null);
@@ -128,6 +138,13 @@ public class OrderComponent {
 		orderAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getUserId())));
 		orderAdminVo.setSeller(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getSellerId())));
 		orderAdminVo.setOrderStatusStyle(GcUtils.getOrderStatusStyle(order.getOrderStatus()));
+		
+		String offlineImage = order.getOfflineImage();
+		if (StringUtils.isNotBlank(offlineImage)) {
+			String[] offlineImages = StringUtils.split(offlineImage);
+			orderAdminVo.getOfflineImages().addAll(Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).collect(Collectors.toList()));
+			orderAdminVo.getOfflineImageThumbnails().addAll(Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).map(v -> GcUtils.getThumbnail(v)).collect(Collectors.toList()));
+		}
 
 		Boolean useLogistics = order.getUseLogistics();
 		if (useLogistics == null) {
@@ -194,6 +211,13 @@ public class OrderComponent {
 			return orderItemVo;
 		}).collect(Collectors.toList());
 		orderDetailVo.setOrderItems((ArrayList<OrderItemVo>) orderItemVos);
+		
+		String offlineImage = order.getOfflineImage();
+		if (StringUtils.isNotBlank(offlineImage)) {
+			String[] offlineImages = StringUtils.split(offlineImage);
+			orderDetailVo.getOfflineImages().addAll(Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).collect(Collectors.toList()));
+			orderDetailVo.getOfflineImageThumbnails().addAll(Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).map(v -> GcUtils.getThumbnail(v)).collect(Collectors.toList()));
+		}
 		
 		return orderDetailVo;
 	}

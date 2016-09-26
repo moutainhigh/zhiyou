@@ -1,5 +1,22 @@
 package com.zy.service.impl;
 
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
@@ -8,6 +25,10 @@ import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
 import com.zy.component.MalComponent;
 import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.PayType;
+import com.zy.entity.fnc.Payment;
+import com.zy.entity.fnc.Payment.PaymentStatus;
+import com.zy.entity.fnc.Payment.PaymentType;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Transfer;
 import com.zy.entity.mal.Order;
@@ -19,7 +40,12 @@ import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.extend.Producer;
-import com.zy.mapper.*;
+import com.zy.mapper.AddressMapper;
+import com.zy.mapper.OrderItemMapper;
+import com.zy.mapper.OrderMapper;
+import com.zy.mapper.PaymentMapper;
+import com.zy.mapper.ProductMapper;
+import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.dto.OrderCreateDto;
@@ -27,19 +53,6 @@ import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.dto.OrderSumDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
@@ -47,6 +60,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderMapper orderMapper;
+	
+	@Autowired
+	private PaymentMapper paymentMapper;
 
 	@Autowired
 	private OrderItemMapper orderItemMapper;
@@ -422,7 +438,6 @@ public class OrderServiceImpl implements OrderService {
 		UserRank buyerUserRank = buyer.getUserRank();
 		UserRank sellerUserRank = seller.getUserRank();
 		Long sysUserId = config.getSysUserId();
-		CurrencyType currencyType = order.getCurrencyType();
 
 		/* 订单收款 */
 		BigDecimal amount = order.getAmount();
@@ -554,5 +569,42 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public OrderSumDto sum(OrderQueryModel orderQueryModel) {
 		return orderMapper.orderSum(orderQueryModel);
+	}
+	
+	@Override
+	public void modifyOffline(Long orderId, String offlineImage, String offlineMemo){
+
+		Order order = orderMapper.findOne(orderId);
+		validate(order, NOT_NULL, "order id " + orderId + " is not found");
+
+		OrderStatus orderStatus = order.getOrderStatus();
+		if (orderStatus != OrderStatus.待支付)  {
+			throw new BizException(BizCode.ERROR, "只有待支付状态的订单才能操作");
+		}
+		if(order.getIsPlatformDeliver()){
+			Payment payment = new Payment();
+			payment.setAmount1(order.getAmount());
+			payment.setCurrencyType1(order.getCurrencyType());
+			payment.setPaymentType(PaymentType.订单支付);
+			payment.setRefId(orderId);
+			payment.setUserId(order.getUserId());
+			payment.setTitle(order.getTitle());
+			payment.setPayType(PayType.银行汇款);
+			payment.setSn(ServiceUtils.generatePaymentSn());
+			payment.setCreatedTime(new Date());
+			payment.setOfflineMemo(offlineMemo);
+			payment.setOfflineImage(offlineImage);
+			payment.setPaymentStatus(PaymentStatus.待确认);
+			payment.setVersion(0);
+			validate(payment);
+			paymentMapper.insert(payment);
+		}
+		order.setOfflineMemo(offlineMemo);
+		order.setOfflineImage(offlineImage);
+		order.setOrderStatus(OrderStatus.待确认);
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
+	
 	}
 }

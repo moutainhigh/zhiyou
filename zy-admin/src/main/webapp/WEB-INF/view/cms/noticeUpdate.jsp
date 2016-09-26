@@ -59,7 +59,7 @@
 					required : "请输入内容"
 				},
 				noticeType : {
-					required : "请选择代理类型"
+					required : "请选择服务商类型"
 				}
 			}
 		});

@@ -32,7 +32,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/agent">代理管理</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/agent">服务商管理</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -43,7 +43,7 @@
     <div class="portlet box yellow">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-edit"></i><span> 代理信息修改 </span>
+          <i class="fa fa-edit"></i><span> 服务商信息修改 </span>
         </div>
         <div class="tools">
           <a href="javascript:;" class="collapse"> </a> <a href="javascript:;" class="reload"> </a>

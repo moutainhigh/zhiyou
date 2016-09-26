@@ -96,31 +96,28 @@ public class ReportQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
+		fieldNames.add("image");
 		fieldNames.add("appliedTime");
 		fieldNames.add("gender");
 		fieldNames.add("tagIds");
+		fieldNames.add("preConfirmedTime");
+		fieldNames.add("confirmRemark");
+		fieldNames.add("userId");
+		fieldNames.add("version");
+		fieldNames.add("realname");
+		fieldNames.add("jobId");
+		fieldNames.add("times");
 		fieldNames.add("isSettledUp");
+		fieldNames.add("areaId");
+		fieldNames.add("phone");
 		fieldNames.add("confirmedTime");
 		fieldNames.add("createdTime");
 		fieldNames.add("confirmStatus");
 		fieldNames.add("id");
 		fieldNames.add("text");
+		fieldNames.add("age");
 		fieldNames.add("reportResult");
 		fieldNames.add("preConfirmStatus");
-		fieldNames.add("image5");
-		fieldNames.add("image6");
-		fieldNames.add("image3");
-		fieldNames.add("image4");
-		fieldNames.add("confirmRemark");
-		fieldNames.add("image1");
-		fieldNames.add("userId");
-		fieldNames.add("image2");
-		fieldNames.add("version");
-		fieldNames.add("realname");
-		fieldNames.add("jobId");
-		fieldNames.add("areaId");
-		fieldNames.add("phone");
-		fieldNames.add("age");
 		fieldNames.add("isHot");
 	}
 
