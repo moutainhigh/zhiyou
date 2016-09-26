@@ -109,6 +109,7 @@ public class OrderComponent {
 				ImageVo imageVo = new ImageVo();
 				imageVo.setImage(v);
 				imageVo.setImageThumbnail(GcUtils.getThumbnail(v));
+				imageVo.setImageBig(GcUtils.getThumbnail(v, 640, 640));
 				return imageVo;
 			}).collect(Collectors.toList());
 			orderAdminFullVo.setOfflineImages(images);
@@ -154,6 +155,7 @@ public class OrderComponent {
 				ImageVo imageVo = new ImageVo();
 				imageVo.setImage(v);
 				imageVo.setImageThumbnail(GcUtils.getThumbnail(v));
+				imageVo.setImageBig(GcUtils.getThumbnail(v, 640, 640));
 				return imageVo;
 			}).collect(Collectors.toList());
 			orderAdminVo.setOfflineImages(images);
@@ -232,6 +234,7 @@ public class OrderComponent {
 				ImageVo imageVo = new ImageVo();
 				imageVo.setImage(v);
 				imageVo.setImageThumbnail(GcUtils.getThumbnail(v));
+				imageVo.setImageBig(GcUtils.getThumbnail(v, 640, 640));
 				return imageVo;
 			}).collect(Collectors.toList());
 			orderDetailVo.setOfflineImages(images);
