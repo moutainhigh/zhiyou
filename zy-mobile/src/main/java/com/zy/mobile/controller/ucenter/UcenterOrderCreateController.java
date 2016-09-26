@@ -69,6 +69,7 @@ public class UcenterOrderCreateController {
 		model.addAttribute("product", productVo);
 		model.addAttribute("quantity", quantity);
 		model.addAttribute("address", address);
+		model.addAttribute("userRank", user.getUserRank());
 		return "ucenter/order/orderCreate";
 	}
 	

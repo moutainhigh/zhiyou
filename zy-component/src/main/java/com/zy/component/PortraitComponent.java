@@ -2,7 +2,6 @@ package com.zy.component;
 
 import static java.util.stream.Collectors.toSet;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,7 +15,6 @@ import com.zy.entity.usr.Portrait;
 import com.zy.entity.usr.User;
 import com.zy.model.dto.AreaDto;
 import com.zy.service.TagService;
-import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.PortraitAdminVo;
 import com.zy.vo.PortraitVo;
