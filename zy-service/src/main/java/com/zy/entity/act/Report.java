@@ -59,7 +59,7 @@ public class Report implements Serializable {
 
 	@NotNull
 	@Field(label = "姓名")
-	@Query({Predicate.LK})
+	@Query({Predicate.EQ, Predicate.IN})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(groups = VO_EXPORT, field = @Field(label = "客户姓名", order = 20))
 	private String realname;
@@ -134,6 +134,7 @@ public class Report implements Serializable {
 	@Field(label = "检测次数")
 	@NotNull
 	@Min(1)
+	@Query(Predicate.EQ)
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Integer times;
 
