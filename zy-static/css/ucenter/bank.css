@@ -1,20 +1,20 @@
 .bank-list .header {
-  background-color: #555;
+  background-color: #585f69;
 }
 .bank-list {
-  background-color: #555;
+  background-color: #585f69;
 }
 .bank-list .list-item-add {
-  background-color: #666;
+  background-color: #666d79;
 }
 .bank-list .list-item-add .list-arrow {
-  border-color: #aaa;
+  border-color: #ccc;
 }
 
 .bank-list .bank {
   position: relative; display: block;
   padding: 10px 15px; margin: 10px 10px 0 10px;
-  color: #fff; background-color: #ed5f77;
+  color: #fff; background-color: #e26585;
 }
 .bank-list .bank .bank-icon {
   position: absolute; padding: 5px;
