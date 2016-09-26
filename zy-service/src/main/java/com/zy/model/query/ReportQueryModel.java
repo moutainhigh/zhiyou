@@ -26,11 +26,15 @@ public class ReportQueryModel implements Serializable {
 
 	private Long[] userIdIN;
 
-	private String realnameLK;
+	private String realnameEQ;
+
+	private String[] realnameIN;
 
 	private String phoneEQ;
 
 	private ReportResult reportResultEQ;
+
+	private Integer timesEQ;
 
 	private Date createdTimeGTE;
 

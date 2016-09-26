@@ -179,8 +179,14 @@
             title: '银行汇款截图',
             orderable: false,
             render: function (data, type, full) {
-              if (full.offlineImage) {
-                return '<img class="imageview mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
+              var offlineImages = full.offlineImages;
+              if (offlineImages) {
+                var html = '';
+                for (var i in offlineImages) {
+                  var image = offlineImage[i];
+                  html += '<img class="imageview mr-10" data-url="' + image.image + '" src="' + image.imageThumbnail + '" >';
+                }
+                return html;
               } else {
                 return '';
               }

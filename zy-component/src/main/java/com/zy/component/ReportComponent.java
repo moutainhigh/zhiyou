@@ -44,13 +44,19 @@ public class ReportComponent {
 		reportAdminVo.setConfirmedTimeLabel(formatDate(report.getConfirmedTime(), TIME_PATTERN));
 		reportAdminVo.setPreConfirmedTimeLabel(formatDate(report.getPreConfirmedTime(), TIME_PATTERN));
 		List<String> images = Arrays.stream(report.getImage().split(",")).map(v -> v).collect(Collectors.toList());
+		reportAdminVo.setImages(images);
 		reportAdminVo.setImageBigs(images.stream().map(v -> getThumbnail(v, 640, 640)).collect(Collectors.toList()));
 		reportAdminVo.setImageThumbnails(images.stream().map(v -> getThumbnail(v)).collect(Collectors.toList()));
 		
-		AreaDto areaDto = cacheComponent.getAreaDto(report.getAreaId());
-		reportAdminVo.setProvince(areaDto.getProvince());
-		reportAdminVo.setCity(areaDto.getCity());
-		reportAdminVo.setDistrict(areaDto.getDistrict());
+		if(report.getAreaId() != null){
+			AreaDto area = areaService.findOneDto(report.getAreaId());
+			reportAdminVo.setProvince(area.getProvince());
+			reportAdminVo.setCity(area.getCity());
+			reportAdminVo.setDistrict(area.getDistrict());
+		}
+		if(report.getJobId() != null){
+			reportAdminVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
+		}
 		return reportAdminVo;
 	}
 
@@ -70,8 +76,10 @@ public class ReportComponent {
 		reportVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportVo.setAppliedTimeLabel(formatDate(report.getAppliedTime(), TIME_PATTERN));
 		List<String> images = Arrays.stream(report.getImage().split(",")).map(v -> v).collect(Collectors.toList());
+		reportVo.setImages(images);
 		reportVo.setImageBigs(images.stream().map(v -> getThumbnail(v, 640, 640)).collect(Collectors.toList()));
 		reportVo.setImageThumbnails(images.stream().map(v -> getThumbnail(v)).collect(Collectors.toList()));
+		
 		return reportVo;
 	}
 

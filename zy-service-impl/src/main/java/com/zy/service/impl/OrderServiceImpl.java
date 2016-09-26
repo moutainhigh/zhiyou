@@ -1,22 +1,5 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
@@ -24,13 +7,9 @@ import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
 import com.zy.component.MalComponent;
-import com.zy.entity.fnc.CurrencyType;
-import com.zy.entity.fnc.PayType;
-import com.zy.entity.fnc.Payment;
+import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
-import com.zy.entity.fnc.Profit;
-import com.zy.entity.fnc.Transfer;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.LogisticsFeePayType;
 import com.zy.entity.mal.Order.OrderStatus;
@@ -40,12 +19,7 @@ import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.extend.Producer;
-import com.zy.mapper.AddressMapper;
-import com.zy.mapper.OrderItemMapper;
-import com.zy.mapper.OrderMapper;
-import com.zy.mapper.PaymentMapper;
-import com.zy.mapper.ProductMapper;
-import com.zy.mapper.UserMapper;
+import com.zy.mapper.*;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.dto.OrderCreateDto;
@@ -53,6 +27,19 @@ import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.dto.OrderSumDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
@@ -609,5 +596,31 @@ public class OrderServiceImpl implements OrderService {
 			throw new ConcurrentException();
 		}
 	
+	}
+
+	@Override
+	public void delete(Long orderId) {
+		Order order = orderMapper.findOne(orderId);
+		validate(order, NOT_NULL, "order id " + orderId + " is not found");
+		if (order.getIsDeleted()) {
+			return; // 幂等操作
+		}
+		order.setIsDeleted(true);
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
+	}
+
+	@Override
+	public void undelete(Long orderId) {
+		Order order = orderMapper.findOne(orderId);
+		validate(order, NOT_NULL, "order id " + orderId + " is not found");
+		if (!order.getIsDeleted()) {
+			return; // 幂等操作
+		}
+		order.setIsDeleted(false);
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
 	}
 }

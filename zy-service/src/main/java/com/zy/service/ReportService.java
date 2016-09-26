@@ -14,6 +14,8 @@ public interface ReportService {
 	
 	Report adminCreate(Report report);
 
+	Report adminModify(Report report);
+	
 	Report modify(Report report);
 
 	Page<Report> findPage(ReportQueryModel reportQueryModel);

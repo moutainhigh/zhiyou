@@ -1,5 +1,8 @@
 package com.zy.admin.controller.act;
 
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,7 +96,7 @@ public class ReportController {
 	}
 
 	@RequiresPermissions("report:edit")
-	@RequestMapping(value = "create", method = RequestMethod.GET)
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create(Model model) {
 		model.addAttribute("jobs", jobService.findAll());
 		model.addAttribute("reportResults", ReportResult.values());
@@ -112,6 +116,33 @@ public class ReportController {
 			return create(model);
 		}
 		redirectAttributes.addFlashAttribute(ResultBuilder.ok("上传检测报告成功"));
+		return "redirect:/report";
+	}
+	
+	@RequiresPermissions("report:edit")
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public String update(@RequestParam Long id, Model model) {
+		Report report = reportService.findOne(id);
+		validate(report, NOT_NULL, "report id " + id + " not found");
+		model.addAttribute("report", reportComponent.buildDetailVo(report));
+		model.addAttribute("jobs", jobService.findAll());
+		model.addAttribute("reportResults", ReportResult.values());
+		return "act/reportUpdate";
+	}
+
+	@RequiresPermissions("report:edit")
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String update(Report report, Model model, RedirectAttributes redirectAttributes) {
+		Long id = report.getId();
+		validate(id, NOT_NULL, "id is null");
+		try {
+			reportService.adminModify(report);
+		} catch (Exception e) {
+			model.addAttribute("report", report);
+			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return update(report.getId(),model);
+		}
+		redirectAttributes.addFlashAttribute(ResultBuilder.ok("检测报告编辑成功"));
 		return "redirect:/report";
 	}
 	

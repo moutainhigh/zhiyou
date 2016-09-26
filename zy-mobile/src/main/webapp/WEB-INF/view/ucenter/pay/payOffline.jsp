@@ -32,7 +32,7 @@
         }
       },
       submitHandler : function(form) {
-        if($('input[name="image"]').length < 1) {
+        if($('input[name="offlineImage"]').length < 1) {
           messageFlash('请至少上传一张图片');
           return;
         }
@@ -91,8 +91,8 @@
 
     
     
-    <form action="${ctx}/u/pay/payment" class="valid-form" id="form" method="post">
-      <input type="hidden" name="paymentId" value="${refId}">
+    <form action="${ctx}/u/pay/${payType == '银行汇款' ? 'order' : 'payment'}" class="valid-form" id="form" method="post">
+      <input type="hidden" name="refId" value="${refId}">
       <div class="list-group">
         <div class="list-title">上传汇款凭证</div>
         <div class="list-item">
