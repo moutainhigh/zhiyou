@@ -1,6 +1,7 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
+import com.zy.model.ImageVo;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.mal.Order.LogisticsFeePayType;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class OrderAdminFullVo implements Serializable {
 	@Field(label = "卖家id")
 	private Long sellerId;
 	@Field(label = "是否支付给平台")
-	private Boolean payToPlatform;
+	private Boolean isPayToPlatform;
 	@Field(label = "标题")
 	private String title;
 	@Field(label = "订单状态")
@@ -72,6 +73,8 @@ public class OrderAdminFullVo implements Serializable {
 	private String offlineImage;
 	@Field(label = "银行汇款备注")
 	private String offlineMemo;
+	@Field(label = "是否删除")
+	private Boolean isDeleted;
 
 	/* 扩展 */
 	@Field(label = "imageThumbnail")
@@ -109,8 +112,6 @@ public class OrderAdminFullVo implements Serializable {
 	@Field(label = "transfers")
 	private List<TransferAdminVo> transfers = new ArrayList<>();
 	@Field(label = "银行汇款截图")
-	private List<String> offlineImages = new ArrayList<>();
-	@Field(label = "银行汇款截图")
-	private List<String> offlineImageThumbnails = new ArrayList<>();
+	private List<ImageVo> offlineImages = new ArrayList<>();
 
 }

@@ -174,6 +174,8 @@ public class OrderServiceImpl implements OrderService {
 		order.setIsSettledUp(false);
 		order.setDiscountFee(new BigDecimal("0.00"));
 		order.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_ORDER_EXPIRE_IN_MINUTES));
+		order.setIsPayToPlatform(orderCreateDto.getIsPayToPlatform());
+		order.setIsDeleted(false);
 		if (StringUtils.isNotBlank(title)) {
 			order.setTitle(title);
 		} else {
@@ -581,7 +583,7 @@ public class OrderServiceImpl implements OrderService {
 		if (orderStatus != OrderStatus.待支付)  {
 			throw new BizException(BizCode.ERROR, "只有待支付状态的订单才能操作");
 		}
-		if(order.getIsPlatformDeliver()){
+		if(order.getIsPayToPlatform()){
 			Payment payment = new Payment();
 			payment.setAmount1(order.getAmount());
 			payment.setCurrencyType1(order.getCurrencyType());
@@ -590,6 +592,7 @@ public class OrderServiceImpl implements OrderService {
 			payment.setUserId(order.getUserId());
 			payment.setTitle(order.getTitle());
 			payment.setPayType(PayType.银行汇款);
+			payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_OFFLINE_EXPIRE_IN_MINUTES));
 			payment.setSn(ServiceUtils.generatePaymentSn());
 			payment.setCreatedTime(new Date());
 			payment.setOfflineMemo(offlineMemo);

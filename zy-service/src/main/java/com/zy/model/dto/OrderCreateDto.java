@@ -33,5 +33,8 @@ public class OrderCreateDto implements Serializable {
 	private String buyerMemo;
 
 	private Long parentId; // 若用户下单parentId为空则必填
+	
+	@NotNull
+	private Boolean isPayToPlatform;
 
 }

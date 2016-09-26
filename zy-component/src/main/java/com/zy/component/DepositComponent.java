@@ -1,18 +1,19 @@
 package com.zy.component;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import com.zy.common.util.BeanUtils;
+import com.zy.entity.fnc.Deposit;
+import com.zy.entity.usr.User;
+import com.zy.model.ImageVo;
+import com.zy.util.GcUtils;
+import com.zy.util.VoHelper;
+import com.zy.vo.DepositAdminVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.zy.common.util.BeanUtils;
-import com.zy.entity.fnc.Deposit;
-import com.zy.entity.usr.User;
-import com.zy.util.GcUtils;
-import com.zy.util.VoHelper;
-import com.zy.vo.DepositAdminVo;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class DepositComponent {
@@ -30,8 +31,13 @@ public class DepositComponent {
 		String offlineImage = deposit.getOfflineImage();
 		if (StringUtils.isNotBlank(offlineImage)) {
 			String[] offlineImages = StringUtils.split(offlineImage);
-			depositAdminVo.getOfflineImages().addAll(Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).collect(Collectors.toList()));
-			depositAdminVo.getOfflineImageThumbnails().addAll(Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).map(v -> GcUtils.getThumbnail(v)).collect(Collectors.toList()));
+			List<ImageVo> images = Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).map(v -> {
+				ImageVo imageVo = new ImageVo();
+				imageVo.setImage(v);
+				imageVo.setImageThumbnail(GcUtils.getThumbnail(v));
+				return imageVo;
+			}).collect(Collectors.toList());
+			depositAdminVo.setOfflineImages(images);
 		}
 
 		depositAdminVo.setDepositStatusStyle(GcUtils.getDepositStatusStyle(deposit.getDepositStatus()));

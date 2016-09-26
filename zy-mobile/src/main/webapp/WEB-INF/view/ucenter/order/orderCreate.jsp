@@ -307,6 +307,28 @@
     </div>
     
     <div class="list-group">
+        <div class="list-title">请选择付款方式</div>
+        <c:if test="${userRank == 'V3' || userRank == 'V2' || userRank == 'V1' || userRank == 'V0'}">
+        <div class="list-item form-radio">
+          <label class="list-text" for="isPayToPlatform0">支付给上级</label>
+          <div class="list-unit">
+            <input id="isPayToPlatform" type="radio" name="isPayToPlatform" value="false" checked="checked">
+            <label class="i-checked" for="isPayToPlatform0"></label>
+          </div>
+        </div>
+        </c:if>
+        <c:if test="${userRank == 'V4' || userRank == 'V3'}">
+        <div class="list-item form-radio">
+          <label class="list-text" for="isPayToPlatform1">支付给平台</label>
+          <div class="list-unit">
+            <input id="isPayToPlatform" type="radio" name="isPayToPlatform" value="true" checked="checked">
+            <label class="i-checked" for="isPayToPlatform1"></label>
+          </div>
+        </div>
+        </c:if>
+    </div>
+    
+    <div class="list-group">
       <div class="list-title">请写下您的订单留言</div>
       <div class="list-item">
         <div class="list-text">

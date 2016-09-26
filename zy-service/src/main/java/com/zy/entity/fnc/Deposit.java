@@ -1,6 +1,7 @@
 package com.zy.entity.fnc;
 
 import com.zy.entity.usr.User;
+import com.zy.model.ImageVo;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -139,7 +140,7 @@ public class Deposit implements Serializable {
 	@View(name = "depositStatusStyle", type = String.class, groups = {VO_ADMIN})
 	private DepositStatus depositStatus;
 
-	@View(groups = "DepositAdminVo")
+	@View(groups = VO_ADMIN)
 	@Field(label = "备注")
 	@Column(length = 1000)
 	private String remark;
@@ -147,8 +148,7 @@ public class Deposit implements Serializable {
 	@Field(label = "银行汇款截图")
 	@View
 	@Column(length = 1000)
-	@CollectionView(name= "offlineImages", type = ArrayList.class, elementType = String.class)
-	@CollectionView(name= "offlineImageThumbnails", type = ArrayList.class, elementType = String.class)
+	@CollectionView(name= "offlineImages", type = ArrayList.class, elementType = ImageVo.class)
 	private String offlineImage;
 	
 	@Field(label = "银行汇款备注")

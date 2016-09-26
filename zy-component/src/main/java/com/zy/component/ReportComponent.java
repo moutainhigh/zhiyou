@@ -2,7 +2,6 @@ package com.zy.component;
 
 import static com.zy.util.GcUtils.formatDate;
 import static com.zy.util.GcUtils.getThumbnail;
-import static java.util.stream.Collectors.toList;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +15,6 @@ import com.zy.entity.act.Report;
 import com.zy.model.dto.AreaDto;
 import com.zy.service.AreaService;
 import com.zy.service.JobService;
-import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.ReportAdminVo;
 import com.zy.vo.ReportDetailVo;
@@ -35,7 +33,7 @@ public class ReportComponent {
 	@Autowired
 	private AreaService areaService;
 
-	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
 	
 	public ReportAdminVo buildAdminVo(Report report) {
 		ReportAdminVo reportAdminVo = new ReportAdminVo();
@@ -48,6 +46,11 @@ public class ReportComponent {
 		List<String> images = Arrays.stream(report.getImage().split(",")).map(v -> v).collect(Collectors.toList());
 		reportAdminVo.setImageBigs(images.stream().map(v -> getThumbnail(v, 640, 640)).collect(Collectors.toList()));
 		reportAdminVo.setImageThumbnails(images.stream().map(v -> getThumbnail(v)).collect(Collectors.toList()));
+		
+		AreaDto areaDto = cacheComponent.getAreaDto(report.getAreaId());
+		reportAdminVo.setProvince(areaDto.getProvince());
+		reportAdminVo.setCity(areaDto.getCity());
+		reportAdminVo.setDistrict(areaDto.getDistrict());
 		return reportAdminVo;
 	}
 

@@ -1,6 +1,7 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
+import com.zy.model.ImageVo;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.mal.Order.LogisticsFeePayType;
 import com.zy.entity.fnc.CurrencyType;
@@ -26,7 +27,7 @@ public class OrderAdminVo implements Serializable {
 	@Field(label = "卖家id")
 	private Long sellerId;
 	@Field(label = "是否支付给平台")
-	private Boolean payToPlatform;
+	private Boolean isPayToPlatform;
 	@Field(label = "标题")
 	private String title;
 	@Field(label = "货币类型")
@@ -112,8 +113,6 @@ public class OrderAdminVo implements Serializable {
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
 	@Field(label = "银行汇款截图")
-	private List<String> offlineImages = new ArrayList<>();
-	@Field(label = "银行汇款截图")
-	private List<String> offlineImageThumbnails = new ArrayList<>();
+	private List<ImageVo> offlineImages = new ArrayList<>();
 
 }

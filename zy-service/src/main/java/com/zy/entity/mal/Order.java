@@ -6,6 +6,7 @@ import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Transfer;
 import com.zy.entity.usr.User;
+import com.zy.model.ImageVo;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -83,21 +84,21 @@ public class Order implements Serializable {
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "用户id")
 	@View
-	@AssociationView(name = "user", groups = {VO_ADMIN, VO_ADMIN_FULL}, associationGroup = User.VO_ADMIN_SIMPLE)
+	@AssociationView(name = "user", groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL}, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@NotNull
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "卖家id")
 	@View
-	@AssociationView(name = "seller", groups = {VO_ADMIN, VO_ADMIN_FULL}, associationGroup = User.VO_ADMIN_SIMPLE)
+	@AssociationView(name = "seller", groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL}, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long sellerId;
 	
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
 	@NotNull
 	@Field(label = "是否支付给平台")
 	@Query(Predicate.EQ)
-	private Boolean payToPlatform;
+	private Boolean isPayToPlatform;
 
 	@NotBlank
 	@Field(label = "标题")
@@ -260,13 +261,18 @@ public class Order implements Serializable {
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	@Column(length = 1000)
 	@StringBinder
-	@CollectionView(name= "offlineImages", type = ArrayList.class, elementType = String.class, groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
-	@CollectionView(name= "offlineImageThumbnails", type = ArrayList.class, elementType = String.class, groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
+	@CollectionView(name= "offlineImages", type = ArrayList.class, elementType = ImageVo.class, groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	private String offlineImage;
 
 	@Field(label = "银行汇款备注")
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	@StringBinder
 	private String offlineMemo;
+
+	@Field(label = "是否删除")
+	@View(groups = {VO_ADMIN_FULL})
+	@NotNull
+	@Query(Predicate.EQ)
+	private Boolean isDeleted;
 
 }
