@@ -38,13 +38,14 @@
       container.appendChild(eleState);
     }
     ths.eleState = eleState;
+    
     var ua = window.navigator.userAgent.toLowerCase();
     if(ua.match(/MicroMessenger/i) == 'micromessenger'){
       // weixin
     }
     
     ths.stopLoading = function(){
-      if(container.className.indexOf('image-add') != -1) {
+      if(options.isMultipart) {
         ths.eleState.className = 'state state-add';
       } else {
         container.removeChild(ths.eleState);
@@ -161,31 +162,32 @@
         },
         uploadSuccess: function(e) {
           if(e.target.status != 200){
-            alert('图片上传失败，请重试' + '[' + e.target.status + ']');
+            ths.callbacks.uploadError(e);
             return;
           }
           var result = JSON.parse(e.target.responseText);
           if(result.code != 0) {
-            alert('图片上传失败，请重试' + '[' + result.code + ']');
+            ths.callbacks.uploadError(e);
             return;
           }
           var resultData = result.data;
           // alert(result);
           
-          var imageObj = container.getElementsByTagName('img')[0];
-          
-          if(imageObj) {
-            imageObj.src = resultData.imageThumbnail;
-            imageObj.onload = function(){
-              ths.stopLoading();
-            };
-          } else {
+          if(options.isMultipart) {
             ths.stopLoading();
-          }
-          
-          var inputHidden = container.getElementsByTagName('input')[0];
-          if(inputHidden){
-            inputHidden.value = resultData.image;
+            //TODO 多图上传
+          } else {
+            var inputHidden = container.getElementsByTagName('input')[0];
+            if(inputHidden){
+              inputHidden.value = resultData.image;
+            }
+            var imageObj = container.getElementsByTagName('img')[0];
+            if(imageObj) {
+              imageObj.src = resultData.imageThumbnail;
+              imageObj.onload = function(){
+                ths.stopLoading();
+              };
+            }
           }
           if(options.success) {
             options.success.call(container, resultData);
@@ -229,6 +231,7 @@
     quality : 0.5,
     fileTypes : ['image/bmp', 'image/gif', 'image/jpeg', 'image/png'],
     maxFileSize : '10MB',
+    isMultipart : false,
     success : function(result){
       
     },

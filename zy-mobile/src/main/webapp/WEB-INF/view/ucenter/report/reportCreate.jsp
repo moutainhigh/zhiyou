@@ -21,25 +21,7 @@
     var area = new areaInit('province', 'city', 'district');
     
     $('.image-multi .image-add').imageupload({
-      progress : function() {
-      },
-      success : function(result) {
-        var $this = $(this);
-        var limit = $this.attr('data-limit');
-        var imageItems = $this.siblings('.image-item');
-        var inputHidden = $this.children('input:hidden');
-        var inputName = inputHidden.val('').attr('name');
-        //inputName = inputName.replace((imageItems.length + 1), '');
-        var image = result.image;
-        var imageThumbnail = result.imageThumbnail;
-        var imageItem = '<div class="image-item">' + '<input type="hidden" name="' + inputName + '" value="' + image + '">'
-            + '<img src="' + imageThumbnail + '">' + '<input type="file">' + '</div>';
-        $(imageItem).insertBefore($this);
-        if (limit && limit <= imageItems.length + 1) {
-          $this.remove();
-        }
-        $this.siblings('.image-item').eq(imageItems.length).imageupload();
-      }
+      isMultipart : true
     });
 
     //验证
@@ -67,12 +49,16 @@
         'reportResult' : {
           required : true
         },
-        'image1' : {
-          required : true
-        },
         'text' : {
           required : true
         }
+      },
+      submitHandler : function(form) {
+        if($('input[name="image"]').length < 1) {
+          messageFlash('请至少上传一张图片');
+          return;
+        }
+        form.submit();
       }
     });
 
@@ -168,8 +154,8 @@
         </div>
         <div class="list-item">
           <div class="list-text image-upload image-multi">
-            <div class="image-add" data-limit="6">
-              <input type="hidden" name="image1" value="">
+            <div class="image-add" data-limit="6" data-name="image">
+              <input type="hidden" value="">
               <input type="file">
               <em class="state state-add"></em>
             </div>

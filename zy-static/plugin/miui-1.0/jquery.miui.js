@@ -232,7 +232,7 @@
     if(options.url.length > 1) {
       str +=  '<div class="view-control control-left"></div>'
           +   '<div class="view-control control-right"></div>'
-          +   '<div class="view-index"><em>' + options.current + '</em> / ' + options.url.length + '</div>';
+          +   '<div class="view-index"><em>' + (options.current + 1) + '</em> / ' + options.url.length + '</div>';
     }
     str +=    '</aside>';
     $imageview = $(str);
