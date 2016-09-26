@@ -139,7 +139,7 @@
           },
           {
             data: '',
-            title: '代理信息',
+            title: '服务商信息',
             render: function (data, type, full) {
               return formatUser(full.user);
             }

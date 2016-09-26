@@ -100,9 +100,9 @@ $(function() {
 					                </shiro:hasPermission>
 					                <shiro:hasPermission name="user:freeze">
 					                if(full.isFrozen) {
-					                	optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/agent/unFreeze/' + data + '" data-confirm="您确定要解冻代理['+full.nickname+']？"><i class="fa fa-smile-o"></i> 解冻 </a>';
+					                	optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/agent/unFreeze/' + data + '" data-confirm="您确定要解冻服务商['+full.nickname+']？"><i class="fa fa-smile-o"></i> 解冻 </a>';
 					                }else {
-					                	optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/agent/freeze/' + data + '" data-confirm="您确定要冻结代理['+full.nickname+']？"><i class="fa fa-meh-o"></i> 冻结 </a>';
+					                	optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/agent/freeze/' + data + '" data-confirm="您确定要冻结服务商['+full.nickname+']？"><i class="fa fa-meh-o"></i> 冻结 </a>';
 					                }
 					                </shiro:hasPermission>
 								}
@@ -174,7 +174,7 @@ function closeBtn() {
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/agent">代理管理</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/agent">服务商管理</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -185,7 +185,7 @@ function closeBtn() {
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-user"></i><span>代理管理 </span>
+          <i class="fa fa-user"></i><span>服务商管理 </span>
         </div>
         <div class="tools">
           <a class="collapse" href="javascript:;"> </a> <a class="reload" href="javascript:;"> </a>
@@ -205,7 +205,7 @@ function closeBtn() {
               </button>
               <ul class="dropdown-menu pull-right">
                 <li><a href="#"> 打印 </a></li>
-                <li><a href="javascript:void(0)" onClick="" class="easyui-linkbutton" data-options="iconCls:'icon-xls',plain:true">导出代理数据</a></li>
+                <li><a href="javascript:void(0)" onClick="" class="easyui-linkbutton" data-options="iconCls:'icon-xls',plain:true">导出服务商数据</a></li>
               </ul>
             </div> -->
           </div>

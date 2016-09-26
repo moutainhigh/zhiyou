@@ -47,12 +47,12 @@
       </div>
       <div class="list-item">
         <i class="list-icon fa fa-map-marker"></i>
-        <div class="list-text">代理等级</div>
+        <div class="list-text">服务商等级</div>
         <div class="list-unit">
-          <c:if test="${user.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
-          <c:if test="${user.userRank == 'V2'}"><label class="label blue">二级代理</label></c:if>
-          <c:if test="${user.userRank == 'V3'}"><label class="label orange">一级代理</label></c:if>
-          <c:if test="${user.userRank == 'V4'}"><label class="label red">特级代理</label></c:if>
+          <c:if test="${user.userRank == 'V1'}"><label class="label purple">三级服务商</label></c:if>
+          <c:if test="${user.userRank == 'V2'}"><label class="label blue">二级服务商</label></c:if>
+          <c:if test="${user.userRank == 'V3'}"><label class="label orange">一级服务商</label></c:if>
+          <c:if test="${user.userRank == 'V4'}"><label class="label red">特级服务商</label></c:if>
         </div>
       </div>
       <div class="list-item">
@@ -69,7 +69,7 @@
     
     <c:if test="${not empty list && level < 3}">
     <div class="list-group">
-      <div class="list-title">&lt;<span class="font-orange">${user.nickname}</span>&gt;的直接下级代理</div>
+      <div class="list-title">&lt;<span class="font-orange">${user.nickname}</span>&gt;的直接下级服务商</div>
       <c:forEach items="${list}" var="inviteUser" varStatus="varStatus">
       <a class="list-item invite" href="${ctx}/u/team/${inviteUser.id}?level=${level+1}">
         <div class="avatar">
@@ -80,10 +80,10 @@
           <div class="font-777 fs-14"><i class="fa fa-phone font-999"></i> ${inviteUser.phone}</div>
         </div>
         <div class="list-unit">
-          <c:if test="${inviteUser.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
-          <c:if test="${inviteUser.userRank == 'V2'}"><label class="label blue">二级代理</label></c:if>
-          <c:if test="${inviteUser.userRank == 'V3'}"><label class="label orange">一级代理</label></c:if>
-          <c:if test="${inviteUser.userRank == 'V4'}"><label class="label red">特级代理</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V1'}"><label class="label purple">三级服务商</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V2'}"><label class="label blue">二级服务商</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V3'}"><label class="label orange">一级服务商</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V4'}"><label class="label red">特级服务商</label></c:if>
         </div>
         <i class="list-arrow"></i>
       </a>

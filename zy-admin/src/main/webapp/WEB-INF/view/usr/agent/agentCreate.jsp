@@ -67,7 +67,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/agent">代理管理</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/agent">服务商管理</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -78,7 +78,7 @@
     <div class="portlet box yellow">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-edit"></i><span> 新增代理 </span>
+          <i class="fa fa-edit"></i><span> 新增服务商 </span>
         </div>
         <div class="tools">
           <a href="javascript:;" class="collapse"> </a> <a href="javascript:;" class="reload"> </a>
@@ -100,19 +100,19 @@
               <div class="col-md-4">
                 <div class="input-icon right">
                   <select name="userType" class="form-control">
-                  	<option value="代理">代理</option>
+                  	<option value="服务商">服务商</option>
                   </select>
                 </div>
               </div>
             </div>
             
             <div class="form-group">
-              <label class="control-label col-md-3">代理等级
+              <label class="control-label col-md-3">服务商等级
               </label>
               <div class="col-md-4">
                 <div class="input-icon right">
                   <select name="userRank" class="form-control">
-                  	<option value="V1">代理</option>
+                  	<option value="V1">服务商</option>
                   	<option value="V4">合伙人</option>
                   </select>
                 </div>

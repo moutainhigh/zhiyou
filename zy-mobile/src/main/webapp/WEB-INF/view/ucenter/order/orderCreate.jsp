@@ -263,7 +263,7 @@
   <input type="hidden" name="parentId" value="${parent.id}">
   <div class="parent-alert alert alert-warning mb-10">
     <img class="image-40 round" src="${parent.avatarThumbnail}">
-    <span class="ml-10">${parent.nickname} 将成为您的上级代理.</span>
+    <span class="ml-10">${parent.nickname} 将成为您的上级服务商.</span>
   </div>
   </c:if>
   

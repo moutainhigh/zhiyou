@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>代理套餐</title>
+<title>服务商套餐</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <style>
 .form-radio.current {
@@ -48,7 +48,7 @@
 	
 	$('#btnSubmit').click(function(){
 	  if(!$('[name="quantity"]').val()) {
-	    messageFlash('请选择代理套餐');
+	    messageFlash('请选择服务商套餐');
 	    return false;
 	  }
 	  <c:if test="${userRank == 'V0'}">
@@ -85,13 +85,13 @@
 <body>
 
   <header class="header">
-    <h1><c:if test="${userRank == 'V0'}">成为代理</c:if><c:if test="${userRank != 'V0'}">升级代理</c:if></h1>
+    <h1><c:if test="${userRank == 'V0'}">成为服务商</c:if><c:if test="${userRank != 'V0'}">升级服务商</c:if></h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
     <a class="button-right" href="${ctx}/help"><i class="fa fa-question-circle"></i></a>
   </header>
   
   <div class="note note-warning mb-0">
-    <p><i class="fa fa-exclamation-circle"></i> 购买下列套餐产品即可<c:if test="${userRank != 'V0'}">升级</c:if>成为相应代理。</p>
+    <p><i class="fa fa-exclamation-circle"></i> 购买下列套餐产品即可<c:if test="${userRank != 'V0'}">升级</c:if>成为相应服务商。</p>
   </div>
   
   <article class="mb-15 clearfix">
@@ -110,8 +110,8 @@
           </div>
           <img class="image-80 block mr-10" src="${product.image1Thumbnail}">
           <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity1}</span>支</h2>
-            <div class="lh-30"><label class="label red">一级代理</label></div>
+            <h2 class="font-777 fs-15 lh-24">${product.title}服务商套餐 <span class="quantity">${quantity1}</span>支</h2>
+            <div class="lh-30"><label class="label red">一级服务商</label></div>
             <div class="font-orange lh-24">¥ ${amount1}</div>
           </div>
         </div>
@@ -124,8 +124,8 @@
           </div>
           <img class="image-80 block mr-10" src="${product.image1Thumbnail}">
           <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity2}</span>支</h2>
-            <div class="lh-30"><label class="label yellow">二级代理</label></div>
+            <h2 class="font-777 fs-15 lh-24">${product.title}服务商套餐 <span class="quantity">${quantity2}</span>支</h2>
+            <div class="lh-30"><label class="label yellow">二级服务商</label></div>
             <div class="font-orange lh-24">¥ ${amount2}</div>
           </div>
         </div>
@@ -138,8 +138,8 @@
           </div>
           <img class="image-80 block mr-10" src="${product.image1Thumbnail}">
           <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${product.title}代理套餐 <span class="quantity">${quantity3}</span>支</h2>
-            <div class="lh-30"><label class="label green">三级代理</label></div>
+            <h2 class="font-777 fs-15 lh-24">${product.title}服务商套餐 <span class="quantity">${quantity3}</span>支</h2>
+            <div class="lh-30"><label class="label green">三级服务商</label></div>
             <div class="font-orange lh-24">¥ ${amount3}</div>
           </div>
         </div>
@@ -152,7 +152,7 @@
         <div class="list-item">
           <label class="list-label" for="name">上级手机号</label>
           <div class="list-text">
-            <input id="phone" name="phone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级代理手机号">
+            <input id="phone" name="phone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">
           </div>
         </div>
       </div>

@@ -36,19 +36,19 @@
     <div class="list-group">
       <div class="list-item">
         <i class="list-icon fa fa-users"></i>
-        <div class="list-text">直接下级代理数</div>
+        <div class="list-text">直接下级服务商数</div>
         <div class="list-unit">${agentsCount}</div>
       </div>
       <div class="list-item">
         <i class="list-icon fa fa-users"></i>
-        <div class="list-text">下级代理总数</div>
+        <div class="list-text">下级服务商总数</div>
         <div class="list-unit">${allAgentsCount}</div>
       </div>
     </div>
     
     <c:if test="${not empty list}">
     <div class="list-group">
-      <div class="list-title">我的直接下级代理</div>
+      <div class="list-title">我的直接下级服务商</div>
       <c:forEach items="${list}" var="inviteUser" varStatus="varStatus">
       <a class="list-item invite" href="${ctx}/u/team/${inviteUser.id}">
         <div class="avatar">
@@ -59,10 +59,10 @@
           <div class="font-777 fs-14"><i class="fa fa-phone font-999"> ${inviteUser.phone}</i></div>
         </div>
         <div class="list-unit">
-          <c:if test="${inviteUser.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
-          <c:if test="${inviteUser.userRank == 'V2'}"><label class="label blue">二级代理</label></c:if>
-          <c:if test="${inviteUser.userRank == 'V3'}"><label class="label orange">一级代理</label></c:if>
-          <c:if test="${inviteUser.userRank == 'V4'}"><label class="label red">特级代理</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V1'}"><label class="label purple">三级服务商</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V2'}"><label class="label blue">二级服务商</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V3'}"><label class="label orange">一级服务商</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V4'}"><label class="label red">特级服务商</label></c:if>
         </div>
         <i class="list-arrow"></i>
       </a>
