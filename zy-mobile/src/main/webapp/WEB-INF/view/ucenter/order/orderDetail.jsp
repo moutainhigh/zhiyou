@@ -17,6 +17,28 @@
 
 <script>
   $(function() {
+    
+    $('.image-view').click(function() {
+      var images = $(this).find('img');
+      if (images.length == 0) {
+        var url = $(this).attr('data-src');
+        var title = $(this).attr('data-title');
+        $.imageview({
+          url : url,
+          title : title
+        });
+      } else {
+        var title = $(this).attr('data-title');
+        var imageUrls = [];
+        $.each(images, function(n, image) {
+          imageUrls.push($(image).attr('data-src'));
+        })
+        $.imageview({
+          url : imageUrls,
+          title : title
+        });
+      }
+    });
 
     /*
      * 进货订单操作(买家)
@@ -71,6 +93,10 @@
   <header class="header">
     <h1>订单详情</h1>
     <a href="${ctx}/u/order/${inOut}" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="javascript:;" class="button-right button-popmenu"><i class="fa fa-ellipsis-h"></i></a>
+    <nav class="header-popmenu hide">
+      <a class="${ctx}/u/order/delete/${order.id}"><i class="fa fa-trash-o"></i>删除</a>
+    </nav>
   </header>
   
   <article>
@@ -245,8 +271,24 @@
       </div>
     </div>
     
-    <div class="list-title">买家留言</div>
     <div class="list-group">
+      <div class="list-title">支付凭证</div>
+      <div class="list-item">
+        <div class="list-text list-image image-view" data-title="支付凭证">
+        <c:forEach items="${order.offlineImages}" var="image">
+          <img src="${image.imageThumbnail}" data-src="${image.imageBig}">
+        </c:forEach>
+        </div>
+      </div>
+      <div class="list-item">
+        <div class="list-text">
+        ${order.offlineMemo}
+        </div>
+      </div>
+    </div>
+
+    <div class="list-group">
+      <div class="list-title">买家留言</div>
       <div class="list-item">
         <div class="list-text">
           <p class="fs-14 font-999">${empty order.buyerMemo ? '买家无留言' : order.buyerMemo}</p>
