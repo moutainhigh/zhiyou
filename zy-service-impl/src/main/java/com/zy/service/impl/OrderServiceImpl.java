@@ -561,7 +561,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public void modifyOffline(Long orderId, String offlineImage, String offlineMemo){
+	public void offlinePay(Long orderId, String offlineImage, String offlineMemo){
 
 		Order order = orderMapper.findOne(orderId);
 		validate(order, NOT_NULL, "order id " + orderId + " is not found");

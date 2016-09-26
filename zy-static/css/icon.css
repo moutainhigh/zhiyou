@@ -130,6 +130,35 @@
   background-image: url(../image/icon/icon_weibo.png);
 }
 
+/* currency */
+.icon-cny-money {
+  background-image: url(../image/icon/currency/icon_money.png);
+}
+.icon-cny-card {
+  background-image: url(../image/icon/currency/icon_card.png);
+}
+.icon-cny-data {
+  background-image: url(../image/icon/currency/icon_data.png);
+}
+.icon-cny-order {
+  background-image: url(../image/icon/currency/icon_order.png);
+}
+.icon-cny-post {
+  background-image: url(../image/icon/currency/icon_post.png);
+}
+.icon-cny-sale {
+  background-image: url(../image/icon/currency/icon_sale.png);
+}
+.icon-cny-teping {
+  background-image: url(../image/icon/currency/icon_teping.png);
+}
+.icon-cny-yiping {
+  background-image: url(../image/icon/currency/icon_yiping.png);
+}
+.icon-cny-yiyue {
+  background-image: url(../image/icon/currency/icon_yiyue.png);
+}
+
 /* bank */
 .icon-bank-youzheng {
   background-image: url(../image/icon/bank/icon_bank_01.png);

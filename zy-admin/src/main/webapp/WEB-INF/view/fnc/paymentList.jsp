@@ -175,12 +175,18 @@
             }
           },
           {
-            data: 'offlineImage',
+            data: '',
             title: '银行汇款截图',
             orderable: false,
             render: function (data, type, full) {
-              if (full.offlineImage) {
-                return '<img class="imageview mr-10" data-url="' + full.offlineImage + '" src="' + full.offlineImageThumbnail + '" >';
+              var offlineImages = full.offlineImages;
+              if (offlineImages) {
+                var html = '';
+                for (var i in offlineImages) {
+                  var image = offlineImages[i];
+                  html += '<img class="imageview mr-10" data-url="' + image.image + '" src="' + image.imageThumbnail + '" >';
+                }
+                return html;
               } else {
                 return '';
               }
@@ -209,7 +215,7 @@
               var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/order/detail?id=' + full.refId
                 + '"><i class="fa icon-control-forward "></i> 查看订单</a>';
               <shiro:hasPermission name="payment:confirmPaid">
-              if (full.payType == '银行汇款' && full.paymentStatus == '待确认' && full.offlineImage) {
+              if (full.payType == '银行汇款' && full.paymentStatus == '待确认' && full.offlineImages) {
                 optionHtml += '<a class="btn btn-xs default yellow-stripe payment-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';
               }
               </shiro:hasPermission>
