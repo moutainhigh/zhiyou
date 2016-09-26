@@ -15,7 +15,6 @@ import com.zy.model.BizCode;
 import com.zy.model.dto.AgentRegisterDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,54 +166,41 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void freeze(@NotNull Long id, @NotNull Long operatorId) {
-		User user = userMapper.findOne(id);
-		validate(user, NOT_NULL, "user id " + id + " is not found");
-		User operator = userMapper.findOne(operatorId);
-		validate(operator, NOT_NULL, "operator id " + id + " is not found");
-
+		User user = findAndValidate(id);
 		if (user.getIsFrozen()) {
 			return; // 幂等操作
 		}
-
-		User userForMerge = new User();
-		userForMerge.setId(id);
-		userForMerge.setIsFrozen(true);
-		userMapper.merge(userForMerge, "isFrozen");
+		user.setIsFrozen(true);
+		userMapper.update(user);
 		usrComponent.recordUserLog(id, operatorId, "冻结", null);
 	}
 
 	@Override
 	public void unfreeze(@NotNull Long id, @NotNull Long operatorId) {
 
-		User user = userMapper.findOne(id);
-		validate(user, NOT_NULL, "user id " + id + " is not found");
-		User operator = userMapper.findOne(operatorId);
-		validate(operator, NOT_NULL, "operator id " + id + " is not found");
-
-
-		User userForMerge = new User();
-		userForMerge.setId(id);
-		userForMerge.setIsFrozen(false);
-		userMapper.merge(userForMerge, "isFrozen");
+		User user = findAndValidate(id);
+		user.setIsFrozen(true);
+		userMapper.update(user);
 		usrComponent.recordUserLog(id, operatorId, "解冻", null);
 	}
 
 	@Override
-	public void modifyUserRank(@NotNull Long id, @NotNull UserRank userRank, String remark,
-			@NotNull Long operatorId) {
+	public void modifyUserRank(@NotNull Long id, @NotNull UserRank userRank, @NotNull Long operatorId, String remark) {
 
-		User user = userMapper.findOne(id);
-		validate(user, NOT_NULL, "user id " + id + " is not found");
-		User operator = userMapper.findOne(operatorId);
-		validate(operator, NOT_NULL, "operator id " + id + " is not found");
+		User user = findAndValidate(id);
+		UserRank plainUserRank = user.getUserRank();
 
-		if (userRank == user.getUserRank()) {
+		if (user.getUserType() != UserType.代理  || plainUserRank == UserRank.V0) {
+			throw new BizException(BizCode.ERROR, "修改无效, 不符合业务逻辑");
+		}
+
+		if (userRank == plainUserRank) {
 			return; // 幂等操作
 		}
 
 		user.setUserRank(userRank);
 		userMapper.update(user);
-		usrComponent.recordUserLog(id, operatorId, "设置用户等级", remark);
+		usrComponent.recordUserLog(id, operatorId, "设置用户等级", "从" + plainUserRank + "改为" + userRank + ", 备注" + remark);
 		producer.send(TOPIC_USER_RANK_CHANGED, user.getId());
 	}
 
@@ -259,18 +245,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyPhone(Long userId, @NotBlank(message = "phone is null") String phone) {
-		findAndValidate(userId);
-		User user = userMapper.findByPhone(phone);
-		validate(user, NOT_NULL, "user existed, phone = " + phone);
-
-		User userForMerge = new User();
-		userForMerge.setId(userId);
-		userForMerge.setPhone(phone);
-		userMapper.merge(userForMerge, "phone");
-	}
-
-	@Override
 	public void modifyNickname(Long userId, @NotBlank String nickname) {
 		findAndValidate(userId);
 
@@ -293,34 +267,30 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyPasswordAndPhone(Long id, String password, @NotBlank String phone) {
-		findAndValidate(id);
-
-		User userForMerge = new User();
-		userForMerge.setId(id);
-		userForMerge.setPhone(phone);
-		if (StringUtils.isNotBlank(password)) {
-			userForMerge.setPassword(ServiceUtils.hashPassword(password));
-			userMapper.merge(userForMerge, "phone", "password");
-		} else {
-			userMapper.merge(userForMerge, "phone");
+	public void modifyPhone(@NotNull Long id, @NotBlank String phone,  @NotNull Long operatorId) {
+		User user = findAndValidate(id);
+		String plainPhone = user.getPhone();
+		if (phone.equals(plainPhone)) {
+			return; // 幂等操作
 		}
+		user.setPhone(phone);
+		userMapper.update(user);
+		usrComponent.recordUserLog(id, operatorId, "修改手机", "从" + plainPhone + "修改为" + phone);
 	}
 
 	@Override
-	public void modifyPassword(Long id, @NotBlank String password) {
-		findAndValidate(id);
-
-		User userForMerge = new User();
-		userForMerge.setId(id);
-		userForMerge.setPassword(hashPassword(password));
-		userMapper.merge(userForMerge, "password");
+	public void modifyPassword(@NotNull Long id, @NotBlank String password,  @NotNull Long operatorId) {
+		User user = findAndValidate(id);
+		user.setPassword(ServiceUtils.hashPassword(password));
+		userMapper.update(user);
+		usrComponent.recordUserLog(id, operatorId, "修改密码", null);
 	}
 
 	@Override
 	public void loginSuccess(@NotNull Long id) {
 		User user = userMapper.findOne(id);
 		validate(user, NOT_NULL, "user id" + id + "not found");
+		// TODO
 	}
 
 	@Override
@@ -329,9 +299,6 @@ public class UserServiceImpl implements UserService {
 		if (user.getOpenId() == null) {
 			return; // 幂等
 		}
-		User operator = userMapper.findOne(operatorId);
-		validate(operator, NOT_NULL, "operator id " + id + " is not found");
-
 		user.setOpenId(null);
 		user.setUnionId(null);
 		userMapper.update(user);
@@ -340,7 +307,36 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void modifyParentId(@NotNull Long id, @NotNull Long parentId, @NotNull Long operatorId, String remark) {
-		// TODO
+		User user = findAndValidate(id);
+		User parent = findAndValidate(parentId);
+		if (parent.getUserType() != UserType.代理) {
+			throw new BizException(BizCode.ERROR, "上级用户类型必须是代理");
+		}
+		if (parent.getUserRank() == UserRank.V0) {
+			throw new BizException(BizCode.ERROR, "上级用户必须成为代理");
+		}
+
+		Long originParentId = parentId;
+		Long plainParentId = user.getParentId();
+		if (originParentId.equals(plainParentId)) {
+			return; // 幂等操作
+		}
+
+		if (id.equals(parentId)) {
+			throw new BizException(BizCode.ERROR, "上级不能是自己");
+		}
+
+		while (parentId != null) {
+			parent = userMapper.findOne(parentId);
+			parentId = parent.getParentId();
+			if (parentId != null && parentId.equals(id)) {
+				throw new BizException(BizCode.ERROR, "出现循环引用");
+			}
+		}
+
+		user.setParentId(originParentId);
+		userMapper.update(user);
+		usrComponent.recordUserLog(id, operatorId, "设置上级", "从" + plainParentId + "设置为" + originParentId + ", 备注" + remark);
 	}
 
 	@Override

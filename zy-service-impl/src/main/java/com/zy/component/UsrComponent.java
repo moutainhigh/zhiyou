@@ -9,6 +9,7 @@ import com.zy.mapper.UserLogMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.mapper.UserUpgradeMapper;
 import com.zy.model.BizCode;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -58,7 +59,14 @@ public class UsrComponent {
 		producer.send(TOPIC_USER_RANK_CHANGED, user.getId());
 	}
 
-	public void recordUserLog(Long userId, Long operatorId, String operation, String remark) {
+	public void recordUserLog(@NotNull Long userId, @NotNull Long operatorId, @NotBlank String operation, String remark) {
+
+		User user = userMapper.findOne(userId);
+		validate(user, NOT_NULL, "user id " + userId + " is not found");
+
+		User operator = userMapper.findOne(operatorId);
+		validate(operator, NOT_NULL, "operator id " + operatorId + " is not found");
+
 		UserLog userLog = new UserLog();
 		userLog.setUserId(userId);
 		userLog.setOperatorId(operatorId);
