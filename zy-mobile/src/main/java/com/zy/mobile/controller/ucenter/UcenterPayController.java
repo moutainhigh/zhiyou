@@ -175,7 +175,7 @@ public class UcenterPayController {
 		validate(order, NOT_NULL, "order id" + refId + " not found");
 		validate(offlineImage, NOT_BLANK, "order offlineImage is blank");
 		validate(offlineMemo, NOT_BLANK, "order offlineMemo is blank");
-		orderService.modifyOffline(refId, offlineImage, offlineMemo);
+		orderService.offlinePay(refId, offlineImage, offlineMemo);
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("转账汇款凭证提交成功，请等待确认"));
 		return "redirect:/u/order/" + refId;
 	}
