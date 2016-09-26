@@ -175,6 +175,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setDiscountFee(new BigDecimal("0.00"));
 		order.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_ORDER_EXPIRE_IN_MINUTES));
 		order.setIsPayToPlatform(orderCreateDto.getIsPayToPlatform());
+		order.setIsDeleted(false);
 		if (StringUtils.isNotBlank(title)) {
 			order.setTitle(title);
 		} else {

@@ -1,19 +1,20 @@
 package com.zy.component;
 
-import static com.zy.util.GcUtils.formatDate;
-
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import com.zy.common.util.BeanUtils;
+import com.zy.entity.fnc.Payment;
+import com.zy.model.ImageVo;
+import com.zy.util.GcUtils;
+import com.zy.util.VoHelper;
+import com.zy.vo.PaymentAdminVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.zy.common.util.BeanUtils;
-import com.zy.entity.fnc.Payment;
-import com.zy.util.GcUtils;
-import com.zy.util.VoHelper;
-import com.zy.vo.PaymentAdminVo;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.zy.util.GcUtils.formatDate;
 
 @Component
 public class PaymentComponent {
@@ -37,8 +38,13 @@ public class PaymentComponent {
 		String offlineImage = payment.getOfflineImage();
 		if (StringUtils.isNotBlank(offlineImage)) {
 			String[] offlineImages = StringUtils.split(offlineImage);
-			paymentAdminVo.getOfflineImages().addAll(Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).collect(Collectors.toList()));
-			paymentAdminVo.getOfflineImageThumbnails().addAll(Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).map(v -> GcUtils.getThumbnail(v)).collect(Collectors.toList()));
+			List<ImageVo> images = Stream.of(offlineImages).filter(v -> StringUtils.isNotBlank(v)).map(v -> {
+				ImageVo imageVo = new ImageVo();
+				imageVo.setImage(v);
+				imageVo.setImageThumbnail(GcUtils.getThumbnail(v));
+				return imageVo;
+			}).collect(Collectors.toList());
+			paymentAdminVo.setOfflineImages(images);
 		}
 
 		paymentAdminVo.setAmount1Label(GcUtils.formatCurreny(payment.getAmount1()));

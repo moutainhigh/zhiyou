@@ -2,6 +2,7 @@ package com.zy.entity.fnc;
 
 import com.zy.common.extend.StringBinder;
 import com.zy.entity.usr.User;
+import com.zy.model.ImageVo;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -173,8 +174,7 @@ public class Payment implements Serializable {
 	@View
 	@Column(length = 1000)
 	@StringBinder
-	@CollectionView(name= "offlineImages", type = ArrayList.class, elementType = String.class)
-	@CollectionView(name= "offlineImageThumbnails", type = ArrayList.class, elementType = String.class)
+	@CollectionView(name= "offlineImages", type = ArrayList.class, elementType = ImageVo.class)
 	private String offlineImage;
 	
 	@Field(label = "银行汇款备注")

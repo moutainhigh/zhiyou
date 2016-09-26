@@ -2,6 +2,7 @@ package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
 import com.zy.entity.fnc.Deposit.DepositStatus;
+import com.zy.model.ImageVo;
 import com.zy.entity.fnc.PayType;
 import com.zy.entity.fnc.CurrencyType;
 import lombok.Getter;
@@ -72,8 +73,6 @@ public class DepositAdminVo implements Serializable {
 	@Field(label = "提现单状态")
 	private String depositStatusStyle;
 	@Field(label = "银行汇款截图")
-	private List<String> offlineImages = new ArrayList<>();
-	@Field(label = "银行汇款截图")
-	private List<String> offlineImageThumbnails = new ArrayList<>();
+	private List<ImageVo> offlineImages = new ArrayList<>();
 
 }
