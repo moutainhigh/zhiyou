@@ -32,7 +32,7 @@
         }
       },
       submitHandler : function(form) {
-        if($('input[name="image"]').length < 1) {
+        if($('input[name="offlineImage"]').length < 1) {
           messageFlash('请至少上传一张图片');
           return;
         }

@@ -54,12 +54,13 @@ public class Report implements Serializable {
 	@Field(label = "用户id")
 	@Query({Predicate.EQ, Predicate.IN})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(groups = VO_EXPORT, name = "nickname", field = @Field(label = "昵称", order = 15))
 	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@NotNull
 	@Field(label = "姓名")
-	@Query({Predicate.LK})
+	@Query({Predicate.EQ, Predicate.IN})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(groups = VO_EXPORT, field = @Field(label = "客户姓名", order = 20))
 	private String realname;
@@ -94,9 +95,9 @@ public class Report implements Serializable {
 
 	//@NotNull
 	@Field(label = "所在地")
-	@View(name = "province", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
-	@View(name = "city", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
-	@View(name = "district", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(name = "province", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN, VO_EXPORT})
+	@View(name = "city", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN, VO_EXPORT})
+	@View(name = "district", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN, VO_EXPORT})
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Long areaId;
 
@@ -134,45 +135,46 @@ public class Report implements Serializable {
 	@Field(label = "检测次数")
 	@NotNull
 	@Min(1)
-	@View(groups = {VO_DETAIL, VO_ADMIN})
+	@Query(Predicate.EQ)
+	@View(groups = {VO_DETAIL, VO_ADMIN, VO_EXPORT})
 	private Integer times;
 
 	@NotNull
 	@Field(label = "申请时间")
 	@View(groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "appliedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST})
+	@View(name = "appliedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST, VO_EXPORT})
 	private Date appliedTime;
 
 	@NotNull
 	@Query({Predicate.GTE, Predicate.LT})
 	@Field(label = "创建时间")
 	@View(groups = {VO_ADMIN})
-	@View(name = "createdTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST})
+	@View(name = "createdTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST, VO_EXPORT})
 	private Date createdTime;
 
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "初审状态")
-	@View(groups = {VO_DETAIL, VO_ADMIN})
+	@View(groups = {VO_DETAIL, VO_ADMIN, VO_EXPORT})
 	private ConfirmStatus preConfirmStatus;
 
 	@Field(label = "初审通过时间")
-	@View(groups = {VO_ADMIN})
+	@View(groups = {VO_ADMIN, VO_EXPORT})
 	@View(name = "preConfirmedTimeLabel", type = String.class, groups = {VO_ADMIN})
 	private Date preConfirmedTime;
 
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "审核状态")
-	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN, VO_EXPORT})
 	private ConfirmStatus confirmStatus;
 
 	@Field(label = "审核备注")
-	@View(groups = {VO_DETAIL, VO_ADMIN})
+	@View(groups = {VO_DETAIL, VO_ADMIN, VO_EXPORT})
 	private String confirmRemark;
 
 	@Field(label = "审核通过时间")
-	@View(groups = {VO_DETAIL, VO_ADMIN})
+	@View(groups = {VO_DETAIL, VO_ADMIN, VO_EXPORT})
 	@View(name = "confirmedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL})
 	private Date confirmedTime;
 	

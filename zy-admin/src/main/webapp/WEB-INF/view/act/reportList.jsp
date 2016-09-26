@@ -184,7 +184,7 @@
             title: '客户检测',
             orderable: false,
             render : function (data, type, full) {
-              return '<p>时间: ' + full.createdTimeLabel + '</p><p>心得: <div class="text" style="width: 200px;" title=' + data + '>' + data +  '</div></p>';
+              return '<p>第' + full.times + '次检测</p><p>时间: ' + full.createdTimeLabel + '</p><p>心得: <div class="text" style="width: 200px;" title=' + data + '>' + data +  '</div></p>';
             }
           },
           {
@@ -245,6 +245,9 @@
             orderable: false,
             render: function (data, type, full) {
               var optionHtml = '';
+              <shiro:hasPermission name="report:edit">
+              optionHtml += '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/report/update?id=' + full.id + '"><i class="fa fa-edit"></i> 编辑</a>';
+              </shiro:hasPermission>
               <shiro:hasPermission name="report:preConfirm">
               if (full.preConfirmStatus == '待审核') {
                 optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-step="1" data-id="' + full.id + '"><i class="fa fa-edit"></i> 预审核 </a>';

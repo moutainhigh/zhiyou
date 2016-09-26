@@ -81,6 +81,7 @@ public class ReportServiceImpl implements ReportService {
 		report.setPreConfirmStatus(ConfirmStatus.已通过);
 		report.setConfirmStatus(ConfirmStatus.已通过);
 		report.setConfirmRemark("管理后台新增");
+		report.setTimes(report.getTimes());
 		report.setConfirmedTime(now);
 		report.setPreConfirmedTime(now);
 		report.setAppliedTime(now);
@@ -90,6 +91,28 @@ public class ReportServiceImpl implements ReportService {
 		validate(report);
 		reportMapper.insert(report);
 		return report;
+	}
+	
+	@Override
+	public Report adminModify(@NotNull Report report) {
+		Long id = report.getId();
+		validate(id, NOT_NULL, "id is null");
+
+		Report persistence = reportMapper.findOne(id);
+		validate(persistence, NOT_NULL, "report id" + id + " not found");
+
+		persistence.setImage(report.getImage());
+		persistence.setAreaId(report.getAreaId());
+		persistence.setJobId(report.getJobId());
+		persistence.setTimes(report.getTimes());
+		persistence.setGender(report.getGender());
+		persistence.setRealname(report.getRealname());
+		persistence.setPhone(report.getPhone());
+		persistence.setAge(report.getAge());
+		persistence.setText(report.getText());
+		persistence.setReportResult(report.getReportResult());
+		reportMapper.update(persistence);
+		return persistence;
 	}
 	
 	@Override
@@ -209,6 +232,7 @@ public class ReportServiceImpl implements ReportService {
 		persistence.setGender(report.getGender());
 		persistence.setRealname(report.getRealname());
 		persistence.setAge(report.getAge());
+		persistence.setImage(report.getImage());
 		persistence.setText(report.getText());
 		persistence.setReportResult(report.getReportResult());
 		reportMapper.update(persistence);
