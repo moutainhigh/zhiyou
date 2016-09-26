@@ -83,14 +83,14 @@ public class Order implements Serializable {
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "用户id")
 	@View
-	@AssociationView(name = "user", groups = {VO_ADMIN, VO_ADMIN_FULL}, associationGroup = User.VO_ADMIN_SIMPLE)
+	@AssociationView(name = "user", groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL}, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@NotNull
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "卖家id")
 	@View
-	@AssociationView(name = "seller", groups = {VO_ADMIN, VO_ADMIN_FULL}, associationGroup = User.VO_ADMIN_SIMPLE)
+	@AssociationView(name = "seller", groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL}, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long sellerId;
 	
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
