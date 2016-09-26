@@ -191,15 +191,17 @@
                   </c:forEach>
                 </select>
                 <p />
-                <img data-target="image1" class="product-image bd" src="${report.imageThumbnails[0]}">
-                <input type="hidden" name="image" id="image1" value="${report.images[0]}"/>
+                <img data-target="image1" class="product-image bd" src="<c:if test="${not empty report.imageThumbnails[0]}">${report.imageThumbnails[0] }</c:if>
+                <c:if test="${empty report.imageThumbnails[0]}">${ctx}/image/upload_240_150.jpg</c:if>">
+                <input type="hidden" name="image" id="image1" value="<c:if test='${not empty report.images[0]}'>${report.images[0]}</c:if>" />
                 <p />
                 <img data-target="image2" class="product-image bd" src="<c:if test="${not empty report.imageThumbnails[1]}">${report.imageThumbnails[1] }</c:if>
                 <c:if test="${empty report.imageThumbnails[1]}">${ctx}/image/upload_240_150.jpg</c:if>">
-                <input type="hidden" name="image" id="image2" value="${report.images[1]}"/>
+                <input type="hidden" name="image" id="image2" value="<c:if test='${not empty report.images[1]}'>${report.images[1]}</c:if>" />
+                
                 <img data-target="image3" class="product-image bd" src="<c:if test="${not empty report.imageThumbnails[2]}">${report.imageThumbnails[2] }</c:if>
                 <c:if test="${empty report.imageThumbnails[2]}">${ctx}/image/upload_240_150.jpg</c:if>">
-                <input type="hidden" name="image" id="image3" value="${report.images[2]}"/>   
+                <input type="hidden" name="image" id="image3" value="<c:if test='${not empty report.images[2]}'>${report.images[2]}</c:if>" />  
               </div>
             </div>
             

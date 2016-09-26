@@ -10,7 +10,7 @@
 <script>
   $(function () {
 
-    var area = new areaInit('province', 'city', 'district');
+    var area = new areaInit('province', 'city', 'district', '${report.areaId}');
     
     $('#form').validate({
       rules: {
@@ -117,7 +117,7 @@
             <div class="form-group">
               <label class="control-label col-md-3">客户姓名<span class="required"> * </span></label>
               <div class="col-md-5">
-                <input type="text" class="form-control" name="realname" id="realname" value=""/>
+                <input type="text" class="form-control" name="realname" id="realname" value="${report.realname}"/>
               </div>
             </div>
             
@@ -126,8 +126,8 @@
               <div class="col-md-5">
                 <select class="form-control" name="gender">
                   <option value="">-- 性别 --</option>
-                  <option value="0">男</option>
-                  <option value="1">女</option>
+                  <option value="0"<c:if test="${report.gender == '男'}"> selected="selected"</c:if>>男</option>
+                  <option value="1"<c:if test="${report.gender == '女'}"> selected="selected"</c:if>>女</option>
                 </select>
               </div>
             </div>
@@ -153,7 +153,7 @@
                 <select name="jobId" class="form-control">
                   <option value="">请选择</option>
                   <c:forEach items="${jobs}" var="job">
-                    <option value="${job.id}">${job.jobName}</option>
+                    <option value="${job.id}"<c:if test="${job.id == report.jobId}"> selected="selected"</c:if>>${job.jobName}</option>
                   </c:forEach>
                 </select>
               </div>
@@ -162,21 +162,21 @@
             <div class="form-group">
               <label class="control-label col-md-3">年龄<span class="required"> * </span></label>
               <div class="col-md-5">
-                <input type="number" name="age" class="form-control" value="" placeholder="填写客户年龄">
+                <input type="number" name="age" class="form-control" value="${report.age}" placeholder="填写客户年龄">
               </div>
             </div>
             
             <div class="form-group">
               <label class="control-label col-md-3" for="phone">手机号<span class="required"> * </span></label>
               <div class="col-md-5">
-                <input type="text" name="phone" class="form-control" value="" placeholder="填写客户手机号">
+                <input type="text" name="phone" class="form-control" value="${report.phone}" placeholder="填写客户手机号">
               </div>
             </div>
             
             <div class="form-group">
               <label class="control-label col-md-3" for="phone">第几次检测<span class="required"> * </span></label>
               <div class="col-md-5">
-                <input type="number" name="times" class="form-control" value="" placeholder="第几次检测">
+                <input type="number" name="times" class="form-control" value="${report.times}" placeholder="第几次检测">
               </div>
             </div>
             
@@ -186,24 +186,28 @@
                 <select name="reportResult" class="form-control">
                   <option value="">-- 检测结果 --</option>
                   <c:forEach items="${reportResults}" var="reportResult">
-                    <option value="${reportResult}">${reportResult}</option>
+                    <option value="${reportResult}"<c:if test="${reportResult == report.reportResult}"> selected="selected"</c:if>>${reportResult}</option>
                   </c:forEach>
                 </select>
                 <p />
-                <img data-target="image1" class="product-image bd" src="${ctx}/image/upload_240_150.jpg">
-                <input type="hidden" name="image" id="image1" value=""/>
+                <img data-target="image1" class="product-image bd" src="<c:if test="${not empty report.imageThumbnails[0]}">${report.imageThumbnails[0] }</c:if>
+                <c:if test="${empty report.imageThumbnails[0]}">${ctx}/image/upload_240_150.jpg</c:if>">
+                <input type="hidden" name="image" id="image1" value="<c:if test='${not empty report.images[0]}'>${report.images[0]}</c:if>" />
                 <p />
-                <img data-target="image2" class="product-image bd" src="${ctx}/image/upload_240_150.jpg">
-                <input type="hidden" name="image" id="image2" value=""/>
-                <img data-target="image3" class="product-image bd" src="${ctx}/image/upload_240_150.jpg">
-                <input type="hidden" name="image" id="image3" value=""/>
+                <img data-target="image2" class="product-image bd" src="<c:if test="${not empty report.imageThumbnails[1]}">${report.imageThumbnails[1] }</c:if>
+                <c:if test="${empty report.imageThumbnails[1]}">${ctx}/image/upload_240_150.jpg</c:if>">
+                <input type="hidden" name="image" id="image2" value="<c:if test='${not empty report.images[1]}'>${report.images[1]}</c:if>" />
+                
+                <img data-target="image3" class="product-image bd" src="<c:if test="${not empty report.imageThumbnails[2]}">${report.imageThumbnails[2] }</c:if>
+                <c:if test="${empty report.imageThumbnails[2]}">${ctx}/image/upload_240_150.jpg</c:if>">
+                <input type="hidden" name="image" id="image3" value="<c:if test='${not empty report.images[2]}'>${report.images[2]}</c:if>" />  
               </div>
             </div>
             
             <div class="form-group">
               <label class="control-label col-md-3" for="phone">填写产品使用心得<span class="required"> * </span></label>
               <div class="col-md-5">
-                 <textarea name="text" class="form-control" rows="3" placeholder="填写产品使用心得"></textarea>
+                 <textarea name="text" class="form-control" rows="3" placeholder="填写产品使用心得">${report.text}</textarea>
               </div>
             </div>
             

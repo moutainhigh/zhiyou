@@ -111,7 +111,7 @@ public class ReportController {
 		try {
 			reportService.adminCreate(report);
 		} catch (Exception e) {
-			model.addAttribute("report", report);
+			model.addAttribute("report", reportComponent.buildDetailVo(report));
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			return create(model);
 		}
@@ -138,7 +138,7 @@ public class ReportController {
 		try {
 			reportService.adminModify(report);
 		} catch (Exception e) {
-			model.addAttribute("report", report);
+			model.addAttribute("report", reportComponent.buildDetailVo(report));
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			return update(report.getId(),model);
 		}

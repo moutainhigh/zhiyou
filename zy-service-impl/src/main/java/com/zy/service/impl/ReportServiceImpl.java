@@ -15,11 +15,13 @@ import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.service.ReportService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -65,6 +67,16 @@ public class ReportServiceImpl implements ReportService {
 		report.setIsSettledUp(false);
 		report.setIsHot(false);
 		validate(report);
+		
+		String realname = report.getRealname();
+		Integer times = report.getTimes();
+		ReportQueryModel reportQueryModel = new ReportQueryModel();
+		reportQueryModel.setRealnameEQ(realname);
+		reportQueryModel.setPhoneEQ(report.getPhone());
+		reportQueryModel.setTimesEQ(times);
+		List<Report> reports = reportMapper.findAll(reportQueryModel);
+		validate(reports, v -> v.isEmpty(), realname + "，第" + times + "次检测结果已经提交，请勿重复提交，谢谢！");
+		
 		reportMapper.insert(report);
 		return report;
 	}
@@ -89,6 +101,16 @@ public class ReportServiceImpl implements ReportService {
 		report.setIsSettledUp(true);
 		report.setIsHot(false);
 		validate(report);
+		
+		String realname = report.getRealname();
+		Integer times = report.getTimes();
+		ReportQueryModel reportQueryModel = new ReportQueryModel();
+		reportQueryModel.setRealnameEQ(realname);
+		reportQueryModel.setPhoneEQ(report.getPhone());
+		reportQueryModel.setTimesEQ(times);
+		List<Report> reports = reportMapper.findAll(reportQueryModel);
+		validate(reports, v -> v.isEmpty(), realname + "，第" + times + "次检测结果已经提交，请勿重复提交，谢谢！");
+		
 		reportMapper.insert(report);
 		return report;
 	}
@@ -111,6 +133,21 @@ public class ReportServiceImpl implements ReportService {
 		persistence.setAge(report.getAge());
 		persistence.setText(report.getText());
 		persistence.setReportResult(report.getReportResult());
+		validate(persistence);
+		
+		String realname = report.getRealname();
+		Integer times = report.getTimes();
+		ReportQueryModel reportQueryModel = new ReportQueryModel();
+		reportQueryModel.setRealnameEQ(realname);
+		reportQueryModel.setPhoneEQ(report.getPhone());
+		reportQueryModel.setTimesEQ(times);
+		List<Report> reports = reportMapper.findAll(reportQueryModel);
+		if(!reports.isEmpty()) {
+			for(Report r : reports) {
+				validate(r.getId(), v -> v.equals(id), realname + "，第" + times + "次检测结果已经提交，请勿重复提交，谢谢！");
+			}
+		}
+		
 		reportMapper.update(persistence);
 		return persistence;
 	}
@@ -235,6 +272,20 @@ public class ReportServiceImpl implements ReportService {
 		persistence.setImage(report.getImage());
 		persistence.setText(report.getText());
 		persistence.setReportResult(report.getReportResult());
+		
+		String realname = report.getRealname();
+		Integer times = report.getTimes();
+		ReportQueryModel reportQueryModel = new ReportQueryModel();
+		reportQueryModel.setRealnameEQ(realname);
+		reportQueryModel.setPhoneEQ(report.getPhone());
+		reportQueryModel.setTimesEQ(times);
+		List<Report> reports = reportMapper.findAll(reportQueryModel);
+		if(!reports.isEmpty()) {
+			for(Report r : reports) {
+				validate(r.getId(), v -> v.equals(id), realname + "，第" + times + "次检测结果已经提交，请勿重复提交，谢谢！");
+			}
+		}
+		validate(persistence);
 		reportMapper.update(persistence);
 		return persistence;
 	}
