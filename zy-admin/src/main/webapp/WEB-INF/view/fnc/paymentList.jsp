@@ -184,7 +184,7 @@
                 var html = '';
                 for (var i in offlineImages) {
                   var image = offlineImage[i];
-                  html += '<img class="imageview mr-10" data-url="' + image.image + '" src="' + image.imageThumbnails + '" >';
+                  html += '<img class="imageview mr-10" data-url="' + image.image + '" src="' + image.imageThumbnail + '" >';
                 }
                 return html;
               } else {
