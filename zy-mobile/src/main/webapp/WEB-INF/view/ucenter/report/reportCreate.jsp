@@ -189,7 +189,7 @@
 
       <div class="form-btn">
         <c:if test="${userRank == 'V0'}">
-        <input class="btn default btn-block round-2" type="button" disabled="disabled" value="成为代理才能提交检测报告">
+        <input class="btn default btn-block round-2" type="button" disabled="disabled" value="成为服务商才能提交检测报告">
         </c:if>
         <c:if test="${userRank != 'V0'}">
         <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提 交">

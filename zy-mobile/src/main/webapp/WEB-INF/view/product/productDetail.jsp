@@ -70,7 +70,7 @@
       <c:if test="${!isUpgrade && !isFirst}">
       var quantity = $("#quantity").val();
       if(quantity < MIN_QUANTITY) {
-        messageAlert('一级代理和特级代理每次入货不得少于' + MIN_QUANTITY + '件');
+        messageAlert('一级服务商和特级服务商每次入货不得少于' + MIN_QUANTITY + '件');
         return;
       }
       </c:if>
@@ -106,7 +106,7 @@
       </div>
       <div class="list-item">
         <div class="font-777 fs-14">
-          <span class="fs-15">代理价： </span><span class="font-orange fs-18 bold"> ¥ ${product.price}</span>
+          <span class="fs-15">服务商价： </span><span class="font-orange fs-18 bold"> ¥ ${product.price}</span>
         </div>
       </div>
     </div>
@@ -150,12 +150,12 @@
   
   <c:if test="${isFirst}">
     <nav class="footer footer-nav flex">
-      <a id="btnAgent" class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">立即成为代理</a>
+      <a id="btnAgent" class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">立即成为服务商</a>
     </nav>
   </c:if>
   <c:if test="${isUpgrade}">
     <nav class="footer footer-nav flex">
-      <a id="btnAgent" class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">升级代理</a>
+      <a id="btnAgent" class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">升级服务商</a>
     </nav>
   </c:if>
 

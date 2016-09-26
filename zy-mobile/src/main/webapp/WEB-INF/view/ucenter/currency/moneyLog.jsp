@@ -21,12 +21,14 @@
     }
   });
   
+  var url = '${ctx}/u/money';
+  
   var timeLT = '${timeLT}';
   var pageNumber = 0;
   
   function loadMore() {
     $.ajax({
-      url : '${ctx}/u/report',
+      url : url,
       data : {
         pageNumber : pageNumber + 1,
         timeLT : timeLT

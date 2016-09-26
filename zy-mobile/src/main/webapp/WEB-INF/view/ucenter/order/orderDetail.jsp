@@ -11,8 +11,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<link href="${stccdn}/css/ucenter/order.css" rel="stylesheet"> 
-
 <title>订单详情</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script src="${stccdn}/js/area.js"></script>

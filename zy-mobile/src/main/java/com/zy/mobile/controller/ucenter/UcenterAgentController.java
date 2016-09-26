@@ -73,16 +73,16 @@ public class UcenterAgentController {
 		User user = userService.findByPhone(phone);
 		if(user != null) {
 			if(user.getId().equals(principal.getUserId())){
-				return ResultBuilder.error("不能设置本人为上级代理.");
+				return ResultBuilder.error("不能设置本人为上级服务商.");
 			} else if(user.getUserType() != UserType.代理){
-				return ResultBuilder.error("此手机绑定的用户不是代理.");
+				return ResultBuilder.error("此手机绑定的用户不是服务商.");
 			} else if(user.getUserRank() == UserRank.V0){
-				return ResultBuilder.error("此手机绑定的用户不是代理.");
+				return ResultBuilder.error("此手机绑定的用户不是服务商.");
 			}{
 				return ResultBuilder.ok(user.getId().toString());
 			}
 		} else {
-			return ResultBuilder.error("没有找到此手机号的代理.");
+			return ResultBuilder.error("没有找到此手机号的服务商.");
 		}
 	}
 	

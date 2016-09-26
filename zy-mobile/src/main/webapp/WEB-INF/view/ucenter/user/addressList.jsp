@@ -13,7 +13,6 @@
 
 <title>我的收货地址</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<link rel="stylesheet" href="${stccdn}/css/ucenter/address.css" />
 </head>
 <body class="address-list">
   <header class="header">

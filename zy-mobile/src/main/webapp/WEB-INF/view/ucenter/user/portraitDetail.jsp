@@ -14,7 +14,7 @@
 <title>个人资料</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 </head>
-<body class="header-fixed">
+<body>
   <header class="header">
     <h1>个人资料</h1>
     <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>

@@ -30,7 +30,7 @@
   
   <article class="service-question">
   	<c:forEach items="${helps}" var="help" varStatus="varStatus">
-    <div class="qa" style="<c:if test="${fn:length(helps) == varStatus.index + 1}">border-bottom: 0px;</c:if>">
+    <div class="qa">
       <h3 id="q${varStatus.index + 1}">Q${varStatus.index + 1}: ${help.title}</h3>
       <p>${help.content}</p>
     </div>

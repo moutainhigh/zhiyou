@@ -107,7 +107,7 @@
     $addVipDialog = $.window({
       content: "<form action='' class='form-horizontal' style='margin-top: 20px;'>" + "<div class='form-body'>" + "<div class='form-group'>"
       + "<label class='control-label col-md-3'>加VIP等级:</label>" + "<div class='col-md-5'>"
-      + "<select class='form-control' id='userRank'><option value='V0'>普通用户</option><option value='V1'>三级代理</option><option value='V2'>二级代理</option><option value='V3'>一级代理</option><option value='V4'>特级代理</option></select>" + "</div>" + "</div>"
+      + "<select class='form-control' id='userRank'><option value='V0'>普通用户</option><option value='V1'>三级服务商</option><option value='V2'>二级服务商</option><option value='V3'>一级服务商</option><option value='V4'>特级服务商</option></select>" + "</div>" + "</div>"
       + "<div class='form-group'>" + "<label class='control-label col-md-3'>备注信息:</label>"
       + "<div class='col-md-5'><textarea class='form-control' style='width: 220px;height: 120px;' id='remark'></textarea></div>" + "</div>" + "</div>"
       + "<div class='form-actions fluid'>" + "<div class='col-md-offset-3 col-md-9'>" + "<button type='button' class='btn green' onclick='submitBtn(" + id + ")'>"

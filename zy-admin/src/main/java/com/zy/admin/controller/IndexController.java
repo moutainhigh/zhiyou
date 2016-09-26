@@ -145,7 +145,7 @@ public class IndexController {
 	
 			Long appearanceCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_APPEARANCE_COUNT);
 			if(appearanceCount == null) {
-				appearanceCount = appearanceService.count(AppearanceQueryModel.builder().confirmStatusEQ(ConfirmStatus.未通过).build());
+				appearanceCount = appearanceService.count(AppearanceQueryModel.builder().confirmStatusEQ(ConfirmStatus.待审核).build());
 				
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_APPEARANCE_COUNT, appearanceCount, DEFAULT_EXPIRE);
 			}
@@ -153,7 +153,7 @@ public class IndexController {
 
 			Long reportPreCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_PRE_COUNT);
 			if(reportPreCount == null) {
-				reportPreCount = reportService.count(ReportQueryModel.builder().preConfirmStatusEQ(ConfirmStatus.未通过).build());
+				reportPreCount = reportService.count(ReportQueryModel.builder().preConfirmStatusEQ(ConfirmStatus.待审核).build());
 				
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_PRE_COUNT, reportPreCount, DEFAULT_EXPIRE);
 			}
@@ -161,7 +161,7 @@ public class IndexController {
 			
 			Long reportCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_COUNT);
 			if(reportCount == null) {
-				reportCount = reportService.count(ReportQueryModel.builder().confirmStatusEQ(ConfirmStatus.未通过).build());
+				reportCount = reportService.count(ReportQueryModel.builder().confirmStatusEQ(ConfirmStatus.待审核).build());
 				
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_COUNT, reportCount, DEFAULT_EXPIRE);
 			}

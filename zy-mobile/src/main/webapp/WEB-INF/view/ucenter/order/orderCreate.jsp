@@ -11,7 +11,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<link href="${stccdn}/css/ucenter/order.css" rel="stylesheet"> 
 <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
 
 <title>确认订单信息</title>
@@ -264,7 +263,7 @@
   <input type="hidden" name="parentId" value="${parent.id}">
   <div class="parent-alert alert alert-warning mb-10">
     <img class="image-40 round" src="${parent.avatarThumbnail}">
-    <span class="ml-10">${parent.nickname} 将成为您的上级代理.</span>
+    <span class="ml-10">${parent.nickname} 将成为您的上级服务商.</span>
   </div>
   </c:if>
   

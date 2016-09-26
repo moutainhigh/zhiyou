@@ -33,7 +33,7 @@
   <article class="user-info">
     <div class="list-group mt-10">
       <div class="list-title">基本信息</div>
-      <a class="list-item list-item-avatar" href="${ctx}/u/avatar">
+      <a class="list-item" href="${ctx}/u/avatar">
         <div class="list-text">头像</div>
         <div class="list-unit">
           <img class="image-60 round bd" src="${userAvatarSmall}">
@@ -56,12 +56,12 @@
         </c:if>
       </a>
       <a class="list-item" href="${ctx}/help/userRank">
-        <div class="list-text">代理等级</div>
+        <div class="list-text">服务商等级</div>
         <div class="list-unit">
-          <c:if test="${user.userRank == 'V1'}"><label class="label purple">三级代理</label></c:if>
-          <c:if test="${user.userRank == 'V2'}"><label class="label blue">二级代理</label></c:if>
-          <c:if test="${user.userRank == 'V3'}"><label class="label orange">一级代理</label></c:if>
-          <c:if test="${user.userRank == 'V4'}"><label class="label red">特级代理</label></c:if>
+          <c:if test="${user.userRank == 'V1'}"><label class="label purple">三级服务商</label></c:if>
+          <c:if test="${user.userRank == 'V2'}"><label class="label blue">二级服务商</label></c:if>
+          <c:if test="${user.userRank == 'V3'}"><label class="label orange">一级服务商</label></c:if>
+          <c:if test="${user.userRank == 'V4'}"><label class="label red">特级服务商</label></c:if>
         </div>
         <i class="list-arrow"></i>
       </a>

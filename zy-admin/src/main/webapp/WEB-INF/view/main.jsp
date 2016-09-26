@@ -87,7 +87,7 @@
               <table class="table table-bordered table-hover">
 				<tbody>
 				<tr>
-  					<td>代理总人数</td>
+  					<td>服务商总人数</td>
   					<td>${agentCount}</td>
 				</tr>
 				</tbody>
@@ -154,7 +154,7 @@
 	    myChart.setOption({
 		    tooltip: {},
 		    legend: {
-		        data:['代理注册人数']
+		        data:['服务商注册人数']
 		    },
 		    xAxis: {
 		        data: []
@@ -162,7 +162,7 @@
 		    yAxis: {},
 		    series: [
 		    {
-		        name: '代理注册人数',
+		        name: '服务商注册人数',
 		        type: 'line',
 		        data: []
 		    }]
@@ -178,7 +178,7 @@
 	           },
 	           series: [{
 	               // 根据名字对应到相应的系列
-	               name: '代理注册人数',
+	               name: '服务商注册人数',
 	               data: result.userCount
 	           }]
 	       });

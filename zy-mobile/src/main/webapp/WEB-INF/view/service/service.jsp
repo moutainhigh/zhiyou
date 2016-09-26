@@ -46,7 +46,6 @@
       </a>
       </c:forEach>
     </div>
-    
   </article>
 
 </body>
