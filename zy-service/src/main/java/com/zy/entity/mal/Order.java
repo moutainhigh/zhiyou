@@ -251,15 +251,15 @@ public class Order implements Serializable {
 	private String receiverAddress;
 
 	@Field(label = "银行汇款截图")
-	@View
+	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	@Column(length = 1000)
 	@StringBinder
-	@CollectionView(name= "offlineImages", type = ArrayList.class, elementType = String.class)
-	@CollectionView(name= "offlineImageThumbnails", type = ArrayList.class, elementType = String.class)
+	@CollectionView(name= "offlineImages", type = ArrayList.class, elementType = String.class, groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
+	@CollectionView(name= "offlineImageThumbnails", type = ArrayList.class, elementType = String.class, groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	private String offlineImage;
 
 	@Field(label = "银行汇款备注")
-	@View
+	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	@StringBinder
 	private String offlineMemo;
 
