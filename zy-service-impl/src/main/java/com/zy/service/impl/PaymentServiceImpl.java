@@ -3,8 +3,6 @@ package com.zy.service.impl;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.NULL;
 import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.fnc.Payment.PaymentStatus.已支付;
-import static com.zy.entity.fnc.Payment.PaymentStatus.待支付;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,8 +32,11 @@ import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.PayType;
 import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Payment.PaymentStatus;
+import com.zy.entity.mal.Order;
+import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.usr.User;
 import com.zy.mapper.AccountMapper;
+import com.zy.mapper.OrderMapper;
 import com.zy.mapper.PaymentMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
@@ -50,6 +51,9 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Autowired
 	private PaymentMapper paymentMapper;
+	
+	@Autowired
+	private OrderMapper orderMapper;
 
 	@Autowired
 	private FncComponent fncComponent;
@@ -118,7 +122,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 		payment.setSn(ServiceUtils.generatePaymentSn());
 		payment.setCreatedTime(new Date());
-		payment.setPaymentStatus(待支付);
+		payment.setPaymentStatus(PaymentStatus.待支付);
 		payment.setVersion(0);
 		validate(payment);
 		paymentMapper.insert(payment);
@@ -164,11 +168,11 @@ public class PaymentServiceImpl implements PaymentService {
 		if (payType != PayType.银行汇款) {
 			throw new BizException(BizCode.ERROR, "支付方式只能为银行汇款");
 		}
-
+		if (payment.getPaymentStatus() != PaymentStatus.待确认) {
+			throw new BizException(BizCode.ERROR, "只有待确认的支付单才能确认支付");
+		}
 		if (payment.getPaymentStatus() == Payment.PaymentStatus.已支付) {
 			return; // 幂等处理
-		} else if (payment.getPaymentStatus() == Payment.PaymentStatus.已取消) {
-			logger.warn("已取消支付单支付成功");
 		}
 
 		payment.setRemark(remark);
@@ -193,8 +197,10 @@ public class PaymentServiceImpl implements PaymentService {
 		if (payType != PayType.银行汇款) {
 			throw new BizException(BizCode.ERROR, "支付方式只能为银行汇款");
 		}
-
-		if (payment.getPaymentStatus() == Payment.PaymentStatus.已取消) {
+		if (payment.getPaymentStatus() != PaymentStatus.待确认) {
+			throw new BizException(BizCode.ERROR, "只有待确认的支付单才能拒绝确认支付");
+		}
+		if (payment.getPaymentStatus() == PaymentStatus.已取消) {
 			return; // 幂等处理
 		}
 		
@@ -202,6 +208,21 @@ public class PaymentServiceImpl implements PaymentService {
 		payment.setOperatorId(operatorId);
 		payment.setPaymentStatus(PaymentStatus.已取消);
 		if (paymentMapper.update(payment) == 0) {
+			throw new ConcurrentException();
+		}
+		
+		Long orderId = payment.getRefId();
+		Order order = orderMapper.findOne(orderId);
+		validate(order, NOT_NULL, "order is not found by order id " + orderId);
+		OrderStatus orderStatus = order.getOrderStatus();
+		if (orderStatus == OrderStatus.已取消) {
+			return; // 幂等操作
+		} else if (orderStatus != OrderStatus.待确认) {
+			logger.warn("订单状态警告 {} 订单id {}", orderStatus, order.getId());
+		}
+
+		order.setOrderStatus(OrderStatus.已取消);
+		if(orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
 		}
 	}
@@ -248,10 +269,10 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 		Long sysUserId = config.getSysUserId();
 
-		Payment.PaymentStatus paymentStatus = payment.getPaymentStatus();
-		if (paymentStatus == 已支付) {
+		PaymentStatus paymentStatus = payment.getPaymentStatus();
+		if (paymentStatus == PaymentStatus.已支付) {
 			return; // 幂等操作
-		} else if (paymentStatus != 待支付) {
+		} else if (paymentStatus != PaymentStatus.待支付) {
 			throw new BizException(BizCode.ERROR, "只有待支付订单才能支付");
 		}
 
@@ -290,7 +311,7 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 
 		payment.setPaidTime(new Date());
-		payment.setPaymentStatus(已支付);
+		payment.setPaymentStatus(PaymentStatus.已支付);
 		if (paymentMapper.update(payment) == 0) {
 			throw new ConcurrentException();
 		}
