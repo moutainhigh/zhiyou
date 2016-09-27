@@ -292,6 +292,7 @@
       </div>
     </div>
     
+    <c:if test="${not empty order.offlineImages}">
     <div class="list-group">
       <div class="list-title">支付凭证</div>
       <div class="list-item">
@@ -307,6 +308,7 @@
         </div>
       </div>
     </div>
+    </c:if>
 
     <div class="list-group">
       <div class="list-title">买家留言</div>
