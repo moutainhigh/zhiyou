@@ -46,6 +46,8 @@ public class UserQueryModel implements Serializable {
 
 	private Long[] parentIdIN;
 
+	private Long parentIdNL;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;

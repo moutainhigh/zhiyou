@@ -43,6 +43,8 @@ public class OrderQueryModel implements Serializable {
 
 	private OrderStatus orderStatusEQ;
 
+	private OrderStatus[] orderStatusIN;
+
 	private Boolean isProfitSettledUpEQ;
 
 	private Boolean isSettledUpEQ;

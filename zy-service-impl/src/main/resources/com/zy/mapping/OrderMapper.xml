@@ -173,6 +173,17 @@
 			<if test="paidTimeLT != null">
 				and paid_time &lt; #{paidTimeLT}
 			</if>
+			<if test="orderStatusIN != null">
+				<if test="orderStatusIN.length != 0">
+				and order_status in
+				<foreach collection="orderStatusIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+				</if>
+				<if test="orderStatusIN.length == 0">
+				1 = 2
+				</if>
+			</if>
 			<if test="snLK != null">
 				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
 			</if>
@@ -256,6 +267,17 @@
 			</if>
 			<if test="paidTimeLT != null">
 				and paid_time &lt; #{paidTimeLT}
+			</if>
+			<if test="orderStatusIN != null">
+				<if test="orderStatusIN.length != 0">
+				and order_status in
+				<foreach collection="orderStatusIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+				</if>
+				<if test="orderStatusIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="snLK != null">
 				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}

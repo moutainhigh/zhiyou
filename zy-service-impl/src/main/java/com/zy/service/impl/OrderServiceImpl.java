@@ -241,8 +241,32 @@ public class OrderServiceImpl implements OrderService {
 		} else if (orderStatus != OrderStatus.待确认) {
 			throw new BizException(BizCode.ERROR, "只有待确认的订单才能确认支付");
 		}
+		if(order.getIsPayToPlatform()){
+			throw new BizException(BizCode.ERROR, "只有支付给上级的订单才能确认支付");
+		}
 
 		order.setOrderStatus(OrderStatus.已支付);
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
+	}
+	
+	@Override
+	public void rejectPay(@NotNull Long id, String remark) {
+		Order order = orderMapper.findOne(id);
+		validate(order, NOT_NULL, "order id" + id + " is not found");
+		OrderStatus orderStatus = order.getOrderStatus();
+		if (orderStatus == OrderStatus.已支付) {
+			return; // 幂等处理
+		} else if (orderStatus != OrderStatus.待确认) {
+			throw new BizException(BizCode.ERROR, "只有待确认的订单才能驳回支付");
+		}
+		if(order.getIsPayToPlatform()){
+			throw new BizException(BizCode.ERROR, "只有支付给上级的订单才能确认支付");
+		}
+
+		order.setSellerMemo(remark);
+		order.setOrderStatus(OrderStatus.已取消);
 		if (orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
 		}
