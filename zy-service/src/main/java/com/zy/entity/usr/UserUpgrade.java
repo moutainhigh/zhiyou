@@ -36,6 +36,7 @@ public class UserUpgrade implements Serializable {
 	private Long id;
 
 	@NotNull
+	@Query(Predicate.EQ)
 	@Field(label = "用户")
 	@View(groups = VO_ADMIN)
 	private Long userId;

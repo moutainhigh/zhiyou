@@ -24,7 +24,7 @@
         pageLength: 20, // default record count per page
         order: [], // set first column as a default sort by desc
         ajax: {
-          url: '${ctx}/appearance', // ajax source
+          url: '${ctx}/userInfo', // ajax source
         },
         columns: [
           {
@@ -60,6 +60,50 @@
             render: function (data, type, full) {
               return '<img class="image-view" data-title="身份证反面照" data-src="' + full.image2 + '" src="' + data + '" style="width: 80px; height: 80px;">';
             }
+          },
+          {
+            data: 'gender',
+            title: '性别'
+          },
+          {
+            data: 'birthdayLabel',
+            title: '出生年月',
+            orderable: false,
+          },
+          {
+            data: 'tagNames',
+            title: '标签',
+            orderable: false,
+            render: function (data, type, full) {
+              var html = '';
+              for (var i = 0; i < data.length; i++) {
+                if (i % 5 == 0) {
+                  html += '<em class="label mb-5 mr-5 inline-block label-success">' + data[i] + '</em>';
+                } else if (i % 5 == 1) {
+                  html += '<em class="label mb-5 mr-5 inline-block label-danger">' + data[i] + '</em>';
+                } else if (i % 5 == 2) {
+                  html += '<em class="label mb-5 mr-5 inline-block label-info">' + data[i] + '</em>';
+                } else if (i % 5 == 3) {
+                  html += '<em class="label mb-5 mr-5 inline-block label-warning">' + data[i] + '</em>';
+                } else if (i % 5 == 4) {
+                  html += '<em class="label mb-5 mr-5 inline-block label-primary">' + data[i] + '</em>';
+                }
+              }
+              return html;
+            }
+          },
+          {
+            data: '',
+            title: '所在地',
+            orderable: false,
+            render: function (data, type, full) {
+              return full.province + '-' + full.city + '-' + full.district;
+            }
+          },
+          {
+            data: 'jobName',
+            title: '职业',
+            orderable: false
           },
           {
             data: 'appliedTime',
@@ -132,7 +176,7 @@
       + "</div>"
       + "</div>"
       + "</form>",
-      title: '颜值认证审核',
+      title: '用户认证审核',
       width: 500,
       height: 360,
       button: false
@@ -171,7 +215,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/appearance">实名认证管理</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/userInfo">用户认证管理</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -182,7 +226,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-user-female"></i> 实名认证管理
+          <i class="icon-user-female"></i> 用户认证管理
         </div>
       </div>
       <div class="portlet-body clearfix">
@@ -205,9 +249,9 @@
               <div class="form-group input-inline">
                 <select name="confirmStatusEQ" class="form-control">
                   <option value="">-- 审核状态 --</option>
-                  <option value="0">待审核</option>
-                  <option value="1">已通过</option>
-                  <option value="2">未通过</option>
+                  <c:forEach items="${confirmStatuses}" var="confirmStatus">
+                  <option value="${confirmStatus}">${confirmStatus}</option>
+                  </c:forEach>
                 </select>
               </div>
 

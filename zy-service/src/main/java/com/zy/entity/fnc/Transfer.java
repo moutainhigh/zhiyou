@@ -42,7 +42,7 @@ public class Transfer implements Serializable {
 	}
 
 	public enum TransferStatus {
-		待转账, 已转账, 已取消
+		待转账, 已转账, 已取消, 已线下转账
 	}
 
 	@Id

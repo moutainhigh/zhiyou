@@ -203,19 +203,14 @@
                   <a href="javascript:;" data-href="${ctx}/user"><i class="icon-user"></i> 用户信息<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
-              <shiro:hasPermission name="appearance:view">
-                <li>
-                  <a href="javascript:;" data-href="${ctx}/appearance"><i class="icon-user-female"></i> 实名认证管理<span class="badge badge-danger"></span></a>
-                </li>
-              </shiro:hasPermission>
               <shiro:hasPermission name="address:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/address"><i class="icon-home"></i> 收货地址管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
-              <shiro:hasPermission name="portrait:view">
+              <shiro:hasPermission name="userInfo:view">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/portrait"><i class="icon-graduation"></i> 完善资料管理<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/userInfo"><i class="icon-graduation"></i> 用户认证管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>
