@@ -88,6 +88,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     public UserInfo create(@NotNull UserInfo userInfo) {
         validate(userInfo);
         userInfo.setConfirmStatus(ConfirmStatus.待审核);
+        userInfo.setAppliedTime(new Date());
 
         Long userId = userInfo.getUserId();
         checkUser(userId);
