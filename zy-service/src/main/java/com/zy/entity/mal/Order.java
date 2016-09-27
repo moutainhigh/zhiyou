@@ -175,6 +175,12 @@ public class Order implements Serializable {
 	@Version
 	@Field(label = "乐观锁")
 	private Integer version;
+	
+	@Field(label = "奖励是否结算")
+	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
+	@NotNull
+	@Query(Predicate.EQ)
+	private Boolean isProfitSettledUp;
 
 	@Field(label = "是否已结算")
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
