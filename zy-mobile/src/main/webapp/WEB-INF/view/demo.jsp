@@ -14,36 +14,7 @@
 <title>MiUI</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
-<script src="${stccdn}/extend/imageupload/imageupload.js"></script>
-<link rel="stylesheet" href="${stccdn}/extend/imageupload/imageupload.css" />
-<script>
-$.fn.imageupload.setDefaults({
-  url : '${ctx}/image/upload',
-  width : 100,
-  height : 100,
-  retain : 2,
-  maxFileSize : '6MB',
-  isMultipart : false,
-  success : function(result){
-    var $this = $(this);
-    if($this.hasClass('image-add')){
-      var limit = $this.attr('data-limit');
-      var name = $this.attr('data-name');
-      var imageItem = '<div class="image-item">' 
-                    + '<input type="hidden" name="' + name + '" value="' + result.image + '">'
-                    + '<img src="' + result.imageThumbnail + '">' 
-                    + '<input type="file">' 
-                    + '</div>';
-      $(imageItem).insertBefore($this);
-      var imageItems = $this.siblings('.image-item');
-      if (limit && limit <= imageItems.length) {
-        $this.remove();
-      }
-      imageItems.last().imageupload();
-    }
-  }
-});
-</script>
+<%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
 <script type="text/javascript">
   $(function() {
     
@@ -51,7 +22,7 @@ $.fn.imageupload.setDefaults({
       $('.header-popmenu').toggle(300);
     });
     
-    $.message('你好', 'info', 2);
+    //$.message('你好', 'info', 2);
     
     $('#deliverType0').click(function(){
       $('#logistics').slideUp(300);
@@ -160,18 +131,18 @@ $.fn.imageupload.setDefaults({
     <a href="${ctx}/" class="button-left"><i class="fa fa-home"></i></a>
     <a href="javascript:;" class="button-right button-popmenu"><i class="fa fa-ellipsis-h"></i></a>
     <nav class="header-popmenu hide">
-      <a class="${ctx}/u"><i class="fa fa-user"></i>用户中心</a>
-      <a class="${ctx}/superLogin/24"><i class="fa fa-sign-in"></i>一键登录</a>
-      <a class="${ctx}/logout"><i class="fa fa-sign-out"></i>退出</a>
+      <a href="${ctx}/u"><i class="fa fa-user"></i>用户中心</a>
+      <a href="${ctx}/superLogin/24"><i class="fa fa-sign-in"></i>一键登录</a>
+      <a href="${ctx}/logout"><i class="fa fa-sign-out"></i>退出</a>
     </nav>
   </header>
   
   <nav class="miui-scroll-nav">
     <ul>
       <li>全部</li>
-      <li>分类1</li>
+      <li class="current">分类1</li>
       <li>分类2</li>
-      <li class="current">分类3</li>
+      <li>分类3</li>
       <li>分类4</li>
       <li>分类5</li>
       <li>分类6</li>
