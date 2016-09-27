@@ -50,6 +50,7 @@
 
   <link rel="stylesheet" href="${stc}/plugin/editor/kindeditor-4.1.7/themes/default/default.css"/>
   <link rel="stylesheet" href="${stc}/plugin/myui-1.0/jquery.myui.css"/>
+  <link href="${stc}/plugin/ztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet"/>
 
   <!-- END THEME STYLES -->
   <!-- BEGIN JAVASCRIPTS -->
@@ -90,6 +91,7 @@
   <script src="${stc}/plugin/layer-2.4/layer.js"></script>
   <script src="${ctx}/plugin/My97DatePicker/WdatePicker.js"></script>
   <script src="${ctx}/plugin/handlebars/handlebars.min.js"></script>
+  <script src="${ctx}/plugin/ztree/js/jquery.ztree.core.min.js"></script>
   <script src="${ctx}/js/area.js"></script>
   <script src="${ctx}/js/common.js"></script>
   <%@ include file="/WEB-INF/view/include/form.jsp" %>
@@ -242,6 +244,9 @@
                 </li>
                 <li>
                   <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 平台发货订单<span class="badge badge-danger"></span></a>
+                </li>
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/userTree"><i class="icon-docs"></i> 用户报表<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>

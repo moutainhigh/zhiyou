@@ -14,6 +14,7 @@ import com.zy.service.UserUpgradeService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.UserAdminFullVo;
+import com.zy.vo.UserAdminSimpleVo;
 import com.zy.vo.UserAdminVo;
 import com.zy.vo.UserListVo;
 import com.zy.vo.UserSimpleVo;
@@ -79,6 +80,10 @@ public class UserComponent {
 		Long userId = user.getId();
 		List<UserUpgrade> userUpgrades = userUpgradeService.findAll(UserUpgradeQueryModel.builder().userIdEQ(userId).build());
 		return null;
+	}
+	
+	public UserAdminSimpleVo buildAdminSimpleVo(User user) {
+		return VoHelper.buildUserAdminSimpleVo(user);
 	}
 
 }
