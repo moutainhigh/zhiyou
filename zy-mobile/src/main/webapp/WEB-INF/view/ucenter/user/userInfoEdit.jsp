@@ -19,8 +19,8 @@
 <script src="${stccdn}/js/area.js"></script>
 <script type="text/javascript">
   $(function() {
-    
-    var area = new areaInit('province', 'city', 'district');
+    var areaId = '${userInfo.areaId}';
+    var area = new areaInit('province', 'city', 'district', areaId);
 
     $('.valid-form').validate({
       rules : {
@@ -99,7 +99,7 @@
     
     /* tags 标签*/
     $('#tagWrap').click(function() {
-      showTagAside();
+      showAside();
       //init
       var tagIds = $('#tagIds').val();
       $.each(tagIds.split(','), function(n, tag){
@@ -109,7 +109,7 @@
 
     var MAX_TAG_SIZE = 5;
     $('body').on('click', '#btnTagsClose', function() {
-      hideTagAside();
+      hideAside();
     }).on('click', '.tag-option', function() {
       var $this = $(this);
       if ($this.hasClass('checked')) {
@@ -131,7 +131,7 @@
         return false;
       }
 
-      hideTagAside();
+      hideAside();
       $('#tagWrap em').remove();
       var checkedIds = [];
       $checkedTags.each(function(n) {
@@ -145,7 +145,7 @@
 
   });
   
-  function showTagAside() {
+  function showAside() {
     if ($('#tagAside').length == 0) {
       var tagAside = document.getElementById('asideTpl').innerHTML;
       $(tagAside).appendTo('body');
@@ -156,7 +156,7 @@
     }, 300);
   }
 
-  function hideTagAside() {
+  function hideAside() {
     $('#tagAside').animate({
       'left' : '100%'
     }, 300, function() {
@@ -244,7 +244,7 @@
             <select name="jobId">
               <option value="">请选择</option>
               <c:forEach items="${jobs}" var="job">
-                <option value="${job.id}" <c:if test="${userInfo.jobId eq job.id}"> selected </c:if>>${job.jobName}</option>
+                <option value="${job.id}"<c:if test="${userInfo.jobId eq job.id}"> selected="selected"</c:if>>${job.jobName}</option>
               </c:forEach>
             </select>
           </div>

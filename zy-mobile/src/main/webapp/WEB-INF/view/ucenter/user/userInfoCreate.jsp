@@ -71,12 +71,12 @@
     
     /* tags 标签*/
     $('#tagWrap').click(function() {
-      showTagAside();
+      showAside();
     });
 
     var MAX_TAG_SIZE = 5;
     $('body').on('click', '#btnTagsClose', function() {
-      hideTagAside();
+      hideAside();
     }).on('click', '.tag-option', function() {
       var $this = $(this);
       if ($this.hasClass('checked')) {
@@ -98,7 +98,7 @@
         return false;
       }
 
-      hideTagAside();
+      hideAside();
       $('#tagWrap em').remove();
       var checkedIds = [];
       $checkedTags.each(function(n) {
@@ -112,7 +112,7 @@
 
   });
   
-  function showTagAside() {
+  function showAside() {
     if ($('#tagAside').length == 0) {
       var tagAside = document.getElementById('asideTpl').innerHTML;
       $(tagAside).appendTo('body');
@@ -123,7 +123,7 @@
     }, 300);
   }
 
-  function hideTagAside() {
+  function hideAside() {
     $('#tagAside').animate({
       'left' : '100%'
     }, 300, function() {
