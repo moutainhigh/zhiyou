@@ -17,7 +17,7 @@
 <body class="address-list">
   <header class="header">
     <h1>收货地址</h1>
-    <a href="${ctx}/u/userInfo" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/info" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
   <article>

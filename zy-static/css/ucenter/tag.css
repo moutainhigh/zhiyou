@@ -4,13 +4,6 @@
   cursor: pointer; white-space: nowrap; font-size: 13px;
 }
 
-
-.aside-tag {
-  position: absolute; left: 100%; top: 0;
-  width: 100%; min-height: 100%;
-  border: none; overflow: scroll-y;
-  background-color: #fff;
-}
 .tag-select {
   background-color: #fff;
 }
