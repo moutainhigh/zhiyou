@@ -35,7 +35,6 @@ import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
-import com.zy.common.util.ValidateUtils;
 import com.zy.component.UserComponent;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
@@ -82,6 +81,15 @@ public class UserController {
 		Page<User> page = userService.findPage(userQueryModel);
 		Page<UserAdminVo> voPage = PageBuilder.copyAndConvert(page, userComponent::buildAdminVo);
 		return new Grid<>(voPage);
+	}
+	
+	@RequiresPermissions("user:view")
+	@RequestMapping(value = "/detail", method = RequestMethod.GET)
+	public String detail(Long id, Model model) {
+		User user = userService.findOne(id);
+		validate(user, NOT_NULL, "user is null");
+		model.addAttribute("user", userComponent.buildAdminFullVo(user));
+		return "usr/userDetail";
 	}
 	
 	@RequiresPermissions("user:edit")

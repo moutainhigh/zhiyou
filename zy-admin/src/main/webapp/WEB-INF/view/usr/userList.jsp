@@ -70,7 +70,7 @@
             title: '操作',
             orderable: false,
             render: function (data, type, full) {
-              var optionHtml = '';
+              var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/user/detail?id=' + data + '"><i class="fa fa-search"></i> 查看 </a>';
               if (full.userType != '平台') {
                 <shiro:hasPermission name="user:edit">
                 optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
