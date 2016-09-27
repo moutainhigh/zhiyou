@@ -184,7 +184,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
     
     private void checkTags(@NotBlank String tagIds) {
-    	String[] tagIdArray = StringUtils.split(tagIds);
+    	String[] tagIdArray = StringUtils.split(tagIds, ",");
     	for (String tagIdStr : tagIdArray) {
     		Long tagId = Long.valueOf(tagIdStr);
     		Tag tag = tagMapper.findOne(tagId);
