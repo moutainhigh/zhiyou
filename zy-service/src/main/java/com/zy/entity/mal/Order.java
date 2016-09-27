@@ -97,7 +97,7 @@ public class Order implements Serializable {
 	@AssociationView(name = "seller", groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL}, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long sellerId;
 	
-	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})
 	@NotNull
 	@Field(label = "是否支付给平台")
 	@Query(Predicate.EQ)
