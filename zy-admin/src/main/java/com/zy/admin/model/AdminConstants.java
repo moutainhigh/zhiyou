@@ -24,9 +24,8 @@ public class AdminConstants {
 			sub.put("user:freeze", "用户信息(冻结账号)");
 			sub.put("user:modifyParent", "用户信息(修改上级)");
 			sub.put("user:export", "用户信息(导出)");
-			sub.put("portrait:view", "用户画像(查看)");
-			sub.put("appearance:view", "实名认证(查看)");
-			sub.put("appearance:confirm", "实名认证(审核)");
+			sub.put("userInfo:view", "用户认证(查看)");
+			sub.put("userInfo:confirm", "用户认证(审核)");
 			sub.put("address:view", "地址管理(查看)");
 	 		SETTING_PERMISSION_MAP.put("用户中心", sub);
 		}
