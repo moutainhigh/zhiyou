@@ -68,16 +68,10 @@
     </div>
 
     <div class="list-group">
-      <a class="list-item list-item-icon" href="${ctx}/u/portrait">
-        <i class="list-icon icon icon-portrait"></i>
-        <div class="list-text">个人资料</div>
-        <div class="list-unit"><c:if test="${!isCompletedPortrait}">未填写</c:if></div>
-        <i class="list-arrow"></i>
-      </a>
-      <a class="list-item list-item-icon" href="${ctx}/u/appearance">
+      <a class="list-item list-item-icon" href="${ctx}/u/userInfo">
         <i class="list-icon icon icon-idcard"></i>
         <div class="list-text">实名认证</div>
-        <div class="list-unit"><c:if test="${!isCompletedAppearance}">未认证</c:if></div>
+        <div class="list-unit"><c:if test="${!isUserInfoCompleted}">未认证</c:if></div>
         <i class="list-arrow"></i>
       </a>
       <a class="list-item list-item-icon" href="${ctx}/u/address">
