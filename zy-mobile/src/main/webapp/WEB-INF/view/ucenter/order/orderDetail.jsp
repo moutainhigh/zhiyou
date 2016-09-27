@@ -18,6 +18,10 @@
 <script>
   $(function() {
     
+    $('.header .button-popmenu').click(function(){
+      $('.header-popmenu').toggle(300);
+    });
+    
     $('.image-view').click(function() {
       var images = $(this).find('img');
       if (images.length == 0) {
@@ -86,6 +90,21 @@
         }
       });
     });
+    
+    /* 取消订单 */
+    <c:if test="${ inOut == 'in' && order.orderStatus == '待支付'}">
+    $('#btnDelete').click(function() {
+      $.dialog({
+        content : '您确定要删除此订单吗？',
+        callback : function(index) {
+          if (index == 1) {
+            location.href = '${ctx}/u/order/delete?id=${order.id}';
+          }
+        }
+      });
+    });
+    </c:if>
+    
   });
 </script>
 </head>
@@ -93,10 +112,12 @@
   <header class="header">
     <h1>订单详情</h1>
     <a href="${ctx}/u/order/${inOut}" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <c:if test="${ inOut == 'in' && order.orderStatus == '待支付'}">
     <a href="javascript:;" class="button-right button-popmenu"><i class="fa fa-ellipsis-h"></i></a>
     <nav class="header-popmenu hide">
-      <a class="${ctx}/u/order/delete/${order.id}"><i class="fa fa-trash-o"></i>删除</a>
+      <a id="btnDelete" href="javascript:;"><i class="fa fa-trash-o"></i>删除</a>
     </nav>
+    </c:if>
   </header>
   
   <article>

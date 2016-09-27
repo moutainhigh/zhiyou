@@ -47,6 +47,10 @@ $.fn.imageupload.setDefaults({
 <script type="text/javascript">
   $(function() {
     
+    $('.header .button-popmenu').click(function(){
+      $('.header-popmenu').toggle(300);
+    });
+    
     $.message('你好', 'info', 2);
     
     $('#deliverType0').click(function(){
@@ -145,7 +149,7 @@ $.fn.imageupload.setDefaults({
     });
     
     $('.miui-scroll-nav').scrollableNav();
-  
+    
   });
 </script>
 </head>

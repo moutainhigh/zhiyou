@@ -13,9 +13,6 @@
 <script src="${stccdn}/js/common.js"></script>
 <script src="${stccdn}/js/util.js"></script>
 <script>
-  $(function(){
-  	FastClick.attach(document.body);
-  });
   var Config = {
     stc : '${stc}',
     ctx : '${ctx}',
