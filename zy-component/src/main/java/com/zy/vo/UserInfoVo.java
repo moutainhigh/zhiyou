@@ -44,6 +44,10 @@ public class UserInfoVo implements Serializable {
 	private String image1Thumbnail;
 	@Field(label = "图片2")
 	private String image2Thumbnail;
+	@Field(label = "申请时间")
+	private String appliedTimeLabel;
+	@Field(label = "审核通过时间")
+	private String confirmedTimeLabel;
 	@Field(label = "生日")
 	private String birthdayLabel;
 	@Field(label = "职业")

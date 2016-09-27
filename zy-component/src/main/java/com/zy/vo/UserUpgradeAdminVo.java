@@ -24,5 +24,13 @@ public class UserUpgradeAdminVo implements Serializable {
 	private Date upgradedTime;
 
 	/* 扩展 */
+	@Field(label = "升级前等级")
+	private String fromUserRankLabel;
+	@Field(label = "升级后等级")
+	private String toUserRankLabel;
+	@Field(label = "升级时间")
+	private String upgradedTimeLabel;
+	@Field(label = "升级时间")
+	private String upgradedTimeFormatted;
 
 }

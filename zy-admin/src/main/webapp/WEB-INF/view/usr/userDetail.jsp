@@ -39,12 +39,13 @@
         <form class="form-horizontal">
           <div class="form-body">
 
+            <h4 class="form-section">基本信息:</h4>
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="control-label col-md-3">昵称:</label>
                   <div class="col-md-9">
-                    <p class="form-control-static">${user.nickname}</p>
+                    <p class="form-control-static"><img src="${user.avatarThumbnail}" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"> ${user.nickname}</p>
                   </div>
                 </div>
               </div>
@@ -71,7 +72,7 @@
                 <div class="form-group">
                   <label class="control-label col-md-3">用户等级:</label>
                   <div class="col-md-9">
-                    <p class="form-control-static">${user.userRank}</p>
+                    <p class="form-control-static">${user.userRankLabel}</p>
                   </div>
                 </div>
               </div>
@@ -95,15 +96,58 @@
                 </div>
               </div>
             </div>
-
+            
+            <h4 class="form-section">上级信息:</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3">昵称:</label>
+                  <div class="col-md-9">
+                    <p class="form-control-static">
+                      <img src="${user.parent.avatarThumbnail}" width="30" height="30" style="border-radius: 40px !important; margin-right:5px">
+                      ${user.parent.nickname}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3">手机号:</label>
+                  <div class="col-md-9">
+                    <p class="form-control-static"><c:if test="${user.parent.phone}">已冻结</c:if></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3">类型:</label>
+                  <div class="col-md-9">
+                    <p class="form-control-static">
+                      ${user.parent.userType}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-md-3">等级:</label>
+                  <div class="col-md-9">
+                    <p class="form-control-static">${user.parent.userRankLabel}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
           </div>
 
         </form>
 
         <ul class="nav nav-tabs">
           <li class="active"><a href="#applies" data-toggle="tab" aria-expanded="false"> 用户认证信息 </a></li>
-          <%-- <li class=""><a href="#signIns" data-toggle="tab" aria-expanded="false"> 收益单 <span class="badge badge-primary"> ${order.profits.size()} </span></a></li>
-          <li class=""><a href="#collects" data-toggle="tab" aria-expanded="false"> 转账单 <span class="badge badge-primary"> ${order.transfers.size()} </span></a></li> --%>
+          <li class=""><a href="#signIns" data-toggle="tab" aria-expanded="false"> 用户升级信息 <span class="badge badge-primary"> ${user.userUpgrades.size()} </span></a></li>
         </ul>
 
         <div class="tab-content">
@@ -147,102 +191,39 @@
                   <td>${user.userInfo.birthdayLabel}</td>
                   <td>${user.userInfo.jobName}</td>
                   <td>${user.userInfo.province} - ${user.userInfo.city} - ${user.userInfo.district}</td>
-                  <td>${user.userInfo.tagNames}</td>
+                  <td><c:forEach items="${user.userInfo.tagNames}" var="tagName">${tagName}</c:forEach></td>
                 </tr>
               </c:if>
               </tbody>
             </table>
           </div>
-          <%-- <div class="tab-pane fade" id="signIns">
+          <div class="tab-pane fade" id="signIns">
             <table class="table table-hover table-bordered">
               <thead>
               <tr>
-                <th>单号</th>
-                <th>标题</th>
-                <th>币种</th>
-                <th>金额</th>
-                <th>用户</th>
-                <th>创建时间</th>
-                <th>收益时间</th>
-                <th>收益单类型</th>
+                <th>升级前的等级</th>
+                <th>升级后的等级</th>
+                <th>升级时间</th>
               </tr>
               </thead>
               <tbody>
-              <c:if test="${empty order.profits}">
+              <c:if test="${empty user.userUpgrades}">
                 <tr>
-                  <td colspan="7">暂无数据</td>
+                  <td colspan="18">暂无数据</td>
                 </tr>
               </c:if>
-              <c:if test="${not empty order.profits}">
-                <c:forEach items="${order.profits}" var="profit">
-                  <tr>
-                    <td>${profit.sn}</td>
-                    <td>${profit.title}</td>
-                    <td>${profit.currencyType}</td>
-                    <td>${profit.amountLabel}</td>
-                    <td><p><img src="${profit.user.avatarThumbnail}" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>: ${profit.user.nickname}</p>
-                      <p>手机号: ${profit.user.phone}</p>
-                      <p>等级: ${profit.user.userRankLabel}</p></td>
-                    <td>${profit.createdTimeLabel}</td>
-                    <td>${profit.grantedTimeLabel}</td>
-                    <td>${profit.profitType}</td>
-                  </tr>
+              <c:if test="${not empty user.userUpgrades}">
+               <c:forEach items="${user.userUpgrades}" var="userUpgrade">
+                <tr>
+                  <td>${userUpgrade.fromUserRank}</td>
+                  <td>${userUpgrade.toUserRank}</td>
+                  <td>${userUpgrade.upgradedTime}</td>
+                </tr>
                 </c:forEach>
               </c:if>
               </tbody>
             </table>
           </div>
-          <div class="tab-pane fade" id="collects">
-            <table class="table table-hover table-bordered">
-              <thead>
-              <tr>
-                <th>单号</th>
-                <th>标题</th>
-                <th>状态</th>
-                <th>币种</th>
-                <th>金额</th>
-                <th>转出用户</th>
-                <th>转入用户</th>
-                <th>创建时间</th>
-                <th>转账时间</th>
-                <th>转账类型</th>
-                <th>转账备注</th>
-                <th>备注</th>
-              </tr>
-              </thead>
-              <tbody>
-              <c:if test="${empty order.transfers}">
-                <tr>
-                  <td colspan="12">暂无数据</td>
-                </tr>
-              </c:if>
-              <c:if test="${not empty order.transfers}">
-                <c:forEach items="${order.transfers}" var="transfer">
-                  <tr>
-                    <td>${transfer.sn}</td>
-                    <td>${transfer.title}</td>
-                    <td><label class="label label-${transfer.transferStatusStyle}">${transfer.transferStatus}</label></td>
-                    <td>${transfer.currencyType}</td>
-                    <td>${transfer.amount}</td>
-                    <td><p><img src="${transfer.fromUser.avatarThumbnail}" width="30" height="30"
-                                style="border-radius: 40px !important; margin-right:5px"/>: ${transfer.fromUser.nickname}</p>
-                      <p>手机号: ${transfer.fromUser.phone}</p>
-                      <p>等级: ${transfer.fromUser.userRankLabel}</p></td>
-                    <td><p><img src="${transfer.toUser.avatarThumbnail}" width="30" height="30"
-                                style="border-radius: 40px !important; margin-right:5px"/>: ${transfer.toUser.nickname}</p>
-                      <p>手机号: ${transfer.toUser.phone}</p>
-                      <p>等级: ${transfer.toUser.userRankLabel}</p></td>
-                    <td>${transfer.createdTimeLabel}</td>
-                    <td>${transfer.transferredTimeLabel}</td>
-                    <td>${transfer.transferType}</td>
-                    <td>${transfer.transferRemark}</td>
-                    <td>${transfer.remark}</td>
-                  </tr>
-                </c:forEach>
-              </c:if>
-              </tbody>
-            </table>
-          </div>--%>
         </div> 
       </div>
     </div>
