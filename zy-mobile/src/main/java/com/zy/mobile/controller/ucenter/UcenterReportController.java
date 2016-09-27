@@ -39,7 +39,6 @@ import com.zy.model.query.TransferQueryModel;
 import com.zy.service.JobService;
 import com.zy.service.ProfitService;
 import com.zy.service.ReportService;
-import com.zy.service.TagService;
 import com.zy.service.TransferService;
 import com.zy.service.UserService;
 
@@ -58,9 +57,6 @@ public class UcenterReportController {
 
 	@Autowired
 	private TransferService transferService;
-	
-	@Autowired
-	private TagService tagService;
 
 	@Autowired
 	private JobService jobService;
