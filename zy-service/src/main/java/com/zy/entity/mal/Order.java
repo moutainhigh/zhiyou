@@ -133,7 +133,7 @@ public class Order implements Serializable {
 	private CurrencyType currencyType;
 
 	@NotNull
-	@Query(Predicate.EQ)
+	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "订单状态")
 	@View
 	@View(name = "orderStatusStyle", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})

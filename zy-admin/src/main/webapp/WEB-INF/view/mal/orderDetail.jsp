@@ -138,9 +138,25 @@
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
-                  <label class="control-label col-md-3">是否已结算:</label>
+                  <label class="control-label col-md-3">是否平台收款:</label>
+                  <div class="col-md-9">
+                    <p class="form-control-static">${order.isPayToPlatform ? '是' : '否'}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label col-md-3">货款已结算:</label>
                   <div class="col-md-9">
                     <p class="form-control-static">${order.isSettledUp ? '是' : '否'}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="control-label col-md-3">奖励已结算:</label>
+                  <div class="col-md-9">
+                    <p class="form-control-static">${order.isProfitSettledUp ? '是' : '否'}</p>
                   </div>
                 </div>
               </div>
