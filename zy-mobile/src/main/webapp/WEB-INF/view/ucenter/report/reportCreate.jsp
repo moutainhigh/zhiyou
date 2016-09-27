@@ -139,7 +139,13 @@
       </div>
 
       <div class="list-group">
-        <div class="list-title">检测结果，至少需要上传1张检测图片</div>
+        <div class="list-title">检测信息，至少需要上传1张检测图片</div>
+        <div class="list-item">
+          <label class="list-label" for="times">检测次数</label>
+          <div class="list-text">
+            <input type="number" name="times" class="form-input" value="" placeholder="第几次检测">
+          </div>
+        </div>
         <div class="list-item">
           <label class="list-label">检测结果</label>
           <div class="list-text form-select">
