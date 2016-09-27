@@ -129,6 +129,22 @@ public class UcenterOrderController {
 		return "ucenter/order/orderDetail";
 	}
 
+	@RequestMapping("/confirmPay")
+	public String confirmPay(Long id, RedirectAttributes redirectAttributes, Principal principal) {
+		Order persistence = orderService.findOne(id);
+		validate(persistence, NOT_NULL, "order id" + id + " not found");
+		if (!principal.getUserId().equals(persistence.getSellerId())) {
+			throw new UnauthorizedException("权限不足");
+		}
+		try {
+			orderService.confirmPay(id);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("确认支付成功"));
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+		}
+		return "redirect:/u/order/" + persistence.getId();
+	}
+	
 	@RequestMapping(path = "/deliver", method = RequestMethod.GET)
 	public String deliver(Long id, Model model) {
 		model.addAttribute("orderId", id);
@@ -187,6 +203,22 @@ public class UcenterOrderController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
 		return "redirect:/u/order/" + order.getId();
+	}
+	
+	@RequestMapping("/delete")
+	public String delete(Long id, RedirectAttributes redirectAttributes, Principal principal) {
+		Order persistence = orderService.findOne(id);
+		validate(persistence, NOT_NULL, "order id" + id + " not found");
+		if (!principal.getUserId().equals(persistence.getUserId())) {
+			throw new UnauthorizedException("权限不足");
+		}
+		try {
+			orderService.delete(id);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("删除订单成功"));
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+		}
+		return "redirect:/u/order/" + persistence.getId();
 	}
 	
 }

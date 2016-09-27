@@ -229,6 +229,23 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	public void confirmPay(@NotNull Long id) {
+		Order order = orderMapper.findOne(id);
+		validate(order, NOT_NULL, "order id" + id + " is not found");
+		OrderStatus orderStatus = order.getOrderStatus();
+		if (orderStatus == OrderStatus.已支付) {
+			return; // 幂等处理
+		} else if (orderStatus != OrderStatus.待确认) {
+			throw new BizException(BizCode.ERROR, "只有待确认的订单才能确认支付");
+		}
+
+		order.setOrderStatus(OrderStatus.已支付);
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
+	}
+	
+	@Override
 	public void deliver(@NotNull OrderDeliverDto orderDeliverDto) {
 
 		validate(orderDeliverDto, "id", "useLogistics");
