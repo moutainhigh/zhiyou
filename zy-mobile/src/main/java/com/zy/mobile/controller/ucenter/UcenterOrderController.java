@@ -88,16 +88,18 @@ public class UcenterOrderController {
 		model.addAttribute("orderCount", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.待支付);
 		model.addAttribute("orderCount0", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已支付);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.待确认);
 		model.addAttribute("orderCount1", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已发货);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已支付);
 		model.addAttribute("orderCount2", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已完成);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已发货);
 		model.addAttribute("orderCount3", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已退款);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已完成);
 		model.addAttribute("orderCount4", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已取消);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已退款);
 		model.addAttribute("orderCount5", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已取消);
+		model.addAttribute("orderCount6", orderService.count(orderQueryModel));
 		return "ucenter/order/orderList";
 	}
 
