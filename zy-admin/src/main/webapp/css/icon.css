@@ -2,26 +2,3 @@
   display: inline-block; display: -moz-inline-stack; *zoom: 1; *display: inline;
   width: 16px; height: 16px; margin-right: 3px; line-height: 16px; vertical-align: middle;
 }
-
-/** ICON **/
-
-.icon-plat {
-  display: inline-block; width: 16px; height: 16px;
-  margin-left: 3px; margin-right: 3px;
-  vertical-align: -3px;
-  background-image: url(../image/icon_plat.png); background-repeat: no-repeat;
-}
-.icon-plat-jd {background-position: -0px 0px;}
-.icon-plat-alibaba {background-position: -22px 0px;}
-.icon-plat-tmall {background-position: -43px 0px;}
-.icon-plat-qq {background-position: -65px 0px;}
-.icon-plat-amazon {background-position: -86px 0px;}
-.icon-plat-dangdang {background-position: -108px 0px;}
-.icon-plat-yhd {background-position: -129px 0px;}
-.icon-plat-meilishuo {background-position: -151px 0px;}
-.icon-plat-mogujie {background-position: -172px 0px;}
-.icon-plat-taobao {background-position: -216px 0px;}
-.icon-plat-suning {background-position: -239px 0px;}
-.icon-plat-guomei {background-position: -261px 0px;}
-.icon-plat-jumei {background-position: -283px 0px;}
-
