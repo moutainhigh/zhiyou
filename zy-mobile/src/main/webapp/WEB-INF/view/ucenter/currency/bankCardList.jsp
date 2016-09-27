@@ -15,7 +15,7 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/bank.css" />
 </head>
-<body class="bank-list">
+<body class="bankcard-list">
   <header class="header">
     <h1>我的银行卡</h1>
     <a href="${ctx}/u/money" class="button-left"><i class="fa fa-angle-left"></i></a>
@@ -30,7 +30,7 @@
     </c:if>
     
     <c:forEach items="${bankCards}" var="bankCard">
-    <a href="${ctx}/u/bankCard/${bankCard.id}" class="bank round-4 relative">
+    <a href="${ctx}/u/bankCard/${bankCard.id}" class="bankcard round-4 relative">
       <div class="bank-icon round"><i class="icon icon-bank-${bankCard.bankCode} round"></i></div>
       <div class="bank-info">
         <div class="fs-15 lh-24">${bankCard.bankName}</div>
