@@ -36,7 +36,7 @@
       <a class="list-item" href="${ctx}/u/avatar">
         <div class="list-text">头像</div>
         <div class="list-unit">
-          <img class="image-60 round bd" src="${userAvatarSmall}">
+          <img class="image-60 round bd" src="${user.avatarThumbnail}">
         </div>
         <i class="list-arrow"></i>
       </a>
