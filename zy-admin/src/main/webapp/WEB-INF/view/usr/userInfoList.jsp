@@ -140,7 +140,7 @@
             render: function (data, type, full) {
               var optionHtml = '';
               if (full.confirmStatus == '待审核') {
-                <shiro:hasPermission name="appearance:confirm">
+                <shiro:hasPermission name="userInfo:confirm">
                 optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="confirm(' + full.id + ')"><i class="fa fa-edit"></i> 审核 </a>';
                 </shiro:hasPermission>
               }
@@ -190,7 +190,7 @@
     }
 
     var confirmRemark = $('#confirmRemark').val();
-    $.post('${ctx}/appearance/confirm', {
+    $.post('${ctx}/userInfo/confirm', {
       id: id,
       isSuccess: isSuccess,
       confirmRemark: confirmRemark
