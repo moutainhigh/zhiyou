@@ -75,11 +75,14 @@ public class UserInfoComponent {
 		userInfoAdminVo.setImage1Thumbnail(GcUtils.getThumbnail(userInfo.getImage1(), 120, 120));
 		userInfoAdminVo.setImage2Thumbnail(GcUtils.getThumbnail(userInfo.getImage2(), 120, 120));
 
-		AreaDto areaDto = cacheComponent.getAreaDto(userInfo.getAreaId());
-		if (areaDto != null) {
-			userInfoAdminVo.setProvince(areaDto.getProvince());
-			userInfoAdminVo.setCity(areaDto.getCity());
-			userInfoAdminVo.setDistrict(areaDto.getDistrict());
+		Long areaId = userInfo.getAreaId();
+		if(areaId != null) {
+			AreaDto areaDto = cacheComponent.getAreaDto(areaId);
+			if (areaDto != null) {
+				userInfoAdminVo.setProvince(areaDto.getProvince());
+				userInfoAdminVo.setCity(areaDto.getCity());
+				userInfoAdminVo.setDistrict(areaDto.getDistrict());
+			}
 		}
 
 		Long jobId = userInfo.getJobId();

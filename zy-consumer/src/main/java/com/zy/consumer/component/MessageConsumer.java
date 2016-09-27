@@ -3,7 +3,6 @@ package com.zy.consumer.component;
 import com.zy.consumer.extend.AbstractConsumer;
 import com.zy.entity.sys.Message;
 import com.zy.entity.usr.User;
-import com.zy.service.AppearanceService;
 import com.zy.service.MessageService;
 import com.zy.service.UserService;
 import org.slf4j.Logger;
@@ -83,6 +82,8 @@ public class MessageConsumer extends AbstractConsumer {
             if (e instanceof SQLException) {
                 if (!e.getMessage().contains("Duplicate"))
                     throw e;
+            }else{
+                logger.error(e.getMessage(),e);
             }
         }
     }

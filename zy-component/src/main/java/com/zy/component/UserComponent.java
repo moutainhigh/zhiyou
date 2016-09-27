@@ -1,14 +1,17 @@
 package com.zy.component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo;
 import com.zy.entity.usr.UserUpgrade;
 import com.zy.model.query.UserUpgradeQueryModel;
+import com.zy.service.UserInfoService;
 import com.zy.service.UserService;
 import com.zy.service.UserUpgradeService;
 import com.zy.util.GcUtils;
@@ -29,7 +32,16 @@ public class UserComponent {
 	private UserService userService;
 	
 	@Autowired
+	private UserInfoService userInfoService;
+	
+	@Autowired
 	private UserUpgradeService userUpgradeService;
+	
+	@Autowired
+	private UserUpgradeComponent userUpgradeComponent;
+	
+	@Autowired
+	private UserInfoComponent userInfoComponent;
 	
 	public UserSimpleVo buildSimpleVo(User user) {
 		UserSimpleVo userSimpleVo = new UserSimpleVo();
@@ -78,8 +90,19 @@ public class UserComponent {
 			userAdminFullVo.setParent(VoHelper.buildUserAdminSimpleVo(userService.findOne(parentId)));
 		}
 		Long userId = user.getId();
-		List<UserUpgrade> userUpgrades = userUpgradeService.findAll(UserUpgradeQueryModel.builder().userIdEQ(userId).build());
-		return null;
+		if(userId != null) {
+			List<UserUpgrade> userUpgrades = userUpgradeService.findAll(UserUpgradeQueryModel.builder().userIdEQ(userId).build());
+			if(!userUpgrades.isEmpty()) {
+				userAdminFullVo.setUserUpgrades(userUpgrades.stream().map(userUpgradeComponent::buildAdminVo).collect(Collectors.toList()));
+			}
+			
+			UserInfo userInfo = userInfoService.findByUserId(userId);
+			if(userInfo != null) {
+				userAdminFullVo.setUserInfo(userInfoComponent.buildAdminVo(userInfo));
+			}
+		}
+		
+		return userAdminFullVo;
 	}
 	
 	public UserAdminSimpleVo buildAdminSimpleVo(User user) {
