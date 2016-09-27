@@ -1,25 +1,23 @@
 package com.zy.component;
 
-import static java.util.stream.Collectors.toSet;
-
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.usr.Job;
-import com.zy.entity.usr.UserInfo;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo;
 import com.zy.model.dto.AreaDto;
 import com.zy.service.TagService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.UserInfoAdminVo;
 import com.zy.vo.UserInfoVo;
-
-import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Component
 public class UserInfoComponent {
@@ -47,9 +45,29 @@ public class UserInfoComponent {
 		userInfoVo.setProvince(areaDto.getProvince());
 		userInfoVo.setCity(areaDto.getCity());
 		userInfoVo.setDistrict(areaDto.getDistrict());
-		userInfoVo.setJobName(cacheComponent.getJob(userInfo.getJobId()).getJobName());
-		userInfoVo.setTagNames(new ArrayList<String>(Arrays.stream(userInfo.getTagIds().split(",")).map(tag -> this.tagService.findById(Long.valueOf(tag)).getTagName()).collect(toSet())));
-		userInfoVo.setBirthdayLabel(DateFormatUtils.format(userInfo.getBirthday(), "yyyy-MM-dd"));
+		
+		Long jobId = userInfo.getJobId();
+		if (jobId != null) {
+			Job job = cacheComponent.getJob(userInfo.getJobId());
+			if (job != null) {
+				userInfoVo.setJobName(job.getJobName());
+			}
+		}
+		
+		String tagIds = userInfo.getTagIds();
+		if (StringUtils.isNotBlank(tagIds)) {
+			List<String> tagNames = Arrays.stream(StringUtils.split(tagIds, ","))
+				.filter(v -> StringUtils.isNotBlank(v))
+				.map(v -> Long.valueOf(v))
+				.map(v -> cacheComponent.getTag(v))
+				.filter(v -> v != null)
+				.map(v -> v.getTagName())
+				.collect(Collectors.toList());
+			userInfoVo.setTagNames(tagNames);
+		}
+		
+		userInfoVo.setBirthdayLabel(GcUtils.formatDate(userInfo.getBirthday(), "yyyy-MM-dd"));
+		
 		return userInfoVo;
 	}
 	
@@ -75,8 +93,20 @@ public class UserInfoComponent {
 				userInfoAdminVo.setJobName(job.getJobName());	
 			}
 		}
-		userInfoAdminVo.setTagNames(new ArrayList<String>(Arrays.stream(userInfo.getTagIds().split(",")).map(tag -> this.tagService.findById(Long.valueOf(tag)).getTagName()).collect(toSet())));
-		userInfoAdminVo.setBirthdayLabel(DateFormatUtils.format(userInfo.getBirthday(), "yyyy-MM-dd"));
+		
+		String tagIds = userInfo.getTagIds();
+		if (StringUtils.isNotBlank(tagIds)) {
+			List<String> tagNames = Arrays.stream(StringUtils.split(tagIds, ","))
+				.filter(v -> StringUtils.isNotBlank(v))
+				.map(v -> Long.valueOf(v))
+				.map(v -> cacheComponent.getTag(v))
+				.filter(v -> v != null)
+				.map(v -> v.getTagName())
+				.collect(Collectors.toList());
+			userInfoAdminVo.setTagNames(tagNames);
+		}
+		
+		userInfoAdminVo.setBirthdayLabel(GcUtils.formatDate(userInfo.getBirthday(), "yyyy-MM-dd"));
 		return userInfoAdminVo;
 	}
 }

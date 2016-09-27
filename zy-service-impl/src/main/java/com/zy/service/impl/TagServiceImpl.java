@@ -1,49 +1,48 @@
 package com.zy.service.impl;
 
-import com.zy.entity.usr.Tag;
-import com.zy.mapper.TagMapper;
-import com.zy.service.TagService;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotNull;
+import com.zy.entity.usr.Tag;
+import com.zy.mapper.TagMapper;
+import com.zy.service.TagService;
 
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.validate;
-
-/**
- * Created by freeman on 16/8/11.
- */
 @Service
 @Validated
 public class TagServiceImpl implements TagService {
-    @Autowired
-    private TagMapper tagMapper;
 
-    @Override
-    public List<Tag> findAll() {
-        return tagMapper.findAll();
-    }
+	@Autowired
+	private TagMapper tagMapper;
 
-    @Override
-    public Tag findById(@NotNull Long id) {
-        return this.tagMapper.findOne(id);
-    }
+	@Override
+	public Tag findOne(@NotNull Long id) {
+		return tagMapper.findOne(id);
+	}
 
-    @Override
-    public Tag create(@NotNull Tag tag) {
-        validate(tag);
-        Tag one = this.tagMapper.findOne(tag.getId());
-        if (one != null) return one;
-        this.tagMapper.insert(tag);
-        return tag;
-    }
+	@Override
+	public List<Tag> findAll() {
+		return tagMapper.findAll();
+	}
 
-    @Override
-    public void delete(@NotNull Long id) {
-        this.tagMapper.delete(id);
-    }
+	@Override
+	public Tag create(@NotNull Tag tag) {
+		validate(tag);
+		Tag one = tagMapper.findOne(tag.getId());
+		if (one != null)
+			return one;
+		this.tagMapper.insert(tag);
+		return tag;
+	}
+
+	@Override
+	public void delete(@NotNull Long id) {
+		this.tagMapper.delete(id);
+	}
 }

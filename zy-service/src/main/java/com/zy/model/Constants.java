@@ -52,6 +52,7 @@ public interface Constants {
     String CACHE_NAME_BANNER = "banner";
     String CACHE_NAME_ADDRESS = "address";
     String CACHE_NAME_JOB = "job";
+    String CACHE_NAME_TAG = "tag";
     String CACHE_NAME_ACTIVITY = "activity";
 
 	String CACHE_NAME_REGISTER_CHART = "registerChart";

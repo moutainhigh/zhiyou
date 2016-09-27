@@ -1,26 +1,43 @@
 package com.zy.component;
 
-import com.zy.common.support.cache.CacheSupport;
-import com.zy.entity.act.Activity;
-import com.zy.entity.cms.Notice;
-import com.zy.entity.fnc.BankCard;
-import com.zy.entity.usr.Address;
-import com.zy.entity.usr.Job;
-import com.zy.entity.usr.User;
-import com.zy.model.dto.AreaDto;
-import com.zy.model.query.NoticeQueryModel;
-import com.zy.service.*;
+import static com.zy.common.util.ValidateUtils.NOT_EMPTY;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.CACHE_NAME_ACTIVITY;
+import static com.zy.model.Constants.CACHE_NAME_ADDRESS;
+import static com.zy.model.Constants.CACHE_NAME_AREA;
+import static com.zy.model.Constants.CACHE_NAME_BANK_CARD;
+import static com.zy.model.Constants.CACHE_NAME_JOB;
+import static com.zy.model.Constants.CACHE_NAME_NOTICE;
+import static com.zy.model.Constants.CACHE_NAME_TAG;
+import static com.zy.model.Constants.CACHE_NAME_USER;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.*;
-import static com.zy.model.Constants.*;
+import com.zy.common.support.cache.CacheSupport;
+import com.zy.entity.act.Activity;
+import com.zy.entity.cms.Notice;
+import com.zy.entity.fnc.BankCard;
+import com.zy.entity.usr.Address;
+import com.zy.entity.usr.Job;
+import com.zy.entity.usr.Tag;
+import com.zy.entity.usr.User;
+import com.zy.model.dto.AreaDto;
+import com.zy.model.query.NoticeQueryModel;
+import com.zy.service.ActivityService;
+import com.zy.service.AddressService;
+import com.zy.service.AreaService;
+import com.zy.service.BankCardService;
+import com.zy.service.JobService;
+import com.zy.service.NoticeService;
+import com.zy.service.TagService;
+import com.zy.service.UserService;
 
 @Component
 public class CacheComponent {
@@ -38,6 +55,9 @@ public class CacheComponent {
 
 	@Autowired
 	private JobService jobService;
+	
+	@Autowired
+	private TagService tagService;
 
 	@Autowired
 	private NoticeService noticeService;
@@ -183,7 +203,7 @@ public class CacheComponent {
 	}
 
 	public Job getJob(Long jobId) {
-		validate(jobId, NOT_EMPTY, "cache key user id is null");
+		validate(jobId, NOT_EMPTY, "cache key job id is null");
 		Job job = null;
 		try {
 			job = cacheSupport.get(CACHE_NAME_JOB, String.valueOf(jobId));
@@ -202,6 +222,28 @@ public class CacheComponent {
 			}
 		}
 		return job;
+	}
+	
+	public Tag getTag(Long tagId) {
+		validate(tagId, NOT_EMPTY, "cache key tag id is null");
+		Tag tag = null;
+		try {
+			tag = cacheSupport.get(CACHE_NAME_TAG, String.valueOf(tagId));
+		} catch (Exception e) {
+			logger.error("缓存异常", e);
+		}
+		if (tag == null) {
+			tag = tagService.findOne(tagId);
+			if (tag != null) {
+
+				try {
+					cacheSupport.set(CACHE_NAME_TAG, String.valueOf(tagId), tag, DEFAULT_EXPIRE);
+				} catch (Exception e) {
+					logger.error("缓存异常", e);
+				}
+			}
+		}
+		return tag;
 	}
 
 	public void deleteAddress(Long userId) {
