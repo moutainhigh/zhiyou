@@ -20,6 +20,8 @@ public interface OrderService {
 	Order findOne(Long id);
 	
 	Order findBySn(String sn);
+	
+	void confirmPay(Long id); // 确认支付
 
 	void deliver(OrderDeliverDto orderDeliverDto); // 发货
 

@@ -64,16 +64,18 @@ public class UcenterOrderController {
 		model.addAttribute("orderCount", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.待支付);
 		model.addAttribute("orderCount0", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已支付);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.待确认);
 		model.addAttribute("orderCount1", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已发货);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已支付);
 		model.addAttribute("orderCount2", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已完成);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已发货);
 		model.addAttribute("orderCount3", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已退款);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已完成);
 		model.addAttribute("orderCount4", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已取消);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已退款);
 		model.addAttribute("orderCount5", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已取消);
+		model.addAttribute("orderCount6", orderService.count(orderQueryModel));
 		return "ucenter/order/orderList";
 	}
 
@@ -88,16 +90,18 @@ public class UcenterOrderController {
 		model.addAttribute("orderCount", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.待支付);
 		model.addAttribute("orderCount0", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已支付);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.待确认);
 		model.addAttribute("orderCount1", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已发货);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已支付);
 		model.addAttribute("orderCount2", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已完成);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已发货);
 		model.addAttribute("orderCount3", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已退款);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已完成);
 		model.addAttribute("orderCount4", orderService.count(orderQueryModel));
-		orderQueryModel.setOrderStatusEQ(OrderStatus.已取消);
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已退款);
 		model.addAttribute("orderCount5", orderService.count(orderQueryModel));
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已取消);
+		model.addAttribute("orderCount6", orderService.count(orderQueryModel));
 		return "ucenter/order/orderList";
 	}
 
@@ -125,6 +129,22 @@ public class UcenterOrderController {
 		return "ucenter/order/orderDetail";
 	}
 
+	@RequestMapping("/confirmPay")
+	public String confirmPay(Long id, RedirectAttributes redirectAttributes, Principal principal) {
+		Order persistence = orderService.findOne(id);
+		validate(persistence, NOT_NULL, "order id" + id + " not found");
+		if (!principal.getUserId().equals(persistence.getSellerId())) {
+			throw new UnauthorizedException("权限不足");
+		}
+		try {
+			orderService.confirmPay(id);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("确认支付成功"));
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+		}
+		return "redirect:/u/order/" + persistence.getId();
+	}
+	
 	@RequestMapping(path = "/deliver", method = RequestMethod.GET)
 	public String deliver(Long id, Model model) {
 		model.addAttribute("orderId", id);
@@ -183,6 +203,22 @@ public class UcenterOrderController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
 		return "redirect:/u/order/" + order.getId();
+	}
+	
+	@RequestMapping("/delete")
+	public String delete(Long id, RedirectAttributes redirectAttributes, Principal principal) {
+		Order persistence = orderService.findOne(id);
+		validate(persistence, NOT_NULL, "order id" + id + " not found");
+		if (!principal.getUserId().equals(persistence.getUserId())) {
+			throw new UnauthorizedException("权限不足");
+		}
+		try {
+			orderService.delete(id);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("删除订单成功"));
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+		}
+		return "redirect:/u/order/" + persistence.getId();
 	}
 	
 }
