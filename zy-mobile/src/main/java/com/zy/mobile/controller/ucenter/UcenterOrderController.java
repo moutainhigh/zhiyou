@@ -61,6 +61,7 @@ public class UcenterOrderController {
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent::buildListVo));
 		model.addAttribute("inOut", "in");
 		model.addAttribute("orderStatus", orderStatus);
+		orderQueryModel.setOrderStatusEQ(null);
 		model.addAttribute("orderCount", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.待支付);
 		model.addAttribute("orderCount0", orderService.count(orderQueryModel));
@@ -87,6 +88,7 @@ public class UcenterOrderController {
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent::buildListVo));
 		model.addAttribute("inOut", "out");
 		model.addAttribute("orderStatus", orderStatus);
+		orderQueryModel.setOrderStatusEQ(null);
 		model.addAttribute("orderCount", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.待支付);
 		model.addAttribute("orderCount0", orderService.count(orderQueryModel));
