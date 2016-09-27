@@ -55,12 +55,13 @@ public class UcenterOrderController {
 	
 	@RequestMapping("/in")
 	public String in(Principal principal, Model model, OrderStatus orderStatus) {
-		OrderQueryModel orderQueryModel = OrderQueryModel.builder().userIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).build();
+		OrderQueryModel orderQueryModel = OrderQueryModel.builder().userIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).isDeletedEQ(false).build();
 		orderQueryModel.setOrderStatusEQ(orderStatus);
 		Page<Order> page = orderService.findPage(orderQueryModel);
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent::buildListVo));
 		model.addAttribute("inOut", "in");
 		model.addAttribute("orderStatus", orderStatus);
+		orderQueryModel.setOrderStatusEQ(null);
 		model.addAttribute("orderCount", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.待支付);
 		model.addAttribute("orderCount0", orderService.count(orderQueryModel));
@@ -81,12 +82,13 @@ public class UcenterOrderController {
 
 	@RequestMapping("/out")
 	public String out(Principal principal, Model model, OrderStatus orderStatus) {
-		OrderQueryModel orderQueryModel = OrderQueryModel.builder().sellerIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).build();
+		OrderQueryModel orderQueryModel = OrderQueryModel.builder().sellerIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).isDeletedEQ(false).build();
 		orderQueryModel.setOrderStatusEQ(orderStatus);
 		Page<Order> page = orderService.findPage(orderQueryModel);
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent::buildListVo));
 		model.addAttribute("inOut", "out");
 		model.addAttribute("orderStatus", orderStatus);
+		orderQueryModel.setOrderStatusEQ(null);
 		model.addAttribute("orderCount", orderService.count(orderQueryModel));
 		orderQueryModel.setOrderStatusEQ(OrderStatus.待支付);
 		model.addAttribute("orderCount0", orderService.count(orderQueryModel));
