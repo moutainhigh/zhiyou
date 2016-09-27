@@ -17,6 +17,7 @@ import static com.zy.model.query.TransferQueryModel.builder;
 /**
  * Created by freeman on 16/9/13.
  */
+@Deprecated
 public class TransferJob implements Job {
 
 	private Logger logger = LoggerFactory.getLogger(TransferJob.class);

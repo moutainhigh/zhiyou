@@ -4,8 +4,8 @@ import com.zy.common.support.sms.SmsSupport;
 import com.zy.consumer.extend.AbstractConsumer;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.mal.Order;
-import com.zy.entity.usr.Appearance;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo;
 import com.zy.entity.usr.UserSetting;
 import com.zy.service.*;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ public class SmsConsumer extends AbstractConsumer {
 
 
     @Autowired
-    private AppearanceService appearanceService;
+    private UserInfoService userInfoService;
 
     @Autowired
     private SmsSupport smsSupport;
@@ -46,18 +46,18 @@ public class SmsConsumer extends AbstractConsumer {
 
 
     /**
-     * String TOPIC_APPEARANCE_CONFIRMED = "appearance-confirmed"; // 实名认证通过
-     * String TOPIC_APPEARANCE_REJECTED = "appearance-rejected"; // 实名认证未通过
-     * String TOPIC_BANKCARD_CONFIRMED = "bankCard-confirmed"; // 银行卡审核通过
-     * String TOPIC_BANKCARD_REJECTED = "bankCard-rejected"; // 银行卡审核未通过
+     String TOPIC_USER_INFO_CONFIRMED = "user-info-confirmed"; // 实名认证通过
+     String TOPIC_USER_INFO_REJECTED = "user-info-rejected"; // 实名认证未通过
+     String TOPIC_BANKCARD_CONFIRMED = "bankCard-confirmed"; // 银行卡审核通过
+     String TOPIC_BANKCARD_REJECTED = "bankCard-rejected"; // 银行卡审核未通过
      * String TOPIC_ORDER_PAID = "order-paid"; // 订单已支付
      * String TOPIC_ORDER_DELIVERED = "order-delivered"; // 订单已发货
      */
 
     public SmsConsumer() {
         super(SmsConsumer.class.getSimpleName()
-                , TOPIC_APPEARANCE_CONFIRMED
-                , TOPIC_APPEARANCE_REJECTED
+                , TOPIC_USER_INFO_CONFIRMED
+                , TOPIC_USER_INFO_REJECTED
                 , TOPIC_BANKCARD_CONFIRMED
                 , TOPIC_BANKCARD_REJECTED
                 , TOPIC_ORDER_PAID
@@ -68,11 +68,11 @@ public class SmsConsumer extends AbstractConsumer {
     @Override
     protected void doHandle(String topic, long refId, String token, String version) {
         switch (topic) {
-            case TOPIC_APPEARANCE_CONFIRMED: {//实名认证通过
+            case TOPIC_USER_INFO_CONFIRMED: {//实名认证通过
                 handleAppearance(topic, refId, token, version, "恭喜,您提交的实名认证请求【审核通过】");
                 break;
             }
-            case TOPIC_APPEARANCE_REJECTED: {
+            case TOPIC_USER_INFO_REJECTED: {
                 handleAppearance(topic, refId, token, version, "抱歉,您提交的实名认证请求【审核未通过】,请前往平台完善信息吧");
                 break;
             }
@@ -119,11 +119,11 @@ public class SmsConsumer extends AbstractConsumer {
     }
 
     private void handleAppearance(String topic, long refId, String token, String version, String message) {
-        final Appearance appearance = this.appearanceService.findOne(refId);
-        if (isNull(appearance)) {
+        UserInfo userInfo = userInfoService.findOne(refId);
+        if (isNull(userInfo)) {
             warn(topic, refId, token, version);
         } else {
-            final Long userId = appearance.getUserId();
+            final Long userId = userInfo.getUserId();
             doSendSms(userId, message);
         }
     }
@@ -139,11 +139,6 @@ public class SmsConsumer extends AbstractConsumer {
         }
     }
 
-    public static void main(String[] args) {
-         //114.55.253.206
-        //32a4dae432844F71aa1A300aac5dY4
-        System.out.println(UUID.randomUUID().toString().replace("-",""));
-    }
 
 
 }

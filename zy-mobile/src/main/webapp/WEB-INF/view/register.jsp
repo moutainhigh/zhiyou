@@ -187,7 +187,7 @@
 </html>
 
 <script id="protocolTpl" type="text/html">
-  <aside id="protocolList" class="bank-list header-fixed abs-lt size-100p bg-white z-1000" style="left: 100%; display: none; overflow-y: scroll;">
+  <aside id="protocolList" class="bank-list header-fixed abs-lt size-100p bg-white zindex-1000" style="left: 100%; display: none; overflow-y: scroll;">
     <header class="header">
       <h1>注册协议</h1>
       <a href="javascript:hideProtocol();" class="button-left"><i class="fa fa-angle-left"></i></a>

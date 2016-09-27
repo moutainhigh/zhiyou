@@ -21,8 +21,7 @@
 
     <dubbo:consumer cluster="failfast" timeout="5000"/>
 
-    <dubbo:reference interface="com.zy.service.AppearanceService" id="appearanceService"/>
-    <dubbo:reference interface="com.zy.service.PortraitService" id="portraitService"/>
+    <dubbo:reference interface="com.zy.service.UserInfoService" id="userInfoService"/>
     <dubbo:reference interface="com.zy.service.UserService" id="userService"/>
     <dubbo:reference interface="com.zy.service.MessageService" id="messageService"/>
     <dubbo:reference interface="com.zy.Config" id="config"/>

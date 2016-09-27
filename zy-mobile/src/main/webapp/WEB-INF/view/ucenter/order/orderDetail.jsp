@@ -102,6 +102,18 @@
       });
     });
     
+  //确认收款
+    $('#btnRejectPay').click(function() {
+      $.dialog({
+        content : '您确定未收到买家款项并驳回此订单吗？',
+        callback : function(index) {
+          if (index == 1) {
+            location.href = '${ctx}/u/order/rejectPay?id=${order.id}';
+          }
+        }
+      });
+    });
+    
     /* 取消订单 */
     $('#btnDelete').click(function() {
       $.dialog({
@@ -376,6 +388,9 @@
       <c:if test="${order.orderStatus == '待确认'}">
         <div class="form-btn">
           <a id="btnConfirmPay" class="btn green btn-block round-2" href="javascript:;"><i class="fa fa-check"></i> 确认已打款</a>
+        </div>
+        <div class="form-btn">
+          <a id="btnRejectPay" class="btn red btn-block round-2" href="javascript:;"><i class="fa fa-times"></i> 驳回已打款</a>
         </div>
       </c:if>
       <c:if test="${order.orderStatus == '已支付' && !order.isPlatformDeliver}">

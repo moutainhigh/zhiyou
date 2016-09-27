@@ -7,6 +7,7 @@ import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Transfer;
 import com.zy.entity.usr.User;
 import com.zy.model.ImageVo;
+
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -18,11 +19,13 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -130,7 +133,7 @@ public class Order implements Serializable {
 	private CurrencyType currencyType;
 
 	@NotNull
-	@Query(Predicate.EQ)
+	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "订单状态")
 	@View
 	@View(name = "orderStatusStyle", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
@@ -161,10 +164,12 @@ public class Order implements Serializable {
 
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	@Field(label = "买家留言")
+	@Column(length = 1000)
 	private String buyerMemo;
 
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	@Field(label = "卖家留言")
+	@Column(length = 1000)
 	private String sellerMemo;
 
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})

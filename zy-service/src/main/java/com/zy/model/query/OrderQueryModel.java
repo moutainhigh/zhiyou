@@ -43,6 +43,10 @@ public class OrderQueryModel implements Serializable {
 
 	private OrderStatus orderStatusEQ;
 
+	private OrderStatus[] orderStatusIN;
+
+	private Boolean isProfitSettledUpEQ;
+
 	private Boolean isSettledUpEQ;
 
 	private Boolean isPlatformDeliverEQ;
@@ -129,6 +133,7 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("isPayToPlatform");
 		fieldNames.add("receiverAreaId");
 		fieldNames.add("amount");
+		fieldNames.add("isProfitSettledUp");
 		fieldNames.add("paidTime");
 		fieldNames.add("userId");
 		fieldNames.add("version");
