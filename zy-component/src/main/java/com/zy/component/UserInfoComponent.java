@@ -13,7 +13,6 @@ import com.zy.entity.usr.Job;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.dto.AreaDto;
-import com.zy.service.TagService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.UserInfoAdminVo;
@@ -24,9 +23,6 @@ public class UserInfoComponent {
 	
 	@Autowired
 	private CacheComponent cacheComponent;
-	
-	@Autowired
-	private TagService tagService;
 	
 	public UserInfoVo buildVo(UserInfo userInfo) {
 		UserInfoVo userInfoVo = new UserInfoVo();
