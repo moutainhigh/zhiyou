@@ -36,3 +36,24 @@
   content: '-'; font-weight: 600;
   margin-right: 2px; margin-left: 2px; 
 }
+
+.ztree li span.button.rank1_ico_open, .ztree li span.button.rank1_ico_close{
+  display: inline-block; width: 16px; height: 16px;
+  background-size: 100% 100%; background-position: center center; background-repeat: no-repeat;
+  background-image: url(../../../../image/icon/icon_rank1.png);
+}
+.ztree li span.button.rank2_ico_open, .ztree li span.button.rank2_ico_close{
+  display: inline-block; width: 16px; height: 16px;
+  background-size: 100% 100%; background-position: center center; background-repeat: no-repeat;
+  background-image: url(../../../../image/icon/icon_rank2.png);
+}
+.ztree li span.button.rank3_ico_open, .ztree li span.button.rank3_ico_close{
+  display: inline-block; width: 16px; height: 16px;
+  background-size: 100% 100%; background-position: center center; background-repeat: no-repeat;
+  background-image: url(../../../../image/icon/icon_rank3.png);
+}
+.ztree li span.button.rank4_ico_open, .ztree li span.button.rank4_ico_close{
+  display: inline-block; width: 16px; height: 16px;
+  background-size: 100% 100%; background-position: center center; background-repeat: no-repeat;
+  background-image: url(../../../../image/icon/icon_rank4.png);
+}
