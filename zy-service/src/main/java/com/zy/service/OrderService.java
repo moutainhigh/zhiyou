@@ -33,7 +33,9 @@ public interface OrderService {
 
 	void modifySellerId(Long orderId, Long sellerId); // 设置卖家
 
-	void settleUp(Long orderId);
+	void settleUp(Long orderId); // 在订单完成时结算
+	
+	void settleUpProfit(Long orderId); // 在订单支付成功后结算
 
 	List<Order> findAll(OrderQueryModel build);
 	

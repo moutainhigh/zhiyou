@@ -96,4 +96,25 @@ public class TransferServiceImpl implements TransferService {
 		return transferMapper.count(transferQueryModel);
 	}
 
+	@Override
+	public void offlineTransfer(Long id, String transferRemark) {
+		Transfer transfer = transferMapper.findOne(id);
+		validate(transfer, NOT_NULL, "transfer id" + id + " not found");
+		TransferStatus transferStatus = transfer.getTransferStatus();
+		if(transferStatus == TransferStatus.已转账) {
+			return ;
+		}
+		if(transferStatus != TransferStatus.待转账) {
+			throw new BizException(BizCode.ERROR, "转账单状态不匹配");
+		}
+		
+		transfer.setTransferStatus(TransferStatus.已线下转账);
+		transfer.setTransferredTime(new Date());
+		transfer.setTransferRemark(transferRemark);
+		if(transferMapper.update(transfer) == 0) {
+			throw new ConcurrentException();
+		}
+		
+	}
+
 }
