@@ -60,7 +60,7 @@ public interface Constants {
 	String CACHE_NAME_AGENT_REGISTER_COUNT = "agentRegisterCount";
 	String CACHE_NAME_USER_BANK_INFO_COUNT = "userBankInfoCount";
 	String CACHE_NAME_BANK = "bank";
-    String CACHE_NAME_APPEARANCE_COUNT = "appearanceCount";
+    String CACHE_NAME_USER_INFO_COUNT = "userInfoCount";
     String CACHE_NAME_REPORT_PRE_COUNT = "reportPreCount";
     String CACHE_NAME_REPORT_COUNT = "reportCount";
 	String CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT = "orderPlatformDeliverCount";

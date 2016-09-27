@@ -1,17 +1,15 @@
 package com.zy.admin.controller;
 
-import static com.zy.model.Constants.CACHE_NAME_STATISTICS;
-import static com.zy.model.Constants.CACHE_NAME_APPEARANCE_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_REPORT_PRE_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_REPORT_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_USER_BANK_INFO_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_WITHDRAW_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_PROFIT_CHART;
+import static com.zy.model.Constants.CACHE_NAME_USER_INFO_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_DEPOSIT_COUNT;
 import static com.zy.model.Constants.CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT;
 import static com.zy.model.Constants.CACHE_NAME_PAYMENT_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_DEPOSIT_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_REPORT_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_REPORT_PRE_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_STATISTICS;
+import static com.zy.model.Constants.CACHE_NAME_USER_BANK_INFO_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_WITHDRAW_COUNT;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,7 +38,6 @@ import com.zy.component.UserComponent;
 import com.zy.entity.fnc.Deposit.DepositStatus;
 import com.zy.entity.fnc.PayType;
 import com.zy.entity.fnc.Payment.PaymentStatus;
-import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Withdraw.WithdrawStatus;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
@@ -48,22 +45,20 @@ import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
 import com.zy.model.Constants;
-import com.zy.model.query.AppearanceQueryModel;
 import com.zy.model.query.BankCardQueryModel;
 import com.zy.model.query.DepositQueryModel;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.PaymentQueryModel;
-import com.zy.model.query.ProfitQueryModel;
 import com.zy.model.query.ReportQueryModel;
+import com.zy.model.query.UserInfoQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.WithdrawQueryModel;
-import com.zy.service.AppearanceService;
 import com.zy.service.BankCardService;
 import com.zy.service.DepositService;
 import com.zy.service.OrderService;
 import com.zy.service.PaymentService;
-import com.zy.service.ProfitService;
 import com.zy.service.ReportService;
+import com.zy.service.UserInfoService;
 import com.zy.service.UserService;
 import com.zy.service.WithdrawService;
 
@@ -84,19 +79,16 @@ public class IndexController {
 	private DepositService depositService;
 	
 	@Autowired
-	private ProfitService profitService;
-	
-	@Autowired
 	private WithdrawService withdrawService;
-
-	@Autowired
-	private AppearanceService appearanceService;
 
 	@Autowired
 	private ReportService reportService;
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private UserInfoService userInfoService;
 	
 	@Autowired
 	private CacheSupport cacheSupport;
@@ -143,13 +135,13 @@ public class IndexController {
 			}
 			model.addAttribute("userBankInfoCount", userBankInfoUnconfirmCount);
 	
-			Long appearanceCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_APPEARANCE_COUNT);
-			if(appearanceCount == null) {
-				appearanceCount = appearanceService.count(AppearanceQueryModel.builder().confirmStatusEQ(ConfirmStatus.待审核).build());
+			Long userInfoCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_USER_INFO_COUNT);
+			if(userInfoCount == null) {
+				userInfoCount = userInfoService.count(UserInfoQueryModel.builder().confirmStatusEQ(ConfirmStatus.待审核).build());
 				
-				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_APPEARANCE_COUNT, appearanceCount, DEFAULT_EXPIRE);
+				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_USER_INFO_COUNT, userInfoCount, DEFAULT_EXPIRE);
 			}
-			model.addAttribute("appearanceCount", appearanceCount);
+			model.addAttribute("userInfoCount", userInfoCount);
 
 			Long reportPreCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_PRE_COUNT);
 			if(reportPreCount == null) {

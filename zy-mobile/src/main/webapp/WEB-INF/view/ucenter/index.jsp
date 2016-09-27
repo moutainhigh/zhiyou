@@ -31,7 +31,7 @@
   </header>
   
   <div class="list-group mb-0">
-    <a class="list-item user-profile bd-0" href="${ctx}/u/userInfo">
+    <a class="list-item user-profile bd-0" href="${ctx}/u/info">
       <img class="avatar round mr-20 ml-10" src="${userAvatarSmall}">
       <div class="list-text font-white lh-30">
         <div class="fs-18 bold">${user.nickname}</div>

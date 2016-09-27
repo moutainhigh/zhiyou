@@ -58,7 +58,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	public String list(Principal principal, Model model, Integer pageNumber) {
 		List<BankCard> list = bankCardService.findByUserId(principal.getUserId());
 		model.addAttribute("bankCards", list.stream().map(bankCardComponent::buildVo).collect(Collectors.toList()));
-		return "ucenter/user/bankCardList";
+		return "ucenter/currency/bankCardList";
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -78,7 +78,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 			cacheSupport.set(Constants.CACHE_NAME_BANK, CACHE_KEY_BANK, banks);
 		}
 		model.addAttribute("banks", banks);
-		return "ucenter/user/bankCardCreate";
+		return "ucenter/currency/bankCardCreate";
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -128,7 +128,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 		}
 		model.addAttribute("banks", banks);
 		
-		return "ucenter/user/bankCardEdit";
+		return "ucenter/currency/bankCardEdit";
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
