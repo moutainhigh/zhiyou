@@ -147,6 +147,22 @@ public class UcenterOrderController {
 		return "redirect:/u/order/" + persistence.getId();
 	}
 	
+	@RequestMapping("/rejectPay")
+	public String rejectPay(Long id, RedirectAttributes redirectAttributes, Principal principal) {
+		Order persistence = orderService.findOne(id);
+		validate(persistence, NOT_NULL, "order id" + id + " not found");
+		if (!principal.getUserId().equals(persistence.getSellerId())) {
+			throw new UnauthorizedException("权限不足");
+		}
+		try {
+			orderService.rejectPay(id, null);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("驳回支付成功"));
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+		}
+		return "redirect:/u/order/" + persistence.getId();
+	}
+	
 	@RequestMapping(path = "/deliver", method = RequestMethod.GET)
 	public String deliver(Long id, Model model) {
 		model.addAttribute("orderId", id);
