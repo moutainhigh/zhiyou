@@ -7,7 +7,6 @@ import com.zy.entity.mal.Order;
 import com.zy.entity.mal.OrderItem;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
-import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,15 +40,14 @@ public class UserTreeController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public List<Map<String, Object>> listAjax(Long parentId) {
-		UserQueryModel userQueryModel = new UserQueryModel();
+		List<User> allUsers = localCacheComponent.getUsers();
+
+		List<User> users;
 		if (parentId == null) {
-			userQueryModel.setUserRankEQ(UserRank.V4);
-			userQueryModel.setParentIdNL(1L);
+			users = allUsers.stream().filter(v -> v.getUserRank() == UserRank.V4 && v.getParentId() == null).collect(Collectors.toList());
 		} else {
-			userQueryModel.setParentIdEQ(parentId);
+			users = allUsers.stream().filter(v -> parentId.equals(v.getParentId())).collect(Collectors.toList());
 		}
-		
-		List<User> users = userService.findAll(userQueryModel);
 		
 		return users.stream().map(user -> {
 			Map<String, Object> map = new HashMap<>();
@@ -61,7 +59,7 @@ public class UserTreeController {
 
 			map.put("id", user.getId());
 			map.put("name", user.getNickname());
-			map.put("isParent", true);
+			map.put("isParent", allUsers.stream().filter(v -> user.getId().equals(v.getParentId())).findFirst().isPresent());
 			return map;
 		}).collect(Collectors.toList());
 		
