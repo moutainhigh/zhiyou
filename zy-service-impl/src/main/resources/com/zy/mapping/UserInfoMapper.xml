@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.UserInfoMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.usr.UserInfo">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="realname" property="realname" />
+		<result column="id_card_number" property="idCardNumber" />
+		<result column="image1" property="image1" />
+		<result column="image2" property="image2" />
+		<result column="confirm_status" property="confirmStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="confirm_remark" property="confirmRemark" />
+		<result column="applied_time" property="appliedTime" />
+		<result column="confirmed_time" property="confirmedTime" />
+		<result column="gender" property="gender" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="birthday" property="birthday" />
+		<result column="job_id" property="jobId" />
+		<result column="area_id" property="areaId" />
+		<result column="hometown_area_id" property="hometownAreaId" />
+		<result column="consumption_level" property="consumptionLevel" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="tag_ids" property="tagIds" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.usr.UserInfo" useGeneratedKeys="true" keyProperty="id">
+	  insert into `usr_user_info` (user_id,realname,id_card_number,image1,image2,confirm_status,confirm_remark,applied_time,confirmed_time,gender,birthday,job_id,area_id,hometown_area_id,consumption_level,tag_ids)
+	  values (#{userId},#{realname},#{idCardNumber},#{image1},#{image2},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{appliedTime},#{confirmedTime},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{birthday},#{jobId},#{areaId},#{hometownAreaId},#{consumptionLevel,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{tagIds})
+	</insert>
+
+	<delete id="delete">
+		delete from `usr_user_info` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.usr.UserInfo">
+		update `usr_user_info`
+		<set>
+			user_id = #{userId},
+			realname = #{realname},
+			id_card_number = #{idCardNumber},
+			image1 = #{image1},
+			image2 = #{image2},
+			confirm_status = #{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			confirm_remark = #{confirmRemark},
+			applied_time = #{appliedTime},
+			confirmed_time = #{confirmedTime},
+			gender = #{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			birthday = #{birthday},
+			job_id = #{jobId},
+			area_id = #{areaId},
+			hometown_area_id = #{hometownAreaId},
+			consumption_level = #{consumptionLevel,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			tag_ids = #{tagIds},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `usr_user_info`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{userInfo.userId},</when>
+					<when test="field == 'realname'">realname = #{userInfo.realname},</when>
+					<when test="field == 'idCardNumber'">id_card_number = #{userInfo.idCardNumber},</when>
+					<when test="field == 'image1'">image1 = #{userInfo.image1},</when>
+					<when test="field == 'image2'">image2 = #{userInfo.image2},</when>
+					<when test="field == 'confirmStatus'">confirm_status = #{userInfo.confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.sys.ConfirmStatus},</when>
+					<when test="field == 'confirmRemark'">confirm_remark = #{userInfo.confirmRemark},</when>
+					<when test="field == 'appliedTime'">applied_time = #{userInfo.appliedTime},</when>
+					<when test="field == 'confirmedTime'">confirmed_time = #{userInfo.confirmedTime},</when>
+					<when test="field == 'gender'">gender = #{userInfo.gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.UserInfo$Gender},</when>
+					<when test="field == 'birthday'">birthday = #{userInfo.birthday},</when>
+					<when test="field == 'jobId'">job_id = #{userInfo.jobId},</when>
+					<when test="field == 'areaId'">area_id = #{userInfo.areaId},</when>
+					<when test="field == 'hometownAreaId'">hometown_area_id = #{userInfo.hometownAreaId},</when>
+					<when test="field == 'consumptionLevel'">consumption_level = #{userInfo.consumptionLevel,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.UserInfo$ConsumptionLevel},</when>
+					<when test="field == 'tagIds'">tag_ids = #{userInfo.tagIds},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{userInfo.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,realname,id_card_number,image1,image2,confirm_status,confirm_remark,applied_time,confirmed_time,gender,birthday,job_id,area_id,hometown_area_id,consumption_level,tag_ids
+		from `usr_user_info`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserInfoQueryModel">
+		select
+		id,user_id,realname,id_card_number,image1,image2,confirm_status,confirm_remark,applied_time,confirmed_time,gender,birthday,job_id,area_id,hometown_area_id,consumption_level,tag_ids
+		from `usr_user_info`
+		<where>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+				and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="confirmStatusEQ != null">
+				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.UserInfoQueryModel">
+		select count(*) from `usr_user_info`
+		<where>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+				and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="confirmStatusEQ != null">
+				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByUserId" resultMap="baseResultMap" parameterType="long">
+		select *
+		from `usr_user_info`
+		where user_id = #{userId}
+	</select>
+
+</mapper>

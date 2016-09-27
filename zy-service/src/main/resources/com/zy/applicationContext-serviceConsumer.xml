@@ -33,8 +33,7 @@
 	<dubbo:reference id="giftService" interface="com.zy.service.GiftService" />
 	<dubbo:reference id="helpCategoryService" interface="com.zy.service.HelpCategoryService" />
 	<dubbo:reference id="helpService" interface="com.zy.service.HelpService" />
-	<dubbo:reference id="portraitService" interface="com.zy.service.PortraitService"  />
-	<dubbo:reference id="appearanceService" interface="com.zy.service.AppearanceService" />
+	<dubbo:reference id="userInfoService" interface="com.zy.service.UserInfoService"  />
 	<dubbo:reference id="reportService" interface="com.zy.service.ReportService" />
 	<dubbo:reference id="userSettingService" interface="com.zy.service.UserSettingService" />
 	<dubbo:reference id="tagService" interface="com.zy.service.TagService"/>

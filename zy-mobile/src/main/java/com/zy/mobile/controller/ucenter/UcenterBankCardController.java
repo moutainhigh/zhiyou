@@ -24,13 +24,13 @@ import com.zy.component.BankCardComponent;
 import com.zy.entity.fnc.Bank;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.Appearance;
+import com.zy.entity.usr.UserInfo;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.BankQueryModel;
-import com.zy.service.AppearanceService;
 import com.zy.service.BankCardService;
 import com.zy.service.BankService;
+import com.zy.service.UserInfoService;
 
 @RequestMapping("/u/bankCard")
 @Controller
@@ -47,7 +47,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	private BankCardComponent bankCardComponent;
 	
 	@Autowired
-	private AppearanceService appearanceService;
+	private UserInfoService userInfoService;
 	
 	@Autowired
 	private CacheSupport cacheSupport;
@@ -64,12 +64,12 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create(Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		
-		Appearance appearance = appearanceService.findByUserId(principal.getUserId());
-		if(appearance == null || appearance.getConfirmStatus() != ConfirmStatus.已通过) {
+		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
+		if(userInfo == null || userInfo.getConfirmStatus() != ConfirmStatus.已通过) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成实名认证"));
 			return "redirect:/u/userInfo";
 		}
-		model.addAttribute("appearance", appearance);
+		model.addAttribute("userInfo", userInfo);
 		
 		List<Bank> banks = cacheSupport.get(Constants.CACHE_NAME_BANK, CACHE_KEY_BANK);
 		if(banks == null) {
@@ -84,14 +84,14 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(BankCard bankCard, Model model, Principal principal, RedirectAttributes redirectAttributes) {
 		
-		Appearance appearance = appearanceService.findByUserId(principal.getUserId());
-		if(appearance == null || appearance.getConfirmStatus() != ConfirmStatus.已通过) {
+		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
+		if(userInfo == null || userInfo.getConfirmStatus() != ConfirmStatus.已通过) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成实名认证"));
 			return "redirect:/u/bankCard";
 		}
-		if(!bankCard.getRealname().equals(appearance.getRealname())) {
+		if(!bankCard.getRealname().equals(userInfo.getRealname())) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("只能添加您本人开户的银行卡"));
-			bankCard.setRealname(appearance.getRealname());
+			bankCard.setRealname(userInfo.getRealname());
 			model.addAttribute("bankCard", bankCardComponent.buildVo(bankCard));
 			return create(principal, model, redirectAttributes);
 		}

@@ -1,9 +1,5 @@
 package com.zy.entity.act;
 
-import com.zy.common.extend.StringBinder;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.Portrait.Gender;
-import com.zy.entity.usr.User;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -13,17 +9,29 @@ import io.gd.generator.annotation.view.CollectionView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.zy.common.extend.StringBinder;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo.Gender;
 
 @Entity
 @Table(name = "act_report")

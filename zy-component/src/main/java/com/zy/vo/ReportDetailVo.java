@@ -1,9 +1,9 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
+import com.zy.entity.usr.UserInfo.Gender;
 import com.zy.entity.act.Report.ReportResult;
 import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.Portrait.Gender;
 import lombok.Getter;
 import lombok.Setter;
 
