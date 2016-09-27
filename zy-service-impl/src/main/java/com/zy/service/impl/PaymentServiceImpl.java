@@ -168,11 +168,11 @@ public class PaymentServiceImpl implements PaymentService {
 		if (payType != PayType.银行汇款) {
 			throw new BizException(BizCode.ERROR, "支付方式只能为银行汇款");
 		}
-		if (payment.getPaymentStatus() != PaymentStatus.待确认) {
-			throw new BizException(BizCode.ERROR, "只有待确认的支付单才能确认支付");
-		}
 		if (payment.getPaymentStatus() == Payment.PaymentStatus.已支付) {
 			return; // 幂等处理
+		}
+		if (payment.getPaymentStatus() != PaymentStatus.待确认) {
+			throw new BizException(BizCode.ERROR, "只有待确认的支付单才能确认支付");
 		}
 
 		payment.setRemark(remark);
@@ -197,11 +197,11 @@ public class PaymentServiceImpl implements PaymentService {
 		if (payType != PayType.银行汇款) {
 			throw new BizException(BizCode.ERROR, "支付方式只能为银行汇款");
 		}
-		if (payment.getPaymentStatus() != PaymentStatus.待确认) {
-			throw new BizException(BizCode.ERROR, "只有待确认的支付单才能拒绝确认支付");
-		}
 		if (payment.getPaymentStatus() == PaymentStatus.已取消) {
 			return; // 幂等处理
+		}
+		if (payment.getPaymentStatus() != PaymentStatus.待确认) {
+			throw new BizException(BizCode.ERROR, "只有待确认的支付单才能拒绝确认支付");
 		}
 		
 		payment.setRemark(remark);
