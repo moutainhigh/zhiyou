@@ -24,6 +24,8 @@ public class UserInfoComponent {
 	@Autowired
 	private CacheComponent cacheComponent;
 	
+	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
+	
 	public UserInfoVo buildVo(UserInfo userInfo) {
 		UserInfoVo userInfoVo = new UserInfoVo();
 		BeanUtils.copyProperties(userInfo, userInfoVo);
@@ -74,7 +76,11 @@ public class UserInfoComponent {
 		userInfoAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
 		userInfoAdminVo.setImage1Thumbnail(GcUtils.getThumbnail(userInfo.getImage1(), 120, 120));
 		userInfoAdminVo.setImage2Thumbnail(GcUtils.getThumbnail(userInfo.getImage2(), 120, 120));
-
+		userInfoAdminVo.setAppliedTimeLabel(GcUtils.formatDate(userInfo.getAppliedTime(), TIME_PATTERN));
+		userInfoAdminVo.setConfirmedTimeLabel(GcUtils.formatDate(userInfo.getConfirmedTime(), TIME_PATTERN));
+		userInfoAdminVo.setConfirmStatusStyle(GcUtils.getConfirmStatusStyle(userInfo.getConfirmStatus()));
+		userInfoAdminVo.setBirthdayLabel(GcUtils.formatDate(userInfo.getBirthday(), "yyyy-MM-dd"));
+		
 		Long areaId = userInfo.getAreaId();
 		if(areaId != null) {
 			AreaDto areaDto = cacheComponent.getAreaDto(areaId);

@@ -2,6 +2,7 @@ package com.zy.entity.usr;
 
 import com.zy.common.extend.StringBinder;
 import com.zy.entity.sys.ConfirmStatus;
+
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -13,11 +14,13 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -133,6 +136,7 @@ public class UserInfo implements Serializable {
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "审核状态")
+	@View(name = "confirmStatusStyle", type = String.class, groups = {VO_ADMIN})
 	@View
 	private ConfirmStatus confirmStatus;
 
@@ -143,10 +147,12 @@ public class UserInfo implements Serializable {
 	@NotNull
 	@Field(label = "申请时间")
 	@View(groups = VO_ADMIN)
+	@View(name = "appliedTimeLabel", type = String.class)
 	private Date appliedTime;
 	
 	@Field(label = "审核通过时间")
 	@View(groups = VO_ADMIN)
+	@View(name = "confirmedTimeLabel", type = String.class)
 	private Date confirmedTime;
 
 	@NotNull
