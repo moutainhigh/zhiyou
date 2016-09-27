@@ -163,7 +163,7 @@
 </script>
 
 <script id="addressCreateTpl" type="text/html">
-<aside id="addressCreate" class="abs-lt size-100p bg-gray z-1000" style="left: 100%; display: none;">
+<aside id="addressCreate" class="abs-lt size-100p bg-gray zindex-1000" style="left: 100%; display: none;">
   <header class="header">
     <h1>新增收货地址</h1>
     <a href="javascript:hideAddressCreate();" class="button-left"><i class="fa fa-angle-left"></i></a>

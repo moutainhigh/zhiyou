@@ -102,7 +102,7 @@
   }
 </script>
 <script id="bankListTpl" type="text/html">
-  <aside id="bankList" class="bank-list header-fixed abs-lt size-100p bg-white z-1000" style="left: 100%; display: none;">
+  <aside id="bankList" class="bank-list header-fixed abs-lt size-100p bg-white zindex-1000" style="left: 100%; display: none;">
     <header class="header">
       <h1>选择银行</h1>
       <a href="javascript:hideBankList();" class="button-left"><i class="fa fa-angle-left"></i></a>

@@ -85,7 +85,7 @@
   
 </script>
 <script id="bankCardListTpl" type="text/html">
-  <aside id="bankCardList" class="header-fixed abs-lt size-100p bg-white z-1000" style="left: 100%; display: none;">
+  <aside id="bankCardList" class="header-fixed abs-lt size-100p bg-white zindex-1000" style="left: 100%; display: none;">
     <header class="header">
       <h1>选择银行卡</h1>
       <a href="javascript:hideBankCardList();" class="button-left"><i class="fa fa-angle-left"></i></a>

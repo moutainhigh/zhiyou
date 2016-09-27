@@ -166,7 +166,7 @@
 </script>
 
 <script id="asideTpl" type="text/html">
-<aside id="tagAside" class="aside-tag header-fixed fix-lt size-100p z-1000" style="left:100%;display:none;overflow-y:auto">
+<aside id="tagAside" class="aside-tag header-fixed fix-lt size-100p zindex-1000" style="left:100%;display:none;overflow-y:auto">
   <header class="header">
     <h1>选择标签</h1>
     <a href="javascript:hideAside();" class="button-left"><i class="fa fa-angle-left"></i></a>
