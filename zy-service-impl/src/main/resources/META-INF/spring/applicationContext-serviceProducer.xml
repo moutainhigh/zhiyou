@@ -40,8 +40,7 @@
 	<dubbo:service ref="paymentServiceImpl" interface="com.zy.service.PaymentService" />
 	<dubbo:service ref="helpCategoryServiceImpl" interface="com.zy.service.HelpCategoryService" />
 	<dubbo:service ref="helpServiceImpl" interface="com.zy.service.HelpService" />
-	<dubbo:service ref="portraitServiceImpl" interface="com.zy.service.PortraitService"  />
-	<dubbo:service ref="appearanceServiceImpl" interface="com.zy.service.AppearanceService" />
+	<dubbo:service ref="userInfoServiceImpl" interface="com.zy.service.UserInfoService"  />
 	<dubbo:service ref="reportServiceImpl" interface="com.zy.service.ReportService" />
 	<dubbo:service ref="userSettingServiceImpl" interface="com.zy.service.UserSettingService" />
 	<dubbo:service ref="tagServiceImpl" interface="com.zy.service.TagService"/>

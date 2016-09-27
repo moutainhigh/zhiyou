@@ -74,7 +74,7 @@
 					<when test="field == 'userId'">user_id = #{report.userId},</when>
 					<when test="field == 'realname'">realname = #{report.realname},</when>
 					<when test="field == 'age'">age = #{report.age},</when>
-					<when test="field == 'gender'">gender = #{report.gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.Portrait$Gender},</when>
+					<when test="field == 'gender'">gender = #{report.gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.UserInfo$Gender},</when>
 					<when test="field == 'phone'">phone = #{report.phone},</when>
 					<when test="field == 'jobId'">job_id = #{report.jobId},</when>
 					<when test="field == 'areaId'">area_id = #{report.areaId},</when>

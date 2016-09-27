@@ -129,8 +129,8 @@ public interface Constants {
     String TOPIC_REGISTER_SUCCESS = "register-success"; // 注册成功
     String TOPIC_USER_RANK_CHANGED = "user-rank-changed"; // 代理等级更新
 
-    String TOPIC_APPEARANCE_CONFIRMED = "appearance-confirmed"; // 实名认证通过 
-    String TOPIC_APPEARANCE_REJECTED = "appearance-rejected"; // 实名认证未通过
+    String TOPIC_USER_INFO_CONFIRMED = "user-info-confirmed"; // 实名认证通过
+    String TOPIC_USER_INFO_REJECTED = "user-info-rejected"; // 实名认证未通过
     String TOPIC_BANKCARD_CONFIRMED = "bankCard-confirmed"; // 银行卡审核通过
     String TOPIC_BANKCARD_REJECTED = "bankCard-rejected"; // 银行卡审核未通过
     
