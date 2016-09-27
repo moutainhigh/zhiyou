@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -44,16 +45,20 @@ public class UserUpgrade implements Serializable {
 	@NotNull
 	@Field(label = "升级前等级")
 	@View(groups = VO_ADMIN)
+	@View(name = "fromUserRankLabel", type = String.class, groups = {VO_ADMIN})
 	private User.UserRank fromUserRank;
 
 	@NotNull
 	@Field(label = "升级后等级")
 	@View(groups = VO_ADMIN)
+	@View(name = "toUserRankLabel", type = String.class, groups = {VO_ADMIN})
 	private User.UserRank toUserRank;
 
 	@NotNull
 	@Field(label = "升级时间")
 	@View(groups = VO_ADMIN)
+	@View(name = "upgradedTimeLabel", type = String.class)
+	@View(name = "upgradedTimeFormatted", type = String.class, groups = VO_ADMIN)
 	@Query({Predicate.GTE, Predicate.LT})
 	private Date upgradedTime;
 
