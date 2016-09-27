@@ -123,7 +123,7 @@
       <div class="list-title">检测信息</div>
       <div class="list-item">
         <div class="list-text">检测次数</div>
-        <div class="list-unit">第${report.times}次检测</div>
+        <div class="list-unit">第 ${report.times} 次检测</div>
       </div>
       <div class="list-item">
         <div class="list-text">检测结果</div>
