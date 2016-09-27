@@ -218,6 +218,9 @@ public class GcUtils {
 		case 已取消:
 			labelClass = "default";
 			break;
+		case 待确认:
+			labelClass = "warning";
+			break;
 		default:
 			break;
 		}

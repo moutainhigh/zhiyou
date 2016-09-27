@@ -197,7 +197,7 @@ public class OrderServiceImpl implements OrderService {
 		if (orderStatus == OrderStatus.已取消) {
 			return; // 幂等处理
 		} else if (orderStatus != OrderStatus.待支付) {
-			throw new BizException(BizCode.ERROR, "只有待支付状态的支付订单才能取消");
+			throw new BizException(BizCode.ERROR, "只有待支付订单才能取消");
 		}
 		order.setOrderStatus(OrderStatus.已取消);
 		if (orderMapper.update(order) == 0) {

@@ -42,6 +42,8 @@ public class OrderDetailVo implements Serializable {
 	private String sellerMemo;
 	@Field(label = "备注")
 	private String remark;
+	@Field(label = "奖励是否结算")
+	private Boolean isProfitSettledUp;
 	@Field(label = "是否已结算")
 	private Boolean isSettledUp;
 	@Field(label = "是否物流发货")

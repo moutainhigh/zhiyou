@@ -41,6 +41,8 @@ public class OrderAdminFullVo implements Serializable {
 	private String sellerMemo;
 	@Field(label = "备注")
 	private String remark;
+	@Field(label = "奖励是否结算")
+	private Boolean isProfitSettledUp;
 	@Field(label = "是否已结算")
 	private Boolean isSettledUp;
 	@Field(label = "物流费支付类型")

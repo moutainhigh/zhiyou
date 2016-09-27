@@ -57,11 +57,14 @@
 		id,user_id,from_user_rank,to_user_rank,upgraded_time
 		from `usr_user_upgrade`
 		<where>
-			<if test="upgradedTimeGTE != null">
-				and upgraded_time &gt;= #{upgradedTimeGTE}
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="upgradedTimeLT != null">
 				and upgraded_time &lt; #{upgradedTimeLT}
+			</if>
+			<if test="upgradedTimeGTE != null">
+				and upgraded_time &gt;= #{upgradedTimeGTE}
 			</if>
 		</where>
 		<choose>
@@ -80,11 +83,14 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.UserUpgradeQueryModel">
 		select count(*) from `usr_user_upgrade`
 		<where>
-			<if test="upgradedTimeGTE != null">
-				and upgraded_time &gt;= #{upgradedTimeGTE}
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="upgradedTimeLT != null">
 				and upgraded_time &lt; #{upgradedTimeLT}
+			</if>
+			<if test="upgradedTimeGTE != null">
+				and upgraded_time &gt;= #{upgradedTimeGTE}
 			</if>
 		</where>
 	</select>
