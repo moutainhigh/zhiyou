@@ -4,6 +4,7 @@ import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.entity.mal.Order.OrderStatus.已支付;
 import static com.zy.entity.mal.Order.OrderStatus.待支付;
+import static com.zy.entity.mal.Order.OrderStatus.待确认;
 import static com.zy.entity.usr.User.UserRank.V4;
 
 import java.math.BigDecimal;
@@ -154,7 +155,7 @@ public class MalComponent {
 		Order.OrderStatus orderStatus = order.getOrderStatus();
 		if (orderStatus == 已支付) {
 			return; // 幂等操作
-		} else if (orderStatus != 待支付) {
+		} else if (orderStatus != 待支付 || orderStatus != 待确认) {
 			logger.warn("订单状态警告 {} 订单id {}", order.getOrderStatus(), order.getId());
 		}
 

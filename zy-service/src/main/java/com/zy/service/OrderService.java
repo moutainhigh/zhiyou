@@ -22,6 +22,8 @@ public interface OrderService {
 	Order findBySn(String sn);
 	
 	void confirmPay(Long id); // 确认支付
+	
+	void rejectPay(Long id, String remark); // 驳回支付
 
 	void deliver(OrderDeliverDto orderDeliverDto); // 发货
 

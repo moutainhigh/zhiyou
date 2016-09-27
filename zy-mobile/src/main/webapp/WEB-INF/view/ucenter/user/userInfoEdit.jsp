@@ -101,6 +101,7 @@
     $('#tagWrap').click(function() {
       showAside();
       //init
+      $('#tagSelect .tag-option').removeClass('checked');
       var tagIds = $('#tagIds').val();
       $.each(tagIds.split(','), function(n, tag){
         $('#tagAside').find('.tag-option[data-id="' + tag + '"]').addClass('checked');
@@ -108,9 +109,7 @@
     });
 
     var MAX_TAG_SIZE = 5;
-    $('body').on('click', '#btnTagsClose', function() {
-      hideAside();
-    }).on('click', '.tag-option', function() {
+    $('body').on('click', '.tag-option', function() {
       var $this = $(this);
       if ($this.hasClass('checked')) {
         $this.removeClass('checked');
@@ -167,7 +166,7 @@
 </script>
 
 <script id="asideTpl" type="text/html">
-<aside id="tagAside" class="aside-tag header-fixed abs-lt size-100p z-1000" style="left: 100%; display: none;">
+<aside id="tagAside" class="aside-tag header-fixed fix-lt size-100p z-1000" style="left:100%;display:none;overflow-y:auto">
   <header class="header">
     <h1>选择标签</h1>
     <a href="javascript:hideAside();" class="button-left"><i class="fa fa-angle-left"></i></a>
