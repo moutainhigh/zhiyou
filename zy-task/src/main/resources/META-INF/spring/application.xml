@@ -66,7 +66,7 @@
 						<bean id="orderStatementJobDetail"
 						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
-							<property name="jobClass" value="com.zy.task.job.OrderStatementJob"></property>
+							<property name="jobClass" value="com.zy.task.job.OrderSettlementJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
@@ -116,17 +116,17 @@
 					</property>
 				</bean>
 				<!--转账 job-->
-				<bean id="transferJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-					<property name="jobDetail">
-						<bean id="transferJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-							<property name="durability" value="true"></property>
-							<property name="jobClass" value="com.zy.task.job.TransferJob"></property>
-						</bean>
-					</property>
-					<property name="cronExpression">
-						<value>0 0/1 * * * ?</value>
-					</property>
-				</bean>
+				<!--<bean id="transferJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+					<!--<property name="jobDetail">-->
+						<!--<bean id="transferJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">-->
+							<!--<property name="durability" value="true"></property>-->
+							<!--<property name="jobClass" value="com.zy.task.job.TransferJob"></property>-->
+						<!--</bean>-->
+					<!--</property>-->
+					<!--<property name="cronExpression">-->
+						<!--<value>0 0/1 * * * ?</value>-->
+					<!--</property>-->
+				<!--</bean>-->
 				<!--订单取消-->
 				<bean id="orderCancelJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
