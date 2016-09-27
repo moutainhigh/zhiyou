@@ -64,6 +64,7 @@
       });
     });
     
+    //确认收货
     $('#btnConfirm').click(function() {
       $.dialog({
         content : '您确定已收到该订单的商品吗？',
@@ -75,8 +76,6 @@
       });
     });
     
-    
-
     /*
      * 出货订单操作(卖家)
      */
@@ -91,8 +90,19 @@
       });
     });
     
+    //确认收款
+    $('#btnConfirmPay').click(function() {
+      $.dialog({
+        content : '您确定已收到买家款项吗？',
+        callback : function(index) {
+          if (index == 1) {
+            location.href = '${ctx}/u/order/confirmPay?id=${order.id}';
+          }
+        }
+      });
+    });
+    
     /* 取消订单 */
-    <c:if test="${ inOut == 'in' && order.orderStatus == '待支付'}">
     $('#btnDelete').click(function() {
       $.dialog({
         content : '您确定要删除此订单吗？',
@@ -103,7 +113,6 @@
         }
       });
     });
-    </c:if>
     
   });
 </script>
@@ -112,7 +121,7 @@
   <header class="header">
     <h1>订单详情</h1>
     <a href="${ctx}/u/order/${inOut}" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <c:if test="${ inOut == 'in' && order.orderStatus == '待支付'}">
+    <c:if test="${ inOut == 'in' && (order.orderStatus == '已取消' || order.orderStatus == '已完成')}">
     <a href="javascript:;" class="button-right button-popmenu"><i class="fa fa-ellipsis-h"></i></a>
     <nav class="header-popmenu hide">
       <a id="btnDelete" href="javascript:;"><i class="fa fa-trash-o"></i>删除</a>
@@ -121,15 +130,20 @@
   </header>
   
   <article>
-    <%-- 待支付, 已支付, 已发货, 已完成, 已退款, 已取消 --%>
+    <%-- 待支付, 待确认, 已支付, 已发货, 已完成, 已退款, 已取消 --%>
     <c:if test="${order.orderStatus == '待支付'}">
     <div class="note note-danger mb-0">
       <p><i class="fa fa-clock-o fs-16"></i> 订单状态：买家未支付</p>
     </div>
     </c:if>
+    <c:if test="${order.orderStatus == '待确认'}">
+    <div class="note note-danger mb-0">
+      <p><i class="fa fa-clock-o fs-16"></i> 订单状态：买家已支付，等待卖家确认</p>
+    </div>
+    </c:if>
     <c:if test="${order.orderStatus == '已支付'}">
     <div class="note note-danger mb-0">
-      <p><i class="fa fa-clock-o fs-16"></i> 订单状态：已支付，等待卖家发货</p>
+      <p><i class="fa fa-clock-o fs-16"></i> 订单状态：已支付成功，等待卖家发货</p>
     </div>
     </c:if>
     <c:if test="${order.orderStatus == '已发货'}">
@@ -303,9 +317,7 @@
         </div>
       </div>
       <div class="list-item">
-        <div class="list-text">
-        ${order.offlineMemo}
-        </div>
+        <div class="list-text">${order.offlineMemo}</div>
       </div>
     </div>
     </c:if>
@@ -368,6 +380,11 @@
       <c:if test="${order.orderStatus == '待支付'}">
         <div class="form-btn">
           <a class="btn disabled btn-block round-2" href="javascript:;"><i class="fa fa-clock"></i> 等待买家支付</a>
+        </div>
+      </c:if>
+      <c:if test="${order.orderStatus == '待确认'}">
+        <div class="form-btn">
+          <a id="btnConfirmPay" class="btn green btn-block round-2" href="javascript:;"><i class="fa fa-check"></i> 确认已打款</a>
         </div>
       </c:if>
       <c:if test="${order.orderStatus == '已支付' && !order.isPlatformDeliver}">

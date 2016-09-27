@@ -4,12 +4,12 @@
 }
 .signInSiccess{
   height: 100%; overflow: hidden;  min-height: 480px;
-  background-image: url('../image/tmp/success-bg.png'); 
+  background-image: url('../image/signIn/success_bg.png'); 
   background-color: #faac0c;
 }
 .signInFail{
   min-height: 550px; height: 100%;
-  background-image: url('../image/tmp/fail-bg.png'); 
+  background-image: url('../image/signIn/fail_bg.png'); 
   background-color: #78c8b4;
 }
 

@@ -115,14 +115,14 @@ public class UcenterActivityController {
 	}
 
 	@RequestMapping(value = "/signIn")
-	public String signIn(Long id, Principal principal) {
-		
+	public String signIn(Long id, Principal principal, Model model) {
 		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(id, principal.getUserId());
+		model.addAttribute("user", userComponent.buildSimpleVo(userService.findOne(principal.getUserId())));
 		if(activityApply == null) {
-			return "not";
+			model.addAttribute("id", id);
+			return "activity/signInFail";
 		}
-		
 		activityService.signIn(id, principal.getUserId());
-		return "ok";
+		return "activity/signInSuccess";
 	}
 }

@@ -31,11 +31,12 @@
     <ul>
       <li<c:if test="${empty orderStatus}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}">全部订单 (${orderCount})</a></li>
       <li<c:if test="${orderStatus == '待支付'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=0">待支付 (${orderCount0})</a></li>
-      <li<c:if test="${orderStatus == '已支付'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=1">已支付 (${orderCount1})</a></li>
-      <li<c:if test="${orderStatus == '已发货'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=2">已发货 (${orderCount2})</a></li>
-      <li<c:if test="${orderStatus == '已完成'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=3">已完成 (${orderCount3})</a></li>
-      <li<c:if test="${orderStatus == '已退款'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=4">已退款 (${orderCount4})</a></li>
-      <li<c:if test="${orderStatus == '已取消'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=5">已取消 (${orderCount5})</a></li>
+      <li<c:if test="${orderStatus == '待确认'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=1">待确认 (${orderCount1})</a></li>
+      <li<c:if test="${orderStatus == '已支付'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=2">已支付 (${orderCount2})</a></li>
+      <li<c:if test="${orderStatus == '已发货'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=3">已发货 (${orderCount3})</a></li>
+      <li<c:if test="${orderStatus == '已完成'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=4">已完成 (${orderCount4})</a></li>
+      <li<c:if test="${orderStatus == '已退款'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=5">已退款 (${orderCount5})</a></li>
+      <li<c:if test="${orderStatus == '已取消'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=6">已取消 (${orderCount6})</a></li>
     </ul>
   </nav>
   
@@ -51,7 +52,8 @@
     <a class="order mt-15 bd-t bd-b" href="${ctx}/u/order/${order.id}">
       <div class="order-sn pl-15 pr-15 font-777 fs-12">订单编号：${order.sn}</div>
       <label class="order-status label<c:if test="${order.orderStatus == '待支付'}"> red</c:if>
-      <c:if test="${order.orderStatus == '已支付'}"> orange</c:if>
+      <c:if test="${order.orderStatus == '待确认'}"> orange</c:if>
+      <c:if test="${order.orderStatus == '已支付'}"> green</c:if>
       <c:if test="${order.orderStatus == '已发货'}"> yellow</c:if>
       <c:if test="${order.orderStatus == '已完成'}"> green</c:if>
       <c:if test="${order.orderStatus == '已退款'}"> blue</c:if>

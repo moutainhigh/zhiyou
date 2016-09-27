@@ -12,32 +12,32 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>签到失败</title>
+<title>签到成功</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/signIn.css" rel="stylesheet">
 <script type="text/javascript">
   $(function() {
-
+    
   });
 </script>
  
 </head>
-<body class="body-bg signInFail pb-15">
+<body class="body-bg signInSiccess">
     
-    <div style="margin-top: 5%;">
-      <div class="width-100p text-center">
-        <img class="user-head " src="http://image.zhi-you.net/avatar/ed673dc0-9e83-4e99-9206-1f33064dc099@240h_240w_1e_1c.jpg"/>
-        <p class="width-100p fs-16 font-white mt-5">昵称昵称昵称</p>
+    <div class="header-img relative block">
+      <img src="${stccdn}/image/signIn/success_header.png" class="width-100p"/>
+      <div class="user-info">
+        <img class="user-head " src="${user.avatarThumbnail}"/>
+        <p class="width-100p fs-16 font-orange">${user.nickname}</p>
       </div>
     </div>
     
-    <img src="${stccdn}/image/tmp/failImg.png" class="width-50p block center" style="margin-top: 33%;" />
-    
-    <a href="#">
-      <img src="${stccdn}/image/tmp/sign.png" class="width-25p block center" style="margin-top: 5%;"/>
+    <a href="${ctx}/">
+      <img src="${stccdn}/image/signIn/btn.png" class="link block"/>
     </a>
     
-    <img src="${stccdn}/image/tmp/footer.png" class="block center" style="width: 40%; margin-top: 50px;" />
+    <img src="${stccdn}/image/signIn/footer.png" class="footer-img absolute block" />
+  
 </body>
 </html>
  
