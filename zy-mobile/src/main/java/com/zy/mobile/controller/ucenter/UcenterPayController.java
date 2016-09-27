@@ -156,10 +156,11 @@ public class UcenterPayController {
 		model.addAttribute("sn", order.getSn());
 		model.addAttribute("amount", order.getAmount());
 		model.addAttribute("payType", payType);
-		model.addAttribute("refId", payment == null ? order.getId() : payment.getId());
 		if (payType == PayType.银行汇款) {
+			model.addAttribute("refId", order.getId());
 			return "ucenter/pay/payOffline";
 		} else if (payment.getPayType() == PayType.余额) {
+			model.addAttribute("refId", payment.getId());
 			Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.现金);
 			model.addAttribute("balance", account.getAmount());
 			return "ucenter/pay/payBalance";
