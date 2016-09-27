@@ -136,7 +136,7 @@ public class UserInfo implements Serializable {
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "审核状态")
-	@View(name = "confirmStatusLabel", type = String.class, groups = {VO_ADMIN})
+	@View(name = "confirmStatusStyle", type = String.class, groups = {VO_ADMIN})
 	@View
 	private ConfirmStatus confirmStatus;
 
@@ -148,13 +148,11 @@ public class UserInfo implements Serializable {
 	@Field(label = "申请时间")
 	@View(groups = VO_ADMIN)
 	@View(name = "appliedTimeLabel", type = String.class)
-	@View(name = "appliedTimeFormatted", type = String.class, groups = VO_ADMIN)
 	private Date appliedTime;
 	
 	@Field(label = "审核通过时间")
 	@View(groups = VO_ADMIN)
 	@View(name = "confirmedTimeLabel", type = String.class)
-	@View(name = "confirmedTimeFormatted", type = String.class, groups = VO_ADMIN)
 	private Date confirmedTime;
 
 	@NotNull

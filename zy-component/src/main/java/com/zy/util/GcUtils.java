@@ -26,6 +26,7 @@ import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Transfer;
 import com.zy.entity.fnc.Withdraw;
 import com.zy.entity.mal.Order;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
@@ -195,6 +196,24 @@ public class GcUtils {
 		} else {
 			return "-";
 		}
+	}
+	
+	public static String getConfirmStatusStyle(ConfirmStatus confirmStatus) {
+		String labelClass = "default";
+		switch (confirmStatus) {
+		case 待审核:
+			labelClass = "danger";
+			break;
+		case 已通过:
+			labelClass = "success";
+			break;
+		case 未通过:
+			labelClass = "default";
+			break;
+		default:
+			break;
+		}
+		return labelClass;
 	}
 
 	public static String getOrderStatusStyle(Order.OrderStatus orderStatus) {

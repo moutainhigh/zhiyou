@@ -30,7 +30,5 @@ public class UserUpgradeAdminVo implements Serializable {
 	private String toUserRankLabel;
 	@Field(label = "升级时间")
 	private String upgradedTimeLabel;
-	@Field(label = "升级时间")
-	private String upgradedTimeFormatted;
 
 }

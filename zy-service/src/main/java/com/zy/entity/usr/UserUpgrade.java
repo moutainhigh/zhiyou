@@ -58,7 +58,6 @@ public class UserUpgrade implements Serializable {
 	@Field(label = "升级时间")
 	@View(groups = VO_ADMIN)
 	@View(name = "upgradedTimeLabel", type = String.class)
-	@View(name = "upgradedTimeFormatted", type = String.class, groups = VO_ADMIN)
 	@Query({Predicate.GTE, Predicate.LT})
 	private Date upgradedTime;
 

@@ -183,10 +183,10 @@
                   <td>${user.userInfo.idCardNumber}</td>
                   <td><c:if test="${not empty user.userInfo.image1Thumbnail}"><img class="imageview" data-url="${user.userInfo.image1}" src="${user.userInfo.image1Thumbnail}"/></c:if></td>
                   <td><c:if test="${not empty user.userInfo.image2Thumbnail}"><img class="imageview" data-url="${user.userInfo.image2}" src="${user.userInfo.image2Thumbnail}"/></c:if></td>
-                  <td>${user.userInfo.confirmStatus}</td>
+                  <td><label class="label label-${user.userInfo.confirmStatusStyle}">${user.userInfo.confirmStatus}</label></td>
                   <td>${user.userInfo.confirmRemark}</td>
-                  <td>${user.userInfo.appliedTime}</td>
-                  <td>${user.userInfo.confirmedTime}</td>
+                  <td>${user.userInfo.appliedTimeLabel}</td>
+                  <td>${user.userInfo.confirmedTimeLabel}</td>
                   <td>${user.userInfo.gender}</td>
                   <td>${user.userInfo.birthdayLabel}</td>
                   <td>${user.userInfo.jobName}</td>
@@ -215,9 +215,9 @@
               <c:if test="${not empty user.userUpgrades}">
                <c:forEach items="${user.userUpgrades}" var="userUpgrade">
                 <tr>
-                  <td>${userUpgrade.fromUserRank}</td>
-                  <td>${userUpgrade.toUserRank}</td>
-                  <td>${userUpgrade.upgradedTime}</td>
+                  <td>${userUpgrade.fromUserRankLabel}</td>
+                  <td>${userUpgrade.toUserRankLabel}</td>
+                  <td>${userUpgrade.upgradedTimeLabel}</td>
                 </tr>
                 </c:forEach>
               </c:if>
