@@ -1,10 +1,12 @@
 package com.zy.service;
 
-import java.util.List;
-
 import com.zy.entity.mal.OrderItem;
+
+import java.util.List;
 
 public interface OrderItemService {
 
 	List<OrderItem> findByOrderId(Long orderId);
+
+	List<OrderItem> findAll();
 }

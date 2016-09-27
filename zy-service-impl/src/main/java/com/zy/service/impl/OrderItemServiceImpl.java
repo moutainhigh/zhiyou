@@ -24,4 +24,9 @@ public class OrderItemServiceImpl implements OrderItemService {
 		return orderItemMapper.findByOrderId(orderId);
 	}
 
+	@Override
+	public List<OrderItem> findAll() {
+		return orderItemMapper.findAll();
+	}
+
 }

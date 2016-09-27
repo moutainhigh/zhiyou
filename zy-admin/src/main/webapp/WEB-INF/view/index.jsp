@@ -246,7 +246,7 @@
                   <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 平台发货订单<span class="badge badge-danger"></span></a>
                 </li>
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/userTree"><i class="icon-docs"></i> 用户报表<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/stastics"><i class="icon-docs"></i> 用户报表<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>

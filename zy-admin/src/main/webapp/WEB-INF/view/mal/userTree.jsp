@@ -6,12 +6,30 @@
     var setting = {
       async: {
         enable: true,
-        url: '${ctx}/userTree',
+        url: '${ctx}/stastics',
         autoParam:['id=parentId']
+      },
+      callback: {
+        onClick: function(event, treeId, treeNode) {
+          $.ajax({
+            url: '${ctx}/stastics/order?userId=' + treeNode.id,
+            dataType: 'html',
+            success: function(data) {
+              layer.open({
+                type: 1,
+                skin: 'layui-layer-rim', //加上边框
+                area: ['960px', '640px'], //宽高
+                content: data
+              });
+            }
+          })
+
+        }
       }
     };
 
     $.fn.zTree.init($("#tree"), setting);
+
   });
 </script>
 <!-- END JAVASCRIPTS -->
