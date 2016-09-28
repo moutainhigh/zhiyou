@@ -98,18 +98,18 @@ public class Report implements Serializable {
 
 	//@NotNull
 	@Field(label = "职业")
-	@View(name = "jobName", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
-	@View(groups = VO_EXPORT, field = @Field(label = "职业", order = 55))
+	@View(name = "jobName", type = String.class, groups = {VO_LIST, VO_DETAIL})
+	@View(name = "jobName", type = String.class, groups = VO_EXPORT, field = @Field(label = "职业", order = 55))
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Long jobId;
 
 	//@NotNull
 	@Field(label = "所在地")
 	@View(name = "province", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
-	@View(name = "city", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN, VO_EXPORT})
-	@View(name = "district", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN, VO_EXPORT})
+	@View(name = "city", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(name = "district", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(name = "province", groups = VO_EXPORT, field = @Field(label = "所在省", order = 56))
-	@View(name = "city", groups = VO_EXPORT, field = @Field(label = "所在室", order = 57))
+	@View(name = "city", groups = VO_EXPORT, field = @Field(label = "所在市", order = 57))
 	@View(name = "district", groups = VO_EXPORT, field = @Field(label = "所在区", order = 58))
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Long areaId;

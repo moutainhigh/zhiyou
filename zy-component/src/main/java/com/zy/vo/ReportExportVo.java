@@ -44,18 +44,6 @@ public class ReportExportVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "昵称", order = 15)
 	private Long nickname;
-	@Field(label = "手机", order = 15)
-	private Long phone;
-	@Field(label = "所在地")
-	private String city;
-	@Field(label = "所在地")
-	private String district;
-	@Field(label = "所在省", order = 56)
-	private Long province;
-	@Field(label = "所在室", order = 57)
-	private Long city;
-	@Field(label = "所在区", order = 58)
-	private Long district;
 	@Field(label = "申请时间", order = 75)
 	private String appliedTimeLabel;
 	@Field(label = "创建时间", order = 76)
