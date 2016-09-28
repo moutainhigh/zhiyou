@@ -39,7 +39,7 @@
 <body class="log-list">
   <article class="drop-wrap">
     <header class="header">
-      <h1>收入 - 订单收款</h1>
+      <h1>收入 - ${title}</h1>
       <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
   

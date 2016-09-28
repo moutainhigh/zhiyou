@@ -1,11 +1,15 @@
 package com.zy.mobile.controller.ucenter;
 
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+
 import static com.zy.entity.fnc.CurrencyType.现金;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,8 +69,10 @@ public class UcenterAcountController {
 	}
 	
 	@RequestMapping(value = "/out", method = RequestMethod.GET)
-	public String out(String type, Principal principal, Model model) {
+	public String out(@RequestParam String type, Principal principal, Model model) {
+		String title = getOutTitle(type);
 		AccountLogQueryModel accountLogQueryModel = new AccountLogQueryModel();
+		accountLogQueryModel.setTitleLK(title);
 		accountLogQueryModel.setInOutEQ(InOut.支出);
 		accountLogQueryModel.setCurrencyTypeEQ(现金);
 		accountLogQueryModel.setUserIdEQ(principal.getUserId());
@@ -76,16 +82,18 @@ public class UcenterAcountController {
 		
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
 		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		model.addAttribute("title", title);
 		return "ucenter/account/accountOut";
 	}
-	
+
 	@RequestMapping(value = "/out", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> out(String type, Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
+	public Result<?> out(@RequestParam String type, Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
 		if (timeLT == null) {
 			timeLT = new Date();
 		}
 		AccountLogQueryModel accountLogQueryModel = new AccountLogQueryModel();
+		accountLogQueryModel.setTitleLK(getOutTitle(type));
 		accountLogQueryModel.setInOutEQ(InOut.支出);
 		accountLogQueryModel.setCurrencyTypeEQ(现金);
 		accountLogQueryModel.setTransTimeLT(timeLT);
@@ -100,15 +108,85 @@ public class UcenterAcountController {
 	}
 	
 	@RequestMapping(value = "/in", method = RequestMethod.GET)
-	public String in(String type, Principal principal, Model model) {
+	public String in(@RequestParam String type, Principal principal, Model model) {
+		String title = getInTitle(type);
+		AccountLogQueryModel accountLogQueryModel = new AccountLogQueryModel();
+		accountLogQueryModel.setTitleLK(title);
+		accountLogQueryModel.setInOutEQ(InOut.收入);
+		accountLogQueryModel.setCurrencyTypeEQ(现金);
+		accountLogQueryModel.setUserIdEQ(principal.getUserId());
+		accountLogQueryModel.setPageSize(10);
+		accountLogQueryModel.setPageNumber(0);
+		Page<AccountLog> page  = accountLogService.findPage(accountLogQueryModel);
 		
+		model.addAttribute("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
+		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		model.addAttribute("title", title);
 		return "ucenter/account/accountIn";
 	}
 	
 	@RequestMapping(value = "/in", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> in(String type, Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
-		
-		return null;
+	public Result<?> in(@RequestParam String type, Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
+		if (timeLT == null) {
+			timeLT = new Date();
+		}
+		AccountLogQueryModel accountLogQueryModel = new AccountLogQueryModel();
+		accountLogQueryModel.setTitleLK(getInTitle(type));
+		accountLogQueryModel.setInOutEQ(InOut.支出);
+		accountLogQueryModel.setCurrencyTypeEQ(现金);
+		accountLogQueryModel.setTransTimeLT(timeLT);
+		accountLogQueryModel.setUserIdEQ(principal.getUserId());
+		accountLogQueryModel.setPageSize(10);
+		accountLogQueryModel.setPageNumber(pageNumber);
+		Page<AccountLog> page  = accountLogService.findPage(accountLogQueryModel);
+		Map<String, Object> map = new HashMap<>();
+		map.put("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
+		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
+		return ResultBuilder.result(map);
+	}
+	
+	private String getInTitle(String type) {
+		String title = null;
+		switch (type) {
+		case "0":
+			title = "订单";
+			break;
+		case "1":
+			title = "数据奖";
+			break;
+		case "2":
+			title = "销量奖";
+			break;
+		case "3":
+			title = "特级平级奖";
+			break;
+		default:
+			break;
+		}
+		validate(title, NOT_BLANK, "参数错误");
+		return title;
+	}
+	
+	private String getOutTitle(String type) {
+		String title = null;
+		switch (type) {
+		case "0":
+			title = "数据奖";
+			break;
+		case "1":
+			title = "一级平级奖";
+			break;
+		case "2":
+			title = "一级越级奖";
+			break;
+		case "3":
+			title = "邮费";
+			break;
+		default:
+			break;
+		}
+		validate(title, NOT_BLANK, "参数错误");
+		return title;
 	}
 }
