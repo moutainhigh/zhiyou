@@ -1,16 +1,16 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
-import com.zy.entity.usr.UserInfo.Gender;
-import com.zy.entity.act.Report.ReportResult;
-import com.zy.entity.sys.ConfirmStatus;
+
+import java.io.Serializable;
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Date;
-import java.util.ArrayList;
+import com.zy.entity.act.Report.ReportResult;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.UserInfo.Gender;
 
 @Getter
 @Setter
@@ -52,15 +52,11 @@ public class ReportExportVo implements Serializable {
 	private String city;
 	@Field(label = "所在地")
 	private String district;
+	@Field(label = "职业")
+	private String jobName;
 	@Field(label = "申请时间")
 	private String appliedTimeLabel;
 	@Field(label = "创建时间")
 	private String createdTimeLabel;
-	@Field(label = "图片")
-	private List<String> images = new ArrayList<>();
-	@Field(label = "图片")
-	private List<String> imageThumbnails = new ArrayList<>();
-	@Field(label = "图片")
-	private List<String> imageBigs = new ArrayList<>();
 
 }
