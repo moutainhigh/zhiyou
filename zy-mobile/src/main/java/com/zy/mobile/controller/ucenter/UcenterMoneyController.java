@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.Config;
+import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -35,12 +36,16 @@ import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.AccountLog;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.fnc.Withdraw;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
+import com.zy.model.BizCode;
 import com.zy.model.Principal;
 import com.zy.model.query.AccountLogQueryModel;
 import com.zy.model.query.BankCardQueryModel;
 import com.zy.service.AccountLogService;
 import com.zy.service.AccountService;
 import com.zy.service.BankCardService;
+import com.zy.service.UserService;
 import com.zy.service.WithdrawService;
 
 @RequestMapping("/u/money")
@@ -51,6 +56,9 @@ public class UcenterMoneyController {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private AccountLogService accountLogService;
@@ -75,16 +83,14 @@ public class UcenterMoneyController {
 		Long userId = principal.getUserId();
 		Account account = accountService.findByUserIdAndCurrencyType(userId, 现金);
 		model.addAttribute("amount", account.getAmount());
+		
 		BankCardQueryModel bankCardQueryModel = new BankCardQueryModel();
 		bankCardQueryModel.setUserIdEQ(principal.getUserId());
 		bankCardQueryModel.setIsDeletedEQ(false);
-		Long count = bankCardService.count(bankCardQueryModel);
-		Boolean isBoundBankCard = true;
-		if(count.compareTo(0L) <= 0){
-			isBoundBankCard = false;
-		}
-		model.addAttribute("isBoundBankCard", isBoundBankCard);
-		return "ucenter/currency/money";
+		Long bankCardCount = bankCardService.count(bankCardQueryModel);
+		model.addAttribute("bankCardCount", bankCardCount);
+		model.addAttribute("userRank", userService.findOne(userId).getUserRank());
+		return "ucenter/account/money";
 	}
 	
 	@RequestMapping(value = "/log", method = RequestMethod.GET)
@@ -98,7 +104,7 @@ public class UcenterMoneyController {
 		
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
 		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-		return "ucenter/currency/moneyLog";
+		return "ucenter/account/moneyLog";
 	}
 	
 	@RequestMapping(value = "/log", method = RequestMethod.POST)
@@ -141,15 +147,20 @@ public class UcenterMoneyController {
 		model.addAttribute("bankCardCount", bankCardCount);
 		model.addAttribute("defaultBankCard", bankCardComponent.buildVo(defaultBankCard));
 		model.addAttribute("bankCards", bankCardList.stream().map(bankCardComponent::buildVo).collect(Collectors.toList()));
-		return "ucenter/currency/moneyWithdraw";
+		return "ucenter/account/moneyWithdraw";
 	}
 	
 	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
 	public String withdraw(Principal principal, Model model, BigDecimal amount,Long bankCardId, RedirectAttributes redirectAttributes) {
 		try {
-			Withdraw withdraw = withdrawService.create(principal.getUserId(), bankCardId, 现金, amount);
+			Long userId = principal.getUserId();
+			User user = userService.findOne(userId);
+			if(user.getUserRank() == UserRank.V1 || user.getUserRank() == UserRank.V2){
+				throw new BizException(BizCode.ERROR, "三级服务商、二级服务商暂不支持提现操作");
+			}
+			Withdraw withdraw = withdrawService.create(userId, bankCardId, 现金, amount);
 			model.addAttribute("withdraw", withdraw);
-			return "ucenter/currency/moneyWithdrawSuccess";
+			return "ucenter/account/moneyWithdrawSuccess";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(现金.getAlias() + "提现申请失败, 原因" + e.getMessage()));

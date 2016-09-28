@@ -21,16 +21,16 @@
   }
   
   function buildRow(row) {
-    var html = '<div class="list-item">' 
-    	+ '<div class="list-text pl-5">' 
-    	+   '<div class="fs-14">' + row.title + '</div>'
-    	+   '<div class="fs-12 font-999">' + row.transTimeLabel + '</div>' 
-        + '</div>' 
-        + '<div class="list-unit width-100 text-right">' 
-        +   '<div class="' + (row.inOut == '收入' ? 'currency-in' : 'currency-out') + '">' + row.transAmount.toFixed(2) + '</div>' 
-        +   '<div class="fs-12 font-999">余额: ' + row.afterAmount.toFixed(2) + '</div>' 
-        + '</div>' 
-        + '</div>';
+    var html  = '<div class="list-item">' 
+              +   '<div class="list-text pl-5">' 
+              +     '<div class="fs-14">' + row.title + '</div>'
+              +     '<div class="fs-12 font-999">' + row.transTimeLabel + '</div>' 
+              +   '</div>' 
+              +   '<div class="list-unit width-100 text-right">' 
+              +     '<div class="' + (row.inOut == '收入' ? 'currency-in' : 'currency-out') + '">' + row.transAmount.toFixed(2) + '</div>' 
+              +     '<div class="fs-12 font-999">余额: ' + row.afterAmount.toFixed(2) + '</div>' 
+              +   '</div>' 
+              + '</div>';
     return html;
   }
 </script>
@@ -65,10 +65,6 @@
         </div>
         </c:forEach>
       </div>
-      
-      <c:if test="${page.total <= page.pageSize}">
-        <a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>
-      </c:if>
     </div>
   </article>
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>

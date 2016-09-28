@@ -130,33 +130,33 @@
   background-image: url(../image/icon/icon_weibo.png);
 }
 
-/* currency */
-.icon-cny-money {
-  background-image: url(../image/icon/currency/icon_money.png);
+/* account */
+.icon-account-money {
+  background-image: url(../image/icon/account/icon_money.png);
 }
-.icon-cny-card {
-  background-image: url(../image/icon/currency/icon_card.png);
+.icon-account-card {
+  background-image: url(../image/icon/account/icon_card.png);
 }
-.icon-cny-data {
-  background-image: url(../image/icon/currency/icon_data.png);
+.icon-account-data {
+  background-image: url(../image/icon/account/icon_data.png);
 }
-.icon-cny-order {
-  background-image: url(../image/icon/currency/icon_order.png);
+.icon-account-order {
+  background-image: url(../image/icon/account/icon_order.png);
 }
-.icon-cny-post {
-  background-image: url(../image/icon/currency/icon_post.png);
+.icon-account-post {
+  background-image: url(../image/icon/account/icon_post.png);
 }
-.icon-cny-sale {
-  background-image: url(../image/icon/currency/icon_sale.png);
+.icon-account-sale {
+  background-image: url(../image/icon/account/icon_sale.png);
 }
-.icon-cny-teping {
-  background-image: url(../image/icon/currency/icon_teping.png);
+.icon-account-teping {
+  background-image: url(../image/icon/account/icon_teping.png);
 }
-.icon-cny-yiping {
-  background-image: url(../image/icon/currency/icon_yiping.png);
+.icon-account-yiping {
+  background-image: url(../image/icon/account/icon_yiping.png);
 }
-.icon-cny-yiyue {
-  background-image: url(../image/icon/currency/icon_yiyue.png);
+.icon-account-yiyue {
+  background-image: url(../image/icon/account/icon_yiyue.png);
 }
 
 /* bank */

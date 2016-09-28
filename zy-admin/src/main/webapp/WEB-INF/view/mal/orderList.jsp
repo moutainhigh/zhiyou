@@ -109,6 +109,14 @@
             }
           },
           {
+            data: 'isPayToPlatform',
+            title: '支付给平台',
+            orderable: false,
+            render: function (data, type, full) {
+              return data ? '是' : '否';
+            }
+          },
+          {
             data: '',
             title: '物流信息',
             orderable: false,
@@ -211,11 +219,12 @@
               <ul id="statusTab" class="nav nav-tabs">
                 <li class="active"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 全部</a></li>
                 <li class="" data-order-status="0"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 待付款</a></li>
-                <li class="" data-order-status="1"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已支付</a></li>
-                <li class="" data-order-status="2"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已发货</a></li>
-                <li class="" data-order-status="3"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已完成</a></li>
-                <li class="" data-order-status="4"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已退款</a></li>
-                <li class="" data-order-status="5"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已取消</a></li>
+                <li class="" data-order-status="1"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 待确认</a></li>
+                <li class="" data-order-status="2"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已支付</a></li>
+                <li class="" data-order-status="3"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已发货</a></li>
+                <li class="" data-order-status="4"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已完成</a></li>
+                <li class="" data-order-status="5"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已退款</a></li>
+                <li class="" data-order-status="6"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已取消</a></li>
               </ul>
               <input id="_orderBy" name="orderBy" type="hidden" value=""/>
               <input id="_direction" name="direction" type="hidden" value=""/>
@@ -239,6 +248,14 @@
               <div class="form-group input-inline">
                 <input type="text" name="logisticsSnLK" class="form-control" placeholder="物流单号"/>
               </div>              
+              
+              <div class="form-group input-inline">
+                <select name="isPayToPlatformEQ" class="form-control">
+                  <option value="">-- 是否支付给平台 --</option>
+                  <option value="1">是</option>
+                  <option value="0">否</option>
+                </select>
+              </div>
               
               <div class="form-group">
                 <input class="Wdate form-control" type="text" id="beginDate"

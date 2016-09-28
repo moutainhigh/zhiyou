@@ -28,6 +28,10 @@ public class AccountLogSimpleVo implements Serializable {
 	private BigDecimal afterAmount;
 
 	/* 扩展 */
+	@Field(label = "所属用户")
+	private UserAdminSimpleVo user;
+	@Field(label = "对应用户id")
+	private UserAdminSimpleVo refUser;
 	@Field(label = " 交易产生时间")
 	private String transTimeLabel;
 

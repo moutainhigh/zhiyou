@@ -1,28 +1,28 @@
-.currency{
+.account{
   background-color: #e9eaed;  
 }
-.currency .header {
+.account .header {
   background-color: #666d79;
 }
-.currency-nav {
+.account-nav {
   background-color: #666d79;
 }
-.currency-nav div {
+.account-nav div {
   color: #fff;
 }
-.currency-nav .icon {
+.account-nav .icon {
   width: 36px; height: 36px;
 }
 
 
-.currency-link {
+.account-link {
   
 }
-.currency-link a {
+.account-link a {
   float: left; padding-top: 15px; padding-bottom: 15px;
   display: block; width: 33.333333%;
   text-align: center;
 }
-.currency-link a .icon {
+.account-link a .icon {
   width: 24px; height: 24px;
 }

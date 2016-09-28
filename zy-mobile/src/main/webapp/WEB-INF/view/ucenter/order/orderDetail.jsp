@@ -347,7 +347,7 @@
         --%>
       </div>
     </div>
-    
+   	
     <%-- 买家操作(进货) --%>
     <c:if test="${inOut == 'in'}">
       <c:if test="${order.orderStatus == '待支付'}">
@@ -356,9 +356,14 @@
           <a id="btnPay" class="btn btn-block green round-2" href="javascript:;"><i class="fa fa-cny"></i> 立即支付</a>
         </div>
         </c:if>
-        <c:if test="${!order.isPayToPlatform}">
+        <c:if test="${!order.isPayToPlatform && (buyer.userRank == 'V2' || buyer.userRank == 'V1' || buyer.userRank == 'V0')}">
         <div class="form-btn">
           <a id="btnPayOffline" class="btn btn-block green round-2" href="${ctx}/u/pay/order/${order.id}?payType=1"><i class="fa fa-cny"></i> 立即支付</a>
+        </div>
+        </c:if>
+        <c:if test="${!order.isPayToPlatform && buyer.userRank == 'V3'}">
+        <div class="form-btn">
+          <a id="btnPay" class="btn btn-block green round-2" href="javascript:;"><i class="fa fa-cny"></i> 立即支付</a>
         </div>
         </c:if>
       </c:if>

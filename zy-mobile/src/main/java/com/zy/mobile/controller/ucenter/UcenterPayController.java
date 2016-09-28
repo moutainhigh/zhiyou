@@ -32,6 +32,8 @@ import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
 import com.zy.entity.mal.Order;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
@@ -41,6 +43,7 @@ import com.zy.service.AccountService;
 import com.zy.service.DepositService;
 import com.zy.service.OrderService;
 import com.zy.service.PaymentService;
+import com.zy.service.UserService;
 
 import io.gd.generator.api.query.Direction;
 
@@ -55,6 +58,9 @@ public class UcenterPayController {
 
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private PaymentService paymentService;
@@ -73,6 +79,10 @@ public class UcenterPayController {
 		final BigDecimal zero = new BigDecimal("0.00");
 		String title = "余额充值";
 		Long userId = principal.getUserId();
+		User user = userService.findOne(userId);
+		if(user.getUserRank() == UserRank.V1 || user.getUserRank() == UserRank.V2){
+			throw new BizException(BizCode.ERROR, "三级服务商、二级服务商暂不支持充值操作");
+		}
 		validate(money, v -> v.compareTo(zero) > 0, "money must be more than 0.00");
 
 		DepositQueryModel depositQueryModel = new DepositQueryModel();
@@ -106,7 +116,7 @@ public class UcenterPayController {
 		if (payType == PayType.银行汇款) {
 			model.addAttribute("offlineImage", deposit.getOfflineImage());
 			model.addAttribute("offlineMemo", deposit.getOfflineMemo());
-			return "ucenter/currency/moneyDepositOffline";
+			return "ucenter/account/moneyDepositOffline";
 		} else {
 			return null;
 		}
@@ -116,7 +126,7 @@ public class UcenterPayController {
 	public String depositPay(@RequestParam(required = true) PayType payType, Model model, Principal principal) {
 		validate(payType, NOT_NULL, "order payType" + payType + " is null");
 		if (payType == PayType.银行汇款) {
-			return "ucenter/currency/moneyDeposit";
+			return "ucenter/account/moneyDeposit";
 		} else {
 			throw new BizException(BizCode.ERROR, "不支持的付款方式");
 		}

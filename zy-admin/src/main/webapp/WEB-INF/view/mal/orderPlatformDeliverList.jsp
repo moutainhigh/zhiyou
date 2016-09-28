@@ -14,6 +14,13 @@
       $('input[name="isPlatformDeliverEQ"]').val($this.data('is-platform-deliver'));
       grid.getDataTable().ajax.reload(null, false);
     });
+    
+    $('#statusTab li').bind('click', function () {
+      $this = $(this);
+      $('input[name="orderStatusEQ"]').val($this.data('order-status'));
+      $('input[name="isPlatformDeliverEQ"]').val($this.data('is-platform-deliver'));
+      grid.getDataTable().ajax.reload(null, false);
+    });
 
     grid.init({
       src: $('#dataTable'),
@@ -174,15 +181,16 @@
         <div class="table-container">
           <div class="table-toolbar">
             <form class="filter-form form-inline" id="searchForm">
-              <%-- <ul id="statusTab" class="nav nav-tabs">
-                <li class=""><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 全部</a></li>
+              <ul id="statusTab" class="nav nav-tabs">
+                <li class="active"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 全部</a></li>
                 <li class="" data-order-status="0"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 待付款</a></li>
-                <li class="active" data-order-status="1" data-is-platform-deliver="true"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"><strong> 已支付 </strong><span class="badge badge-primary"> ${count} </span></a></li>
-                <li class="" data-order-status="2"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已发货</a></li>
-                <li class="" data-order-status="3"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已完成</a></li>
-                <li class="" data-order-status="4"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已退款</a></li>
-                <li class="" data-order-status="5"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已取消</a></li>
-              </ul> --%>
+                <li class="" data-order-status="1"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 待确认</a></li>
+                <li class="" data-order-status="2" data-is-platform-deliver="true"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"><strong> 已支付 </strong><span class="badge badge-primary"> ${count} </span></a></li>
+                <li class="" data-order-status="3"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已发货</a></li>
+                <li class="" data-order-status="4"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已完成</a></li>
+                <li class="" data-order-status="5"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已退款</a></li>
+                <li class="" data-order-status="6"><a href="javascript:void(0)" data-toggle="tab" aria-expanded="false"> 已取消</a></li>
+              </ul>
               <input id="_orderBy" name="orderBy" type="hidden" value=""/> <input id="_direction" name="direction" type="hidden" value=""/>
               <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
               <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
@@ -204,15 +212,6 @@
               <div class="form-group input-inline">
                 <input type="text" name="logisticsSnLK" class="form-control" placeholder="物流单号"/>
               </div>               
-              
-              <div class="form-group input-inline">
-                <select name="orderStatusEQ" class="form-control">
-                  <option value="">-- 订单状态 --</option>
-                  <c:forEach items="${orderStatuses}" var="orderStatus">
-                  <option value="${orderStatus}">${orderStatus}</option>
-                  </c:forEach>
-                </select>
-              </div>
               
               <div class="form-group">
                 <input class="Wdate form-control" type="text" id="beginDate"
