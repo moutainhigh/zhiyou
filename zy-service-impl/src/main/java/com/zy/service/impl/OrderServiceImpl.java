@@ -435,7 +435,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void modifySellerId(@NotNull Long orderId, @NotNull Long sellerId) {
-		Order order = orderMapper.findOne(orderId);
+		/*Order order = orderMapper.findOne(orderId);
 		validate(order, NOT_NULL, "order id" + orderId + " is not found");
 		User seller = userMapper.findOne(sellerId);
 		validate(seller, NOT_NULL, "seller id" + seller + " is not found");
@@ -446,7 +446,8 @@ public class OrderServiceImpl implements OrderService {
 		order.setSellerId(sellerId);
 		if (orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
-		}
+		}*/
+		throw new BizException(BizCode.ERROR, "暂不支持该操作");
 	}
 	
 	@Override
@@ -510,7 +511,7 @@ public class OrderServiceImpl implements OrderService {
 			Long skipBonusUserId = null;
 			boolean firstParent = true;
 
-			while(parentId != null) {
+			while (parentId != null) {
 				User parent = userMapper.findOne(parentId);
 				if (firstParent) {
 					if (parent.getUserRank() == UserRank.V3) {
@@ -566,50 +567,53 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "只有已完成订单才能结算");
 		}
 
-		OrderItem orderItem = orderItemMapper.findByOrderId(orderId).get(0);
+		if (order.getIsPayToPlatform()) {
 
-		Long quantity = orderItem.getQuantity();
-		Long productId = orderItem.getProductId();
-		Long buyerId = order.getUserId();
-		Long sellerId = order.getSellerId();
-		User buyer = userMapper.findOne(buyerId);
-		User seller = userMapper.findOne(sellerId);
-		@SuppressWarnings("unused")
-		UserRank buyerUserRank = buyer.getUserRank();
-		@SuppressWarnings("unused")
-		UserRank sellerUserRank = seller.getUserRank();
-		Long sysUserId = config.getSysUserId();
+			OrderItem orderItem = orderItemMapper.findByOrderId(orderId).get(0);
 
-		/* 订单收款 */
-		BigDecimal amount = order.getAmount();
-		if (sellerId.equals(sysUserId)) {
-			/*fncComponent.createAndGrantProfit(sysUserId, Profit.ProfitType.平台收款, orderId, "订单" + order.getSn() + "平台收款", currencyType, amount);*/
-		} else {
-			BigDecimal v4Amount = malComponent.getPrice(productId, UserRank.V4, quantity).multiply(BigDecimal.valueOf(quantity)).setScale(2, BigDecimal.ROUND_HALF_UP);
-			if (order.getIsPlatformDeliver()) {
-				amount = amount.subtract(v4Amount);
-				/*fncComponent.createAndGrantProfit(sysUserId, Profit.ProfitType.平台收款, orderId, "订单" + order.getSn() + "平台收款", currencyType, v4Amount);*/
+			Long quantity = orderItem.getQuantity();
+			Long productId = orderItem.getProductId();
+			Long buyerId = order.getUserId();
+			Long sellerId = order.getSellerId();
+			User buyer = userMapper.findOne(buyerId);
+			User seller = userMapper.findOne(sellerId);
+			@SuppressWarnings("unused")
+			UserRank buyerUserRank = buyer.getUserRank();
+			@SuppressWarnings("unused")
+			UserRank sellerUserRank = seller.getUserRank();
+			Long sysUserId = config.getSysUserId();
+
+			/* 订单收款 */
+			BigDecimal amount = order.getAmount();
+			if (sellerId.equals(sysUserId)) {
+				/*fncComponent.createAndGrantProfit(sysUserId, Profit.ProfitType.平台收款, orderId, "订单" + order.getSn() + "平台收款", currencyType, amount);*/
+			} else {
+				BigDecimal v4Amount = malComponent.getPrice(productId, UserRank.V4, quantity).multiply(BigDecimal.valueOf(quantity)).setScale(2, BigDecimal.ROUND_HALF_UP);
+				if (order.getIsPlatformDeliver()) {
+					amount = amount.subtract(v4Amount);
+					/*fncComponent.createAndGrantProfit(sysUserId, Profit.ProfitType.平台收款, orderId, "订单" + order.getSn() + "平台收款", currencyType, v4Amount);*/
+				}
+				fncComponent.createAndGrantProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单" + order.getSn() + "收款", CurrencyType.现金, amount);
 			}
-			fncComponent.createAndGrantProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单" + order.getSn() + "收款", CurrencyType.现金, amount);
-		}
 
-		/* 邮费 */
-		if (order.getUseLogistics()) {
-			LogisticsFeePayType logisticsFeePayType = order.getLogisticsFeePayType();
-			BigDecimal logisticsFee = order.getLogisticsFee();
-			Boolean isPlatformDeliver = order.getIsPlatformDeliver();
-			if (logisticsFee.compareTo(new BigDecimal("0.00")) > 0) {
-				if (isPlatformDeliver) {
-					if (logisticsFeePayType == LogisticsFeePayType.买家付) {
-						fncComponent.createTransfer(buyerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
-					} else if (logisticsFeePayType == LogisticsFeePayType.卖家付) {
-						fncComponent.createTransfer(sellerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
-					}
-				} else {
-					if (logisticsFeePayType == LogisticsFeePayType.买家付) {
-						fncComponent.createTransfer(buyerId, sellerId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
-					} else if (logisticsFeePayType == LogisticsFeePayType.卖家付) {
-						// ignore
+			/* 邮费 */
+			if (order.getUseLogistics()) {
+				LogisticsFeePayType logisticsFeePayType = order.getLogisticsFeePayType();
+				BigDecimal logisticsFee = order.getLogisticsFee();
+				Boolean isPlatformDeliver = order.getIsPlatformDeliver();
+				if (logisticsFee.compareTo(new BigDecimal("0.00")) > 0) {
+					if (isPlatformDeliver) {
+						if (logisticsFeePayType == LogisticsFeePayType.买家付) {
+							fncComponent.createTransfer(buyerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
+						} else if (logisticsFeePayType == LogisticsFeePayType.卖家付) {
+							fncComponent.createTransfer(sellerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
+						}
+					} else {
+						if (logisticsFeePayType == LogisticsFeePayType.买家付) {
+							fncComponent.createTransfer(buyerId, sellerId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
+						} else if (logisticsFeePayType == LogisticsFeePayType.卖家付) {
+							// ignore
+						}
 					}
 				}
 			}
