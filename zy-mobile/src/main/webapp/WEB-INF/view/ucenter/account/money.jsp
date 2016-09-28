@@ -20,7 +20,7 @@
 
   <header class="header">
     <h1>我的余额</h1>
-    <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
     <a class="button-right" href="${ctx}/u/money/log"><span>明细</span></a>
   </header>
 
@@ -32,19 +32,16 @@
     <div class="form-btn mt-20">
       <a href="${ctx}/u/pay/deposit?payType=1" class="btn orange btn-block round-2">充值</a>
     </div>
-    <c:if test="${!isBoundBankCard}">
+    <c:if test="${bankCardCount == 0}">
     <div class="form-btn">
       <a href="javascript:;" class="btn disabled btn-block round-2">提现(请先添加银行卡)</a>
     </div>
     </c:if>
-    <c:if test="${isBoundBankCard}">
+    <c:if test="${bankCardCount > 0}">
     <div class="form-btn">
       <a href="${ctx}/u/money/withdraw" class="btn green btn-block round-2">提现</a>
     </div>
     </c:if>
-    <div class="form-btn">
-      <a href="${ctx}/u/bankCard" class="btn default btn-block round-2">我的银行卡</a>
-    </div>
     
     <a href="${ctx}/help/money" class="mt-30 mb-10 block width-100p font-999 fs-12 text-center"><i class="fa fa-question-circle-o"></i> 余额问题</a>
   </article>

@@ -106,7 +106,7 @@ public class UcenterPayController {
 		if (payType == PayType.银行汇款) {
 			model.addAttribute("offlineImage", deposit.getOfflineImage());
 			model.addAttribute("offlineMemo", deposit.getOfflineMemo());
-			return "ucenter/currency/moneyDepositOffline";
+			return "ucenter/account/moneyDepositOffline";
 		} else {
 			return null;
 		}
@@ -116,7 +116,7 @@ public class UcenterPayController {
 	public String depositPay(@RequestParam(required = true) PayType payType, Model model, Principal principal) {
 		validate(payType, NOT_NULL, "order payType" + payType + " is null");
 		if (payType == PayType.银行汇款) {
-			return "ucenter/currency/moneyDeposit";
+			return "ucenter/account/moneyDeposit";
 		} else {
 			throw new BizException(BizCode.ERROR, "不支持的付款方式");
 		}

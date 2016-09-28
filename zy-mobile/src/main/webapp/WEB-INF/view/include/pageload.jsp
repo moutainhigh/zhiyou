@@ -11,7 +11,7 @@
 }
 .drop-inner {
   -webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1;
-  background-color: #fff; overflow-y: scroll;
+  background-color: #fff; overflow-y: scroll; overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 </style>
@@ -54,6 +54,7 @@
           return;
         }
         dropload.$element.find('.list-group').html('');
+        dropload.$element.find('.empty-tip').remove();
         var page = result.data.page;
         if (page.data.length) {
           timeLT = result.data.timeLT;
@@ -65,6 +66,7 @@
             dropload.$element.find('.list-group').append(html);
           }
           if (page.data.length < page.pageSize) {
+            dropload.$domDown.remove();
             dropload.$element.append('<a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>')
           }
         } else {

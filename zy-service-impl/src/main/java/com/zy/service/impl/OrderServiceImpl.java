@@ -244,11 +244,7 @@ public class OrderServiceImpl implements OrderService {
 		if(order.getIsPayToPlatform()){
 			throw new BizException(BizCode.ERROR, "只有支付给上级的订单才能确认支付");
 		}
-
-		order.setOrderStatus(OrderStatus.已支付);
-		if (orderMapper.update(order) == 0) {
-			throw new ConcurrentException();
-		}
+		malComponent.successOrder(id);
 	}
 	
 	@Override
