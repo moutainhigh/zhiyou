@@ -65,7 +65,7 @@ public class UcenterAcountController {
 	}
 	
 	@RequestMapping(value = "/out", method = RequestMethod.GET)
-	public String list(Principal principal, Model model) {
+	public String out(Principal principal, Model model) {
 		AccountLogQueryModel accountLogQueryModel = new AccountLogQueryModel();
 		accountLogQueryModel.setInOutEQ(InOut.支出);
 		accountLogQueryModel.setCurrencyTypeEQ(现金);
@@ -81,7 +81,7 @@ public class UcenterAcountController {
 	
 	@RequestMapping(value = "/out", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> list(Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
+	public Result<?> out(Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
 		if (timeLT == null) {
 			timeLT = new Date();
 		}
@@ -99,4 +99,16 @@ public class UcenterAcountController {
 		return ResultBuilder.result(map);
 	}
 	
+	@RequestMapping(value = "/in", method = RequestMethod.GET)
+	public String in(Principal principal, Model model) {
+		
+		return "ucenter/account/accountIn";
+	}
+	
+	@RequestMapping(value = "/in", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> in(Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
+		
+		return null;
+	}
 }
