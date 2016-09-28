@@ -64,8 +64,6 @@ public class ReportAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
-	@Field(label = "职业")
-	private String jobName;
 	@Field(label = "所在地")
 	private String province;
 	@Field(label = "所在地")

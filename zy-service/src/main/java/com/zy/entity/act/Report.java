@@ -62,8 +62,8 @@ public class Report implements Serializable {
 	@Field(label = "用户id")
 	@Query({Predicate.EQ, Predicate.IN})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
-	@View(groups = VO_EXPORT, name = "nickname", field = @Field(label = "昵称", order = 15))
-	@View(groups = VO_EXPORT, name = "phone", field = @Field(label = "手机", order = 15))
+	@View(groups = VO_EXPORT, name = "userNickname", field = @Field(label = "昵称", order = 15))
+	@View(groups = VO_EXPORT, name = "userPhone", field = @Field(label = "手机", order = 15))
 	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
