@@ -29,8 +29,10 @@ import com.zy.component.ReportComponent;
 import com.zy.entity.act.Report;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Transfer;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
+import com.zy.entity.usr.UserInfo;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.ProfitQueryModel;
@@ -40,6 +42,7 @@ import com.zy.service.JobService;
 import com.zy.service.ProfitService;
 import com.zy.service.ReportService;
 import com.zy.service.TransferService;
+import com.zy.service.UserInfoService;
 import com.zy.service.UserService;
 
 @RequestMapping("/u/report")
@@ -61,6 +64,9 @@ public class UcenterReportController {
 	@Autowired
 	private JobService jobService;
 
+	@Autowired
+	private UserInfoService userInfoService;
+	
 	@Autowired
 	private ReportComponent reportComponent;
 
@@ -88,7 +94,11 @@ public class UcenterReportController {
 	}
 
 	@RequestMapping(value = "create", method = GET)
-	public String create(Model model, Principal principal) {
+	public String create(Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		if(!isCompletedUserInfo(principal.getUserId())) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
+			return "redirect:/u/report";
+		}
 		User user = userService.findOne(principal.getUserId());
 		model.addAttribute("userRank", user.getUserRank());
 		model.addAttribute("jobs", this.jobService.findAll());
@@ -98,6 +108,10 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "/create", method = POST)
 	public String create(Report report, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		if(!isCompletedUserInfo(principal.getUserId())) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
+			return "redirect:/u/report";
+		}
 		User user = userService.findOne(principal.getUserId());
 		if (user.getUserRank() == UserRank.V0) {
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("只有成为服务商后才能提交检测报告"));
@@ -109,7 +123,7 @@ public class UcenterReportController {
 		} catch (Exception e) {
 			model.addAttribute("report", report);
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return create(model, principal);
+			return create(principal, model, redirectAttributes);
 		}
 		redirectAttributes.addFlashAttribute(ResultBuilder.ok("上传检测报告成功"));
 		return "redirect:/u/report";
@@ -140,7 +154,11 @@ public class UcenterReportController {
 	}
 
 	@RequestMapping(value = "/edit", method = GET)
-	public String edit(@RequestParam Long id, Principal principal, Model model) {
+	public String edit(@RequestParam Long id, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		if(!isCompletedUserInfo(principal.getUserId())) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
+			return "redirect:/u/report";
+		}
 		Report report = findAndValidate(id, principal.getUserId());
 		validate(report, NOT_NULL, "report id" + id + " not found");
 		model.addAttribute("jobs", this.jobService.findAll());
@@ -151,6 +169,10 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "/edit", method = POST)
 	public String edit(Report report, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		if(!isCompletedUserInfo(principal.getUserId())) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
+			return "redirect:/u/report";
+		}
 		Long id = report.getId();
 		validate(id, NOT_NULL, "id is null");
 		Report persistence = reportService.findOne(id);
@@ -160,12 +182,23 @@ public class UcenterReportController {
 			reportService.modify(report);
 		} catch (Exception e) {
 			model.addAttribute(ResultBuilder.error(e.getMessage()));
-			return edit(report.getId(), principal, model);
+			return edit(report.getId(), principal, model, redirectAttributes);
 		}
 		redirectAttributes.addFlashAttribute(ResultBuilder.ok("更新检测报告成功"));
 		return "redirect:/u/report";
 	}
 
+	private boolean isCompletedUserInfo(Long userId) {
+		UserInfo userInfo = userInfoService.findByUserId(userId);
+		if(userInfo == null) {
+			return false;
+		}
+		if(userInfo.getConfirmStatus() == ConfirmStatus.已通过) {
+			return true;
+		}
+		return false;
+	}
+	
 	private Report findAndValidate(Long id, Long userId) {
 		Report report = reportService.findOne(id);
 		validate(report, NOT_NULL, "report id" + id + " not found");
@@ -173,14 +206,4 @@ public class UcenterReportController {
 		return report;
 	}
 
-	/*private Map<String, List<Tag>> getTags() {
-		Map<String, List<Tag>> tags = new HashMap<>();
-		this.tagService.findAll().parallelStream().forEach(tag -> {
-			if (!tags.containsKey(tag.getTagType())) {
-				tags.put(tag.getTagType(), new ArrayList<>());
-			}
-			tags.get(tag.getTagType()).add(tag);
-		});
-		return tags;
-	}*/
 }
