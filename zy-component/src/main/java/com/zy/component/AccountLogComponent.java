@@ -37,6 +37,12 @@ public class AccountLogComponent {
 			accountLogSimpleVo.setAfterAmount(afterAmount);
 		}
 
+		User user = cacheComponent.getUser(accountLog.getUserId());
+		accountLogSimpleVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
+
+		User refUser = cacheComponent.getUser(accountLog.getRefUserId());
+		accountLogSimpleVo.setRefUser(VoHelper.buildUserAdminSimpleVo(refUser));
+		
 		return accountLogSimpleVo;
 	}
 

@@ -66,14 +66,14 @@ public class AccountLog implements Serializable {
 	@Query({EQ, IN})
 	@Field(label = "所属用户")
 	@View
-	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
+	@AssociationView(name = "user", groups = {VO_ADMIN, VO_SIMPLE}, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
 	@NotNull
 	@Query({EQ, IN})
 	@Field(label = "对应用户id")
 	@View
-	@AssociationView(name = "refUser", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
+	@AssociationView(name = "refUser", groups = {VO_ADMIN, VO_SIMPLE}, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long refUserId;
 
 	@NotNull
