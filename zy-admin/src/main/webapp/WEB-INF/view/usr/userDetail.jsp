@@ -146,13 +146,65 @@
         </form>
 
         <ul class="nav nav-tabs">
-          <li class="active"><a href="#applies" data-toggle="tab" aria-expanded="false"> 用户认证信息 </a></li>
-          <li class=""><a href="#signIns" data-toggle="tab" aria-expanded="false"> 用户升级信息 <span class="badge badge-primary"> ${user.userUpgrades.size()} </span></a></li>
+          <li class="active"><a href="#chart" data-toggle="tab" aria-expanded="false"> 层级信息 </a></li>
+          <li class=""><a href="#userInfo" data-toggle="tab" aria-expanded="false"> 用户认证信息 </a></li>
+          <li class=""><a href="#userUpgrade" data-toggle="tab" aria-expanded="false"> 用户升级信息 <span class="badge badge-primary"> ${user.userUpgrades.size()} </span></a></li>
         </ul>
 
         <div class="tab-content">
 
-          <div class="tab-pane fade active in" id="applies">
+          <div class="tab-pane fade active in" id="userInfo">
+            <div id="userChart" style="height:800px;">
+                    
+            </div>
+          </div>
+          <script>
+            $(function(){
+              var myChart = echarts.init(document.getElementById('userChart'));
+              // 指定图表的配置项和数据
+              myChart.showLoading();
+              $.post('${ctx}/user/ajaxChart/team',{userId : '${user.id}'}, function (result) {
+                  myChart.hideLoading();
+                
+                  option = {
+                          legend: {
+                              data: result.legend
+                          },
+                          series: [{
+                              type: 'graph',
+                              layout: 'force',
+                              force: {
+                                repulsion: 1500,
+                                edgeLength: 150
+                              },
+                              animation: false,
+                              label: {
+                                  normal: {
+                                    show: true,
+                                    position: 'right',
+                                      formatter: function(v) {
+                                        return v.data.value;
+                                      }
+                                  }
+                              },
+                              itemStyle: {
+                                normal: {
+                                  shadowColor: 'rgba(0, 0, 0, 0.5)',
+                                  shadowBlur: 10
+                                }
+                              },
+                              draggable: true,
+                              data: result.nodes,
+                              categories: result.categories,
+                              links: result.links
+                          }]
+                      };
+              
+                  myChart.setOption(option);
+              })
+              });
+            </script>
+          <div class="tab-pane fade in" id="userInfo">
             <table class="table table-hover table-bordered">
               <thead>
               <tr>
@@ -197,7 +249,7 @@
               </tbody>
             </table>
           </div>
-          <div class="tab-pane fade" id="signIns">
+          <div class="tab-pane fade" id="userUpgrade">
             <table class="table table-hover table-bordered">
               <thead>
               <tr>
