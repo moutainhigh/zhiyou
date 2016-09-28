@@ -1,36 +1,5 @@
 package com.zy.admin.controller.usr;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BinaryOperator;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.aspectj.apache.bcel.classfile.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.alibaba.druid.Constants;
-import com.mysql.fabric.xmlrpc.base.Array;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
@@ -43,11 +12,25 @@ import com.zy.component.UserComponent;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
-import com.zy.model.Principal;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import com.zy.vo.UserAdminVo;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.zy.common.util.ValidateUtils.*;
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
 @RequestMapping("/user")
 @Controller
