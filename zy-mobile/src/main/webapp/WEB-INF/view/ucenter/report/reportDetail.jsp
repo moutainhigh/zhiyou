@@ -146,8 +146,8 @@
       </div>
       <div class="list-item">
         <div class="list-text list-image image-view" data-title="检测报告图片">
-        <c:forEach items="${report.images}" var="image">
-          <img src="${image.imageThumbnail}" data-src="${image.imageBig}">
+        <c:forEach items="${report.images}" var="image" varStatus="varStatus">
+          <img src="${report.imageThumbnails[varStatus.index]}" data-src="${report.imageBigs[varStatus.index]}">
         </c:forEach>
         </div>
       </div>
