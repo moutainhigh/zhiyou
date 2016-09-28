@@ -153,7 +153,7 @@
 
         <div class="tab-content">
 
-          <div class="tab-pane fade active in" id="userInfo">
+          <div class="tab-pane fade active in" id="chart">
             <div id="userChart" style="height:800px;">
                     
             </div>
