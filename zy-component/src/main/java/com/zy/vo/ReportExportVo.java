@@ -41,21 +41,21 @@ public class ReportExportVo implements Serializable {
 
 	/* 扩展 */
 	@Field(label = "昵称", order = 15)
-	private Long userNickname;
+	private String userNickname;
 	@Field(label = "手机", order = 15)
-	private Long userPhone;
+	private String userPhone;
 	@Field(label = "职业", order = 55)
 	private String jobName;
 	@Field(label = "所在省", order = 56)
-	private Long province;
+	private String province;
 	@Field(label = "所在市", order = 57)
-	private Long city;
+	private String city;
 	@Field(label = "所在区", order = 58)
-	private Long district;
+	private String district;
 	@Field(label = "申请时间", order = 75)
 	private String appliedTimeLabel;
 	@Field(label = "创建时间", order = 76)
-	private Date createdTimeLabel;
+	private String createdTimeLabel;
 	@Field(label = "初审通过时间", order = 78)
 	private String preConfirmedTimeLabel;
 	@Field(label = "初审通过时间", order = 90)

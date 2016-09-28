@@ -62,8 +62,8 @@ public class Report implements Serializable {
 	@Field(label = "用户id")
 	@Query({Predicate.EQ, Predicate.IN})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
-	@View(groups = VO_EXPORT, name = "userNickname", field = @Field(label = "昵称", order = 15))
-	@View(groups = VO_EXPORT, name = "userPhone", field = @Field(label = "手机", order = 15))
+	@View(groups = VO_EXPORT, type = String.class,  name = "userNickname", field = @Field(label = "昵称", order = 15))
+	@View(groups = VO_EXPORT, type = String.class,  name = "userPhone", field = @Field(label = "手机", order = 15))
 	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
@@ -71,7 +71,7 @@ public class Report implements Serializable {
 	@Field(label = "姓名")
 	@Query({Predicate.EQ, Predicate.IN})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
-	@View(groups = VO_EXPORT, field = @Field(label = "客户姓名", order = 20))
+	@View(groups = VO_EXPORT, type = String.class,  field = @Field(label = "客户姓名", order = 20))
 	private String realname;
 
 	@NotNull
@@ -93,12 +93,12 @@ public class Report implements Serializable {
 	@Query(Predicate.EQ)
 	@Field(label = "手机号")
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
-	@View(groups = VO_EXPORT, field = @Field(label = "手机号", order = 50))
+	@View(groups = VO_EXPORT, type = String.class,  field = @Field(label = "手机号", order = 50))
 	private String phone;
 
 	//@NotNull
 	@Field(label = "职业")
-	@View(name = "jobName", type = String.class, groups = {VO_LIST, VO_DETAIL})
+	@View(name = "jobName", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(name = "jobName", type = String.class, groups = VO_EXPORT, field = @Field(label = "职业", order = 55))
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Long jobId;
@@ -108,9 +108,9 @@ public class Report implements Serializable {
 	@View(name = "province", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(name = "city", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(name = "district", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
-	@View(name = "province", groups = VO_EXPORT, field = @Field(label = "所在省", order = 56))
-	@View(name = "city", groups = VO_EXPORT, field = @Field(label = "所在市", order = 57))
-	@View(name = "district", groups = VO_EXPORT, field = @Field(label = "所在区", order = 58))
+	@View(name = "province", type = String.class, groups = VO_EXPORT, field = @Field(label = "所在省", order = 56))
+	@View(name = "city", type = String.class, groups = VO_EXPORT, field = @Field(label = "所在市", order = 57))
+	@View(name = "district", type = String.class, groups = VO_EXPORT, field = @Field(label = "所在区", order = 58))
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Long areaId;
 
@@ -165,7 +165,7 @@ public class Report implements Serializable {
 	@Field(label = "创建时间")
 	@View(groups = {VO_ADMIN})
 	@View(name = "createdTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST})
-	@View(name = "createdTimeLabel", groups = VO_EXPORT, field = @Field(label = "创建时间", order = 76))
+	@View(name = "createdTimeLabel", type = String.class,  groups = VO_EXPORT, field = @Field(label = "创建时间", order = 76))
 	private Date createdTime;
 
 	@NotNull

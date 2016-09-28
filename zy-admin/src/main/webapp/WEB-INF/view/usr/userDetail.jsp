@@ -62,28 +62,9 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label class="control-label col-md-3">用户类型:</label>
-                  <div class="col-md-9">
-                    <p class="form-control-static">${user.userType}</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
                   <label class="control-label col-md-3">用户等级:</label>
                   <div class="col-md-9">
                     <p class="form-control-static">${user.userRankLabel}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label col-md-3">qq:</label>
-                  <div class="col-md-9">
-                    <p class="form-control-static">${user.qq}</p>
                   </div>
                 </div>
               </div>
@@ -97,6 +78,7 @@
               </div>
             </div>
             
+            <c:if test="${not empty user.parent}">
             <h4 class="form-section">上级信息:</h4>
             <div class="row">
               <div class="col-md-6">
@@ -114,23 +96,13 @@
                 <div class="form-group">
                   <label class="control-label col-md-3">手机号:</label>
                   <div class="col-md-9">
-                    <p class="form-control-static"><c:if test="${user.parent.phone}">已冻结</c:if></p>
+                    <p class="form-control-static">${user.parent.phone}</p>
                   </div>
                 </div>
               </div>
             </div>
           
             <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label col-md-3">类型:</label>
-                  <div class="col-md-9">
-                    <p class="form-control-static">
-                      ${user.parent.userType}
-                    </p>
-                  </div>
-                </div>
-              </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="control-label col-md-3">等级:</label>
@@ -140,7 +112,7 @@
                 </div>
               </div>
             </div>
-          
+           </c:if>
           </div>
 
         </form>

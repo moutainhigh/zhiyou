@@ -12,9 +12,11 @@ import org.springframework.stereotype.Component;
 
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Report;
+import com.zy.entity.usr.User;
 import com.zy.model.dto.AreaDto;
 import com.zy.service.AreaService;
 import com.zy.service.JobService;
+import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.ReportAdminVo;
 import com.zy.vo.ReportDetailVo;
@@ -106,6 +108,25 @@ public class ReportComponent {
 		ReportExportVo reportExportVo = new ReportExportVo();
 		BeanUtils.copyProperties(report, reportExportVo);
 
+		Long userId = report.getUserId();
+		if(userId != null) {
+			User user = cacheComponent.getUser(report.getUserId());
+			reportExportVo.setUserNickname(user.getNickname());
+			reportExportVo.setUserPhone(user.getPhone());
+		}
+		if(report.getAreaId() != null){
+			AreaDto area = areaService.findOneDto(report.getAreaId());
+			reportExportVo.setProvince(area.getProvince());
+			reportExportVo.setCity(area.getCity());
+			reportExportVo.setDistrict(area.getDistrict());
+		}
+		if(report.getJobId() != null){
+			reportExportVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
+		}
+		reportExportVo.setAppliedTimeLabel(GcUtils.formatDate(report.getAppliedTime(), TIME_PATTERN));
+		reportExportVo.setCreatedTimeLabel(GcUtils.formatDate(report.getCreatedTime(), TIME_PATTERN));
+		reportExportVo.setPreConfirmedTimeLabel(GcUtils.formatDate(report.getPreConfirmedTime(), TIME_PATTERN));
+		reportExportVo.setConfirmedTimeLabel(GcUtils.formatDate(report.getConfirmedTime(), TIME_PATTERN));
 		return reportExportVo;
 	}
 }
