@@ -1,16 +1,14 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
-
-import java.io.Serializable;
-import java.util.Date;
-
+import com.zy.entity.usr.UserInfo.Gender;
+import com.zy.entity.act.Report.ReportResult;
+import com.zy.entity.sys.ConfirmStatus;
 import lombok.Getter;
 import lombok.Setter;
 
-import com.zy.entity.act.Report.ReportResult;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.UserInfo.Gender;
+import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -26,19 +24,19 @@ public class ReportExportVo implements Serializable {
 	private Gender gender;
 	@Field(label = "手机号", order = 50)
 	private String phone;
+	@Field(label = "职业", order = 55)
+	private Long jobId;
 	@Field(label = "检测结果", order = 60)
 	private ReportResult reportResult;
 	@Field(label = "检测心得", order = 70)
 	private String text;
-	@Field(label = "检测次数")
+	@Field(label = "检测次数", order = 59)
 	private Integer times;
-	@Field(label = "初审状态")
+	@Field(label = "初审状态", order = 77)
 	private ConfirmStatus preConfirmStatus;
-	@Field(label = "初审通过时间")
-	private Date preConfirmedTime;
-	@Field(label = "审核状态")
+	@Field(label = "审核状态", order = 79)
 	private ConfirmStatus confirmStatus;
-	@Field(label = "审核备注")
+	@Field(label = "审核备注", order = 80)
 	private String confirmRemark;
 	@Field(label = "审核通过时间")
 	private Date confirmedTime;
@@ -46,17 +44,25 @@ public class ReportExportVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "昵称", order = 15)
 	private Long nickname;
-	@Field(label = "所在地")
-	private String province;
+	@Field(label = "手机", order = 15)
+	private Long phone;
 	@Field(label = "所在地")
 	private String city;
 	@Field(label = "所在地")
 	private String district;
-	@Field(label = "职业")
-	private String jobName;
-	@Field(label = "申请时间")
+	@Field(label = "所在省", order = 56)
+	private Long province;
+	@Field(label = "所在室", order = 57)
+	private Long city;
+	@Field(label = "所在区", order = 58)
+	private Long district;
+	@Field(label = "申请时间", order = 75)
 	private String appliedTimeLabel;
-	@Field(label = "创建时间")
-	private String createdTimeLabel;
+	@Field(label = "创建时间", order = 76)
+	private Date createdTimeLabel;
+	@Field(label = "初审通过时间", order = 78)
+	private String preConfirmedTimeLabel;
+	@Field(label = "初审通过时间", order = 90)
+	private String confirmedTimeLabel;
 
 }
