@@ -97,9 +97,9 @@
         if (result.code != 0) {
           return;
         }
-        alert(JSON.stringify(result));
+        //alert(JSON.stringify(result));
         var page = result.data.page;
-        alert(JSON.stringify(page));
+        //alert(JSON.stringify(page));
         if (page.data.length) {
           timeLT = result.data.timeLT;
           pageNumber = page.pageNumber;
@@ -109,14 +109,11 @@
             var html = buildRow(row);
             dropload.$element.find('.list-group').append(html);
           }
-          if (page.data.length < page.pageSize) {
-            dropload.$domDown.remove();
-            dropload.$element.append('<a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>')
-          }
           dropload.resetload();
         }
         if(page.data.length == 0){
           dropload.$domDown.remove();
+          dropload.$element.append('<a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>');
         }
       },
       error : function(xhr, type) {
