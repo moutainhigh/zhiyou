@@ -356,14 +356,9 @@
           <a id="btnPay" class="btn btn-block green round-2" href="javascript:;"><i class="fa fa-cny"></i> 立即支付</a>
         </div>
         </c:if>
-        <c:if test="${!order.isPayToPlatform && (buyer.userRank == 'V2' || buyer.userRank == 'V1' || buyer.userRank == 'V0')}">
+        <c:if test="${!order.isPayToPlatform}">
         <div class="form-btn">
           <a id="btnPayOffline" class="btn btn-block green round-2" href="${ctx}/u/pay/order/${order.id}?payType=1"><i class="fa fa-cny"></i> 立即支付</a>
-        </div>
-        </c:if>
-        <c:if test="${!order.isPayToPlatform && buyer.userRank == 'V3'}">
-        <div class="form-btn">
-          <a id="btnPay" class="btn btn-block green round-2" href="javascript:;"><i class="fa fa-cny"></i> 立即支付</a>
         </div>
         </c:if>
       </c:if>
@@ -400,9 +395,11 @@
       </c:if>
       <c:if test="${order.orderStatus == '已支付' && !order.isPlatformDeliver}">
         <c:if test="${seller.userRank == 'V4' && buyer.userRank == 'V3'}">
+          <c:if test="${order.isPayToPlatform}">
           <div class="form-btn">
             <a id="btnPlatformDeliver" class="btn blue btn-block round-2"><i class="fa fa-share"></i> 转给公司发货</a>
           </div>
+          </c:if>
         </c:if>
         <form id="orderForm" action="${ctx}/u/order/deliver" method="get">
           <input type="hidden" name="id" value="${order.id}">

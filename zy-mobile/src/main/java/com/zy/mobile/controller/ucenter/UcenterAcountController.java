@@ -1,15 +1,13 @@
 package com.zy.mobile.controller.ucenter;
 
-import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-
+import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.entity.fnc.CurrencyType.现金;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,6 +103,7 @@ public class UcenterAcountController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
 		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
+		model.addAttribute("type", type);
 		return ResultBuilder.result(map);
 	}
 	
@@ -145,6 +144,7 @@ public class UcenterAcountController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
 		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
+		model.addAttribute("type", type);
 		return ResultBuilder.result(map);
 	}
 	
