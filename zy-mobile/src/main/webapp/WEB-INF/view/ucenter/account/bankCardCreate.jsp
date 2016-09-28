@@ -132,7 +132,7 @@
         <div class="list-item">
           <label class="list-label" for="realname">开户姓名</label>
           <div class="list-text">
-            <input type="text" id="realname" name="realname" class="form-input" value="${appearance.realname}" readonly="readonly">
+            <input type="text" id="realname" name="realname" class="form-input" value="${userInfo.realname}" readonly="readonly">
           </div>
         </div>
         <div class="list-item bank-info">

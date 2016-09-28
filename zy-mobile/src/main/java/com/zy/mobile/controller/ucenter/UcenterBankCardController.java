@@ -67,7 +67,7 @@ Logger logger = LoggerFactory.getLogger(UcenterBankCardController.class);
 		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
 		if(userInfo == null || userInfo.getConfirmStatus() != ConfirmStatus.已通过) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成实名认证"));
-			return "redirect:/u/userInfo";
+			return "redirect:/u/info";
 		}
 		model.addAttribute("userInfo", userInfo);
 		
