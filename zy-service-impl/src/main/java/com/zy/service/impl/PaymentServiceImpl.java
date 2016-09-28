@@ -1,24 +1,5 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.URL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
@@ -26,11 +7,7 @@ import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
 import com.zy.component.MalComponent;
-import com.zy.entity.fnc.Account;
-import com.zy.entity.fnc.AccountLog;
-import com.zy.entity.fnc.CurrencyType;
-import com.zy.entity.fnc.PayType;
-import com.zy.entity.fnc.Payment;
+import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
@@ -42,6 +19,21 @@ import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.PaymentQueryModel;
 import com.zy.service.PaymentService;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
@@ -118,6 +110,16 @@ public class PaymentServiceImpl implements PaymentService {
 			validate(amount2, v -> v.compareTo(new BigDecimal("0.00")) > 0, "amount 2 must be greater than 0.00");
 		} else {
 			validate(amount2, NULL, "amount 2 must be null");
+		}
+
+		if (payment.getPaymentType() == Payment.PaymentType.订单支付) {
+			Long orderId = payment.getRefId();
+			validate(orderId, NOT_NULL, "order id is null");
+			Order order = orderMapper.findOne(orderId);
+			validate(order, NOT_NULL, "order id " +  orderId +" is not found");
+			if (!order.getIsPayToPlatform()) {
+				throw new BizException(BizCode.ERROR, "只有平台收款订单才能创建支付单");
+			}
 		}
 
 		payment.setSn(ServiceUtils.generatePaymentSn());

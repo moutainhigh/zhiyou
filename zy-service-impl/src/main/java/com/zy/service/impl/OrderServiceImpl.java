@@ -414,6 +414,10 @@ public class OrderServiceImpl implements OrderService {
 		if (order.getOrderStatus() != OrderStatus.已支付) {
 			throw new BizException(BizCode.ERROR, "只有已支付的订单才能转换为平台发货");
 		}
+
+		if (!order.getIsPayToPlatform()) {
+			throw new BizException(BizCode.ERROR, "只有平台收款订单才能转换为平台发货");
+		}
 		User buyer = userMapper.findOne(order.getUserId());
 		User seller = userMapper.findOne(order.getSellerId());
 		if (buyer.getUserRank() == UserRank.V3 && seller.getUserRank() == UserRank.V4) {
