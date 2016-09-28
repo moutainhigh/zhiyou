@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>支出 - 数据奖</title>
+<title>收入 - 订单收款</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/pageload.jsp"%>
 <script type="text/javascript">
@@ -22,9 +22,8 @@
   
   function buildRow(row) {
     var html = '<div class="list-item">' 
-             +   '<img class="image-40 round mr-10" src="' + row.avatarThumbnail + '">'
-             +   '<div class="list-text pl-5">'
-             +     '<div class="fs-14">' + row.nicikname + '</div>'
+             +   '<div class="list-text pl-5">' 
+             +     '<div class="fs-14">' + row.title + '</div>'
              +     '<div class="fs-12 font-999">' + row.transTimeLabel + '</div>' 
              +   '</div>' 
              +   '<div class="list-unit width-100 text-right">' 
@@ -40,7 +39,7 @@
 <body class="log-list">
   <article class="drop-wrap">
     <header class="header">
-      <h1>支出 - 数据奖</h1>
+      <h1>收入 - 订单收款</h1>
       <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
   
@@ -55,9 +54,8 @@
       <div class="list-group mb-0">
         <c:forEach items="${page.data}" var="accountLog">
         <div class="list-item">
-          <img class="image-40 round mr-10" src="http://image.zhi-you.net/avatar/ed673dc0-9e83-4e99-9206-1f33064dc099@160h_160w_1e_1c.jpg">
           <div class="list-text pl-5">
-            <div class="fs-14">哆来嘧</div>
+            <div class="fs-14">${accountLog.title}</div>
             <div class="fs-12 font-999">${accountLog.transTimeLabel}</div>
           </div>
           <div class="list-unit width-100 text-right">

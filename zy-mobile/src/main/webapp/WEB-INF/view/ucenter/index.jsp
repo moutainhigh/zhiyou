@@ -50,9 +50,9 @@
   </aside>
   
   <div class="user-account flex">
-    <a class="flex-1 bd-r" href="${ctx}/u/money">
+    <a class="flex-1 bd-r" href="${ctx}/u/account">
       <i class="icon icon-money icon-2x"></i>
-      <em>余额</em>
+      <em>钱包</em>
       <span>¥${money}</span>
     </a>
     <a class="flex-1 bd-r" href="${ctx}/u/order/in">

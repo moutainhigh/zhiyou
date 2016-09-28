@@ -44,19 +44,19 @@
       <div class="list-title">我的收入</div>
       <div class="list-item p-0">
         <div class="list-text account-link">
-          <a class="bd-r bd-b" href="${ctx}/u/account/">
+          <a class="bd-r bd-b" href="${ctx}/u/account/in?type=xxx">
            <div><i class="icon icon-account-order"></i></div>
            <div class="fs-14 font-333">订单收款</div>
           </a>
-          <a class="bd-r bd-b" href="${ctx}/u/account/">
+          <a class="bd-r bd-b" href="${ctx}/u/account/in?type=xxx">
            <div><i class="icon icon-account-data"></i></div>
            <div class="fs-14 font-333">数据奖</div>
           </a>
-          <a class="bd-b" href="${ctx}/u/account/">
+          <a class="bd-b" href="${ctx}/u/account/in?type=xxx">
            <div><i class="icon icon-account-sale"></i></div>
            <div class="fs-14 font-333">销量奖</div>
           </a>
-          <a class="bd-r" href="${ctx}/u/account/">
+          <a class="bd-r" href="${ctx}/u/account/in?type=xxx">
            <div><i class="icon icon-account-teping"></i></div>
            <div class="fs-14 font-333">特级平级奖</div>
           </a>
@@ -68,19 +68,19 @@
       <div class="list-title">我的支出</div>
       <div class="list-item p-0">
         <div class="list-text account-link">
-          <a class="bd-r bd-b" href="${ctx}/u/account/">
+          <a class="bd-r bd-b" href="${ctx}/u/account/out?type=xxx">
            <div><i class="icon icon-account-data"></i></div>
            <div class="fs-14 font-333">数据奖</div>
           </a>
-          <a class="bd-r bd-b" href="${ctx}/u/account/">
+          <a class="bd-r bd-b" href="${ctx}/u/account/out?type=xxx">
            <div><i class="icon icon-account-yiping"></i></div>
            <div class="fs-14 font-333">一级平级奖</div>
           </a>
-          <a class="bd-b" href="${ctx}/u/account/">
+          <a class="bd-b" href="${ctx}/u/account/out?type=xxx">
            <div><i class="icon icon-account-yiyue"></i></div>
            <div class="fs-14 font-333">一级越级奖</div>
           </a>
-          <a class="bd-r" href="${ctx}/u/account/">
+          <a class="bd-r" href="${ctx}/u/account/out?type=xxx">
            <div><i class="icon icon-account-post"></i></div>
            <div class="fs-14 font-333">邮费</div>
           </a>
