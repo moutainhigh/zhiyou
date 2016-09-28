@@ -17,7 +17,7 @@
 <%@ include file="/WEB-INF/view/include/pageload.jsp"%>
 <script type="text/javascript">
   function getUrl() {
-    return '${ctx}/u/money/log';
+    return '${ctx}/u/account/out?type=${type}';
   }
   
   function buildRow(row) {

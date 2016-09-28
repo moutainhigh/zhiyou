@@ -83,6 +83,7 @@ public class UcenterAcountController {
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
 		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		model.addAttribute("title", title);
+		model.addAttribute("type", type);
 		return "ucenter/account/accountOut";
 	}
 
@@ -122,6 +123,7 @@ public class UcenterAcountController {
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
 		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		model.addAttribute("title", title);
+		model.addAttribute("type", type);
 		return "ucenter/account/accountIn";
 	}
 	
