@@ -75,16 +75,13 @@ public class UcenterMoneyController {
 		Long userId = principal.getUserId();
 		Account account = accountService.findByUserIdAndCurrencyType(userId, 现金);
 		model.addAttribute("amount", account.getAmount());
+		
 		BankCardQueryModel bankCardQueryModel = new BankCardQueryModel();
 		bankCardQueryModel.setUserIdEQ(principal.getUserId());
 		bankCardQueryModel.setIsDeletedEQ(false);
-		Long count = bankCardService.count(bankCardQueryModel);
-		Boolean isBoundBankCard = true;
-		if(count.compareTo(0L) <= 0){
-			isBoundBankCard = false;
-		}
-		model.addAttribute("isBoundBankCard", isBoundBankCard);
-		return "ucenter/currency/money";
+		Long bankCardCount = bankCardService.count(bankCardQueryModel);
+		model.addAttribute("bankCardCount", bankCardCount);
+		return "ucenter/account/money";
 	}
 	
 	@RequestMapping(value = "/log", method = RequestMethod.GET)
@@ -98,7 +95,7 @@ public class UcenterMoneyController {
 		
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
 		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-		return "ucenter/currency/moneyLog";
+		return "ucenter/account/moneyLog";
 	}
 	
 	@RequestMapping(value = "/log", method = RequestMethod.POST)
@@ -141,7 +138,7 @@ public class UcenterMoneyController {
 		model.addAttribute("bankCardCount", bankCardCount);
 		model.addAttribute("defaultBankCard", bankCardComponent.buildVo(defaultBankCard));
 		model.addAttribute("bankCards", bankCardList.stream().map(bankCardComponent::buildVo).collect(Collectors.toList()));
-		return "ucenter/currency/moneyWithdraw";
+		return "ucenter/account/moneyWithdraw";
 	}
 	
 	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
@@ -149,7 +146,7 @@ public class UcenterMoneyController {
 		try {
 			Withdraw withdraw = withdrawService.create(principal.getUserId(), bankCardId, 现金, amount);
 			model.addAttribute("withdraw", withdraw);
-			return "ucenter/currency/moneyWithdrawSuccess";
+			return "ucenter/account/moneyWithdrawSuccess";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(现金.getAlias() + "提现申请失败, 原因" + e.getMessage()));

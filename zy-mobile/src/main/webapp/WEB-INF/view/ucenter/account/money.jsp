@@ -32,12 +32,12 @@
     <div class="form-btn mt-20">
       <a href="${ctx}/u/pay/deposit?payType=1" class="btn orange btn-block round-2">充值</a>
     </div>
-    <c:if test="${!isBoundBankCard}">
+    <c:if test="${bankCardCount == 0}">
     <div class="form-btn">
       <a href="javascript:;" class="btn disabled btn-block round-2">提现(请先添加银行卡)</a>
     </div>
     </c:if>
-    <c:if test="${isBoundBankCard}">
+    <c:if test="${bankCardCount > 0}">
     <div class="form-btn">
       <a href="${ctx}/u/money/withdraw" class="btn green btn-block round-2">提现</a>
     </div>
