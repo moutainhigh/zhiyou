@@ -66,6 +66,7 @@
             dropload.$element.find('.list-group').append(html);
           }
           if (page.data.length < page.pageSize) {
+            dropload.$domDown.remove();
             dropload.$element.append('<a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>')
           }
         } else {
