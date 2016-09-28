@@ -56,7 +56,6 @@
         dropload.$element.find('.list-group').html('');
         dropload.$element.find('.empty-tip').remove();
         var page = result.data.page;
-        alert(page.data.length);
         if (page.data.length) {
           timeLT = result.data.timeLT;
           pageNumber = page.pageNumber;
@@ -99,7 +98,6 @@
           return;
         }
         var page = result.data.page;
-        alert(page.data.length);
         if (page.data.length) {
           timeLT = result.data.timeLT;
           pageNumber = page.pageNumber;
