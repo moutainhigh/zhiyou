@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.Config;
+import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -35,12 +36,16 @@ import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.AccountLog;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.fnc.Withdraw;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
+import com.zy.model.BizCode;
 import com.zy.model.Principal;
 import com.zy.model.query.AccountLogQueryModel;
 import com.zy.model.query.BankCardQueryModel;
 import com.zy.service.AccountLogService;
 import com.zy.service.AccountService;
 import com.zy.service.BankCardService;
+import com.zy.service.UserService;
 import com.zy.service.WithdrawService;
 
 @RequestMapping("/u/money")
@@ -51,6 +56,9 @@ public class UcenterMoneyController {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private AccountLogService accountLogService;
@@ -81,6 +89,7 @@ public class UcenterMoneyController {
 		bankCardQueryModel.setIsDeletedEQ(false);
 		Long bankCardCount = bankCardService.count(bankCardQueryModel);
 		model.addAttribute("bankCardCount", bankCardCount);
+		model.addAttribute("userRank", userService.findOne(userId).getUserRank());
 		return "ucenter/account/money";
 	}
 	
@@ -144,7 +153,12 @@ public class UcenterMoneyController {
 	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
 	public String withdraw(Principal principal, Model model, BigDecimal amount,Long bankCardId, RedirectAttributes redirectAttributes) {
 		try {
-			Withdraw withdraw = withdrawService.create(principal.getUserId(), bankCardId, 现金, amount);
+			Long userId = principal.getUserId();
+			User user = userService.findOne(userId);
+			if(user.getUserRank() == UserRank.V1 || user.getUserRank() == UserRank.V2){
+				throw new BizException(BizCode.ERROR, "三级服务商、二级服务商暂不支持提现操作");
+			}
+			Withdraw withdraw = withdrawService.create(userId, bankCardId, 现金, amount);
 			model.addAttribute("withdraw", withdraw);
 			return "ucenter/account/moneyWithdrawSuccess";
 		} catch (Exception e) {
