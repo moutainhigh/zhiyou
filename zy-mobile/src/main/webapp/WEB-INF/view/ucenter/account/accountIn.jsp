@@ -65,10 +65,6 @@
         </div>
         </c:forEach>
       </div>
-      
-      <c:if test="${page.total <= page.pageSize}">
-        <a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>
-      </c:if>
     </div>
   </article>
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
