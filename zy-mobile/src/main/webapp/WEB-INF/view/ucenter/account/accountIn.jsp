@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>收入 - 订单收款</title>
+<title>收入 - ${title}</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/pageload.jsp"%>
 <script type="text/javascript">
