@@ -245,6 +245,7 @@ public class UserController {
 				node.put("parentName", v.getParentId() + "");
 				node.put("symbolSize", size[category]);
 				node.put("symbol", "image://" + v.getAvatar()/* + "@100-1ci"*/);
+				node.put("isParent", false);
 				tmp[2] = id + 1;
 				return node;
 			}).collect(Collectors.toList()));
@@ -280,6 +281,7 @@ public class UserController {
 			node.put("parentName", v.getParentId() + "");
 			node.put("symbolSize", size[category]);
 			node.put("symbol", "image://" + v.getAvatar()/* + "@100-1ci"*/);
+			node.put("isParent", true);
 			tmp[2] = id + 1;
 			return node;
 		}).collect(Collectors.toList()));
