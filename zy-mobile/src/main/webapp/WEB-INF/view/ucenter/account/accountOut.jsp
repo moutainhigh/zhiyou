@@ -38,7 +38,7 @@
 </head>
  
 <body class="account-list">
-  <article class="drop-wrap">
+  <article class="page-wrap">
     <header class="header">
       <h1>支出 - ${title}</h1>
       <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>

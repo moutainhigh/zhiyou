@@ -2,9 +2,6 @@
 <link rel="stylesheet" href="${stccdn}/plugin/dropload-0.9.0/dropload.css" />
 <script src="${stccdn}/plugin/dropload-0.9.0/dropload.js"></script>
 <style>
-body {
-  overflow: hidden;
-}
 .page-wrap {
   position: absolute; left: 0; top: 0;
   width: 100%; height: 100%;
@@ -46,7 +43,6 @@ body {
     loadData(dropload);
     
     <c:if test="${page.total <= page.pageSize}">
-    console.info('${page.total}');
     dropload.lock('down');
     dropload.$domDown.remove();
     </c:if>
