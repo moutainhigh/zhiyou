@@ -16,8 +16,8 @@
 <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
 <script type="text/javascript">
   $(function() {
-    if (!$('.list-more').hasClass('disabled')) {
-      $('.list-more').click(loadMore);
+    if (!$('.page-more').hasClass('disabled')) {
+      $('.page-more').click(loadMore);
     }
   });
   
@@ -48,7 +48,7 @@
           }
         }
         if (!page.data.length || page.data.length < page.pageSize) {
-          $('.list-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
+          $('.page-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
         }
       }
     });
@@ -57,7 +57,7 @@
   function buildRow(row){
     var rowTpl = document.getElementById('rowTpl').innerHTML;
     laytpl(rowTpl).render(row, function(html) {
-      $(html).insertBefore($('.list-more'));
+      $('.list-group').append(html);
     });
   }
 </script>
@@ -96,55 +96,55 @@
   
   <article>
     <c:if test="${empty page.data}">
-      <div class="empty-tip">
+      <div class="page-empty">
         <i class="fa fa-file-o"></i>
         <span>暂无记录</span>
       </div>
     </c:if>
     
     <c:if test="${not empty page.data}">
-    <div class="list-group mb-0">
-      <c:forEach items="${page.data}" var="report">
-      <a class="list-item" href="${ctx}/u/report/${report.id}">
-        <div class="list-text report">
-          <div class="lh-30">${report.realname}<span class="ml-10 fs-12 font-999">&lt;${report.gender}  ${report.age}岁&gt;</span><span class="right fs-12 font-999">${report.phone}</span></div>
-          <div class="lh-30 fs-14">
-          <c:choose>
-            <c:when test="${report.reportResult == '阴性'}">
-            <span class="font-red">${report.reportResult}</span>
-            </c:when>
-            <c:when test="${report.reportResult == '弱阳性'}">
-            <span class="font-orange">${report.reportResult}</span>
-            </c:when>
-            <c:when test="${report.reportResult == '阳性'}">
-            <span class="font-green">${report.reportResult}</span>
-            </c:when>
-            <c:when test="${report.reportResult == '干扰色'}">
-            <span class="font-purple">${report.reportResult}</span>
-            </c:when>
-          </c:choose>
-          <c:choose>
-            <c:when test="${report.confirmStatus == '待审核'}">
-            <span class="right lh-20 label orange">待审核</span>
-            </c:when>
-            <c:when test="${report.confirmStatus == '未通过'}">
-            <span class="right lh-20 label gray">未通过</span>
-            </c:when>
-            <c:when test="${report.confirmStatus == '已通过'}">
-            <span class="right lh-20 label blue">已通过</span>
-            </c:when>
-          </c:choose>
+      <div class="list-group mb-0">
+        <c:forEach items="${page.data}" var="report">
+        <a class="list-item" href="${ctx}/u/report/${report.id}">
+          <div class="list-text report">
+            <div class="lh-30">${report.realname}<span class="ml-10 fs-12 font-999">&lt;${report.gender}  ${report.age}岁&gt;</span><span class="right fs-12 font-999">${report.phone}</span></div>
+            <div class="lh-30 fs-14">
+            <c:choose>
+              <c:when test="${report.reportResult == '阴性'}">
+              <span class="font-red">${report.reportResult}</span>
+              </c:when>
+              <c:when test="${report.reportResult == '弱阳性'}">
+              <span class="font-orange">${report.reportResult}</span>
+              </c:when>
+              <c:when test="${report.reportResult == '阳性'}">
+              <span class="font-green">${report.reportResult}</span>
+              </c:when>
+              <c:when test="${report.reportResult == '干扰色'}">
+              <span class="font-purple">${report.reportResult}</span>
+              </c:when>
+            </c:choose>
+            <c:choose>
+              <c:when test="${report.confirmStatus == '待审核'}">
+              <span class="right lh-20 label orange">待审核</span>
+              </c:when>
+              <c:when test="${report.confirmStatus == '未通过'}">
+              <span class="right lh-20 label gray">未通过</span>
+              </c:when>
+              <c:when test="${report.confirmStatus == '已通过'}">
+              <span class="right lh-20 label blue">已通过</span>
+              </c:when>
+            </c:choose>
+            </div>
           </div>
-        </div>
-      </a>
-      </c:forEach>
+        </a>
+        </c:forEach>
+      </div>
       <c:if test="${page.total > page.pageSize}">
-      <a class="list-item list-more" href="javascript:;"><span>点击加载更多</span></a>
+        <div class="page-more"><span>点击加载更多</span></div>
       </c:if>
       <c:if test="${page.total <= page.pageSize}">
-      <a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>
+        <div class="page-more disabled"><span>没有更多数据了</span></div>
       </c:if>
-    </div>
     </c:if>
   </article>
 </body>

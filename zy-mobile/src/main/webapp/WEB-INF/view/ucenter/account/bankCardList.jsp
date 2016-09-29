@@ -23,7 +23,7 @@
   
   <article>
     <c:if test="${empty bankCards}">
-      <div class="empty-tip">
+      <div class="page-empty">
         <i class="fa fa-file-o"></i>
         <span>您还木有绑定银行卡</span>
       </div>

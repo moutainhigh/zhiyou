@@ -36,22 +36,22 @@
 </script>
 </head>
  
-<body class="log-list">
-  <article class="drop-wrap">
+<body class="account-list">
+  <article class="page-wrap">
     <header class="header">
       <h1>收入 - ${title}</h1>
       <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
   
-    <div class="drop-inner">
+    <div class="page-inner">
       <c:if test="${empty page.data}">
-        <div class="empty-tip">
+        <div class="page-empty">
           <i class="fa fa-file-o"></i>
           <span>暂无记录</span>
         </div>
       </c:if>
       
-      <div class="list-group mb-0">
+      <div class="page-list list-group mb-0">
         <c:forEach items="${page.data}" var="accountLog">
         <div class="list-item">
           <div class="list-text pl-5">
@@ -65,6 +65,10 @@
         </div>
         </c:forEach>
       </div>
+      
+      <c:if test="${page.total <= page.pageSize}">
+        <div class="page-more disabled"><span>没有更多数据了</span></div>
+      </c:if>
     </div>
   </article>
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>

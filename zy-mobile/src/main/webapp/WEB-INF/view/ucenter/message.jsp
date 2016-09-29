@@ -40,7 +40,7 @@
   <article>
     <c:if test="${empty unreadMessageVos && empty readMessageVos}">
       <div class="message-list">
-        <div class="empty-tip">
+        <div class="page-empty">
           <i class="fa fa-comments"></i> <span>空空如也!</span>
         </div>
       </div>

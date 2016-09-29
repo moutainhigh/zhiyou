@@ -29,7 +29,7 @@
 
   <article>
     <c:if test="${empty activities && empty historyActivities}">
-    <div class="empty-tip">
+    <div class="page-empty">
       <i class="fa fa-flag"></i>
       <span>您没有关注活动</span>
     </div>

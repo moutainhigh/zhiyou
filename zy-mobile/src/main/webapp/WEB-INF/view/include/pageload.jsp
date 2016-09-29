@@ -2,14 +2,14 @@
 <link rel="stylesheet" href="${stccdn}/plugin/dropload-0.9.0/dropload.css" />
 <script src="${stccdn}/plugin/dropload-0.9.0/dropload.js"></script>
 <style>
-.drop-wrap {
+.page-wrap {
   position: absolute; left: 0; top: 0;
   width: 100%; height: 100%;
   display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex;
   -ms-flex-direction: column; -webkit-flex-direction: column; flex-direction: column;
   -webkit-box-orient: vertical; box-orient: vertical;
 }
-.drop-inner {
+.page-inner {
   -webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1;
   background-color: #fff; overflow-y: scroll; overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -19,7 +19,8 @@
   var dropload;
 
   $(function() {
-    dropload = $('.drop-inner').dropload({
+    dropload = $('.page-inner').dropload({
+      autoLoad : false,
       domUp : {
         domClass : 'dropload-up',
         domRefresh : '<div class="dropload-refresh">↓ 下拉刷新</div>',
@@ -30,18 +31,22 @@
         domClass : 'dropload-down',
         domRefresh : '<div class="dropload-refresh">↑ 上拉加载更多</div>',
         domLoad : '<div class="dropload-load"><span class="i-loading"></span>加载中...</div>',
-        domNoData : '<div class="dropload-noData">暂无数据</div>'
+        domNoData : '<div class="dropload-noData">没有更多数据了</div>'
       },
       loadUpFn : function(dropload) {
-        reload(dropload);
+        loadData(dropload);
       },
       loadDownFn : function(dropload) {
         loadMore(dropload)
       }
     });
+    
+    <c:if test="${page.total > page.pageSize}">
+    dropload.unlock('down');
+    </c:if>
   });
 
-  function reload(dropload) {
+  function loadData(dropload) {
     $.ajax({
       url : getUrl(),
       data : {
@@ -51,32 +56,43 @@
       type : 'POST',
       success : function(result) {
         if (result.code != 0) {
+          messageAlert('[' + result.code + ']Ajax Page Load error!');
+          dropload.resetload();
           return;
         }
-        dropload.$element.find('.list-group').html('');
-        dropload.$element.find('.empty-tip').remove();
+        dropload.$element.find('.page-list').html('');
+        dropload.$element.find('.page-empty').remove();
         var page = result.data.page;
-        if (page.data.length) {
+        if(page.data.length == 0) {
+          dropload.$element.append('<div class="page-empty"><i class="fa fa-file-o"></i><span>暂无记录</span></div>');
+          dropload.resetload();
+          dropload.lock('down');
+          return;
+        }
+        if (page.data.length > 0) {
           timeLT = result.data.timeLT;
           pageNumber = page.pageNumber;
           var pageData = page.data;
           for ( var i in pageData ) {
             var row = pageData[i];
+            console.log(row);
             var html = buildRow(row);
-            dropload.$element.find('.list-group').append(html);
+            dropload.$element.find('.page-list').append(html);
           }
-          if (page.data.length < page.pageSize) {
-            dropload.$domDown.remove();
-            dropload.$element.append('<a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>')
-          }
+        }
+        
+        if (page.data.length < page.pageSize) {
+          dropload.hasMore(false);
+          dropload.lock('down');
         } else {
-          dropload.$element.append('<div class="empty-tip"><i class="fa fa-file-o"></i><span>暂无记录</span></div>');
+          dropload.hasMore(true);
+          dropload.unlock('down');
         }
 
         dropload.resetload();
       },
       error : function(xhr, type) {
-        messageAlert('Ajax Load error!');
+        messageAlert('[' + xhr.status + ']Ajax Page Load error!');
         dropload.resetload();
       }
     });
@@ -85,6 +101,9 @@
   var timeLT = '${timeLT}';
   var pageNumber = 0;
   function loadMore(dropload) {
+    if(dropload.$element.find('.page-more').hasClass('.disabled')){
+      return;
+    }
     $.ajax({
       url : getUrl(),
       data : {
@@ -95,29 +114,34 @@
       type : 'POST',
       success : function(result) {
         if (result.code != 0) {
+          messageAlert('[' + result.code + ']Ajax Page Load error!');
+          dropload.resetload();
           return;
         }
-        //alert(JSON.stringify(result));
         var page = result.data.page;
-        //alert(JSON.stringify(page));
-        if (page.data.length) {
+        if (page.data.length > 0) {
           timeLT = result.data.timeLT;
           pageNumber = page.pageNumber;
           var pageData = page.data;
           for ( var i in pageData ) {
             var row = pageData[i];
             var html = buildRow(row);
-            dropload.$element.find('.list-group').append(html);
+            dropload.$element.find('.page-list').append(html);
           }
-          dropload.resetload();
         }
-        if(page.data.length == 0){
-          dropload.$domDown.remove();
-          dropload.$element.append('<a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>');
+        
+        if (page.data.length == 0 || page.data.length < page.pageSize) {
+          dropload.hasMore(false);
+          dropload.lock('down');
+        } else {
+          dropload.hasMore(true);
+          dropload.unlock('down');
         }
+        
+        dropload.resetload();
       },
       error : function(xhr, type) {
-        messageAlert('Ajax Load error!');
+        messageAlert('[' + xhr.status + ']Ajax Page Load error!');
         dropload.resetload();
       }
     });

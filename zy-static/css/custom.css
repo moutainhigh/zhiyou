@@ -220,21 +220,30 @@ a.disabled, a.disabled:hover, a.disabled:focus {
   font-size: 28px; color: #777;
 }
 
-/****** empty tip *******/
-.empty-tip {
+/****** page empty *******/
+.page-empty {
   width: 100%; height: 100%;
 }
-.empty-tip i, .empty-tip span {
+.page-empty i, .page-empty span {
   position: absolute; top: 50%; left: 50%;
   display: block; width: 200px; margin-left: -100px;
   color: #d0d0d0; font-size: 14px; text-align: center;
 }
-.empty-tip i {
+.page-empty i {
   margin-top: -60px;
   color: #e0e0e0; font-size: 60px;
 }
-.empty-tip span {
+.page-empty span {
   margin-top: 10px;
+}
+
+.page-more {
+  padding: 10px 15px; cursor: pointer;
+  display: block; width: 100%;
+  color: #999; font-size: 14px; line-height: 24px; text-align: center;
+}
+.page-more.disabled {
+  color: #ccc; cursor: default;
 }
 
 /****** line-text *******/
