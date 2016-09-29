@@ -2,6 +2,9 @@
 <link rel="stylesheet" href="${stccdn}/plugin/dropload-0.9.0/dropload.css" />
 <script src="${stccdn}/plugin/dropload-0.9.0/dropload.js"></script>
 <style>
+body {
+  overflow: hidden;
+}
 .page-wrap {
   position: absolute; left: 0; top: 0;
   width: 100%; height: 100%;
@@ -11,7 +14,7 @@
 }
 .page-inner {
   -webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1;
-  background-color: #fff; overflow-y: scroll; overflow-x: hidden;
+  overflow-y: scroll; overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 </style>
@@ -40,9 +43,12 @@
         loadMore(dropload)
       }
     });
+    loadData(dropload);
     
-    <c:if test="${page.total > page.pageSize}">
-    dropload.unlock('down');
+    <c:if test="${page.total <= page.pageSize}">
+    console.info('${page.total}');
+    dropload.lock('down');
+    dropload.$domDown.remove();
     </c:if>
   });
 
@@ -65,8 +71,9 @@
         var page = result.data.page;
         if(page.data.length == 0) {
           dropload.$element.append('<div class="page-empty"><i class="fa fa-file-o"></i><span>暂无记录</span></div>');
-          dropload.resetload();
           dropload.lock('down');
+          dropload.resetload();
+          dropload.$domDown.remove();
           return;
         }
         if (page.data.length > 0) {
@@ -75,7 +82,6 @@
           var pageData = page.data;
           for ( var i in pageData ) {
             var row = pageData[i];
-            console.log(row);
             var html = buildRow(row);
             dropload.$element.find('.page-list').append(html);
           }

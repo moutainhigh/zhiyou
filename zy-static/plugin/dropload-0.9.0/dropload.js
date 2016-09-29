@@ -21,7 +21,7 @@
     dl.loading = false;
     // 是否锁定
     dl.isLockUp = false;
-    dl.isLockDown = true;
+    dl.isLockDown = false;
     // 是否有数据
     dl.hasMoreData = true;
     dl._scrollTop = 0;
@@ -272,7 +272,7 @@
   // 无数据
   DropLoad.prototype.hasMore = function(flag) {
     var dl = this;
-    if (flag === undefined || flag == true) {
+    if (typeof flag === undefined || flag == true) {
       dl.hasMoreData = true;
     } else if (flag == false) {
       dl.hasMoreData = false;
@@ -282,9 +282,7 @@
   // 重置
   DropLoad.prototype.resetload = function() {
     var dl = this;
-    console.info(dl.direction);
-    console.info(dl.upInsertDOM);
-    if (dl.direction == 'down' && dl.upInsertDOM) {
+    if (dl.upInsertDOM) {
       dl.$domUp.css({
         'height' : '0'
       }).on('webkitTransitionEnd mozTransitionEnd transitionend', function() {
@@ -293,18 +291,19 @@
         $(this).remove();
         fnRecoverContentHeight(dl);
       });
-    } else if (dl.direction == 'up') {
+    } else {
       dl.loading = false;
-      // 如果有数据
-      if (dl.hasMoreData) {
-        // 加载区修改样式
-        dl.$domDown.html(dl.options.domDown.domRefresh);
-        fnRecoverContentHeight(dl);
-        fnAutoLoad(dl);
-      } else {
-        // 如果没数据
-        dl.$domDown.html(dl.options.domDown.domNoData);
-      }
+    }
+    
+    // 如果有数据
+    if (dl.hasMoreData) {
+      // 加载区修改样式
+      dl.$domDown.html(dl.options.domDown.domRefresh);
+      fnRecoverContentHeight(dl);
+      fnAutoLoad(dl);
+    } else {
+      // 如果没数据
+      dl.$domDown.html(dl.options.domDown.domNoData);
     }
   };
 

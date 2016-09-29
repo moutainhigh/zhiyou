@@ -74,7 +74,6 @@ public class UcenterAcountController {
 		accountLogQueryModel.setInOutEQ(InOut.支出);
 		accountLogQueryModel.setCurrencyTypeEQ(现金);
 		accountLogQueryModel.setUserIdEQ(principal.getUserId());
-		accountLogQueryModel.setPageSize(2);
 		accountLogQueryModel.setPageNumber(0);
 		Page<AccountLog> page  = accountLogService.findPage(accountLogQueryModel);
 		
@@ -97,7 +96,6 @@ public class UcenterAcountController {
 		accountLogQueryModel.setCurrencyTypeEQ(现金);
 		accountLogQueryModel.setTransTimeLT(timeLT);
 		accountLogQueryModel.setUserIdEQ(principal.getUserId());
-		accountLogQueryModel.setPageSize(2);
 		accountLogQueryModel.setPageNumber(pageNumber);
 		Page<AccountLog> page  = accountLogService.findPage(accountLogQueryModel);
 		Map<String, Object> map = new HashMap<>();
@@ -115,7 +113,6 @@ public class UcenterAcountController {
 		accountLogQueryModel.setInOutEQ(InOut.收入);
 		accountLogQueryModel.setCurrencyTypeEQ(现金);
 		accountLogQueryModel.setUserIdEQ(principal.getUserId());
-		accountLogQueryModel.setPageSize(2);
 		accountLogQueryModel.setPageNumber(0);
 		Page<AccountLog> page  = accountLogService.findPage(accountLogQueryModel);
 		
@@ -134,11 +131,10 @@ public class UcenterAcountController {
 		}
 		AccountLogQueryModel accountLogQueryModel = new AccountLogQueryModel();
 		accountLogQueryModel.setTitleLK(getInTitle(type));
-		accountLogQueryModel.setInOutEQ(InOut.支出);
+		accountLogQueryModel.setInOutEQ(InOut.收入);
 		accountLogQueryModel.setCurrencyTypeEQ(现金);
 		accountLogQueryModel.setTransTimeLT(timeLT);
 		accountLogQueryModel.setUserIdEQ(principal.getUserId());
-		accountLogQueryModel.setPageSize(2);
 		accountLogQueryModel.setPageNumber(pageNumber);
 		Page<AccountLog> page  = accountLogService.findPage(accountLogQueryModel);
 		Map<String, Object> map = new HashMap<>();

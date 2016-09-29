@@ -68,7 +68,7 @@
         </c:forEach>
       </div>
       
-      <c:if test="${page.total <= page.pageSize}">
+      <c:if test="${not empty page.data && page.total <= page.pageSize}">
         <div class="page-more disabled"><span>没有更多数据了</span></div>
       </c:if>
     </div>
