@@ -187,7 +187,7 @@ public class UcenterOrderController {
 
 		return "redirect:/u/order/" + persistence.getId();
 	}
-
+	
 	@RequestMapping("/confirmDelivery")
 	public String confirmDelivery(Long id, RedirectAttributes redirectAttributes, Principal principal) {
 
@@ -214,13 +214,18 @@ public class UcenterOrderController {
 		if(!principal.getUserId().equals(order.getSellerId())) {
 			throw new UnauthorizedException("权限不足");
 		}
+		Long newOrderId = null;
 		try {
-//			orderService.modifyIsPlatformDeliver(id, true);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("已成功转给公司发货"));
+			newOrderId = orderService.copy(id);
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
-		return "redirect:/u/order/" + order.getId();
+		if(order.getIsPayToPlatform()){
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("已成功转给公司发货"));
+		} else {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("已成功转给公司发货，请尽快支付"));
+		}
+		return "redirect:/u/order/" + newOrderId;
 	}
 	
 	@RequestMapping("/delete")

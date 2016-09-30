@@ -95,6 +95,8 @@ public class OrderAdminFullVo implements Serializable {
 	private String priceLabel;
 	@Field(label = "quantity")
 	private Long quantity;
+	@Field(label = "isPlatformDeliver")
+	private Boolean isPlatformDeliver;
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
 	@Field(label = "买家用户等级")

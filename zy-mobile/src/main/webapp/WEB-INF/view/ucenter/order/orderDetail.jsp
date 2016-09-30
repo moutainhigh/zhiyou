@@ -237,7 +237,7 @@
           </c:if>
         </div>
       </c:if>
-      <c:if test="${order.useLogistics == true}">
+      <c:if test="${order.isUseLogistics == true}">
       <div class="list-item lh-20">
         <div class="list-text fs-14">物流公司</div>
         <div class="list-unit">${order.logisticsName}</div>
@@ -251,7 +251,7 @@
         <div class="list-unit">${order.logisticsFee}</div>
       </div>
       </c:if>
-      <c:if test="${order.useLogistics == false}">
+      <c:if test="${order.isUseLogistics == false}">
       <div class="list-item lh-20">
         <div class="list-text fs-14">发货方式</div>
         <div class="list-unit">面对面发货</div>
@@ -363,9 +363,16 @@
         </c:if>
       </c:if>
       <c:if test="${order.orderStatus == '已发货'}">
+        <c:if test="${!order.isCopied || !order.isPlatformDeliver}">
         <div class="form-btn">
           <a id="btnConfirm" class="btn green btn-block round-2"><i class="fa fa-check"></i> 确认收货</a>
         </div>
+        </c:if>
+        <c:if test="${order.isPlatformDeliver && order.isCopied}">
+        <div class="form-btn">
+          <a class="btn disabled btn-block round-2" href="javascript:;"><i class="fa fa-send"></i> 请等待下级服务商确认收货</a>
+        </div>
+        </c:if>
       </c:if>
       <c:if test="${order.orderStatus == '已完成'}">
         <form id="orderForm" action="${ctx}/u/order/create" method="get">
@@ -393,13 +400,12 @@
           <a id="btnRejectPay" class="btn red btn-block round-2" href="javascript:;"><i class="fa fa-times"></i> 驳回已打款</a>
         </div>
       </c:if>
-      <c:if test="${order.orderStatus == '已支付' && !order.isPlatformDeliver}">
-        <c:if test="${seller.userRank == 'V4' && buyer.userRank == 'V3'}">
-          <c:if test="${order.isPayToPlatform}">
+      
+      <c:if test="${order.orderStatus == '已支付' && !order.isCopied}">
+        <c:if test="${order.sellerUserRank == 'V4' && order.quantity >= 100 && quantity mod 100 == 0}">
           <div class="form-btn">
             <a id="btnPlatformDeliver" class="btn blue btn-block round-2"><i class="fa fa-share"></i> 转给公司发货</a>
           </div>
-          </c:if>
         </c:if>
         <form id="orderForm" action="${ctx}/u/order/deliver" method="get">
           <input type="hidden" name="id" value="${order.id}">
@@ -408,7 +414,7 @@
           </div>
         </form>
       </c:if>
-      <c:if test="${order.orderStatus == '已支付' && order.isPlatformDeliver}">
+      <c:if test="${order.orderStatus == '已支付' && order.isCopied}">
         <div class="form-btn">
           <a class="btn disabled btn-block round-2" href="javascript:;"><i class="fa fa-share"></i> 已转给公司发货，等待公司发货。</a>
         </div>

@@ -5,13 +5,13 @@
   $(function() {
     $('#form').validate({
       rules: {
-        'useLogistics' : {
+        'isUseLogistics' : {
           required: true
         }
       },
       submitHandler : 
         function(form){
-          var val = $('#useLogistics').find('option:selected').val();
+          var val = $('#isUseLogistics').find('option:selected').val();
           if(val == 'true') {
             var logisticsName = $('#logisticsName').val();
             var logisticsSn = $('#logisticsSn').val();
@@ -35,7 +35,7 @@
   		}
     });
     
-    $('#useLogistics').change(function(){
+    $('#isUseLogistics').change(function(){
       var val = $(this).find('option:selected').val();
       if(val == 'true') {
         $('#logistics').show();
@@ -112,7 +112,7 @@
             <div class="form-group">
               <label class="control-label col-md-3">发货方式<span class="font-red">*</span> </label>
               <div class="col-md-5">
-                <select name="useLogistics" id="useLogistics" class="form-control">
+                <select name="isUseLogistics" id="isUseLogistics" class="form-control">
                   <option value="">-- 请选择 --</option>
                   <option value="false">面对面发货</option>
                   <option value="true">物流发货</option>

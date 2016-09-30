@@ -312,14 +312,14 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <%-- <div class="col-md-4">
                 <div class="form-group">
                   <label class="control-label col-md-3">谁支付物流费:</label>
                   <div class="col-md-9">
                     <p class="form-control-static">${order.logisticsFeePayType}</p>
                   </div>
                 </div>
-              </div>
+              </div> --%>
             </div>
 
           </div>

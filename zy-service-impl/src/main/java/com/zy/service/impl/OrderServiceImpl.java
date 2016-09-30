@@ -323,7 +323,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void platformDeliver(@NotNull OrderDeliverDto orderDeliverDto) {
-		validate(orderDeliverDto, "id", "useLogistics");
+		validate(orderDeliverDto, "id", "isUseLogistics");
 		boolean isUseLogistics = orderDeliverDto.getIsUseLogistics();
 
 		Long id = orderDeliverDto.getId();
@@ -438,13 +438,13 @@ public class OrderServiceImpl implements OrderService {
 			BigDecimal v4Amount = v4Price.multiply(BigDecimal.valueOf(quantity)).setScale(2, BigDecimal.ROUND_HALF_UP);
 			Product product = productMapper.findOne(productId);
 
+			Date date = new Date();
 			Order order = new Order();
 			order.setUserId(persistentOrder.getSellerId());
 			order.setAmount(v4Amount);
 			order.setCreatedTime(new Date());
 			order.setIsSettledUp(false);
 			order.setIsProfitSettledUp(false);
-			order.setIsCopied(false);
 			order.setBuyerUserRank(UserRank.V4);
 			order.setSellerUserRank(null);
 			order.setReceiverAreaId(persistentOrder.getReceiverAreaId());
@@ -464,6 +464,10 @@ public class OrderServiceImpl implements OrderService {
 			order.setDiscountFee(new BigDecimal("0.00"));
 			order.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_ORDER_EXPIRE_IN_MINUTES));
 
+			order.setIsCopied(true);
+			order.setCopiedTime(date);
+			order.setRefId(orderId);
+			
 			order.setIsDeleted(false);
 			order.setTitle(persistentOrder.getTitle());
 
@@ -491,7 +495,15 @@ public class OrderServiceImpl implements OrderService {
 			if (persistentOrder.getIsPayToPlatform()) {
 				malComponent.successOrder(order.getId());
 			}
+			
+			persistentOrder.setIsCopied(true);
+			persistentOrder.setCopiedTime(date);
+			persistentOrder.setRefId(order.getId());
 
+			if (orderMapper.update(persistentOrder) == 0) {
+				throw new ConcurrentException();
+			}
+			
 			return order.getId();
 		} else {
 			throw new BizException(BizCode.ERROR, "不符合转订单条件");

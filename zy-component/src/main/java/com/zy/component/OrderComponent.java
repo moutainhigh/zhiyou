@@ -1,5 +1,17 @@
 package com.zy.component;
 
+import static com.zy.util.GcUtils.formatDate;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.zy.Config;
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Profit;
@@ -16,18 +28,11 @@ import com.zy.service.ProfitService;
 import com.zy.service.TransferService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
-import com.zy.vo.*;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.zy.util.GcUtils.formatDate;
+import com.zy.vo.OrderAdminFullVo;
+import com.zy.vo.OrderAdminVo;
+import com.zy.vo.OrderDetailVo;
+import com.zy.vo.OrderItemVo;
+import com.zy.vo.OrderListVo;
 
 @Component
 public class OrderComponent {
@@ -49,6 +54,8 @@ public class OrderComponent {
 	private TransferComponent transferComponent;
 	@Autowired
 	private CacheComponent cacheComponent;
+	@Autowired
+	private Config config;
 	
 	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 	
@@ -67,6 +74,11 @@ public class OrderComponent {
 		orderAdminFullVo.setRefundedTimeLabel(formatDate(order.getRefundedTime(), TIME_PATTERN));
 		orderAdminFullVo.setDeliveredTimeLabel(formatDate(order.getDeliveredTime(), TIME_PATTERN));
 		orderAdminFullVo.setAmountLabel(GcUtils.formatCurreny(order.getAmount()));
+		if(order.getSellerId().equals(config.getSysUserId())){
+			orderAdminFullVo.setIsPlatformDeliver(true);
+		} else {
+			orderAdminFullVo.setIsPlatformDeliver(false);
+		}
 		
 		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
 		if (orderItem != null) {
@@ -135,6 +147,11 @@ public class OrderComponent {
 		orderAdminVo.setPaidTimeLabel(formatDate(order.getPaidTime(), TIME_PATTERN));
 		orderAdminVo.setRefundedTimeLabel(formatDate(order.getRefundedTime(), TIME_PATTERN));
 		orderAdminVo.setAmountLabel(GcUtils.formatCurreny(order.getAmount()));
+		if(order.getSellerId().equals(config.getSysUserId())){
+			orderAdminVo.setIsPlatformDeliver(true);
+		} else {
+			orderAdminVo.setIsPlatformDeliver(false);
+		}
 		
 		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
 		if (orderItem != null) {
@@ -181,6 +198,11 @@ public class OrderComponent {
 		orderListVo.setExpiredTimeLabel(formatDate(order.getExpiredTime(), SIMPLE_TIME_PATTERN));
 		orderListVo.setAmount(order.getAmount());
 		orderListVo.setAmountLabel(GcUtils.formatCurreny(order.getAmount()));
+		if(order.getSellerId().equals(config.getSysUserId())){
+			orderListVo.setIsPlatformDeliver(true);
+		} else {
+			orderListVo.setIsPlatformDeliver(false);
+		}
 		
 		List<OrderItem> orderItems = orderItemService.findByOrderId(order.getId());
 		List<OrderItemVo> orderItemVos = orderItems.stream().map(v ->{
@@ -214,6 +236,12 @@ public class OrderComponent {
 		}
 		orderDetailVo.setAmount(order.getAmount());
 		orderDetailVo.setRefund(order.getAmount());
+		if(order.getSellerId().equals(config.getSysUserId())){
+			orderDetailVo.setIsPlatformDeliver(true);
+		} else {
+			orderDetailVo.setIsPlatformDeliver(false);
+		}
+		
 		
 		List<OrderItem> orderItems = orderItemService.findByOrderId(order.getId());
 		List<OrderItemVo> orderItemVos = orderItems.stream().map(v ->{
@@ -226,6 +254,8 @@ public class OrderComponent {
 			return orderItemVo;
 		}).collect(Collectors.toList());
 		orderDetailVo.setOrderItems((ArrayList<OrderItemVo>) orderItemVos);
+		Long quantity = orderItems.stream().map(v -> v.getQuantity()).reduce((x, y) -> x + y).get();
+		orderDetailVo.setQuantity(quantity);
 		
 		String offlineImage = order.getOfflineImage();
 		if (StringUtils.isNotBlank(offlineImage)) {
