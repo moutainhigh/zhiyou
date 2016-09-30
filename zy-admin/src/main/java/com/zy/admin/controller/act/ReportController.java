@@ -1,7 +1,7 @@
 package com.zy.admin.controller.act;
 
-import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,7 +17,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,7 +41,6 @@ import com.zy.model.query.ReportQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.JobService;
 import com.zy.service.ReportService;
-import com.zy.service.TagService;
 import com.zy.service.UserService;
 import com.zy.vo.ReportAdminVo;
 import com.zy.vo.ReportExportVo;
@@ -56,9 +54,6 @@ public class ReportController {
 
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private TagService tagService;
 
 	@Autowired
 	private JobService jobService;

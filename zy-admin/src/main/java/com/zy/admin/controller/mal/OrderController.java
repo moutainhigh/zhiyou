@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.zy.Config;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -23,7 +24,6 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.OrderComponent;
 import com.zy.entity.mal.Order;
-import com.zy.entity.mal.Order.LogisticsFeePayType;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
@@ -47,6 +47,9 @@ public class OrderController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private Config config;
 	
 	@RequiresPermissions("order:view")
 	@RequestMapping(method = RequestMethod.GET)
@@ -76,7 +79,8 @@ public class OrderController {
 	@RequiresPermissions("order:view")
 	@RequestMapping(value = "/platformDeliverList", method = RequestMethod.GET)
 	public String platformDeliverList(Model model) {
-		long count = orderService.count(OrderQueryModel.builder().isPlatformDeliverEQ(true).orderStatusEQ(OrderStatus.已支付).build());
+		Long sysUserId = config.getSysUserId();
+		long count = orderService.count(OrderQueryModel.builder().sellerIdEQ(sysUserId).orderStatusEQ(OrderStatus.已支付).build());
 		model.addAttribute("count", count);
 		model.addAttribute("orderStatuses", OrderStatus.values());
 		return "mal/orderPlatformDeliverList";
@@ -86,6 +90,7 @@ public class OrderController {
 	@RequestMapping(value = "/platformDeliverList", method = RequestMethod.POST)
 	@ResponseBody
 	public Grid<OrderAdminVo> platformDeliverList(OrderQueryModel orderQueryModel, String userPhoneEQ, String userNicknameLK) {
+		Long sysUserId = config.getSysUserId();
 		if (StringUtils.isNotBlank(userPhoneEQ) || StringUtils.isNotBlank(userNicknameLK)) {
         	UserQueryModel userQueryModel = new UserQueryModel();
         	userQueryModel.setPhoneEQ(userPhoneEQ);
@@ -94,7 +99,7 @@ public class OrderController {
             Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
             orderQueryModel.setUserIdIN(userIds);
         }
-		orderQueryModel.setIsPlatformDeliverEQ(true);
+		orderQueryModel.setSellerIdEQ(sysUserId);
 		
 		Page<Order> page = orderService.findPage(orderQueryModel);
 		Page<OrderAdminVo> voPage = PageBuilder.copyAndConvert(page, orderComponent::buildAdminVo);
@@ -117,7 +122,6 @@ public class OrderController {
 		validate(order, NOT_NULL, "order id " + id + "not found");
 		
 		model.addAttribute("order", orderComponent.buildAdminVo(order));
-		model.addAttribute("logisticsFeePayTypes", LogisticsFeePayType.values());
 		return "mal/orderDeliver";
 	}
 	

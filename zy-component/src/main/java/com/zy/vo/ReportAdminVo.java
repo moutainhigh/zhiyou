@@ -1,11 +1,9 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
-
 import com.zy.entity.usr.UserInfo.Gender;
 import com.zy.entity.act.Report.ReportResult;
 import com.zy.entity.sys.ConfirmStatus;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -66,7 +64,7 @@ public class ReportAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
-	@Field(label = "职业", order = 55)
+	@Field(label = "职业")
 	private String jobName;
 	@Field(label = "所在地")
 	private String province;

@@ -46,12 +46,12 @@ public class OrderDetailVo implements Serializable {
 	private Boolean isProfitSettledUp;
 	@Field(label = "是否已结算")
 	private Boolean isSettledUp;
-	@Field(label = "是否物流发货")
-	private Boolean useLogistics;
-	@Field(label = "是否平台发货")
-	private Boolean isPlatformDeliver;
+	@Field(label = "是否已拷贝")
+	private Boolean isCopied;
 	@Field(label = "发货时间")
 	private Date deliveredTime;
+	@Field(label = "是否物流发货")
+	private Boolean isUseLogistics;
 	@Field(label = "物流公司名")
 	private String logisticsName;
 	@Field(label = "物流单号")
