@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
-<%@ include file="/WEB-INF/view/include/editor.jsp" %>
 <!-- BEGIN JAVASCRIPTS -->
 <style>
   .imageview {
@@ -25,12 +24,14 @@
 <!-- END JAVASCRIPTS -->
 
 <!-- BEGIN PAGE HEADER-->
+<c:if test="${not isPure}">
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
     <li><a href="javascript:;" data-href="${ctx}/order">订单管理</a></li>
   </ul>
 </div>
+</c:if>
 <!-- END PAGE HEADER-->
 
 <div class="row">
@@ -40,11 +41,13 @@
         <div class="caption">
           <i class="icon-docs"></i> 查看订单
         </div>
+        <c:if test="${not isPure}">
         <div class="actions">
           <a class="btn btn-circle default" data-href="${ctx}/order">
             <i class="fa fa-chevron-left"></i> 返回
           </a>
         </div>
+        </c:if>
       </div>
 
       <div class="portlet-body form">
@@ -186,7 +189,7 @@
                 <div class="form-group">
                   <label class="control-label col-md-3">买家等级:</label>
                   <div class="col-md-9">
-                    <p class="form-control-static">${order.user.userRankLabel}</p>
+                    <p class="form-control-static">${order.buyerUserRankLabel}</p>
                   </div>
                 </div>
               </div>
@@ -214,7 +217,7 @@
                 <div class="form-group">
                   <label class="control-label col-md-3">卖家等级:</label>
                   <div class="col-md-9">
-                    <p class="form-control-static">${order.seller.userRankLabel}</p>
+                    <p class="form-control-static">${order.sellerUserRankLabel}</p>
                   </div>
                 </div>
               </div>
@@ -312,14 +315,14 @@
                   </div>
                 </div>
               </div>
-              <%-- <div class="col-md-4">
+              <div class="col-md-4">
                 <div class="form-group">
-                  <label class="control-label col-md-3">谁支付物流费:</label>
+                  <label class="control-label col-md-3">买家付物流费:</label>
                   <div class="col-md-9">
-                    <p class="form-control-static">${order.logisticsFeePayType}</p>
+                    <p class="form-control-static">${order.isBuyerPayLogisticsFee ? '是' : '否'}</p>
                   </div>
                 </div>
-              </div> --%>
+              </div>
             </div>
 
           </div>

@@ -385,9 +385,6 @@
 			<if test="isSettledUpEQ != null">
 				and is_settled_up = #{isSettledUpEQ}
 			</if>
-			<if test="isPlatformDeliverEQ != null">
-				and is_platform_deliver = #{isPlatformDeliverEQ}
-			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
 			</if>
