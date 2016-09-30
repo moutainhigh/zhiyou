@@ -127,9 +127,9 @@ public class OrderServiceImpl implements OrderService {
 		long quantity = orderCreateDto.getQuantity();
 		UserRank buyerUserRank = user.getUserRank();
 
-		Long sellerId = malComponent.calculateSellerId(userRank, quantity, parentId);
-		User seller = userMapper.findOne(sellerId);
-		UserRank sellerUserRank = seller.getUserRank();
+		User seller = malComponent.calculateSeller(userRank, quantity, parentId);
+		Long sellerId = seller.getId();
+		UserRank sellerUserRank = sellerId.equals(config.getSysUserId()) ? null : seller.getUserRank();
 
 		BigDecimal price = malComponent.getPrice(productId, user.getUserRank(), quantity);
 		BigDecimal amount = price.multiply(new BigDecimal(quantity));
@@ -561,7 +561,11 @@ public class OrderServiceImpl implements OrderService {
 			Long skipBonusUserId = null;
 			boolean firstParent = true;
 
+			int whileTimes = 0;
 			while (parentId != null) {
+				if (whileTimes > 1000) {
+					throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+				}
 				User parent = userMapper.findOne(parentId);
 				if (firstParent) {
 					if (parent.getUserRank() == UserRank.V3) {
@@ -594,6 +598,7 @@ public class OrderServiceImpl implements OrderService {
 
 				}
 				parentId = parent.getParentId();
+				whileTimes ++;
 			}
 		}
 

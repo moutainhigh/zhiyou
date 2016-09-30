@@ -1,25 +1,5 @@
 package com.zy.component;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.mal.Order.OrderStatus.已支付;
-import static com.zy.entity.mal.Order.OrderStatus.待支付;
-import static com.zy.entity.mal.Order.OrderStatus.待确认;
-import static com.zy.entity.usr.User.UserRank.V4;
-
-import java.math.BigDecimal;
-import java.util.Date;
-
-import javax.validation.constraints.NotNull;
-
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.customizers.ImportCustomizer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
-
 import com.zy.Config;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
@@ -34,10 +14,25 @@ import com.zy.mapper.ProductMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
-
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
+import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.control.customizers.ImportCustomizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.entity.mal.Order.OrderStatus.*;
+import static com.zy.entity.usr.User.UserRank.V4;
 
 @Component
 @Validated
@@ -49,7 +44,7 @@ public class MalComponent {
 	private Config config;
 
 	@Autowired
-	private UserMapper userMaper;
+	private UserMapper userMapper;
 
 	@Autowired
 	private OrderMapper orderMapper;
@@ -92,35 +87,35 @@ public class MalComponent {
 		}
 	}
 
-	public Long calculateSellerId(User.UserRank userRank, long quantity, Long parentId) {
-		Long sysUserId = config.getSysUserId();
+	public User calculateSeller(User.UserRank userRank, long quantity, Long parentId) {
 		if (userRank == V4) {
-			return sysUserId;
+			return userMapper.findOne(config.getSysUserId());
 		}
 
 		UserRank upgradeUserRank = getUpgradeUserRank(userRank, quantity);
 
-		Long sellerId = null;
+		User seller = null;
 
+		int whileTimes = 0;
 		while (parentId != null) {
-			User parent = userMaper.findOne(parentId);
+			if (whileTimes > 1000) {
+				break; // 防御性循环引用校验
+			}
+			User parent = userMapper.findOne(parentId);
 			if (parent.getUserType() != User.UserType.代理) {
 				logger.error("代理父级数据错误,parentId=" + parentId);
 				throw new BizException(BizCode.ERROR, "代理父级数据错误"); // 防御性校验
 			}
 			if (parent.getUserRank().getLevel() > upgradeUserRank.getLevel()) {
-				sellerId = parentId;
-				break;
+				return seller;
 			}
 			parentId = parent.getParentId();
+			whileTimes ++;
 		}
 
-		if (sellerId == null) {
-			logger.error("代理父级数据错误,parentId=" + parentId);
-			throw new BizException(BizCode.ERROR, "代理父级数据错误"); // 防御性校验
-		}
+		logger.error("代理父级数据错误,parentId=" + parentId);
+		throw new BizException(BizCode.ERROR, "代理父级数据错误");
 
-		return sellerId;
 	}
 
 
@@ -168,7 +163,7 @@ public class MalComponent {
 		long quantity = orderItemMapper.findByOrderId(orderId).get(0).getQuantity();
 
 		Long userId = order.getUserId();
-		User user = userMaper.findOne(userId);
+		User user = userMapper.findOne(userId);
 		UserRank userRank = user.getUserRank();
 
 		UserRank upgradeUserRank = getUpgradeUserRank(userRank, quantity);
