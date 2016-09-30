@@ -175,4 +175,24 @@ public class MalComponent {
 		producer.send(Constants.TOPIC_ORDER_PAID, order.getId());
 	}
 
+	public void failureOrder(@NotNull Long orderId, String remark) {
+		final Order order = orderMapper.findOne(orderId);
+		validate(order, NOT_NULL, "order does not found, order id " + orderId);
+		Order.OrderStatus orderStatus = order.getOrderStatus();
+		if (orderStatus == 已取消) {
+			return; // 幂等操作
+		} else if (orderStatus != 待确认) {
+			throw new BizException(BizCode.ERROR, "只有待确认订单才能拒绝");
+		}
+
+		order.setOrderStatus(Order.OrderStatus.已取消);
+		order.setSellerMemo(remark);
+		if(orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
+
+		producer.send(Constants.TOPIC_ORDER_OFFLINE_REJECTED, order.getId());
+
+	}
+
 }
