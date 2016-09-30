@@ -5,6 +5,7 @@ import com.zy.entity.fnc.Transfer;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.TransferAdminVo;
+import com.zy.vo.TransferListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,5 +33,9 @@ public class TransferComponent {
 		transferAdminVo.setAmountLabel(GcUtils.formatCurreny(transfer.getAmount()));
 
 		return transferAdminVo;
+	}
+
+	public TransferListVo buildListVo(Transfer transfer) {
+		return null;
 	}
 }

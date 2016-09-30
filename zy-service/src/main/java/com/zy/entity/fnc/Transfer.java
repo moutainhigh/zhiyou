@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import static com.zy.entity.fnc.Transfer.VO_ADMIN;
+import static com.zy.entity.fnc.Transfer.VO_LIST;
 import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
@@ -29,9 +30,10 @@ import static io.gd.generator.api.query.Predicate.*;
 @Setter
 @QueryModel
 @Type(label = "转账单")
-@ViewObject(groups = VO_ADMIN)
+@ViewObject(groups = {VO_LIST, VO_ADMIN})
 public class Transfer implements Serializable {
 
+	public static final String VO_LIST = "TransferListVo";
 	public static final String VO_ADMIN = "TransferAdminVo";
 
 	public enum TransferType {
@@ -47,14 +49,14 @@ public class Transfer implements Serializable {
 
 	@Id
 	@Field(label = "id")
-	@View(groups = VO_ADMIN)
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private Long id;
 
 	@NotNull
 	@Field(label = "转账状态")
 	@Query(EQ)
 	@View(groups = VO_ADMIN)
-	@View(name = "transferStatusStyle", type = String.class, groups = {VO_ADMIN})
+	@View(name = "transferStatusStyle", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private TransferStatus transferStatus;
 
 	@NotNull
@@ -68,19 +70,19 @@ public class Transfer implements Serializable {
 	@Query({EQ,IN})
 	@Field(label = "转入用户id")
 	@View(groups = VO_ADMIN)
-	@AssociationView(name = "toUser", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
+	@AssociationView(name = "toUser", groups = {VO_LIST, VO_ADMIN}, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long toUserId;
 
 	@Column(length = 60, unique = true)
 	@NotBlank
 	@Field(label = "转账单号")
 	@Query(EQ)
-	@View(groups = VO_ADMIN)
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private String sn;
 
 	@NotBlank
 	@Field(label = "转账标题")
-	@View(groups = VO_ADMIN)
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private String title;
 
 	@NotNull
@@ -92,19 +94,19 @@ public class Transfer implements Serializable {
 	@DecimalMin("0.01")
 	@Field(label = "金额")
 	@View(groups = VO_ADMIN)
-	@View(name = "amountLabel", type = String.class, groups = VO_ADMIN)
+	@View(name = "amountLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal amount;
 
 	@NotNull
 	@Query({GTE,LT})
 	@Field(label = "创建时间")
-	@View(name = "createdTimeLabel", type = String.class, groups = VO_ADMIN)
+	@View(name = "createdTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	@View(groups = VO_ADMIN)
 	private Date createdTime;
 
 	@Query({GTE,LT})
 	@Field(label = "转账时间")
-	@View(name = "transferredTimeLabel", type = String.class, groups = VO_ADMIN)
+	@View(name = "transferredTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	@View(groups = VO_ADMIN)
 	private Date transferredTime;
 

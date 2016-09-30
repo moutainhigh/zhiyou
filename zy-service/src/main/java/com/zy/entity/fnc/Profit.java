@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import static com.zy.entity.fnc.Profit.VO_ADMIN;
+import static com.zy.entity.fnc.Profit.VO_LIST;
 import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
@@ -32,9 +33,10 @@ import static io.gd.generator.api.query.Predicate.*;
 @Setter
 @QueryModel
 @Type(label = "收益单")
-@ViewObject(groups = VO_ADMIN)
+@ViewObject(groups = {VO_LIST, VO_ADMIN})
 public class Profit implements Serializable {
 
+	public static final String VO_LIST = "ProfitListVo";
 	public static final String VO_ADMIN = "ProfitAdminVo";
 
 	public enum ProfitType {
@@ -61,7 +63,7 @@ public class Profit implements Serializable {
 	@Field(label = "收益单状态")
 	@Query(EQ)
 	@View(groups = VO_ADMIN)
-	@View(name = "profitStatusStyle", type = String.class, groups = {VO_ADMIN})
+	@View(name = "profitStatusStyle", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private ProfitStatus profitStatus;
 
 	@NotNull
@@ -75,12 +77,12 @@ public class Profit implements Serializable {
 	@NotBlank
 	@Field(label = "收益单号")
 	@Query(EQ)
-	@View(groups = VO_ADMIN)
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private String sn;
 
 	@NotBlank
 	@Field(label = "收益标题")
-	@View(groups = VO_ADMIN)
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private String title;
 
 	@NotNull
@@ -92,20 +94,20 @@ public class Profit implements Serializable {
 	@DecimalMin("0.01")
 	@Field(label = "金额")
 	@View(groups = VO_ADMIN)
-	@View(name = "amountLabel", type = String.class, groups = VO_ADMIN)
+	@View(name = "amountLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal amount;
 
 	@NotNull
 	@Query({GTE,LT})
 	@Field(label = "创建时间")
 	@View(groups = VO_ADMIN)
-	@View(name = "createdTimeLabel", type = String.class, groups = VO_ADMIN)
+	@View(name = "createdTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private Date createdTime;
 
 	@Query({GTE,LT})
 	@Field(label = "发放时间")
 	@View(groups = VO_ADMIN)
-	@View(name = "grantedTimeLabel", type = String.class, groups = VO_ADMIN)
+	@View(name = "grantedTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private Date grantedTime;
 
 	@Query({Predicate.EQ, Predicate.IN})
