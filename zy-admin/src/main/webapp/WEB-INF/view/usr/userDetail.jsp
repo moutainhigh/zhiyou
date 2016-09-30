@@ -11,23 +11,42 @@
 				simpleData: {
 					enable: true
 				}
-			}
+			},
+        callback: {
+          onClick: function(event, treeId, treeNode) {
+            $.ajax({
+              url: '${ctx}/user/detail?isPure=true&id=' + treeNode.id,
+              dataType: 'html',
+              success: function(data) {
+                layer.open({
+                  type: 1,
+                  skin: 'layui-layer-rim', //加上边框
+                  area: ['960px', '640px'], //宽高
+                  content: data
+                });
+              }
+            })
+  
+          }
+        }
     };
   	var json = ${json};
   	
-    $.fn.zTree.init($('#tree'), setting, json);
+    $.fn.zTree.init($('#${treeUuid}'), setting, json);
 
   });
 </script>
 <!-- END JAVASCRIPTS -->
 
 <!-- BEGIN PAGE HEADER-->
+<c:if test="${not isPure}">
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
     <li><a href="javascript:;" data-href="${ctx}/user">用户管理</a></li>
   </ul>
 </div>
+</c:if>
 <!-- END PAGE HEADER-->
 
 <div class="row">
@@ -38,11 +57,13 @@
         <div class="caption">
           <i class="icon-user"></i> 查看用户
         </div>
+        <c:if test="${not isPure}">
         <div class="actions">
           <a class="btn btn-circle default" data-href="${ctx}/user">
             <i class="fa fa-chevron-left"></i> 返回
           </a>
         </div>
+        </c:if>
       </div>
       <div class="portlet-body form">
         <form class="form-horizontal">
@@ -141,7 +162,7 @@
         <div class="tab-content">
 
           <div class="tab-pane fade active in" id="chart">
-            <div class="col-md-10 ztree" id="tree">
+            <div class="col-md-10 ztree" id="${treeUuid}">
 
             </div>
           </div>
