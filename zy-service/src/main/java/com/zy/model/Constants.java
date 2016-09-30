@@ -132,17 +132,16 @@ public interface Constants {
 
     String TOPIC_USER_INFO_CONFIRMED = "user-info-confirmed"; // 实名认证通过
     String TOPIC_USER_INFO_REJECTED = "user-info-rejected"; // 实名认证未通过
+
     String TOPIC_BANKCARD_CONFIRMED = "bankCard-confirmed"; // 银行卡审核通过
     String TOPIC_BANKCARD_REJECTED = "bankCard-rejected"; // 银行卡审核未通过
-    
+
+    String TOPIC_ORDER_OFFLINE_REJECTED = "order-offline-rejected";
     String TOPIC_ORDER_PAID = "order-paid"; // 订单已支付
     String TOPIC_ORDER_DELIVERED = "order-delivered"; // 订单已发货
-
     String TOPIC_ORDER_RECEIVED = "order-received";
 
     String TOPIC_DEPOSIT_SUCCESS = "deposit-success";
     String TOPIC_DEPOSIT_OFFLINE_REJECTED = "deposit-offline-rejected";
 
-    String TOPIC_PAYMENT_OFFLINE_REJECTED = "payment-offline-rejected";
-    
 }

@@ -4,11 +4,15 @@ import com.zy.common.model.query.Page;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.query.UserInfoQueryModel;
 
+import java.util.List;
+
 public interface UserInfoService {
 
 	UserInfo findOne(Long id);
 
 	Page<UserInfo> findPage(UserInfoQueryModel userInfoQueryModel);
+
+	List<UserInfo> findAll(UserInfoQueryModel userInfoQueryModel);
 
 	UserInfo findByUserId(Long userId);
 

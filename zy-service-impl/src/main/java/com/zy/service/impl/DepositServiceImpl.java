@@ -12,9 +12,11 @@ import com.zy.entity.fnc.Deposit;
 import com.zy.entity.fnc.Deposit.DepositStatus;
 import com.zy.entity.fnc.PayType;
 import com.zy.entity.usr.User;
+import com.zy.extend.Producer;
 import com.zy.mapper.DepositMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
+import com.zy.model.Constants;
 import com.zy.model.query.DepositQueryModel;
 import com.zy.service.DepositService;
 import org.apache.commons.lang3.StringUtils;
@@ -50,6 +52,9 @@ public class DepositServiceImpl implements DepositService {
 
 	@Autowired
 	private Config config;
+
+	@Autowired
+	private Producer producer;
 
 	@Override
 	public Deposit create(@NotNull Deposit deposit) {
@@ -169,6 +174,8 @@ public class DepositServiceImpl implements DepositService {
 		if (depositMapper.update(deposit) == 0) {
 			throw new ConcurrentException();
 		}
+
+		producer.send(Constants.TOPIC_DEPOSIT_OFFLINE_REJECTED, deposit.getId());
 	}
 	
 	private void successFinal(Deposit deposit) {
@@ -193,6 +200,8 @@ public class DepositServiceImpl implements DepositService {
 		if (currencyType2 != null) {
 			fncComponent.recordAccountLog(userId, "充值进账", currencyType2, deposit.getAmount2(), InOut.收入, deposit, sysUserId);
 		}
+
+		producer.send(Constants.TOPIC_DEPOSIT_SUCCESS, deposit.getId());
 
 	}
 

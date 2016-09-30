@@ -127,9 +127,9 @@ public class OrderServiceImpl implements OrderService {
 		long quantity = orderCreateDto.getQuantity();
 		UserRank buyerUserRank = user.getUserRank();
 
-		Long sellerId = malComponent.calculateSellerId(userRank, quantity, parentId);
-		User seller = userMapper.findOne(sellerId);
-		UserRank sellerUserRank = seller.getUserRank();
+		User seller = malComponent.calculateSeller(userRank, quantity, parentId);
+		Long sellerId = seller.getId();
+		UserRank sellerUserRank = sellerId.equals(config.getSysUserId()) ? null : seller.getUserRank();
 
 		BigDecimal price = malComponent.getPrice(productId, user.getUserRank(), quantity);
 		BigDecimal amount = price.multiply(new BigDecimal(quantity));
@@ -230,14 +230,8 @@ public class OrderServiceImpl implements OrderService {
 	public void confirmPay(@NotNull Long id) {
 		Order order = orderMapper.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " is not found");
-		OrderStatus orderStatus = order.getOrderStatus();
-		if (orderStatus == OrderStatus.已支付) {
-			return; // 幂等处理
-		} else if (orderStatus != OrderStatus.待确认) {
-			throw new BizException(BizCode.ERROR, "只有待确认的订单才能确认支付");
-		}
-		if(order.getIsPayToPlatform()){
-			throw new BizException(BizCode.ERROR, "只有支付给上级的订单才能确认支付");
+		if (order.getIsPayToPlatform()){
+			throw new BizException(BizCode.ERROR, "平台收款订单不能确认");
 		}
 		malComponent.successOrder(id);
 	}
@@ -246,21 +240,10 @@ public class OrderServiceImpl implements OrderService {
 	public void rejectPay(@NotNull Long id, String remark) {
 		Order order = orderMapper.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " is not found");
-		OrderStatus orderStatus = order.getOrderStatus();
-		if (orderStatus == OrderStatus.已支付) {
-			return; // 幂等处理
-		} else if (orderStatus != OrderStatus.待确认) {
-			throw new BizException(BizCode.ERROR, "只有待确认的订单才能驳回支付");
+		if (order.getIsPayToPlatform()){
+			throw new BizException(BizCode.ERROR, "平台收款订单不能驳回");
 		}
-		if(order.getIsPayToPlatform()){
-			throw new BizException(BizCode.ERROR, "只有支付给上级的订单才能确认支付");
-		}
-
-		order.setSellerMemo(remark);
-		order.setOrderStatus(OrderStatus.已取消);
-		if (orderMapper.update(order) == 0) {
-			throw new ConcurrentException();
-		}
+		malComponent.failureOrder(id, remark);
 	}
 	
 	@Override
@@ -573,7 +556,11 @@ public class OrderServiceImpl implements OrderService {
 			Long skipBonusUserId = null;
 			boolean firstParent = true;
 
+			int whileTimes = 0;
 			while (parentId != null) {
+				if (whileTimes > 1000) {
+					throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+				}
 				User parent = userMapper.findOne(parentId);
 				if (firstParent) {
 					if (parent.getUserRank() == UserRank.V3) {
@@ -606,6 +593,7 @@ public class OrderServiceImpl implements OrderService {
 
 				}
 				parentId = parent.getParentId();
+				whileTimes ++;
 			}
 		}
 

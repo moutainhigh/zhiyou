@@ -10,7 +10,6 @@ import com.zy.component.MalComponent;
 import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.mal.Order;
-import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.usr.User;
 import com.zy.mapper.AccountMapper;
 import com.zy.mapper.OrderMapper;
@@ -212,21 +211,8 @@ public class PaymentServiceImpl implements PaymentService {
 		if (paymentMapper.update(payment) == 0) {
 			throw new ConcurrentException();
 		}
-		
-		Long orderId = payment.getRefId();
-		Order order = orderMapper.findOne(orderId);
-		validate(order, NOT_NULL, "order is not found by order id " + orderId);
-		OrderStatus orderStatus = order.getOrderStatus();
-		if (orderStatus == OrderStatus.已取消) {
-			return; // 幂等操作
-		} else if (orderStatus != OrderStatus.待确认) {
-			logger.warn("订单状态警告 {} 订单id {}", orderStatus, order.getId());
-		}
 
-		order.setOrderStatus(OrderStatus.已取消);
-		if(orderMapper.update(order) == 0) {
-			throw new ConcurrentException();
-		}
+		onFailure(payment);
 	}
 
 	private void updateSuccess(Payment payment) {
@@ -248,6 +234,14 @@ public class PaymentServiceImpl implements PaymentService {
 
 		if (currencyType2 != null) {
 			fncComponent.recordAccountLog(sysUserId, "支付成功", currencyType2, payment.getAmount2(), AccountLog.InOut.收入, payment, userId);
+		}
+	}
+
+	private void onFailure(Payment payment) {
+		Payment.PaymentType paymentType = payment.getPaymentType();
+		Long refId = payment.getRefId();
+		if (paymentType == Payment.PaymentType.订单支付) {
+			malComponent.failureOrder(refId, payment.getRemark());
 		}
 	}
 

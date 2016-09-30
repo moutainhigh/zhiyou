@@ -34,10 +34,12 @@ public class OrderCancelJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        logger.info("begin..");
         this.orderService.findAll(builder().createdTimeLT(addMinutes(new Date(), -SETTING_ORDER_EXPIRE_IN_MINUTES)).orderStatusEQ(待支付).build())
                 .stream()
                 .map(order -> order.getId())
                 .forEach(this::cancel);
+        logger.info("end..");
     }
 
     private void cancel(Long orderId) {
