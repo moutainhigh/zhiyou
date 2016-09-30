@@ -50,6 +50,6 @@ public class TransferComponent {
 		transferListVo.setAmountLabel(GcUtils.formatCurreny(transfer.getAmount()));
 		transferListVo.setCreatedTimeLabel(GcUtils.formatDate(transfer.getCreatedTime(), TIME_PATTERN));
 		transferListVo.setTransferredTimeLabel(GcUtils.formatDate(transfer.getTransferredTime(), TIME_PATTERN));
-		return null;
+		return transferListVo;
 	}
 }

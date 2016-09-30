@@ -41,7 +41,7 @@ public class ProfitComponent {
 		profitListVo.setAmountLabel(GcUtils.formatCurreny(profit.getAmount()));
 		profitListVo.setCreatedTimeLabel(GcUtils.formatDate(profit.getCreatedTime(), TIME_PATTERN));
 		profitListVo.setGrantedTimeLabel(GcUtils.formatDate(profit.getGrantedTime(), TIME_PATTERN));
-		return null;
+		return profitListVo;
 	}
 
 }
