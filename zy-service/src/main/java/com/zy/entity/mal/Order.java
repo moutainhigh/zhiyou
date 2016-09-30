@@ -1,5 +1,25 @@
 package com.zy.entity.mal;
 
+import static com.zy.entity.mal.Order.VO_ADMIN;
+import static com.zy.entity.mal.Order.VO_ADMIN_FULL;
+import static com.zy.entity.mal.Order.VO_DETAIL;
+import static com.zy.entity.mal.Order.VO_LIST;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.zy.common.extend.StringBinder;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Payment;
@@ -8,6 +28,7 @@ import com.zy.entity.fnc.Transfer;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.ImageVo;
+
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -19,17 +40,6 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-
-import static com.zy.entity.mal.Order.*;
 
 @Entity
 @Table(name = "mal_order")
@@ -47,8 +57,8 @@ import static com.zy.entity.mal.Order.*;
 				@View(name = "imageThumbnail", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
 				@View(name = "price", type = BigDecimal.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
 				@View(name = "priceLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
-				@View(name = "quantity", type = Long.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
-				@View(name = "isPlatformDeliver", type = boolean.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})
+				@View(name = "quantity", type = Long.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL}),
+				@View(name = "isPlatformDeliver", type = Boolean.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})
 		}
 
 )
@@ -86,8 +96,8 @@ public class Order implements Serializable {
 
 	@NotNull
 	@Field(label = "买家用户等级")
-	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
-	@View(name = "buyerUserRankLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
+	@View(name = "buyerUserRankLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
 	private UserRank buyerUserRank;
 
 	@NotNull
@@ -98,8 +108,8 @@ public class Order implements Serializable {
 	private Long sellerId;
 
 	@Field(label = "卖家用户等级", description = "如果是平台用户可以为空")
-	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
-	@View(name = "sellerUserRankLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
+	@View(name = "sellerUserRankLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
 	private UserRank sellerUserRank;
 
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})

@@ -3,6 +3,7 @@ package com.zy.vo;
 import io.gd.generator.annotation.Field;
 import com.zy.model.ImageVo;
 import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.usr.User.UserRank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,8 +23,12 @@ public class OrderDetailVo implements Serializable {
 	private String sn;
 	@Field(label = "用户id")
 	private Long userId;
+	@Field(label = "买家用户等级")
+	private UserRank buyerUserRank;
 	@Field(label = "卖家id")
 	private Long sellerId;
+	@Field(label = "卖家用户等级")
+	private UserRank sellerUserRank;
 	@Field(label = "是否支付给平台")
 	private Boolean isPayToPlatform;
 	@Field(label = "标题")
@@ -78,10 +83,18 @@ public class OrderDetailVo implements Serializable {
 	private String offlineMemo;
 
 	/* 扩展 */
+	@Field(label = "quantity")
+	private Long quantity;
+	@Field(label = "isPlatformDeliver")
+	private Boolean isPlatformDeliver;
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
+	@Field(label = "买家用户等级")
+	private String buyerUserRankLabel;
 	@Field(label = "卖家id")
 	private UserAdminSimpleVo seller;
+	@Field(label = "卖家用户等级")
+	private String sellerUserRankLabel;
 	@Field(label = "下单时间")
 	private String createdTimeLabel;
 	@Field(label = "过期时间")

@@ -32,6 +32,8 @@ public class OrderListVo implements Serializable {
 	private BigDecimal amount;
 
 	/* 扩展 */
+	@Field(label = "isPlatformDeliver")
+	private Boolean isPlatformDeliver;
 	@Field(label = "下单时间")
 	private String createdTimeLabel;
 	@Field(label = "过期时间")
