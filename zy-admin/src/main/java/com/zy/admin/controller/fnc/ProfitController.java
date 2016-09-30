@@ -16,7 +16,6 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.ProfitComponent;
-import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.entity.usr.User;
 import com.zy.model.dto.ProfitDto;
@@ -24,7 +23,6 @@ import com.zy.model.query.ProfitQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.ProfitService;
 import com.zy.service.UserService;
-import com.zy.vo.ProfitAdminVo;
 import com.zy.vo.ProfitDtoAdminVo;
 
 @RequestMapping("/profit")
