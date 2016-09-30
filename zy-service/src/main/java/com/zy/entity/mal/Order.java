@@ -47,7 +47,8 @@ import static com.zy.entity.mal.Order.*;
 				@View(name = "imageThumbnail", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
 				@View(name = "price", type = BigDecimal.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
 				@View(name = "priceLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
-				@View(name = "quantity", type = Long.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+				@View(name = "quantity", type = Long.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
+				@View(name = "isPlatformDeliver", type = boolean.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})
 		}
 
 )
