@@ -267,7 +267,7 @@ public class OrderServiceImpl implements OrderService {
 	public void deliver(@NotNull OrderDeliverDto orderDeliverDto) {
 
 		validate(orderDeliverDto, "id", "useLogistics");
-		boolean useLogistics = orderDeliverDto.getUseLogistics();
+		boolean isUseLogistics = orderDeliverDto.getIsUseLogistics();
 
 		Long id = orderDeliverDto.getId();
 		Order order = orderMapper.findOne(id);
@@ -288,7 +288,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "已转订单不能发货");
 		}
 
-		if (useLogistics) {
+		if (isUseLogistics) {
 
 			String logisticsName = orderDeliverDto.getLogisticsName();
 			String logisticsSn = orderDeliverDto.getLogisticsSn();
@@ -309,7 +309,7 @@ public class OrderServiceImpl implements OrderService {
 			order.setLogisticsSn(null);
 		}
 
-		order.setIsUseLogistics(useLogistics);
+		order.setIsUseLogistics(isUseLogistics);
 
 		order.setDeliveredTime(new Date());
 		order.setOrderStatus(OrderStatus.已发货);
@@ -324,7 +324,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void platformDeliver(@NotNull OrderDeliverDto orderDeliverDto) {
 		validate(orderDeliverDto, "id", "useLogistics");
-		boolean isUseLogistics = orderDeliverDto.getUseLogistics();
+		boolean isUseLogistics = orderDeliverDto.getIsUseLogistics();
 
 		Long id = orderDeliverDto.getId();
 		Order order = orderMapper.findOne(id);
@@ -423,17 +423,76 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Long copy(@NotNull Long orderId) {
-		Order order = orderMapper.findOne(orderId);
-		validate(order, NOT_NULL, "order id" + orderId + " is not found");
+		Order persistentOrder = orderMapper.findOne(orderId);
+		validate(persistentOrder, NOT_NULL, "order id" + orderId + " is not found");
 
-		OrderItem orderItem = orderItemMapper.findByOrderId(orderId).get(0);
-		Long quantity = orderItem.getQuantity();
-		if (!order.getSellerId().equals(config.getSysUserId()) && order.getSellerUserRank() == UserRank.V4 && quantity >= 100 && quantity % 100 == 0) {
-			if (order.getIsCopied()) {
-				return order.getRefId(); // 幂等操作
+		OrderItem persistentOrderItem = orderItemMapper.findByOrderId(orderId).get(0);
+		Long quantity = persistentOrderItem.getQuantity();
+		if (!persistentOrder.getSellerId().equals(config.getSysUserId()) && persistentOrder.getSellerUserRank() == UserRank.V4 && quantity >= 100 && quantity % 100 == 0) {
+			if (persistentOrder.getIsCopied()) {
+				return persistentOrder.getRefId(); // 幂等操作
+			}
+			Long productId = persistentOrderItem.getProductId();
+			Long sysUserId = config.getSysUserId();
+			BigDecimal v4Price = malComponent.getPrice(productId, UserRank.V4, quantity);
+			BigDecimal v4Amount = v4Price.multiply(BigDecimal.valueOf(quantity)).setScale(2, BigDecimal.ROUND_HALF_UP);
+			Product product = productMapper.findOne(productId);
+
+			Order order = new Order();
+			order.setUserId(persistentOrder.getSellerId());
+			order.setAmount(v4Amount);
+			order.setCreatedTime(new Date());
+			order.setIsSettledUp(false);
+			order.setIsProfitSettledUp(false);
+			order.setIsCopied(false);
+			order.setBuyerUserRank(UserRank.V4);
+			order.setSellerUserRank(null);
+			order.setReceiverAreaId(persistentOrder.getReceiverAreaId());
+			order.setReceiverProvince(persistentOrder.getReceiverProvince());
+			order.setReceiverCity(persistentOrder.getReceiverCity());
+			order.setReceiverDistrict(persistentOrder.getReceiverDistrict());
+			order.setReceiverAddress(persistentOrder.getReceiverAddress());
+			order.setReceiverRealname(persistentOrder.getReceiverRealname());
+			order.setReceiverPhone(persistentOrder.getReceiverPhone());
+			order.setBuyerMemo("转订单为平台发货");
+			order.setOrderStatus(OrderStatus.待支付);
+			order.setVersion(0);
+			order.setSellerId(sysUserId);
+			order.setCurrencyType(CurrencyType.现金);
+			order.setSn(ServiceUtils.generateOrderSn());
+			order.setIsSettledUp(false);
+			order.setDiscountFee(new BigDecimal("0.00"));
+			order.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_ORDER_EXPIRE_IN_MINUTES));
+
+			order.setIsDeleted(false);
+			order.setTitle(persistentOrder.getTitle());
+
+			if (persistentOrder.getIsPayToPlatform()) {
+				order.setIsPayToPlatform(false);
+			} else {
+				order.setIsPayToPlatform(true);
 			}
 
-			return null; // TODO
+			validate(order);
+			orderMapper.insert(order);
+
+			OrderItem orderItem = new OrderItem();
+			orderItem.setPrice(v4Price);
+			orderItem.setOrderId(order.getId());
+			orderItem.setProductId(productId);
+			orderItem.setMarketPrice(product.getMarketPrice());
+			orderItem.setQuantity(quantity);
+			orderItem.setAmount(v4Amount);
+			orderItem.setTitle(product.getTitle());
+			orderItem.setImage(product.getImage1());
+			validate(orderItem);
+			orderItemMapper.insert(orderItem);
+
+			if (persistentOrder.getIsPayToPlatform()) {
+				malComponent.successOrder(order.getId());
+			}
+
+			return order.getId();
 		} else {
 			throw new BizException(BizCode.ERROR, "不符合转订单条件");
 		}
@@ -535,9 +594,7 @@ public class OrderServiceImpl implements OrderService {
 
 				}
 				parentId = parent.getParentId();
-
 			}
-
 		}
 
 		order.setIsProfitSettledUp(true);

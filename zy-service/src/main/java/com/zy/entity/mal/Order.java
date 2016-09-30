@@ -96,8 +96,7 @@ public class Order implements Serializable {
 	@AssociationView(name = "seller", groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL}, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long sellerId;
 
-	@NotNull
-	@Field(label = "卖家用户等级")
+	@Field(label = "卖家用户等级", description = "如果是平台用户可以为空")
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
 	@View(name = "sellerUserRankLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
 	private UserRank sellerUserRank;
