@@ -53,11 +53,6 @@
             orderable: false
           },
           {
-            data: 'orderItemQuantity',
-            title: '订单之数',
-            orderable: false
-          },
-          {
             data: 'createdTime',
             title: '创建时间',
             orderable: true

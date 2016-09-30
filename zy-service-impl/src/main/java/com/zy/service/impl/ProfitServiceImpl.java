@@ -1,5 +1,18 @@
 package com.zy.service.impl;
 
+import static com.zy.entity.fnc.AccountLog.InOut.支出;
+import static com.zy.entity.fnc.AccountLog.InOut.收入;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.Config;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
@@ -8,22 +21,8 @@ import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.mapper.ProfitMapper;
-import com.zy.model.dto.ProfitDto;
 import com.zy.model.query.ProfitQueryModel;
 import com.zy.service.ProfitService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import static com.zy.entity.fnc.AccountLog.InOut.支出;
-import static com.zy.entity.fnc.AccountLog.InOut.收入;
 
 @Service
 @Validated
@@ -88,22 +87,6 @@ public class ProfitServiceImpl implements ProfitService {
 			throw new ConcurrentException();
 		}
 
-	}
-	
-	@Override
-	public Page<ProfitDto> findDtoPage(@NotNull ProfitQueryModel profitQueryModel) {
-		if (profitQueryModel.getPageNumber() == null)
-			profitQueryModel.setPageNumber(0);
-		if (profitQueryModel.getPageSize() == null)
-			profitQueryModel.setPageSize(20);
-		long total = profitMapper.count(profitQueryModel);
-		List<ProfitDto> data = profitMapper.findAllAndSum(profitQueryModel);
-		Page<ProfitDto> page = new Page<>();
-		page.setPageNumber(profitQueryModel.getPageNumber());
-		page.setPageSize(profitQueryModel.getPageSize());
-		page.setData(data);
-		page.setTotal(total);
-		return page;
 	}
 
 }

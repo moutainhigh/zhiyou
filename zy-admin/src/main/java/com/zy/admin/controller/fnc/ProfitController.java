@@ -1,17 +1,7 @@
 package com.zy.admin.controller.fnc;
 
-import com.zy.common.model.query.Page;
-import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.ui.Grid;
-import com.zy.component.ProfitComponent;
-import com.zy.entity.fnc.Profit.ProfitType;
-import com.zy.entity.usr.User;
-import com.zy.model.dto.ProfitDto;
-import com.zy.model.query.ProfitQueryModel;
-import com.zy.model.query.UserQueryModel;
-import com.zy.service.ProfitService;
-import com.zy.service.UserService;
-import com.zy.vo.ProfitAdminVo;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.ui.Grid;
+import com.zy.component.ProfitComponent;
+import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Profit.ProfitType;
+import com.zy.entity.usr.User;
+import com.zy.model.query.ProfitQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.ProfitService;
+import com.zy.service.UserService;
+import com.zy.vo.ProfitAdminVo;
 
 @RequestMapping("/profit")
 @Controller
@@ -62,7 +63,7 @@ public class ProfitController {
             Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
             profitQueryModel.setUserIdIN(userIds);
         }
-        Page<ProfitDto> page = profitService.findDtoPage(profitQueryModel);
+        Page<Profit> page = profitService.findPage(profitQueryModel);
         Page<ProfitAdminVo> adminVoPage = PageBuilder.copyAndConvert(page, profitComponent::buildAdminVo);
         return new Grid<ProfitAdminVo>(adminVoPage);
     }

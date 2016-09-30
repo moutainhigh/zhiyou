@@ -1,21 +1,12 @@
 package com.zy.mobile.controller.ucenter;
 
-import com.zy.common.model.query.Page;
-import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.component.ProfitComponent;
-import com.zy.component.TransferComponent;
-import com.zy.entity.fnc.Account;
-import com.zy.entity.fnc.AccountLog;
-import com.zy.entity.fnc.AccountLog.InOut;
-import com.zy.entity.fnc.Profit;
-import com.zy.entity.fnc.Transfer;
-import com.zy.model.Principal;
-import com.zy.model.query.AccountLogQueryModel;
-import com.zy.model.query.BankCardQueryModel;
-import com.zy.model.query.TransferQueryModel;
-import com.zy.service.*;
+import static com.sun.tools.doclets.formats.html.markup.HtmlStyle.title;
+import static com.zy.entity.fnc.CurrencyType.现金;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,18 +18,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.sun.tools.doclets.formats.html.markup.HtmlStyle.title;
-import static com.zy.entity.fnc.CurrencyType.现金;
+import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.component.ProfitComponent;
+import com.zy.component.TransferComponent;
+import com.zy.entity.fnc.Account;
+import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Transfer;
+import com.zy.model.Principal;
+import com.zy.model.query.BankCardQueryModel;
+import com.zy.model.query.ProfitQueryModel;
+import com.zy.model.query.TransferQueryModel;
+import com.zy.service.AccountLogService;
+import com.zy.service.AccountService;
+import com.zy.service.BankCardService;
+import com.zy.service.ProfitService;
+import com.zy.service.TransferService;
 
 @RequestMapping("/u/account")
 @Controller
 public class UcenterAcountController {
 	
 	Logger logger = LoggerFactory.getLogger(UcenterAcountController.class);
+	
+	private final int pageSize = 20;
 	
 	@Autowired
 	private AccountService accountService;
@@ -47,7 +52,7 @@ public class UcenterAcountController {
 	private AccountLogService accountLogService;
 
 	@Autowired
-	private ProfitService prfoitService;
+	private ProfitService profitService;
 
 	@Autowired
 	private TransferService transferService;
@@ -85,6 +90,7 @@ public class UcenterAcountController {
 		transferQueryModel.setPageNumber(0);
 		transferQueryModel.setTransferTypeEQ(type);
 		transferQueryModel.setCreatedTimeLT(timeLT);
+		transferQueryModel.setPageSize(pageSize);
 
 		Page<Transfer> page  = transferService.findPage(transferQueryModel);
 		
@@ -103,13 +109,14 @@ public class UcenterAcountController {
 		}
 		TransferQueryModel transferQueryModel = new TransferQueryModel();
 		transferQueryModel.setFromUserIdEQ(principal.getUserId());
-		transferQueryModel.setPageNumber(0);
 		transferQueryModel.setTransferTypeEQ(type);
 		transferQueryModel.setCreatedTimeLT(timeLT);
+		transferQueryModel.setPageSize(pageSize);
 		transferQueryModel.setPageNumber(pageNumber);
-		Page<AccountLog> page  = accountLogService.findPage(accountLogQueryModel);
+		
+		Page<Transfer> page  = transferService.findPage(transferQueryModel);
 		Map<String, Object> map = new HashMap<>();
-		map.put("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
+		map.put("page", PageBuilder.copyAndConvert(page, transferComponent::buildListVo));
 		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
 		model.addAttribute("type", type);
 		return ResultBuilder.result(map);
@@ -117,17 +124,19 @@ public class UcenterAcountController {
 	
 	@RequestMapping(value = "/in", method = RequestMethod.GET)
 	public String in(@RequestParam Profit.ProfitType type, Principal principal, Model model) {
-		String title = getInTitle(type);
-		AccountLogQueryModel accountLogQueryModel = new AccountLogQueryModel();
-		accountLogQueryModel.setTitleLK(title);
-		accountLogQueryModel.setInOutEQ(InOut.收入);
-		accountLogQueryModel.setCurrencyTypeEQ(现金);
-		accountLogQueryModel.setUserIdEQ(principal.getUserId());
-		accountLogQueryModel.setPageNumber(0);
-		Page<AccountLog> page  = accountLogService.findPage(accountLogQueryModel);
 		
-		model.addAttribute("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
-		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		Date timeLT = new Date();
+		
+		ProfitQueryModel profitQueryModel = new ProfitQueryModel();
+		profitQueryModel.setProfitTypeEQ(type);
+		profitQueryModel.setUserIdEQ(principal.getUserId());
+		profitQueryModel.setCreatedTimeLT(timeLT);
+		profitQueryModel.setPageNumber(0);
+		profitQueryModel.setPageSize(pageSize);
+		Page<Profit> page  = profitService.findPage(profitQueryModel);
+		
+		model.addAttribute("page", PageBuilder.copyAndConvert(page, profitComponent::buildListVo));
+		model.addAttribute("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
 		model.addAttribute("title", title);
 		model.addAttribute("type", type);
 		return "ucenter/account/accountIn";
@@ -135,20 +144,20 @@ public class UcenterAcountController {
 	
 	@RequestMapping(value = "/in", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> in(@RequestParam String type, Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
+	public Result<?> in(@RequestParam Profit.ProfitType type, Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
 		if (timeLT == null) {
 			timeLT = new Date();
 		}
-		AccountLogQueryModel accountLogQueryModel = new AccountLogQueryModel();
-		accountLogQueryModel.setTitleLK(getInTitle(type));
-		accountLogQueryModel.setInOutEQ(InOut.收入);
-		accountLogQueryModel.setCurrencyTypeEQ(现金);
-		accountLogQueryModel.setTransTimeLT(timeLT);
-		accountLogQueryModel.setUserIdEQ(principal.getUserId());
-		accountLogQueryModel.setPageNumber(pageNumber);
-		Page<AccountLog> page  = accountLogService.findPage(accountLogQueryModel);
+		ProfitQueryModel profitQueryModel = new ProfitQueryModel();
+		profitQueryModel.setProfitTypeEQ(type);
+		profitQueryModel.setUserIdEQ(principal.getUserId());
+		profitQueryModel.setCreatedTimeLT(timeLT);
+		profitQueryModel.setPageNumber(pageNumber);
+		profitQueryModel.setPageSize(pageSize);
+		
+		Page<Profit> page  = profitService.findPage(profitQueryModel);
 		Map<String, Object> map = new HashMap<>();
-		map.put("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
+		map.put("page", PageBuilder.copyAndConvert(page, profitComponent::buildListVo));
 		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
 		model.addAttribute("type", type);
 		return ResultBuilder.result(map);
