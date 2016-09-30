@@ -1,16 +1,5 @@
 package com.zy.component;
 
-import static com.zy.util.GcUtils.formatDate;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.zy.Config;
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.fnc.Payment;
@@ -28,11 +17,17 @@ import com.zy.service.ProfitService;
 import com.zy.service.TransferService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
-import com.zy.vo.OrderAdminFullVo;
-import com.zy.vo.OrderAdminVo;
-import com.zy.vo.OrderDetailVo;
-import com.zy.vo.OrderItemVo;
-import com.zy.vo.OrderListVo;
+import com.zy.vo.*;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.zy.util.GcUtils.formatDate;
 
 @Component
 public class OrderComponent {
@@ -113,6 +108,9 @@ public class OrderComponent {
 		orderAdminFullVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getUserId())));
 		orderAdminFullVo.setSeller(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getSellerId())));
 		orderAdminFullVo.setOrderStatusStyle(GcUtils.getOrderStatusStyle(order.getOrderStatus()));
+
+		orderAdminFullVo.setBuyerUserRankLabel(GcUtils.getUserRankLabel(order.getBuyerUserRank()));
+		orderAdminFullVo.setSellerUserRankLabel(GcUtils.getUserRankLabel(order.getSellerUserRank()));
 		
 		String offlineImage = order.getOfflineImage();
 		if (StringUtils.isNotBlank(offlineImage)) {

@@ -65,6 +65,24 @@
     var grid = new Datatable();
     var template = Handlebars.compile($('#confirmTmpl').html());
 
+    $('#dataTable').on('click', '.order-view', function() {
+      var id = $(this).data('id');
+      $.ajax({
+        url: '${ctx}/order/detail?id=' + id +　'&isPure=true',
+        dataType: 'html',
+        success: function(data) {
+          layer.open({
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['1080px', '720px'], //宽高
+            content: data
+          });
+        }
+      });
+
+
+    });
+
     $('#dataTable').on('click', '.payment-confirm', function () {
       var id = $(this).data('id');
       var data = {
@@ -212,8 +230,7 @@
             title: '操作',
             orderable: false,
             render: function (data, type, full) {
-              var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/order/detail?id=' + full.refId
-                + '"><i class="fa icon-control-forward "></i> 查看订单</a>';
+              var optionHtml = '<a class="btn btn-xs default blue-stripe order-view" href="javascript:;" data-id="' + full.id + '"><i class="fa icon-control-forward "></i> 查看订单</a>';
               <shiro:hasPermission name="payment:confirmPaid">
               if (full.payType == '银行汇款' && full.paymentStatus == '待确认' && full.offlineImages) {
                 optionHtml += '<a class="btn btn-xs default yellow-stripe payment-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 确认已支付</a>';

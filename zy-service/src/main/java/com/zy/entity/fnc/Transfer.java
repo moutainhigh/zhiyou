@@ -47,27 +47,27 @@ public class Transfer implements Serializable {
 
 	@Id
 	@Field(label = "id")
-	@View
+	@View(groups = VO_ADMIN)
 	private Long id;
 
 	@NotNull
 	@Field(label = "转账状态")
 	@Query(EQ)
-	@View
+	@View(groups = VO_ADMIN)
 	@View(name = "transferStatusStyle", type = String.class, groups = {VO_ADMIN})
 	private TransferStatus transferStatus;
 
 	@NotNull
 	@Query({EQ,IN})
 	@Field(label = "转出用户id")
-	@View
+	@View(groups = VO_ADMIN)
 	@AssociationView(name = "fromUser", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long fromUserId;
 
 	@NotNull
 	@Query({EQ,IN})
 	@Field(label = "转入用户id")
-	@View
+	@View(groups = VO_ADMIN)
 	@AssociationView(name = "toUser", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long toUserId;
 
@@ -75,56 +75,56 @@ public class Transfer implements Serializable {
 	@NotBlank
 	@Field(label = "转账单号")
 	@Query(EQ)
-	@View
+	@View(groups = VO_ADMIN)
 	private String sn;
 
 	@NotBlank
 	@Field(label = "转账标题")
-	@View
+	@View(groups = VO_ADMIN)
 	private String title;
 
 	@NotNull
 	@Field(label = "币种")
-	@View
+	@View(groups = VO_ADMIN)
 	private CurrencyType currencyType;
 
 	@NotNull
 	@DecimalMin("0.01")
 	@Field(label = "金额")
-	@View
+	@View(groups = VO_ADMIN)
 	@View(name = "amountLabel", type = String.class, groups = VO_ADMIN)
 	private BigDecimal amount;
 
 	@NotNull
 	@Query({GTE,LT})
 	@Field(label = "创建时间")
-	@View(name = "createdTimeLabel", type = String.class)
-	@View
+	@View(name = "createdTimeLabel", type = String.class, groups = VO_ADMIN)
+	@View(groups = VO_ADMIN)
 	private Date createdTime;
 
 	@Query({GTE,LT})
 	@Field(label = "转账时间")
-	@View(name = "transferredTimeLabel", type = String.class)
-	@View
+	@View(name = "transferredTimeLabel", type = String.class, groups = VO_ADMIN)
+	@View(groups = VO_ADMIN)
 	private Date transferredTime;
 
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "转账类型")
-	@View
+	@View(groups = VO_ADMIN)
 	@NotNull
 	private TransferType transferType;
 
 	@Field(label = "关联业务id", description = "可以不填写")
-	@View
+	@View(groups = VO_ADMIN)
 	@Query(Predicate.EQ)
 	private Long refId;
 
 	@Field(label = "转账备注")
-	@View
+	@View(groups = VO_ADMIN)
 	private String transferRemark;
 
 	@Field(label = "备注")
-	@View
+	@View(groups = VO_ADMIN)
 	private String remark;
 
 	@NotNull
