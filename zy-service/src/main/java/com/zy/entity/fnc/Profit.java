@@ -62,8 +62,8 @@ public class Profit implements Serializable {
 	@NotNull
 	@Field(label = "收益单状态")
 	@Query(EQ)
-	@View(groups = VO_ADMIN)
-	@View(name = "profitStatusStyle", type = String.class, groups = {VO_LIST, VO_ADMIN})
+	@View(groups = {VO_LIST})
+	@View(name = "profitStatusStyle", type = String.class, groups = {VO_ADMIN})
 	private ProfitStatus profitStatus;
 
 	@NotNull

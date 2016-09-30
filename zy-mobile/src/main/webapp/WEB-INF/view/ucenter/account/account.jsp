@@ -44,19 +44,19 @@
       <div class="list-title">我的收入</div>
       <div class="list-item p-0">
         <div class="list-text account-link">
-          <a class="bd-r bd-b" href="${ctx}/u/account/in?type=0">
+          <a class="bd-r bd-b" href="${ctx}/u/account/in?type=1">
            <div><i class="icon icon-account-order"></i></div>
            <div class="fs-14 font-333">订单收款</div>
           </a>
-          <a class="bd-r bd-b" href="${ctx}/u/account/in?type=1">
+          <a class="bd-r bd-b" href="${ctx}/u/account/in?type=2">
            <div><i class="icon icon-account-data"></i></div>
            <div class="fs-14 font-333">数据奖</div>
           </a>
-          <a class="bd-b" href="${ctx}/u/account/in?type=2">
+          <a class="bd-b" href="${ctx}/u/account/in?type=3">
            <div><i class="icon icon-account-sale"></i></div>
            <div class="fs-14 font-333">销量奖</div>
           </a>
-          <a class="bd-r" href="${ctx}/u/account/in?type=3">
+          <a class="bd-r" href="${ctx}/u/account/in?type=4">
            <div><i class="icon icon-account-teping"></i></div>
            <div class="fs-14 font-333">特级平级奖</div>
           </a>

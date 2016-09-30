@@ -55,8 +55,8 @@ public class Transfer implements Serializable {
 	@NotNull
 	@Field(label = "转账状态")
 	@Query(EQ)
-	@View(groups = VO_ADMIN)
-	@View(name = "transferStatusStyle", type = String.class, groups = {VO_LIST, VO_ADMIN})
+	@View(groups = {VO_LIST})
+	@View(name = "transferStatusStyle", type = String.class, groups = {VO_ADMIN})
 	private TransferStatus transferStatus;
 
 	@NotNull
