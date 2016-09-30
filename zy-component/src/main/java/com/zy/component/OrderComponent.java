@@ -115,10 +115,10 @@ public class OrderComponent {
 			orderAdminFullVo.setOfflineImages(images);
 		}
 		
-		Boolean useLogistics = order.getUseLogistics();
-		if (useLogistics == null) {
+		Boolean isUseLogistics = order.getIsUseLogistics();
+		if (isUseLogistics == null) {
 			orderAdminFullVo.setUseLogisticsLabel(null);
-		} else if (useLogistics) {
+		} else if (isUseLogistics) {
 			orderAdminFullVo.setUseLogisticsLabel("物流发货");
 		} else {
 			orderAdminFullVo.setUseLogisticsLabel("面对面发货");
@@ -161,10 +161,10 @@ public class OrderComponent {
 			orderAdminVo.setOfflineImages(images);
 		}
 
-		Boolean useLogistics = order.getUseLogistics();
-		if (useLogistics == null) {
+		Boolean isUseLogistics = order.getIsUseLogistics();
+		if (isUseLogistics == null) {
 			orderAdminVo.setUseLogisticsLabel(null);
-		} else if (useLogistics) {
+		} else if (isUseLogistics) {
 			orderAdminVo.setUseLogisticsLabel("物流发货");
 		} else {
 			orderAdminVo.setUseLogisticsLabel("面对面发货");

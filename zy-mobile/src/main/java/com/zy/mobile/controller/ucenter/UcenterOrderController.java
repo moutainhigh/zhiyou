@@ -215,7 +215,7 @@ public class UcenterOrderController {
 			throw new UnauthorizedException("权限不足");
 		}
 		try {
-			orderService.modifyIsPlatformDeliver(id, true);
+//			orderService.modifyIsPlatformDeliver(id, true);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("已成功转给公司发货"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));

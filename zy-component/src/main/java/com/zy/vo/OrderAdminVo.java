@@ -3,7 +3,7 @@ package com.zy.vo;
 import io.gd.generator.annotation.Field;
 import com.zy.model.ImageVo;
 import com.zy.entity.mal.Order.OrderStatus;
-import com.zy.entity.mal.Order.LogisticsFeePayType;
+import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.fnc.CurrencyType;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +24,12 @@ public class OrderAdminVo implements Serializable {
 	private String sn;
 	@Field(label = "用户id")
 	private Long userId;
+	@Field(label = "买家用户等级")
+	private UserRank buyerUserRank;
 	@Field(label = "卖家id")
 	private Long sellerId;
+	@Field(label = "卖家用户等级")
+	private UserRank sellerUserRank;
 	@Field(label = "是否支付给平台")
 	private Boolean isPayToPlatform;
 	@Field(label = "标题")
@@ -52,14 +56,16 @@ public class OrderAdminVo implements Serializable {
 	private Boolean isProfitSettledUp;
 	@Field(label = "是否已结算")
 	private Boolean isSettledUp;
-	@Field(label = "是否物流发货")
-	private Boolean useLogistics;
-	@Field(label = "物流费支付类型")
-	private LogisticsFeePayType logisticsFeePayType;
-	@Field(label = "是否平台发货")
-	private Boolean isPlatformDeliver;
+	@Field(label = "是否已拷贝")
+	private Boolean isCopied;
+	@Field(label = "拷贝时间")
+	private Date copiedTime;
+	@Field(label = "对应订单id")
+	private Long refId;
 	@Field(label = "发货时间")
 	private Date deliveredTime;
+	@Field(label = "是否物流发货")
+	private Boolean isUseLogistics;
 	@Field(label = "物流公司名")
 	private String logisticsName;
 	@Field(label = "物流单号")
@@ -96,8 +102,12 @@ public class OrderAdminVo implements Serializable {
 	private Long quantity;
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
+	@Field(label = "买家用户等级")
+	private String buyerUserRankLabel;
 	@Field(label = "卖家id")
 	private UserAdminSimpleVo seller;
+	@Field(label = "卖家用户等级")
+	private String sellerUserRankLabel;
 	@Field(label = "下单时间")
 	private String createdTimeLabel;
 	@Field(label = "过期时间")
@@ -110,10 +120,12 @@ public class OrderAdminVo implements Serializable {
 	private String orderStatusStyle;
 	@Field(label = "应付总金额")
 	private String amountLabel;
-	@Field(label = "是否物流发货")
-	private String useLogisticsLabel;
+	@Field(label = "拷贝时间")
+	private String copiedTimeLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
+	@Field(label = "是否物流发货")
+	private String useLogisticsLabel;
 	@Field(label = "银行汇款截图")
 	private List<ImageVo> offlineImages = new ArrayList<>();
 
