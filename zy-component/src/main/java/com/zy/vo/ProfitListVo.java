@@ -1,6 +1,7 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
+import com.zy.entity.fnc.Profit.ProfitStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,14 +13,14 @@ public class ProfitListVo implements Serializable {
 	/* 原生 */
 	@Field(label = "id")
 	private Long id;
+	@Field(label = "收益单状态")
+	private ProfitStatus profitStatus;
 	@Field(label = "收益单号")
 	private String sn;
 	@Field(label = "收益标题")
 	private String title;
 
 	/* 扩展 */
-	@Field(label = "收益单状态")
-	private String profitStatusStyle;
 	@Field(label = "金额")
 	private String amountLabel;
 	@Field(label = "创建时间")
