@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserService {
 	public void unfreeze(@NotNull Long id, @NotNull Long operatorId) {
 
 		User user = findAndValidate(id);
-		user.setIsFrozen(true);
+		user.setIsFrozen(false);
 		userMapper.update(user);
 		usrComponent.recordUserLog(id, operatorId, "解冻", null);
 	}
