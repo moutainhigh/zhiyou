@@ -1,6 +1,5 @@
 package com.zy.mobile.controller.ucenter;
 
-import static com.sun.tools.doclets.formats.html.markup.HtmlStyle.title;
 import static com.zy.entity.fnc.CurrencyType.现金;
 
 import java.util.Date;
@@ -31,7 +30,6 @@ import com.zy.model.Principal;
 import com.zy.model.query.BankCardQueryModel;
 import com.zy.model.query.ProfitQueryModel;
 import com.zy.model.query.TransferQueryModel;
-import com.zy.service.AccountLogService;
 import com.zy.service.AccountService;
 import com.zy.service.BankCardService;
 import com.zy.service.ProfitService;
@@ -48,9 +46,6 @@ public class UcenterAcountController {
 	@Autowired
 	private AccountService accountService;
 	
-	@Autowired
-	private AccountLogService accountLogService;
-
 	@Autowired
 	private ProfitService profitService;
 
@@ -96,7 +91,6 @@ public class UcenterAcountController {
 		
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, transferComponent::buildListVo));
 		model.addAttribute("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
-		model.addAttribute("title", title);
 		model.addAttribute("type", type);
 		return "ucenter/account/accountOut";
 	}
@@ -137,7 +131,6 @@ public class UcenterAcountController {
 		
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, profitComponent::buildListVo));
 		model.addAttribute("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
-		model.addAttribute("title", title);
 		model.addAttribute("type", type);
 		return "ucenter/account/accountIn";
 	}
