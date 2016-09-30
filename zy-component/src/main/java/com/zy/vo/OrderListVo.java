@@ -38,8 +38,6 @@ public class OrderListVo implements Serializable {
 	private String expiredTimeLabel;
 	@Field(label = "应付总金额")
 	private String amountLabel;
-	@Field(label = "发货时间")
-	private String deliveredTimeLabel;
 	@Field(label = "orderItems")
 	private List<OrderItemVo> orderItems = new ArrayList<>();
 

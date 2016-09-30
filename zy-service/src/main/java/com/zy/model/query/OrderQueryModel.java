@@ -49,7 +49,7 @@ public class OrderQueryModel implements Serializable {
 
 	private Boolean isSettledUpEQ;
 
-	private Boolean isPlatformDeliverEQ;
+	private Boolean isCopiedEQ;
 
 	private String logisticsNameLK;
 
@@ -112,13 +112,12 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("currencyType");
 		fieldNames.add("logisticsSn");
 		fieldNames.add("discountFee");
-		fieldNames.add("isPlatformDeliver");
+		fieldNames.add("isUseLogistics");
 		fieldNames.add("orderStatus");
 		fieldNames.add("remark");
 		fieldNames.add("receiverProvince");
 		fieldNames.add("title");
 		fieldNames.add("receiverCity");
-		fieldNames.add("logisticsFeePayType");
 		fieldNames.add("isSettledUp");
 		fieldNames.add("sellerId");
 		fieldNames.add("receiverPhone");
@@ -131,8 +130,11 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("id");
 		fieldNames.add("sn");
 		fieldNames.add("isPayToPlatform");
+		fieldNames.add("sellerUserRank");
 		fieldNames.add("receiverAreaId");
 		fieldNames.add("amount");
+		fieldNames.add("isCopied");
+		fieldNames.add("isBuyerPayLogisticsFee");
 		fieldNames.add("isProfitSettledUp");
 		fieldNames.add("paidTime");
 		fieldNames.add("userId");
@@ -141,13 +143,15 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("receiverRealname");
 		fieldNames.add("logisticsName");
 		fieldNames.add("receiverAddress");
+		fieldNames.add("buyerUserRank");
+		fieldNames.add("copiedTime");
 		fieldNames.add("sellerMemo");
+		fieldNames.add("refId");
 		fieldNames.add("deliveredTime");
 		fieldNames.add("logisticsFee");
 		fieldNames.add("offlineMemo");
 		fieldNames.add("refund");
 		fieldNames.add("buyerMemo");
-		fieldNames.add("useLogistics");
 	}
 
 }

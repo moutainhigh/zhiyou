@@ -1,6 +1,5 @@
 package com.zy.admin.controller;
 
-import static com.zy.model.Constants.CACHE_NAME_USER_INFO_COUNT;
 import static com.zy.model.Constants.CACHE_NAME_DEPOSIT_COUNT;
 import static com.zy.model.Constants.CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT;
 import static com.zy.model.Constants.CACHE_NAME_PAYMENT_COUNT;
@@ -8,6 +7,7 @@ import static com.zy.model.Constants.CACHE_NAME_REPORT_COUNT;
 import static com.zy.model.Constants.CACHE_NAME_REPORT_PRE_COUNT;
 import static com.zy.model.Constants.CACHE_NAME_STATISTICS;
 import static com.zy.model.Constants.CACHE_NAME_USER_BANK_INFO_COUNT;
+import static com.zy.model.Constants.CACHE_NAME_USER_INFO_COUNT;
 import static com.zy.model.Constants.CACHE_NAME_WITHDRAW_COUNT;
 
 import java.util.ArrayList;
@@ -31,9 +31,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zy.Config;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.support.cache.CacheSupport;
-import com.zy.component.CacheComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.fnc.Deposit.DepositStatus;
 import com.zy.entity.fnc.PayType;
@@ -94,8 +94,8 @@ public class IndexController {
 	private CacheSupport cacheSupport;
 
 	@Autowired
-	private CacheComponent cacheComponent;
-
+	private Config config;
+	
 	@Autowired
 	private UserComponent userComponent;
 
@@ -161,7 +161,8 @@ public class IndexController {
 			
 			Long orderPlatformDeliverCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT);
 			if(orderPlatformDeliverCount == null) {
-				orderPlatformDeliverCount = orderService.count(OrderQueryModel.builder().isPlatformDeliverEQ(true).orderStatusEQ(OrderStatus.已支付).build());
+				Long sysUserId = config.getSysUserId();
+				orderPlatformDeliverCount = orderService.count(OrderQueryModel.builder().sellerIdEQ(sysUserId).orderStatusEQ(OrderStatus.已支付).build());
 				
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT, orderPlatformDeliverCount, DEFAULT_EXPIRE);
 			}

@@ -4,11 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -32,7 +30,7 @@ public class OrderCreateDto implements Serializable {
 	@Length(max = 100)
 	private String buyerMemo;
 
-	private Long parentId; // 若用户下单parentId为空则必填
+	private Long parentId; // V0用户下单必填
 	
 	@NotNull
 	private Boolean isPayToPlatform;
