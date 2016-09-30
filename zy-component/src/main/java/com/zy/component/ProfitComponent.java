@@ -34,6 +34,13 @@ public class ProfitComponent {
 	}
 
 	public ProfitListVo buildListVo(Profit profit) {
+		ProfitListVo profitListVo = new ProfitListVo();
+		BeanUtils.copyProperties(profit, profitListVo);
+		
+		profitListVo.setProfitStatusStyle(GcUtils.getProfitStatusStyle(profit.getProfitStatus()));
+		profitListVo.setAmountLabel(GcUtils.formatCurreny(profit.getAmount()));
+		profitListVo.setCreatedTimeLabel(GcUtils.formatDate(profit.getCreatedTime(), TIME_PATTERN));
+		profitListVo.setGrantedTimeLabel(GcUtils.formatDate(profit.getGrantedTime(), TIME_PATTERN));
 		return null;
 	}
 
