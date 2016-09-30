@@ -6,8 +6,8 @@ import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Transfer;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
 import com.zy.model.ImageVo;
-
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -19,13 +19,11 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -66,11 +64,6 @@ public class Order implements Serializable {
 		待支付, 待确认, 已支付, 已发货, 已完成, 已退款, 已取消
 	}
 
-	@Type(label = "物流费支付方式")
-	public enum LogisticsFeePayType {
-		无, 买家付, 卖家付
-	}
-
 	@Id
 	@Field(label = "id")
 	@View
@@ -91,12 +84,24 @@ public class Order implements Serializable {
 	private Long userId;
 
 	@NotNull
+	@Field(label = "买家用户等级")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(name = "buyerUserRankLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private UserRank buyerUserRank;
+
+	@NotNull
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "卖家id")
 	@View
 	@AssociationView(name = "seller", groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL}, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long sellerId;
-	
+
+	@NotNull
+	@Field(label = "卖家用户等级")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(name = "sellerUserRankLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private UserRank sellerUserRank;
+
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})
 	@NotNull
 	@Field(label = "是否支付给平台")
@@ -193,25 +198,30 @@ public class Order implements Serializable {
 	@Query(Predicate.EQ)
 	private Boolean isSettledUp;
 
-	@Field(label = "是否物流发货")
-	@View(name = "useLogisticsLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
-	@View(groups = {VO_DETAIL, VO_ADMIN})
-	private Boolean useLogistics;
-
-	@Field(label = "物流费支付类型")
-	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
-	private LogisticsFeePayType logisticsFeePayType;
-
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	@NotNull
-	@Field(label = "是否平台发货")
+	@Field(label = "是否已拷贝")
 	@Query(Predicate.EQ)
-	private Boolean isPlatformDeliver;
+	private Boolean isCopied;
 
-	@View(name = "deliveredTimeLabel", type = String.class)
+	@View(name = "copiedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@Field(label = "拷贝时间")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private Date copiedTime;
+
+	@Field(label = "对应订单id")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private Long refId;
+
+	@View(name = "deliveredTimeLabel", type = String.class, groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	@Field(label = "发货时间")
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	private Date deliveredTime;
+
+	@Field(label = "是否物流发货")
+	@View(name = "useLogisticsLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(groups = {VO_DETAIL, VO_ADMIN})
+	private Boolean isUseLogistics;
 
 	@Query(Predicate.LK)
 	@Field(label = "物流公司名")
@@ -229,6 +239,10 @@ public class Order implements Serializable {
 	@Field(label = "物流费")
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	private BigDecimal logisticsFee;
+
+	@Field(label = "是否买家支付邮费")
+	@View(groups = {VO_ADMIN_FULL})
+	private Boolean isBuyerPayLogisticsFee;
 
 	@NotNull
 	@Field(label = "收件人区域")
