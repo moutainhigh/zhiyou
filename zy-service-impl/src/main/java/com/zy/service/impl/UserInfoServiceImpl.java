@@ -1,20 +1,5 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.sys.Area;
@@ -25,15 +10,22 @@ import com.zy.entity.usr.Tag;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
 import com.zy.extend.Producer;
-import com.zy.mapper.AreaMapper;
-import com.zy.mapper.JobMapper;
-import com.zy.mapper.TagMapper;
-import com.zy.mapper.UserInfoMapper;
-import com.zy.mapper.UserMapper;
+import com.zy.mapper.*;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.query.UserInfoQueryModel;
 import com.zy.service.UserInfoService;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.*;
 
 
 @Service
@@ -77,6 +69,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         page.setData(data);
         page.setTotal(total);
         return page;
+    }
+
+    @Override
+    public List<UserInfo> findAll(@NotNull UserInfoQueryModel userInfoQueryModel) {
+        return userInfoMapper.findAll(userInfoQueryModel);
     }
 
     @Override
