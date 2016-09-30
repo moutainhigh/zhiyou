@@ -62,7 +62,8 @@ public class Report implements Serializable {
 	@Field(label = "用户id")
 	@Query({Predicate.EQ, Predicate.IN})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
-	@View(groups = VO_EXPORT, name = "nickname", field = @Field(label = "昵称", order = 15))
+	@View(groups = VO_EXPORT, type = String.class,  name = "userNickname", field = @Field(label = "昵称", order = 15))
+	@View(groups = VO_EXPORT, type = String.class,  name = "userPhone", field = @Field(label = "手机", order = 15))
 	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
@@ -70,7 +71,7 @@ public class Report implements Serializable {
 	@Field(label = "姓名")
 	@Query({Predicate.EQ, Predicate.IN})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
-	@View(groups = VO_EXPORT, field = @Field(label = "客户姓名", order = 20))
+	@View(groups = VO_EXPORT, type = String.class,  field = @Field(label = "客户姓名", order = 20))
 	private String realname;
 
 	@NotNull
@@ -92,20 +93,24 @@ public class Report implements Serializable {
 	@Query(Predicate.EQ)
 	@Field(label = "手机号")
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
-	@View(groups = VO_EXPORT, field = @Field(label = "手机号", order = 50))
+	@View(groups = VO_EXPORT, type = String.class,  field = @Field(label = "手机号", order = 50))
 	private String phone;
 
 	//@NotNull
 	@Field(label = "职业")
 	@View(name = "jobName", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(name = "jobName", type = String.class, groups = VO_EXPORT, field = @Field(label = "职业", order = 55))
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Long jobId;
 
 	//@NotNull
 	@Field(label = "所在地")
-	@View(name = "province", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN, VO_EXPORT})
-	@View(name = "city", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN, VO_EXPORT})
-	@View(name = "district", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN, VO_EXPORT})
+	@View(name = "province", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(name = "city", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(name = "district", type = String.class, groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(name = "province", type = String.class, groups = VO_EXPORT, field = @Field(label = "所在省", order = 56))
+	@View(name = "city", type = String.class, groups = VO_EXPORT, field = @Field(label = "所在市", order = 57))
+	@View(name = "district", type = String.class, groups = VO_EXPORT, field = @Field(label = "所在区", order = 58))
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Long areaId;
 
@@ -135,55 +140,63 @@ public class Report implements Serializable {
 	@Field(label = "图片")
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	@Column(length = 2000)
-	@CollectionView(name= "images", type = ArrayList.class, elementType = String.class)
-	@CollectionView(name= "imageThumbnails", type = ArrayList.class, elementType = String.class)
-	@CollectionView(name= "imageBigs", type = ArrayList.class, elementType = String.class)
+	@CollectionView(name= "images", groups = {VO_DETAIL, VO_ADMIN}, type = ArrayList.class, elementType = String.class)
+	@CollectionView(name= "imageThumbnails", groups = {VO_DETAIL, VO_ADMIN}, type = ArrayList.class, elementType = String.class)
+	@CollectionView(name= "imageBigs", groups = {VO_DETAIL, VO_ADMIN}, type = ArrayList.class, elementType = String.class)
 	private String image;
 
 	@Field(label = "检测次数")
 	@NotNull
 	@Min(1)
 	@Query(Predicate.EQ)
-	@View(groups = {VO_DETAIL, VO_ADMIN, VO_EXPORT})
+	@View(groups = {VO_DETAIL, VO_ADMIN})
+	@View(groups = VO_EXPORT, field = @Field(label = "检测次数", order = 59))
 	private Integer times;
 
 	@NotNull
 	@Field(label = "申请时间")
 	@View(groups = {VO_DETAIL, VO_ADMIN})
-	@View(name = "appliedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST, VO_EXPORT})
+	@View(name = "appliedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST})
+	@View(name = "appliedTimeLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "申请时间", order = 75))
 	private Date appliedTime;
 
 	@NotNull
 	@Query({Predicate.GTE, Predicate.LT})
 	@Field(label = "创建时间")
 	@View(groups = {VO_ADMIN})
-	@View(name = "createdTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST, VO_EXPORT})
+	@View(name = "createdTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST})
+	@View(name = "createdTimeLabel", type = String.class,  groups = VO_EXPORT, field = @Field(label = "创建时间", order = 76))
 	private Date createdTime;
 
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "初审状态")
-	@View(groups = {VO_DETAIL, VO_ADMIN, VO_EXPORT})
+	@View(groups = {VO_DETAIL, VO_ADMIN})
+	@View(groups = VO_EXPORT, field = @Field(label = "初审状态", order = 77))
 	private ConfirmStatus preConfirmStatus;
 
 	@Field(label = "初审通过时间")
-	@View(groups = {VO_ADMIN, VO_EXPORT})
+	@View(groups = {VO_ADMIN})
 	@View(name = "preConfirmedTimeLabel", type = String.class, groups = {VO_ADMIN})
+	@View(name = "preConfirmedTimeLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "初审通过时间", order = 78))
 	private Date preConfirmedTime;
 
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "审核状态")
-	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN, VO_EXPORT})
+	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(groups = VO_EXPORT, field = @Field(label = "审核状态", order = 79))
 	private ConfirmStatus confirmStatus;
 
 	@Field(label = "审核备注")
-	@View(groups = {VO_DETAIL, VO_ADMIN, VO_EXPORT})
+	@View(groups = {VO_DETAIL, VO_ADMIN})
+	@View(groups = VO_EXPORT, field = @Field(label = "审核备注", order = 80))
 	private String confirmRemark;
 
 	@Field(label = "审核通过时间")
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_EXPORT})
 	@View(name = "confirmedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL})
+	@View(name = "confirmedTimeLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "初审通过时间", order = 90))
 	private Date confirmedTime;
 	
 	@Field(label = "是否已结算")

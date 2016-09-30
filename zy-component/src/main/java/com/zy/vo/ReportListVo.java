@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -45,11 +43,5 @@ public class ReportListVo implements Serializable {
 	private String appliedTimeLabel;
 	@Field(label = "创建时间")
 	private String createdTimeLabel;
-	@Field(label = "图片")
-	private List<String> images = new ArrayList<>();
-	@Field(label = "图片")
-	private List<String> imageThumbnails = new ArrayList<>();
-	@Field(label = "图片")
-	private List<String> imageBigs = new ArrayList<>();
 
 }

@@ -25,8 +25,8 @@
 </style>
 <script type="text/javascript">
   $(function() {
-    if (!$('.list-more').hasClass('disabled')) {
-      $('.list-more').click(loadMore);
+    if (!$('.page-more').hasClass('disabled')) {
+      $('.page-more').click(loadMore);
     }
   });
   
@@ -57,7 +57,7 @@
           }
         }
         if (!page.data.length || page.data.length < page.pageSize) {
-          $('.list-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
+          $('.page-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
         }
       }
     });
@@ -66,7 +66,7 @@
   function buildRow(row){
     var rowTpl = document.getElementById('rowTpl').innerHTML;
     laytpl(rowTpl).render(row, function(html) {
-      $(html).insertBefore($('.list-more'));
+      $('.list-group').append(html);
     });
   }
 </script>
@@ -98,13 +98,14 @@
         </div>
       </a>
       </c:forEach>
-      <c:if test="${page.total > page.pageSize}">
-      <a class="list-item list-more" href="javascript:;"><span>点击加载更多</span></a>
-      </c:if>
-      <c:if test="${page.total <= page.pageSize}">
-      <a class="list-item list-more disabled" href="javascript:;"><span>没有更多数据了</span></a>
-      </c:if>
     </div>
+    
+    <c:if test="${page.total > page.pageSize}">
+      <div class="page-more"><span>点击加载更多</span></div>
+    </c:if>
+    <c:if test="${page.total <= page.pageSize}">
+      <div class="page-more disabled"><span>没有更多数据了</span></div>
+    </c:if>
   </article>
 
 </body>

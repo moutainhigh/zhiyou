@@ -196,9 +196,13 @@
 		</where>
 	</select>
 
-	<select id="findAllAndSum" resultMap="baseResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
-		select p.*, o.sum_order_item_quantity from fnc_profit p 
-		left join (select order_id, sum(quantity) as sum_order_item_quantity from mal_order_item ot, fnc_profit fp  where ot.order_id = fp.ref_id  group by order_id) o 
+	<resultMap id="sumResultMap" type="com.zy.model.dto.ProfitDto" extends="baseResultMap">
+		<result column="order_item_quantity" property="orderItemQuantity" />
+	</resultMap>
+
+	<select id="findAllAndSum" resultMap="sumResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
+		select p.*, o.order_item_quantity from fnc_profit p 
+		left join (select order_id, quantity as order_item_quantity from mal_order_item ot, fnc_profit fp  where ot.order_id = fp.ref_id  group by order_id) o 
 		on p.ref_id = o.order_id
 		<where>
 				<if test="snEQ != null">

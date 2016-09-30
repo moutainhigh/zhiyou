@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Date;
-import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -30,37 +28,37 @@ public class ReportExportVo implements Serializable {
 	private ReportResult reportResult;
 	@Field(label = "检测心得", order = 70)
 	private String text;
-	@Field(label = "检测次数")
+	@Field(label = "检测次数", order = 59)
 	private Integer times;
-	@Field(label = "初审状态")
+	@Field(label = "初审状态", order = 77)
 	private ConfirmStatus preConfirmStatus;
-	@Field(label = "初审通过时间")
-	private Date preConfirmedTime;
-	@Field(label = "审核状态")
+	@Field(label = "审核状态", order = 79)
 	private ConfirmStatus confirmStatus;
-	@Field(label = "审核备注")
+	@Field(label = "审核备注", order = 80)
 	private String confirmRemark;
 	@Field(label = "审核通过时间")
 	private Date confirmedTime;
 
 	/* 扩展 */
 	@Field(label = "昵称", order = 15)
-	private Long nickname;
-	@Field(label = "所在地")
+	private String userNickname;
+	@Field(label = "手机", order = 15)
+	private String userPhone;
+	@Field(label = "职业", order = 55)
+	private String jobName;
+	@Field(label = "所在省", order = 56)
 	private String province;
-	@Field(label = "所在地")
+	@Field(label = "所在市", order = 57)
 	private String city;
-	@Field(label = "所在地")
+	@Field(label = "所在区", order = 58)
 	private String district;
-	@Field(label = "申请时间")
+	@Field(label = "申请时间", order = 75)
 	private String appliedTimeLabel;
-	@Field(label = "创建时间")
+	@Field(label = "创建时间", order = 76)
 	private String createdTimeLabel;
-	@Field(label = "图片")
-	private List<String> images = new ArrayList<>();
-	@Field(label = "图片")
-	private List<String> imageThumbnails = new ArrayList<>();
-	@Field(label = "图片")
-	private List<String> imageBigs = new ArrayList<>();
+	@Field(label = "初审通过时间", order = 78)
+	private String preConfirmedTimeLabel;
+	@Field(label = "初审通过时间", order = 90)
+	private String confirmedTimeLabel;
 
 }

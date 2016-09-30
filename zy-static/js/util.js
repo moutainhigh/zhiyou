@@ -74,68 +74,6 @@ function arrayToJson(o) {
   return o.toString();
 }
 
-// 移除数组中索引为dx的元素
-function arrayRemove(array, dx) {
-  var newArr = [];
-  if (isNaN(dx) || dx > array.length) {
-    return array;
-  }
-  for (var i = 0, n = 0; i < array.length; i++) {
-    if (i != dx) {
-      newArr[n++] = array[i];
-    }
-  }
-  return newArr;
-}
-
-// 判断数组是否包含另一个数组中所有元素
-function arrayContains(array1, array2) {
-  if (!(array1 instanceof Array) || !(array2 instanceof Array)) {
-    return false;
-  }
-  if (array1.length < array2.length) {
-    return false;
-  }
-  for ( var i in array2) {
-    if ($.inArray(array2[i], array1) == -1) {
-      return false;
-    }
-  }
-  return true;
-}
-
-// 判断两个数组中的所有元素是否相同
-function arrayEqual(array1, array2) {
-  if (!(array1 instanceof Array) || !(array2 instanceof Array)) {
-    return false;
-  }
-  if (array1.length != array2.length) {
-    return false;
-  }
-  for ( var i in array2) {
-    if ($.inArray(array2[i], array1) == -1) {
-      return false;
-    }
-  }
-  return true;
-}
-
-/**
- * 去除数组中重复项
- */
-function uniqueArray(arr) {
-  var o = {}, newArr = [];
-  for (var i = 0; i < arr.length; i++) {
-    if (typeof (o[arr[i]]) == 'undefined') {
-      o[tharris[i]] = '';
-    }
-  }
-  for ( var j in o) {
-    newArr.push(j);
-  }
-  return newArr;
-};
-
 // 添加收藏夹
 function addFavorite(url, title) {
   try {
@@ -158,6 +96,17 @@ function htmlEscape(htmlString) {
   htmlString = htmlString.replace(/"/g, '&quot;');
   htmlString = htmlString.replace(/\|/g, '&brvbar;');
   return htmlString;
+}
+
+//获取参数
+function getParameter(name) {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  var r = window.location.search.substr(1).match(reg);
+  if (r != null) {
+    return decodeURIComponent(r[2]);
+  } else {
+    return null;
+  }
 }
 
 /**
@@ -198,18 +147,7 @@ function clearCookie(cookieName) {
   this.setCookie(cookieName, 'null', yesterday);
 }
 
-// 获取参数
-function getParameter(name) {
-  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-  var r = window.location.search.substr(1).match(reg);
-  if (r != null) {
-    return decodeURIComponent(r[2]);
-  } else {
-    return null;
-  }
-}
-
-// 浮点数加法运算
+//浮点数加法运算
 function floatAdd(arg1, arg2) {
   var r1, r2, m;
   try {
@@ -295,68 +233,3 @@ function formatCurrency(price, withSign, withUnit) {
   price = setScale(price, sys.currencyScale, sys.roundType);
   return (withSign ? sys.currencySign : '') + price + (withUnit ? sys.currencyUnit : '');
 }
-
-/**
- * 增加formatString功能 使用方法：formatString('字符串{0}字符串{1}字符串','第一个变量','第二个变量');
- * 
- * @returns 格式化后的字符串
- */
-function formatString(str) {
-  for (var i = 0; i < arguments.length - 1; i++) {
-    str = str.replace("{" + i + "}", arguments[i + 1]);
-  }
-  return str;
-}
-
-/**
- * 根据长度截取字符串，超长部分追加suffix
- * 
- * @param str
- *          对象字符串
- * @param len
- *          目标字节长度
- * @param suffix
- *          追加后缀
- * @return 处理结果字符串
- */
-function subString(str, len, suffix) {
-  // length属性读出来的汉字长度为1
-  if (!suffix) {
-    suffix = '';
-  }
-  if (str == null) {
-    return '';
-  }
-  if (str.length * 2 <= len) {
-    return str;
-  }
-  var strlen = 0;
-  var s = "";
-  for (var i = 0; i < str.length; i++) {
-    strlen = strlen + (str.charCodeAt(i) > 128 ? 2 : 1);
-    if (strlen <= len - suffix.length) {
-      s = s + str.charAt(i);
-    } else {
-      s = s + suffix;
-      break;
-    }
-  }
-  return s;
-}
-/**
- * 接收一个以逗号分割的字符串，返回List，list里每一项都是一个字符串
- * 
- * @returns list
- */
-function stringToList(value) {
-  if (value != undefined && value != '') {
-    var values = [];
-    var t = value.split(',');
-    for (var i = 0; i < t.length; i++) {
-      values.push('' + t[i]);/* 避免他将ID当成数字 */
-    }
-    return values;
-  } else {
-    return [];
-  }
-};

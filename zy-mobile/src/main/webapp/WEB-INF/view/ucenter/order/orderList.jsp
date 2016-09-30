@@ -42,7 +42,7 @@
   
   <article class="order-list">
     <c:if test="${empty page.data}">
-    <div class="empty-tip">
+    <div class="page-empty">
       <i class="fa fa-file-o"></i>
       <span>空空如也!</span>
     </div>

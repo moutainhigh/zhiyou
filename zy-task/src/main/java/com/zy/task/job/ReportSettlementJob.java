@@ -17,9 +17,9 @@ import static com.zy.model.query.ReportQueryModel.builder;
 /**
  * Created by freeman on 16/9/8.
  */
-public class ReportStatementJob implements Job {
+public class ReportSettlementJob implements Job {
 
-	private Logger logger = LoggerFactory.getLogger(ReportStatementJob.class);
+	private Logger logger = LoggerFactory.getLogger(ReportSettlementJob.class);
 
 	@Autowired
 	private ReportService reportService;

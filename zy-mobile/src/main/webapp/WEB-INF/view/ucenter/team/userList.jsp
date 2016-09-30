@@ -27,7 +27,7 @@
 
   <article>
     <c:if test="${empty list}">
-      <div class="empty-tip">
+      <div class="page-empty">
         <i class="fa fa-user"></i>
         <span>您还没有团队成员</span>
       </div>

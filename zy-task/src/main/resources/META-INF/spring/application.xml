@@ -59,8 +59,22 @@
 						<value>0 0/1 * * * ?</value>
 					</property>
 				</bean>
+				<!--订单取消-->
+				<bean id="orderCancelJobTrigger"
+				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id="orderStatementJobDetail"
+						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.OrderCancelJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/1 * * * ?</value>
+					</property>
+				</bean>
 				<!--订单结算job-->
-				<bean id="orderStatementJobTrigger"
+				<bean id="orderSettlementJobTrigger"
 				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
 						<bean id="orderStatementJobDetail"
@@ -101,6 +115,7 @@
 						<value>0 0/1 * * * ?</value>
 					</property>
 				</bean>
+
 				<!--report 结算-->
 				<bean id="reportStatementJobTrigger"
 				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
@@ -108,7 +123,7 @@
 						<bean id="reportStatementJobDetail"
 						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
-							<property name="jobClass" value="com.zy.task.job.ReportStatementJob"></property>
+							<property name="jobClass" value="com.zy.task.job.ReportSettlementJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
@@ -127,18 +142,6 @@
 						<!--<value>0 0/1 * * * ?</value>-->
 					<!--</property>-->
 				<!--</bean>-->
-				<!--订单取消-->
-				<bean id="orderCancelJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-					<property name="jobDetail">
-						<bean id="orderCancelJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-							<property name="durability" value="true"></property>
-							<property name="jobClass" value="com.zy.task.job.OrderCancelJob"></property>
-						</bean>
-					</property>
-					<property name="cronExpression">
-						<value>0 0/1 * * * ?</value>
-					</property>
-				</bean>
 
 			</list>
 		</property>

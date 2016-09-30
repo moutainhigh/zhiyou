@@ -38,5 +38,7 @@ public class ProfitDto implements Serializable {
 	private Long refId;
 
 	private String remark;
+	
+	private Long orderItemQuantity;
 
 }

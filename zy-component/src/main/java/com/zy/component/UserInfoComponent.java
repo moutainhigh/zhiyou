@@ -36,8 +36,8 @@ public class UserInfoComponent {
 		String image1 = userInfo.getImage1();
 		String image2 = userInfo.getImage2();
 		
-		userInfoVo.setImage1Thumbnail(StringUtils.isBlank(image1)? null : GcUtils.getThumbnail(image1, 120, 120));
-		userInfoVo.setImage2Thumbnail(StringUtils.isBlank(image2)? null : GcUtils.getThumbnail(image2, 120, 120));
+		userInfoVo.setImage1Thumbnail(StringUtils.isBlank(image1)? null : GcUtils.getThumbnail(image1, 240, 150));
+		userInfoVo.setImage2Thumbnail(StringUtils.isBlank(image2)? null : GcUtils.getThumbnail(image2, 240, 150));
 		
 		AreaDto areaDto = cacheComponent.getAreaDto(userInfo.getAreaId());
 		userInfoVo.setProvince(areaDto.getProvince());
@@ -74,8 +74,8 @@ public class UserInfoComponent {
 		BeanUtils.copyProperties(userInfo, userInfoAdminVo);
 		User user = cacheComponent.getUser(userInfo.getUserId());
 		userInfoAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
-		userInfoAdminVo.setImage1Thumbnail(GcUtils.getThumbnail(userInfo.getImage1(), 120, 120));
-		userInfoAdminVo.setImage2Thumbnail(GcUtils.getThumbnail(userInfo.getImage2(), 120, 120));
+		userInfoAdminVo.setImage1Thumbnail(GcUtils.getThumbnail(userInfo.getImage1(), 240, 150));
+		userInfoAdminVo.setImage2Thumbnail(GcUtils.getThumbnail(userInfo.getImage2(), 240, 150));
 		userInfoAdminVo.setAppliedTimeLabel(GcUtils.formatDate(userInfo.getAppliedTime(), TIME_PATTERN));
 		userInfoAdminVo.setConfirmedTimeLabel(GcUtils.formatDate(userInfo.getConfirmedTime(), TIME_PATTERN));
 		userInfoAdminVo.setConfirmStatusStyle(GcUtils.getConfirmStatusStyle(userInfo.getConfirmStatus()));

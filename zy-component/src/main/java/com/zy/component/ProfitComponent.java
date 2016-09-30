@@ -2,9 +2,12 @@ package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.fnc.Profit;
+import com.zy.model.dto.ProfitDto;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.ProfitAdminVo;
+import com.zy.vo.ProfitDtoAdminVo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,4 +35,16 @@ public class ProfitComponent {
 		return profitAdminVo;
 	}
 	
+	public ProfitDtoAdminVo buildDtoAdminVo(ProfitDto profitDto) {
+		ProfitDtoAdminVo profitDtoAdminVo = new ProfitDtoAdminVo();
+		BeanUtils.copyProperties(profitDto, profitDtoAdminVo);
+
+		profitDtoAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(profitDto.getUserId())));
+		profitDtoAdminVo.setCreatedTimeLabel(formatDate(profitDto.getCreatedTime(), TIME_PATTERN));
+		profitDtoAdminVo.setGrantedTimeLabel(formatDate(profitDto.getGrantedTime(), TIME_PATTERN));
+		profitDtoAdminVo.setProfitStatusStyle(GcUtils.getProfitStatusStyle(profitDto.getProfitStatus()));
+
+		profitDtoAdminVo.setAmountLabel(GcUtils.formatCurreny(profitDto.getAmount()));
+		return profitDtoAdminVo;
+	}
 }

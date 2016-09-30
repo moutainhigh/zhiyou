@@ -22,7 +22,7 @@
   
   <article>
     <c:if test="${empty list}">
-      <div class="empty-tip">
+      <div class="page-empty">
         <i class="fa fa-map-marker"></i>
         <span>空空如也!</span>
       </div>

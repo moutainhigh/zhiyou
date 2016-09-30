@@ -19,11 +19,13 @@ import com.zy.component.ProfitComponent;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.entity.usr.User;
+import com.zy.model.dto.ProfitDto;
 import com.zy.model.query.ProfitQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.ProfitService;
 import com.zy.service.UserService;
 import com.zy.vo.ProfitAdminVo;
+import com.zy.vo.ProfitDtoAdminVo;
 
 @RequestMapping("/profit")
 @Controller
@@ -49,7 +51,7 @@ public class ProfitController {
     @RequiresPermissions("profit:view")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public Grid<ProfitAdminVo> list(ProfitQueryModel profitQueryModel, String phoneEQ, String nicknameLK) {
+    public Grid<ProfitDtoAdminVo> list(ProfitQueryModel profitQueryModel, String phoneEQ, String nicknameLK) {
 
         if (StringUtils.isNotBlank(phoneEQ) || StringUtils.isNotBlank(nicknameLK)) {
         	UserQueryModel userQueryModel = new UserQueryModel();
@@ -58,14 +60,14 @@ public class ProfitController {
         	
             List<User> users = userService.findAll(userQueryModel);
             if (users == null || users.size() == 0) {
-                return new Grid<ProfitAdminVo>(PageBuilder.empty(profitQueryModel.getPageSize(), profitQueryModel.getPageNumber()));
+                return new Grid<ProfitDtoAdminVo>(PageBuilder.empty(profitQueryModel.getPageSize(), profitQueryModel.getPageNumber()));
             }
             Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
             profitQueryModel.setUserIdIN(userIds);
         }
-        Page<Profit> page = profitService.findPage(profitQueryModel);
-        Page<ProfitAdminVo> adminVoPage = PageBuilder.copyAndConvert(page, profitComponent::buildAdminVo);
-        return new Grid<ProfitAdminVo>(adminVoPage);
+        Page<ProfitDto> page = profitService.findDtoPage(profitQueryModel);
+        Page<ProfitDtoAdminVo> adminVoPage = PageBuilder.copyAndConvert(page, profitComponent::buildDtoAdminVo);
+        return new Grid<ProfitDtoAdminVo>(adminVoPage);
     }
 
 }
