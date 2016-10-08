@@ -94,8 +94,6 @@ public class MalComponent {
 
 		UserRank upgradeUserRank = getUpgradeUserRank(userRank, quantity);
 
-		User seller = null;
-
 		int whileTimes = 0;
 		while (parentId != null) {
 			if (whileTimes > 1000) {
@@ -107,7 +105,7 @@ public class MalComponent {
 				throw new BizException(BizCode.ERROR, "代理父级数据错误"); // 防御性校验
 			}
 			if (parent.getUserRank().getLevel() > upgradeUserRank.getLevel()) {
-				return seller;
+				return parent;
 			}
 			parentId = parent.getParentId();
 			whileTimes ++;
