@@ -44,7 +44,7 @@
   </header>
 
   <article>
-    <form id="form" action="${ctx}/findPassword2" method="post">
+    <form id="form" action="${ctx}/findPassword/modify" method="post">
     <div class="list-group">
       <div class="list-item">
         <i class="list-icon fa fa-key"></i>

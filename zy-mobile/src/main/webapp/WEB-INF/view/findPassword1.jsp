@@ -43,7 +43,7 @@
       var leftTime = 120;
 
       $.ajax({
-        url : '${ctx}/register/sendSmsCode',
+        url : '${ctx}/findPassword/sendSmsCode',
         type : 'POST',
         data : {
           phone : phone,
