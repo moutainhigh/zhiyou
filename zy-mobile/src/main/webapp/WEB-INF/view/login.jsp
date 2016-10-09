@@ -16,8 +16,8 @@
 <script type="text/javascript">
   $(function() {
     $('.valid-form').submit(function() {
-      var phone = $('#phone');
-      var password = $('#password');
+      var phone = $('#phone').val();
+      var password = $('#password').val();
       if (!phone) {
         messageFlash('请输入手机号');
         return false;
@@ -39,13 +39,13 @@
   <form class="valid-form" action="${ctx}/login" method="post">
     <div class="list-group mt-15">
       <div class="list-item">
-        <i class="list-icon fa fa-phone"></i> <label class="list-label" for="phone">手机号</label>
+        <i class="list-icon fa fa-phone"></i>
         <div class="list-text">
           <input type="text" id="phone" name="phone" class="form-input" value="${phone}" placeholder="输入手机号">
         </div>
       </div>
       <div class="list-item">
-        <i class="list-icon fa fa-key"></i> <label class="list-label" for="password">密码</label>
+        <i class="list-icon fa fa-key"></i>
         <div class="list-text">
           <input type="password" id="password" name="password" class="form-input" value="" placeholder="输入密码">
         </div>
