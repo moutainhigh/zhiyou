@@ -296,16 +296,16 @@ h5 { font-size: 14px; line-height: 28px; }
 .font-999 {color: #999 !important;}
 .font-ccc {color: #ccc !important;}
 
-.bg-white {background-color: #fff;}
-.bg-black {background-color: #000;}
-.bg-gray {background-color: #f1f3f5;}
+.bg-white {background-color: #fff !important;}
+.bg-black {background-color: #000 !important;}
+.bg-gray {background-color: #f1f3f5 !important;}
 
-.bg-red{background-color: #e35b5a;} /* #f3565d */
-.bg-blue{background-color: #46a7bf;} /* #428bca */
-.bg-green{background-color: #6cb92d;} /* #45b6af */
-.bg-yellow{background-color: #f4d03f;}
-.bg-orange {background-color: #fb8604;} /* #e87e04 */
-.bg-purple{background-color: #8a3f8a;}
+.bg-red{background-color: #e35b5a !important;} /* #f3565d */
+.bg-blue{background-color: #46a7bf !important;} /* #428bca */
+.bg-green{background-color: #6cb92d !important;} /* #45b6af */
+.bg-yellow{background-color: #f4d03f !important;}
+.bg-orange {background-color: #fb8604 !important;} /* #e87e04 */
+.bg-purple{background-color: #8a3f8a !important;}
 
 
 /* Text */

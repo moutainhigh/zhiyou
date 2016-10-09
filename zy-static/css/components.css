@@ -784,6 +784,9 @@ h1 .label, h2 .label, h3 .label, h4 .label, h5 .label, h6 .label {
 .badge.badge-roundless {
   border-radius: 0 !important; -webkit-border-radius: 0 !important; -moz-border-radius: 0 !important;
 }
+.badge.dot {
+  padding: 0; min-width: 10px; width: 10px; height: 10px;
+}
 
 /* Badge color */
 

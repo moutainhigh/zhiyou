@@ -318,7 +318,7 @@
             </div>
           </div>
           <div class="list-unit">
-            <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/cube.png" data-title="淘宝截图示例图"><i class="fa fa-question-circle-o"></i> 示例图</a>
+            <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/taobao_jhs.png" data-title="淘宝截图示例图"><i class="fa fa-question-circle-o"></i> 示例图</a>
           </div>
         </div>
       </div>
@@ -340,8 +340,8 @@
         <div class="list-title">图片布局</div>
         <div class="list-item">
           <div class="list-text list-image image-view" data-title="我的美照">
-            <img src="${stccdn}/image/example/cube.png" data-src="${stccdn}/image/example/cube.png">
-            <img src="${stccdn}/image/example/cube.png" data-src="${stccdn}/image/example/cube.png">
+            <img src="http://image.mayishike.com/image/56b64b56-c2bf-47af-aa28-8a214dd5c7f0@160h_160w_1e_1c.jpg" data-src="http://image.mayishike.com/image/56b64b56-c2bf-47af-aa28-8a214dd5c7f0@640h_640w_1e_1c.jpg">
+            <img src="http://image.mayishike.com/image/56b64b56-c2bf-47af-aa28-8a214dd5c7f0@160h_160w_1e_1c.jpg" data-src="http://image.mayishike.com/image/56b64b56-c2bf-47af-aa28-8a214dd5c7f0@640h_640w_1e_1c.jpg">
           </div>
         </div>
       </div>

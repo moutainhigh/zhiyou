@@ -169,13 +169,15 @@ public class UcenterIndexController {
     }
 
     @RequestMapping(value = "/nickname", method = RequestMethod.POST)
-    public String nickname(@RequestParam String nickname) {
+    public String nickname(@RequestParam String nickname, Model model, RedirectAttributes redirectAttributes) {
         Principal principal = GcUtils.getPrincipal();
         try {
             userService.modifyNickname(principal.getUserId(), nickname);
         } catch (Exception e) {
+        	model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("昵称修改失败，原因" + e.getMessage()));
             return "ucenter/user/userNickname";
         }
+        redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("修改成功"));
         return "redirect:/u/info";
     }
 	
