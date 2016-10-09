@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void freeze(@NotNull Long id, @NotNull Long operatorId) {
+	public void freezeAdmin(@NotNull Long id, @NotNull Long operatorId) {
 		User user = findAndValidate(id);
 		if (user.getIsFrozen()) {
 			return; // 幂等操作
@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void unfreeze(@NotNull Long id, @NotNull Long operatorId) {
+	public void unfreezeAdmin(@NotNull Long id, @NotNull Long operatorId) {
 
 		User user = findAndValidate(id);
 		user.setIsFrozen(false);
@@ -184,7 +184,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyUserRank(@NotNull Long id, @NotNull UserRank userRank, @NotNull Long operatorId, String remark) {
+	public void modifyUserRankAdmin(@NotNull Long id, @NotNull UserRank userRank, @NotNull Long operatorId, String remark) {
 
 		User user = findAndValidate(id);
 		UserRank plainUserRank = user.getUserRank();
@@ -264,7 +264,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyPhone(@NotNull Long id, @NotBlank String phone,  @NotNull Long operatorId) {
+	public void modifyPhoneAdmin(@NotNull Long id, @NotBlank String phone,  @NotNull Long operatorId) {
 		User user = findAndValidate(id);
 		String plainPhone = user.getPhone();
 		if (phone.equals(plainPhone)) {
@@ -276,7 +276,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyPassword(@NotNull Long id, @NotBlank String password,  @NotNull Long operatorId) {
+	public void modifyPassword(@NotNull Long id, @NotBlank String password) {
+		User user = findAndValidate(id);
+		user.setPassword(ServiceUtils.hashPassword(password));
+		userMapper.update(user);
+	}
+
+	@Override
+	public void modifyPasswordAdmin(@NotNull Long id, @NotBlank String password,  @NotNull Long operatorId) {
 		User user = findAndValidate(id);
 		user.setPassword(ServiceUtils.hashPassword(password));
 		userMapper.update(user);
@@ -284,14 +291,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void loginSuccess(@NotNull Long id) {
-		User user = userMapper.findOne(id);
-		validate(user, NOT_NULL, "user id" + id + "not found");
-		// TODO
-	}
-
-	@Override
-	public void unbind(@NotNull Long id, @NotNull Long operatorId, String remark) {
+	public void unbindAdmin(@NotNull Long id, @NotNull Long operatorId, String remark) {
 		User user = findAndValidate(id);
 		if (user.getOpenId() == null) {
 			return; // 幂等
@@ -303,7 +303,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyParentId(@NotNull Long id, @NotNull Long parentId, @NotNull Long operatorId, String remark) {
+	public void modifyParentIdAdmin(@NotNull Long id, @NotNull Long parentId, @NotNull Long operatorId, String remark) {
 		User user = findAndValidate(id);
 		User parent = findAndValidate(parentId);
 		if (parent.getUserType() != UserType.代理) {
@@ -336,11 +336,6 @@ public class UserServiceImpl implements UserService {
 		usrComponent.recordUserLog(id, operatorId, "设置上级", "从" + plainParentId + "设置为" + originParentId + ", 备注" + remark);
 	}
 
-	@Override
-	public void modifyInfo(@NotNull User user) {
-		findAndValidate(user.getId());
-		userMapper.merge(user, "nickname", "qq");
-	}
 
 	private User findAndValidate(Long userId) {
 		User user = userMapper.findOne(userId);

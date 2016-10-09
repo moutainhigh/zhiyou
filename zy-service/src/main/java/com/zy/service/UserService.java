@@ -20,32 +20,34 @@ public interface UserService {
 
 	List<User> findAll(UserQueryModel userQueryModel);
 
-	void freeze(Long id, Long operatorId);
-	
-	void unfreeze(Long id, Long operatorId);
 
-	void modifyUserRank(Long id, UserRank userRank, Long operatorId, String remark);
 	
 	User registerAgent(AgentRegisterDto agentRegisterDto);
 
 	long count(UserQueryModel userQueryModel);
 	
 	String hashPassword(String plainPassword);
-	
-	void modifyPassword(Long id, String password, Long operatorId);
-	
-	void modifyPhone(Long id, String phone, Long operatorId);
+
+	void modifyPassword(Long id, String password);
 	
 	void modifyNickname(Long id, String nickname);
 	
 	void modifyAvatar(Long id, String avatar);
-	
-	void modifyInfo(User user);
-	
-	void loginSuccess(Long id);
 
-	void unbind(Long id, Long operatorId, String remark);
 
-	void modifyParentId(Long id, Long parentId, Long operatorId, String remark);
+	/* 管理员操作 */
+	void modifyParentIdAdmin(Long id, Long parentId, Long operatorId, String remark);
+
+	void modifyPasswordAdmin(Long id, String password, Long operatorId);
+
+	void modifyPhoneAdmin(Long id, String phone, Long operatorId);
+
+	void freezeAdmin(Long id, Long operatorId);
+
+	void unfreezeAdmin(Long id, Long operatorId);
+
+	void modifyUserRankAdmin(Long id, UserRank userRank, Long operatorId, String remark);
+
+	void unbindAdmin(Long id, Long operatorId, String remark);
 	
 }

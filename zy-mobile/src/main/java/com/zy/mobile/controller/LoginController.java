@@ -1,34 +1,5 @@
 package com.zy.mobile.controller;
 
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.CACHE_NAME_BIND_PHONE_SMS_LAST_SEND_TIME;
-import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
-import static com.zy.model.Constants.REQUEST_ATTRIBUTE_INVITER_ID;
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_AGENT_REGISTER_DTO;
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_BIND_PHONE_SMS;
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_CAPTCHA;
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_REDIRECT_URL;
-
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.cache.CacheSupport;
@@ -46,9 +17,28 @@ import com.zy.model.dto.AgentRegisterDto;
 import com.zy.service.ShortMessageService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
-
-import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpService;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
+
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.*;
 
 @RequestMapping
 @Controller
@@ -70,6 +60,55 @@ public class LoginController {
 	
 	@Autowired
 	private WxMpService wxMpService;
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(Model model, HttpServletRequest request) {
+
+		if (GcUtils.getPrincipal() != null) {
+			return "redirect:/u";
+		}
+
+		return "login";
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String login(String phone, String password, Model model,
+	                    HttpServletRequest request, HttpServletResponse response,
+	                    HttpSession session, RedirectAttributes redirectAttributes) {
+
+		if (GcUtils.getPrincipal() != null) {
+			return "redirect:/u";
+		}
+
+		if (StringUtils.isBlank(phone)) {
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("登录失败, 手机号不能为空"));
+			return "redirect:/login";
+		}
+		if (StringUtils.isBlank(password)) {
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("登录失败, 密码不能为空"));
+			return "redirect:/login";
+		}
+
+
+		User user = userService.findByPhone(phone);
+		if (user == null) {
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("登录失败, 手机号不存在"));
+			return "redirect:/login";
+		} else if (!userService.hashPassword(password).equals(user.getPassword())){
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("登录失败, 密码错误"));
+			return "redirect:/login";
+		}
+
+		String redirectUrl = (String) session.getAttribute(SESSION_ATTRIBUTE_REDIRECT_URL);
+		if (StringUtils.isBlank(redirectUrl)) {
+			redirectUrl = "/";
+		}
+
+		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("登录成功"));
+		onLoginSuccess(request, response, user.getId());
+		return "redirect:" + redirectUrl;
+	}
+
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String register(Model model, HttpServletRequest request) {
@@ -81,13 +120,8 @@ public class LoginController {
 
 		AgentRegisterDto agentRegisterDto = (AgentRegisterDto) session.getAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO);
 		if (agentRegisterDto == null) {
-			String redirectUrl = request.getContextPath() + "/u";
-			String oauthUrl = wxMpService.oauth2buildAuthorizationUrl(redirectUrl, WxConsts.OAUTH2_SCOPE_USER_INFO,
-					Constants.WEIXIN_STATE_USERINFO);
-			model.addAttribute("oauthUrl", oauthUrl);
-			model.addAttribute("isNew", true);
+			return "redirect:/login";
 		} else {
-			model.addAttribute("isNew", false);
 			model.addAttribute("avatar", agentRegisterDto.getAvatar());
 			model.addAttribute("nickname", agentRegisterDto.getNickname());
 		}
@@ -195,12 +229,7 @@ public class LoginController {
 		Principal principal = PrincipalBuilder.build(userId, tgt);
 		session.setAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL, principal);
 		int expire = 60 * 60 * 24 * 7;
-		boolean rememberMe = true;
-		if (rememberMe) {
-			CookieUtils.add(response, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, expire, Constants.DOMAIN_MOBILE);
-		} else {
-			CookieUtils.add(response, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, -1, Constants.DOMAIN_MOBILE);
-		}
+		CookieUtils.add(response, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, expire, Constants.DOMAIN_MOBILE);
 		cacheSupport.set(Constants.CACHE_NAME_TGT, tgt, userId, expire);
 
 	}

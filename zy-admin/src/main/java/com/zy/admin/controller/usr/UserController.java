@@ -1,33 +1,5 @@
 package com.zy.admin.controller.usr;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
@@ -47,6 +19,21 @@ import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import com.zy.vo.UserAdminVo;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.zy.common.util.ValidateUtils.*;
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
 @RequestMapping("/user")
 @Controller
@@ -203,7 +190,7 @@ public class UserController {
 			}
 		}
 		try {
-			userService.modifyPassword(userId, newPassword, getPrincipalUserId());
+			userService.modifyPasswordAdmin(userId, newPassword, getPrincipalUserId());
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error("保存失败: " + e.getMessage()));
 			return "redirect:/user";
@@ -218,7 +205,7 @@ public class UserController {
 	public Result<?> addVip(Long id, UserRank userRank, String remark) {
 		checkAndValidateIsPlatform(id);
 		try {
-			userService.modifyUserRank(id, userRank, getPrincipalUserId(), remark);
+			userService.modifyUserRankAdmin(id, userRank, getPrincipalUserId(), remark);
 		} catch (Exception e) {
 			return new ResultBuilder<>().message(e.getMessage()).build();
 		}
@@ -230,7 +217,7 @@ public class UserController {
 	public String freeze(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 		checkAndValidateIsPlatform(id);
 		try {
-			userService.freeze(id, getPrincipalUserId());
+			userService.freezeAdmin(id, getPrincipalUserId());
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("用户冻结成功"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
@@ -243,7 +230,7 @@ public class UserController {
 	public String unFreeze(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 		checkAndValidateIsPlatform(id);
 		try {
-			userService.unfreeze(id, getPrincipalUserId());
+			userService.unfreezeAdmin(id, getPrincipalUserId());
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("用户解结成功"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
@@ -297,7 +284,7 @@ public class UserController {
 		User parentUser = userService.findByPhone(parentPhone);
 		validate(parentUser, NOT_NULL, "user phone" + parentPhone + " not fount");
 		try {
-			userService.modifyParentId(id, parentUser.getId(), getPrincipalUserId(), remark);
+			userService.modifyParentIdAdmin(id, parentUser.getId(), getPrincipalUserId(), remark);
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("修改上级成功"));
 			return "redirect:/user";
 		} catch (Exception e) {

@@ -191,34 +191,6 @@
           <!-- END RESPONSIVE QUICK SEARCH FORM -->
         </li>
 
-        <shiro:hasAnyPermissions name="user:view,appearance:view,address:view,portrait:view">
-          <li class="start active open">
-            <a href="javascript:;">
-              <i class="icon-users"></i>
-              <span class="title">用户中心</span>
-              <span class="selected"></span>
-              <span class="arrow"></span>
-            </a>
-            <ul class="sub-menu">
-              <shiro:hasPermission name="user:view">
-                <li>
-                  <a href="javascript:;" data-href="${ctx}/user"><i class="icon-user"></i> 用户信息<span class="badge badge-danger"></span></a>
-                </li>
-              </shiro:hasPermission>
-              <shiro:hasPermission name="address:view">
-                <li>
-                  <a href="javascript:;" data-href="${ctx}/address"><i class="icon-home"></i> 收货地址管理<span class="badge badge-danger"></span></a>
-                </li>
-              </shiro:hasPermission>
-              <shiro:hasPermission name="userInfo:view">
-                <li>
-                  <a href="javascript:;" data-href="${ctx}/userInfo"><i class="icon-graduation"></i> 用户认证管理<span class="badge badge-danger"></span></a>
-                </li>
-              </shiro:hasPermission>
-            </ul>
-          </li>
-        </shiro:hasAnyPermissions>
-
         <shiro:hasAnyPermissions name="product:view,order:view">
           <li>
             <a href="javascript:;">
@@ -270,6 +242,34 @@
               <shiro:hasPermission name="report:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/report"><i class="icon-volume-1"></i> 检测报告<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
+
+        <shiro:hasAnyPermissions name="user:view,address:view,userInfo:view">
+          <li class="start active open">
+            <a href="javascript:;">
+              <i class="icon-users"></i>
+              <span class="title">用户中心</span>
+              <span class="selected"></span>
+              <span class="arrow"></span>
+            </a>
+            <ul class="sub-menu">
+              <shiro:hasPermission name="user:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/user"><i class="icon-user"></i> 用户信息<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="address:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/address"><i class="icon-home"></i> 收货地址管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="userInfo:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/userInfo"><i class="icon-graduation"></i> 用户认证管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>
