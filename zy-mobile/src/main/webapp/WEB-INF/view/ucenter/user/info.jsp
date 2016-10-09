@@ -40,11 +40,19 @@
         </div>
         <i class="list-arrow"></i>
       </a>
-      <a class="list-item" href="${ctx}/u/nickname">
-        <div class="list-text">昵称</div>
-        <div class="list-unit">${user.nickname}</div>
-        <i class="list-arrow"></i>
-      </a>
+      <c:if test="${isUserInfoCompleted}">
+        <a class="list-item" href="javascript:;">
+          <div class="list-text">昵称</div>
+          <div class="list-unit">${user.nickname}</div>
+        </a>
+      </c:if>
+      <c:if test="${!isUserInfoCompleted}">
+        <a class="list-item" href="${ctx}/u/nickname">
+          <div class="list-text">昵称</div>
+          <div class="list-unit">${user.nickname}</div>
+          <i class="list-arrow"></i>
+        </a>
+      </c:if>
       <a class="list-item"<c:if test="${empty user.phone}"> href="${ctx}/u/bindPhone"</c:if><c:if test="${not empty user.phone}"> href="javascript:;"</c:if>>
         <div class="list-text">手机号</div>
         <c:if test="${empty user.phone}">
