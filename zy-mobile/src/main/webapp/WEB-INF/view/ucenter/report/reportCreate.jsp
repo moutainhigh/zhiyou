@@ -25,7 +25,7 @@
     });
 
     //验证
-    $(".valid-form").validate({
+    $('.valid-form').validate({
       rules : {
         'realname' : {
           required : true

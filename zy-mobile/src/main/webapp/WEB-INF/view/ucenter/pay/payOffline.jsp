@@ -22,7 +22,7 @@
       isMultipart : true
     });
 
-    $(".valid-form").validate({
+    $('.valid-form').validate({
       rules : {
         'offlineImage' : {
           required : true

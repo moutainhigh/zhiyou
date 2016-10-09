@@ -73,7 +73,7 @@
     });
 
     //注册验证
-    $(".valid-form").validate({
+    $('.valid-form').validate({
       rules : {
         'phone' : {
           required : true,
