@@ -16,7 +16,6 @@ import com.zy.model.Constants;
 import com.zy.model.query.UserInfoQueryModel;
 import com.zy.service.UserInfoService;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -185,13 +184,15 @@ public class UserInfoServiceImpl implements UserInfoService {
         validate(job, NOT_NULL, "job id " + jobId + " is not found");
     }
     
-    private void checkTags(@NotBlank String tagIds) {
-    	String[] tagIdArray = StringUtils.split(tagIds, ",");
-    	for (String tagIdStr : tagIdArray) {
-    		Long tagId = Long.valueOf(tagIdStr);
-    		Tag tag = tagMapper.findOne(tagId);
-    		 validate(tag, NOT_NULL, "tag id " + tagId + " is not found");
-    	}
+    private void checkTags(String tagIds) {
+        if (StringUtils.isNotBlank(tagIds)) {
+            String[] tagIdArray = StringUtils.split(tagIds, ",");
+            for (String tagIdStr : tagIdArray) {
+                Long tagId = Long.valueOf(tagIdStr);
+                Tag tag = tagMapper.findOne(tagId);
+                validate(tag, NOT_NULL, "tag id " + tagId + " is not found");
+            }
+        }
     }
 
     private void checkArea(@NotNull Long areaId) {
