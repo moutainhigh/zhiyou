@@ -68,12 +68,12 @@
 
       <c:if test="${amount <= balance}">
         <div class="form-btn">
-          <div id="btnSubmit" class="btn green btn-block round-2">确认支付</div>
+          <a id="btnSubmit" href="javascript:;" class="btn green btn-block round-2">确认支付</a>
         </div>
       </c:if>
       <c:if test="${amount > balance}">
         <div class="form-btn">
-          <a id="btn" class="btn btn-block orange round-2">余额不足，请先充值</a>
+          <a href="${ctx}/u/pay/deposit?payType=1" class="btn btn-block orange round-2">余额不足，请先充值</a>
         </div>
       </c:if>
     </article>
