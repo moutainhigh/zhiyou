@@ -99,7 +99,7 @@ public interface Constants {
     /* social login notify url */
     String WEIXIN_LOGIN_NOTIFY = "http://passport.zhi-you.net/notify/weixin";
     String QQ_LOGIN_NOTIFY = "http://passport.zhi-you.net/notify/qq";
-    String WEIXIN_MP_LOGIN_NOTIFY = "http://passport.zhi-you.net/notify/weixinMp";
+    String WEIXIN_MP_LOGIN_NOTIFY = "http://agentsystem.zhi-you.net/notify/weixinMp";
 
     /* aliyun oss */
     String ALIYUN_BUCKET_NAME_IMAGE = "zy-image";

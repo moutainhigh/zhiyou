@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.zy.model.Constants.SESSION_ATTRIBUTE_REDIRECT_URL;
-import static com.zy.model.Constants.WEIXIN_MP_PAY_NOTIFY;
+import static com.zy.model.Constants.WEIXIN_MP_LOGIN_NOTIFY;
 
 @org.springframework.web.bind.annotation.ControllerAdvice
 public class ControllerAdvice {
@@ -109,7 +109,7 @@ public class ControllerAdvice {
 		request.getSession().setAttribute(SESSION_ATTRIBUTE_REDIRECT_URL, redirectUrl);
 
 		if (WebUtils.isAjax(request)) {
-			String oauthUrl = wxMpService.oauth2buildAuthorizationUrl(WEIXIN_MP_PAY_NOTIFY, WxConsts.OAUTH2_SCOPE_USER_INFO,
+			String oauthUrl = wxMpService.oauth2buildAuthorizationUrl(WEIXIN_MP_LOGIN_NOTIFY, WxConsts.OAUTH2_SCOPE_USER_INFO,
 					Constants.WEIXIN_STATE_USERINFO);
 			OutputStream os = response.getOutputStream();
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());

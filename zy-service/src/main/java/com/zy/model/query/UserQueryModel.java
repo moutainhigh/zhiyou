@@ -46,7 +46,9 @@ public class UserQueryModel implements Serializable {
 
 	private Long[] parentIdIN;
 
-	private Long parentIdNL;
+	private Boolean parentIdNL;
+
+	private Boolean isRootEQ;
 
 	private Integer pageNumber;
 
@@ -103,6 +105,7 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("qq");
 		fieldNames.add("registerIp");
 		fieldNames.add("unionId");
+		fieldNames.add("isRoot");
 		fieldNames.add("registerTime");
 		fieldNames.add("openId");
 		fieldNames.add("remark");

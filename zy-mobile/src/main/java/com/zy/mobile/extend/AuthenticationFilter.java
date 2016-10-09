@@ -23,9 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_PRINCIPAL;
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_REDIRECT_URL;
-import static com.zy.model.Constants.WEIXIN_MP_PAY_NOTIFY;
+import static com.zy.model.Constants.*;
 
 
 public class AuthenticationFilter implements Filter {
@@ -48,7 +46,7 @@ public class AuthenticationFilter implements Filter {
 		if (principal == null) {
 			String redirectUrl = GcUtils.resolveRedirectUrl(request);
 			session.setAttribute(SESSION_ATTRIBUTE_REDIRECT_URL, redirectUrl);
-			String oauthUrl = wxMpService.oauth2buildAuthorizationUrl(WEIXIN_MP_PAY_NOTIFY, WxConsts.OAUTH2_SCOPE_USER_INFO, Constants.WEIXIN_STATE_USERINFO);
+			String oauthUrl = wxMpService.oauth2buildAuthorizationUrl(WEIXIN_MP_LOGIN_NOTIFY, WxConsts.OAUTH2_SCOPE_USER_INFO, Constants.WEIXIN_STATE_USERINFO);
 
 			if (WebUtils.isAjax(request)) {
 				OutputStream os = response.getOutputStream();

@@ -167,4 +167,9 @@ public class User implements Serializable {
 	@Field(label = "上次升级时间")
 	private Date lastUpgradedTime;
 
+	@Query(Predicate.EQ)
+	@Field(label = "是否子系统")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private Boolean isRoot;
+
 }
