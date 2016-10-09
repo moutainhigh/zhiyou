@@ -17,6 +17,7 @@ import com.zy.model.dto.AgentRegisterDto;
 import com.zy.service.ShortMessageService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -68,6 +69,9 @@ public class LoginController {
 			return "redirect:/u";
 		}
 
+		String oauthUrl = wxMpService.oauth2buildAuthorizationUrl(WEIXIN_MP_PAY_NOTIFY, WxConsts.OAUTH2_SCOPE_USER_INFO,
+				Constants.WEIXIN_STATE_USERINFO);
+		model.addAttribute("oauthUrl", oauthUrl);
 		return "login";
 	}
 
