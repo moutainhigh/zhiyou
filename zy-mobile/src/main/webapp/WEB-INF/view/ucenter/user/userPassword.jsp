@@ -55,7 +55,6 @@
     <div class="list-group">
       <c:if test="${hasPassword}">
       <div class="list-item">
-        <i class="list-icon fa fa-key"></i>
         <label class="list-label" for="oldPassword">旧密码</label>
         <div class="list-text">
           <input type="password" id="oldPassword" name="oldPassword" class="form-input" value="" placeholder="输入当前密码">
@@ -63,14 +62,12 @@
       </div>
       </c:if>
       <div class="list-item">
-        <i class="list-icon fa fa-key"></i>
         <label class="list-label" for="password">设置密码</label>
         <div class="list-text">
           <input type="password" id="password" name="password" class="form-input" value="" placeholder="输入要设置的密码">
         </div>
       </div>
       <div class="list-item">
-        <i class="list-icon fa fa-key"></i>
         <label class="list-label" for="password2">确认密码</label>
         <div class="list-text">
           <input type="password" id="password2" name="password2" class="form-input" value="" placeholder="重新输入密码">

@@ -68,6 +68,12 @@
     </div>
 
     <div class="list-group">
+      <a class="list-item list-item-icon" href="${ctx}/u/password">
+        <i class="list-icon icon icon icon-key"></i>
+        <div class="list-text">${hasPassword ? '修改' : '设置'}密码</div>
+        <div class="list-unit"><c:if test="${!hasPassword}">未设置</c:if></div>
+        <i class="list-arrow"></i>
+      </a>
       <a class="list-item list-item-icon" href="${ctx}/u/userInfo">
         <i class="list-icon icon icon-idcard"></i>
         <div class="list-text">实名认证</div>

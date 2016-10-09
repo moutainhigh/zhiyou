@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>${sys}- 登录</title>
+<title>${sys}- 登陆</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script type="text/javascript">
   $(function() {
@@ -32,7 +32,7 @@
 </head>
 <body>
   <header class="header">
-    <h1>登录</h1>
+    <h1>登陆</h1>
     <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
@@ -41,13 +41,13 @@
       <div class="list-item">
         <i class="list-icon fa fa-mobile fs-20"></i>
         <div class="list-text">
-          <input type="text" id="phone" name="phone" class="form-input" value="${phone}" placeholder="输入手机号">
+          <input type="text" id="phone" name="phone" class="form-input" value="${phone}" placeholder="输入登陆手机号">
         </div>
       </div>
       <div class="list-item">
         <i class="list-icon fa fa-key"></i>
         <div class="list-text">
-          <input type="password" id="password" name="password" class="form-input" value="" placeholder="输入密码">
+          <input type="password" id="password" name="password" class="form-input" value="" placeholder="输入登陆密码">
         </div>
       </div>
     </div>
