@@ -151,13 +151,20 @@
   </c:if>
   
   <c:if test="${isFirst}">
-    <nav class="footer footer-nav flex">
-      <a id="btnAgent" class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">立即成为服务商</a>
-    </nav>
+    <c:if test="${hasUserInfo}">
+      <nav class="footer footer-nav flex">
+        <a class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">立即成为服务商</a>
+      </nav>
+    </c:if>
+    <c:if test="${!hasUserInfo}">
+      <nav class="footer footer-nav flex">
+        <a class="flex-2 btn-order" href="${ctx}/u/userInfo">请先登陆并完成实名认证</a>
+      </nav>
+    </c:if>
   </c:if>
   <c:if test="${isUpgrade}">
     <nav class="footer footer-nav flex">
-      <a id="btnAgent" class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">升级服务商</a>
+      <a class="flex-2 btn-order" href="${ctx}/u/agent?productId=${product.id}">升级服务商</a>
     </nav>
   </c:if>
 

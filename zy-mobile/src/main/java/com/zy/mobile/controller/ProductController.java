@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.zy.component.ProductComponent;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Principal;
 import com.zy.model.query.ProductQueryModel;
 import com.zy.service.ProductService;
+import com.zy.service.UserInfoService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 
@@ -32,6 +34,9 @@ public class ProductController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private UserInfoService userInfoService;    
 	
 	@Autowired
 	private ProductComponent productComponent;
@@ -55,6 +60,10 @@ public class ProductController {
 		if(principal != null) {
 			User user = userService.findOne(principal.getUserId());
 			model.addAttribute("userRank", user.getUserRank());
+			UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
+			if(userInfo != null) {
+				model.addAttribute("hasUserInfo", true);
+			}
 			product.setPrice(productService.getPrice(product.getId(), user.getUserRank(), 1L));
 			if(user.getUserRank() == UserRank.V0){
 				model.addAttribute("isFirst", true);

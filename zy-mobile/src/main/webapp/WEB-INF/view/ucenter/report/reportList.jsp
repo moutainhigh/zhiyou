@@ -95,6 +95,12 @@
   </header>
   
   <article>
+    <c:if test="${userRank == 'V0'}">
+    <div class="note note-warning mb-0">
+      <i class="fa fa-exclamation-circle"></i> 您必须成为服务商才能上传检测报告
+    </div>
+    </c:if>
+    
     <c:if test="${empty page.data}">
       <div class="page-empty">
         <i class="fa fa-file-o"></i>

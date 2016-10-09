@@ -75,6 +75,9 @@ public class UcenterReportController {
 		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(0).pageSize(6).build());
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, reportComponent::buildListVo));
 		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+		
+		User user = userService.findOne(principal.getUserId());
+		model.addAttribute("userRank", user.getUserRank());
 		return "ucenter/report/reportList";
 	}
 
