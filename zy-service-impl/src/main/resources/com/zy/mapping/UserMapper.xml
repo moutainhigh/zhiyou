@@ -21,11 +21,12 @@
 		<result column="open_id" property="openId" />
 		<result column="union_id" property="unionId" />
 		<result column="last_upgraded_time" property="lastUpgradedTime" />
+		<result column="is_root" property="isRoot" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time)
-	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime})
+	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root)
+	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot})
 	</insert>
 
 	<delete id="delete">
@@ -52,6 +53,7 @@
 			open_id = #{openId},
 			union_id = #{unionId},
 			last_upgraded_time = #{lastUpgradedTime},
+			is_root = #{isRoot},
 		</set>
 		where id = #{id}
 	</update>
@@ -78,6 +80,7 @@
 					<when test="field == 'openId'">open_id = #{user.openId},</when>
 					<when test="field == 'unionId'">union_id = #{user.unionId},</when>
 					<when test="field == 'lastUpgradedTime'">last_upgraded_time = #{user.lastUpgradedTime},</when>
+					<when test="field == 'isRoot'">is_root = #{user.isRoot},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -86,14 +89,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root
 		from `usr_user`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root
 		from `usr_user`
 		<where>
 			<if test="userRankEQ != null">
@@ -102,9 +105,14 @@
 			<if test="nicknameLK != null">
 				<bind name="nicknameLK" value="'%' + nicknameLK + '%'"/> and nickname like #{nicknameLK}
 			</if>
-			<if test="parentIdNL != null">
-				and parent_id is null
-			</if>
+             <if test="parentIdNL != null">
+                 <if test="parentIdNL">
+                    and parent_id is null
+                 </if>
+                 <if test="!parentIdNL">
+                    and parent_id is not null
+                 </if>
+             </if>
 			<if test="inviterIdEQ != null">
 				and inviter_id = #{inviterIdEQ}
 			</if>
@@ -147,6 +155,9 @@
 			</if>
 			<if test="phoneEQ != null">
 				and phone = #{phoneEQ}
+			</if>
+			<if test="isRootEQ != null">
+				and is_root = #{isRootEQ}
 			</if>
 			<if test="inviterIdIN != null">
 				<if test="inviterIdIN.length != 0">
@@ -183,7 +194,12 @@
 				<bind name="nicknameLK" value="'%' + nicknameLK + '%'"/> and nickname like #{nicknameLK}
 			</if>
 			<if test="parentIdNL != null">
-				and parent_id is null
+				<if test="parentIdNL">
+					and parent_id is  null
+				</if>
+                <if test="!parentIdNL">
+				    and parent_id is not null
+                </if>
 			</if>
 			<if test="inviterIdEQ != null">
 				and inviter_id = #{inviterIdEQ}
@@ -227,6 +243,9 @@
 			</if>
 			<if test="phoneEQ != null">
 				and phone = #{phoneEQ}
+			</if>
+			<if test="isRootEQ != null">
+				and is_root = #{isRootEQ}
 			</if>
 			<if test="inviterIdIN != null">
 				<if test="inviterIdIN.length != 0">
