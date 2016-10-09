@@ -55,18 +55,14 @@
     <div class="form-btn">
       <input class="btn green btn-block round-2" type="submit" value="登 陆">
     </div>
-  </form>
     
-  <a href="${ctx}/findPassword" class="mt-20 block-100 font-999 fs-13 text-center"><i class="fa fa-question-circle"></i> 忘记密码</a>
+  </form>
   
-  
-  <div class="abs-mb block-100">
-    <div class="mt-30 form-btn">
-      <a class="btn btn-block default round-2" href="#"><i class="icon icon-weixin"></i> 微信注册</a>
-    </div>
+  <div class="form-btn">
+    <a class="btn btn-block default round-2" href="#"><i class="icon icon-weixin"></i> 微信授权登陆</a>
   </div>
-  
-  
+    
+  <a href="${ctx}/findPassword" class="abs-mb block-100 mb-20 font-999 fs-13 text-center"><i class="fa fa-question-circle"></i> 忘记密码</a>
   
 </body>
 </html>
