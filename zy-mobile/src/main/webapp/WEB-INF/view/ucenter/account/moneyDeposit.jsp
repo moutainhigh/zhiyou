@@ -18,7 +18,7 @@
 <script type="text/javascript">
   $(function() {
     
-    $(".valid-form").validate({
+    $('.valid-form').validate({
       ignore: ':hidden',
       rules : {
         'payType' : {

@@ -18,7 +18,7 @@
   $(function() {
     
     //验证
-    $(".valid-form").validate({
+    $('.valid-form').validate({
       ignore: ':hidden',
       rules : {
         'useLogistics' : {
