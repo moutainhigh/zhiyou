@@ -8,6 +8,7 @@ import static com.zy.model.Constants.SESSION_ATTRIBUTE_AGENT_REGISTER_DTO;
 import static com.zy.model.Constants.SESSION_ATTRIBUTE_BIND_PHONE_SMS;
 import static com.zy.model.Constants.SESSION_ATTRIBUTE_CAPTCHA;
 import static com.zy.model.Constants.SESSION_ATTRIBUTE_REDIRECT_URL;
+import static com.zy.model.Constants.WEIXIN_MP_PAY_NOTIFY;
 
 import java.util.Date;
 
@@ -47,6 +48,7 @@ import com.zy.service.ShortMessageService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpService;
 
 @RequestMapping
@@ -77,6 +79,9 @@ public class LoginController {
 			return "redirect:/u";
 		}
 
+		String oauthUrl = wxMpService.oauth2buildAuthorizationUrl(WEIXIN_MP_PAY_NOTIFY, WxConsts.OAUTH2_SCOPE_USER_INFO,
+				Constants.WEIXIN_STATE_USERINFO);
+		model.addAttribute("oauthUrl", oauthUrl);
 		return "login";
 	}
 
