@@ -161,6 +161,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         	userInfo.setConfirmStatus(ConfirmStatus.已通过);
         	userInfo.setConfirmedTime(new Date());
             producer.send(Constants.TOPIC_USER_INFO_CONFIRMED, userInfo.getId());
+
+            User user = userMapper.findOne(userInfo.getUserId());
+            user.setNickname(userInfo.getRealname());
+            userMapper.update(user);
+
         } else {
             validate(confirmRemark, NOT_BLANK, "审核不通过时备注必须填写");
             userInfo.setConfirmRemark(confirmRemark);
