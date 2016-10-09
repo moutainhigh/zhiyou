@@ -1,5 +1,33 @@
 package com.zy.admin.controller.usr;
 
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
@@ -7,7 +35,10 @@ import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
+import com.zy.common.util.Identities;
+import com.zy.common.util.JsonUtils;
 import com.zy.component.CacheComponent;
+import com.zy.component.LocalCacheComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
@@ -16,21 +47,6 @@ import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import com.zy.vo.UserAdminVo;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.zy.common.util.ValidateUtils.*;
-import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
 @RequestMapping("/user")
 @Controller
@@ -45,6 +61,9 @@ public class UserController {
 	
 	@Autowired
 	private UserComponent userComponent;
+	
+	@Autowired
+	private LocalCacheComponent localCacheComponent;
 	
 	@RequiresPermissions("user:view")
 	@RequestMapping(method = RequestMethod.GET)
@@ -76,10 +95,84 @@ public class UserController {
 	
 	@RequiresPermissions("user:view")
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
-	public String detail(Long id, Model model) {
-		User user = userService.findOne(id);
-		validate(user, NOT_NULL, "user is null");
-		model.addAttribute("user", userComponent.buildAdminFullVo(user));
+	public String detail(Long id, Model model, Boolean isPure) {
+		
+		model.addAttribute("isPure", isPure == null ? false : isPure);
+		model.addAttribute("treeUuid", Identities.uuid2());
+		
+		User persistence = userService.findOne(id);
+		validate(persistence, NOT_NULL, "user is null");
+		model.addAttribute("user", userComponent.buildAdminFullVo(persistence));
+		
+		List<User> allUsers = localCacheComponent.getUsers();
+		Map<Long, User> userMap = localCacheComponent.getUserMap();
+		User current = userMap.get(id);
+		List<User> parents = new ArrayList<User>();
+		Long parentId = current.getParentId();
+		while (parentId != null) {
+			User parentUser = caheComponent.getUser(parentId);
+			parentId = parentUser.getParentId();
+			parents.add(parentUser);
+		}
+		
+		Collections.reverse(parents);
+		
+		List<Map<String, Object>> list = parents.stream().map(user -> {
+			Map<String, Object> map = new HashMap<>();
+
+			UserRank userRank = user.getUserRank();
+			if (userRank != null && userRank != UserRank.V0) {
+				map.put("iconSkin", "rank" + userRank.getLevel());
+			}
+
+			map.put("id", user.getId());
+			map.put("pId", user.getParentId());
+			map.put("name", user.getNickname());
+			map.put("open", true);
+			map.put("isParent", true);
+			return map;
+		}).collect(Collectors.toList());
+		
+		{
+			Map<String, Object> map = new HashMap<>();
+			UserRank userRank = persistence.getUserRank();
+			if (userRank != null && userRank != UserRank.V0) {
+				map.put("iconSkin", "rank" + userRank.getLevel());
+			}
+			map.put("id", persistence.getId());
+			map.put("pId", persistence.getParentId());
+			map.put("name", persistence.getNickname() + "  (自己)");
+			map.put("open", true);
+			map.put("isParent", allUsers.stream().filter(v -> persistence.getId().equals(v.getParentId())).findFirst().isPresent());
+			list.add(map);
+		}
+		
+		
+		List<User> children = allUsers.stream().filter(v -> id.equals(v.getParentId())).collect(Collectors.toList());
+		while (!children.isEmpty()) {
+			List<Map<String, Object>> childrenList = children.stream().map(user -> {
+				Map<String, Object> map = new HashMap<>();
+
+				UserRank userRank = user.getUserRank();
+				if (userRank != null && userRank != UserRank.V0) {
+					map.put("iconSkin", "rank" + userRank.getLevel());
+				}
+
+				map.put("id", user.getId());
+				map.put("pId", user.getParentId());
+				map.put("name", user.getNickname());
+				map.put("open", true);
+				map.put("isParent", allUsers.stream().filter(v -> user.getId().equals(v.getParentId())).findFirst().isPresent());
+				return map;
+			}).collect(Collectors.toList());
+			
+			Map<Long, Boolean> childrenIdMap = children.stream().collect(Collectors.toMap(v -> v.getId(), v -> true));
+			List<User> childrenOfChildren = allUsers.stream().filter(v -> childrenIdMap.get(v.getParentId()) != null).collect(Collectors.toList());
+			children.clear();
+			children.addAll(childrenOfChildren);
+			list.addAll(childrenList);
+		}
+		model.addAttribute("json", JsonUtils.toJson(list)); 
 		return "usr/userDetail";
 	}
 	
@@ -211,125 +304,6 @@ public class UserController {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			return "redirect:/user/modifyParent?id=" + id;
 		}
-	}
-	
-	@RequestMapping("/ajaxChart/team")
-	@ResponseBody
-	public Map<String, Object> getpRrofitChart(Long userId) {
-		Map<String, Object> resultMap = new HashMap<>();
-		
-		List<User> users = userService.findAll(new UserQueryModel());
-		
-		List<User> children = users.stream().filter(v -> v.getId().equals(userId)).collect(Collectors.toList());
-		User user = children.get(0);
-		String[] legend = new String[] {user.getNickname(), "特级服务商", "一级服务商", "二级服务商", "三级服务商", "普通用户"};
-		resultMap.put("legend", legend);
-		
-		List<Map<String, Object>> allChildren = new ArrayList<>();
-		int[] size = new int[] {80, 60, 50, 40, 30, 25};
-		final int tmp[] = new int[] {0, 0, 0};
-		while (!children.isEmpty()) {
-			int depth = tmp[0];
-			
-			allChildren.addAll(children.stream().map(v -> {
-				if(!v.getId().equals(userId)) {
-					tmp[1] = getLegendIndex(v.getUserRank());
-				} 
-				int category = tmp[1];
-				int id = tmp[2];
-				Map<String, Object> node = new LinkedHashMap<String, Object>();
-				node.put("name", v.getId() + "");
-				node.put("value", v.getNickname());
-				node.put("category", legend[category]);
-				node.put("depth", depth);
-				node.put("parentName", v.getParentId() + "");
-				node.put("symbolSize", size[category]);
-				node.put("symbol", "image://" + v.getAvatar()/* + "@100-1ci"*/);
-				node.put("isParent", false);
-				tmp[2] = id + 1;
-				return node;
-			}).collect(Collectors.toList()));
-			
-			tmp[0] = depth + 1;
-			
-			Map<Long, Boolean> childrenIdMap = children.stream().collect(Collectors.toMap(v -> v.getId(), v -> true));
-			List<User> childrenOfChildren = users.stream().filter(v -> childrenIdMap.get(v.getParentId()) != null).collect(Collectors.toList());
-			children.clear();
-			children.addAll(childrenOfChildren);
-		}
-		
-		List<User> parents = new ArrayList<User>();
-		Long parentId = user.getParentId();
-		while (parentId != null) {
-			User parentUser = caheComponent.getUser(parentId);
-			parentId = parentUser.getParentId();
-			parents.add(parentUser);
-		}
-		
-		int depth = tmp[0];	
-		allChildren.addAll(parents.stream().map(v -> {
-			if(!v.getId().equals(userId)) {
-				tmp[1] = getLegendIndex(v.getUserRank());
-			} 
-			int category = tmp[1];
-			int id = tmp[2];
-			Map<String, Object> node = new LinkedHashMap<String, Object>();
-			node.put("name", v.getId() + "");
-			node.put("value", v.getNickname());
-			node.put("category", legend[category]);
-			node.put("depth", depth);
-			node.put("parentName", v.getParentId() + "");
-			node.put("symbolSize", size[category]);
-			node.put("symbol", "image://" + v.getAvatar()/* + "@100-1ci"*/);
-			node.put("isParent", true);
-			tmp[2] = id + 1;
-			return node;
-		}).collect(Collectors.toList()));
-		tmp[0] = depth + 1;
-		
-		resultMap.put("nodes", allChildren);
-		
-		List<Map<String, Object>> categories = Arrays.asList(legend).stream().map(v -> {
-			Map<String, Object> category = new LinkedHashMap<String, Object>();
-			category.put("name", v);
-			category.put("keyword", "");
-			category.put("base", v);
-			return category;
-		}).collect(Collectors.toList());
-		resultMap.put("categories", categories);
-		
-		List<Map<String, Object>> links = allChildren.stream().map(v -> {
-			Map<String, Object> topLink = new LinkedHashMap<String, Object>();
-			topLink.put("source", v.get("name"));
-			topLink.put("target", v.get("parentName"));
-			return topLink;
-		}).collect(Collectors.toList());
-		resultMap.put("links", links);
-		return resultMap;
-	}
-	
-	private Integer getLegendIndex(UserRank userRank) {
-		Integer index = 1;
-		switch (userRank) {
-		case V0:
-			index = 5;
-			break;
-		case V1:
-			index = 4;
-			break;
-		case V2:
-			index = 3;
-			break;
-		case V3:
-			index = 2;
-			break;
-		case V4:
-			index = 1;
-			break;
-		default:
-			break;
-		}
-		return index;
 	}
 	
 	private void checkAndValidateIsPlatform(Long userId) {

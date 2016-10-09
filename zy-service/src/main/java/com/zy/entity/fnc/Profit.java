@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import static com.zy.entity.fnc.Profit.VO_ADMIN;
+import static com.zy.entity.fnc.Profit.VO_LIST;
 import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
@@ -32,9 +33,10 @@ import static io.gd.generator.api.query.Predicate.*;
 @Setter
 @QueryModel
 @Type(label = "收益单")
-@ViewObject(groups = VO_ADMIN)
+@ViewObject(groups = {VO_LIST, VO_ADMIN})
 public class Profit implements Serializable {
 
+	public static final String VO_LIST = "ProfitListVo";
 	public static final String VO_ADMIN = "ProfitAdminVo";
 
 	public enum ProfitType {
@@ -60,14 +62,14 @@ public class Profit implements Serializable {
 	@NotNull
 	@Field(label = "收益单状态")
 	@Query(EQ)
-	@View
+	@View(groups = {VO_LIST})
 	@View(name = "profitStatusStyle", type = String.class, groups = {VO_ADMIN})
 	private ProfitStatus profitStatus;
 
 	@NotNull
 	@Query({EQ,IN})
 	@Field(label = "用户id")
-	@View
+	@View(groups = VO_ADMIN)
 	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
@@ -75,52 +77,52 @@ public class Profit implements Serializable {
 	@NotBlank
 	@Field(label = "收益单号")
 	@Query(EQ)
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private String sn;
 
 	@NotBlank
 	@Field(label = "收益标题")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private String title;
 
 	@NotNull
 	@Field(label = "币种")
-	@View
+	@View(groups = VO_ADMIN)
 	private CurrencyType currencyType;
 
 	@NotNull
 	@DecimalMin("0.01")
 	@Field(label = "金额")
-	@View
-	@View(name = "amountLabel", type = String.class, groups = VO_ADMIN)
+	@View(groups = VO_ADMIN)
+	@View(name = "amountLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal amount;
 
 	@NotNull
 	@Query({GTE,LT})
 	@Field(label = "创建时间")
-	@View
-	@View(name = "createdTimeLabel", type = String.class)
+	@View(groups = VO_ADMIN)
+	@View(name = "createdTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private Date createdTime;
 
 	@Query({GTE,LT})
 	@Field(label = "发放时间")
-	@View
-	@View(name = "grantedTimeLabel", type = String.class)
+	@View(groups = VO_ADMIN)
+	@View(name = "grantedTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private Date grantedTime;
 
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "收益单类型")
-	@View
+	@View(groups = VO_ADMIN)
 	@NotNull
 	private ProfitType profitType;
 
 	@Field(label = "关联业务id", description = "可以不填写")
-	@View
+	@View(groups = VO_ADMIN)
 	@Query(Predicate.EQ)
 	private Long refId;
 
 	@Field(label = "备注")
-	@View
+	@View(groups = VO_ADMIN)
 	private String remark;
 
 }

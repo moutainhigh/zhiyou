@@ -18,7 +18,7 @@ public class OrderDeliverDto implements Serializable {
 	private Long id;
 
 	@NotNull
-	private Boolean useLogistics;
+	private Boolean isUseLogistics;
 
 	@StringBinder
 	@Length(max = 20)

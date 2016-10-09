@@ -1,20 +1,5 @@
 package com.zy.admin.controller.mal;
 
-import com.zy.common.model.tree.TreeHelper;
-import com.zy.common.model.tree.TreeNode;
-import com.zy.component.LocalCacheComponent;
-import com.zy.entity.mal.Order;
-import com.zy.entity.mal.OrderItem;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.User.UserRank;
-import com.zy.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +7,24 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.zy.common.model.tree.TreeHelper;
+import com.zy.common.model.tree.TreeNode;
+import com.zy.component.LocalCacheComponent;
+import com.zy.entity.mal.Order;
+import com.zy.entity.mal.OrderItem;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
+
 @RequestMapping("/stastics")
 @Controller
 public class UserTreeController {
-
-	@Autowired
-	private UserService userService;
 
 	@Autowired
 	private LocalCacheComponent localCacheComponent;

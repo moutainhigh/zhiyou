@@ -2,9 +2,12 @@ package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.fnc.Transfer;
+import com.zy.entity.usr.User;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.TransferAdminVo;
+import com.zy.vo.TransferListVo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,5 +35,20 @@ public class TransferComponent {
 		transferAdminVo.setAmountLabel(GcUtils.formatCurreny(transfer.getAmount()));
 
 		return transferAdminVo;
+	}
+
+	public TransferListVo buildListVo(Transfer transfer) {
+		TransferListVo transferListVo = new TransferListVo();
+		BeanUtils.copyProperties(transfer, transferListVo);
+		
+		Long toUserId = transfer.getToUserId();
+		if(toUserId != null) {
+			User user = cacheComponent.getUser(toUserId);
+			transferListVo.setToUser(VoHelper.buildUserAdminSimpleVo(user));
+		}
+		transferListVo.setAmountLabel(GcUtils.formatCurreny(transfer.getAmount()));
+		transferListVo.setCreatedTimeLabel(GcUtils.formatDate(transfer.getCreatedTime(), TIME_PATTERN));
+		transferListVo.setTransferredTimeLabel(GcUtils.formatDate(transfer.getTransferredTime(), TIME_PATTERN));
+		return transferListVo;
 	}
 }

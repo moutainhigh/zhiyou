@@ -30,7 +30,6 @@ import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.entity.fnc.CurrencyType.现金;
 import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
-import static com.zy.model.Constants.TOPIC_USER_RANK_CHANGED;
 
 @Service
 @Validated
@@ -179,7 +178,7 @@ public class UserServiceImpl implements UserService {
 	public void unfreeze(@NotNull Long id, @NotNull Long operatorId) {
 
 		User user = findAndValidate(id);
-		user.setIsFrozen(true);
+		user.setIsFrozen(false);
 		userMapper.update(user);
 		usrComponent.recordUserLog(id, operatorId, "解冻", null);
 	}
@@ -198,10 +197,8 @@ public class UserServiceImpl implements UserService {
 			return; // 幂等操作
 		}
 
-		user.setUserRank(userRank);
-		userMapper.update(user);
+		usrComponent.upgrade(id, plainUserRank, userRank);
 		usrComponent.recordUserLog(id, operatorId, "设置用户等级", "从" + plainUserRank + "改为" + userRank + ", 备注" + remark);
-		producer.send(TOPIC_USER_RANK_CHANGED, user.getId());
 	}
 
 	@Override

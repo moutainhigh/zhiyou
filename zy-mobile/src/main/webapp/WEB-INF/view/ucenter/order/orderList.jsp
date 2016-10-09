@@ -35,7 +35,7 @@
       <li<c:if test="${orderStatus == '已支付'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=2">已支付 (${orderCount2})</a></li>
       <li<c:if test="${orderStatus == '已发货'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=3">已发货 (${orderCount3})</a></li>
       <li<c:if test="${orderStatus == '已完成'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=4">已完成 (${orderCount4})</a></li>
-      <li<c:if test="${orderStatus == '已退款'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=5">已退款 (${orderCount5})</a></li>
+      <%--<li<c:if test="${orderStatus == '已退款'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=5">已退款 (${orderCount5})</a></li>--%>
       <li<c:if test="${orderStatus == '已取消'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=6">已取消 (${orderCount6})</a></li>
     </ul>
   </nav>

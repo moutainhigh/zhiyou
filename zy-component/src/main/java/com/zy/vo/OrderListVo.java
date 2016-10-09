@@ -32,14 +32,14 @@ public class OrderListVo implements Serializable {
 	private BigDecimal amount;
 
 	/* 扩展 */
+	@Field(label = "isPlatformDeliver")
+	private Boolean isPlatformDeliver;
 	@Field(label = "下单时间")
 	private String createdTimeLabel;
 	@Field(label = "过期时间")
 	private String expiredTimeLabel;
 	@Field(label = "应付总金额")
 	private String amountLabel;
-	@Field(label = "发货时间")
-	private String deliveredTimeLabel;
 	@Field(label = "orderItems")
 	private List<OrderItemVo> orderItems = new ArrayList<>();
 

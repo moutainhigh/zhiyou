@@ -1,11 +1,32 @@
 package com.zy.entity.mal;
 
+import static com.zy.entity.mal.Order.VO_ADMIN;
+import static com.zy.entity.mal.Order.VO_ADMIN_FULL;
+import static com.zy.entity.mal.Order.VO_DETAIL;
+import static com.zy.entity.mal.Order.VO_LIST;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.zy.common.extend.StringBinder;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Transfer;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
 import com.zy.model.ImageVo;
 
 import io.gd.generator.annotation.Field;
@@ -19,19 +40,6 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-
-import static com.zy.entity.mal.Order.*;
 
 @Entity
 @Table(name = "mal_order")
@@ -49,7 +57,8 @@ import static com.zy.entity.mal.Order.*;
 				@View(name = "imageThumbnail", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
 				@View(name = "price", type = BigDecimal.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
 				@View(name = "priceLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
-				@View(name = "quantity", type = Long.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+				@View(name = "quantity", type = Long.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL}),
+				@View(name = "isPlatformDeliver", type = Boolean.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})
 		}
 
 )
@@ -64,11 +73,6 @@ public class Order implements Serializable {
 	@Type(label = "订单状态")
 	public enum OrderStatus {
 		待支付, 待确认, 已支付, 已发货, 已完成, 已退款, 已取消
-	}
-
-	@Type(label = "物流费支付方式")
-	public enum LogisticsFeePayType {
-		无, 买家付, 卖家付
 	}
 
 	@Id
@@ -91,12 +95,23 @@ public class Order implements Serializable {
 	private Long userId;
 
 	@NotNull
+	@Field(label = "买家用户等级")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
+	@View(name = "buyerUserRankLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
+	private UserRank buyerUserRank;
+
+	@NotNull
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "卖家id")
 	@View
 	@AssociationView(name = "seller", groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL}, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long sellerId;
-	
+
+	@Field(label = "卖家用户等级", description = "如果是平台用户可以为空")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
+	@View(name = "sellerUserRankLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
+	private UserRank sellerUserRank;
+
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})
 	@NotNull
 	@Field(label = "是否支付给平台")
@@ -193,25 +208,30 @@ public class Order implements Serializable {
 	@Query(Predicate.EQ)
 	private Boolean isSettledUp;
 
-	@Field(label = "是否物流发货")
-	@View(name = "useLogisticsLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
-	@View(groups = {VO_DETAIL, VO_ADMIN})
-	private Boolean useLogistics;
-
-	@Field(label = "物流费支付类型")
-	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
-	private LogisticsFeePayType logisticsFeePayType;
-
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	@NotNull
-	@Field(label = "是否平台发货")
+	@Field(label = "是否已拷贝")
 	@Query(Predicate.EQ)
-	private Boolean isPlatformDeliver;
+	private Boolean isCopied;
 
-	@View(name = "deliveredTimeLabel", type = String.class)
+	@View(name = "copiedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@Field(label = "拷贝时间")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private Date copiedTime;
+
+	@Field(label = "对应订单id")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private Long refId;
+
+	@View(name = "deliveredTimeLabel", type = String.class, groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	@Field(label = "发货时间")
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	private Date deliveredTime;
+
+	@Field(label = "是否物流发货")
+	@View(name = "useLogisticsLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(groups = {VO_DETAIL, VO_ADMIN})
+	private Boolean isUseLogistics;
 
 	@Query(Predicate.LK)
 	@Field(label = "物流公司名")
@@ -229,6 +249,10 @@ public class Order implements Serializable {
 	@Field(label = "物流费")
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	private BigDecimal logisticsFee;
+
+	@Field(label = "是否买家支付邮费")
+	@View(groups = {VO_ADMIN_FULL})
+	private Boolean isBuyerPayLogisticsFee;
 
 	@NotNull
 	@Field(label = "收件人区域")

@@ -317,7 +317,7 @@
           </div>
         </div>
         </c:if>
-        <c:if test="${userRank == 'V4'}">
+        <c:if test="${userRank == 'V3' || userRank == 'V4'}">
         <div class="list-item form-radio">
           <label class="list-text" for="isPayToPlatform1">付款给平台</label>
           <div class="list-unit">

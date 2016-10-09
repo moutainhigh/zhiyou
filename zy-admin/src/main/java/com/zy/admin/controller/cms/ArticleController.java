@@ -2,7 +2,6 @@ package com.zy.admin.controller.cms;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
-import io.gd.generator.api.query.Direction;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -33,14 +32,14 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
-import com.zy.common.support.AliyunOssSupport;
 import com.zy.component.ArticleComponent;
-import com.zy.entity.act.Activity;
 import com.zy.entity.cms.Article;
 import com.zy.model.Constants;
 import com.zy.model.query.ArticleQueryModel;
 import com.zy.service.ArticleService;
 import com.zy.vo.ArticleAdminVo;
+
+import io.gd.generator.api.query.Direction;
 
 @Controller
 @RequestMapping("/article")

@@ -48,8 +48,6 @@ public class ActivityComponent {
 	@Autowired
 	private ActivitySignInService activitySignInService;
 	
-	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-	
 	private static final String SIMPLE_TIME_PATTERN = "M月d日 HH:mm";
 
 	public ActivityAdminFullVo buildAdminFullVo(Activity activity) {

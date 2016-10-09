@@ -117,7 +117,7 @@
 				</bean>
 
 				<!--report 结算-->
-				<bean id="reportStatementJobTrigger"
+				<bean id="ReportSettlementJobJobTrigger"
 				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
 						<bean id="reportStatementJobDetail"

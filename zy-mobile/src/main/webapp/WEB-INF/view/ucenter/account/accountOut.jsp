@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>支出 - ${title}</title>
+<title>支出 - ${type}</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/pageload.jsp"%>
 <script type="text/javascript">
@@ -22,14 +22,14 @@
   
   function buildRow(row) {
     var html = '<div class="list-item">' 
-             +   '<img class="image-40 round mr-10" src="' + row.refUser.avatarThumbnail + '">'
+             +   '<img class="image-40 round mr-10" src="' + row.toUser.avatarThumbnail + '">'
              +   '<div class="list-text pl-5">'
-             +     '<div class="fs-14">' + row.refUser.nickname + '</div>'
-             +     '<div class="fs-12 font-999">' + row.transTimeLabel + '</div>' 
+             +     '<div class="fs-14">' + row.toUser.nickname + '</div>'
+             +     '<div class="fs-12 font-999">' + row.createdTimeLabel + '</div>' 
              +   '</div>' 
              +   '<div class="list-unit width-100 text-right">' 
-             +     '<div class="' + (row.inOut == '收入' ? 'currency-in' : 'currency-out') + '">' + row.transAmount.toFixed(2) + '</div>' 
-             +     '<div class="fs-12 font-999">余额: ' + row.afterAmount.toFixed(2) + '</div>' 
+             +     '<div class="currency-out">' + row.amountLabel + '</div>' 
+             +     '<div class="fs-12 font-999">状态: ' + row.transferStatus + '</div>' 
              +   '</div>' 
              + '</div>';
     return html;
@@ -40,7 +40,7 @@
 <body class="account-list">
   <article class="page-wrap">
     <header class="header">
-      <h1>支出 - ${title}</h1>
+      <h1>支出 - ${type}</h1>
       <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
   
@@ -53,16 +53,16 @@
       </c:if>
       
       <div class="page-list list-group mb-0">
-        <c:forEach items="${page.data}" var="accountLog">
+        <c:forEach items="${page.data}" var="transfer">
         <div class="list-item">
-          <img class="image-40 round mr-10" src="${accountLog.refUser.avatarThumbnail}">
+          <img class="image-40 round mr-10" src="${transfer.toUser.avatarThumbnail}">
           <div class="list-text pl-5">
-            <div class="fs-14">${accountLog.refUser.nickname}</div>
-            <div class="fs-12 font-999">${accountLog.transTimeLabel}</div>
+            <div class="fs-14">${transfer.toUser.nickname}</div>
+            <div class="fs-12 font-999">${transfer.createdTimeLabel}</div>
           </div>
           <div class="list-unit width-100 text-right">
-            <div class="<c:if test="${accountLog.inOut == '支出'}"> currency-out</c:if><c:if test="${accountLog.inOut == '收入'}"> currency-in</c:if>">${accountLog.transAmount}</div>
-            <div class="fs-12 font-999">余额: ${accountLog.afterAmount}</div>
+            <div class="currency-out">${transfer.amountLabel}</div>
+            <div class="fs-12 font-999">状态: ${transfer.transferStatus}</div>
           </div>
         </div>
         </c:forEach>

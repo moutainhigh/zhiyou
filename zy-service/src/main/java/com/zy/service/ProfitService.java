@@ -1,19 +1,16 @@
 package com.zy.service;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import com.zy.common.model.query.Page;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
-import com.zy.model.dto.ProfitDto;
 import com.zy.model.query.ProfitQueryModel;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 public interface ProfitService {
 
 	Page<Profit> findPage(ProfitQueryModel profitQueryModel);
-	
-	Page<ProfitDto> findDtoPage(ProfitQueryModel profitQueryModel);
 	
 	List<Profit> findAll(ProfitQueryModel profitQueryModel);
 	
