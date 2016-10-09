@@ -72,6 +72,7 @@
         <div class="list-text">职业</div>
         <div class="list-unit">${userInfo.jobName}</div>
       </div>
+      <%--
       <div class="list-item">
         <div class="list-text">标签</div>
         <div class="list-unit">
@@ -86,6 +87,7 @@
           </c:forEach>
         </div>
       </div>
+       --%>
     </div>
     
     <div class="list-group">
