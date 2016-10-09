@@ -39,7 +39,7 @@
   <form class="valid-form" action="${ctx}/login" method="post">
     <div class="list-group mt-15">
       <div class="list-item">
-        <i class="list-icon fa fa-phone"></i>
+        <i class="list-icon fa fa-mobile fs-20"></i>
         <div class="list-text">
           <input type="text" id="phone" name="phone" class="form-input" value="${phone}" placeholder="输入手机号">
         </div>
