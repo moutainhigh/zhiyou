@@ -65,9 +65,6 @@
         'jobId' : {
           required : '请选择职业'
         },
-        'tagIds' : {
-          required : '请填写标签'
-        },
         'realname' : {
           required : '请填写真实姓名'
         },
@@ -97,6 +94,7 @@
       });
     });
     
+    <%--
     /* tags 标签*/
     $('#tagWrap').click(function() {
       showAside();
@@ -141,9 +139,11 @@
       });
       $('#tagIds').val(checkedIds.join(','));
     });
+    --%>
 
   });
   
+  <%--
   function showAside() {
     if ($('#tagAside').length == 0) {
       var tagAside = document.getElementById('asideTpl').innerHTML;
@@ -163,8 +163,9 @@
       $('#tagAside').hide();
     });
   }
+  --%>
 </script>
-
+<%--
 <script id="asideTpl" type="text/html">
 <aside id="tagAside" class="aside-tag header-fixed fix-lt size-100p zindex-1000" style="left:100%;display:none;overflow-y:auto">
   <header class="header">
@@ -184,7 +185,7 @@
   </div>
 </aside>
 </script>
-
+ --%>
 </head>
 <body>
   <header class="header">
@@ -248,6 +249,7 @@
             </select>
           </div>
         </div>
+        <%--
         <div class="list-item">
           <label class="list-label">标签</label>
           <div id="tagWrap" class="list-text tag-wrap pt-5">
@@ -262,6 +264,7 @@
           </div>
           <i class="i-arrow"></i>
         </div>
+        --%>
       </div>
     
       <div class="list-group">

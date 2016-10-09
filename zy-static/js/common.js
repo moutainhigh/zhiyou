@@ -57,6 +57,7 @@ $(function() {
       +   '<div class="abs-mm text-center zindex-100">'
       +     '<p class="font-white fs-15 lh-30">您还没有登录，请先登录</p>'
       +     '<a class="btn green mt-15 width-200 round-2" href="' + url + '"><i class="fa fa-weixin font-white"></i> 去授权登录</a>'
+      +     '<a class="btn default mt-15 width-200 round-2" href="${ctx}/login">手机密码登录</a>'
       +   '</div>'
       + '</aside>';
     $('body').addClass('o-hidden');
