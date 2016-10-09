@@ -129,7 +129,7 @@
       </div>
       
       <div class="form-btn">
-        <input id="btnSubmit" class="btn green btn-block round-2" type="submit" value="提 交">
+        <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="下一步">
       </div>
     </form>
   </article>
