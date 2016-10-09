@@ -17,7 +17,7 @@ import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
 
-@RequestMapping("/u/modifyPassword")
+@RequestMapping("/u/password")
 @Controller
 public class UcenterModifyPasswordController {
 	
@@ -33,8 +33,7 @@ public class UcenterModifyPasswordController {
 		} else {
 			model.addAttribute("hasPassword", true);
 		}
-
-		return "ucenter/user/modifyPassword";
+		return "ucenter/user/userPassword";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -52,11 +51,9 @@ public class UcenterModifyPasswordController {
 			validate(password, NOT_BLANK, "old password must not be blank");
 			if (!userService.hashPassword(oldPassword).equals(persistentPassword)) {
 				redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("修改密码失败, 旧密码错误"));
-				return "redirect:/u/modifyPassword";
+				return "redirect:/u/password";
 			}
 		}
-
-
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok(label + "密码成功"));
 		return "redirect:/u";
 	}
