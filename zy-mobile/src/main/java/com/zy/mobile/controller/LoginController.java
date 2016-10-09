@@ -1,5 +1,35 @@
 package com.zy.mobile.controller;
 
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.CACHE_NAME_BIND_PHONE_SMS_LAST_SEND_TIME;
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
+import static com.zy.model.Constants.REQUEST_ATTRIBUTE_INVITER_ID;
+import static com.zy.model.Constants.SESSION_ATTRIBUTE_AGENT_REGISTER_DTO;
+import static com.zy.model.Constants.SESSION_ATTRIBUTE_BIND_PHONE_SMS;
+import static com.zy.model.Constants.SESSION_ATTRIBUTE_CAPTCHA;
+import static com.zy.model.Constants.SESSION_ATTRIBUTE_REDIRECT_URL;
+import static com.zy.model.Constants.WEIXIN_MP_PAY_NOTIFY;
+
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.cache.CacheSupport;
@@ -17,29 +47,9 @@ import com.zy.model.dto.AgentRegisterDto;
 import com.zy.service.ShortMessageService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
+
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpService;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.Date;
-
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.*;
 
 @RequestMapping
 @Controller
@@ -92,7 +102,6 @@ public class LoginController {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("登录失败, 密码不能为空"));
 			return "redirect:/login";
 		}
-
 
 		User user = userService.findByPhone(phone);
 		if (user == null) {

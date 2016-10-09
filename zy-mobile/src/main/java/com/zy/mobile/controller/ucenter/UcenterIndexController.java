@@ -1,5 +1,8 @@
 package com.zy.mobile.controller.ucenter;
 
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 import static java.util.Objects.isNull;
 
 import java.io.IOException;
@@ -118,6 +121,7 @@ public class UcenterIndexController {
         } else {
         	isUserInfoCompleted = userInfo.getConfirmStatus() == ConfirmStatus.已通过;
         }
+		model.addAttribute("hasPassword", StringUtils.isNotEmpty(user.getPassword()));
         model.addAttribute("hasAddress", !addressService.findByUserId(userId).isEmpty());
         model.addAttribute("isUserInfoCompleted", isUserInfoCompleted);
         model.addAttribute("user", userComponent.buildListVo(user));
@@ -180,5 +184,28 @@ public class UcenterIndexController {
         redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("修改成功"));
         return "redirect:/u/info";
     }
+    
+    @RequestMapping(value = "/password", method = RequestMethod.GET)
+	public String password(Principal principal, Model model) {
+		User user = userService.findOne(principal.getUserId());
+		model.addAttribute("hasPassword", StringUtils.isNotEmpty(user.getPassword()));
+		return "ucenter/user/userPassword";
+	}
+	
+	@RequestMapping(value = "/password", method = RequestMethod.POST)
+	public String password(String oldPassword, String password, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		validate(password, NOT_BLANK, "password must not be blank");
+		
+		User user = userService.findOne(principal.getUserId());
+		String persistentPassword = user.getPassword();
+		if (StringUtils.isNotEmpty(persistentPassword) && !userService.hashPassword(oldPassword).equals(persistentPassword)) {
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("修改密码失败, 旧密码错误"));
+			return "redirect:/u/password";
+		} 
+		String label = StringUtils.isNotEmpty(persistentPassword) ? "修改" : "设置";
+		userService.modifyPassword(principal.getUserId(), password);	
+		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok(label + "密码成功"));
+		return "redirect:/u/info";
+	}
 	
 }

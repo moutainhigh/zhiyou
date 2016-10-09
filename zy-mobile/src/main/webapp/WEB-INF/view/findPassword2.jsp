@@ -44,17 +44,15 @@
   </header>
 
   <article>
-    <form id="form" action="${ctx}/findPassword2" method="post">
+    <form id="form" action="${ctx}/findPassword/modify" method="post">
     <div class="list-group">
       <div class="list-item">
-        <i class="list-icon fa fa-key"></i>
         <label class="list-label" for="password">设置密码</label>
         <div class="list-text">
           <input type="password" id="password" name="password" class="form-input" value="" placeholder="输入要设置的密码">
         </div>
       </div>
       <div class="list-item">
-        <i class="list-icon fa fa-key"></i>
         <label class="list-label" for="password2">确认密码</label>
         <div class="list-text">
           <input type="password" id="password2" name="password2" class="form-input" value="" placeholder="重新输入密码">
@@ -62,7 +60,7 @@
       </div>
     </div>
     <div class="form-btn">
-      <input class="btn orange btn-block round-2" type="submit" value="提 交">
+      <input class="btn green btn-block round-2" type="submit" value="提 交">
     </div>
     </form>
   </article>
