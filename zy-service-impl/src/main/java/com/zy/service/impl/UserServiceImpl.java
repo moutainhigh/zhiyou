@@ -303,6 +303,26 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public void modifyIsRootAdmin(Long id, boolean isRoot, Long operatorId, String remark) {
+		User user = findAndValidate(id);
+		String label = isRoot ? "设置" : "取消";
+		if (user.getIsRoot() == null) {
+			// 无视
+		} else if (user.getIsRoot()) {
+			if (isRoot) {
+				return; // 幂等操作
+			}
+		} else {
+			if (!isRoot) {
+				return; // 幂等操作
+			}
+		}
+		user.setIsRoot(isRoot);
+		userMapper.update(user);
+		usrComponent.recordUserLog(id, operatorId, label + "子系统", remark);
+	}
+
+	@Override
 	public void modifyParentIdAdmin(@NotNull Long id, @NotNull Long parentId, @NotNull Long operatorId, String remark) {
 		User user = findAndValidate(id);
 		User parent = findAndValidate(parentId);
