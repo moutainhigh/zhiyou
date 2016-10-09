@@ -36,7 +36,7 @@ public class ImageController {
 	public Result<?> upload(@RequestParam(defaultValue = "200") int width, @RequestParam(defaultValue = "200") int height, MultipartFile file, HttpServletRequest request, Model model, Principal principal) {
 		try {
 			if (width < 0 || width > 1000 || height < 0 || height > 1000) {
-				throw new ValidationException("长宽参数错误");
+				throw new ValidationException("【上传图片】图片参数错误，长宽值必须在1-1000之间");
 			}
 			GcUtils.checkImage(file);
 			String url = aliyunOssSupport.putPublicObject(Constants.ALIYUN_BUCKET_NAME_IMAGE, "image/", file, Constants.ALIYUN_URL_IMAGE);
@@ -45,11 +45,9 @@ public class ImageController {
 			result.put("imageThumbnail", GcUtils.getThumbnail(url, width, height));
 			return ResultBuilder.result(result);
 		} catch (Exception e) {
-			logger.error("上传图片失败", e);
+			logger.error("【上传图片】上传图片失败", e);
 			return ResultBuilder.error(StringEscapeUtils.escapeXml(e.getMessage()));
 		}
 	}
-
-
 	
 }
