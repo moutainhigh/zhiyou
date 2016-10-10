@@ -110,7 +110,7 @@ public class Payment implements Serializable {
 	private Date paidTime;
 
 	@NotNull
-	@Field(label = "支付状态")
+	@Field(label = "支付单状态")
 	@Query(Predicate.EQ)
 	@View
 	@View(name = "paymentStatusStyle", type = String.class, groups = {VO_ADMIN})

@@ -135,7 +135,7 @@ public class Deposit implements Serializable {
 
 	@NotNull
 	@Query({Predicate.EQ, Predicate.IN})
-	@Field(label = "提现单状态")
+	@Field(label = "充值单状态")
 	@View
 	@View(name = "depositStatusStyle", type = String.class, groups = {VO_ADMIN})
 	private DepositStatus depositStatus;
