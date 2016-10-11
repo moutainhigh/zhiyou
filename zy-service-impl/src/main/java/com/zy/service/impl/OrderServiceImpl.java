@@ -249,7 +249,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void deliver(@NotNull OrderDeliverDto orderDeliverDto) {
 
-		validate(orderDeliverDto, "id", "useLogistics");
+		validate(orderDeliverDto, "id", "isUseLogistics");
 		boolean isUseLogistics = orderDeliverDto.getIsUseLogistics();
 
 		Long id = orderDeliverDto.getId();
