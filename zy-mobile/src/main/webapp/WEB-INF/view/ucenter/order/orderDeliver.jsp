@@ -21,7 +21,7 @@
     $('.valid-form').validate({
       ignore: ':hidden',
       rules : {
-        'useLogistics' : {
+        'isUseLogistics' : {
           required : true
         },
         'logisticsName' : {
@@ -37,7 +37,7 @@
         }
       },
       submitHandler : function(form) {
-        var deliverType = $('input[name="useLogistics"]:checked');
+        var deliverType = $('input[name="isUseLogistics"]:checked');
         if(deliverType.length == 0) {
           messageFlash('请选择发货方式');
           return;
@@ -73,14 +73,14 @@
         <div class="list-item form-radio">
           <label class="list-text" for="deliverType0">面对面发货</label>
           <div class="list-unit">
-            <input id="deliverType0" type="radio" name="useLogistics" value="false">
+            <input id="deliverType0" type="radio" name="isUseLogistics" value="false">
             <label class="i-checked" for="deliverType0"></label>
           </div>
         </div>
         <div class="list-item form-radio">
           <label class="list-text" for="deliverType1">物流发货</label>
           <div class="list-unit">
-            <input id="deliverType1" type="radio" name="useLogistics" value="true">
+            <input id="deliverType1" type="radio" name="isUseLogistics" value="true">
             <label class="i-checked" for="deliverType1"></label>
           </div>
         </div>
