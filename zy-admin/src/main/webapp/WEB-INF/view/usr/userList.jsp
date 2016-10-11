@@ -73,15 +73,15 @@
               var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/user/detail?id=' + data + '"><i class="fa fa-search"></i> 查看 </a>';
               if (full.userType != '平台') {
                 <shiro:hasPermission name="user:edit">
-                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
+                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/update/' + data + '"><i class="fa fa-edit"></i> 修改密码 </a>';
                 </shiro:hasPermission>
                 <shiro:hasPermission name="user:modifyParent">
                 if(full.parent != null) {
-                  optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/user/modifyParent?id=' + data + '"><i class="fa fa-edit"></i> 修改上级 </a>';
+                  optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/user/modifyParent?id=' + data + '"><i class="fa fa-edit"></i> 修改邀请人</a>';
                 }
                 </shiro:hasPermission>
                 <shiro:hasPermission name="user:addVip">
-                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="addVip(' + full.id + ')"><i class="fa fa-user"></i> 加VIP </a>';
+                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="addVip(' + full.id + ')"><i class="fa fa-user"></i> 修改等级 </a>';
                 </shiro:hasPermission>
                 <shiro:hasPermission name="user:freeze">
                 if (full.isFrozen) {
