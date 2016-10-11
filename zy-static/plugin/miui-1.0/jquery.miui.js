@@ -514,11 +514,11 @@
         bal_second = Math.floor((bal - (bal_day*60*60*24*1000) - (bal_hour*60*60*1000) - (bal_minute*60*1000)) / 1000);
         var html = '';
         if(bal_day > 0) {
-          html += bal_day + '<em>' + options.unit[0] + '</em>';
+          html += bal_day + '<em>' + options.units[0] + '</em>';
         }
-        html += (bal_hour < 10 ? '0' + bal_hour : bal_hour) + '<em>' + options.unit[1] + '</em>';
-        html += (bal_minute < 10 ? '0' + bal_minute : bal_minute) + '<em>' + options.unit[2] + '</em>';
-        html += (bal_second < 10 ? '0' + bal_second : bal_second) + '<em>' + options.unit[3] + '</em>';
+        html += (bal_hour < 10 ? '0' + bal_hour : bal_hour) + '<em>' + options.units[1] + '</em>';
+        html += (bal_minute < 10 ? '0' + bal_minute : bal_minute) + '<em>' + options.units[2] + '</em>';
+        html += (bal_second < 10 ? '0' + bal_second : bal_second) + '<em>' + options.units[3] + '</em>';
         
         $this.html(html);
       };
