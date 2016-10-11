@@ -139,7 +139,7 @@
               <label class="control-label col-md-3">商品主图<span class="required"> * </span></label>
               <div class="col-md-5">
                 <div class="input-icon right">
-                  <img data-target="image1" class="product-image bd" style="width: 240px; height: 150px;" alt="商品主图 点击选择" src="${ctx}/image/upload_240_150.jpg"> <input type="hidden" name="image1"
+                  <img data-target="image1" class="product-image bd" style="width: 240px; height: 240px;" alt="商品主图 点击选择" src="${ctx}/image/upload_240_240.jpg"> <input type="hidden" name="image1"
                     value="" />
                 </div>
               </div>
