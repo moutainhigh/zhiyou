@@ -147,7 +147,7 @@
               <div class="col-md-5">
                 <div class="input-icon right">
                   <img data-target="image1" class="product-image bd" alt="商品主图 点击选择"
-                    src="<c:if test="${not empty product.image1 }">${product.image1Big}</c:if><c:if test="${empty product.image1 }">${ctx}/image/upload_240_150.jpg</c:if>">
+                    src="<c:if test="${not empty product.image1 }">${product.image1Big}</c:if><c:if test="${empty product.image1 }">${ctx}/image/upload_240_240.jpg</c:if>">
                   <input type="hidden" name="image1" value="${product.image1}" />
                 </div>
               </div>
