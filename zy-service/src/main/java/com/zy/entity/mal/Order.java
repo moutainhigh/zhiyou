@@ -308,9 +308,8 @@ public class Order implements Serializable {
 	private Long productId;
 
 	//@NotBlank
-	@View(name = "imageThumbnail")
 	@Field(label = "商品图")
-	@View(name = "imageThumbnail", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(name = "imageThumbnail", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})
 	private String image;
 
 	//@NotNull

@@ -42,8 +42,6 @@ public class OrderListVo implements Serializable {
 	private String expiredTimeLabel;
 	@Field(label = "应付总金额")
 	private String amountLabel;
-	@Field(label = "商品图")
-	private String imageThumbnail;
 	@Field(label = "orderItems")
 	private List<OrderItemVo> orderItems = new ArrayList<>();
 
