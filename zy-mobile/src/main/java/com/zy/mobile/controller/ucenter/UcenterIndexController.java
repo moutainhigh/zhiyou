@@ -1,17 +1,22 @@
 package com.zy.mobile.controller.ucenter;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
-import static java.util.Objects.isNull;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.zy.common.exception.ValidationException;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.support.AliyunOssSupport;
+import com.zy.component.UserComponent;
+import com.zy.entity.fnc.Account;
+import com.zy.entity.mal.Order;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
+import com.zy.model.dto.OrderSumDto;
+import com.zy.model.query.MessageQueryModel;
+import com.zy.model.query.OrderQueryModel;
+import com.zy.service.*;
+import com.zy.util.GcUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,26 +29,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.zy.common.exception.ValidationException;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.support.AliyunOssSupport;
-import com.zy.component.UserComponent;
-import com.zy.entity.fnc.Account;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.UserInfo;
-import com.zy.model.Constants;
-import com.zy.model.Principal;
-import com.zy.model.query.MessageQueryModel;
-import com.zy.model.query.OrderQueryModel;
-import com.zy.service.AccountService;
-import com.zy.service.AddressService;
-import com.zy.service.MessageService;
-import com.zy.service.OrderService;
-import com.zy.service.UserInfoService;
-import com.zy.service.UserService;
-import com.zy.util.GcUtils;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
+import static java.util.Objects.isNull;
 
 @RequestMapping("/u")
 @Controller
@@ -103,9 +98,18 @@ public class UcenterIndexController {
 		messageQueryModel.setUserIdEQ(userId);
 		messageQueryModel.setIsReadEQ(false);
 		model.addAttribute("unreadMessageCount", messageService.count(messageQueryModel));
-		
-		model.addAttribute("orderInConut", orderService.count(OrderQueryModel.builder().userIdEQ(userId).build()));
-		model.addAttribute("orderOutConut", orderService.count(OrderQueryModel.builder().sellerIdEQ(userId).build()));
+
+		OrderSumDto inSum = orderService.sum(OrderQueryModel.builder()
+				.orderStatusIN(new Order.OrderStatus[]{Order.OrderStatus.已完成, Order.OrderStatus.已发货, Order.OrderStatus.已支付})
+				.userIdEQ(userId).build());
+
+		OrderSumDto outSum = orderService.sum(OrderQueryModel.builder()
+				.orderStatusIN(new Order.OrderStatus[]{Order.OrderStatus.已完成, Order.OrderStatus.已发货, Order.OrderStatus.已支付})
+				.sellerIdEQ(userId).build());
+
+
+		model.addAttribute("inSumQuantity", inSum.getSumQuantity() == null ? 0 : inSum.getSumQuantity());
+		model.addAttribute("outSumQuantity", outSum.getSumQuantity() == null ? 0 : outSum.getSumQuantity());
 		return "ucenter/index";
 	}
 	
