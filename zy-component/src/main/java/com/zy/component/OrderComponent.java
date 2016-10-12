@@ -75,13 +75,12 @@ public class OrderComponent {
 			orderAdminFullVo.setIsPlatformDeliver(false);
 		}
 		
-		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
-		if (orderItem != null) {
-			orderAdminFullVo.setImageThumbnail(GcUtils.getThumbnail(orderItem.getImage()));
-			orderAdminFullVo.setPrice(orderItem.getPrice());
-			orderAdminFullVo.setPriceLabel(GcUtils.formatCurreny(orderItem.getPrice()));
-			orderAdminFullVo.setQuantity(orderItem.getQuantity());
-		}
+
+		orderAdminFullVo.setImageThumbnail(GcUtils.getThumbnail(order.getImage()));
+		orderAdminFullVo.setPrice(order.getPrice());
+		orderAdminFullVo.setPriceLabel(GcUtils.formatCurreny(order.getPrice()));
+		orderAdminFullVo.setQuantity(order.getQuantity());
+
 		
 		Long orderId = order.getId();
 		orderAdminFullVo.setProfits(profitService
@@ -151,13 +150,12 @@ public class OrderComponent {
 			orderAdminVo.setIsPlatformDeliver(false);
 		}
 		
-		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
-		if (orderItem != null) {
-			orderAdminVo.setImageThumbnail(GcUtils.getThumbnail(orderItem.getImage()));
-			orderAdminVo.setPrice(orderItem.getPrice());
-			orderAdminVo.setPriceLabel(GcUtils.formatCurreny(orderItem.getPrice()));
-			orderAdminVo.setQuantity(orderItem.getQuantity());
-		}
+
+		orderAdminVo.setImageThumbnail(GcUtils.getThumbnail(order.getImage()));
+		orderAdminVo.setPrice(order.getPrice());
+		orderAdminVo.setPriceLabel(GcUtils.formatCurreny(order.getPrice()));
+		orderAdminVo.setQuantity(order.getQuantity());
+
 		
 		orderAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getUserId())));
 		orderAdminVo.setSeller(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getSellerId())));

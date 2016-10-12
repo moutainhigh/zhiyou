@@ -219,6 +219,7 @@ public class UcenterOrderController {
 			newOrderId = orderService.copy(id);
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return "redirect:/u/order/" + id;
 		}
 		if(order.getIsPayToPlatform()){
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("已成功转给公司发货，无需支付"));

@@ -1,25 +1,5 @@
 package com.zy.entity.mal;
 
-import static com.zy.entity.mal.Order.VO_ADMIN;
-import static com.zy.entity.mal.Order.VO_ADMIN_FULL;
-import static com.zy.entity.mal.Order.VO_DETAIL;
-import static com.zy.entity.mal.Order.VO_LIST;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.zy.common.extend.StringBinder;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Payment;
@@ -28,7 +8,6 @@ import com.zy.entity.fnc.Transfer;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.ImageVo;
-
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -40,6 +19,18 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+
+import static com.zy.entity.mal.Order.*;
 
 @Entity
 @Table(name = "mal_order")
@@ -54,10 +45,6 @@ import lombok.Setter;
 				@CollectionView(name = "orderItems", type = ArrayList.class, groups = {VO_LIST, VO_DETAIL}, elementGroup = OrderItem.VO)
 		},
 		views = {
-				@View(name = "imageThumbnail", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
-				@View(name = "price", type = BigDecimal.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
-				@View(name = "priceLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL}),
-				@View(name = "quantity", type = Long.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL}),
 				@View(name = "isPlatformDeliver", type = Boolean.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})
 		}
 
@@ -309,5 +296,39 @@ public class Order implements Serializable {
 	@NotNull
 	@Query(Predicate.EQ)
 	private Boolean isDeleted;
+
+	/* 追加冗余 */
+	@NotNull
+	@Field(label = "是否多子订单")
+	private Boolean isMultiple;
+
+	//@NotNull
+	@Field(label = "商品id")
+	@View
+	private Long productId;
+
+	//@NotBlank
+	@View(name = "imageThumbnail")
+	@Field(label = "商品图")
+	@View(name = "imageThumbnail", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private String image;
+
+	//@NotNull
+	@DecimalMin("0.00")
+	@Field(label = "原价/市场价")
+	private BigDecimal marketPrice;
+
+	//@NotNull
+	@DecimalMin("0.00")
+	@Field(label = "单价")
+	@View(name = "price", type = BigDecimal.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(name = "priceLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private BigDecimal price;
+
+	//@NotNull
+	@Min(1L)
+	@Field(label = "数量")
+	@View(name = "quantity", type = Long.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
+	private Long quantity;
 
 }

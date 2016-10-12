@@ -161,6 +161,15 @@ public class OrderServiceImpl implements OrderService {
 		order.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_ORDER_EXPIRE_IN_MINUTES));
 		order.setIsPayToPlatform(orderCreateDto.getIsPayToPlatform());
 		order.setIsDeleted(false);
+
+		/* 追加字段 */
+		order.setIsMultiple(false);
+		order.setProductId(productId);
+		order.setMarketPrice(product.getMarketPrice());
+		order.setQuantity(quantity);
+		order.setPrice(price);
+		order.setImage(product.getImage1());
+
 		if (StringUtils.isNotBlank(title)) {
 			order.setTitle(title);
 		} else {
@@ -453,6 +462,14 @@ public class OrderServiceImpl implements OrderService {
 			
 			order.setIsDeleted(false);
 			order.setTitle(persistentOrder.getTitle());
+
+			/* 追加字段 */
+			order.setIsMultiple(false);
+			order.setProductId(productId);
+			order.setMarketPrice(product.getMarketPrice());
+			order.setQuantity(quantity);
+			order.setPrice(v4Price);
+			order.setImage(product.getImage1());
 
 			if (persistentOrder.getIsPayToPlatform()) {
 				order.setIsPayToPlatform(false);
