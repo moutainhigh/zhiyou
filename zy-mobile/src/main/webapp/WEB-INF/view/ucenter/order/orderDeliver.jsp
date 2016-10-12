@@ -42,6 +42,12 @@
           messageFlash('请选择发货方式');
           return;
         }
+        var reg = /^\d*\.\d{2}$/
+        var logisticsFee = $('#logisticsFee').val();
+        if(reg.test(logisticsFee)) {
+          messageAlert('物流费用必须为数字');
+          return;
+        }
         $(form).find(':submit').prop('disabled', true);
         form.submit();
       }
@@ -103,7 +109,7 @@
         <div class="list-item">
           <label class="list-label" for="logisticsFee">物流费用</label>
           <div class="list-text">
-            <input type="number" name="logisticsFee" class="form-input" value="" placeholder="填写物流费用">
+            <input type="number" id="logisticsFee" name="logisticsFee" class="form-input" value="" placeholder="填写物流费用">
           </div>
         </div>
       </div>
