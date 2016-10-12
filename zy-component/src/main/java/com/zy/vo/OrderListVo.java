@@ -30,6 +30,8 @@ public class OrderListVo implements Serializable {
 	private OrderStatus orderStatus;
 	@Field(label = "应付总金额")
 	private BigDecimal amount;
+	@Field(label = "商品id")
+	private Long productId;
 
 	/* 扩展 */
 	@Field(label = "isPlatformDeliver")
@@ -40,6 +42,8 @@ public class OrderListVo implements Serializable {
 	private String expiredTimeLabel;
 	@Field(label = "应付总金额")
 	private String amountLabel;
+	@Field(label = "商品图")
+	private String imageThumbnail;
 	@Field(label = "orderItems")
 	private List<OrderItemVo> orderItems = new ArrayList<>();
 

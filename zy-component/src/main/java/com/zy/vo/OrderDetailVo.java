@@ -81,10 +81,12 @@ public class OrderDetailVo implements Serializable {
 	private String offlineImage;
 	@Field(label = "银行汇款备注")
 	private String offlineMemo;
+	@Field(label = "商品id")
+	private Long productId;
+	@Field(label = "数量")
+	private Long quantity;
 
 	/* 扩展 */
-	@Field(label = "quantity")
-	private Long quantity;
 	@Field(label = "isPlatformDeliver")
 	private Boolean isPlatformDeliver;
 	@Field(label = "用户id")
@@ -107,6 +109,8 @@ public class OrderDetailVo implements Serializable {
 	private String amountLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
+	@Field(label = "商品图")
+	private String imageThumbnail;
 	@Field(label = "orderItems")
 	private List<OrderItemVo> orderItems = new ArrayList<>();
 	@Field(label = "银行汇款截图")

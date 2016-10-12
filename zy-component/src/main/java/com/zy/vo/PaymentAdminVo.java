@@ -39,7 +39,7 @@ public class PaymentAdminVo implements Serializable {
 	private Date expiredTime;
 	@Field(label = "支付时间")
 	private Date paidTime;
-	@Field(label = "支付状态")
+	@Field(label = "支付单状态")
 	private PaymentStatus paymentStatus;
 	@Field(label = " 货币1")
 	private CurrencyType currencyType1;
@@ -77,7 +77,7 @@ public class PaymentAdminVo implements Serializable {
 	private String expiredTimeLabel;
 	@Field(label = "支付时间")
 	private String paidTimeLabel;
-	@Field(label = "支付状态")
+	@Field(label = "支付单状态")
 	private String paymentStatusStyle;
 	@Field(label = "货币1支付金额")
 	private String amount1Label;
