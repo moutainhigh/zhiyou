@@ -109,8 +109,6 @@ public class OrderDetailVo implements Serializable {
 	private String amountLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
-	@Field(label = "商品图")
-	private String imageThumbnail;
 	@Field(label = "orderItems")
 	private List<OrderItemVo> orderItems = new ArrayList<>();
 	@Field(label = "银行汇款截图")

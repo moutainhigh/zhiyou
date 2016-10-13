@@ -128,8 +128,6 @@ public class OrderAdminVo implements Serializable {
 	private String useLogisticsLabel;
 	@Field(label = "商品图")
 	private String imageThumbnail;
-	@Field(label = "商品图")
-	private String imageThumbnail;
 	@Field(label = "单价")
 	private String priceLabel;
 	@Field(label = "银行汇款截图")

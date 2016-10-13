@@ -24,6 +24,10 @@
         messageFlash('请先选择收货地址.');
         return false;  
       }
+      if($('input[name=isPayToPlatform]:checked').length == 0) {
+        messageFlash('请先选择收款对象.');
+        return false;  
+      }
     });
     
   	//选择收货地址
@@ -312,7 +316,7 @@
         <div class="list-item form-radio">
           <label class="list-text" for="isPayToPlatform0">付款给上级</label>
           <div class="list-unit">
-            <input id="isPayToPlatform0" type="radio" name="isPayToPlatform" value="false">
+            <input id="isPayToPlatform0" type="radio" name="isPayToPlatform" value="false"${userRank == 'V2' || userRank == 'V1' || userRank == 'V0' ? ' checked="checked"' : ''}>
             <label class="i-checked" for="isPayToPlatform0"></label>
           </div>
         </div>
@@ -321,7 +325,7 @@
         <div class="list-item form-radio">
           <label class="list-text" for="isPayToPlatform1">付款给平台</label>
           <div class="list-unit">
-            <input id="isPayToPlatform1" type="radio" name="isPayToPlatform" value="true">
+            <input id="isPayToPlatform1" type="radio" name="isPayToPlatform" value="true"${userRank == 'V4' ? ' checked="checked"' : ''}>
             <label class="i-checked" for="isPayToPlatform1"></label>
           </div>
         </div>
