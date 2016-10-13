@@ -131,6 +131,38 @@ public class OrderServiceImpl implements OrderService {
 		Long sellerId = seller.getId();
 		UserRank sellerUserRank = sellerId.equals(config.getSysUserId()) ? null : seller.getUserRank();
 
+		Long v4Id = null;
+		Long tmpParentId = parentId;
+		int whileTimes = 0;
+		while (tmpParentId != null) {
+			if (whileTimes > 1000) {
+				break; // 防御性循环引用校验
+			}
+			User parent = userMapper.findOne(tmpParentId);
+			if (parent.getUserRank() == UserRank.V4) {
+				v4Id = tmpParentId;
+				break;
+			}
+			tmpParentId = parent.getParentId();
+			whileTimes ++;
+		}
+
+		Long rootId = null;
+		tmpParentId = parentId;
+		whileTimes = 0;
+		while (tmpParentId != null) {
+			if (whileTimes > 1000) {
+				break; // 防御性循环引用校验
+			}
+			User parent = userMapper.findOne(tmpParentId);
+			if (parent.getIsRoot() != null && parent.getIsRoot()) {
+				rootId = tmpParentId;
+				break;
+			}
+			tmpParentId = parent.getParentId();
+			whileTimes ++;
+		}
+
 		BigDecimal price = malComponent.getPrice(productId, user.getUserRank(), quantity);
 		BigDecimal amount = price.multiply(new BigDecimal(quantity));
 
@@ -169,6 +201,10 @@ public class OrderServiceImpl implements OrderService {
 		order.setQuantity(quantity);
 		order.setPrice(price);
 		order.setImage(product.getImage1());
+
+		/* 追追加字段 */
+		order.setV4Id(v4Id);
+		order.setRootId(rootId);
 
 		if (StringUtils.isNotBlank(title)) {
 			order.setTitle(title);

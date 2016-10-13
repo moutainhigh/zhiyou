@@ -99,6 +99,14 @@ public class Order implements Serializable {
 	@View(name = "sellerUserRankLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
 	private UserRank sellerUserRank;
 
+	@Query({Predicate.EQ})
+	@Field(label = "子系统id")
+	private Long rootId;
+
+	@Query({Predicate.EQ})
+	@Field(label = "直属特级id")
+	private Long v4Id;
+
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})
 	@NotNull
 	@Field(label = "是否支付给平台")
