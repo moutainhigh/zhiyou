@@ -125,7 +125,7 @@ public class OrderAdminVo implements Serializable {
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
 	@Field(label = "是否物流发货")
-	private String useLogisticsLabel;
+	private String isUseLogisticsLabel;
 	@Field(label = "商品图")
 	private String imageThumbnail;
 	@Field(label = "单价")

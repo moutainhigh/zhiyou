@@ -148,19 +148,23 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 		Long rootId = null;
-		tmpParentId = parentId;
-		whileTimes = 0;
-		while (tmpParentId != null) {
-			if (whileTimes > 1000) {
-				break; // 防御性循环引用校验
+		if (user.getIsRoot()) {
+			rootId = userId;
+		} else {
+			tmpParentId = parentId;
+			whileTimes = 0;
+			while (tmpParentId != null) {
+				if (whileTimes > 1000) {
+					break; // 防御性循环引用校验
+				}
+				User parent = userMapper.findOne(tmpParentId);
+				if (parent.getIsRoot() != null && parent.getIsRoot()) {
+					rootId = tmpParentId;
+					break;
+				}
+				tmpParentId = parent.getParentId();
+				whileTimes++;
 			}
-			User parent = userMapper.findOne(tmpParentId);
-			if (parent.getIsRoot() != null && parent.getIsRoot()) {
-				rootId = tmpParentId;
-				break;
-			}
-			tmpParentId = parent.getParentId();
-			whileTimes ++;
 		}
 
 		BigDecimal price = malComponent.getPrice(productId, user.getUserRank(), quantity);

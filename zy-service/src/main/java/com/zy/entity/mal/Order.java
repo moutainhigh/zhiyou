@@ -224,7 +224,7 @@ public class Order implements Serializable {
 	private Date deliveredTime;
 
 	@Field(label = "是否物流发货")
-	@View(name = "useLogisticsLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(name = "isUseLogisticsLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Boolean isUseLogistics;
 
