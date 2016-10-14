@@ -273,7 +273,7 @@
                 <div class="form-group">
                   <label class="control-label col-md-3">发货方式:</label>
                   <div class="col-md-9">
-                    <p class="form-control-static">${order.useLogisticsLabel}</p>
+                    <p class="form-control-static">${order.isUseLogisticsLabel}</p>
                   </div>
                 </div>
               </div>
