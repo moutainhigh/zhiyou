@@ -189,8 +189,12 @@ public class UserServiceImpl implements UserService {
 		User user = findAndValidate(id);
 		UserRank plainUserRank = user.getUserRank();
 
-		if (user.getUserType() != UserType.代理  || plainUserRank == UserRank.V0) {
-			throw new BizException(BizCode.ERROR, "修改无效, 不符合业务逻辑");
+		if (user.getUserType() != UserType.代理) {
+			throw new BizException(BizCode.ERROR, "修改无效, 用户类型必须为代理");
+		}
+
+		if (plainUserRank == UserRank.V0) {
+			throw new BizException(BizCode.ERROR, "修改无效, 意向代理不能修改");
 		}
 
 		if (userRank == plainUserRank) {
