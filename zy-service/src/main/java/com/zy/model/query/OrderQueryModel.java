@@ -33,7 +33,7 @@ public class OrderQueryModel implements Serializable {
 
 	private Long rootIdEQ;
 
-	private Long v4IdEQ;
+	private Long v4UserIdEQ;
 
 	private Boolean isPayToPlatformEQ;
 
@@ -117,7 +117,6 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("discountFee");
 		fieldNames.add("receiverProvince");
 		fieldNames.add("receiverCity");
-		fieldNames.add("v4Id");
 		fieldNames.add("sellerId");
 		fieldNames.add("receiverPhone");
 		fieldNames.add("refundedTime");
@@ -162,6 +161,7 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("userId");
 		fieldNames.add("expiredTime");
 		fieldNames.add("receiverRealname");
+		fieldNames.add("v4UserId");
 		fieldNames.add("refId");
 		fieldNames.add("logisticsFee");
 	}

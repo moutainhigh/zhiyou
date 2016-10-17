@@ -1,16 +1,19 @@
 package com.zy.component;
 
+import com.zy.common.exception.BizException;
+import com.zy.common.util.BeanUtils;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.OrderItem;
+import com.zy.entity.sys.Area;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
+import com.zy.model.BizCode;
+import com.zy.model.query.AreaQueryModel;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.UserInfoQueryModel;
 import com.zy.model.query.UserQueryModel;
-import com.zy.service.OrderItemService;
-import com.zy.service.OrderService;
-import com.zy.service.UserInfoService;
-import com.zy.service.UserService;
+import com.zy.service.*;
+import com.zy.vo.UserReportVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +41,12 @@ public class LocalCacheComponent {
 
 	private Map<Long, UserInfo> userInfoMap = new HashMap<>();
 
+	private List<UserReportVo> userReportVos = new ArrayList<>();
+
+	private List<Area> areas = new ArrayList<>();
+
+	private Map<Long, Area> areaMap = new HashMap<>();
+
     @Autowired
     private OrderService orderService;
 
@@ -46,6 +55,9 @@ public class LocalCacheComponent {
 
     @Autowired
     private UserService userService;
+
+	@Autowired
+	private AreaService areaService;
 
 	@Autowired
 	private UserInfoService userInfoService;
@@ -70,19 +82,104 @@ public class LocalCacheComponent {
         return orderItemMap;
     }
 
+	public List<UserReportVo> getuserReportVos() {
+		return userReportVos;
+	}
+
     public void refresh() {
         logger.info("refresh begin...");
-        List<User> newUsers = userService.findAll(new UserQueryModel());
+	    List<Area> newAreas = areaService.findAll(new AreaQueryModel());
+	    Map<Long, Area> newAreaMap = newAreas.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
+
+        List<User> newUsers = userService.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
         List<Order> newOrders = orderService.findAll(new OrderQueryModel());
         Map<Long, OrderItem> newOrderItemMap = orderItemService.findAll().stream().collect(Collectors.toMap(v -> v.getOrderId(), v -> v));
 	    Map<Long, User> newUserMap = newUsers.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
 	    Map<Long, UserInfo> newUserInfoMap = userInfoService.findAll(new UserInfoQueryModel()).stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v));
 
+	    areas = newAreas;
+	    areaMap = newAreaMap;
         users = newUsers;
         orders = newOrders;
         orderItemMap = newOrderItemMap;
 	    userMap = newUserMap;
 	    userInfoMap = newUserInfoMap;
+
+	    userReportVos = newUsers.stream().map(user -> {
+		    UserReportVo userReportVo = new UserReportVo();
+		    BeanUtils.copyProperties(user, userReportVo);
+			Long userId = user.getId();
+		    UserInfo userInfo = newUserInfoMap.get(userId);
+		    if (userInfo != null) {
+				Long areaId = userInfo.getAreaId();
+			    if (areaId != null) {
+				    Long districtId = areaId;
+				    Area district = areaMap.get(districtId);
+				    if (district != null && district.getAreaType() == Area.AreaType.区) {
+					    userReportVo.setDistrictId(districtId);
+					    Long cityId = district.getParentId();
+					    Area city = areaMap.get(cityId);
+					    if (city != null && city.getAreaType() == Area.AreaType.市) {
+						    userReportVo.setCityId(cityId);
+						    Long provinceId = city.getParentId();
+						    Area province = areaMap.get(cityId);
+						    if (province != null && province.getAreaType() == Area.AreaType.省) {
+							    userReportVo.setProvinceId(provinceId);
+						    }
+					    }
+
+				    }
+			    }
+		    }
+
+		    Long parentId = user.getParentId();
+		    int whileTimes = 0;
+
+		    Long v4UserId = null;
+		    Long tmpParentId = parentId;
+		    while (tmpParentId != null) {
+			    if (whileTimes > 1000) {
+				    throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + userId);
+			    }
+			    User parent = newUserMap.get(tmpParentId);
+			    if (parent.getUserRank() == User.UserRank.V4) {
+				    v4UserId =  tmpParentId;
+			    }
+			    tmpParentId = parent.getParentId();
+			    whileTimes ++;
+		    }
+		    if (v4UserId != null) {
+			    User v4User = newUserMap.get(v4UserId);
+			    userReportVo.setV4UserId(v4UserId);
+			    userReportVo.setV4UserNickname(v4User.getNickname());
+		    }
+
+		    Long rootId = null;
+		    if (user.getIsRoot()) {
+			    rootId = userId;
+		    } else {
+			    tmpParentId = parentId;
+			    whileTimes = 0;
+			    while (tmpParentId != null) {
+				    if (whileTimes > 1000) {
+					    throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
+				    }
+				    User parent =  newUserMap.get(tmpParentId);
+				    if (parent.getIsRoot() != null && parent.getIsRoot()) {
+					    rootId = tmpParentId;
+				    }
+				    tmpParentId = parent.getParentId();
+				    whileTimes++;
+			    }
+		    }
+		    if (rootId != null) {
+			    User root = newUserMap.get(rootId);
+			    userReportVo.setRootId(rootId);
+			    userReportVo.setRootRootName(root.getRootName());
+		    }
+			return userReportVo;
+
+	    }).collect(Collectors.toList());
 
         logger.info("refresh end...");
 
@@ -92,6 +189,8 @@ public class LocalCacheComponent {
     public void init() {
         refresh();
     }
+
+
 
 
 }
