@@ -172,4 +172,8 @@ public class User implements Serializable {
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
 	private Boolean isRoot;
 
+	@Field(label = "子系统名称")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private String rootName;
+
 }
