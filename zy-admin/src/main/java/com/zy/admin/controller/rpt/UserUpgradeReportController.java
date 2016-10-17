@@ -35,13 +35,14 @@ public class UserUpgradeReportController {
 	@RequiresPermissions("userUpgradeport:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model, UserUpgradeReportVo.UserUpgradeReportQueryModel userUpgradeReportQueryModel) {
-		model.addAttribute("data", getData(userUpgradeReportQueryModel));
+
 		model.addAttribute("queryModel", userUpgradeReportQueryModel);
+		setModel(userUpgradeReportQueryModel, model);
 		return "rpt/userUpgradeport";
 	}
 
 
-	public List<UserUpgradeReportVo> getData(UserUpgradeReportVo.UserUpgradeReportQueryModel userUpgradeReportQueryModel) {
+	public void setModel(UserUpgradeReportVo.UserUpgradeReportQueryModel userUpgradeReportQueryModel, Model model) {
 		List<UserReportVo> all = localCacheComponent.getuserReportVos();
 
 		List<UserUpgrade> userUpgrades = localCacheComponent.getUserUpgrades();
@@ -260,7 +261,8 @@ public class UserUpgradeReportController {
 			lastMonthUserUpgradeReportVo = userUpgradeReportVo;
 		}
 
-		return userUpgradeReportVos;
+		model.addAttribute("data", userUpgradeReportVos);
+		model.addAttribute("timeLabels", timeLabels);
 	}
 	
 }
