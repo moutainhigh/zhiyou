@@ -32,13 +32,13 @@ public class UserUpgradeReportController {
 	@Autowired
 	private LocalCacheComponent localCacheComponent;
 
-	@RequiresPermissions("userUpgradeport:view")
+	@RequiresPermissions("userUpgradReport:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model, UserUpgradeReportVo.UserUpgradeReportQueryModel userUpgradeReportQueryModel) {
 
 		model.addAttribute("queryModel", userUpgradeReportQueryModel);
 		setModel(userUpgradeReportQueryModel, model);
-		return "rpt/userUpgradeport";
+		return "rpt/userUpgradReport";
 	}
 
 
