@@ -7,11 +7,9 @@ import com.zy.entity.mal.OrderItem;
 import com.zy.entity.sys.Area;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
+import com.zy.entity.usr.UserUpgrade;
 import com.zy.model.BizCode;
-import com.zy.model.query.AreaQueryModel;
-import com.zy.model.query.OrderQueryModel;
-import com.zy.model.query.UserInfoQueryModel;
-import com.zy.model.query.UserQueryModel;
+import com.zy.model.query.*;
 import com.zy.service.*;
 import com.zy.vo.UserReportVo;
 import org.slf4j.Logger;
@@ -47,6 +45,8 @@ public class LocalCacheComponent {
 
 	private Map<Long, Area> areaMap = new HashMap<>();
 
+	private List<UserUpgrade> userUpgrades = new ArrayList<>();
+
     @Autowired
     private OrderService orderService;
 
@@ -61,6 +61,9 @@ public class LocalCacheComponent {
 
 	@Autowired
 	private UserInfoService userInfoService;
+
+	@Autowired
+	private UserUpgradeService userUpgradeService;
 
     public List<User> getUsers() {
         return users;
@@ -86,16 +89,21 @@ public class LocalCacheComponent {
 		return userReportVos;
 	}
 
+	public List<UserUpgrade> getUserUpgrades() {
+		return userUpgrades;
+	}
+
     public void refresh() {
         logger.info("refresh begin...");
 	    List<Area> newAreas = areaService.findAll(new AreaQueryModel());
 	    Map<Long, Area> newAreaMap = newAreas.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
 
         List<User> newUsers = userService.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
-        List<Order> newOrders = orderService.findAll(new OrderQueryModel());
+        List<Order> newOrders = orderService.findAll(OrderQueryModel.builder().build());
         Map<Long, OrderItem> newOrderItemMap = orderItemService.findAll().stream().collect(Collectors.toMap(v -> v.getOrderId(), v -> v));
 	    Map<Long, User> newUserMap = newUsers.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
-	    Map<Long, UserInfo> newUserInfoMap = userInfoService.findAll(new UserInfoQueryModel()).stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v));
+	    Map<Long, UserInfo> newUserInfoMap = userInfoService.findAll(UserInfoQueryModel.builder().build()).stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v));
+	    List<UserUpgrade> newUserUpgrades = userUpgradeService.findAll(UserUpgradeQueryModel.builder().build());
 
 	    areas = newAreas;
 	    areaMap = newAreaMap;
@@ -104,6 +112,7 @@ public class LocalCacheComponent {
         orderItemMap = newOrderItemMap;
 	    userMap = newUserMap;
 	    userInfoMap = newUserInfoMap;
+	    userUpgrades = newUserUpgrades;
 
 	    userReportVos = newUsers.stream().map(user -> {
 		    UserReportVo userReportVo = new UserReportVo();
