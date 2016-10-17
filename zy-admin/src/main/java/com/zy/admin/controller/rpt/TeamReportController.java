@@ -58,25 +58,25 @@ public class TeamReportController {
 				String rootRootNameLK = teamReportQueryModel.getRootRootNameLK();
 
 				if (cityIdEQ != null) {
-					result = result && userReportVo.getCityId().equals(cityIdEQ);
+					result = result && cityIdEQ.equals(userReportVo.getCityId());
 				}
 				if (districtIdEQ != null) {
-					result = result && userReportVo.getDistrictId().equals(districtIdEQ);
+					result = result && districtIdEQ.equals(userReportVo.getDistrictId());
 				}
 				if (provinceIdEQ != null) {
-					result = result && userReportVo.getProvinceId().equals(provinceIdEQ);
+					result = result && provinceIdEQ.equals(userReportVo.getProvinceId());
 				}
 				if (nicknameLK != null) {
 					result = result && StringUtils.contains(userReportVo.getNickname(), nicknameLK);
 				}
 				if (phoneEQ != null) {
-					result = result && StringUtils.equals(userReportVo.getPhone(), phoneEQ);
+					result = result && phoneEQ.equals(userReportVo.getPhone());
 				}
 				if (v4UserNicknameLK != null) {
-					result = result && StringUtils.equals(userReportVo.getV4UserNickname(), v4UserNicknameLK);
+					result = result && StringUtils.contains(userReportVo.getV4UserNickname(), v4UserNicknameLK);
 				}
 				if (rootRootNameLK != null) {
-					result = result && StringUtils.equals(userReportVo.getRootRootName(), rootRootNameLK);
+					result = result && StringUtils.contains(userReportVo.getRootRootName(), rootRootNameLK);
 				}
 				return result;
 		}).collect(Collectors.toList());
