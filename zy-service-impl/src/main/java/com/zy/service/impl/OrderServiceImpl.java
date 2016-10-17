@@ -131,41 +131,8 @@ public class OrderServiceImpl implements OrderService {
 		Long sellerId = seller.getId();
 		UserRank sellerUserRank = sellerId.equals(config.getSysUserId()) ? null : seller.getUserRank();
 
-		Long v4Id = null;
-		Long tmpParentId = parentId;
-		int whileTimes = 0;
-		while (tmpParentId != null) {
-			if (whileTimes > 1000) {
-				break; // 防御性循环引用校验
-			}
-			User parent = userMapper.findOne(tmpParentId);
-			if (parent.getUserRank() == UserRank.V4) {
-				v4Id = tmpParentId;
-				break;
-			}
-			tmpParentId = parent.getParentId();
-			whileTimes ++;
-		}
-
-		Long rootId = null;
-		if (user.getIsRoot()) {
-			rootId = userId;
-		} else {
-			tmpParentId = parentId;
-			whileTimes = 0;
-			while (tmpParentId != null) {
-				if (whileTimes > 1000) {
-					break; // 防御性循环引用校验
-				}
-				User parent = userMapper.findOne(tmpParentId);
-				if (parent.getIsRoot() != null && parent.getIsRoot()) {
-					rootId = tmpParentId;
-					break;
-				}
-				tmpParentId = parent.getParentId();
-				whileTimes++;
-			}
-		}
+		Long v4UserId = calculateV4UserId(user);
+		Long rootId = calculateRootId(user);
 
 		BigDecimal price = malComponent.getPrice(productId, user.getUserRank(), quantity);
 		BigDecimal amount = price.multiply(new BigDecimal(quantity));
@@ -205,9 +172,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setQuantity(quantity);
 		order.setPrice(price);
 		order.setImage(product.getImage1());
-
-		/* 追追加字段 */
-		order.setV4Id(v4Id);
+		order.setV4UserId(v4UserId);
 		order.setRootId(rootId);
 
 		if (StringUtils.isNotBlank(title)) {
@@ -469,10 +434,15 @@ public class OrderServiceImpl implements OrderService {
 			BigDecimal v4Price = malComponent.getPrice(productId, UserRank.V4, quantity);
 			BigDecimal v4Amount = v4Price.multiply(BigDecimal.valueOf(quantity)).setScale(2, BigDecimal.ROUND_HALF_UP);
 			Product product = productMapper.findOne(productId);
+			Long userId = persistentOrder.getSellerId();
+			User user = userMapper.findOne(userId);
+
+			Long v4UserId = calculateV4UserId(user);
+			Long rootId = calculateRootId(user);
 
 			Date date = new Date();
 			Order order = new Order();
-			order.setUserId(persistentOrder.getSellerId());
+			order.setUserId(userId);
 			order.setAmount(v4Amount);
 			order.setCreatedTime(new Date());
 			order.setIsSettledUp(false);
@@ -510,6 +480,8 @@ public class OrderServiceImpl implements OrderService {
 			order.setQuantity(quantity);
 			order.setPrice(v4Price);
 			order.setImage(product.getImage1());
+			order.setV4UserId(v4UserId);
+			order.setRootId(rootId);
 
 			if (persistentOrder.getIsPayToPlatform()) {
 				order.setIsPayToPlatform(false);
@@ -549,7 +521,44 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "不符合转订单条件");
 		}
 
+	}
 
+	private Long calculateV4UserId(User user) {
+		Long parentId = user.getParentId();
+		int whileTimes = 0;
+		while (parentId != null) {
+			if (whileTimes > 1000) {
+				throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
+			}
+			User parent = userMapper.findOne(parentId);
+			if (parent.getUserRank() == UserRank.V4) {
+				return parentId;
+			}
+			parentId = parent.getParentId();
+			whileTimes ++;
+		}
+		return null;
+	}
+
+	private Long calculateRootId(User user) {
+		if (user.getIsRoot()) {
+			return user.getId();
+		} else {
+			Long parentId = user.getParentId();
+			int whileTimes = 0;
+			while (parentId != null) {
+				if (whileTimes > 1000) {
+					throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
+				}
+				User parent = userMapper.findOne(parentId);
+				if (parent.getIsRoot() != null && parent.getIsRoot()) {
+					return parentId;
+				}
+				parentId = parent.getParentId();
+				whileTimes++;
+			}
+			return null;
+		}
 	}
 
 	@Override

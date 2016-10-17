@@ -9,6 +9,8 @@
 		<result column="buyer_user_rank" property="buyerUserRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="seller_id" property="sellerId" />
 		<result column="seller_user_rank" property="sellerUserRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="root_id" property="rootId" />
+		<result column="v4_id" property="v4Id" />
 		<result column="is_pay_to_platform" property="isPayToPlatform" />
 		<result column="title" property="title" />
 		<result column="created_time" property="createdTime" />
@@ -55,8 +57,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.Order" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_order` (sn,user_id,buyer_user_rank,seller_id,seller_user_rank,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,version)
-	  values (#{sn},#{userId},#{buyerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{sellerId},#{sellerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{isPayToPlatform},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{discountFee},#{amount},#{refund},#{refundRemark},#{buyerMemo},#{sellerMemo},#{remark},#{isProfitSettledUp},#{isSettledUp},#{isCopied},#{copiedTime},#{refId},#{deliveredTime},#{isUseLogistics},#{logisticsName},#{logisticsSn},#{logisticsFee},#{isBuyerPayLogisticsFee},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{offlineImage},#{offlineMemo},#{isDeleted},#{isMultiple},#{productId},#{image},#{marketPrice},#{price},#{quantity},#{version})
+	  insert into `mal_order` (sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,version)
+	  values (#{sn},#{userId},#{buyerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{sellerId},#{sellerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{rootId},#{v4Id},#{isPayToPlatform},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{discountFee},#{amount},#{refund},#{refundRemark},#{buyerMemo},#{sellerMemo},#{remark},#{isProfitSettledUp},#{isSettledUp},#{isCopied},#{copiedTime},#{refId},#{deliveredTime},#{isUseLogistics},#{logisticsName},#{logisticsSn},#{logisticsFee},#{isBuyerPayLogisticsFee},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{offlineImage},#{offlineMemo},#{isDeleted},#{isMultiple},#{productId},#{image},#{marketPrice},#{price},#{quantity},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -71,6 +73,8 @@
 			buyer_user_rank = #{buyerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			seller_id = #{sellerId},
 			seller_user_rank = #{sellerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			root_id = #{rootId},
+			v4_id = #{v4Id},
 			is_pay_to_platform = #{isPayToPlatform},
 			title = #{title},
 			created_time = #{createdTime},
@@ -128,6 +132,8 @@
 					<when test="field == 'buyerUserRank'">buyer_user_rank = #{order.buyerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.User$UserRank},</when>
 					<when test="field == 'sellerId'">seller_id = #{order.sellerId},</when>
 					<when test="field == 'sellerUserRank'">seller_user_rank = #{order.sellerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.User$UserRank},</when>
+					<when test="field == 'rootId'">root_id = #{order.rootId},</when>
+					<when test="field == 'v4Id'">v4_id = #{order.v4Id},</when>
 					<when test="field == 'isPayToPlatform'">is_pay_to_platform = #{order.isPayToPlatform},</when>
 					<when test="field == 'title'">title = #{order.title},</when>
 					<when test="field == 'createdTime'">created_time = #{order.createdTime},</when>
@@ -178,18 +184,21 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,version
+		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,version
 		from `mal_order`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderQueryModel">
 		select
-		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,version
+		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,currency_type,order_status,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,version
 		from `mal_order`
 		<where>
 			<if test="isDeletedEQ != null">
 				and is_deleted = #{isDeletedEQ}
+			</if>
+			<if test="rootIdEQ != null">
+				and root_id = #{rootIdEQ}
 			</if>
 			<if test="orderStatusEQ != null">
 				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
@@ -251,6 +260,9 @@
 			</if>
 			<if test="logisticsSnLK != null">
 				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
+			</if>
+			<if test="v4IdEQ != null">
+				and v4_id = #{v4IdEQ}
 			</if>
 			<if test="isPayToPlatformEQ != null">
 				and is_pay_to_platform = #{isPayToPlatformEQ}
@@ -286,6 +298,9 @@
 			<if test="isDeletedEQ != null">
 				and is_deleted = #{isDeletedEQ}
 			</if>
+			<if test="rootIdEQ != null">
+				and root_id = #{rootIdEQ}
+			</if>
 			<if test="orderStatusEQ != null">
 				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -346,6 +361,9 @@
 			</if>
 			<if test="logisticsSnLK != null">
 				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
+			</if>
+			<if test="v4IdEQ != null">
+				and v4_id = #{v4IdEQ}
 			</if>
 			<if test="isPayToPlatformEQ != null">
 				and is_pay_to_platform = #{isPayToPlatformEQ}

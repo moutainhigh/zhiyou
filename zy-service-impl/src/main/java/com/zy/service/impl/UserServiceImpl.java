@@ -303,7 +303,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyIsRootAdmin(Long id, boolean isRoot, Long operatorId, String remark) {
+	public void modifyIsRootAdmin(@NotNull Long id, boolean isRoot, String rootName, Long operatorId, String remark) {
 		User user = findAndValidate(id);
 		String label = isRoot ? "设置" : "取消";
 		if (user.getIsRoot() == null) {
@@ -318,6 +318,7 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		user.setIsRoot(isRoot);
+		user.setRootName(rootName);
 		userMapper.update(user);
 		usrComponent.recordUserLog(id, operatorId, label + "子系统", remark);
 	}

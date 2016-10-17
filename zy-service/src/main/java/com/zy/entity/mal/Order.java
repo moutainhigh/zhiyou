@@ -105,7 +105,7 @@ public class Order implements Serializable {
 
 	@Query({Predicate.EQ})
 	@Field(label = "直属特级id")
-	private Long v4Id;
+	private Long v4UserId;
 
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})
 	@NotNull
