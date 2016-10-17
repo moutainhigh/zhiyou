@@ -1,4 +1,4 @@
-package com.zy.admin.model.vo;
+package com.zy.admin.model;
 
 public class OrderReportVo {
 	
@@ -6,7 +6,7 @@ public class OrderReportVo {
 	
 	private String phone;  //服务商手机
 	
-	private String name;  //系统名称
+	private String rootName;  //系统名称
 	
 	private String parentNickname;  //直属特级昵称
 	
@@ -50,12 +50,12 @@ public class OrderReportVo {
 		this.phone = phone;
 	}
 
-	public String getName() {
-		return name;
+	public String getRootName() {
+		return rootName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setRootName(String rootName) {
+		this.rootName = rootName;
 	}
 
 	public String getParentNickname() {
