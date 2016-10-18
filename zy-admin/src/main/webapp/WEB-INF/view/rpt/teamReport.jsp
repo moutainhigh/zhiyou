@@ -39,7 +39,7 @@
             orderable: false
           },
           {
-            data: 'v1Count',
+            data: 'v3Count',
             title: '一级',
             orderable: false
           },
@@ -49,10 +49,11 @@
             orderable: false
           },
           {
-            data: 'v3Count',
+            data: 'v1Count',
             title: '三级',
             orderable: false
           },
+
           {
             data: 'v0Count',
             title: '意向服务商',
