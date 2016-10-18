@@ -1,18 +1,5 @@
 package com.zy.admin.controller.rpt;
 
-import com.zy.component.LocalCacheComponent;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.UserUpgrade;
-import com.zy.model.UserUpgradeReportVo;
-import com.zy.vo.UserReportVo;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +12,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.zy.component.LocalCacheComponent;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserUpgrade;
+import com.zy.model.UserUpgradeReportVo;
+import com.zy.vo.UserReportVo;
+
 @Controller
 @RequestMapping("/report/userUpgrade")
 public class UserUpgradeReportController {
@@ -32,15 +33,36 @@ public class UserUpgradeReportController {
 	@Autowired
 	private LocalCacheComponent localCacheComponent;
 
-	@RequiresPermissions("userUpgradReport:view")
+	@RequiresPermissions("userUpgradeReport:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model, UserUpgradeReportVo.UserUpgradeReportQueryModel userUpgradeReportQueryModel) {
 
-		model.addAttribute("queryModel", userUpgradeReportQueryModel);
+		model.addAttribute("rootNames", localCacheComponent.getRootNames());
 		setModel(userUpgradeReportQueryModel, model);
 		return "rpt/userUpgradReport";
 	}
 
+	@RequiresPermissions("userUpgradeReport:view")
+	@RequestMapping(method = RequestMethod.POST)
+	public String postList(Model model, UserUpgradeReportVo.UserUpgradeReportQueryModel userUpgradeReportQueryModel) {
+		model.addAttribute("rootNames", localCacheComponent.getRootNames());
+		//model.addAttribute("queryModel", userUpgradeReportQueryModel);
+		Long provinceIdEQ = userUpgradeReportQueryModel.getProvinceIdEQ();
+		Long cityIdEQ = userUpgradeReportQueryModel.getCityIdEQ();
+		Long districtIdEQ = userUpgradeReportQueryModel.getDistrictIdEQ();
+		Long areaId = null;
+		if (districtIdEQ != null) {
+			areaId = districtIdEQ;
+		} else if (cityIdEQ != null) {
+			areaId = cityIdEQ;
+		} else if (provinceIdEQ != null) {
+			areaId = provinceIdEQ;
+		}
+		model.addAttribute("areaId", areaId);
+		model.addAttribute("rootRootName", userUpgradeReportQueryModel.getRootRootNameLK());
+		setModel(userUpgradeReportQueryModel, model);
+		return "rpt/userUpgradReport";
+	}
 
 	public void setModel(UserUpgradeReportVo.UserUpgradeReportQueryModel userUpgradeReportQueryModel, Model model) {
 		List<UserReportVo> all = localCacheComponent.getuserReportVos();

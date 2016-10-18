@@ -1,12 +1,9 @@
 package com.zy.admin.controller.rpt;
 
-import com.zy.common.model.query.Page;
-import com.zy.common.model.ui.Grid;
-import com.zy.component.LocalCacheComponent;
-import com.zy.entity.usr.User;
-import com.zy.model.TeamReportVo;
-import com.zy.util.GcUtils;
-import com.zy.vo.UserReportVo;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.zy.common.model.query.Page;
+import com.zy.common.model.ui.Grid;
+import com.zy.component.LocalCacheComponent;
+import com.zy.entity.usr.User;
+import com.zy.model.TeamReportVo;
+import com.zy.vo.UserReportVo;
 
 @Controller
 @RequestMapping("/report/team")
@@ -32,7 +30,7 @@ public class TeamReportController {
 	@RequiresPermissions("teamReport:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
-		model.addAttribute("userRankMap", Arrays.asList(User.UserRank.values()).stream().collect(Collectors.toMap(v->v, v-> GcUtils.getUserRankLabel(v),(u, v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new)) );
+		model.addAttribute("rootNames", localCacheComponent.getRootNames());
 		return "rpt/teamReport";
 	}
 
@@ -105,10 +103,10 @@ public class TeamReportController {
 			teamReportVo.setNickname(userReportVo.getNickname());
 			teamReportVo.setRootRootName(userReportVo.getRootRootName());
 			teamReportVo.setV4UserNickname(userReportVo.getV4UserNickname());
-			long v0Count = all.stream().filter(v -> v.getV4UserId() != null & v.getV4UserId().equals(userId)).filter(v -> v.getUserRank() == User.UserRank.V0).count();
-			long v1Count = all.stream().filter(v -> v.getV4UserId() != null & v.getV4UserId().equals(userId)).filter(v -> v.getUserRank() == User.UserRank.V1).count();
-			long v2Count = all.stream().filter(v -> v.getV4UserId() != null & v.getV4UserId().equals(userId)).filter(v -> v.getUserRank() == User.UserRank.V2).count();
-			long v3Count = all.stream().filter(v -> v.getV4UserId() != null & v.getV4UserId().equals(userId)).filter(v -> v.getUserRank() == User.UserRank.V3).count();
+			long v0Count = all.stream().filter(v -> v.getV4UserId() != null && v.getV4UserId().equals(userId)).filter(v -> v.getUserRank() == User.UserRank.V0).count();
+			long v1Count = all.stream().filter(v -> v.getV4UserId() != null && v.getV4UserId().equals(userId)).filter(v -> v.getUserRank() == User.UserRank.V1).count();
+			long v2Count = all.stream().filter(v -> v.getV4UserId() != null && v.getV4UserId().equals(userId)).filter(v -> v.getUserRank() == User.UserRank.V2).count();
+			long v3Count = all.stream().filter(v -> v.getV4UserId() != null && v.getV4UserId().equals(userId)).filter(v -> v.getUserRank() == User.UserRank.V3).count();
 			long v123Count = v1Count + v2Count + v3Count;
 			teamReportVo.setV0Count(v0Count);
 			teamReportVo.setV1Count(v1Count);
@@ -123,6 +121,7 @@ public class TeamReportController {
 		page.setPageNumber(pageNumber);
 		page.setPageSize(pageSize);
 		page.setData(result);
+		page.setTotal(Long.valueOf(result.size()));
 		return new Grid<>(page);
 	}
 	

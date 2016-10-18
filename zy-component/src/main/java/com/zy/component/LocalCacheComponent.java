@@ -41,6 +41,8 @@ public class LocalCacheComponent {
 
 	private List<UserReportVo> userReportVos = new ArrayList<>();
 
+	private List<String> rootNames = new ArrayList<String>();
+	
 	private List<Area> areas = new ArrayList<>();
 
 	private Map<Long, Area> areaMap = new HashMap<>();
@@ -89,6 +91,10 @@ public class LocalCacheComponent {
 		return userReportVos;
 	}
 
+	public List<String> getRootNames() {
+		return rootNames;
+	}
+	
 	public List<UserUpgrade> getUserUpgrades() {
 		return userUpgrades;
 	}
@@ -99,6 +105,7 @@ public class LocalCacheComponent {
 	    Map<Long, Area> newAreaMap = newAreas.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
 
         List<User> newUsers = userService.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
+        List<String> newRootNames = newUsers.stream().filter(v -> v.getIsRoot()).map(User::getRootName).distinct().collect(Collectors.toList());
         List<Order> newOrders = orderService.findAll(OrderQueryModel.builder().build());
         Map<Long, OrderItem> newOrderItemMap = orderItemService.findAll().stream().collect(Collectors.toMap(v -> v.getOrderId(), v -> v));
 	    Map<Long, User> newUserMap = newUsers.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
@@ -113,7 +120,8 @@ public class LocalCacheComponent {
 	    userMap = newUserMap;
 	    userInfoMap = newUserInfoMap;
 	    userUpgrades = newUserUpgrades;
-
+	    rootNames = newRootNames; 
+	    
 	    userReportVos = newUsers.stream().map(user -> {
 		    UserReportVo userReportVo = new UserReportVo();
 		    BeanUtils.copyProperties(user, userReportVo);
@@ -131,7 +139,7 @@ public class LocalCacheComponent {
 					    if (city != null && city.getAreaType() == Area.AreaType.市) {
 						    userReportVo.setCityId(cityId);
 						    Long provinceId = city.getParentId();
-						    Area province = areaMap.get(cityId);
+						    Area province = areaMap.get(provinceId);
 						    if (province != null && province.getAreaType() == Area.AreaType.省) {
 							    userReportVo.setProvinceId(provinceId);
 						    }

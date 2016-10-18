@@ -85,6 +85,13 @@ public class AdminConstants {
 		}
 		{
 			sub = new HashMap<>();
+			sub.put("orderReport:view", "服务商进货报表");
+			sub.put("teamReport:view", "特级服务商人数下线报表");
+			sub.put("userUpgradeReport:view", "服务商数量统计报表");
+	 		SETTING_PERMISSION_MAP.put("报表管理", sub);
+		}
+		{
+			sub = new HashMap<>();
 			sub.put("admin:*", "管理员管理");
 			sub.put("role:*", "角色管理");
 			sub.put("site:*", "站点管理");

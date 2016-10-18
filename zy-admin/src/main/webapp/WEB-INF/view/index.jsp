@@ -361,6 +361,39 @@
             </ul>
           </li>
         </shiro:hasAnyPermissions>
+        
+        <shiro:hasAnyPermissions name="orderReport:view">
+          <li>
+            <a href="javascript:;">
+              <i class="icon-grid"></i>
+              <span class="title">报表管理</span>
+              <span class="selected"></span>
+              <span class="arrow "></span>
+            </a>
+            <ul class="sub-menu">
+              <shiro:hasPermission name="teamReport:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/team"><i class="icon-bar-chart"></i> 特级服务商下线人数报表<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="userUpgradeReport:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/userUpgrade"><i class="icon-bar-chart"></i> 服务商数量统计报表<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="orderReport:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/order/month"><i class="icon-bar-chart"></i> 服务商进货(月)报表<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="orderReport:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/order/daily"><i class="icon-bar-chart"></i> 服务商进货(日)报表<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
 
         <shiro:hasAnyPermissions name="admin:*,role:*,message:view,setting:*,area:*,tag:view,job:view,bank:view">
           <li>
