@@ -127,14 +127,17 @@ public class OrderReportDailyController {
 		List<Order> allOrders = localCacheComponent.getOrders();
 		List<OrderReportVo> result =  data.stream().map( v -> {
 			Map<String, Long> map = timeLabels.stream().collect(Collectors.toMap(t -> t, t -> 0L ,(u, e)-> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new));
-			List<Order> os = allOrders.stream().filter(order -> order.getUserId().equals(v.getId()) & order.getOrderStatus() == OrderStatus.已完成).collect(Collectors.toList());
+			List<Order> os = allOrders.stream().filter(order -> order.getUserId().equals(v.getId()) && order.getOrderStatus() == OrderStatus.已完成).collect(Collectors.toList());
 			for(Order order : os) {
 				Date createdTime = order.getCreatedTime();
-				String formatDate = GcUtils.formatDate(createdTime, "yy/M/d");
-				Long quantity  = map.get(formatDate);
-				if(quantity != null) {
-					quantity += order.getQuantity();
-					map.put(formatDate, quantity);
+				String formatDate = GcUtils.formatDate(createdTime, "yyyy/MM");
+				if(formatDate.equals(GcUtils.formatDate(date, "yyyy/MM"))) {
+					formatDate = GcUtils.formatDate(createdTime, "d");
+					Long quantity  = map.get(formatDate);
+					if(quantity != null) {
+						quantity += order.getQuantity();
+						map.put(formatDate, quantity);
+					}
 				}
 			}
 			OrderReportVo orderReportVo = new OrderReportVo();
@@ -168,7 +171,7 @@ public class OrderReportDailyController {
 		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
 		LocalDate begin = localDateTime.toLocalDate().with(TemporalAdjusters.firstDayOfMonth());
 		LocalDate end = begin.with(TemporalAdjusters.lastDayOfMonth());
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yy/M/d");
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d");
 		List<String> timeLabels = new ArrayList<>();
 		for (LocalDate itDate = begin; itDate.isEqual(end) || itDate.isBefore(end); itDate = itDate.plusDays(1)) {
 			timeLabels.add(dateTimeFormatter.format(itDate));

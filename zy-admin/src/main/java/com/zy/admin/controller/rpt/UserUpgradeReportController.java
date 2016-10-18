@@ -94,7 +94,7 @@ public class UserUpgradeReportController {
 
 		LocalDate begin = LocalDate.of(2015, 9, 1);
 		LocalDate today = LocalDate.now();
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy年MM月");
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yy/M");
 		List<String> timeLabels = new ArrayList<>();
 		List<UserUpgradeReportVo> userUpgradeReportVos = new ArrayList<>();
 
