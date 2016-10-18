@@ -125,6 +125,13 @@
                 <input type="text" name="v4UserNicknameLK" class="form-control" placeholder="直属特级"/>
               </div>
               
+              <div class="form-group">
+                <input type="text" name="nickNameLK" class="form-control" placeholder="服务商昵称"/>
+              </div>
+              <div class="form-group">
+                <input type="text" name="phoneEQ" class="form-control" placeholder="服务商手机"/>
+              </div>
+              
               <div class="form-group input-inline">
                 <button class="btn blue filter-submit">
                   <i class="fa fa-search"></i> 查询

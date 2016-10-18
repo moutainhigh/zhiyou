@@ -86,13 +86,13 @@ public class UserUpgradeReportController {
 					if (provinceIdEQ != null) {
 						result = result && provinceIdEQ.equals(userReportVo.getProvinceId());
 					}
-					if (rootRootNameLK != null) {
+					if (!StringUtils.isBlank(rootRootNameLK)) {
 						result = result && StringUtils.contains(userReportVo.getRootRootName(), rootRootNameLK);
 					}
 					return result;
 				}).collect(Collectors.toList());
 
-		LocalDate begin = LocalDate.of(2015, 9, 1);
+		LocalDate begin = LocalDate.of(2016, 2, 1);
 		LocalDate today = LocalDate.now();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yy/M");
 		List<String> timeLabels = new ArrayList<>();

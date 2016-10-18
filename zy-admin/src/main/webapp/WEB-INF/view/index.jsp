@@ -370,7 +370,7 @@
             <ul class="sub-menu">
               <shiro:hasPermission name="userReport:view">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/stastics"><i class="icon-bar-chart"></i> 用户数<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/report/userTree"><i class="icon-bar-chart"></i> 用户树<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="teamReport:view">
@@ -380,7 +380,7 @@
               </shiro:hasPermission>
               <shiro:hasPermission name="userUpgradeReport:view">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/report/userUpgrade"><i class="icon-bar-chart"></i> 服务商数量统计报表<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/report/userUpgrade"><i class="icon-bar-chart"></i> 服务商数量按月统计报表<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="orderReport:view">
