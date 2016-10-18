@@ -161,6 +161,7 @@ public class LocalCacheComponent {
 			    User parent = newUserMap.get(tmpParentId);
 			    if (parent.getUserRank() == User.UserRank.V4) {
 				    v4UserId =  tmpParentId;
+				    break;
 			    }
 			    tmpParentId = parent.getParentId();
 			    whileTimes ++;
@@ -184,6 +185,7 @@ public class LocalCacheComponent {
 				    User parent =  newUserMap.get(tmpParentId);
 				    if (parent.getIsRoot() != null && parent.getIsRoot()) {
 					    rootId = tmpParentId;
+					    break;
 				    }
 				    tmpParentId = parent.getParentId();
 				    whileTimes++;
