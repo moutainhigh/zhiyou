@@ -217,9 +217,6 @@
                 <li>
                   <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 平台发货订单<span class="badge badge-danger"></span></a>
                 </li>
-                <li>
-                  <a href="javascript:;" data-href="${ctx}/stastics"><i class="icon-docs"></i> 订单报表<span class="badge badge-danger"></span></a>
-                </li>
               </shiro:hasPermission>
             </ul>
           </li>
@@ -371,6 +368,11 @@
               <span class="arrow "></span>
             </a>
             <ul class="sub-menu">
+              <shiro:hasPermission name="userReport:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/stastics"><i class="icon-bar-chart"></i> 用户数<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
               <shiro:hasPermission name="teamReport:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/report/team"><i class="icon-bar-chart"></i> 特级服务商下线人数报表<span class="badge badge-danger"></span></a>

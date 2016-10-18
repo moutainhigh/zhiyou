@@ -38,7 +38,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/userTree">订单报表</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/userTree">用户数据</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -49,7 +49,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-present"></i><span> 订单报表</span>
+          <i class="icon-bar-chart"></i><span> 用户数据</span>
         </div>
       </div>
       <div class="portlet-body">

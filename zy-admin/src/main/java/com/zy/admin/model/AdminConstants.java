@@ -85,6 +85,7 @@ public class AdminConstants {
 		}
 		{
 			sub = new HashMap<>();
+			sub.put("userReport:view", "用户数据");
 			sub.put("orderReport:view", "服务商进货报表");
 			sub.put("teamReport:view", "特级服务商人数下线报表");
 			sub.put("userUpgradeReport:view", "服务商数量统计报表");
