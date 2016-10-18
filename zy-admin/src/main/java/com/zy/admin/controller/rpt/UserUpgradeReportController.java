@@ -223,7 +223,7 @@ public class UserUpgradeReportController {
 			} else {
 				long lastMonthCount = lastMonthUserUpgradeReportVo.getCount();
 				//noinspection unused
-				long lastMonthV0Count = lastMonthUserUpgradeReportVo.getV0Count();
+				//long lastMonthV0Count = lastMonthUserUpgradeReportVo.getV0Count();
 				long lastMonthV1Count = lastMonthUserUpgradeReportVo.getV1Count();
 				long lastMonthV2Count = lastMonthUserUpgradeReportVo.getV2Count();
 				long lastMonthV3Count = lastMonthUserUpgradeReportVo.getV3Count();
