@@ -78,13 +78,14 @@ public class ZtinfoSmsSupport implements SmsSupport {
 		String pass = Digests.md5Hex((Digests.md5Hex(password.getBytes(Charset.forName("UTF-8")))+strtime).getBytes(Charset.forName("UTF-8")));
 
 		HttpPost post = new HttpPost(URL);
+		String content = message + "【" + sign + "】";
 		List<NameValuePair> nvps = new ArrayList<>();
 		nvps.add(new BasicNameValuePair("username", username));
 		nvps.add(new BasicNameValuePair("tkey", strtime));
 		nvps.add(new BasicNameValuePair("password", pass));
 		nvps.add(new BasicNameValuePair("productid", productId));
 		nvps.add(new BasicNameValuePair("mobile", phone));
-		nvps.add(new BasicNameValuePair("content", message + "【" + sign + "】"));
+		nvps.add(new BasicNameValuePair("content", content));
 		nvps.add(new BasicNameValuePair("xh", ""));
 
 		post.setEntity(new UrlEncodedFormEntity(nvps, Charset.forName("UTF-8")));
@@ -104,7 +105,8 @@ public class ZtinfoSmsSupport implements SmsSupport {
 			}
 		} catch (Exception e) {
 			logger.error("调用短信接口异常", e);
-			logger.error(Stream.of(post.getAllHeaders()).map(v -> v.toString()).reduce("", (u, v) -> u + v), e); // 打印头部信息
+			logger.error("内容:" + content);
+			logger.error("头部:" + Stream.of(post.getAllHeaders()).map(v -> v.toString()).reduce("", (u, v) -> u + v), e); // 打印头部信息
 
 			smsResult.setSuccess(false);
 			smsResult.setMessage(e.getMessage());
