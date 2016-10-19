@@ -1,6 +1,7 @@
 package com.zy.common.extend;
 
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.NoConnectionReuseStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -31,7 +32,7 @@ public class CloseableHttpClientFactoryBean implements FactoryBean<CloseableHttp
 		cm.setMaxTotal(maxTotal);
 		cm.setDefaultMaxPerRoute(defaultMaxPerRoute);
 		RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(connectTimeout).setSocketTimeout(socketTimeout).build();
-		closeableHttpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).setConnectionManager(cm).build();
+		closeableHttpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).setConnectionReuseStrategy(NoConnectionReuseStrategy.INSTANCE).setConnectionManager(cm).build();
 	}
 
 	@Override

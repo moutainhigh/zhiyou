@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 public class ZtinfoSmsSupport implements SmsSupport {
 
@@ -106,7 +105,6 @@ public class ZtinfoSmsSupport implements SmsSupport {
 		} catch (Exception e) {
 			logger.error("调用短信接口异常", e);
 			logger.error("内容:" + content);
-			logger.error("头部:" + Stream.of(post.getAllHeaders()).map(v -> v.toString()).reduce("", (u, v) -> u + v), e); // 打印头部信息
 
 			smsResult.setSuccess(false);
 			smsResult.setMessage(e.getMessage());
