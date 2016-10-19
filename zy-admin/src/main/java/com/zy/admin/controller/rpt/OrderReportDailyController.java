@@ -77,7 +77,6 @@ public class OrderReportDailyController {
 			String nicknameLK = orderReportVoQueryModel.getNicknameLK();
 			String phoneEQ = orderReportVoQueryModel.getPhoneEQ();
 			String rootRootNameLK = orderReportVoQueryModel.getRootRootNameLK();
-			UserRank userRankEQ = orderReportVoQueryModel.getUserRankEQ();
 			String v4UserNicknameLK = orderReportVoQueryModel.getV4UserNicknameLK();
 			
 			if (provinceIdEQ != null) {
@@ -100,9 +99,6 @@ public class OrderReportDailyController {
 			}
 			if (!StringUtils.isBlank(rootRootNameLK)) {
 				result = result && StringUtils.contains(userReportVo.getRootRootName(), rootRootNameLK);
-			}
-			if (userRankEQ != null) {
-				result = result && userRankEQ.equals(userReportVo.getUserRank());
 			}
 			return result;
 		}).collect(Collectors.toList());
@@ -128,7 +124,14 @@ public class OrderReportDailyController {
 		List<Order> allOrders = localCacheComponent.getOrders();
 		List<OrderReportVo> result =  data.stream().map( v -> {
 			Map<String, Long> map = timeLabels.stream().collect(Collectors.toMap(t -> t, t -> 0L ,(u, e)-> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new));
-			List<Order> os = allOrders.stream().filter(order -> order.getUserId().equals(v.getId()) && order.getOrderStatus() == OrderStatus.已完成).collect(Collectors.toList());
+			List<Order> os = allOrders.stream().filter(order -> order.getUserId().equals(v.getId()) && (order.getOrderStatus() == OrderStatus.已完成 
+					|| order.getOrderStatus() == OrderStatus.已支付 || order.getOrderStatus() == OrderStatus.已发货)).collect(Collectors.toList());
+			UserRank userRankEQ = orderReportVoQueryModel.getUserRankEQ();
+			if(userRankEQ == null) {
+				os = os.stream().filter(order -> order.getBuyerUserRank() == UserRank.V4).collect(Collectors.toList());
+			} else {
+				os = os.stream().filter(order -> order.getBuyerUserRank() == userRankEQ).collect(Collectors.toList());
+			}
 			for(Order order : os) {
 				Date createdTime = order.getCreatedTime();
 				String formatDate = GcUtils.formatDate(createdTime, "yyyy/MM");

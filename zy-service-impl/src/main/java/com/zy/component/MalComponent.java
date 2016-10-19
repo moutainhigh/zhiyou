@@ -1,4 +1,4 @@
-package com.zy.component;
+ package com.zy.component;
 
 import com.zy.Config;
 import com.zy.common.exception.BizException;
