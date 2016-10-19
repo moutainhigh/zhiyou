@@ -15,6 +15,8 @@ import com.zy.service.OrderService;
 import com.zy.service.ProductService;
 import com.zy.service.UserService;
 import com.zy.vo.ProductListVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,8 @@ import static com.zy.common.util.ValidateUtils.validate;
 @RequestMapping("/u/order")
 @Controller
 public class UcenterOrderCreateController {
+
+	Logger logger = LoggerFactory.getLogger(UcenterOrderCreateController.class);
 
 	@Autowired
 	private AddressService addressService;
@@ -81,6 +85,7 @@ public class UcenterOrderCreateController {
 		try {
 			order = orderService.create(orderCreateDto);
 		} catch (Exception e) {
+			logger.error("下单错误", e);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("下单失败, 原因" + e.getMessage()));
 			return "redirect:/u/order/create?productId=" + orderCreateDto.getProductId() + "&quantity=" + orderCreateDto.getQuantity() + (orderCreateDto.getParentId() == null ? "" : ("&parentId=" + orderCreateDto.getParentId()));
 		}
