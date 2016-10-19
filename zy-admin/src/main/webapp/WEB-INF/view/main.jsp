@@ -46,8 +46,8 @@
                         </tr>
                         <tr>
                             <td> 待审核实名认证 </td>
-                            <td> ${appearanceCount} </td>
-                            <td><c:if test="${appearanceCount > 0}"><a data-href="${ctx}/appearance" class="btn green btn-xs"><i class="fa fa-edit"></i>去审核</a></c:if></td>
+                            <td> ${userInfoCount} </td>
+                            <td><c:if test="${userInfoCount > 0}"><a data-href="${ctx}/userInfo" class="btn green btn-xs"><i class="fa fa-edit"></i>去审核</a></c:if></td>
                         </tr>
                         <tr>
                             <td> 待预审核检测报告 </td>
