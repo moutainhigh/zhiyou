@@ -12,6 +12,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -20,6 +22,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class ZtinfoSmsSupport implements SmsSupport {
+
+	Logger logger = LoggerFactory.getLogger(ZtinfoSmsSupport.class);
 
 	private static final String URL = "http://www.ztsms.cn:8800/sendNSms.do";
 
@@ -97,6 +101,7 @@ public class ZtinfoSmsSupport implements SmsSupport {
 				throw new Exception("http状态码异常" + resp.getStatusLine().getStatusCode());
 			}
 		} catch (Exception e) {
+			logger.error("调用短信接口异常", e);
 			smsResult.setSuccess(false);
 			smsResult.setMessage(e.getMessage());
 		}

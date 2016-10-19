@@ -108,6 +108,7 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("isRoot");
 		fieldNames.add("registerTime");
 		fieldNames.add("openId");
+		fieldNames.add("rootName");
 		fieldNames.add("remark");
 		fieldNames.add("lastUpgradedTime");
 		fieldNames.add("userRank");

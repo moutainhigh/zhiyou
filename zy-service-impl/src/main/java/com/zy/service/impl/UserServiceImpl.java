@@ -189,8 +189,12 @@ public class UserServiceImpl implements UserService {
 		User user = findAndValidate(id);
 		UserRank plainUserRank = user.getUserRank();
 
-		if (user.getUserType() != UserType.代理  || plainUserRank == UserRank.V0) {
-			throw new BizException(BizCode.ERROR, "修改无效, 不符合业务逻辑");
+		if (user.getUserType() != UserType.代理) {
+			throw new BizException(BizCode.ERROR, "修改无效, 用户类型必须为代理");
+		}
+
+		if (plainUserRank == UserRank.V0) {
+			throw new BizException(BizCode.ERROR, "修改无效, 意向代理不能修改");
 		}
 
 		if (userRank == plainUserRank) {
@@ -303,7 +307,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyIsRootAdmin(Long id, boolean isRoot, Long operatorId, String remark) {
+	public void modifyIsRootAdmin(@NotNull Long id, boolean isRoot, String rootName, Long operatorId, String remark) {
 		User user = findAndValidate(id);
 		String label = isRoot ? "设置" : "取消";
 		if (user.getIsRoot() == null) {
@@ -318,6 +322,7 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		user.setIsRoot(isRoot);
+		user.setRootName(rootName);
 		userMapper.update(user);
 		usrComponent.recordUserLog(id, operatorId, label + "子系统", remark);
 	}

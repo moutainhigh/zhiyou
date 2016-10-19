@@ -7,13 +7,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Date;
-import java.util.ArrayList;
 
 @Getter
 @Setter
-public class UserAdminFullVo implements Serializable {
+public class UserReportVo implements Serializable {
 	/* 原生 */
 	@Field(label = "id")
 	private Long id;
@@ -25,35 +23,33 @@ public class UserAdminFullVo implements Serializable {
 	private UserType userType;
 	@Field(label = "用户等级")
 	private UserRank userRank;
-	@Field(label = "qq")
-	private String qq;
 	@Field(label = "是否冻结")
 	private Boolean isFrozen;
 	@Field(label = "注册时间")
 	private Date registerTime;
 	@Field(label = "注册ip")
 	private String registerIp;
-	@Field(label = "remark")
-	private String remark;
+	@Field(label = "上级id")
+	private Long parentId;
 	@Field(label = "是否子系统")
 	private Boolean isRoot;
 	@Field(label = "子系统名称")
 	private String rootName;
 
 	/* 扩展 */
-	@Field(label = "userInfo")
-	private UserInfoAdminVo userInfo;
-	@Field(label = "用户等级")
-	private String userRankLabel;
-	@Field(label = "头像")
-	private String avatarThumbnail;
-	@Field(label = "邀请人id")
-	private UserAdminSimpleVo inviter;
-	@Field(label = "上级id")
-	private UserAdminSimpleVo parent;
-	@Field(label = "userUpgrades")
-	private List<UserUpgradeAdminVo> userUpgrades = new ArrayList<>();
-	@Field(label = "teammates")
-	private List<UserAdminSimpleVo> teammates = new ArrayList<>();
+	@Field(label = "provinceId")
+	private Long provinceId;
+	@Field(label = "cityId")
+	private Long cityId;
+	@Field(label = "districtId")
+	private Long districtId;
+	@Field(label = "v4UserId")
+	private Long v4UserId;
+	@Field(label = "v4UserNickname")
+	private String v4UserNickname;
+	@Field(label = "rootId")
+	private Long rootId;
+	@Field(label = "rootRootName")
+	private String rootRootName;
 
 }

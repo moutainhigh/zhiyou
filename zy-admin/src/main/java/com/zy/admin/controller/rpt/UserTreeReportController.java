@@ -1,4 +1,4 @@
-package com.zy.admin.controller.mal;
+package com.zy.admin.controller.rpt;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,16 +22,16 @@ import com.zy.entity.mal.OrderItem;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 
-@RequestMapping("/stastics")
+@RequestMapping("/report/userTree")
 @Controller
-public class UserTreeController {
+public class UserTreeReportController {
 
 	@Autowired
 	private LocalCacheComponent localCacheComponent;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list() {
-		return "mal/userTree";
+		return "rpt/userTreeReport";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -92,7 +92,7 @@ public class UserTreeController {
 		model.addAttribute("teamInCount", teamInCount);
 		model.addAttribute("teamOutCount", teamOutCount);
 
-		return "mal/orderStastics";
+		return "rpt/orderStastics";
 	}
 
 
