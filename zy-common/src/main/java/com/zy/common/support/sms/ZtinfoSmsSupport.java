@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class ZtinfoSmsSupport implements SmsSupport {
 
@@ -88,6 +89,7 @@ public class ZtinfoSmsSupport implements SmsSupport {
 
 		post.setEntity(new UrlEncodedFormEntity(nvps, Charset.forName("UTF-8")));
 		try (CloseableHttpResponse resp = hc.execute(post)) {
+
 			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				HttpEntity entity = resp.getEntity();
 				String r = EntityUtils.toString(entity, "utf8");
@@ -102,6 +104,8 @@ public class ZtinfoSmsSupport implements SmsSupport {
 			}
 		} catch (Exception e) {
 			logger.error("调用短信接口异常", e);
+			logger.error(Stream.of(post.getAllHeaders()).map(v -> v.toString()).reduce("", (u, v) -> u + v), e); // 打印头部信息
+
 			smsResult.setSuccess(false);
 			smsResult.setMessage(e.getMessage());
 		}
