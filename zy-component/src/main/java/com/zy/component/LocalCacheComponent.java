@@ -173,7 +173,7 @@ public class LocalCacheComponent {
 		    }
 
 		    Long rootId = null;
-		    if (user.getIsRoot()) {
+		    if (user.getIsRoot() != null && user.getIsRoot()) {
 			    rootId = userId;
 		    } else {
 			    tmpParentId = parentId;
