@@ -164,7 +164,7 @@
             <label for="isAgree" class="i-checked"></label>
           </div>
           <label for="isAgree" class="fs-14">阅读并接受</label>
-          <span id="protocol" class="font-blue fs-14">《智云服务商注册协议》</span>
+          <span id="protocol" class="font-blue fs-14">《${sys}注册协议》</span>
         </div>
         
       </div>
