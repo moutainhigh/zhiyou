@@ -541,7 +541,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	private Long calculateRootId(User user) {
-		if (user.getIsRoot()) {
+		if (user.getIsRoot() != null && user.getIsRoot()) {
 			return user.getId();
 		} else {
 			Long parentId = user.getParentId();

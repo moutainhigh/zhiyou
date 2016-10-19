@@ -4,7 +4,10 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		">
 
-	<bean id="closeableHttpClient" class="com.zy.common.extend.CloseableHttpClientFactoryBean" destroy-method="destroy"/>
+	<bean id="closeableHttpClient" class="com.zy.common.extend.CloseableHttpClientFactoryBean" destroy-method="destroy">
+		<property name="connectTimeout" value="12000"/>
+		<property name="socketTimeout" value="12000"/>
+	</bean>
 
 	<bean id="memcachedClient" class="com.zy.common.extend.MemcachedClientFactoryBean">
 		<property name="servers" value="${memcached.url}"/>
