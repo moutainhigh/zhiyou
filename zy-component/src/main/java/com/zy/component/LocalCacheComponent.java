@@ -105,7 +105,7 @@ public class LocalCacheComponent {
 	    Map<Long, Area> newAreaMap = newAreas.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
 
         List<User> newUsers = userService.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
-        List<String> newRootNames = newUsers.stream().filter(v -> v.getIsRoot()).map(User::getRootName).distinct().collect(Collectors.toList());
+        List<String> newRootNames = newUsers.stream().filter(v -> v != null && v.getIsRoot()).map(User::getRootName).distinct().collect(Collectors.toList());
         List<Order> newOrders = orderService.findAll(OrderQueryModel.builder().build());
         Map<Long, OrderItem> newOrderItemMap = orderItemService.findAll().stream().collect(Collectors.toMap(v -> v.getOrderId(), v -> v));
 	    Map<Long, User> newUserMap = newUsers.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
