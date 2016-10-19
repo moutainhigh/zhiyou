@@ -6,13 +6,13 @@
     var setting = {
       async: {
         enable: true,
-        url: '${ctx}/stastics',
+        url: '${ctx}/report/userTree',
         autoParam:['id=parentId']
       },
       callback: {
         onClick: function(event, treeId, treeNode) {
           $.ajax({
-            url: '${ctx}/stastics/order?userId=' + treeNode.id,
+            url: '${ctx}/report/userTree/order?userId=' + treeNode.id,
             dataType: 'html',
             success: function(data) {
               layer.open({
@@ -38,7 +38,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/userTree">用户数据</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/userTree">用户树</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -49,7 +49,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-bar-chart"></i><span> 用户数据</span>
+          <i class="icon-bar-chart"></i><span> 用户树</span>
         </div>
       </div>
       <div class="portlet-body">

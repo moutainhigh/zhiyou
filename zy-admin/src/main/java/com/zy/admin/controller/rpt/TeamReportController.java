@@ -64,16 +64,16 @@ public class TeamReportController {
 				if (provinceIdEQ != null) {
 					result = result && provinceIdEQ.equals(userReportVo.getProvinceId());
 				}
-				if (nicknameLK != null) {
+				if (!StringUtils.isBlank(nicknameLK)) {
 					result = result && StringUtils.contains(userReportVo.getNickname(), nicknameLK);
 				}
-				if (phoneEQ != null) {
+				if (!StringUtils.isBlank(phoneEQ)) {
 					result = result && phoneEQ.equals(userReportVo.getPhone());
 				}
-				if (v4UserNicknameLK != null) {
+				if (!StringUtils.isBlank(v4UserNicknameLK)) {
 					result = result && StringUtils.contains(userReportVo.getV4UserNickname(), v4UserNicknameLK);
 				}
-				if (rootRootNameLK != null) {
+				if (!StringUtils.isBlank(rootRootNameLK)) {
 					result = result && StringUtils.contains(userReportVo.getRootRootName(), rootRootNameLK);
 				}
 				return result;
@@ -121,7 +121,7 @@ public class TeamReportController {
 		page.setPageNumber(pageNumber);
 		page.setPageSize(pageSize);
 		page.setData(result);
-		page.setTotal(Long.valueOf(result.size()));
+		page.setTotal(Long.valueOf(filtered.size()));
 		return new Grid<>(page);
 	}
 	

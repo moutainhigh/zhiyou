@@ -121,10 +121,10 @@
               </div>
               
               <div class="form-group">
-                <input type="text" name="nicknameLK" class="form-control" placeholder="昵称"/>
+                <input type="text" name="nicknameLK" class="form-control" placeholder="服务商昵称"/>
               </div>
               <div class="form-group">
-                <input type="text" name="phoneEQ" class="form-control" placeholder="手机"/>
+                <input type="text" name="phoneEQ" class="form-control" placeholder="服务商手机"/>
               </div>
 
               <div class="form-group input-inline">

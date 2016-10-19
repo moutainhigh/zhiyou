@@ -75,16 +75,16 @@ public class OrderReportMonthController {
 			if (districtIdEQ != null) {
 				result = result && districtIdEQ.equals(userReportVo.getDistrictId());
 			}
-			if (nicknameLK != null) {
+			if (!StringUtils.isBlank(nicknameLK)) {
 				result = result && StringUtils.contains(userReportVo.getNickname(), nicknameLK);
 			}
-			if (phoneEQ != null) {
+			if (!StringUtils.isBlank(phoneEQ)) {
 				result = result && phoneEQ.equals(userReportVo.getPhone());
 			}
-			if (v4UserNicknameLK != null) {
+			if (!StringUtils.isBlank(v4UserNicknameLK)) {
 				result = result && StringUtils.contains(userReportVo.getV4UserNickname(), v4UserNicknameLK);
 			}
-			if (rootRootNameLK != null) {
+			if (!StringUtils.isBlank(rootRootNameLK)) {
 				result = result && StringUtils.contains(userReportVo.getRootRootName(), rootRootNameLK);
 			}
 			if (userRankEQ != null) {
@@ -126,7 +126,7 @@ public class OrderReportMonthController {
 			}
 			OrderReportVo orderReportVo = new OrderReportVo();
 			orderReportVo.setNickname(v.getNickname());
-			orderReportVo.setRootName(v.getRootName());
+			orderReportVo.setRootName(v.getRootRootName());
 			orderReportVo.setPhone(v.getPhone());
 			orderReportVo.setV4UserNickname(v.getV4UserNickname());
 			
@@ -145,12 +145,12 @@ public class OrderReportMonthController {
 		page.setPageNumber(pageNumber);
 		page.setPageSize(pageSize);
 		page.setData(result);
-		page.setTotal(Long.valueOf(result.size()));
+		page.setTotal(Long.valueOf(filtered.size()));
 		return new Grid<>(page);
 	}
 	
 	private List<String> getTimeLabels() {
-		LocalDate begin = LocalDate.of(2015, 9, 1);
+		LocalDate begin = LocalDate.of(2016, 2, 1);
 		LocalDate today = LocalDate.now();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yy/M");
 		List<String> timeLabels = new ArrayList<>();
