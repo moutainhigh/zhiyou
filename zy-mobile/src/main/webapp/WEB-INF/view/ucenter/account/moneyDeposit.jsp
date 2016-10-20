@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>余额充值</title>
+<title>积分余额充值</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <script type="text/javascript">
@@ -46,7 +46,7 @@
 <body>
 
   <header class="header">
-    <h1>余额充值</h1>
+    <h1>积分余额充值</h1>
     <a href="${ctx}/u/money" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
@@ -89,6 +89,6 @@
     </form>
   </article>
   
-  <a href="${ctx}/help/money" class="abs-lb mb-10 width-100p font-999 fs-12 text-center"><i class="fa fa-question-circle-o"></i> 余额问题</a>
+  <a href="${ctx}/help/money" class="abs-lb mb-10 width-100p font-999 fs-12 text-center"><i class="fa fa-question-circle-o"></i> 积分余额问题</a>
 </body>
 </html>

@@ -12,21 +12,21 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>我的余额</title>
+<title>我的积分余额</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 </head>
 
 <body>
 
   <header class="header">
-    <h1>我的余额</h1>
+    <h1>我的积分余额</h1>
     <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
     <a class="button-right" href="${ctx}/u/money/log"><span>明细</span></a>
   </header>
 
   <article>
     <i class="icon icon-money icon-6x block center mt-30"></i>
-    <h2 class="font-777 fs-16 lh-30 text-center mt-20">我的余额(元)</h2>
+    <h2 class="font-777 fs-16 lh-30 text-center mt-20">我的积分余额(元)</h2>
     <div class="font-333 fs-36 lh-60 text-center">${amount}</div>
     <c:if test="${userRank == 'V4' || userRank == 'V3'}">
     <div class="form-btn mt-20">
@@ -43,7 +43,7 @@
     </div>
     </c:if>
     </c:if>
-    <a href="${ctx}/help/money" class="mt-30 mb-10 block width-100p font-999 fs-12 text-center"><i class="fa fa-question-circle-o"></i> 余额问题</a>
+    <a href="${ctx}/help/money" class="mt-30 mb-10 block width-100p font-999 fs-12 text-center"><i class="fa fa-question-circle-o"></i> 积分余额问题</a>
   </article>
 
 </body>
