@@ -15,9 +15,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="description" content="商品详情" />
+<meta name="description" content="服务详情" />
 
-<title>商品详情</title>
+<title>服务详情</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/product.css" rel="stylesheet" />
 <script>
@@ -72,7 +72,7 @@
       <c:if test="${!isUpgrade && !isFirst}">
       var quantity = $("#quantity").val();
       if(quantity < MIN_QUANTITY || quantity % MIN_QUANTITY != 0) {
-        messageAlert('一级服务商和特级服务商每次入货最小单位' + MIN_QUANTITY + '件');
+        messageAlert('一级服务商和特级服务商每次购买最小单位' + MIN_QUANTITY + '次');
         return;
       }
       </c:if>
@@ -98,12 +98,12 @@
       </div>
       <div class="list-item">
         <div class="font-777 fs-14">
-          <span class="fs-15">商品编号： <span> ${product.skuCode}</span></span>
+          <span class="fs-15">编号： <span> ${product.skuCode}</span></span>
         </div>
       </div>
       <div class="list-item">
         <div class="font-777 fs-14">
-          <span class="fs-15">零售价： <span> ¥ ${product.marketPrice}</span></span>
+          <span class="fs-15">服务零售价： <span> ¥ ${product.marketPrice}</span></span>
         </div>
       </div>
       <div class="list-item">
@@ -116,7 +116,7 @@
     <div class="list-group mb-0">
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-list-alt font-orange"></i></div>
-        <div class="list-text">商品介绍</div>
+        <div class="list-text">服务介绍</div>
       </div>
       <div class="list-item p-0">
         <div class="list-text">
@@ -146,7 +146,7 @@
           <i class="fa fa-plus"></i>
         </div>
       </div>
-      <a id="btnOrder" class="flex-2 btn-order" href="javascript:;">立即订货</a>
+      <a id="btnOrder" class="flex-2 btn-order" href="javascript:;">购买</a>
     </nav>
   </c:if>
   

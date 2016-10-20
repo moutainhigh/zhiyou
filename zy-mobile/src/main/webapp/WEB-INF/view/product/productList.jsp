@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>全部商品</title>
+<title>全部服务</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/product.css" rel="stylesheet" />
 
@@ -22,7 +22,7 @@
 
   <header class="header">
     <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <h1>全部商品</h1>
+    <h1>全部服务</h1>
   </header>
 
   <article class="mb-15 clearfix">
