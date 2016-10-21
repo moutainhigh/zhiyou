@@ -1,6 +1,7 @@
 package com.zy.admin.controller.usr;
 
 import com.zy.admin.model.AdminPrincipal;
+import com.zy.common.exception.BizException;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
@@ -15,6 +16,7 @@ import com.zy.component.UserComponent;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
+import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
@@ -177,22 +179,18 @@ public class UserController {
 	
 	@RequiresPermissions("user:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(User user, String newPassword, String phone, RedirectAttributes redirectAttributes) {
+	public String update(User user, String newPassword, RedirectAttributes redirectAttributes) {
 		Long userId = user.getId();
 		checkAndValidateIsPlatform(userId);
 		validate(userId, NOT_NULL, "user id is null");
-		validate(phone, NOT_BLANK, "phone is null");
-		
+
 		User persistence = userService.findOne(user.getId());
 		validate(persistence, NOT_NULL, "user is null, id =" + userId);
-		
-		User userByPhone = userService.findByPhone(phone);
-		if(userByPhone != null) {
-			if(userByPhone.getId() != userId) {
-				redirectAttributes.addFlashAttribute(ResultBuilder.error("手机号已存在"));
-				return "redirect:/user/update/" + userId;
-			}
+
+		if (persistence.getUserType() != UserType.代理) {
+			throw new BizException(BizCode.ERROR, "只能修改服务商密码");
 		}
+
 		try {
 			userService.modifyPasswordAdmin(userId, newPassword, getPrincipalUserId());
 		} catch (Exception e) {
