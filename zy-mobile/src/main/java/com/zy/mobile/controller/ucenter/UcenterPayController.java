@@ -169,7 +169,7 @@ public class UcenterPayController {
 		if (payType == PayType.银行汇款) {
 			model.addAttribute("refId", order.getId());
 			return "ucenter/pay/payOffline";
-		} else if (payment.getPayType() == PayType.积分余额) {
+		} else if (payment.getPayType() == PayType.余额) {
 			model.addAttribute("refId", payment.getId());
 			Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.现金);
 			model.addAttribute("balance", account.getAmount());
@@ -198,7 +198,7 @@ public class UcenterPayController {
 		Payment payment = paymentService.findOne(refId);
 		validate(payment, NOT_NULL, "payment id" + refId + " not found");
 		Long orderId = payment.getRefId();
-		if (payment.getPayType() == PayType.积分余额) {
+		if (payment.getPayType() == PayType.余额) {
 			paymentService.balancePay(refId, true);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分余额支付成功"));
 			return "redirect:/u/order/" + orderId;
