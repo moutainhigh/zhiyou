@@ -7,6 +7,10 @@
       rules: {
         'isUseLogistics' : {
           required: true
+        },
+        'logisticsFee' : {
+          digit: true,
+          min : 0
         }
       },
       submitHandler : 

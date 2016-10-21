@@ -3,6 +3,7 @@ package com.zy.vo;
 import io.gd.generator.annotation.Field;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Transfer.TransferType;
+import com.zy.entity.fnc.Transfer.TransferStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,8 @@ public class TransferAdminVo implements Serializable {
 	/* 原生 */
 	@Field(label = "id")
 	private Long id;
+	@Field(label = "转账状态")
+	private TransferStatus transferStatus;
 	@Field(label = "转出用户id")
 	private Long fromUserId;
 	@Field(label = "转入用户id")

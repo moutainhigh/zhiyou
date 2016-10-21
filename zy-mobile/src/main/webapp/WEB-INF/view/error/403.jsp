@@ -29,7 +29,12 @@
     <div class="error-status">403</div>
     <div class="error-info">
       <p class="font-orange fs-16">抱歉！您没有权限访问</p>
-      <p>请检查您输入的页面地址是否正确</p>
+      <c:if test="${not empty errorMessage}">
+        <p>原因：${errorMessage}</p>
+      </c:if>
+      <c:if test="${empty errorMessage}">
+        <p>请检查您输入的页面地址是否正确或者联系管理员</p>
+      </c:if>
     </div>
     <div class="error-btn">
       <a class="btn green" href="javascript:history.go(-1);">返回上一页</a>

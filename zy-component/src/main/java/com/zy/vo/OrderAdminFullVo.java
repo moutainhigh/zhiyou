@@ -85,16 +85,14 @@ public class OrderAdminFullVo implements Serializable {
 	private String offlineMemo;
 	@Field(label = "是否删除")
 	private Boolean isDeleted;
+	@Field(label = "商品id")
+	private Long productId;
+	@Field(label = "单价")
+	private BigDecimal price;
+	@Field(label = "数量")
+	private Long quantity;
 
 	/* 扩展 */
-	@Field(label = "imageThumbnail")
-	private String imageThumbnail;
-	@Field(label = "price")
-	private BigDecimal price;
-	@Field(label = "priceLabel")
-	private String priceLabel;
-	@Field(label = "quantity")
-	private Long quantity;
 	@Field(label = "isPlatformDeliver")
 	private Boolean isPlatformDeliver;
 	@Field(label = "用户id")
@@ -122,7 +120,11 @@ public class OrderAdminFullVo implements Serializable {
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
 	@Field(label = "是否物流发货")
-	private String useLogisticsLabel;
+	private String isUseLogisticsLabel;
+	@Field(label = "商品图")
+	private String imageThumbnail;
+	@Field(label = "单价")
+	private String priceLabel;
 	@Field(label = "payments")
 	private List<PaymentAdminVo> payments = new ArrayList<>();
 	@Field(label = "profits")

@@ -77,7 +77,7 @@ public class UcenterPayController {
 		}
 
 		final BigDecimal zero = new BigDecimal("0.00");
-		String title = "余额充值";
+		String title = "积分余额充值";
 		Long userId = principal.getUserId();
 		User user = userService.findOne(userId);
 		if(user.getUserRank() == UserRank.V1 || user.getUserRank() == UserRank.V2){
@@ -200,7 +200,7 @@ public class UcenterPayController {
 		Long orderId = payment.getRefId();
 		if (payment.getPayType() == PayType.余额) {
 			paymentService.balancePay(refId, true);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("余额支付成功"));
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分余额支付成功"));
 			return "redirect:/u/order/" + orderId;
 		} else if (payment.getPayType() == PayType.银行汇款) {
 			validate(offlineImage, NOT_BLANK, "payment offlineImage is blank");

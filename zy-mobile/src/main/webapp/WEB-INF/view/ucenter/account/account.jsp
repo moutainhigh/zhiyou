@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>钱包</title>
+<title>积分钱包</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link  rel="stylesheet" href="${stccdn}/css/ucenter/account.css">
 </head>
@@ -25,7 +25,7 @@
     <nav class="flex account-nav pb-30 mb-10">
       <a class="flex-1 text-center" href="${ctx}/u/money">
         <div class="mb-10"><i class="icon icon-account-money"></i></div>
-        <div class="fs-16 lh-24">余额</div>
+        <div class="fs-16 lh-24">积分余额</div>
         <div class="fs-12 lh-20 font-ccc">${amount}</div>
       </a>
       <a class="flex-1 text-center" href="${ctx}/u/bankCard">

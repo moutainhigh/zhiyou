@@ -37,6 +37,8 @@ public class UserAdminFullVo implements Serializable {
 	private String remark;
 	@Field(label = "是否子系统")
 	private Boolean isRoot;
+	@Field(label = "子系统名称")
+	private String rootName;
 
 	/* 扩展 */
 	@Field(label = "userInfo")

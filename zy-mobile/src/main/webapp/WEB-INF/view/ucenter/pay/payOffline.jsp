@@ -73,7 +73,7 @@
         <div class="list-unit">${amount}元</div>
       </div>
     </div> 
-    <div class="list-title">收款银行账户</div>
+    <%-- <div class="list-title">收款银行账户</div>
     <div class="list-group">
       <div class="list-item">
         <div class="list-text">银行</div>
@@ -87,9 +87,7 @@
         <div class="list-text">收款人</div>
         <div class="list-unit">戴钟华</div>
       </div>
-    </div>
-
-    
+    </div> --%>
     
     <form action="${ctx}/u/pay/${payType == '银行汇款' ? 'order' : 'payment'}" class="valid-form" id="form" method="post">
       <input type="hidden" name="refId" value="${refId}">

@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>余额支付</title>
+<title>积分余额支付</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script type="text/javascript">
   $(function() {
@@ -25,14 +25,14 @@
 <body>
 
   <header class="header">
-    <h1>余额支付</h1>
+    <h1>积分余额支付</h1>
     <a href="javascript:history.go(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
   <c:if test="${amount > balance}">
     <div class="note note-warning mb-0">
       <p>
-        <i class="fa fa-exclamation-circle"></i> 对不起，您账户余额不足！
+        <i class="fa fa-exclamation-circle"></i> 对不起，您账户积分余额不足！
       </p>
     </div>
   </c:if>
@@ -55,7 +55,7 @@
       <div class="list-title">支付信息</div>
       <div class="list-group">
         <div class="list-item">
-          <div class="list-text">账户余额</div>
+          <div class="list-text">账户积分余额</div>
           <div class="list-unit">${balance}元</div>
         </div>
         <div class="list-item">
@@ -73,7 +73,7 @@
       </c:if>
       <c:if test="${amount > balance}">
         <div class="form-btn">
-          <a href="${ctx}/u/pay/deposit?payType=1" class="btn btn-block orange round-2">余额不足，请先充值</a>
+          <a href="${ctx}/u/pay/deposit?payType=1" class="btn btn-block orange round-2">积分余额不足，请先充值</a>
         </div>
       </c:if>
     </article>

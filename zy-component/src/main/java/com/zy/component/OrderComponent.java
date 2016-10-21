@@ -75,13 +75,12 @@ public class OrderComponent {
 			orderAdminFullVo.setIsPlatformDeliver(false);
 		}
 		
-		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
-		if (orderItem != null) {
-			orderAdminFullVo.setImageThumbnail(GcUtils.getThumbnail(orderItem.getImage()));
-			orderAdminFullVo.setPrice(orderItem.getPrice());
-			orderAdminFullVo.setPriceLabel(GcUtils.formatCurreny(orderItem.getPrice()));
-			orderAdminFullVo.setQuantity(orderItem.getQuantity());
-		}
+
+		orderAdminFullVo.setImageThumbnail(GcUtils.getThumbnail(order.getImage()));
+		orderAdminFullVo.setPrice(order.getPrice());
+		orderAdminFullVo.setPriceLabel(GcUtils.formatCurreny(order.getPrice()));
+		orderAdminFullVo.setQuantity(order.getQuantity());
+
 		
 		Long orderId = order.getId();
 		orderAdminFullVo.setProfits(profitService
@@ -127,11 +126,11 @@ public class OrderComponent {
 		
 		Boolean isUseLogistics = order.getIsUseLogistics();
 		if (isUseLogistics == null) {
-			orderAdminFullVo.setUseLogisticsLabel(null);
+			orderAdminFullVo.setIsUseLogisticsLabel(null);
 		} else if (isUseLogistics) {
-			orderAdminFullVo.setUseLogisticsLabel("物流发货");
+			orderAdminFullVo.setIsUseLogisticsLabel("物流发货");
 		} else {
-			orderAdminFullVo.setUseLogisticsLabel("面对面发货");
+			orderAdminFullVo.setIsUseLogisticsLabel("面对面发货");
 		}
 		return orderAdminFullVo;
 	}
@@ -151,13 +150,12 @@ public class OrderComponent {
 			orderAdminVo.setIsPlatformDeliver(false);
 		}
 		
-		OrderItem orderItem = orderItemService.findByOrderId(order.getId()).get(0);
-		if (orderItem != null) {
-			orderAdminVo.setImageThumbnail(GcUtils.getThumbnail(orderItem.getImage()));
-			orderAdminVo.setPrice(orderItem.getPrice());
-			orderAdminVo.setPriceLabel(GcUtils.formatCurreny(orderItem.getPrice()));
-			orderAdminVo.setQuantity(orderItem.getQuantity());
-		}
+
+		orderAdminVo.setImageThumbnail(GcUtils.getThumbnail(order.getImage()));
+		orderAdminVo.setPrice(order.getPrice());
+		orderAdminVo.setPriceLabel(GcUtils.formatCurreny(order.getPrice()));
+		orderAdminVo.setQuantity(order.getQuantity());
+
 		
 		orderAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getUserId())));
 		orderAdminVo.setSeller(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(order.getSellerId())));
@@ -178,11 +176,11 @@ public class OrderComponent {
 
 		Boolean isUseLogistics = order.getIsUseLogistics();
 		if (isUseLogistics == null) {
-			orderAdminVo.setUseLogisticsLabel(null);
+			orderAdminVo.setIsUseLogisticsLabel(null);
 		} else if (isUseLogistics) {
-			orderAdminVo.setUseLogisticsLabel("物流发货");
+			orderAdminVo.setIsUseLogisticsLabel("物流发货");
 		} else {
-			orderAdminVo.setUseLogisticsLabel("面对面发货");
+			orderAdminVo.setIsUseLogisticsLabel("面对面发货");
 		}
 		return orderAdminVo;
 	}

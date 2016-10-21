@@ -52,7 +52,7 @@ public class DepositAdminVo implements Serializable {
 	private Date createdTime;
 	@Field(label = "过期时间")
 	private Date expiredTime;
-	@Field(label = "提现单状态")
+	@Field(label = "充值单状态")
 	private DepositStatus depositStatus;
 	@Field(label = "备注")
 	private String remark;
@@ -70,7 +70,7 @@ public class DepositAdminVo implements Serializable {
 	private String amount2Label;
 	@Field(label = "充值总金额")
 	private String totalAmountLabel;
-	@Field(label = "提现单状态")
+	@Field(label = "充值单状态")
 	private String depositStatusStyle;
 	@Field(label = "银行汇款截图")
 	private List<ImageVo> offlineImages = new ArrayList<>();

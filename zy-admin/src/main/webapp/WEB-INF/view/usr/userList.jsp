@@ -5,6 +5,53 @@
   var grid = new Datatable();
 
   $(function () {
+    
+    var template = Handlebars.compile($('#confirmTmpl').html());
+
+    $('#dataTable').on('click', '.root-confirm', function () {
+      var id = $(this).data('id');
+      var data = {
+        id: id
+      };
+      var html = template(data);
+      var index = layer.open({
+        type: 1,
+        //skin: 'layui-layer-rim', //加上边框
+        area: ['600px', '360px'], //宽高
+        content: html
+      });
+
+      $form = $('#confirmForm' + id);
+      $form.validate({
+        rules: {
+          rootName: {
+            required: true
+          }
+        },
+        messages: {}
+      });
+
+      $('#rootConfirmSubmit' + id).bind('click', function () {
+        var result = $form.validate().form();
+        if (result) {
+          var url = '${ctx}/user/setRoot';
+          $.post(url, $form.serialize(), function (data) {
+            if (data.code === 0) {
+              layer.close(index);
+              grid.getDataTable().ajax.reload(null, false);
+            } else {
+              layer.alert('操作失败,原因' + data.message);
+            }
+          });
+        }
+      })
+
+      $('#rootConfirmCancel' + id).bind('click', function () {
+        layer.close(index);
+      })
+
+    });
+    
     grid.init({
       src: $('#dataTable'),
       onSuccess: function (grid) {
@@ -73,21 +120,28 @@
               var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/user/detail?id=' + data + '"><i class="fa fa-search"></i> 查看 </a>';
               if (full.userType != '平台') {
                 <shiro:hasPermission name="user:edit">
-                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
+                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/update/' + data + '"><i class="fa fa-edit"></i> 修改密码 </a>';
                 </shiro:hasPermission>
                 <shiro:hasPermission name="user:modifyParent">
                 if(full.parent != null) {
-                  optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/user/modifyParent?id=' + data + '"><i class="fa fa-edit"></i> 修改上级 </a>';
+                  optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/user/modifyParent?id=' + data + '"><i class="fa fa-edit"></i> 修改邀请人</a>';
                 }
                 </shiro:hasPermission>
                 <shiro:hasPermission name="user:addVip">
-                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="addVip(' + full.id + ')"><i class="fa fa-user"></i> 加VIP </a>';
+                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="addVip(' + full.id + ')"><i class="fa fa-user"></i> 修改等级 </a>';
                 </shiro:hasPermission>
                 <shiro:hasPermission name="user:freeze">
                 if (full.isFrozen) {
                   optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/unFreeze/' + data + '" data-confirm="您确定要解冻用户[' + full.nickname + ']？"><i class="fa fa-smile-o"></i> 解冻 </a>';
                 } else {
                   optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/freeze/' + data + '" data-confirm="您确定要冻结用户[' + full.nickname + ']？"><i class="fa fa-meh-o"></i> 冻结 </a>';
+                }
+                </shiro:hasPermission>
+                <shiro:hasPermission name="user:setRoot">
+                if (full.isRoot == null || full.isRoot == false) {
+                  optionHtml += '<a class="btn btn-xs default yellow-stripe root-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 设置子系统 </a>';
+                } else if (full.isRoot) {
+                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setRoot?id=' + full.id + '" data-confirm="您确定要取消子系统？"><i class="fa fa-edit"></i> 取消子系统 </a>';
                 }
                 </shiro:hasPermission>
               }
@@ -141,6 +195,43 @@
   function exportUsers() {
     location.href = '${ctx}/user/export?' + $('#searchForm').serialize();
   }
+</script>
+
+<script id="confirmTmpl" type="text/x-handlebars-template">
+  <form id="confirmForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+    <input type="hidden" name="id" value="{{id}}"/>
+	<input type="hidden" name="isRoot" value="1"/>
+    <div class="form-body">
+      <div class="alert alert-danger display-hide">
+        <i class="fa fa-exclamation-circle"></i>
+        <button class="close" data-close="alert"></button>
+        <span class="form-errors">您填写的信息有误，请检查。</span>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">子系统名称<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="rootName" value="" class="form-control" placeholder="请输入子系统名称"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">操作备注<span class="required"> * </span>
+        </label>
+        <div class="col-md-5">
+          <textarea type="text" class="form-control" name="remark"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions fluid">
+      <div class="col-md-offset-3 col-md-9">
+        <button id="rootConfirmSubmit{{id}}" type="button" class="btn green">
+          <i class="fa fa-save"></i> 保存
+        </button>
+        <button id="rootConfirmCancel{{id}}" class="btn default" data-href="">
+          <i class="fa fa-chevron-left"></i> 返回
+        </button>
+      </div>
+    </div>
+  </form>
 </script>
 <!-- END JAVASCRIPTS -->
 

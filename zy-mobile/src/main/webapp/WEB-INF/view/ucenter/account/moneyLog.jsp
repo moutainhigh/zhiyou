@@ -28,7 +28,7 @@
               +   '</div>' 
               +   '<div class="list-unit width-100 text-right">' 
               +     '<div class="' + (row.inOut == '收入' ? 'currency-in' : 'currency-out') + '">' + row.transAmount.toFixed(2) + '</div>' 
-              +     '<div class="fs-12 font-999">余额: ' + row.afterAmount.toFixed(2) + '</div>' 
+              +     '<div class="fs-12 font-999">积分余额: ' + row.afterAmount.toFixed(2) + '</div>' 
               +   '</div>' 
               + '</div>';
     return html;
@@ -60,7 +60,7 @@
           </div>
           <div class="list-unit width-100 text-right">
             <div class="<c:if test="${accountLog.inOut == '支出'}"> currency-out</c:if><c:if test="${accountLog.inOut == '收入'}"> currency-in</c:if>">${accountLog.transAmount}</div>
-            <div class="fs-12 font-999">余额: ${accountLog.afterAmount}</div>
+            <div class="fs-12 font-999">积分余额: ${accountLog.afterAmount}</div>
           </div>
         </div>
         </c:forEach>

@@ -68,11 +68,11 @@
   </article>
 
   <nav class="index-nav flex box pt-15 pb-15">
-    <a class="flex-1" href="${ctx}/product/1">
+    <a class="flex-1" href="${ctx}/u/report">
       <div class="text-center">
-        <img class="round" src="${stccdn}/image/icon/icon_about.png">
+        <img class="round" src="${stccdn}/image/icon/icon_report.png">
       </div>
-      <div class="mt-5 text-center">商品</div>
+      <div class="mt-5 text-center">检测报告</div>
     </a>
     <a class="flex-1" href="${ctx}/activity">
       <div class="text-center">
@@ -80,11 +80,11 @@
       </div>
       <div class="mt-5 text-center">活动</div>
     </a>
-    <a class="flex-1" href="${ctx}/u/report">
+    <a class="flex-1" href="${ctx}/product/1">
       <div class="text-center">
-        <img class="round" src="${stccdn}/image/icon/icon_report.png">
+        <img class="round" src="${stccdn}/image/icon/icon_about.png">
       </div>
-      <div class="mt-5 text-center">检测报告</div>
+      <div class="mt-5 text-center">通知</div>
     </a>
   </nav>
   

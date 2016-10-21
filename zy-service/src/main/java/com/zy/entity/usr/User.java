@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import static com.zy.entity.usr.User.*;
+import static com.zy.entity.usr.User.VO_REPORT;
 
 @Entity
 @Table(name = "usr_user")
@@ -29,13 +30,22 @@ import static com.zy.entity.usr.User.*;
 @Setter
 @QueryModel
 @Type(label = "用户")
-@ViewObject(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL},
+@ViewObject(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT},
 	collectionViews = {
 		@CollectionView(name = "userUpgrades", elementGroup = UserUpgrade.VO_ADMIN, groups = VO_ADMIN_FULL),
 		@CollectionView(name = "teammates", elementGroup = VO_ADMIN_SIMPLE, groups = VO_ADMIN_FULL)
 	},
 	associationViews = {
 		@AssociationView(name = "userInfo", associationGroup = UserInfo.VO_ADMIN, groups = VO_ADMIN_FULL)
+	},
+	views = {
+		@View(name = "provinceId", type = Long.class, groups = VO_REPORT),
+		@View(name = "cityId", type = Long.class, groups = VO_REPORT),
+		@View(name = "districtId", type = Long.class, groups = VO_REPORT),
+		@View(name = "v4UserId", type = Long.class, groups = VO_REPORT),
+		@View(name = "v4UserNickname", type = String.class, groups = VO_REPORT),
+		@View(name = "rootId", type = Long.class, groups = VO_REPORT),
+		@View(name = "rootRootName", type = String.class, groups = VO_REPORT)
 	}
 
 )
@@ -46,6 +56,7 @@ public class User implements Serializable {
 	public static final String VO_ADMIN = "UserAdminVo";
 	public static final String VO_ADMIN_SIMPLE = "UserAdminSimpleVo";
 	public static final String VO_ADMIN_FULL = "UserAdminFullVo";
+	public static final String VO_REPORT = "UserReportVo";
 
 	@Type(label = "用户类型")
 	public enum UserType {
@@ -70,7 +81,7 @@ public class User implements Serializable {
 	@Id
 	@Query(Predicate.IN)
 	@Field(label = "id")
-	@View
+	@View(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT})
 	private Long id;
 
 	@Column(length = 11, unique = true)
@@ -79,7 +90,7 @@ public class User implements Serializable {
 	@StringBinder
 	@Query(Predicate.EQ)
 	@Field(label = "手机号")
-	@View(groups = {VO_LIST, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL})
+	@View(groups = {VO_LIST, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT})
 	private String phone;
 
 	@Column(length = 60)
@@ -92,19 +103,19 @@ public class User implements Serializable {
 	@Query(Predicate.LK)
 	@Length(max = 60)
 	@Field(label = "昵称")
-	@View
+	@View(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT})
 	private String nickname;
 
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "用户类型")
-	@View(groups = {VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL})
+	@View(groups = {VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT})
 	private UserType userType;
 
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "用户等级")
-	@View(groups = {VO_LIST, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL})
+	@View(groups = {VO_LIST, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT})
 	@View(name = "userRankLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL})
 	private UserRank userRank;
 
@@ -116,26 +127,26 @@ public class User implements Serializable {
 
 	@NotBlank
 	@Field(label = "头像")
-	@View(name = "avatarThumbnail", type = String.class)
+	@View(name = "avatarThumbnail", type = String.class, groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL})
 	@Length(max = 250)
 	private String avatar;
 
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "是否冻结")
-	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
 	private Boolean isFrozen;
 
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@Query({Predicate.GTE, Predicate.LT})
 	@Field(label = "注册时间")
-	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
 	private Date registerTime;
 
 	@NotNull
 	@Field(label = "注册ip")
-	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
 	private String registerIp;
 
 	@Query({Predicate.EQ, Predicate.IN})
@@ -146,6 +157,7 @@ public class User implements Serializable {
 	@Query({Predicate.EQ, Predicate.IN, Predicate.NL})
 	@Field(label = "上级id")
 	@AssociationView(name = "parent", associationGroup = VO_ADMIN_SIMPLE, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(groups = {VO_REPORT})
 	private Long parentId;
 
 	@Field(label = "remark")
@@ -169,7 +181,11 @@ public class User implements Serializable {
 
 	@Query(Predicate.EQ)
 	@Field(label = "是否子系统")
-	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
 	private Boolean isRoot;
+
+	@Field(label = "子系统名称")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
+	private String rootName;
 
 }

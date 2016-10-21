@@ -31,6 +31,10 @@ public class OrderQueryModel implements Serializable {
 
 	private Long[] sellerIdIN;
 
+	private Long rootIdEQ;
+
+	private Long v4UserIdEQ;
+
 	private Boolean isPayToPlatformEQ;
 
 	private Date createdTimeLT;
@@ -110,48 +114,56 @@ public class OrderQueryModel implements Serializable {
 
 	static {
 		fieldNames.add("currencyType");
-		fieldNames.add("logisticsSn");
 		fieldNames.add("discountFee");
-		fieldNames.add("isUseLogistics");
-		fieldNames.add("orderStatus");
-		fieldNames.add("remark");
 		fieldNames.add("receiverProvince");
-		fieldNames.add("title");
 		fieldNames.add("receiverCity");
-		fieldNames.add("isSettledUp");
 		fieldNames.add("sellerId");
 		fieldNames.add("receiverPhone");
-		fieldNames.add("isDeleted");
 		fieldNames.add("refundedTime");
-		fieldNames.add("receiverDistrict");
-		fieldNames.add("refundRemark");
+		fieldNames.add("price");
 		fieldNames.add("createdTime");
 		fieldNames.add("offlineImage");
 		fieldNames.add("id");
-		fieldNames.add("sn");
 		fieldNames.add("isPayToPlatform");
 		fieldNames.add("sellerUserRank");
 		fieldNames.add("receiverAreaId");
-		fieldNames.add("amount");
-		fieldNames.add("isCopied");
+		fieldNames.add("image");
 		fieldNames.add("isBuyerPayLogisticsFee");
+		fieldNames.add("productId");
 		fieldNames.add("isProfitSettledUp");
 		fieldNames.add("paidTime");
-		fieldNames.add("userId");
 		fieldNames.add("version");
-		fieldNames.add("expiredTime");
-		fieldNames.add("receiverRealname");
 		fieldNames.add("logisticsName");
 		fieldNames.add("receiverAddress");
 		fieldNames.add("buyerUserRank");
 		fieldNames.add("copiedTime");
 		fieldNames.add("sellerMemo");
-		fieldNames.add("refId");
 		fieldNames.add("deliveredTime");
-		fieldNames.add("logisticsFee");
 		fieldNames.add("offlineMemo");
 		fieldNames.add("refund");
 		fieldNames.add("buyerMemo");
+		fieldNames.add("logisticsSn");
+		fieldNames.add("marketPrice");
+		fieldNames.add("isUseLogistics");
+		fieldNames.add("rootId");
+		fieldNames.add("orderStatus");
+		fieldNames.add("remark");
+		fieldNames.add("title");
+		fieldNames.add("isSettledUp");
+		fieldNames.add("isDeleted");
+		fieldNames.add("receiverDistrict");
+		fieldNames.add("refundRemark");
+		fieldNames.add("sn");
+		fieldNames.add("amount");
+		fieldNames.add("isCopied");
+		fieldNames.add("quantity");
+		fieldNames.add("isMultiple");
+		fieldNames.add("userId");
+		fieldNames.add("expiredTime");
+		fieldNames.add("receiverRealname");
+		fieldNames.add("v4UserId");
+		fieldNames.add("refId");
+		fieldNames.add("logisticsFee");
 	}
 
 }

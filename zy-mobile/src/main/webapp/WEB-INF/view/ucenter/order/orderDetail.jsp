@@ -53,7 +53,7 @@
       $.dialog({
         content : '请选择支付方式',
         skin : 'footer',
-        btn : [ '<a id="btnPay1" class="btn orange block round-2">余额支付</a>'/*, '<a id="btnPay2" class="btn green block round-2">银行汇款</a>' */],
+        btn : [ '<a id="btnPay1" class="btn orange block round-2">积分余额支付</a>'/*, '<a id="btnPay2" class="btn green block round-2">银行汇款</a>' */],
         callback : function(index) {
           if (index == 1) {
             location.href = '${ctx}/u/pay/order/${order.id}?payType=0';
@@ -402,7 +402,7 @@
       </c:if>
       
       <c:if test="${order.orderStatus == '已支付' && !order.isCopied}">
-        <c:if test="${order.sellerUserRank == 'V4' && order.quantity >= 100 && quantity mod 100 == 0}">
+        <c:if test="${order.sellerUserRank == 'V4' && order.quantity >= 100 && order.quantity mod 100 == 0}">
           <div class="form-btn">
             <a id="btnPlatformDeliver" class="btn blue btn-block round-2"><i class="fa fa-share"></i> 转给公司发货</a>
           </div>

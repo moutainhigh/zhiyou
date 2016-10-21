@@ -12,6 +12,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -20,6 +22,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class ZtinfoSmsSupport implements SmsSupport {
+
+	Logger logger = LoggerFactory.getLogger(ZtinfoSmsSupport.class);
 
 	private static final String URL = "http://www.ztsms.cn:8800/sendNSms.do";
 
@@ -73,17 +77,19 @@ public class ZtinfoSmsSupport implements SmsSupport {
 		String pass = Digests.md5Hex((Digests.md5Hex(password.getBytes(Charset.forName("UTF-8")))+strtime).getBytes(Charset.forName("UTF-8")));
 
 		HttpPost post = new HttpPost(URL);
+		String content = message + "【" + sign + "】";
 		List<NameValuePair> nvps = new ArrayList<>();
 		nvps.add(new BasicNameValuePair("username", username));
 		nvps.add(new BasicNameValuePair("tkey", strtime));
 		nvps.add(new BasicNameValuePair("password", pass));
 		nvps.add(new BasicNameValuePair("productid", productId));
 		nvps.add(new BasicNameValuePair("mobile", phone));
-		nvps.add(new BasicNameValuePair("content", message + "【" + sign + "】"));
+		nvps.add(new BasicNameValuePair("content", content));
 		nvps.add(new BasicNameValuePair("xh", ""));
 
 		post.setEntity(new UrlEncodedFormEntity(nvps, Charset.forName("UTF-8")));
 		try (CloseableHttpResponse resp = hc.execute(post)) {
+
 			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				HttpEntity entity = resp.getEntity();
 				String r = EntityUtils.toString(entity, "utf8");
@@ -97,6 +103,9 @@ public class ZtinfoSmsSupport implements SmsSupport {
 				throw new Exception("http状态码异常" + resp.getStatusLine().getStatusCode());
 			}
 		} catch (Exception e) {
+			logger.error("调用短信接口异常", e);
+			logger.error("内容:" + content);
+
 			smsResult.setSuccess(false);
 			smsResult.setMessage(e.getMessage());
 		}

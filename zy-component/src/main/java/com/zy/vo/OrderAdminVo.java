@@ -90,16 +90,14 @@ public class OrderAdminVo implements Serializable {
 	private String offlineImage;
 	@Field(label = "银行汇款备注")
 	private String offlineMemo;
+	@Field(label = "商品id")
+	private Long productId;
+	@Field(label = "单价")
+	private BigDecimal price;
+	@Field(label = "数量")
+	private Long quantity;
 
 	/* 扩展 */
-	@Field(label = "imageThumbnail")
-	private String imageThumbnail;
-	@Field(label = "price")
-	private BigDecimal price;
-	@Field(label = "priceLabel")
-	private String priceLabel;
-	@Field(label = "quantity")
-	private Long quantity;
 	@Field(label = "isPlatformDeliver")
 	private Boolean isPlatformDeliver;
 	@Field(label = "用户id")
@@ -127,7 +125,11 @@ public class OrderAdminVo implements Serializable {
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
 	@Field(label = "是否物流发货")
-	private String useLogisticsLabel;
+	private String isUseLogisticsLabel;
+	@Field(label = "商品图")
+	private String imageThumbnail;
+	@Field(label = "单价")
+	private String priceLabel;
 	@Field(label = "银行汇款截图")
 	private List<ImageVo> offlineImages = new ArrayList<>();
 

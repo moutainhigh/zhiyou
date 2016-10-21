@@ -23,6 +23,7 @@ public class AdminConstants {
 			sub.put("user:addVip", "用户信息(加VIP)");
 			sub.put("user:freeze", "用户信息(冻结账号)");
 			sub.put("user:modifyParent", "用户信息(修改上级)");
+			sub.put("user:setRoot", "用户信息(修改子系统)");
 			sub.put("user:export", "用户信息(导出)");
 			sub.put("userInfo:view", "用户认证(查看)");
 			sub.put("userInfo:confirm", "用户认证(审核)");
@@ -82,6 +83,14 @@ public class AdminConstants {
 			sub.put("payment:confirmPaid", "支付单确认支付");
 			sub.put("transfer:view", "转账单管理");
 	 		SETTING_PERMISSION_MAP.put("财务管理", sub);
+		}
+		{
+			sub = new HashMap<>();
+			sub.put("userReport:view", "用户数据");
+			sub.put("orderReport:view", "服务商进货报表");
+			sub.put("teamReport:view", "特级服务商人数下线报表");
+			sub.put("userUpgradeReport:view", "服务商数量统计报表");
+	 		SETTING_PERMISSION_MAP.put("报表管理", sub);
 		}
 		{
 			sub = new HashMap<>();

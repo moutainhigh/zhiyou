@@ -5,6 +5,7 @@ import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -343,4 +344,7 @@ public class GcUtils {
 		return labelClass;
 	}
 
+	public static List<String> getRootNames() {
+		return Arrays.asList(new String[]{"金生系统", "创优系统", "优墨系统", "传奇系统", "聚城系统", "汇营系统"});
+	}
 }

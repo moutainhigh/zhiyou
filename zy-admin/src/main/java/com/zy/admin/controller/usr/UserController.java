@@ -15,10 +15,12 @@ import com.zy.component.UserComponent;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
+import com.zy.model.Constants;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import com.zy.vo.UserAdminVo;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -291,6 +293,22 @@ public class UserController {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			return "redirect:/user/modifyParent?id=" + id;
 		}
+	}
+	
+	@RequiresPermissions("user:setRoot")
+	@RequestMapping(value = "/setRoot", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> setRoot(@RequestParam Long id, @RequestParam String rootName, Boolean isRoot, String remark) {
+		userService.modifyIsRootAdmin(id, isRoot, rootName, getPrincipalUserId(), remark);
+		return ResultBuilder.ok("操作成功");
+	}
+	
+	@RequiresPermissions("user:setRoot")
+	@RequestMapping(value = "/setRoot", method = RequestMethod.GET)
+	public String setRoot(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+		userService.modifyIsRootAdmin(id, false, null, getPrincipalUserId(), null);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
+		return "redirect:/user";
 	}
 	
 	private void checkAndValidateIsPlatform(Long userId) {

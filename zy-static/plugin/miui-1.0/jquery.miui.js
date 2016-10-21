@@ -346,42 +346,6 @@
     shadeClose : true
   });
 
-  $.fn.placeholder = function (config) {
-  	if (('placeholder' in document.createElement('input'))) {
-  		return;
-  	}
-    return this.each(function (n) {
-        var that = $(this), pl = that.attr('placeholder');
-        if (this.type == 'password') {
-            var wrap = that.wrap('<div class="placeholder" style="width:' + that.outerWidth(true) + 'px;height:' + that.outerHeight(true) + 'px"></div>').parent();
-            var placeholderText = wrap.append('<span class="placeholder-text" style="line-height:' + that.outerHeight(true) + 'px;left:' + that.css('padding-left') + ';font-size:' + that.css('font-size') + '">' + pl + '</span>').find('span.placeholder-text');
-            wrap.click(function () {
-                wrap.find('span.placeholder-text').hide();
-                that.focus();
-            });
-            that.blur(function () {
-                if (that.val() == '') placeholderText.show();
-            });
-        } else {
-            that.focus(function () {
-                if (this.value == pl) that.val('').removeClass('placeholder');
-            }).blur(function () {
-                if (this.value == '') that.val(pl).addClass('placeholder');
-            }).trigger('blur').closest('form').submit(function () {
-                if (that.val() == pl) that.val('');
-            });
-        }
-    });
-  };
-  // 扩展方法clearPlaceholderValue：提交数据前执行一下，清空和placeholder值一样的控件内容。防止提交placeholder的值。
-  // 用于输入控件不在表单中或者使用其他代码进行提交的，不会触发form的submit事件，记得一定要执行此方法
-  // 是否要执行这个方法，可以判断是否存在此扩展
-  // DMEO:if($.fn.clearPlaceholderValue)$('input[placeholder],textarea[placeholder]').clearPlaceholderValue()
-  $.fn.clearPlaceholderValue = function () {
-    return this.each(function () {
-        if (this.value == this.getAttribute('placeholder')) this.value = '';
-    });
-  }
   
   $.fn.scrollableNav = function() {
     var $this = $(this);
@@ -514,11 +478,11 @@
         bal_second = Math.floor((bal - (bal_day*60*60*24*1000) - (bal_hour*60*60*1000) - (bal_minute*60*1000)) / 1000);
         var html = '';
         if(bal_day > 0) {
-          html += bal_day + '<em>' + options.unit[0] + '</em>';
+          html += bal_day + '<em>' + options.units[0] + '</em>';
         }
-        html += (bal_hour < 10 ? '0' + bal_hour : bal_hour) + '<em>' + options.unit[1] + '</em>';
-        html += (bal_minute < 10 ? '0' + bal_minute : bal_minute) + '<em>' + options.unit[2] + '</em>';
-        html += (bal_second < 10 ? '0' + bal_second : bal_second) + '<em>' + options.unit[3] + '</em>';
+        html += (bal_hour < 10 ? '0' + bal_hour : bal_hour) + '<em>' + options.units[1] + '</em>';
+        html += (bal_minute < 10 ? '0' + bal_minute : bal_minute) + '<em>' + options.units[2] + '</em>';
+        html += (bal_second < 10 ? '0' + bal_second : bal_second) + '<em>' + options.units[3] + '</em>';
         
         $this.html(html);
       };
@@ -544,6 +508,8 @@
   };
   
   $.fn.timer.defaults = $.extend({}, {
+    beginTime : null,
+    endTime : null,
   	beginText : '未开始',
     endText : '已结束',
     units: ['天', '时', '分', '秒']

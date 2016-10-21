@@ -223,7 +223,6 @@ public class DepositServiceImpl implements DepositService {
 
 	@Override
 	public Page<Deposit> findPage(@NotNull DepositQueryModel depositQueryModel) {
-		validate(depositQueryModel, NOT_NULL, "deposit query model is null");
 		if (depositQueryModel.getPageNumber() == null)
 			depositQueryModel.setPageNumber(0);
 		if (depositQueryModel.getPageSize() == null)
