@@ -2,7 +2,7 @@ package com.zy.model;
 
 import java.math.BigDecimal;
 
-public interface Constants {
+public  interface Constants {
 
     /* session attribute */
     String SESSION_ATTRIBUTE_CAPTCHA = "captcha";

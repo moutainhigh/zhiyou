@@ -155,19 +155,19 @@
         </form>
 
         <ul class="nav nav-tabs">
-          <li class="active"><a href="#chart" data-toggle="tab" aria-expanded="false"> 层级信息 </a></li>
-          <li class=""><a href="#userUpgrade" data-toggle="tab" aria-expanded="false"> 用户升级信息 <span class="badge badge-primary"> ${user.userUpgrades.size()} </span></a></li>
+          <li class="active"><a href="#${levelUuid}" data-toggle="tab" aria-expanded="false"> 层级信息 </a></li>
+          <li class=""><a href="#${upgradeUuid}" data-toggle="tab" aria-expanded="false"> 用户升级信息 <span class="badge badge-primary"> ${user.userUpgrades.size()} </span></a></li>
         </ul>
 
         <div class="tab-content">
 
-          <div class="tab-pane fade active in" id="chart">
+          <div class="tab-pane fade active in" id="${levelUuid}">
             <div class="col-md-10 ztree" id="${treeUuid}">
 
             </div>
           </div>
           
-          <div class="tab-pane fade" id="userUpgrade">
+          <div class="tab-pane fade" id="${upgradeUuid}">
             <table class="table table-hover table-bordered">
               <thead>
               <tr>
