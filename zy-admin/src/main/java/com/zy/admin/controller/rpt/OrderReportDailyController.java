@@ -184,7 +184,7 @@ public class OrderReportDailyController {
 	}
 	
 	private List<String> getQueryTimeLabels() {
-		LocalDate begin = LocalDate.of(2015, 9, 1);
+		LocalDate begin = LocalDate.of(2016, 2, 1);
 		LocalDate today = LocalDate.now();
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM");
 		List<String> timeLabels = new ArrayList<>();

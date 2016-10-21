@@ -87,7 +87,9 @@ public class UserController {
 	public String detail(Long id, Model model, Boolean isPure) {
 		
 		model.addAttribute("isPure", isPure == null ? false : isPure);
+		model.addAttribute("levelUuid", Identities.uuid2());
 		model.addAttribute("treeUuid", Identities.uuid2());
+		model.addAttribute("upgradeUuid", Identities.uuid2());
 		
 		User persistence = userService.findOne(id);
 		validate(persistence, NOT_NULL, "user is null");
