@@ -28,6 +28,7 @@
     <dubbo:reference interface="com.zy.service.UserSettingService" id="userSettingService"/>
     <dubbo:reference interface="com.zy.service.BankCardService" id="bankCardService"/>
     <dubbo:reference interface="com.zy.service.OrderService" id="orderService"/>
+    <dubbo:reference interface="com.zy.service.DepositService" id="depositService"/>
 
 
     <bean id="smsSupport" class="com.zy.common.support.sms.ZtinfoSmsSupport">
