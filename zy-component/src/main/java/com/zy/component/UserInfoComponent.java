@@ -1,13 +1,5 @@
 package com.zy.component;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.usr.Job;
 import com.zy.entity.usr.User;
@@ -17,9 +9,20 @@ import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.UserInfoAdminVo;
 import com.zy.vo.UserInfoVo;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class UserInfoComponent {
+
+	Logger logger = LoggerFactory.getLogger(UserInfoComponent.class);
 	
 	@Autowired
 	private CacheComponent cacheComponent;
@@ -40,9 +43,14 @@ public class UserInfoComponent {
 		userInfoVo.setImage2Thumbnail(StringUtils.isBlank(image2)? null : GcUtils.getThumbnail(image2, 240, 150));
 		
 		AreaDto areaDto = cacheComponent.getAreaDto(userInfo.getAreaId());
-		userInfoVo.setProvince(areaDto.getProvince());
-		userInfoVo.setCity(areaDto.getCity());
-		userInfoVo.setDistrict(areaDto.getDistrict());
+		if (areaDto != null) {
+			userInfoVo.setProvince(areaDto.getProvince());
+			userInfoVo.setCity(areaDto.getCity());
+			userInfoVo.setDistrict(areaDto.getDistrict());
+		} else {
+			logger.error("area id " + userInfo.getAreaId() + " is not found");
+		}
+
 		
 		Long jobId = userInfo.getJobId();
 		if (jobId != null) {
