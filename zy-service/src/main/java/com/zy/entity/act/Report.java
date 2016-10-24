@@ -169,6 +169,7 @@ public class Report implements Serializable {
 
 	@Field(label = "初审通过时间")
 	@View(groups = {VO_ADMIN})
+	@Query({Predicate.GTE, Predicate.LT})
 	@View(name = "preConfirmedTimeLabel", type = String.class, groups = {VO_ADMIN})
 	@View(name = "preConfirmedTimeLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "初审通过时间", order = 78))
 	private Date preConfirmedTime;

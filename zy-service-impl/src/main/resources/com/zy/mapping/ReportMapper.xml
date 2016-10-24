@@ -110,6 +110,9 @@
 		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image,times,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version
 		from `act_report`
 		<where>
+			<if test="preConfirmedTimeGTE != null">
+				and pre_confirmed_time &gt;= #{preConfirmedTimeGTE}
+			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
 			</if>
@@ -156,6 +159,9 @@
 			</if>
 			<if test="timesEQ != null">
 				and times = #{timesEQ}
+			</if>
+			<if test="preConfirmedTimeLT != null">
+				and pre_confirmed_time &lt; #{preConfirmedTimeLT}
 			</if>
 		</where>
 		<choose>
@@ -174,6 +180,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.ReportQueryModel">
 		select count(*) from `act_report`
 		<where>
+			<if test="preConfirmedTimeGTE != null">
+				and pre_confirmed_time &gt;= #{preConfirmedTimeGTE}
+			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
 			</if>
@@ -220,6 +229,9 @@
 			</if>
 			<if test="timesEQ != null">
 				and times = #{timesEQ}
+			</if>
+			<if test="preConfirmedTimeLT != null">
+				and pre_confirmed_time &lt; #{preConfirmedTimeLT}
 			</if>
 		</where>
 	</select>
