@@ -149,6 +149,9 @@ public class OrderComponent {
 		} else {
 			orderAdminVo.setIsPlatformDeliver(false);
 		}
+
+		orderAdminVo.setBuyerUserRankLabel(GcUtils.getUserRankLabel(order.getBuyerUserRank()));
+		orderAdminVo.setSellerUserRankLabel(GcUtils.getUserRankLabel(order.getSellerUserRank()));
 		
 
 		orderAdminVo.setImageThumbnail(GcUtils.getThumbnail(order.getImage()));
