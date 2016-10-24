@@ -50,7 +50,7 @@ public class AdminController {
 		AdminQueryModel adminQueryModel = AdminQueryModel.builder().pageNumber(pageNumber)
 				.pageSize(pageSize).build();
 
-		if (StringUtils.isBlank(phoneEQ) && StringUtils.isBlank(nicknameLK)) {
+		if (StringUtils.isNotBlank(phoneEQ) || StringUtils.isNotBlank(nicknameLK)) {
 
 			UserQueryModel userQueryModel = UserQueryModel.builder().phoneEQ(phoneEQ).nicknameLK(nicknameLK).build();
 			Page<User> userPage = userService.findPage(userQueryModel);
