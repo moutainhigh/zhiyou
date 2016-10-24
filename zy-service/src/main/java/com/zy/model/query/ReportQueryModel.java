@@ -26,9 +26,7 @@ public class ReportQueryModel implements Serializable {
 
 	private Long[] userIdIN;
 
-	private String realnameEQ;
-
-	private String[] realnameIN;
+	private String realnameLK;
 
 	private String phoneEQ;
 
