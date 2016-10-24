@@ -1,5 +1,6 @@
 package com.zy.admin.controller.adm;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,18 +45,19 @@ public class AdminController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Grid<AdminAdminVo> list(UserQueryModel userQueryModel) {
-		Page<User> userPage = userService.findPage(userQueryModel);
-		Page<Admin> page = null;
-		if (userPage.getData().isEmpty()) {
-			page = PageBuilder.empty(userQueryModel.getPageSize(), userQueryModel.getPageNumber());
-		} else {
-			Long[] userIdIN = userPage.getData().stream().map(v -> v.getId()).toArray(Long[]::new);
-			AdminQueryModel adminQueryModel = AdminQueryModel.builder().pageNumber(userQueryModel.getPageNumber())
-					.pageSize(userQueryModel.getPageSize()).userIdIN(userIdIN).build();
-			page = adminService.findPage(adminQueryModel);
-		}
+	public Grid<AdminAdminVo> list(String phoneEQ, String nicknameLK, Integer pageSize, Integer pageNumber) {
 
+		AdminQueryModel adminQueryModel = AdminQueryModel.builder().pageNumber(pageNumber)
+				.pageSize(pageSize).build();
+
+		if (StringUtils.isBlank(phoneEQ) && StringUtils.isBlank(nicknameLK)) {
+
+			UserQueryModel userQueryModel = UserQueryModel.builder().phoneEQ(phoneEQ).nicknameLK(nicknameLK).build();
+			Page<User> userPage = userService.findPage(userQueryModel);
+			Long[] userIdIN = userPage.getData().stream().map(v -> v.getId()).toArray(Long[]::new);
+			adminQueryModel.setUserIdIN(userIdIN);
+		}
+		Page<Admin> page = adminService.findPage(adminQueryModel);
 		return new Grid<>(PageBuilder.copyAndConvert(page, adminComponent::buildAdminVo));
 	}
 	
