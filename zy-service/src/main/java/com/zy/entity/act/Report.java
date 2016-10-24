@@ -61,7 +61,7 @@ public class Report implements Serializable {
 
 	@NotNull
 	@Field(label = "姓名")
-	@Query({Predicate.LK})
+	@Query({Predicate.LK, Predicate.EQ})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(groups = VO_EXPORT, type = String.class,  field = @Field(label = "客户姓名", order = 20))
 	private String realname;

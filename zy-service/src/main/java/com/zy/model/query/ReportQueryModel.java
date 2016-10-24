@@ -28,6 +28,8 @@ public class ReportQueryModel implements Serializable {
 
 	private String realnameLK;
 
+	private String realnameEQ;
+
 	private String phoneEQ;
 
 	private ReportResult reportResultEQ;

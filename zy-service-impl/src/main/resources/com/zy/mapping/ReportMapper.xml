@@ -139,6 +139,9 @@
 				1 = 2
 				</if>
 			</if>
+			<if test="realnameEQ != null">
+				and realname = #{realnameEQ}
+			</if>
 			<if test="reportResultEQ != null">
 				and report_result = #{reportResultEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -199,6 +202,9 @@
 				<if test="userIdIN.length == 0">
 				1 = 2
 				</if>
+			</if>
+			<if test="realnameEQ != null">
+				and realname = #{realnameEQ}
 			</if>
 			<if test="reportResultEQ != null">
 				and report_result = #{reportResultEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
