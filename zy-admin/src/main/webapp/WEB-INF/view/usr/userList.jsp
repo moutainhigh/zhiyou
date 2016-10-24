@@ -94,7 +94,7 @@
           },
           {
             data: '',
-            title: '直属上级',
+            title: '上级',
             orderable: false,
             render: function (data, type, full) {
               return formatUser(full.parent);

@@ -1,5 +1,9 @@
 package com.zy.entity.act;
 
+import com.zy.common.extend.StringBinder;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo.Gender;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -9,29 +13,17 @@ import io.gd.generator.annotation.view.CollectionView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
-import lombok.Getter;
-import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
-
-import com.zy.common.extend.StringBinder;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.UserInfo.Gender;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 
 @Entity
 @Table(name = "act_report")
@@ -69,7 +61,7 @@ public class Report implements Serializable {
 
 	@NotNull
 	@Field(label = "姓名")
-	@Query({Predicate.EQ, Predicate.IN})
+	@Query({Predicate.LK, Predicate.EQ})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(groups = VO_EXPORT, type = String.class,  field = @Field(label = "客户姓名", order = 20))
 	private String realname;
@@ -177,6 +169,7 @@ public class Report implements Serializable {
 
 	@Field(label = "初审通过时间")
 	@View(groups = {VO_ADMIN})
+	@Query({Predicate.GTE, Predicate.LT})
 	@View(name = "preConfirmedTimeLabel", type = String.class, groups = {VO_ADMIN})
 	@View(name = "preConfirmedTimeLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "初审通过时间", order = 78))
 	private Date preConfirmedTime;

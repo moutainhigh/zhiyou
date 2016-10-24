@@ -3,16 +3,20 @@
 <style>
   .imagescan {
     cursor: pointer;
-    width : 80px; height: 80px;
+    width: 80px;
+    height: 80px;
   }
+
   .mr-10 {
     margin-left: 10px;
   }
+
   .text {
-    width: 320px; height: 100px;
-    overflow: hidden; 
-    text-overflow:ellipsis; 
-    white-space:nowrap;
+    width: 320px;
+    height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     cursor: pointer;
   }
 </style>
@@ -93,7 +97,7 @@
         var result = $form.validate().form();
         if (result) {
           var url = '';
-          if(step == 1) {
+          if (step == 1) {
             url = '${ctx}/report/preConfirm';
           } else {
             url = '${ctx}/report/confirm';
@@ -126,7 +130,7 @@
       },
       dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
-        lengthMenu : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here
+        lengthMenu: [[10, 20, 50, 100], [10, 20, 50, 100]],// change per page values here
         pageLength: 20, // default record count per page
         order: [], // set first column as a default sort by desc
         ajax: {
@@ -151,7 +155,7 @@
             orderable: false,
             render: function (data, type, full) {
               return '<p>姓名: ' + full.realname + '</p><p>性别: ' + full.gender + '</p><p>年龄: ' + full.age + '</p>'
-              	+'<p>地区:' + full.province + '-' + full.city + '-' + full.district + '</p>';
+                + '<p>地区:' + full.province + '-' + full.city + '-' + full.district + '</p>';
             }
           },
           {
@@ -173,7 +177,7 @@
               var html = '<span class="layer-phote-' + full.id + '">';
               var imageBigs = full.imageBigs;
               var imageThumbnails = full.imageThumbnails;
-              for(var i=0; i < imageThumbnails.length; i++) {
+              for (var i = 0; i < imageThumbnails.length; i++) {
                 html += '<img class="imagescan mr-10" layer-src="' + imageBigs[i] + '" src="' + imageThumbnails[i] + '" >';
               }
               return html + '</span>';
@@ -183,8 +187,8 @@
             data: 'text',
             title: '客户检测',
             orderable: false,
-            render : function (data, type, full) {
-              return '<p>第' + full.times + '次检测</p><p>时间: ' + full.createdTimeLabel + '</p><p>心得: <div class="text" style="width: 200px;" title=' + data + '>' + data +  '</div></p>';
+            render: function (data, type, full) {
+              return '<p>第' + full.times + '次检测</p><p>时间: ' + full.createdTimeLabel + '</p><p>心得: <div class="text" style="width: 200px;" title=' + data + '>' + data + '</div></p>';
             }
           },
           {
@@ -218,8 +222,8 @@
             title: '审核时间',
             orderable: false,
             render: function (data, type, full) {
-              var preConfirmedTimeLabel = data==null?'-':data;
-              var confirmedTimeLabel = full.confirmedTimeLabel==null?'-':full.confirmedTimeLabel;
+              var preConfirmedTimeLabel = data == null ? '-' : data;
+              var confirmedTimeLabel = full.confirmedTimeLabel == null ? '-' : full.confirmedTimeLabel;
               return '<p>初审: ' + preConfirmedTimeLabel + '</p><p>终审: ' + confirmedTimeLabel + '</p>';
             }
           },
@@ -264,21 +268,21 @@
         ]
       }
     });
-    
-    $('#dataTable').on('click', '.imagescan', function() {
+
+    $('#dataTable').on('click', '.imagescan', function () {
       var $this = $(this);
       layer.photos({
         photos: '.' + $this.parent().attr('class')
       });
     });
-    
-    $('#dataTable').on('click', '.text', function() {
+
+    $('#dataTable').on('click', '.text', function () {
       var text = $(this).text();
       if (text != '') {
         layer.alert($(this).text());
       }
     })
-    
+
   });
   <shiro:hasPermission name="report:export">
   function reportExport() {
@@ -307,11 +311,11 @@
           <i class="icon-volume-1"></i> 检测报告
         </div>
         <shiro:hasPermission name="report:edit">
-        <div class="actions">
-          <a class="btn btn-circle green" data-href="${ctx}/report/create">
-            <i class="fa fa-plus"></i> 新增
-          </a>
-        </div>
+          <div class="actions">
+            <a class="btn btn-circle green" data-href="${ctx}/report/create">
+              <i class="fa fa-plus"></i> 新增
+            </a>
+          </div>
         </shiro:hasPermission>
       </div>
       <div class="portlet-body clearfix">
@@ -340,16 +344,26 @@
 
               <div class="form-group">
                 <select name="preConfirmStatusEQ" class="form-control">
-                  <option value="">-- 预审核状态 --</option>
+                  <option value="">-- 初审状态 --</option>
                   <c:forEach items="${confirmStatus}" var="confirmStatus">
                     <option value="${confirmStatus}">${confirmStatus}</option>
                   </c:forEach>
                 </select>
               </div>
 
+
+              <div class="form-group input-inline">
+                <input class="Wdate form-control" type="text"
+                       onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="preConfirmedTimeGTE" value="" placeholder="初审时间起"/>
+              </div>
+              <div class="form-group input-inline">
+                <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                       name="preConfirmedTimeLT" value="" placeholder="初审时间止"/>
+              </div>
+
               <div class="form-group">
                 <select name="confirmStatusEQ" class="form-control">
-                  <option value="">-- 审核状态 --</option>
+                  <option value="">-- 终审状态 --</option>
                   <c:forEach items="${confirmStatus}" var="confirmStatus">
                     <option value="${confirmStatus}">${confirmStatus}</option>
                   </c:forEach>
@@ -362,19 +376,21 @@
                 </button>
               </div>
               <shiro:hasPermission name="report:export">
-              <div class="form-group">
-                <button type="button" class="btn yellow" onClick="reportExport()">
-                  <i class="fa fa-file-excel-o"></i> 导出Excel
-                </button>
-              </div>
+                <div class="form-group">
+                  <button type="button" class="btn yellow" onClick="reportExport()">
+                    <i class="fa fa-file-excel-o"></i> 导出Excel
+                  </button>
+                </div>
               </shiro:hasPermission>
             </form>
           </div>
+
           <table class="table table-striped table-bordered table-hover" id="dataTable">
           </table>
         </div>
+
       </div>
-      <!-- END ALERTS PORTLET-->
     </div>
+    <!-- END ALERTS PORTLET-->
   </div>
 </div>

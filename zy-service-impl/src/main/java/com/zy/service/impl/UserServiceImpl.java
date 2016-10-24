@@ -123,8 +123,8 @@ public class UserServiceImpl implements UserService {
 				/* 绑定 */
 				user.setNickname(nickname);
 				user.setAvatar(avatar);
-				user.setRegisterTime(new Date());
-				user.setRegisterIp(registerIp);
+/*				user.setRegisterTime(new Date());
+				user.setRegisterIp(registerIp);*/
 				user.setOpenId(openId);
 				user.setUnionId(unionId);
 				userMapper.update(user);

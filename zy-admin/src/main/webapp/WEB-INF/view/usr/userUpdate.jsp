@@ -68,7 +68,7 @@
               </label>
               <div class="col-md-4">
                 <div class="input-icon right">
-                 <div class="form-control-static"> ${user.phone}</div> <input type="hidden" id="phone" class="form-control" name="phone" value="${user.phone}" />
+                 <div class="form-control-static"> ${user.phone}</div>
                 </div>
               </div>
             </div>

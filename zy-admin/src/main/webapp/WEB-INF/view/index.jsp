@@ -359,7 +359,7 @@
           </li>
         </shiro:hasAnyPermissions>
         
-        <shiro:hasAnyPermissions name="orderReport:view">
+        <shiro:hasAnyPermissions name="userTreeReport:view,teamReport:view,userUpgradeReport:view,orderReport:view">
           <li>
             <a href="javascript:;">
               <i class="icon-grid"></i>
@@ -368,7 +368,7 @@
               <span class="arrow "></span>
             </a>
             <ul class="sub-menu">
-              <shiro:hasPermission name="userReport:view">
+              <shiro:hasPermission name="userTreeReport:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/report/userTree"><i class="icon-bar-chart"></i> 用户树<span class="badge badge-danger"></span></a>
                 </li>

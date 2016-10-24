@@ -1,19 +1,5 @@
 package com.zy.admin.controller.rpt;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
 import com.zy.component.LocalCacheComponent;
@@ -21,6 +7,20 @@ import com.zy.entity.mal.Order;
 import com.zy.entity.mal.OrderItem;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @RequestMapping("/report/userTree")
 @Controller
@@ -29,6 +29,7 @@ public class UserTreeReportController {
 	@Autowired
 	private LocalCacheComponent localCacheComponent;
 
+	@RequiresPermissions("userTreeReport:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list() {
 		return "rpt/userTreeReport";
@@ -36,6 +37,7 @@ public class UserTreeReportController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
+	@RequiresPermissions("userTreeReport:view")
 	public List<Map<String, Object>> listAjax(Long parentId) {
 		List<User> allUsers = localCacheComponent.getUsers();
 
@@ -64,6 +66,7 @@ public class UserTreeReportController {
 
 
 	@RequestMapping("/order")
+	@RequiresPermissions("userTreeReport:view")
 	public String orderStastics(Long userId, Model model) {
 		List<User> users = localCacheComponent.getUsers();
 		List<Order> orders = localCacheComponent.getOrders();
