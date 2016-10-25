@@ -84,7 +84,7 @@
       <div class="text-center">
         <img class="round" src="${stccdn}/image/icon/icon_about.png">
       </div>
-      <div class="mt-5 text-center">通知</div>
+      <div class="mt-5 text-center">服务</div>
     </a>
   </nav>
   
