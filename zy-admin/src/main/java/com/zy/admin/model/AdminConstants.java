@@ -1,6 +1,7 @@
 package com.zy.admin.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class AdminConstants {
@@ -17,7 +18,7 @@ public class AdminConstants {
 		Map<String, String> sub;
 
 		{
-			sub = new HashMap<>();
+			sub = new LinkedHashMap<>();
 			sub.put("user:view", "用户信息(查看)");
 			sub.put("user:edit", "用户信息(编辑)");
 			sub.put("user:addVip", "用户信息(加VIP)");
@@ -31,7 +32,7 @@ public class AdminConstants {
 	 		SETTING_PERMISSION_MAP.put("用户中心", sub);
 		}
 		{
-			sub = new HashMap<>();
+			sub = new LinkedHashMap<>();
 			sub.put("product:view", "商品查看");
 			sub.put("product:edit", "商品编辑");
 			sub.put("product:modifyPrice", "商品价格修改");
@@ -41,7 +42,7 @@ public class AdminConstants {
 	 		SETTING_PERMISSION_MAP.put("下单中心", sub);
 		}
 		{
-			sub = new HashMap<>();
+			sub = new LinkedHashMap<>();
 			sub.put("activity:view", "活动查看");
 			sub.put("activity:edit", "活动编辑");
 			sub.put("report:view", "检测报告查看");
@@ -52,7 +53,7 @@ public class AdminConstants {
 			SETTING_PERMISSION_MAP.put("活动管理", sub);
 		}
 		{
-			sub = new HashMap<>();
+			sub = new LinkedHashMap<>();
 			sub.put("banner:view", "banner管理(查看)");
 			sub.put("banner:edit", "banner管理(编辑)");
 			sub.put("notice:view", "公告管理(查看)");
@@ -66,7 +67,7 @@ public class AdminConstants {
 	 		SETTING_PERMISSION_MAP.put("内容管理", sub);
 		}
 		{
-			sub = new HashMap<>();
+			sub = new LinkedHashMap<>();
 			sub.put("account:view", "账户查看");
 			sub.put("account:deposit", "账户充值");
 			sub.put("deposit:view", "充值查看");
@@ -85,15 +86,15 @@ public class AdminConstants {
 	 		SETTING_PERMISSION_MAP.put("财务管理", sub);
 		}
 		{
-			sub = new HashMap<>();
-			sub.put("userReport:view", "用户数据");
+			sub = new LinkedHashMap<>();
+			sub.put("userTreeReport:view", "用户树");
 			sub.put("orderReport:view", "服务商进货报表");
 			sub.put("teamReport:view", "特级服务商人数下线报表");
 			sub.put("userUpgradeReport:view", "服务商数量统计报表");
 	 		SETTING_PERMISSION_MAP.put("报表管理", sub);
 		}
 		{
-			sub = new HashMap<>();
+			sub = new LinkedHashMap<>();
 			sub.put("admin:*", "管理员管理");
 			sub.put("role:*", "角色管理");
 			sub.put("site:*", "站点管理");
