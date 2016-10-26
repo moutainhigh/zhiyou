@@ -220,6 +220,10 @@ public class OrderServiceImpl implements OrderService {
 			orderQueryModel.setPageNumber(0);
 		if (orderQueryModel.getPageSize() == null)
 			orderQueryModel.setPageSize(20);
+		if (orderQueryModel.getOrderBy() == null) {
+			orderQueryModel.setOrderBy("createdTime");
+		}
+
 		long total = orderMapper.count(orderQueryModel);
 		List<Order> data = orderMapper.findAll(orderQueryModel);
 		Page<Order> page = new Page<>();
@@ -726,8 +730,11 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<Order> findAll(@NotNull OrderQueryModel queryModel) {
-		return this.orderMapper.findAll(queryModel);
+	public List<Order> findAll(@NotNull OrderQueryModel orderQueryModel) {
+		if (orderQueryModel.getOrderBy() == null) {
+			orderQueryModel.setOrderBy("createdTime");
+		}
+		return this.orderMapper.findAll(orderQueryModel);
 	}
 
 	@Override

@@ -14,6 +14,9 @@ public class VoHelper {
 		BeanUtils.copyProperties(user, userAdminSimpleVo);
 		userAdminSimpleVo.setAvatarThumbnail(GcUtils.getThumbnail(user.getAvatar()));
 		userAdminSimpleVo.setUserRankLabel(GcUtils.getUserRankLabel(user.getUserRank()));
+		if (user.getUserType() == User.UserType.平台) {
+			userAdminSimpleVo.setPhone("-");
+		}
 		return userAdminSimpleVo;
 	}
 
