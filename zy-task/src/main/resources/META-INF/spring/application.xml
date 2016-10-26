@@ -36,98 +36,92 @@
 				<!--account log ack job -->
 				<bean id="accountLogAckJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="accountLogAckJobDetail"
-						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.task.job.AccountLogAckJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0/1 * * * ?</value>
+						<value>0 0/2 * * * ?</value>
 					</property>
 				</bean>
 				<!--头像装换job-->
 				<bean id="conversionAvatarTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="conversionAvatarDetail"
-						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+						<bean  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.task.job.ConversionAvatarJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0/1 * * * ?</value>
+						<value>0 0/2 * * * ?</value>
 					</property>
 				</bean>
 				<!--订单取消-->
 				<bean id="orderCancelJobTrigger"
 				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="orderStatementJobDetail"
+						<bean id="OrderCancelJob"
 						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.task.job.OrderCancelJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0/1 * * * ?</value>
+						<value>0 0/2 * * * ?</value>
 					</property>
 				</bean>
 				<!--订单结算job-->
 				<bean id="orderSettlementJobTrigger"
 				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="orderStatementJobDetail"
-						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.task.job.OrderSettlementJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0/1 * * * ?</value>
+						<value>0 0/2 * * * ?</value>
 					</property>
 				</bean>
 
 				<!--支付单取消job-->
 				<bean id="paymentCancelTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="paymentCancelDetail"
-						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.task.job.PaymentCancelJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0/1 * * * ?</value>
+						<value>0 0/2 * * * ?</value>
 					</property>
 				</bean>
 
 				<!--收益单结算job-->
-				<bean id="profitGrantJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-					<property name="jobDetail">
-						<bean id="profitGrantJobDetail"
-						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-							<property name="durability" value="true"></property>
-							<property name="jobClass" value="com.zy.task.job.ProfitGrantJob"></property>
-						</bean>
-					</property>
-					<property name="cronExpression">
-						<value>0 0/1 * * * ?</value>
-					</property>
-				</bean>
+				<!--<bean id="profitGrantJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+					<!--<property name="jobDetail">-->
+						<!--<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">-->
+							<!--<property name="durability" value="true"></property>-->
+							<!--<property name="jobClass" value="com.zy.task.job.ProfitGrantJob"></property>-->
+						<!--</bean>-->
+					<!--</property>-->
+					<!--<property name="cronExpression">-->
+						<!--<value>0 0/2 * * * ?</value>-->
+					<!--</property>-->
+				<!--</bean>-->
 
 				<!--report 结算-->
-				<bean id="ReportSettlementJobJobTrigger"
+				<bean id="ReportSettlementJobTrigger"
 				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
-						<bean id="reportStatementJobDetail"
-						      class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.task.job.ReportSettlementJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0/1 * * * ?</value>
+						<value>0 0/2 * * * ?</value>
 					</property>
 				</bean>
 				<!--转账 job-->
@@ -139,7 +133,7 @@
 						<!--</bean>-->
 					<!--</property>-->
 					<!--<property name="cronExpression">-->
-						<!--<value>0 0/1 * * * ?</value>-->
+						<!--<value>0 0/2 * * * ?</value>-->
 					<!--</property>-->
 				<!--</bean>-->
 

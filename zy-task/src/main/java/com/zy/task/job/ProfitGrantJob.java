@@ -20,6 +20,7 @@ import static com.zy.model.query.ProfitQueryModel.builder;
 /**
  * Created by freeman on 16/9/13.
  */
+@Deprecated
 public class ProfitGrantJob implements Job {
 
 	private Logger logger = LoggerFactory.getLogger(ProfitGrantJob.class);
@@ -30,23 +31,20 @@ public class ProfitGrantJob implements Job {
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		logger.info("begin...{}", LocalDateTime.now());
-		profitService.findAll(builder().profitStatusEQ(待发放).build())
-				.stream()
-				.map(profit -> profit.getId())
-				.forEach(this::gant);
+//		profitService.findAll(builder().profitStatusEQ(待发放).build())
+//				.stream()
+//				.map(profit -> profit.getId())
+//				.forEach(this::gant);
 		logger.info("end...{}", LocalDateTime.now());
 
 	}
 
 	private void gant(Long profitId) {
 		try {
-			try {
-				TimeUnit.SECONDS.sleep(2);
-			} catch (InterruptedException e) {
-			}
 			this.profitService.grant(profitId);
 			logger.info("profitId  {} success", profitId);
 		} catch (ConcurrentException e) {
+			try {TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
 			gant(profitId);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

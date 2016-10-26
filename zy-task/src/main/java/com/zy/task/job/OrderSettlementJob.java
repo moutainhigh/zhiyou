@@ -45,14 +45,11 @@ public class OrderSettlementJob implements Job {
 
     private void settleUp(Long id) {
         try {
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
 
-            }
             this.orderService.settleUp(id);
             logger.info("结算 {} 成功", id);
         } catch (ConcurrentException e) {
+            try {TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
             settleUp(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -61,14 +58,11 @@ public class OrderSettlementJob implements Job {
 
     private void settleUpProfit(Long id) {
         try {
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
 
-            }
             this.orderService.settleUpProfit(id);
             logger.info("结算 settleUpProfit {} 成功", id);
         } catch (ConcurrentException e) {
+            try {TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
             settleUpProfit(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

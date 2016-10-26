@@ -35,13 +35,11 @@ public class AccountLogAckJob implements Job {
 
 	private void acknowledge(Long id) {
 		try {
-			try {
-				TimeUnit.SECONDS.sleep(2);
-			} catch (InterruptedException e) {
-			}
+
 			this.accountLogService.acknowledge(id);
 			logger.info(" acknowledge {} success", id);
 		} catch (ConcurrentException e) {
+			try {TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
 			acknowledge(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
