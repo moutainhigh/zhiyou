@@ -79,10 +79,6 @@ public class UcenterPayController {
 		final BigDecimal zero = new BigDecimal("0.00");
 		String title = "积分余额充值";
 		Long userId = principal.getUserId();
-		User user = userService.findOne(userId);
-		if(user.getUserRank() == UserRank.V1 || user.getUserRank() == UserRank.V2){
-			throw new BizException(BizCode.ERROR, "三级服务商、二级服务商暂不支持充值操作");
-		}
 		validate(money, v -> v.compareTo(zero) > 0, "money must be more than 0.00");
 
 		DepositQueryModel depositQueryModel = new DepositQueryModel();

@@ -28,7 +28,6 @@
     <i class="icon icon-money icon-6x block center mt-30"></i>
     <h2 class="font-777 fs-16 lh-30 text-center mt-20">我的积分余额(元)</h2>
     <div class="font-333 fs-36 lh-60 text-center">${amount}</div>
-    <c:if test="${userRank == 'V4' || userRank == 'V3'}">
     <div class="form-btn mt-20">
       <a href="${ctx}/u/pay/deposit?payType=1" class="btn orange btn-block round-2">充值</a>
     </div>
@@ -41,7 +40,6 @@
     <div class="form-btn">
       <a href="${ctx}/u/money/withdraw" class="btn green btn-block round-2">提现</a>
     </div>
-    </c:if>
     </c:if>
     <a href="${ctx}/help/money" class="mt-30 mb-10 block width-100p font-999 fs-12 text-center"><i class="fa fa-question-circle-o"></i> 积分余额问题</a>
   </article>

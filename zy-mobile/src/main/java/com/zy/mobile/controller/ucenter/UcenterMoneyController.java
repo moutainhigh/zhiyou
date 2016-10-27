@@ -154,10 +154,6 @@ public class UcenterMoneyController {
 	public String withdraw(Principal principal, Model model, BigDecimal amount,Long bankCardId, RedirectAttributes redirectAttributes) {
 		try {
 			Long userId = principal.getUserId();
-			User user = userService.findOne(userId);
-			if(user.getUserRank() == UserRank.V1 || user.getUserRank() == UserRank.V2){
-				throw new BizException(BizCode.ERROR, "三级服务商、二级服务商暂不支持提现操作");
-			}
 			Withdraw withdraw = withdrawService.create(userId, bankCardId, 现金, amount);
 			model.addAttribute("withdraw", withdraw);
 			return "ucenter/account/moneyWithdrawSuccess";

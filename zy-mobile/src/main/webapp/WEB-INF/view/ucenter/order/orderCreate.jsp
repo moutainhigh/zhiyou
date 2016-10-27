@@ -311,8 +311,8 @@
     </div>
     
     <div class="list-group">
-        <div class="list-title">请选择付款方式</div>
-        <c:if test="${userRank == 'V3' || userRank == 'V2' || userRank == 'V1' || userRank == 'V0'}">
+      <div class="list-title">请选择付款方式</div>
+      <c:if test="${userRank == 'V0' || userRank == 'V1' || userRank == 'V2' || userRank == 'V3'}">
         <div class="list-item form-radio">
           <label class="list-text" for="isPayToPlatform0">线下转账</label>
           <div class="list-unit">
@@ -320,8 +320,8 @@
             <label class="i-checked" for="isPayToPlatform0"></label>
           </div>
         </div>
-        </c:if>
-        <c:if test="${userRank == 'V3' || userRank == 'V4'}">
+      </c:if>
+      <c:if test="${userRank == 'V0' || userRank == 'V1' || userRank == 'V2' || userRank == 'V3' || userRank == 'V4'}">
         <div class="list-item form-radio">
           <label class="list-text" for="isPayToPlatform1">余额支付</label>
           <div class="list-unit">
@@ -329,7 +329,7 @@
             <label class="i-checked" for="isPayToPlatform1"></label>
           </div>
         </div>
-        </c:if>
+      </c:if>
     </div>
     
     <div class="list-group">
