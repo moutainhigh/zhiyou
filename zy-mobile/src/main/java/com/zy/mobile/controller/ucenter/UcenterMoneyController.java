@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.zy.Config;
-import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -36,9 +35,6 @@ import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.AccountLog;
 import com.zy.entity.fnc.BankCard;
 import com.zy.entity.fnc.Withdraw;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.User.UserRank;
-import com.zy.model.BizCode;
 import com.zy.model.Principal;
 import com.zy.model.query.AccountLogQueryModel;
 import com.zy.model.query.BankCardQueryModel;

@@ -32,8 +32,6 @@ import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
 import com.zy.entity.mal.Order;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.User.UserRank;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
@@ -43,7 +41,6 @@ import com.zy.service.AccountService;
 import com.zy.service.DepositService;
 import com.zy.service.OrderService;
 import com.zy.service.PaymentService;
-import com.zy.service.UserService;
 
 import io.gd.generator.api.query.Direction;
 
@@ -59,9 +56,6 @@ public class UcenterPayController {
 	@Autowired
 	private OrderService orderService;
 	
-	@Autowired
-	private UserService userService;
-
 	@Autowired
 	private PaymentService paymentService;
 
