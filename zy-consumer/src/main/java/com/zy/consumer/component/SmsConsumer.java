@@ -1,5 +1,6 @@
 package com.zy.consumer.component;
 
+import com.zy.Config;
 import com.zy.common.support.sms.SmsSupport;
 import com.zy.consumer.extend.AbstractConsumer;
 import com.zy.entity.fnc.BankCard;
@@ -50,6 +51,9 @@ public class SmsConsumer extends AbstractConsumer {
 
     @Autowired
     private DepositService depositService;
+
+    @Autowired
+    private Config config;
 
     // String TOPIC_DEPOSIT_SUCCESS = "deposit-success";
     //String TOPIC_DEPOSIT_OFFLINE_REJECTED = "deposit-offline-rejected";
