@@ -303,7 +303,7 @@ public class OrderServiceImpl implements OrderService {
 			order.setLogisticsName(logisticsName);
 			order.setLogisticsSn(logisticsSn);
 			order.setLogisticsFee(logisticsFee);
-
+			order.setIsBuyerPayLogisticsFee(false);
 		} else {
 			order.setLogisticsFee(null);
 			order.setLogisticsName(null);
