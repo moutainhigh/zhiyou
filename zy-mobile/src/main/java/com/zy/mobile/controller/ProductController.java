@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.zy.component.ProductComponent;
 import com.zy.entity.mal.Product;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
 import com.zy.entity.usr.User.UserRank;
@@ -61,7 +62,7 @@ public class ProductController {
 			User user = userService.findOne(principal.getUserId());
 			model.addAttribute("userRank", user.getUserRank());
 			UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
-			if(userInfo != null) {
+			if(userInfo != null && userInfo.getConfirmStatus() == ConfirmStatus.已通过) {
 				model.addAttribute("hasUserInfo", true);
 			}
 			product.setPrice(productService.getPrice(product.getId(), user.getUserRank(), 1L));
