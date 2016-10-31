@@ -87,29 +87,33 @@
         var url = reader.result;
         image.src = url;
       };
-      var canvas = document.createElement("canvas"),
-      ctx = canvas.getContext('2d');
       image.onload = function() {
         var w = image.naturalWidth,
             h = image.naturalHeight;
-        canvas.width = w;
-        canvas.height = h;
-        ctx.drawImage(image, 0, 0, w, h, 0, 0, w, h);
-        
-        var format = "image/jpeg";
-        var base64 = canvas.toDataURL(format, options.quality);
-        var code = window.atob(base64.split(',')[1]);
+        try {
+          var canvas = document.createElement("canvas");
+          canvas.width = w;
+          canvas.height = h;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(image, 0, 0, w, h, 0, 0, w, h);
+          
+          var format = "image/jpeg";
+          var base64 = canvas.toDataURL(format, options.quality);
+          var code = window.atob(base64.split(',')[1]);
 
-        var aBuffer = new window.ArrayBuffer(code.length);
-        var uBuffer = new window.Uint8Array(aBuffer);
-        for(var i = 0; i < code.length; i++){
-          uBuffer[i] = code.charCodeAt(i) & 0xff ;
+          var aBuffer = new window.ArrayBuffer(code.length);
+          var uBuffer = new window.Uint8Array(aBuffer);
+          for(var i = 0; i < code.length; i++){
+            uBuffer[i] = code.charCodeAt(i) & 0xff ;
+          }
+          ths.fileData = new Blob([uBuffer], {
+            type: format
+          });
+          console.info('Compressed File size : ' + ths.fileData.size + 'Byte');
+        } catch (e) {
+          ths.fileData = file;
+          console.info('Canvas compress failed...' + e.message);
         }
-        ths.fileData = new Blob([uBuffer], {
-          type: format
-        });
-        
-        console.info('Compressed File size : ' + ths.fileData.size + 'Byte');
         ths.startUploadFile();
       };
       reader.readAsDataURL(file);
@@ -154,7 +158,12 @@
           }
         },
         uploadError : function(e) {
-          alert('图片上传失败，请重试' + '[' + e.target.status + ']');
+          if(e.target.status == 200) {
+            var result = JSON.parse(e.target.responseText);
+            alert('[' + result.code + ']' + result.message + '');
+          } else {
+            alert('[' + e.target.status + ']' + '图片上传失败，请重试');
+          }
           ths.stopLoading();
           if (options.error) {
             options.error.call(container, e);
