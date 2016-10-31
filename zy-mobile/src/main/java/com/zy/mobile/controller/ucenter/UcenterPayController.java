@@ -131,13 +131,15 @@ public class UcenterPayController {
 		if(!order.getUserId().equals(principal.getUserId())){
 			throw new BizException(BizCode.ERROR, "非自己的订单不能支付");
 		}
-		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(order.getId()).build());
+		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(order.getId()).paymentTypeEQ(PaymentType.订单支付).build());
 		Payment payment = payments.stream().filter(v -> v.getPayType() == payType)
 				.filter(v -> (v.getPaymentStatus() == PaymentStatus.待支付 || v.getPaymentStatus() == PaymentStatus.待确认))
 				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
-				.filter(v -> v.getRefId() == orderId).filter(v -> v.getAmount1().equals(order.getAmount()))
-				.filter(v -> v.getCurrencyType1() == order.getCurrencyType()).filter(v -> v.getAmount2() == null)
-				.filter(v -> v.getCurrencyType2() == null).findFirst().orElse(null);
+				.filter(v -> v.getAmount1().equals(order.getAmount()))
+				.filter(v -> v.getCurrencyType1() == order.getCurrencyType())
+				.filter(v -> v.getAmount2() == null)
+				.filter(v -> v.getCurrencyType2() == null)
+				.findFirst().orElse(null);
 
 		if (payment == null && payType != PayType.银行汇款) {
 			payment = new Payment();
