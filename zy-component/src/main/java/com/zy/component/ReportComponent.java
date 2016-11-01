@@ -128,7 +128,6 @@ public class ReportComponent {
 		}
 		reportExportVo.setReportedDateLabel(formatDate(report.getReportedDate(), "yyyy-MM-dd"));
 		reportExportVo.setAppliedTimeLabel(GcUtils.formatDate(report.getAppliedTime(), TIME_PATTERN));
-		reportExportVo.setCreatedTimeLabel(GcUtils.formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportExportVo.setPreConfirmedTimeLabel(GcUtils.formatDate(report.getPreConfirmedTime(), TIME_PATTERN));
 		reportExportVo.setConfirmedTimeLabel(GcUtils.formatDate(report.getConfirmedTime(), TIME_PATTERN));
 		return reportExportVo;

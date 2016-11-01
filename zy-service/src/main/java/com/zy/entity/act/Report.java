@@ -165,7 +165,6 @@ public class Report implements Serializable {
 	@Field(label = "创建时间")
 	@View(groups = {VO_ADMIN})
 	@View(name = "createdTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST})
-	@View(name = "createdTimeLabel", type = String.class,  groups = VO_EXPORT, field = @Field(label = "创建时间", order = 76))
 	private Date createdTime;
 
 	@NotNull
