@@ -44,14 +44,10 @@ public class OrderCancelJob implements Job {
 
     private void cancel(Long orderId) {
         try {
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-
-            }
             this.orderService.cancel(orderId);
             logger.info("取消 {} 成功", orderId);
         } catch (ConcurrentException e) {
+            try {TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
             cancel(orderId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

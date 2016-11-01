@@ -37,9 +37,9 @@ import com.zy.service.TransferService;
 
 @RequestMapping("/u/account")
 @Controller
-public class UcenterAcountController {
+public class UcenterAccountController {
 	
-	Logger logger = LoggerFactory.getLogger(UcenterAcountController.class);
+	Logger logger = LoggerFactory.getLogger(UcenterAccountController.class);
 	
 	private final int pageSize = 20;
 	

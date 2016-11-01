@@ -38,14 +38,10 @@ public class ReportSettlementJob implements Job {
 
 	private void settleUp(Long id) {
 		try {
-			try {
-				TimeUnit.SECONDS.sleep(2);
-			} catch (InterruptedException e) {
-
-			}
 			this.reportService.settleUp(id);
 			logger.info("settleUp {} success",id);
 		} catch (ConcurrentException e) {
+			try {TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
 			settleUp(id);
 		}catch (Exception e){
 			logger.error(e.getMessage(),e);

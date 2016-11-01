@@ -87,29 +87,49 @@
         var url = reader.result;
         image.src = url;
       };
-      var canvas = document.createElement("canvas"),
-      ctx = canvas.getContext('2d');
+      var MaxSide = 1280;
       image.onload = function() {
-        var w = image.naturalWidth,
-            h = image.naturalHeight;
-        canvas.width = w;
-        canvas.height = h;
-        ctx.drawImage(image, 0, 0, w, h, 0, 0, w, h);
-        
-        var format = "image/jpeg";
-        var base64 = canvas.toDataURL(format, options.quality);
-        var code = window.atob(base64.split(',')[1]);
-
-        var aBuffer = new window.ArrayBuffer(code.length);
-        var uBuffer = new window.Uint8Array(aBuffer);
-        for(var i = 0; i < code.length; i++){
-          uBuffer[i] = code.charCodeAt(i) & 0xff ;
+        var sw = image.naturalWidth,
+            sh = image.naturalHeight;
+        console.info('Origin File pixel : ' + sw + ' x ' + sh);
+        var w = sw, h = sh;
+        if(w > h) {
+          if(w > MaxSide) {
+            h = Math.round(MaxSide * h / w);
+            w = MaxSide;
+          }
+        } else {
+          if(h > MaxSide) {
+            w = Math.round(MaxSide * w / h);
+            h = MaxSide;
+          }
         }
-        ths.fileData = new Blob([uBuffer], {
-          type: format
-        });
-        
-        console.info('Compressed File size : ' + ths.fileData.size + 'Byte');
+        console.info('Compressed File pixel : ' + w + ' x ' + h);
+        try {
+          var canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(image, 0, 0, sw, sh, 0, 0, w, h);
+          var format = 'image/jpeg';
+          var base64 = canvas.toDataURL(format, options.quality);
+          var code = window.atob(base64.split(',')[1]);
+          if(code.length == 0) {
+            throw new Error('该浏览器不支持Canvas绘图.');
+          }
+          var aBuffer = new window.ArrayBuffer(code.length);
+          var uBuffer = new window.Uint8Array(aBuffer);
+          for(var i = 0; i < code.length; i++){
+            uBuffer[i] = code.charCodeAt(i) & 0xff ;
+          }
+          ths.fileData = new Blob([uBuffer], {
+            type: format
+          });
+          console.info('Compressed File size : ' + ths.fileData.size + 'Byte');
+        } catch (e) {
+          ths.fileData = file;
+          console.info('Canvas compress failed...' + e.message);
+        }
         ths.startUploadFile();
       };
       reader.readAsDataURL(file);
@@ -123,9 +143,9 @@
       }
       
       var formData = new FormData();
-      formData.append("file", ths.fileData);
-      formData.append("width", options.width *　(options.retain ? 2 : 1));
-      formData.append("height", options.height * (options.retain ? 2 : 1));
+      formData.append('file', ths.fileData);
+      formData.append('width', options.width *　(options.retain ? 2 : 1));
+      formData.append('height', options.height * (options.retain ? 2 : 1));
       
       var oXHR = new XMLHttpRequest();
       oXHR.addEventListener('load', ths.callbacks.uploadSuccess, false);
@@ -137,7 +157,13 @@
     };
     ths.showError = function(message) {
       if((window.jQuery || window.Zepto) && $.message){
-        $.message(message, 'error');
+        //$.message(message, 'error');
+        $.dialog({
+          content : message,
+          btn : [ '我知道了' ],
+          btnCancel : null,
+          shadeClose : true
+        });
       } else {
         alert(message);
       }
@@ -154,7 +180,12 @@
           }
         },
         uploadError : function(e) {
-          alert('图片上传失败，请重试' + '[' + e.target.status + ']');
+          if(e.target.status == 200) {
+            var result = JSON.parse(e.target.responseText);
+            alert('[' + result.code + ']' + result.message + '');
+          } else {
+            alert('[' + e.target.status + ']' + '图片上传失败，请重试');
+          }
           ths.stopLoading();
           if (options.error) {
             options.error.call(container, e);
@@ -228,7 +259,7 @@
     width : 100,
     height : 100,
     retain : true,
-    quality : 0.5,
+    quality : 0.6,
     fileTypes : ['image/bmp', 'image/gif', 'image/jpeg', 'image/png'],
     maxFileSize : '10MB',
     isMultipart : false,

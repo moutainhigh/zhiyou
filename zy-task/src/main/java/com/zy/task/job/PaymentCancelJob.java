@@ -62,14 +62,10 @@ public class PaymentCancelJob implements Job {
 
 	private void cancel(Long id) {
 		try {
-			try {
-				TimeUnit.SECONDS.sleep(2);
-			} catch (InterruptedException e) {
-
-			}
 			this.paymentService.cancel(id);
 			logger.info("取消 {} 成功", id);
 		} catch (ConcurrentException e) {
+			try {TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
 			cancel(id);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

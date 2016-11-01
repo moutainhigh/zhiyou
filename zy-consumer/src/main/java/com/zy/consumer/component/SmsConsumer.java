@@ -1,5 +1,6 @@
 package com.zy.consumer.component;
 
+import com.zy.Config;
 import com.zy.common.support.sms.SmsSupport;
 import com.zy.consumer.extend.AbstractConsumer;
 import com.zy.entity.fnc.BankCard;
@@ -51,6 +52,9 @@ public class SmsConsumer extends AbstractConsumer {
     @Autowired
     private DepositService depositService;
 
+    @Autowired
+    private Config config;
+
     // String TOPIC_DEPOSIT_SUCCESS = "deposit-success";
     //String TOPIC_DEPOSIT_OFFLINE_REJECTED = "deposit-offline-rejected";
 
@@ -101,9 +105,11 @@ public class SmsConsumer extends AbstractConsumer {
                 if (isNull(order)) {
                     warn(topic, refId, token, version);
                 } else {
-                    Long parentId = userService.findOne(order.getUserId()).getParentId();
-                    if (parentId != null && parentId > 0) {
-                        doSendSms(parentId, format("订单【%s】已经完成付款,请尽快发货", order.getSn()));
+                    Long sellerId = order.getSellerId();
+                    if (!sellerId.equals(config.getSysUserId())) {
+                        if (sellerId != null && sellerId > 0) {
+                            doSendSms(sellerId, format("订单【%s】已经完成付款,请尽快发货", order.getSn()));
+                        }
                     }
                 }
                 break;
