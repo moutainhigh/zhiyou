@@ -40,6 +40,10 @@
           required : true,
           phone : true
         },
+        'times' : {
+          required : true,
+          digits : true
+        },
         'areaId' : {
           required : true
         },
