@@ -1,38 +1,32 @@
 package com.zy.util;
 
-import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.zy.common.exception.ValidationException;
+import com.zy.common.util.Identities;
+import com.zy.entity.fnc.*;
+import com.zy.entity.mal.Order;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.zy.common.exception.ValidationException;
-import com.zy.common.util.Identities;
-import com.zy.entity.fnc.Deposit;
-import com.zy.entity.fnc.Payment;
-import com.zy.entity.fnc.Profit;
-import com.zy.entity.fnc.Transfer;
-import com.zy.entity.fnc.Withdraw;
-import com.zy.entity.mal.Order;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.User;
-import com.zy.model.Constants;
-import com.zy.model.Principal;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.*;
+
+import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
 
 public class GcUtils {
+
+	public static boolean isOld(Long productId) {
+		return productId.equals(1L);
+	}
 
 	public static String getHost() {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
