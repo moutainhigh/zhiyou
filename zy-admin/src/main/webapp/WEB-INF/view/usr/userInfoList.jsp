@@ -246,6 +246,14 @@
                 <input type="text" name="userNicknameLK" class="form-control" placeholder="昵称"/>
               </div>
 
+              <div class="form-group">
+                <input type="text" name="realnameLK" class="form-control" placeholder="姓名"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="idCardNumberLK" class="form-control" placeholder="身份证号"/>
+              </div>
+
               <div class="form-group input-inline">
                 <select name="confirmStatusEQ" class="form-control">
                   <option value="">-- 审核状态 --</option>
