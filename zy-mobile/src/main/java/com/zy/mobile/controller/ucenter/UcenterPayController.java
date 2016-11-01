@@ -32,6 +32,7 @@ import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
 import com.zy.entity.mal.Order;
+import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
@@ -130,6 +131,9 @@ public class UcenterPayController {
 		validate(order, NOT_NULL, "order id" + orderId + " not found");
 		if(!order.getUserId().equals(principal.getUserId())){
 			throw new BizException(BizCode.ERROR, "非自己的订单不能支付");
+		}
+		if(order.getOrderStatus() != OrderStatus.待支付){
+			return "redirect:/u/order/" + orderId;
 		}
 		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(order.getId()).paymentTypeEQ(PaymentType.订单支付).build());
 		Payment payment = payments.stream().filter(v -> v.getPayType() == payType)
