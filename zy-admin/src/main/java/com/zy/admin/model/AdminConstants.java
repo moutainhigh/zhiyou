@@ -39,6 +39,7 @@ public class AdminConstants {
 			sub.put("product:on", "商品上架");
 			sub.put("order:view", "订单查看");
 			sub.put("order:deliver", "平台订单发货");
+			sub.put("order:refund", "订单退款");
 	 		SETTING_PERMISSION_MAP.put("下单中心", sub);
 		}
 		{
