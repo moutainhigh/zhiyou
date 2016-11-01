@@ -164,8 +164,8 @@
             orderable: false
           },
           {
-            data: 'reportedDateLabel',
-            title: '检测日期',
+            data: 'appliedTimeLabel',
+            title: '申请时间',
             orderable: false
           },
           {
@@ -193,7 +193,7 @@
             title: '客户检测',
             orderable: false,
             render: function (data, type, full) {
-              return '<p>第' + full.times + '次检测</p><p>时间: ' + full.createdTimeLabel + '</p><p>心得: <div class="text" style="width: 200px;" title=' + data + '>' + data + '</div></p>';
+              return '<p>第' + full.times + '次检测</p><p>检测: ' + full.reportedDateLabel + '</p><p>心得: <div class="text" style="width: 200px;" title=' + data + '>' + data + '</div></p>';
             }
           },
           {
