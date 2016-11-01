@@ -42,6 +42,13 @@
           required : true,
           phone : true
         },
+        'times' : {
+          required : true,
+          digits : true
+        },
+        'reportedDate' : {
+          required : true
+        },
         'areaId' : {
           required : true
         },
@@ -147,6 +154,12 @@
           <label class="list-label" for="times">检测次数</label>
           <div class="list-text">
             <input type="number" name="times" class="form-input" value="${report.times}" placeholder="第几次检测">
+          </div>
+        </div>
+        <div class="list-item">
+          <label class="list-label" for="date">检测日期</label>
+          <div class="list-text">
+            <input type="text" id="date" name="reportedDate" class="form-input" value="${report.reportedDateLabel}" placeholder="填写检测时间 2001-01-01" onfocus="this.type='date'">
           </div>
         </div>
         <div class="list-item">

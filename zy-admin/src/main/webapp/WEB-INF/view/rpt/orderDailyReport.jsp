@@ -54,6 +54,12 @@
 
   });
 
+  <shiro:hasPermission name="orderReport:export">
+  function reportExport() {
+    location.href = '${ctx}/report/order/daily/export?queryDate=${queryDate}&' + $('#searchForm').serialize();
+  }
+  </shiro:hasPermission>
+  
 </script>
 <!-- END JAVASCRIPTS -->
 
@@ -93,7 +99,7 @@
       <div class="portlet-body clearfix">
         <div class="table-container">
           <div class="table-toolbar">
-            <form class="filter-form form-inline">
+            <form class="filter-form form-inline" id="searchForm">
               <input id="_orderBy" name="orderBy" type="hidden" value=""/>
               <input id="_direction" name="direction" type="hidden" value=""/>
               <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
@@ -147,6 +153,13 @@
                   <i class="fa fa-search"></i> 查询
                 </button>
               </div>
+              <shiro:hasPermission name="orderReport:export">
+                <div class="form-group">
+                  <button type="button" class="btn yellow" onClick="reportExport()">
+                    <i class="fa fa-file-excel-o"></i> 导出Excel
+                  </button>
+                </div>
+              </shiro:hasPermission>
             </form>
           </div>
           <table class="table table-striped table-bordered table-hover" id="dataTable">

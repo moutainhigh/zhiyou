@@ -64,6 +64,8 @@ public class ReportDetailVo implements Serializable {
 	private String city;
 	@Field(label = "所在地")
 	private String district;
+	@Field(label = "检测日期")
+	private String reportedDateLabel;
 	@Field(label = "申请时间")
 	private String appliedTimeLabel;
 	@Field(label = "创建时间")

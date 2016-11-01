@@ -16,6 +16,7 @@
 		<result column="text" property="text" />
 		<result column="image" property="image" />
 		<result column="times" property="times" />
+		<result column="reported_date" property="reportedDate" />
 		<result column="applied_time" property="appliedTime" />
 		<result column="created_time" property="createdTime" />
 		<result column="pre_confirm_status" property="preConfirmStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
@@ -29,8 +30,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.act.Report" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_report` (user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image,times,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version)
-	  values (#{userId},#{realname},#{age},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{jobId},#{areaId},#{tagIds},#{reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{text},#{image},#{times},#{appliedTime},#{createdTime},#{preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{preConfirmedTime},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{confirmedTime},#{isSettledUp},#{isHot},#{version})
+	  insert into `act_report` (user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image,times,reported_date,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version)
+	  values (#{userId},#{realname},#{age},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{jobId},#{areaId},#{tagIds},#{reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{text},#{image},#{times},#{reportedDate},#{appliedTime},#{createdTime},#{preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{preConfirmedTime},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{confirmedTime},#{isSettledUp},#{isHot},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -52,6 +53,7 @@
 			text = #{text},
 			image = #{image},
 			times = #{times},
+			reported_date = #{reportedDate},
 			applied_time = #{appliedTime},
 			created_time = #{createdTime},
 			pre_confirm_status = #{preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
@@ -83,6 +85,7 @@
 					<when test="field == 'text'">text = #{report.text},</when>
 					<when test="field == 'image'">image = #{report.image},</when>
 					<when test="field == 'times'">times = #{report.times},</when>
+					<when test="field == 'reportedDate'">reported_date = #{report.reportedDate},</when>
 					<when test="field == 'appliedTime'">applied_time = #{report.appliedTime},</when>
 					<when test="field == 'createdTime'">created_time = #{report.createdTime},</when>
 					<when test="field == 'preConfirmStatus'">pre_confirm_status = #{report.preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.sys.ConfirmStatus},</when>
@@ -100,18 +103,21 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image,times,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version
+		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image,times,reported_date,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version
 		from `act_report`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ReportQueryModel">
 		select
-		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image,times,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version
+		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,report_result,text,image,times,reported_date,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version
 		from `act_report`
 		<where>
 			<if test="preConfirmedTimeGTE != null">
 				and pre_confirmed_time &gt;= #{preConfirmedTimeGTE}
+			</if>
+			<if test="reportedDateLT != null">
+				and reported_date &lt; #{reportedDateLT}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
@@ -144,6 +150,9 @@
 			</if>
 			<if test="realnameEQ != null">
 				and realname = #{realnameEQ}
+			</if>
+			<if test="reportedDateGTE != null">
+				and reported_date &gt;= #{reportedDateGTE}
 			</if>
 			<if test="reportResultEQ != null">
 				and report_result = #{reportResultEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
@@ -183,6 +192,9 @@
 			<if test="preConfirmedTimeGTE != null">
 				and pre_confirmed_time &gt;= #{preConfirmedTimeGTE}
 			</if>
+			<if test="reportedDateLT != null">
+				and reported_date &lt; #{reportedDateLT}
+			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
 			</if>
@@ -214,6 +226,9 @@
 			</if>
 			<if test="realnameEQ != null">
 				and realname = #{realnameEQ}
+			</if>
+			<if test="reportedDateGTE != null">
+				and reported_date &gt;= #{reportedDateGTE}
 			</if>
 			<if test="reportResultEQ != null">
 				and report_result = #{reportResultEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}

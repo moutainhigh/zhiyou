@@ -39,6 +39,7 @@ public class AdminConstants {
 			sub.put("product:on", "商品上架");
 			sub.put("order:view", "订单查看");
 			sub.put("order:deliver", "平台订单发货");
+			sub.put("order:refund", "订单退款");
 	 		SETTING_PERMISSION_MAP.put("下单中心", sub);
 		}
 		{
@@ -76,6 +77,7 @@ public class AdminConstants {
 			sub.put("withdraw:view", "提现查看");
 			sub.put("withdraw:confirm", "操作提现");
 			sub.put("profit:view", "收益查看");
+			sub.put("profit:grant", "收益发放");
 			sub.put("accountLog:view", "流水查看");
 			sub.put("accountLog:export", "流水导出");
 			sub.put("bankCard:view", "绑定银行信息(查看)");
@@ -89,8 +91,11 @@ public class AdminConstants {
 			sub = new LinkedHashMap<>();
 			sub.put("userTreeReport:view", "用户树");
 			sub.put("orderReport:view", "服务商进货报表");
+			sub.put("orderReport:export", "服务商进货报表导出");
 			sub.put("teamReport:view", "特级服务商人数下线报表");
+			sub.put("teamReport:export", "特级服务商人数下线报表导出");
 			sub.put("userUpgradeReport:view", "服务商数量统计报表");
+			sub.put("userUpgradeReport:export", "服务商数量统计报表导出");
 	 		SETTING_PERMISSION_MAP.put("报表管理", sub);
 		}
 		{
