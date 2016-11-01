@@ -147,6 +147,14 @@ public class Report implements Serializable {
 	private Integer times;
 
 	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	@Field(label = "检测时间")
+	@View(groups = {VO_ADMIN})
+	@View(name = "reportedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST})
+	@View(name = "reportedTimeLabel", type = String.class,  groups = VO_EXPORT, field = @Field(label = "检测时间", order = 74))
+	private Date reportedTime;
+	
+	@NotNull
 	@Field(label = "申请时间")
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	@View(name = "appliedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST})

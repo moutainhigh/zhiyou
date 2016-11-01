@@ -153,7 +153,7 @@ public class OrderController {
 	
 	@RequestMapping(value = "/sum", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> sum(OrderQueryModel orderQueryModel, String userPhoneEQ, String userNicknameLK) {
+	public Result<?> sum(OrderQueryModel orderQueryModel, String userPhoneEQ, String userNicknameLK, Boolean isPlatformDeliver) {
 		
 		if (StringUtils.isNotBlank(userPhoneEQ) || StringUtils.isNotBlank(userNicknameLK)) {
         	UserQueryModel userQueryModel = new UserQueryModel();
@@ -163,7 +163,9 @@ public class OrderController {
             Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
             orderQueryModel.setUserIdIN(userIds);
         }
-		
+		if(isPlatformDeliver != null && isPlatformDeliver) {
+			orderQueryModel.setSellerIdEQ(config.getSysUserId());
+		}
 		return ResultBuilder.result(orderService.sum(orderQueryModel));
 	}
 	
