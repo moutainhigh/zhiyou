@@ -1,22 +1,12 @@
 package com.zy.admin.controller.mal;
 
-import com.zy.Config;
-import com.zy.common.model.query.Page;
-import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.model.ui.Grid;
-import com.zy.component.OrderComponent;
-import com.zy.entity.mal.Order;
-import com.zy.entity.mal.Order.OrderStatus;
-import com.zy.entity.usr.User;
-import com.zy.model.Constants;
-import com.zy.model.dto.OrderDeliverDto;
-import com.zy.model.query.OrderQueryModel;
-import com.zy.model.query.UserQueryModel;
-import com.zy.service.OrderService;
-import com.zy.service.UserService;
-import com.zy.vo.OrderAdminVo;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +18,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
+import com.zy.Config;
+import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.model.ui.Grid;
+import com.zy.component.OrderComponent;
+import com.zy.entity.fnc.Payment;
+import com.zy.entity.fnc.Payment.PaymentStatus;
+import com.zy.entity.fnc.Payment.PaymentType;
+import com.zy.entity.mal.Order;
+import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.model.dto.OrderDeliverDto;
+import com.zy.model.query.OrderQueryModel;
+import com.zy.model.query.PaymentQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.OrderService;
+import com.zy.service.PaymentService;
+import com.zy.service.UserService;
+import com.zy.vo.OrderAdminVo;
 
 
 @RequestMapping("/order")
@@ -40,6 +48,9 @@ public class OrderController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private PaymentService paymentService;
 	
 	@Autowired
 	private OrderComponent orderComponent;
@@ -112,6 +123,8 @@ public class OrderController {
 		validate(order, NOT_NULL, "order id" + id + " not found");
 		model.addAttribute("isPure", isPure == null ? false : isPure);
 		model.addAttribute("order", orderComponent.buildAdminFullVo(order));
+		long count = paymentService.count(PaymentQueryModel.builder().refIdEQ(id).paymentTypeEQ(PaymentType.订单支付).paymentStatusEQ(PaymentStatus.已支付).build());
+		model.addAttribute("count", count);
 		return "mal/orderDetail";
 	}
 	
@@ -152,5 +165,24 @@ public class OrderController {
         }
 		
 		return ResultBuilder.result(orderService.sum(orderQueryModel));
+	}
+	
+	@RequiresPermissions("order:refund")
+	@RequestMapping(value = "/refund")
+	public String refund(@NotNull Long paymentId, RedirectAttributes redirectAttributes) {
+		Payment payment = paymentService.findOne(paymentId);
+		validate(payment, NOT_NULL, "payment id" + paymentId + " not found");
+		validate(payment, v -> (v.getPaymentStatus() == PaymentStatus.已支付 && v.getPaymentType() == PaymentType.订单支付), "paymentStatus and paymentType is error, payment id is " + paymentId + "");
+		Order order = orderService.findOne(payment.getRefId());
+		validate(order, v -> v.getOrderStatus() == OrderStatus.已支付, "orderStatus is not paid");
+		
+		long count = paymentService.count(PaymentQueryModel.builder().refIdEQ(payment.getRefId()).paymentTypeEQ(PaymentType.订单支付).paymentStatusEQ(PaymentStatus.已支付).build());
+		if(count > 1){
+			paymentService.refund(paymentId);
+			redirectAttributes.addFlashAttribute(ResultBuilder.ok("退款成功！"));
+		} else {
+			redirectAttributes.addFlashAttribute(ResultBuilder.error("退款失败，订单退款仅支持重复支付退款！"));
+		}
+		return "redirect:/order";
 	}
 }
