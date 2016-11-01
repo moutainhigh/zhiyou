@@ -89,8 +89,11 @@ public class AdminConstants {
 			sub = new LinkedHashMap<>();
 			sub.put("userTreeReport:view", "用户树");
 			sub.put("orderReport:view", "服务商进货报表");
+			sub.put("orderReport:export", "服务商进货报表导出");
 			sub.put("teamReport:view", "特级服务商人数下线报表");
+			sub.put("teamReport:export", "特级服务商人数下线报表导出");
 			sub.put("userUpgradeReport:view", "服务商数量统计报表");
+			sub.put("userUpgradeReport:export", "服务商数量统计报表导出");
 	 		SETTING_PERMISSION_MAP.put("报表管理", sub);
 		}
 		{
