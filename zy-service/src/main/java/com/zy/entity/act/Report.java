@@ -135,7 +135,6 @@ public class Report implements Serializable {
 	@CollectionView(name= "images", groups = {VO_DETAIL, VO_ADMIN}, type = ArrayList.class, elementType = String.class)
 	@CollectionView(name= "imageThumbnails", groups = {VO_DETAIL, VO_ADMIN}, type = ArrayList.class, elementType = String.class)
 	@CollectionView(name= "imageBigs", groups = {VO_DETAIL, VO_ADMIN}, type = ArrayList.class, elementType = String.class)
-	@View(groups = VO_EXPORT, field = @Field(label = "图片链接", order = 71))
 	private String image;
 
 	@Field(label = "检测次数")
