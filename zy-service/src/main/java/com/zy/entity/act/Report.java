@@ -135,7 +135,6 @@ public class Report implements Serializable {
 	@CollectionView(name= "images", groups = {VO_DETAIL, VO_ADMIN}, type = ArrayList.class, elementType = String.class)
 	@CollectionView(name= "imageThumbnails", groups = {VO_DETAIL, VO_ADMIN}, type = ArrayList.class, elementType = String.class)
 	@CollectionView(name= "imageBigs", groups = {VO_DETAIL, VO_ADMIN}, type = ArrayList.class, elementType = String.class)
-	@View(groups = VO_EXPORT, field = @Field(label = "图片链接", order = 71))
 	private String image;
 
 	@Field(label = "检测次数")
@@ -146,6 +145,14 @@ public class Report implements Serializable {
 	@View(groups = VO_EXPORT, field = @Field(label = "检测次数", order = 59))
 	private Integer times;
 
+	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	@Field(label = "检测日期")
+	@View(groups = {VO_ADMIN})
+	@View(name = "reportedDateLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST})
+	@View(name = "reportedDateLabel", type = String.class,  groups = VO_EXPORT, field = @Field(label = "检测日期", order = 74))
+	private Date reportedDate;
+	
 	@NotNull
 	@Field(label = "申请时间")
 	@View(groups = {VO_DETAIL, VO_ADMIN})
@@ -158,7 +165,6 @@ public class Report implements Serializable {
 	@Field(label = "创建时间")
 	@View(groups = {VO_ADMIN})
 	@View(name = "createdTimeLabel", type = String.class, groups = {VO_ADMIN, VO_DETAIL, VO_LIST})
-	@View(name = "createdTimeLabel", type = String.class,  groups = VO_EXPORT, field = @Field(label = "创建时间", order = 76))
 	private Date createdTime;
 
 	@NotNull

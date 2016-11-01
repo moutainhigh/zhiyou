@@ -11,14 +11,63 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ExcelUtils {
 
 	private static final String DEFAULT_DATE_FORMAT = "yyyy/MM/dd HH:mm:ss";
+
+	public static void exportExcel(List<Map<String, Object>> dataList, List<String> headers, OutputStream os) throws IOException {
+		Workbook wb = new SXSSFWorkbook(1000); // 创建wb
+
+		for (String header : headers) {
+			boolean isDate = dataList.stream().map(v -> v.get(header)).filter(Objects::nonNull).anyMatch(v -> v.getClass() == Date.class);
+			createStyle(wb, isDate); // 创建样式
+		}
+
+		createStyle0(wb);
+
+		Sheet sheet = wb.createSheet(); // 创建sheet
+
+		Row headerRow = sheet.createRow(0); // 创建header row
+
+		// 写入header row
+		int columnIndex = 0;
+		int styleIndex = headers.size() + 1;
+		for (String header : headers) {
+			Cell cell = headerRow.createCell(columnIndex++);
+			cell.setCellValue(header);
+			cell.setCellStyle(cell.getSheet().getWorkbook().getCellStyleAt((short) styleIndex));
+		}
+
+		int rowIndex = 1;
+		for (Map<String, Object> data : dataList) {
+			Row row = sheet.createRow(rowIndex++);
+			columnIndex = 0;
+			for (String header : headers) {
+				Cell cell = row.createCell(columnIndex++);
+				cell.setCellStyle(wb.getCellStyleAt((short) columnIndex));
+				Object value = data.get(header);
+				if (value == null) {
+					cell.setCellType(Cell.CELL_TYPE_BLANK);
+				} else {
+					setCellValue(cell, value.getClass(), value);
+				}
+
+			}
+		}
+
+		for (int i = 0; i < headers.size(); i++) {
+			sheet.autoSizeColumn(i);
+		}
+		try {
+			wb.write(os);
+		} finally {
+			((SXSSFWorkbook) wb).dispose();
+		}
+
+	}
 
 	public static <T> void exportExcel(List<T> dataList, Class<T> dataClass, OutputStream os) throws IOException {
 
@@ -39,7 +88,13 @@ public class ExcelUtils {
 					}
 				})
 				.collect(Collectors.toList());
-		createStyles(wb, fields); // 创建样式
+
+		for (Field field : fields) {
+			createStyle(wb, field.getType() == Date.class); // 创建样式
+		}
+
+		createStyle0(wb);
+
 		Sheet sheet = wb.createSheet(); // 创建sheet
 
 		Row headerRow = sheet.createRow(0); // 创建header row
@@ -67,7 +122,13 @@ public class ExcelUtils {
 			for (Field field : fields) {
 				Cell cell = row.createCell(columnIndex++);
 				cell.setCellStyle(wb.getCellStyleAt((short) columnIndex));
-				setCellValue(cell, field.getType(), Reflections.getFieldValue(data, field.getName()));
+				Object value = Reflections.getFieldValue(data, field.getName());
+				if (value == null) {
+					cell.setCellType(Cell.CELL_TYPE_BLANK);
+				} else {
+					setCellValue(cell, field.getType(), value);
+				}
+
 			}
 		}
 
@@ -81,28 +142,7 @@ public class ExcelUtils {
 		}
 	}
 
-	private static void createStyles(Workbook wb, List<Field> fields) {
-		for (Field field : fields) {
-			CellStyle style = wb.createCellStyle(); //style1
-			if (field.getType() == Date.class) {
-				DataFormat format = wb.createDataFormat();
-				style.setDataFormat(format.getFormat(DEFAULT_DATE_FORMAT));
-			}
-			style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-			style.setAlignment(CellStyle.ALIGN_LEFT);
-			style.setBorderRight(CellStyle.BORDER_THIN);
-			style.setRightBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
-			style.setBorderLeft(CellStyle.BORDER_THIN);
-			style.setLeftBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
-			style.setBorderTop(CellStyle.BORDER_THIN);
-			style.setTopBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
-			style.setBorderBottom(CellStyle.BORDER_THIN);
-			style.setBottomBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
-			Font font = wb.createFont();
-			font.setFontName("Arial");
-			font.setFontHeightInPoints((short) 10);
-			style.setFont(font);
-		}
+	private static void createStyle0(Workbook wb) {
 		CellStyle style0 = wb.createCellStyle(); //style5
 		style0.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		style0.setBorderRight(CellStyle.BORDER_THIN);
@@ -124,53 +164,72 @@ public class ExcelUtils {
 		style0.setFont(font0);
 	}
 
+	private static void createStyle(Workbook wb, boolean isDate) {
+
+		CellStyle style = wb.createCellStyle(); //style1
+		if (isDate) {
+			DataFormat format = wb.createDataFormat();
+			style.setDataFormat(format.getFormat(DEFAULT_DATE_FORMAT));
+		}
+		style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		style.setAlignment(CellStyle.ALIGN_LEFT);
+		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setRightBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setLeftBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setTopBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBottomBorderColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		Font font = wb.createFont();
+		font.setFontName("Arial");
+		font.setFontHeightInPoints((short) 10);
+		style.setFont(font);
+	}
+
 
 	private static void setCellValue(Cell cell, Class<?> type, Object value) {
 		try {
-			if (value != null) {
-				Class<?> valueClass = type;
-				if (String.class.isAssignableFrom(valueClass)) {
-					cell.setCellType(Cell.CELL_TYPE_STRING);
-					cell.setCellValue((String) value);
-				} else if (Integer.class.isAssignableFrom(valueClass) || int.class.isAssignableFrom(valueClass)) {
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-					cell.setCellValue((Integer) value);
-				} else if (Long.class.isAssignableFrom(valueClass) || long.class.isAssignableFrom(valueClass)) {
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-					cell.setCellValue((Long) value);
-				} else if (Double.class.isAssignableFrom(valueClass) || double.class.isAssignableFrom(valueClass)) {
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-					cell.setCellValue((Double) value);
-				} else if (Float.class.isAssignableFrom(valueClass) || float.class.isAssignableFrom(valueClass)) {
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-					cell.setCellValue((Float) value);
-				} else if (Character.class.isAssignableFrom(valueClass) || char.class.isAssignableFrom(valueClass)) {
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-					cell.setCellValue((Character) value);
-				} else if (Byte.class.isAssignableFrom(valueClass) || byte.class.isAssignableFrom(valueClass)) {
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-					cell.setCellValue((Byte) value);
-				} else if (BigDecimal.class.isAssignableFrom(valueClass)) {
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-					cell.setCellValue(((BigDecimal) value).doubleValue());
-				} else if (BigInteger.class.isAssignableFrom(valueClass)) {
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-					cell.setCellValue(((BigInteger) value).doubleValue());
-				} else if (Date.class.isAssignableFrom(valueClass)) {
-					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-					cell.setCellValue((Date) value);
-				} else if (Boolean.class.isAssignableFrom(valueClass) || boolean.class.isAssignableFrom(valueClass)) {
-					cell.setCellType(Cell.CELL_TYPE_BOOLEAN);
-					cell.setCellValue((boolean) value);
-				} else if (Enum.class.isAssignableFrom(valueClass)) {
-					cell.setCellType(Cell.CELL_TYPE_STRING);
-					cell.setCellValue(value.toString());
-				} else { // 其他类型
-					cell.setCellType(Cell.CELL_TYPE_STRING);
-					cell.setCellValue(value.toString());
-				}
-			} else {
-				cell.setCellType(Cell.CELL_TYPE_BLANK);
+			Class<?> valueClass = type;
+			if (String.class.isAssignableFrom(valueClass)) {
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue((String) value);
+			} else if (Integer.class.isAssignableFrom(valueClass) || int.class.isAssignableFrom(valueClass)) {
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue((Integer) value);
+			} else if (Long.class.isAssignableFrom(valueClass) || long.class.isAssignableFrom(valueClass)) {
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue((Long) value);
+			} else if (Double.class.isAssignableFrom(valueClass) || double.class.isAssignableFrom(valueClass)) {
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue((Double) value);
+			} else if (Float.class.isAssignableFrom(valueClass) || float.class.isAssignableFrom(valueClass)) {
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue((Float) value);
+			} else if (Character.class.isAssignableFrom(valueClass) || char.class.isAssignableFrom(valueClass)) {
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue((Character) value);
+			} else if (Byte.class.isAssignableFrom(valueClass) || byte.class.isAssignableFrom(valueClass)) {
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue((Byte) value);
+			} else if (BigDecimal.class.isAssignableFrom(valueClass)) {
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(((BigDecimal) value).doubleValue());
+			} else if (BigInteger.class.isAssignableFrom(valueClass)) {
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(((BigInteger) value).doubleValue());
+			} else if (Date.class.isAssignableFrom(valueClass)) {
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				cell.setCellValue((Date) value);
+			} else if (Boolean.class.isAssignableFrom(valueClass) || boolean.class.isAssignableFrom(valueClass)) {
+				cell.setCellType(Cell.CELL_TYPE_BOOLEAN);
+				cell.setCellValue((boolean) value);
+			} else if (Enum.class.isAssignableFrom(valueClass)) {
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(value.toString());
+			} else { // 其他类型
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				cell.setCellValue(value.toString());
 			}
 		} catch (Exception e) {
 			throw new IllegalArgumentException("行" + (cell.getRowIndex() + 1) + "列" + (cell.getColumnIndex() + 1) + "写入错误:"

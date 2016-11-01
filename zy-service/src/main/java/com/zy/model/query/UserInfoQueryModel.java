@@ -24,6 +24,10 @@ public class UserInfoQueryModel implements Serializable {
 
 	private Long[] userIdIN;
 
+	private String realnameLK;
+
+	private String idCardNumberLK;
+
 	private ConfirmStatus confirmStatusEQ;
 
 	private Integer pageNumber;

@@ -38,7 +38,12 @@
     </c:if>
     <c:if test="${bankCardCount > 0}">
     <div class="form-btn">
+      <c:if test="${withdraw}">
       <a href="${ctx}/u/money/withdraw" class="btn green btn-block round-2">提现</a>
+      </c:if>
+      <c:if test="${!withdraw}">
+      <a href="javascript:;" class="btn btn-block round-2">提现(提现操作时间每月7日-15日)</a>
+      </c:if>
     </div>
     </c:if>
     <a href="${ctx}/help/money" class="mt-30 mb-10 block width-100p font-999 fs-12 text-center"><i class="fa fa-question-circle-o"></i> 积分余额问题</a>

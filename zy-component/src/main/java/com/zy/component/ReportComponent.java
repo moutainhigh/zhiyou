@@ -45,6 +45,7 @@ public class ReportComponent {
 		reportAdminVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportAdminVo.setConfirmedTimeLabel(formatDate(report.getConfirmedTime(), TIME_PATTERN));
 		reportAdminVo.setPreConfirmedTimeLabel(formatDate(report.getPreConfirmedTime(), TIME_PATTERN));
+		reportAdminVo.setReportedDateLabel(formatDate(report.getReportedDate(), "yyyy-MM-dd"));
 		List<String> images = Arrays.stream(report.getImage().split(",")).map(v -> v).collect(Collectors.toList());
 		reportAdminVo.setImages(images);
 		reportAdminVo.setImageBigs(images.stream().map(v -> getThumbnail(v, 640, 640)).collect(Collectors.toList()));
@@ -77,6 +78,7 @@ public class ReportComponent {
 		}
 		reportVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportVo.setAppliedTimeLabel(formatDate(report.getAppliedTime(), TIME_PATTERN));
+		reportVo.setReportedDateLabel(formatDate(report.getReportedDate(), "yyyy-MM-dd"));
 		List<String> images = Arrays.stream(report.getImage().split(",")).map(v -> v).collect(Collectors.toList());
 		reportVo.setImages(images);
 		reportVo.setImageBigs(images.stream().map(v -> getThumbnail(v, 640, 640)).collect(Collectors.toList()));
@@ -100,6 +102,7 @@ public class ReportComponent {
 		}
 		reportVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportVo.setAppliedTimeLabel(formatDate(report.getAppliedTime(), TIME_PATTERN));
+		reportVo.setReportedDateLabel(formatDate(report.getReportedDate(), "yyyy-MM-dd"));
 		
 		return reportVo;
 	}
@@ -123,8 +126,8 @@ public class ReportComponent {
 		if(report.getJobId() != null){
 			reportExportVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
 		}
+		reportExportVo.setReportedDateLabel(formatDate(report.getReportedDate(), "yyyy-MM-dd"));
 		reportExportVo.setAppliedTimeLabel(GcUtils.formatDate(report.getAppliedTime(), TIME_PATTERN));
-		reportExportVo.setCreatedTimeLabel(GcUtils.formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportExportVo.setPreConfirmedTimeLabel(GcUtils.formatDate(report.getPreConfirmedTime(), TIME_PATTERN));
 		reportExportVo.setConfirmedTimeLabel(GcUtils.formatDate(report.getConfirmedTime(), TIME_PATTERN));
 		return reportExportVo;

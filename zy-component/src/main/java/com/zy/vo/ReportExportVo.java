@@ -28,8 +28,6 @@ public class ReportExportVo implements Serializable {
 	private ReportResult reportResult;
 	@Field(label = "检测心得", order = 70)
 	private String text;
-	@Field(label = "图片链接", order = 71)
-	private String image;
 	@Field(label = "检测次数", order = 59)
 	private Integer times;
 	@Field(label = "初审状态", order = 77)
@@ -54,10 +52,10 @@ public class ReportExportVo implements Serializable {
 	private String city;
 	@Field(label = "所在区", order = 58)
 	private String district;
+	@Field(label = "检测日期", order = 74)
+	private String reportedDateLabel;
 	@Field(label = "申请时间", order = 75)
 	private String appliedTimeLabel;
-	@Field(label = "创建时间", order = 76)
-	private String createdTimeLabel;
 	@Field(label = "初审通过时间", order = 78)
 	private String preConfirmedTimeLabel;
 	@Field(label = "初审通过时间", order = 90)

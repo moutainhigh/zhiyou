@@ -133,6 +133,7 @@ public class ReportServiceImpl implements ReportService {
 		persistence.setAge(report.getAge());
 		persistence.setText(report.getText());
 		persistence.setReportResult(report.getReportResult());
+		persistence.setReportedDate(report.getReportedDate());
 		validate(persistence);
 		
 		String realname = report.getRealname();

@@ -110,6 +110,10 @@
         <div class="list-unit">${report.phone}</div>
       </div>
       <div class="list-item">
+        <div class="list-text">检测时间</div>
+        <div class="list-unit">${report.reportedDateLabel}</div>
+      </div>
+      <div class="list-item">
         <div class="list-text">地区</div>
         <div class="list-unit">${report.province} ${report.city} ${report.district}</div>
       </div>

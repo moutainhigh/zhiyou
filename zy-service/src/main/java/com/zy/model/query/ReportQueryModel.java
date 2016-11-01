@@ -36,6 +36,10 @@ public class ReportQueryModel implements Serializable {
 
 	private Integer timesEQ;
 
+	private Date reportedDateGTE;
+
+	private Date reportedDateLT;
+
 	private Date createdTimeGTE;
 
 	private Date createdTimeLT;
@@ -118,6 +122,7 @@ public class ReportQueryModel implements Serializable {
 		fieldNames.add("isSettledUp");
 		fieldNames.add("areaId");
 		fieldNames.add("phone");
+		fieldNames.add("reportedDate");
 		fieldNames.add("confirmedTime");
 		fieldNames.add("createdTime");
 		fieldNames.add("confirmStatus");

@@ -3,9 +3,25 @@
 <!-- BEGIN JAVASCRIPTS -->
 <script>
 
+  function sum() {
+    $.post("${ctx}/order/sum", $('#searchForm').serialize(), function(result) {
+      if(result.code == 0) {
+        var data = result.data;
+        $('#countNumber').text(data.countNumber + '个');
+        $('#sumQuantity').text(data.sumQuantity == null? 0 + '支' : data.sumQuantity + '支');
+        $('#sumAmount').text(data.sumAmount == null? 0.00 + '元' : data.sumAmount.toFixed(2) + '元');
+      }
+    });
+  }
 
   $(function () {
 
+	sum();
+    
+    $('.filter-submit').click(function(){
+      sum();
+    })
+    
     var grid = new Datatable();
 
     $('#statusTab li').bind('click', function () {
@@ -173,6 +189,32 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
+          <i class="icon-docs"></i><span>订单管理 </span>
+        </div>
+        <div class="tools"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+            <div class="note note-info">
+                <h4 class="block">订单数</h4>
+                <p id="countNumber">0 个</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="note note-success">
+                <h4 class="block">订单支数</h4>
+                <p id="sumQuantity">0 支</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="note note-danger">
+                <h4 class="block">订单总额</h4>
+                <p id="sumAmount">0.00 元</p>
+            </div>
+        </div>
+      </div>
+      <div class="portlet-title">
+        <div class="caption">
           <i class="icon-docs"></i><span>平台发货订单管理 </span>
         </div>
         <div class="tools"></div>
@@ -195,7 +237,7 @@
               <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
               <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
               <input type="hidden" name="orderStatusEQ" value=""/>
-              <input type="hidden" name="isPlatformDeliverEQ" value=""/>
+              <input type="hidden" name="isPlatformDeliver" value="true"/>
 
               <div class="form-group">
                 <input type="text" name="userPhoneEQ" class="form-control" placeholder="用户手机号"/>

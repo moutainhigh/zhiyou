@@ -359,6 +359,7 @@
                 <th>外部sn</th>
                 <th>银行汇款截图</th>
                 <th>银行汇款备注</th>
+                <th>操作</th>
               </tr>
               </thead>
               <tbody>
@@ -388,6 +389,13 @@
                     <td>${payment.outerSn}</td>
                     <td><c:if test="${not empty payment.offlineImage}"><img class="imageview" data-url="${payment.offlineImage}" src="${payment.offlineImage}"/></c:if></td>
                     <td>${payment.offlineMemo}</td>
+                    <td>
+                    <shiro:hasPermission name="order:refund">
+                    <c:if test="${payment.paymentStatus == '已支付' && count > 1}">
+                    <a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/order/refund?paymentId=${payment.id}" data-confirm="您确定要执行退款操作么？"><i class="fa fa-sign-out"></i> 退款 </a>
+                    </c:if>
+                    </shiro:hasPermission>
+                    </td>
                   </tr>
                 </c:forEach>
               </c:if>
