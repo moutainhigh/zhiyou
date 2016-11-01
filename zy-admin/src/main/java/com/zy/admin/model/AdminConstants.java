@@ -77,6 +77,7 @@ public class AdminConstants {
 			sub.put("withdraw:view", "提现查看");
 			sub.put("withdraw:confirm", "操作提现");
 			sub.put("profit:view", "收益查看");
+			sub.put("profit:grant", "收益发放");
 			sub.put("accountLog:view", "流水查看");
 			sub.put("accountLog:export", "流水导出");
 			sub.put("bankCard:view", "绑定银行信息(查看)");

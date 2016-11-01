@@ -42,6 +42,8 @@ public class ReportAdminVo implements Serializable {
 	private String image;
 	@Field(label = "检测次数")
 	private Integer times;
+	@Field(label = "检测日期")
+	private Date reportedDate;
 	@Field(label = "申请时间")
 	private Date appliedTime;
 	@Field(label = "创建时间")
