@@ -1,9 +1,11 @@
 package com.zy.vo;
 
 import io.gd.generator.annotation.Field;
+
 import com.zy.entity.usr.UserInfo.Gender;
 import com.zy.entity.act.Report.ReportResult;
 import com.zy.entity.sys.ConfirmStatus;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -54,6 +56,8 @@ public class ReportExportVo implements Serializable {
 	private String city;
 	@Field(label = "所在区", order = 58)
 	private String district;
+	@Field(label = "检测日期", order = 74)
+	private String reportedDateLabel;
 	@Field(label = "申请时间", order = 75)
 	private String appliedTimeLabel;
 	@Field(label = "创建时间", order = 76)

@@ -164,6 +164,11 @@
             orderable: false
           },
           {
+            data: 'reportedDateLabel',
+            title: '检测日期',
+            orderable: false
+          },
+          {
             data: 'reportResult',
             title: '检测结果',
             orderable: false

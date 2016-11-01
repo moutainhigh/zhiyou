@@ -33,6 +33,9 @@
           required: true,
           phone: true
         },
+        'reportedDate': {
+          required: true
+        },
         'reportResult': {
           required: true
         },
@@ -177,6 +180,14 @@
               <label class="control-label col-md-3" for="phone">第几次检测<span class="required"> * </span></label>
               <div class="col-md-5">
                 <input type="number" name="times" class="form-control" value="${report.times}" placeholder="第几次检测">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="control-label col-md-3">检测日期<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <input class="form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})"
+                       name="reportedDate" value="${report.reportedDateLabel}" placeholder="检测日期"/>
               </div>
             </div>
             
