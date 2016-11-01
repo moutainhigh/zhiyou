@@ -110,11 +110,13 @@ public class UserInfo implements Serializable {
 	@NotBlank
 	@Field(label = "真实姓名")
 	@View
+	@Query(Predicate.LK)
 	private String realname;
 
 	@NotBlank
 	@Field(label = "身份证号")
 	@View
+	@Query(Predicate.LK)
 	private String idCardNumber;
 
 	@NotBlank
