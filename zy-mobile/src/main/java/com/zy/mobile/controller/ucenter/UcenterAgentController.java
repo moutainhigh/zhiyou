@@ -1,16 +1,6 @@
 package com.zy.mobile.controller.ucenter;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.math.BigDecimal;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.zy.Config;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.ProductComponent;
@@ -22,6 +12,13 @@ import com.zy.entity.usr.User.UserType;
 import com.zy.model.Principal;
 import com.zy.service.ProductService;
 import com.zy.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.math.BigDecimal;
 
 @RequestMapping("/u/agent")
 @Controller
@@ -38,12 +35,22 @@ public class UcenterAgentController {
 
 	@Autowired
 	private ProductComponent productComponent;
+
+	@Autowired
+	private Config config;
 	
 	@RequestMapping
-	public String agent(Long productId, Principal principal, Model model) {
-		Product product = productService.findOne(productId);
-		validate(product, NOT_NULL, "product id:" + productId + " is not found !");
-		model.addAttribute("product", productComponent.buildListVo(product));
+	public String agent(Principal principal, Model model) {
+
+		Long productIdOld = config.getOld();
+		Long productIdNew = config.getNew();
+
+		Product productOld = productService.findOne(config.getOld());
+		Product productNew = productService.findOne(config.getNew());
+
+		model.addAttribute("productOld", productComponent.buildListVo(productOld));
+		model.addAttribute("productNew", productComponent.buildListVo(productNew));
+
 		User user = userService.findOne(principal.getUserId());
 		model.addAttribute("userRank", user.getUserRank());
 		if(user.getInviterId() != null){
@@ -52,18 +59,36 @@ public class UcenterAgentController {
 				model.addAttribute("inviter", userComponent.buildListVo(inviter));
 			}
 		}
-		int quantity1 = 300;
-		int quantity2 = 100;
-		int quantity3 = 15;
-		BigDecimal price1 = productService.getPrice(productId, UserRank.V0, quantity1);
-		BigDecimal price2 = productService.getPrice(productId, UserRank.V0, quantity2);
-		BigDecimal price3 = productService.getPrice(productId, UserRank.V0, quantity3);
-		model.addAttribute("quantity1", quantity1);
-		model.addAttribute("quantity2", quantity2);
-		model.addAttribute("quantity3", quantity3);
-		model.addAttribute("amount1", price1.multiply(new BigDecimal(quantity1)));
-		model.addAttribute("amount2", price2.multiply(new BigDecimal(quantity2)));
-		model.addAttribute("amount3", price3.multiply(new BigDecimal(quantity3)));
+
+		/* old */
+		int quantity1Old = 300;
+		int quantity2Old = 100;
+		int quantity3Old = 15;
+		BigDecimal price1Old = productService.getPrice(productIdOld, UserRank.V0, quantity1Old);
+		BigDecimal price2Old = productService.getPrice(productIdOld, UserRank.V0, quantity2Old);
+		BigDecimal price3Old = productService.getPrice(productIdOld, UserRank.V0, quantity3Old);
+		model.addAttribute("quantity1Old", quantity1Old);
+		model.addAttribute("quantity2Old", quantity2Old);
+		model.addAttribute("quantity3Old", quantity3Old);
+		model.addAttribute("amount1Old", price1Old.multiply(new BigDecimal(quantity1Old)));
+		model.addAttribute("amount2Old", price2Old.multiply(new BigDecimal(quantity2Old)));
+		model.addAttribute("amount3Old", price3Old.multiply(new BigDecimal(quantity3Old)));
+
+
+		/* new */
+		int quantity1New = 240;
+		int quantity2New = 80;
+		int quantity3New = 5;
+		BigDecimal price1New = productService.getPrice(productIdNew, UserRank.V0, quantity1New);
+		BigDecimal price2New = productService.getPrice(productIdNew, UserRank.V0, quantity2New);
+		BigDecimal price3New = productService.getPrice(productIdNew, UserRank.V0, quantity3New);
+		model.addAttribute("quantity1New", quantity1New);
+		model.addAttribute("quantity2New", quantity2New);
+		model.addAttribute("quantity3New", quantity3New);
+		model.addAttribute("amount1New", price1New.multiply(new BigDecimal(quantity1New)));
+		model.addAttribute("amount2New", price2New.multiply(new BigDecimal(quantity2New)));
+		model.addAttribute("amount3New", price3New.multiply(new BigDecimal(quantity3New)));
+
 		return "agent";
 	}
 	
