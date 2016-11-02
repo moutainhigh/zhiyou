@@ -1,10 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/include/taglib.jsp"%>
 
-<c:if test="${!isUpgrade && !isFirst}">
-<c:set var="minQuantity" value="${(userRank == 'V3' || userRank == 'V4') ? 100 : 1}"/>
-</c:if>
-
 <!DOCTYPE html>
 <html>
 <head>

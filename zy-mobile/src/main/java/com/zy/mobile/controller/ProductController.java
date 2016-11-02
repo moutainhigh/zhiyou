@@ -1,11 +1,18 @@
 package com.zy.mobile.controller;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.zy.Config;
+import com.zy.component.ProductComponent;
+import com.zy.entity.mal.Product;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
+import com.zy.entity.usr.UserInfo;
+import com.zy.model.Principal;
+import com.zy.model.query.ProductQueryModel;
+import com.zy.service.ProductService;
+import com.zy.service.UserInfoService;
+import com.zy.service.UserService;
+import com.zy.util.GcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,18 +20,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.zy.component.ProductComponent;
-import com.zy.entity.mal.Product;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.UserInfo;
-import com.zy.entity.usr.User.UserRank;
-import com.zy.model.Principal;
-import com.zy.model.query.ProductQueryModel;
-import com.zy.service.ProductService;
-import com.zy.service.UserInfoService;
-import com.zy.service.UserService;
-import com.zy.util.GcUtils;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 @RequestMapping("/product")
 @Controller
@@ -41,6 +41,9 @@ public class ProductController {
 	
 	@Autowired
 	private ProductComponent productComponent;
+
+	@Autowired
+	private Config config;
 	
 	@RequestMapping
 	public String list(Model model) {
@@ -60,7 +63,8 @@ public class ProductController {
 		}
 		if(principal != null) {
 			User user = userService.findOne(principal.getUserId());
-			model.addAttribute("userRank", user.getUserRank());
+			UserRank userRank = user.getUserRank();
+			model.addAttribute("userRank", userRank);
 			UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
 			if(userInfo != null && userInfo.getConfirmStatus() == ConfirmStatus.已通过) {
 				model.addAttribute("hasUserInfo", true);
@@ -71,10 +75,24 @@ public class ProductController {
 			} else if((user.getUserRank() != UserRank.V1 || user.getUserRank() != UserRank.V2)&& isAgent){
 				model.addAttribute("isUpgrade", true);
 			}
+
+			int minQuantity = 1;
+			if (userRank == UserRank.V3 || userRank == UserRank.V4) {
+				if (config.isOld(id)) {
+					minQuantity = 100;
+				} else {
+					minQuantity = 80;
+				}
+			}
+			model.addAttribute("minQuantity", minQuantity);
+
 		}
 		validate(product, NOT_NULL, "product id" + id + " not found");
 		validate(product.getIsOn(), v -> true, "product is not on");
 		model.addAttribute("product", productComponent.buildDetailVo(product));
+
+
+
 		return "product/productDetail";
 	}
 
