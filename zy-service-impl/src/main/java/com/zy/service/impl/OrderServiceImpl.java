@@ -127,7 +127,7 @@ public class OrderServiceImpl implements OrderService {
 		long quantity = orderCreateDto.getQuantity();
 		UserRank buyerUserRank = user.getUserRank();
 
-		User seller = malComponent.calculateSeller(userRank, quantity, parentId);
+		User seller = malComponent.calculateSeller(userRank, productId, quantity, parentId);
 		Long sellerId = seller.getId();
 		UserRank sellerUserRank = sellerId.equals(config.getSysUserId()) ? null : seller.getUserRank();
 
