@@ -43,7 +43,9 @@
 	  var item = $(this).parents('.form-radio');
 	  item.addClass('current').siblings().removeClass('current');
 	  var quantity = item.find('.quantity').text();
+	  var productId = item.attr('data-id');
 	  $('[name="quantity"]').val(quantity);
+	  $('[name="productId"]').val(productId);
 	});
 	
 	$('#btnSubmit').click(function(){
@@ -103,7 +105,7 @@
       <div class="list-group">
         <!-- form-radio -->
         <c:if test="${userRank == 'V0' || userRank == 'V1' || userRank == 'V2'}">
-        <div class="list-item form-radio">
+        <div class="list-item form-radio" data-id="${product.id}">
           <div class="list-icon">
             <input id="agentLevel1" type="radio" name="agentLevel" value="V3">
             <label class="i-checked" for="agentLevel1"></label>
@@ -117,7 +119,7 @@
         </div>
         </c:if>
         <c:if test="${userRank == 'V0' || userRank == 'V1'}">
-        <div class="list-item form-radio">
+        <div class="list-item form-radio" data-id="${product.id}">
           <div class="list-icon">
             <input id="agentLevel2" type="radio" name="agentLevel" value="V2">
             <label class="i-checked" for="agentLevel2"></label>
@@ -131,7 +133,7 @@
         </div>
         </c:if>
         <c:if test="${userRank == 'V0'}">
-        <div class="list-item form-radio">
+        <div class="list-item form-radio" data-id="${product.id}">
           <div class="list-icon">
             <input id="agentLevel3" type="radio" name="agentLevel" value="V1">
             <label class="i-checked" for="agentLevel3"></label>

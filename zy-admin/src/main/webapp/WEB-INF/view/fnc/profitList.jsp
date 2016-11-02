@@ -22,10 +22,17 @@
           url: '${ctx}/profit', // ajax source
         },
         columns: [
-          /*{
+          {
             data: 'id',
-            title: 'id'
-          },*/
+            title: '<input type="checkbox" name="checkAll" id="checkAll" value=""/>',
+            render: function (data, type, full) {
+              if(full.profitStatus == '待发放'){
+                return '<input type="checkbox" name="id" id="id" value="' + data + '"/>';
+              } else {
+                return '<input type="checkbox" name="id" disabled="disabled" id="id" value="' + data + '"/>';
+              }
+            }
+          },
           {
             data: 'title',
             title: '收益基本信息',
@@ -75,12 +82,86 @@
             data: 'remark',
             title: '备注',
             orderable: false
+          },
+          {
+            data: '',
+            title: '操作',
+            orderable: false,
+            render: function (data, type, full) {
+              var optionHtml = '';
+              <shiro:hasPermission name="profit:grant">
+              if(full.profitStatus == '待发放'){
+                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/profit/grant?id=' + full.id + '" data-confirm="您确定发放奖励？"><i class="fa fa-send-o"></i> 发放 </a>';
+              }
+              </shiro:hasPermission>
+              return optionHtml;
+            }
           }]
       }
     });
 
+    $('#dataTable').on('click', '#checkAll', function(){
+      var isChecked = $(this).attr("checked");
+      if(isChecked == 'checked'){
+        $("input[name='id']").each(function() {
+        	var disableAttr = $(this).attr("disabled");
+        	if(disableAttr == undefined){
+        	  $(this).parent().addClass("checked");
+        	  $(this).attr("checked",'true');
+        	}
+        });
+      } else {
+        $("input[name='id']").each(function() {
+        	var disableAttr = $(this).attr("disabled");
+        	if(disableAttr == undefined){
+        	  $(this).parent().removeClass("checked");
+        	  $(this).removeAttr("checked");
+        	}
+        });
+      }
+    }
+    );
+    
+    <shiro:hasPermission name="profit:grant">
+    $('.table-toolbar').on('click', '#grantBtn',function(){
+      layer.confirm('您确认要批量发放奖励吗？', {
+        btn: ['发放','取消']
+      }, function(){
+        var ids = '';
+        $("input[name='id']").each(function() {
+          var isChecked = $(this).attr("checked");
+        	if(isChecked == 'checked'){
+        	  ids += $(this).val() + ',';
+        	}
+        })
+        if(ids.length > 0){
+          $.ajax({
+  	    	  url : '${ctx}/profit/batchGrant',
+  	          dataType:"json",
+  	          type: "post",
+  	          data : {
+  	        	  ids : ids
+  	          },
+  	          success: function( result ) {
+  	        	  layer.alert(result.message, {icon: 1});
+  	        	  grid.getDataTable().ajax.reload(null, false);
+  	          } 
+  	      });
+          
+        } else {
+          layer.alert("请至少选择一条记录！", {icon: 2});
+        }
+        
+      }, function(){
+        
+      });
+    });
+    </shiro:hasPermission>
   });
+  
+
 </script>
+
 
 <!-- BEGIN PAGE HEADER-->
 <div class="page-bar">
@@ -132,6 +213,11 @@
               <div class="form-group">
                 <button class="btn blue filter-submit">
                   <i class="fa fa-search"></i> 查询
+                </button>
+              </div>
+              <div class="form-group">
+                <button class="btn green" id="grantBtn">
+                  <i class="fa fa-send-o"></i> 批量发放
                 </button>
               </div>
             </form>
