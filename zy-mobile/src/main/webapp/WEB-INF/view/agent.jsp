@@ -102,52 +102,96 @@
       <input type="hidden" name="parentId" value="${inviter.id}">
       <input type="hidden" name="quantity" value="">
       
+      <c:if test="${userRank == 'V0' || userRank == 'V1' || userRank == 'V2'}">
       <div class="list-group">
         <!-- form-radio -->
-        <c:if test="${userRank == 'V0' || userRank == 'V1' || userRank == 'V2'}">
-        <div class="list-item form-radio" data-id="${product.id}">
+        <div class="list-item form-radio" data-id="${productNew.id}">
           <div class="list-icon">
             <input id="agentLevel1" type="radio" name="agentLevel" value="V3">
             <label class="i-checked" for="agentLevel1"></label>
           </div>
-          <img class="image-80 block mr-10" src="${product.image1Thumbnail}">
+          <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
           <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${product.title}服务商套餐 <span class="quantity">${quantity1}</span>次</h2>
+            <h2 class="font-777 fs-15 lh-24">${productNew.title}服务商套餐 <span class="quantity">${quantity1New}</span>次</h2>
             <div class="lh-30"><label class="label red">一级服务商</label></div>
-            <div class="font-orange lh-24">¥ ${amount1}</div>
+            <div class="font-orange lh-24">¥ ${amount1New}</div>
           </div>
         </div>
         </c:if>
         <c:if test="${userRank == 'V0' || userRank == 'V1'}">
-        <div class="list-item form-radio" data-id="${product.id}">
+        <div class="list-item form-radio" data-id="${productNew.id}">
           <div class="list-icon">
             <input id="agentLevel2" type="radio" name="agentLevel" value="V2">
             <label class="i-checked" for="agentLevel2"></label>
           </div>
-          <img class="image-80 block mr-10" src="${product.image1Thumbnail}">
+          <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
           <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${product.title}服务商套餐 <span class="quantity">${quantity2}</span>次</h2>
+            <h2 class="font-777 fs-15 lh-24">${productNew.title}服务商套餐 <span class="quantity">${quantity2New}</span>次</h2>
             <div class="lh-30"><label class="label yellow">二级服务商</label></div>
-            <div class="font-orange lh-24">¥ ${amount2}</div>
+            <div class="font-orange lh-24">¥ ${amount2New}</div>
           </div>
         </div>
         </c:if>
         <c:if test="${userRank == 'V0'}">
-        <div class="list-item form-radio" data-id="${product.id}">
+        <div class="list-item form-radio" data-id="${productNew.id}">
           <div class="list-icon">
             <input id="agentLevel3" type="radio" name="agentLevel" value="V1">
             <label class="i-checked" for="agentLevel3"></label>
           </div>
-          <img class="image-80 block mr-10" src="${product.image1Thumbnail}">
+          <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
           <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${product.title}服务商套餐 <span class="quantity">${quantity3}</span>次</h2>
+            <h2 class="font-777 fs-15 lh-24">${productNew.title}服务商套餐 <span class="quantity">${quantity3New}</span>次</h2>
             <div class="lh-30"><label class="label green">三级服务商</label></div>
-            <div class="font-orange lh-24">¥ ${amount3}</div>
+            <div class="font-orange lh-24">¥ ${amount3New}</div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <div class="list-group">
+        <!-- form-radio -->
+        <div class="list-item form-radio" data-id="${productOld.id}">
+          <div class="list-icon">
+            <input id="agentLevel1" type="radio" name="agentLevel" value="V3">
+            <label class="i-checked" for="agentLevel1"></label>
+          </div>
+          <img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">
+          <div class="list-text">
+            <h2 class="font-777 fs-15 lh-24">${productOld.title}服务商套餐 <span class="quantity">${quantity1Old}</span>次</h2>
+            <div class="lh-30"><label class="label red">一级服务商</label></div>
+            <div class="font-orange lh-24">¥ ${amount1Old}</div>
           </div>
         </div>
         </c:if>
-        
+        <c:if test="${userRank == 'V0' || userRank == 'V1'}">
+        <div class="list-item form-radio" data-id="${productOld.id}">
+          <div class="list-icon">
+            <input id="agentLevel2" type="radio" name="agentLevel" value="V2">
+            <label class="i-checked" for="agentLevel2"></label>
+          </div>
+          <img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">
+          <div class="list-text">
+            <h2 class="font-777 fs-15 lh-24">${productOld.title}服务商套餐 <span class="quantity">${quantity2Old}</span>次</h2>
+            <div class="lh-30"><label class="label yellow">二级服务商</label></div>
+            <div class="font-orange lh-24">¥ ${amount2Old}</div>
+          </div>
+        </div>
+        </c:if>
+        <c:if test="${userRank == 'V0'}">
+        <div class="list-item form-radio" data-id="${productOld.id}">
+          <div class="list-icon">
+            <input id="agentLevel3" type="radio" name="agentLevel" value="V1">
+            <label class="i-checked" for="agentLevel3"></label>
+          </div>
+          <img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">
+          <div class="list-text">
+            <h2 class="font-777 fs-15 lh-24">${productOld.title}服务商套餐 <span class="quantity">${quantity3Old}</span>次</h2>
+            <div class="lh-30"><label class="label green">三级服务商</label></div>
+            <div class="font-orange lh-24">¥ ${amount3Old}</div>
+          </div>
+        </div>
       </div>
+       </c:if>
       
       <c:if test="${userRank == 'V0'}">
       <div class="list-group">
