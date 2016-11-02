@@ -24,10 +24,6 @@ import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
 
 public class GcUtils {
 
-	public static boolean isOld(Long productId) {
-		return productId.equals(1L);
-	}
-
 	public static String getHost() {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		return request.getRemoteAddr();

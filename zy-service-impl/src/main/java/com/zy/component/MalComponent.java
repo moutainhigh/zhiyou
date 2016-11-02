@@ -1,9 +1,10 @@
  package com.zy.component;
 
-import com.zy.Config;
+ import com.zy.Config;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.entity.mal.Order;
+import com.zy.entity.mal.OrderItem;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
@@ -87,12 +88,12 @@ public class MalComponent {
 		}
 	}
 
-	public User calculateSeller(User.UserRank userRank, long quantity, Long parentId) {
+	public User calculateSeller(User.UserRank userRank, Long productId, long quantity, Long parentId) {
 		if (userRank == V4) {
 			return userMapper.findOne(config.getSysUserId());
 		}
 
-		UserRank upgradeUserRank = getUpgradeUserRank(userRank, quantity);
+		UserRank upgradeUserRank = getUpgradeUserRank(userRank, productId, quantity);
 
 		int whileTimes = 0;
 		while (parentId != null) {
@@ -117,25 +118,47 @@ public class MalComponent {
 	}
 
 
-	public UserRank getUpgradeUserRank(User.UserRank userRank, long quantity) {
+	public UserRank getUpgradeUserRank(User.UserRank userRank, Long productId, long quantity) {
 		UserRank upgradeUserRank = userRank;
-		if (userRank == UserRank.V0) {
-			if (quantity >= 300) {
-				upgradeUserRank = UserRank.V3;
-			} else if (quantity >= 100 && quantity < 300) {
-				upgradeUserRank = UserRank.V2;
-			} else if (quantity >= 15) {
-				upgradeUserRank = UserRank.V1;
+		if (config.isOld(productId)) {
+			if (userRank == UserRank.V0) {
+				if (quantity >= 300) {
+					upgradeUserRank = UserRank.V3;
+				} else if (quantity >= 100 && quantity < 300) {
+					upgradeUserRank = UserRank.V2;
+				} else if (quantity >= 15) {
+					upgradeUserRank = UserRank.V1;
+				}
+			} else if (userRank == UserRank.V1) {
+				if (quantity >= 300) {
+					upgradeUserRank = UserRank.V3;
+				} else if (quantity >= 100 && quantity < 300) {
+					upgradeUserRank = UserRank.V2;
+				}
+			} else if (userRank == UserRank.V2) {
+				if (quantity >= 300) {
+					upgradeUserRank = UserRank.V3;
+				}
 			}
-		} else if (userRank == UserRank.V1) {
-			if (quantity >= 300) {
-				upgradeUserRank = UserRank.V3;
-			} else if (quantity >= 100 && quantity < 300) {
-				upgradeUserRank = UserRank.V2;
-			}
-		} else if (userRank == UserRank.V2) {
-			if (quantity >= 300) {
-				upgradeUserRank = UserRank.V3;
+		} else {
+			if (userRank == UserRank.V0) {
+				if (quantity >= 240) {
+					upgradeUserRank = UserRank.V3;
+				} else if (quantity >= 80 && quantity < 240) {
+					upgradeUserRank = UserRank.V2;
+				} else if (quantity >= 5) {
+					upgradeUserRank = UserRank.V1;
+				}
+			} else if (userRank == UserRank.V1) {
+				if (quantity >= 240) {
+					upgradeUserRank = UserRank.V3;
+				} else if (quantity >= 80 && quantity < 240) {
+					upgradeUserRank = UserRank.V2;
+				}
+			} else if (userRank == UserRank.V2) {
+				if (quantity >= 240) {
+					upgradeUserRank = UserRank.V3;
+				}
 			}
 		}
 		return upgradeUserRank;
@@ -158,13 +181,15 @@ public class MalComponent {
 			throw new ConcurrentException();
 		}
 
-		long quantity = orderItemMapper.findByOrderId(orderId).get(0).getQuantity();
+		OrderItem orderItem = orderItemMapper.findByOrderId(orderId).get(0);
+		long quantity = orderItem.getQuantity();
+		Long productId = orderItem.getProductId();
 
 		Long userId = order.getUserId();
 		User user = userMapper.findOne(userId);
 		UserRank userRank = user.getUserRank();
 
-		UserRank upgradeUserRank = getUpgradeUserRank(userRank, quantity);
+		UserRank upgradeUserRank = getUpgradeUserRank(userRank, productId, quantity);
 
 		if (upgradeUserRank.getLevel() > userRank.getLevel()) {
 			usrComponent.upgrade(userId, userRank, upgradeUserRank);

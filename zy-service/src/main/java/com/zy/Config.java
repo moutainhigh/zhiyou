@@ -13,4 +13,10 @@ public interface Config {
 
     boolean isDev();
 
+    boolean isOld(Long productId);
+
+    Long getOld();
+
+    Long getNew();
+
 }

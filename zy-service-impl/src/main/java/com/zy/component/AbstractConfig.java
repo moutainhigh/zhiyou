@@ -54,7 +54,20 @@ public abstract class AbstractConfig implements Config {
 		return getSetting().getIsDev();
 	}
 
+	@Override
+	public boolean isOld(Long productId) {
+		return productId.equals(1L);
+	}
 
+	@Override
+	public Long getOld() {
+		return 1L;
+	}
+
+	@Override
+	public Long getNew() {
+		return 2L;
+	}
 
 
 }
