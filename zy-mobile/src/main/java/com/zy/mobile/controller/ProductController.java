@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.SETTING_NEW_MIN_QUANTITY;
+import static com.zy.model.Constants.SETTING_OLD_MIN_QUANTITY;
 
 @RequestMapping("/product")
 @Controller
@@ -72,16 +74,16 @@ public class ProductController {
 			product.setPrice(productService.getPrice(product.getId(), user.getUserRank(), 1L));
 			if(user.getUserRank() == UserRank.V0){
 				model.addAttribute("isFirst", true);
-			} else if((user.getUserRank() != UserRank.V1 || user.getUserRank() != UserRank.V2)&& isAgent){
+			} else if((user.getUserRank() != UserRank.V1 || user.getUserRank() != UserRank.V2) && isAgent){
 				model.addAttribute("isUpgrade", true);
 			}
 
 			int minQuantity = 1;
 			if (userRank == UserRank.V3 || userRank == UserRank.V4) {
 				if (config.isOld(id)) {
-					minQuantity = 100;
+					minQuantity = SETTING_OLD_MIN_QUANTITY;
 				} else {
-					minQuantity = 80;
+					minQuantity = SETTING_NEW_MIN_QUANTITY;
 				}
 			}
 			model.addAttribute("minQuantity", minQuantity);
