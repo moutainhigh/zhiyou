@@ -114,6 +114,7 @@ public class Order implements Serializable {
 	private Boolean isPayToPlatform;
 
 	@NotBlank
+	@Query(Predicate.LK)
 	@Field(label = "标题")
 	@View
 	private String title;
