@@ -1,18 +1,6 @@
 package com.zy.mobile.controller.ucenter;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import com.zy.Config;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
@@ -22,17 +10,32 @@ import com.zy.component.UserComponent;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.mal.OrderItem;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.ProfitQueryModel;
+import com.zy.service.OrderItemService;
 import com.zy.service.OrderService;
 import com.zy.service.ProfitService;
 import com.zy.service.UserService;
-
 import io.gd.generator.api.query.Direction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.SETTING_NEW_MIN_QUANTITY;
+import static com.zy.model.Constants.SETTING_OLD_MIN_QUANTITY;
 
 @RequestMapping("/u/order")
 @Controller
@@ -43,9 +46,15 @@ public class UcenterOrderController {
 	
 	@Autowired
 	private OrderService orderService;
+
+	@Autowired
+	private OrderItemService orderItemService;
 	
 	@Autowired
 	private ProfitService profitService;
+
+	@Autowired
+	private Config config;
 
 	@Autowired
 	private OrderComponent orderComponent;
@@ -111,12 +120,20 @@ public class UcenterOrderController {
 	public String detail(@PathVariable Long id, Principal principal, Model model) {
 		Order order = orderService.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " not found");
+
+		OrderItem persistentOrderItem = orderItemService.findByOrderId(id).get(0);
+
+		Long productId = persistentOrderItem.getProductId();
+		boolean canCopy = false;
+		int minQuantity = config.isOld(productId) ? SETTING_OLD_MIN_QUANTITY : SETTING_NEW_MIN_QUANTITY;
 		
 		model.addAttribute("inOut", order.getUserId().equals(principal.getUserId()) ? "in" : "out");
 		User buyer = userService.findOne(order.getUserId());
 		model.addAttribute("buyer", userComponent.buildListVo(buyer));
 		User seller = userService.findOne(order.getSellerId());
 		model.addAttribute("seller", userComponent.buildListVo(seller));
+
+		long quantity = persistentOrderItem.getQuantity();
 		
 		if(order.getIsSettledUp()) {
 			List<Profit> profits = profitService.findAll(
@@ -128,6 +145,12 @@ public class UcenterOrderController {
 			model.addAttribute("profits", profits);
 		}
 		model.addAttribute("order", orderComponent.buildDetailVo(order));
+
+		if (order.getSellerUserRank() == User.UserRank.V4 && quantity >= minQuantity && quantity % minQuantity == 0) {
+			canCopy = true;
+		}
+		model.addAttribute("canCopy", canCopy);
+
 		return "ucenter/order/orderDetail";
 	}
 

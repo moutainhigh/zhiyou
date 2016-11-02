@@ -402,7 +402,7 @@
       </c:if>
       
       <c:if test="${order.orderStatus == '已支付' && !order.isCopied}">
-        <c:if test="${order.sellerUserRank == 'V4' && order.quantity >= 100 && order.quantity mod 100 == 0}">
+        <c:if test="${canCopy}">
           <div class="form-btn">
             <a id="btnPlatformDeliver" class="btn blue btn-block round-2"><i class="fa fa-share"></i> 转给公司发货</a>
           </div>
