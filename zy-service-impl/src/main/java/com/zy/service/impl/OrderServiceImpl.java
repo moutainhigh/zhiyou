@@ -39,6 +39,8 @@ import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.*;
+import static com.zy.model.Constants.SETTING_NEW_MIN_QUANTITY;
+import static com.zy.model.Constants.SETTING_OLD_MIN_QUANTITY;
 
 @Service
 @Validated
@@ -428,12 +430,15 @@ public class OrderServiceImpl implements OrderService {
 		validate(persistentOrder, NOT_NULL, "order id" + orderId + " is not found");
 
 		OrderItem persistentOrderItem = orderItemMapper.findByOrderId(orderId).get(0);
+		Long productId = persistentOrderItem.getProductId();
+		int minQuantity = config.isOld(productId) ? SETTING_OLD_MIN_QUANTITY : SETTING_NEW_MIN_QUANTITY;
+
+
 		Long quantity = persistentOrderItem.getQuantity();
-		if (!persistentOrder.getSellerId().equals(config.getSysUserId()) && persistentOrder.getSellerUserRank() == UserRank.V4 && quantity >= 100 && quantity % 100 == 0) {
+		if (!persistentOrder.getSellerId().equals(config.getSysUserId()) && persistentOrder.getSellerUserRank() == UserRank.V4 && quantity >= minQuantity && quantity % minQuantity == 0) {
 			if (persistentOrder.getIsCopied()) {
 				return persistentOrder.getRefId(); // 幂等操作
 			}
-			Long productId = persistentOrderItem.getProductId();
 			Long sysUserId = config.getSysUserId();
 			BigDecimal v4Price = malComponent.getPrice(productId, UserRank.V4, quantity);
 			BigDecimal v4Amount = v4Price.multiply(BigDecimal.valueOf(quantity)).setScale(2, BigDecimal.ROUND_HALF_UP);
