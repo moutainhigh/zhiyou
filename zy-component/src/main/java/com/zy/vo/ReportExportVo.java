@@ -56,8 +56,6 @@ public class ReportExportVo implements Serializable {
 	private String reportedDateLabel;
 	@Field(label = "申请时间", order = 75)
 	private String appliedTimeLabel;
-	@Field(label = "创建时间", order = 76)
-	private String createdTimeLabel;
 	@Field(label = "初审通过时间", order = 78)
 	private String preConfirmedTimeLabel;
 	@Field(label = "初审通过时间", order = 90)

@@ -191,7 +191,7 @@
 }
 
 .list-item .list-unit {
-  display: block;  max-width: 160px; margin-left: 6px;
+  display: block;  max-width: 66%; margin-left: 6px;
   color: #777; font-size: 14px;
 }
 .list-item .list-unit > img {

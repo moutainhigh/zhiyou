@@ -5,6 +5,8 @@ import static com.zy.entity.usr.User.UserType.代理;
 import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -86,6 +88,27 @@ public class UcenterMoneyController {
 		Long bankCardCount = bankCardService.count(bankCardQueryModel);
 		model.addAttribute("bankCardCount", bankCardCount);
 		model.addAttribute("userRank", userService.findOne(userId).getUserRank());
+		
+		Calendar calendar = Calendar.getInstance();
+		Date now = new Date();
+		calendar.setTime(now);
+		calendar.set(Calendar.DAY_OF_MONTH, 7);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		Date beginTime = calendar.getTime();
+		calendar.set(Calendar.DAY_OF_MONTH, 12);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		Date endTime = calendar.getTime();
+		
+		boolean withdraw = false;
+		if(now.after(beginTime) && now.before(endTime)) {
+			withdraw = true;
+		}
+		model.addAttribute("withdraw", withdraw);
 		return "ucenter/account/money";
 	}
 	
@@ -148,6 +171,27 @@ public class UcenterMoneyController {
 	
 	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
 	public String withdraw(Principal principal, Model model, BigDecimal amount,Long bankCardId, RedirectAttributes redirectAttributes) {
+		
+		Calendar calendar = Calendar.getInstance();
+		Date now = new Date();
+		calendar.setTime(now);
+		calendar.set(Calendar.DAY_OF_MONTH, 7);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		Date beginTime = calendar.getTime();
+		calendar.set(Calendar.DAY_OF_MONTH, 12);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		Date endTime = calendar.getTime();
+		
+		if(now.before(beginTime) && now.after(endTime)) {
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("提现操作时间每月7号-15号之间"));
+			return "redirect:/u/money";
+		}
+		
 		try {
 			Long userId = principal.getUserId();
 			Withdraw withdraw = withdrawService.create(userId, bankCardId, 现金, amount);

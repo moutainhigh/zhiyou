@@ -42,6 +42,10 @@
           required : true,
           phone : true
         },
+        'times' : {
+          required : true,
+          digits : true
+        },
         'reportedDate' : {
           required : true
         },
