@@ -89,4 +89,9 @@ public class ProfitServiceImpl implements ProfitService {
 
 	}
 
+	@Override
+	public Profit findOne(Long id) {
+		return profitMapper.findOne(id);
+	}
+
 }
