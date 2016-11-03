@@ -192,7 +192,7 @@
               <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
               <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
-              <div class="form-group input-inline">
+              <div class="form-group">
                 <input type="text" name="userPhoneEQ" class="form-control" placeholder="手机号"/>
               </div>
 
