@@ -37,6 +37,8 @@ public class OrderQueryModel implements Serializable {
 
 	private Boolean isPayToPlatformEQ;
 
+	private String titleLK;
+
 	private Date createdTimeLT;
 
 	private Date createdTimeGTE;
