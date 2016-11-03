@@ -251,6 +251,10 @@
                 <input type="text" name="snLK" class="form-control" placeholder="订单号"/>
               </div>
               
+              <div class="form-group">
+                <input type="text" name="titleLK" class="form-control" placeholder="标题"/>
+              </div>
+              
               <div class="form-group input-inline">
                 <input type="text" name="logisticsSnLK" class="form-control" placeholder="物流单号"/>
               </div>               
