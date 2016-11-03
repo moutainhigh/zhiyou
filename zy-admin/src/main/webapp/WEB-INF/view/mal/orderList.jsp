@@ -237,19 +237,23 @@
                 <input type="text" name="userPhoneEQ" class="form-control" placeholder="用户手机号"/>
               </div>
 
-              <div class="form-group input-inline">
+              <div class="form-group">
                 <input type="text" name="userNicknameLK" class="form-control" placeholder="用户昵称"/>
               </div>
 
-              <div class="form-group input-inline">
+              <div class="form-group">
                 <input type="text" name="snLK" class="form-control" placeholder="订单号"/>
               </div>
               
-              <div class="form-group input-inline">
+              <div class="form-group">
+                <input type="text" name="titleLK" class="form-control" placeholder="标题"/>
+              </div>
+              
+              <div class="form-group">
                 <input type="text" name="logisticsSnLK" class="form-control" placeholder="物流单号"/>
               </div>              
               
-              <div class="form-group input-inline">
+              <div class="form-group">
                 <select name="isPayToPlatformEQ" class="form-control">
                   <option value="">-- 是否支付给平台 --</option>
                   <option value="1">是</option>
@@ -275,7 +279,7 @@
                   name="paidTimeLT" value="" placeholder="支付时间止" />
               </div>
 
-              <div class="form-group input-inline">
+              <div class="form-group">
                 <button class="btn blue filter-submit">
                   <i class="fa fa-search"></i> 查询
                 </button>

@@ -203,6 +203,9 @@
 			<if test="v4UserIdEQ != null">
 				and v4_user_id = #{v4UserIdEQ}
 			</if>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
 			<if test="orderStatusEQ != null">
 				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -303,6 +306,9 @@
 			</if>
 			<if test="v4UserIdEQ != null">
 				and v4_user_id = #{v4UserIdEQ}
+			</if>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
 			<if test="orderStatusEQ != null">
 				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
