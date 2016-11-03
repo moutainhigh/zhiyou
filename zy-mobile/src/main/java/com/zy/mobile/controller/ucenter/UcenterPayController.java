@@ -122,7 +122,7 @@ public class UcenterPayController {
 		Order order = orderService.findOne(orderId);
 		validate(order, NOT_NULL, "order id" + orderId + " not found");
 		if(!order.getUserId().equals(principal.getUserId())){
-			throw new BizException(BizCode.ERROR, "非自己的订单不能支付");
+			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
 		}
 		if(order.getOrderStatus() != OrderStatus.待支付){
 			return "redirect:/u/order/" + orderId;
@@ -171,7 +171,7 @@ public class UcenterPayController {
 		Payment payment = paymentService.findOne(refId);
 		validate(payment, NOT_NULL, "payment id" + refId + " not found");
 		if(!payment.getUserId().equals(principal.getUserId())){
-			throw new BizException(BizCode.ERROR, "非自己的支付单不能支付");
+			throw new BizException(BizCode.ERROR, "非自己的支付单不能操作");
 		}
 		Long orderId = payment.getRefId();
 		if (payment.getPayType() == PayType.余额) {
@@ -199,7 +199,7 @@ public class UcenterPayController {
 		Deposit deposit = depositService.findOne(depositId);
 		validate(deposit, NOT_NULL, "deposit id" + depositId + " not found");
 		if(!deposit.getUserId().equals(principal.getUserId())){
-			throw new BizException(BizCode.ERROR, "非自己的充值单不能支付");
+			throw new BizException(BizCode.ERROR, "非自己的充值单不能操作");
 		}
 		if (deposit.getPayType() == PayType.银行汇款) {
 			validate(offlineImage, NOT_BLANK, "deposit offlineImage is blank");
