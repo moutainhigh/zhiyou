@@ -153,43 +153,6 @@
 
   });
 
-  var $addVipDialog;
-  function addVip(id) {
-    $addVipDialog = $.window({
-      content: "<form action='' class='form-horizontal' style='margin-top: 20px;'>" + "<div class='form-body'>" + "<div class='form-group'>"
-      + "<label class='control-label col-md-3'>加VIP等级:</label>" + "<div class='col-md-5'>"
-      + "<select class='form-control' id='userRank'><option value=''>-- 用户等级 --</option><option value='V1'>三级服务商</option><option value='V2'>二级服务商</option><option value='V3'>一级服务商</option><option value='V4'>特级服务商</option></select></div></div>"
-      + "<div class='form-group'>" + "<label class='control-label col-md-3'>备注信息:</label>"
-      + "<div class='col-md-5'><textarea class='form-control' style='width: 220px;height: 120px;' id='remark'></textarea></div>" + "</div>" + "</div>"
-      + "<div class='form-actions fluid'>" + "<div class='col-md-offset-3 col-md-9'>" + "<button type='button' class='btn green' onclick='submitBtn(" + id + ")'>"
-      + "保存</button>" + "<button type='button' class='btn default' onclick='closeBtn()' style='margin-left: 20px;'>" + "取消</button>" + "</div>" + "</div>" + "</form>",
-      title: '加VIP',
-      width: 420,
-      height: 320,
-      button: false
-    });
-  }
-  function submitBtn(id) {
-    var remark = $('#remark').val();
-    var userRank = $('#userRank').find("option:selected").val();
-    if (remark == '' || remark == null) {
-      alert('请输入备注信息');
-      return;
-    }
-    $.post('${ctx}/user/addVip', {
-      id: id,
-      userRank: userRank,
-      remark: remark
-    }, function (result) {
-      toastr.success(result.message, '提示信息');
-      $addVipDialog.close();
-      grid.getDataTable().ajax.reload(null, false);
-    })
-
-  }
-  function closeBtn() {
-    $addVipDialog.close();
-  }
 </script>
 <script type="text/javascript">
   function exportUsers() {
