@@ -263,8 +263,11 @@ public class DepositServiceImpl implements DepositService {
 		}
 
 		DepositStatus depositStatus = deposit.getDepositStatus();
-		if (depositStatus != DepositStatus.待充值 && depositStatus != DepositStatus.待确认)  {
-			throw new BizException(BizCode.ERROR, "只有待充值或者待确认状态的充值单才能操作");
+
+		if (depositStatus == DepositStatus.待确认) {
+			return; // 幂等处理
+		} else if (depositStatus != DepositStatus.待充值)  {
+			throw new BizException(BizCode.ERROR, "只有待充值状态的充值单才能操作");
 		}
 		deposit.setOfflineMemo(offlineMemo);
 		deposit.setOfflineImage(offlineImage);
