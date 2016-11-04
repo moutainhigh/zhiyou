@@ -80,7 +80,7 @@
       </div>
       <div class="mt-5 text-center">活动</div>
     </a>
-    <a class="flex-1" href="${ctx}/product/1">
+    <a class="flex-1" href="${ctx}/product">
       <div class="text-center">
         <img class="round" src="${stccdn}/image/icon/icon_about.png">
       </div>

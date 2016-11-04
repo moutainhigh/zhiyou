@@ -174,6 +174,11 @@
             orderable: false
           },
           {
+            data: 'createdTime',
+            title: '提交时间',
+            orderable: true
+          },
+          {
             data: 'paidTime',
             title: '支付时间',
             orderable: true
