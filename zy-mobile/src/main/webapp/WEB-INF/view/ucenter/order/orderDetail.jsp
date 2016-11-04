@@ -57,9 +57,9 @@
         callback : function(index) {
           if (index == 1) {
             location.href = '${ctx}/u/pay/order/${order.id}?payType=0';
-          } else if (index == 2) {
+          }/*  else if (index == 2) {
             location.href = '${ctx}/u/pay/order/${order.id}?payType=1';
-          }
+          } */
         }
       });
     });
@@ -358,7 +358,7 @@
         </c:if>
         <c:if test="${!order.isPayToPlatform}">
         <div class="form-btn">
-          <a id="btnPayOffline" class="btn btn-block green round-2" href="${ctx}/u/pay/order/${order.id}?payType=1"><i class="fa fa-cny"></i> 立即支付</a>
+          <a id="btnPayOffline" class="btn btn-block green round-2" href="${ctx}/u/order/pay/${order.id}?payType=1"><i class="fa fa-cny"></i> 立即支付</a>
         </div>
         </c:if>
       </c:if>

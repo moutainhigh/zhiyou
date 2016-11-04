@@ -122,7 +122,7 @@ public class UcenterPayController {
 		Order order = orderService.findOne(orderId);
 		validate(order, NOT_NULL, "order id" + orderId + " not found");
 		if(!order.getUserId().equals(principal.getUserId())){
-			throw new BizException(BizCode.ERROR, "非自己的订单不能支付");
+			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
 		}
 		if(order.getOrderStatus() != OrderStatus.待支付){
 			return "redirect:/u/order/" + orderId;
@@ -154,10 +154,7 @@ public class UcenterPayController {
 		model.addAttribute("sn", order.getSn());
 		model.addAttribute("amount", order.getAmount());
 		model.addAttribute("payType", payType);
-		if (payType == PayType.银行汇款) {
-			model.addAttribute("refId", order.getId());
-			return "ucenter/pay/payOffline";
-		} else if (payment.getPayType() == PayType.余额) {
+		if (payment.getPayType() == PayType.余额) {
 			model.addAttribute("refId", payment.getId());
 			Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.现金);
 			model.addAttribute("balance", account.getAmount());
@@ -167,24 +164,15 @@ public class UcenterPayController {
 		}
 	}
 
-	@RequestMapping(path = "/order", method = RequestMethod.POST)
-	public String orderPay(Long refId, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes, Principal principal) {
-		validate(refId, NOT_NULL, "order id " + refId + " is null");
-		Order order = orderService.findOne(refId);
-		validate(order, NOT_NULL, "order id" + refId + " not found");
-		validate(offlineImage, NOT_BLANK, "order offlineImage is blank");
-		validate(offlineMemo, NOT_BLANK, "order offlineMemo is blank");
-		orderService.offlinePay(refId, offlineImage, offlineMemo);
-		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("转账汇款凭证提交成功，请等待确认"));
-		return "redirect:/u/order/" + refId;
-	}
-	
 	@RequestMapping(path = "/payment", method = RequestMethod.POST)
 	public String paymentPay(Long refId, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes,
 			Principal principal) {
 		validate(refId, NOT_NULL, "payment id " + refId + " is null");
 		Payment payment = paymentService.findOne(refId);
 		validate(payment, NOT_NULL, "payment id" + refId + " not found");
+		if(!payment.getUserId().equals(principal.getUserId())){
+			throw new BizException(BizCode.ERROR, "非自己的支付单不能操作");
+		}
 		Long orderId = payment.getRefId();
 		if (payment.getPayType() == PayType.余额) {
 			paymentService.balancePay(refId, true);
@@ -210,6 +198,9 @@ public class UcenterPayController {
 		validate(depositId, NOT_NULL, "deposit id " + depositId + " is null");
 		Deposit deposit = depositService.findOne(depositId);
 		validate(deposit, NOT_NULL, "deposit id" + depositId + " not found");
+		if(!deposit.getUserId().equals(principal.getUserId())){
+			throw new BizException(BizCode.ERROR, "非自己的充值单不能操作");
+		}
 		if (deposit.getPayType() == PayType.银行汇款) {
 			validate(offlineImage, NOT_BLANK, "deposit offlineImage is blank");
 			validate(offlineMemo, NOT_BLANK, "deposit offlineMemo is blank");

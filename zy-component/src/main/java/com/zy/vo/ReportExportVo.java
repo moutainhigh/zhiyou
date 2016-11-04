@@ -28,6 +28,8 @@ public class ReportExportVo implements Serializable {
 	private ReportResult reportResult;
 	@Field(label = "检测心得", order = 70)
 	private String text;
+	@Field(label = "图片链接", order = 71)
+	private String image;
 	@Field(label = "检测次数", order = 59)
 	private Integer times;
 	@Field(label = "初审状态", order = 77)

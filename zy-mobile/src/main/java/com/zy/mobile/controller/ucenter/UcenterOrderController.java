@@ -1,17 +1,37 @@
 package com.zy.mobile.controller.ucenter;
 
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.SETTING_NEW_MIN_QUANTITY;
+import static com.zy.model.Constants.SETTING_OLD_MIN_QUANTITY;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.zy.Config;
+import com.zy.common.exception.BizException;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.OrderComponent;
 import com.zy.component.UserComponent;
+import com.zy.entity.fnc.PayType;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.mal.OrderItem;
 import com.zy.entity.usr.User;
+import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.dto.OrderDeliverDto;
@@ -21,21 +41,8 @@ import com.zy.service.OrderItemService;
 import com.zy.service.OrderService;
 import com.zy.service.ProfitService;
 import com.zy.service.UserService;
+
 import io.gd.generator.api.query.Direction;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
-
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.SETTING_NEW_MIN_QUANTITY;
-import static com.zy.model.Constants.SETTING_OLD_MIN_QUANTITY;
 
 @RequestMapping("/u/order")
 @Controller
@@ -154,6 +161,43 @@ public class UcenterOrderController {
 		return "ucenter/order/orderDetail";
 	}
 
+	@RequestMapping(path = "/pay/{orderId}", method = RequestMethod.GET)
+	public String orderPay(@PathVariable Long orderId, @RequestParam(required = true) PayType payType, Model model,
+			Principal principal) {
+		validate(payType, NOT_NULL, "order payType" + payType + " is null");
+		Order order = orderService.findOne(orderId);
+		validate(order, NOT_NULL, "order id" + orderId + " not found");
+		if(!order.getUserId().equals(principal.getUserId())){
+			throw new BizException(BizCode.ERROR, "非自己的订单不能支付");
+		}
+		if(order.getOrderStatus() != OrderStatus.待支付){
+			return "redirect:/u/order/" + orderId;
+		}
+
+		model.addAttribute("title", order.getTitle());
+		model.addAttribute("sn", order.getSn());
+		model.addAttribute("amount", order.getAmount());
+		model.addAttribute("payType", payType);
+		if (payType == PayType.银行汇款) {
+			model.addAttribute("id", order.getId());
+			return "ucenter/pay/payOffline";
+		} else {
+			throw new BizException(BizCode.ERROR, "不支持的付款方式");
+		}
+	}
+	
+	@RequestMapping(path = "/pay", method = RequestMethod.POST)
+	public String orderPay(Long id, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes, Principal principal) {
+		validate(id, NOT_NULL, "order id " + id + " is null");
+		Order order = orderService.findOne(id);
+		validate(order, NOT_NULL, "order id" + id + " not found");
+		validate(offlineImage, NOT_BLANK, "order offlineImage is blank");
+		validate(offlineMemo, NOT_BLANK, "order offlineMemo is blank");
+		orderService.offlinePay(id, offlineImage, offlineMemo);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("转账汇款凭证提交成功，请等待确认"));
+		return "redirect:/u/order/" + id;
+	}
+	
 	@RequestMapping("/confirmPay")
 	public String confirmPay(Long id, RedirectAttributes redirectAttributes, Principal principal) {
 		Order persistence = orderService.findOne(id);

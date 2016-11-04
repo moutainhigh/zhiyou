@@ -89,8 +89,8 @@
       </div>
     </div> --%>
     
-    <form action="${ctx}/u/pay/${payType == '银行汇款' ? 'order' : 'payment'}" class="valid-form" id="form" method="post">
-      <input type="hidden" name="refId" value="${refId}">
+    <form action="${ctx}/u/order/pay/" class="valid-form" id="form" method="post">
+      <input type="hidden" name="id" value="${id}">
       <div class="list-group">
         <div class="list-title">上传汇款凭证</div>
         <div class="list-item">
