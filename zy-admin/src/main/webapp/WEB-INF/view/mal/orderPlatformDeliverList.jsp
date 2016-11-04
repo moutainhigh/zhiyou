@@ -29,13 +29,9 @@
       $('input[name="orderStatusEQ"]').val($this.data('order-status'));
       $('input[name="isPlatformDeliverEQ"]').val($this.data('is-platform-deliver'));
       grid.getDataTable().ajax.reload(null, false);
-    });
-    
-    $('#statusTab li').bind('click', function () {
-      $this = $(this);
-      $('input[name="orderStatusEQ"]').val($this.data('order-status'));
-      $('input[name="isPlatformDeliverEQ"]').val($this.data('is-platform-deliver'));
-      grid.getDataTable().ajax.reload(null, false);
+      
+      sum();
+      
     });
 
     grid.init({
