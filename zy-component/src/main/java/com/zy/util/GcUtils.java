@@ -177,11 +177,11 @@ public class GcUtils {
 		if (userRank == User.UserRank.V0) {
 			return "普通用户";
 		} else if (userRank == User.UserRank.V1) {
-			return "三级服务商";
+			return "VIP";
 		} else if (userRank == User.UserRank.V2) {
-			return "二级服务商";
+			return "市级服务商";
 		} else if (userRank == User.UserRank.V3) {
-			return "一级服务商";
+			return "省级服务商";
 		} else if (userRank == User.UserRank.V4) {
 			return "特级服务商";
 		} else {
