@@ -5,15 +5,14 @@ import com.zy.component.ProductComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Product;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.dto.OrderCreateDto;
-import com.zy.service.AddressService;
-import com.zy.service.OrderService;
-import com.zy.service.ProductService;
-import com.zy.service.UserService;
+import com.zy.service.*;
 import com.zy.vo.ProductListVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +43,9 @@ public class UcenterOrderCreateController {
 	private UserService userService;
 
 	@Autowired
+	private UserInfoService userInfoService;
+
+	@Autowired
 	private ProductService productService;
 
 	@Autowired
@@ -62,6 +64,11 @@ public class UcenterOrderCreateController {
 			User parent = userService.findOne(parentId);
 			validate(parent, NOT_NULL, "parent user id " + parentId + " does not exist");
 			model.addAttribute("parent", userComponent.buildListVo(parent));
+		}
+
+		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
+		if(userInfo != null && userInfo.getConfirmStatus() == ConfirmStatus.已通过) {
+			model.addAttribute("hasUserInfo", true);
 		}
 
 		Address address = addressService.findDefaultByUserId(userId);
