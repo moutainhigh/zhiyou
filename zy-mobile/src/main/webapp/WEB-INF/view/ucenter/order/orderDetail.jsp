@@ -130,6 +130,18 @@
       });
     });
     
+    /* 删除订单 */
+    $('#btnCancel').click(function() {
+      $.dialog({
+        content : '您确定要取消此订单吗？',
+        callback : function(index) {
+          if (index == 1) {
+            location.href = '${ctx}/u/order/cancel?id=${order.id}';
+          }
+        }
+      });
+    });
+    
   });
 </script>
 </head>
@@ -140,7 +152,12 @@
     <c:if test="${ inOut == 'in' && (order.orderStatus == '已取消' || order.orderStatus == '待支付')}">
     <a href="javascript:;" class="button-right button-popmenu"><i class="fa fa-ellipsis-h"></i></a>
     <nav class="header-popmenu hide">
-      <a id="btnDelete" href="javascript:;"><i class="fa fa-trash-o"></i>删除</a>
+    <c:if test="${order.orderStatus == '待支付'}">
+      <a id="btnCancel" href="javascript:;"><i class="fa fa-times-circle-o"></i> 取消</a>
+      </c:if>
+      <c:if test="${order.orderStatus == '已取消'}">
+      <a id="btnDelete" href="javascript:;"><i class="fa fa-trash-o"></i> 删除</a>
+      </c:if>
     </nav>
     </c:if>
   </header>

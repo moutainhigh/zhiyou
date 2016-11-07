@@ -319,4 +319,20 @@ public class UcenterOrderController {
 		return "redirect:/u/order/in";
 	}
 	
+	@RequestMapping("/cancel")
+	public String cancel(Long id, RedirectAttributes redirectAttributes, Principal principal) {
+		Order persistence = orderService.findOne(id);
+		validate(persistence, NOT_NULL, "order id" + id + " not found");
+		if (!principal.getUserId().equals(persistence.getUserId())) {
+			throw new UnauthorizedException("权限不足");
+		}
+		try {
+			orderService.cancel(id);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("取消订单成功"));
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+		}
+		return "redirect:/u/order/in";
+	}
+	
 }
