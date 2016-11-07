@@ -43,6 +43,7 @@ public class ReportComponent {
 
 		reportAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(report.getUserId())));
 		reportAdminVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
+		reportAdminVo.setAppliedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportAdminVo.setConfirmedTimeLabel(formatDate(report.getConfirmedTime(), TIME_PATTERN));
 		reportAdminVo.setPreConfirmedTimeLabel(formatDate(report.getPreConfirmedTime(), TIME_PATTERN));
 		reportAdminVo.setReportedDateLabel(formatDate(report.getReportedDate(), "yyyy-MM-dd"));

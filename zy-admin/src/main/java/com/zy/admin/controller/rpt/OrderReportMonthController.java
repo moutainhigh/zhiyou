@@ -33,7 +33,7 @@ import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.OrderReportVo;
-import com.zy.model.TeamReportVo;
+import com.zy.model.OrderReportVo.OrderReportVoItem;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.util.GcUtils;
 import com.zy.vo.UserReportVo;
@@ -102,6 +102,8 @@ public class OrderReportMonthController {
 		Integer pageNumber = orderReportVoQueryModel.getPageNumber();
 		if (pageSize == null) {
 			pageSize = 20;
+		} else if (pageSize == -1) {
+			pageSize = totalCount + 1;
 		}
 		if (pageNumber == null) {
 			pageNumber = 0;
@@ -151,6 +153,32 @@ public class OrderReportMonthController {
 		    orderReportVo.setOrderReportVoItems(orderReportVoItems);
 			return orderReportVo;
 		}).collect(Collectors.toList());
+		
+		/* 合计 */
+		{
+			OrderReportVo orderReportVo = new OrderReportVo();
+			orderReportVo.setNickname("合计");
+			Map<String, Long> map = new LinkedHashMap<String, Long>();
+			for(OrderReportVo o : result) {
+				List<OrderReportVoItem> orderReportVoItems = o.getOrderReportVoItems();
+				for (OrderReportVoItem orderReportVoItem : orderReportVoItems) {
+					Long quantity = map.get(orderReportVoItem.getTimeLabel());
+					quantity = quantity == null ? orderReportVoItem.getQuantity() : quantity + orderReportVoItem.getQuantity();
+					map.put(orderReportVoItem.getTimeLabel(), quantity);
+				}
+			}
+			
+			List<OrderReportVo.OrderReportVoItem> orderReportVoItems = new ArrayList<>();
+		    for(Map.Entry<String, Long> entry : map.entrySet()) {   
+		    	OrderReportVo.OrderReportVoItem orderReportVoItem = new OrderReportVo.OrderReportVoItem();
+		    	orderReportVoItem.setTimeLabel(entry.getKey());
+		    	orderReportVoItem.setQuantity(entry.getValue());
+		    	orderReportVoItems.add(orderReportVoItem);
+		    }
+		    orderReportVo.setOrderReportVoItems(orderReportVoItems);
+		    result.add(orderReportVo);
+		}
+		
 		
 		Page<OrderReportVo> page = new Page<>();
 		page.setPageNumber(pageNumber);
@@ -239,6 +267,31 @@ public class OrderReportMonthController {
 		    orderReportVo.setOrderReportVoItems(orderReportVoItems);
 			return orderReportVo;
 		}).collect(Collectors.toList());
+		
+		/* 合计 */
+		{
+			OrderReportVo orderReportVo = new OrderReportVo();
+			orderReportVo.setNickname("合计");
+			Map<String, Long> map = new LinkedHashMap<String, Long>();
+			for(OrderReportVo o : result) {
+				List<OrderReportVoItem> orderReportVoItems = o.getOrderReportVoItems();
+				for (OrderReportVoItem orderReportVoItem : orderReportVoItems) {
+					Long quantity = map.get(orderReportVoItem.getTimeLabel());
+					quantity = quantity == null ? orderReportVoItem.getQuantity() : quantity + orderReportVoItem.getQuantity();
+					map.put(orderReportVoItem.getTimeLabel(), quantity);
+				}
+			}
+			
+			List<OrderReportVo.OrderReportVoItem> orderReportVoItems = new ArrayList<>();
+		    for(Map.Entry<String, Long> entry : map.entrySet()) {   
+		    	OrderReportVo.OrderReportVoItem orderReportVoItem = new OrderReportVo.OrderReportVoItem();
+		    	orderReportVoItem.setTimeLabel(entry.getKey());
+		    	orderReportVoItem.setQuantity(entry.getValue());
+		    	orderReportVoItems.add(orderReportVoItem);
+		    }
+		    orderReportVo.setOrderReportVoItems(orderReportVoItems);
+		    result.add(orderReportVo);
+		}
 		
 		String fileName = "服务商进货(月)报表.xlsx";
 		WebUtils.setFileDownloadHeader(response, fileName);

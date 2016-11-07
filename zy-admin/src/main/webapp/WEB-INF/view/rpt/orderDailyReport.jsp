@@ -18,6 +18,11 @@
       },
       dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
+        lengthMenu: [
+                         [10, 20, 50, 100, -1],
+                         [10, 20, 50, 100, '全部'] // change per page values here
+                         ],
+
         order: [], // set first column as a default sort by desc
         ajax: {
           url: '${ctx}/report/order/daily?queryDate=${queryDate}', // ajax source
