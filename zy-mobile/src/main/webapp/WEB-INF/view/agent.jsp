@@ -108,8 +108,8 @@
         
         <div class="list-item form-radio" data-id="${productNew.id}">
           <div class="list-icon">
-            <input id="agentLevel1" type="radio" name="agentLevel" value="V3">
-            <label class="i-checked" for="agentLevel1"></label>
+            <input id="agentLevel1New" type="radio" name="agentLevel" value="V3">
+            <label class="i-checked" for="agentLevel1New"></label>
           </div>
           <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
           <div class="list-text">
@@ -121,8 +121,8 @@
         
         <div class="list-item form-radio" data-id="${productOld.id}">
           <div class="list-icon">
-            <input id="agentLevel1" type="radio" name="agentLevel" value="V3">
-            <label class="i-checked" for="agentLevel1"></label>
+            <input id="agentLevel1Old" type="radio" name="agentLevel" value="V3">
+            <label class="i-checked" for="agentLevel1Old"></label>
           </div>
           <img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">
           <div class="list-text">
@@ -137,8 +137,8 @@
         
         <div class="list-item form-radio" data-id="${productNew.id}">
           <div class="list-icon">
-            <input id="agentLevel2" type="radio" name="agentLevel" value="V2">
-            <label class="i-checked" for="agentLevel2"></label>
+            <input id="agentLevel2New" type="radio" name="agentLevel" value="V2">
+            <label class="i-checked" for="agentLevel2New"></label>
           </div>
           <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
           <div class="list-text">
@@ -150,8 +150,8 @@
         
         <div class="list-item form-radio" data-id="${productOld.id}">
           <div class="list-icon">
-            <input id="agentLevel2" type="radio" name="agentLevel" value="V2">
-            <label class="i-checked" for="agentLevel2"></label>
+            <input id="agentLevel2Old" type="radio" name="agentLevel" value="V2">
+            <label class="i-checked" for="agentLevel2Old"></label>
           </div>
           <img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">
           <div class="list-text">
@@ -165,8 +165,8 @@
         
         <div class="list-item form-radio" data-id="${productNew.id}">
           <div class="list-icon">
-            <input id="agentLevel3" type="radio" name="agentLevel" value="V1">
-            <label class="i-checked" for="agentLevel3"></label>
+            <input id="agentLevel3New" type="radio" name="agentLevel" value="V1">
+            <label class="i-checked" for="agentLevel3New"></label>
           </div>
           <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
           <div class="list-text">
@@ -178,8 +178,8 @@
         
         <div class="list-item form-radio" data-id="${productOld.id}">
           <div class="list-icon">
-            <input id="agentLevel3" type="radio" name="agentLevel" value="V1">
-            <label class="i-checked" for="agentLevel3"></label>
+            <input id="agentLevel3Old" type="radio" name="agentLevel" value="V1">
+            <label class="i-checked" for="agentLevel3Old"></label>
           </div>
           <img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">
           <div class="list-text">
@@ -195,7 +195,7 @@
       <c:if test="${userRank == 'V0'}">
       <div class="list-group">
         <div class="list-item">
-          <label class="list-label" for="name">上级手机号</label>
+          <label class="list-label">上级手机号</label>
           <div class="list-text">
             <input id="phone" name="phone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">
           </div>
