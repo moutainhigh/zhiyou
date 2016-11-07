@@ -4,9 +4,11 @@ package com.zy.mobile.extend;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.util.JsonUtils;
 import com.zy.common.util.WebUtils;
+import com.zy.entity.usr.User;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
+import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -42,6 +44,7 @@ public class AuthenticationFilter implements Filter {
 
 		Principal principal = (Principal) session.getAttribute(SESSION_ATTRIBUTE_PRINCIPAL);
 		WxMpService wxMpService  = wac.getBean(WxMpService.class);
+		UserService userService  = wac.getBean(UserService.class);
 		
 		if (principal == null) {
 			String redirectUrl = GcUtils.resolveRedirectUrl(request);
@@ -60,7 +63,14 @@ public class AuthenticationFilter implements Filter {
 				response.sendRedirect(loginUrl);
 			}
 		} else {
-			chain.doFilter(request, response);
+			User user = userService.findOne(principal.getUserId());
+			if (user.getIsFrozen() != null && user.getIsFrozen()) {
+				request.setAttribute("errorMessage", "账户已冻结");
+				response.sendError(HttpServletResponse.SC_FORBIDDEN);
+				return;
+			} else {
+				chain.doFilter(request, response);
+			}
 		}
 		
 	}
