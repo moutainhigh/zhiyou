@@ -18,9 +18,13 @@
       },
       dataTable: {
         //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
+        lengthMenu: [
+                         [10, 20, 50, 100, -1],
+                         [10, 20, 50, 100, '全部'] // change per page values here
+                         ],
         order: [], // set first column as a default sort by desc
         ajax: {
-          url: '${ctx}/report/order/month', // ajax source
+          url: '${ctx}/report/order/month?showAll=${showAll}', // ajax source
         },
         columns: [
           {
@@ -79,6 +83,11 @@
         <div class="caption">
           <i class="icon-bar-chart"></i><span>服务商进货(月)报表</span>
         </div>
+        <div class="actions">
+          <a class="btn btn-circle green" data-href="${ctx}/report/order/month?showAll=true">
+            <i class="fa  fa-search"></i> 查看全部
+          </a>
+        </div>
       </div>
       <div class="portlet-body clearfix">
         <div class="table-container">
@@ -86,8 +95,8 @@
             <form class="filter-form form-inline" id="searchForm">
               <input id="_orderBy" name="orderBy" type="hidden" value=""/>
               <input id="_direction" name="direction" type="hidden" value=""/>
-              <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
-              <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
+              <input id="_pageNumber" name="pageNumber" type="hidden" value=""/>
+              <input id="_pageSize" name="pageSize" type="hidden" value=""/>
 
               <div class="form-group">
                 <select class="form-control pull-left" id="province" name="provinceIdEQ">
