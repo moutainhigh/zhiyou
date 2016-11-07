@@ -170,7 +170,7 @@ public class UcenterOrderController {
 		Order order = orderService.findOne(orderId);
 		validate(order, NOT_NULL, "order id" + orderId + " not found");
 		if(!order.getUserId().equals(principal.getUserId())){
-			throw new BizException(BizCode.ERROR, "非自己的订单不能支付");
+			throw new UnauthorizedException("权限不足");
 		}
 		if(order.getOrderStatus() != OrderStatus.待支付){
 			return "redirect:/u/order/" + orderId;
@@ -193,7 +193,7 @@ public class UcenterOrderController {
 		validate(id, NOT_NULL, "order id " + id + " is null");
 		Order order = orderService.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " not found");
-		if (!principal.getUserId().equals(order.getSellerId())) {
+		if (!principal.getUserId().equals(order.getUserId())) {
 			throw new UnauthorizedException("权限不足");
 		}
 		
