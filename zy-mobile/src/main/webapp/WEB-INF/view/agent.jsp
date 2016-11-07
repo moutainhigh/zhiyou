@@ -98,7 +98,7 @@
   
   <article class="mb-15 clearfix">
     <form id="form" action="${ctx}/u/order/create" method="get">
-      <input type="hidden" name="productId" value="${product.id}">
+      <input type="hidden" name="productId" value="">
       <input type="hidden" name="parentId" value="${inviter.id}">
       <input type="hidden" name="quantity" value="">
       
