@@ -127,7 +127,9 @@ public class UcenterOrderController {
 	public String detail(@PathVariable Long id, Principal principal, Model model) {
 		Order order = orderService.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " not found");
-
+		if (!principal.getUserId().equals(order.getSellerId()) && !principal.getUserId().equals(order.getUserId())) {
+			throw new UnauthorizedException("权限不足");
+		}
 		OrderItem persistentOrderItem = orderItemService.findByOrderId(id).get(0);
 
 		Long productId = persistentOrderItem.getProductId();
@@ -191,6 +193,10 @@ public class UcenterOrderController {
 		validate(id, NOT_NULL, "order id " + id + " is null");
 		Order order = orderService.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " not found");
+		if (!principal.getUserId().equals(order.getSellerId())) {
+			throw new UnauthorizedException("权限不足");
+		}
+		
 		validate(offlineImage, NOT_BLANK, "order offlineImage is blank");
 		validate(offlineMemo, NOT_BLANK, "order offlineMemo is blank");
 		orderService.offlinePay(id, offlineImage, offlineMemo);
@@ -231,7 +237,12 @@ public class UcenterOrderController {
 	}
 	
 	@RequestMapping(path = "/deliver", method = RequestMethod.GET)
-	public String deliver(Long id, Model model) {
+	public String deliver(Long id, Model model, Principal principal) {
+		Order persistence = orderService.findOne(id);
+		validate(persistence, NOT_NULL, "order id" + id + " not found");
+		if (!principal.getUserId().equals(persistence.getSellerId())) {
+			throw new UnauthorizedException("权限不足");
+		}
 		model.addAttribute("orderId", id);
 		return "ucenter/order/orderDeliver";
 	}
@@ -309,7 +320,7 @@ public class UcenterOrderController {
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
-		return "redirect:/u/order/" + persistence.getId();
+		return "redirect:/u/order/in";
 	}
 	
 }

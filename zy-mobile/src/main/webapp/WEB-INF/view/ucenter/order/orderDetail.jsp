@@ -133,7 +133,7 @@
   <header class="header">
     <h1>订单详情</h1>
     <a href="${ctx}/u/order/${inOut}" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <c:if test="${ inOut == 'in' && (order.orderStatus == '已取消' || order.orderStatus == '已完成')}">
+    <c:if test="${ inOut == 'in' && (order.orderStatus == '已取消' || order.orderStatus == '待支付')}">
     <a href="javascript:;" class="button-right button-popmenu"><i class="fa fa-ellipsis-h"></i></a>
     <nav class="header-popmenu hide">
       <a id="btnDelete" href="javascript:;"><i class="fa fa-trash-o"></i>删除</a>
