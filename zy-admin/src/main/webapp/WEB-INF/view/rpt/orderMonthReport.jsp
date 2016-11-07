@@ -83,11 +83,6 @@
         <div class="caption">
           <i class="icon-bar-chart"></i><span>服务商进货(月)报表</span>
         </div>
-        <div class="actions">
-          <a class="btn btn-circle green" data-href="${ctx}/report/order/month?showAll=true">
-            <i class="fa  fa-search"></i> 查看全部
-          </a>
-        </div>
       </div>
       <div class="portlet-body clearfix">
         <div class="table-container">

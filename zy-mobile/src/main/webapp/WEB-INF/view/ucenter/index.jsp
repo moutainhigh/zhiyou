@@ -70,14 +70,14 @@
   <article>
     <div class="list-group">
       <c:if test="${user.userRank == 'V0'}">
-      <a class="list-item" href="${ctx}/product/1?isAgent=true">
+      <a class="list-item" href="${ctx}/u/agent">
         <i class="list-icon icon icon-agent"></i>
         <div class="list-text">成为服务商</div>
         <i class="list-arrow"></i>
       </a>
       </c:if>
       <c:if test="${user.userRank == 'V1' || user.userRank == 'V2'}">
-      <a class="list-item" href="${ctx}/product/1?isAgent=true">
+      <a class="list-item" href="${ctx}/u/agent">
         <i class="list-icon icon icon-upgrade"></i>
         <div class="list-text">升级服务商</div>
         <i class="list-arrow"></i>
