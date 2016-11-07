@@ -22,6 +22,10 @@
       $('.header-popmenu').toggle(300);
     });
     
+    $("article").click(function() {
+      $('.header-popmenu').slideUp();
+    });
+    
     $('.image-view').click(function() {
       var images = $(this).find('img');
       if (images.length == 0) {
