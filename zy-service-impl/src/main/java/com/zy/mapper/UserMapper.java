@@ -1,11 +1,11 @@
 package com.zy.mapper;
 
 
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
-
 import com.zy.entity.usr.User;
 import com.zy.model.query.UserQueryModel;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 public interface UserMapper {
@@ -27,5 +27,7 @@ public interface UserMapper {
 	User findByPhone(String phone);
 
 	User findByOpenId(String openId);
+
+	User findByCode(String code);
 
 }

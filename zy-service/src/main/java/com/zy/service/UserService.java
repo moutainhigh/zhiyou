@@ -14,6 +14,8 @@ public interface UserService {
 
 	User findByPhone(String phone);
 
+	User findByCode(String code);
+
 	User findByOpenId(String openId);
 
 	Page<User> findPage(UserQueryModel userQueryModel);
@@ -34,6 +36,7 @@ public interface UserService {
 	
 	void modifyAvatar(Long id, String avatar);
 
+	void generateCode(Long id);
 
 	/* 管理员操作 */
 	void modifyParentIdAdmin(Long id, Long parentId, Long operatorId, String remark);

@@ -15,6 +15,7 @@ import com.zy.model.BizCode;
 import com.zy.model.dto.AgentRegisterDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
+import me.chanjar.weixin.common.util.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -55,6 +57,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findByPhone(@NotBlank String phone) {
 		return userMapper.findByPhone(phone);
+	}
+
+	@Override
+	public User findByCode(@NotBlank String code) {
+		return userMapper.findByCode(code);
 	}
 
 	@Override
@@ -246,7 +253,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyNickname(Long userId, @NotBlank String nickname) {
+	public void modifyNickname(@NotNull Long userId, @NotBlank String nickname) {
 		findAndValidate(userId);
 
 		User userForMerge = new User();
@@ -257,13 +264,49 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void modifyAvatar(Long userId, @NotBlank @URL String avatar) {
+	public void modifyAvatar(@NotNull Long userId, @NotBlank @URL String avatar) {
 		findAndValidate(userId);
 
 		User userForMerge = new User();
 		userForMerge.setId(userId);
 		userForMerge.setAvatar(avatar);
 		userMapper.merge(userForMerge, "avatar");
+
+	}
+
+	char[] codeSeq = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '2', '3', '4', '5', '6',
+			'7', '8', '9' };
+
+	private String getCode() {
+		Random random = new Random();
+		int length = codeSeq.length;
+		StringBuilder s = new StringBuilder();
+		for (int i = 0; i < 14; i++) {
+			s.append(codeSeq[random.nextInt(length)]);
+		}
+		return s.toString();
+	}
+
+	@Override
+	public void generateCode(@NotNull Long id) {
+		User user = findAndValidate(id);
+		if (StringUtils.isNotBlank(user.getCode())) {
+			return; // 幂等操作
+		}
+
+		String code = getCode();
+		User userByCode = userMapper.findByCode(code);
+		int times = 0;
+		while (userByCode != null) {
+			if (times > 1000) {
+				throw new BizException(BizCode.ERROR, "生成code失败");
+			}
+			code = getCode();
+			userByCode = userMapper.findByCode(code);
+			times ++;
+		}
+		user.setCode(code);
+		userMapper.update(user);
 
 	}
 
