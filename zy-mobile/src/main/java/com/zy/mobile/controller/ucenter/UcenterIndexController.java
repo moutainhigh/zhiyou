@@ -129,6 +129,7 @@ public class UcenterIndexController {
         model.addAttribute("hasAddress", !addressService.findByUserId(userId).isEmpty());
         model.addAttribute("isUserInfoCompleted", isUserInfoCompleted);
         model.addAttribute("user", userComponent.buildListVo(user));
+        model.addAttribute("code", user.getCode());
         
         return "ucenter/user/info";
     }
