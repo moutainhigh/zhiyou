@@ -27,14 +27,26 @@
             data: {'code': codeText},
             success: function(data){
               if(data.code == 0){
-                $('#authorImage').attr('src',"${ctx}/code/image?userId="+data.data)
+                $('#authorImage').attr('src',"${ctx}/code/image?userId="+data.data);
+                $('.error').hide();
+                $('#imgWrap').show();
               }else{
-                alert("author code cannot found ")
+                $.dialog({
+                  content : '授权码未找到！',
+                  skin: 'message',
+                  timeout : 2
+                });
+                $('.error').show();
+                $('#imgWrap').hide();
               }
             }  
           }); 
         }else{
-          alert('不能为空！');
+          $.dialog({
+            content : '授权码不能为空！',
+            skin: 'message',
+            timeout : 2
+          });
         }
  
       });
@@ -50,7 +62,7 @@
   <div class="list-group">
     <div class="list-item ">
         <div class="list-text">
-          <input id="searchInput" name="searchInput" class="form-input" placeholder="授权码" value="" type="text">
+          <input id="searchInput" name="searchInput" class="form-input" placeholder="请输入授权码" value="" type="text">
         </div>
         <div class="list-unit">
           <i class="fa fa-search btn blue"></i>
@@ -58,11 +70,11 @@
     </div>
   </div>
   
-  <section class="p-15">
-    <img id="authorImage" class="block-100" src="http://image.zhi-you.net/editor/5d20abcc-c48c-4307-a102-f7a7b2e506e6">
+  <section id="imgWrap" class="p-15">
+    <img id="authorImage" class="block-100" src="">
   </section>
   
-  <section class="error">
+  <section class="error hide">
     <i class="error-icon font-gray fa fa-exclamation-triangle"></i>
     <div class="error-info">
       <p>暂无数据</p>
@@ -70,11 +82,7 @@
     </div>
   </section>  
   
-  <section class="message-list hide">
-    <div class="page-empty">
-      <i class="fa fa-bolt"></i> <span>空空如也!</span>
-    </div>
-  </section>
+ 
   
 </body>
 </html>
