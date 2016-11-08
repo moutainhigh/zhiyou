@@ -1,17 +1,5 @@
 package com.zy.mobile.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.zy.common.model.query.Page;
 import com.zy.component.ActivityComponent;
 import com.zy.component.UserComponent;
@@ -23,13 +11,19 @@ import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.model.query.ActivityCollectQueryModel;
 import com.zy.model.query.ActivityQueryModel;
 import com.zy.model.query.ActivitySignInQueryModel;
-import com.zy.service.ActivityApplyService;
-import com.zy.service.ActivityCollectService;
-import com.zy.service.ActivityService;
-import com.zy.service.ActivitySignInService;
-import com.zy.service.UserService;
+import com.zy.service.*;
 import com.zy.util.GcUtils;
 import com.zy.vo.ActivityListVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RequestMapping("/activity")
