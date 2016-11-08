@@ -45,7 +45,6 @@
 
   <div class="list-group">
     <div class="list-item ">
-        <label for="smsCode" class="list-label width-50" style="">ZY</label>
         <div class="list-text">
           <input id="searchInput" name="searchInput" class="form-input" placeholder="授权码" value="" type="text">
         </div>
