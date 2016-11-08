@@ -15,6 +15,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,6 +26,7 @@ import java.io.IOException;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RequestMapping("/code")
 @Controller
@@ -45,7 +47,7 @@ public class CodeController {
         return "code";
     }
 
-    @RequestMapping("check")
+    @RequestMapping(value = "check",method = POST)
     @ResponseBody
     public Result<?> check(@RequestParam String code) {
         User user = userService.findByCode(code);

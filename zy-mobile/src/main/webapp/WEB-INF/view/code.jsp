@@ -21,12 +21,16 @@
 
         if(codeText != ''){
           $.ajax({  
-            url: "${ctx}/check",  
-            type: "get",
+            url: "${ctx}/code/check",
+            type: "post",
             dataType: "json",
-            data: {'check': codeText}, 
-            success: function(data){ 
-              //成功 返回data数据
+            data: {'code': codeText},
+            success: function(data){
+              if(data.code == 0){
+                $('#authorImage').attr('src',"${ctx}/code/image?userId="+data.data)
+              }else{
+                alert("author code cannot found ")
+              }
             }  
           }); 
         }else{
@@ -55,7 +59,7 @@
   </div>
   
   <section class="p-15">
-    <img class="block-100" src="http://image.zhi-you.net/editor/5d20abcc-c48c-4307-a102-f7a7b2e506e6">
+    <img id="authorImage" class="block-100" src="http://image.zhi-you.net/editor/5d20abcc-c48c-4307-a102-f7a7b2e506e6">
   </section>
   
   <section class="error">
