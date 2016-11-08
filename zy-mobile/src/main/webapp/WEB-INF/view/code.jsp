@@ -22,7 +22,7 @@
         if(codeText != ''){
           $.ajax({  
             url: "${ctx}/check",  
-            type: "POST",
+            type: "get",
             dataType: "json",
             data: {'check': codeText}, 
             success: function(data){ 
