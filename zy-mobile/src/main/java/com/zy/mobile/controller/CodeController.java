@@ -86,6 +86,10 @@ public class CodeController {
         String nickname = user.getNickname();
         IMOperation authorOp = new IMOperation();
         ConvertCmd cmd = new ConvertCmd(false);
+        if (StringUtils.isNotBlank(imageMagickPath)) {
+            cmd.setSearchPath(imageMagickPath);
+        }
+
         authorOp.font(fontPath).pointsize(28).fill("#000000").draw("text 250,335 '" + nickname + "'");
         authorOp.font(fontPath).pointsize(20).fill("#000000").draw("text 218,385 '" + user.getCode() + "'");
         authorOp.font(fontPath).pointsize(45).fill("#2170A8").draw("text 183,490 '" + GcUtils.getUserRankLabel(user.getUserRank()) + "'");
