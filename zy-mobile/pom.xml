@@ -184,7 +184,10 @@
 			<groupId>com.zy</groupId>
 			<artifactId>zy-component</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.im4java</groupId>
+			<artifactId>im4java</artifactId>
+		</dependency>
 
 	</dependencies>
 

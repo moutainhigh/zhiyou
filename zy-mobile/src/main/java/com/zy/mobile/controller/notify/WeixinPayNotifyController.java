@@ -1,13 +1,13 @@
 package com.zy.mobile.controller.notify;
 
-import java.util.Map;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
+import com.zy.common.exception.BizException;
+import com.zy.common.util.BeanUtils;
+import com.zy.common.util.JsonUtils;
+import com.zy.entity.fnc.Deposit;
+import com.zy.model.BizCode;
+import com.zy.service.DepositService;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpPayCallback;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zy.common.exception.BizException;
-import com.zy.common.util.BeanUtils;
-import com.zy.common.util.JsonUtils;
-import com.zy.entity.fnc.Deposit;
-import com.zy.model.BizCode;
-import com.zy.service.DepositService;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/notify/weixinPay")

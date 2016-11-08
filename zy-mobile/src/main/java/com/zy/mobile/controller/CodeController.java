@@ -4,15 +4,24 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.entity.usr.User;
 import com.zy.service.UserService;
+import com.zy.util.GcUtils;
 import me.chanjar.weixin.common.util.StringUtils;
+import org.im4java.core.ConvertCmd;
+import org.im4java.core.IM4JavaException;
+import org.im4java.core.IMOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -21,39 +30,67 @@ import static com.zy.common.util.ValidateUtils.validate;
 @Controller
 public class CodeController {
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@RequestMapping
-	public String index() {
-		return "code";
-	}
+    @Value("${imageMagick.path}")
+    private String imageMagickPath;
 
-	@RequestMapping("check")
-	@ResponseBody
-	public Result<Object> check(@RequestParam String code) {
-		User user = userService.findByCode(code);
-		if (user != null) {
-			return ResultBuilder.result(user.getId());
-		} else {
-			return ResultBuilder.error("授权码不存在");
-		}
-	}
-	
-	@RequestMapping("/image")
-	@ResponseBody
-	public BufferedImage image(@RequestParam Long userId, Model model) {
-		User user = userService.findOne(userId);
-		validate(user, NOT_NULL, "user id " + userId + " is not found");
-		if (StringUtils.isBlank(user.getCode())) {
-			userService.generateCode(userId);
-			user = userService.findOne(userId);
-		}
-		String nickname = user.getNickname();
-		String avatar = user.getAvatar();
-		String code = user.getCode();
-		// TODO
-		return null;
-	}
-	
+    @Value("${imageMagick.tmp}")
+    private String tmp;
+
+
+    @RequestMapping
+    public String index(Model model) {
+        return "code";
+    }
+
+    @RequestMapping("check")
+    @ResponseBody
+    public Result<?> check(@RequestParam String code) {
+        User user = userService.findByCode(code);
+        if (user != null) {
+            return ResultBuilder.result(user.getId());
+        } else {
+            return ResultBuilder.error("授权码不存在");
+        }
+    }
+
+    String fontPath;
+    String bgPath;
+
+    {
+        try {
+            fontPath = new ClassPathResource("msyh.ttf").getFile().getAbsolutePath();
+            bgPath = new ClassPathResource("authorization.jpg").getFile().getAbsolutePath();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/image", produces = "image/jpeg")
+    @ResponseBody
+    public BufferedImage image(@RequestParam Long userId, Model model) throws InterruptedException, IOException, IM4JavaException {
+        User user = userService.findOne(userId);
+        validate(user, NOT_NULL, "user id " + userId + " is not found");
+
+        String result = tmp + "/authorization-user-id-" + userId + ".jpg";
+
+
+        if (StringUtils.isBlank(user.getCode())) {
+            userService.generateCode(userId);
+            user = userService.findOne(userId);
+        }
+        String nickname = user.getNickname();
+        IMOperation authorOp = new IMOperation();
+        ConvertCmd cmd = new ConvertCmd(false);
+        authorOp.font(fontPath).pointsize(28).fill("#000000").draw("text 250,335 '" + nickname + "'");
+        authorOp.font(fontPath).pointsize(20).fill("#000000").draw("text 218,385 '" + user.getCode() + "'");
+        authorOp.font(fontPath).pointsize(45).fill("#2170A8").draw("text 183,490 '" + GcUtils.getUserRankLabel(user.getUserRank()) + "'");
+        authorOp.addImage();
+        authorOp.addImage();
+        cmd.run(authorOp, bgPath, result);
+        return ImageIO.read(new File(result));
+    }
+
 }
