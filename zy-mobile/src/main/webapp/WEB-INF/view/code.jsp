@@ -21,10 +21,10 @@
 
         if(codeText != ''){
           $.ajax({  
-            url: "http://baidu.com/",  
+            url: "${ctx}/check",  
             type: "POST",
             dataType: "json",
-            data: {check: codeText}, 
+            data: {'check': codeText}, 
             success: function(data){ 
               //成功 返回data数据
             }  
