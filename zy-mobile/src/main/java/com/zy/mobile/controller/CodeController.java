@@ -25,13 +25,13 @@ public class CodeController {
 	private UserService userService;
 
 	@RequestMapping
-	public String index(Model model) {
+	public String index() {
 		return "code";
 	}
 
-	@RequestMapping
+	@RequestMapping("check")
 	@ResponseBody
-	public Result<?> check(@RequestParam String code) {
+	public Result<Object> check(@RequestParam String code) {
 		User user = userService.findByCode(code);
 		if (user != null) {
 			return ResultBuilder.result(user.getId());
