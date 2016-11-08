@@ -16,7 +16,24 @@
 <link rel="stylesheet" href="${stccdn}/css/error.css" />
 <script type="text/javascript">
   $(function() {
+      $('.fa-search').click(function(){
+        var codeText = $.trim($('#searchInput').val());  //获取授权编码
+
+        if(codeText != ''){
+          $.ajax({  
+            url: "http://baidu.com/",  
+            type: "POST",
+            dataType: "json",
+            data: {check: codeText}, 
+            success: function(data){ 
+              //成功 返回data数据
+            }  
+          }); 
+        }else{
+          alert('不能为空！');
+        }
  
+      });
   });
 </script>
 </head>
