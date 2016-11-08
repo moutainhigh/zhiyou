@@ -76,7 +76,7 @@ public class CodeController {
         User user = userService.findOne(userId);
         validate(user, NOT_NULL, "user id " + userId + " is not found");
 
-        String result = tmp + "/authorization-user-id-" + userId + ".jpg";
+        String result = tmp + "/authorization" + userId + ".jpg";
 
 
         if (StringUtils.isBlank(user.getCode())) {

@@ -74,7 +74,7 @@
         <i class="list-arrow"></i>
       </a>
       <c:if test="${user.userRank != 'V0'}">
-      <a class="list-item" href="${ctx}/code?userId=${user.id}">
+      <a class="list-item" href="${ctx}/code/image?userId=${user.id}">
         <div class="list-text">我的授权码</div>
         <div class="list-unit"><c:if test="${empty code}">点击查看</c:if><c:if test="${not empty code}">${code}</c:if></div>
       </a>
