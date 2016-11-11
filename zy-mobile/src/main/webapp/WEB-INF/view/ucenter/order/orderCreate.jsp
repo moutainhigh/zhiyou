@@ -29,7 +29,7 @@
         return false;  
       }
       
-      <c:if test="${userRank == 'V0'}">
+      <c:if test="${userRank == 'V0' && empty parent}">
       var parentPhone = $('#parentPhone').val();
       if(!parentPhone) {
         messageFlash('请填写上级手机号');
@@ -371,7 +371,7 @@
         <div class="list-item">
           <label class="list-label">上级手机号</label>
           <div class="list-text">
-            <input id="phone" name="phone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">
+            <input id="parentPhone" name="parentPhone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">
           </div>
         </div>
       </div>
