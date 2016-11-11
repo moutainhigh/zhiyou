@@ -331,6 +331,10 @@
               <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/> <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
               <div class="form-group">
+                <input type="text" name="idEQ" class="form-control" placeholder="编号"/>
+              </div>
+
+              <div class="form-group">
                 <input type="text" name="realnameLK" class="form-control" placeholder="姓名"/>
               </div>
 

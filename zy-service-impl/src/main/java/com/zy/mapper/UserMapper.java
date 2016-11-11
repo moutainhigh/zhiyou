@@ -1,11 +1,11 @@
 package com.zy.mapper;
 
 
-import com.zy.entity.usr.User;
-import com.zy.model.query.UserQueryModel;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import com.zy.entity.usr.User;
+import com.zy.model.query.UserQueryModel;
 
 
 public interface UserMapper {

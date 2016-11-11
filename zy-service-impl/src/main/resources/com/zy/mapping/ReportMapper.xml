@@ -154,6 +154,9 @@
 			<if test="reportedDateGTE != null">
 				and reported_date &gt;= #{reportedDateGTE}
 			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
 			<if test="reportResultEQ != null">
 				and report_result = #{reportResultEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -229,6 +232,9 @@
 			</if>
 			<if test="reportedDateGTE != null">
 				and reported_date &gt;= #{reportedDateGTE}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
 			</if>
 			<if test="reportResultEQ != null">
 				and report_result = #{reportResultEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}

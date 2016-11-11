@@ -22,6 +22,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class ReportQueryModel implements Serializable {
 
+	private Long idEQ;
+
 	private Long userIdEQ;
 
 	private Long[] userIdIN;
