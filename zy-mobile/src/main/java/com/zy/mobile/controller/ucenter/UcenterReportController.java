@@ -87,10 +87,10 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "create", method = GET)
 	public String create(Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		if(!isCompletedUserInfo(principal.getUserId())) {
+		/*if(!isCompletedUserInfo(principal.getUserId())) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
 			return "redirect:/u/report";
-		}
+		}*/
 		User user = userService.findOne(principal.getUserId());
 		model.addAttribute("userRank", user.getUserRank());
 		model.addAttribute("jobs", this.jobService.findAll());
@@ -100,10 +100,10 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "/create", method = POST)
 	public String create(Report report, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		if(!isCompletedUserInfo(principal.getUserId())) {
+		/*if(!isCompletedUserInfo(principal.getUserId())) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
 			return "redirect:/u/report";
-		}
+		}*/
 		User user = userService.findOne(principal.getUserId());
 		/*if (user.getUserRank() == UserRank.V0) {
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("只有成为服务商后才能提交检测报告"));
@@ -147,10 +147,10 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "/edit", method = GET)
 	public String edit(@RequestParam Long id, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		if(!isCompletedUserInfo(principal.getUserId())) {
+		/*if(!isCompletedUserInfo(principal.getUserId())) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
 			return "redirect:/u/report";
-		}
+		}*/
 		Report report = findAndValidate(id, principal.getUserId());
 		validate(report, NOT_NULL, "report id" + id + " not found");
 		model.addAttribute("jobs", this.jobService.findAll());
@@ -161,10 +161,10 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "/edit", method = POST)
 	public String edit(Report report, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		if(!isCompletedUserInfo(principal.getUserId())) {
+		/*if(!isCompletedUserInfo(principal.getUserId())) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
 			return "redirect:/u/report";
-		}
+		}*/
 		Long id = report.getId();
 		validate(id, NOT_NULL, "id is null");
 		Report persistence = reportService.findOne(id);
