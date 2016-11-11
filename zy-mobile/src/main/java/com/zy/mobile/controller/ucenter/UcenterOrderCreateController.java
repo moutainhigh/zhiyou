@@ -55,10 +55,11 @@ public class UcenterOrderCreateController {
 	private UserComponent userComponent;
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String create(@RequestParam Long productId, @RequestParam Long quantity, Boolean isPayToPlatform, Long parentId, Model model, Principal principal) {
+	public String create(@RequestParam Long productId, @RequestParam Long quantity, Boolean isPayToPlatform, /*Long parentId, */Model model, Principal principal) {
 
 		Long userId = principal.getUserId();
 		User user = userService.findOne(userId);
+		User.UserRank userRank = user.getUserRank();
 		/*if (user.getUserRank() == User.UserRank.V0) {
 			validate(parentId, NOT_NULL, "parent user id is null");
 			User parent = userService.findOne(parentId);
@@ -79,7 +80,22 @@ public class UcenterOrderCreateController {
 		model.addAttribute("product", productVo);
 		model.addAttribute("quantity", quantity);
 		model.addAttribute("address", address);
-		model.addAttribute("userRank", user.getUserRank());
+		model.addAttribute("userRank", userRank);
+
+		if (userRank == User.UserRank.V0) {
+			Long parentId = user.getParentId();
+			if (parentId == null) {
+				parentId = user.getInviterId();
+			}
+
+			if (parentId != null) {
+				User inviter = userService.findOne(parentId);
+				if (inviter != null) {
+					model.addAttribute("inviter", userComponent.buildListVo(inviter));
+				}
+			}
+		}
+
 		return "ucenter/order/orderCreate";
 	}
 	
