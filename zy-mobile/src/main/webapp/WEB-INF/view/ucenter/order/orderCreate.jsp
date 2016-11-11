@@ -289,7 +289,7 @@
   <form id="orderForm" class="valid-form" action="${ctx}/u/order/create" method="post">
   
   <c:if test="${not empty parent}">
-  <input type="hidden" name="parentId" value="${parent.id}">
+  <input type="hidden" name="parentId" value="${inviter.id}">
   <div class="parent-alert alert alert-warning mb-10">
     <img class="image-40 round" src="${parent.avatarThumbnail}">
     <span class="ml-10">${parent.nickname} 将成为您的上级服务商.</span>
