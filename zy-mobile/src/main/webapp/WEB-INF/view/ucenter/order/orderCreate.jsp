@@ -19,7 +19,7 @@
 
 <script>
   $(function() {
-    $('#orderForm').submit(function(){
+    $('#btnSubmit').click(function(){
       if(!$('#addressId').val()) {
         messageFlash('请先选择收货地址.');
         return false;  
@@ -45,7 +45,7 @@
         success: function(result){
           if(result.code == 0) {
             $('[name="parentId"]').val(result.message);
-            $('#form').submit();
+            $('#orderForm').submit();
           } else {
             messageAlert(result.message);
           }
@@ -288,13 +288,16 @@
   
   <form id="orderForm" class="valid-form" action="${ctx}/u/order/create" method="post">
   
-  <c:if test="${not empty parent}">
   <input type="hidden" name="parentId" value="${inviter.id}">
+  
+  <%--
+  <c:if test="${not empty parent}">
   <div class="parent-alert alert alert-warning mb-10">
     <img class="image-40 round" src="${parent.avatarThumbnail}">
     <span class="ml-10">${parent.nickname} 将成为您的上级服务商.</span>
   </div>
   </c:if>
+  --%>
   
   <article>
     <div class="list-group">
@@ -384,7 +387,7 @@
         </nav>
       </c:if>
       <c:if test="${hasUserInfo}">
-      <input type="submit" value="确认订单" class="btn btn-block orange round-2">
+      <input id="btnSubmit" type="submit" value="确认订单" class="btn btn-block orange round-2">
       </c:if>
     </div>
     
