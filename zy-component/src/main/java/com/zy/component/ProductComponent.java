@@ -1,17 +1,16 @@
 package com.zy.component;
 
-import static java.util.Objects.isNull;
-
-import java.math.BigDecimal;
-
-import org.springframework.stereotype.Component;
-
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.mal.Product;
 import com.zy.util.GcUtils;
 import com.zy.vo.ProductAdminVo;
 import com.zy.vo.ProductDetailVo;
 import com.zy.vo.ProductListVo;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+
+import static java.util.Objects.isNull;
 
 @Component
 public class ProductComponent {
@@ -62,7 +61,7 @@ public class ProductComponent {
 		if(!isNull(marketPrice)) {
 			productListVo.setMarketPrice(marketPrice);
 		}
-		productListVo.setImage1Thumbnail(GcUtils.getThumbnail(product.getImage1()));
+		productListVo.setImage1Thumbnail(GcUtils.getThumbnail(product.getImage1(), 320, 320));
 		return productListVo;
 	}
 }
