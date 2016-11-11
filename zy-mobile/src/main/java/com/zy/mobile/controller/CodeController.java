@@ -89,8 +89,19 @@ public class CodeController {
         if (StringUtils.isNotBlank(imageMagickPath)) {
             cmd.setSearchPath(imageMagickPath);
         }
-
-        authorOp.font(fontPath).pointsize(28).fill("#000000").draw("text 250,335 '" + nickname + "'");
+        int x = 0;
+        if(nickname.length() == 1){
+            x = 285;
+        }else if (nickname.length() == 2){
+            x = 270;
+        }else if(nickname.length() == 3){
+            x = 260;
+        }else if (nickname.length() == 4){
+            x = 245;
+        }else if (nickname.length() == 5) {
+            x = 235;
+        }
+        authorOp.font(fontPath).pointsize(28).fill("#000000").draw("text "+x+",335 '" + nickname + "'");
         authorOp.font(fontPath).pointsize(20).fill("#000000").draw("text 218,385 '" + user.getCode() + "'");
         authorOp.font(fontPath).pointsize(45).fill("#2170A8").draw("text 183,490 '" + GcUtils.getUserRankLabel(user.getUserRank()) + "'");
         authorOp.addImage();
