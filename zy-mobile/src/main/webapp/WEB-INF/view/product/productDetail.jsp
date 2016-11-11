@@ -19,11 +19,9 @@
 <script>
   $(function() {
     
-    <c:if test="${!isUpgrade && !isFirst}">
-    
     var MIN_QUANTITY = ${minQuantity}; 
-    
     var MAX_QUANTITY = 10000;
+    
     function editQuantity(quantity) {
       if (isNaN(quantity) || quantity < MIN_QUANTITY) {
         quantity = MIN_QUANTITY;
@@ -61,17 +59,13 @@
       editQuantity(parseInt(quantity) - MIN_QUANTITY);
     });
     
-    </c:if>
-
     //下单
     $('#btnOrder').click(function() {
-      <c:if test="${!isUpgrade && !isFirst}">
       var quantity = $("#quantity").val();
       if(quantity < MIN_QUANTITY || quantity % MIN_QUANTITY != 0) {
         messageAlert('一级服务商和特级服务商每次购买最小单位' + MIN_QUANTITY + '次');
         return;
       }
-      </c:if>
       $('#form').submit();
     });
 
@@ -126,36 +120,16 @@
     
   </article>
   
-  <c:if test="${!isUpgrade && !isFirst}">
-    <nav class="footer footer-nav flex">
-      <%--
-      <a class="flex-1 link-cart" href="${ctx}/cart">
-        <i class="fa fa-shopping-cart"></i>
-        <span>购物车</span>
-        <em id="cartNum" class="badge badge-danger">8</em>
-      </a>
-      --%>
-      <div class="flex-2">
-        <div class="quantity-wrap">
-          <i class="fa fa-minus disabled"></i>
-          <input type="text" class="input-quantity text-center fs-14" id="quantity" name="quantity" value="${minQuantity}">
-          <i class="fa fa-plus"></i>
-        </div>
+  <nav class="footer footer-nav flex">
+    <div class="flex-2">
+      <div class="quantity-wrap">
+        <i class="fa fa-minus disabled"></i>
+        <input type="text" class="input-quantity text-center fs-14" id="quantity" name="quantity" value="${minQuantity}">
+        <i class="fa fa-plus"></i>
       </div>
-      <a id="btnOrder" class="flex-2 btn-order" href="javascript:;">购买</a>
-    </nav>
-  </c:if>
-  
-  <c:if test="${isFirst}">
-    <nav class="footer footer-nav flex">
-      <a class="flex-2 btn-order" href="${ctx}/u/agent">立即成为服务商</a>
-    </nav>
-  </c:if>
-  <c:if test="${isUpgrade}">
-    <nav class="footer footer-nav flex">
-      <a class="flex-2 btn-order" href="${ctx}/u/agent">升级服务商</a>
-    </nav>
-  </c:if>
+    </div>
+    <a id="btnOrder" class="flex-2 btn-order" href="javascript:;">购买</a>
+  </nav>
 
   </form>
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>

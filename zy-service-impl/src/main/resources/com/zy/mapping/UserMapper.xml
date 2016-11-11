@@ -23,11 +23,12 @@
 		<result column="last_upgraded_time" property="lastUpgradedTime" />
 		<result column="is_root" property="isRoot" />
 		<result column="root_name" property="rootName" />
+		<result column="code" property="code" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name)
-	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName})
+	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,code)
+	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{code})
 	</insert>
 
 	<delete id="delete">
@@ -56,6 +57,7 @@
 			last_upgraded_time = #{lastUpgradedTime},
 			is_root = #{isRoot},
 			root_name = #{rootName},
+			code = #{code},
 		</set>
 		where id = #{id}
 	</update>
@@ -84,6 +86,7 @@
 					<when test="field == 'lastUpgradedTime'">last_upgraded_time = #{user.lastUpgradedTime},</when>
 					<when test="field == 'isRoot'">is_root = #{user.isRoot},</when>
 					<when test="field == 'rootName'">root_name = #{user.rootName},</when>
+					<when test="field == 'code'">code = #{user.code},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -92,14 +95,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,code
 		from `usr_user`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,code
 		from `usr_user`
 		<where>
 			<if test="userRankEQ != null">
@@ -270,6 +273,10 @@
 
 	<select id="findByOpenId" resultMap="baseResultMap">
 		select * from `usr_user` where open_id = #{openId}
+	</select>
+
+	<select id="findByCode" resultMap="baseResultMap">
+		select * from `usr_user` where code = #{code}
 	</select>
 
 </mapper>

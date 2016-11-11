@@ -188,4 +188,8 @@ public class User implements Serializable {
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
 	private String rootName;
 
+	@Field(label = "授权码")
+	@Column(length = 60, unique = true)
+	private String code;
+
 }

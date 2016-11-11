@@ -1,26 +1,5 @@
 package com.zy.mobile.controller.ucenter;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -31,19 +10,29 @@ import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Transfer;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
-import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.ProfitQueryModel;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.model.query.TransferQueryModel;
-import com.zy.service.JobService;
-import com.zy.service.ProfitService;
-import com.zy.service.ReportService;
-import com.zy.service.TransferService;
-import com.zy.service.UserInfoService;
-import com.zy.service.UserService;
+import com.zy.service.*;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RequestMapping("/u/report")
 @Controller
@@ -98,10 +87,10 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "create", method = GET)
 	public String create(Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		if(!isCompletedUserInfo(principal.getUserId())) {
+		/*if(!isCompletedUserInfo(principal.getUserId())) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
 			return "redirect:/u/report";
-		}
+		}*/
 		User user = userService.findOne(principal.getUserId());
 		model.addAttribute("userRank", user.getUserRank());
 		model.addAttribute("jobs", this.jobService.findAll());
@@ -111,15 +100,15 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "/create", method = POST)
 	public String create(Report report, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		if(!isCompletedUserInfo(principal.getUserId())) {
+		/*if(!isCompletedUserInfo(principal.getUserId())) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
 			return "redirect:/u/report";
-		}
+		}*/
 		User user = userService.findOne(principal.getUserId());
-		if (user.getUserRank() == UserRank.V0) {
+		/*if (user.getUserRank() == UserRank.V0) {
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("只有成为服务商后才能提交检测报告"));
 			return "redirect:/u/report";
-		}
+		}*/
 		report.setUserId(principal.getUserId());
 		try {
 			reportService.create(report);
@@ -158,10 +147,10 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "/edit", method = GET)
 	public String edit(@RequestParam Long id, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		if(!isCompletedUserInfo(principal.getUserId())) {
+		/*if(!isCompletedUserInfo(principal.getUserId())) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
 			return "redirect:/u/report";
-		}
+		}*/
 		Report report = findAndValidate(id, principal.getUserId());
 		validate(report, NOT_NULL, "report id" + id + " not found");
 		model.addAttribute("jobs", this.jobService.findAll());
@@ -172,10 +161,10 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "/edit", method = POST)
 	public String edit(Report report, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		if(!isCompletedUserInfo(principal.getUserId())) {
+		/*if(!isCompletedUserInfo(principal.getUserId())) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
 			return "redirect:/u/report";
-		}
+		}*/
 		Long id = report.getId();
 		validate(id, NOT_NULL, "id is null");
 		Report persistence = reportService.findOne(id);

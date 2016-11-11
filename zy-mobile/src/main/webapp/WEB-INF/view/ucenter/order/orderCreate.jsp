@@ -28,6 +28,31 @@
         messageFlash('请先选择收款对象.');
         return false;  
       }
+      
+      <c:if test="${userRank == 'V0' && empty parent}">
+      var parentPhone = $('#parentPhone').val();
+      if(!parentPhone) {
+        messageFlash('请填写上级手机号');
+        return false;
+      }
+      $.ajax({
+        url: '${ctx}/u/order/checkPhone',
+        data: {
+          phone: parentPhone
+        },
+        type: 'POST',
+        dataType: 'JSON',
+        success: function(result){
+          if(result.code == 0) {
+            $('[name="parentId"]').val(result.message);
+            $('#form').submit();
+          } else {
+            messageAlert(result.message);
+          }
+        }
+      });
+      return false;
+      </c:if>
     });
     
   	//选择收货地址
@@ -264,7 +289,7 @@
   <form id="orderForm" class="valid-form" action="${ctx}/u/order/create" method="post">
   
   <c:if test="${not empty parent}">
-  <input type="hidden" name="parentId" value="${parent.id}">
+  <input type="hidden" name="parentId" value="${inviter.id}">
   <div class="parent-alert alert alert-warning mb-10">
     <img class="image-40 round" src="${parent.avatarThumbnail}">
     <span class="ml-10">${parent.nickname} 将成为您的上级服务商.</span>
@@ -340,6 +365,17 @@
         </div>
       </div>
     </div>
+    
+    <c:if test="${userRank == 'V0' && empty parent}">
+      <div class="list-group">
+        <div class="list-item">
+          <label class="list-label">上级手机号</label>
+          <div class="list-text">
+            <input id="parentPhone" name="parentPhone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">
+          </div>
+        </div>
+      </div>
+    </c:if>
     
     <div class="form-btn">
       <c:if test="${!hasUserInfo}">

@@ -105,6 +105,7 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("qq");
 		fieldNames.add("registerIp");
 		fieldNames.add("unionId");
+		fieldNames.add("code");
 		fieldNames.add("isRoot");
 		fieldNames.add("registerTime");
 		fieldNames.add("openId");
