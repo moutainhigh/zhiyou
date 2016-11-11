@@ -100,6 +100,8 @@ public class CodeController {
             x = 245;
         }else if (nickname.length() == 5) {
             x = 235;
+        }else{
+            x = 210;
         }
         authorOp.font(fontPath).pointsize(28).fill("#000000").draw("text "+x+",335 '" + nickname + "'");
         authorOp.font(fontPath).pointsize(20).fill("#000000").draw("text 218,385 '" + user.getCode() + "'");
