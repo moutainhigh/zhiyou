@@ -1,5 +1,20 @@
 package com.zy.mobile.controller;
 
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.SETTING_NEW_MIN_QUANTITY;
+import static com.zy.model.Constants.SETTING_OLD_MIN_QUANTITY;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import com.zy.Config;
 import com.zy.component.ProductComponent;
 import com.zy.entity.mal.Product;
@@ -8,23 +23,8 @@ import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Principal;
 import com.zy.model.query.ProductQueryModel;
 import com.zy.service.ProductService;
-import com.zy.service.UserInfoService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.SETTING_NEW_MIN_QUANTITY;
-import static com.zy.model.Constants.SETTING_OLD_MIN_QUANTITY;
 
 @RequestMapping("/product")
 @Controller
@@ -36,9 +36,6 @@ public class ProductController {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private UserInfoService userInfoService;    
-	
 	@Autowired
 	private ProductComponent productComponent;
 
@@ -66,11 +63,13 @@ public class ProductController {
 			UserRank userRank = user.getUserRank();
 			model.addAttribute("userRank", userRank);
 			product.setPrice(productService.getPrice(product.getId(), user.getUserRank(), 1L));
+			/*
 			if(user.getUserRank() == UserRank.V0){
 				model.addAttribute("isFirst", true);
 			} else if((user.getUserRank() != UserRank.V1 || user.getUserRank() != UserRank.V2) && isAgent){
 				model.addAttribute("isUpgrade", true);
 			}
+			*/
 
 			int minQuantity = 1;
 			if (userRank == UserRank.V3 || userRank == UserRank.V4) {
@@ -86,8 +85,6 @@ public class ProductController {
 		validate(product, NOT_NULL, "product id" + id + " not found");
 		validate(product.getIsOn(), v -> true, "product is not on");
 		model.addAttribute("product", productComponent.buildDetailVo(product));
-
-
 
 		return "product/productDetail";
 	}

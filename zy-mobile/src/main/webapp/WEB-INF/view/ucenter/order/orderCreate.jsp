@@ -28,6 +28,31 @@
         messageFlash('请先选择收款对象.');
         return false;  
       }
+      
+      <c:if test="${userRank == 'V0'}">
+      var parentPhone = $('#parentPhone').val();
+      if(!parentPhone) {
+        messageFlash('请填写上级手机号');
+        return false;
+      }
+      $.ajax({
+        url: '${ctx}/u/order/checkPhone',
+        data: {
+          phone: parentPhone
+        },
+        type: 'POST',
+        dataType: 'JSON',
+        success: function(result){
+          if(result.code == 0) {
+            $('[name="parentId"]').val(result.message);
+            $('#form').submit();
+          } else {
+            messageAlert(result.message);
+          }
+        }
+      });
+      return false;
+      </c:if>
     });
     
   	//选择收货地址
@@ -340,6 +365,17 @@
         </div>
       </div>
     </div>
+    
+    <c:if test="${userRank == 'V0'}">
+      <div class="list-group">
+        <div class="list-item">
+          <label class="list-label">上级手机号</label>
+          <div class="list-text">
+            <input id="phone" name="phone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">
+          </div>
+        </div>
+      </div>
+    </c:if>
     
     <div class="form-btn">
       <c:if test="${!hasUserInfo}">
