@@ -84,12 +84,17 @@ public class UcenterOrderCreateController {
 
 		if (userRank == User.UserRank.V0) {
 			Long parentId = user.getParentId();
-			if (parentId == null) {
-				parentId = user.getInviterId();
-			}
+			Long inviterId = user.getInviterId();
 
 			if (parentId != null) {
-				User inviter = userService.findOne(parentId);
+				User parent = userService.findOne(parentId);
+				if (parent != null) {
+					model.addAttribute("parent", userComponent.buildListVo(parent));
+				}
+			}
+
+			if (inviterId != null) {
+				User inviter = userService.findOne(inviterId);
 				if (inviter != null) {
 					model.addAttribute("inviter", userComponent.buildListVo(inviter));
 				}
