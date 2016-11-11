@@ -366,7 +366,7 @@
       </div>
     </div>
     
-    <c:if test="${userRank == 'V0'}">
+    <c:if test="${userRank == 'V0' && empty parent}">
       <div class="list-group">
         <div class="list-item">
           <label class="list-label">上级手机号</label>
