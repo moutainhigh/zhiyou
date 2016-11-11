@@ -176,47 +176,15 @@
         </div>
         <div class="list-item">
           <div class="list-text image-upload image-multi">
+            <c:forEach items="${report.images}" var="image" varStatus="varStatus">
             <div class="image-item">
-              <input type="hidden" name="image1" value="${report.image1}">
-              <img src="${report.image1Thumbnail}">
+              <input type="hidden" name="image" value="${image}">
+              <img src="${report.imageThumbnails[varStatus.index]}">
               <input type="file">
             </div>
-            <c:if test="${not empty report.image2}">
-            <div class="image-item">
-              <input type="hidden" name="image2" value="${report.image2}">
-              <img src="${report.image2Thumbnail}">
-              <input type="file">
-            </div>
-            </c:if>
-            <c:if test="${not empty report.image3}">
-            <div class="image-item">
-              <input type="hidden" name="image3" value="${report.image3}">
-              <img src="${report.image3Thumbnail}">
-              <input type="file">
-            </div>
-            </c:if>
-            <c:if test="${not empty report.image4}">
-            <div class="image-item">
-              <input type="hidden" name="image4" value="${report.image4}">
-              <img src="${report.image4Thumbnail}">
-              <input type="file">
-            </div>
-            </c:if>
-            <c:if test="${not empty report.image5}">
-            <div class="image-item">
-              <input type="hidden" name="image5" value="${report.image5}">
-              <img src="${report.image5Thumbnail}">
-              <input type="file">
-            </div>
-            </c:if>
-            <c:if test="${not empty report.image6}">
-            <div class="image-item">
-              <input type="hidden" name="image6" value="${report.image6}">
-              <img src="${report.image6Thumbnail}">
-              <input type="file">
-            </div>
-            </c:if>
-            <c:if test="${empty report.image6}">
+            </c:forEach>
+            
+            <c:if test="${fn:length(report.images) < 6}">
             <div class="image-add" data-limit="6" data-name="image">
               <input type="hidden" value="">
               <input type="file">
