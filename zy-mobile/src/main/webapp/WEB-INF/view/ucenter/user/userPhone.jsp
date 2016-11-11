@@ -101,7 +101,7 @@
     <form action="${ctx}/u/bindPhone" class="valid-form" method="post">
       <div class="list-group">
         <div class="list-item">
-          <label for="realname" class="list-label">手机号</label>
+          <label for="phone" class="list-label">手机号</label>
           <div class="list-text">
             <input type="text" id="phone" name="phone" class="form-input" value="" placeholder="输入手机号">
           </div>

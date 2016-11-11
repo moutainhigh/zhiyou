@@ -53,155 +53,155 @@
 	    messageFlash('请选择服务商套餐');
 	    return false;
 	  }
-	  <c:if test="${userRank == 'V0'}">
-	  var phone = $('#phone').val();
-	  if(!phone) {
-	    messageFlash('请填写上级手机号');
-	    return false;
-	  }
-	  $.ajax({
-	    url: '${ctx}/u/agent/checkPhone',
-	    data: {
-	      phone: phone
-	    },
-	    type: 'POST',
-	    dataType: 'JSON',
-	    success: function(result){
-	      if(result.code == 0) {
-	        $('[name="parentId"]').val(result.message);
-	        $('#form').submit();
-	      } else {
-	        messageAlert(result.message);
-	      }
-	    }
-	  });
-	  return false;
-	  </c:if>
-	  $('#form').submit();
-	});
-	
-  });
-</script>
+    <%-- <c:if test="${userRank == 'V0'}">
+     var phone = $('#phone').val();
+     if(!phone) {
+       messageFlash('请填写上级手机号');
+       return false;
+     }
+     $.ajax({
+       url: '${ctx}/u/agent/checkPhone',
+       data: {
+         phone: phone
+       },
+       type: 'POST',
+       dataType: 'JSON',
+       success: function(result){
+         if(result.code == 0) {
+           $('[name="parentId"]').val(result.message);
+           $('#form').submit();
+         } else {
+           messageAlert(result.message);
+         }
+       }
+     });
+     return false;
+     </c:if> --%>
+     $('#form').submit();
+   });
 
-</head>
-<body>
+   });
+ </script>
 
-  <header class="header">
-    <h1><c:if test="${userRank == 'V0'}">成为服务商</c:if><c:if test="${userRank != 'V0'}">升级服务商</c:if></h1>
-    <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <a class="button-right" href="${ctx}/help"><i class="fa fa-question-circle"></i></a>
-  </header>
-  
-  <div class="note note-warning mb-0">
-    <p><i class="fa fa-exclamation-circle"></i> 购买下列套餐产品即可<c:if test="${userRank != 'V0'}">升级</c:if>成为相应服务商。</p>
-  </div>
-  
-  <article class="mb-15 clearfix">
-    <form id="form" action="${ctx}/u/order/create" method="get">
-      <input type="hidden" name="productId" value="">
-      <input type="hidden" name="parentId" value="${inviter.id}">
-      <input type="hidden" name="quantity" value="">
-      
-      <div class="list-group">
-        <!-- form-radio -->
-        <c:if test="${userRank == 'V0' || userRank == 'V1' || userRank == 'V2'}">
-        
-        <div class="list-item form-radio" data-id="${productNew.id}">
-          <div class="list-icon">
-            <input id="agentLevel1New" type="radio" name="agentLevel" value="V3">
-            <label class="i-checked" for="agentLevel1New"></label>
-          </div>
-          <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
-          <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${productNewd.title}服务商套餐 <span class="quantity">${quantity1New}</span>次</h2>
-            <div class="lh-30"><label class="label red">一级服务商</label></div>
-            <div class="font-orange lh-24">¥ ${amount1New}</div>
-          </div>
-        </div>
-        
-        <div class="list-item form-radio" data-id="${productOld.id}">
-          <div class="list-icon">
-            <input id="agentLevel1Old" type="radio" name="agentLevel" value="V3">
-            <label class="i-checked" for="agentLevel1Old"></label>
-          </div>
-          <img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">
-          <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${productOld.title}服务商套餐 <span class="quantity">${quantity1Old}</span>次</h2>
-            <div class="lh-30"><label class="label red">一级服务商</label></div>
-            <div class="font-orange lh-24">¥ ${amount1Old}</div>
-          </div>
-        </div>
-        
-        </c:if>
-        <c:if test="${userRank == 'V0' || userRank == 'V1'}">
-        
-        <div class="list-item form-radio" data-id="${productNew.id}">
-          <div class="list-icon">
-            <input id="agentLevel2New" type="radio" name="agentLevel" value="V2">
-            <label class="i-checked" for="agentLevel2New"></label>
-          </div>
-          <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
-          <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${productNew.title}服务商套餐 <span class="quantity">${quantity2New}</span>次</h2>
-            <div class="lh-30"><label class="label yellow">二级服务商</label></div>
-            <div class="font-orange lh-24">¥ ${amount2New}</div>
-          </div>
-        </div>
-        
-        <div class="list-item form-radio" data-id="${productOld.id}">
-          <div class="list-icon">
-            <input id="agentLevel2Old" type="radio" name="agentLevel" value="V2">
-            <label class="i-checked" for="agentLevel2Old"></label>
-          </div>
-          <img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">
-          <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${productOld.title}服务商套餐 <span class="quantity">${quantity2Old}</span>次</h2>
-            <div class="lh-30"><label class="label yellow">二级服务商</label></div>
-            <div class="font-orange lh-24">¥ ${amount2Old}</div>
-          </div>
-        </div>
-        </c:if>
-        <c:if test="${userRank == 'V0'}">
-        
-        <div class="list-item form-radio" data-id="${productNew.id}">
-          <div class="list-icon">
-            <input id="agentLevel3New" type="radio" name="agentLevel" value="V1">
-            <label class="i-checked" for="agentLevel3New"></label>
-          </div>
-          <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
-          <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${productNew.title}服务商套餐 <span class="quantity">${quantity3New}</span>次</h2>
-            <div class="lh-30"><label class="label green">三级服务商</label></div>
-            <div class="font-orange lh-24">¥ ${amount3New}</div>
-          </div>
-        </div>
-        
-        <div class="list-item form-radio" data-id="${productOld.id}">
-          <div class="list-icon">
-            <input id="agentLevel3Old" type="radio" name="agentLevel" value="V1">
-            <label class="i-checked" for="agentLevel3Old"></label>
-          </div>
-          <img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">
-          <div class="list-text">
-            <h2 class="font-777 fs-15 lh-24">${productOld.title}服务商套餐 <span class="quantity">${quantity3Old}</span>次</h2>
-            <div class="lh-30"><label class="label green">三级服务商</label></div>
-            <div class="font-orange lh-24">¥ ${amount3Old}</div>
-          </div>
-        </div>
-        </c:if>
-        
-      </div>
-      
-      <c:if test="${userRank == 'V0'}">
-      <div class="list-group">
-        <div class="list-item">
-          <label class="list-label">上级手机号</label>
-          <div class="list-text">
-            <input id="phone" name="phone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">
-          </div>
-        </div>
-      </div>
-      </c:if>
+ </head>
+ <body>
+
+   <header class="header">
+     <h1><c:if test="${userRank == 'V0'}">成为服务商</c:if><c:if test="${userRank != 'V0'}">升级服务商</c:if></h1>
+     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+     <a class="button-right" href="${ctx}/help"><i class="fa fa-question-circle"></i></a>
+   </header>
+
+   <div class="note note-warning mb-0">
+     <p><i class="fa fa-exclamation-circle"></i> 购买下列套餐产品即可<c:if test="${userRank != 'V0'}">升级</c:if>成为相应服务商。</p>
+   </div>
+
+   <article class="mb-15 clearfix">
+     <form id="form" action="${ctx}/u/order/create" method="get">
+       <input type="hidden" name="productId" value="">
+       <input type="hidden" name="parentId" value="${inviter.id}">
+       <input type="hidden" name="quantity" value="">
+
+       <div class="list-group">
+         <!-- form-radio -->
+         <c:if test="${userRank == 'V0' || userRank == 'V1' || userRank == 'V2'}">
+
+         <div class="list-item form-radio" data-id="${productNew.id}">
+           <div class="list-icon">
+             <input id="agentLevel1New" type="radio" name="agentLevel" value="V3">
+             <label class="i-checked" for="agentLevel1New"></label>
+           </div>
+           <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
+           <div class="list-text">
+             <h2 class="font-777 fs-15 lh-24">${productNewd.title}服务商套餐 <span class="quantity">${quantity1New}</span>次</h2>
+             <div class="lh-30"><label class="label red">一级服务商</label></div>
+             <div class="font-orange lh-24">¥ ${amount1New}</div>
+           </div>
+         </div>
+
+         <div class="list-item form-radio" data-id="${productOld.id}">
+           <div class="list-icon">
+             <input id="agentLevel1Old" type="radio" name="agentLevel" value="V3">
+             <label class="i-checked" for="agentLevel1Old"></label>
+           </div>
+           <img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">
+           <div class="list-text">
+             <h2 class="font-777 fs-15 lh-24">${productOld.title}服务商套餐 <span class="quantity">${quantity1Old}</span>次</h2>
+             <div class="lh-30"><label class="label red">一级服务商</label></div>
+             <div class="font-orange lh-24">¥ ${amount1Old}</div>
+           </div>
+         </div>
+
+         </c:if>
+         <c:if test="${userRank == 'V0' || userRank == 'V1'}">
+
+         <div class="list-item form-radio" data-id="${productNew.id}">
+           <div class="list-icon">
+             <input id="agentLevel2New" type="radio" name="agentLevel" value="V2">
+             <label class="i-checked" for="agentLevel2New"></label>
+           </div>
+           <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
+           <div class="list-text">
+             <h2 class="font-777 fs-15 lh-24">${productNew.title}服务商套餐 <span class="quantity">${quantity2New}</span>次</h2>
+             <div class="lh-30"><label class="label yellow">二级服务商</label></div>
+             <div class="font-orange lh-24">¥ ${amount2New}</div>
+           </div>
+         </div>
+
+         <div class="list-item form-radio" data-id="${productOld.id}">
+           <div class="list-icon">
+             <input id="agentLevel2Old" type="radio" name="agentLevel" value="V2">
+             <label class="i-checked" for="agentLevel2Old"></label>
+           </div>
+           <img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">
+           <div class="list-text">
+             <h2 class="font-777 fs-15 lh-24">${productOld.title}服务商套餐 <span class="quantity">${quantity2Old}</span>次</h2>
+             <div class="lh-30"><label class="label yellow">二级服务商</label></div>
+             <div class="font-orange lh-24">¥ ${amount2Old}</div>
+           </div>
+         </div>
+         </c:if>
+         <c:if test="${userRank == 'V0'}">
+
+         <div class="list-item form-radio" data-id="${productNew.id}">
+           <div class="list-icon">
+             <input id="agentLevel3New" type="radio" name="agentLevel" value="V1">
+             <label class="i-checked" for="agentLevel3New"></label>
+           </div>
+           <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
+           <div class="list-text">
+             <h2 class="font-777 fs-15 lh-24">${productNew.title}服务商套餐 <span class="quantity">${quantity3New}</span>次</h2>
+             <div class="lh-30"><label class="label green">三级服务商</label></div>
+             <div class="font-orange lh-24">¥ ${amount3New}</div>
+           </div>
+         </div>
+
+         <div class="list-item form-radio" data-id="${productOld.id}">
+           <div class="list-icon">
+             <input id="agentLevel3Old" type="radio" name="agentLevel" value="V1">
+             <label class="i-checked" for="agentLevel3Old"></label>
+           </div>
+           <img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">
+           <div class="list-text">
+             <h2 class="font-777 fs-15 lh-24">${productOld.title}服务商套餐 <span class="quantity">${quantity3Old}</span>次</h2>
+             <div class="lh-30"><label class="label green">三级服务商</label></div>
+             <div class="font-orange lh-24">¥ ${amount3Old}</div>
+           </div>
+         </div>
+         </c:if>
+
+       </div>
+
+      <%-- <c:if test="${userRank == 'V0'}">
+       <div class="list-group">
+         <div class="list-item">
+           <label class="list-label">上级手机号</label>
+           <div class="list-text">
+             <input id="phone" name="phone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">
+           </div>
+         </div>
+       </div>
+       </c:if>--%>
       
       <div class="form-btn">
         <a id="btnSubmit" class="btn orange btn-block" href="javascript:;">购买套餐</a>

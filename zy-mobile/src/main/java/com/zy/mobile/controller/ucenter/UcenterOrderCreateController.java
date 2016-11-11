@@ -59,12 +59,12 @@ public class UcenterOrderCreateController {
 
 		Long userId = principal.getUserId();
 		User user = userService.findOne(userId);
-		if (user.getUserRank() == User.UserRank.V0) {
+		/*if (user.getUserRank() == User.UserRank.V0) {
 			validate(parentId, NOT_NULL, "parent user id is null");
 			User parent = userService.findOne(parentId);
 			validate(parent, NOT_NULL, "parent user id " + parentId + " does not exist");
 			model.addAttribute("parent", userComponent.buildListVo(parent));
-		}
+		}*/
 
 		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
 		if(userInfo != null && userInfo.getConfirmStatus() == ConfirmStatus.已通过) {
