@@ -381,14 +381,15 @@
     </c:if>
     
     <div class="form-btn">
+      <%--
       <c:if test="${!hasUserInfo}">
         <nav class="footer footer-nav flex">
           <a class="flex-2 btn-order" href="${ctx}/u/userInfo">请先完成实名认证再下单</a>
         </nav>
       </c:if>
       <c:if test="${hasUserInfo}">
+       --%>
       <input id="btnSubmit" type="submit" value="确认订单" class="btn btn-block orange round-2">
-      </c:if>
     </div>
     
   </article>
