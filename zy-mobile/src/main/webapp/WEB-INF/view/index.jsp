@@ -80,11 +80,11 @@
       </div>
       <div class="mt-5 text-center">活动</div>
     </a>
-    <a class="flex-1" href="${ctx}/product">
+    <a class="flex-1" href="${ctx}/code">
       <div class="text-center">
         <img class="round" src="${stccdn}/image/icon/icon_about.png">
       </div>
-      <div class="mt-5 text-center">服务</div>
+      <div class="mt-5 text-center">授权查询</div>
     </a>
   </nav>
   

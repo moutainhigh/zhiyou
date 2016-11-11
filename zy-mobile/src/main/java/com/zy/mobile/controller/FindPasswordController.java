@@ -1,17 +1,15 @@
 package com.zy.mobile.controller;
 
-import static com.zy.common.util.ValidateUtils.PHONE;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.CACHE_NAME_FIND_PASSWORD_LAST_SEND_TIME;
-import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_CAPTCHA;
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_FIND_PASSWORD_SMS;
-import static com.zy.model.Constants.SESSION_ATTRIBUTE_FIND_PASSWORD_USER_ID;
-
-import java.util.Date;
-
-import javax.servlet.http.HttpSession;
-
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.support.cache.CacheSupport;
+import com.zy.common.support.sms.SmsSupport;
+import com.zy.entity.sys.ShortMessage;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
+import com.zy.service.ShortMessageService;
+import com.zy.service.UserService;
+import com.zy.util.GcUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -24,16 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.support.cache.CacheSupport;
-import com.zy.common.support.sms.SmsSupport;
-import com.zy.entity.sys.ShortMessage;
-import com.zy.entity.usr.User;
-import com.zy.model.Constants;
-import com.zy.service.ShortMessageService;
-import com.zy.service.UserService;
-import com.zy.util.GcUtils;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
+
+import static com.zy.common.util.ValidateUtils.PHONE;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.*;
 
 @RequestMapping
 @Controller

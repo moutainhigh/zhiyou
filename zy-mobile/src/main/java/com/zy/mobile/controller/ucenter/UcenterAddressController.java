@@ -1,7 +1,12 @@
 package com.zy.mobile.controller.ucenter;
 
-import java.util.List;
-
+import com.zy.common.exception.UnauthorizedException;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.component.CacheComponent;
+import com.zy.entity.usr.Address;
+import com.zy.model.Principal;
+import com.zy.service.AddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.zy.common.exception.UnauthorizedException;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.component.CacheComponent;
-import com.zy.entity.usr.Address;
-import com.zy.model.Principal;
-import com.zy.service.AddressService;
+import java.util.List;
 
 @RequestMapping("/u/address")
 @Controller
