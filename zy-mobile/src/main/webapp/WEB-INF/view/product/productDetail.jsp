@@ -96,11 +96,13 @@
           <span class="fs-15">服务零售价： <span> ¥ ${product.marketPrice}</span></span>
         </div>
       </div>
-      <div class="list-item">
-        <div class="font-777 fs-14">
-          <span class="fs-15">服务商价： </span><span class="font-orange fs-18 bold"> ¥ ${product.price}</span>
+      <c:if test="${not empty product.price}">
+        <div class="list-item">
+          <div class="font-777 fs-14">
+            <span class="fs-15">服务商价： </span><span class="font-orange fs-18 bold"> ¥ ${product.price}</span>
+          </div>
         </div>
-      </div>
+      </c:if>
     </div>
     
     <div class="list-group mb-0">
