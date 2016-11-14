@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.PolicyCodeMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.act.PolicyCode">
+		<id column="id" property="id" />
+		<result column="code" property="code" />
+		<result column="created_time" property="createdTime" />
+		<result column="used_time" property="usedTime" />
+		<result column="is_used" property="isUsed" />
+		<result column="batch_code" property="batchCode" />
+		<result column="version" property="version" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.act.PolicyCode" useGeneratedKeys="true" keyProperty="id">
+	  insert into `act_policy_code` (code,created_time,used_time,is_used,batch_code,version)
+	  values (#{code},#{createdTime},#{usedTime},#{isUsed},#{batchCode},#{version})
+	</insert>
+
+	<delete id="delete">
+		delete from `act_policy_code` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.act.PolicyCode">
+		update `act_policy_code`
+		<set>
+			code = #{code},
+			created_time = #{createdTime},
+			used_time = #{usedTime},
+			is_used = #{isUsed},
+			batch_code = #{batchCode},
+			version = version + 1,
+		</set>
+		where id = #{id} and version=#{version}
+	</update>
+
+	<update id="merge">
+		update `act_policy_code`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'code'">code = #{policyCode.code},</when>
+					<when test="field == 'createdTime'">created_time = #{policyCode.createdTime},</when>
+					<when test="field == 'usedTime'">used_time = #{policyCode.usedTime},</when>
+					<when test="field == 'isUsed'">is_used = #{policyCode.isUsed},</when>
+					<when test="field == 'batchCode'">batch_code = #{policyCode.batchCode},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{policyCode.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,code,created_time,used_time,is_used,batch_code,version
+		from `act_policy_code`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.PolicyCodeQueryModel">
+		select
+		id,code,created_time,used_time,is_used,batch_code,version
+		from `act_policy_code`
+		<where>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
+			</if>
+			<if test="codeEQ != null">
+				and code = #{codeEQ}
+			</if>
+			<if test="usedTimeLT != null">
+				and used_time &lt; #{usedTimeLT}
+			</if>
+			<if test="isUsedEQ != null">
+				and is_used = #{isUsedEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="codeLK != null">
+				<bind name="codeLK" value="'%' + codeLK + '%'"/> and code like #{codeLK}
+			</if>
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="batchCodeEQ != null">
+				and batch_code = #{batchCodeEQ}
+			</if>
+			<if test="usedTimeGTE != null">
+				and used_time &gt;= #{usedTimeGTE}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.PolicyCodeQueryModel">
+		select count(*) from `act_policy_code`
+		<where>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
+			</if>
+			<if test="codeEQ != null">
+				and code = #{codeEQ}
+			</if>
+			<if test="usedTimeLT != null">
+				and used_time &lt; #{usedTimeLT}
+			</if>
+			<if test="isUsedEQ != null">
+				and is_used = #{isUsedEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="codeLK != null">
+				<bind name="codeLK" value="'%' + codeLK + '%'"/> and code like #{codeLK}
+			</if>
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="batchCodeEQ != null">
+				and batch_code = #{batchCodeEQ}
+			</if>
+			<if test="usedTimeGTE != null">
+				and used_time &gt;= #{usedTimeGTE}
+			</if>
+		</where>
+	</select>
+
+</mapper>

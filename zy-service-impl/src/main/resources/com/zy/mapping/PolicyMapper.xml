@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.PolicyMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.act.Policy">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="realname" property="realname" />
+		<result column="birthday" property="birthday" />
+		<result column="gender" property="gender" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="phone" property="phone" />
+		<result column="code" property="code" />
+		<result column="id_card_number" property="idCardNumber" />
+		<result column="image1" property="image1" />
+		<result column="image2" property="image2" />
+		<result column="version" property="version" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.act.Policy" useGeneratedKeys="true" keyProperty="id">
+	  insert into `act_policy` (user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,version)
+	  values (#{userId},#{realname},#{birthday},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{code},#{idCardNumber},#{image1},#{image2},#{version})
+	</insert>
+
+	<delete id="delete">
+		delete from `act_policy` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.act.Policy">
+		update `act_policy`
+		<set>
+			user_id = #{userId},
+			realname = #{realname},
+			birthday = #{birthday},
+			gender = #{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			phone = #{phone},
+			code = #{code},
+			id_card_number = #{idCardNumber},
+			image1 = #{image1},
+			image2 = #{image2},
+			version = version + 1,
+		</set>
+		where id = #{id} and version=#{version}
+	</update>
+
+	<update id="merge">
+		update `act_policy`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{policy.userId},</when>
+					<when test="field == 'realname'">realname = #{policy.realname},</when>
+					<when test="field == 'birthday'">birthday = #{policy.birthday},</when>
+					<when test="field == 'gender'">gender = #{policy.gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.UserInfo$Gender},</when>
+					<when test="field == 'phone'">phone = #{policy.phone},</when>
+					<when test="field == 'code'">code = #{policy.code},</when>
+					<when test="field == 'idCardNumber'">id_card_number = #{policy.idCardNumber},</when>
+					<when test="field == 'image1'">image1 = #{policy.image1},</when>
+					<when test="field == 'image2'">image2 = #{policy.image2},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{policy.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,version
+		from `act_policy`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.PolicyQueryModel">
+		select
+		id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,version
+		from `act_policy`
+		<where>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+				and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="realnameEQ != null">
+				and realname = #{realnameEQ}
+			</if>
+			<if test="codeEQ != null">
+				and code = #{codeEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="codeLK != null">
+				<bind name="codeLK" value="'%' + codeLK + '%'"/> and code like #{codeLK}
+			</if>
+			<if test="idCardNumberLK != null">
+				<bind name="idCardNumberLK" value="'%' + idCardNumberLK + '%'"/> and id_card_number like #{idCardNumberLK}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="phoneEQ != null">
+				and phone = #{phoneEQ}
+			</if>
+			<if test="realnameLK != null">
+				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.PolicyQueryModel">
+		select count(*) from `act_policy`
+		<where>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+				and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="realnameEQ != null">
+				and realname = #{realnameEQ}
+			</if>
+			<if test="codeEQ != null">
+				and code = #{codeEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="codeLK != null">
+				<bind name="codeLK" value="'%' + codeLK + '%'"/> and code like #{codeLK}
+			</if>
+			<if test="idCardNumberLK != null">
+				<bind name="idCardNumberLK" value="'%' + idCardNumberLK + '%'"/> and id_card_number like #{idCardNumberLK}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="phoneEQ != null">
+				and phone = #{phoneEQ}
+			</if>
+			<if test="realnameLK != null">
+				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+		</where>
+	</select>
+
+</mapper>
