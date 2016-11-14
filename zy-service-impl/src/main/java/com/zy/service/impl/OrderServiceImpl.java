@@ -103,9 +103,9 @@ public class OrderServiceImpl implements OrderService {
 		/* calculate parent id */
 		Long parentId;
 		UserRank userRank = user.getUserRank();
-		if (userRank == UserRank.V0) {
+		if (userRank == UserRank.V0 && user.getParentId() == null) {
 			parentId = orderCreateDto.getParentId();
-			if (user.getParentId() == null && parentId == null) {
+			if (parentId == null) {
 				throw new BizException(BizCode.ERROR, "首次下单必须填写邀请人");
 			}
 			User parent = userMapper.findOne(parentId);
