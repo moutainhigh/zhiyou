@@ -87,7 +87,6 @@ public class Policy implements Serializable {
 	@Query(Predicate.LK)
 	private String idCardNumber;
 
-	@NotBlank
 	@URL
 	@StringBinder
 	@Field(label = "图片1")
@@ -95,7 +94,6 @@ public class Policy implements Serializable {
 	@View(name = "image1Thumbnail")
 	private String image1;
 
-	@NotBlank
 	@URL
 	@StringBinder
 	@Field(label = "图片2")
