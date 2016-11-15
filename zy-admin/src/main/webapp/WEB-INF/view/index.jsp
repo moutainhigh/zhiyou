@@ -241,6 +241,16 @@
                   <a href="javascript:;" data-href="${ctx}/report"><i class="icon-volume-1"></i> 检测报告<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="policy:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/policy"><i class="icon-umbrella"></i> 保险单管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="policyCode:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/policyCode"><i class="icon-umbrella"></i> 保险单号管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
             </ul>
           </li>
         </shiro:hasAnyPermissions>

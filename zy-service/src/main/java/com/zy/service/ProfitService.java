@@ -18,5 +18,7 @@ public interface ProfitService {
 
 	void grant(Long id);
 	
+	void cancel(Long id);
+	
 	Profit findOne(Long id);
 }
