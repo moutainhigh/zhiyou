@@ -7,6 +7,7 @@ import com.zy.model.ImageVo;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.DepositAdminVo;
+import com.zy.vo.DepositListVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,6 +47,13 @@ public class DepositComponent {
 		depositAdminVo.setTotalAmountLabel(GcUtils.formatCurreny(deposit.getTotalAmount()));
 
 		return depositAdminVo;
+	}
+
+	public DepositListVo buildListVo(Deposit deposit) {
+		DepositListVo depositListVo = new DepositListVo();
+		BeanUtils.copyProperties(deposit, depositListVo);
+		// TODO
+		return depositListVo;
 	}
 	
 }

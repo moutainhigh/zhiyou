@@ -7,6 +7,7 @@ import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.BankCardAdminVo;
 import com.zy.vo.WithdrawAdminVo;
+import com.zy.vo.WithdrawListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +40,14 @@ public class WithdrawComponent {
 		withdrawAdminVo.setRealAmountLabel(GcUtils.formatCurreny(withdraw.getRealAmount()));
 
 		return withdrawAdminVo;
+	}
+
+	public WithdrawListVo buildListVo(Withdraw withdraw) {
+		WithdrawListVo withdrawListVo = new WithdrawListVo();
+		BeanUtils.copyProperties(withdraw, withdrawListVo);
+		// TODO
+
+		return withdrawListVo;
 	}
 	
 }

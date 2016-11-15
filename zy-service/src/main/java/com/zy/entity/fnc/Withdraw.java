@@ -20,18 +20,17 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import static com.zy.entity.fnc.Withdraw.VO_ADMIN;
-
 @Entity
 @Table(name = "fnc_withdraw")
 @Getter
 @Setter
 @QueryModel
 @Type(label = "提现")
-@ViewObject(groups = VO_ADMIN)
+@ViewObject(groups = {Withdraw.VO_ADMIN, Withdraw.VO_LIST})
 public class Withdraw implements Serializable {
 
 	public static final String VO_ADMIN = "WithdrawAdminVo";
+	public static final String VO_LIST = "WithdrawListVo";
 
 	public enum WithdrawStatus {
 		已申请, 提现成功, 已取消
@@ -96,6 +95,7 @@ public class Withdraw implements Serializable {
 	@NotNull
 	@Field(label = "创建时间")
 	@View
+	@Query({Predicate.LT, Predicate.GTE})
 	private Date createdTime;
 
 	@Field(label = "提现成功时间")
@@ -114,21 +114,21 @@ public class Withdraw implements Serializable {
 
 	@NotNull
 	@Field(label = "是否提现到银行卡")
-	@View
+	@View(groups = VO_ADMIN)
 	private Boolean isToBankCard;
 
 	@Field(label = "银行卡id", description = "如果提现到银行卡必填")
-	@View
+	@View(groups = VO_ADMIN)
 	@AssociationView(name = "bankCard", groups = VO_ADMIN, associationGroup = "BankCardAdminVo")
 	private Long bankCardId;
 
 	@Field(label = "微信openId", description = "如果提现到微信必填")
-	@View
+	@View(groups = VO_ADMIN)
 	private String openId;
 
 	@Column(length = 2000)
 	@Field(label = "备注")
-	@View
+	@View(groups = VO_ADMIN)
 	private String remark;
 
 	@NotNull

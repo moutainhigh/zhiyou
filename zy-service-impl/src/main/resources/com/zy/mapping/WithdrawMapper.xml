@@ -98,6 +98,9 @@
 		id,user_id,currency_type,title,sn,amount,fee_rate,fee,real_amount,outer_fee,created_time,withdrawed_time,withdraw_status,operator_id,is_to_bank_card,bank_card_id,open_id,remark,version
 		from `fnc_withdraw`
 		<where>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
+			</if>
 			<if test="withdrawStatusEQ != null">
 				and withdraw_status = #{withdrawStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -114,6 +117,9 @@
 				<if test="userIdIN.length == 0">
 				1 = 2
 				</if>
+			</if>
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 		</where>
 		<choose>
@@ -132,6 +138,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.WithdrawQueryModel">
 		select count(*) from `fnc_withdraw`
 		<where>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
+			</if>
 			<if test="withdrawStatusEQ != null">
 				and withdraw_status = #{withdrawStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -148,6 +157,9 @@
 				<if test="userIdIN.length == 0">
 				1 = 2
 				</if>
+			</if>
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 		</where>
 	</select>
