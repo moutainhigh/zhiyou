@@ -284,13 +284,13 @@
       <div class="row">
         <div class="col-md-4">
             <div class="note note-info">
-                <h4 class="block">充值笔数</h4>
+                <h4 class="block">总笔数</h4>
                 <p id="count">0 笔</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="note note-danger">
-                <h4 class="block">充值总金额</h4>
+                <h4 class="block">总金额</h4>
                 <p id="sumAmount">0.00 元</p>
             </div>
         </div>
