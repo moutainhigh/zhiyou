@@ -23,18 +23,17 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.zy.entity.fnc.Deposit.VO_ADMIN;
-
 @Entity
 @Table(name = "fnc_deposit")
 @Getter
 @Setter
 @QueryModel
 @Type(label = "充值单")
-@ViewObject(groups = VO_ADMIN)
+@ViewObject(groups = {Deposit.VO_ADMIN, Deposit.VO_LIST})
 public class Deposit implements Serializable {
 
 	public static final String VO_ADMIN = "DepositAdminVo";
+	public static final String VO_LIST = "DepositListVo";
 
 	public enum DepositStatus {
 		待充值, 待确认, 充值成功, 已取消
