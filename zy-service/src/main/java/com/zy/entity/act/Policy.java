@@ -42,6 +42,12 @@ public class Policy implements Serializable {
 	private Long id;
 
 	@NotNull
+	@Query(Predicate.EQ)
+	@Field(label = "检测报告id")
+	@View
+	private Long reportId;
+	
+	@NotNull
 	@Field(label = "用户id")
 	@Query({Predicate.EQ, Predicate.IN})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})

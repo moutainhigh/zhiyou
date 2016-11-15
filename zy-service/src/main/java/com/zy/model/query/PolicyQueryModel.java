@@ -21,6 +21,8 @@ public class PolicyQueryModel implements Serializable {
 
 	private Long idEQ;
 
+	private Long reportIdEQ;
+
 	private Long userIdEQ;
 
 	private Long[] userIdIN;
@@ -91,6 +93,7 @@ public class PolicyQueryModel implements Serializable {
 	static {
 		fieldNames.add("birthday");
 		fieldNames.add("code");
+		fieldNames.add("reportId");
 		fieldNames.add("gender");
 		fieldNames.add("phone");
 		fieldNames.add("idCardNumber");

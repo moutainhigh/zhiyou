@@ -4,6 +4,7 @@
 
 	<resultMap id="baseResultMap" type="com.zy.entity.act.Policy">
 		<id column="id" property="id" />
+		<result column="report_id" property="reportId" />
 		<result column="user_id" property="userId" />
 		<result column="realname" property="realname" />
 		<result column="birthday" property="birthday" />
@@ -17,8 +18,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.act.Policy" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_policy` (user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,version)
-	  values (#{userId},#{realname},#{birthday},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{code},#{idCardNumber},#{image1},#{image2},#{version})
+	  insert into `act_policy` (report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,version)
+	  values (#{reportId},#{userId},#{realname},#{birthday},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{code},#{idCardNumber},#{image1},#{image2},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -28,6 +29,7 @@
 	<update id="update" parameterType="com.zy.entity.act.Policy">
 		update `act_policy`
 		<set>
+			report_id = #{reportId},
 			user_id = #{userId},
 			realname = #{realname},
 			birthday = #{birthday},
@@ -47,6 +49,7 @@
 			<set>
 				<foreach collection="fields" item="field">
 				<choose>
+					<when test="field == 'reportId'">report_id = #{policy.reportId},</when>
 					<when test="field == 'userId'">user_id = #{policy.userId},</when>
 					<when test="field == 'realname'">realname = #{policy.realname},</when>
 					<when test="field == 'birthday'">birthday = #{policy.birthday},</when>
@@ -64,16 +67,19 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,version
+		id,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,version
 		from `act_policy`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.PolicyQueryModel">
 		select
-		id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,version
+		id,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,version
 		from `act_policy`
 		<where>
+			<if test="reportIdEQ != null">
+				and report_id = #{reportIdEQ}
+			</if>
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
 				and user_id in
@@ -126,6 +132,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.PolicyQueryModel">
 		select count(*) from `act_policy`
 		<where>
+			<if test="reportIdEQ != null">
+				and report_id = #{reportIdEQ}
+			</if>
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
 				and user_id in
