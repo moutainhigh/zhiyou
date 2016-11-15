@@ -1,10 +1,11 @@
 package com.zy.service;
 
+import java.util.List;
+
 import com.zy.common.model.query.Page;
 import com.zy.entity.fnc.Deposit;
+import com.zy.model.dto.DepositSumDto;
 import com.zy.model.query.DepositQueryModel;
-
-import java.util.List;
 
 public interface DepositService {
 
@@ -29,4 +30,6 @@ public interface DepositService {
 	Page<Deposit> findPage(DepositQueryModel depositQueryModel);
 	
 	List<Deposit> findAll(DepositQueryModel depositQueryModel);
+	
+	DepositSumDto sum(DepositQueryModel depositQueryModel);
 }

@@ -17,8 +17,10 @@ import com.zy.mapper.DepositMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
+import com.zy.model.dto.DepositSumDto;
 import com.zy.model.query.DepositQueryModel;
 import com.zy.service.DepositService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -280,6 +283,11 @@ public class DepositServiceImpl implements DepositService {
 	@Override
 	public long count(DepositQueryModel depositQueryModel) {
 		return depositMapper.count(depositQueryModel);
+	}
+
+	@Override
+	public DepositSumDto sum(DepositQueryModel depositQueryModel) {
+		return depositMapper.depositSum(depositQueryModel);
 	}
 
 }
