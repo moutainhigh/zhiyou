@@ -290,7 +290,7 @@
         </div>
         <div class="col-md-4">
             <div class="note note-danger">
-                <h4 class="block">充值总额</h4>
+                <h4 class="block">充值总金额</h4>
                 <p id="sumAmount">0.00 元</p>
             </div>
         </div>
