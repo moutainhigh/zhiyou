@@ -1,5 +1,14 @@
 package com.zy.component;
 
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.fnc.Deposit;
 import com.zy.entity.usr.User;
@@ -8,16 +17,13 @@ import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.DepositAdminVo;
 import com.zy.vo.DepositListVo;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class DepositComponent {
+
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm");
 	
 	@Autowired
 	private CacheComponent cacheComponent;
@@ -45,14 +51,24 @@ public class DepositComponent {
 		depositAdminVo.setAmount1Label(GcUtils.formatCurreny(deposit.getAmount1()));
 		depositAdminVo.setAmount2Label(GcUtils.formatCurreny(deposit.getAmount2()));
 		depositAdminVo.setTotalAmountLabel(GcUtils.formatCurreny(deposit.getTotalAmount()));
-
+		depositAdminVo.setCreatedTimeLabel(dateFormat.format(deposit.getCreatedTime()));
+		if(deposit.getPaidTime() != null) {
+			depositAdminVo.setPaidTimeLabel(dateFormat.format(deposit.getPaidTime()));
+		}
+		
 		return depositAdminVo;
 	}
 
 	public DepositListVo buildListVo(Deposit deposit) {
 		DepositListVo depositListVo = new DepositListVo();
 		BeanUtils.copyProperties(deposit, depositListVo);
-		// TODO
+		depositListVo.setAmount1Label(GcUtils.formatCurreny(deposit.getAmount1()));
+		depositListVo.setAmount2Label(GcUtils.formatCurreny(deposit.getAmount2()));
+		depositListVo.setTotalAmountLabel(GcUtils.formatCurreny(deposit.getTotalAmount()));
+		depositListVo.setCreatedTimeLabel(simpleDateFormat.format(deposit.getCreatedTime()));
+		if(deposit.getPaidTime() != null) {
+			depositListVo.setPaidTimeLabel(simpleDateFormat.format(deposit.getPaidTime()));
+		}
 		return depositListVo;
 	}
 	

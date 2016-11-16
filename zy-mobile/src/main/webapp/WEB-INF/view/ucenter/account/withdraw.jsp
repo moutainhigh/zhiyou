@@ -23,17 +23,30 @@
   function buildRow(row) {
     var html = '<div class="list-item">' 
              +   '<div class="list-text pl-5">' 
-             +     '<div class="fs-14">' + row.sn + '</div>'
-             +     '<div class="fs-12 font-999">申请时间:' + row.createdTimeLabel + '</div>'
-             + (row.withdrawStatus == '提现成功' ? '<div class="fs-12 font-999">到账时间:' + row.withdrawTimeLabel + '</div>' : '')
+             +     '<div class="fs-14">单据号:' + row.sn + '</div>'
+             +     '<div class="fs-12 font-999">申请时间: ' + row.createdTimeLabel + '</div>'
+             + (row.withdrawStatus == '提现成功' ? '<div class="fs-12 font-999 bdd-t mt-5 pt-5">到账时间: ' + row.withdrawedTimeLabel + '</div>' : '')
+             + (row.withdrawStatus == '提现成功' ? '<div class="fs-12 font-777">实际到账 <span class="fs-14 font-orange">¥ ' + row.realAmountLabel + '</span></div>' : '')
              +   '</div>' 
              +   '<div class="list-unit width-100 text-right">' 
-             +     '<div class="currency-in">' + row.amountLabel + '</div>' 
-             +     '<div class="fs-12 font-999">状态：' + row.withdrawStatus + '</div>'
-             + (row.withdrawStatus == '提现成功' ? '<div class="fs-14">实际到账:<span class="font-red">¥' + row.realAmountLabel + '</span></div>' : '')
+             +     '<div class="currency-out">' + row.amountLabel + '</div>' 
+             +     '<div class="fs-12 ' + getStyle(row.withdrawStatus) + '">' + row.withdrawStatus + '</div>'
              +   '</div>' 
              + '</div>';
     return html;
+  }
+  
+  function getStyle(status){
+    switch (status) {
+      case '已申请':
+        return 'font-222';
+      case '提现成功':
+        return 'font-orange';
+      case '已取消':
+        return 'font-aaa';
+      default:
+        return 'font-aaa';
+    }
   }
 </script>
 </head>

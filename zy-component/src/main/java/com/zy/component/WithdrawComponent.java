@@ -44,9 +44,10 @@ public class WithdrawComponent {
 		withdrawAdminVo.setAmountLabel(GcUtils.formatCurreny(withdraw.getAmount()));
 		withdrawAdminVo.setFeeLabel(GcUtils.formatCurreny(withdraw.getFee()));
 		withdrawAdminVo.setRealAmountLabel(GcUtils.formatCurreny(withdraw.getRealAmount()));
-		withdrawAdminVo.setCreatedTimeLabel(dateFormat.format(withdraw.getCreatedTime())); 
-		withdrawAdminVo.setWithdrawedTimeLabel(dateFormat.format(withdraw.getWithdrawedTime()));
-
+		withdrawAdminVo.setCreatedTimeLabel(dateFormat.format(withdraw.getCreatedTime()));
+		if(withdraw.getWithdrawedTime() != null) {
+			withdrawAdminVo.setWithdrawedTimeLabel(dateFormat.format(withdraw.getWithdrawedTime()));
+		}
 		return withdrawAdminVo;
 	}
 
@@ -58,8 +59,9 @@ public class WithdrawComponent {
 		withdrawListVo.setFeeLabel(GcUtils.formatCurreny(withdraw.getFee()));
 		withdrawListVo.setRealAmountLabel(GcUtils.formatCurreny(withdraw.getRealAmount()));
 		withdrawListVo.setCreatedTimeLabel(simpleDateFormat.format(withdraw.getCreatedTime())); 
-		withdrawListVo.setWithdrawedTimeLabel(simpleDateFormat.format(withdraw.getWithdrawedTime()));
-		
+		if(withdraw.getWithdrawedTime() != null) {
+			withdrawListVo.setWithdrawedTimeLabel(simpleDateFormat.format(withdraw.getWithdrawedTime()));
+		}
 		return withdrawListVo;
 	}
 	

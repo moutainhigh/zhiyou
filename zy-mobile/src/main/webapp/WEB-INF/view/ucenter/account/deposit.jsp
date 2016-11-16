@@ -23,15 +23,31 @@
   function buildRow(row) {
     var html = '<div class="list-item">' 
              +   '<div class="list-text pl-5">' 
-             +     '<div class="fs-14">' + row.title + '</div>'
-             +     '<div class="fs-12 font-999">' + row.createdTimeLabel + '</div>' 
+             +     '<div class="fs-14">单据号:' + row.sn + '</div>'
+             +     '<div class="fs-12 font-999">提交时间: ' + row.createdTimeLabel + '</div>'
+             + (row.depositStatus == '充值成功' ? '<div class="fs-12 font-999">付款时间: ' + row.paidTimeLabel + '</div>' : '')
              +   '</div>' 
              +   '<div class="list-unit width-100 text-right">' 
-             +     '<div class="currency-in">' + row.amountLabel + '</div>' 
-             +     '<div class="fs-12 font-999">状态：' + row.profitStatus + '</div>' 
+             +     '<div class="currency-in">' + row.totalAmountLabel + '</div>' 
+             +     '<div class="fs-12 ' + getStyle(row.depositStatus) + '">' + row.depositStatus + '</div>'
              +   '</div>' 
              + '</div>';
     return html;
+  }
+  
+  function getStyle(status){
+    switch (status) {
+      case '待充值':
+        return 'font-aaa';
+      case '待确认':
+        return 'font-orange';
+      case '充值成功':
+        return 'font-green';
+      case '已取消':
+        return 'font-aaa';
+      default:
+        return 'font-aaa';
+    }
   }
 </script>
 </head>
