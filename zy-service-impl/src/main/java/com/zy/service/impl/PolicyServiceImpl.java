@@ -4,6 +4,7 @@ import static com.zy.common.util.ValidateUtils.NOT_BLANK;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -61,7 +62,8 @@ public class PolicyServiceImpl implements PolicyService {
 		if(policyCodes.isEmpty()) {
 			throw new BizException(BizCode.ERROR, "保险单号[" + code + "]不存在");
 		}
-		if(!policyCodes.get(0).getIsUsed()) {
+		PolicyCode policyCode = policyCodes.get(0);
+		if(!policyCode.getIsUsed()) {
 			throw new BizException(BizCode.ERROR, "保险单号[" + code + "]已被使用");
 		}
 		
@@ -77,7 +79,11 @@ public class PolicyServiceImpl implements PolicyService {
 		policy.setReportId(reportId);
 		policy.setVersion(0);
 		validate(policy);
-		policyMapper.insert(policy);
+		if(policyMapper.insert(policy) > 0) {
+			policyCode.setIsUsed(true);
+			policyCode.setUsedTime(new Date());
+			policyCodeMapper.update(policyCode);
+		}
 
 		return policy;
 	}
