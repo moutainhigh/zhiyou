@@ -89,9 +89,10 @@
             orderable: false,
             render: function (data, type, full) {
               var optionHtml = '';
-              <shiro:hasPermission name="profit:grant">
+              <shiro:hasPermission name="profit:grant,profit:cancel">
               if(full.profitStatus == '待发放'){
                 optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/profit/grant?id=' + full.id + '" data-confirm="您确定发放奖励？"><i class="fa fa-send-o"></i> 发放 </a>';
+                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/profit/cancel?id=' + full.id + '" data-confirm="您确定取消奖励？"><i class="fa fa-send-o"></i> 取消 </a>';
               }
               </shiro:hasPermission>
               return optionHtml;
@@ -137,6 +138,42 @@
         if(ids.length > 0){
           $.ajax({
   	    	  url : '${ctx}/profit/batchGrant',
+  	          dataType:"json",
+  	          type: "post",
+  	          data : {
+  	        	  ids : ids
+  	          },
+  	          success: function( result ) {
+  	        	  layer.alert(result.message, {icon: 1});
+  	        	  grid.getDataTable().ajax.reload(null, false);
+  	          } 
+  	      });
+          
+        } else {
+          layer.alert("请至少选择一条记录！", {icon: 2});
+        }
+        
+      }, function(){
+        
+      });
+    });
+    </shiro:hasPermission>
+    
+    <shiro:hasPermission name="profit:cancel">
+    $('.table-toolbar').on('click', '#cancelBtn',function(){
+      layer.confirm('您确认要批量取消发放奖励吗？', {
+        btn: ['确认','取消']
+      }, function(){
+        var ids = '';
+        $("input[name='id']").each(function() {
+          var isChecked = $(this).attr("checked");
+        	if(isChecked == 'checked'){
+        	  ids += $(this).val() + ',';
+        	}
+        })
+        if(ids.length > 0){
+          $.ajax({
+  	    	  url : '${ctx}/profit/batchCancel',
   	          dataType:"json",
   	          type: "post",
   	          data : {
@@ -215,11 +252,23 @@
                   <i class="fa fa-search"></i> 查询
                 </button>
               </div>
+              
+              <shiro:hasPermission name="profit:grant">
               <div class="form-group">
-                <button class="btn green" id="grantBtn">
+                <button type="button" class="btn green" id="grantBtn">
                   <i class="fa fa-send-o"></i> 批量发放
                 </button>
               </div>
+              </shiro:hasPermission>
+              
+              <shiro:hasPermission name="profit:cancel">
+              <div class="form-group">
+                <button type="button" class="btn cancel" id="cancelBtn">
+                  <i class="fa fa-times"></i> 批量取消
+                </button>
+              </div>
+              </shiro:hasPermission>
+              
             </form>
           </div>
           <table class="table table-striped table-bordered table-hover" id="dataTable">
