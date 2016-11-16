@@ -4,6 +4,7 @@ import static com.zy.common.util.ValidateUtils.validate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.validation.constraints.NotNull;
 
@@ -14,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
-import com.zy.common.util.Identities;
 import com.zy.entity.act.PolicyCode;
 import com.zy.mapper.PolicyCodeMapper;
 import com.zy.model.BizCode;
@@ -46,7 +46,13 @@ public class PolicyCodeServiceImpl implements PolicyCodeService {
 		policyCode.setIsUsed(false);
 		policyCode.setVersion(0);
 		for(int i=0; i < time; i++) {
-			policyCode.setCode(Identities.uuid());
+			StringBuffer code = new StringBuffer("YJ");
+			long count2 = 0;
+			do {
+				code = code.append(getPolicyCode());
+				count2 = policyCodeMapper.count(PolicyCodeQueryModel.builder().codeEQ(code.toString()).build());
+			} while (count2 > 0);
+			policyCode.setCode(code.toString());
 			validate(policyCode);
 			policyCodeMapper.insert(policyCode);
 		}
@@ -75,4 +81,14 @@ public class PolicyCodeServiceImpl implements PolicyCodeService {
 		return page;
 	}
 
+	private String getPolicyCode() {  
+    	char[] codeSeq = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+    	Random random = new Random();
+    	int length = codeSeq.length;
+		StringBuilder s = new StringBuilder();
+		for (int i = 0; i < 10; i++) {
+			s.append(codeSeq[random.nextInt(length)]);
+		}
+		return s.toString();
+    }
 }
