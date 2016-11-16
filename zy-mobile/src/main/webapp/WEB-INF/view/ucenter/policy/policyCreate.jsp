@@ -48,7 +48,7 @@
       var report = {};
       report.id = $this.attr('data-id');
       report.realname = $this.attr('data-realname');
-      report.age = $this.attr('data-age');
+      report.gender = $this.attr('data-gender');
       report.phone = $this.attr('data-phone');
       setReport(report);
     });
@@ -67,11 +67,11 @@
   
   function setReport(report) {
     hideReportList();
-    $('[name="reportId"]').val(report.id);
+    $('#reportId').val(report.id);
     $('#realname').text(report.realname);
-    $('#age').text(report.age);
+    $('#gender').text(report.gender);
     $('#phone').text(report.phone);
-    $('.report-info .list-unit').html('<span>报告编号:' + report.id + '</span>(<span>姓名:' + report.realname + '</span>)');
+    $('.report-info .list-unit').html('<span>报告编号：' + report.id + '</span> (<span>' + report.realname + '</span>)');
   }
   
 </script>
@@ -83,9 +83,9 @@
     </header>
     <div class="list-group">
       <c:forEach items="${reports}" var="report">
-      <div class="list-item report" data-id="${report.id}" data-realname="${report.realname}" data-age="${report.age}" data-phone="${report.phone}">
-        <div class="list-text">${report.realname}(编号: ${report.id})</div>
-        <div class="list-unit fs-16">检测时间: ${report.reportedDateLabel}</div>
+      <div class="list-item report" data-id="${report.id}" data-realname="${report.realname}" data-gender="${report.gender}" data-phone="${report.phone}">
+        <div class="list-text">${report.realname} (编号: ${report.id})</div>
+        <div class="list-unit fs-14">检测时间: ${report.reportedDateLabel}</div>
       </div>
       </c:forEach>
     </div>
@@ -106,10 +106,10 @@
           <label class="list-text lh-36">请选择</label>
           <div class="list-unit"></div>
           <i class="list-arrow"></i>
-          <input type="hidden" name="reportId" value="">
+          <input id="reportId" type="hidden" name="reportId" value="">
         </div>
       </div>
-      <div class="list-group mt-10">
+      <div class="list-group">
         <div class="list-title">客户资料</div>
         <div class="list-item">
           <label class="list-label" for="realname">姓名</label>

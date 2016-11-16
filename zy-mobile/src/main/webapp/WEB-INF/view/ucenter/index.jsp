@@ -111,6 +111,11 @@
         <div class="list-text">检测报告</div>
         <i class="list-arrow"></i>
       </a>
+      <a class="list-item list-item-icon" href="${ctx}/u/policy">
+        <i class="list-icon icon icon-policy"></i>
+        <div class="list-text">保险单</div>
+        <i class="list-arrow"></i>
+      </a>
     </div>
     
     <div class="list-group">
