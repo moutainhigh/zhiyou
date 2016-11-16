@@ -36,7 +36,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-umbrella"></i> 保险单号
+          <i class="icon-umbrella"></i> 保险单号生成
         </div>
       </div>
       <div class="portlet-body form">
