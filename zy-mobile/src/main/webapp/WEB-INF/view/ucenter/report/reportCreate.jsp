@@ -68,6 +68,16 @@
         form.submit();
       }
     });
+    
+    $('#hasPolicy').click(function() {
+      var checked = $(this).is(':checked');
+      //messageFlash(checked);
+      if(checked) {
+        $('#policyInfo').slideDown(300);
+      } else {
+        $('#policyInfo').slideUp(300);
+      }
+    });
 
   });
 </script>
@@ -180,8 +190,34 @@
             </div>
           </div>
         </div>
+        
+        <div class="list-item">
+          <div class="list-text">是否添加保单</div>
+          <div class="list-unit form-switch">
+            <input type="hidden" name="_hasPolicy" value="false">
+            <input type="checkbox" id="hasPolicy" name="hasPolicy" value="false">
+            <label class="i-switch" for="hasPolicy"></label>
+          </div>
+        </div>
 
       </div>
+      
+      <div id="policyInfo" class="list-group hide">
+        <div class="list-title">保单信息</div>
+        <div class="list-item">
+          <label class="list-label" for="idCardNumber">身份证号</label>
+          <div class="list-text">
+            <input type="text" name="idCardNumber" class="form-input" value="" placeholder="填写客户姓名">
+          </div>
+        </div>
+        <div class="list-item">
+          <label class="list-label">生日</label>
+          <div class="list-text">
+            <input type="date" name="birthday" class="form-input" value="" placeholder="填写生日  1900-01-01">
+          </div>
+        </div>
+      </div>
+      
       <div class="list-group">
         <div class="list-title">填写产品使用心得</div>
         <div class="list-item">
