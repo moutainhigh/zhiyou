@@ -22,6 +22,30 @@ window.messageAlert = function(message, button) {
   });
 };
 
+window.pushDialog = function(dialog, callback) {
+  $('body').addClass('o-hidden').find('article').hide();
+  $(dialog).css({
+    'left' : '100%',
+    'display' : 'none'
+  }).appendTo($('body')).show().animate({
+    'left' : 0
+  }, 300, function() {
+    if ($.isFunction(callback)) {
+      callback.call($(dialog), window.jQuery || window.Zepto)
+    }
+  });
+}
+window.pullDialog = function(dialog, callback) {
+  $(dialog).animate({
+    'left' : '100%'
+  }, 300, function() {
+    $('body').removeClass('o-hidden').find('article').show();
+    if ($.isFunction(callback)) {
+      callback.call($(dialog), window.jQuery || window.Zepto)
+    }
+  });
+}
+
 $(function() {
   
   /* 处理移动端click事件 */

@@ -207,7 +207,7 @@
         <div class="list-item">
           <label class="list-label" for="idCardNumber">身份证号</label>
           <div class="list-text">
-            <input type="text" name="idCardNumber" class="form-input" value="" placeholder="填写客户姓名">
+            <input type="text" name="idCardNumber" class="form-input" value="" placeholder="填写身份证号">
           </div>
         </div>
         <div class="list-item">
@@ -228,12 +228,7 @@
       </div>
 
       <div class="form-btn">
-        <c:if test="${userRank == 'V0'}">
-        <input class="btn default btn-block round-2" type="button" disabled="disabled" value="成为服务商才能提交检测报告">
-        </c:if>
-        <c:if test="${userRank != 'V0'}">
         <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提 交">
-        </c:if>
       </div>
 
     </form>
