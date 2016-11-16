@@ -288,8 +288,6 @@
   
   <form id="orderForm" class="valid-form" action="${ctx}/u/order/create" method="post">
   
-  <input type="hidden" name="parentId" value="${inviter.id}">
-  
   <%--
   <c:if test="${not empty parent}">
   <div class="parent-alert alert alert-warning mb-10">
@@ -375,6 +373,7 @@
           <label class="list-label">上级手机号</label>
           <div class="list-text">
             <input id="parentPhone" name="parentPhone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">
+            <input type="hidden" name="parentId" value="${inviter.id}">
           </div>
         </div>
       </div>

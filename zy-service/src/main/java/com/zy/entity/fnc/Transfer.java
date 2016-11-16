@@ -1,6 +1,28 @@
 package com.zy.entity.fnc;
 
+import static com.zy.entity.fnc.Transfer.VO_ADMIN;
+import static com.zy.entity.fnc.Transfer.VO_LIST;
+import static io.gd.generator.api.query.Predicate.EQ;
+import static io.gd.generator.api.query.Predicate.GTE;
+import static io.gd.generator.api.query.Predicate.IN;
+import static io.gd.generator.api.query.Predicate.LT;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.zy.entity.usr.User;
+
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -11,18 +33,6 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-
-import static com.zy.entity.fnc.Transfer.VO_ADMIN;
-import static com.zy.entity.fnc.Transfer.VO_LIST;
-import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
 @Table(name = "fnc_transfer")
@@ -64,13 +74,15 @@ public class Transfer implements Serializable {
 	@Field(label = "转出用户id")
 	@View(groups = VO_ADMIN)
 	@AssociationView(name = "fromUser", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
+	@AssociationView(name = "fromUser", groups = VO_LIST, associationGroup = User.VO_LIST)
 	private Long fromUserId;
 
 	@NotNull
 	@Query({EQ,IN})
 	@Field(label = "转入用户id")
 	@View(groups = VO_ADMIN)
-	@AssociationView(name = "toUser", groups = {VO_LIST, VO_ADMIN}, associationGroup = User.VO_ADMIN_SIMPLE)
+	@AssociationView(name = "toUser", groups = {VO_ADMIN}, associationGroup = User.VO_ADMIN_SIMPLE)
+	@AssociationView(name = "toUser", groups = VO_LIST, associationGroup = User.VO_LIST)
 	private Long toUserId;
 
 	@Column(length = 60, unique = true)

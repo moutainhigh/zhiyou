@@ -1,5 +1,22 @@
 package com.zy.mobile.controller.ucenter;
 
+import static com.zy.entity.fnc.CurrencyType.现金;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -17,22 +34,6 @@ import com.zy.service.AccountService;
 import com.zy.service.BankCardService;
 import com.zy.service.ProfitService;
 import com.zy.service.TransferService;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.zy.entity.fnc.CurrencyType.现金;
 
 @RequestMapping("/u/account")
 @Controller
@@ -74,69 +75,15 @@ public class UcenterAccountController {
 		return "ucenter/account/account";
 	}
 	
-	@RequestMapping(value = "/out", method = RequestMethod.GET)
-	public String out(@RequestParam Transfer.TransferType type, Principal principal, Model model) {
-
-		Date timeLT = new Date();
-
-		TransferQueryModel transferQueryModel = new TransferQueryModel();
-		transferQueryModel.setFromUserIdEQ(principal.getUserId());
-		transferQueryModel.setPageNumber(0);
-		transferQueryModel.setTransferTypeEQ(type);
-		transferQueryModel.setCreatedTimeLT(timeLT);
-		transferQueryModel.setPageSize(pageSize);
-
-		Page<Transfer> page  = transferService.findPage(transferQueryModel);
-		
-		model.addAttribute("page", PageBuilder.copyAndConvert(page, transferComponent::buildListVo));
-		model.addAttribute("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
+	@RequestMapping(value = "/profit", method = RequestMethod.GET)
+	public String profit(@RequestParam Profit.ProfitType type, Principal principal, Model model) {
 		model.addAttribute("type", type);
-		return "ucenter/account/accountOut";
-	}
-
-	@RequestMapping(value = "/out", method = RequestMethod.POST)
-	@ResponseBody
-	public Result<?> out(@RequestParam Transfer.TransferType type, Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
-		if (timeLT == null) {
-			timeLT = new Date();
-		}
-		TransferQueryModel transferQueryModel = new TransferQueryModel();
-		transferQueryModel.setFromUserIdEQ(principal.getUserId());
-		transferQueryModel.setTransferTypeEQ(type);
-		transferQueryModel.setCreatedTimeLT(timeLT);
-		transferQueryModel.setPageSize(pageSize);
-		transferQueryModel.setPageNumber(pageNumber);
-		
-		Page<Transfer> page  = transferService.findPage(transferQueryModel);
-		Map<String, Object> map = new HashMap<>();
-		map.put("page", PageBuilder.copyAndConvert(page, transferComponent::buildListVo));
-		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
-		model.addAttribute("type", type);
-		return ResultBuilder.result(map);
+		return "ucenter/account/profit";
 	}
 	
-	@RequestMapping(value = "/in", method = RequestMethod.GET)
-	public String in(@RequestParam Profit.ProfitType type, Principal principal, Model model) {
-		
-		Date timeLT = new Date();
-		
-		ProfitQueryModel profitQueryModel = new ProfitQueryModel();
-		profitQueryModel.setProfitTypeEQ(type);
-		profitQueryModel.setUserIdEQ(principal.getUserId());
-		profitQueryModel.setCreatedTimeLT(timeLT);
-		profitQueryModel.setPageNumber(0);
-		profitQueryModel.setPageSize(pageSize);
-		Page<Profit> page  = profitService.findPage(profitQueryModel);
-		
-		model.addAttribute("page", PageBuilder.copyAndConvert(page, profitComponent::buildListVo));
-		model.addAttribute("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
-		model.addAttribute("type", type);
-		return "ucenter/account/accountIn";
-	}
-	
-	@RequestMapping(value = "/in", method = RequestMethod.POST)
+	@RequestMapping(value = "/profit", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> in(@RequestParam Profit.ProfitType type, Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
+	public Result<?> profit(@RequestParam Profit.ProfitType type, Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
 		if (timeLT == null) {
 			timeLT = new Date();
 		}
@@ -155,5 +102,58 @@ public class UcenterAccountController {
 		return ResultBuilder.result(map);
 	}
 	
+	@RequestMapping(value = "/transferOut", method = RequestMethod.GET)
+	public String transferOut(@RequestParam Transfer.TransferType type, Principal principal, Model model) {
+		model.addAttribute("type", type);
+		return "ucenter/account/transferOut";
+	}
+
+	@RequestMapping(value = "/transferOut", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> transferOut(@RequestParam Transfer.TransferType type, Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
+		if (timeLT == null) {
+			timeLT = new Date();
+		}
+		TransferQueryModel transferQueryModel = new TransferQueryModel();
+		transferQueryModel.setFromUserIdEQ(principal.getUserId());
+		transferQueryModel.setTransferTypeEQ(type);
+		transferQueryModel.setCreatedTimeLT(timeLT);
+		transferQueryModel.setPageSize(pageSize);
+		transferQueryModel.setPageNumber(pageNumber);
+		
+		Page<Transfer> page  = transferService.findPage(transferQueryModel);
+		Map<String, Object> map = new HashMap<>();
+		map.put("page", PageBuilder.copyAndConvert(page, transferComponent::buildListVo));
+		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
+		model.addAttribute("type", type);
+		return ResultBuilder.result(map);
+	}
+	
+	@RequestMapping(value = "/transferIn", method = RequestMethod.GET)
+	public String transferIn(@RequestParam Transfer.TransferType type, Principal principal, Model model) {
+		model.addAttribute("type", type);
+		return "ucenter/account/transferIn";
+	}
+	
+	@RequestMapping(value = "/transferIn", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> transferIn(@RequestParam Transfer.TransferType type, Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
+		if (timeLT == null) {
+			timeLT = new Date();
+		}
+		TransferQueryModel transferQueryModel = new TransferQueryModel();
+		transferQueryModel.setTransferTypeEQ(type);
+		transferQueryModel.setToUserIdEQ(principal.getUserId());
+		transferQueryModel.setCreatedTimeLT(timeLT);
+		transferQueryModel.setPageNumber(pageNumber);
+		transferQueryModel.setPageSize(pageSize);
+		
+		Page<Transfer> page  = transferService.findPage(transferQueryModel);
+		Map<String, Object> map = new HashMap<>();
+		map.put("page", PageBuilder.copyAndConvert(page, transferComponent::buildListVo));
+		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
+		model.addAttribute("type", type);
+		return ResultBuilder.result(map);
+	}
 
 }
