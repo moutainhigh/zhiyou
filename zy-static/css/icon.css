@@ -158,6 +158,12 @@
 .icon-account-yiping {
   background-image: url(../image/icon/account/icon_yiping.png);
 }
+.icon-account-deposit {
+  background-image: url(../image/icon/account/icon_deposit.png);
+}
+.icon-account-withdraw {
+  background-image: url(../image/icon/account/icon_withdraw.png);
+}
 .icon-account-yiyue {
   background-image: url(../image/icon/account/icon_yiyue.png);
 }

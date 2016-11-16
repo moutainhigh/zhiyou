@@ -12,23 +12,25 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>收入 - ${type}</title>
+<title>提现单</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/pageload.jsp"%>
 <script type="text/javascript">
   function getUrl() {
-    return '${ctx}/u/account/profit?type=${type.ordinal()}';
+    return '${ctx}/u/account/withdraw';
   }
   
   function buildRow(row) {
     var html = '<div class="list-item">' 
              +   '<div class="list-text pl-5">' 
-             +     '<div class="fs-14">' + row.title + '</div>'
-             +     '<div class="fs-12 font-999">' + row.createdTimeLabel + '</div>' 
+             +     '<div class="fs-14">' + row.sn + '</div>'
+             +     '<div class="fs-12 font-999">申请时间:' + row.createdTimeLabel + '</div>'
+             + (row.withdrawStatus == '提现成功' ? '<div class="fs-12 font-999">到账时间:' + row.withdrawTimeLabel + '</div>' : '')
              +   '</div>' 
              +   '<div class="list-unit width-100 text-right">' 
              +     '<div class="currency-in">' + row.amountLabel + '</div>' 
-             +     '<div class="fs-12 font-999">状态：' + row.profitStatus + '</div>' 
+             +     '<div class="fs-12 font-999">状态：' + row.withdrawStatus + '</div>'
+             + (row.withdrawStatus == '提现成功' ? '<div class="fs-14">实际到账:<span class="font-red">¥' + row.realAmountLabel + '</span></div>' : '')
              +   '</div>' 
              + '</div>';
     return html;
@@ -36,10 +38,10 @@
 </script>
 </head>
  
-<body class="account-list">
+<body>
   <article class="page-wrap">
     <header class="header">
-      <h1>收入 - ${type}</h1>
+      <h1>提现单</h1>
       <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
   

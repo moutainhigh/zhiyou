@@ -12,12 +12,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>收入 - ${type}</title>
+<title>充值单</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/pageload.jsp"%>
 <script type="text/javascript">
   function getUrl() {
-    return '${ctx}/u/account/profit?type=${type.ordinal()}';
+    return '${ctx}/u/account/deposit';
   }
   
   function buildRow(row) {
@@ -36,10 +36,10 @@
 </script>
 </head>
  
-<body class="account-list">
+<body>
   <article class="page-wrap">
     <header class="header">
-      <h1>收入 - ${type}</h1>
+      <h1>充值单</h1>
       <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
   
