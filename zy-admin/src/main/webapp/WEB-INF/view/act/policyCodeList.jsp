@@ -75,7 +75,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-umbrella"></i> 保险单管理
+          <i class="icon-umbrella"></i> 保险单号管理
         </div>
         <shiro:hasPermission name="policyCode:edit">
           <div class="actions">
