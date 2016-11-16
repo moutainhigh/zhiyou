@@ -26,6 +26,8 @@ public class PolicyListVo implements Serializable {
 	private Gender gender;
 	@Field(label = "手机号")
 	private String phone;
+	@Field(label = "编号")
+	private String code;
 	@Field(label = "身份证号")
 	private String idCardNumber;
 	@Field(label = "图片1")
