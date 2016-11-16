@@ -70,6 +70,10 @@ public class PolicyServiceImpl implements PolicyService {
 			throw new BizException(BizCode.ERROR, "检测报告已被投保"); 
 		}
 		
+		policy.setGender(report.getGender());
+		policy.setPhone(report.getPhone());
+		policy.setRealname(report.getRealname());
+		policy.setUserId(report.getUserId());
 		policy.setReportId(reportId);
 		policy.setVersion(0);
 		validate(policy);

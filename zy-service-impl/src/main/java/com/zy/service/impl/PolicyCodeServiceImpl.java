@@ -81,12 +81,12 @@ public class PolicyCodeServiceImpl implements PolicyCodeService {
 		return page;
 	}
 
-	private String getPolicyCode() {  
-    	char[] codeSeq = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+    private String getPolicyCode() {  
+    	char[] codeSeq = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '2', '3', '4', '5', '6', '7', '8', '9' };
     	Random random = new Random();
     	int length = codeSeq.length;
 		StringBuilder s = new StringBuilder();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 12; i++) {
 			s.append(codeSeq[random.nextInt(length)]);
 		}
 		return s.toString();
