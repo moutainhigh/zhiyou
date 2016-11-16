@@ -56,6 +56,10 @@ public class WithdrawAdminVo implements Serializable {
 	private String feeLabel;
 	@Field(label = "实际到账总金额")
 	private String realAmountLabel;
+	@Field(label = "创建时间")
+	private String createdTimeLabel;
+	@Field(label = "提现成功时间")
+	private String withdrawedTimeLabel;
 	@Field(label = "提现单状态")
 	private String withdrawStatusStyle;
 	@Field(label = "银行卡id")

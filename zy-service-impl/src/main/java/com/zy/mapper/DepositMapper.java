@@ -2,13 +2,12 @@ package com.zy.mapper;
 
 
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 
 import com.zy.entity.fnc.Deposit;
-import com.zy.model.dto.DepositSumDto;
 import com.zy.model.query.DepositQueryModel;
 
+import com.zy.model.dto.DepositSumDto;
 
 public interface DepositMapper {
 

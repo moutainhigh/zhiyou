@@ -1,10 +1,10 @@
 package com.zy.vo;
 
-import java.io.Serializable;
-
 import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
 
 @Getter
 @Setter

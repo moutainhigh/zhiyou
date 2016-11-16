@@ -1,7 +1,23 @@
 package com.zy.entity.fnc;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.zy.entity.usr.User;
 import com.zy.model.ImageVo;
+
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -13,15 +29,6 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
 
 @Entity
 @Table(name = "fnc_deposit")
@@ -72,7 +79,7 @@ public class Deposit implements Serializable {
 	@DecimalMin("0.01")
 	@Field(label = "充值货币1金额")
 	@View
-	@View(name = "amount1Label", type = String.class, groups = VO_ADMIN)
+	@View(name = "amount1Label", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal amount1;
 
 	@Field(label = "充值货币2")
@@ -82,14 +89,14 @@ public class Deposit implements Serializable {
 	@DecimalMin("0.01")
 	@Field(label = "充值货币2金额")
 	@View
-	@View(name = "amount2Label", type = String.class, groups = VO_ADMIN)
+	@View(name = "amount2Label", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal amount2;
 
 	@NotNull
 	@DecimalMin("0.01")
 	@Field(label = "充值总金额")
 	@View
-	@View(name = "totalAmountLabel", type = String.class, groups = VO_ADMIN)
+	@View(name = "totalAmountLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal totalAmount;
 
 	@NotNull
@@ -118,11 +125,13 @@ public class Deposit implements Serializable {
 	@Query({Predicate.GTE, Predicate.LT})
 	@Field(label = "支付成功时间")
 	@View
+	@View(name = "paidTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private Date paidTime;
 
 	@NotNull
 	@Field(label = "创建时间")
 	@View
+	@View(name = "createdTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	@Query({Predicate.LT, Predicate.GTE})
 	private Date createdTime;
 
@@ -161,6 +170,5 @@ public class Deposit implements Serializable {
 
 	@Field(label = "操作者id")
 	private Long operatorId;
-
 
 }

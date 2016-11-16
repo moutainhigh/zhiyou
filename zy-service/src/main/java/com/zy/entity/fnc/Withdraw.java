@@ -67,7 +67,7 @@ public class Withdraw implements Serializable {
 	@DecimalMin("0.01")
 	@Field(label = "提现金额")
 	@View
-	@View(name = "amountLabel", type = String.class, groups = VO_ADMIN)
+	@View(name = "amountLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal amount;
 
 	@NotNull
@@ -78,13 +78,13 @@ public class Withdraw implements Serializable {
 	@NotNull
 	@Field(label = "提现手续费")
 	@View
-	@View(name = "feeLabel", type = String.class, groups = VO_ADMIN)
+	@View(name = "feeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal fee;
 
 	@NotNull
 	@Field(label = "实际到账总金额", description = "实际到账总金额 = 提现金额 - 提现手续费")
 	@View
-	@View(name = "realAmountLabel", type = String.class, groups = VO_ADMIN)
+	@View(name = "realAmountLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal realAmount;
 
 	@DecimalMin("0.00")
@@ -95,11 +95,13 @@ public class Withdraw implements Serializable {
 	@NotNull
 	@Field(label = "创建时间")
 	@View
+	@View(name = "createdTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	@Query({Predicate.LT, Predicate.GTE})
 	private Date createdTime;
 
 	@Field(label = "提现成功时间")
 	@View
+	@View(name = "withdrawedTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private Date withdrawedTime;
 
 	@NotNull

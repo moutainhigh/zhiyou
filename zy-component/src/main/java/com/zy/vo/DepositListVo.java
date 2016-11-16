@@ -60,6 +60,16 @@ public class DepositListVo implements Serializable {
 	private String offlineMemo;
 
 	/* 扩展 */
+	@Field(label = "充值货币1金额")
+	private String amount1Label;
+	@Field(label = "充值货币2金额")
+	private String amount2Label;
+	@Field(label = "充值总金额")
+	private String totalAmountLabel;
+	@Field(label = "支付成功时间")
+	private String paidTimeLabel;
+	@Field(label = "创建时间")
+	private String createdTimeLabel;
 	@Field(label = "银行汇款截图")
 	private List<ImageVo> offlineImages = new ArrayList<>();
 

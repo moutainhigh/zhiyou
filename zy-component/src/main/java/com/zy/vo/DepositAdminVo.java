@@ -70,6 +70,10 @@ public class DepositAdminVo implements Serializable {
 	private String amount2Label;
 	@Field(label = "充值总金额")
 	private String totalAmountLabel;
+	@Field(label = "支付成功时间")
+	private String paidTimeLabel;
+	@Field(label = "创建时间")
+	private String createdTimeLabel;
 	@Field(label = "充值单状态")
 	private String depositStatusStyle;
 	@Field(label = "银行汇款截图")

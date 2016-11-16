@@ -40,5 +40,15 @@ public class WithdrawListVo implements Serializable {
 	private WithdrawStatus withdrawStatus;
 
 	/* 扩展 */
+	@Field(label = "提现金额")
+	private String amountLabel;
+	@Field(label = "提现手续费")
+	private String feeLabel;
+	@Field(label = "实际到账总金额")
+	private String realAmountLabel;
+	@Field(label = "创建时间")
+	private String createdTimeLabel;
+	@Field(label = "提现成功时间")
+	private String withdrawedTimeLabel;
 
 }

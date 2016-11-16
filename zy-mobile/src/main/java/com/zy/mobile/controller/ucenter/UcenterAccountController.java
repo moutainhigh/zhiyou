@@ -25,10 +25,23 @@ import com.zy.component.DepositComponent;
 import com.zy.component.ProfitComponent;
 import com.zy.component.TransferComponent;
 import com.zy.component.WithdrawComponent;
-import com.zy.entity.fnc.*;
+import com.zy.entity.fnc.Account;
+import com.zy.entity.fnc.Deposit;
+import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Transfer;
+import com.zy.entity.fnc.Withdraw;
 import com.zy.model.Principal;
-import com.zy.model.query.*;
-import com.zy.service.*;
+import com.zy.model.query.BankCardQueryModel;
+import com.zy.model.query.DepositQueryModel;
+import com.zy.model.query.ProfitQueryModel;
+import com.zy.model.query.TransferQueryModel;
+import com.zy.model.query.WithdrawQueryModel;
+import com.zy.service.AccountService;
+import com.zy.service.BankCardService;
+import com.zy.service.DepositService;
+import com.zy.service.ProfitService;
+import com.zy.service.TransferService;
+import com.zy.service.WithdrawService;
 
 @RequestMapping("/u/account")
 @Controller
@@ -166,18 +179,6 @@ public class UcenterAccountController {
 
 	@RequestMapping(value = "/withdraw", method = RequestMethod.GET)
 	public String withdraw(Principal principal, Model model) {
-
-		Date timeLT = new Date();
-
-		WithdrawQueryModel withdrawQueryModel = new WithdrawQueryModel();
-		withdrawQueryModel.setUserIdEQ(principal.getUserId());
-		withdrawQueryModel.setCreatedTimeLT(timeLT);
-		withdrawQueryModel.setPageNumber(0);
-		withdrawQueryModel.setPageSize(pageSize);
-		Page<Withdraw> page  = withdrawService.findPage(withdrawQueryModel);
-
-		model.addAttribute("page", PageBuilder.copyAndConvert(page, withdrawComponent::buildListVo));
-		model.addAttribute("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
 		return "ucenter/account/withdraw";
 	}
 
@@ -202,18 +203,6 @@ public class UcenterAccountController {
 
 	@RequestMapping(value = "/deposit", method = RequestMethod.GET)
 	public String deposit(Principal principal, Model model) {
-
-		Date timeLT = new Date();
-
-		DepositQueryModel depositQueryModel = new DepositQueryModel();
-		depositQueryModel.setUserIdEQ(principal.getUserId());
-		depositQueryModel.setCreatedTimeLT(timeLT);
-		depositQueryModel.setPageNumber(0);
-		depositQueryModel.setPageSize(pageSize);
-		Page<Deposit> page  = depositService.findPage(depositQueryModel);
-
-		model.addAttribute("page", PageBuilder.copyAndConvert(page, depositComponent::buildListVo));
-		model.addAttribute("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
 		return "ucenter/account/deposit";
 	}
 
