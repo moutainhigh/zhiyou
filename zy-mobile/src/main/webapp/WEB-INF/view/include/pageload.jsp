@@ -41,11 +41,6 @@
       }
     });
     loadData(dropload);
-    
-    <c:if test="${page.total <= page.pageSize}">
-    dropload.lock('down');
-    dropload.$domDown.remove();
-    </c:if>
   });
 
   function loadData(dropload) {
