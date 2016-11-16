@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import java.util.Date;
 import com.zy.entity.fnc.Withdraw.WithdrawStatus;
 
 @Getter
@@ -23,6 +24,10 @@ public class WithdrawQueryModel implements Serializable {
 	private Long userIdEQ;
 
 	private Long[] userIdIN;
+
+	private Date createdTimeLT;
+
+	private Date createdTimeGTE;
 
 	private WithdrawStatus withdrawStatusEQ;
 

@@ -62,7 +62,24 @@
 </script>
 <script>
 
+  function sum() {
+    $.post("${ctx}/deposit/sum", $('#searchForm').serialize(), function(result) {
+      if(result.code == 0) {
+        var data = result.data;
+        $('#count').text(data.count + '笔');
+        $('#sumAmount').text(data.sumAmount == null? 0.00 + '元' : data.sumAmount.toFixed(2) + '元');
+      }
+    });
+  }
+
   $(function () {
+    
+	sum();
+    
+    $('.filter-submit').click(function(){
+      sum();
+    })
+    
     var grid = new Datatable();
     var template = Handlebars.compile($('#confirmTmpl').html());
 
@@ -258,6 +275,26 @@
   <div class="col-md-12">
     <!-- BEGIN ALERTS PORTLET-->
     <div class="portlet light bordered">
+    <div class="portlet-title">
+      <div class="caption">
+        <i class="icon-docs"></i><span>订单管理 </span>
+      </div>
+      <div class="tools"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+            <div class="note note-info">
+                <h4 class="block">总笔数</h4>
+                <p id="count">0 笔</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="note note-danger">
+                <h4 class="block">总金额</h4>
+                <p id="sumAmount">0.00 元</p>
+            </div>
+        </div>
+      </div>
       <div class="portlet-title">
         <div class="caption">
           <i class="icon-login"></i><span>充值管理 </span>

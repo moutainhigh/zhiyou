@@ -109,6 +109,15 @@ public class DepositController {
 		return null;
 	}
 
+	@RequestMapping(value = "/sum", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> sum(DepositQueryModel depositQueryModel, String phoneEQ, String nicknameLK) {
+		
+		fillQueryModel(depositQueryModel, phoneEQ, nicknameLK);
+		
+		return ResultBuilder.result(depositService.sum(depositQueryModel));
+	}
+	
 	private void fillQueryModel(DepositQueryModel depositQueryModel, String phoneEQ, String nicknameLK) {
 		if(StringUtils.isNotBlank(phoneEQ) || StringUtils.isNotBlank(nicknameLK)) {
 			UserQueryModel userQueryModel = new UserQueryModel();

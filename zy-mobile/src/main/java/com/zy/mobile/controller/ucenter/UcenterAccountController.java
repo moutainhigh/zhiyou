@@ -21,19 +21,14 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.component.DepositComponent;
 import com.zy.component.ProfitComponent;
 import com.zy.component.TransferComponent;
-import com.zy.entity.fnc.Account;
-import com.zy.entity.fnc.Profit;
-import com.zy.entity.fnc.Transfer;
+import com.zy.component.WithdrawComponent;
+import com.zy.entity.fnc.*;
 import com.zy.model.Principal;
-import com.zy.model.query.BankCardQueryModel;
-import com.zy.model.query.ProfitQueryModel;
-import com.zy.model.query.TransferQueryModel;
-import com.zy.service.AccountService;
-import com.zy.service.BankCardService;
-import com.zy.service.ProfitService;
-import com.zy.service.TransferService;
+import com.zy.model.query.*;
+import com.zy.service.*;
 
 @RequestMapping("/u/account")
 @Controller
@@ -50,6 +45,12 @@ public class UcenterAccountController {
 	private ProfitService profitService;
 
 	@Autowired
+	private WithdrawService withdrawService;
+
+	@Autowired
+	private DepositService depositService;
+
+	@Autowired
 	private TransferService transferService;
 	
 	@Autowired
@@ -60,6 +61,12 @@ public class UcenterAccountController {
 
 	@Autowired
 	private ProfitComponent profitComponent;
+
+	@Autowired
+	private WithdrawComponent withdrawComponent;
+
+	@Autowired
+	private DepositComponent depositComponent;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String index(Principal principal, Model model) {
@@ -153,6 +160,79 @@ public class UcenterAccountController {
 		map.put("page", PageBuilder.copyAndConvert(page, transferComponent::buildListVo));
 		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
 		model.addAttribute("type", type);
+		return ResultBuilder.result(map);
+	}
+
+
+	@RequestMapping(value = "/withdraw", method = RequestMethod.GET)
+	public String withdraw(Principal principal, Model model) {
+
+		Date timeLT = new Date();
+
+		WithdrawQueryModel withdrawQueryModel = new WithdrawQueryModel();
+		withdrawQueryModel.setUserIdEQ(principal.getUserId());
+		withdrawQueryModel.setCreatedTimeLT(timeLT);
+		withdrawQueryModel.setPageNumber(0);
+		withdrawQueryModel.setPageSize(pageSize);
+		Page<Withdraw> page  = withdrawService.findPage(withdrawQueryModel);
+
+		model.addAttribute("page", PageBuilder.copyAndConvert(page, withdrawComponent::buildListVo));
+		model.addAttribute("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
+		return "ucenter/account/withdraw";
+	}
+
+	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> withdraw(Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
+		if (timeLT == null) {
+			timeLT = new Date();
+		}
+		WithdrawQueryModel withdrawQueryModel = new WithdrawQueryModel();
+		withdrawQueryModel.setUserIdEQ(principal.getUserId());
+		withdrawQueryModel.setCreatedTimeLT(timeLT);
+		withdrawQueryModel.setPageNumber(pageNumber);
+		withdrawQueryModel.setPageSize(pageSize);
+		Page<Withdraw> page  = withdrawService.findPage(withdrawQueryModel);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("page", PageBuilder.copyAndConvert(page, withdrawComponent::buildListVo));
+		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
+		return ResultBuilder.result(map);
+	}
+
+	@RequestMapping(value = "/deposit", method = RequestMethod.GET)
+	public String deposit(Principal principal, Model model) {
+
+		Date timeLT = new Date();
+
+		DepositQueryModel depositQueryModel = new DepositQueryModel();
+		depositQueryModel.setUserIdEQ(principal.getUserId());
+		depositQueryModel.setCreatedTimeLT(timeLT);
+		depositQueryModel.setPageNumber(0);
+		depositQueryModel.setPageSize(pageSize);
+		Page<Deposit> page  = depositService.findPage(depositQueryModel);
+
+		model.addAttribute("page", PageBuilder.copyAndConvert(page, depositComponent::buildListVo));
+		model.addAttribute("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
+		return "ucenter/account/deposit";
+	}
+
+	@RequestMapping(value = "/deposit", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> deposit(Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
+		if (timeLT == null) {
+			timeLT = new Date();
+		}
+		DepositQueryModel depositQueryModel = new DepositQueryModel();
+		depositQueryModel.setUserIdEQ(principal.getUserId());
+		depositQueryModel.setCreatedTimeLT(timeLT);
+		depositQueryModel.setPageNumber(pageNumber);
+		depositQueryModel.setPageSize(pageSize);
+		Page<Deposit> page  = depositService.findPage(depositQueryModel);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("page", PageBuilder.copyAndConvert(page, depositComponent::buildListVo));
+		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
 		return ResultBuilder.result(map);
 	}
 

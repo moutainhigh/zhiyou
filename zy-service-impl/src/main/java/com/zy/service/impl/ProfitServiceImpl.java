@@ -1,5 +1,7 @@
 package com.zy.service.impl;
 
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.entity.fnc.AccountLog.InOut.支出;
 import static com.zy.entity.fnc.AccountLog.InOut.收入;
 
@@ -19,6 +21,7 @@ import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Profit.ProfitStatus;
 import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.mapper.ProfitMapper;
 import com.zy.model.query.ProfitQueryModel;
@@ -90,8 +93,21 @@ public class ProfitServiceImpl implements ProfitService {
 	}
 
 	@Override
-	public Profit findOne(Long id) {
+	public Profit findOne(@NotNull Long id) {
 		return profitMapper.findOne(id);
+	}
+
+	@Override
+	public void cancel(@NotNull Long id) {
+		Profit profit = profitMapper.findOne(id);
+		validate(profit, NOT_NULL, "profit id " + id + " not found");
+		
+		if(profit.getProfitStatus() != ProfitStatus.待发放) {
+			return ;
+		}
+		
+		profit.setProfitStatus(ProfitStatus.已取消);
+		profitMapper.update(profit);
 	}
 
 }

@@ -14,6 +14,8 @@ public class PolicyAdminVo implements Serializable {
 	/* 原生 */
 	@Field(label = "id")
 	private Long id;
+	@Field(label = "检测报告id")
+	private Long reportId;
 	@Field(label = "用户id")
 	private Long userId;
 	@Field(label = "姓名")

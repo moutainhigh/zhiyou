@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -116,4 +117,41 @@ public class ProfitController {
 		}
 	}
 	
+	@RequiresPermissions("profit:cancel")
+	@RequestMapping(value = "/cancel")
+	public String cancel(@NotNull Long id, RedirectAttributes redirectAttributes) {
+		Profit profit = profitService.findOne(id);
+		validate(profit, NOT_NULL, "profit id" + id + " not found");
+		validate(profit, v -> (v.getProfitStatus() == ProfitStatus.待发放), "ProfitStatus is error, profit id is " + id + "");
+		try {
+			profitService.cancel(id);
+			redirectAttributes.addFlashAttribute(ResultBuilder.ok("收益取消成功！"));
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
+		}
+		return "redirect:/profit";
+	}
+	
+	@RequiresPermissions("profit:cancel")
+	@RequestMapping(value = "/batchCancel")
+	@ResponseBody
+	public Result<?> batchCancel(@NotBlank String ids) {
+		if(StringUtils.isBlank(ids)){
+			return ResultBuilder.error("请至少选择一条记录！");
+		} else {
+			String[] idStringArray = ids.split(",");
+			for(String idString : idStringArray){
+				Long id = new Long(idString);
+				Profit profit = profitService.findOne(id);
+				validate(profit, NOT_NULL, "profit id" + id + " not found");
+				validate(profit, v -> (v.getProfitStatus() == ProfitStatus.待发放), "ProfitStatus is error, profit id is " + id + "");
+				try {
+					profitService.cancel(id);
+				} catch (Exception e) {
+					return ResultBuilder.error(e.getMessage());
+				}
+			}
+			return ResultBuilder.ok("收益取消成功！");
+		}
+	}
 }
