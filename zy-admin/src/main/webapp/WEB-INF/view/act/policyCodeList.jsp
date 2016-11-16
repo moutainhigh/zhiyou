@@ -43,7 +43,7 @@
             title: '是否使用',
             orderable: false,
             render: function (data, type, full) {
-              return data?'已使用':'';
+              return data?'<i class="fa fa-check"></i> 已使用':'';
             }
           },
           {
