@@ -79,7 +79,15 @@ public class UcenterPolicyController {
 
 	@RequestMapping(value = "/create", method = GET)
 	public String create(Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		List<Report> reports = reportService.findAll(ReportQueryModel.builder().userIdEQ(principal.getUserId()).build());
+		List<Report> reports = null;
+		List<Policy> policys = policyService.findAll(PolicyQueryModel.builder().userIdEQ(principal.getUserId()).build());
+		if(!policys.isEmpty()) {
+			Long[] reportIds = policys.stream().map(v -> v.getReportId()).toArray(Long[]::new);
+			reports = reportService.findAll(ReportQueryModel.builder().idIN(reportIds).build());
+		} else {
+			reports = reportService.findAll(ReportQueryModel.builder().userIdEQ(principal.getUserId()).build());
+		}
+		
 		model.addAttribute("reports", reports.stream().map(reportComponent::buildListVo).collect(Collectors.toList()));
 		return "ucenter/policy/policyCreate";
 	}

@@ -131,6 +131,17 @@
 			<if test="isSettledUpEQ != null">
 				and is_settled_up = #{isSettledUpEQ}
 			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				1 = 2
+				</if>
+			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
 			</if>
@@ -209,6 +220,17 @@
 			</if>
 			<if test="isSettledUpEQ != null">
 				and is_settled_up = #{isSettledUpEQ}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}

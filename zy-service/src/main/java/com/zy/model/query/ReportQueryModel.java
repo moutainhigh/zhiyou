@@ -24,6 +24,8 @@ public class ReportQueryModel implements Serializable {
 
 	private Long idEQ;
 
+	private Long[] idIN;
+
 	private Long userIdEQ;
 
 	private Long[] userIdIN;

@@ -48,7 +48,7 @@ public class Report implements Serializable {
 	@Field(label = "id")
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(groups = VO_EXPORT, field = @Field(label = "报告编号", order = 10))
-	@Query({Predicate.EQ})
+	@Query({Predicate.EQ, Predicate.IN})
 	private Long id;
 
 	@NotNull
