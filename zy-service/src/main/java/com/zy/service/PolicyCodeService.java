@@ -9,6 +9,8 @@ import com.zy.model.query.PolicyCodeQueryModel;
 public interface PolicyCodeService {
 
 	PolicyCode findOne(Long id);
+
+	PolicyCode findByCode(String code);
 	
 	List<PolicyCode> createByBatchCode(String batchCode, Long time);
 	
