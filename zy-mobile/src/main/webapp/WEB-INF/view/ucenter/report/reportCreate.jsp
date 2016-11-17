@@ -18,7 +18,7 @@
 <script src="${stccdn}/js/area.js"></script>
 <script type="text/javascript">
   $(function() {
-    var area = new areaInit('province', 'city', 'district');
+    var area = new areaInit('province', 'city', 'district', '${report.areaId}');
     
     $('.image-multi .image-add').imageupload({
       isMultipart : true
@@ -95,7 +95,7 @@
         <div class="list-item">
           <label class="list-label" for="realname">姓名</label>
           <div class="list-text">
-            <input type="text" name="realname" class="form-input" value="" placeholder="填写客户姓名">
+            <input type="text" name="realname" class="form-input" value="${report.realname}" placeholder="填写客户姓名">
           </div>
         </div>
         <div class="list-item">
@@ -103,8 +103,8 @@
           <div class="list-text form-select">
             <select name="gender">
               <option value="">请选择</option>
-              <option value="0">男</option>
-              <option value="1">女</option>
+              <option value="男"<c:if test="${report.gender eq '男'}"> selected="selected"</c:if>>男</option>
+              <option value="女"<c:if test="${report.gender eq '女'}"> selected="selected"</c:if>>女</option>
             </select>
           </div>
         </div>
@@ -136,7 +136,7 @@
             <select name="jobId">
               <option value="">请选择</option>
               <c:forEach items="${jobs}" var="job">
-                <option value="${job.id}">${job.jobName}</option>
+                <option value="${job.id}"${jobe.id eq report.jobId ? ' selected="selected"' : ''}>${job.jobName}</option>
               </c:forEach>
             </select>
           </div>
@@ -144,13 +144,13 @@
         <div class="list-item">
           <label class="list-label" for="age">年龄</label>
           <div class="list-text">
-            <input type="number" name="age" class="form-input" value="" placeholder="填写客户年龄">
+            <input type="number" name="age" class="form-input" value="${report.age}" placeholder="填写客户年龄">
           </div>
         </div>
         <div class="list-item">
           <label class="list-label" for="phone">手机号</label>
           <div class="list-text">
-            <input type="number" name="phone" class="form-input" value="" placeholder="填写客户手机号">
+            <input type="number" name="phone" class="form-input" value="${report.phone}" placeholder="填写客户手机号">
           </div>
         </div>
       </div>
@@ -160,7 +160,7 @@
         <div class="list-item">
           <label class="list-label" for="times">检测次数</label>
           <div class="list-text">
-            <input type="number" name="times" class="form-input" value="" placeholder="第几次检测">
+            <input type="number" name="times" class="form-input" value="${report.times}" placeholder="第几次检测">
           </div>
         </div>
         <div class="list-item">
@@ -174,10 +174,10 @@
           <div class="list-text form-select">
             <select name="reportResult">
               <option value="">请选择</option>
-              <option value="阴性">阴性</option>
-              <option value="弱阳性">弱阳性</option>
-              <option value="阳性">阳性</option>
-              <option value="干扰色">干扰色</option>
+              <option value="阴性"<c:if test="${report.reportResult eq '阴性'}"> selected="selected"</c:if>>阴性</option>
+              <option value="弱阳性"<c:if test="${report.reportResult eq '弱阳性'}"> selected="selected"</c:if>>弱阳性</option>
+              <option value="阳性"<c:if test="${report.reportResult eq '阳性'}"> selected="selected"</c:if>>阳性</option>
+              <option value="干扰色"<c:if test="${report.reportResult eq '干扰色'}"> selected="selected"</c:if>>干扰色</option>
             </select>
           </div>
         </div>
@@ -213,7 +213,7 @@
         <div class="list-item">
           <label class="list-label" for="idCardNumber">身份证号</label>
           <div class="list-text">
-            <input type="text" name="idCardNumber" class="form-input" value="" placeholder="填写身份证号">
+            <input type="text" name="idCardNumber" class="form-input" value="${policy.idCardNumber}" placeholder="填写身份证号">
           </div>
         </div>
         <div class="list-item">
@@ -228,7 +228,7 @@
         <div class="list-title">填写产品使用心得</div>
         <div class="list-item">
           <div class="list-text">
-            <textarea name="text" class="form-input" rows="3" placeholder="填写产品使用心得"></textarea>
+            <textarea name="text" class="form-input" rows="3" placeholder="填写产品使用心得">${report.text}</textarea>
           </div>
         </div>
       </div>

@@ -1,38 +1,54 @@
 package com.zy.mobile.controller.ucenter;
 
-import com.zy.common.model.query.Page;
-import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.component.ReportComponent;
-import com.zy.entity.act.Report;
-import com.zy.entity.fnc.Profit;
-import com.zy.entity.fnc.Transfer;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.UserInfo;
-import com.zy.model.Constants;
-import com.zy.model.Principal;
-import com.zy.model.query.ProfitQueryModel;
-import com.zy.model.query.ReportQueryModel;
-import com.zy.model.query.TransferQueryModel;
-import com.zy.service.*;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.zy.common.exception.BizException;
+import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.component.ReportComponent;
+import com.zy.entity.act.Policy;
+import com.zy.entity.act.PolicyCode;
+import com.zy.entity.act.Report;
+import com.zy.entity.fnc.Profit;
+import com.zy.entity.fnc.Transfer;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo;
+import com.zy.model.BizCode;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
+import com.zy.model.query.ProfitQueryModel;
+import com.zy.model.query.ReportQueryModel;
+import com.zy.model.query.TransferQueryModel;
+import com.zy.service.JobService;
+import com.zy.service.PolicyCodeService;
+import com.zy.service.PolicyService;
+import com.zy.service.ProfitService;
+import com.zy.service.ReportService;
+import com.zy.service.TransferService;
+import com.zy.service.UserInfoService;
+import com.zy.service.UserService;
 
 @RequestMapping("/u/report")
 @Controller
@@ -43,6 +59,12 @@ public class UcenterReportController {
 
 	@Autowired
 	private ReportService reportService;
+
+	@Autowired
+	private PolicyService policyService;
+
+	@Autowired
+	private PolicyCodeService policyCodeService;
 	
 	@Autowired
 	private ProfitService profitService;
@@ -86,7 +108,7 @@ public class UcenterReportController {
 	}
 
 	@RequestMapping(value = "create", method = GET)
-	public String create(Principal principal, Model model, RedirectAttributes redirectAttributes) {
+	public String create(Principal principal, Model model) {
 		/*if(!isCompletedUserInfo(principal.getUserId())) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
 			return "redirect:/u/report";
@@ -99,28 +121,30 @@ public class UcenterReportController {
 	}
 
 	@RequestMapping(value = "/create", method = POST)
-	public String create(Report report, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		/*if(!isCompletedUserInfo(principal.getUserId())) {
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
-			return "redirect:/u/report";
-		}*/
-		User user = userService.findOne(principal.getUserId());
-		/*if (user.getUserRank() == UserRank.V0) {
-			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("只有成为服务商后才能提交检测报告"));
-			return "redirect:/u/report";
-		}*/
-		report.setUserId(principal.getUserId());
+	public String create(Report report, Policy policy, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		try {
-			reportService.create(report);
+			PolicyCode policyCode = policyCodeService.findByCode(policy.getCode());
+			if(policyCode == null) {
+				throw new BizException(BizCode.ERROR, "保险单号[" + policy.getCode() + "]不存在");
+			}
+			if(!policyCode.getIsUsed()) {
+				throw new BizException(BizCode.ERROR, "保险单号[" + policy.getCode() + "]已被使用");
+			}
+			report.setUserId(principal.getUserId());
+			policy.setUserId(principal.getUserId());
+			Report persistentReport = reportService.create(report);
+			policy.setReportId(persistentReport.getId());
+			policyService.create(policy);
 		} catch (Exception e) {
 			model.addAttribute("report", report);
+			model.addAttribute("policy", policy);
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return create(principal, model, redirectAttributes);
+			return create(principal, model);
 		}
 		redirectAttributes.addFlashAttribute(ResultBuilder.ok("上传检测报告成功"));
 		return "redirect:/u/report";
 	}
-
+	
 	@RequestMapping(value = "/{id}", method = GET)
 	public String detail(@PathVariable Long id, Principal principal, Model model) {
 		Report report = findAndValidate(id, principal.getUserId());

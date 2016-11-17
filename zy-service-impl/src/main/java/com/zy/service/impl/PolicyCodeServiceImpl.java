@@ -34,6 +34,11 @@ public class PolicyCodeServiceImpl implements PolicyCodeService {
 	}
 
 	@Override
+	public PolicyCode findByCode(String code) {
+		return policyCodeMapper.findByCode(code);
+	}
+	
+	@Override
 	public List<PolicyCode> createByBatchCode(@NotBlank String batchCode, @NotNull Long time) {
 		long count = policyCodeMapper.count(PolicyCodeQueryModel.builder().batchCodeEQ(batchCode).build());
 		if(count > 0) {
@@ -91,4 +96,5 @@ public class PolicyCodeServiceImpl implements PolicyCodeService {
 		}
 		return s.toString();
     }
+
 }
