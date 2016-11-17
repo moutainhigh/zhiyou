@@ -96,7 +96,7 @@ public class UcenterPolicyController {
 	public String create(Policy policy, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		policy.setUserId(principal.getUserId());
 		try {
-			//TODO policyService.create(policy);
+			policyService.create(policy);
 		} catch (Exception e) {
 			model.addAttribute("policy", policy);
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
