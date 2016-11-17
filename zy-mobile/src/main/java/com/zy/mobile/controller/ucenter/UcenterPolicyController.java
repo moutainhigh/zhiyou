@@ -3,6 +3,8 @@ package com.zy.mobile.controller.ucenter;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -79,13 +81,19 @@ public class UcenterPolicyController {
 
 	@RequestMapping(value = "/create", method = GET)
 	public String create(Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		List<Report> reports = null;
+		List<Report> reports = new ArrayList<Report>();
+		List<Report> all = reportService.findAll(ReportQueryModel.builder().userIdEQ(principal.getUserId()).build());
 		List<Policy> policys = policyService.findAll(PolicyQueryModel.builder().userIdEQ(principal.getUserId()).build());
 		if(!policys.isEmpty()) {
-			Long[] reportIds = policys.stream().map(v -> v.getReportId()).toArray(Long[]::new);
-			reports = reportService.findAll(ReportQueryModel.builder().idIN(reportIds).build());
-		} else {
-			reports = reportService.findAll(ReportQueryModel.builder().userIdEQ(principal.getUserId()).build());
+			List<Long> reportIds = policys.stream().map(v -> v.getReportId()).collect(Collectors.toList());
+			reports = all.stream().filter(report -> {
+				for(Long reportId : reportIds) {
+					if(reportId.equals(report.getId())) {
+						return false;
+					}
+				}
+				return true;
+			}).collect(Collectors.toList());
 		}
 		
 		model.addAttribute("reports", reports.stream().map(reportComponent::buildListVo).collect(Collectors.toList()));
