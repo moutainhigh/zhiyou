@@ -96,8 +96,8 @@
           <div class="list-text form-select">
             <select name="gender">
               <option value="">请选择</option>
-              <option value="0"<c:if test="${report.gender eq '男'}"> selected</c:if>>男</option>
-              <option value="1"<c:if test="${report.gender eq '女'}"> selected</c:if>>女</option>
+              <option value="男"<c:if test="${report.gender eq '男'}"> selected</c:if>>男</option>
+              <option value="女"<c:if test="${report.gender eq '女'}"> selected</c:if>>女</option>
             </select>
           </div>
         </div>

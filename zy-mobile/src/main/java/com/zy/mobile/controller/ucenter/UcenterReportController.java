@@ -108,7 +108,7 @@ public class UcenterReportController {
 	}
 
 	@RequestMapping(value = "create", method = GET)
-	public String create(Principal principal, Model model, RedirectAttributes redirectAttributes) {
+	public String create(Principal principal, Model model) {
 		/*if(!isCompletedUserInfo(principal.getUserId())) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
 			return "redirect:/u/report";
@@ -122,16 +122,16 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "/create", method = POST)
 	public String create(Report report, Policy policy, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		PolicyCode policyCode = policyCodeService.findByCode(policy.getCode());
-		if(policyCode == null) {
-			throw new BizException(BizCode.ERROR, "保险单号[" + policy.getCode() + "]不存在");
-		}
-		if(!policyCode.getIsUsed()) {
-			throw new BizException(BizCode.ERROR, "保险单号[" + policy.getCode() + "]已被使用");
-		}
-		report.setUserId(principal.getUserId());
-		policy.setUserId(principal.getUserId());
 		try {
+			PolicyCode policyCode = policyCodeService.findByCode(policy.getCode());
+			if(policyCode == null) {
+				throw new BizException(BizCode.ERROR, "保险单号[" + policy.getCode() + "]不存在");
+			}
+			if(!policyCode.getIsUsed()) {
+				throw new BizException(BizCode.ERROR, "保险单号[" + policy.getCode() + "]已被使用");
+			}
+			report.setUserId(principal.getUserId());
+			policy.setUserId(principal.getUserId());
 			Report persistentReport = reportService.create(report);
 			policy.setReportId(persistentReport.getId());
 			policyService.create(policy);
@@ -139,7 +139,7 @@ public class UcenterReportController {
 			model.addAttribute("report", report);
 			model.addAttribute("policy", policy);
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return create(principal, model, redirectAttributes);
+			return create(principal, model);
 		}
 		redirectAttributes.addFlashAttribute(ResultBuilder.ok("上传检测报告成功"));
 		return "redirect:/u/report";
