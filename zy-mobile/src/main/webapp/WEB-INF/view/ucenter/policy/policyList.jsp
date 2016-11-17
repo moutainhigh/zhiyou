@@ -62,12 +62,10 @@
   }
 </script>
 <script id="rowTpl" type="text/html">
-  <a class="list-item" href="${ctx}/u/policy/{{ d.id }}">
+  <a class="list-item" href="javascript:;">
     <div class="list-text policy">
-      <div class="lh-30 fs-14">
-        <span>报告编号：{{ d.reportId }}</span>
-      </div>
-      <div class="lh-30">{{ d.realname }}<span class="ml-10 fs-12 font-999">&lt;{{ d.gender }}  {{ d.age }}岁&gt;</span><span class="right fs-12 font-999">{{ d.phone }}</span></div>
+      <div class="lh-30 fs-14">报告编号：<span class="fs-13 font-orange">{{ d.reportId }}</span></div>
+      <div class="lh-30 fs-14">{{ d.realname }}<span class="ml-10 fs-12 font-999">&lt;{{ d.gender }}  {{ d.age }}岁&gt;</span><span class="right fs-12 font-999">{{ d.phone }}</span></div>
     </div>
   </a>
 </script>
@@ -96,10 +94,10 @@
     <c:if test="${not empty page.data}">
       <div class="list-group mb-0">
         <c:forEach items="${page.data}" var="policy">
-        <a class="list-item" href="${ctx}/u/policy/${policy.id}">
+        <a class="list-item" href="javascript:;">
           <div class="list-text policy">
-            <div class="lh-30 fs-14"><span>保单编号：${policy.code}</span></div>
-            <div class="lh-30">${policy.realname}<span class="ml-10 fs-12 font-999">&lt;${policy.gender}&gt;</span><span class="right fs-12 font-999">${policy.phone}</span></div>
+            <div class="lh-30 fs-14">保单编号：<span class="font-orange fs-13">${policy.code}</span></div>
+            <div class="lh-30 fs-14">${policy.realname}<span class="ml-10 fs-12 font-999">&lt;${policy.gender}&gt;</span><span class="right fs-12 font-999">${policy.phone}</span></div>
           </div>
         </a>
         </c:forEach>
