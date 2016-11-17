@@ -8,7 +8,7 @@ import com.zy.model.query.PolicyQueryModel;
 
 public interface PolicyService {
 
-	Policy create(Policy policy, Long reportId);
+	Policy create(Policy policy);
 	
 	Policy findOne(Long id);
 	

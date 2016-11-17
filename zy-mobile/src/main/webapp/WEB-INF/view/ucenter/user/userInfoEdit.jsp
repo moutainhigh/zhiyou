@@ -43,7 +43,8 @@
           required : true
         },
         'idCardNumber' : {
-          required : true
+          required : true,
+          length : 18
         },
         'image1' : {
           required : true
@@ -69,7 +70,8 @@
           required : '请填写真实姓名'
         },
         'idCardNumber' : {
-          required : '请填写身份证号码'
+          required : '请填写身份证号码',
+          length : '请输入18位身份证号'
         },
         'image1' : {
           required : '请上传身份证正面照'
@@ -272,7 +274,7 @@
         <div class="list-item">
           <label class="list-label">身份证号</label>
           <div class="list-text">
-            <input type="text" id="idCardNumber" name="idCardNumber" class="form-input" value="${userInfo.realname}" placeholder="填写身份证号">
+            <input type="text" id="idCardNumber" name="idCardNumber" class="form-input" value="${userInfo.idCardNumber}" placeholder="填写身份证号">
           </div>
         </div>
         <div class="list-item">
