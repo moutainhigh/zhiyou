@@ -124,6 +124,12 @@
           <div id="phone" class="list-text"></div>
         </div>
         <div class="list-item">
+          <label class="list-label" for="code">保单编号</label>
+          <div class="list-text">
+            <input type="text" name="code" class="form-input" value="" placeholder="填写保单编号">
+          </div>
+        </div>
+        <div class="list-item">
           <label class="list-label" for="idCardNumber">身份证号</label>
           <div class="list-text">
             <input type="text" name="idCardNumber" class="form-input" value="" placeholder="填写身份证号">

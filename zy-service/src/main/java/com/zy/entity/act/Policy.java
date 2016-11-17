@@ -1,8 +1,25 @@
 package com.zy.entity.act;
 
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+
 import com.zy.common.extend.StringBinder;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo.Gender;
+
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -13,14 +30,6 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.URL;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "act_policy")
@@ -83,7 +92,7 @@ public class Policy implements Serializable {
 	@NotNull
 	@Field(label = "编号")
 	@Query({Predicate.LK, Predicate.EQ})
-	@View(groups = {VO_ADMIN})
+	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@Column(length = 60, unique = true)
 	private String code;
 
