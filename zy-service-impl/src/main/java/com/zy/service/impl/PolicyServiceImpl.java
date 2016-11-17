@@ -24,7 +24,6 @@ import com.zy.mapper.PolicyMapper;
 import com.zy.mapper.ReportMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
-import com.zy.model.query.PolicyCodeQueryModel;
 import com.zy.model.query.PolicyQueryModel;
 import com.zy.service.PolicyService;
 
@@ -59,13 +58,12 @@ public class PolicyServiceImpl implements PolicyService {
 		
 		String code = policy.getCode();
 		validate(code, NOT_BLANK, "code is null");
-		List<PolicyCode> policyCodes = policyCodeMapper.findAll(PolicyCodeQueryModel.builder().codeEQ(code).build());
-		if(policyCodes.isEmpty()) {
-			throw new BizException(BizCode.ERROR, "保险单号[" + code + "]不存在");
+		PolicyCode policyCode = policyCodeMapper.findByCode(policy.getCode());
+		if(policyCode == null) {
+			throw new BizException(BizCode.ERROR, "保险单号[" + policy.getCode() + "]不存在");
 		}
-		PolicyCode policyCode = policyCodes.get(0);
-		if(!policyCode.getIsUsed()) {
-			throw new BizException(BizCode.ERROR, "保险单号[" + code + "]已被使用");
+		if(policyCode.getIsUsed()) {
+			throw new BizException(BizCode.ERROR, "保险单号[" + policy.getCode() + "]已被使用");
 		}
 		
 		long count = policyMapper.count(PolicyQueryModel.builder().reportIdEQ(reportId).build());

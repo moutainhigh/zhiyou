@@ -127,7 +127,7 @@ public class UcenterReportController {
 			if(policyCode == null) {
 				throw new BizException(BizCode.ERROR, "保险单号[" + policy.getCode() + "]不存在");
 			}
-			if(!policyCode.getIsUsed()) {
+			if(policyCode.getIsUsed()) {
 				throw new BizException(BizCode.ERROR, "保险单号[" + policy.getCode() + "]已被使用");
 			}
 			report.setUserId(principal.getUserId());
