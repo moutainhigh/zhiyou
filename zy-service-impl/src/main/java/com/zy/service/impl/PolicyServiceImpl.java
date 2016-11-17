@@ -45,8 +45,9 @@ public class PolicyServiceImpl implements PolicyService {
 	private UserMapper userMapper;
 	
 	@Override
-	public Policy create(@NotNull Policy policy, @NotNull Long reportId) {
-		
+	public Policy create(@NotNull Policy policy) {
+		Long reportId = policy.getReportId();
+		validate(reportId, NOT_NULL, "policy -> report id is null");
 		Report report = ReportMapper.findOne(reportId);
 		validate(report, NOT_NULL, "report id" + reportId +  " not found");
 		
