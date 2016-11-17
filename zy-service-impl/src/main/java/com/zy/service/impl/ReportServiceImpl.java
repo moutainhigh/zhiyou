@@ -257,7 +257,7 @@ public class ReportServiceImpl implements ReportService {
 
 		Report persistence = reportMapper.findOne(id);
 		validate(persistence, NOT_NULL, "report id" + id + " not found");
-		if (persistence.getConfirmStatus() == ConfirmStatus.已通过) {
+		if (persistence.getConfirmStatus() != ConfirmStatus.未通过 && persistence.getPreConfirmStatus() != ConfirmStatus.待审核) {
 			throw new BizException(BizCode.ERROR, "状态不匹配");
 		}
 

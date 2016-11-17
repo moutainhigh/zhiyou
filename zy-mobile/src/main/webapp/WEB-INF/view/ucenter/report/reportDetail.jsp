@@ -46,7 +46,8 @@
   <header class="header">
     <h1>检测报告</h1>
     <a href="${ctx}/u/report" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <c:if test="${report.confirmStatus != '已通过'}">
+    ${report.preConfirmStatus }
+    <c:if test="${report.confirmStatus == '未通过' or report.preConfirmStatus == '待审核'}">
     <a href="${ctx}/u/report/edit?id=${report.id}" class="button-right"><i class="fa fa-edit"></i></a>
     </c:if>
   </header>
