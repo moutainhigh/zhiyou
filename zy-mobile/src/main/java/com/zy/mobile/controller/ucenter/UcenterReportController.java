@@ -177,6 +177,10 @@ public class UcenterReportController {
 		}*/
 		Report report = findAndValidate(id, principal.getUserId());
 		validate(report, NOT_NULL, "report id" + id + " not found");
+		if(report.getConfirmStatus() != ConfirmStatus.未通过 && report.getPreConfirmStatus() != ConfirmStatus.待审核) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("检测报告状态不匹配,不能修改"));
+			return "redirect:/u/report";
+		}
 		model.addAttribute("jobs", this.jobService.findAll());
 		//model.addAttribute("tags", getTags());
 		model.addAttribute("report", reportComponent.buildDetailVo(report));
@@ -193,7 +197,10 @@ public class UcenterReportController {
 		validate(id, NOT_NULL, "id is null");
 		Report persistence = reportService.findOne(id);
 		validate(persistence, NOT_NULL, "report id" + id + " not found");
-
+		if(persistence.getConfirmStatus() != ConfirmStatus.未通过 && persistence.getPreConfirmStatus() != ConfirmStatus.待审核) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("检测报告状态不匹配,不能修改"));
+			return "redirect:/u/report";
+		}
 		try {
 			reportService.modify(report);
 		} catch (Exception e) {
