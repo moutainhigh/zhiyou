@@ -125,10 +125,10 @@ public class UcenterReportController {
 		try {
 			PolicyCode policyCode = policyCodeService.findByCode(policy.getCode());
 			if(policyCode == null) {
-				throw new BizException(BizCode.ERROR, "保险单号[" + policy.getCode() + "]不存在");
+				throw new BizException(BizCode.ERROR, "保险单号不存在[" + policy.getCode() + "]");
 			}
 			if(policyCode.getIsUsed()) {
-				throw new BizException(BizCode.ERROR, "保险单号[" + policy.getCode() + "]已被使用");
+				throw new BizException(BizCode.ERROR, "保险单号已被使用[" + policy.getCode() + "]");
 			}
 			report.setUserId(principal.getUserId());
 			policy.setUserId(principal.getUserId());
