@@ -1,5 +1,12 @@
 package com.zy.admin.controller.act;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,12 +20,15 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
+import com.zy.common.util.ExcelUtils;
+import com.zy.common.util.WebUtils;
 import com.zy.component.PolicyCodeComponent;
 import com.zy.entity.act.PolicyCode;
 import com.zy.model.Constants;
 import com.zy.model.query.PolicyCodeQueryModel;
 import com.zy.service.PolicyCodeService;
 import com.zy.vo.PolicyCodeAdminVo;
+import com.zy.vo.PolicyCodeExportVo;
 
 
 @RequestMapping("/policyCode")
@@ -65,5 +75,21 @@ public class PolicyCodeController {
 			return "redirect:/policyCode/create";
 		}
 		
+	}
+	
+	@RequiresPermissions("policy:export")
+	@RequestMapping("/export")
+	public String export(PolicyCodeQueryModel policyCodeQueryModel,
+			HttpServletResponse response) throws IOException {
+
+		List<PolicyCode> polisyCodes = policyCodeService.findAll(policyCodeQueryModel);
+		String fileName = "保险单号.xlsx";
+		WebUtils.setFileDownloadHeader(response, fileName);
+
+		List<PolicyCodeExportVo> policyExportVos = polisyCodes.stream().map(policyCodeComponent::buildExportVo).collect(Collectors.toList());
+		OutputStream os = response.getOutputStream();
+		ExcelUtils.exportExcel(policyExportVos, PolicyCodeExportVo.class, os);
+
+		return null;
 	}
 }

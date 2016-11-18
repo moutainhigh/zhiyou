@@ -8,6 +8,7 @@ import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.PolicyCode;
 import com.zy.util.GcUtils;
 import com.zy.vo.PolicyCodeAdminVo;
+import com.zy.vo.PolicyCodeExportVo;
 
 @Component
 public class PolicyCodeComponent {
@@ -27,5 +28,13 @@ public class PolicyCodeComponent {
 			policyCodeAdminVo.setCreatedTimeLabel(GcUtils.formatDate(createdTime, TIME_PATTERN));
 		}
 		return policyCodeAdminVo;
+	}
+	
+	public PolicyCodeExportVo buildExportVo(PolicyCode policyCode) {
+		PolicyCodeExportVo policyCodeExportVo = new PolicyCodeExportVo();
+		BeanUtils.copyProperties(policyCode, policyCodeExportVo);
+		
+		policyCodeExportVo.setIsUsedLabel(policyCode.getIsUsed()? "已使用" : "");
+		return policyCodeExportVo;
 	}
 }

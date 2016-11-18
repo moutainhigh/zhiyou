@@ -64,9 +64,13 @@
 
 
   });
+  <shiro:hasPermission name="policy:export">
+  function policyExport() {
+    location.href = '${ctx}/policy/export?' + $('#searchForm').serialize();
+  }
+  </shiro:hasPermission>
 </script>
 <!-- END JAVASCRIPTS -->
-
 
 <!-- BEGIN PAGE HEADER-->
 <div class="page-bar">
@@ -110,6 +114,14 @@
                   <i class="fa fa-search"></i> 查询
                 </button>
               </div>
+
+              <shiro:hasPermission name="policy:export">
+                <div class="form-group">
+                  <button type="button" class="btn yellow" onClick="policyExport()">
+                    <i class="fa fa-file-excel-o"></i> 导出Excel
+                  </button>
+                </div>
+              </shiro:hasPermission>
 
             </form>
           </div>

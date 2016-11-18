@@ -50,13 +50,6 @@
 		where id = #{policyCode.id}
 	</update>
 
-	<select id="findByCode" resultMap="baseResultMap" parameterType="String">
-		select
-		id,code,created_time,used_time,is_used,batch_code,version
-		from `act_policy_code`
-		where code = #{code}
-	</select>
-	
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
 		id,code,created_time,used_time,is_used,batch_code,version
@@ -141,6 +134,13 @@
 				and used_time &gt;= #{usedTimeGTE}
 			</if>
 		</where>
+	</select>
+
+	<select id="findByCode" resultMap="baseResultMap" parameterType="String">
+		select
+		id,code,created_time,used_time,is_used,batch_code,version
+		from `act_policy_code`
+		where code = #{code}
 	</select>
 
 </mapper>

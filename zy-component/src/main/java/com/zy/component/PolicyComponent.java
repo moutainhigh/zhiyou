@@ -6,9 +6,11 @@ import org.springframework.stereotype.Component;
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Policy;
 import com.zy.entity.usr.User;
+import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.PolicyAdminVo;
 import com.zy.vo.PolicyDetailVo;
+import com.zy.vo.PolicyExportVo;
 import com.zy.vo.PolicyListVo;
 
 @Component
@@ -41,5 +43,13 @@ public class PolicyComponent {
 		BeanUtils.copyProperties(policy, policyDetailVo);
 		
 		return policyDetailVo;
+	}
+	
+	public PolicyExportVo buildExportVo(Policy policy) {
+		PolicyExportVo policyExportVo = new PolicyExportVo();
+		BeanUtils.copyProperties(policy, policyExportVo);
+		
+		policyExportVo.setBirthdayLabel(GcUtils.formatDate(policy.getBirthday(), "yyyy-MM-dd"));
+		return policyExportVo;
 	}
 }

@@ -37,23 +37,25 @@ import lombok.Setter;
 @Setter
 @Type(label = "保险单")
 @QueryModel
-@ViewObject(groups = {Policy.VO_LIST, Policy.VO_DETAIL, Policy.VO_ADMIN})
+@ViewObject(groups = {Policy.VO_LIST, Policy.VO_DETAIL, Policy.VO_ADMIN, Policy.VO_EXPORT})
 public class Policy implements Serializable {
 
 	public static final String VO_ADMIN = "PolicyAdminVo";
 	public static final String VO_LIST = "PolicyListVo";
 	public static final String VO_DETAIL = "PolicyDetailVo";
+	public static final String VO_EXPORT = "PolicyExportVo";
 
 	@Id
 	@Field(label = "id")
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@Query({Predicate.EQ})
+	@View(groups = VO_EXPORT, field = @Field(label = "序号", order = 10))
 	private Long id;
 
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "检测报告id")
-	@View
+	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	private Long reportId;
 	
 	@NotNull
@@ -67,17 +69,20 @@ public class Policy implements Serializable {
 	@Field(label = "姓名")
 	@Query({Predicate.LK, Predicate.EQ})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(groups = VO_EXPORT, field = @Field(label = "姓名", order = 20))
 	private String realname;
 
 	//@NotNull
 	@Field(label = "出生年月日")
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@Temporal(TemporalType.DATE)
+	@View(name = "birthdayLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "出生年月", order = 50))
 	private Date birthday;
 	
 	//@NotNull
 	@Field(label = "性别")
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(groups = VO_EXPORT, field = @Field(label = "性别", order = 40))
 	private Gender gender;
 	
 	@Column(length = 60)
@@ -87,6 +92,7 @@ public class Policy implements Serializable {
 	@Query(Predicate.EQ)
 	@Field(label = "手机号")
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(groups = VO_EXPORT, field = @Field(label = "手机号码", order = 60))
 	private String phone;
 
 	@NotNull
@@ -98,22 +104,19 @@ public class Policy implements Serializable {
 
 	@NotBlank
 	@Field(label = "身份证号")
-	@View
+	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@Query(Predicate.LK)
+	@View(groups = VO_EXPORT, field = @Field(label = "证件号码", order = 30))
 	private String idCardNumber;
 
 	@URL
 	@StringBinder
 	@Field(label = "图片1")
-	@View
-	@View(name = "image1Thumbnail")
 	private String image1;
 
 	@URL
 	@StringBinder
 	@Field(label = "图片2")
-	@View
-	@View(name = "image2Thumbnail")
 	private String image2;
 
 	@NotNull

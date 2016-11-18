@@ -30,17 +30,9 @@ public class PolicyAdminVo implements Serializable {
 	private String code;
 	@Field(label = "身份证号")
 	private String idCardNumber;
-	@Field(label = "图片1")
-	private String image1;
-	@Field(label = "图片2")
-	private String image2;
 
 	/* 扩展 */
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
-	@Field(label = "图片1")
-	private String image1Thumbnail;
-	@Field(label = "图片2")
-	private String image2Thumbnail;
 
 }

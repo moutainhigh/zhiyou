@@ -2,7 +2,6 @@ package com.zy.mapper;
 
 
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 
 import com.zy.entity.act.PolicyCode;
@@ -20,11 +19,11 @@ public interface PolicyCodeMapper {
 	int delete(Long id);
 
 	PolicyCode findOne(Long id);
-	
-	PolicyCode findByCode(String code);
 
 	List<PolicyCode> findAll(PolicyCodeQueryModel policyCodeQueryModel);
 
 	long count(PolicyCodeQueryModel policyCodeQueryModel);
+
+	PolicyCode findByCode(String code);
 
 }

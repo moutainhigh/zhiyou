@@ -22,10 +22,11 @@ import java.util.Date;
 @Setter
 @Type(label = "保险单号")
 @QueryModel
-@ViewObject(groups = {PolicyCode.VO_ADMIN})
+@ViewObject(groups = {PolicyCode.VO_ADMIN, PolicyCode.VO_EXPORT})
 public class PolicyCode implements Serializable {
 
 	public static final String VO_ADMIN = "PolicyCodeAdminVo";
+	public static final String VO_EXPORT = "PolicyCodeExportVo";
 
 	@Id
 	@Field(label = "id")
@@ -37,6 +38,7 @@ public class PolicyCode implements Serializable {
 	@Field(label = "编号")
 	@Query({Predicate.LK, Predicate.EQ})
 	@View(groups = {VO_ADMIN})
+	@View(groups = VO_EXPORT, field = @Field(label = "编号", order = 10))
 	@Column(length = 60, unique = true)
 	private String code;
 
@@ -57,12 +59,14 @@ public class PolicyCode implements Serializable {
 	@View(groups = {VO_ADMIN})
 	@NotNull
 	@Query(Predicate.EQ)
+	@View(name = "isUsedLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "是否使用", order = 15))
 	private Boolean isUsed;
 
 	@NotBlank
 	@Field(label = "批次号")
 	@Query({Predicate.EQ})
 	@View(groups = {VO_ADMIN})
+	@View(groups = VO_EXPORT, field = @Field(label = "批次号", order = 5))
 	private String batchCode;
 
 	@NotNull

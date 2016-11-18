@@ -56,6 +56,11 @@
     });
 
   });
+  <shiro:hasPermission name="policyCode:export">
+  function policyCodeExport() {
+    location.href = '${ctx}/policyCode/export?' + $('#searchForm').serialize();
+  }
+  </shiro:hasPermission>
 </script>
 <!-- END JAVASCRIPTS -->
 
@@ -113,6 +118,14 @@
                   <i class="fa fa-search"></i> 查询
                 </button>
               </div>
+
+              <shiro:hasPermission name="policyCode:export">
+                <div class="form-group">
+                  <button type="button" class="btn yellow" onClick="policyCodeExport()">
+                    <i class="fa fa-file-excel-o"></i> 导出Excel
+                  </button>
+                </div>
+              </shiro:hasPermission>
 
             </form>
           </div>
