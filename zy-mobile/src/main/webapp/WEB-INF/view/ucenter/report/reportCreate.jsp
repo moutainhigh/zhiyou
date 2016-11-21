@@ -26,6 +26,7 @@
 
     //验证
     $('.valid-form').validate({
+      ignore: ':hidden',
       rules : {
         'realname' : {
           required : true
@@ -58,12 +59,24 @@
         },
         'text' : {
           required : true
+        },
+        'code' : {
+          required : true
+        },
+        'idCardNumber' : {
+          required : true
+        },
+        'birthday' : {
+          required : true
         }
       },
       submitHandler : function(form) {
         if($('input[name="image"]').length < 1) {
           messageFlash('请至少上传一张图片');
           return;
+        }
+        if($('#hasPolicy').is(':checked')) {
+          //
         }
         form.submit();
       }
@@ -191,6 +204,19 @@
           </div>
         </div>
         
+      </div>
+      
+      <div class="list-group">
+        <div class="list-title">填写产品使用心得</div>
+        <div class="list-item">
+          <div class="list-text">
+            <textarea name="text" class="form-input" rows="3" placeholder="填写产品使用心得">${report.text}</textarea>
+          </div>
+        </div>
+      </div>
+      
+      <div class="list-group hide">
+        <div class="list-title">保单信息</div>
         <div class="list-item">
           <div class="list-text">是否添加保单</div>
           <div class="list-unit form-switch">
@@ -199,36 +225,24 @@
             <label class="i-switch" for="hasPolicy"></label>
           </div>
         </div>
-
-      </div>
-      
-      <div id="policyInfo" class="list-group hide">
-        <div class="list-title">保单信息</div>
-        <div class="list-item">
-          <label class="list-label" for="code">保单编号</label>
-          <div class="list-text">
-            <input type="text" name="code" class="form-input" value="" placeholder="填写保单编号">
+        <div id="policyInfo">
+          <div class="list-item">
+            <label class="list-label" for="code">保单编号</label>
+            <div class="list-text">
+              <input type="text" name="code" class="form-input" value="" placeholder="填写保单编号">
+            </div>
           </div>
-        </div>
-        <div class="list-item">
-          <label class="list-label" for="idCardNumber">身份证号</label>
-          <div class="list-text">
-            <input type="text" name="idCardNumber" class="form-input" value="${policy.idCardNumber}" placeholder="填写身份证号">
+          <div class="list-item">
+            <label class="list-label" for="idCardNumber">身份证号</label>
+            <div class="list-text">
+              <input type="text" name="idCardNumber" class="form-input" value="${policy.idCardNumber}" placeholder="填写身份证号">
+            </div>
           </div>
-        </div>
-        <div class="list-item">
-          <label class="list-label">生日</label>
-          <div class="list-text">
-            <input type="date" name="birthday" class="form-input" value="" placeholder="填写生日  1900-01-01">
-          </div>
-        </div>
-      </div>
-      
-      <div class="list-group">
-        <div class="list-title">填写产品使用心得</div>
-        <div class="list-item">
-          <div class="list-text">
-            <textarea name="text" class="form-input" rows="3" placeholder="填写产品使用心得">${report.text}</textarea>
+          <div class="list-item">
+            <label class="list-label">生日</label>
+            <div class="list-text">
+              <input type="date" name="birthday" class="form-input" value="" placeholder="填写生日  1900-01-01">
+            </div>
           </div>
         </div>
       </div>
