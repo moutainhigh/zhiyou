@@ -149,7 +149,7 @@
             <select name="jobId">
               <option value="">请选择</option>
               <c:forEach items="${jobs}" var="job">
-                <option value="${job.id}"${jobe.id eq report.jobId ? ' selected="selected"' : ''}>${job.jobName}</option>
+                <option value="${job.id}"${job.id eq report.jobId ? ' selected="selected"' : ''}>${job.jobName}</option>
               </c:forEach>
             </select>
           </div>
