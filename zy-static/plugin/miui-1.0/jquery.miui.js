@@ -147,11 +147,11 @@
 
     var html = '<div class="header-message ';
     if (options.type == 'success') {
-    	html += 'header-message-success';
+      html += 'header-message-success';
     } else if (options.type == 'error') {
-    	html += 'header-message-error';
+      html += 'header-message-error';
     } else {
-    	html += 'header-message-info';
+      html += 'header-message-info';
     }
     html += '">';
     html += '<i class="message-icon"></i>';
@@ -162,18 +162,20 @@
     html += '</div>';
     var $message = $(html);
     
-    var onClose = function() {
-      if ($.isFunction(options.callback)) {
+    if ($.isFunction(options.callback)) {
+      $message.click(function(){
         if (options.callback.call($message, window.jQuery || window.Zepto) != false) {
           $message.slideUp(300, function(){
             $message.remove();
           });
         }
-      } else {
-        $message.slideUp(300, function(){
-          $message.remove();
-        });
-      }
+      });
+    }
+    
+    var onClose = function() {
+      $message.slideUp(300, function(){
+        $message.remove();
+      });
     };
     
     if (options.closable){

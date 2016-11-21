@@ -200,15 +200,15 @@
   display: none; width: 100%; line-height: 24px;
   padding: 12px 15px; background: #f7e2e1; z-index: 1100;
 }
-.header-message-success {
+.header-message-success, .header-message-success a {
   color: #235836;
   background-color: rgba(222, 245, 188, 1);
 }
-.header-message-info {
+.header-message-info, .header-message-info a {
   color: #108198;
   background-color: rgba(201, 221, 241, 1);
 }
-.header-message-error {
+.header-message-error, .header-message-error a {
   color: #d60539;
   background-color: rgba(245, 189, 189, 1);
 }

@@ -22,7 +22,7 @@
       $('.header-popmenu').toggle(300);
     });
     
-    //$.message('你好', 'info', 2);
+    $.message('你好', 'info', 0);
     
     $('#deliverType0').click(function(){
       $('#logistics').slideUp(300);
