@@ -248,7 +248,7 @@
           <div class="list-text">是否接受更新提醒<small>switch开关</small></div>
           <div class="list-unit form-switch">
             <input type="hidden" name="_isDefault" value="false">
-            <input type="checkbox" id="isDefault" name="isDefault" value="true">
+            <input type="checkbox" id="isDefault" name="isDefault">
             <label class="i-switch" for="isDefault"></label>
           </div>
         </div>

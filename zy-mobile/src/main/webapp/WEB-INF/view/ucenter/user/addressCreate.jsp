@@ -127,7 +127,7 @@
           <div class="list-text">设为默认地址</div>
           <div class="list-unit form-switch">
             <input type="hidden" name="_isDefault" value="false">
-            <input type="checkbox" id="isDefault" name="isDefault" value="true">
+            <input type="checkbox" id="isDefault" name="isDefault">
             <label class="i-switch" for="isDefault"></label>
           </div>
         </div>

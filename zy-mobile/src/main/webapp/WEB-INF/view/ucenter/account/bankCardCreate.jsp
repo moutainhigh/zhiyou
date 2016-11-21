@@ -169,7 +169,7 @@
           <div class="list-text">设为默认银行卡</div>
           <div class="list-unit form-switch">
             <input type="hidden" name="_isDefault" value="false">
-            <input type="checkbox" id="isDefault" name="isDefault" value="true"<c:if test="${bankCard.isDefault}"> checked="checked"</c:if>>
+            <input type="checkbox" id="isDefault" name="isDefault"<c:if test="${bankCard.isDefault}"> checked="checked"</c:if>>
             <label class="i-switch" for="isDefault"></label>
           </div>
         </div>
