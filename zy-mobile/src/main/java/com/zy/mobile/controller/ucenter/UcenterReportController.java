@@ -121,7 +121,7 @@ public class UcenterReportController {
 	}
 
 	@RequestMapping(value = "/create", method = POST)
-	public String create(Boolean hasPolicy, Report report, Policy policy, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+	public String create(boolean hasPolicy, Report report, Policy policy, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		try {
 			if(hasPolicy && policy != null) {
 				if(policy.getCode() == null) {
