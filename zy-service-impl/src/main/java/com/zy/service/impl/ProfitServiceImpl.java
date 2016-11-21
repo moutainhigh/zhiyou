@@ -1,21 +1,7 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.entity.fnc.AccountLog.InOut.支出;
-import static com.zy.entity.fnc.AccountLog.InOut.收入;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import com.zy.Config;
+import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
@@ -24,8 +10,22 @@ import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Profit.ProfitStatus;
 import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.mapper.ProfitMapper;
+import com.zy.model.BizCode;
 import com.zy.model.query.ProfitQueryModel;
 import com.zy.service.ProfitService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.entity.fnc.AccountLog.InOut.支出;
+import static com.zy.entity.fnc.AccountLog.InOut.收入;
 
 @Service
 @Validated
@@ -101,13 +101,17 @@ public class ProfitServiceImpl implements ProfitService {
 	public void cancel(@NotNull Long id) {
 		Profit profit = profitMapper.findOne(id);
 		validate(profit, NOT_NULL, "profit id " + id + " not found");
-		
-		if(profit.getProfitStatus() != ProfitStatus.待发放) {
-			return ;
+
+		if (profit.getProfitStatus() == ProfitStatus.已取消) {
+			return;
+		} else if (profit.getProfitStatus() != ProfitStatus.待发放) {
+			throw new BizException(BizCode.ERROR, "只有待发放收益才能取消");
 		}
-		
+
 		profit.setProfitStatus(ProfitStatus.已取消);
-		profitMapper.update(profit);
+		if (profitMapper.update(profit) == 0) {
+			throw new ConcurrentException();
+		}
 	}
 
 }
