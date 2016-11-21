@@ -8,7 +8,7 @@
       if(result.code == 0) {
         var data = result.data;
         $('#countNumber').text(data.countNumber + '个');
-        $('#sumQuantity').text(data.sumQuantity == null? 0 + '支' : data.sumQuantity + '个');
+        $('#sumQuantity').text(data.sumQuantity == null? 0 + '个' : data.sumQuantity + '个');
         $('#sumAmount').text(data.sumAmount == null? 0.00 + '元' : data.sumAmount.toFixed(2) + '元');
       }
     });
