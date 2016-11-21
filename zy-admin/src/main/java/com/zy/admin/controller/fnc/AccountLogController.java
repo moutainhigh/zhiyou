@@ -1,20 +1,5 @@
 package com.zy.admin.controller.fnc;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.ui.Grid;
@@ -27,6 +12,19 @@ import com.zy.model.query.UserQueryModel;
 import com.zy.service.AccountLogService;
 import com.zy.service.UserService;
 import com.zy.vo.AccountLogAdminVo;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 @RequestMapping("/accountLog")
@@ -57,12 +55,10 @@ public class AccountLogController {
 	@RequiresPermissions("accountLog:view")
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Grid<AccountLogAdminVo> list(AccountLogQueryModel accountLogQueryModel, UserQueryModel userQueryModel) {
+	public Grid<AccountLogAdminVo> list(AccountLogQueryModel accountLogQueryModel, String phoneEQ, String nicknameLK) {
 		
-		String userPhone = userQueryModel.getPhoneEQ();
-		String userNickname = userQueryModel.getNicknameLK();
-		if(StringUtils.isNotBlank(userPhone) || StringUtils.isNotBlank(userNickname)) {
-			List<User> users = userService.findAll(userQueryModel);
+		if(StringUtils.isNotBlank(phoneEQ) || StringUtils.isNotBlank(nicknameLK)) {
+			List<User> users = userService.findAll(UserQueryModel.builder().phoneEQ(phoneEQ).nicknameLK(nicknameLK).build());
 			if(users == null || users.size() == 0) {
 				return new Grid<AccountLogAdminVo>(PageBuilder.empty(accountLogQueryModel.getPageSize(), accountLogQueryModel.getPageNumber()));
 			}
