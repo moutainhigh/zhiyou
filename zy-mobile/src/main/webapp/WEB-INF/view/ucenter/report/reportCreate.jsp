@@ -43,7 +43,8 @@
         },
         'times' : {
           required : true,
-          digits : true
+          digits : true,
+          max: 999
         },
         'reportedDate' : {
           required : true
