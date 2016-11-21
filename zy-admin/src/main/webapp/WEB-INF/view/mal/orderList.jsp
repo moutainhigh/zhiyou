@@ -8,7 +8,7 @@
       if(result.code == 0) {
         var data = result.data;
         $('#countNumber').text(data.countNumber + '个');
-        $('#sumQuantity').text(data.sumQuantity == null? 0 + '支' : data.sumQuantity + '支');
+        $('#sumQuantity').text(data.sumQuantity == null? 0 + '支' : data.sumQuantity + '个');
         $('#sumAmount').text(data.sumAmount == null? 0.00 + '元' : data.sumAmount.toFixed(2) + '元');
       }
     });
@@ -195,14 +195,14 @@
       <div class="row">
         <div class="col-md-4">
             <div class="note note-info">
-                <h4 class="block">订单数</h4>
+                <h4 class="block">子订单数</h4>
                 <p id="countNumber">0 个</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="note note-success">
-                <h4 class="block">订单支数</h4>
-                <p id="sumQuantity">0 支</p>
+                <h4 class="block">商品数</h4>
+                <p id="sumQuantity">0 个</p>
             </div>
         </div>
         <div class="col-md-4">
