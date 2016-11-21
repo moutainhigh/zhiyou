@@ -215,7 +215,7 @@
         </div>
       </div>
       
-      <div class="list-group hide">
+      <div class="list-group">
         <div class="list-title">保单信息</div>
         <div class="list-item">
           <div class="list-text">是否添加保单</div>
@@ -225,7 +225,7 @@
             <label class="i-switch" for="hasPolicy"></label>
           </div>
         </div>
-        <div id="policyInfo">
+        <div id="policyInfo" class="hide">
           <div class="list-item">
             <label class="list-label" for="code">保单编号</label>
             <div class="list-text">
