@@ -121,20 +121,27 @@ public class UcenterReportController {
 	}
 
 	@RequestMapping(value = "/create", method = POST)
-	public String create(Report report, Policy policy, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+	public String create(Boolean hasPolicy, Report report, Policy policy, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		try {
-			PolicyCode policyCode = policyCodeService.findByCode(policy.getCode());
-			if(policyCode == null) {
-				throw new BizException(BizCode.ERROR, "保险单号不存在[" + policy.getCode() + "]");
-			}
-			if(policyCode.getIsUsed()) {
-				throw new BizException(BizCode.ERROR, "保险单号已被使用[" + policy.getCode() + "]");
+			if(hasPolicy && policy != null) {
+				if(policy.getCode() == null) {
+					throw new BizException(BizCode.ERROR, "请填写保险单号");
+				}
+				PolicyCode policyCode = policyCodeService.findByCode(policy.getCode());
+				if(policyCode == null) {
+					throw new BizException(BizCode.ERROR, "保险单号不存在[" + policy.getCode() + "]");
+				}
+				if(policyCode.getIsUsed()) {
+					throw new BizException(BizCode.ERROR, "保险单号已被使用[" + policy.getCode() + "]");
+				}
 			}
 			report.setUserId(principal.getUserId());
-			policy.setUserId(principal.getUserId());
 			Report persistentReport = reportService.create(report);
-			policy.setReportId(persistentReport.getId());
-			policyService.create(policy);
+			if(hasPolicy && policy != null) {
+				policy.setUserId(principal.getUserId());
+				policy.setReportId(persistentReport.getId());
+				policyService.create(policy);
+			}
 		} catch (Exception e) {
 			model.addAttribute("report", report);
 			model.addAttribute("policy", policy);
