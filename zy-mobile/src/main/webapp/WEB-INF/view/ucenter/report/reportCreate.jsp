@@ -221,12 +221,12 @@
           <div class="list-text">是否添加保单</div>
           <div class="list-unit form-switch">
             <input type="hidden" name="_hasPolicy" value="false">
-            <input type="checkbox" id="hasPolicy" name="hasPolicy" value="false">
+            <input type="checkbox" id="hasPolicy" name="hasPolicy">
             <label class="i-switch" for="hasPolicy"></label>
           </div>
         </div>
         <div id="policyInfo" class="hide">
-          <div class="list-item">
+          <div class="list-item bd-t-0">
             <label class="list-label" for="code">保单编号</label>
             <div class="list-text">
               <input type="text" name="code" class="form-input" value="" placeholder="填写保单编号">
