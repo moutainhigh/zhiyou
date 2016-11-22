@@ -369,7 +369,7 @@
           </li>
         </shiro:hasAnyPermissions>
         
-        <shiro:hasAnyPermissions name="userTreeReport:view,teamReport:view,userUpgradeReport:view,orderReport:view">
+        <shiro:hasAnyPermissions name="userTreeReport:view,teamReport:view,userUpgradeReport:view,orderReport:view,financeReport:view">
           <li>
             <a href="javascript:;">
               <i class="icon-grid"></i>
@@ -401,6 +401,11 @@
               <shiro:hasPermission name="orderReport:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/report/order/daily"><i class="icon-bar-chart"></i> 服务商进货(日)报表<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="financeReport:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/finance"><i class="icon-bar-chart"></i> 财务报表<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>

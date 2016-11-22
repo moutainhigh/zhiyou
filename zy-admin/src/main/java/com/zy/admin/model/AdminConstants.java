@@ -102,6 +102,8 @@ public class AdminConstants {
 			sub.put("teamReport:export", "特级服务商人数下线报表导出");
 			sub.put("userUpgradeReport:view", "服务商数量统计报表");
 			sub.put("userUpgradeReport:export", "服务商数量统计报表导出");
+			sub.put("financeReport:view", "财务报表");
+			/*sub.put("financeReport:export", "财务导出");*/
 	 		SETTING_PERMISSION_MAP.put("报表管理", sub);
 		}
 		{
