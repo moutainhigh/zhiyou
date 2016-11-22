@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zy.common.model.query.Page;
@@ -22,6 +23,7 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.LocalCacheComponent;
+import com.zy.component.ProfitComponent;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.Deposit;
 import com.zy.entity.fnc.Payment;
@@ -29,6 +31,7 @@ import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Withdraw;
 import com.zy.entity.usr.User;
 import com.zy.model.FinanceReportVo;
+import com.zy.vo.ProfitAdminVo;
 
 @Controller
 @RequestMapping("/report/finance")
@@ -36,6 +39,9 @@ public class FinanceReportController {
 	
 	@Autowired
 	private LocalCacheComponent localCacheComponent;
+	
+	@Autowired
+	private ProfitComponent profitComponent;
 	
 	@RequiresPermissions("financeReport:view")
 	@RequestMapping(method = RequestMethod.GET)
@@ -433,4 +439,60 @@ public class FinanceReportController {
 		return ResultBuilder.result(resultMap);
 	}
 	
+	@RequiresPermissions("financeReport:view")
+	@RequestMapping(value = "/profit", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<Object, Object> listAjax(@RequestParam Long userId, Date timeGTE, Date timeLT) {
+		
+		List<Profit> profits = localCacheComponent.getProfits();
+		List<Profit> filterProfits = profits.stream().filter(profit -> {
+			boolean result = profit.getUserId().equals(userId);
+			Date grantedTime = profit.getGrantedTime();
+			
+			if (timeGTE != null) {
+				result = result && (grantedTime.after(timeGTE) || timeGTE.equals(grantedTime));
+			}
+			if (timeLT != null) {
+				result = result && grantedTime.before(timeLT);
+			}
+			return result;
+		}).collect(Collectors.toList());
+		
+		BigDecimal zero = new BigDecimal("0.00");
+		BigDecimal tjpjj = zero;
+		BigDecimal xlj = zero;
+		BigDecimal sjj = zero;
+		BigDecimal ddsk = zero;
+		BigDecimal bc = zero;
+		for(Profit profit : filterProfits) {
+			switch (profit.getProfitType()) {
+			case 特级平级奖:
+				tjpjj = tjpjj.add(profit.getAmount());
+				break;
+			case 销量奖:
+				xlj = xlj.add(profit.getAmount());
+				break;
+			case 数据奖:
+				sjj = sjj.add(profit.getAmount());
+				break;
+			case 订单收款:
+				ddsk = ddsk.add(profit.getAmount());
+				break;
+			case 补偿:
+				bc = bc.add(profit.getAmount());
+				break;
+			default:
+				break;
+			}
+		}
+		
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		map.put("tjpjj", tjpjj);
+		map.put("xlj", xlj);
+		map.put("sjj", sjj);
+		map.put("ddsk", ddsk);
+		map.put("bc", bc);
+		map.put("profits", filterProfits.stream().map(profitComponent::buildAdminVo).collect(Collectors.toList()));
+		return map;
+	}
 }

@@ -1,6 +1,67 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 <!-- BEGIN JAVASCRIPTS -->
+<script id="profitItem" type="text/x-handlebars-template">
+    <div class="portlet light bordered">
+      <div class="portlet-title">
+        <div class="caption">
+          <i class="icon-bar-chart"></i><span>收益明细</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="note note-info">
+            <h4 class="block">特级平级奖合计</h4>
+            <p>{{tjpjj}}</p>
+          </div>
+        </div>
+		<div class="col-md-4">
+          <div class="note note-success">
+            <h4 class="block">销量奖合计</h4>
+            <p>{{xlj}}</p>
+          </div>
+        </div>
+		<div class="col-md-4">
+          <div class="note note-danger">
+            <h4 class="block">数据奖合计</h4>
+            <p>{{sjj}}</p>
+          </div>
+        </div>
+		<div class="col-md-4">
+          <div class="note note-success">
+            <h4 class="block">订单收款合计</h4>
+            <p>{{ddsk}}</p>
+          </div>
+        </div>
+		<div class="col-md-4">
+          <div class="note note-info">
+            <h4 class="block">补偿合计</h4>
+            <p>{{bc}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="portlet-body clearfix">
+        <div class="table-container">
+          <table class="table table-striped table-bordered table-hover" id="dataTable">
+			<thead>
+		      <tr role="row">
+				<th class="sorting_disabled" rowspan="1" colspan="1" aria-label="收益类型">收益类型</th>
+				<th class="sorting_disabled" rowspan="1" colspan="1" aria-label="收益金额">收益金额</th>
+			  </tr>
+			</thead>
+			<tbody>
+			  {{#each profits}}
+				<tr role="row" class="odd">
+					<td>{{profitType}}</td>
+					<td>{{amountLabel}}</td>
+				</tr>
+			  {{/each}}
+			</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</script>
 <script>
 	
   function sum() {
@@ -22,6 +83,34 @@
   var grid = new Datatable();
 
   $(function () {
+    
+    var template = Handlebars.compile($('#profitItem').html());
+    $('#dataTable').on('click', '.profit-item', function () {
+      var userId = $(this).data('user-id');
+      var data;
+      $.post('${ctx}/report/finance/profit', {"userId" : userId, "timeGTE" : $('#beginDate').val(), "timeLT" : $('#endDate').val()}, function(result) {
+		data = {
+		    tjpjj : result.tjpjj,
+		    xlj: result.xlj,
+		    sjj : result.sjj,
+		    ddsk : result.ddsk,
+		    bc : result.bc,
+		    profits : result.profits,
+		}; 
+		var html = template(data);
+        var index = layer.open({
+          type: 1,
+          //skin: 'layui-layer-rim', //加上边框
+          area: ['800px', '500px'], //宽高
+          content: html
+        });
+      });
+
+      /* $('#reportConfirmCancel' + id).bind('click', function () {
+        layer.close(index);
+      }) */
+
+    });
     
 	sum();
     
@@ -83,6 +172,16 @@
             data: 'accountAmount',
             title: '积分余额',
             orderable: false
+          },
+          {
+            data: 'id',
+            title: '操作',
+            orderable: false,
+            render: function (data, type, full) {
+              var optionHtml = 
+              optionHtml = '<a class="btn btn-xs default blue-stripe profit-item" href="javascript:;" data-user-id = "'+full.userId+'"><i class="fa fa-edit"></i> 查看积分收益明细</a>';
+              return optionHtml;
+            }
           }
           ]
       }
