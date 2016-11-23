@@ -14,6 +14,9 @@
     
     $('#form').validate({
       rules: {
+        'productId': {
+          required: true
+        },
         'realname': {
           required: true
         },
@@ -115,6 +118,18 @@
               <i class="fa fa-exclamation-circle"></i>
               <button class="close" data-close="alert"></button>
               <span class="form-errors">您填写的信息有误，请检查。</span>
+            </div>
+            
+            <div class="form-group">
+              <label class="control-label col-md-3">产品<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <select name="productId" class="form-control">
+                  <option value="">请选择</option>
+                  <c:forEach items="${products}" var="product">
+                    <option value="${product.id}"<c:if test="${product.id == report.productId}"> selected="selected"</c:if>>${product.title}</option>
+                  </c:forEach>
+                </select>
+              </div>
             </div>
             
             <div class="form-group">

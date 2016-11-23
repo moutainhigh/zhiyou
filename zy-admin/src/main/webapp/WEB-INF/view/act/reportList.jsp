@@ -150,6 +150,15 @@
             }
           },
           {
+			data: '',
+          	title: '商品',
+          	orderable: false,
+          	width: '120px',
+          	render: function (data, type, full) {
+          	  return full.product ? '<img src="' + full.product.image1Thumbnail + '" style="width: 80px; height: 80px;"><div>' + full.product.title + '</div>' : '无产品信息';
+          	}
+          },
+          {
             data: '',
             title: '客户信息',
             orderable: false,

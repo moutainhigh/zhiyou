@@ -8,15 +8,19 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.common.util.ExcelUtils;
 import com.zy.common.util.WebUtils;
+import com.zy.component.ProductComponent;
 import com.zy.component.ReportComponent;
 import com.zy.entity.act.Report;
 import com.zy.entity.act.Report.ReportResult;
+import com.zy.entity.mal.Product;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
+import com.zy.model.query.ProductQueryModel;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.JobService;
+import com.zy.service.ProductService;
 import com.zy.service.ReportService;
 import com.zy.service.UserService;
 import com.zy.vo.ReportAdminVo;
@@ -59,6 +63,12 @@ public class ReportController {
 	@Autowired
 	private ReportComponent reportComponent;
 
+	@Autowired
+	private ProductService productService;
+
+	@Autowired
+	private ProductComponent productComponent;
+	
 	@RequiresPermissions("report:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
@@ -93,12 +103,20 @@ public class ReportController {
 	public String create(Model model) {
 		model.addAttribute("jobs", jobService.findAll());
 		model.addAttribute("reportResults", ReportResult.values());
+		
+		ProductQueryModel productQueryModel = new ProductQueryModel();
+		productQueryModel.setIsOnEQ(true);
+		List<Product> products = productService.findAll(productQueryModel);
+		model.addAttribute("products", products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
 		return "act/reportCreate";
 	}
 
 	@RequiresPermissions("report:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(Report report, Model model, RedirectAttributes redirectAttributes) {
+		Product product = productService.findOne(report.getProductId());
+		validate(product, NOT_NULL, "product id " + report.getProductId() + " not found");
+		
 		AdminPrincipal principal = (AdminPrincipal) SecurityUtils.getSubject().getPrincipal();
 		report.setUserId(principal.getUserId());
 		try {

@@ -3,8 +3,6 @@ package com.zy.mobile.controller.ucenter;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.zy.Config;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -56,6 +55,9 @@ public class UcenterPolicyController {
 	@Autowired
 	private PolicyComponent policyComponent;
 
+	@Autowired
+	private Config config;
+	
 	@RequestMapping()
 	public String list(Principal principal, Model model) {
 		Page<Policy> page = policyService.findPage(PolicyQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(0).pageSize(6).build());
@@ -88,6 +90,9 @@ public class UcenterPolicyController {
 			reports = reports.stream().filter(report -> {
 				for(Long reportId : reportIds) {
 					if(reportId.equals(report.getId())) {
+						return false;
+					}
+					if(config.isOld(report.getProductId())){
 						return false;
 					}
 				}
