@@ -84,6 +84,15 @@
     <form action="${ctx}/u/report/edit" class="valid-form" method="post">
       <input type="hidden" name="id" value="${report.id}"/>
       <div class="list-group mt-10">
+        <div class="list-title">产品信息</div>
+        <div class="list-item">
+          <label class="list-text lh-36">产品</label>
+          <img class="image-40 mr-10" src="${report.product.image1Thumbnail}">
+          <div class="list-unit">${report.product.title}</div>
+          <input type="hidden" name="productId" value="${report.productId}"/>
+        </div>
+      </div>
+      <div class="list-group mt-10">
         <div class="list-title">填写客户资料</div>
         <div class="list-item">
           <label class="list-label" for="realname">姓名</label>

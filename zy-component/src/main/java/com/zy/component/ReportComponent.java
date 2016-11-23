@@ -16,6 +16,7 @@ import com.zy.entity.usr.User;
 import com.zy.model.dto.AreaDto;
 import com.zy.service.AreaService;
 import com.zy.service.JobService;
+import com.zy.service.ProductService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.ReportAdminVo;
@@ -28,6 +29,12 @@ public class ReportComponent {
 
 	@Autowired
 	private CacheComponent cacheComponent;
+	
+	@Autowired
+	private ProductService productService;
+
+	@Autowired
+	private ProductComponent productComponent;
 	
 	@Autowired
 	private JobService jobService;
@@ -61,6 +68,9 @@ public class ReportComponent {
 		if(report.getJobId() != null){
 			reportAdminVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
 		}
+		if(report.getProductId() != null){
+			reportAdminVo.setProduct(productComponent.buildListVo(productService.findOne(report.getProductId())));
+		}
 		return reportAdminVo;
 	}
 
@@ -76,6 +86,9 @@ public class ReportComponent {
 		}
 		if(report.getJobId() != null){
 			reportVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
+		}
+		if(report.getProductId() != null){
+			reportVo.setProduct(productComponent.buildListVo(productService.findOne(report.getProductId())));
 		}
 		reportVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportVo.setAppliedTimeLabel(formatDate(report.getAppliedTime(), TIME_PATTERN));
@@ -100,6 +113,9 @@ public class ReportComponent {
 		}
 		if(report.getJobId() != null){
 			reportVo.setJobName(jobService.findOne(report.getJobId()).getJobName());
+		}
+		if(report.getProductId() != null){
+			reportVo.setProductTitle(productService.findOne(report.getProductId()).getTitle());
 		}
 		reportVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportVo.setAppliedTimeLabel(formatDate(report.getAppliedTime(), TIME_PATTERN));

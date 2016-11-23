@@ -1,12 +1,12 @@
 package com.zy.service;
 
+import java.util.List;
+
 import com.zy.common.model.query.Page;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.dto.AgentRegisterDto;
 import com.zy.model.query.UserQueryModel;
-
-import java.util.List;
 
 public interface UserService {
 
@@ -22,7 +22,7 @@ public interface UserService {
 
 	List<User> findAll(UserQueryModel userQueryModel);
 
-
+	void setParentId(Long id, Long parentId);
 	
 	User registerAgent(AgentRegisterDto agentRegisterDto);
 

@@ -23,7 +23,7 @@ window.messageAlert = function(message, button) {
 };
 
 window.pushDialog = function(dialog, callback) {
-  $('body').addClass('header-fixed').find('article').hide();
+  $('body').find('article').hide();
   $(dialog).css({
     'left' : '100%',
     'display' : 'none'
@@ -39,7 +39,7 @@ window.pullDialog = function(dialog, callback) {
   $(dialog).animate({
     'left' : '100%'
   }, 300, function() {
-    $('body').removeClass('header-fixed').find('article').show();
+    $('body').find('article').show();
     if ($.isFunction(callback)) {
       callback.call($(dialog), window.jQuery || window.Zepto)
     }

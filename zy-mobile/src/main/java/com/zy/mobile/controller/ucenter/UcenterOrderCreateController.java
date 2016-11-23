@@ -11,10 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.ProductComponent;
 import com.zy.component.UserComponent;
@@ -23,8 +21,6 @@ import com.zy.entity.mal.Product;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
-import com.zy.entity.usr.User.UserRank;
-import com.zy.entity.usr.User.UserType;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
@@ -88,14 +84,12 @@ public class UcenterOrderCreateController {
 		if (userRank == User.UserRank.V0) {
 			Long parentId = user.getParentId();
 			Long inviterId = user.getInviterId();
-
 			if (parentId != null) {
 				User parent = userService.findOne(parentId);
 				if (parent != null) {
 					model.addAttribute("parent", userComponent.buildListVo(parent));
 				}
 			}
-
 			if (inviterId != null) {
 				User inviter = userService.findOne(inviterId);
 				if (inviter != null) {
@@ -103,7 +97,6 @@ public class UcenterOrderCreateController {
 				}
 			}
 		}
-
 		return "ucenter/order/orderCreate";
 	}
 	
@@ -123,25 +116,6 @@ public class UcenterOrderCreateController {
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("下单成功，请继续支付"));
 		return "redirect:/u/order/" + order.getId();
 
-	}
-	
-	@ResponseBody
-	@RequestMapping("checkPhone")
-	public Result<String> checkPhone(Principal principal, String phone){
-		User user = userService.findByPhone(phone);
-		if(user != null) {
-			if(user.getId().equals(principal.getUserId())){
-				return ResultBuilder.error("不能设置本人为上级服务商.");
-			} else if(user.getUserType() != UserType.代理){
-				return ResultBuilder.error("此手机绑定的用户不是服务商.");
-			} else if(user.getUserRank() == UserRank.V0){
-				return ResultBuilder.error("此手机绑定的用户不是服务商.");
-			}{
-				return ResultBuilder.ok(user.getId().toString());
-			}
-		} else {
-			return ResultBuilder.error("没有找到此手机号的服务商.");
-		}
 	}
 	
 }

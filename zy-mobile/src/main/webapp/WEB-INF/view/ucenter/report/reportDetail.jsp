@@ -91,6 +91,15 @@
     </div>
     
     </c:if>
+    
+    <div class="list-group mt-10">
+      <div class="list-title">产品信息</div>
+      <div class="list-item">
+        <label class="list-text lh-36">产品</label>
+        <img class="image-40 mr-10" src="${report.product.image1Thumbnail}">
+        <div class="list-unit">${report.product.title}</div>
+      </div>
+    </div>
   
     <div class="list-group">
       <div class="list-title">客户资料</div>

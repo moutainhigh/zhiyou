@@ -1,5 +1,23 @@
 package com.zy.service.impl;
 
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.entity.fnc.CurrencyType.现金;
+import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
@@ -15,23 +33,8 @@ import com.zy.model.BizCode;
 import com.zy.model.dto.AgentRegisterDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
+
 import me.chanjar.weixin.common.util.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.URL;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.fnc.CurrencyType.现金;
-import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
 
 @Service
 @Validated
@@ -369,6 +372,40 @@ public class UserServiceImpl implements UserService {
         usrComponent.recordUserLog(id, operatorId, label + "子系统", remark);
     }
 
+	@Override
+	public void setParentId(Long id, Long parentId) {
+		User user = findAndValidate(id);
+        User parent = findAndValidate(parentId);
+        if (parent.getUserType() != UserType.代理) {
+            throw new BizException(BizCode.ERROR, "上级用户类型必须是代理");
+        }
+        if (parent.getUserRank() == UserRank.V0) {
+            throw new BizException(BizCode.ERROR, "上级用户必须成为代理");
+        }
+        Long originParentId = parentId;
+        Long plainParentId = user.getParentId();
+        if (plainParentId != null && !originParentId.equals(plainParentId)) {
+        	throw new BizException(BizCode.ERROR, "用户[id=" + id + "]已经存在上级, 不能设置上级");
+        }
+        if (parentId.equals(plainParentId)) {
+            return; // 幂等操作
+        }
+
+        if (id.equals(parentId)) {
+            throw new BizException(BizCode.ERROR, "上级不能是自己");
+        }
+
+        while (parentId != null) {
+            parent = userMapper.findOne(parentId);
+            parentId = parent.getParentId();
+            if (parentId != null && parentId.equals(id)) {
+                throw new BizException(BizCode.ERROR, "出现循环引用");
+            }
+        }
+        user.setParentId(originParentId);
+        userMapper.update(user);
+	}
+	
     @Override
     public void modifyParentIdAdmin(@NotNull Long id, @NotNull Long parentId, @NotNull Long operatorId, String remark) {
         User user = findAndValidate(id);
@@ -409,5 +446,6 @@ public class UserServiceImpl implements UserService {
         validate(user, NOT_NULL, "user id " + userId + "not found");
         return user;
     }
+
 
 }

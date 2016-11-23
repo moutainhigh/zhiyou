@@ -25,6 +25,10 @@ public class ReportListVo implements Serializable {
 	private Gender gender;
 	@Field(label = "手机号")
 	private String phone;
+	@Field(label = "产品")
+	private Long productId;
+	@Field(label = "检测次数")
+	private Integer times;
 	@Field(label = "检测结果")
 	private ReportResult reportResult;
 	@Field(label = "审核状态")
@@ -39,6 +43,8 @@ public class ReportListVo implements Serializable {
 	private String city;
 	@Field(label = "所在地")
 	private String district;
+	@Field(label = "产品")
+	private String productTitle;
 	@Field(label = "检测日期")
 	private String reportedDateLabel;
 	@Field(label = "申请时间")

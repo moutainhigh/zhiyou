@@ -36,7 +36,7 @@
         return false;
       }
       $.ajax({
-        url: '${ctx}/u/order/checkPhone',
+        url: '${ctx}/u/checkPhone',
         data: {
           phone: parentPhone
         },

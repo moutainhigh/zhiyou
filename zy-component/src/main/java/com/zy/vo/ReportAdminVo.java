@@ -34,6 +34,8 @@ public class ReportAdminVo implements Serializable {
 	private Long areaId;
 	@Field(label = "标签")
 	private String tagIds;
+	@Field(label = "产品")
+	private Long productId;
 	@Field(label = "检测结果")
 	private ReportResult reportResult;
 	@Field(label = "文字")
@@ -74,6 +76,8 @@ public class ReportAdminVo implements Serializable {
 	private String city;
 	@Field(label = "所在地")
 	private String district;
+	@Field(label = "产品")
+	private ProductListVo product;
 	@Field(label = "检测日期")
 	private String reportedDateLabel;
 	@Field(label = "申请时间")

@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,29 +22,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.zy.Config;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.component.ProductComponent;
 import com.zy.component.ReportComponent;
+import com.zy.component.UserComponent;
 import com.zy.entity.act.Policy;
 import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Transfer;
+import com.zy.entity.mal.Product;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
+import com.zy.model.query.ProductQueryModel;
 import com.zy.model.query.ProfitQueryModel;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.model.query.TransferQueryModel;
 import com.zy.service.JobService;
 import com.zy.service.PolicyCodeService;
 import com.zy.service.PolicyService;
+import com.zy.service.ProductService;
 import com.zy.service.ProfitService;
 import com.zy.service.ReportService;
 import com.zy.service.TransferService;
@@ -77,10 +85,22 @@ public class UcenterReportController {
 
 	@Autowired
 	private UserInfoService userInfoService;
+
+	@Autowired
+	private UserComponent userComponent;
 	
 	@Autowired
 	private ReportComponent reportComponent;
 
+	@Autowired
+	private ProductService productService;
+
+	@Autowired
+	private ProductComponent productComponent;
+
+	@Autowired
+	private Config config;
+	
 	@RequestMapping()
 	public String list(Principal principal, Model model) {
 		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(0).pageSize(6).build());
@@ -113,7 +133,30 @@ public class UcenterReportController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成用户信息认证!"));
 			return "redirect:/u/report";
 		}*/
+		
 		User user = userService.findOne(principal.getUserId());
+		
+		if (user.getUserRank() == User.UserRank.V0) {
+			Long parentId = user.getParentId();
+			Long inviterId = user.getInviterId();
+			if (parentId != null) {
+				User parent = userService.findOne(parentId);
+				if (parent != null) {
+					model.addAttribute("parent", userComponent.buildListVo(parent));
+				}
+			}
+			if (inviterId != null) {
+				User inviter = userService.findOne(inviterId);
+				if (inviter != null) {
+					model.addAttribute("inviter", userComponent.buildListVo(inviter));
+				}
+			}
+		}
+		ProductQueryModel productQueryModel = new ProductQueryModel();
+		productQueryModel.setIsOnEQ(true);
+		List<Product> products = productService.findAll(productQueryModel);
+		model.addAttribute("products", products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
+		
 		model.addAttribute("userRank", user.getUserRank());
 		model.addAttribute("jobs", this.jobService.findAll());
 		//model.addAttribute("tags", getTags());
@@ -121,8 +164,22 @@ public class UcenterReportController {
 	}
 
 	@RequestMapping(value = "/create", method = POST)
-	public String create(boolean hasPolicy, Report report, Policy policy, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+	public String create(boolean hasPolicy, Report report, Policy policy, Long parentId, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		User user = userService.findOne(principal.getUserId());
 		try {
+			//设置上级
+			if (user.getUserRank() == UserRank.V0 && user.getParentId() == null) {
+				if (parentId == null) {
+					throw new BizException(BizCode.ERROR, "首次下单必须填写邀请人");
+				}
+				userService.setParentId(principal.getUserId(), parentId);
+			}
+			
+			if(config.isOld(report.getProductId()) && hasPolicy){
+				throw new BizException(BizCode.ERROR, "一代产品不能提交保单.");
+			}
+			
+			//保单校验
 			if(hasPolicy && policy != null) {
 				if(policy.getCode() == null) {
 					throw new BizException(BizCode.ERROR, "请填写保险单号");

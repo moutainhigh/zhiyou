@@ -1,9 +1,26 @@
 package com.zy.entity.act;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.zy.common.extend.StringBinder;
+import com.zy.entity.mal.Product;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo.Gender;
+
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -15,15 +32,6 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
 
 @Entity
 @Table(name = "act_report")
@@ -113,6 +121,12 @@ public class Report implements Serializable {
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private String tagIds;
 	
+	@Field(label = "产品")
+	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View(name = "productTitle", type = String.class, groups = {VO_LIST })
+	@AssociationView(name = "product", groups = {VO_DETAIL, VO_ADMIN}, associationGroup = Product.VO_LIST)
+	private Long productId;
+	
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "检测结果")
@@ -143,7 +157,7 @@ public class Report implements Serializable {
 	@NotNull
 	@Min(1)
 	@Query(Predicate.EQ)
-	@View(groups = {VO_DETAIL, VO_ADMIN})
+	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(groups = VO_EXPORT, field = @Field(label = "检测次数", order = 59))
 	private Integer times;
 

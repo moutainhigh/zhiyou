@@ -1,12 +1,14 @@
 package com.zy.model.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
+import java.io.Serializable;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+
+import org.hibernate.validator.constraints.Length;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -30,7 +32,7 @@ public class OrderCreateDto implements Serializable {
 	@Length(max = 100)
 	private String buyerMemo;
 
-	private Long parentId; // V0用户下单必填
+	private Long parentId;
 	
 	@NotNull
 	private Boolean isPayToPlatform;

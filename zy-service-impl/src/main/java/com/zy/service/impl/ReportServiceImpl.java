@@ -52,9 +52,11 @@ public class ReportServiceImpl implements ReportService {
 		if (user.getUserType() != User.UserType.代理) {
 			throw new BizException(BizCode.ERROR, "只有代理才能提交检测报告");
 		}
+		/*
 		if (user.getUserRank() == null || user.getUserRank() == V0) {
 			throw new BizException(BizCode.ERROR, "不具有提交检测报告的权限, 请升级代理等级");
 		}
+		*/
 
 		Date now = new Date();
 		report.setVersion(0);

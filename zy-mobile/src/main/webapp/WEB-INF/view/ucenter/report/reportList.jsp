@@ -65,7 +65,9 @@
   <a class="list-item" href="${ctx}/u/report/{{ d.id }}">
     <div class="list-text report">
       <div class="lh-30">{{ d.realname }}<span class="ml-10 fs-12 font-999">&lt;{{ d.gender }}  {{ d.age }}岁&gt;</span><span class="right fs-12 font-999">{{ d.phone }}</span></div>
-      <div class="lh-30 fs-14">
+      <div class="fs-13 font-777">产品名称：{{ d.productTitle }}</div>
+      <div class="fs-13 font-777">
+      <span>检测结果：
       {{# if(d.reportResult == '阴性'){ }}
       <span class="font-red">阴性</span>
       {{# } else if(d.reportResult == '弱阳性'){ }}
@@ -74,7 +76,7 @@
       <span class="font-green">阳性</span>
       {{# } else if(d.reportResult == '干扰色'){ }}
       <span class="ont-purple">干扰色</span>
-      {{# } }}
+      {{# } }}</span>
       {{# if(d.confirmStatus == '待审核'){ }}
       <span class="right lh-20 label orange">待审核</span>
       {{# } else if(d.confirmStatus == '未通过'){ }}
@@ -95,11 +97,11 @@
   </header>
   
   <article>
-    <c:if test="${userRank == 'V0'}">
+    <%--<c:if test="${userRank == 'V0'}">
     <div class="note note-warning mb-0">
       <i class="fa fa-exclamation-circle"></i> 您必须成为服务商才能上传检测报告
     </div>
-    </c:if>
+    </c:if> --%>
     
     <c:if test="${empty page.data}">
       <div class="page-empty">
@@ -114,7 +116,8 @@
         <a class="list-item" href="${ctx}/u/report/${report.id}">
           <div class="list-text report">
             <div class="lh-30">${report.realname}<span class="ml-10 fs-12 font-999">&lt;${report.gender}  ${report.age}岁&gt;</span><span class="right fs-12 font-999">${report.phone}</span></div>
-            <div class="lh-30 fs-14">
+            <div class="fs-13 font-777">产品名称：${report.productTitle}</div>
+            <div class="fs-13 font-777"><span>检测结果：
             <c:choose>
               <c:when test="${report.reportResult == '阴性'}">
               <span class="font-red">${report.reportResult}</span>
@@ -129,6 +132,7 @@
               <span class="font-purple">${report.reportResult}</span>
               </c:when>
             </c:choose>
+            </span>
             <c:choose>
               <c:when test="${report.confirmStatus == '待审核'}">
               <span class="right lh-20 label orange">待审核</span>

@@ -20,6 +20,9 @@
   $(function() {
     var area = new areaInit('province', 'city', 'district', '${report.areaId}');
     
+    //选择产品
+    showProductList();
+    
     $('.image-multi .image-add').imageupload({
       isMultipart : true
     });
@@ -76,13 +79,60 @@
           messageFlash('请至少上传一张图片');
           return;
         }
-        if($('#hasPolicy').is(':checked')) {
-          //
+        var productId = $('#productId').val();
+        if(!productId) {
+          messageAlert('请选择产品');
+          return;
         }
+        <c:if test="${userRank == 'V0' && empty parent}">
+        var parentPhone = $('#parentPhone').val();
+        if(!parentPhone) {
+          messageFlash('请填写上级手机号');
+          return;
+        }
+        $.ajax({
+          url: '${ctx}/u/checkPhone',
+          data: {
+            phone: parentPhone
+          },
+          type: 'POST',
+          dataType: 'JSON',
+          success: function(result){
+            if(result.code == 0) {
+              $('[name="parentId"]').val(result.message);
+              form.submit();
+            } else {
+              messageAlert(result.message);
+            }
+          }
+        });
+        return;
+        </c:if>
         form.submit();
       }
     });
     
+    //选择产品
+  	$('.product-info').click(function(){
+  	  showProductList();
+  	});
+    
+    $('body').on('click', '.product', function() {
+      var $this = $(this);
+      var product = {};
+      product.id = $this.attr('data-id');
+      product.title = $this.attr('data-title');
+      product.image = $this.attr('data-image');
+      setProduct(product);
+      if(product.id == 2) {
+        $('#policy').show();
+      } else {
+        $('#policy').hide();
+        $('#hasPolicy').removeAttr('checked');
+      }
+    });
+    
+    //是否选择保单
     $('#hasPolicy').click(function() {
       var checked = $(this).is(':checked');
       //messageFlash(checked);
@@ -94,6 +144,40 @@
     });
 
   });
+  
+  function showProductList() {
+    var html = document.getElementById('productListTpl').innerHTML;
+    pushDialog(html);
+  }
+	
+  function hideProductList() {
+    pullDialog('#productList', function(){
+      $('#productList').remove();
+    });
+  }
+  
+  function setProduct(product) {
+    hideProductList();
+    $('#productId').val(product.id);
+    $('.product-info .list-unit').html('<span>' + product.title + '</span>');
+    $('.product-info .list-icon').removeClass('list-icon').html('<img class="image-40" src="' + product.image + '">');
+  }
+</script>
+<script id="productListTpl" type="text/html">
+  <aside id="productList" class="abs-lt size-100p bg-gray zindex-1000">
+    <header class="header">
+      <h1>选择商品</h1>
+      <a href="javascript:hideProductList();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    </header>
+    <div class="list-group">
+      <c:forEach items="${products}" var="product">
+      <div class="list-item product" data-id="${product.id}" data-title="${product.title}" data-image="${product.image1Thumbnail}">
+        <img class="image-60 mr-10" src="${product.image1Thumbnail}">
+        <div class="list-text">${product.title}</div>
+      </div>
+      </c:forEach>
+    </div>
+  </aside>
 </script>
 </head>
 <body>
@@ -104,6 +188,17 @@
 
   <article>
     <form action="${ctx}/u/report/create" class="valid-form" method="post">
+      <div class="list-group mt-10">
+        <div class="list-title">请选择产品</div>
+        <div class="list-item product-info">
+          <label class="list-text lh-36">选择产品</label>
+          <div class="list-icon"></div>
+          <div class="list-unit"></div>
+          <i class="list-arrow"></i>
+          <input id="productId" type="hidden" name="productId" value="">
+        </div>
+      </div>
+      
       <div class="list-group mt-10">
         <div class="list-title">填写客户资料</div>
         <div class="list-item">
@@ -167,6 +262,15 @@
             <input type="number" name="phone" class="form-input" value="${report.phone}" placeholder="填写客户手机号">
           </div>
         </div>
+        <c:if test="${userRank == 'V0' && empty parent}">
+          <div class="list-item">
+            <label class="list-label">上级手机号</label>
+            <div class="list-text">
+              <input id="parentPhone" name="parentPhone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">
+              <input type="hidden" name="parentId" value="${inviter.id}">
+            </div>
+          </div>
+        </c:if>
       </div>
 
       <div class="list-group">
@@ -216,7 +320,7 @@
         </div>
       </div>
       
-      <div class="list-group">
+      <div id="policy" class="list-group" style="display: none;">
         <div class="list-title">保单信息</div>
         <div class="list-item">
           <div class="list-text">是否添加保单</div>

@@ -6,17 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zy.Config;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.ProductComponent;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
+import com.zy.entity.usr.User.UserType;
 import com.zy.model.Principal;
 import com.zy.service.ProductService;
 import com.zy.service.UserService;
 
-@RequestMapping("/u/agent")
+@RequestMapping("/u")
 @Controller
 public class UcenterAgentController {
 	
@@ -32,7 +36,7 @@ public class UcenterAgentController {
 	@Autowired
 	private Config config;
 	
-	@RequestMapping
+	@RequestMapping("/agent")
 	public String agent(Principal principal, Model model) {
 
 		Long productIdOld = config.getOld();
@@ -77,6 +81,25 @@ public class UcenterAgentController {
 		model.addAttribute("amount3New", price3New.multiply(new BigDecimal(quantity3New)));
 
 		return "agent";
+	}
+	
+	@ResponseBody
+	@RequestMapping("checkPhone")
+	public Result<String> checkPhone(Principal principal, String phone){
+		User user = userService.findByPhone(phone);
+		if(user != null) {
+			if(user.getId().equals(principal.getUserId())){
+				return ResultBuilder.error("不能设置本人为上级服务商.");
+			} else if(user.getUserType() != UserType.代理){
+				return ResultBuilder.error("此手机绑定的用户不是服务商.");
+			} else if(user.getUserRank() == UserRank.V0){
+				return ResultBuilder.error("此手机绑定的用户不是服务商.");
+			}{
+				return ResultBuilder.ok(user.getId().toString());
+			}
+		} else {
+			return ResultBuilder.error("没有找到此手机号的服务商.");
+		}
 	}
 	
 }
