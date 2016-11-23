@@ -247,6 +247,25 @@
                   </c:forEach>
                 </select>
               </div>
+              
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" id="beginDate"
+                       onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="createdTimeGTE" value="" placeholder="收益创建时间起"/>
+              </div>
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" id="endDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                       name="createdTimeLT" value="" placeholder="收益创建时间止"/>
+              </div>
+              
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" id="beginDate"
+                       onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="grantedTimeGTE" value="" placeholder="收益发放时间起"/>
+              </div>
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" id="endDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                       name="grantedTimeLT" value="" placeholder="收益发放时间止"/>
+              </div>
+              
               <div class="form-group">
                 <button class="btn blue filter-submit">
                   <i class="fa fa-search"></i> 查询
