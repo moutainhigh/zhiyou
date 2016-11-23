@@ -206,6 +206,9 @@ public class ReportServiceImpl implements ReportService {
 		}
 
 		Long productId = report.getProductId();
+		if (productId == null) {
+			return; // 防御性
+		}
 
 		Long userId = report.getUserId();
 		User user = userMapper.findOne(userId);
