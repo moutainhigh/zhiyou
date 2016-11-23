@@ -268,11 +268,11 @@
               <div class="form-group">
                 <input type="text" name="phoneEQ" class="form-control" placeholder="手机"/>
               </div>
-              <div class="form-group input-inline">
+              <div class="form-group">
                 <input class="Wdate form-control" type="text" id="beginDate"
                        onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="registerTimeGTE" value="" placeholder="注册时间起"/>
               </div>
-              <div class="form-group input-inline">
+              <div class="form-group">
                 <input class="Wdate form-control" type="text" id="endDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
                        name="registerTimeLT" value="" placeholder="注册时间止"/>
               </div>
