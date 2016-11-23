@@ -5,6 +5,7 @@ import com.zy.common.exception.BizException;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.sys.Setting;
 import com.zy.entity.usr.User.UserType;
+import com.zy.model.BizCode;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
@@ -56,7 +57,13 @@ public abstract class AbstractConfig implements Config {
 
 	@Override
 	public boolean isOld(Long productId) {
-		return productId.equals(1L);
+		if (productId != null && productId.equals(1L)) {
+			return true;
+		} else if (productId != null && productId.equals(2L)) {
+			return false;
+		} else {
+			throw new BizException(BizCode.ERROR, "productId错误");
+		}
 	}
 
 	@Override
