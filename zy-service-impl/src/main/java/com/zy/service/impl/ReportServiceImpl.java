@@ -241,7 +241,11 @@ public class ReportServiceImpl implements ReportService {
 
 
 				/* 否则递归查找 */
+				int times = 0;
 				while (parentId != null) {
+					if (times > 1000) {
+						throw new BizException(BizCode.ERROR, "循环引用");
+					}
 					User parent = userMapper.findOne(parentId);
 					if (parent.getUserType() != User.UserType.代理) {
 						logger.error("代理父级数据错误,parentId=" + parentId);
@@ -257,6 +261,7 @@ public class ReportServiceImpl implements ReportService {
 						break;
 					}
 					parentId = parent.getParentId();
+					times ++;
 				}
 
 				if (topId == null) {
