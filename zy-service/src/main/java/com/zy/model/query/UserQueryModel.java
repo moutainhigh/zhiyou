@@ -46,7 +46,7 @@ public class UserQueryModel implements Serializable {
 
 	private Long[] parentIdIN;
 
-	private Boolean parentIdNL;
+	private Long parentIdNL;
 
 	private Boolean isRootEQ;
 
