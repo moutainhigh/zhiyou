@@ -57,6 +57,8 @@ public class PolicyController {
 	public String export(PolicyQueryModel policyQueryModel,
 			HttpServletResponse response) throws IOException {
 
+		policyQueryModel.setPageSize(null);
+		policyQueryModel.setPageNumber(null);
 		List<Policy> polisys = policyService.findAll(policyQueryModel);
 		String fileName = "投保名单.xlsx";
 		WebUtils.setFileDownloadHeader(response, fileName);
