@@ -8,7 +8,7 @@
 		">
 	<dubbo:application name="zy-provider" owner="zy"/>
 
-	<dubbo:protocol name="restful" server="restful" port="8090" />
+	<!--<dubbo:protocol name="restful" server="restful" port="8090" />-->
 
 	<!--采用快速失败的集群模式,即只进行一次调用 failfast -->
 	<dubbo:provider cluster="failfast" timeout="10000"  filter="-exception,myException" loadbalance="roundrobin" />
