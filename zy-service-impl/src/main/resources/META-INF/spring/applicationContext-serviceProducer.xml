@@ -8,17 +8,20 @@
 		">
 	<dubbo:application name="zy-provider" owner="zy"/>
 
+	<!--<dubbo:protocol name="restful" server="restful" port="8090" />-->
+
 	<!--采用快速失败的集群模式,即只进行一次调用 failfast -->
 	<dubbo:provider cluster="failfast" timeout="10000"  filter="-exception,myException" loadbalance="roundrobin" />
 
 	<dubbo:registry protocol="${dubbo.registry.protocol}" address="${dubbo.registry.address}" />
 	<dubbo:protocol port="${dubbo.protocol.port}" threads="${dubbo.threads}"  />
-	
+
 	<dubbo:service ref="adminServiceImpl" interface="com.zy.service.AdminService" />
 	<dubbo:service ref="areaServiceImpl" interface="com.zy.service.AreaService" />
 	<dubbo:service ref="accountServiceImpl" interface="com.zy.service.AccountService" />
 	<dubbo:service ref="accountLogServiceImpl" interface="com.zy.service.AccountLogService" />
 	<dubbo:service ref="bannerServiceImpl" interface="com.zy.service.BannerService" />
+
 	<dubbo:service ref="messageServiceImpl" interface="com.zy.service.MessageService" />
 	<dubbo:service ref="noticeServiceImpl" interface="com.zy.service.NoticeService" />
 	<dubbo:service ref="roleServiceImpl" interface="com.zy.service.RoleService" />

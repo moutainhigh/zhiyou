@@ -94,7 +94,7 @@
       <div class="list-title">身份证信息</div>
       <div class="list-item">
         <div class="list-text">身份证号</div>
-        <div class="list-unit">${userInfo.idCardNumber}</div>
+        <div class="list-unit">${userInfo.idCardNumberLabel}</div>
       </div>
       <div class="list-item">
         <div class="list-text">身份证正面照</div>

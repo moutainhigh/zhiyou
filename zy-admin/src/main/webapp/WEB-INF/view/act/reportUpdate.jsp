@@ -119,6 +119,15 @@
             </div>
             
             <div class="form-group">
+              <label class="control-label col-md-3">商品信息</label>
+              <div class="col-md-5">
+                <img src="${report.product.image1Thumbnail}" style="width: 80px; height: 80px;">
+                ${report.product.title}
+                <input type="hidden" name="productId" value="${report.productId}"/>
+              </div>
+            </div>
+            
+            <div class="form-group">
               <label class="control-label col-md-3">客户姓名<span class="required"> * </span></label>
               <div class="col-md-5">
                 <input type="text" class="form-control" name="realname" id="realname" value="${report.realname}"/>

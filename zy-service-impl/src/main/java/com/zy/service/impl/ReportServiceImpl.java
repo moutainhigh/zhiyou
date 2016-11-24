@@ -1,5 +1,6 @@
 package com.zy.service.impl;
 
+import com.zy.Config;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
@@ -15,20 +16,17 @@ import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.service.ReportService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.support.weixinpay.WeixinPayUtils.logger;
 import static com.zy.common.util.ValidateUtils.*;
-import static com.zy.entity.usr.User.UserRank.V0;
 
 @Service
 @Validated
@@ -42,6 +40,9 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	private FncComponent fncComponent;
+
+	@Autowired
+	private Config config;
 
 	@Override
 	public Report create(@NotNull Report report) {
@@ -204,45 +205,94 @@ public class ReportServiceImpl implements ReportService {
 			throw new BizException(BizCode.ERROR, "只有审核通过的报告才能结算");
 		}
 
+		Long productId = report.getProductId();
+		if (productId == null) {
+			return; // 防御性
+		}
+
 		Long userId = report.getUserId();
 		User user = userMapper.findOne(userId);
-		String title = "数据奖,检测报告编号" + id;
-		Long topId = null; // 找到第一个特级代理
-		if (user.getUserRank() == User.UserRank.V4) {
-			/* 如果自己是特级代理 */
-			topId = userId;
-		} else {
-			/* 否则递归查找 */
+		User.UserRank userRank = user.getUserRank();
+
+		if (config.isOld(productId)) { // 旧产品, 按原有规则结算
+
+			String title = "数据奖,检测报告编号" + id;
+			Long topId = null; // 找到第一个特级代理
+			Long transferUserId = null; // transfer 给到的代理
+
 			Long parentId = user.getParentId();
-			while (parentId != null) {
-				User parent = userMapper.findOne(parentId);
-				if (parent.getUserType() != User.UserType.代理) {
-					logger.error("代理父级数据错误,parentId=" + parentId);
-					throw new BizException(BizCode.ERROR, "代理父级数据错误"); // 防御性校验
-				}
-				if (parent.getUserRank() == User.UserRank.V4) {
-					topId = parentId;
-					break;
-				}
-				parentId = parent.getParentId();
+			if (parentId == null && userRank != User.UserRank.V4) {
+				//logger.error("上级为空暂不结算,编号" + id);
+				return; // 上级为空 暂不做结算
 			}
-		}
-		
-		if (topId == null) {
-			logger.error("代理父级数据错误,parentId=" + user.getParentId());
-			throw new BizException(BizCode.ERROR, "结算失败,找不到特级代理");
-		}
 
-		/* 全额给一个人 */
-		fncComponent.createProfit(topId, ProfitType.数据奖, id, title, CurrencyType.现金, new BigDecimal("18.00")); // TODO	 写死
+			boolean hasTransfer = true;
+			if (userRank == User.UserRank.V4) {
+				/* 如果自己是特级代理 */
+				topId = userId;
+				hasTransfer = false;
+			} else {
 
-		if (!topId.equals(userId)) {
-			fncComponent.createTransfer(topId, userId, Transfer.TransferType.数据奖, id, title, CurrencyType.现金, new BigDecimal("15.00"));
-		}
+				boolean hitTransferUserId = false;
+				if (userRank != User.UserRank.V0) {
+					hitTransferUserId = true;
+					transferUserId = userId;
+				}
 
-		report.setIsSettledUp(true);
-		if (reportMapper.update(report) == 0) {
-			throw new ConcurrentException();
+
+				/* 否则递归查找 */
+				int times = 0;
+				while (parentId != null) {
+					if (times > 1000) {
+						throw new BizException(BizCode.ERROR, "循环引用");
+					}
+					User parent = userMapper.findOne(parentId);
+					if (parent.getUserType() != User.UserType.代理) {
+						logger.error("代理父级数据错误,parentId=" + parentId);
+						throw new BizException(BizCode.ERROR, "代理父级数据错误"); // 防御性校验
+					}
+					if (!hitTransferUserId && parent.getUserRank() != User.UserRank.V0) {
+						hitTransferUserId = true;
+						transferUserId = parentId;
+					}
+
+					if (parent.getUserRank() == User.UserRank.V4) {
+						topId = parentId;
+						break;
+					}
+					parentId = parent.getParentId();
+					times ++;
+				}
+
+				if (topId == null) {
+					//logger.error("特级代理为空暂不结算,编号" + id);
+					return; // 特级代理 暂不做结算
+				}
+
+				if (hitTransferUserId && transferUserId.equals(topId)) {
+					hasTransfer = false;
+				}
+			}
+
+
+
+			/* 全额给一个人 */
+			fncComponent.createProfit(topId, ProfitType.数据奖, id, title, CurrencyType.现金, new BigDecimal("18.00")); // TODO	 写死
+
+			if (hasTransfer) {
+				fncComponent.createTransfer(topId, transferUserId, Transfer.TransferType.数据奖, id, title, CurrencyType.现金, new BigDecimal("15.00"));
+			}
+
+			report.setIsSettledUp(true);
+			if (reportMapper.update(report) == 0) {
+				throw new ConcurrentException();
+			}
+		} else { // 新产品 结算不产生收益
+			report.setIsSettledUp(true);
+			if (reportMapper.update(report) == 0) {
+				throw new ConcurrentException();
+			}
+
 		}
 
 	}

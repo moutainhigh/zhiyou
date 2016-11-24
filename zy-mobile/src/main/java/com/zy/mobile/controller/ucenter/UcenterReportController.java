@@ -165,6 +165,9 @@ public class UcenterReportController {
 
 	@RequestMapping(value = "/create", method = POST)
 	public String create(boolean hasPolicy, Report report, Policy policy, Long parentId, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		Product product = productService.findOne(report.getProductId());
+		validate(product, NOT_NULL, "product id " + report.getProductId() + " not found");
+		
 		User user = userService.findOne(principal.getUserId());
 		try {
 			//设置上级

@@ -3,11 +3,6 @@
        xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		">
-
-
-
-
-
     <bean id="memcachedClient" class="com.zy.common.extend.MemcachedClientFactoryBean">
         <property name="servers" value="${memcached.url}"/>
         <property name="protocol" value="BINARY"/>

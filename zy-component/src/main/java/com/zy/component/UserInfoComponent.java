@@ -1,5 +1,15 @@
 package com.zy.component;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.usr.Job;
 import com.zy.entity.usr.User;
@@ -9,15 +19,6 @@ import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.UserInfoAdminVo;
 import com.zy.vo.UserInfoVo;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class UserInfoComponent {
@@ -35,7 +36,7 @@ public class UserInfoComponent {
         BeanUtils.copyProperties(userInfo, userInfoVo);
 
         String idCardNumber = userInfo.getIdCardNumber();
-        userInfoVo.setIdCardNumber(StringUtils.overlay(idCardNumber, "***********", 6, idCardNumber.length()));
+        userInfoVo.setIdCardNumberLabel(StringUtils.overlay(idCardNumber, "***********", 6, idCardNumber.length()));
 
         String image1 = userInfo.getImage1();
         String image2 = userInfo.getImage2();
