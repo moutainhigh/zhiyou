@@ -111,14 +111,9 @@
 			<if test="nicknameLK != null">
 				<bind name="nicknameLK" value="'%' + nicknameLK + '%'"/> and nickname like #{nicknameLK}
 			</if>
-             <if test="parentIdNL != null">
-                 <if test="parentIdNL">
-                    and parent_id is null
-                 </if>
-                 <if test="!parentIdNL">
-                    and parent_id is not null
-                 </if>
-             </if>
+			<if test="parentIdNL != null">
+				and parent_id is null
+			</if>
 			<if test="inviterIdEQ != null">
 				and inviter_id = #{inviterIdEQ}
 			</if>
@@ -200,12 +195,7 @@
 				<bind name="nicknameLK" value="'%' + nicknameLK + '%'"/> and nickname like #{nicknameLK}
 			</if>
 			<if test="parentIdNL != null">
-				<if test="parentIdNL">
-					and parent_id is  null
-				</if>
-                <if test="!parentIdNL">
-				    and parent_id is not null
-                </if>
+				and parent_id is null
 			</if>
 			<if test="inviterIdEQ != null">
 				and inviter_id = #{inviterIdEQ}

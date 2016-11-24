@@ -40,6 +40,8 @@ public class UserInfoVo implements Serializable {
 	private String tagIds;
 
 	/* 扩展 */
+	@Field(label = "身份证号")
+	private String idCardNumberLabel;
 	@Field(label = "图片1")
 	private String image1Thumbnail;
 	@Field(label = "图片2")

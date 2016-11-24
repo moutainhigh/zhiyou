@@ -27,10 +27,10 @@ public class ReportListVo implements Serializable {
 	private String phone;
 	@Field(label = "产品")
 	private Long productId;
-	@Field(label = "检测次数")
-	private Integer times;
 	@Field(label = "检测结果")
 	private ReportResult reportResult;
+	@Field(label = "检测次数")
+	private Integer times;
 	@Field(label = "审核状态")
 	private ConfirmStatus confirmStatus;
 
