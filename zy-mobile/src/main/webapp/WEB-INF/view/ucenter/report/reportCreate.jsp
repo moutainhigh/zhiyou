@@ -323,7 +323,7 @@
       <div id="policy" class="list-group" style="display: none;">
         <div class="list-title">保单信息</div>
         <div class="list-item">
-          <div class="list-text">是否添加保单</div>
+          <div class="list-text">是否申请保险</div>
           <div class="list-unit form-switch">
             <input type="hidden" name="_hasPolicy" value="false">
             <input type="checkbox" id="hasPolicy" name="hasPolicy">
