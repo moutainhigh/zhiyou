@@ -153,7 +153,6 @@ public class UcenterReportController {
 			}
 		}
 		ProductQueryModel productQueryModel = new ProductQueryModel();
-		productQueryModel.setIsOnEQ(true);
 		List<Product> products = productService.findAll(productQueryModel);
 		model.addAttribute("products", products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
 		
