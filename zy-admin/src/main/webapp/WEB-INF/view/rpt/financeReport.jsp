@@ -214,19 +214,19 @@
         <div class="col-md-2">
               <div class="note note-info">
                   <h4 class="block">充值总积分</h4>
-                  <p id="totalPaymentAmount">0.00</p>
+                  <p id="totalDepositAmount">0.00</p>
               </div>
           </div>
           <div class="col-md-2">
               <div class="note note-success">
                   <h4 class="block">提现总积分</h4>
-                  <p id="totalDepositAmount">0.00</p>
+                  <p id="totalWithdrawAmount">0.00</p>
               </div>
           </div>
           <div class="col-md-2">
               <div class="note note-danger">
                   <h4 class="block">支付总积分</h4>
-                  <p id="totalWithdrawAmount">0.00</p>
+                  <p id="totalPaymentAmount">0.00</p>
               </div>
           </div>
           <div class="col-md-2">
