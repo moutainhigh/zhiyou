@@ -321,7 +321,7 @@
       </div>
       
       <div id="policy" class="list-group" style="display: none;">
-        <div class="list-title">保单信息</div>
+        <div class="list-title">保险</div>
         <div class="list-item">
           <div class="list-text">是否申请保险</div>
           <div class="list-unit form-switch">
@@ -332,9 +332,9 @@
         </div>
         <div id="policyInfo" class="hide">
           <div class="list-item bd-t-0">
-            <label class="list-label" for="code">保单编号</label>
+            <label class="list-label" for="code">产品编码</label>
             <div class="list-text">
-              <input type="text" name="code" class="form-input" value="" placeholder="填写保单编号">
+              <input type="text" name="code" class="form-input" value="" placeholder="填写产品编码">
             </div>
           </div>
           <div class="list-item">

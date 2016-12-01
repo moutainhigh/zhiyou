@@ -74,7 +74,7 @@
   <header class="header">
     <h1>保险单列表</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <a href="${ctx}/u/policy/create" class="button-right"><i class="fa fa-plus"></i></a>
+    <a href="${ctx}/u/policy/create" class="button-right">新增</a>
   </header>
   
   <article>
