@@ -1,7 +1,9 @@
 package com.zy.admin.controller.rpt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -10,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +23,9 @@ import com.zy.common.model.ui.Grid;
 import com.zy.component.LocalCacheComponent;
 import com.zy.entity.mal.Order;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
 import com.zy.model.OrderQuantityReportVo;
+import com.zy.util.GcUtils;
 
 @Controller
 @RequestMapping("/report/orderQuantity")
@@ -31,8 +36,8 @@ public class OrderQuantityReportController {
 	
 	@RequiresPermissions("orderQuantity:view")
 	@RequestMapping(method = RequestMethod.GET)
-	public String list() {
-		
+	public String list(Model model) {
+		model.addAttribute("userRankMap", Arrays.asList(User.UserRank.values()).stream().collect(Collectors.toMap(v->v, v-> GcUtils.getUserRankLabel(v),(u, v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new)) );
 		return "rpt/orderQuantityReport";
 	}
 	
@@ -47,12 +52,16 @@ public class OrderQuantityReportController {
 			boolean result = true;
 			String nicknameLK = orderQuantityReportVoQueryModel.getNicknameLK();
 			String phoneEQ = orderQuantityReportVoQueryModel.getPhoneEQ();
+			UserRank userRankEQ = orderQuantityReportVoQueryModel.getUserRankEQ();
 			
 			if (!StringUtils.isBlank(nicknameLK)) {
 				result = result && StringUtils.contains(user.getNickname(), nicknameLK);
 			}
 			if (!StringUtils.isBlank(phoneEQ)) {
 				result = result && phoneEQ.equals(user.getPhone());
+			}
+			if(userRankEQ != null) {
+				result = result && userRankEQ == user.getUserRank();
 			}
 			return result;
 		}).collect(Collectors.toList());

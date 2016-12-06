@@ -3,6 +3,8 @@ package com.zy.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.zy.entity.usr.User.UserRank;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +34,7 @@ public class OrderQuantityReportVo implements Serializable {
 		
 		private String nicknameLK;
 		private String phoneEQ;
+		private UserRank userRankEQ;
 		private Date createdTimeGTE;
 		private Date createdTimeLT;
 		private Date paidTimeGTE;
