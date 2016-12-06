@@ -2,20 +2,29 @@ package com.zy.admin.controller.rpt;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+
+
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+
+
 
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
@@ -30,7 +39,9 @@ import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Withdraw;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
 import com.zy.model.FinanceReportVo;
+import com.zy.util.GcUtils;
 import com.zy.vo.ProfitAdminVo;
 
 @Controller
@@ -45,8 +56,8 @@ public class FinanceReportController {
 	
 	@RequiresPermissions("financeReport:view")
 	@RequestMapping(method = RequestMethod.GET)
-	public String list() {
-		
+	public String list(Model model) {
+		model.addAttribute("userRankMap", Arrays.asList(User.UserRank.values()).stream().collect(Collectors.toMap(v->v, v-> GcUtils.getUserRankLabel(v),(u, v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new)) );
 		return "rpt/financeReport";
 	}
 	
@@ -61,12 +72,16 @@ public class FinanceReportController {
 			boolean result = true;
 			String nicknameLK = financeReportVoQueryModel.getNicknameLK();
 			String phoneEQ = financeReportVoQueryModel.getPhoneEQ();
+			UserRank userRankEQ = financeReportVoQueryModel.getUserRankEQ();
 			
 			if (!StringUtils.isBlank(nicknameLK)) {
 				result = result && StringUtils.contains(user.getNickname(), nicknameLK);
 			}
 			if (!StringUtils.isBlank(phoneEQ)) {
 				result = result && phoneEQ.equals(user.getPhone());
+			}
+			if(userRankEQ != null) {
+				result = result && userRankEQ == user.getUserRank();
 			}
 			return result;
 		}).collect(Collectors.toList());

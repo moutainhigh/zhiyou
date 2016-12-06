@@ -257,6 +257,16 @@
               <div class="form-group">
                 <input type="text" name="phoneEQ" class="form-control" placeholder="服务商手机"/>
               </div>
+              
+              <div class="form-group">
+                <select name="userRankEQ" class="form-control">
+                  <option value="">-- 等级 --</option>
+                  <c:forEach items="${userRankMap}" var="userRankMap">
+                  <option value="${userRankMap.key}"<c:if test="${userRankMap.key == 'V4'}"> selected="selected"</c:if>>${userRankMap.value}</option>
+                  </c:forEach>
+                </select>
+              </div>
+              
               <div class="form-group input-inline">
                 <input class="Wdate form-control" type="text" id="beginDate"
                        onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="timeGTE" value="" placeholder="时间起"/>

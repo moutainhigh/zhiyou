@@ -3,6 +3,8 @@ package com.zy.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.zy.entity.usr.User.UserRank;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,6 +33,7 @@ public class FinanceReportVo {
 	public static class FinanceReportVoQueryModel {
 		private String nicknameLK;
 		private String phoneEQ;
+		private UserRank userRankEQ;
 		private Date timeGTE;
 		private Date timeLT;
 		private Integer pageNumber;
