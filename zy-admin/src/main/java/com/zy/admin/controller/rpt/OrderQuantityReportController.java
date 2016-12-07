@@ -1,5 +1,9 @@
 package com.zy.admin.controller.rpt;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -8,6 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.zy.common.util.ExcelUtils;
+import com.zy.common.util.WebUtils;
+import com.zy.entity.fnc.*;
+import com.zy.model.FinanceReportVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +34,8 @@ import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.OrderQuantityReportVo;
 import com.zy.util.GcUtils;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/report/orderQuantity")
@@ -197,4 +207,141 @@ public class OrderQuantityReportController {
 		return new Grid<>(page);
 	}
 
+	@RequiresPermissions("orderQuantity:export")
+	@RequestMapping("/export")
+	public String export(OrderQuantityReportVo.OrderQuantityReportVoQueryModel orderQuantityReportVoQueryModel,
+	                     HttpServletResponse response) throws IOException, ParseException {
+
+		List<User> users = localCacheComponent.getUsers();
+		List<User> filterUser = users.stream().filter(user -> {
+			boolean result = true;
+			String nicknameLK = orderQuantityReportVoQueryModel.getNicknameLK();
+			String phoneEQ = orderQuantityReportVoQueryModel.getPhoneEQ();
+			UserRank userRankEQ = orderQuantityReportVoQueryModel.getUserRankEQ();
+
+			if (!StringUtils.isBlank(nicknameLK)) {
+				result = result && StringUtils.contains(user.getNickname(), nicknameLK);
+			}
+			if (!StringUtils.isBlank(phoneEQ)) {
+				result = result && phoneEQ.equals(user.getPhone());
+			}
+			if(userRankEQ != null) {
+				result = result && userRankEQ == user.getUserRank();
+			}
+			return result;
+		}).collect(Collectors.toList());
+		List<Long> userIds = filterUser.stream().map(v -> v.getId()).collect(Collectors.toList());
+		if(userIds.isEmpty()) {
+			String fileName = "订单核算报表.xlsx";
+			WebUtils.setFileDownloadHeader(response, fileName);
+			OutputStream os = response.getOutputStream();
+			ExcelUtils.exportExcel(new ArrayList<>(), OrderQuantityReportVo.class, os);
+		}
+		Map<Long, Boolean> userIdMap = userIds.stream().collect(Collectors.toMap(v -> v, v -> true));
+
+		List<Order> orders = localCacheComponent.getOrders();
+		List<Order> filterOrders = orders.stream().filter(order -> {
+			boolean result = userIdMap.get(order.getUserId()) != null;
+
+			Date createdTimeGTE = orderQuantityReportVoQueryModel.getCreatedTimeGTE();
+			Date createdTimeLT = orderQuantityReportVoQueryModel.getCreatedTimeLT();
+			Date paidTimeGTE = orderQuantityReportVoQueryModel.getPaidTimeGTE();
+			Date paidTimeLT = orderQuantityReportVoQueryModel.getPaidTimeLT();
+
+			Date createdTime = order.getCreatedTime();
+			Date paidTime = order.getPaidTime();
+			if (createdTimeGTE != null) {
+				if(createdTime == null) {
+					result = false;
+				} else {
+					result = result && (createdTime.after(createdTimeGTE) || createdTime.equals(createdTimeGTE));
+				}
+			}
+			if (createdTimeLT != null) {
+				if(createdTime == null) {
+					result = false;
+				} else {
+					result = result && createdTime.before(createdTimeLT);
+				}
+			}
+			if (paidTimeGTE != null) {
+				if(paidTime == null) {
+					result = false;
+				} else {
+					result = result && (paidTime.after(paidTimeGTE) || paidTime.equals(paidTimeGTE));
+				}
+			}
+			if (paidTimeLT != null) {
+				if(paidTime == null) {
+					result = false;
+				} else {
+					result = result && paidTime.before(paidTimeLT);
+				}
+			}
+			return result;
+		}).collect(Collectors.toList());
+
+		Map<Long, OrderQuantityReportVo> orderQuantityReportMap = filterUser.stream().collect(Collectors.toMap(v -> v.getId(), v -> {
+			OrderQuantityReportVo orderQuantityReportVo = new OrderQuantityReportVo();
+			orderQuantityReportVo.setNickname(v.getNickname());
+			orderQuantityReportVo.setPhone(v.getPhone());
+			orderQuantityReportVo.setCanceledSum(0L);
+			orderQuantityReportVo.setDeliveredSum(0L);
+			orderQuantityReportVo.setOrderedSum(0L);
+			orderQuantityReportVo.setPaidSum(0L);
+			orderQuantityReportVo.setReceivedSum(0L);
+			orderQuantityReportVo.setRefundedSum(0L);
+			return orderQuantityReportVo;
+		}));
+
+		for(Order order : filterOrders) {
+			Long userId = order.getUserId();
+			OrderQuantityReportVo orderQuantityReportVo = orderQuantityReportMap.get(userId);
+			if(orderQuantityReportVo != null) {
+				Long quantity = order.getQuantity();
+				switch (order.getOrderStatus()) {
+					case 待支付:
+						orderQuantityReportVo.setOrderedSum(orderQuantityReportVo.getOrderedSum() + quantity);
+						break;
+					case 待确认:
+						orderQuantityReportVo.setOrderedSum(orderQuantityReportVo.getOrderedSum() + quantity);
+						break;
+					case 已支付:
+						orderQuantityReportVo.setOrderedSum(orderQuantityReportVo.getOrderedSum() + quantity);
+						orderQuantityReportVo.setPaidSum(orderQuantityReportVo.getPaidSum() + quantity);
+						break;
+					case 已发货:
+						orderQuantityReportVo.setOrderedSum(orderQuantityReportVo.getOrderedSum() + quantity);
+						orderQuantityReportVo.setPaidSum(orderQuantityReportVo.getPaidSum() + quantity);
+						orderQuantityReportVo.setDeliveredSum(orderQuantityReportVo.getDeliveredSum() + quantity);
+						break;
+					case 已完成:
+						orderQuantityReportVo.setOrderedSum(orderQuantityReportVo.getOrderedSum() + quantity);
+						orderQuantityReportVo.setPaidSum(orderQuantityReportVo.getPaidSum() + quantity);
+						orderQuantityReportVo.setReceivedSum(orderQuantityReportVo.getReceivedSum() + + quantity);
+						break;
+					case 已退款:
+						orderQuantityReportVo.setOrderedSum(orderQuantityReportVo.getOrderedSum() + quantity);
+						orderQuantityReportVo.setPaidSum(orderQuantityReportVo.getPaidSum() + quantity);
+						orderQuantityReportVo.setRefundedSum(orderQuantityReportVo.getRefundedSum() + quantity);
+						break;
+					case 已取消:
+						orderQuantityReportVo.setOrderedSum(orderQuantityReportVo.getOrderedSum() + quantity);
+						orderQuantityReportVo.setCanceledSum(orderQuantityReportVo.getCanceledSum() + quantity);
+						break;
+					default:
+						break;
+				}
+				orderQuantityReportMap.put(userId, orderQuantityReportVo);
+			}
+		}
+
+		List<OrderQuantityReportVo> orderQuantityReportVo = new ArrayList<>(orderQuantityReportMap.values());
+
+		String fileName = "订单核算报表.xlsx";
+		WebUtils.setFileDownloadHeader(response, fileName);
+		OutputStream os = response.getOutputStream();
+		ExcelUtils.exportExcel(orderQuantityReportVo, OrderQuantityReportVo.class, os);
+		return null;
+	}
 }

@@ -188,7 +188,13 @@
     });
 
   });
-  
+
+  <shiro:hasPermission name="financeReport:export">
+  function reportExport() {
+	  location.href = '${ctx}/report/finance/export?' + $('#searchForm').serialize();
+  }
+  </shiro:hasPermission>
+
 </script>
 <!-- END JAVASCRIPTS -->
 
@@ -281,6 +287,13 @@
                   <i class="fa fa-search"></i> 查询
                 </button>
               </div>
+              <shiro:hasPermission name="financeReport:export">
+                <div class="form-group">
+                  <button type="button" class="btn yellow" onClick="reportExport()">
+                    <i class="fa fa-file-excel-o"></i> 导出Excel
+                  </button>
+                </div>
+              </shiro:hasPermission>
             </form>
           </div>
           <table class="table table-striped table-bordered table-hover" id="dataTable">
