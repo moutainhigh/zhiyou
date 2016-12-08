@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -165,24 +166,9 @@ public class UcenterMoneyController {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("提现暂时关闭, 如有疑问请联系平台客服"));
 			return "redirect:/u/money";
 		}
-
-		
-		Calendar calendar = Calendar.getInstance();
-		Date now = new Date();
-		calendar.setTime(now);
-		calendar.set(Calendar.DAY_OF_MONTH, 7);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		Date beginTime = calendar.getTime();
-		calendar.set(Calendar.DAY_OF_MONTH, 12);
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
-		calendar.set(Calendar.MINUTE, 59);
-		calendar.set(Calendar.SECOND, 59);
-		Date endTime = calendar.getTime();
-		
-		if(now.before(beginTime) && now.after(endTime)) {
+		LocalDate localDate = LocalDate.now();
+		int dayOfMonth = localDate.getDayOfMonth();
+		if (dayOfMonth < 7 || dayOfMonth > 15) {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("提现操作时间每月7号-15号之间"));
 			return "redirect:/u/money";
 		}
