@@ -107,23 +107,36 @@ $(function(){
 											<div class="form-group">
 												<label class="control-label col-md-3">是否开发环境:</label>
 												<div class="col-md-9">
-													<p class="form-control-static">
-													<select name="isDev" class="form-control" style="width : 205px;">
-														<option value="1"<c:if test="${setting.isDev == '1'}"> selected="selected"</c:if>>是</option>
-														<option value="0"<c:if test="${setting.isDev == '0'}"> selected="selected"</c:if>>否</option>
-													</select>
-													</p>
+													<div class="checkbox">
+														<label class="checkbox-inline">
+															<input type="checkbox" name="isDev" <c:if test="${setting.isDev}">checked="checked</c:if>">
+															<input type="hidden" name="_isDev" value="false">
+														</label>
+													</div>
 												</div>
 											</div>
 										</div>
-                                        <div class="col-md-6"><div class="form-group"></div></div>
-                                        <div class="col-md-6">
-                                          <div class="form-group">
-                                            <button  type="submit" class="btn green">
-                                              <i class="fa fa-plus"></i> 保存
-                                            </button>
-                                          </div>
-                                        </div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="control-label col-md-3">是否开放提现:</label>
+												<div class="col-md-9">
+													<div class="checkbox">
+														<label class="checkbox-inline">
+															<input type="checkbox" name="isWithdrawOn" <c:if test="${setting.isWithdrawOn}">checked="checked</c:if>">
+															<input type="hidden" name="_isWithdrawOn" value="false">
+														</label>
+													</div>
+												</div>
+											</div>
+										</div>
+                    <div class="col-md-6"><div class="form-group"></div></div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <button  type="submit" class="btn green">
+                          <i class="fa fa-plus"></i> 保存
+                        </button>
+                      </div>
+                    </div>
 									</div>
 									
 								</div>
