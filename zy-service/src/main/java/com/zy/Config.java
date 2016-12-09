@@ -19,4 +19,6 @@ public interface Config {
 
     Long getNew();
 
+    boolean isWithdrawOn();
+
 }

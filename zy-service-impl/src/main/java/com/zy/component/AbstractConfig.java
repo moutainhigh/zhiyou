@@ -76,5 +76,10 @@ public abstract class AbstractConfig implements Config {
 		return 2L;
 	}
 
+	@Override
+	public boolean isWithdrawOn() {
+		return getSetting().getIsWithdrawOn();
+	}
+
 
 }

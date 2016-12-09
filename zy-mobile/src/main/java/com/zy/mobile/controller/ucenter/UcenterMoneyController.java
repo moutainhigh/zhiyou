@@ -162,7 +162,7 @@ public class UcenterMoneyController {
 	
 	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
 	public String withdraw(Principal principal, Model model, BigDecimal amount,Long bankCardId, RedirectAttributes redirectAttributes) {
-		if (true) {
+		if (!config.isWithdrawOn()) {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("提现暂时关闭, 如有疑问请联系平台客服"));
 			return "redirect:/u/money";
 		}

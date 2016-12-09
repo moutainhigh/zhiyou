@@ -1,19 +1,16 @@
 package com.zy.entity.sys;
 
 import io.gd.generator.annotation.Field;
-
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
-
-import org.hibernate.validator.constraints.NotBlank;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "sys_setting")
@@ -37,5 +34,9 @@ public class Setting implements Serializable {
 	@NotNull
 	@Field(label = "是否开发环境")
 	private Boolean isDev;
+
+	@NotNull
+	@Field(label = "是否开放提现")
+	private Boolean isWithdrawOn;
 
 }
