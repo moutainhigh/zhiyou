@@ -5,7 +5,6 @@
 <script>
 
 $(function(){
-	<c:if test="${show}">
 	$('#withdrawFeeRateScriptCheckBtn').click(function(){
 		$.post('${ctx}/setting/checkWithdrawFeeRateScript', 
 			{withdrawFeeRateScript: $('#withdrawFeeRateScript').val()}, 
@@ -18,59 +17,6 @@ $(function(){
 			}
 		);
 	});
-	
-	$('#bonusRateScriptCheckBtn').click(function(){
-		$.post('${ctx}/setting/checkBonusRateScript', 
-			{bonusRateScript: $('#bonusRateScript').val()}, 
-			function(result) {
-				if(result.code == 0) {
-					$('#bonusRateScriptResult').html(result.data);
-				} else {
-					$('#bonusRateScriptResult').text('校验失败:' + result.message);
-				}
-			}
-		);
-	});
-	
-	$('#basicCoinScriptCheckBtn').click(function(){
-		$.post('${ctx}/setting/checkBasicCoinScript', 
-			{basicCoinScript: $('#basicCoinScript').val()}, 
-			function(result) {
-				if(result.code == 0) {
-					$('#basicCoinScriptResult').html(result.data);
-				} else {
-					$('#basicCoinScriptResult').text('校验失败:' + result.message);
-				}
-			}
-		);
-	});
-	
-	$('#achievementAwardScriptCheckBtn').click(function(){
-		$.post('${ctx}/setting/checkAchievementAwardScript', 
-			{achievementAwardScript: $('#achievementAwardScript').val()}, 
-			function(result) {
-				if(result.code == 0) {
-					$('#achievementAwardScriptResult').html(result.data);
-				} else {
-					$('#achievementAwardScriptResult').text('校验失败:' + result.message);
-				}
-			}
-		);
-	});
-	
-	$('#signInPointScriptCheckBtn').click(function(){
-		$.post('${ctx}/setting/checkSignInPointScript', 
-			{signInPointScript: $('#signInPointScript').val()}, 
-			function(result) {
-				if(result.code == 0) {
-					$('#signInPointScriptResult').html(result.data);
-				} else {
-					$('#signInPointScriptResult').text('校验失败:' + result.message);
-				}
-			}
-		);
-	});
-	</c:if>
 });
 
 </script>
@@ -159,7 +105,6 @@ $(function(){
 										</p>
 									</div>
 								</div>
-								<c:if test="${show}">
 								<div class="form-group">
 									<label class="control-label col-md-3"></label>
 									<div class="col-md-9">
@@ -171,7 +116,6 @@ $(function(){
 										</button>
 									</div>
 								</div>
-								</c:if>
 							</form>
 						</div>
 
