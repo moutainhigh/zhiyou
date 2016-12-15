@@ -58,4 +58,5 @@
 	<dubbo:service ref="notifyServiceImpl" interface="com.zy.service.NotifyService"/>
 	<dubbo:service ref="policyServiceImpl" interface="com.zy.service.PolicyService"/>
 	<dubbo:service ref="policyCodeServiceImpl" interface="com.zy.service.PolicyCodeService"/>
+	<dubbo:service ref="reportVisitedLogServiceImpl" interface="com.zy.service.ReportVisitedLogService"/>
 </beans>

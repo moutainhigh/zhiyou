@@ -189,7 +189,7 @@ public class FncComponent {
 		if (fromUserId.equals(toUserId)) {
 			throw new ValidationException("from user id must not be same with to user id");
 		}
-		
+
 		transfer.setRefId(refId);
 		transfer.setTransferStatus(Transfer.TransferStatus.待转账);
 		transfer.setTransferType(transferType);

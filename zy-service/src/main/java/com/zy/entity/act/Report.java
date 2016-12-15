@@ -1,26 +1,10 @@
 package com.zy.entity.act;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.zy.common.extend.StringBinder;
 import com.zy.entity.mal.Product;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo.Gender;
-
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -32,6 +16,15 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 
 @Entity
 @Table(name = "act_report")
@@ -68,7 +61,7 @@ public class Report implements Serializable {
 	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
-	@NotNull
+	@NotBlank
 	@Field(label = "姓名")
 	@Query({Predicate.LK, Predicate.EQ})
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})

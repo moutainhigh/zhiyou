@@ -271,10 +271,10 @@
                 optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-step="1" data-id="' + full.id + '"><i class="fa fa-edit"></i> 预审核 </a>';
               }
               </shiro:hasPermission>
-              <shiro:hasPermission name="report:confirm">
-              if (full.preConfirmStatus == '已通过' && full.confirmStatus == '待审核') {
-                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-step="2" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
-              }
+              <shiro:hasPermission name="reportVisitedLog:edit">
+	            if (full.preConfirmStatus == '已通过' && full.confirmStatus == '待审核') {
+	              optionHtml += '<a class="btn btn-xs yellow blue-stripe" href="javascript:;" data-href="${ctx}/reportVisitedLog/create?reportId=' + full.id + '"><i class="fa fa-edit"></i> 填写回访记录</a>';
+	            }
               </shiro:hasPermission>
               return optionHtml;
             }

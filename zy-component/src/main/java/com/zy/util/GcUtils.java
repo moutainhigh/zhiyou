@@ -337,4 +337,25 @@ public class GcUtils {
 	public static List<String> getRootNames() {
 		return Arrays.asList(new String[]{"金生系统", "创优系统", "优墨系统", "传奇系统", "聚城系统", "汇营系统"});
 	}
+
+	public static Map<String, Object> getVisitedMap() {
+		Map<String, Object> map = new HashMap<>();
+		map.put("guanxi", Constants.relationshipList);
+		map.put("zuoxi", Constants.restTimeLabelList);
+		map.put("shuimian", Constants.sleepQualityList);
+		map.put("yinjiu", Constants.drinkList);
+		map.put("chouyan", Constants.smokeList);
+		map.put("duanlian", Constants.exerciseList);
+		map.put("xingqu", Constants.hobbyList);
+		map.put("yuanyin", Constants.causeList);
+		map.put("jiankang", Constants.healthList);
+		map.put("bingzhuang", Constants.sicknessList);
+		map.put("bingshi", Constants.familyHistoryList);
+		map.put("baojianpin", Constants.healthProductList);
+		map.put("yuexiaofei", Constants.monthlyCostList);
+		map.put("fenxiang", Constants.productSharingList);
+		map.put("zuodaili", Constants.toAgentList);
+		map.put("fangshi", Constants.contactWayList);
+		return map;
+	}
 }

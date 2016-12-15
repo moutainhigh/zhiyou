@@ -28,7 +28,7 @@ import static com.zy.entity.fnc.AccountLog.InOut.收入;
 public class AccountLogServiceImpl implements AccountLogService {
 
 	Logger logger = LoggerFactory.getLogger(AccountLogServiceImpl.class);
-	
+
 	@Autowired
 	private AccountLogMapper accountLogMapper;
 
