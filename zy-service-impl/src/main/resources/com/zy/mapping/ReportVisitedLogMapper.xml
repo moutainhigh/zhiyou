@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.ReportVisitedLogMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.act.ReportVisitedLog">
+		<id column="id" property="id" />
+		<result column="report_id" property="reportId" />
+		<result column="relationship" property="relationship" />
+		<result column="relationship_text" property="relationshipText" />
+		<result column="customer_service_name1" property="customerServiceName1" />
+		<result column="visited_time1" property="visitedTime1" />
+		<result column="visited_status1" property="visitedStatus1" />
+		<result column="customer_service_name2" property="customerServiceName2" />
+		<result column="visited_time2" property="visitedTime2" />
+		<result column="visited_status2" property="visitedStatus2" />
+		<result column="customer_service_name3" property="customerServiceName3" />
+		<result column="visited_time3" property="visitedTime3" />
+		<result column="visited_status3" property="visitedStatus3" />
+		<result column="visited_status" property="visitedStatus" />
+		<result column="confirm_status" property="confirmStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="remark" property="remark" />
+		<result column="rest_time_label" property="restTimeLabel" />
+		<result column="rest_time_text" property="restTimeText" />
+		<result column="sleep_quality" property="sleepQuality" />
+		<result column="sleep_quality_text" property="sleepQualityText" />
+		<result column="drink" property="drink" />
+		<result column="smoke" property="smoke" />
+		<result column="exercise" property="exercise" />
+		<result column="exercise_text" property="exerciseText" />
+		<result column="hobby" property="hobby" />
+		<result column="hobby_text" property="hobbyText" />
+		<result column="remark1" property="remark1" />
+		<result column="cause" property="cause" />
+		<result column="cause_text" property="causeText" />
+		<result column="health" property="health" />
+		<result column="sickness" property="sickness" />
+		<result column="family_history" property="familyHistory" />
+		<result column="remark2" property="remark2" />
+		<result column="health_product" property="healthProduct" />
+		<result column="health_product_text" property="healthProductText" />
+		<result column="monthly_cost" property="monthlyCost" />
+		<result column="monthly_cost_text" property="monthlyCostText" />
+		<result column="product_name" property="productName" />
+		<result column="interfering_factors" property="interferingFactors" />
+		<result column="remark3" property="remark3" />
+		<result column="visited_info" property="visitedInfo" />
+		<result column="product_sharing" property="productSharing" />
+		<result column="product_sharing_text" property="productSharingText" />
+		<result column="to_agent" property="toAgent" />
+		<result column="contact_way" property="contactWay" />
+		<result column="contact_way_text" property="contactWayText" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.act.ReportVisitedLog" useGeneratedKeys="true" keyProperty="id">
+	  insert into `act_report_visited_log` (report_id,relationship,relationship_text,customer_service_name1,visited_time1,visited_status1,customer_service_name2,visited_time2,visited_status2,customer_service_name3,visited_time3,visited_status3,visited_status,confirm_status,remark,rest_time_label,rest_time_text,sleep_quality,sleep_quality_text,drink,smoke,exercise,exercise_text,hobby,hobby_text,remark1,cause,cause_text,health,sickness,family_history,remark2,health_product,health_product_text,monthly_cost,monthly_cost_text,product_name,interfering_factors,remark3,visited_info,product_sharing,product_sharing_text,to_agent,contact_way,contact_way_text)
+	  values (#{reportId},#{relationship},#{relationshipText},#{customerServiceName1},#{visitedTime1},#{visitedStatus1},#{customerServiceName2},#{visitedTime2},#{visitedStatus2},#{customerServiceName3},#{visitedTime3},#{visitedStatus3},#{visitedStatus},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{remark},#{restTimeLabel},#{restTimeText},#{sleepQuality},#{sleepQualityText},#{drink},#{smoke},#{exercise},#{exerciseText},#{hobby},#{hobbyText},#{remark1},#{cause},#{causeText},#{health},#{sickness},#{familyHistory},#{remark2},#{healthProduct},#{healthProductText},#{monthlyCost},#{monthlyCostText},#{productName},#{interferingFactors},#{remark3},#{visitedInfo},#{productSharing},#{productSharingText},#{toAgent},#{contactWay},#{contactWayText})
+	</insert>
+
+	<delete id="delete">
+		delete from `act_report_visited_log` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.act.ReportVisitedLog">
+		update `act_report_visited_log`
+		<set>
+			report_id = #{reportId},
+			relationship = #{relationship},
+			relationship_text = #{relationshipText},
+			customer_service_name1 = #{customerServiceName1},
+			visited_time1 = #{visitedTime1},
+			visited_status1 = #{visitedStatus1},
+			customer_service_name2 = #{customerServiceName2},
+			visited_time2 = #{visitedTime2},
+			visited_status2 = #{visitedStatus2},
+			customer_service_name3 = #{customerServiceName3},
+			visited_time3 = #{visitedTime3},
+			visited_status3 = #{visitedStatus3},
+			visited_status = #{visitedStatus},
+			confirm_status = #{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			remark = #{remark},
+			rest_time_label = #{restTimeLabel},
+			rest_time_text = #{restTimeText},
+			sleep_quality = #{sleepQuality},
+			sleep_quality_text = #{sleepQualityText},
+			drink = #{drink},
+			smoke = #{smoke},
+			exercise = #{exercise},
+			exercise_text = #{exerciseText},
+			hobby = #{hobby},
+			hobby_text = #{hobbyText},
+			remark1 = #{remark1},
+			cause = #{cause},
+			cause_text = #{causeText},
+			health = #{health},
+			sickness = #{sickness},
+			family_history = #{familyHistory},
+			remark2 = #{remark2},
+			health_product = #{healthProduct},
+			health_product_text = #{healthProductText},
+			monthly_cost = #{monthlyCost},
+			monthly_cost_text = #{monthlyCostText},
+			product_name = #{productName},
+			interfering_factors = #{interferingFactors},
+			remark3 = #{remark3},
+			visited_info = #{visitedInfo},
+			product_sharing = #{productSharing},
+			product_sharing_text = #{productSharingText},
+			to_agent = #{toAgent},
+			contact_way = #{contactWay},
+			contact_way_text = #{contactWayText},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `act_report_visited_log`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'reportId'">report_id = #{reportVisitedLog.reportId},</when>
+					<when test="field == 'relationship'">relationship = #{reportVisitedLog.relationship},</when>
+					<when test="field == 'relationshipText'">relationship_text = #{reportVisitedLog.relationshipText},</when>
+					<when test="field == 'customerServiceName1'">customer_service_name1 = #{reportVisitedLog.customerServiceName1},</when>
+					<when test="field == 'visitedTime1'">visited_time1 = #{reportVisitedLog.visitedTime1},</when>
+					<when test="field == 'visitedStatus1'">visited_status1 = #{reportVisitedLog.visitedStatus1},</when>
+					<when test="field == 'customerServiceName2'">customer_service_name2 = #{reportVisitedLog.customerServiceName2},</when>
+					<when test="field == 'visitedTime2'">visited_time2 = #{reportVisitedLog.visitedTime2},</when>
+					<when test="field == 'visitedStatus2'">visited_status2 = #{reportVisitedLog.visitedStatus2},</when>
+					<when test="field == 'customerServiceName3'">customer_service_name3 = #{reportVisitedLog.customerServiceName3},</when>
+					<when test="field == 'visitedTime3'">visited_time3 = #{reportVisitedLog.visitedTime3},</when>
+					<when test="field == 'visitedStatus3'">visited_status3 = #{reportVisitedLog.visitedStatus3},</when>
+					<when test="field == 'visitedStatus'">visited_status = #{reportVisitedLog.visitedStatus},</when>
+					<when test="field == 'confirmStatus'">confirm_status = #{reportVisitedLog.confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.sys.ConfirmStatus},</when>
+					<when test="field == 'remark'">remark = #{reportVisitedLog.remark},</when>
+					<when test="field == 'restTimeLabel'">rest_time_label = #{reportVisitedLog.restTimeLabel},</when>
+					<when test="field == 'restTimeText'">rest_time_text = #{reportVisitedLog.restTimeText},</when>
+					<when test="field == 'sleepQuality'">sleep_quality = #{reportVisitedLog.sleepQuality},</when>
+					<when test="field == 'sleepQualityText'">sleep_quality_text = #{reportVisitedLog.sleepQualityText},</when>
+					<when test="field == 'drink'">drink = #{reportVisitedLog.drink},</when>
+					<when test="field == 'smoke'">smoke = #{reportVisitedLog.smoke},</when>
+					<when test="field == 'exercise'">exercise = #{reportVisitedLog.exercise},</when>
+					<when test="field == 'exerciseText'">exercise_text = #{reportVisitedLog.exerciseText},</when>
+					<when test="field == 'hobby'">hobby = #{reportVisitedLog.hobby},</when>
+					<when test="field == 'hobbyText'">hobby_text = #{reportVisitedLog.hobbyText},</when>
+					<when test="field == 'remark1'">remark1 = #{reportVisitedLog.remark1},</when>
+					<when test="field == 'cause'">cause = #{reportVisitedLog.cause},</when>
+					<when test="field == 'causeText'">cause_text = #{reportVisitedLog.causeText},</when>
+					<when test="field == 'health'">health = #{reportVisitedLog.health},</when>
+					<when test="field == 'sickness'">sickness = #{reportVisitedLog.sickness},</when>
+					<when test="field == 'familyHistory'">family_history = #{reportVisitedLog.familyHistory},</when>
+					<when test="field == 'remark2'">remark2 = #{reportVisitedLog.remark2},</when>
+					<when test="field == 'healthProduct'">health_product = #{reportVisitedLog.healthProduct},</when>
+					<when test="field == 'healthProductText'">health_product_text = #{reportVisitedLog.healthProductText},</when>
+					<when test="field == 'monthlyCost'">monthly_cost = #{reportVisitedLog.monthlyCost},</when>
+					<when test="field == 'monthlyCostText'">monthly_cost_text = #{reportVisitedLog.monthlyCostText},</when>
+					<when test="field == 'productName'">product_name = #{reportVisitedLog.productName},</when>
+					<when test="field == 'interferingFactors'">interfering_factors = #{reportVisitedLog.interferingFactors},</when>
+					<when test="field == 'remark3'">remark3 = #{reportVisitedLog.remark3},</when>
+					<when test="field == 'visitedInfo'">visited_info = #{reportVisitedLog.visitedInfo},</when>
+					<when test="field == 'productSharing'">product_sharing = #{reportVisitedLog.productSharing},</when>
+					<when test="field == 'productSharingText'">product_sharing_text = #{reportVisitedLog.productSharingText},</when>
+					<when test="field == 'toAgent'">to_agent = #{reportVisitedLog.toAgent},</when>
+					<when test="field == 'contactWay'">contact_way = #{reportVisitedLog.contactWay},</when>
+					<when test="field == 'contactWayText'">contact_way_text = #{reportVisitedLog.contactWayText},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{reportVisitedLog.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,report_id,relationship,relationship_text,customer_service_name1,visited_time1,visited_status1,customer_service_name2,visited_time2,visited_status2,customer_service_name3,visited_time3,visited_status3,visited_status,confirm_status,remark,rest_time_label,rest_time_text,sleep_quality,sleep_quality_text,drink,smoke,exercise,exercise_text,hobby,hobby_text,remark1,cause,cause_text,health,sickness,family_history,remark2,health_product,health_product_text,monthly_cost,monthly_cost_text,product_name,interfering_factors,remark3,visited_info,product_sharing,product_sharing_text,to_agent,contact_way,contact_way_text
+		from `act_report_visited_log`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ReportVisitedLogQueryModel">
+		select
+		id,report_id,relationship,relationship_text,customer_service_name1,visited_time1,visited_status1,customer_service_name2,visited_time2,visited_status2,customer_service_name3,visited_time3,visited_status3,visited_status,confirm_status,remark,rest_time_label,rest_time_text,sleep_quality,sleep_quality_text,drink,smoke,exercise,exercise_text,hobby,hobby_text,remark1,cause,cause_text,health,sickness,family_history,remark2,health_product,health_product_text,monthly_cost,monthly_cost_text,product_name,interfering_factors,remark3,visited_info,product_sharing,product_sharing_text,to_agent,contact_way,contact_way_text
+		from `act_report_visited_log`
+		<where>
+			<if test="reportIdEQ != null">
+				and report_id = #{reportIdEQ}
+			</if>
+			<if test="customerServiceName2LK != null">
+				<bind name="customerServiceName2LK" value="'%' + customerServiceName2LK + '%'"/> and customer_service_name2 like #{customerServiceName2LK}
+			</if>
+			<if test="customerServiceName1LK != null">
+				<bind name="customerServiceName1LK" value="'%' + customerServiceName1LK + '%'"/> and customer_service_name1 like #{customerServiceName1LK}
+			</if>
+			<if test="confirmStatusEQ != null">
+				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="reportIdIN != null">
+				<if test="reportIdIN.length != 0">
+				and report_id in
+				<foreach collection="reportIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="reportIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="restTimeLabelGTE != null">
+				and rest_time_label &gt;= #{restTimeLabelGTE}
+			</if>
+			<if test="restTimeLabelLT != null">
+				and rest_time_label &lt; #{restTimeLabelLT}
+			</if>
+			<if test="exerciseEQ != null">
+				and exercise = #{exerciseEQ}
+			</if>
+			<if test="customerServiceName3LK != null">
+				<bind name="customerServiceName3LK" value="'%' + customerServiceName3LK + '%'"/> and customer_service_name3 like #{customerServiceName3LK}
+			</if>
+			<if test="visitedTime3GTE != null">
+				and visited_time3 &gt;= #{visitedTime3GTE}
+			</if>
+			<if test="visitedTime1GTE != null">
+				and visited_time1 &gt;= #{visitedTime1GTE}
+			</if>
+			<if test="smokeEQ != null">
+				and smoke = #{smokeEQ}
+			</if>
+			<if test="visitedStatus1LK != null">
+				<bind name="visitedStatus1LK" value="'%' + visitedStatus1LK + '%'"/> and visited_status1 like #{visitedStatus1LK}
+			</if>
+			<if test="visitedStatus2LK != null">
+				<bind name="visitedStatus2LK" value="'%' + visitedStatus2LK + '%'"/> and visited_status2 like #{visitedStatus2LK}
+			</if>
+			<if test="visitedStatus3LK != null">
+				<bind name="visitedStatus3LK" value="'%' + visitedStatus3LK + '%'"/> and visited_status3 like #{visitedStatus3LK}
+			</if>
+			<if test="visitedStatusLK != null">
+				<bind name="visitedStatusLK" value="'%' + visitedStatusLK + '%'"/> and visited_status like #{visitedStatusLK}
+			</if>
+			<if test="relationshipLK != null">
+				<bind name="relationshipLK" value="'%' + relationshipLK + '%'"/> and relationship like #{relationshipLK}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="visitedStatus1EQ != null">
+				and visited_status1 = #{visitedStatus1EQ}
+			</if>
+			<if test="visitedStatus2EQ != null">
+				and visited_status2 = #{visitedStatus2EQ}
+			</if>
+			<if test="visitedTime3LT != null">
+				and visited_time3 &lt; #{visitedTime3LT}
+			</if>
+			<if test="visitedStatus3EQ != null">
+				and visited_status3 = #{visitedStatus3EQ}
+			</if>
+			<if test="visitedTime1LT != null">
+				and visited_time1 &lt; #{visitedTime1LT}
+			</if>
+			<if test="visitedTime2LT != null">
+				and visited_time2 &lt; #{visitedTime2LT}
+			</if>
+			<if test="visitedStatusEQ != null">
+				and visited_status = #{visitedStatusEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="visitedTime2GTE != null">
+				and visited_time2 &gt;= #{visitedTime2GTE}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.ReportVisitedLogQueryModel">
+		select count(*) from `act_report_visited_log`
+		<where>
+			<if test="reportIdEQ != null">
+				and report_id = #{reportIdEQ}
+			</if>
+			<if test="customerServiceName2LK != null">
+				<bind name="customerServiceName2LK" value="'%' + customerServiceName2LK + '%'"/> and customer_service_name2 like #{customerServiceName2LK}
+			</if>
+			<if test="customerServiceName1LK != null">
+				<bind name="customerServiceName1LK" value="'%' + customerServiceName1LK + '%'"/> and customer_service_name1 like #{customerServiceName1LK}
+			</if>
+			<if test="confirmStatusEQ != null">
+				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="reportIdIN != null">
+				<if test="reportIdIN.length != 0">
+				and report_id in
+				<foreach collection="reportIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="reportIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="restTimeLabelGTE != null">
+				and rest_time_label &gt;= #{restTimeLabelGTE}
+			</if>
+			<if test="restTimeLabelLT != null">
+				and rest_time_label &lt; #{restTimeLabelLT}
+			</if>
+			<if test="exerciseEQ != null">
+				and exercise = #{exerciseEQ}
+			</if>
+			<if test="customerServiceName3LK != null">
+				<bind name="customerServiceName3LK" value="'%' + customerServiceName3LK + '%'"/> and customer_service_name3 like #{customerServiceName3LK}
+			</if>
+			<if test="visitedTime3GTE != null">
+				and visited_time3 &gt;= #{visitedTime3GTE}
+			</if>
+			<if test="visitedTime1GTE != null">
+				and visited_time1 &gt;= #{visitedTime1GTE}
+			</if>
+			<if test="smokeEQ != null">
+				and smoke = #{smokeEQ}
+			</if>
+			<if test="visitedStatus1LK != null">
+				<bind name="visitedStatus1LK" value="'%' + visitedStatus1LK + '%'"/> and visited_status1 like #{visitedStatus1LK}
+			</if>
+			<if test="visitedStatus2LK != null">
+				<bind name="visitedStatus2LK" value="'%' + visitedStatus2LK + '%'"/> and visited_status2 like #{visitedStatus2LK}
+			</if>
+			<if test="visitedStatus3LK != null">
+				<bind name="visitedStatus3LK" value="'%' + visitedStatus3LK + '%'"/> and visited_status3 like #{visitedStatus3LK}
+			</if>
+			<if test="visitedStatusLK != null">
+				<bind name="visitedStatusLK" value="'%' + visitedStatusLK + '%'"/> and visited_status like #{visitedStatusLK}
+			</if>
+			<if test="relationshipLK != null">
+				<bind name="relationshipLK" value="'%' + relationshipLK + '%'"/> and relationship like #{relationshipLK}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="visitedStatus1EQ != null">
+				and visited_status1 = #{visitedStatus1EQ}
+			</if>
+			<if test="visitedStatus2EQ != null">
+				and visited_status2 = #{visitedStatus2EQ}
+			</if>
+			<if test="visitedTime3LT != null">
+				and visited_time3 &lt; #{visitedTime3LT}
+			</if>
+			<if test="visitedStatus3EQ != null">
+				and visited_status3 = #{visitedStatus3EQ}
+			</if>
+			<if test="visitedTime1LT != null">
+				and visited_time1 &lt; #{visitedTime1LT}
+			</if>
+			<if test="visitedTime2LT != null">
+				and visited_time2 &lt; #{visitedTime2LT}
+			</if>
+			<if test="visitedStatusEQ != null">
+				and visited_status = #{visitedStatusEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="visitedTime2GTE != null">
+				and visited_time2 &gt;= #{visitedTime2GTE}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByReportId" resultMap="baseResultMap" parameterType="long">
+		select *
+		from `act_report_visited_log`
+		where report_id = #{reportId}
+	</select>
+
+</mapper>
