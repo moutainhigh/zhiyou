@@ -133,7 +133,7 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 				reportVisitedLog.setConfirmStatus(待审核);
 			}
 		} else {
-			throw new ValidationException("visited status3 and visited status2 all are blank");
+			throw new ValidationException("客服信息为空");
 		}
 
 		reportVisitedLog.setCustomerServiceName1(persistence.getCustomerServiceName1());

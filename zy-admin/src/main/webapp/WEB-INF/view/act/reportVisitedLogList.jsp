@@ -136,7 +136,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-umbrella"></i> 回访记录
+          <i class="icon-volume-1"></i> 回访记录
         </div>
       </div>
       <div class="portlet-body clearfix">
