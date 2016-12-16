@@ -27,7 +27,7 @@
 	<logger name="com.zy" level="${log.packageLevel}"/>
 
 	<!-- 日志输出级别 -->
-	<root level="info">
+	<root level="${log.rootLevel}">
 		<appender-ref ref="${log.appender}"/>
 	</root>
 

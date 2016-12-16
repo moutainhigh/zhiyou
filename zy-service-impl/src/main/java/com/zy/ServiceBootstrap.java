@@ -9,6 +9,8 @@ public class ServiceBootstrap {
         System.setProperty("dubbo.application.logger", "slf4j");
         System.setProperty("container", "spring");
         System.setProperty("dubbo.shutdown.hook", "true");
+        org.slf4j.LoggerFactory.getLogger(ServiceBootstrap.class.getClass()).info("started,.......");
+
         Main.main(args);
     }
 

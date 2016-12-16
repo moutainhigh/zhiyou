@@ -1,6 +1,6 @@
 package com.zy;
 
-import io.gd.generator.*;
+import io.gd.generator.Generator;
 import io.gd.generator.handler.NodeHandler;
 
 /**
