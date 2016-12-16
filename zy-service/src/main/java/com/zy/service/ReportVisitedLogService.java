@@ -12,7 +12,6 @@ public interface ReportVisitedLogService {
 
 	void create(ReportVisitedLog reportVisitedLog);
 
-
 	void modify(ReportVisitedLog reportVisitedLog);
 
 	ReportVisitedLog findByReportId(Long reportId);
