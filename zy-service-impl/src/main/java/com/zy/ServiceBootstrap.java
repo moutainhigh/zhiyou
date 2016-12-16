@@ -1,8 +1,6 @@
 package com.zy;
 
 import com.alibaba.dubbo.container.Main;
-import org.apache.log4j.spi.LoggerFactory;
-import org.slf4j.Logger;
 
 public class ServiceBootstrap {
 
@@ -11,7 +9,7 @@ public class ServiceBootstrap {
         System.setProperty("dubbo.application.logger", "slf4j");
         System.setProperty("container", "spring");
         System.setProperty("dubbo.shutdown.hook", "true");
-        org.slf4j.LoggerFactory.getLogger(this.getClass()).info("started,.......");
+        org.slf4j.LoggerFactory.getLogger(ServiceBootstrap.class.getClass()).info("started,.......");
 
         Main.main(args);
     }
