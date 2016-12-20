@@ -132,12 +132,11 @@ public class FncComponent {
 	}
 
 	public Profit createAndGrantProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
-	                           @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
+	                           @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount, Date createdTime) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
 		}
-		Date date = new Date();
 		Profit profit = new Profit();
 		profit.setProfitType(profitType);
 		profit.setTitle(title);
@@ -145,10 +144,10 @@ public class FncComponent {
 		profit.setAmount(amount);
 		profit.setSn(ServiceUtils.generateProfitSn());
 		profit.setCurrencyType(currencyType);
-		profit.setCreatedTime(date);
+		profit.setCreatedTime(createdTime);
 		profit.setRefId(refId);
 		profit.setProfitStatus(Profit.ProfitStatus.已发放);
-		profit.setGrantedTime(date);
+		profit.setGrantedTime(createdTime);
 		validate(profit);
 		profitMapper.insert(profit);
 		Long sysUserId = config.getSysUserId();
@@ -160,12 +159,11 @@ public class FncComponent {
 	}
 
 	public Profit createProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
-	                                   @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
+	                                          @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount, Date createdTime) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
 		}
-		Date date = new Date();
 		Profit profit = new Profit();
 		profit.setProfitType(profitType);
 		profit.setTitle(title);
@@ -173,7 +171,7 @@ public class FncComponent {
 		profit.setAmount(amount);
 		profit.setSn(ServiceUtils.generateProfitSn());
 		profit.setCurrencyType(currencyType);
-		profit.setCreatedTime(date);
+		profit.setCreatedTime(createdTime);
 		profit.setRefId(refId);
 		profit.setProfitStatus(Profit.ProfitStatus.待发放);
 		profit.setGrantedTime(null);
@@ -184,7 +182,7 @@ public class FncComponent {
 
 	public Transfer createTransfer(@NotNull Long fromUserId, @NotNull Long toUserId, @NotNull Transfer.TransferType transferType, Long refId,
 	                               @NotBlank String title, @NotNull CurrencyType currencyType,
-	                               @NotNull @DecimalMin("0.01") BigDecimal amount) {
+	                               @NotNull @DecimalMin("0.01") BigDecimal amount, Date createdTime) {
 		Transfer transfer = new Transfer();
 		if (fromUserId.equals(toUserId)) {
 			throw new ValidationException("from user id must not be same with to user id");
@@ -198,7 +196,7 @@ public class FncComponent {
 		transfer.setToUserId(toUserId);
 		transfer.setCurrencyType(currencyType);
 		transfer.setSn(ServiceUtils.generateTransferSn());
-		transfer.setCreatedTime(new Date());
+		transfer.setCreatedTime(createdTime);
 		transfer.setTitle(title);
 		transfer.setVersion(0);
 		transferMapper.insert(transfer);
