@@ -269,10 +269,10 @@ public class UserController {
 	public String modifyParent(Long id, Model model, RedirectAttributes redirectAttributes) {
 		User user = userService.findOne(id);
 		validate(user, NOT_NULL, "user id" + id + " not fount");
-		if(user.getParentId() == null) {
+		/*if(user.getParentId() == null) {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, "上级为空不允许修改");
 			return "redirect:/user";
-		}
+		}*/
 		model.addAttribute("user", userComponent.buildAdminVo(user));
 		return "usr/modifyParent";
 	}

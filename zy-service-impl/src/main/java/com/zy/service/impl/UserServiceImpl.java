@@ -200,9 +200,9 @@ public class UserServiceImpl implements UserService {
             throw new BizException(BizCode.ERROR, "修改无效, 用户类型必须为代理");
         }
 
-        if (plainUserRank == UserRank.V0) {
+        /*if (plainUserRank == UserRank.V0) {
             throw new BizException(BizCode.ERROR, "修改无效, 意向代理不能修改");
-        }
+        }*/
 
         if (userRank == plainUserRank) {
             return; // 幂等操作
@@ -427,9 +427,10 @@ public class UserServiceImpl implements UserService {
         if (parent.getUserType() != UserType.代理) {
             throw new BizException(BizCode.ERROR, "上级用户类型必须是代理");
         }
+        /*
         if (parent.getUserRank() == UserRank.V0) {
             throw new BizException(BizCode.ERROR, "上级用户必须成为代理");
-        }
+        }*/
 
         Long originParentId = parentId;
         Long plainParentId = user.getParentId();
