@@ -86,7 +86,7 @@ public class OrderFillUserController {
 	}
 
 	@RequiresPermissions("orderFillUser:edit")
-	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public String delete(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 		orderFillUserService.delete(id);
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ok("操作成功"));
