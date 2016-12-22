@@ -46,7 +46,7 @@
       var amount = $transfer.find('.transfer-amount').text();
       $.dialog({
         content : '您确定要将' + amount + '元${type}转账给' + nickname + '吗?'
-          + '<textarea id="remark" name="remark" class="form-input" rows="2" placeholder="请填写转账备注"></textarea>',
+            + '<textarea id="remark" name="remark" class="form-input" rows="2" placeholder="请填写转账备注"></textarea>',
         callback : function(index){
           if(index == 1) {
             var remark = $('#remark').val();

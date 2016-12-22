@@ -85,12 +85,12 @@
     <div class="list-item p-0">
       <div class="list-text account-link">
         <a class="bd-r bd-b" href="${ctx}/u/account/transferIn?status=0">
-          <div><i class="icon icon-account-data"></i></div>
+          <div><i class="icon icon-account-in"></i></div>
           <div class="fs-14 font-333">转入</div>
           <em class="badge red">${transferInCount}</em>
         </a>
         <a class="bd-r bd-b" href="${ctx}/u/account/transferOut?status=0">
-          <div><i class="icon icon-account-yiping"></i></div>
+          <div><i class="icon icon-account-out"></i></div>
           <div class="fs-14 font-333">转出</div>
           <em class="badge red">${transferOutCount}</em>
         </a>
