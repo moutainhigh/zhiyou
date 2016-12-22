@@ -37,16 +37,20 @@
              + '</div>';
     return html;
   }
-  
+
+</script>
+
+<script>
   $(function(){
-    $('body').on('.btn-transfer', 'click', function(){
+
+    $('body').on('click', '.btn-transfer', function(){
       var $transfer =  $(this).parents('.list-item');
       var id = $transfer.attr('data-id');
       var nickname = $transfer.find('.transfer-nickname').text();
       var amount = $transfer.find('.transfer-amount').text();
       $.dialog({
         content : '您确定要将' + amount + '元${type}转账给' + nickname + '吗?'
-            + '<textarea id="remark" name="remark" class="form-input" rows="2" placeholder="请填写转账备注"></textarea>',
+        + '<textarea id="remark" name="remark" class="block-100 bd mt-5" rows="2" placeholder="请填写转账备注"></textarea>',
         callback : function(index){
           if(index == 1) {
             var remark = $('#remark').val();
@@ -60,9 +64,10 @@
               type : 'POST',
               success : function(result){
                 if(result.code == 0){
-                  messageFlash('${result.message}');
+                  messageFlash(result.message);
+                  loadData();
                 } else {
-                  messageAlert('${result.message}');
+                  messageAlert(result.message);
                 }
               }
             });
