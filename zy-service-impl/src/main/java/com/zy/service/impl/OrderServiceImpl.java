@@ -24,6 +24,7 @@ import com.zy.model.Constants;
 import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.dto.OrderSumDto;
+import com.zy.model.query.OrderFillUserQueryModel;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.OrderService;
 import org.apache.commons.lang3.StringUtils;
@@ -48,7 +49,10 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderMapper orderMapper;
-	
+
+	@Autowired
+	private OrderFillUserMapper orderFillUserMapper;
+
 	@Autowired
 	private PaymentMapper paymentMapper;
 
@@ -81,8 +85,15 @@ public class OrderServiceImpl implements OrderService {
 		validate(orderCreateDto);
 
 		Order.OrderType orderType = orderCreateDto.getOrderType();
-		if(orderType == Order.OrderType.补单 && !config.isOpenOrderFill()) {
-			throw new BizException(BizCode.ERROR, "补单已关闭");
+		if(orderType == Order.OrderType.补单) {
+			if(!config.isOpenOrderFill()) {
+				throw new BizException(BizCode.ERROR, "补单已关闭");
+			}
+
+			long count = orderFillUserMapper.count(OrderFillUserQueryModel.builder().userIdEQ(orderCreateDto.getUserId()).build());
+			if(count == 0) {
+				throw new BizException(BizCode.ERROR, "当前权限不能补单");
+			}
 		}
 
 		/* check user */
