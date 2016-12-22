@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "sys_setting")
@@ -39,4 +40,10 @@ public class Setting implements Serializable {
 	@Field(label = "是否开放提现")
 	private Boolean isWithdrawOn;
 
+	@NotNull
+	@Field(label = "是否开放补订单")
+	private Boolean isOpenOrderFill;
+
+	@Field(label = "补单时间", description = "做为订单创建和下单时间")
+	private Date orderFillTime;
 }

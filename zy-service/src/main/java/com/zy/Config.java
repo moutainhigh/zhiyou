@@ -4,6 +4,7 @@ import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.usr.User.UserType;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public interface Config {
 
@@ -21,4 +22,7 @@ public interface Config {
 
     boolean isWithdrawOn();
 
+    boolean isOpenOrderFill();
+
+    Date getOrderFillTime();
 }

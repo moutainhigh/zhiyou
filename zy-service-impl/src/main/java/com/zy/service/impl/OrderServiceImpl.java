@@ -80,6 +80,11 @@ public class OrderServiceImpl implements OrderService {
 	public Order create(@NotNull OrderCreateDto orderCreateDto) {
 		validate(orderCreateDto);
 
+		Order.OrderType orderType = orderCreateDto.getOrderType();
+		if(orderType == Order.OrderType.补单 && !config.isOpenOrderFill()) {
+			throw new BizException(BizCode.ERROR, "补单已关闭");
+		}
+
 		/* check user */
 		Long userId = orderCreateDto.getUserId();
 		User user = userMapper.findOne(userId);
@@ -139,10 +144,16 @@ public class OrderServiceImpl implements OrderService {
 		BigDecimal price = malComponent.getPrice(productId, user.getUserRank(), quantity);
 		BigDecimal amount = price.multiply(new BigDecimal(quantity));
 
+		Date createdTime = null;
+		if(orderCreateDto.getOrderType() == Order.OrderType.普通订单) {
+			createdTime = new Date();
+		} else {
+			createdTime = config.getOrderFillTime();
+		}
 		Order order = new Order();
 		order.setUserId(userId);
 		order.setAmount(amount);
-		order.setCreatedTime(new Date());
+		order.setCreatedTime(createdTime);
 		order.setIsSettledUp(false);
 		order.setIsProfitSettledUp(false);
 		order.setIsCopied(false);
@@ -157,6 +168,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setReceiverPhone(address.getPhone());
 		order.setBuyerMemo(orderCreateDto.getBuyerMemo());
 		order.setOrderStatus(OrderStatus.待支付);
+		order.setOrderType(orderType);
 		order.setVersion(0);
 		order.setSellerId(sellerId);
 		order.setCurrencyType(CurrencyType.现金);

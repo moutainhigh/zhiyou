@@ -1,20 +1,5 @@
 package com.zy.mobile.controller;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.model.Constants.SETTING_NEW_MIN_QUANTITY;
-import static com.zy.model.Constants.SETTING_OLD_MIN_QUANTITY;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.zy.Config;
 import com.zy.component.ProductComponent;
 import com.zy.entity.mal.Product;
@@ -25,6 +10,20 @@ import com.zy.model.query.ProductQueryModel;
 import com.zy.service.ProductService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.SETTING_NEW_MIN_QUANTITY;
+import static com.zy.model.Constants.SETTING_OLD_MIN_QUANTITY;
 
 @RequestMapping("/product")
 @Controller
@@ -43,16 +42,17 @@ public class ProductController {
 	private Config config;
 	
 	@RequestMapping
-	public String list(Model model) {
+	public String list(Model model, String orderFill) {
 		ProductQueryModel productQueryModel = new ProductQueryModel();
 		productQueryModel.setIsOnEQ(true);
 		List<Product> products = productService.findAll(productQueryModel);
 		model.addAttribute("products", products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
+		model.addAttribute("orderFill", orderFill);
 		return "product/productList";
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String detail(@PathVariable Long id, boolean isAgent, Model model) {
+	public String detail(@PathVariable Long id, boolean isAgent, String orderFill, Model model) {
 		Product product = productService.findOne(id);
 		Principal principal = GcUtils.getPrincipal();
 		if(principal == null) {
@@ -85,7 +85,7 @@ public class ProductController {
 		validate(product, NOT_NULL, "product id" + id + " not found");
 		validate(product.getIsOn(), v -> true, "product is not on");
 		model.addAttribute("product", productComponent.buildDetailVo(product));
-
+		model.addAttribute("orderFill", orderFill);
 		return "product/productDetail";
 	}
 

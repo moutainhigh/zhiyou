@@ -175,8 +175,14 @@ public class MalComponent {
 			logger.warn("订单状态警告 {} 订单id {}", order.getOrderStatus(), order.getId());
 		}
 
+		Date paidTime = null;
+		if(order.getOrderType() == Order.OrderType.补单) {
+			paidTime = order.getCreatedTime();
+		} else {
+			paidTime = new Date();
+		}
 		order.setOrderStatus(已支付);
-		order.setPaidTime(new Date());
+		order.setPaidTime(paidTime);
 		if(orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
 		}

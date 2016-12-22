@@ -56,7 +56,7 @@
             title: '订单',
             orderable: false,
             render: function (data, type, full) {
-              return 'sn: ' + full.sn + '<br /> 标题：' + full.title;
+              return '<p>sn: ' + full.sn + '</p><p> 标题：' + full.title + '</p>类型: ' + full.orderType;
             }
           },
           {

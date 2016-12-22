@@ -62,6 +62,11 @@ public class Order implements Serializable {
 		待支付, 待确认, 已支付, 已发货, 已完成, 已退款, 已取消
 	}
 
+	@Type(label = "订单类型")
+	public enum OrderType {
+		普通订单, 补单
+	}
+
 	@Id
 	@Field(label = "id")
 	@View
@@ -149,6 +154,12 @@ public class Order implements Serializable {
 	@View
 	@View(name = "orderStatusStyle", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
 	private OrderStatus orderStatus;
+
+	@NotNull
+	@Query({Predicate.EQ})
+	@Field(label = "订单类型")
+	@View
+	private OrderType orderType;
 
 	@NotNull
 	@DecimalMin("0.00")

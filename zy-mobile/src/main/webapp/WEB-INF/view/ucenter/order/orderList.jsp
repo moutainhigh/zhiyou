@@ -25,6 +25,9 @@
   <header class="header">
     <h1>${inOut == 'out' ? '出货' : '进货'}订单</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <c:if test="${orderFill}">
+      <a href="${ctx}/product?orderFill=1" class="button-right"><i class="fa fa-save"></i>补单</a>
+    </c:if>
   </header>
   
   <nav class="miui-scroll-nav">

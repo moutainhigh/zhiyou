@@ -48,4 +48,5 @@
     <dubbo:reference id="policyService" interface="com.zy.service.PolicyService" protocol="dubbo"/>
     <dubbo:reference id="policyCodeService" interface="com.zy.service.PolicyCodeService" protocol="dubbo"/>
     <dubbo:reference id="reportVisitLogService" interface="com.zy.service.ReportVisitedLogService" protocol="dubbo"/>
+    <dubbo:reference id="orderFillUserService" interface="com.zy.service.OrderFillUserService" protocol="dubbo"/>
 </beans>

@@ -129,6 +129,11 @@
       });
     });
 
+	  $('.form-switch label').click(function() {
+		  var checked = $(this).prev().is(':checked');
+		  $('#isOrderFill').val(!checked);
+	  });
+
   });
   
   function showAddressCreate() {
@@ -287,7 +292,7 @@
   </header>
   
   <form id="orderForm" class="valid-form" action="${ctx}/u/order/create" method="post">
-  
+    <input type="hidden" name="orderType" value="${orderType}" />
   <%--
   <c:if test="${not empty parent}">
   <div class="parent-alert alert alert-warning mb-10">
@@ -357,6 +362,19 @@
         </div>
       </c:if>
     </div>
+
+    <c:if test="${orderFill}">
+    <div class="list-group">
+      <div class="list-item">
+        <div class="list-text">是否补订单</div>
+        <div class="list-unit form-switch">
+          <input type="hidden" name="_isOrderFill" value="false">
+          <input type="checkbox" id="isOrderFill" name="isOrderFill">
+          <label class="i-switch" for="isOrderFill"></label>
+        </div>
+      </div>
+    </div>
+    </c:if>
     
     <div class="list-group">
       <div class="list-title">请写下您的订单留言</div>

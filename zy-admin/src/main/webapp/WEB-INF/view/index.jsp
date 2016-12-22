@@ -218,6 +218,11 @@
                   <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 平台发货订单<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="orderFillUser:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/orderFillUser"><i class="icon-users"></i> 用户补单管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
             </ul>
           </li>
         </shiro:hasAnyPermissions>
@@ -441,11 +446,11 @@
                   <a href="javascript:;" data-href="${ctx}/role"><i class="icon-key"></i> 角色管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
-              <shiro:hasPermission name="message:view">
-                <li>
-                  <a href="javascript:;" data-href="${ctx}/message"><i class="icon-bulb"></i> 消息管理<span class="badge badge-danger"></span></a>
-                </li>
-              </shiro:hasPermission>
+              <%--<shiro:hasPermission name="message:view">--%>
+                <%--<li>--%>
+                  <%--<a href="javascript:;" data-href="${ctx}/message"><i class="icon-bulb"></i> 消息管理<span class="badge badge-danger"></span></a>--%>
+                <%--</li>--%>
+              <%--</shiro:hasPermission>--%>
               <shiro:hasPermission name="setting:*">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/setting/edit"><i class="icon-speedometer"></i> 系统设置<span class="badge badge-danger"></span></a>

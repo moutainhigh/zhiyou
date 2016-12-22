@@ -1,18 +1,14 @@
 package com.zy.model.query;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.io.Serializable;
-
-import io.gd.generator.api.query.Direction;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.mal.Order.OrderType;
+import io.gd.generator.api.query.Direction;
+import lombok.*;
+
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -50,6 +46,8 @@ public class OrderQueryModel implements Serializable {
 	private OrderStatus orderStatusEQ;
 
 	private OrderStatus[] orderStatusIN;
+
+	private OrderType orderTypeEQ;
 
 	private Boolean isProfitSettledUpEQ;
 
@@ -116,6 +114,7 @@ public class OrderQueryModel implements Serializable {
 
 	static {
 		fieldNames.add("currencyType");
+		fieldNames.add("orderType");
 		fieldNames.add("discountFee");
 		fieldNames.add("receiverProvince");
 		fieldNames.add("receiverCity");

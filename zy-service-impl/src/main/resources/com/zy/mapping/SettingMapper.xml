@@ -8,11 +8,13 @@
 		<result column="withdraw_fee_rate_script" property="withdrawFeeRateScript" />
 		<result column="is_dev" property="isDev" />
 		<result column="is_withdraw_on" property="isWithdrawOn" />
+		<result column="is_open_order_fill" property="isOpenOrderFill" />
+		<result column="order_fill_time" property="orderFillTime" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.sys.Setting" useGeneratedKeys="true" keyProperty="id">
-	  insert into `sys_setting` (sys_user_id,withdraw_fee_rate_script,is_dev,is_withdraw_on)
-	  values (#{sysUserId},#{withdrawFeeRateScript},#{isDev},#{isWithdrawOn})
+	  insert into `sys_setting` (sys_user_id,withdraw_fee_rate_script,is_dev,is_withdraw_on,is_open_order_fill,order_fill_time)
+	  values (#{sysUserId},#{withdrawFeeRateScript},#{isDev},#{isWithdrawOn},#{isOpenOrderFill},#{orderFillTime})
 	</insert>
 
 	<delete id="delete">
@@ -26,6 +28,8 @@
 			withdraw_fee_rate_script = #{withdrawFeeRateScript},
 			is_dev = #{isDev},
 			is_withdraw_on = #{isWithdrawOn},
+			is_open_order_fill = #{isOpenOrderFill},
+			order_fill_time = #{orderFillTime},
 		</set>
 		where id = #{id}
 	</update>
@@ -39,6 +43,8 @@
 					<when test="field == 'withdrawFeeRateScript'">withdraw_fee_rate_script = #{setting.withdrawFeeRateScript},</when>
 					<when test="field == 'isDev'">is_dev = #{setting.isDev},</when>
 					<when test="field == 'isWithdrawOn'">is_withdraw_on = #{setting.isWithdrawOn},</when>
+					<when test="field == 'isOpenOrderFill'">is_open_order_fill = #{setting.isOpenOrderFill},</when>
+					<when test="field == 'orderFillTime'">order_fill_time = #{setting.orderFillTime},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -47,14 +53,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,sys_user_id,withdraw_fee_rate_script,is_dev,is_withdraw_on
+		id,sys_user_id,withdraw_fee_rate_script,is_dev,is_withdraw_on,is_open_order_fill,order_fill_time
 		from `sys_setting`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap">
 		select
-		id,sys_user_id,withdraw_fee_rate_script,is_dev,is_withdraw_on
+		id,sys_user_id,withdraw_fee_rate_script,is_dev,is_withdraw_on,is_open_order_fill,order_fill_time
 		from `sys_setting`
 		order by id desc
 	</select>

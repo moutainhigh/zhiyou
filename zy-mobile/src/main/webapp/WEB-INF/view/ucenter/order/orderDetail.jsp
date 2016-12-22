@@ -337,6 +337,10 @@
         <img class="image-40 round ml-10" src="${seller.avatarThumbnail}">
         </c:if>
       </div>
+      <div class="list-item lh-20">
+        <div class="list-text fs-14">类型</div>
+        <div class="list-unit fs-12">${order.orderType}</div>
+      </div>
     </div>
     
     <c:if test="${not empty order.offlineImages}">

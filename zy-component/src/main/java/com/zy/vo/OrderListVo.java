@@ -1,14 +1,15 @@
 package com.zy.vo;
 
-import io.gd.generator.annotation.Field;
 import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.mal.Order.OrderType;
+import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,6 +29,8 @@ public class OrderListVo implements Serializable {
 	private String title;
 	@Field(label = "订单状态")
 	private OrderStatus orderStatus;
+	@Field(label = "订单类型")
+	private OrderType orderType;
 	@Field(label = "应付总金额")
 	private BigDecimal amount;
 	@Field(label = "商品id")

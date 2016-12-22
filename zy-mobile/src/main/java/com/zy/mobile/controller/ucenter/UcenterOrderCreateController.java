@@ -1,8 +1,22 @@
 package com.zy.mobile.controller.ucenter;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-
+import com.zy.Config;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.component.ProductComponent;
+import com.zy.component.UserComponent;
+import com.zy.entity.mal.Order;
+import com.zy.entity.mal.OrderFillUser;
+import com.zy.entity.mal.Product;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.Address;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo;
+import com.zy.model.Constants;
+import com.zy.model.Principal;
+import com.zy.model.dto.OrderCreateDto;
+import com.zy.model.query.OrderFillUserQueryModel;
+import com.zy.service.*;
+import com.zy.vo.ProductListVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,24 +27,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.component.ProductComponent;
-import com.zy.component.UserComponent;
-import com.zy.entity.mal.Order;
-import com.zy.entity.mal.Product;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.Address;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.UserInfo;
-import com.zy.model.Constants;
-import com.zy.model.Principal;
-import com.zy.model.dto.OrderCreateDto;
-import com.zy.service.AddressService;
-import com.zy.service.OrderService;
-import com.zy.service.ProductService;
-import com.zy.service.UserInfoService;
-import com.zy.service.UserService;
-import com.zy.vo.ProductListVo;
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 @RequestMapping("/u/order")
 @Controller
@@ -52,6 +52,12 @@ public class UcenterOrderCreateController {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private OrderFillUserService orderFillUserService;
+
+	@Autowired
+	private Config config;
 
 	@Autowired
 	private ProductComponent productComponent;
@@ -97,21 +103,38 @@ public class UcenterOrderCreateController {
 				}
 			}
 		}
+
+		boolean orderFill = config.isOpenOrderFill();
+		if(orderFill) {
+			List<OrderFillUser> all = orderFillUserService.findAll(OrderFillUserQueryModel.builder().userIdEQ(userId).build());
+			if(all.isEmpty()) {
+				orderFill = false;
+			} else {
+				orderFill = true;
+			}
+		}
+		model.addAttribute("orderFill", orderFill);
 		return "ucenter/order/orderCreate";
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String create(OrderCreateDto orderCreateDto, Long parentId, Principal principal, RedirectAttributes redirectAttributes) {
+	public String create(OrderCreateDto orderCreateDto, boolean isOrderFill, Long parentId, Principal principal, RedirectAttributes redirectAttributes) {
 		
 		orderCreateDto.setUserId(principal.getUserId());
 		orderCreateDto.setParentId(parentId);
+		if(isOrderFill) {
+			orderCreateDto.setOrderType(Order.OrderType.补单);
+		} else {
+			orderCreateDto.setOrderType(Order.OrderType.普通订单);
+		}
 		Order order = null;
 		try {
 			order = orderService.create(orderCreateDto);
 		} catch (Exception e) {
 			logger.error("下单错误", e);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("下单失败, 原因: " + e.getMessage()));
-			return "redirect:/u/order/create?productId=" + orderCreateDto.getProductId() + "&quantity=" + orderCreateDto.getQuantity() + (orderCreateDto.getParentId() == null ? "" : ("&parentId=" + orderCreateDto.getParentId()));
+			return "redirect:/u/order/create?productId=" + orderCreateDto.getProductId() + "&quantity=" + orderCreateDto.getQuantity() + (orderCreateDto.getParentId() == null ? "" : ("&parentId=" + orderCreateDto.getParentId()))
+					+ (orderCreateDto.getOrderType() == Order.OrderType.补单 ? ("&orderFill=1") : "");
 		}
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("下单成功，请继续支付"));
 		return "redirect:/u/order/" + order.getId();

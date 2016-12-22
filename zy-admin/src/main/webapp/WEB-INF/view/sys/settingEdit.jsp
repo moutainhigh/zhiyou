@@ -17,6 +17,29 @@ $(function(){
 			}
 		);
 	});
+
+	$('#dataForm').validate({
+		rules: {},
+		messages: {},
+		submitHandler: function (form) {
+			if($('#isOpenOrderFill').prop('checked')) {
+				var orderFillTime = $('#orderFillTime').val();
+				if(orderFillTime == '' || orderFillTime == null) {
+					layer.alert('请选择补单时间');
+					return ;
+				}
+			}
+
+			$(form).find(':submit').prop('disabled', true);
+			Layout.postForm(form);
+		}
+	});
+
+	$('#isOpenOrderFill').click(function () {
+		if(!$(this).prop('checked')) {
+			$('#orderFillTime').val('');
+		}
+	})
 });
 
 </script>
@@ -75,6 +98,34 @@ $(function(){
 												</div>
 											</div>
 										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="control-label col-md-3">是否开放补单:</label>
+												<div class="col-md-9">
+													<div class="checkbox">
+														<label class="checkbox-inline">
+															<input type="checkbox" name="isOpenOrderFill" id="isOpenOrderFill" <c:if test="${setting.isOpenOrderFill}">checked="checked</c:if>">
+															<input type="hidden" name="_isOpenOrderFill" value="false">
+														</label>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="control-label col-md-3">补单时间:</label>
+												<div class="col-md-6">
+													<input class="form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+													       name="orderFillTime" id="orderFillTime" value="<fmt:formatDate value="${setting.orderFillTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate>" placeholder="补单时间"/>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="row">
                     <div class="col-md-6"><div class="form-group"></div></div>
                     <div class="col-md-6">
                       <div class="form-group">

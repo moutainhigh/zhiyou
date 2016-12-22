@@ -37,7 +37,7 @@ public class SettingController {
 
 	@RequestMapping(value = "/edit/base", method = RequestMethod.POST)
 	public String edit(Setting setting, RedirectAttributes redirectAttributes) {
-		String[] fields = new String[]{"isDev", "isWithdrawOn"};
+		String[] fields = new String[]{"isDev", "isWithdrawOn", "isOpenOrderFill", "orderFillTime"};
 		try {
 			validate(setting, fields);
 			settingService.merge(setting, fields);

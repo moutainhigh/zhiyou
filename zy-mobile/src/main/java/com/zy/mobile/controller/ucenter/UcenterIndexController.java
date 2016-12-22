@@ -67,7 +67,7 @@ public class UcenterIndexController {
 	
 	@Autowired
     private AliyunOssSupport aliyunOssSupport;
-	
+
 	@RequestMapping
 	public String index(Principal principal, Model model) {
 		Long userId = principal.getUserId();

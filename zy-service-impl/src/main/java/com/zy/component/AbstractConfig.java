@@ -14,6 +14,7 @@ import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public abstract class AbstractConfig implements Config {
 
@@ -81,5 +82,9 @@ public abstract class AbstractConfig implements Config {
 		return getSetting().getIsWithdrawOn();
 	}
 
+	@Override
+	public boolean isOpenOrderFill() { return getSetting().getIsOpenOrderFill(); }
 
+	@Override
+	public Date getOrderFillTime() { return getSetting().getOrderFillTime(); }
 }
