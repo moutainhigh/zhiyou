@@ -12,12 +12,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>收入 - ${type}</title>
+<title>转入</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/pageload.jsp"%>
 <script type="text/javascript">
   function getUrl() {
-    return '${ctx}/u/account/transferIn?type=${type.ordinal()}';
+    return '${ctx}/u/account/transferIn?status=${status}';
   }
   
   function buildRow(row) {
@@ -29,11 +29,17 @@
              +   '</div>' 
              +   '<div class="list-unit width-100 text-right">' 
              +     '<div class="transfer-amount currency-in">' + row.amountLabel + '</div>' 
-             +     '<div class="fs-12 font-999">状态: ' + row.transferStatus + '</div>';
-         html += '</div>'
+             +     '<div class="fs-12 font-999">状态: ' + row.transferStatus + '</div>'
+             +   '</div>'
              + '</div>';
     return html;
   }
+
+  $(function(){
+
+    $('.miui-scroll-nav').scrollableNav();
+
+  });
   
 </script>
 </head>
@@ -41,9 +47,16 @@
 <body class="account-list">
   <article class="page-wrap">
     <header class="header">
-      <h1>收入 - ${type}</h1>
+      <h1>转入</h1>
       <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
+
+    <nav class="miui-scroll-nav">
+      <ul>
+        <li<c:if test="${status == '0'}"> class="current"</c:if>><a href="${ctx}/u/account/transferIn?status=0">待处理</a></li>
+        <li<c:if test="${status == '1'}"> class="current"</c:if>><a href="${ctx}/u/account/transferIn?status=1">已完成</a></li>
+      </ul>
+    </nav>
   
     <div class="page-inner">
       <div class="page-list list-group mb-0">

@@ -1,11 +1,16 @@
 package com.zy.model.query;
 
-import io.gd.generator.api.query.Direction;
-import lombok.*;
-
-import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.HashSet;
+import java.io.Serializable;
+
+import io.gd.generator.api.query.Direction;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Getter
 @Setter

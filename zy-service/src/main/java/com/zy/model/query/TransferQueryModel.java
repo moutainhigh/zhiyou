@@ -24,6 +24,8 @@ public class TransferQueryModel implements Serializable {
 
 	private TransferStatus transferStatusEQ;
 
+	private TransferStatus[] transferStatusIN;
+
 	private Long fromUserIdEQ;
 
 	private Long[] fromUserIdIN;

@@ -1,11 +1,11 @@
 package com.zy.mapper;
 
 
-import com.zy.entity.mal.OrderFillUser;
-import com.zy.model.query.OrderFillUserQueryModel;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import com.zy.entity.mal.OrderFillUser;
+import com.zy.model.query.OrderFillUserQueryModel;
 
 
 public interface OrderFillUserMapper {

@@ -12,12 +12,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>支出 - ${type}</title>
+<title>转出</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/pageload.jsp"%>
-<script type="text/javascript">
+<script>
   function getUrl() {
-    return '${ctx}/u/account/transferOut?type=${type.ordinal()}';
+    return '${ctx}/u/account/transferOut?status=${status}';
   }
   
   function buildRow(row) {
@@ -30,11 +30,9 @@
              +   '<div class="list-unit width-100 text-right">' 
              +     '<div class="transfer-amount currency-out">' + row.amountLabel + '</div>' 
              +     '<div class="fs-12 font-999">状态: ' + row.transferStatus + '</div>';
-         <%--
          if(row.transferStatus == '待转账'){
            html += '<a class="btn-transfer btn btn-sm red" href="javascript:;">余额转账</a>';
          }
-         --%>
          html += '</div>'
              + '</div>';
     return html;
@@ -42,18 +40,22 @@
   
   $(function(){
     $('body').on('.btn-transfer', 'click', function(){
+      console.log(2);
       var $transfer =  $(this).parents('.list-item');
       var id = $transfer.attr('data-id');
       var nickname = $transfer.find('.transfer-nickname').text();
       var amount = $transfer.find('.transfer-amount').text();
       $.dialog({
-        content : '您确定要将' + amount + '元${type}转账给' + nickname + '吗?',
+        content : '您确定要将' + amount + '元${type}转账给' + nickname + '吗?'
+          + '<textarea id="remark" name="remark" class="form-input" rows="2" placeholder="请填写转账备注"></textarea>',
         callback : function(index){
           if(index == 1) {
+            var remark = $('#remark').val();
             $.ajax({
               url : '${ctx}/u/account/transfer',
               data : {
-                id : id
+                id : id,
+                remark : remark
               },
               dataType : 'json',
               type : 'POST',
@@ -70,6 +72,9 @@
         }
       });
     });
+
+    $('.miui-scroll-nav').scrollableNav();
+
   });
 </script>
 </head>
@@ -77,15 +82,21 @@
 <body class="account-list">
   <article class="page-wrap">
     <header class="header">
-      <h1>支出 - ${type}</h1>
+      <h1>转出</h1>
       <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
-  
+
+    <nav class="miui-scroll-nav">
+      <ul>
+        <li<c:if test="${status == '0'}"> class="current"</c:if>><a href="${ctx}/u/account/transferOut?status=0">待处理</a></li>
+        <li<c:if test="${status == '1'}"> class="current"</c:if>><a href="${ctx}/u/account/transferOut?status=1">已完成</a></li>
+      </ul>
+    </nav>
+
     <div class="page-inner">
       <div class="page-list list-group mb-0">
       </div>
     </div>
   </article>
-  <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
 </html>
