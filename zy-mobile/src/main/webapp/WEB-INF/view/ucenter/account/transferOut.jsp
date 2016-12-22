@@ -40,7 +40,6 @@
   
   $(function(){
     $('body').on('.btn-transfer', 'click', function(){
-      console.log(2);
       var $transfer =  $(this).parents('.list-item');
       var id = $transfer.attr('data-id');
       var nickname = $transfer.find('.transfer-nickname').text();
