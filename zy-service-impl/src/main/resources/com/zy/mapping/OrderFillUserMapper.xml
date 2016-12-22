@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.OrderFillUserMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.mal.OrderFillUser">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.mal.OrderFillUser" useGeneratedKeys="true" keyProperty="id">
+	  insert into `mal_order_fill_user` (user_id,remark)
+	  values (#{userId},#{remark})
+	</insert>
+
+	<delete id="delete">
+		delete from `mal_order_fill_user` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.mal.OrderFillUser">
+		update `mal_order_fill_user`
+		<set>
+			user_id = #{userId},
+			remark = #{remark},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `mal_order_fill_user`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{orderFillUser.userId},</when>
+					<when test="field == 'remark'">remark = #{orderFillUser.remark},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{orderFillUser.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,remark
+		from `mal_order_fill_user`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderFillUserQueryModel">
+		select
+		id,user_id,remark
+		from `mal_order_fill_user`
+		<where>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+				and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.OrderFillUserQueryModel">
+		select count(*) from `mal_order_fill_user`
+		<where>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+				and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+		</where>
+	</select>
+
+</mapper>
