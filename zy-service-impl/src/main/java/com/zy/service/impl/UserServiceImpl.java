@@ -1,23 +1,5 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.fnc.CurrencyType.现金;
-import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.URL;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
@@ -33,8 +15,23 @@ import com.zy.model.BizCode;
 import com.zy.model.dto.AgentRegisterDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
-
 import me.chanjar.weixin.common.util.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.entity.fnc.CurrencyType.现金;
+import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
 
 @Service
 @Validated
@@ -319,10 +316,27 @@ public class UserServiceImpl implements UserService {
         if (phone.equals(plainPhone)) {
             return; // 幂等操作
         }
+        if (userMapper.findByPhone(phone) != null) {
+            throw new BizException(BizCode.ERROR, "手机号重复");
+        }
         user.setPhone(phone);
         userMapper.update(user);
         usrComponent.recordUserLog(id, operatorId, "修改手机", "从" + plainPhone + "修改为" + phone);
     }
+
+
+    @Override
+    public void modifyNicknameAdmin(@NotNull Long id, @NotBlank String nickname, @NotNull Long operatorId) {
+        User user = findAndValidate(id);
+        String plainNickname = user.getNickname();
+        if (nickname.equals(plainNickname)) {
+            return; // 幂等操作
+        }
+        user.setPhone(nickname);
+        userMapper.update(user);
+        usrComponent.recordUserLog(id, operatorId, "修改昵称", "从" + plainNickname + "修改为" + nickname);
+    }
+
 
     @Override
     public void modifyPassword(@NotNull Long id, @NotBlank String password) {

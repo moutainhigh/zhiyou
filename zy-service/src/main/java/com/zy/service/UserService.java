@@ -1,12 +1,12 @@
 package com.zy.service;
 
-import java.util.List;
-
 import com.zy.common.model.query.Page;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.dto.AgentRegisterDto;
 import com.zy.model.query.UserQueryModel;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -44,6 +44,8 @@ public interface UserService {
 	void modifyPasswordAdmin(Long id, String password, Long operatorId);
 
 	void modifyPhoneAdmin(Long id, String phone, Long operatorId);
+
+	void modifyNicknameAdmin(Long id, String nickname, Long operatorId);
 
 	void freezeAdmin(Long id, Long operatorId);
 
