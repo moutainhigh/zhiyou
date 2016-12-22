@@ -203,7 +203,7 @@ public class UcenterAccountController {
 			throw new UnauthorizedException();
 		}
 		try {
-			transferService.transfer(id, remark);
+			transferService.offlineTransfer(id, remark);
 			return ResultBuilder.ok("已转账成功");
 		} catch (Exception e) {
 			return ResultBuilder.error(e.getMessage());
