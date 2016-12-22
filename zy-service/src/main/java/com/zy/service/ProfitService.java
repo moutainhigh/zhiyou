@@ -1,12 +1,13 @@
 package com.zy.service;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import com.zy.common.model.query.Page;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
 import com.zy.model.query.ProfitQueryModel;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 public interface ProfitService {
 
@@ -14,7 +15,7 @@ public interface ProfitService {
 	
 	List<Profit> findAll(ProfitQueryModel profitQueryModel);
 	
-	Profit createAndGrant(Long userId, String title, CurrencyType currencyType, BigDecimal amount);
+	Profit createAndGrant(Long userId, String title, CurrencyType currencyType, BigDecimal amount, Date createdTime);
 
 	void grant(Long id);
 	

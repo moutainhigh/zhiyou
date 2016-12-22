@@ -609,12 +609,14 @@ public class OrderServiceImpl implements OrderService {
 		@SuppressWarnings("unused")
 		Long sysUserId = config.getSysUserId();
 
+		Date paidTime = order.getPaidTime();
+
 		if (config.isOld(productId)) {
 
 			/* 销量奖 */
 			if (buyerUserRank == UserRank.V4) {
 				final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
-				fncComponent.createProfit(buyerId, Profit.ProfitType.销量奖, orderId, "销量奖", CurrencyType.现金, saleBonus);
+				fncComponent.createProfit(buyerId, Profit.ProfitType.销量奖, orderId, "销量奖", CurrencyType.现金, saleBonus, paidTime);
 			}
 
 			/* 一级平级奖 */
@@ -624,7 +626,7 @@ public class OrderServiceImpl implements OrderService {
 					User buyerParent = userMapper.findOne(buyerParentId);
 					if (buyerParent.getUserRank() == UserRank.V3) {
 						final BigDecimal v3FlatBonus = new BigDecimal("7.00").multiply(BigDecimal.valueOf(quantity));
-						fncComponent.createTransfer(sellerId, buyerParentId, Transfer.TransferType.一级平级奖, orderId, "一级平级奖", CurrencyType.现金, v3FlatBonus);
+						fncComponent.createTransfer(sellerId, buyerParentId, Transfer.TransferType.一级平级奖, orderId, "一级平级奖", CurrencyType.现金, v3FlatBonus, paidTime);
 					}
 				}
 			}
@@ -666,16 +668,16 @@ public class OrderServiceImpl implements OrderService {
 						if (index == 0) {
 							continue;
 						} else if (index == 1) {
-							fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus1);
+							fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus1, paidTime);
 							if (skipBonusUserId != null) {
 								/* 一级越级奖 */
-								fncComponent.createTransfer(parentId, skipBonusUserId, Transfer.TransferType.一级越级奖, orderId, "一级越级奖", CurrencyType.现金, v3SkipBonus);
+								fncComponent.createTransfer(parentId, skipBonusUserId, Transfer.TransferType.一级越级奖, orderId, "一级越级奖", CurrencyType.现金, v3SkipBonus, paidTime);
 							}
 
 						} else if (index == 2) {
-							fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus2);
+							fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus2, paidTime);
 						} else if (index == 3) {
-							fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus3);
+							fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.现金, v4FlatBonus3, paidTime);
 						} else {
 							break;
 						}
@@ -721,6 +723,8 @@ public class OrderServiceImpl implements OrderService {
 		UserRank sellerUserRank = seller.getUserRank();
 		Long sysUserId = config.getSysUserId();
 
+		Date paidTime = order.getPaidTime();
+
 		/* 订单收款 */
 		if (order.getIsPayToPlatform()) {
 			BigDecimal amount = order.getAmount();
@@ -732,7 +736,7 @@ public class OrderServiceImpl implements OrderService {
 					amount = amount.subtract(v4Amount);
 					/*fncComponent.createAndGrantProfit(sysUserId, Profit.ProfitType.平台收款, orderId, "订单" + order.getSn() + "平台收款", currencyType, v4Amount);*/
 				}
-				fncComponent.createAndGrantProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单" + order.getSn() + "收款", CurrencyType.现金, amount);
+				fncComponent.createAndGrantProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单" + order.getSn() + "收款", CurrencyType.现金, amount, paidTime);
 			}
 		}
 
@@ -740,7 +744,7 @@ public class OrderServiceImpl implements OrderService {
 		if (order.getIsUseLogistics() && order.getIsBuyerPayLogisticsFee()) {
 			BigDecimal logisticsFee = order.getLogisticsFee();
 			if (logisticsFee.compareTo(new BigDecimal("0.00")) > 0) {
-				fncComponent.createTransfer(buyerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee);
+				fncComponent.createTransfer(buyerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee, paidTime);
 			}
 		}
 

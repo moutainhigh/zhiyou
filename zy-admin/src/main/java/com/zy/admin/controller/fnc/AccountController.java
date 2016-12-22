@@ -1,17 +1,5 @@
 package com.zy.admin.controller.fnc;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.math.BigDecimal;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.zy.common.extend.BigDecimalBinder;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
@@ -26,6 +14,18 @@ import com.zy.model.query.UserQueryModel;
 import com.zy.service.ProfitService;
 import com.zy.service.UserService;
 import com.zy.vo.AccountAdminVo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 @RequestMapping("/account")
 @Controller
@@ -67,7 +67,7 @@ public class AccountController {
 		}
 
 		try {
-			profitService.createAndGrant(userId, remark, CurrencyType.现金, amount);
+			profitService.createAndGrant(userId, remark, CurrencyType.现金, amount, new Date());
 		} catch (Exception e) {
 			return ResultBuilder.error("充值失败," + e.getMessage());
 		}
