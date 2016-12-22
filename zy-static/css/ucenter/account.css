@@ -19,10 +19,13 @@
   
 }
 .account-link a {
-  float: left; padding-top: 15px; padding-bottom: 15px;
+  position: relative; float: left; padding-top: 15px; padding-bottom: 15px;
   display: block; width: 33.333333%;
   text-align: center;
 }
-.account-link a .icon {
+.account-link a > .icon {
   width: 24px; height: 24px;
+}
+.account-link a > .badge {
+  position: absolute; right: 5px; top: 5px;
 }

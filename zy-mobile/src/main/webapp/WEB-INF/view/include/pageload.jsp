@@ -40,10 +40,10 @@
         loadMore(dropload)
       }
     });
-    loadData(dropload);
+    loadData();
   });
 
-  function loadData(dropload) {
+  function loadData() {
     $.ajax({
       url : getUrl(),
       data : {
@@ -97,7 +97,7 @@
 
   var timeLT = '${timeLT}';
   var pageNumber = 0;
-  function loadMore(dropload) {
+  function loadMore() {
     if(dropload.$element.find('.page-more').hasClass('.disabled')){
       return;
     }

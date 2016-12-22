@@ -305,7 +305,7 @@
 
 /* scroll nav */
 .miui-scroll-nav {
-  position: relative; z-index: 99; overflow: hidden; 
+  position: relative; z-index: 99; overflow: hidden;
   display: block; width: 100%; height: 48px;
   background-color: #f9f9f9;
 }
@@ -316,12 +316,16 @@
 }
 .miui-scroll-nav > ul {
   position: absolute; left: 0; white-space: nowrap;
+  min-width: 100%; text-align: center;
 }
 .miui-scroll-nav > ul > li {
   position: relative; margin: 0 10px; padding: 0 6px;
   display: inline-block; height: 100%;
-  color: #666; font-size: 15px; line-height: 48px; text-align: center; 
+  color: #666; font-size: 15px; line-height: 48px; text-align: center;
   cursor: pointer;
+}
+.miui-scroll-nav > ul > li > a {
+  display: inline-block; height: 100%;
 }
 .miui-scroll-nav > ul > li::after {
   position: absolute; top: 12px; right: -12px; bottom: 12px;
@@ -337,4 +341,5 @@
   border: 0; background-color: #fb8604;
   pointer-events: none; z-index: 100;
 }
+
 

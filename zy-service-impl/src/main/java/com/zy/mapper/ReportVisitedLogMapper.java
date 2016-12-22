@@ -1,11 +1,11 @@
 package com.zy.mapper;
 
 
-import com.zy.entity.act.ReportVisitedLog;
-import com.zy.model.query.ReportVisitedLogQueryModel;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import com.zy.entity.act.ReportVisitedLog;
+import com.zy.model.query.ReportVisitedLogQueryModel;
 
 
 public interface ReportVisitedLogMapper {

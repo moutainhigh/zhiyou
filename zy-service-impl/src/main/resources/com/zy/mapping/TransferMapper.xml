@@ -129,6 +129,17 @@
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
 			</if>
+			<if test="transferStatusIN != null">
+				<if test="transferStatusIN.length != 0">
+				and transfer_status in
+				<foreach collection="transferStatusIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+				</if>
+				<if test="transferStatusIN.length == 0">
+				1 = 2
+				</if>
+			</if>
 			<if test="fromUserIdIN != null">
 				<if test="fromUserIdIN.length != 0">
 				and from_user_id in
@@ -208,6 +219,17 @@
 			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
+			</if>
+			<if test="transferStatusIN != null">
+				<if test="transferStatusIN.length != 0">
+				and transfer_status in
+				<foreach collection="transferStatusIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+				</if>
+				<if test="transferStatusIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 			<if test="fromUserIdIN != null">
 				<if test="fromUserIdIN.length != 0">
