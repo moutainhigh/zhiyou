@@ -13,6 +13,7 @@ public class PayNotify {
 	String name; // 版本名称	Name	是	String(32)	版本名称,默认属性值为:B2CPayment
 	String version; // 版本号	Version	是	String(20)	版本号,默认属性值为: V4.1.1.1.1
 	String charset; // 字符集	Charset	是	String(10)	字符集,支持GBK、UTF-8、GB2312,默认属性值为:UTF-8
+	String traceNo; // 请求序列号	TraceNo	是	String(40)	报文发起方唯一消息标识
 	String msgSender; // 发送方标识	MsgSender	是	String(64)	由盛付通提供,默认为:商户号(由盛付通提供的8位正整数),用于盛付通判别请求方的身份
 	String sendTime; // 发送支付请求时间	SendTime	是	String(14)	用户通过商户网站提交订单的支付时间,必须为14位正整数数字,格式为:yyyyMMddHHmmss,如:20110707112233
 	String instCode; // 银行编码	InstCode	是	String(256)	见附录7.1.2综合网银编码列表,机构代码列表以逗号分隔,如：InstCode=ICBC,CMB

@@ -100,8 +100,8 @@ public  interface Constants {
     String ALIPAY_WAP_SITE_URL = "http://m.zhi-you.net";
 
     /* shengPay */
-    String SHENGPAY_NOTIFY = "http://www.zhi-you.net/notify/shengPay/async";
-    String SHENGPAY_RETURN = "http://www.zhi-you.net/notify/shengPay/sync";
+    String SHENGPAY_NOTIFY = "http://agentsystem.zhi-you.net/notify/shengPay/async";
+    String SHENGPAY_RETURN = "http://agentsystem.zhi-you.net/notify/shengPay/sync";
 
     /* social login notify url */
     String WEIXIN_LOGIN_NOTIFY = "http://passport.zhi-you.net/notify/weixin";

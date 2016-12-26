@@ -39,6 +39,8 @@ public class ShengPayClient {
 		forSign.append(seperator);
 		forSign.append(payNotify.getCharset());
 		forSign.append(seperator);
+		forSign.append(payNotify.getTraceNo());
+		forSign.append(seperator);
 		forSign.append(payNotify.getMsgSender());
 		forSign.append(seperator);
 		forSign.append(payNotify.getSendTime());
@@ -57,12 +59,18 @@ public class ShengPayClient {
 		forSign.append(seperator);
 		forSign.append(payNotify.getTransType());
 		forSign.append(seperator);
+		forSign.append(payNotify.getTransTime());
+		forSign.append(seperator);
 		forSign.append(payNotify.getMerchantNo());
 		forSign.append(seperator);
-		forSign.append(payNotify.getErrorCode());
-		forSign.append(seperator);
-		forSign.append(payNotify.getErrorMsg());
-		forSign.append(seperator);
+		if (payNotify.getErrorCode() != null) {
+			forSign.append(payNotify.getErrorCode());
+			forSign.append(seperator);
+		}
+		if (payNotify.getErrorMsg() != null) {
+			forSign.append(payNotify.getErrorMsg());
+			forSign.append(seperator);
+		}
 		forSign.append(payNotify.getSignType());
 		forSign.append(seperator);
 

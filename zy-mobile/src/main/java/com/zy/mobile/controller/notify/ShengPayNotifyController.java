@@ -1,19 +1,20 @@
 package com.zy.mobile.controller.notify;
 
 import com.zy.common.exception.BizException;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.shengpay.PayNotify;
 import com.zy.common.support.shengpay.ShengPayClient;
 import com.zy.common.util.JsonUtils;
 import com.zy.entity.fnc.Deposit;
 import com.zy.model.BizCode;
+import com.zy.model.Constants;
 import com.zy.service.DepositService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import static com.zy.common.support.weixinpay.WeixinPayClient.logger;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/notify/shengPay")
@@ -27,7 +28,8 @@ public class ShengPayNotifyController {
 	private DepositService depositService;
 
 	@RequestMapping("/sync")
-	public String page(PayNotify payNotify) {
+	@ResponseBody
+	public String sync(PayNotify payNotify, RedirectAttributes redirectAttributes) {
 		log.info("enter sheng pay notify controller");
 		try {
 			if (!shengPayClient.checkPayNotify(payNotify)) {
@@ -36,25 +38,26 @@ public class ShengPayNotifyController {
 			if (shengPayClient.isSuccess(payNotify)) {
 				String transNo = payNotify.getTransNo();
 				String orderNo = payNotify.getOrderNo();
-				logger.info("amount " + payNotify.getTransAmount());
-				logger.info(JsonUtils.toJson(payNotify));
+				log.info("amount " + payNotify.getTransAmount());
+				log.info(JsonUtils.toJson(payNotify));
 				Deposit deposit = depositService.findBySn(orderNo);
 				depositService.success(deposit.getId(), transNo);
-				return "OK";
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("充值成功"));
+				return "redirect:/u/money";
 			} else {
-				log.error("支付失败, " + JsonUtils.toJson(payNotify));
-				return "ERROR";
+				throw new BizException(BizCode.ERROR, "未支付成功" + JsonUtils.toJson(payNotify));
 			}
 
 		} catch (Throwable throwable) {
-			logger.warn("pay error", throwable);
-			return "ERROR";
+			log.error("pay error", throwable);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("充值失败"));
+			return "redirect:/u/money";
 		}
 	}
 
 	@RequestMapping("/async")
 	@ResponseBody
-	public String notify(PayNotify payNotify) {
+	public String async(PayNotify payNotify) {
 		log.info("enter sheng pay notify controller");
 		try {
 			if (!shengPayClient.checkPayNotify(payNotify)) {
@@ -63,18 +66,17 @@ public class ShengPayNotifyController {
 			if (shengPayClient.isSuccess(payNotify)) {
 				String transNo = payNotify.getTransNo();
 				String orderNo = payNotify.getOrderNo();
-				logger.info("amount " + payNotify.getTransAmount());
-				logger.info(JsonUtils.toJson(payNotify));
+				log.info("amount " + payNotify.getTransAmount());
+				log.info(JsonUtils.toJson(payNotify));
 				Deposit deposit = depositService.findBySn(orderNo);
 				depositService.success(deposit.getId(), transNo);
 				return "OK";
 			} else {
-				log.error("支付失败, " + JsonUtils.toJson(payNotify));
-				return "ERROR";
+				throw new BizException(BizCode.ERROR, "未支付成功" + JsonUtils.toJson(payNotify));
 			}
 
 		} catch (Throwable throwable) {
-			logger.warn("pay error", throwable);
+			log.warn("pay error", throwable);
 			return "ERROR";
 		}
 	}

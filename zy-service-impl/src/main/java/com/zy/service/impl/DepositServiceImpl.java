@@ -109,11 +109,11 @@ public class DepositServiceImpl implements DepositService {
 
 		PayType payType = deposit.getPayType();
 
-		if (payType != PayType.支付宝 && payType != PayType.微信 && payType != PayType.支付宝手机 && payType != PayType.微信公众号) {
+		if (payType != PayType.盛付通) {
 			throw new BizException(BizCode.ERROR, "支付方式错误");
 		}
 
-		if (payType != PayType.微信 && payType != PayType.微信公众号 && StringUtils.isBlank(outerSn)) {
+		if (payType == PayType.盛付通 && StringUtils.isBlank(outerSn)) {
 			throw new BizException(BizCode.ERROR, "outer sn参数缺失");
 		}
 
