@@ -26,7 +26,7 @@ public class ShengPayNotifyController {
 	@Autowired
 	private DepositService depositService;
 
-	@RequestMapping("/return")
+	@RequestMapping("/sync")
 	public String page(PayNotify payNotify) {
 		log.info("enter sheng pay notify controller");
 		try {
@@ -52,7 +52,7 @@ public class ShengPayNotifyController {
 		}
 	}
 
-	@RequestMapping("/notify")
+	@RequestMapping("/async")
 	@ResponseBody
 	public String notify(PayNotify payNotify) {
 		log.info("enter sheng pay notify controller");
