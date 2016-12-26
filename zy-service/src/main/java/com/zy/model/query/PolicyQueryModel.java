@@ -1,16 +1,12 @@
 package com.zy.model.query;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.io.Serializable;
-
 import io.gd.generator.api.query.Direction;
+import lombok.*;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -38,6 +34,10 @@ public class PolicyQueryModel implements Serializable {
 	private String codeEQ;
 
 	private String idCardNumberLK;
+
+	private Date createdTimeGTE;
+
+	private Date createdTimeLT;
 
 	private Integer pageNumber;
 
@@ -95,14 +95,15 @@ public class PolicyQueryModel implements Serializable {
 		fieldNames.add("code");
 		fieldNames.add("reportId");
 		fieldNames.add("gender");
-		fieldNames.add("phone");
-		fieldNames.add("idCardNumber");
-		fieldNames.add("id");
 		fieldNames.add("image1");
 		fieldNames.add("userId");
 		fieldNames.add("image2");
 		fieldNames.add("version");
 		fieldNames.add("realname");
+		fieldNames.add("phone");
+		fieldNames.add("idCardNumber");
+		fieldNames.add("createdTime");
+		fieldNames.add("id");
 	}
 
 }

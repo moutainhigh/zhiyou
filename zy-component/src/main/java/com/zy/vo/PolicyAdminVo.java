@@ -1,7 +1,7 @@
 package com.zy.vo;
 
-import io.gd.generator.annotation.Field;
 import com.zy.entity.usr.UserInfo.Gender;
+import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,5 +34,7 @@ public class PolicyAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "用户id")
 	private UserAdminSimpleVo user;
+	@Field(label = "创建时间")
+	private String createdTimeLabel;
 
 }

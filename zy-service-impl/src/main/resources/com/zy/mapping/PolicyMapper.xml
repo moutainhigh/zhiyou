@@ -14,12 +14,13 @@
 		<result column="id_card_number" property="idCardNumber" />
 		<result column="image1" property="image1" />
 		<result column="image2" property="image2" />
+		<result column="created_time" property="createdTime" />
 		<result column="version" property="version" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.act.Policy" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_policy` (report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,version)
-	  values (#{reportId},#{userId},#{realname},#{birthday},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{code},#{idCardNumber},#{image1},#{image2},#{version})
+	  insert into `act_policy` (report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,version)
+	  values (#{reportId},#{userId},#{realname},#{birthday},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{code},#{idCardNumber},#{image1},#{image2},#{createdTime},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -39,6 +40,7 @@
 			id_card_number = #{idCardNumber},
 			image1 = #{image1},
 			image2 = #{image2},
+			created_time = #{createdTime},
 			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
@@ -59,6 +61,7 @@
 					<when test="field == 'idCardNumber'">id_card_number = #{policy.idCardNumber},</when>
 					<when test="field == 'image1'">image1 = #{policy.image1},</when>
 					<when test="field == 'image2'">image2 = #{policy.image2},</when>
+					<when test="field == 'createdTime'">created_time = #{policy.createdTime},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -67,18 +70,30 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,version
+		id,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,version
 		from `act_policy`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.PolicyQueryModel">
 		select
-		id,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,version
+		id,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,version
 		from `act_policy`
 		<where>
 			<if test="reportIdEQ != null">
 				and report_id = #{reportIdEQ}
+			</if>
+			<if test="codeEQ != null">
+				and code = #{codeEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="realnameLK != null">
+				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
 			</if>
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
@@ -94,9 +109,6 @@
 			<if test="realnameEQ != null">
 				and realname = #{realnameEQ}
 			</if>
-			<if test="codeEQ != null">
-				and code = #{codeEQ}
-			</if>
 			<if test="idEQ != null">
 				and id = #{idEQ}
 			</if>
@@ -106,14 +118,11 @@
 			<if test="idCardNumberLK != null">
 				<bind name="idCardNumberLK" value="'%' + idCardNumberLK + '%'"/> and id_card_number like #{idCardNumberLK}
 			</if>
-			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
-			</if>
 			<if test="phoneEQ != null">
 				and phone = #{phoneEQ}
 			</if>
-			<if test="realnameLK != null">
-				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 		</where>
 		<choose>
@@ -135,6 +144,18 @@
 			<if test="reportIdEQ != null">
 				and report_id = #{reportIdEQ}
 			</if>
+			<if test="codeEQ != null">
+				and code = #{codeEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="realnameLK != null">
+				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+			<if test="createdTimeLT != null">
+				and created_time &lt; #{createdTimeLT}
+			</if>
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
 				and user_id in
@@ -149,9 +170,6 @@
 			<if test="realnameEQ != null">
 				and realname = #{realnameEQ}
 			</if>
-			<if test="codeEQ != null">
-				and code = #{codeEQ}
-			</if>
 			<if test="idEQ != null">
 				and id = #{idEQ}
 			</if>
@@ -161,14 +179,11 @@
 			<if test="idCardNumberLK != null">
 				<bind name="idCardNumberLK" value="'%' + idCardNumberLK + '%'"/> and id_card_number like #{idCardNumberLK}
 			</if>
-			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
-			</if>
 			<if test="phoneEQ != null">
 				and phone = #{phoneEQ}
 			</if>
-			<if test="realnameLK != null">
-				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
 			</if>
 		</where>
 	</select>
