@@ -24,7 +24,57 @@ public class ShengPayClient {
 	}
 
 	public boolean checkPayNotify(PayNotify payNotify) {
-		return true;
+
+		// 支付应答签名原始串是：Origin＝Name + | + Version + | + Charset + | + TraceNo + |
+		// + MsgSender + | + SendTime + | + InstCode + | + OrderNo + |
+		// + OrderAmount + | + TransNo + | + TransAmount + | + TransStatus + |
+		// + TransType + | + TransTime + | + MerchantNo + | + ErrorCode + |
+		// + ErrorMsg + | + Ext1(忽略) + | + SignType + |；
+
+		String seperator = "|";
+		StringBuilder forSign = new StringBuilder();
+		forSign.append(payNotify.getName());
+		forSign.append(seperator);
+		forSign.append(payNotify.getVersion());
+		forSign.append(seperator);
+		forSign.append(payNotify.getCharset());
+		forSign.append(seperator);
+		forSign.append(payNotify.getMsgSender());
+		forSign.append(seperator);
+		forSign.append(payNotify.getSendTime());
+		forSign.append(seperator);
+		forSign.append(payNotify.getInstCode());
+		forSign.append(seperator);
+		forSign.append(payNotify.getOrderNo());
+		forSign.append(seperator);
+		forSign.append(payNotify.getOrderAmount());
+		forSign.append(seperator);
+		forSign.append(payNotify.getTransNo());
+		forSign.append(seperator);
+		forSign.append(payNotify.getTransAmount());
+		forSign.append(seperator);
+		forSign.append(payNotify.getTransStatus());
+		forSign.append(seperator);
+		forSign.append(payNotify.getTransType());
+		forSign.append(seperator);
+		forSign.append(payNotify.getMerchantNo());
+		forSign.append(seperator);
+		forSign.append(payNotify.getErrorCode());
+		forSign.append(seperator);
+		forSign.append(payNotify.getErrorMsg());
+		forSign.append(seperator);
+		forSign.append(payNotify.getSignType());
+		forSign.append(seperator);
+
+		forSign.append(key);
+
+		String signed = Encodes.encodeHex(Digests.md5(forSign.toString().getBytes(Charset.forName("UTF-8")))).toUpperCase();
+		if (signed.equals(payNotify.getSignMsg())) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	public boolean isSuccess(PayNotify payNotify) {
