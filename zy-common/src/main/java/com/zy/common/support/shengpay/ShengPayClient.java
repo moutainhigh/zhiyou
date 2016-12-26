@@ -19,12 +19,6 @@ public class ShengPayClient {
 	private String key;
 
 	public ShengPayClient(String merchantId, String key) {
-		if (merchantId == null) {
-			throw new IllegalArgumentException("sheng pay merchat id must not be null");
-		}
-		if (key == null) {
-			throw new IllegalArgumentException("sheng pay key must not be null");
-		}
 		this.merchantId = merchantId;
 		this.key = key;
 	}
