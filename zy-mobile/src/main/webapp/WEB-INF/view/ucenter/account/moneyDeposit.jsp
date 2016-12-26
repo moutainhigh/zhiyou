@@ -57,7 +57,7 @@
         <div class="list-item">
           <label for="money" class="list-label lh-48 fs-18">金额：</label>
           <div class="list-text">
-            <input type="number" class="form-input lh-48 fs-18" name="money" placeholder="输入充值金额" value="">
+            <input type="number" class="form-input lh-48 fs-18" name="money" id="money" placeholder="输入充值金额" value="">
           </div>
         </div>
       </div>
@@ -77,7 +77,14 @@
         <label class="list-item form-radio" for="payType1">
           <div class="list-text">银行汇款</div>
           <div class="list-unit">
-            <input id="payType1" type="radio" name="payType" value="1" checked="checked">
+            <input id="payType1" type="radio" name="payType" value="1">
+            <em class="i-checked"></em>
+          </div>
+        </label>
+        <label class="list-item form-radio" for="payType6">
+          <div class="list-text">盛付通</div>
+          <div class="list-unit">
+            <input id="payType6" type="radio" name="payType" value="6">
             <em class="i-checked"></em>
           </div>
         </label>

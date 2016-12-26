@@ -29,7 +29,7 @@
     <h2 class="font-777 fs-16 lh-30 text-center mt-20">我的积分余额(元)</h2>
     <div class="font-333 fs-36 lh-60 text-center">${amount}</div>
     <div class="form-btn mt-20">
-      <a href="${ctx}/u/pay/deposit?payType=1" class="btn orange btn-block round-2">充值</a>
+      <a href="${ctx}/u/pay/deposit" class="btn orange btn-block round-2">充值</a>
     </div>
     <c:if test="${bankCardCount == 0}">
     <div class="form-btn">

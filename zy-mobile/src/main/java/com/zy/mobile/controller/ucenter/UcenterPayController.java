@@ -3,6 +3,7 @@ package com.zy.mobile.controller.ucenter;
 import com.zy.common.exception.BizException;
 import com.zy.common.extend.BigDecimalBinder;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.support.shengpay.ShengPayClient;
 import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.Deposit.DepositStatus;
 import com.zy.entity.fnc.Payment.PaymentStatus;
@@ -18,6 +19,7 @@ import com.zy.service.AccountService;
 import com.zy.service.DepositService;
 import com.zy.service.OrderService;
 import com.zy.service.PaymentService;
+import com.zy.util.GcUtils;
 import io.gd.generator.api.query.Direction;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -55,13 +57,12 @@ public class UcenterPayController {
 	@Autowired
 	private AccountService accountService;
 
+	@Autowired
+	private ShengPayClient shengPayClient;
+
 	@RequestMapping(method = RequestMethod.POST)
 	public String depositPay(@BigDecimalBinder BigDecimal money, @RequestParam PayType payType, Model model,
 			Principal principal) {
-
-		if (payType != PayType.银行汇款) {
-			throw new BizException(BizCode.ERROR, "暂只支持银行汇款");
-		}
 
 		final BigDecimal zero = new BigDecimal("0.00");
 		String title = "积分余额充值";
@@ -92,27 +93,25 @@ public class UcenterPayController {
 			deposit = depositService.create(deposit);
 		}
 
-		model.addAttribute("title", deposit.getTitle());
-		model.addAttribute("sn", deposit.getSn());
-		model.addAttribute("amount", deposit.getAmount1());
-		model.addAttribute("refId", deposit.getId());
 		if (payType == PayType.银行汇款) {
+			model.addAttribute("title", deposit.getTitle());
+			model.addAttribute("sn", deposit.getSn());
+			model.addAttribute("amount", deposit.getAmount1());
+			model.addAttribute("refId", deposit.getId());
 			model.addAttribute("offlineImage", deposit.getOfflineImage());
 			model.addAttribute("offlineMemo", deposit.getOfflineMemo());
 			return "ucenter/account/moneyDepositOffline";
+		} else if(payType == PayType.盛付通) {
+			String payUrl = shengPayClient.getPayCreateUrl(deposit.getTitle(), deposit.getSn(), deposit.getAmount1(), new Date(), GcUtils.getHost(), Constants.SHENGPAY_RETURN, Constants.SHENGPAY_NOTIFY, Constants.URL_MOBILE);
+			return "redirect:" + payUrl;
 		} else {
 			return null;
 		}
 	}
 
 	@RequestMapping(path = "/deposit", method = RequestMethod.GET)
-	public String depositPay(@RequestParam(required = true) PayType payType, Model model, Principal principal) {
-		validate(payType, NOT_NULL, "order payType" + payType + " is null");
-		if (payType == PayType.银行汇款) {
-			return "ucenter/account/moneyDeposit";
-		} else {
-			throw new BizException(BizCode.ERROR, "不支持的付款方式");
-		}
+	public String depositPay(Model model, Principal principal) {
+		return "ucenter/account/moneyDeposit";
 	}
 
 	@RequestMapping(path = "/order/{orderId}", method = RequestMethod.GET)

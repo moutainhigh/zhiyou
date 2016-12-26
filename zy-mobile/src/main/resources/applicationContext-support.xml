@@ -86,4 +86,9 @@
 		<property name="wxMpConfigStorage" ref="wxMpConfigStorage"/>
 	</bean>
 
+	<bean id="shengPayClient" class="com.zy.common.support.shengpay.ShengPayClient">
+		<constructor-arg index="0" value="${shengPay.merchantId}"/>
+		<constructor-arg index="1" value="${shengPay.key}"/>
+	</bean>
+
 </beans>
