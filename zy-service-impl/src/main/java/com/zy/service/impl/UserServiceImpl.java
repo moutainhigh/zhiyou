@@ -332,7 +332,7 @@ public class UserServiceImpl implements UserService {
         if (nickname.equals(plainNickname)) {
             return; // 幂等操作
         }
-        user.setPhone(nickname);
+        user.setNickname(nickname);
         userMapper.update(user);
         usrComponent.recordUserLog(id, operatorId, "修改昵称", "从" + plainNickname + "修改为" + nickname);
     }

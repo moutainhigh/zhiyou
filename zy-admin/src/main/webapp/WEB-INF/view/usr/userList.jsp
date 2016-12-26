@@ -1,13 +1,99 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 <!-- BEGIN JAVASCRIPTS -->
+<script id="modifyTmpl" type="text/x-handlebars-template">
+  <form id="modifyForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+    <input type="hidden" name="userId" value="{{id}}"/>
+    <div class="form-body">
+      <div class="alert alert-danger display-hide">
+        <i class="fa fa-exclamation-circle"></i>
+        <button class="close" data-close="alert"></button>
+        <span class="form-errors">您填写的信息有误，请检查。</span>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">昵称<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="nickname" value="{{nickname}}" class="form-control" placeholder="请输入昵称"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">手机<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="{{phone}}" class="form-control" placeholder="请输入手机号"/>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions fluid">
+      <div class="col-md-offset-3 col-md-9">
+        <button id="modifySubmit{{id}}" type="button" class="btn green">
+          <i class="fa fa-save"></i> 保存
+        </button>
+        <button id="modifyCancel{{id}}" class="btn default" data-href="">
+          <i class="fa fa-chevron-left"></i> 返回
+        </button>
+      </div>
+    </div>
+  </form>
+</script>
 <script>
   var grid = new Datatable();
 
   $(function () {
-    
-    var template = Handlebars.compile($('#confirmTmpl').html());
 
+	  var modifyTemplate = Handlebars.compile($('#modifyTmpl').html());
+	  $('#dataTable').on('click', '.modify-info', function () {
+		  var id = $(this).data('id');
+		  var nickname = $(this).data('nickname');
+		  var phone = $(this).data('phone');
+		  var data = {
+			  id: id,
+			  nickname: nickname,
+			  phone: phone
+		  };
+		  var html = modifyTemplate(data);
+		  var index = layer.open({
+			  type: 1,
+			  //skin: 'layui-layer-rim', //加上边框
+			  area: ['600px', '360px'], //宽高
+			  content: html
+		  });
+
+		  $form = $('#modifyForm' + id);
+		  $form.validate({
+			  rules: {
+				  'nickname': {
+					  required: true
+				  },
+				  'phone': {
+					  required: true
+				  }
+			  },
+			  messages: {}
+		  });
+
+		  $('#modifySubmit' + id).bind('click', function () {
+			  var result = $form.validate().form();
+			  if (result) {
+				  var url = '${ctx}/user/modify';
+				  $.post(url, $form.serialize(), function (data) {
+					  if (data.code === 0) {
+					  	layer.alert('操作成功');
+						  layer.close(index);
+						  grid.getDataTable().ajax.reload(null, false);
+					  } else {
+						  layer.alert('操作失败,原因' + data.message);
+					  }
+				  });
+			  }
+		  })
+
+		  $('#modifyCancel' + id).bind('click', function () {
+			  layer.close(index);
+		  })
+
+	  });
+
+    var template = Handlebars.compile($('#confirmTmpl').html());
     $('#dataTable').on('click', '.root-confirm', function () {
       var id = $(this).data('id');
       var data = {
@@ -121,6 +207,7 @@
               if (full.userType != '平台') {
                 <shiro:hasPermission name="user:edit">
                 optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/update/' + data + '"><i class="fa fa-edit"></i> 修改密码 </a>';
+	              optionHtml += '<a class="btn btn-xs default yellow-stripe modify-info" href="javascript:;" data-id="' + full.id + '" data-nickname="' + full.nickname + '" data-phone="' + full.phone + '"><i class="fa fa-edit"></i> 修改手机昵称 </a>';
                 </shiro:hasPermission>
                 <shiro:hasPermission name="user:modifyParent">
                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/user/modifyParent?id=' + data + '"><i class="fa fa-edit"></i> 修改邀请人</a>';

@@ -57,7 +57,12 @@
             data: 'code',
             title: '保险单号',
             orderable: false
-          }
+          },
+	        {
+		        data: 'createdTimeLabel',
+		        title: '创建时间',
+		        orderable: false
+	        }
         ]
       }
     });
@@ -107,6 +112,15 @@
 
               <div class="form-group">
                 <input type="text" name="codeEQ" class="form-control" placeholder="保险单号"/>
+              </div>
+
+              <div class="form-group input-inline">
+                <input class="Wdate form-control" type="text"
+                       onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="createdTimeGTE" value="" placeholder="创建时间起"/>
+              </div>
+              <div class="form-group input-inline">
+                <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                       name="createdTimeLT" value="" placeholder="创建时间止"/>
               </div>
 
               <div class="form-group">

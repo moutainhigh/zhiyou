@@ -1,8 +1,5 @@
 package com.zy.component;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Policy;
 import com.zy.entity.usr.User;
@@ -12,6 +9,8 @@ import com.zy.vo.PolicyAdminVo;
 import com.zy.vo.PolicyDetailVo;
 import com.zy.vo.PolicyExportVo;
 import com.zy.vo.PolicyListVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class PolicyComponent {
@@ -28,6 +27,7 @@ public class PolicyComponent {
 			User user = cacheComponent.getUser(userId);
 			policyAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
 		}
+		policyAdminVo.setCreatedTimeLabel(GcUtils.formatDate(policy.getCreatedTime(), "yyyy-MM-dd HH:mm:ss"));
 		return policyAdminVo;
 	}
 	
