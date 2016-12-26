@@ -17,7 +17,7 @@ public class ShengPayClient {
 
 	public static void main(String[] args) {
 		ShengPayClient shengPayClient = new ShengPayClient();
-		System.out.println(shengPayClient.genPayCreateHtml("积分充值v22", "test001", new BigDecimal("1.00"), new Date(), "127.0.0.1", "http://zt.net", "http://zt.net", "http://zt.net"));
+		System.out.println(shengPayClient.genPayCreateUrl("积分充值v22", "test001", new BigDecimal("1.00"), new Date(), "127.0.0.1", "http://zt.net", "http://zt.net", "http://zt.net"));
 	}
 
 
@@ -38,7 +38,7 @@ public class ShengPayClient {
 		this.httpClient = httpClient;
 	}
 
-	private String genPayCreateHtml(String productName, String orderNo, BigDecimal orderAmount, Date orderTime, String buyerIp, String pageUrl, String notifyUrl, String backUrl) {
+	private String genPayCreateUrl(String productName, String orderNo, BigDecimal orderAmount, Date orderTime, String buyerIp, String pageUrl, String notifyUrl, String backUrl) {
 
 		PayCreate payCreate = new PayCreate();
 		payCreate.setProductName(productName);
