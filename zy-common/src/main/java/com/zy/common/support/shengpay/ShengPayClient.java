@@ -3,7 +3,6 @@ package com.zy.common.support.shengpay;
 import com.zy.common.util.Digests;
 import com.zy.common.util.Encodes;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.http.impl.client.CloseableHttpClient;
 
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
@@ -14,28 +13,14 @@ import java.util.Date;
  */
 public class ShengPayClient {
 
-
-	public static void main(String[] args) {
-		ShengPayClient shengPayClient = new ShengPayClient();
-		System.out.println(shengPayClient.genPayCreateUrl("积分充值v22", "test001", new BigDecimal("1.00"), new Date(), "127.0.0.1", "http://zt.net", "http://zt.net", "http://zt.net"));
-	}
-
-
-
 	public static final String URL_PAY = "https://mas.shengpay.com/web-acquire-channel/cashier.htm";
 
 	private String merchantId = "540505";
 	private String key = "support4html5test";
 
-	private CloseableHttpClient httpClient;
-	public ShengPayClient() {
-
-	}
-
-	public ShengPayClient(String merchantId, String key, CloseableHttpClient httpClient) {
+	public ShengPayClient(String merchantId, String key) {
 		this.merchantId = merchantId;
 		this.key = key;
-		this.httpClient = httpClient;
 	}
 
 	private String genPayCreateUrl(String productName, String orderNo, BigDecimal orderAmount, Date orderTime, String buyerIp, String pageUrl, String notifyUrl, String backUrl) {
