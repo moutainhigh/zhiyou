@@ -29,19 +29,6 @@ public class PayCreate {
 	String signType = "MD5"; // 签名类型	SignType	是	String(10)	签名类型,如：MD5
 	String signMsg;
 
-	//BackUrl=http://zt.net&
-	// BuyerIp=127.0.0.1&
-	// Charset=UTF-8&
-	// MsgSender=10100894&
-	// Name=B2CPayment&
-	// NotifyUrl=http://zt.net&
-	// OrderAmount=1.00&
-	// OrderNo=test001&
-	// OrderTime=20161226160134&
-	// PageUrl=http://zt.net&
-	// PayType=PT001&SignType=MD5&
-	// SingMsg=F2D96779DF0DCE1E72F92E64467BC82D&Version=V4.1.1.1.1
-
 	public Map<String, String> toMap() {
 		Map map = new LinkedHashMap<>();
 		map.put("Name", name);

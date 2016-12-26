@@ -23,7 +23,15 @@ public class ShengPayClient {
 		this.key = key;
 	}
 
-	private String genPayCreateUrl(String productName, String orderNo, BigDecimal orderAmount, Date orderTime, String buyerIp, String pageUrl, String notifyUrl, String backUrl) {
+	public boolean checkPayNotify(PayNotify payNotify) {
+		return true;
+	}
+
+	public boolean isSuccess(PayNotify payNotify) {
+		return "01".equals(payNotify.getTransStatus());
+	}
+
+	public String getPayCreateUrl(String productName, String orderNo, BigDecimal orderAmount, Date orderTime, String buyerIp, String pageUrl, String notifyUrl, String backUrl) {
 
 		PayCreate payCreate = new PayCreate();
 		payCreate.setProductName(productName);
@@ -36,13 +44,13 @@ public class ShengPayClient {
 		payCreate.setBackUrl(backUrl);
 
 		payCreate.setMsgSender(merchantId);
-		payCreate.setSignMsg(genPayCreateSign(payCreate));
+		payCreate.setSignMsg(getPayCreateSign(payCreate));
 
 		return URL_PAY + "?" + payCreate.toMap().entrySet().stream().map(v -> v.getKey() + "=" + Encodes.urlEncode(v.getValue())).reduce((u, v) -> u + "&" + v).get();
 
 	}
 
-	private String genPayCreateSign(PayCreate payCreate) {
+	private String getPayCreateSign(PayCreate payCreate) {
 
 		// Origin＝Name + | + Version + | + Charset + | + MsgSender
 		// + | + SendTime(忽略) + | + OrderNo + | + OrderAmount + |
