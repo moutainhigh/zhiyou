@@ -15,10 +15,16 @@ public class ShengPayClient {
 
 	public static final String URL_PAY = "https://mas.shengpay.com/web-acquire-channel/cashier.htm";
 
-	private String merchantId = "540505";
-	private String key = "support4html5test";
+	private String merchantId;
+	private String key;
 
 	public ShengPayClient(String merchantId, String key) {
+		if (merchantId == null) {
+			throw new IllegalArgumentException("sheng pay merchat id must not be null");
+		}
+		if (key == null) {
+			throw new IllegalArgumentException("sheng pay key must not be null");
+		}
 		this.merchantId = merchantId;
 		this.key = key;
 	}
