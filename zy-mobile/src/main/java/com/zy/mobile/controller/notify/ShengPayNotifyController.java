@@ -26,9 +26,36 @@ public class ShengPayNotifyController {
 	@Autowired
 	private DepositService depositService;
 
-	@RequestMapping(produces = "/notify")
+	@RequestMapping
 	@ResponseBody
-	public String payNotify(PayNotify payNotify) {
+	public String notify(PayNotify payNotify) {
+		log.info("enter sheng pay notify controller");
+		try {
+			if (!shengPayClient.checkPayNotify(payNotify)) {
+				throw new BizException(BizCode.ERROR, "签名验证失败:签名不一致");
+			}
+			if (shengPayClient.isSuccess(payNotify)) {
+				String transNo = payNotify.getTransNo();
+				String orderNo = payNotify.getOrderNo();
+				logger.info("amount " + payNotify.getTransAmount());
+				logger.info(JsonUtils.toJson(payNotify));
+				Deposit deposit = depositService.findBySn(orderNo);
+				depositService.success(deposit.getId(), transNo);
+				return "OK";
+			} else {
+				log.error("支付失败, " + JsonUtils.toJson(payNotify));
+				return "ERROR";
+			}
+
+		} catch (Throwable throwable) {
+			logger.warn("pay error", throwable);
+			return "ERROR";
+		}
+	}
+
+	@RequestMapping("/page")
+	@ResponseBody
+	public String page(PayNotify payNotify) {
 		log.info("enter sheng pay notify controller");
 		try {
 			if (!shengPayClient.checkPayNotify(payNotify)) {
