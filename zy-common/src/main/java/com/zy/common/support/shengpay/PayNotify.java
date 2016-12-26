@@ -26,7 +26,7 @@ public class PayNotify {
 	String merchantNo; // 商户号	MerchantNo	是	String(64)	商户号
 	String errorCode; // 错误代码	ErrorCode	是	String(256)	商户交易错误代码
 	String errorMsg; // 错误消息	ErrorMsg	是	String(256)	商户交易错误消息
-	String ext1; // 扩展1	Ext1	是	String(128)	英文或中文字符串 支付完成后，按照原样返回给商户
+	//String ext1; // 扩展1	Ext1	是	String(128)	英文或中文字符串 支付完成后，按照原样返回给商户
 	String bankSerialNo; // 网银流水号	BankSerialNo	是	String(64)	银行返回的交易流水号
 	String signType; // 签名类型	SignType	是	String(10)	签名类型,如：MD5
 	String signMsg; // 签名串	SignMsg	是	String(14)	签名结果
