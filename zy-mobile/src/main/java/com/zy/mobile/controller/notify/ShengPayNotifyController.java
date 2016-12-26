@@ -28,7 +28,6 @@ public class ShengPayNotifyController {
 	private DepositService depositService;
 
 	@RequestMapping("/sync")
-	@ResponseBody
 	public String sync(PayNotify payNotify, RedirectAttributes redirectAttributes) {
 		log.info("enter sheng pay notify controller");
 		try {
