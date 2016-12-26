@@ -76,7 +76,7 @@ public class ShengPayNotifyController {
 			}
 
 		} catch (Throwable throwable) {
-			log.warn("pay error", throwable);
+			log.error("pay error", throwable);
 			return "ERROR";
 		}
 	}
