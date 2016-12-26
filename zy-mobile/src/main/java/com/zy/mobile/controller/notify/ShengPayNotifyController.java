@@ -26,9 +26,8 @@ public class ShengPayNotifyController {
 	@Autowired
 	private DepositService depositService;
 
-	@RequestMapping
-	@ResponseBody
-	public String notify(PayNotify payNotify) {
+	@RequestMapping("/return")
+	public String page(PayNotify payNotify) {
 		log.info("enter sheng pay notify controller");
 		try {
 			if (!shengPayClient.checkPayNotify(payNotify)) {
@@ -53,9 +52,9 @@ public class ShengPayNotifyController {
 		}
 	}
 
-	@RequestMapping("/page")
+	@RequestMapping("/notify")
 	@ResponseBody
-	public String page(PayNotify payNotify) {
+	public String notify(PayNotify payNotify) {
 		log.info("enter sheng pay notify controller");
 		try {
 			if (!shengPayClient.checkPayNotify(payNotify)) {
