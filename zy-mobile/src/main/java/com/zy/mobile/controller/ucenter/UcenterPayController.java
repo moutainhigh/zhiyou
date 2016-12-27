@@ -111,6 +111,7 @@ public class UcenterPayController {
 
 	@RequestMapping(path = "/deposit", method = RequestMethod.GET)
 	public String depositPay(Model model, Principal principal) {
+		model.addAttribute("useShengPay", principal.getUserId().equals(5672));
 		return "ucenter/account/moneyDeposit";
 	}
 
