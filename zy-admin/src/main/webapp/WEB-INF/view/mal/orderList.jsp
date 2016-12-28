@@ -136,7 +136,7 @@
           {
             data: 'paidTimeLabel',
             title: '支付时间',
-            orderable: false
+	          orderable: false
           },
 
           {
@@ -260,23 +260,36 @@
                   <option value="0">否</option>
                 </select>
               </div>
-              
+
               <div class="form-group">
-                <input class="Wdate form-control" type="text" id="beginDate"
-                  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="createdTimeGTE" value="" placeholder="下单时间起" />
+                <select name="orderTypeEQ" class="form-control">
+                  <option value="">-- 是否补单 --</option>
+                  <option value="1">是</option>
+                  <option value="0">否</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="createdTimeGTE" value="" placeholder="下单时间起" />
               </div>
               <div class="form-group">
-                <input class="Wdate form-control" type="text" id="endDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
                   name="createdTimeLT" value="" placeholder="下单时间止" />
               </div>
 
               <div class="form-group">
-                <input class="Wdate form-control" type="text" id="beginDate"
-                  onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="paidTimeGTE" value="" placeholder="支付时间起" />
+                <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="paidTimeGTE" value="" placeholder="支付时间起" />
               </div>
               <div class="form-group">
-                <input class="Wdate form-control" type="text" id="endDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
                   name="paidTimeLT" value="" placeholder="支付时间止" />
+              </div>
+
+              <div class="form-group">
+                <select class="form-control" name="paidTimeOrderBy">
+                  <option value="">-- 请选择排序字段 --</option>
+                  <option value="1">支付时间</option>
+                </select>
               </div>
 
               <div class="form-group">
