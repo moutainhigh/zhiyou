@@ -31,48 +31,48 @@ public class ShengPayClient {
 		// + TransType + | + TransTime + | + MerchantNo + | + ErrorCode + |
 		// + ErrorMsg + | + Ext1(忽略) + | + SignType + |；
 
-		String seperator = "|";
+		String s = "|";
 		StringBuilder forSign = new StringBuilder();
 		forSign.append(payNotify.getName());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getVersion());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getCharset());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getTraceNo());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getMsgSender());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getSendTime());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getInstCode());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getOrderNo());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getOrderAmount());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getTransNo());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getTransAmount());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getTransStatus());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getTransType());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getTransTime());
-		forSign.append(seperator);
+		forSign.append(s);
 		forSign.append(payNotify.getMerchantNo());
-		forSign.append(seperator);
+		forSign.append(s);
 		if (payNotify.getErrorCode() != null) {
 			forSign.append(payNotify.getErrorCode());
-			forSign.append(seperator);
+			forSign.append(s);
 		}
 		if (payNotify.getErrorMsg() != null) {
 			forSign.append(payNotify.getErrorMsg());
-			forSign.append(seperator);
+			forSign.append(s);
 		}
 		forSign.append(payNotify.getSignType());
-		forSign.append(seperator);
+		forSign.append(s);
 
 		forSign.append(key);
 
