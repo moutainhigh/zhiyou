@@ -8,7 +8,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class BatchPaymentyNotify {
+public class BatchPaymentNotify {
 
 	String batchNo; // batchNo	String	BN20120818032545	批次号
 	String statusCode; // statusCode	String	C	流程状态编码见9.4
