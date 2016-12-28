@@ -15,8 +15,10 @@ import com.zy.model.Principal;
 import com.zy.model.query.AccountLogQueryModel;
 import com.zy.model.query.BankCardQueryModel;
 import com.zy.service.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,12 +150,20 @@ public class UcenterMoneyController {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("提现暂时关闭, 如有疑问请联系平台客服"));
 			return "redirect:/u/money";
 		}
+		/*
+		BankCard bankCard = bankCardService.findOne(bankCardId);
+		if(StringUtils.isEmpty(bankCard.getProvince()) || StringUtils.isEmpty(bankCard.getCity()) || bankCard.getIsEnterprise() == null) {
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请完善银行卡开户行省市,是否企业账户等信息"));
+			return "redirect:/u/bankCard/" + bankCardId;
+		}
+		*/
 		/*LocalDate localDate = LocalDate.now();
 		int dayOfMonth = localDate.getDayOfMonth();
 		if (dayOfMonth < 7 || dayOfMonth > 15) {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("提现操作时间每月7号-15号之间"));
 			return "redirect:/u/money";
 		}*/
+
 		
 		try {
 			Long userId = principal.getUserId();

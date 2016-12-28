@@ -36,7 +36,16 @@
         },
         'bankBranchName' : {
           required : true
-        }
+        }<%--,
+        'isEnterprise' : {
+          required : true
+        },
+        'province' : {
+          required : true
+        },
+        'city' : {
+          required : true
+        }--%>
       },
       messages : {
         'bankId' : {
@@ -165,6 +174,28 @@
             <input type="text" id="bankBranchName" name="bankBranchName" class="form-input" value="${bankCard.bankBranchName}" placeholder="填写开户支行名称">
           </div>
         </div>
+        <%--
+        <div class="list-item">
+          <label class="list-label" for="province">开户行 省</label>
+          <div class="list-text">
+            <input type="text" id="province" name="province" class="form-input" value="${bankCard.province}" placeholder="填写开户行省份">
+          </div>
+        </div>
+        <div class="list-item">
+          <label class="list-label" for="city">开户行 市</label>
+          <div class="list-text">
+            <input type="text" id="city" name="city" class="form-input" value="${bankCard.city}" placeholder="填写开户行所在市">
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="list-text">是否企业账户</div>
+          <div class="list-unit form-switch">
+            <input type="hidden" name="_isEnterprise" value="false">
+            <input type="checkbox" id="isEnterprise" name="isEnterprise"<c:if test="${bankCard.isEnterprise}"> checked="checked"</c:if>>
+            <label class="i-switch" for="isEnterprise"></label>
+          </div>
+        </div>
+        --%>
         <div class="list-item">
           <div class="list-text">设为默认银行卡</div>
           <div class="list-unit form-switch">
