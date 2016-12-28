@@ -32,6 +32,9 @@ import static com.zy.entity.fnc.BankCard.VO_ADMIN;
 @Setter
 @QueryModel
 @Type(label = "银行卡信息")
+// 工商银行，建设银行，农业银行，招商银行，交通银行, 平安银行，广发银行，光大银行，民生银行，中信银行，浦东发展银行，北京银行
+//	交通银行，建设银行，招商银行
+//	光大银行，民生银行
 @ViewObject(groups = {VO, VO_ADMIN})
 public class BankCard implements Serializable {
 
@@ -71,7 +74,22 @@ public class BankCard implements Serializable {
 	@View
 	@View(name = "bankCode", type=String.class, field = @Field(label = "开户行code"))
 	private Long bankId;
-	
+
+	@NotNull
+	@Field(label = "是否企业银行", description = "新增字段")
+	@View
+	private Boolean isEnterprise;
+
+	@NotBlank
+	@View
+	@Field(label = "省", description = "新增字段")
+	private String province;
+
+	@NotBlank
+	@View
+	@Field(label = "市", description = "新增字段")
+	private String city;
+
 	@NotBlank
 	@StringBinder
 	@Field(label = "开户行名")
