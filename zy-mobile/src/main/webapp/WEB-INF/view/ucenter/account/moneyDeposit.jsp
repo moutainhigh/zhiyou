@@ -81,7 +81,7 @@
             <em class="i-checked"></em>
           </div>
         </label>
-        <c:if test="${useShengPay}">
+
         <label class="list-item form-radio" for="payType6">
           <div class="list-text">盛付通</div>
           <div class="list-unit">
@@ -89,7 +89,7 @@
             <em class="i-checked"></em>
           </div>
         </label>
-        </c:if>
+
       </div>
       
       <div class="form-btn">
