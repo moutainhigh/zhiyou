@@ -36,7 +36,7 @@
         },
         'bankBranchName' : {
           required : true
-        },
+        }<%--,
         'isEnterprise' : {
           required : true
         },
@@ -45,7 +45,7 @@
         },
         'city' : {
           required : true
-        }
+        }--%>
       },
       messages : {
         'bankId' : {
@@ -173,6 +173,7 @@
             <input type="text" id="bankBranchName" name="bankBranchName" class="form-input" value="${bankCard.bankBranchName}" placeholder="填写开户支行名称">
           </div>
         </div>
+        <%--
         <div class="list-item">
           <label class="list-label" for="province">开户行 省</label>
           <div class="list-text">
@@ -193,6 +194,7 @@
             <label class="i-switch" for="isEnterprise"></label>
           </div>
         </div>
+        --%>
         <div class="list-item">
           <div class="list-text">设为默认银行卡</div>
           <div class="list-unit form-switch">
@@ -202,7 +204,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="form-btn">
         <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="保 存">
       </div>
