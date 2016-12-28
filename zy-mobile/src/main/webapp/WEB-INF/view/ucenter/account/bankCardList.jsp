@@ -25,7 +25,7 @@
     <c:if test="${empty bankCards}">
       <div class="page-empty">
         <i class="fa fa-file-o"></i>
-        <span>您还木有绑定银行卡</span>
+        <span>您还没有绑定银行卡</span>
       </div>
     </c:if>
     

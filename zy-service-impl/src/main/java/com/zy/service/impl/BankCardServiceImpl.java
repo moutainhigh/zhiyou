@@ -104,6 +104,9 @@ public class BankCardServiceImpl implements BankCardService {
 			persistence.setCardNumber(bankCard.getCardNumber());
 			persistence.setBankName(bankCard.getBankName());
 			persistence.setBankBranchName(bankCard.getBankBranchName());
+			persistence.setProvince(bankCard.getProvince());
+			persistence.setCity(bankCard.getCity());
+			persistence.setIsEnterprise(bankCard.getIsEnterprise());
 			persistence.setConfirmStatus(ConfirmStatus.待审核);
 			persistence.setConfirmedTime(new Date());
 			persistence.setIsDefault(isDefault);
