@@ -22,7 +22,6 @@ import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import com.zy.vo.UserAdminVo;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -36,7 +35,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.zy.common.util.ValidateUtils.*;
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
 @RequestMapping("/user")
@@ -200,7 +200,20 @@ public class UserController {
 		redirectAttributes.addFlashAttribute(ResultBuilder.ok("用户[" + persistence.getNickname() + "]资料修改成功"));
 		return "redirect:/user";
 	}
-	
+
+	@RequiresPermissions("user:edit")
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> modify(@RequestParam Long userId, String nickname, String phone) {
+		if(StringUtils.isNotBlank(nickname)) {
+			userService.modifyNicknameAdmin(userId, nickname, getPrincipalUserId());
+		}
+		if(StringUtils.isNotBlank(phone)) {
+			userService.modifyPhoneAdmin(userId, phone, getPrincipalUserId());
+		}
+		return ResultBuilder.ok("操作成功");
+	}
+
 	@RequiresPermissions("user:addVip")
 	@RequestMapping("/addVip")
 	@ResponseBody

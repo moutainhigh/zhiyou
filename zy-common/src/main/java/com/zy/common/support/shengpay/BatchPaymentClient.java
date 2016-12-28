@@ -5,10 +5,13 @@ import com.shengpay.mcl.bp.api.BatchPayment;
 import com.shengpay.mcl.bp.api.BatchPaymentService;
 import com.shengpay.mcl.bp.api.DirectApplyRequest;
 import com.shengpay.mcl.btc.response.DirectApplyResponse;
+import com.zy.common.util.Digests;
+import com.zy.common.util.Encodes;
 
 import javax.xml.namespace.QName;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 /**
  * Created by Administrator on 2016/12/28.
@@ -71,7 +74,44 @@ public class BatchPaymentClient {
 		//signStr：      charset+signType+customerNo+batchNo+callbackUrl+totalAmount+循环拼明细（id+province+city+branchName+bankName+accountType+bankUserName+bankAccount+amount+remark）+md5key
 		ApplyInfoDetail applyInfoDetail = directApplyRequest.getDetails().get(0);
 		//String forSign =
-		return null;
+		String seperator = "+";
+		StringBuilder forSign = new StringBuilder();
+		forSign.append(directApplyRequest.getCharset());
+		forSign.append(seperator);
+		forSign.append(directApplyRequest.getSignType());
+		forSign.append(seperator);
+		forSign.append(directApplyRequest.getCustomerNo());
+		forSign.append(seperator);
+		forSign.append(directApplyRequest.getBatchNo());
+		forSign.append(seperator);
+		forSign.append(directApplyRequest.getCallbackUrl());
+		forSign.append(seperator);
+		forSign.append(directApplyRequest.getTotalAmount());
+		forSign.append(seperator);
+		forSign.append(applyInfoDetail.getId());
+		forSign.append(seperator);
+		forSign.append(applyInfoDetail.getProvince());
+		forSign.append(seperator);
+		forSign.append(applyInfoDetail.getCity());
+		forSign.append(seperator);
+		forSign.append(applyInfoDetail.getBranchName());
+		forSign.append(seperator);
+		forSign.append(applyInfoDetail.getBankName());
+		forSign.append(seperator);
+		forSign.append(applyInfoDetail.getAccountType());
+		forSign.append(seperator);
+		forSign.append(applyInfoDetail.getBankUserName());
+		forSign.append(seperator);
+		forSign.append(applyInfoDetail.getBankAccount());
+		forSign.append(seperator);
+		forSign.append(applyInfoDetail.getAmount());
+		forSign.append(seperator);
+		forSign.append(applyInfoDetail.getRemark());
+		forSign.append(seperator);
+
+		forSign.append(key);
+
+		return Encodes.encodeHex(Digests.md5(forSign.toString().getBytes(Charset.forName("UTF-8")))).toUpperCase();
 
 	}
 

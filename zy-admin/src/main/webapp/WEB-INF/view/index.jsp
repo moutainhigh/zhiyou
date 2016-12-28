@@ -149,7 +149,7 @@
           <span class="username username-hide-on-mobile"> ${user.nickname} </span> <i class="fa fa-angle-down"></i>
         </a>
           <ul class="dropdown-menu">
-            <li><a data-href="${ctx}/modifyPassword"> <i class="fa fa-key"></i> 修改密码</a></li>
+            <%--<li><a data-href="${ctx}/modifyPassword"> <i class="fa fa-key"></i> 修改密码</a></li>--%>
             <li><a href="${ctx}/logout"> <i class="fa fa-arrow-circle-left"></i> 退出系统</a></li>
           </ul>
         </li>
