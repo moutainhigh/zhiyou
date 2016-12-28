@@ -163,6 +163,7 @@ public class UcenterMoneyController {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("提现操作时间每月7号-15号之间"));
 			return "redirect:/u/money";
 		}*/
+
 		
 		try {
 			Long userId = principal.getUserId();
