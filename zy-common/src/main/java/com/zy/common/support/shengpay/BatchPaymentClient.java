@@ -75,40 +75,23 @@ public class BatchPaymentClient {
 		//签名原始串拼写(“+”表示连接，”(”,”)”左括号右括号表示范围，不包含于签名原始串，totalAmount，amount需要格式化成“#.00”格式，如100.5，格式化后为100.50)
 		//signStr：      charset+signType+customerNo+batchNo+callbackUrl+totalAmount+循环拼明细（id+province+city+branchName+bankName+accountType+bankUserName+bankAccount+amount+remark）+md5key
 		ApplyInfoDetail applyInfoDetail = directApplyRequest.getDetails().get(0);
-		String s = "";
 		StringBuilder forSign = new StringBuilder();
 		forSign.append(directApplyRequest.getCharset());
-		forSign.append(s);
 		forSign.append(directApplyRequest.getSignType());
-		forSign.append(s);
 		forSign.append(directApplyRequest.getCustomerNo());
-		forSign.append(s);
 		forSign.append(directApplyRequest.getBatchNo());
-		forSign.append(s);
 		forSign.append(directApplyRequest.getCallbackUrl());
-		forSign.append(s);
 		forSign.append(directApplyRequest.getTotalAmount());
-		forSign.append(s);
 		forSign.append(applyInfoDetail.getId());
-		forSign.append(s);
 		forSign.append(applyInfoDetail.getProvince());
-		forSign.append(s);
 		forSign.append(applyInfoDetail.getCity());
-		forSign.append(s);
 		forSign.append(applyInfoDetail.getBranchName());
-		forSign.append(s);
 		forSign.append(applyInfoDetail.getBankName());
-		forSign.append(s);
 		forSign.append(applyInfoDetail.getAccountType());
-		forSign.append(s);
 		forSign.append(applyInfoDetail.getBankUserName());
-		forSign.append(s);
 		forSign.append(applyInfoDetail.getBankAccount());
-		forSign.append(s);
 		forSign.append(applyInfoDetail.getAmount());
-		forSign.append(s);
 		forSign.append(applyInfoDetail.getRemark());
-		forSign.append(s);
 
 		forSign.append(key);
 
