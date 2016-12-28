@@ -18,12 +18,18 @@ public class BatchPaymentClient {
 
 	private BatchPayment port;
 
-	public BatchPaymentClient() {
+	private String merchantId;
+
+	private String key;
+
+	public BatchPaymentClient(String merchantId, String key) {
 
 		URL wsdlURL = BatchPaymentService.WSDL_LOCATION;
 
 		BatchPaymentService ss = new BatchPaymentService(wsdlURL, SERVICE_NAME);
 		port = ss.getBatchPaymentPort();
+		this.merchantId = merchantId;
+		this.key = key;
 	}
 
 
@@ -32,7 +38,7 @@ public class BatchPaymentClient {
 	}
 
 	public static void main(String[] args) {
-		BatchPaymentClient batchPaymentClient = new BatchPaymentClient();
+		BatchPaymentClient batchPaymentClient = new BatchPaymentClient(null, null);
 		DirectApplyResponse directApplyResponse = batchPaymentClient.directApply(new DirectApplyRequest());
 		System.out.println(JsonUtils.toJson(directApplyResponse));
 	}

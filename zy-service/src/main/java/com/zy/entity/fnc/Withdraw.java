@@ -33,7 +33,9 @@ public class Withdraw implements Serializable {
 	public static final String VO_LIST = "WithdrawListVo";
 
 	public enum WithdrawStatus {
-		已申请, 提现成功, 已取消
+		已申请, 提现成功, 已取消,
+
+		处理中, 处理失败 // 新增
 	}
 
 	@Id
