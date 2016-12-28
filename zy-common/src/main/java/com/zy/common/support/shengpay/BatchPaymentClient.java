@@ -41,13 +41,14 @@ public class BatchPaymentClient {
 	// 工商银行，建设银行，农业银行，招商银行，交通银行, 平安银行，广发银行，光大银行，民生银行，中信银行，浦东发展银行，北京银行
 	//	交通银行，建设银行，招商银行
 	//	光大银行，民生银行
-	public DirectApplyResponse directApply(String sn, BigDecimal amount, String province, String city, String bankName, String branchName, Boolean isEnterprise, String realname, String cardNumber) {
+	public DirectApplyResponse directApply(String sn, BigDecimal amount, String province, String city, String bankName, String branchName, Boolean isEnterprise, String realname, String cardNumber, String callbackUrl) {
 		DirectApplyRequest directApplyRequest = new DirectApplyRequest();
 		directApplyRequest.setBatchNo(sn);
+		directApplyRequest.setCallbackUrl(callbackUrl);
 		directApplyRequest.setTotalAmount(amount);
 		directApplyRequest.setCustomerNo(merchantId);
 		directApplyRequest.setCharset("utf-8");
-		directApplyRequest.setSign("MD5");
+		directApplyRequest.setSignType("MD5");
 
 
 		ApplyInfoDetail applyInfoDetail = new ApplyInfoDetail();
