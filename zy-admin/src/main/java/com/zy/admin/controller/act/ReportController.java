@@ -93,10 +93,10 @@ public class ReportController {
 			Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
 			reportQueryModel.setUserIdIN(userIds);
 		}*/
-		Long principalUserId = getPrincipalUserId();
-		if(!principalUserId.equals(Constants.SETTING_SUPER_ADMIN_ID)) {
-			reportQueryModel.setVisitUserIdEQ(principalUserId);
-		}
+//		Long principalUserId = getPrincipalUserId();
+//		if(!principalUserId.equals(Constants.SETTING_SUPER_ADMIN_ID)) {
+//			reportQueryModel.setVisitUserIdEQ(principalUserId);
+//		}
 		Page<Report> page = reportService.findPage(reportQueryModel);
 		return new Grid<ReportAdminVo>(PageBuilder.copyAndConvert(page, reportComponent::buildAdminVo));
 	}

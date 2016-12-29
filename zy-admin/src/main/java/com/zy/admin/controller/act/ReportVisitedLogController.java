@@ -7,10 +7,8 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.ReportComponent;
 import com.zy.component.ReportVisitedLogComponent;
-import com.zy.entity.act.Report;
 import com.zy.entity.act.ReportVisitedLog;
 import com.zy.model.Constants;
-import com.zy.model.query.ReportQueryModel;
 import com.zy.model.query.ReportVisitedLogQueryModel;
 import com.zy.service.ReportService;
 import com.zy.service.ReportVisitedLogService;
@@ -26,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 import static com.zy.common.model.result.ResultBuilder.ok;
 import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
@@ -59,19 +55,19 @@ public class ReportVisitedLogController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public Grid<ReportVisitedLogListVo> list(ReportVisitedLogQueryModel reportVisitedLogQueryModel) {
-		Long reportId = reportVisitedLogQueryModel.getReportIdEQ();
-
-		Long principalUserId = getPrincipalUserId();
-		if(!principalUserId.equals(Constants.SETTING_SUPER_ADMIN_ID)) {
-			List<Report> reports = reportService.findAll(ReportQueryModel.builder().visitUserIdEQ(principalUserId).build());
-			if(reportId != null) {
-				if(!reports.contains(reportId)) {
-					reportVisitedLogQueryModel.setIdEQ(66666666L);
-				}
-			} else {
-				reportVisitedLogQueryModel.setReportIdIN(reports.stream().map(v -> v.getId()).toArray(Long[]::new));
-			}
-		}
+//		Long reportId = reportVisitedLogQueryModel.getReportIdEQ();
+//
+//		Long principalUserId = getPrincipalUserId();
+//		if(!principalUserId.equals(Constants.SETTING_SUPER_ADMIN_ID)) {
+//			List<Report> reports = reportService.findAll(ReportQueryModel.builder().visitUserIdEQ(principalUserId).build());
+//			if(reportId != null) {
+//				if(!reports.contains(reportId)) {
+//					reportVisitedLogQueryModel.setIdEQ(66666666L);
+//				}
+//			} else {
+//				reportVisitedLogQueryModel.setReportIdIN(reports.stream().map(v -> v.getId()).toArray(Long[]::new));
+//			}
+//		}
 		Page<ReportVisitedLog> page = reportVisitedLogService.findPage(reportVisitedLogQueryModel);
 		return new Grid<ReportVisitedLogListVo>(PageBuilder.copyAndConvert(page, reportVisitedLogComponent::buildListVo));
 	}
