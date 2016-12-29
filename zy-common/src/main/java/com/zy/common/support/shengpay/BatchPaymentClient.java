@@ -50,6 +50,7 @@ public class BatchPaymentClient {
 		directApplyRequest.setCustomerNo(merchantId);
 		directApplyRequest.setCharset("utf-8");
 		directApplyRequest.setSignType("MD5");
+		directApplyRequest.setRemark("无");
 
 
 		ApplyInfoDetail applyInfoDetail = new ApplyInfoDetail();
@@ -62,6 +63,7 @@ public class BatchPaymentClient {
 		applyInfoDetail.setBranchName(branchName);
 		applyInfoDetail.setBankName(bankName);
 		applyInfoDetail.setAmount(amount);
+		applyInfoDetail.setRemark("无");
 
 
 		directApplyRequest.getDetails().add(applyInfoDetail);
