@@ -94,7 +94,7 @@ public class ReportController {
 			reportQueryModel.setUserIdIN(userIds);
 		}*/
 		Long principalUserId = getPrincipalUserId();
-		if(!SecurityUtils.getSubject().isPermitted("report:visitUser") && !SecurityUtils.getSubject().isPermitted("report:checkReportResult")) {
+		if(!SecurityUtils.getSubject().isPermitted("report:visitUser")) {
 			reportQueryModel.setVisitUserIdEQ(principalUserId);
 		}
 		Page<Report> page = reportService.findPage(reportQueryModel);
