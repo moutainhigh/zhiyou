@@ -259,8 +259,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		if (withdraw.getWithdrawStatus() == Withdraw.WithdrawStatus.提现成功) {
 			return; // 幂等处理
 		} else if (withdraw.getWithdrawStatus() != Withdraw.WithdrawStatus.已推送) {
-			//throw new BizException(BizCode.ERROR, "只有已推送状态的提现单可以确认成功");
-			log.error("只有已推送状态的提现单可以确认成功, id" + id);
+			throw new BizException(BizCode.ERROR, "只有已推送状态的提现单可以确认成功");
 		}
 		if (!withdraw.getIsToBankCard()) {
 			throw new BizException(BizCode.ERROR, "暂不支持微信提现");
@@ -285,8 +284,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		if (withdraw.getWithdrawStatus() == Withdraw.WithdrawStatus.处理失败) {
 			return; // 幂等处理
 		} else if (withdraw.getWithdrawStatus() != Withdraw.WithdrawStatus.已推送) {
-			// throw new BizException(BizCode.ERROR, "只有已申请状态的提现单可以确认失败");
-			log.error("只有已申请状态的提现单可以确认失败, id" + id);
+			throw new BizException(BizCode.ERROR, "只有已申请状态的提现单可以确认失败");
 		}
 		if (!withdraw.getIsToBankCard()) {
 			throw new BizException(BizCode.ERROR, "暂不支持微信提现");
