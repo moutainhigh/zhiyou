@@ -38,7 +38,7 @@ public class ServiceUtils {
 	}
 	
 	private static String generateSn(String prefix) {
-		return prefix + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + "-" + StringUtils.leftPad(String.valueOf(random.nextInt(10000)), 4, '0');
+		return prefix + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + "" + StringUtils.leftPad(String.valueOf(random.nextInt(10000)), 4, '0');
 	}
 	
 	public static String hashPassword(String plainPassword) {
