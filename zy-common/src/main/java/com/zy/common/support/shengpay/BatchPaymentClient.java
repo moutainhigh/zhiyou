@@ -7,6 +7,7 @@ import com.shengpay.mcl.bp.api.DirectApplyRequest;
 import com.shengpay.mcl.btc.response.DirectApplyResponse;
 import com.zy.common.util.Digests;
 import com.zy.common.util.Encodes;
+import com.zy.common.util.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.xml.namespace.QName;
@@ -86,6 +87,7 @@ public class BatchPaymentClient {
 		forSign.append(directApplyRequest.getBatchNo());
 		forSign.append(directApplyRequest.getCallbackUrl());
 		forSign.append(directApplyRequest.getTotalAmount());
+
 		forSign.append(applyInfoDetail.getId());
 		forSign.append(applyInfoDetail.getProvince());
 		forSign.append(applyInfoDetail.getCity());
@@ -98,7 +100,8 @@ public class BatchPaymentClient {
 		forSign.append(applyInfoDetail.getRemark());
 
 		forSign.append(key);
-
+		log.warn("directApplyRequest = " + JsonUtils.toJson(directApplyRequest));
+		log.warn("forSign = " + forSign.toString());
 		return Encodes.encodeHex(Digests.md5(forSign.toString().getBytes(Charset.forName("UTF-8")))).toUpperCase();
 
 	}
