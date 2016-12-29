@@ -35,7 +35,7 @@ public class Withdraw implements Serializable {
 	public enum WithdrawStatus {
 		已申请, 提现成功, 已取消,
 
-		处理中, 处理失败 // 新增
+		已推送, 处理失败 // 新增
 	}
 
 	@Id

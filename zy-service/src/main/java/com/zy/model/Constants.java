@@ -102,6 +102,7 @@ public  interface Constants {
     /* shengPay */
     String SHENGPAY_NOTIFY = "http://agentsystem.zhi-you.net/notify/shengPay/async";
     String SHENGPAY_RETURN = "http://agentsystem.zhi-you.net/notify/shengPay/sync";
+    String SHENGPAY_BATCH_PAYMENT_NOTIFY = "http://adminsystem.zhi-you.net/notify/shengPay/batchPayment";
 
     /* social login notify url */
     String WEIXIN_LOGIN_NOTIFY = "http://passport.zhi-you.net/notify/weixin";

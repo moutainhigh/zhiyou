@@ -23,4 +23,12 @@ public interface WithdrawService {
 	List<Withdraw> findAll(WithdrawQueryModel withdrawQueryModel);
 	
 	long count(WithdrawQueryModel withdrawQueryModel);
+
+	Withdraw findBySn(String sn);
+
+	void push(Long id);
+
+	void autoSuccess(Long id);
+
+	void autoFailure(Long id, String remark);
 }

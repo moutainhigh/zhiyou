@@ -1,11 +1,11 @@
 package com.zy.mapper;
 
 
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
-
 import com.zy.entity.fnc.Withdraw;
 import com.zy.model.query.WithdrawQueryModel;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 public interface WithdrawMapper {
@@ -24,4 +24,5 @@ public interface WithdrawMapper {
 
 	long count(WithdrawQueryModel withdrawQueryModel);
 
+	Withdraw findBySn(String sn);
 }

@@ -70,6 +70,10 @@ public class BatchPaymentClient {
 		return port.directApply(directApplyRequest);
 	}
 
+	public boolean isDirectApplyResponseSuccess(DirectApplyResponse directApplyResponse) {
+		return directApplyResponse.getResultCode().equals("00");
+	}
+
 
 	private String getDirectApplySign(DirectApplyRequest directApplyRequest) {
 		//签名原始串拼写(“+”表示连接，”(”,”)”左括号右括号表示范围，不包含于签名原始串，totalAmount，amount需要格式化成“#.00”格式，如100.5，格式化后为100.50)
@@ -99,8 +103,12 @@ public class BatchPaymentClient {
 
 	}
 
+	public boolean isBatchPaymentNofitySuccess(BatchPaymentNotify batchPaymentNotify) {
+		return batchPaymentNotify.getResultCode().equals("S001") || batchPaymentNotify.getResultCode().equals("S002");
+	}
 
-	public boolean checkPaymentNofity(BatchPaymentNotify batchPaymentNotify) {
+
+	public boolean checkBatchPaymentNofitySign(BatchPaymentNotify batchPaymentNotify) {
 		// 签名原始串拼写({param} 替换成param对应的值, “+”表示连接，不包含于签名原始串，“=”是原始串的一部分, 空值不参与签名)
 		// signStr：charset={charset}batchNo={batchNo}statusCode={statusCode}statusName=
 		//		{statusName}fileName={fileName}resultCode={resultCode}resultName=

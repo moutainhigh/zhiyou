@@ -62,4 +62,9 @@
 		<constructor-arg index="3" value="${aliyun.ossGroup}"/>
 	</bean>
 
+	<bean id="batchPaymentClient" class="com.zy.common.support.shengpay.BatchPaymentClient">
+		<constructor-arg index="0" value="${shengPay.merchantId}"/>
+		<constructor-arg index="1" value="${shengPay.key}"/>
+	</bean>
+
 </beans>

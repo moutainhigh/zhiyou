@@ -164,4 +164,11 @@
 		</where>
 	</select>
 
+	<select id="findBySn" resultMap="baseResultMap" parameterType="string">
+		select
+		*
+		from `fnc_withdraw`
+		where sn = #{sn}
+	</select>
+
 </mapper>

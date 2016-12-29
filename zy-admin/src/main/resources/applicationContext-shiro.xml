@@ -27,6 +27,7 @@
 				/login = authc
 		        /logout = logout
 		        /captcha = anon
+				/notify/** = anon
 		        /callback/** = anon
 		        /assets/** = anon
 		        /css/** = anon

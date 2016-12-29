@@ -1,18 +1,29 @@
 package com.zy.service.impl;
 
+import com.shengpay.mcl.btc.response.DirectApplyResponse;
 import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
+import com.zy.common.support.shengpay.BatchPaymentClient;
 import com.zy.component.FncComponent;
-import com.zy.entity.fnc.*;
+import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.AccountLog.InOut;
+import com.zy.entity.fnc.BankCard;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Withdraw;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
+import com.zy.mapper.AccountMapper;
+import com.zy.mapper.BankCardMapper;
+import com.zy.mapper.UserMapper;
+import com.zy.mapper.WithdrawMapper;
 import com.zy.model.BizCode;
+import com.zy.model.Constants;
 import com.zy.model.query.WithdrawQueryModel;
 import com.zy.service.WithdrawService;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,25 +40,29 @@ import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
+@Slf4j
 public class WithdrawServiceImpl implements WithdrawService {
 
 	@Autowired
-	private com.zy.mapper.AccountMapper accountMapper;
+	private AccountMapper accountMapper;
 
 	@Autowired
-	private com.zy.mapper.UserMapper userMapper;
+	private UserMapper userMapper;
 
 	@Autowired
-	private com.zy.mapper.BankCardMapper bankCardMapper;
+	private BankCardMapper bankCardMapper;
 
 	@Autowired
-	private com.zy.mapper.WithdrawMapper withdrawMapper;
+	private WithdrawMapper withdrawMapper;
 
 	@Autowired
 	private FncComponent fncComponent;
 
 	@Autowired
 	private Config config;
+
+	@Autowired
+	private BatchPaymentClient batchPaymentClient;
 
 	@Override
 	public Withdraw create(@NotNull Long userId, @NotNull Long bankCardId, @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount) {
@@ -115,7 +130,6 @@ public class WithdrawServiceImpl implements WithdrawService {
 	@Override
 	public void success(@NotNull Long id, @NotNull Long operatorId, @NotBlank String remark) {
 
-//		final BigDecimal zero = new BigDecimal("0.00");
 		Withdraw withdraw = withdrawMapper.findOne(id);
 		validate(withdraw, NOT_NULL, "withdraw id " + id + " is not found null");
 		User operator = userMapper.findOne(operatorId);
@@ -141,13 +155,6 @@ public class WithdrawServiceImpl implements WithdrawService {
 		Long sysUserId = config.getSysUserId();
 
 		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw, withdraw.getUserId());
-
-		/* 提现手续费 暂不记录 */
-	/*	BigDecimal fee = withdraw.getFee();
-		if (fee.compareTo(new BigDecimal("0.00")) > 0) {
-			String title = "提现单" + withdraw.getSn() + "收益";
-			fncComponent.createAndGrantProfit(sysUserId, Profit.ProfitType.提现手续费, id, title, currencyType, fee);
-		}*/
 	}
 
 	@Override
@@ -213,6 +220,83 @@ public class WithdrawServiceImpl implements WithdrawService {
 	@Override
 	public long count(@NotNull WithdrawQueryModel withdrawQueryModel) {
 		return withdrawMapper.count(withdrawQueryModel);
+	}
+
+	@Override
+	public Withdraw findBySn(@NotBlank String sn) {
+		return withdrawMapper.findBySn(sn);
+	}
+
+	@Override
+	public void push(@NotNull Long id) {
+		Withdraw withdraw = withdrawMapper.findOne(id);
+		validate(withdraw, NOT_NULL, "withdraw id " + id + " is not found null");
+
+		if (withdraw.getWithdrawStatus() == Withdraw.WithdrawStatus.已推送) {
+			return; // 幂等处理
+		} else if (withdraw.getWithdrawStatus() != Withdraw.WithdrawStatus.已申请) {
+			throw new BizException(BizCode.ERROR, "只有已申请状态的提现单可以推送");
+		}
+
+		BankCard bankCard = bankCardMapper.findOne(withdraw.getBankCardId());
+		DirectApplyResponse directApplyResponse = batchPaymentClient.directApply(withdraw.getSn(), withdraw.getAmount(), null, null, bankCard.getBankName(), null, false, bankCard.getRealname(), bankCard.getCardNumber(), Constants.SHENGPAY_BATCH_PAYMENT_NOTIFY);
+		if (!batchPaymentClient.isDirectApplyResponseSuccess(directApplyResponse)) {
+			throw new BizException(BizCode.ERROR, "推送失败, 错误码" + directApplyResponse.getResultCode() + ", 错误信息" + directApplyResponse.getResultMessage());
+		}
+
+		withdraw.setWithdrawStatus(Withdraw.WithdrawStatus.已推送);
+		if (withdrawMapper.update(withdraw) == 0) {
+			throw new ConcurrentException();
+		}
+
+	}
+
+	@Override
+	public void autoSuccess(@NotNull Long id) {
+		Withdraw withdraw = withdrawMapper.findOne(id);
+		validate(withdraw, NOT_NULL, "withdraw id " + id + " is not found null");
+
+		if (withdraw.getWithdrawStatus() == Withdraw.WithdrawStatus.提现成功) {
+			return; // 幂等处理
+		} else if (withdraw.getWithdrawStatus() != Withdraw.WithdrawStatus.已推送) {
+			//throw new BizException(BizCode.ERROR, "只有已推送状态的提现单可以确认成功");
+			log.error("只有已推送状态的提现单可以确认成功, id" + id);
+		}
+		if (!withdraw.getIsToBankCard()) {
+			throw new BizException(BizCode.ERROR, "暂不支持微信提现");
+		}
+
+		withdraw.setWithdrawStatus(Withdraw.WithdrawStatus.提现成功);
+		withdraw.setWithdrawedTime(new Date());
+		if (withdrawMapper.update(withdraw) == 0) {
+			throw new ConcurrentException();
+		}
+		CurrencyType currencyType = withdraw.getCurrencyType();
+		Long sysUserId = config.getSysUserId();
+
+		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw, withdraw.getUserId());
+	}
+
+	@Override
+	public void autoFailure(@NotNull Long id, String remark) {
+		Withdraw withdraw = withdrawMapper.findOne(id);
+		validate(withdraw, NOT_NULL, "withdraw id " + id + " is not found null");
+
+		if (withdraw.getWithdrawStatus() == Withdraw.WithdrawStatus.处理失败) {
+			return; // 幂等处理
+		} else if (withdraw.getWithdrawStatus() != Withdraw.WithdrawStatus.已推送) {
+			// throw new BizException(BizCode.ERROR, "只有已申请状态的提现单可以确认失败");
+			log.error("只有已申请状态的提现单可以确认失败, id" + id);
+		}
+		if (!withdraw.getIsToBankCard()) {
+			throw new BizException(BizCode.ERROR, "暂不支持微信提现");
+		}
+
+		withdraw.setRemark(remark);
+		withdraw.setWithdrawStatus(Withdraw.WithdrawStatus.处理失败);
+		if (withdrawMapper.update(withdraw) == 0) {
+			throw new ConcurrentException();
+		}
 	}
 
 }
