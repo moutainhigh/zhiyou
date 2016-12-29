@@ -12,9 +12,9 @@ public interface WithdrawService {
 
 	Withdraw create(Long userId, Long bankCardId, CurrencyType currencyType, BigDecimal amount);
 	
-	void success(Long id, Long operatorId, String remark);
+	void success(Long id, Long operatorId, String remark); // 手动成功
 	
-	void cancel(Long id, Long operatorId, String remark);
+	void cancel(Long id, Long operatorId, String remark); // 手动取消
 	
 	Withdraw findOne(Long id);
 	
@@ -26,9 +26,9 @@ public interface WithdrawService {
 
 	Withdraw findBySn(String sn);
 
-	void push(Long id);
+	void push(Long id); // 推送
 
-	void autoSuccess(Long id);
+	void autoSuccess(Long id); // 自动成功
 
-	void autoFailure(Long id, String remark);
+	void autoFailure(Long id, String remark); // 自动失败
 }
