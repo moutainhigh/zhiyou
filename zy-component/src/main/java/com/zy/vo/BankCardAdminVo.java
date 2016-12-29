@@ -22,6 +22,12 @@ public class BankCardAdminVo implements Serializable {
 	private String cardNumber;
 	@Field(label = "开户行id")
 	private Long bankId;
+	@Field(label = "是否企业银行")
+	private Boolean isEnterprise;
+	@Field(label = "省")
+	private String province;
+	@Field(label = "市")
+	private String city;
 	@Field(label = "开户行名")
 	private String bankName;
 	@Field(label = "开户支行")

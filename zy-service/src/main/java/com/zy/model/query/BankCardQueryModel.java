@@ -81,6 +81,7 @@ public class BankCardQueryModel implements Serializable {
 
 	static {
 		fieldNames.add("appliedTime");
+		fieldNames.add("city");
 		fieldNames.add("bankBranchName");
 		fieldNames.add("confirmRemark");
 		fieldNames.add("bankName");
@@ -88,8 +89,10 @@ public class BankCardQueryModel implements Serializable {
 		fieldNames.add("realname");
 		fieldNames.add("bankId");
 		fieldNames.add("isDefault");
+		fieldNames.add("province");
 		fieldNames.add("isDeleted");
 		fieldNames.add("confirmedTime");
+		fieldNames.add("isEnterprise");
 		fieldNames.add("confirmStatus");
 		fieldNames.add("id");
 		fieldNames.add("cardNumber");

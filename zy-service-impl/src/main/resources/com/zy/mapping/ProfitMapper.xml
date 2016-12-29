@@ -15,11 +15,12 @@
 		<result column="profit_type" property="profitType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="ref_id" property="refId" />
 		<result column="remark" property="remark" />
+		<result column="version" property="version" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.Profit" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_profit` (profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark)
-	  values (#{profitStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userId},#{sn},#{title},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount},#{createdTime},#{grantedTime},#{profitType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{remark})
+	  insert into `fnc_profit` (profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark,version)
+	  values (#{profitStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userId},#{sn},#{title},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount},#{createdTime},#{grantedTime},#{profitType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{remark},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -40,8 +41,9 @@
 			profit_type = #{profitType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			ref_id = #{refId},
 			remark = #{remark},
+			version = version + 1,
 		</set>
-		where id = #{id}
+		where id = #{id} and version=#{version}
 	</update>
 
 	<update id="merge">
@@ -68,14 +70,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark
+		id,profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark,version
 		from `fnc_profit`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
 		select
-		id,profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark
+		id,profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark,version
 		from `fnc_profit`
 		<where>
 			<if test="snEQ != null">

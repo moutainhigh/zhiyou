@@ -8,6 +8,9 @@
 		<result column="realname" property="realname" />
 		<result column="card_number" property="cardNumber" />
 		<result column="bank_id" property="bankId" />
+		<result column="is_enterprise" property="isEnterprise" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
 		<result column="bank_name" property="bankName" />
 		<result column="bank_branch_name" property="bankBranchName" />
 		<result column="is_default" property="isDefault" />
@@ -19,8 +22,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.BankCard" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_bank_card` (user_id,realname,card_number,bank_id,bank_name,bank_branch_name,is_default,is_deleted,confirm_status,confirm_remark,confirmed_time,applied_time)
-	  values (#{userId},#{realname},#{cardNumber},#{bankId},#{bankName},#{bankBranchName},#{isDefault},#{isDeleted},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{confirmedTime},#{appliedTime})
+	  insert into `fnc_bank_card` (user_id,realname,card_number,bank_id,is_enterprise,province,city,bank_name,bank_branch_name,is_default,is_deleted,confirm_status,confirm_remark,confirmed_time,applied_time)
+	  values (#{userId},#{realname},#{cardNumber},#{bankId},#{isEnterprise},#{province},#{city},#{bankName},#{bankBranchName},#{isDefault},#{isDeleted},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{confirmedTime},#{appliedTime})
 	</insert>
 
 	<delete id="delete">
@@ -34,6 +37,9 @@
 			realname = #{realname},
 			card_number = #{cardNumber},
 			bank_id = #{bankId},
+			is_enterprise = #{isEnterprise},
+			province = #{province},
+			city = #{city},
 			bank_name = #{bankName},
 			bank_branch_name = #{bankBranchName},
 			is_default = #{isDefault},
@@ -55,6 +61,9 @@
 					<when test="field == 'realname'">realname = #{bankCard.realname},</when>
 					<when test="field == 'cardNumber'">card_number = #{bankCard.cardNumber},</when>
 					<when test="field == 'bankId'">bank_id = #{bankCard.bankId},</when>
+					<when test="field == 'isEnterprise'">is_enterprise = #{bankCard.isEnterprise},</when>
+					<when test="field == 'province'">province = #{bankCard.province},</when>
+					<when test="field == 'city'">city = #{bankCard.city},</when>
 					<when test="field == 'bankName'">bank_name = #{bankCard.bankName},</when>
 					<when test="field == 'bankBranchName'">bank_branch_name = #{bankCard.bankBranchName},</when>
 					<when test="field == 'isDefault'">is_default = #{bankCard.isDefault},</when>
@@ -71,14 +80,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,realname,card_number,bank_id,bank_name,bank_branch_name,is_default,is_deleted,confirm_status,confirm_remark,confirmed_time,applied_time
+		id,user_id,realname,card_number,bank_id,is_enterprise,province,city,bank_name,bank_branch_name,is_default,is_deleted,confirm_status,confirm_remark,confirmed_time,applied_time
 		from `fnc_bank_card`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.BankCardQueryModel">
 		select
-		id,user_id,realname,card_number,bank_id,bank_name,bank_branch_name,is_default,is_deleted,confirm_status,confirm_remark,confirmed_time,applied_time
+		id,user_id,realname,card_number,bank_id,is_enterprise,province,city,bank_name,bank_branch_name,is_default,is_deleted,confirm_status,confirm_remark,confirmed_time,applied_time
 		from `fnc_bank_card`
 		<where>
 			<if test="isDeletedEQ != null">

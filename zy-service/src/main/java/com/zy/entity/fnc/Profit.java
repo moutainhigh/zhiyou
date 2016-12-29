@@ -13,10 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -124,5 +121,10 @@ public class Profit implements Serializable {
 	@Field(label = "备注")
 	@View(groups = VO_ADMIN)
 	private String remark;
+
+	@NotNull
+	@Version
+	@Field(label = "乐观锁")
+	private Integer version;
 
 }

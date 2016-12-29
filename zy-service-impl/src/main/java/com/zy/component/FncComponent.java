@@ -148,6 +148,7 @@ public class FncComponent {
 		profit.setRefId(refId);
 		profit.setProfitStatus(Profit.ProfitStatus.已发放);
 		profit.setGrantedTime(createdTime);
+		profit.setVersion(0);
 		validate(profit);
 		profitMapper.insert(profit);
 		Long sysUserId = config.getSysUserId();
@@ -175,6 +176,7 @@ public class FncComponent {
 		profit.setRefId(refId);
 		profit.setProfitStatus(Profit.ProfitStatus.待发放);
 		profit.setGrantedTime(null);
+		profit.setVersion(0);
 		validate(profit);
 		profitMapper.insert(profit);
 		return profit;
