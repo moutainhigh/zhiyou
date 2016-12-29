@@ -31,7 +31,7 @@ public class ShengPayNotifyController {
 	@RequestMapping("/batchPayment")
 	@ResponseBody
 	public String batchPayment(BatchPaymentNotify batchPaymentNotify) {
-		if (!batchPaymentClient.checkBatchPaymentNofitySign(batchPaymentNotify)) {
+		if (!batchPaymentClient.checkBatchPaymentNotifySign(batchPaymentNotify)) {
 			log.error("验签错误");
 			throw new BizException(BizCode.ERROR, "验证签名错误");
 		}
@@ -40,7 +40,7 @@ public class ShengPayNotifyController {
 			String sn = batchPaymentNotify.getBatchNo();
 			Withdraw withdraw = withdrawService.findBySn(sn);
 			Long withdrawId = withdraw.getId();
-			if (batchPaymentClient.isBatchPaymentNofitySuccess(batchPaymentNotify)) {
+			if (batchPaymentClient.isBatchPaymentNotifySuccess(batchPaymentNotify)) {
 				withdrawService.autoSuccess(withdrawId);
 			} else {
 				withdrawService.autoFailure(withdrawId, "错误code:" + batchPaymentNotify.getResultCode() + ", 错误名称:" + batchPaymentNotify.getResultName());
