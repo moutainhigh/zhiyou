@@ -10,15 +10,13 @@ import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.usr.User;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.DepositQueryModel;
 import com.zy.model.query.PaymentQueryModel;
-import com.zy.service.AccountService;
-import com.zy.service.DepositService;
-import com.zy.service.OrderService;
-import com.zy.service.PaymentService;
+import com.zy.service.*;
 import com.zy.util.GcUtils;
 import io.gd.generator.api.query.Direction;
 import org.apache.commons.lang3.time.DateUtils;
@@ -56,6 +54,9 @@ public class UcenterPayController {
 
 	@Autowired
 	private AccountService accountService;
+
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private ShengPayClient shengPayClient;
@@ -111,6 +112,13 @@ public class UcenterPayController {
 
 	@RequestMapping(path = "/deposit", method = RequestMethod.GET)
 	public String depositPay(Model model, Principal principal) {
+		User user = userService.findOne(principal.getUserId());
+		User.UserRank userRank = user.getUserRank();
+		boolean useShengPay = false;
+		if(userRank == User.UserRank.V3 || userRank == User.UserRank.V4) {
+			useShengPay = true;
+		}
+		model.addAttribute("userShengPay", useShengPay);
 		return "ucenter/account/moneyDeposit";
 	}
 
