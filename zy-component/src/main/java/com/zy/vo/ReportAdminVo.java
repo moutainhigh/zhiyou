@@ -1,16 +1,16 @@
 package com.zy.vo;
 
-import io.gd.generator.annotation.Field;
-import com.zy.entity.usr.UserInfo.Gender;
 import com.zy.entity.act.Report.ReportResult;
 import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.UserInfo.Gender;
+import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,6 +38,8 @@ public class ReportAdminVo implements Serializable {
 	private Long productId;
 	@Field(label = "检测结果")
 	private ReportResult reportResult;
+	@Field(label = "客服检测结果")
+	private ReportResult checkReportResult;
 	@Field(label = "文字")
 	private String text;
 	@Field(label = "图片")
@@ -78,6 +80,8 @@ public class ReportAdminVo implements Serializable {
 	private String district;
 	@Field(label = "产品")
 	private ProductListVo product;
+	@Field(label = "回访客服")
+	private UserAdminSimpleVo visitUser;
 	@Field(label = "检测日期")
 	private String reportedDateLabel;
 	@Field(label = "申请时间")

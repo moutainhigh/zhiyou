@@ -21,6 +21,70 @@
   }
 </style>
 <!-- BEGIN JAVASCRIPTS -->
+<script id="checkReportResultTmpl" type="text/x-handlebars-template">
+  <form id="checkReportResult{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+    <input type="hidden" name="id" value="{{id}}"/>
+    <div class="form-body">
+      <div class="alert alert-danger display-hide">
+        <i class="fa fa-exclamation-circle"></i>
+        <button class="close" data-close="alert"></button>
+        <span class="form-errors">您填写的信息有误，请检查。</span>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">检测结果<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <select name="reportResult" class="form-control">
+            <option value="">--请选择--</option>
+            <option value="0">阴性</option>
+            <option value="1">弱阳性</option>
+            <option value="2">阳性</option>
+            <option value="3">干扰色</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions fluid">
+      <div class="col-md-offset-3 col-md-9">
+        <button id="checkReportResultSubmit{{id}}" type="button" class="btn green">
+          <i class="fa fa-save"></i> 保存
+        </button>
+        <button id="checkReportResultCancel{{id}}" class="btn default" >
+          <i class="fa fa-chevron-left"></i> 返回
+        </button>
+      </div>
+    </div>
+  </form>
+</script>
+
+<script id="visitUserTmpl" type="text/x-handlebars-template">
+  <form id="visitUserForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+    <input type="hidden" name="id" value="{{id}}"/>
+    <div class="form-body">
+      <div class="alert alert-danger display-hide">
+        <i class="fa fa-exclamation-circle"></i>
+        <button class="close" data-close="alert"></button>
+        <span class="form-errors">您填写的信息有误，请检查。</span>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">客服手机<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="{{phone}}" class="form-control" placeholder="请输入客服手机"/>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions fluid">
+      <div class="col-md-offset-3 col-md-9">
+        <button id="visitUserSubmit{{id}}" type="button" class="btn green">
+          <i class="fa fa-save"></i> 保存
+        </button>
+        <button id="visitUserCancel{{id}}" class="btn default" >
+          <i class="fa fa-chevron-left"></i> 返回
+        </button>
+      </div>
+    </div>
+  </form>
+</script>
+
 <script id="confirmTmpl" type="text/x-handlebars-template">
   <form id="confirmForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
     <input type="hidden" name="id" value="{{id}}"/>
@@ -67,7 +131,6 @@
     var grid = new Datatable();
 
     var template = Handlebars.compile($('#confirmTmpl').html());
-
     $('#dataTable').on('click', '.report-confirm', function () {
       var id = $(this).data('id');
       var step = $(this).data('step');
@@ -119,6 +182,99 @@
 
     });
 
+	  var checkReportResultTemplate = Handlebars.compile($('#checkReportResultTmpl').html());
+	  $('#dataTable').on('click', '.check-report-result', function () {
+		  var id = $(this).data('id');
+		  var data = {
+			  id: id
+		  };
+		  var html = checkReportResultTemplate(data);
+		  var index = layer.open({
+			  type: 1,
+			  //skin: 'layui-layer-rim', //加上边框
+			  area: ['600px', '360px'], //宽高
+			  content: html
+		  });
+
+		  $form = $('#checkReportResult' + id);
+		  $form.validate({
+			  rules: {
+				  'reportResult': {
+					  required: true
+				  },
+				  confirmRemark: {}
+			  },
+			  messages: {}
+		  });
+
+		  $('#checkReportResultSubmit' + id).bind('click', function () {
+			  var result = $form.validate().form();
+			  if (result) {
+				  var url = '${ctx}/report/checkReportResult';
+				  $.post(url, $form.serialize(), function (data) {
+					  if (data.code === 0) {
+						  layer.close(index);
+						  grid.getDataTable().ajax.reload(null, false);
+					  } else {
+						  layer.alert('审核失败,原因' + data.message);
+					  }
+				  });
+			  }
+		  })
+
+		  $('#checkReportResultCancel' + id).bind('click', function () {
+			  layer.close(index);
+		  })
+
+	  });
+
+	  var visitUserTemplate = Handlebars.compile($('#visitUserTmpl').html());
+	  $('#dataTable').on('click', '.visit-user', function () {
+		  var id = $(this).data('id');
+		  var phone = $(this).data('phone');
+		  var data = {
+			  id: id,
+			  phone: phone
+		  };
+		  var html = visitUserTemplate(data);
+		  var index = layer.open({
+			  type: 1,
+			  //skin: 'layui-layer-rim', //加上边框
+			  area: ['600px', '360px'], //宽高
+			  content: html
+		  });
+
+		  $form = $('#visitUserForm' + id);
+		  $form.validate({
+			  rules: {
+				  'phone': {
+					  required: true
+				  }
+			  },
+			  messages: {}
+		  });
+
+		  $('#visitUserSubmit' + id).bind('click', function () {
+			  var result = $form.validate().form();
+			  if (result) {
+				  var url = '${ctx}/report/visitUser';
+				  $.post(url, $form.serialize(), function (data) {
+					  if (data.code === 0) {
+						  layer.alert('操作成功');
+						  layer.close(index);
+						  grid.getDataTable().ajax.reload(null, false);
+					  } else {
+						  layer.alert(data.message);
+					  }
+				  });
+			  }
+		  })
+
+		  $('#visitUserCancel' + id).bind('click', function () {
+			  layer.close(index);
+		  })
+
+	  });
 
     grid.init({
       src: $('#dataTable'),
@@ -150,7 +306,7 @@
             }
           },
           {
-			data: '',
+			      data: '',
           	title: '商品',
           	orderable: false,
           	width: '120px',
@@ -182,6 +338,19 @@
             title: '检测结果',
             orderable: false
           },
+	        {
+		        data: 'checkReportResult',
+		        title: '客服检测结果',
+		        orderable: false
+	        },
+	        {
+		        data: '',
+		        title: '回访客服',
+		        orderable: false,
+		        render: function (data, type, full) {
+			        return formatUser(full.visitUser);
+		        }
+	        },
           {
             data: '',
             title: '图片',
@@ -271,16 +440,24 @@
                 optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-step="1" data-id="' + full.id + '"><i class="fa fa-edit"></i> 预审核 </a>';
               }
               </shiro:hasPermission>
-	            <shiro:hasPermission name="report:confirm">
 	            if (full.preConfirmStatus == '已通过' && full.confirmStatus == '待审核') {
-		            optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-step="2" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
+	            	if(full.checkReportResult != null) {
+			            <shiro:hasPermission name="report:visitUser">
+			            if(full.visitUser == null) {
+				            optionHtml += '<a class="btn btn-xs default blue-stripe visit-user" data-id="' + full.id + '" href="javascript:;" ><i class="fa fa-edit"></i> 分配客服</a>';
+			            }
+			            </shiro:hasPermission>
+			            <shiro:hasPermission name="reportVisitedLog:edit">
+                  if(full.visitUser != null) {
+	                  optionHtml += '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/reportVisitedLog/create?reportId=' + full.id + '"><i class="fa fa-edit"></i> 填写回访记录</a>';
+                  }
+			            </shiro:hasPermission>
+		            } else {
+                  <shiro:hasPermission name="report:checkReportResult">
+			            optionHtml += '<a class="btn btn-xs default blue-stripe check-report-result" data-id="' + full.id + '" href="javascript:;" ><i class="fa fa-edit"></i> 客服检测</a>';
+                  </shiro:hasPermission>
+		            }
 	            }
-	            </shiro:hasPermission>
-              <shiro:hasPermission name="reportVisitedLog:edit">
-	            if (full.preConfirmStatus == '已通过' && full.confirmStatus == '待审核') {
-	              optionHtml += '<a class="btn btn-xs yellow blue-stripe" href="javascript:;" data-href="${ctx}/reportVisitedLog/create?reportId=' + full.id + '"><i class="fa fa-edit"></i> 填写回访记录</a>';
-	            }
-              </shiro:hasPermission>
               return optionHtml;
             }
           }

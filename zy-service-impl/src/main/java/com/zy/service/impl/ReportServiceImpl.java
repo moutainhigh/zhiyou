@@ -6,11 +6,13 @@ import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.FncComponent;
 import com.zy.entity.act.Report;
+import com.zy.entity.adm.Admin;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.entity.fnc.Transfer;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
+import com.zy.mapper.AdminMapper;
 import com.zy.mapper.ReportMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
@@ -37,6 +39,9 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	private UserMapper userMapper;
+
+	@Autowired
+	private AdminMapper adminMapper;
 
 	@Autowired
 	private FncComponent fncComponent;
@@ -295,6 +300,51 @@ public class ReportServiceImpl implements ReportService {
 
 		}
 
+	}
+
+	@Override
+	public void checkReportResult(@NotNull Long id, @NotNull Report.ReportResult reportResult) {
+		Report report = reportMapper.findOne(id);
+		validate(report, NOT_NULL, "report id " + id + " not fount");
+
+		if(report.getCheckReportResult() != null) {
+			return;
+		}
+		if(report.getPreConfirmStatus() != ConfirmStatus.已通过) {
+			throw new BizException(BizCode.ERROR);
+		}
+		if(report.getConfirmStatus() != ConfirmStatus.待审核) {
+			throw new BizException(BizCode.ERROR);
+		}
+		report.setCheckReportResult(reportResult);
+		reportMapper.update(report);
+	}
+
+	@Override
+	public void visitUser(@NotNull Long id, @NotNull Long userId) {
+		Report report = reportMapper.findOne(id);
+		validate(report, NOT_NULL, "report id " + id + " not fount");
+		validate(report, v -> v.getCheckReportResult() != null, "客服检测结果为空");
+
+		Long visitUserId = report.getVisitUserId();
+		if (visitUserId != null) {
+			return;
+		}
+		if(report.getPreConfirmStatus() != ConfirmStatus.已通过) {
+			throw new BizException(BizCode.ERROR);
+		}
+		if(report.getConfirmStatus() != ConfirmStatus.待审核) {
+			throw new BizException(BizCode.ERROR);
+		}
+
+		User user = userMapper.findOne(userId);
+		validate(user, NOT_NULL, "user id " + userId + " not found");
+
+		Admin admin = adminMapper.findByUserId(userId);
+		validate(admin, NOT_NULL, "admin user id " + userId + " not found");
+
+		report.setVisitUserId(userId);
+		reportMapper.update(report);
 	}
 
 	@Override

@@ -1,15 +1,5 @@
 package com.zy.component;
 
-import static com.zy.util.GcUtils.formatDate;
-import static com.zy.util.GcUtils.getThumbnail;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Report;
 import com.zy.entity.usr.User;
@@ -23,6 +13,15 @@ import com.zy.vo.ReportAdminVo;
 import com.zy.vo.ReportDetailVo;
 import com.zy.vo.ReportExportVo;
 import com.zy.vo.ReportListVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.zy.util.GcUtils.formatDate;
+import static com.zy.util.GcUtils.getThumbnail;
 
 @Component
 public class ReportComponent {
@@ -49,6 +48,10 @@ public class ReportComponent {
 		BeanUtils.copyProperties(report, reportAdminVo);
 
 		reportAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(report.getUserId())));
+		Long visitUserId = report.getVisitUserId();
+		if (visitUserId != null) {
+			reportAdminVo.setVisitUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(visitUserId)));
+		}
 		reportAdminVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportAdminVo.setAppliedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportAdminVo.setConfirmedTimeLabel(formatDate(report.getConfirmedTime(), TIME_PATTERN));

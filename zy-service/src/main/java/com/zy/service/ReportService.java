@@ -29,4 +29,8 @@ public interface ReportService {
 	void confirm(Long id, boolean isSuccess, String confirmRemark);
 
 	void settleUp(Long id);
+
+	void checkReportResult(Long id, Report.ReportResult reportResult);
+
+	void visitUser(Long id, Long userId);
 }

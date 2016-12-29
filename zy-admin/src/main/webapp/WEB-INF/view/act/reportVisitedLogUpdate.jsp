@@ -153,7 +153,7 @@
                       </label>
                     </c:forEach>
                   </div>
-                  <input type="text" name="exerciseText" class="form-control" placeholder="是或其他"/>
+                  <input type="text" name="exerciseText" class="form-control" value="${reportVisitedLog.exerciseText}" placeholder="是或其他"/>
                 </div>
               </div>
 
@@ -343,12 +343,6 @@
             </div>
 
             <c:if test="${empty reportVisitedLog.customerServiceName2 or empty reportVisitedLog.customerServiceName3}">
-              <div class="form-group">
-                <label class="control-label col-md-3">客服<span class="required"> * </span></label>
-                <div class="col-md-5">
-                  <input type="text" class="form-control" name="<c:if test="${empty reportVisitedLog.customerServiceName2}">customerServiceName2</c:if><c:if test="${not empty reportVisitedLog.customerServiceName2 and empty reportVisitedLog.customerServiceName3}">customerServiceName3</c:if>" />
-                </div>
-              </div>
               <div class="form-group">
                 <label class="control-label col-md-3">时间<span class="required"> * </span></label>
                 <div class="col-md-5">
