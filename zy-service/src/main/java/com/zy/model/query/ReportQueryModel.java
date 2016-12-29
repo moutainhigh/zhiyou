@@ -1,19 +1,14 @@
 package com.zy.model.query;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.io.Serializable;
-
-import io.gd.generator.api.query.Direction;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import com.zy.entity.act.Report.ReportResult;
 import com.zy.entity.sys.ConfirmStatus;
+import io.gd.generator.api.query.Direction;
+import lombok.*;
+
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -37,6 +32,10 @@ public class ReportQueryModel implements Serializable {
 	private String phoneEQ;
 
 	private ReportResult reportResultEQ;
+
+	private ReportResult checkReportResultEQ;
+
+	private Long visitUserIdEQ;
 
 	private Integer timesEQ;
 
@@ -124,6 +123,7 @@ public class ReportQueryModel implements Serializable {
 		fieldNames.add("id");
 		fieldNames.add("text");
 		fieldNames.add("reportResult");
+		fieldNames.add("checkReportResult");
 		fieldNames.add("preConfirmStatus");
 		fieldNames.add("image");
 		fieldNames.add("productId");
@@ -135,6 +135,7 @@ public class ReportQueryModel implements Serializable {
 		fieldNames.add("jobId");
 		fieldNames.add("areaId");
 		fieldNames.add("phone");
+		fieldNames.add("visitUserId");
 		fieldNames.add("age");
 		fieldNames.add("isHot");
 	}

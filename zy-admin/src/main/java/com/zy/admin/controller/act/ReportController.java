@@ -93,7 +93,10 @@ public class ReportController {
 			Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
 			reportQueryModel.setUserIdIN(userIds);
 		}*/
-
+		Long principalUserId = getPrincipalUserId();
+		if(!SecurityUtils.getSubject().isPermitted("report:visitUser") && !SecurityUtils.getSubject().isPermitted("report:checkReportResult")) {
+			reportQueryModel.setVisitUserIdEQ(principalUserId);
+		}
 		Page<Report> page = reportService.findPage(reportQueryModel);
 		return new Grid<ReportAdminVo>(PageBuilder.copyAndConvert(page, reportComponent::buildAdminVo));
 	}
@@ -156,7 +159,33 @@ public class ReportController {
 		redirectAttributes.addFlashAttribute(ResultBuilder.ok("检测报告编辑成功"));
 		return "redirect:/report";
 	}
-	
+
+	@RequiresPermissions("report:checkReportResult")
+	@RequestMapping(value = "/checkReportResult", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> checkReportResult(@RequestParam Long id, @RequestParam ReportResult reportResult) {
+		reportService.checkReportResult(id, reportResult);
+		return ResultBuilder.ok("操作成功");
+	}
+
+	@RequiresPermissions("report:visitUser")
+	@RequestMapping(value = "/visitUser", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> visitUser(@RequestParam Long id, @RequestParam String phone) {
+		User user = userService.findByPhone(phone);
+		if(user == null ) {
+			return ResultBuilder.error("客服不存在");
+		}
+		try{
+			reportService.visitUser(id, user.getId());
+			return ResultBuilder.ok("操作成功");
+		} catch (Exception e) {
+			return ResultBuilder.error(e.getMessage());
+		}
+
+
+	}
+
 	@RequiresPermissions("report:confirm")
 	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
 	@ResponseBody
@@ -206,5 +235,9 @@ public class ReportController {
 
 		return null;
 	}
-	
+
+	private Long getPrincipalUserId() {
+		AdminPrincipal principal = (AdminPrincipal)SecurityUtils.getSubject().getPrincipal();
+		return principal.getUserId();
+	}
 }

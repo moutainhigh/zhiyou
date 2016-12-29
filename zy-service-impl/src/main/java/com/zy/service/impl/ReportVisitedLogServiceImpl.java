@@ -5,8 +5,10 @@ import com.zy.common.model.query.Page;
 import com.zy.entity.act.Report;
 import com.zy.entity.act.ReportVisitedLog;
 import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.User;
 import com.zy.mapper.ReportMapper;
 import com.zy.mapper.ReportVisitedLogMapper;
+import com.zy.mapper.UserMapper;
 import com.zy.model.query.ReportVisitedLogQueryModel;
 import com.zy.service.ReportVisitedLogService;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +34,9 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 
 	@Autowired
 	private ReportMapper reportMapper;
+
+	@Autowired
+	private UserMapper userMapper;
 
 	@Override
 	public ReportVisitedLog findOne(@NotNull Long id) {
@@ -80,6 +85,12 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 		} else {
 			reportVisitedLog.setConfirmStatus(待审核);
 		}
+		Long visitUserId = report.getVisitUserId();
+		User user = userMapper.findOne(visitUserId);
+		validate(user, NOT_NULL, "user id not " + visitUserId + "found");
+
+		reportVisitedLog.setCustomerServiceName1(user.getNickname());
+		validate(reportVisitedLog);
 		reportVisitedLogMapper.insert(reportVisitedLog);
 	}
 
@@ -100,6 +111,9 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 		if(report.getConfirmStatus() != 待审核) {
 			return ;
 		}
+		Long visitUserId = report.getVisitUserId();
+		User user = userMapper.findOne(visitUserId);
+		validate(user, NOT_NULL, "user id not " + visitUserId + "found");
 
 		String visitedStatus3 = reportVisitedLog.getVisitedStatus3();
 		String visitedStatus2 = reportVisitedLog.getVisitedStatus2();
@@ -107,6 +121,7 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 			ConfirmStatus confirmStatus = checkSuccessAndReturnStatus(visitedStatus3);
 			String confirmRemark = visitedStatus3;
 
+			reportVisitedLog.setCustomerServiceName3(user.getNickname());
 			reportVisitedLog.setConfirmStatus(confirmStatus);
 			reportVisitedLog.setVisitedStatus(confirmRemark);
 			report.setConfirmStatus(confirmStatus);
@@ -117,6 +132,7 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 
 		} else if(StringUtils.isNotBlank(visitedStatus2)) {
 			if(!visitContinueCheckList.contains(visitedStatus2)) {  //判断是否需要再次回访
+				reportVisitedLog.setCustomerServiceName2(user.getNickname());
 				reportVisitedLog.setVisitedStatus(visitedStatus2);      //无需回访 设置最终回访状态
 				if(StringUtils.isBlank(reportVisitedLog.getRemark())) {
 					reportVisitedLog.setRemark(reportVisitedLog.getRemark());
@@ -136,20 +152,54 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 			throw new ValidationException("客服信息为空");
 		}
 
-		reportVisitedLog.setCustomerServiceName1(persistence.getCustomerServiceName1());
-		reportVisitedLog.setVisitedStatus1(persistence.getVisitedStatus1());
-		reportVisitedLog.setVisitedTime1(persistence.getVisitedTime1());
-		if(StringUtils.isNotBlank(persistence.getCustomerServiceName2())) {
-			reportVisitedLog.setCustomerServiceName2(persistence.getCustomerServiceName2());
-			reportVisitedLog.setVisitedStatus2(persistence.getVisitedStatus2());
-			reportVisitedLog.setVisitedTime2(persistence.getVisitedTime2());
+		persistence.setRemark(reportVisitedLog.getRemark());
+		persistence.setVisitedStatus(reportVisitedLog.getVisitedStatus());
+		persistence.setCause(reportVisitedLog.getCause());
+		persistence.setCauseText(reportVisitedLog.getCauseText());
+		persistence.setConfirmStatus(reportVisitedLog.getConfirmStatus());
+		persistence.setContactWay(reportVisitedLog.getContactWay());
+		persistence.setContactWayText(reportVisitedLog.getContactWayText());
+		persistence.setDrink(reportVisitedLog.getDrink());
+		persistence.setExercise(reportVisitedLog.getExercise());
+		persistence.setExerciseText(reportVisitedLog.getExerciseText());
+		persistence.setFamilyHistory(reportVisitedLog.getFamilyHistory());
+		persistence.setHealth(reportVisitedLog.getHealth());
+		persistence.setHealthProduct(reportVisitedLog.getHealthProduct());
+		persistence.setHealthProductText(reportVisitedLog.getHealthProductText());
+		persistence.setHobby(reportVisitedLog.getHobby());
+		persistence.setHobbyText(reportVisitedLog.getHobbyText());
+		persistence.setInterferingFactors(reportVisitedLog.getInterferingFactors());
+		persistence.setMonthlyCost(reportVisitedLog.getMonthlyCost());
+		persistence.setMonthlyCostText(reportVisitedLog.getMonthlyCostText());
+		persistence.setProductName(reportVisitedLog.getProductName());
+		persistence.setProductSharing(reportVisitedLog.getProductSharing());
+		persistence.setProductSharingText(reportVisitedLog.getProductSharingText());
+		persistence.setRelationship(reportVisitedLog.getRelationship());
+		persistence.setRelationshipText(reportVisitedLog.getRelationshipText());
+		persistence.setRemark1(reportVisitedLog.getRemark1());
+		persistence.setRemark2(reportVisitedLog.getRemark2());
+		persistence.setRemark3(reportVisitedLog.getRemark3());
+		persistence.setRestTimeLabel(reportVisitedLog.getRestTimeLabel());
+		persistence.setRestTimeText(reportVisitedLog.getRestTimeText());
+		persistence.setSickness(reportVisitedLog.getSickness());
+		persistence.setSleepQuality(reportVisitedLog.getSleepQuality());
+		persistence.setSleepQualityText(reportVisitedLog.getSleepQualityText());
+		persistence.setSmoke(reportVisitedLog.getSmoke());
+		persistence.setToAgent(reportVisitedLog.getToAgent());
+		persistence.setVisitedInfo(reportVisitedLog.getVisitedInfo());
+		persistence.setVisitedStatus(reportVisitedLog.getVisitedStatus());
+		if(StringUtils.isBlank(persistence.getCustomerServiceName2())) {
+			persistence.setCustomerServiceName2(user.getNickname());
+			persistence.setVisitedStatus2(reportVisitedLog.getVisitedStatus2());
+			persistence.setVisitedTime2(reportVisitedLog.getVisitedTime2());
 		}
-		if(StringUtils.isNotBlank(persistence.getCustomerServiceName3())) {
-			reportVisitedLog.setCustomerServiceName3(persistence.getCustomerServiceName3());
-			reportVisitedLog.setVisitedStatus3(persistence.getVisitedStatus3());
-			reportVisitedLog.setVisitedTime3(persistence.getVisitedTime3());
+		if(StringUtils.isBlank(persistence.getCustomerServiceName3())) {
+			persistence.setCustomerServiceName3(user.getNickname());
+			persistence.setVisitedStatus3(reportVisitedLog.getVisitedStatus3());
+			persistence.setVisitedTime3(reportVisitedLog.getVisitedTime3());
 		}
-		reportVisitedLogMapper.update(reportVisitedLog);
+		validate(persistence);
+		reportVisitedLogMapper.update(persistence);
 		reportMapper.update(report);
 	}
 

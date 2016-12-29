@@ -1,5 +1,6 @@
 package com.zy.admin.controller.act;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
@@ -13,6 +14,7 @@ import com.zy.service.ReportService;
 import com.zy.service.ReportVisitedLogService;
 import com.zy.util.GcUtils;
 import com.zy.vo.ReportVisitedLogListVo;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,6 +55,19 @@ public class ReportVisitedLogController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public Grid<ReportVisitedLogListVo> list(ReportVisitedLogQueryModel reportVisitedLogQueryModel) {
+//		Long reportId = reportVisitedLogQueryModel.getReportIdEQ();
+//
+//		Long principalUserId = getPrincipalUserId();
+//		if(!principalUserId.equals(Constants.SETTING_SUPER_ADMIN_ID)) {
+//			List<Report> reports = reportService.findAll(ReportQueryModel.builder().visitUserIdEQ(principalUserId).build());
+//			if(reportId != null) {
+//				if(!reports.contains(reportId)) {
+//					reportVisitedLogQueryModel.setIdEQ(66666666L);
+//				}
+//			} else {
+//				reportVisitedLogQueryModel.setReportIdIN(reports.stream().map(v -> v.getId()).toArray(Long[]::new));
+//			}
+//		}
 		Page<ReportVisitedLog> page = reportVisitedLogService.findPage(reportVisitedLogQueryModel);
 		return new Grid<ReportVisitedLogListVo>(PageBuilder.copyAndConvert(page, reportVisitedLogComponent::buildListVo));
 	}
@@ -112,5 +127,10 @@ public class ReportVisitedLogController {
 			return "redirect:/reportVisitedLog/update?id=" + reportVisitedLog.getId();
 		}
 
+	}
+
+	private Long getPrincipalUserId() {
+		AdminPrincipal principal = (AdminPrincipal) SecurityUtils.getSubject().getPrincipal();
+		return principal.getUserId();
 	}
 }

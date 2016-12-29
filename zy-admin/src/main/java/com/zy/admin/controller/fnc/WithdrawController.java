@@ -1,19 +1,7 @@
 package com.zy.admin.controller.fnc;
 
 
-import java.util.List;
-
 import com.zy.admin.model.AdminPrincipal;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
@@ -28,6 +16,17 @@ import com.zy.model.query.WithdrawQueryModel;
 import com.zy.service.UserService;
 import com.zy.service.WithdrawService;
 import com.zy.vo.WithdrawAdminVo;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 
 @RequestMapping("/withdraw")
@@ -85,6 +84,18 @@ public class WithdrawController {
 			}else{
 				withdrawService.cancel(id, operatorUserId, confirmRemark);
 			}
+		} catch (BizException e) {
+			return new ResultBuilder<>().message(e.getMessage()).build();
+		}
+		return new ResultBuilder<>().message("操作成功").build();
+	}
+
+	@RequiresPermissions("withdraw:push")
+	@RequestMapping(value = "/push", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> push(@RequestParam Long id) {
+		try {
+			withdrawService.push(id);
 		} catch (BizException e) {
 			return new ResultBuilder<>().message(e.getMessage()).build();
 		}

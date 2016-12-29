@@ -119,13 +119,23 @@ public class Report implements Serializable {
 	@View(name = "productTitle", type = String.class, groups = {VO_LIST })
 	@AssociationView(name = "product", groups = {VO_DETAIL, VO_ADMIN}, associationGroup = Product.VO_LIST)
 	private Long productId;
-	
+
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "检测结果")
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(groups = VO_EXPORT, field = @Field(label = "检测结果", order = 60))
 	private ReportResult reportResult;
+
+	@Query(Predicate.EQ)
+	@Field(label = "客服检测结果")
+	@View(groups = {VO_ADMIN})
+	private ReportResult checkReportResult;
+
+	@Query(Predicate.EQ)
+	@Field(label = "回访客服")
+	@AssociationView(name = "visitUser", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
+	private Long visitUserId;
 
 	@NotBlank
 	@Column(length = 2000)

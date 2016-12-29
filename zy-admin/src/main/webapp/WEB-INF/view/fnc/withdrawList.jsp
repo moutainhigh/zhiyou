@@ -108,12 +108,16 @@
               orderable: false,
               render: function (data, type, full) {
                 var operationHtml = '';
-                <shiro:hasPermission name="withdraw:confirm">
                 if (full.withdrawStatus == '已申请') {
+	                <shiro:hasPermission name="withdraw:confirm">
                   operationHtml += '<p><a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="confirm(' + full.id
                     + ')"><i class="fa fa-edit"></i> 确认提现 </a></p>';
+                  </shiro:hasPermission>
+	                <shiro:hasPermission name="withdraw:push">
+	                operationHtml += '<p><a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="push(' + full.id
+		                + ')"><i class="fa fa-edit"></i> 提现推送 </a></p>';
+	                </shiro:hasPermission>
                 }
-                </shiro:hasPermission>
                 //operationHtml += '<p><a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/transaction?phoneEQ='+full.phone+'&fromParent=true"><i class="fa fa-file-sound-o"></i> 查看流水 </a></p>';
                 return operationHtml;
               }
@@ -164,6 +168,14 @@
 
   function closeBtn() {
     $confirmDialog.close();
+  }
+
+  function push(id) {
+	  $.post('${ctx}/withdraw/push', {id: id}, function (result) {
+		  toastr.success(result.message, '提示信息');
+		  $confirmDialog.close();
+		  grid.getDataTable().ajax.reload(null, false);
+	  })
   }
 </script>
 

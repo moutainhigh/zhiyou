@@ -58,6 +58,8 @@ public class AdminConstants {
 			sub.put("report:preConfirm", "检测报告预审");
 			sub.put("report:confirm", "检测报告终审");
 			sub.put("report:export", "检测报告导出");
+			sub.put("report:checkReportResult", "检测报告(客服检测)");
+			sub.put("report:visitUser", "检测报告(回访客服分配)");
 			sub.put("reportVisitedLog:view", "回访日志(查看)");
 			sub.put("reportVisitedLog:edit", "回访日志(编辑)");
 			SETTING_PERMISSION_MAP.put("活动管理", sub);
@@ -85,6 +87,7 @@ public class AdminConstants {
 			sub.put("deposit:export", "充值导出");
 			sub.put("withdraw:view", "提现查看");
 			sub.put("withdraw:confirm", "操作提现");
+			sub.put("withdraw:push", "提现推送");
 			sub.put("profit:view", "收益查看");
 			sub.put("profit:grant", "收益发放");
 			sub.put("profit:cancel", "收益取消");

@@ -6,9 +6,6 @@
 
     $('#form').validate({
       rules: {
-        'customerServiceName1': {
-          required: true
-        },
         'visitedStatus1': {
           required: true
         },
@@ -327,13 +324,6 @@
                   </c:forEach>
                 </div>
                 <input type="text" name="contactWayText" class="form-control" placeholder="微信号或其他"/>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="control-label col-md-3">客服<span class="required"> * </span></label>
-              <div class="col-md-5">
-                <input type="text" class="form-control" name="customerServiceName1" />
               </div>
             </div>
 
