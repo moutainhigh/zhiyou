@@ -75,17 +75,17 @@ public class BankCard implements Serializable {
 	@View(name = "bankCode", type=String.class, field = @Field(label = "开户行code"))
 	private Long bankId;
 
-	@NotNull
+	//@NotNull
 	@Field(label = "是否企业银行", description = "新增字段")
 	@View
 	private Boolean isEnterprise;
 
-	@NotBlank
+	//@NotBlank
 	@View
 	@Field(label = "省", description = "新增字段")
 	private String province;
 
-	@NotBlank
+	//@NotBlank
 	@View
 	@Field(label = "市", description = "新增字段")
 	private String city;
