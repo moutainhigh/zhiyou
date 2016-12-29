@@ -32,7 +32,7 @@
       <i class="icon icon-clock icon-6x block center"></i>
       <h2 class="font-black fs-16 lh-30 text-center mt-20 mb-20">本金提现申请已提交</h2>
       <div class="list-group pl-15 pr-15 pt-10 pb-10">
-        <p class="clearfix fs-14 lh-30"><span class="left font-999">提现到</span><span class="right font-black"><i class="icon icon-weixin"></i> 微信零钱</span></p>
+        <p class="clearfix fs-14 lh-30"><span class="left font-999">提现到</span><span class="right font-black"><i class="icon icon-bank-${bankCard.bankCode}"></i> ${bankCard.bankName}（${bankCard.cardNumberLabel}）</span></p>
         <p class="clearfix fs-14 lh-30"><span class="left font-999">提现金额</span><span class="right font-black">￥${withdraw.amount}</span></p>
       </div>
       <div class="form-btn mt-30">

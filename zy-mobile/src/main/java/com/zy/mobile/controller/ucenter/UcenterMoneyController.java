@@ -168,7 +168,9 @@ public class UcenterMoneyController {
 		try {
 			Long userId = principal.getUserId();
 			Withdraw withdraw = withdrawService.create(userId, bankCardId, 现金, amount);
+			BankCard bankCard = bankCardService.findOne(bankCardId);
 			model.addAttribute("withdraw", withdraw);
+			model.addAttribute("bankCard", bankCardComponent.buildVo(bankCard));
 			return "ucenter/account/moneyWithdrawSuccess";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

@@ -89,15 +89,15 @@ public class BatchPaymentClient {
 		forSign.append(directApplyRequest.getTotalAmount());
 
 		forSign.append(applyInfoDetail.getId());
-		forSign.append(applyInfoDetail.getProvince());
-		forSign.append(applyInfoDetail.getCity());
-		forSign.append(applyInfoDetail.getBranchName());
+		forSign.append(applyInfoDetail.getProvince() == null ? "" : applyInfoDetail.getProvince());
+		forSign.append(applyInfoDetail.getCity() == null ? "" : applyInfoDetail.getCity());
+		forSign.append(applyInfoDetail.getBranchName() == null ? "" : applyInfoDetail.getBranchName());
 		forSign.append(applyInfoDetail.getBankName());
 		forSign.append(applyInfoDetail.getAccountType());
 		forSign.append(applyInfoDetail.getBankUserName());
 		forSign.append(applyInfoDetail.getBankAccount());
 		forSign.append(applyInfoDetail.getAmount());
-		forSign.append(applyInfoDetail.getRemark());
+		forSign.append(applyInfoDetail.getRemark() == null ? "" : applyInfoDetail.getRemark());
 
 		forSign.append(key);
 		log.warn("directApplyRequest = " + JsonUtils.toJson(directApplyRequest));
@@ -106,35 +106,29 @@ public class BatchPaymentClient {
 
 	}
 
-	public boolean isBatchPaymentNofitySuccess(BatchPaymentNotify batchPaymentNotify) {
+	public boolean isBatchPaymentNotifySuccess(BatchPaymentNotify batchPaymentNotify) {
 		return batchPaymentNotify.getResultCode().equals("S001") || batchPaymentNotify.getResultCode().equals("S002");
 	}
 
 
-	public boolean checkBatchPaymentNofitySign(BatchPaymentNotify batchPaymentNotify) {
+	public boolean checkBatchPaymentNotifySign(BatchPaymentNotify batchPaymentNotify) {
 		// 签名原始串拼写({param} 替换成param对应的值, “+”表示连接，不包含于签名原始串，“=”是原始串的一部分, 空值不参与签名)
 		// signStr：charset={charset}batchNo={batchNo}statusCode={statusCode}statusName=
 		//		{statusName}fileName={fileName}resultCode={resultCode}resultName=
 		//		{resultName}resultMemo={resultMemo}+md5key
-		StringBuilder forSign = new StringBuilder();
-		forSign.append("charset=");
-		forSign.append(batchPaymentNotify.getCharset());
-		forSign.append("batchNo=");
-		forSign.append(batchPaymentNotify.getBatchNo());
-		forSign.append("statusCode=");
-		forSign.append(batchPaymentNotify.getStatusCode());
-		forSign.append("statusName=");
-		forSign.append(batchPaymentNotify.getStatusName());
-		forSign.append("fileName=");
-		forSign.append(batchPaymentNotify.getFileName());
-		forSign.append("resultCode=");
-		forSign.append(batchPaymentNotify.getResultCode());
-		forSign.append("resultName=");
-		forSign.append(batchPaymentNotify.getResultName());
-		forSign.append("resultMemo=");
-		forSign.append(batchPaymentNotify.getResultMemo());
+		String forSign = "";
+		forSign += "charset=" + batchPaymentNotify.getCharset();
+		forSign += "batchNo=" + batchPaymentNotify.getBatchNo();
+		forSign += "statusCode=" + batchPaymentNotify.getStatusCode();
 
-		forSign.append(key);
+
+		forSign += batchPaymentNotify.getStatusName() == null ? "" : "statusName=" + batchPaymentNotify.getStatusName();
+		forSign += batchPaymentNotify.getFileName() == null ? "" : "fileName=" + batchPaymentNotify.getFileName();
+		forSign += batchPaymentNotify.getResultCode() == null ? "" : "resultCode=" + batchPaymentNotify.getResultCode();
+		forSign += batchPaymentNotify.getResultName() == null ? "" : "resultName=" + batchPaymentNotify.getResultName();
+		forSign += batchPaymentNotify.getResultMemo() == null ? "" : "resultMemo=" + batchPaymentNotify.getResultMemo();
+
+		forSign += key;
 
 		String signed = Encodes.encodeHex(Digests.md5(forSign.toString().getBytes(Charset.forName("UTF-8")))).toUpperCase();
 		if (signed.equals(batchPaymentNotify.getSign())) {
