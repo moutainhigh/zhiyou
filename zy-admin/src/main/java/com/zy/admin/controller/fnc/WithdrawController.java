@@ -97,9 +97,9 @@ public class WithdrawController {
 		try {
 			withdrawService.push(id);
 		} catch (BizException e) {
-			return new ResultBuilder<>().message(e.getMessage()).build();
+			return ResultBuilder.error(e.getMessage());
 		}
-		return new ResultBuilder<>().message("操作成功").build();
+		return ResultBuilder.ok("操作成功");
 	}
 
 }
