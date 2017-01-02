@@ -1,18 +1,5 @@
 package com.zy.service.impl;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.act.Policy;
@@ -26,6 +13,15 @@ import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.PolicyQueryModel;
 import com.zy.service.PolicyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.*;
 
 @Service
 @Validated
@@ -75,6 +71,7 @@ public class PolicyServiceImpl implements PolicyService {
 		policy.setPhone(report.getPhone());
 		policy.setRealname(report.getRealname());
 		policy.setUserId(report.getUserId());
+		policy.setCreatedTime(new Date());
 		policy.setReportId(reportId);
 		policy.setVersion(0);
 		validate(policy);
