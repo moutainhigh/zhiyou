@@ -115,7 +115,7 @@ public class ProductReplacement implements Serializable {
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private String receiverAddress;
 
-	@View(name = "createdTimeLabel", type = String.class, groups = {VO_DETAIL, VO_ADMIN})
+	@View(name = "deliveredTimeLabel", type = String.class, groups = {VO_DETAIL, VO_ADMIN})
 	@Field(label = "更换时间")
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Date createdTime;

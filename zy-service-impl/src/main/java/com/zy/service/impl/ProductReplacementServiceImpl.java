@@ -2,9 +2,13 @@ package com.zy.service.impl;
 
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
+import com.zy.component.SysComponent;
 import com.zy.entity.mal.ProductReplacement;
+import com.zy.entity.sys.Area;
+import com.zy.mapper.AreaMapper;
 import com.zy.mapper.ProductReplacementMapper;
 import com.zy.model.BizCode;
+import com.zy.model.dto.AreaDto;
 import com.zy.model.dto.LogisticsDto;
 import com.zy.model.query.ProductReplacementQueryModel;
 import com.zy.service.ProductReplacementService;
@@ -26,10 +30,27 @@ public class ProductReplacementServiceImpl implements ProductReplacementService{
 	@Autowired
 	private ProductReplacementMapper productReplacementMapper;
 
+	@Autowired
+	private AreaMapper areaMapper;
+
+	@Autowired
+	private SysComponent sysComponent;
+
 	@Override
 	public ProductReplacement create(@NotNull ProductReplacement productReplacement) {
+		productReplacement.setFromProduct("优检一生1.0");
+		productReplacement.setToProduct("优检一生2.0");
 		productReplacement.setCreatedTime(new Date());
 		productReplacement.setProductReplacementStatus(ProductReplacement.ProductReplacementStatus.已申请);
+
+		Long areaId = productReplacement.getReceiverAreaId();
+		Area area = areaMapper.findOne(areaId);
+		validate(area, NOT_NULL, "area id " + areaId + " not found");
+		AreaDto areaDto = sysComponent.findOneDto(areaId);
+
+		productReplacement.setReceiverProvince(areaDto.getProvince());
+		productReplacement.setReceiverCity(areaDto.getCity());
+		productReplacement.setReceiverDistrict(areaDto.getDistrict());
 		validate(productReplacement);
 		productReplacementMapper.insert(productReplacement);
 		return productReplacement;
