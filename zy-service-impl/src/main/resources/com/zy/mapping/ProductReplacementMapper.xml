@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.ProductReplacementMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.mal.ProductReplacement">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="product_replacement_status" property="productReplacementStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="from_product" property="fromProduct" />
+		<result column="to_product" property="toProduct" />
+		<result column="quantity" property="quantity" />
+		<result column="receiver_area_id" property="receiverAreaId" />
+		<result column="receiver_realname" property="receiverRealname" />
+		<result column="receiver_phone" property="receiverPhone" />
+		<result column="receiver_province" property="receiverProvince" />
+		<result column="receiver_city" property="receiverCity" />
+		<result column="receiver_district" property="receiverDistrict" />
+		<result column="receiver_address" property="receiverAddress" />
+		<result column="created_time" property="createdTime" />
+		<result column="delivered_time" property="deliveredTime" />
+		<result column="logistics_name" property="logisticsName" />
+		<result column="logistics_sn" property="logisticsSn" />
+		<result column="logistics_fee" property="logisticsFee" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.mal.ProductReplacement" useGeneratedKeys="true" keyProperty="id">
+	  insert into `mal_product_replacement` (user_id,product_replacement_status,from_product,to_product,quantity,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,created_time,delivered_time,logistics_name,logistics_sn,logistics_fee,remark)
+	  values (#{userId},#{productReplacementStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{fromProduct},#{toProduct},#{quantity},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{createdTime},#{deliveredTime},#{logisticsName},#{logisticsSn},#{logisticsFee},#{remark})
+	</insert>
+
+	<delete id="delete">
+		delete from `mal_product_replacement` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.mal.ProductReplacement">
+		update `mal_product_replacement`
+		<set>
+			user_id = #{userId},
+			product_replacement_status = #{productReplacementStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			from_product = #{fromProduct},
+			to_product = #{toProduct},
+			quantity = #{quantity},
+			receiver_area_id = #{receiverAreaId},
+			receiver_realname = #{receiverRealname},
+			receiver_phone = #{receiverPhone},
+			receiver_province = #{receiverProvince},
+			receiver_city = #{receiverCity},
+			receiver_district = #{receiverDistrict},
+			receiver_address = #{receiverAddress},
+			created_time = #{createdTime},
+			delivered_time = #{deliveredTime},
+			logistics_name = #{logisticsName},
+			logistics_sn = #{logisticsSn},
+			logistics_fee = #{logisticsFee},
+			remark = #{remark},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `mal_product_replacement`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{productReplacement.userId},</when>
+					<when test="field == 'productReplacementStatus'">product_replacement_status = #{productReplacement.productReplacementStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.mal.ProductReplacement$ProductReplacementStatus},</when>
+					<when test="field == 'fromProduct'">from_product = #{productReplacement.fromProduct},</when>
+					<when test="field == 'toProduct'">to_product = #{productReplacement.toProduct},</when>
+					<when test="field == 'quantity'">quantity = #{productReplacement.quantity},</when>
+					<when test="field == 'receiverAreaId'">receiver_area_id = #{productReplacement.receiverAreaId},</when>
+					<when test="field == 'receiverRealname'">receiver_realname = #{productReplacement.receiverRealname},</when>
+					<when test="field == 'receiverPhone'">receiver_phone = #{productReplacement.receiverPhone},</when>
+					<when test="field == 'receiverProvince'">receiver_province = #{productReplacement.receiverProvince},</when>
+					<when test="field == 'receiverCity'">receiver_city = #{productReplacement.receiverCity},</when>
+					<when test="field == 'receiverDistrict'">receiver_district = #{productReplacement.receiverDistrict},</when>
+					<when test="field == 'receiverAddress'">receiver_address = #{productReplacement.receiverAddress},</when>
+					<when test="field == 'createdTime'">created_time = #{productReplacement.createdTime},</when>
+					<when test="field == 'deliveredTime'">delivered_time = #{productReplacement.deliveredTime},</when>
+					<when test="field == 'logisticsName'">logistics_name = #{productReplacement.logisticsName},</when>
+					<when test="field == 'logisticsSn'">logistics_sn = #{productReplacement.logisticsSn},</when>
+					<when test="field == 'logisticsFee'">logistics_fee = #{productReplacement.logisticsFee},</when>
+					<when test="field == 'remark'">remark = #{productReplacement.remark},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{productReplacement.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,product_replacement_status,from_product,to_product,quantity,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,created_time,delivered_time,logistics_name,logistics_sn,logistics_fee,remark
+		from `mal_product_replacement`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ProductReplacementQueryModel">
+		select
+		id,user_id,product_replacement_status,from_product,to_product,quantity,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,created_time,delivered_time,logistics_name,logistics_sn,logistics_fee,remark
+		from `mal_product_replacement`
+		<where>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+				and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="logisticsNameLK != null">
+				<bind name="logisticsNameLK" value="'%' + logisticsNameLK + '%'"/> and logistics_name like #{logisticsNameLK}
+			</if>
+			<if test="productReplacementStatusEQ != null">
+				and product_replacement_status = #{productReplacementStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="toProductLK != null">
+				<bind name="toProductLK" value="'%' + toProductLK + '%'"/> and to_product like #{toProductLK}
+			</if>
+			<if test="fromProductLK != null">
+				<bind name="fromProductLK" value="'%' + fromProductLK + '%'"/> and from_product like #{fromProductLK}
+			</if>
+			<if test="logisticsSnLK != null">
+				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.ProductReplacementQueryModel">
+		select count(*) from `mal_product_replacement`
+		<where>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+				and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="logisticsNameLK != null">
+				<bind name="logisticsNameLK" value="'%' + logisticsNameLK + '%'"/> and logistics_name like #{logisticsNameLK}
+			</if>
+			<if test="productReplacementStatusEQ != null">
+				and product_replacement_status = #{productReplacementStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="toProductLK != null">
+				<bind name="toProductLK" value="'%' + toProductLK + '%'"/> and to_product like #{toProductLK}
+			</if>
+			<if test="fromProductLK != null">
+				<bind name="fromProductLK" value="'%' + fromProductLK + '%'"/> and from_product like #{fromProductLK}
+			</if>
+			<if test="logisticsSnLK != null">
+				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
+			</if>
+		</where>
+	</select>
+
+</mapper>
