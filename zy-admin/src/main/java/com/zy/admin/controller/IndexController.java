@@ -1,36 +1,5 @@
 package com.zy.admin.controller;
 
-import static com.zy.model.Constants.CACHE_NAME_DEPOSIT_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_PAYMENT_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_REPORT_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_REPORT_PRE_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_STATISTICS;
-import static com.zy.model.Constants.CACHE_NAME_USER_BANK_INFO_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_USER_INFO_COUNT;
-import static com.zy.model.Constants.CACHE_NAME_WITHDRAW_COUNT;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.zy.Config;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.support.cache.CacheSupport;
@@ -45,22 +14,24 @@ import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
 import com.zy.model.Constants;
-import com.zy.model.query.BankCardQueryModel;
-import com.zy.model.query.DepositQueryModel;
-import com.zy.model.query.OrderQueryModel;
-import com.zy.model.query.PaymentQueryModel;
-import com.zy.model.query.ReportQueryModel;
-import com.zy.model.query.UserInfoQueryModel;
-import com.zy.model.query.UserQueryModel;
-import com.zy.model.query.WithdrawQueryModel;
-import com.zy.service.BankCardService;
-import com.zy.service.DepositService;
-import com.zy.service.OrderService;
-import com.zy.service.PaymentService;
-import com.zy.service.ReportService;
-import com.zy.service.UserInfoService;
-import com.zy.service.UserService;
-import com.zy.service.WithdrawService;
+import com.zy.model.query.*;
+import com.zy.service.*;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+
+import static com.zy.model.Constants.*;
 
 @Controller
 @RequestMapping
@@ -267,7 +238,7 @@ public class IndexController {
 			calendar.set(Calendar.MILLISECOND, 0);
 			calendar.add(Calendar.DATE, -15);
 
-			List<Order> orders = orderService.findAll(OrderQueryModel.builder().createdTimeGTE(calendar.getTime()).build());
+			List<Order> orders = orderService.findAll(OrderQueryModel.builder().orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成}).paidTimeGTE(calendar.getTime()).build());
 			
 			final String dateFmt = "yyyy-MM-dd";
 			Date date = null;
@@ -277,8 +248,9 @@ public class IndexController {
 				String dateStr = DateFormatUtils.format(date, dateFmt);
 				Long count = 0L;
 				for (Order order : orders) {
-					if (DateFormatUtils.format(order.getCreatedTime(), dateFmt).equals(dateStr)) {
-						count++;
+					Date paidTime = order.getPaidTime();
+					if (paidTime != null && DateFormatUtils.format(paidTime, dateFmt).equals(dateStr)) {
+						count = count + order.getQuantity();
 					}
 				}
 

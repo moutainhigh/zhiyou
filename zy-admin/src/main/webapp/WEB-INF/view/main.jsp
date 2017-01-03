@@ -210,7 +210,7 @@
 	    myChart.setOption({
 		    tooltip: {},
 		    legend: {
-		        data:['订单数']
+		        data:['订单支数']
 		    },
 		    xAxis: {
 		        data: []
@@ -218,7 +218,7 @@
 		    yAxis: {},
 		    series: [
 		    {
-		        name: '订单数',
+		        name: '订单支数',
 		        type: 'line',
 		        data: []
 		    }]
@@ -234,7 +234,7 @@
 	           },
 	           series: [{
 	               // 根据名字对应到相应的系列
-	               name: '订单数',
+	               name: '订单支数',
 	               data: result.orderCount
 	           },]
 	       });
