@@ -4,6 +4,7 @@ import com.zy.common.exception.ValidationException;
 import com.zy.common.util.Identities;
 import com.zy.entity.fnc.*;
 import com.zy.entity.mal.Order;
+import com.zy.entity.mal.ProductReplacement;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
@@ -330,6 +331,27 @@ public class GcUtils {
 			labelClass = "warning";
 		default:
 			break;
+		}
+		return labelClass;
+	}
+
+	public static String getProductReplacementStatusStyle(ProductReplacement.ProductReplacementStatus productReplacementStatus) {
+		String labelClass = "default";
+		switch (productReplacementStatus) {
+			case 已申请:
+				labelClass = "warning";
+				break;
+			case 已发货:
+				labelClass = "info";
+				break;
+			case 已完成:
+				labelClass = "success";
+				break;
+			case 已驳回:
+				labelClass = "default";
+				break;
+			default:
+				break;
 		}
 		return labelClass;
 	}

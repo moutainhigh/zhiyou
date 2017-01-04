@@ -64,7 +64,7 @@
 <body class="header-fixed footer-fixed">
 	<header class="header">
 		<h1>更换产品</h1>
-		<a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+		<a href="${ctx}/u/productReplacement" class="button-left"><i class="fa fa-angle-left"></i></a>
 	</header>
 
 	<article class="order-list">
@@ -75,7 +75,8 @@
 		<div class="list-group mt-15">
 			<div class="list-title">公司收货地址：</div>
 			<div class="list-item">
-				<div class="list-text fs-14">上海市普陀区云岭东路609弄1号楼十楼</div>
+				<div class="list-text fs-14">上海市普陀区云岭东路609号汇银铭尊一号楼十楼
+				<p>邮编: 200333</p></div>
 			</div>
 		</div>
 		<form id="form" class="valid-form" action="${ctx}/u/productReplacement/create" method="post">
@@ -83,7 +84,7 @@
 				<div class="list-title">更换产品</div>
 				<!-- form-radio -->
 				<div class="list-item form-radio">
-					<label class="list-text fs-14" for="deliverType1">优检一生1.0更换2.0</label>
+					<label class="list-text fs-14" for="deliverType1">优检一生1.0更换优检一生2.0</label>
 					<div class="list-unit">
 						<input id="deliverType1" type="radio" name="deliverType" value="1" checked="checked">
 						<label class="i-checked" for="deliverType1"></label>

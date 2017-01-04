@@ -59,5 +59,7 @@ public class ProductReplacementAdminVo implements Serializable {
 	private String createdTimeLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
+	@Field(label = "更换状态")
+	private String productReplacementStatusStyle;
 
 }

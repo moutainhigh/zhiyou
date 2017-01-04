@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -38,7 +39,7 @@ public class UcenterProductReplacementController {
 	public String list(Principal principal, Model model) {
 		List<ProductReplacement> all = productReplacementService.findAll(ProductReplacementQueryModel
 				.builder().userIdEQ(principal.getUserId()).build());
-		model.addAttribute("productReplacement", all);
+		model.addAttribute("productReplacements", all.stream().map(productReplacementComponent::buildListVo).collect(Collectors.toList()));
 		return "ucenter/order/productReplacementList";
 	}
 
@@ -57,7 +58,7 @@ public class UcenterProductReplacementController {
 		} catch (Exception e) {
 			log.error("换货错误", e);
 		}
-		return "redirect:/u/productReplacement/create";
+		return "redirect:/u/productReplacement";
 	}
 
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)

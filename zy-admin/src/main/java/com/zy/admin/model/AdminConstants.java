@@ -42,6 +42,9 @@ public class AdminConstants {
 			sub.put("order:refund", "订单退款");
 			sub.put("orderFillUser:view", "用户补单管理(查看)");
 			sub.put("orderFillUser:edit", "用户补单管理(编辑)");
+			sub.put("productReplacement:view", "换货管理(查看)");
+			sub.put("productReplacement:deliver", "换货管理(发货)");
+			sub.put("productReplacement:reject", "换货管理(驳回)");
 	 		SETTING_PERMISSION_MAP.put("下单中心", sub);
 		}
 		{

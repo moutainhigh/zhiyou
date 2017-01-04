@@ -67,7 +67,9 @@ public class UcenterOrderController {
 	
 	@RequestMapping("/in")
 	public String in(Principal principal, Model model, OrderStatus orderStatus) {
-		OrderQueryModel orderQueryModel = OrderQueryModel.builder().userIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).isDeletedEQ(false).build();
+		OrderQueryModel orderQueryModel = OrderQueryModel.builder().userIdEQ(principal.getUserId())
+				.orderBy("createdTime").direction(Direction.DESC).isDeletedEQ(false)
+				.pageSize(50).build();
 		orderQueryModel.setOrderStatusEQ(orderStatus);
 		Page<Order> page = orderService.findPage(orderQueryModel);
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent::buildListVo));
@@ -94,7 +96,9 @@ public class UcenterOrderController {
 
 	@RequestMapping("/out")
 	public String out(Principal principal, Model model, OrderStatus orderStatus) {
-		OrderQueryModel orderQueryModel = OrderQueryModel.builder().sellerIdEQ(principal.getUserId()).orderBy("createdTime").direction(Direction.DESC).isDeletedEQ(false).build();
+		OrderQueryModel orderQueryModel = OrderQueryModel.builder().sellerIdEQ(principal.getUserId())
+				.orderBy("createdTime").direction(Direction.DESC).isDeletedEQ(false)
+				.pageSize(50).build();
 		orderQueryModel.setOrderStatusEQ(orderStatus);
 		Page<Order> page = orderService.findPage(orderQueryModel);
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, orderComponent::buildListVo));

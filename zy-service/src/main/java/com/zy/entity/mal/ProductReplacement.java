@@ -58,6 +58,7 @@ public class ProductReplacement implements Serializable {
 	@Query({Predicate.EQ})
 	@Field(label = "更换状态")
 	@View
+	@View(name = "productReplacementStatusStyle", type = String.class, groups = {VO_ADMIN})
 	private ProductReplacementStatus productReplacementStatus;
 
 	@NotBlank
@@ -115,7 +116,7 @@ public class ProductReplacement implements Serializable {
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private String receiverAddress;
 
-	@View(name = "deliveredTimeLabel", type = String.class, groups = {VO_DETAIL, VO_ADMIN})
+	@View(name = "deliveredTimeLabel", type = String.class, groups = {VO_DETAIL, VO_ADMIN, VO_LIST})
 	@Field(label = "更换时间")
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Date createdTime;

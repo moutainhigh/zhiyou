@@ -29,6 +29,7 @@ public class ProductReplacementComponent {
 
 		productReplacementAdminVo.setCreatedTimeLabel(GcUtils.formatDate(productReplacement.getCreatedTime(), pattern));
 		productReplacementAdminVo.setDeliveredTimeLabel(GcUtils.formatDate(productReplacement.getDeliveredTime(), pattern));
+		productReplacementAdminVo.setProductReplacementStatusStyle(GcUtils.getProductReplacementStatusStyle(productReplacement.getProductReplacementStatus()));
 		return productReplacementAdminVo;
 	}
 
@@ -36,6 +37,7 @@ public class ProductReplacementComponent {
 		ProductReplacementListVo productReplacementListVo = new ProductReplacementListVo();
 		BeanUtils.copyProperties(productReplacement, productReplacementListVo);
 
+		productReplacementListVo.setCreatedTimeLabel(GcUtils.formatDate(productReplacement.getCreatedTime(), pattern));
 		return productReplacementListVo;
 	}
 

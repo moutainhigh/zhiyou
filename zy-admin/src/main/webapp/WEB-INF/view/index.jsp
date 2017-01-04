@@ -261,6 +261,11 @@
                   <a href="javascript:;" data-href="${ctx}/policyCode"><i class="icon-umbrella"></i> 保险单号管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="productReplacement:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/productReplacement"><i class="icon-vector"></i> 换货管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
             </ul>
           </li>
         </shiro:hasAnyPermissions>
