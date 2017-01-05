@@ -76,14 +76,6 @@
 </script>
 <!-- END JAVASCRIPTS -->
 
-<!-- BEGIN PAGE HEADER-->
-<div class="page-bar">
-  <ul class="page-breadcrumb">
-    <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-  </ul>
-</div>
-<!-- END PAGE HEADER-->
-
 <div class="row">
   <div class="col-md-12">
     <!-- BEGIN ALERTS PORTLET-->
