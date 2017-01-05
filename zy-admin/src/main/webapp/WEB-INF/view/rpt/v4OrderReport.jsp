@@ -76,7 +76,7 @@
 </script>
 <!-- END JAVASCRIPTS -->
 
-<div class="row">
+<div class="row" style="width: 100%;">
   <div class="col-md-12">
     <!-- BEGIN ALERTS PORTLET-->
     <div class="portlet light bordered">
