@@ -398,6 +398,14 @@
                   <a href="javascript:;" data-href="${ctx}/report/userTree"><i class="icon-bar-chart"></i> 用户树<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="v4TreeReport:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/v4Tree"><i class="icon-bar-chart"></i> 特级树<span class="badge badge-danger"></span></a>
+                </li>
+<%--                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/v4Order"><i class="icon-bar-chart"></i> 特级报表<span class="badge badge-danger"></span></a>
+                </li>--%>
+              </shiro:hasPermission>
               <shiro:hasPermission name="teamReport:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/report/team"><i class="icon-bar-chart"></i> 特级服务商下线人数报表<span class="badge badge-danger"></span></a>

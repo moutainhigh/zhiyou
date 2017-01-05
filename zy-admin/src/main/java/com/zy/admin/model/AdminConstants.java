@@ -106,6 +106,7 @@ public class AdminConstants {
 		{
 			sub = new LinkedHashMap<>();
 			sub.put("userTreeReport:view", "用户树");
+			sub.put("v4TreeReport:view", "特级树");
 			sub.put("orderReport:view", "服务商进货报表");
 			sub.put("orderReport:export", "服务商进货报表导出");
 			sub.put("teamReport:view", "特级服务商人数下线报表");
