@@ -179,12 +179,13 @@ public class UserController {
 	
 	@RequiresPermissions("user:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(User user, String newPassword, RedirectAttributes redirectAttributes) {
-		Long userId = user.getId();
+	@ResponseBody
+	public Result<?> update(Long userId, String newPassword, RedirectAttributes redirectAttributes) {
+
 		checkAndValidateIsPlatform(userId);
 		validate(userId, NOT_NULL, "user id is null");
 
-		User persistence = userService.findOne(user.getId());
+		User persistence = userService.findOne(userId);
 		validate(persistence, NOT_NULL, "user is null, id =" + userId);
 
 		if (persistence.getUserType() != UserType.代理) {
@@ -194,11 +195,9 @@ public class UserController {
 		try {
 			userService.modifyPasswordAdmin(userId, newPassword, getPrincipalUserId());
 		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute(ResultBuilder.error("保存失败: " + e.getMessage()));
-			return "redirect:/user";
+			return ResultBuilder.error(e.getMessage());
 		}
-		redirectAttributes.addFlashAttribute(ResultBuilder.ok("用户[" + persistence.getNickname() + "]资料修改成功"));
-		return "redirect:/user";
+		return ResultBuilder.ok("用户[" + persistence.getNickname() + "]资料修改成功");
 	}
 
 	@RequiresPermissions("user:edit")
@@ -278,33 +277,21 @@ public class UserController {
 	}
 	
 	@RequiresPermissions("user:modifyParent")
-	@RequestMapping(value = "/modifyParent", method = RequestMethod.GET)
-	public String modifyParent(Long id, Model model, RedirectAttributes redirectAttributes) {
-		User user = userService.findOne(id);
-		validate(user, NOT_NULL, "user id" + id + " not fount");
-		/*if(user.getParentId() == null) {
-			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, "上级为空不允许修改");
-			return "redirect:/user";
-		}*/
-		model.addAttribute("user", userComponent.buildAdminVo(user));
-		return "usr/modifyParent";
-	}
-	
-	@RequiresPermissions("user:modifyParent")
 	@RequestMapping(value = "/modifyParent", method = RequestMethod.POST)
-	public String modifyParent(Long id, String parentPhone, String remark, RedirectAttributes redirectAttributes) {
-		User user = userService.findOne(id);
-		validate(user, NOT_NULL, "user id" + id + " not fount");
+	@ResponseBody
+	public Result<?> modifyParent(Long userId, String parentPhone, String remark) {
+		User user = userService.findOne(userId);
+		validate(user, NOT_NULL, "user id" + userId + " not fount");
 		
 		User parentUser = userService.findByPhone(parentPhone);
-		validate(parentUser, NOT_NULL, "user phone" + parentPhone + " not fount");
+		if(parentUser == null) {
+			return ResultBuilder.error("邀请人手机号不存在");
+		}
 		try {
-			userService.modifyParentIdAdmin(id, parentUser.getId(), getPrincipalUserId(), remark);
-			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("修改上级成功"));
-			return "redirect:/user";
+			userService.modifyParentIdAdmin(userId, parentUser.getId(), getPrincipalUserId(), remark);
+			return ResultBuilder.ok("修改上级成功");
 		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return "redirect:/user/modifyParent?id=" + id;
+			return ResultBuilder.error(e.getMessage());
 		}
 	}
 	
