@@ -38,6 +38,14 @@
         },
         columns: [
           {
+	          data: '',
+	          title: '检测人信息',
+	          orderable: false,
+	          render : function(data, type, full) {
+		          return '<p>姓名: ' + full.reportRealname + '</p><p>手机号: ' + full.reportPhone + '</p>';
+	          }
+          },
+          {
             data: 'relationship',
             title: '与检测人关系',
 	          orderable: false

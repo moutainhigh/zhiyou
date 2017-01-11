@@ -57,7 +57,7 @@ public class UserTreeReportController {
 			}
 
 			map.put("id", user.getId());
-			map.put("name", user.getNickname());
+			map.put("name", user.getNickname() + (user.getIsFrozen()?"(已冻结)" : ""));
 			map.put("isParent", allUsers.stream().filter(v -> user.getId().equals(v.getParentId())).findFirst().isPresent());
 			return map;
 		}).collect(Collectors.toList());

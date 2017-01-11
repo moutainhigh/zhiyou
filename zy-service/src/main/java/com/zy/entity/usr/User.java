@@ -1,29 +1,6 @@
 package com.zy.entity.usr;
 
-import static com.zy.entity.usr.User.VO_ADMIN;
-import static com.zy.entity.usr.User.VO_ADMIN_FULL;
-import static com.zy.entity.usr.User.VO_ADMIN_SIMPLE;
-import static com.zy.entity.usr.User.VO_LIST;
-import static com.zy.entity.usr.User.VO_REPORT;
-import static com.zy.entity.usr.User.VO_SIMPLE;
-
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.zy.common.extend.StringBinder;
-
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -35,6 +12,16 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
+import java.util.Date;
+
+import static com.zy.entity.usr.User.*;
 
 @Entity
 @Table(name = "usr_user")
@@ -146,7 +133,7 @@ public class User implements Serializable {
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "是否冻结")
-	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT, VO_LIST})
 	private Boolean isFrozen;
 
 	@NotNull

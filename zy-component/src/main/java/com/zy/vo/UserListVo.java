@@ -1,7 +1,7 @@
 package com.zy.vo;
 
-import io.gd.generator.annotation.Field;
 import com.zy.entity.usr.User.UserRank;
+import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +19,8 @@ public class UserListVo implements Serializable {
 	private String nickname;
 	@Field(label = "用户等级")
 	private UserRank userRank;
+	@Field(label = "是否冻结")
+	private Boolean isFrozen;
 
 	/* 扩展 */
 	@Field(label = "用户等级")

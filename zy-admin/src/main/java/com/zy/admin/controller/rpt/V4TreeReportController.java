@@ -52,7 +52,7 @@ public class V4TreeReportController {
 			}
 
 			map.put("id", user.getId());
-			map.put("name", user.getNickname());
+			map.put("name", user.getNickname() + (user.getIsFrozen()?"(已冻结)" : ""));
 			map.put("isParent", v4Users.stream().filter(v -> user.getId().equals(v.getV4UserId())).findFirst().isPresent());
 			return map;
 		}).collect(Collectors.toList());

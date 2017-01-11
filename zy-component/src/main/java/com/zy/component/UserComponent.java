@@ -1,11 +1,5 @@
 package com.zy.component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
@@ -16,11 +10,12 @@ import com.zy.service.UserService;
 import com.zy.service.UserUpgradeService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
-import com.zy.vo.UserAdminFullVo;
-import com.zy.vo.UserAdminSimpleVo;
-import com.zy.vo.UserAdminVo;
-import com.zy.vo.UserListVo;
-import com.zy.vo.UserSimpleVo;
+import com.zy.vo.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class UserComponent {
@@ -58,6 +53,7 @@ public class UserComponent {
 		userListVo.setNickname(user.getNickname());
 		userListVo.setPhone(user.getPhone());
 		userListVo.setUserRank(user.getUserRank());
+		userListVo.setIsFrozen(user.getIsFrozen());
 		return userListVo;
 	}
 	

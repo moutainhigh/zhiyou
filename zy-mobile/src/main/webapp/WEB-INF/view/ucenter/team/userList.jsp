@@ -55,7 +55,14 @@
           <img class="image-40 round mr-10" src="${inviteUser.avatarThumbnail}">
         </div>
         <div class="list-text">
-          <div class="fs-15">${inviteUser.nickname}</div>
+          <div class="fs-15">
+            <c:if test="${inviteUser.isFrozen}">
+            <label style="color: #d9d9d9;">${inviteUser.nickname}(已冻结)</label>
+            </c:if>
+            <c:if test="${!inviteUser.isFrozen}">
+            ${inviteUser.nickname}
+            </c:if>
+          </div>
           <div class="font-777 fs-14"><i class="fa fa-phone font-999"> ${inviteUser.phone}</i></div>
         </div>
         <div class="list-unit">
