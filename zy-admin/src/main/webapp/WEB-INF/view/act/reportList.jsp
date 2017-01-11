@@ -125,10 +125,41 @@
   </form>
 </script>
 <script>
+	var grid = new Datatable();
 
   $(function () {
 
-    var grid = new Datatable();
+	  $('#dataTable').on('click', '.report-edit', function() {
+		  var id = $(this).data('id');
+		  $.ajax({
+			  url: '${ctx}/report/update?id=' + id,
+			  dataType: 'html',
+			  success: function(data) {
+				  layer.open({
+					  type: 1,
+					  skin: 'layui-layer-rim', //加上边框
+					  area: ['1080px', '720px'], //宽高
+					  content: data
+				  });
+			  }
+		  });
+	  });
+
+	  $('#dataTable').on('click', '.report-edit', function() {
+		  var id = $(this).data('id');
+		  $.ajax({
+			  url: '${ctx}/report/update?id=' + id,
+			  dataType: 'html',
+			  success: function(data) {
+				  layer.open({
+					  type: 1,
+					  skin: 'layui-layer-rim', //加上边框
+					  area: ['1080px', '720px'], //宽高
+					  content: data
+				  });
+			  }
+		  });
+	  });
 
     var template = Handlebars.compile($('#confirmTmpl').html());
     $('#dataTable').on('click', '.report-confirm', function () {
@@ -433,7 +464,7 @@
             render: function (data, type, full) {
               var optionHtml = '';
               <shiro:hasPermission name="report:edit">
-              optionHtml += '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/report/update?id=' + full.id + '"><i class="fa fa-edit"></i> 编辑</a>';
+              optionHtml += '<a class="btn btn-xs default blue-stripe report-edit" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 编辑</a>';
               </shiro:hasPermission>
               <shiro:hasPermission name="report:preConfirm">
               if (full.preConfirmStatus == '待审核') {

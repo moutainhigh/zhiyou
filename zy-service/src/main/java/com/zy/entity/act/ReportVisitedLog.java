@@ -40,6 +40,8 @@ public class ReportVisitedLog implements Serializable {
 	@Field(label = "检测报告id")
 	@Query({Predicate.EQ, Predicate.IN})
 	@View(groups = {VO_LIST, VO_ADMIN})
+	@View(name = "reportRealname", type = String.class, groups = VO_LIST, field = @Field(label = "检测报告用户昵称"))
+	@View(name = "reportPhone", type = String.class, groups = VO_LIST, field = @Field(label = "检测报告用户手机"))
 	private Long reportId;
 
 	/** 外拨记录 **/

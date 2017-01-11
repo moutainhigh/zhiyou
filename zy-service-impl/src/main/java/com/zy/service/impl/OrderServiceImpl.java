@@ -155,6 +155,12 @@ public class OrderServiceImpl implements OrderService {
 		BigDecimal price = malComponent.getPrice(productId, user.getUserRank(), quantity);
 		BigDecimal amount = price.multiply(new BigDecimal(quantity));
 
+		boolean isPayToPlatform = orderCreateDto.getIsPayToPlatform();
+		UserRank upgradeUserRank = malComponent.getUpgradeUserRank(userRank, productId, quantity);
+		if(upgradeUserRank == UserRank.V4) {  //升特级只允许支付给平台
+			isPayToPlatform = true;
+		}
+
 		Date createdTime = null;
 		if(orderCreateDto.getOrderType() == Order.OrderType.普通订单) {
 			createdTime = new Date();

@@ -65,7 +65,7 @@
     </c:if>
     <c:if test="${report.confirmStatus == '已通过'}">
     <div class="note note-success mb-0">
-      <i class="fa fa-check"></i> 审核信息：已通过
+      <i class="fa fa-check"></i> 审核信息：已通过  | 审核时间: ${report.confirmedTimeLabel}
     </div>
     </c:if>
   

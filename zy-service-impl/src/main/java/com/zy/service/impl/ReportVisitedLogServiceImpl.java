@@ -1,5 +1,6 @@
 package com.zy.service.impl;
 
+import com.zy.common.exception.BizException;
 import com.zy.common.exception.ValidationException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.act.Report;
@@ -9,6 +10,7 @@ import com.zy.entity.usr.User;
 import com.zy.mapper.ReportMapper;
 import com.zy.mapper.ReportVisitedLogMapper;
 import com.zy.mapper.UserMapper;
+import com.zy.model.BizCode;
 import com.zy.model.query.ReportVisitedLogQueryModel;
 import com.zy.service.ReportVisitedLogService;
 import org.apache.commons.lang3.StringUtils;
@@ -148,8 +150,6 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 			} else {
 				reportVisitedLog.setConfirmStatus(待审核);
 			}
-		} else {
-			throw new ValidationException("客服信息为空");
 		}
 
 		persistence.setRemark(reportVisitedLog.getRemark());
@@ -190,11 +190,22 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 		persistence.setVisitedStatus(reportVisitedLog.getVisitedStatus());
 		if(StringUtils.isBlank(persistence.getCustomerServiceName2())) {
 			persistence.setCustomerServiceName2(user.getNickname());
+			if(reportVisitedLog.getVisitedStatus2() == null) {
+				throw new BizException(BizCode.ERROR, "回访结果为空");
+			}
+			if(reportVisitedLog.getVisitedTime2() == null) {
+				throw new BizException(BizCode.ERROR, "回访时间为空");
+			}
 			persistence.setVisitedStatus2(reportVisitedLog.getVisitedStatus2());
 			persistence.setVisitedTime2(reportVisitedLog.getVisitedTime2());
-		}
-		if(StringUtils.isBlank(persistence.getCustomerServiceName3())) {
+		} else if(StringUtils.isBlank(persistence.getCustomerServiceName3())) {
 			persistence.setCustomerServiceName3(user.getNickname());
+			if(reportVisitedLog.getVisitedStatus3() == null) {
+				throw new BizException(BizCode.ERROR, "回访结果为空");
+			}
+			if(reportVisitedLog.getVisitedTime3() == null) {
+				throw new BizException(BizCode.ERROR, "回访时间为空");
+			}
 			persistence.setVisitedStatus3(reportVisitedLog.getVisitedStatus3());
 			persistence.setVisitedTime3(reportVisitedLog.getVisitedTime3());
 		}

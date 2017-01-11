@@ -27,4 +27,5 @@ public class ProductReplacementListVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "更换时间")
 	private String createdTimeLabel;
+
 }

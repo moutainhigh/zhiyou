@@ -163,7 +163,18 @@
           <%--</div>--%>
         <%--</div>--%>
       </c:if>
-
+        <div class="list-item form-radio" data-id="${productNew.id}">
+          <div class="list-icon">
+            <input id="agentLevel4New" type="radio" name="agentLevel" value="V1">
+            <label class="i-checked" for="agentLevel4New"></label>
+          </div>
+          <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
+          <div class="list-text">
+            <h2 class="font-777 fs-15 lh-24">${productNew.title}服务商套餐 <span class="quantity">${quantity4New}</span>次</h2>
+            <div class="lh-30"><label class="label blue">特级服务商</label></div>
+            <div class="font-orange lh-24">¥ ${amount4New}</div>
+          </div>
+        </div>
     </div>
 
     <div class="form-btn">

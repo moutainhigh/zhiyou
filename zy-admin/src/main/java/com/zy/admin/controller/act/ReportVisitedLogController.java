@@ -3,6 +3,7 @@ package com.zy.admin.controller.act;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.ReportComponent;
@@ -117,14 +118,13 @@ public class ReportVisitedLogController {
 
 	@RequiresPermissions("reportVisitedLog:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(ReportVisitedLog reportVisitedLog, Model model, RedirectAttributes redirectAttributes) {
+	@ResponseBody
+	public Result<?> update(ReportVisitedLog reportVisitedLog, Model model) {
 		try {
 			reportVisitedLogService.modify(reportVisitedLog);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));
-			return "redirect:/reportVisitedLog";
+			return ResultBuilder.ok("保存成功");
 		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return "redirect:/reportVisitedLog/update?id=" + reportVisitedLog.getId();
+			return ResultBuilder.error(e.getMessage());
 		}
 
 	}

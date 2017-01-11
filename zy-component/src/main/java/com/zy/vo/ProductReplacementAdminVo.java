@@ -55,11 +55,11 @@ public class ProductReplacementAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "服务商")
 	private UserAdminSimpleVo user;
+	@Field(label = "更换状态")
+	private String productReplacementStatusStyle;
 	@Field(label = "更换时间")
 	private String createdTimeLabel;
 	@Field(label = "发货时间")
 	private String deliveredTimeLabel;
-	@Field(label = "更换状态")
-	private String productReplacementStatusStyle;
 
 }

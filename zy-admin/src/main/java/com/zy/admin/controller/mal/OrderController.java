@@ -102,7 +102,7 @@ public class OrderController {
 	@RequiresPermissions("order:view")
 	@RequestMapping(value = "/platformDeliverList", method = RequestMethod.POST)
 	@ResponseBody
-	public Grid<OrderAdminVo> platformDeliverList(OrderQueryModel orderQueryModel, String userPhoneEQ, String userNicknameLK) {
+	public Grid<OrderAdminVo> platformDeliverList(OrderQueryModel orderQueryModel, String paidTimeOrderBy, String userPhoneEQ, String userNicknameLK) {
 		Long sysUserId = config.getSysUserId();
 		if (StringUtils.isNotBlank(userPhoneEQ) || StringUtils.isNotBlank(userNicknameLK)) {
         	UserQueryModel userQueryModel = new UserQueryModel();
@@ -113,7 +113,12 @@ public class OrderController {
             orderQueryModel.setUserIdIN(userIds);
         }
 		orderQueryModel.setSellerIdEQ(sysUserId);
-		
+
+		if(StringUtils.isNotBlank(paidTimeOrderBy)) {
+			orderQueryModel.setOrderBy("paidTime");
+			orderQueryModel.setDirection(Direction.DESC);
+		}
+
 		Page<Order> page = orderService.findPage(orderQueryModel);
 		Page<OrderAdminVo> voPage = PageBuilder.copyAndConvert(page, orderComponent::buildAdminVo);
 		return new Grid<OrderAdminVo>(voPage);

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,7 +101,10 @@ public class ReportComponent {
 		reportVo.setImages(images);
 		reportVo.setImageBigs(images.stream().map(v -> getThumbnail(v, 640, 640)).collect(Collectors.toList()));
 		reportVo.setImageThumbnails(images.stream().map(v -> getThumbnail(v)).collect(Collectors.toList()));
-		
+		Date confirmedTime = report.getConfirmedTime();
+		if(confirmedTime != null) {
+			reportVo.setConfirmedTimeLabel(formatDate(confirmedTime, TIME_PATTERN));
+		}
 		return reportVo;
 	}
 

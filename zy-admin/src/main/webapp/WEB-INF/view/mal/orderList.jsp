@@ -16,6 +16,22 @@
 
   $(function () {
 
+	  $('#dataTable').on('click', '.detail-view', function() {
+		  var id = $(this).data('id');
+		  $.ajax({
+			  url: '${ctx}/order/detail?id=' + id +　'&isPure=true',
+			  dataType: 'html',
+			  success: function(data) {
+				  layer.open({
+					  type: 1,
+					  skin: 'layui-layer-rim', //加上边框
+					  area: ['1080px', '720px'], //宽高
+					  content: data
+				  });
+			  }
+		  });
+	  });
+
     sum();
     
     $('.filter-submit').click(function(){
@@ -163,7 +179,7 @@
             title: '操作',
             orderable: false,
             render: function (data, type, full) {
-              var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/order/detail?id=' + data + '"><i class="fa fa-search"></i> 查看 </a>';
+              var optionHtml = '<a class="btn btn-xs default blue-stripe detail-view" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-search"></i> 查看 </a>';
               return optionHtml;
             }
           }]

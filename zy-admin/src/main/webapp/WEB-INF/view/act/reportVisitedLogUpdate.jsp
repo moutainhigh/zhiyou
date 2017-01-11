@@ -3,18 +3,28 @@
 <!-- BEGIN JAVASCRIPTS -->
 <script>
   $(function () {
+  	$('.btn-submit').click(function() {
+		  $.post('${ctx}/reportVisitedLog/update', $('#form').serialize(), function(data) {
+			  if(data.code == 0) {
+				  parent.grid.getDataTable().ajax.reload(null, false);
+				  layer.closeAll();
+			  } else {
+				  layer.alert(data.message);
+			  }
+		  });
+    });
 
   });
 </script>
 <!-- END JAVASCRIPTS -->
 
 <!-- BEGIN PAGE HEADER-->
-<div class="page-bar">
+<%--<div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
     <li><a href="javascript:;" data-href="${ctx}/reportVisitedLog">回访记录</a></li>
   </ul>
-</div>
+</div>--%>
 <!-- END PAGE HEADER-->
 
 <div class="row">
@@ -365,12 +375,12 @@
           </div>
           <div class="form-actions fluid">
             <div class="col-md-offset-3 col-md-9">
-              <button type="submit" class="btn green">
+              <button type="button" class="btn green btn-submit">
                 <i class="fa fa-save"></i> 保存
               </button>
-              <button class="btn default" data-href="${ctx}/reportVisitedLog">
+              <%--<button class="btn default" data-href="${ctx}/reportVisitedLog">
                 <i class="fa fa-chevron-left"></i> 返回
-              </button>
+              </button>--%>
             </div>
           </div>
         </form>

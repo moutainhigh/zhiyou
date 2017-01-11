@@ -8,6 +8,7 @@
   }
 </style>
 <script>
+
   $(function () {
 
     var area = new areaInit('province', 'city', 'district', '${report.areaId}');
@@ -50,7 +51,14 @@
         }
       },
       messages: {
-      }
+      },
+	    submitHandler :
+		    function(){
+			    $.post('${ctx}/report/update', $('#form').serialize(), function(data) {
+				    parent.grid.getDataTable().ajax.reload(null, false);
+				    layer.closeAll();
+			    });
+		    }
     });
 
     var uploader = new ss.SimpleUpload({
@@ -90,12 +98,12 @@
 <!-- END JAVASCRIPTS -->
 
 <!-- BEGIN PAGE HEADER-->
-<div class="page-bar">
+<%--<div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
     <li><a href="javascript:;" data-href="${ctx}/report">检测报告</a></li>
   </ul>
-</div>
+</div>--%>
 <!-- END PAGE HEADER-->
 
 <div class="row">
@@ -180,14 +188,14 @@
             </div>
             
             <div class="form-group">
-              <label class="control-label col-md-3" for="phone">手机号<span class="required"> * </span></label>
+              <label class="control-label col-md-3">手机号<span class="required"> * </span></label>
               <div class="col-md-5">
                 <input type="text" name="phone" class="form-control" value="${report.phone}" placeholder="填写客户手机号">
               </div>
             </div>
             
             <div class="form-group">
-              <label class="control-label col-md-3" for="phone">第几次检测<span class="required"> * </span></label>
+              <label class="control-label col-md-3">第几次检测<span class="required"> * </span></label>
               <div class="col-md-5">
                 <input type="number" name="times" class="form-control" value="${report.times}" placeholder="第几次检测">
               </div>
@@ -226,7 +234,7 @@
             </div>
             
             <div class="form-group">
-              <label class="control-label col-md-3" for="phone">填写产品使用心得<span class="required"> * </span></label>
+              <label class="control-label col-md-3">填写产品使用心得<span class="required"> * </span></label>
               <div class="col-md-5">
                  <textarea name="text" class="form-control" rows="3" placeholder="填写产品使用心得">${report.text}</textarea>
               </div>
@@ -237,9 +245,6 @@
             <div class="col-md-offset-3 col-md-9">
               <button type="submit" class="btn green">
                 <i class="fa fa-save"></i> 保存
-              </button>
-              <button class="btn default" data-href="${ctx}/report">
-                <i class="fa fa-chevron-left"></i> 返回
               </button>
             </div>
           </div>

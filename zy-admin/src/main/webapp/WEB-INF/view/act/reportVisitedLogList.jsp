@@ -1,10 +1,24 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 <script>
-
+	var grid = new Datatable();
   $(function () {
 
-    var grid = new Datatable();
+	  $('#dataTable').on('click', '.visited-log-update', function() {
+		  var id = $(this).data('id');
+		  $.ajax({
+			  url: '${ctx}reportVisitedLog/update?id=' + id,
+			  dataType: 'html',
+			  success: function(data) {
+				  layer.open({
+					  type: 1,
+					  skin: 'layui-layer-rim', //加上边框
+					  area: ['1080px', '720px'], //宽高
+					  content: data
+				  });
+			  }
+		  });
+	  });
 
     grid.init({
       src: $('#dataTable'),
@@ -104,9 +118,9 @@
 		        orderable: false,
 		        render: function (data, type, full) {
 			        var optionHtml = '';
-			        <shiro:hasPermission name="report:edit">
+			        <shiro:hasPermission name="reportVisitedLog:edit">
               if(full.confirmStatus == '待审核') {
-	              optionHtml += '<a class="btn btn-xs yellow blue-stripe" href="javascript:;" data-href="${ctx}/reportVisitedLog/update?id=' + full.id + '"><i class="fa fa-edit"></i> 再次回访</a>';
+	              optionHtml += '<a class="btn btn-xs yellow blue-stripe visited-log-update" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 再次回访</a>';
               }
 			        </shiro:hasPermission>
 			        return optionHtml;

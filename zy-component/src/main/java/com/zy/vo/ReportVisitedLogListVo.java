@@ -1,7 +1,7 @@
 package com.zy.vo;
 
-import io.gd.generator.annotation.Field;
 import com.zy.entity.sys.ConfirmStatus;
+import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -98,6 +98,10 @@ public class ReportVisitedLogListVo implements Serializable {
 	private String contactWayText;
 
 	/* 扩展 */
+	@Field(label = "检测报告用户昵称")
+	private String reportRealname;
+	@Field(label = "检测报告用户手机")
+	private String reportPhone;
 	@Field(label = "一访日期")
 	private String visitedTime1Label;
 	@Field(label = "二访日期")

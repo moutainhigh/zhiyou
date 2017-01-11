@@ -95,6 +95,10 @@ public class MalComponent {
 
 		UserRank upgradeUserRank = getUpgradeUserRank(userRank, productId, quantity);
 
+		if (upgradeUserRank == V4) {
+			return userMapper.findOne(config.getSysUserId());
+		}
+
 		int whileTimes = 0;
 		while (parentId != null) {
 			if (whileTimes > 1000) {
@@ -159,6 +163,11 @@ public class MalComponent {
 				if (quantity >= 240) {
 					upgradeUserRank = UserRank.V3;
 				}
+			}
+
+			/*一次性购买3600支 升级成特级服务商*/
+			if(quantity >= 3600) {
+				upgradeUserRank = UserRank.V4;
 			}
 		}
 		return upgradeUserRank;

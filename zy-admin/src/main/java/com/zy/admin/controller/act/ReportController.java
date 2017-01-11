@@ -146,18 +146,16 @@ public class ReportController {
 
 	@RequiresPermissions("report:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(Report report, Model model, RedirectAttributes redirectAttributes) {
+	@ResponseBody
+	public Result<?> update(Report report, Model model) {
 		Long id = report.getId();
 		validate(id, NOT_NULL, "id is null");
 		try {
 			reportService.adminModify(report);
 		} catch (Exception e) {
-			model.addAttribute("report", reportComponent.buildDetailVo(report));
-			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return update(report.getId(),model);
+			return ResultBuilder.error(e.getMessage());
 		}
-		redirectAttributes.addFlashAttribute(ResultBuilder.ok("检测报告编辑成功"));
-		return "redirect:/report";
+		return ResultBuilder.ok("ok");
 	}
 
 	@RequiresPermissions("report:checkReportResult")

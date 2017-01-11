@@ -16,7 +16,23 @@
 
   $(function () {
 
-	sum();
+	  $('#dataTable').on('click', '.detail-view', function() {
+		  var id = $(this).data('id');
+		  $.ajax({
+			  url: '${ctx}/order/detail?id=' + id +　'&isPure=true',
+			  dataType: 'html',
+			  success: function(data) {
+				  layer.open({
+					  type: 1,
+					  skin: 'layui-layer-rim', //加上边框
+					  area: ['1080px', '720px'], //宽高
+					  content: data
+				  });
+			  }
+		  });
+	  });
+
+	  sum();
     
     $('.filter-submit').click(function(){
       sum();
@@ -155,7 +171,7 @@
             title: '操作',
             orderable: false,
             render: function (data, type, full) {
-              var optionHtml = '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/order/detail?id=' + data + '"><i class="fa fa-search"></i> 查看 </a>';
+              var optionHtml = '<a class="btn btn-xs default blue-stripe detail-view" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-search"></i> 查看 </a>';
               <shiro:hasPermission name="order:deliver">
               if (full.orderStatus == '已支付' && full.isPlatformDeliver) {
                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/order/deliver?id=' + data + '"><i class="fa fa-car"></i> 发货 </a>';
@@ -271,6 +287,13 @@
               <div class="form-group">
                 <input class="Wdate form-control" type="text" id="endDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
                   name="paidTimeLT" value="" placeholder="支付时间止" />
+              </div>
+
+              <div class="form-group">
+                <select class="form-control" name="paidTimeOrderBy">
+                  <option value="">-- 请选择排序字段 --</option>
+                  <option value="1">支付时间</option>
+                </select>
               </div>
 
               <div class="form-group input-inline">

@@ -343,6 +343,7 @@
     
     <div class="list-group">
       <div class="list-title">请选择付款方式</div>
+      <c:if test="${useOfflinePay}">
       <c:if test="${userRank == 'V0' || userRank == 'V1' || userRank == 'V2' || userRank == 'V3'}">
         <div class="list-item form-radio">
           <label class="list-text" for="isPayToPlatform0">线下转账</label>
@@ -351,6 +352,7 @@
             <label class="i-checked" for="isPayToPlatform0"></label>
           </div>
         </div>
+      </c:if>
       </c:if>
       <c:if test="${userRank == 'V0' || userRank == 'V1' || userRank == 'V2' || userRank == 'V3' || userRank == 'V4'}">
         <div class="list-item form-radio">
@@ -393,6 +395,9 @@
             <input id="parentPhone" name="parentPhone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">
             <input type="hidden" name="parentId" value="${inviter.id}">
           </div>
+        </div>
+        <div style="color: #8a6d3b; padding: 15px 30px 15px 15px;">
+          <p>此手机号码为直属上级的手机号码，填写错误，则上下级关系不予以更改</p>
         </div>
       </div>
     </c:if>

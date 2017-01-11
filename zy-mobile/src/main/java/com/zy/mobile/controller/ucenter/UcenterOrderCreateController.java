@@ -86,6 +86,7 @@ public class UcenterOrderCreateController {
 		model.addAttribute("quantity", quantity);
 		model.addAttribute("address", address);
 		model.addAttribute("userRank", userRank);
+		model.addAttribute("useOfflinePay", quantity < 3600L);
 
 		if (userRank == User.UserRank.V0) {
 			Long parentId = user.getParentId();
