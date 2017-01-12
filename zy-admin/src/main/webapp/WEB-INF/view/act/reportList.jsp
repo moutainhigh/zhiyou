@@ -145,22 +145,6 @@
 		  });
 	  });
 
-	  $('#dataTable').on('click', '.report-edit', function() {
-		  var id = $(this).data('id');
-		  $.ajax({
-			  url: '${ctx}/report/update?id=' + id,
-			  dataType: 'html',
-			  success: function(data) {
-				  layer.open({
-					  type: 1,
-					  skin: 'layui-layer-rim', //加上边框
-					  area: ['1080px', '720px'], //宽高
-					  content: data
-				  });
-			  }
-		  });
-	  });
-
     var template = Handlebars.compile($('#confirmTmpl').html());
     $('#dataTable').on('click', '.report-confirm', function () {
       var id = $(this).data('id');

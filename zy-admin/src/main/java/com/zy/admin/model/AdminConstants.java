@@ -27,6 +27,7 @@ public class AdminConstants {
 			sub.put("user:setRoot", "用户信息(修改子系统)");
 			sub.put("user:export", "用户信息(导出)");
 			sub.put("userInfo:view", "用户认证(查看)");
+			sub.put("userInfo:edit", "用户认证(编辑)");
 			sub.put("userInfo:confirm", "用户认证(审核)");
 			sub.put("address:view", "地址管理(查看)");
 	 		SETTING_PERMISSION_MAP.put("用户中心", sub);

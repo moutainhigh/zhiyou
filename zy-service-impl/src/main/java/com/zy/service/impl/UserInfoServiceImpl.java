@@ -142,6 +142,35 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public void adminModify(@NotNull UserInfo userInfo) {
+
+        Long id = userInfo.getId();
+        validate(id, NOT_NULL, "user info id is null");
+        UserInfo persistence = userInfoMapper.findOne(id);
+        validate(persistence, NOT_NULL, "user info id " + id + " is not found");
+
+        Long jobId = userInfo.getJobId();
+        checkJob(jobId);
+        Long areaId = userInfo.getAreaId();
+        checkArea(areaId);
+        String tagIds = userInfo.getTagIds();
+        checkTags(tagIds);
+
+        persistence.setAreaId(areaId);
+        persistence.setJobId(jobId);
+        persistence.setTagIds(tagIds);
+
+        persistence.setGender(userInfo.getGender());
+        persistence.setBirthday(userInfo.getBirthday());
+        persistence.setHometownAreaId(userInfo.getHometownAreaId());
+        persistence.setConsumptionLevel(userInfo.getConsumptionLevel());
+
+        persistence.setRealname(userInfo.getRealname());
+        validate(persistence);
+        userInfoMapper.update(persistence);
+    }
+
+    @Override
     public long count(@NotNull UserInfoQueryModel userInfoQueryModel) {
         return userInfoMapper.count(userInfoQueryModel);
     }

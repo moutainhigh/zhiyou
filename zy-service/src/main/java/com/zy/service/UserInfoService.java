@@ -20,6 +20,8 @@ public interface UserInfoService {
 
 	void modify(UserInfo userInfo);
 
+	void adminModify(UserInfo userInfo);
+
 	long count(UserInfoQueryModel userInfoQueryModel);
 
 	void confirm(Long id, boolean isSuccess, String confirmRemark);

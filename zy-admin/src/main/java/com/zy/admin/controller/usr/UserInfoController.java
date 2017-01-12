@@ -1,7 +1,22 @@
 package com.zy.admin.controller.usr;
 
-import java.util.List;
-
+import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.model.ui.Grid;
+import com.zy.component.UserInfoComponent;
+import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.usr.Tag;
+import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo;
+import com.zy.model.query.UserInfoQueryModel;
+import com.zy.model.query.UserQueryModel;
+import com.zy.service.JobService;
+import com.zy.service.TagService;
+import com.zy.service.UserInfoService;
+import com.zy.service.UserService;
+import com.zy.vo.UserInfoAdminVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,20 +27,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zy.common.model.query.Page;
-import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.model.ui.Grid;
-import com.zy.component.UserInfoComponent;
-import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.UserInfo;
-import com.zy.model.query.UserInfoQueryModel;
-import com.zy.model.query.UserQueryModel;
-import com.zy.service.UserInfoService;
-import com.zy.service.UserService;
-import com.zy.vo.UserInfoAdminVo;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/userInfo")
 @Controller
@@ -36,7 +41,13 @@ public class UserInfoController {
 	
 	@Autowired
 	private UserInfoService userInfoService;
-	
+
+	@Autowired
+	private TagService tagService;
+
+	@Autowired
+	private JobService jobService;
+
 	@Autowired
 	private UserInfoComponent userInfoComponent;
 	
@@ -76,5 +87,47 @@ public class UserInfoController {
 	public Result<?> confirm(@RequestParam Long id, @RequestParam boolean isSuccess, String confirmRemark) {
 		userInfoService.confirm(id, isSuccess, confirmRemark);
 		return ResultBuilder.ok("操作成功");
+	}
+
+	@RequiresPermissions("userInfo:edit")
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public String update(@RequestParam Long userId, Model model) {
+		UserInfo userInfo = userInfoService.findByUserId(userId);
+		if(userInfo == null) {
+			return "redirect:/userInfo";
+		}
+		model.addAttribute("jobs", jobService.findAll());
+		//model.addAttribute("tags", getTags());
+		model.addAttribute("userInfo", userInfoComponent.buildVo(userInfo));
+		return "usr/userInfoUpdate";
+	}
+
+	@RequiresPermissions("userInfo:edit")
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> update(UserInfo userInfo) {
+		Long userId = userInfo.getUserId();
+		UserInfo persistence = userInfoService.findByUserId(userId);
+		if(userInfo == null) {
+			return ResultBuilder.error("user id " + userId +  " not found");
+		}
+		userInfo.setId(persistence.getId());
+		try {
+			userInfoService.adminModify(userInfo);
+			return ResultBuilder.ok("修改成功");
+		} catch (Exception e) {
+			return ResultBuilder.error(e.getMessage());
+		}
+	}
+
+	private Map<String, List<Tag>> getTags() {
+		Map<String, List<Tag>> tags = new HashMap<>();
+		tagService.findAll().parallelStream().forEach(tag -> {
+			if (!tags.containsKey(tag.getTagType())) {
+				tags.put(tag.getTagType(), new ArrayList<>());
+			}
+			tags.get(tag.getTagType()).add(tag);
+		});
+		return tags;
 	}
 }

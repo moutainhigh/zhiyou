@@ -70,7 +70,7 @@
             title: '出生年月',
             orderable: false,
           },
-          {
+          /*{
             data: 'tagNames',
             title: '标签',
             orderable: false,
@@ -91,7 +91,7 @@
               }
               return html;
             }
-          },
+          },*/
           {
             data: '',
             title: '所在地',
@@ -135,7 +135,6 @@
           {
             data: 'id',
             title: '操作',
-            width: '80px',
             orderable: false,
             render: function (data, type, full) {
               var optionHtml = '';
@@ -144,6 +143,9 @@
                 optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="confirm(' + full.id + ')"><i class="fa fa-edit"></i> 审核 </a>';
                 </shiro:hasPermission>
               }
+              <shiro:hasPermission name="userInfo:edit">
+	            optionHtml += '<a class="btn btn-xs default blue-stripe user-info-update" href="javascript:;" data-user-id="' + full.userId + '"><i class="fa fa-edit"></i> 编辑 </a>';
+              </shiro:hasPermission>
               return optionHtml;
             }
           }]
@@ -157,6 +159,23 @@
         title: title
       });
     });
+
+	  $('#dataTable').on('click', '.user-info-update', function() {
+		  var userId = $(this).data('user-id');
+		  $.ajax({
+			  url: '${ctx}/userInfo/update?userId=' + userId,
+			  dataType: 'html',
+			  success: function(data) {
+				  layer.open({
+					  type: 1,
+					  skin: 'layui-layer-rim', //加上边框
+					  area: ['1080px', '600px'], //宽高
+					  content: data
+				  });
+			  }
+		  });
+	  });
+
   });
   var $confirmDialog;
   function confirm(id) {

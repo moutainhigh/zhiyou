@@ -36,6 +36,8 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.*;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
 
@@ -167,6 +169,12 @@ public class OrderServiceImpl implements OrderService {
 		} else {
 			createdTime = config.getOrderFillTime();
 		}
+
+		LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+		LocalDateTime localDateTime = LocalDateTime.of(lastDate, LocalTime.parse("23:59:59"));
+		Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+		Date expiredTime = Date.from(instant);
+
 		Order order = new Order();
 		order.setUserId(userId);
 		order.setAmount(amount);
@@ -192,7 +200,8 @@ public class OrderServiceImpl implements OrderService {
 		order.setSn(ServiceUtils.generateOrderSn());
 		order.setIsSettledUp(false);
 		order.setDiscountFee(new BigDecimal("0.00"));
-		order.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_ORDER_EXPIRE_IN_MINUTES));
+		//order.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_ORDER_EXPIRE_IN_MINUTES));
+		order.setExpiredTime(expiredTime);
 		order.setIsPayToPlatform(orderCreateDto.getIsPayToPlatform());
 		order.setIsDeleted(false);
 
@@ -854,4 +863,5 @@ public class OrderServiceImpl implements OrderService {
 			throw new ConcurrentException();
 		}
 	}
+
 }
