@@ -5,15 +5,13 @@ import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.api.query.Predicate;
-
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "sys_area")
@@ -37,7 +35,7 @@ public class Area implements Serializable {
 	@Field(label = "地区类型")
 	private AreaType areaType;
 
-	@Query(Predicate.EQ)
+	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "父节点id")
 	private Long parentId;
 

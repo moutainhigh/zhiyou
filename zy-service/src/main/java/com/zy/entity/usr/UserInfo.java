@@ -1,27 +1,7 @@
 package com.zy.entity.usr;
 
-import static com.zy.entity.usr.UserInfo.VO;
-import static com.zy.entity.usr.UserInfo.VO_ADMIN;
-import static io.gd.generator.api.query.Predicate.EQ;
-import static io.gd.generator.api.query.Predicate.IN;
-
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.URL;
-
 import com.zy.common.extend.StringBinder;
 import com.zy.entity.sys.ConfirmStatus;
-
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -33,6 +13,18 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
+
+import static com.zy.entity.usr.UserInfo.VO;
+import static com.zy.entity.usr.UserInfo.VO_ADMIN;
+import static io.gd.generator.api.query.Predicate.EQ;
+import static io.gd.generator.api.query.Predicate.IN;
 
 @Entity
 @Table(name = "usr_user_info")
@@ -181,6 +173,7 @@ public class UserInfo implements Serializable {
 	private Long jobId;
 
 	@NotNull
+	@Query({EQ,IN})
 	@Field(label = "所在地")
 	@View(name = "province", type = String.class)
 	@View(name = "city", type = String.class)

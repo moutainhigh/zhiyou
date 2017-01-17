@@ -6,16 +6,15 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.UserInfoComponent;
+import com.zy.entity.sys.Area;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Tag;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
+import com.zy.model.query.AreaQueryModel;
 import com.zy.model.query.UserInfoQueryModel;
 import com.zy.model.query.UserQueryModel;
-import com.zy.service.JobService;
-import com.zy.service.TagService;
-import com.zy.service.UserInfoService;
-import com.zy.service.UserService;
+import com.zy.service.*;
 import com.zy.vo.UserInfoAdminVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -31,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping("/userInfo")
 @Controller
@@ -49,6 +49,9 @@ public class UserInfoController {
 	private JobService jobService;
 
 	@Autowired
+	private AreaService areaService;
+
+	@Autowired
 	private UserInfoComponent userInfoComponent;
 	
 	@RequiresPermissions("userInfo:view")
@@ -61,7 +64,8 @@ public class UserInfoController {
 	@RequiresPermissions("userInfo:view")
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Grid<UserInfoAdminVo> list(UserInfoQueryModel userInfoQueryModel, String userPhoneEQ, String userNicknameLK) {
+	public Grid<UserInfoAdminVo> list(UserInfoQueryModel userInfoQueryModel, String userPhoneEQ, String userNicknameLK
+			, Long provinceIdEQ, Long cityIdEQ) {
 		
 		if (StringUtils.isNotBlank(userPhoneEQ) || StringUtils.isNotBlank(userNicknameLK)) {
         	UserQueryModel userQueryModel = new UserQueryModel();
@@ -74,6 +78,28 @@ public class UserInfoController {
             }
             Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
             userInfoQueryModel.setUserIdIN(userIds);
+        }
+		Long areaIdEQ = userInfoQueryModel.getAreaIdEQ();
+		if(areaIdEQ == null) {
+			List<Area> all = areaService.findAll(AreaQueryModel.builder().build());
+			Map<Long, List<Area>> childrenMap = all.stream()
+					.filter(area -> area.getParentId() != null)
+					.collect(Collectors.groupingBy(Area::getParentId));
+			if(cityIdEQ != null) {
+				List<Area> areas = childrenMap.get(cityIdEQ);
+				Long[] longs = areas.stream().map(v -> v.getId()).toArray(Long[]::new);
+				userInfoQueryModel.setAreaIdIN(longs);
+			} else {
+				if(provinceIdEQ != null) {
+					List<Area> cityAreas = childrenMap.get(provinceIdEQ);
+					List<Area> districtAreas = new ArrayList<>();
+					for(Area area : cityAreas) {
+						districtAreas.addAll(childrenMap.get(area.getId()));
+					}
+					Long[] longs = districtAreas.stream().map(v -> v.getId()).toArray(Long[]::new);
+					userInfoQueryModel.setAreaIdIN(longs);
+				}
+			}
         }
 		
 		Page<UserInfo> page = userInfoService.findPage(userInfoQueryModel);

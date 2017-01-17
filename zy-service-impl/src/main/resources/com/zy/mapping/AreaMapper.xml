@@ -77,6 +77,17 @@
 			<if test="areaTypeEQ != null">
 				and area_type = #{areaTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
+			<if test="parentIdIN != null">
+				<if test="parentIdIN.length != 0">
+				and parent_id in
+				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="parentIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -110,6 +121,17 @@
 			</if>
 			<if test="areaTypeEQ != null">
 				and area_type = #{areaTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="parentIdIN != null">
+				<if test="parentIdIN.length != 0">
+				and parent_id in
+				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="parentIdIN.length == 0">
+				1 = 2
+				</if>
 			</if>
 		</where>
 	</select>

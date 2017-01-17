@@ -7,6 +7,7 @@
 </style>
 <!-- BEGIN JAVASCRIPTS -->
 <script>
+	var area = new areaInit('province', 'city', 'district');
   var grid = new Datatable();
 
   $(function () {
@@ -271,6 +272,18 @@
 
               <div class="form-group">
                 <input type="text" name="idCardNumberLK" class="form-control" placeholder="身份证号"/>
+              </div>
+
+              <div class="form-group">
+                <select class="form-control pull-left" id="province" name="provinceIdEQ">
+                  <option value="">-- 请选择省 --</option>
+                </select>
+                <select class="form-control pull-left" id="city" name="cityIdEQ">
+                  <option value="">-- 请选择市 --</option>
+                </select>
+                <select class="form-control pull-left" id="district" name="areaIdEQ">
+                  <option value="">-- 请选择区 --</option>
+                </select>
               </div>
 
               <div class="form-group input-inline">
