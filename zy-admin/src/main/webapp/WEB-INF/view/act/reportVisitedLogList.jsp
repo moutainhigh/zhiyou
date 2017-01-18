@@ -37,6 +37,11 @@
           url: '${ctx}/reportVisitedLog', // ajax source
         },
         columns: [
+	        {
+		        data: 'reportId',
+		        title: '检测报告编号',
+		        orderable: false
+	        },
           {
 	          data: '',
 	          title: '检测人信息',
@@ -168,6 +173,10 @@
               <input type="hidden" name="reportId" value="${reportId}"/>
               <input id="_orderBy" name="orderBy" type="hidden" value=""/> <input id="_direction" name="direction" type="hidden" value=""/>
               <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/> <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
+
+              <div class="form-group">
+                <input type="text" name="reportIdEQ" class="form-control" placeholder="检测报告编号"/>
+              </div>
 
               <div class="form-group">
                 <input type="text" name="customerServiceName1LK" class="form-control" placeholder="一访客服名"/>

@@ -83,7 +83,7 @@ public class ReportVisitedLogController {
 			model.addAttribute("visitedStatusList", Constants.visitedStatusList);
 			return "act/reportVisitedLogCreate";
 		}
-		return "redirect:/reportVisitedLog/update?id=" + byReportId.getId();
+		return "redirect:/reportVisitedLog";
 	}
 
 	@RequiresPermissions("reportVisitedLog:edit")
