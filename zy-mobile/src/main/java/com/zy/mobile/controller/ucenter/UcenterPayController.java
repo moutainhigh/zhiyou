@@ -134,69 +134,83 @@ public class UcenterPayController {
 		if(order.getOrderStatus() != OrderStatus.待支付){
 			return "redirect:/u/order/" + orderId;
 		}
-		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(order.getId()).paymentTypeEQ(PaymentType.订单支付).build());
-		Payment payment = payments.stream().filter(v -> v.getPayType() == payType)
-				.filter(v -> (v.getPaymentStatus() == PaymentStatus.待支付 || v.getPaymentStatus() == PaymentStatus.待确认))
-				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
-				.filter(v -> v.getAmount1().equals(order.getAmount()))
-				.filter(v -> v.getCurrencyType1() == order.getCurrencyType())
-				.filter(v -> v.getAmount2() == null)
-				.filter(v -> v.getCurrencyType2() == null)
-				.findFirst().orElse(null);
 
-		if (payment == null && payType != PayType.银行汇款) {
-			payment = new Payment();
-			payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
-			payment.setAmount1(order.getAmount());
-			payment.setCurrencyType1(order.getCurrencyType());
-			payment.setPaymentType(PaymentType.订单支付);
-			payment.setRefId(orderId);
-			payment.setUserId(order.getUserId());
-			payment.setTitle(order.getTitle());
-			payment.setPayType(payType);
-			payment = paymentService.create(payment);
-		}
 
 		model.addAttribute("title", order.getTitle());
 		model.addAttribute("sn", order.getSn());
 		model.addAttribute("amount", order.getAmount());
 		model.addAttribute("payType", payType);
-		if (payment.getPayType() == PayType.余额) {
-			model.addAttribute("refId", payment.getId());
-			Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.现金);
-			model.addAttribute("balance", account.getAmount());
-			return "ucenter/pay/payBalance";
-		} else {
-			throw new BizException(BizCode.ERROR, "不支持的付款方式");
-		}
+		model.addAttribute("orderId", orderId);
+		Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.现金);
+		model.addAttribute("amount1", account.getAmount());
+		Account account1 = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.积分);
+		model.addAttribute("amount2", account1.getAmount());
+		BigDecimal balance = account.getAmount().add(account1.getAmount());
+		model.addAttribute("balance", balance);
+		return "ucenter/pay/payBalance";
+
 	}
 
 	@RequestMapping(path = "/payment", method = RequestMethod.POST)
-	public String paymentPay(Long refId, String offlineImage, String offlineMemo, RedirectAttributes redirectAttributes,
+	public String paymentPay(Long orderId, boolean useCurrency2, BigDecimal amount2, RedirectAttributes redirectAttributes,
 			Principal principal) {
-		validate(refId, NOT_NULL, "payment id " + refId + " is null");
-		Payment payment = paymentService.findOne(refId);
-		validate(payment, NOT_NULL, "payment id" + refId + " not found");
-		if(!payment.getUserId().equals(principal.getUserId())){
-			throw new BizException(BizCode.ERROR, "非自己的支付单不能操作");
+		validate(orderId, NOT_NULL, "order id " + orderId + " is null");
+		Order order = orderService.findOne(orderId);
+		validate(order, NOT_NULL, "order id" + orderId + " not found");
+		if(!order.getUserId().equals(principal.getUserId())){
+			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
 		}
-		Long orderId = payment.getRefId();
-		if (payment.getPayType() == PayType.余额) {
-			paymentService.balancePay(refId, true);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分余额支付成功"));
+		if(order.getOrderStatus() != OrderStatus.待支付){
 			return "redirect:/u/order/" + orderId;
-		} else if (payment.getPayType() == PayType.银行汇款) {
-			validate(offlineImage, NOT_BLANK, "payment offlineImage is blank");
-			validate(offlineMemo, NOT_BLANK, "payment offlineMemo is blank");
-			payment.setOfflineImage(offlineImage);
-			payment.setOfflineMemo(offlineMemo);
-			paymentService.modifyOffline(refId, offlineImage, offlineMemo);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT,
-					ResultBuilder.ok("转账汇款信息提交成功，请等待工作人员确认"));
-			return "redirect:/u/order/" + orderId;
+		}
+
+		if(useCurrency2) {
+			if(amount2 == null) {
+				throw new BizException(BizCode.INSUFFICIENT_BALANCE, "使用积分余额支付, 积分余额为空");
+			}
+			Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.积分);
+			if(account.getAmount().compareTo(amount2) < 0) {
+				throw new BizException(BizCode.INSUFFICIENT_BALANCE, "支付失败, " + CurrencyType.积分.getAlias() + "余额不足");
+			}
 		} else {
-			throw new BizException(BizCode.ERROR, "不支持的付款方式");
+			amount2 = new BigDecimal("0.00");
 		}
+		Payment payment =createPayment(order, amount2);
+
+		paymentService.balancePay(payment.getId(), true);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分余额支付成功"));
+		return "redirect:/u/order/" + orderId;
+	}
+
+	private Payment createPayment(Order order, BigDecimal amount2) {
+		PayType payType = PayType.余额;
+		BigDecimal orderAmount = order.getAmount();
+		BigDecimal amount1 = orderAmount.subtract(amount2);
+		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(order.getId()).paymentTypeEQ(PaymentType.订单支付).build());
+		Payment payment = payments.stream().filter(v -> v.getPayType() == payType)
+				.filter(v -> (v.getPaymentStatus() == PaymentStatus.待支付 || v.getPaymentStatus() == PaymentStatus.待确认))
+				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
+				.filter(v -> v.getAmount1().equals(amount1))
+				.filter(v -> v.getAmount2().equals(amount2))
+				.filter(v -> v.getCurrencyType2() == null)
+				.findFirst().orElse(null);
+
+		if (payment == null) {
+
+			payment = new Payment();
+			payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
+			payment.setAmount1(amount1);
+			payment.setCurrencyType1(CurrencyType.现金);
+			payment.setAmount2(amount2);
+			payment.setCurrencyType2(CurrencyType.积分);
+			payment.setPaymentType(PaymentType.订单支付);
+			payment.setRefId(order.getId());
+			payment.setUserId(order.getUserId());
+			payment.setTitle(order.getTitle());
+			payment.setPayType(payType);
+			payment = paymentService.create(payment);
+		}
+		return payment;
 	}
 	
 	@RequestMapping(path = "/deposit", method = RequestMethod.POST)

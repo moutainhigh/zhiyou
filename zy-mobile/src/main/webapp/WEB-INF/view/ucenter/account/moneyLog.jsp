@@ -17,10 +17,11 @@
 <%@ include file="/WEB-INF/view/include/pageload.jsp"%>
 <script type="text/javascript">
   function getUrl() {
-    return '${ctx}/u/money/log';
+    return '${ctx}/u/money/log?currencyType=${currencyType}';
   }
   
   function buildRow(row) {
+  	$('.page-more').html('');
     var html  = '<div class="list-item">' 
               +   '<div class="list-text pl-5">' 
               +     '<div class="fs-14">' + row.title + '</div>'
@@ -28,7 +29,7 @@
               +   '</div>' 
               +   '<div class="list-unit width-100 text-right">' 
               +     '<div class="' + (row.inOut == '收入' ? 'currency-in' : 'currency-out') + '">' + row.transAmount.toFixed(2) + '</div>' 
-              +     '<div class="fs-12 font-999">积分余额: ' + row.afterAmount.toFixed(2) + '</div>' 
+              +     '<div class="fs-12 font-999">${currencyType.alias}余额: ' + row.afterAmount.toFixed(2) + '</div>'
               +   '</div>' 
               + '</div>';
     return html;
@@ -39,8 +40,8 @@
 <body class="log-list">
   <article class="page-wrap">
     <header class="header">
-      <h1>本金记录</h1>
-      <a href="${ctx}/u/money" class="button-left"><i class="fa fa-angle-left"></i></a>
+      <h1>${currencyType.alias}记录</h1>
+      <a href="${ctx}/u/money?currencyType=${currencyType}" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
   
     <div class="page-inner">
@@ -60,7 +61,7 @@
           </div>
           <div class="list-unit width-100 text-right">
             <div class="<c:if test="${accountLog.inOut == '支出'}"> currency-out</c:if><c:if test="${accountLog.inOut == '收入'}"> currency-in</c:if>">${accountLog.transAmount}</div>
-            <div class="fs-12 font-999">积分余额: ${accountLog.afterAmount}</div>
+            <div class="fs-12 font-999">${currencyType.alias}余额: ${accountLog.afterAmount}</div>
           </div>
         </div>
         </c:forEach>

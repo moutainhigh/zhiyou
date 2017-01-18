@@ -31,6 +31,7 @@ import java.util.Random;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.entity.fnc.CurrencyType.现金;
+import static com.zy.entity.fnc.CurrencyType.积分;
 import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
 
 @Service
@@ -231,7 +232,7 @@ public class UserServiceImpl implements UserService {
             validate(account);
             accountMapper.insert(account);
         }
-		/*{
+		{
 			Account account = new Account();
 			account.setAmount(zero);
 			account.setCurrencyType(积分);
@@ -240,7 +241,7 @@ public class UserServiceImpl implements UserService {
 			validate(account);
 			accountMapper.insert(account);
 		}
-		{
+		/*{
 			Account account = new Account();
 			account.setAmount(zero);
 			account.setCurrencyType(金币);

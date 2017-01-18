@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.zy.entity.fnc.CurrencyType.现金;
+import static com.zy.entity.fnc.CurrencyType.积分;
 
 @RequestMapping("/u/account")
 @Controller
@@ -71,8 +72,10 @@ public class UcenterAccountController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String index(Principal principal, Model model) {
 		Long userId = principal.getUserId();
-		Account account = accountService.findByUserIdAndCurrencyType(userId, 现金);
-		model.addAttribute("amount", account.getAmount());
+		Account account1 = accountService.findByUserIdAndCurrencyType(userId, 现金);
+		model.addAttribute("amount1", account1.getAmount());
+		Account account2 = accountService.findByUserIdAndCurrencyType(userId, 积分);
+		model.addAttribute("amount2", account2.getAmount());
 
 		BankCardQueryModel bankCardQueryModel = new BankCardQueryModel();
 		bankCardQueryModel.setUserIdEQ(principal.getUserId());

@@ -23,10 +23,15 @@
 </header>
 <article>
   <nav class="flex account-nav pb-30 mb-10">
-    <a class="flex-1 text-center" href="${ctx}/u/money">
+    <a class="flex-1 text-center" href="${ctx}/u/money?currencyType=0">
+      <div class="mb-10"><i class="icon icon-account-money"></i></div>
+      <div class="fs-16 lh-24">U币余额</div>
+      <div class="fs-12 lh-20 font-ccc">${amount1}</div>
+    </a>
+    <a class="flex-1 text-center" href="${ctx}/u/money?currencyType=1">
       <div class="mb-10"><i class="icon icon-account-money"></i></div>
       <div class="fs-16 lh-24">积分余额</div>
-      <div class="fs-12 lh-20 font-ccc">${amount}</div>
+      <div class="fs-12 lh-20 font-ccc">${amount2}</div>
     </a>
     <a class="flex-1 text-center" href="${ctx}/u/bankCard">
       <div class="mb-10"><i class="icon icon-account-card"></i></div>

@@ -1,7 +1,6 @@
 package com.zy.entity.mal;
 
 import com.zy.common.extend.StringBinder;
-import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Payment;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Transfer;
@@ -142,11 +141,6 @@ public class Order implements Serializable {
 	@View(name = "refundedTimeLabel", type = String.class, groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	@Field(label = "退款时间")
 	private Date refundedTime;
-
-	@NotNull
-	@Field(label = "货币类型")
-	@View(groups = VO_ADMIN)
-	private CurrencyType currencyType;
 
 	@NotNull
 	@Query({Predicate.EQ, Predicate.IN})

@@ -1,19 +1,18 @@
 package com.zy.vo;
 
-import io.gd.generator.annotation.Field;
-import com.zy.model.ImageVo;
 import com.zy.entity.mal.Order.OrderStatus;
-import com.zy.entity.usr.User.UserRank;
-import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.mal.Order.OrderType;
+import com.zy.entity.usr.User.UserRank;
+import com.zy.model.ImageVo;
+import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,8 +34,6 @@ public class OrderAdminVo implements Serializable {
 	private Boolean isPayToPlatform;
 	@Field(label = "标题")
 	private String title;
-	@Field(label = "货币类型")
-	private CurrencyType currencyType;
 	@Field(label = "订单状态")
 	private OrderStatus orderStatus;
 	@Field(label = "订单类型")

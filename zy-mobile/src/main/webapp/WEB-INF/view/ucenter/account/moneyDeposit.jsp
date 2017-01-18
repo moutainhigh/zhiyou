@@ -47,7 +47,7 @@
 
   <header class="header">
     <h1>积分余额充值</h1>
-    <a href="${ctx}/u/money" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/money?currencyType=0" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
   <article class="account-wrap clearfix">

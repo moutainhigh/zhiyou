@@ -57,7 +57,7 @@
       $.dialog({
         content : '请选择支付方式',
         skin : 'footer',
-        btn : [ '<a id="btnPay1" class="btn orange block round-2">积分余额支付</a>'/*, '<a id="btnPay2" class="btn green block round-2">银行汇款</a>' */],
+        btn : [ '<a id="btnPay1" class="btn orange block round-2">U币积分支付</a>'/*, '<a id="btnPay2" class="btn green block round-2">银行汇款</a>' */],
         callback : function(index) {
           if (index == 1) {
             location.href = '${ctx}/u/pay/order/${order.id}?payType=0';

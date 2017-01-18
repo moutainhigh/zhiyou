@@ -37,13 +37,14 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.*;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.*;
 import static com.zy.model.Constants.SETTING_NEW_MIN_QUANTITY;
 import static com.zy.model.Constants.SETTING_OLD_MIN_QUANTITY;
+import static java.time.temporal.ChronoField.DAY_OF_MONTH;
+import static java.time.temporal.ChronoUnit.MONTHS;
 
 @Service
 @Validated
@@ -170,8 +171,8 @@ public class OrderServiceImpl implements OrderService {
 			createdTime = config.getOrderFillTime();
 		}
 
-		LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-		LocalDateTime localDateTime = LocalDateTime.of(lastDate, LocalTime.parse("23:59:59"));
+		LocalDate lastDate = LocalDate.now().with(DAY_OF_MONTH, 4).plus(1, MONTHS);
+		LocalDateTime localDateTime = LocalDateTime.of(lastDate, LocalTime.parse("00:00:00"));
 		Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 		Date expiredTime = Date.from(instant);
 
@@ -196,7 +197,6 @@ public class OrderServiceImpl implements OrderService {
 		order.setOrderType(orderType);
 		order.setVersion(0);
 		order.setSellerId(sellerId);
-		order.setCurrencyType(CurrencyType.现金);
 		order.setSn(ServiceUtils.generateOrderSn());
 		order.setIsSettledUp(false);
 		order.setDiscountFee(new BigDecimal("0.00"));
@@ -507,7 +507,6 @@ public class OrderServiceImpl implements OrderService {
 			order.setOrderStatus(OrderStatus.待支付);
 			order.setVersion(0);
 			order.setSellerId(sysUserId);
-			order.setCurrencyType(CurrencyType.现金);
 			order.setSn(ServiceUtils.generateOrderSn());
 			order.setIsSettledUp(false);
 			order.setDiscountFee(new BigDecimal("0.00"));
@@ -813,7 +812,7 @@ public class OrderServiceImpl implements OrderService {
 		if(order.getIsPayToPlatform()){
 			Payment payment = new Payment();
 			payment.setAmount1(order.getAmount());
-			payment.setCurrencyType1(order.getCurrencyType());
+			payment.setCurrencyType1(CurrencyType.现金);
 			payment.setPaymentType(PaymentType.订单支付);
 			payment.setRefId(orderId);
 			payment.setUserId(order.getUserId());

@@ -7,18 +7,13 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.AccountLogComponent;
 import com.zy.component.BankCardComponent;
-import com.zy.entity.fnc.Account;
-import com.zy.entity.fnc.AccountLog;
-import com.zy.entity.fnc.BankCard;
-import com.zy.entity.fnc.Withdraw;
+import com.zy.entity.fnc.*;
 import com.zy.model.Principal;
 import com.zy.model.query.AccountLogQueryModel;
 import com.zy.model.query.BankCardQueryModel;
 import com.zy.service.*;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,11 +67,12 @@ public class UcenterMoneyController {
 	private Config config;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String index(Principal principal, Model model) {
+	public String index(Principal principal, Model model, @RequestParam CurrencyType currencyType) {
 		Long userId = principal.getUserId();
-		Account account = accountService.findByUserIdAndCurrencyType(userId, 现金);
+		Account account = accountService.findByUserIdAndCurrencyType(userId, currencyType);
 		model.addAttribute("amount", account.getAmount());
-		
+		model.addAttribute("currencyType", currencyType);
+
 		BankCardQueryModel bankCardQueryModel = new BankCardQueryModel();
 		bankCardQueryModel.setUserIdEQ(principal.getUserId());
 		bankCardQueryModel.setIsDeletedEQ(false);
@@ -88,14 +84,15 @@ public class UcenterMoneyController {
 	}
 	
 	@RequestMapping(value = "/log", method = RequestMethod.GET)
-	public String log(Principal principal, Model model) {
+	public String log(Principal principal, Model model, @RequestParam CurrencyType currencyType) {
 		AccountLogQueryModel accountLogQueryModel = new AccountLogQueryModel();
-		accountLogQueryModel.setCurrencyTypeEQ(现金);
+		accountLogQueryModel.setCurrencyTypeEQ(currencyType);
 		accountLogQueryModel.setUserIdEQ(principal.getUserId());
 		accountLogQueryModel.setPageSize(10);
 		accountLogQueryModel.setPageNumber(0);
 		Page<AccountLog> page  = accountLogService.findPage(accountLogQueryModel);
-		
+
+		model.addAttribute("currencyType", currencyType);
 		model.addAttribute("page", PageBuilder.copyAndConvert(page, accountLogComponent::buildSimpleVo));
 		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		return "ucenter/account/moneyLog";
@@ -103,12 +100,13 @@ public class UcenterMoneyController {
 	
 	@RequestMapping(value = "/log", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> log(Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber) {
+	public Result<?> log(Principal principal, Model model, Date timeLT, @RequestParam(required = true) Integer pageNumber
+			, @RequestParam CurrencyType currencyType) {
 		if (timeLT == null) {
 			timeLT = new Date();
 		}
 		AccountLogQueryModel accountLogQueryModel = new AccountLogQueryModel();
-		accountLogQueryModel.setCurrencyTypeEQ(现金);
+		accountLogQueryModel.setCurrencyTypeEQ(currencyType);
 		accountLogQueryModel.setTransTimeLT(timeLT);
 		accountLogQueryModel.setUserIdEQ(principal.getUserId());
 		accountLogQueryModel.setPageSize(10);
