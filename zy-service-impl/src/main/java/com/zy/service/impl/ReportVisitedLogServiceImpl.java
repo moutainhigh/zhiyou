@@ -146,7 +146,6 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 				if(confirmStatus == 已通过) {
 					report.setConfirmedTime(new Date());
 				}
-				reportMapper.update(report);
 			} else {
 				reportVisitedLog.setConfirmStatus(待审核);
 			}
