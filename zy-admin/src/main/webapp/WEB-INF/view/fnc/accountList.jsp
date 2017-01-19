@@ -46,9 +46,14 @@
           },
           {
             data: 'moneyLabel',
-            title: '<i class="fa fa-money"></i> 余额',
+            title: '<i class="fa fa-money"></i> U币',
             orderable: false
           },
+	        {
+		        data: 'pointLabel',
+		        title: '<i class="fa fa-money"></i> 积分',
+		        orderable: false
+	        },
           {
             data: '',
             title: '操作',
@@ -58,7 +63,7 @@
               if (full.user) {
                 if (full.user.userType != '平台') {
                   <shiro:hasPermission name="account:deposit">
-                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="deposit(' + full.userId + ')"><i class="fa fa-money"></i> 赠送余额</a>';
+                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="deposit(' + full.userId + ')"><i class="fa fa-money"></i> 赠送U币</a>';
                   </shiro:hasPermission>
                 }
               }
@@ -93,7 +98,7 @@
       + "</div>"
       + "</div>"
       + "</form>",
-      title: '赠送金额',
+      title: '赠送U币',
       width: 420,
       height: 360,
       button: false

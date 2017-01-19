@@ -25,18 +25,18 @@
 
   <header class="header">
     <h1>提现成功</h1>
-    <a href="${ctx}/u/money" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/money?currencyType=${currencyType}" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
   <article class="mt-30">
       <i class="icon icon-clock icon-6x block center"></i>
-      <h2 class="font-black fs-16 lh-30 text-center mt-20 mb-20">本金提现申请已提交</h2>
+      <h2 class="font-black fs-16 lh-30 text-center mt-20 mb-20">${currencyType.alias}提现申请已提交</h2>
       <div class="list-group pl-15 pr-15 pt-10 pb-10">
         <p class="clearfix fs-14 lh-30"><span class="left font-999">提现到</span><span class="right font-black"><i class="icon icon-bank-${bankCard.bankCode}"></i> ${bankCard.bankName}（${bankCard.cardNumberLabel}）</span></p>
         <p class="clearfix fs-14 lh-30"><span class="left font-999">提现金额</span><span class="right font-black">￥${withdraw.amount}</span></p>
       </div>
       <div class="form-btn mt-30">
-         <a href="${ctx}/u/money" class="btn green btn-block round-2">完成</a>
+         <a href="${ctx}/u/money?currencyType=${currencyType}" class="btn green btn-block round-2">完成</a>
       </div>
   </article>
   

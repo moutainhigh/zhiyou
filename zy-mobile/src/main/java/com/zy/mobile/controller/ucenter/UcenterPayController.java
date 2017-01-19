@@ -6,7 +6,6 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.shengpay.ShengPayClient;
 import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.Deposit.DepositStatus;
-import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
@@ -15,7 +14,6 @@ import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.DepositQueryModel;
-import com.zy.model.query.PaymentQueryModel;
 import com.zy.service.*;
 import com.zy.util.GcUtils;
 import io.gd.generator.api.query.Direction;
@@ -173,7 +171,7 @@ public class UcenterPayController {
 				throw new BizException(BizCode.INSUFFICIENT_BALANCE, "支付失败, " + CurrencyType.积分.getAlias() + "余额不足");
 			}
 		} else {
-			amount2 = new BigDecimal("0.00");
+			amount2 = null;
 		}
 		Payment payment =createPayment(order, amount2);
 
@@ -185,31 +183,33 @@ public class UcenterPayController {
 	private Payment createPayment(Order order, BigDecimal amount2) {
 		PayType payType = PayType.余额;
 		BigDecimal orderAmount = order.getAmount();
-		BigDecimal amount1 = orderAmount.subtract(amount2);
-		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(order.getId()).paymentTypeEQ(PaymentType.订单支付).build());
-		Payment payment = payments.stream().filter(v -> v.getPayType() == payType)
-				.filter(v -> (v.getPaymentStatus() == PaymentStatus.待支付 || v.getPaymentStatus() == PaymentStatus.待确认))
-				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
-				.filter(v -> v.getAmount1().equals(amount1))
-				.filter(v -> v.getAmount2().equals(amount2))
-				.filter(v -> v.getCurrencyType2() == null)
-				.findFirst().orElse(null);
-
-		if (payment == null) {
-
-			payment = new Payment();
-			payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
-			payment.setAmount1(amount1);
-			payment.setCurrencyType1(CurrencyType.现金);
-			payment.setAmount2(amount2);
-			payment.setCurrencyType2(CurrencyType.积分);
-			payment.setPaymentType(PaymentType.订单支付);
-			payment.setRefId(order.getId());
-			payment.setUserId(order.getUserId());
-			payment.setTitle(order.getTitle());
-			payment.setPayType(payType);
-			payment = paymentService.create(payment);
+		BigDecimal amount1 = orderAmount;
+		if(amount2 != null) {
+			amount1 =  orderAmount.subtract(amount2);
 		}
+//		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(order.getId()).paymentTypeEQ(PaymentType.订单支付).build());
+//		Payment payment = payments.stream().filter(v -> v.getPayType() == payType)
+//				.filter(v -> (v.getPaymentStatus() == PaymentStatus.待支付 || v.getPaymentStatus() == PaymentStatus.待确认))
+//				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
+//				.filter(v -> v.getAmount1().equals(amount1))
+//				.filter(v -> v.getAmount2().equals(amount2))
+//				.filter(v -> v.getCurrencyType2() == null)
+//				.findFirst().orElse(null);
+
+		Payment payment = new Payment();
+		payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
+		payment.setCurrencyType1(CurrencyType.现金);
+		payment.setAmount1(amount1);
+		if(amount2 != null) {
+			payment.setCurrencyType2(CurrencyType.积分);
+			payment.setAmount2(amount2);
+		}
+		payment.setPaymentType(PaymentType.订单支付);
+		payment.setRefId(order.getId());
+		payment.setUserId(order.getUserId());
+		payment.setTitle(order.getTitle());
+		payment.setPayType(payType);
+		payment = paymentService.create(payment);
 		return payment;
 	}
 	

@@ -170,9 +170,12 @@
             }
           },
           {
-            data: 'amount1Label',
+            data: '',
             title: '应付金额',
-            orderable: false
+            orderable: false,
+	          render: function (data, type, full) {
+		          return '<p>U币: ' + full.amount1Label + '</p><p>积分: ' + full.amount2Label + '</p>'
+	          }
           },
           {
             data: 'payType',

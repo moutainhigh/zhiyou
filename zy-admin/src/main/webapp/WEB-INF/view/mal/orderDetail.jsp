@@ -351,7 +351,8 @@
                 <th>支付状态</th>
                 <th>货币1</th>
                 <th>货币1支付金额</th>
-                <th>货币1退款金额</th>
+                <th>货币2</th>
+                <th>货币2支付金额</th>
                 <th>退款时间</th>
                 <th>退款备注</th>
                 <th>取消备注</th>
@@ -381,7 +382,8 @@
                     <td><label class="label label-${payment.paymentStatusStyle}">${payment.paymentStatus}</label></td>
                     <td>${payment.currencyType1}</td>
                     <td>${payment.amount1}</td>
-                    <td>${payment.refund1}</td>
+                    <td>${payment.currencyType2}</td>
+                    <td>${payment.amount2}</td>
                     <td>${payment.refundedTimeLabel}</td>
                     <td>${payment.refundRemark}</td>
                     <td>${payment.cancelRemark}</td>

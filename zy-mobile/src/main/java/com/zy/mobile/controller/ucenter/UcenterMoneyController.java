@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.zy.entity.fnc.CurrencyType.现金;
 import static com.zy.entity.usr.User.UserType.代理;
 import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 
@@ -119,7 +118,7 @@ public class UcenterMoneyController {
 	}
 	
 	@RequestMapping(value = "/withdraw", method = RequestMethod.GET)
-	public String withdraw(Principal principal, Model model, RedirectAttributes redirectAttributes) {
+	public String withdraw(@RequestParam CurrencyType currencyType, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		BankCardQueryModel bankCardQueryModel = new BankCardQueryModel();
 		bankCardQueryModel.setUserIdEQ(principal.getUserId());
 		bankCardQueryModel.setIsDeletedEQ(false);
@@ -132,18 +131,19 @@ public class UcenterMoneyController {
 		BankCard defaultBankCard = bankCardList.stream().filter(v -> v.getIsDefault()).findFirst().orElse(null);
 		defaultBankCard = defaultBankCard == null ? bankCardList.get(0) : defaultBankCard;
 		
-		Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), 现金);
-		model.addAttribute("withdrawFeeRate", config.getWithdrawFeeRate(代理, 现金));
+		Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), currencyType);
+		model.addAttribute("withdrawFeeRate", config.getWithdrawFeeRate(代理, currencyType));
 		model.addAttribute("amount", account.getAmount());
 		model.addAttribute("date", DateFormatUtils.format(DateUtils.addMinutes(new Date(), 30), "HH:mm"));
 		model.addAttribute("bankCardCount", bankCardCount);
 		model.addAttribute("defaultBankCard", bankCardComponent.buildVo(defaultBankCard));
 		model.addAttribute("bankCards", bankCardList.stream().map(bankCardComponent::buildVo).collect(Collectors.toList()));
+		model.addAttribute("currencyType", currencyType);
 		return "ucenter/account/moneyWithdraw";
 	}
 	
 	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
-	public String withdraw(Principal principal, Model model, BigDecimal amount,Long bankCardId, RedirectAttributes redirectAttributes) {
+	public String withdraw(Principal principal, Model model, BigDecimal amount, @RequestParam CurrencyType currencyType, Long bankCardId, RedirectAttributes redirectAttributes) {
 		if (!config.isWithdrawOn()) {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("提现暂时关闭, 如有疑问请联系平台客服"));
 			return "redirect:/u/money";
@@ -165,14 +165,15 @@ public class UcenterMoneyController {
 		
 		try {
 			Long userId = principal.getUserId();
-			Withdraw withdraw = withdrawService.create(userId, bankCardId, 现金, amount);
+			Withdraw withdraw = withdrawService.create(userId, bankCardId, currencyType, amount);
 			BankCard bankCard = bankCardService.findOne(bankCardId);
 			model.addAttribute("withdraw", withdraw);
 			model.addAttribute("bankCard", bankCardComponent.buildVo(bankCard));
+			model.addAttribute("currencyType", currencyType);
 			return "ucenter/account/moneyWithdrawSuccess";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(现金.getAlias() + "提现申请失败, 原因" + e.getMessage()));
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(currencyType.getAlias() + "提现申请失败, 原因" + e.getMessage()));
 			return "redirect:/u/money/withdraw";
 		}
 	}

@@ -105,36 +105,37 @@
 
 <body>
   <header class="header">
-    <h1>本金提现</h1>
-    <a href="${ctx}/u/money?currencyType=0" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <h1>${currencyType.alias}提现</h1>
+    <a href="${ctx}/u/money?currencyType=${currencyType}" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
   <article>
     <form id="form" method="post" action="${ctx}/u/money/withdraw">
-    <div class="list-group mt-20">
-      <div class="list-item">
-        <label class="list-text lh-36">提现到</label>
-        <div class="list-unit bank-card-info">
-          <i class="icon icon-bank-${defaultBankCard.bankCode}"></i> ${defaultBankCard.bankName}（${defaultBankCard.cardNumberLabel}）
+      <input type="hidden" name="currencyType" value="${currencyType}"/>
+      <div class="list-group mt-20">
+        <div class="list-item">
+          <label class="list-text lh-36">提现到</label>
+          <div class="list-unit bank-card-info">
+            <i class="icon icon-bank-${defaultBankCard.bankCode}"></i> ${defaultBankCard.bankName}（${defaultBankCard.cardNumberLabel}）
+          </div>
+          <i class="list-arrow"></i>
+          <input type="hidden" name="bankCardId" value="${defaultBankCard.id}">
         </div>
-        <i class="list-arrow"></i>
-        <input type="hidden" name="bankCardId" value="${defaultBankCard.id}">
-      </div>
-      <div class="list-item">
-        <label for="amount" class="list-label lh-48 fs-18">金额：</label>
-        <div class="list-text">
-          <input type="number" class="form-input lh-48 fs-18" id="amount" name="amount" placeholder="输入提现金额" value="">
-          <div class="form-help pt-5 bdd-t text-right">可提现金额 <em id="accountBalance" class="font-orange fs-16 bold">${amount}</em> 元</div>
+        <div class="list-item">
+          <label for="amount" class="list-label lh-48 fs-18">金额：</label>
+          <div class="list-text">
+            <input type="number" class="form-input lh-48 fs-18" id="amount" name="amount" placeholder="输入提现金额" value="">
+            <div class="form-help pt-5 bdd-t text-right">可提现金额 <em id="accountBalance" class="font-orange fs-16 bold">${amount}</em> 元</div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="list-title lh-30">
-      <p><i class="fa fa-exclamation-circle"></i> 预计${date}前到账</p>
-      <p><i class="fa fa-exclamation-circle"></i> 预计到账金额：<em id="realAmount" class="font-orange bold">0.00</em> 元</p>
-    </div>
-    <div class="form-btn mt-15">
-      <button type="button" class="btn btn-block disabled round-2">确认提现</button>
-    </div>
+      <div class="list-title lh-30">
+        <p><i class="fa fa-exclamation-circle"></i> 预计${date}前到账</p>
+        <p><i class="fa fa-exclamation-circle"></i> 预计到账金额：<em id="realAmount" class="font-orange bold">0.00</em> 元</p>
+      </div>
+      <div class="form-btn mt-15">
+        <button type="button" class="btn btn-block disabled round-2">确认提现</button>
+      </div>
     </form>
   </article>
 

@@ -80,8 +80,8 @@ public class WithdrawServiceImpl implements WithdrawService {
 		/* check 提现币种 */
 		UserType userType = user.getUserType();
 
-		if (userType != UserType.代理 && currencyType != CurrencyType.现金) {
-			throw new BizException(BizCode.ERROR, "暂只支持代理现金提现");
+		if (userType != UserType.代理 && (currencyType != CurrencyType.现金 || currencyType != CurrencyType.积分)) {
+			throw new BizException(BizCode.ERROR, "暂只支持代理现金和积分提现");
 
 		}
 
@@ -116,7 +116,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		withdraw.setIsToBankCard(true);
 		withdraw.setBankCardId(bankCardId);
 		withdraw.setOpenId(null);
-		withdraw.setTitle("余额提现");
+		withdraw.setTitle(currencyType.getAlias() + "余额提现");
 		withdraw.setWithdrawStatus(Withdraw.WithdrawStatus.已申请);
 		validate(withdraw);
 		withdrawMapper.insert(withdraw);
