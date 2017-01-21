@@ -5,6 +5,8 @@ import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
+import com.zy.common.model.tree.TreeHelper;
+import com.zy.common.model.tree.TreeNode;
 import com.zy.component.FncComponent;
 import com.zy.component.MalComponent;
 import com.zy.entity.fnc.*;
@@ -13,6 +15,7 @@ import com.zy.entity.fnc.Payment.PaymentType;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.mal.OrderItem;
+import com.zy.entity.mal.OrderMonthlySettlement;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
@@ -21,15 +24,19 @@ import com.zy.extend.Producer;
 import com.zy.mapper.*;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
+import com.zy.model.TeamModel;
 import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.dto.OrderSumDto;
 import com.zy.model.query.OrderFillUserQueryModel;
 import com.zy.model.query.OrderQueryModel;
+import com.zy.model.query.UserQueryModel;
 import com.zy.service.OrderService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.validator.constraints.NotBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -37,14 +44,20 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.*;
 import static com.zy.model.Constants.SETTING_NEW_MIN_QUANTITY;
 import static com.zy.model.Constants.SETTING_OLD_MIN_QUANTITY;
-import static java.time.temporal.ChronoField.DAY_OF_MONTH;
-import static java.time.temporal.ChronoUnit.MONTHS;
 
 @Service
 @Validated
@@ -75,6 +88,9 @@ public class OrderServiceImpl implements OrderService {
 	private AddressMapper addressMapper;
 
 	@Autowired
+	private OrderMonthlySettlementMapper orderMonthlySettlementMapper;
+
+	@Autowired
 	private MalComponent malComponent;
 
 	@Autowired
@@ -82,6 +98,8 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private Producer producer;
+
+	public static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
 	@Override
 	public Order create(@NotNull OrderCreateDto orderCreateDto) {
@@ -171,8 +189,8 @@ public class OrderServiceImpl implements OrderService {
 			createdTime = config.getOrderFillTime();
 		}
 
-		LocalDate lastDate = LocalDate.now().with(DAY_OF_MONTH, 4).plus(1, MONTHS);
-		LocalDateTime localDateTime = LocalDateTime.of(lastDate, LocalTime.parse("00:00:00"));
+		LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+		LocalDateTime localDateTime = LocalDateTime.of(lastDate, LocalTime.parse("23:59:59"));
 		Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 		Date expiredTime = Date.from(instant);
 
@@ -719,9 +737,276 @@ public class OrderServiceImpl implements OrderService {
 				throw new ConcurrentException();
 			}
 		} else {
-			// DO NOTHING
+			/* 平级推荐奖 */
+			if(buyerUserRank == UserRank.V3) {
+				Long parentId = buyer.getParentId();
+				if(parentId != null) {
+					User buyerParent = userMapper.findOne(parentId);
+					if(buyerParent.getUserRank() == UserRank.V4) {
+						return ;
+					}
+				}
+
+				int whileTimes = 0;
+				while (parentId != null) {
+					if (whileTimes > 1000) {
+						throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+					}
+
+					User buyerParent = userMapper.findOne(parentId);
+					if(buyerParent.getUserRank() == UserRank.V4) {
+						final BigDecimal saleBonus = new BigDecimal("10.00").multiply(BigDecimal.valueOf(quantity));
+						fncComponent.createProfit(parentId, Profit.ProfitType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, saleBonus, paidTime);
+
+						final BigDecimal flatBonus = new BigDecimal("9.00").multiply(BigDecimal.valueOf(quantity));
+						fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, flatBonus, paidTime);
+						break;
+					}
+
+					parentId = buyerParent.getParentId();
+					whileTimes++;
+				}
+
+			}
+
+			/* 特级推荐奖 */
+			if(buyerUserRank == UserRank.V4) {
+
+				Long parentId = buyer.getParentId();
+				User buyerParent = null;
+				boolean firstV4Parent = false;
+				int whileTimes = 0;
+				while (parentId != null && !firstV4Parent) {
+					if (whileTimes > 1000) {
+						throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+					}
+
+					buyerParent = userMapper.findOne(parentId);
+					if(buyerParent.getUserRank() == UserRank.V4) {
+						firstV4Parent = true;
+					}
+
+					if(firstV4Parent) {
+						final BigDecimal saleBonus = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
+						fncComponent.createProfit(parentId, Profit.ProfitType.特级推荐奖, orderId, "特级推荐奖", CurrencyType.积分, saleBonus, paidTime);
+						break;
+					}
+
+					parentId = buyerParent.getParentId();
+					whileTimes++;
+				}
+
+				if(firstV4Parent) {
+					if(buyerParent.getUserRank() != UserRank.V4) {
+						Date lastUpgradedTime = seller.getLastUpgradedTime();
+						if (lastUpgradedTime != null && DateUtils.addMonths(lastUpgradedTime, 3).after(new Date())) {
+							final BigDecimal saleBonus = new BigDecimal("3.00").multiply(BigDecimal.valueOf(quantity));
+							fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.特级推荐奖, orderId, "特级推荐奖", CurrencyType.积分, saleBonus, paidTime);
+						}
+					}
+				}
+			}
 		}
 
+	}
+
+	private BigDecimal getMonthlyRate(BigDecimal totalAmount) {
+		BigDecimal lvl1 = new BigDecimal("12000.00");
+		BigDecimal lvl2 = new BigDecimal("24000.00");
+		BigDecimal lvl3 = new BigDecimal("48000.00");
+		BigDecimal lvl4 = new BigDecimal("9600.00");
+		BigDecimal lvl5 = new BigDecimal("19200.00");
+		BigDecimal lvl6 = new BigDecimal("38400.00");
+		BigDecimal lvl7 = new BigDecimal("57600.00");
+		BigDecimal lvl8 = new BigDecimal("86400.00");
+		BigDecimal lvl9 = new BigDecimal("129600.00");
+		BigDecimal lvl10= new BigDecimal("200000.00");
+		BigDecimal lvl11 = new BigDecimal("300000.00");
+
+		BigDecimal rate0 = new BigDecimal("0.03");
+		BigDecimal rate1 = new BigDecimal("0.05");
+		BigDecimal rate2 = new BigDecimal("0.07");
+		BigDecimal rate3 = new BigDecimal("0.09");
+		BigDecimal rate4 = new BigDecimal("0.11");
+		BigDecimal rate5 = new BigDecimal("0.12");
+		BigDecimal rate6 = new BigDecimal("0.13");
+		BigDecimal rate7 = new BigDecimal("0.14");
+		BigDecimal rate8 = new BigDecimal("0.15");
+		BigDecimal rate9 = new BigDecimal("0.16");
+		BigDecimal rate10 = new BigDecimal("0.17");
+		BigDecimal rate11 = new BigDecimal("0.18");
+
+		BigDecimal rate;
+
+		if (totalAmount.compareTo(lvl1) < 0) {
+			rate = rate0;
+		} else if (totalAmount.compareTo(lvl1) >= 0 && totalAmount.compareTo(lvl2) < 0){
+			rate = rate1;
+		} else if (totalAmount.compareTo(lvl2) >= 0 && totalAmount.compareTo(lvl3) < 0){
+			rate = rate2;
+		} else if (totalAmount.compareTo(lvl3) >= 0 && totalAmount.compareTo(lvl4) < 0){
+			rate = rate3;
+		} else if (totalAmount.compareTo(lvl4) >= 0 && totalAmount.compareTo(lvl5) < 0){
+			rate = rate4;
+		} else if (totalAmount.compareTo(lvl5) >= 0 && totalAmount.compareTo(lvl6) < 0){
+			rate = rate5;
+		} else if (totalAmount.compareTo(lvl6) >= 0 && totalAmount.compareTo(lvl7) < 0){
+			rate = rate6;
+		} else if (totalAmount.compareTo(lvl7) >= 0 && totalAmount.compareTo(lvl8) < 0){
+			rate = rate7;
+		} else if (totalAmount.compareTo(lvl8) >= 0 && totalAmount.compareTo(lvl9) < 0){
+			rate = rate8;
+		} else if (totalAmount.compareTo(lvl9) >= 0 && totalAmount.compareTo(lvl10) < 0){
+			rate = rate9;
+		} else if (totalAmount.compareTo(lvl10) >= 0 && totalAmount.compareTo(lvl11) < 0){
+			rate = rate10;
+		} else {
+			rate = rate11;
+		}
+		return rate;
+	}
+
+	@Override
+	public void settleUpMonthly(@NotBlank String yearAndMonth) {
+
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM");
+		TemporalAccessor temporalAccessor = df.parse(yearAndMonth);
+		Predicate<User> predicate = v -> {
+			User.UserRank userRank = v.getUserRank();
+			if (userRank != null && userRank == UserRank.V4) {
+				return true;
+			}
+			return false;
+		};
+
+		int year = temporalAccessor.get(ChronoField.YEAR);
+		int month = temporalAccessor.get(ChronoField.MONTH_OF_YEAR);
+
+		YearMonth yearMonth = YearMonth.of(year, month);
+		YearMonth nowYearMonth = YearMonth.now();
+		if (!nowYearMonth.isAfter(yearMonth)) {
+			throw new BizException(BizCode.ERROR, "未达到发放时间");
+		}
+
+		OrderMonthlySettlement orderMonthlySettlement = orderMonthlySettlementMapper.findByYearAndMonth(yearAndMonth);
+		if (orderMonthlySettlement != null) {
+			return; // 幂等操作
+		}
+
+		BigDecimal zero = new BigDecimal("0.00");
+
+		LocalDate beginDate = LocalDate.of(year, month, 1);
+		LocalDate endDate = beginDate.with(TemporalAdjusters.firstDayOfNextMonth());
+
+		LocalDateTime beginDateTime = LocalDateTime.of(beginDate, LocalTime.MIN);
+		LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MIN);
+
+		Date begin = Date.from(beginDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		Date end = Date.from(endDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		System.out.println(begin);
+		System.out.println(end);
+
+		List<Order> orders = orderMapper.findAll(OrderQueryModel.builder()
+				.orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成})
+				.paidTimeGTE(begin).paidTimeLT(end).build());
+		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
+		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
+		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
+
+		Map<Long, TeamModel> teamMap = v4Users.stream()
+				.map(v -> {
+					TeamModel teamModel = new TeamModel();
+					teamModel.setUser(v);
+					teamModel.setChildren(TreeHelper.sortBreadth2(users, String.valueOf(v.getId()), u -> {
+						TreeNode treeNode = new TreeNode();
+						treeNode.setId(String.valueOf(u.getId()));
+						treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(u.getParentId()));
+						return treeNode;
+
+					}));
+					teamModel.setDirectV4Children(users.stream().filter(u -> {
+						Long userId = u.getId();
+						if (userId.equals(v.getId())) {
+							return false;
+						}
+						Long directV4ParentId = null;
+						int times = 0;
+						Long parentId = u.getParentId();
+						while(parentId != null) {
+							if (times > 1000) {
+								throw new BizException(BizCode.ERROR, "循环引用");
+							}
+							User parent = userMap.get(parentId);
+							if (predicate.test(parent)) {
+								directV4ParentId = parentId;
+								break;
+							}
+							parentId = parent.getParentId();
+							times ++;
+						}
+						if (directV4ParentId != null && directV4ParentId.equals(v.getId())) {
+							return true;
+						}
+						return false;
+					}).collect(Collectors.toList()));
+					return teamModel;
+				}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
+
+		Map<Long, BigDecimal> userAmountMap = orders.stream().collect(Collectors.toMap(Order::getUserId, Order::getAmount, BigDecimal::add));
+		userAmountMap.entrySet().stream().forEach(v -> {
+			if (v.getValue().compareTo(zero) > 0) {
+				//System.out.println(userMap.get(v.getKey()).getNickname() + "个人销量" + v.getValue() + "元");
+			}
+		});
+
+
+		Map<Long, BigDecimal> teamAmountMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
+			Long userId = v.getId();
+			BigDecimal myAmount = userAmountMap.get(userId) == null ? new BigDecimal("0.00") : userAmountMap.get(userId);
+			BigDecimal teamAmount = teamMap.get(userId).getChildren().stream()
+					.map(u -> userAmountMap.get(u.getId()) == null ? new BigDecimal("0.00") : userAmountMap.get(u.getId()))
+					.reduce(new BigDecimal("0.00"), BigDecimal::add);
+			return teamAmount.add(myAmount);
+		}));
+
+		teamAmountMap.entrySet().stream().forEach(v -> {
+			if (v.getValue().compareTo(zero) > 0) {
+				logger.error(userMap.get(v.getKey()).getNickname() + "团队销量" + v.getValue() + "元");
+			}
+		});
+
+		Map<Long, BigDecimal> profitMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
+			Long userId = v.getId();
+			BigDecimal amount = teamAmountMap.get(userId);
+			BigDecimal rate = getMonthlyRate(amount);
+			BigDecimal profit = amount.multiply(rate);
+			for (User user : teamMap.get(userId).getDirectV4Children()) {
+				if (predicate.test(user)) {
+					Long childUserId = user.getId();
+					BigDecimal childAmount = teamAmountMap.get(childUserId);
+					BigDecimal childRate = getMonthlyRate(childAmount);
+					BigDecimal childProfit = childAmount.multiply(childRate);
+					profit = profit.subtract(childProfit);
+				}
+			}
+
+			return profit;
+		}));
+
+		Date now = new Date();
+		for (Map.Entry<Long, BigDecimal> entry : profitMap.entrySet()) {
+			BigDecimal amount = entry.getValue();
+			Long userId = entry.getKey();
+			if (amount.compareTo(zero) > 0) {
+				fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "返利奖", CurrencyType.积分, amount, now);
+				logger.error(userMap.get(userId).getNickname() + "返利奖" + amount + "积分");
+			}
+		}
+
+		orderMonthlySettlement = new OrderMonthlySettlement();
+		orderMonthlySettlement.setYearAndMonth(yearAndMonth);
+		orderMonthlySettlement.setSettledUpTime(now);
+		orderMonthlySettlementMapper.insert(orderMonthlySettlement);
 	}
 
 	@Override

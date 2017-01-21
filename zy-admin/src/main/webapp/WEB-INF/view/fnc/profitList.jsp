@@ -89,11 +89,13 @@
             orderable: false,
             render: function (data, type, full) {
               var optionHtml = '';
-              <shiro:hasPermission name="profit:grant,profit:cancel">
+              <shiro:hasPermission name="profit:grant">
               if(full.profitStatus == '待发放'){
                 optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/profit/grant?id=' + full.id + '" data-confirm="您确定发放奖励？"><i class="fa fa-send-o"></i> 发放 </a>';
-                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/profit/cancel?id=' + full.id + '" data-confirm="您确定取消奖励？"><i class="fa fa-send-o"></i> 取消 </a>';
               }
+              </shiro:hasPermission>
+              <shiro:hasPermission name="profit:cancel">
+	              optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/profit/cancel?id=' + full.id + '" data-confirm="您确定取消奖励？"><i class="fa fa-send-o"></i> 取消 </a>';
               </shiro:hasPermission>
               return optionHtml;
             }

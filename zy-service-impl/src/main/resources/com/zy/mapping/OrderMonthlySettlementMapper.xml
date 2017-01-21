@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.OrderMonthlySettlementMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.mal.OrderMonthlySettlement">
+		<id column="id" property="id" />
+		<result column="year_and_month" property="yearAndMonth" />
+		<result column="settled_up_time" property="settledUpTime" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.mal.OrderMonthlySettlement" useGeneratedKeys="true" keyProperty="id">
+	  insert into `mal_order_monthly_settlement` (year_and_month,settled_up_time)
+	  values (#{yearAndMonth},#{settledUpTime})
+	</insert>
+
+	<delete id="delete">
+		delete from `mal_order_monthly_settlement` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.mal.OrderMonthlySettlement">
+		update `mal_order_monthly_settlement`
+		<set>
+			year_and_month = #{yearAndMonth},
+			settled_up_time = #{settledUpTime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `mal_order_monthly_settlement`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'yearAndMonth'">year_and_month = #{orderMonthlySettlement.yearAndMonth},</when>
+					<when test="field == 'settledUpTime'">settled_up_time = #{orderMonthlySettlement.settledUpTime},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{orderMonthlySettlement.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,year_and_month,settled_up_time
+		from `mal_order_monthly_settlement`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderMonthlySettlementQueryModel">
+		select
+		id,year_and_month,settled_up_time
+		from `mal_order_monthly_settlement`
+		<where>
+			<if test="settledUpTimeGTE != null">
+				and settled_up_time &gt;= #{settledUpTimeGTE}
+			</if>
+			<if test="yearAndMonthLK != null">
+				<bind name="yearAndMonthLK" value="'%' + yearAndMonthLK + '%'"/> and year_and_month like #{yearAndMonthLK}
+			</if>
+			<if test="settledUpTimeLT != null">
+				and settled_up_time &lt; #{settledUpTimeLT}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.OrderMonthlySettlementQueryModel">
+		select count(*) from `mal_order_monthly_settlement`
+		<where>
+			<if test="settledUpTimeGTE != null">
+				and settled_up_time &gt;= #{settledUpTimeGTE}
+			</if>
+			<if test="yearAndMonthLK != null">
+				<bind name="yearAndMonthLK" value="'%' + yearAndMonthLK + '%'"/> and year_and_month like #{yearAndMonthLK}
+			</if>
+			<if test="settledUpTimeLT != null">
+				and settled_up_time &lt; #{settledUpTimeLT}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByYearAndMonth" resultMap="baseResultMap" parameterType="string">
+		select
+		id,year_and_month,settled_up_time
+		from `mal_order_monthly_settlement`
+		where year_and_month = #{yearAndMonth}
+	</select>
+
+</mapper>

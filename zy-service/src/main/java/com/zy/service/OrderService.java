@@ -34,8 +34,10 @@ public interface OrderService {
 	Long copy(Long orderId); // 复制(转订单)
 
 	void settleUp(Long orderId); // 在订单完成时结算
-	
+
 	void settleUpProfit(Long orderId); // 在订单支付成功后结算
+
+	void settleUpMonthly(String yearAndMonth); // 月结算
 
 	List<Order> findAll(OrderQueryModel build);
 	

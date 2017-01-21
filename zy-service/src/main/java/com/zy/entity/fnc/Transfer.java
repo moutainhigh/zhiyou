@@ -1,28 +1,6 @@
 package com.zy.entity.fnc;
 
-import static com.zy.entity.fnc.Transfer.VO_ADMIN;
-import static com.zy.entity.fnc.Transfer.VO_LIST;
-import static io.gd.generator.api.query.Predicate.EQ;
-import static io.gd.generator.api.query.Predicate.GTE;
-import static io.gd.generator.api.query.Predicate.IN;
-import static io.gd.generator.api.query.Predicate.LT;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.zy.entity.usr.User;
-
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -33,6 +11,18 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+import static com.zy.entity.fnc.Transfer.VO_ADMIN;
+import static com.zy.entity.fnc.Transfer.VO_LIST;
+import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
 @Table(name = "fnc_transfer")
@@ -50,7 +40,9 @@ public class Transfer implements Serializable {
 		数据奖,
 		一级平级奖,
 		一级越级奖,
-		邮费
+		邮费,
+		平级推荐奖,  //2.0
+		特级推荐奖,  //2.0
 	}
 
 	public enum TransferStatus {
