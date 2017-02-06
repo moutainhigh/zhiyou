@@ -84,20 +84,24 @@
         <div class="table-container">
           <div class="table-toolbar">
             <form class="filter-form form-inline">
-              <input id="_sort" name="q.sort" type="hidden" value="" /> <input id="_pageNumber" name="q.pageNumber" type="hidden" value="0" /> <input id="_pageSize"
-                name="q.pageSize" type="hidden" value="20" />
-              <!-- <div class="form-group input-inline">
-                  <label class="sr-only">名称</label>
-                  <input type="text" name="q.name" maxlength="50" class="form-control" placeholder="用户名" />
-                </div>
-                <button class="btn purple filter-submit">
-                  <i class="fa fa-check"></i> 查询
-                </button> -->
+              <input id="_orderBy" name="orderBy" type="hidden" value=""/>
+              <input id="_direction" name="direction" type="hidden" value=""/>
+              <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
+              <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
+
+              <%-- <div class="form-group">
+                 <div class="btn-group">
+                   <button class="btn green" data-href="${ctx}/activity/create">
+                     <i class="fa fa-plus"></i> 新增
+                   </button>
+                 </div>
+               </div>--%>
+
             </form>
           </div>
+          <table class="table table-striped table-bordered table-hover" id="dataTable">
+          </table>
         </div>
-        <table class="table table-striped table-bordered table-hover" id="dataTable">
-        </table>
       </div>
     </div>
     <!-- END ALERTS PORTLET-->
