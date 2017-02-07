@@ -9,6 +9,7 @@ import com.zy.entity.fnc.AccountLog.InOut;
 import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.entity.usr.User;
 import com.zy.mapper.*;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ import static com.zy.entity.fnc.AccountLog.InOut.收入;
 
 @Component
 @Validated
+@Slf4j
 public class FncComponent {
 
 	@Autowired
@@ -165,12 +167,15 @@ public class FncComponent {
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
 		}
+
 		Profit profit = new Profit();
 		profit.setProfitType(profitType);
 		profit.setTitle(title);
 		profit.setUserId(userId);
 		profit.setAmount(amount);
-		profit.setSn(ServiceUtils.generateProfitSn());
+		String sn = ServiceUtils.generateProfitSn();
+		log.error(sn);
+		profit.setSn(sn);
 		profit.setCurrencyType(currencyType);
 		profit.setCreatedTime(createdTime);
 		profit.setRefId(refId);

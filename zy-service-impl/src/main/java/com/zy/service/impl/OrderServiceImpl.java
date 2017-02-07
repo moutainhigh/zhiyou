@@ -51,6 +51,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -1002,6 +1003,7 @@ public class OrderServiceImpl implements OrderService {
 			BigDecimal amount = entry.getValue();
 			Long userId = entry.getKey();
 			if (amount.compareTo(zero) > 0) {
+				try {TimeUnit.MILLISECONDS.sleep(50);} catch (InterruptedException e1) {}
 				fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "返利奖", CurrencyType.积分, amount, now);
 				logger.error(userMap.get(userId).getNickname() + "返利奖" + amount + "积分");
 			}
