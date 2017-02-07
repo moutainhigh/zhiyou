@@ -743,29 +743,29 @@ public class OrderServiceImpl implements OrderService {
 				Long parentId = buyer.getParentId();
 				if(parentId != null) {
 					User buyerParent = userMapper.findOne(parentId);
-					if(buyerParent.getUserRank() == UserRank.V4) {
-						return ;
+					if(buyerParent.getUserRank() != UserRank.V4) {
+
+						int whileTimes = 0;
+						while (parentId != null) {
+							if (whileTimes > 1000) {
+								throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+							}
+
+							buyerParent = userMapper.findOne(parentId);
+							if(buyerParent.getUserRank() == UserRank.V4) {
+								final BigDecimal saleBonus = new BigDecimal("10.00").multiply(BigDecimal.valueOf(quantity));
+								fncComponent.createProfit(parentId, Profit.ProfitType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, saleBonus, paidTime);
+
+								final BigDecimal flatBonus = new BigDecimal("9.00").multiply(BigDecimal.valueOf(quantity));
+								fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, flatBonus, paidTime);
+								break;
+							}
+
+							parentId = buyerParent.getParentId();
+							whileTimes++;
+						}
+
 					}
-				}
-
-				int whileTimes = 0;
-				while (parentId != null) {
-					if (whileTimes > 1000) {
-						throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
-					}
-
-					User buyerParent = userMapper.findOne(parentId);
-					if(buyerParent.getUserRank() == UserRank.V4) {
-						final BigDecimal saleBonus = new BigDecimal("10.00").multiply(BigDecimal.valueOf(quantity));
-						fncComponent.createProfit(parentId, Profit.ProfitType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, saleBonus, paidTime);
-
-						final BigDecimal flatBonus = new BigDecimal("9.00").multiply(BigDecimal.valueOf(quantity));
-						fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, flatBonus, paidTime);
-						break;
-					}
-
-					parentId = buyerParent.getParentId();
-					whileTimes++;
 				}
 
 			}
