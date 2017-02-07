@@ -85,6 +85,20 @@
 					</property>
 				</bean>
 
+				<!--订单月结算job-->
+				<bean id="OrderSettlementMonthlyJob"
+				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.OrderSettlementMonthlyJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0 4 4 * ?</value>
+					</property>
+				</bean>
+
 				<!--支付单取消job-->
 				<bean id="paymentCancelTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">

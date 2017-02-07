@@ -294,4 +294,15 @@ public class IndexController {
 		return "login";
 	}
 
+	@RequestMapping("/settlementMonthly")
+	@ResponseBody
+	public String orderSettlementMonthlyJob(String yeahAndMonth) {
+		try{
+			orderService.settleUpMonthly(yeahAndMonth);
+			return "success";
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+
+	}
 }

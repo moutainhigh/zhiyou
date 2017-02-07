@@ -806,6 +806,10 @@ public class OrderServiceImpl implements OrderService {
 					}
 				}
 			}
+			order.setIsProfitSettledUp(true);
+			if (orderMapper.update(order) == 0) {
+				throw new ConcurrentException();
+			}
 		}
 
 	}
