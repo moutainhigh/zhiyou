@@ -54,6 +54,11 @@
             title: '收益',
             orderable: false
           },
+	        {
+		        data: 'currencyType',
+		        title: '币种',
+		        orderable: false
+	        },
           {
             data: 'profitType',
             title: '业务名',
