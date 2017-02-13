@@ -914,6 +914,13 @@ public class OrderServiceImpl implements OrderService {
 		List<Order> orders = orderMapper.findAll(OrderQueryModel.builder()
 				.orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成})
 				.paidTimeGTE(begin).paidTimeLT(end).build());
+		orders = orders.stream().filter(v -> {
+			OrderStatus orderStatus = v.getOrderStatus();
+			if(orderStatus == OrderStatus.已发货 || orderStatus == OrderStatus.已完成) {
+				return Constants.SETTING_SUPER_ADMIN_ID.equals(v.getSellerId());
+			}
+			return true;
+		}).collect(Collectors.toList());
 		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
 		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
 		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
