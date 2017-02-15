@@ -25,4 +25,5 @@ public interface OrderMonthlySettlementMapper {
 	long count(OrderMonthlySettlementQueryModel orderMonthlySettlementQueryModel);
 
 	OrderMonthlySettlement findByYearAndMonth(String yearAndMonth);
+
 }

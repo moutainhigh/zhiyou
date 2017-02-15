@@ -56,5 +56,8 @@ public interface UserService {
 	void unbindAdmin(Long id, Long operatorId, String remark);
 
 	void modifyIsRootAdmin(Long id, boolean isRoot, String rootName, Long operatorId, String remark);
-	
+
+	void modifyIsDirector(Long id, boolean isDirector);
+
+	void modifyIsShareholder(Long id, boolean isShareholder);
 }

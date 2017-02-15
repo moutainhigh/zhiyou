@@ -21,6 +21,10 @@ public class UserListVo implements Serializable {
 	private UserRank userRank;
 	@Field(label = "是否冻结")
 	private Boolean isFrozen;
+	@Field(label = "是否董事")
+	private Boolean isDirector;
+	@Field(label = "是否股东")
+	private Boolean isShareholder;
 
 	/* 扩展 */
 	@Field(label = "用户等级")

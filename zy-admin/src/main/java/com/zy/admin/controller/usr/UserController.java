@@ -302,6 +302,20 @@ public class UserController {
 		userService.modifyIsRootAdmin(id, isRoot, rootName, getPrincipalUserId(), remark);
 		return ResultBuilder.ok("操作成功");
 	}
+
+	@RequiresPermissions("user:setDirector")
+	@RequestMapping(value = "/setDirector", method = RequestMethod.GET)
+	public String setDirector(@RequestParam Long id) {
+		userService.modifyIsDirector(id, true);
+		return "redirect:/user";
+	}
+
+	@RequiresPermissions("user:setShareholder")
+	@RequestMapping(value = "/setShareholder", method = RequestMethod.GET)
+	public String setShareholder(@RequestParam Long id) {
+		userService.modifyIsShareholder(id, true);
+		return "redirect:/user";
+	}
 	
 	@RequiresPermissions("user:setRoot")
 	@RequestMapping(value = "/setRoot", method = RequestMethod.GET)

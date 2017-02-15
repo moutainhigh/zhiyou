@@ -6,7 +6,7 @@ import io.gd.generator.annotation.Type;
 @Type(label = "货币类型")
 public enum CurrencyType {
 
-	现金("money", "U币"), 积分("point", "积分"), @Deprecated 金币("coin", "试客币"), ;
+	现金("money", "U币"), 积分("point", "积分"), 货币期权("option", "期权"), 货币股份("share", "股份");
 
 	CurrencyType(String code, String alias) {
 		this.code = code;

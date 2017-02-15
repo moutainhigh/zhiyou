@@ -44,10 +44,10 @@ public class AccountComponent {
 						accountAdminVo.setMoney(amount);
 						accountAdminVo.setMoneyLabel(GcUtils.formatCurreny(amount));
 						break;
-					case 金币:
-						accountAdminVo.setCoin(amount);
-						accountAdminVo.setCoinLabel(GcUtils.formatCurreny(amount));
-						break;
+//					case 货币期权:
+//						accountAdminVo.setCoin(amount);
+//						accountAdminVo.setCoinLabel(GcUtils.formatCurreny(amount));
+//						break;
 					case 积分:
 						accountAdminVo.setPoint(amount);
 						accountAdminVo.setPointLabel(GcUtils.formatCurreny(amount));

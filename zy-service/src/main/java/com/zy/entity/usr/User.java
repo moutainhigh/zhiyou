@@ -191,4 +191,11 @@ public class User implements Serializable {
 	@Column(length = 60, unique = true)
 	private String code;
 
+	@Field(label = "是否董事")
+	@View(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT})
+	private Boolean isDirector;
+
+	@Field(label = "是否股东")
+	@View(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT})
+	private Boolean isShareholder;
 }

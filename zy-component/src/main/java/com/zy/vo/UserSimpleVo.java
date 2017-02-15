@@ -14,6 +14,10 @@ public class UserSimpleVo implements Serializable {
 	private Long id;
 	@Field(label = "昵称")
 	private String nickname;
+	@Field(label = "是否董事")
+	private Boolean isDirector;
+	@Field(label = "是否股东")
+	private Boolean isShareholder;
 
 	/* 扩展 */
 	@Field(label = "用户等级")

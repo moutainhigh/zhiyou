@@ -3,8 +3,11 @@ package com.zy.service.impl;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
+import com.zy.component.FncComponent;
 import com.zy.component.UsrComponent;
 import com.zy.entity.fnc.Account;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Profit;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
@@ -49,6 +52,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private Producer producer;
+
+    @Autowired
+    private FncComponent fncComponent;
 
     @Override
     public User findOne(@NotNull Long id) {
@@ -387,7 +393,36 @@ public class UserServiceImpl implements UserService {
         usrComponent.recordUserLog(id, operatorId, label + "子系统", remark);
     }
 
-	@Override
+    @Override
+    public void modifyIsDirector(@NotNull Long id, boolean isDirector) {
+        User user = findAndValidate(id);
+        if(user.getIsDirector()) {
+            return ;
+        }
+        User userForMerge = new User();
+        userForMerge.setId(id);
+        userForMerge.setIsDirector(isDirector);
+        userMapper.merge(userForMerge, "isDirector");
+    }
+
+    @Override
+    public void modifyIsShareholder(@NotNull Long id, boolean isShareholder) {
+        User user = findAndValidate(id);
+        if(user.getIsShareholder()) {
+            return ;
+        }
+        User userForMerge = new User();
+        userForMerge.setId(id);
+        userForMerge.setIsShareholder(isShareholder);
+        userMapper.merge(userForMerge, "isShareholder");
+
+        //升级股东获得50W股
+        if(isShareholder) {
+            fncComponent.createAndGrantProfit(id, Profit.ProfitType.股份奖励, null, user.getNickname() + "升级股东,获得股份奖励", CurrencyType.货币股份, new BigDecimal("500000.00"), new Date());
+        }
+    }
+
+    @Override
 	public void setParentId(Long id, Long parentId) {
 		User user = findAndValidate(id);
         User parent = findAndValidate(parentId);

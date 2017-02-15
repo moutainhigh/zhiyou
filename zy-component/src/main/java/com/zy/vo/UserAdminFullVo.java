@@ -1,15 +1,15 @@
 package com.zy.vo;
 
-import io.gd.generator.annotation.Field;
-import com.zy.entity.usr.User.UserType;
 import com.zy.entity.usr.User.UserRank;
+import com.zy.entity.usr.User.UserType;
+import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,6 +39,10 @@ public class UserAdminFullVo implements Serializable {
 	private Boolean isRoot;
 	@Field(label = "子系统名称")
 	private String rootName;
+	@Field(label = "是否董事")
+	private Boolean isDirector;
+	@Field(label = "是否股东")
+	private Boolean isShareholder;
 
 	/* 扩展 */
 	@Field(label = "userInfo")

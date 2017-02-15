@@ -81,9 +81,9 @@ public class UcenterIndexController {
 			case 现金:
 				model.addAttribute("money", account.getAmount());
 				break;
-			case 金币:
-				model.addAttribute("coin", account.getAmount());			
-				break;
+//			case 金币:
+//				model.addAttribute("coin", account.getAmount());
+//				break;
 			case 积分:
 				model.addAttribute("point", account.getAmount().setScale(0));
 				break;

@@ -357,6 +357,22 @@
             data: 'userType',
             title: '用户类型'
           },
+	        {
+		        data: 'isDirector',
+		        title: '是否董事',
+		        orderable: false,
+            render: function(data, type, full) {
+		        	return data? '董事' : '';
+            }
+	        },
+	        {
+		        data: 'isShareholder',
+		        title: '是否股东',
+		        orderable: false,
+		        render: function(data, type, full) {
+			        return data? '股东' : '';
+		        }
+	        },
           {
             data: 'registerTime',
             title: '注册时间',
@@ -387,8 +403,9 @@
             title: '操作',
             orderable: false,
             render: function (data, type, full) {
-              var optionHtml = '<a class="btn btn-xs default blue-stripe user-detail" href="javascript:;" data-id="' + data + '"><i class="fa fa-search"></i> 查看 </a>';
+              var optionHtml = '';
               if (full.userType != '平台') {
+	              optionHtml = '<a class="btn btn-xs default blue-stripe user-detail" href="javascript:;" data-id="' + data + '"><i class="fa fa-search"></i> 查看 </a>';
                 <shiro:hasPermission name="user:edit">
                 optionHtml += '<a class="btn btn-xs default yellow-stripe user-modify-password" href="javascript:;" data-id="' + data + '"><i class="fa fa-edit"></i> 修改密码 </a>';
 	              optionHtml += '<a class="btn btn-xs default yellow-stripe modify-info" href="javascript:;" data-id="' + full.id + '" data-nickname="' + full.nickname + '" data-phone="' + full.phone + '"><i class="fa fa-edit"></i> 修改手机昵称 </a>';
@@ -413,6 +430,21 @@
                   optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setRoot?id=' + full.id + '" data-confirm="您确定要取消子系统？"><i class="fa fa-edit"></i> 取消子系统 </a>';
                 }
                 </shiro:hasPermission>
+	              if(full.userRank == 'V4') {
+                <shiro:hasPermission name="user:setDirector">
+                  if(!full.isDirector) {
+	                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setDirector?id=' + full.id + '" data-confirm="您确定要升级[' + full.nickname + ']为董事？"><i class="fa fa-smile-o"></i> 升级董事 </a>';
+                  }
+                </shiro:hasPermission>
+                <shiro:hasPermission name="user:setShareholder">
+                  if(!full.isShareholder) {
+	                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setShareholder?id=' + full.id + '" data-confirm="您确定要升级[' + full.nickname + ']为股东？"><i class="fa fa-smile-o"></i> 成为股东 </a>';
+                  }
+                </shiro:hasPermission>
+	              }
+	              <shiro:hasPermission name="user:setShareholder">
+
+	              </shiro:hasPermission>
               }
               return optionHtml;
             }

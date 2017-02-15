@@ -1,8 +1,8 @@
 package com.zy.vo;
 
-import io.gd.generator.annotation.Field;
-import com.zy.entity.usr.User.UserType;
 import com.zy.entity.usr.User.UserRank;
+import com.zy.entity.usr.User.UserType;
+import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,6 +37,10 @@ public class UserAdminVo implements Serializable {
 	private Boolean isRoot;
 	@Field(label = "子系统名称")
 	private String rootName;
+	@Field(label = "是否董事")
+	private Boolean isDirector;
+	@Field(label = "是否股东")
+	private Boolean isShareholder;
 
 	/* 扩展 */
 	@Field(label = "用户等级")
