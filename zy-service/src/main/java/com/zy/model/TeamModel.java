@@ -11,6 +11,6 @@ import java.util.List;
 @Setter
 public class TeamModel {
 	private User user;
-	private List<User> children = new ArrayList<>();
+	private List<User> v4Children = new ArrayList<>();
 	private List<User> directV4Children = new ArrayList<>();
 }

@@ -844,25 +844,25 @@ public class OrderServiceImpl implements OrderService {
 
 		if (totalQuantity.compareTo(lvl1) < 0) {
 			rate = rate0;
-		} else if (totalQuantity.compareTo(lvl1) >= 0 && totalQuantity.compareTo(lvl2) < 0){
+		} else if (totalQuantity.compareTo(lvl1) >= 0 && totalQuantity.compareTo(lvl2) <= 0){
 			rate = rate1;
-		} else if (totalQuantity.compareTo(lvl2) >= 0 && totalQuantity.compareTo(lvl3) < 0){
+		} else if (totalQuantity.compareTo(lvl2) > 0 && totalQuantity.compareTo(lvl3) <= 0){
 			rate = rate2;
-		} else if (totalQuantity.compareTo(lvl3) >= 0 && totalQuantity.compareTo(lvl4) < 0){
+		} else if (totalQuantity.compareTo(lvl3) > 0 && totalQuantity.compareTo(lvl4) <= 0){
 			rate = rate3;
-		} else if (totalQuantity.compareTo(lvl4) >= 0 && totalQuantity.compareTo(lvl5) < 0){
+		} else if (totalQuantity.compareTo(lvl4) > 0 && totalQuantity.compareTo(lvl5) <= 0){
 			rate = rate4;
-		} else if (totalQuantity.compareTo(lvl5) >= 0 && totalQuantity.compareTo(lvl6) < 0){
+		} else if (totalQuantity.compareTo(lvl5) > 0 && totalQuantity.compareTo(lvl6) <= 0){
 			rate = rate5;
-		} else if (totalQuantity.compareTo(lvl6) >= 0 && totalQuantity.compareTo(lvl7) < 0){
+		} else if (totalQuantity.compareTo(lvl6) > 0 && totalQuantity.compareTo(lvl7) <= 0){
 			rate = rate6;
-		} else if (totalQuantity.compareTo(lvl7) >= 0 && totalQuantity.compareTo(lvl8) < 0){
+		} else if (totalQuantity.compareTo(lvl7) > 0 && totalQuantity.compareTo(lvl8) <= 0){
 			rate = rate7;
-		} else if (totalQuantity.compareTo(lvl8) >= 0 && totalQuantity.compareTo(lvl9) < 0){
+		} else if (totalQuantity.compareTo(lvl8) > 0 && totalQuantity.compareTo(lvl9) <= 0){
 			rate = rate8;
-		} else if (totalQuantity.compareTo(lvl9) >= 0 && totalQuantity.compareTo(lvl10) < 0){
+		} else if (totalQuantity.compareTo(lvl9) > 0 && totalQuantity.compareTo(lvl10) <= 0){
 			rate = rate9;
-		} else if (totalQuantity.compareTo(lvl10) >= 0 && totalQuantity.compareTo(lvl11) < 0){
+		} else if (totalQuantity.compareTo(lvl10) > 0 && totalQuantity.compareTo(lvl11) <= 0){
 			rate = rate10;
 		} else {
 			rate = rate11;
@@ -927,13 +927,14 @@ public class OrderServiceImpl implements OrderService {
 				.map(v -> {
 					TeamModel teamModel = new TeamModel();
 					teamModel.setUser(v);
-					teamModel.setChildren(TreeHelper.sortBreadth2(users, String.valueOf(v.getId()), u -> {
+					teamModel.setV4Children(TreeHelper.sortBreadth2(v4Users, String.valueOf(v.getId()), u -> {
 						TreeNode treeNode = new TreeNode();
 						treeNode.setId(String.valueOf(u.getId()));
-						treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(u.getParentId()));
+						Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
+						treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(directV4ParentId));
 						return treeNode;
 
-					}).stream().filter(u -> u.getUserRank() == UserRank.V4).collect(Collectors.toList()));
+					}));
 					teamModel.setDirectV4Children(users.stream().filter(u -> {
 						Long userId = u.getId();
 						if (userId.equals(v.getId())) {
@@ -965,14 +966,14 @@ public class OrderServiceImpl implements OrderService {
 		Map<Long, Long> userQuantityMap = orders.stream().collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x , y) -> x + y));
 		userQuantityMap.entrySet().stream().forEach(v -> {
 			if (v.getValue() > 0) {
-				//System.out.println(userMap.get(v.getKey()).getNickname() + "个人销量" + v.getValue() + "元");
+				System.out.println(userMap.get(v.getKey()).getNickname() + "个人销量" + v.getValue() + "元");
 			}
 		});
 
 		Map<Long, Long> teamQuantityMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
 			Long userId = v.getId();
 			Long myQuantity = userQuantityMap.get(userId) == null ? 0L : userQuantityMap.get(userId);
-			Long teamQuantity = teamMap.get(userId).getChildren().stream()
+			Long teamQuantity = teamMap.get(userId).getV4Children().stream()
 					.map(u -> userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId()))
 					.reduce(0L, (x, y) -> x + y);
 			return teamQuantity + myQuantity;
@@ -1008,7 +1009,7 @@ public class OrderServiceImpl implements OrderService {
 			BigDecimal amount = entry.getValue();
 			Long userId = entry.getKey();
 			if (amount.compareTo(zero) > 0) {
-				try {TimeUnit.MILLISECONDS.sleep(50);} catch (InterruptedException e1) {}
+				try {TimeUnit.MILLISECONDS.sleep(100);} catch (InterruptedException e1) {}
 				fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "返利奖", CurrencyType.积分, amount, now);
 				logger.error(userMap.get(userId).getNickname() + "返利奖" + amount + "积分");
 			}
@@ -1044,10 +1045,11 @@ public class OrderServiceImpl implements OrderService {
 				.map(v -> {
 					TeamModel teamModel = new TeamModel();
 					teamModel.setUser(v);
-					teamModel.setChildren(sortBreadth2(users, String.valueOf(v.getId()), u -> {  //只取V4 children
+					teamModel.setV4Children(sortBreadth2(v4Users, String.valueOf(v.getId()), u -> {
 						TreeNode treeNode = new TreeNode();
 						treeNode.setId(String.valueOf(u.getId()));
-						treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(u.getParentId()));
+						Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
+						treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(directV4ParentId));
 						return treeNode;
 
 					}));
@@ -1058,7 +1060,7 @@ public class OrderServiceImpl implements OrderService {
 			Long userId = v.getId();
 			Long myQuantity = userQuantityMap.get(userId) == null ? 0L : userQuantityMap.get(userId);
 			BigDecimal profit = new BigDecimal(myQuantity).multiply(new BigDecimal("2.00"));
-			BigDecimal teamProfit = teamV4Map.get(userId).getChildren().stream()
+			BigDecimal teamProfit = teamV4Map.get(userId).getV4Children().stream()
 					.map(u -> {
 						Long quantity = userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId());
 						BigDecimal innerProfit = new BigDecimal("0.00");
@@ -1241,11 +1243,31 @@ public class OrderServiceImpl implements OrderService {
 		if (plist == null) {
 			return;
 		}
-		plist = plist.stream().filter(u -> !u.getIsDirector()).filter(u -> u.getUserRank() == UserRank.V4).collect(Collectors.toList());
+		plist = plist.stream().filter(u -> !u.getIsDirector()).collect(Collectors.toList());
 		result.addAll(plist);
 		for (User user : plist) {
 			sortBreadth2(childrenMap, result, treeNodeResolver.apply(user).getId(), treeNodeResolver);
 		}
 	}
 
+	private Long getDirectV4ParentId(Predicate<User> predicate, Map<Long, User> userMap, User u) {
+		int times = 0;
+		Long directV4ParentId = null;
+		Long parentId = u.getParentId();
+		while(parentId != null) {
+			if (times > 1000) {
+				throw new BizException(BizCode.ERROR, "循环引用");
+			}
+			User parent = userMap.get(parentId);
+			if(parent != null) {
+				if (predicate.test(parent)) {
+					directV4ParentId = parentId;
+					break;
+				}
+			}
+			parentId = parent.getParentId();
+			times ++;
+		}
+		return directV4ParentId;
+	}
 }
