@@ -209,6 +209,9 @@
 			<if test="orderStatusEQ != null">
 				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
+			<if test="productIdEQ != null">
+				and product_id = #{productIdEQ}
+			</if>
 			<if test="sellerIdEQ != null">
 				and seller_id = #{sellerIdEQ}
 			</if>
@@ -315,6 +318,9 @@
 			</if>
 			<if test="orderStatusEQ != null">
 				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="productIdEQ != null">
+				and product_id = #{productIdEQ}
 			</if>
 			<if test="sellerIdEQ != null">
 				and seller_id = #{sellerIdEQ}

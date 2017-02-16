@@ -317,6 +317,7 @@ public class Order implements Serializable {
 	private Boolean isMultiple;
 
 	//@NotNull
+	@Query(Predicate.EQ)
 	@Field(label = "商品id")
 	@View
 	private Long productId;

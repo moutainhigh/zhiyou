@@ -61,6 +61,8 @@ public class OrderQueryModel implements Serializable {
 
 	private Boolean isDeletedEQ;
 
+	private Long productIdEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;

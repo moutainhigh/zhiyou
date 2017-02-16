@@ -910,6 +910,7 @@ public class OrderServiceImpl implements OrderService {
 
 		List<Order> orders = orderMapper.findAll(OrderQueryModel.builder()
 				.orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成})
+				.productIdEQ(2L)  //月结算只针对2.0的产品
 				.paidTimeGTE(begin).paidTimeLT(end).build());
 		orders = orders.stream().filter(v -> {
 			OrderStatus orderStatus = v.getOrderStatus();
@@ -932,7 +933,7 @@ public class OrderServiceImpl implements OrderService {
 						treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(u.getParentId()));
 						return treeNode;
 
-					}));
+					}).stream().filter(u -> u.getUserRank() == UserRank.V4).collect(Collectors.toList()));
 					teamModel.setDirectV4Children(users.stream().filter(u -> {
 						Long userId = u.getId();
 						if (userId.equals(v.getId())) {
