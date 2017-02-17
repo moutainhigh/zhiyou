@@ -1023,6 +1023,7 @@ public class OrderServiceImpl implements OrderService {
 		Map<Long, BigDecimal> profitShareMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
 			Long userId = v.getId();
 			BigDecimal quantity = new BigDecimal(userQuantityMap.get(userId));
+			logger.error(v.getNickname() + "销量:" + quantity);
 			BigDecimal profit = quantity.multiply(new BigDecimal("0.4"));  //特级服务商：每人新增服务量*0.4股计算；
 			logger.error(v.getNickname() + "收益: " + profit + ", 是否董事: " + v.getIsDirector());
 			if(v.getIsDirector()) {  //联席董事: 每人新增服务量*0.4股+公司月总服务量*0.6股；
