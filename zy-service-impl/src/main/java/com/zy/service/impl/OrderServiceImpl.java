@@ -985,18 +985,18 @@ public class OrderServiceImpl implements OrderService {
 			}
 		});
 
-		BigDecimal rateOuter = new BigDecimal("128");
+		BigDecimal rate = new BigDecimal("128");
 		Map<Long, BigDecimal> profitMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
 			Long userId = v.getId();
 			BigDecimal quantity = new BigDecimal(teamQuantityMap.get(userId));
-			BigDecimal rate = getMonthlyRate(quantity);
-			BigDecimal profit = quantity.multiply(rate).multiply(rateOuter);
+			BigDecimal rate1 = getMonthlyRate(quantity);
+			BigDecimal profit = quantity.multiply(rate1).multiply(rate);
 			for (User user : teamMap.get(userId).getDirectV4Children()) {
 				if (predicate.test(user)) {
 					Long childUserId = user.getId();
 					BigDecimal childQuantity = new BigDecimal(teamQuantityMap.get(childUserId));
 					BigDecimal childRate = getMonthlyRate(childQuantity);
-					BigDecimal childProfit = childQuantity.multiply(childRate).multiply(rateOuter);
+					BigDecimal childProfit = childQuantity.multiply(childRate).multiply(rate);
 					profit = profit.subtract(childProfit);
 				}
 			}
@@ -1021,7 +1021,7 @@ public class OrderServiceImpl implements OrderService {
 		long companySales = summaryStatistics.getSum();
 		Map<Long, BigDecimal> profitShareMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
 			Long userId = v.getId();
-			BigDecimal quantity = new BigDecimal(teamQuantityMap.get(userId));
+			BigDecimal quantity = new BigDecimal(userQuantityMap.get(userId));
 			BigDecimal profit = quantity.multiply(new BigDecimal("0.4"));  //特级服务商：每人新增服务量*0.4股计算；
 			if(v.getIsDirector()) {  //联席董事: 每人新增服务量*0.4股+公司月总服务量*0.6股；
 				BigDecimal company = new BigDecimal(companySales).multiply(new BigDecimal("0.6"));
