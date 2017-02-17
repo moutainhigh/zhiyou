@@ -985,17 +985,18 @@ public class OrderServiceImpl implements OrderService {
 			}
 		});
 
+		BigDecimal rateOuter = new BigDecimal("128");
 		Map<Long, BigDecimal> profitMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
 			Long userId = v.getId();
 			BigDecimal quantity = new BigDecimal(teamQuantityMap.get(userId));
 			BigDecimal rate = getMonthlyRate(quantity);
-			BigDecimal profit = quantity.multiply(rate);
+			BigDecimal profit = quantity.multiply(rate).multiply(rateOuter);
 			for (User user : teamMap.get(userId).getDirectV4Children()) {
 				if (predicate.test(user)) {
 					Long childUserId = user.getId();
 					BigDecimal childQuantity = new BigDecimal(teamQuantityMap.get(childUserId));
 					BigDecimal childRate = getMonthlyRate(childQuantity);
-					BigDecimal childProfit = childQuantity.multiply(childRate);
+					BigDecimal childProfit = childQuantity.multiply(childRate).multiply(rateOuter);
 					profit = profit.subtract(childProfit);
 				}
 			}

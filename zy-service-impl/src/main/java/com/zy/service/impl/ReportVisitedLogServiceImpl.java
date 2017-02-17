@@ -207,6 +207,8 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 			}
 			persistence.setVisitedStatus3(reportVisitedLog.getVisitedStatus3());
 			persistence.setVisitedTime3(reportVisitedLog.getVisitedTime3());
+		}else {
+			throw new ValidationException("客服信息为空");
 		}
 		validate(persistence);
 		reportVisitedLogMapper.update(persistence);
