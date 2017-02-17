@@ -1019,7 +1019,7 @@ public class OrderServiceImpl implements OrderService {
 		/* 期权奖励 */
 		LongSummaryStatistics summaryStatistics = orders.stream().mapToLong((x) -> x.getQuantity()).summaryStatistics();
 		long companySales = summaryStatistics.getSum();
-		logger.error("公司总销量:" + companySales);
+		logger.error("公司总销量:" + companySales + "v4Users size: " + v4Users.size());
 		Map<Long, BigDecimal> profitShareMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
 			Long userId = v.getId();
 			BigDecimal quantity = new BigDecimal(userQuantityMap.get(userId));
