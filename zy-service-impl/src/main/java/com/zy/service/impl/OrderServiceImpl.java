@@ -1033,7 +1033,7 @@ public class OrderServiceImpl implements OrderService {
 			}
 			return profit;
 		}));
-
+		logger.error("profitShareMap end........");
 		for (Map.Entry<Long, BigDecimal> entry : profitShareMap.entrySet()) {
 			BigDecimal amount = entry.getValue();
 			Long userId = entry.getKey();
