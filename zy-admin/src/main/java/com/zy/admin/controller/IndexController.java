@@ -3,6 +3,7 @@ package com.zy.admin.controller;
 import com.zy.Config;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.support.cache.CacheSupport;
+import com.zy.component.LocalCacheComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.fnc.Deposit.DepositStatus;
 import com.zy.entity.fnc.PayType;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.zy.model.Constants.*;
 
@@ -69,6 +71,9 @@ public class IndexController {
 	
 	@Autowired
 	private UserComponent userComponent;
+
+	@Autowired
+	private LocalCacheComponent localCacheComponent;
 
 	private static final int DEFAULT_EXPIRE = 300;
 
@@ -238,8 +243,23 @@ public class IndexController {
 			calendar.set(Calendar.MILLISECOND, 0);
 			calendar.add(Calendar.DATE, -15);
 
-			List<Order> orders = orderService.findAll(OrderQueryModel.builder().orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成}).paidTimeGTE(calendar.getTime()).build());
-			
+			//List<Order> orders = orderService.findAll(OrderQueryModel.builder().orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成}).paidTimeGTE(calendar.getTime()).build());
+			List<Order> orders = localCacheComponent.getOrders().stream()
+					.filter(v -> {
+						OrderStatus orderStatus = v.getOrderStatus();
+						if(orderStatus == OrderStatus.已支付 || orderStatus == OrderStatus.已发货 || orderStatus == OrderStatus.已完成) {
+							return true;
+						}
+						return false;
+					})
+					.filter(v -> {
+						Date paidTime = v.getPaidTime();
+						if(paidTime.after(calendar.getTime()) || calendar.getTime().equals(paidTime)) {
+							return true;
+						}
+						return false;
+					}).collect(Collectors.toList());
+
 			final String dateFmt = "yyyy-MM-dd";
 			Date date = null;
 			List<Long> orderList = new ArrayList<Long>();
