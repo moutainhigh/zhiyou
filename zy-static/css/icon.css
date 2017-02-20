@@ -176,6 +176,27 @@
 .icon-account-yiyue {
   background-image: url(../image/icon/account/icon_yiyue.png);
 }
+.icon_account_contribution {
+  background-image: url(../image/icon/account/icon_contribution.png);
+}
+.icon_account_level {
+  background-image: url(../image/icon/account/icon_level.png);
+}
+.icon_account_option {
+  background-image: url(../image/icon/account/icon_option.png);
+}
+.icon_account_rebate {
+  background-image: url(../image/icon/account/icon_rebate.png);
+}
+.icon_account_share {
+  background-image: url(../image/icon/account/icon_share.png);
+}
+.icon_account_super {
+  background-image: url(../image/icon/account/icon_super.png);
+}
+.icon_account_umoney {
+  background-image: url(../image/icon/account/icon_umoney.png);
+}
 
 /* bank */
 .icon-bank-youzheng {
