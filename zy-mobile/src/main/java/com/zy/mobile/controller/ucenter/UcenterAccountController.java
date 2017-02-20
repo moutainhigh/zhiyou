@@ -26,10 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import static com.zy.entity.fnc.CurrencyType.现金;
-import static com.zy.entity.fnc.CurrencyType.积分;
 
 @RequestMapping("/u/account")
 @Controller
@@ -72,10 +70,26 @@ public class UcenterAccountController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String index(Principal principal, Model model) {
 		Long userId = principal.getUserId();
-		Account account1 = accountService.findByUserIdAndCurrencyType(userId, 现金);
-		model.addAttribute("amount1", account1.getAmount());
-		Account account2 = accountService.findByUserIdAndCurrencyType(userId, 积分);
-		model.addAttribute("amount2", account2.getAmount());
+		List<Account> accounts = accountService.findByUserId(userId);
+		accounts.stream().forEach(v -> {
+			switch (v.getCurrencyType()) {
+				case 现金:
+					model.addAttribute("amount1", v.getAmount());
+					break;
+				case 积分:
+					model.addAttribute("amount2", v.getAmount());
+					break;
+				case 货币期权:
+					model.addAttribute("amount3", v.getAmount());
+					break;
+				case 货币股份:
+					model.addAttribute("amount4", v.getAmount());
+					break;
+				default:
+					break;
+			}
+		});
+
 
 		BankCardQueryModel bankCardQueryModel = new BankCardQueryModel();
 		bankCardQueryModel.setUserIdEQ(principal.getUserId());
