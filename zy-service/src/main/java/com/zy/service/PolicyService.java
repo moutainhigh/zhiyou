@@ -20,4 +20,6 @@ public interface PolicyService {
 	Page<Policy> findPage(PolicyQueryModel policyQueryModel);
 
 	void checkAndModify(Long id);
+
+	void fail(Long id);
 }

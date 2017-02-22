@@ -175,7 +175,7 @@
 		  }
 	  );
 
-	  <shiro:hasPermission name="policy:modifyValidTime">
+	  <shiro:hasPermission name="policy:modify">
 	  var modifyTemplate = Handlebars.compile($('#modifyValidTimeTmpl').html());
 	  $('.table-toolbar').on('click', '#modifyValidTimeBtn',function(){
 			  var ids = '';
@@ -235,6 +235,41 @@
 				  layer.alert("请至少选择一条记录！", {icon: 2});
 			  }
 	  });
+
+	  $('.table-toolbar').on('click', '#failBtn',function(){
+		  layer.confirm('您确认要批量设置审核失败？', {
+			  btn: ['确定','取消']
+		  }, function(){
+			  var ids = '';
+			  $("input[name='id']").each(function() {
+				  var isChecked = $(this).attr("checked");
+				  if(isChecked == 'checked'){
+					  ids += $(this).val() + ',';
+				  }
+			  })
+			  if(ids.length > 0){
+				  $.ajax({
+					  url : '${ctx}/policy/fail',
+					  dataType:"json",
+					  type: "post",
+					  data : {
+						  ids : ids
+					  },
+					  success: function( result ) {
+						  layer.alert(result.message, {icon: 1});
+						  grid.getDataTable().ajax.reload(null, false);
+					  }
+				  });
+
+			  } else {
+				  layer.alert("请至少选择一条记录！", {icon: 2});
+			  }
+
+		  }, function(){
+
+		  });
+	  });
+
 	  </shiro:hasPermission>
 
   });
@@ -306,10 +341,15 @@
                 </div>
               </shiro:hasPermission>
 
-              <shiro:hasPermission name="policy:modifyValidTime">
+              <shiro:hasPermission name="policy:modify">
               <div class="form-group">
                 <button type="button" class="btn green" id="modifyValidTimeBtn">
                   <i class="fa fa-send-o"></i> 设置生效时间
+                </button>
+              </div>
+              <div class="form-group">
+                <button type="button" class="btn grey" id="failBtn">
+                  <i class="fa fa-send-o"></i> 审核失败
                 </button>
               </div>
               </shiro:hasPermission>

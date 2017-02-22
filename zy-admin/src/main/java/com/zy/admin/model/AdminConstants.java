@@ -56,7 +56,7 @@ public class AdminConstants {
 			sub.put("activity:edit", "活动编辑");
 			sub.put("policy:view", "保险单管理(查看)");
 			sub.put("policy:export", "保险单管理(导出)");
-			sub.put("policy:modifyValidTime", "保险单管理(设置生效时间)");
+			sub.put("policy:modify", "保险单管理(编辑)");
 			sub.put("policyCode:view", "保险单号管理(查看)");
 			sub.put("policyCode:edit", "保险单号管理(编辑)");
 			sub.put("policyCode:export", "保险单号管理(导出)");

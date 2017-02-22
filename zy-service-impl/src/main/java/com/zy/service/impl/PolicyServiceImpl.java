@@ -149,8 +149,11 @@ public class PolicyServiceImpl implements PolicyService {
 	public void checkAndModify(@NotNull Long id) {
 		Policy policy = findOne(id);
 		validate(policy, NOT_NULL, "policy id " + id + " not found");
-		if (policy.getPolicyStatus() != Policy.PolicyStatus.已生效) {
+		if (policy.getPolicyStatus() == Policy.PolicyStatus.已生效) {
 			return ;
+		}
+		if(policy.getPolicyStatus() != Policy.PolicyStatus.审核中) {
+			throw new BizException(BizCode.ERROR, "policy status error");
 		}
 
 		Instant instant = policy.getValidTimeEnd().toInstant();
@@ -171,8 +174,20 @@ public class PolicyServiceImpl implements PolicyService {
 		}
 	}
 
-	public static void main(String[] args) {
-		LocalDateTime localDateTime = LocalDateTime.now();
-		System.out.println(localDateTime.minusDays(15));
+	@Override
+	public void fail(@NotNull Long id) {
+		Policy policy = findOne(id);
+		validate(policy, NOT_NULL, "policy id " + id + " not found");
+		if (policy.getPolicyStatus() == Policy.PolicyStatus.未通过) {
+			return ;
+		}
+		if (policy.getPolicyStatus() != Policy.PolicyStatus.审核中) {
+			throw new BizException(BizCode.ERROR, "policy status error");
+		}
+
+		Policy merge = new Policy();
+		merge.setId(id);
+		merge.setPolicyStatus(Policy.PolicyStatus.未通过);
+		policyMapper.merge(merge, "policyStatus");
 	}
 }
