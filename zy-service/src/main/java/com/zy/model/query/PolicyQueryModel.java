@@ -1,17 +1,13 @@
 package com.zy.model.query;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.io.Serializable;
-
+import com.zy.entity.act.Policy.PolicyStatus;
 import io.gd.generator.api.query.Direction;
+import lombok.*;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,6 +17,10 @@ import java.util.Date;
 public class PolicyQueryModel implements Serializable {
 
 	private Long idEQ;
+
+	private PolicyStatus policyStatusEQ;
+
+	private PolicyStatus[] policyStatusIN;
 
 	private Long reportIdEQ;
 
@@ -43,6 +43,14 @@ public class PolicyQueryModel implements Serializable {
 	private Date createdTimeGTE;
 
 	private Date createdTimeLT;
+
+	private Date validTimeBeginGTE;
+
+	private Date validTimeBeginLT;
+
+	private Date validTimeEndGTE;
+
+	private Date validTimeEndLT;
 
 	private Integer pageNumber;
 
@@ -100,11 +108,14 @@ public class PolicyQueryModel implements Serializable {
 		fieldNames.add("code");
 		fieldNames.add("reportId");
 		fieldNames.add("gender");
+		fieldNames.add("validTimeEnd");
+		fieldNames.add("policyStatus");
 		fieldNames.add("image1");
 		fieldNames.add("userId");
 		fieldNames.add("image2");
 		fieldNames.add("version");
 		fieldNames.add("realname");
+		fieldNames.add("validTimeBegin");
 		fieldNames.add("phone");
 		fieldNames.add("idCardNumber");
 		fieldNames.add("createdTime");

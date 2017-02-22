@@ -39,12 +39,24 @@ public class Policy implements Serializable {
 	public static final String VO_DETAIL = "PolicyDetailVo";
 	public static final String VO_EXPORT = "PolicyExportVo";
 
+	@Type(label = "保险进度状态")
+	public enum PolicyStatus {
+		审核中, 已生效, 未通过, 已到期
+	}
+
 	@Id
 	@Field(label = "id")
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@Query({Predicate.EQ})
 	@View(groups = VO_EXPORT, field = @Field(label = "序号", order = 10))
 	private Long id;
+
+	@NotNull
+	@Query({Predicate.EQ, Predicate.IN})
+	@Field(label = "保险进度状态")
+	@View
+	@View(name = "policyStatusStyle", type = String.class, groups = {VO_ADMIN})
+	private Policy.PolicyStatus policyStatus;
 
 	@NotNull
 	@Query(Predicate.EQ)
@@ -103,9 +115,12 @@ public class Policy implements Serializable {
 	@View(groups = VO_EXPORT, field = @Field(label = "证件号码", order = 30))
 	private String idCardNumber;
 
+	@NotBlank
 	@URL
 	@StringBinder
-	@Field(label = "图片1")
+	@Field(label = "图片1", description = "身份证正面照")
+	@View(name = "image1Thumbnail", groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
+	@View
 	private String image1;
 
 	@URL
@@ -119,6 +134,18 @@ public class Policy implements Serializable {
 	@Field(label = "创建时间")
 	@View(name = "createdTimeLabel", type = String.class, groups = {VO_ADMIN})
 	private Date createdTime;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Query({GTE,LT})
+	@Field(label = "有效时间起")
+	@View(name = "validTimeBeginLabel", type = String.class, groups = {VO_ADMIN})
+	private Date validTimeBegin;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Query({GTE,LT})
+	@Field(label = "有效时间止")
+	@View(name = "validTimeEndLabel", type = String.class, groups = {VO_ADMIN})
+	private Date validTimeEnd;
 
 	@NotNull
 	@Version

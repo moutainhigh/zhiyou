@@ -150,29 +150,49 @@
           },
           {
             data: 'depositAmount',
-            title: '积分充值',
+            title: 'U币充值',
             orderable: false
           },
           {
             data: 'withdrawAmount',
-            title: '积分提现',
+            title: 'U币提现',
             orderable: false
           },
           {
             data: 'paymentAmount',
-            title: '积分支付',
+            title: 'U币支付',
             orderable: false
           },
           {
             data: 'profitAmount',
-            title: '积分收益',
+            title: 'U币收益',
             orderable: false
           },
           {
             data: 'accountAmount',
-            title: '积分余额',
+            title: 'U币余额',
             orderable: false
           },
+	        {
+		        data: 'withdrawPointAmount',
+		        title: '积分提现',
+		        orderable: false
+	        },
+	        {
+		        data: 'paymentPointAmount',
+		        title: '积分支付',
+		        orderable: false
+	        },
+	        {
+		        data: 'profitPointAmount',
+		        title: '积分收益',
+		        orderable: false
+	        },
+	        {
+		        data: 'accountPointAmount',
+		        title: '积分余额',
+		        orderable: false
+	        },
           {
             data: 'id',
             title: '操作',
@@ -219,31 +239,31 @@
       <div class="row">
         <div class="col-md-2">
               <div class="note note-info">
-                  <h4 class="block">充值总积分</h4>
+                  <h4 class="block">充值总U币</h4>
                   <p id="totalDepositAmount">0.00</p>
               </div>
           </div>
           <div class="col-md-2">
               <div class="note note-success">
-                  <h4 class="block">提现总积分</h4>
+                  <h4 class="block">提现总U币</h4>
                   <p id="totalWithdrawAmount">0.00</p>
               </div>
           </div>
           <div class="col-md-2">
               <div class="note note-danger">
-                  <h4 class="block">支付总积分</h4>
+                  <h4 class="block">支付总U币</h4>
                   <p id="totalPaymentAmount">0.00</p>
               </div>
           </div>
           <div class="col-md-2">
               <div class="note note-success">
-                  <h4 class="block">收益总积分</h4>
+                  <h4 class="block">收益总U币</h4>
                   <p id="totalProfitAmount">0.00</p>
               </div>
           </div>
           <div class="col-md-2">
               <div class="note note-info">
-                  <h4 class="block">余额总积分</h4>
+                  <h4 class="block">余额总U币</h4>
                   <p id="totalAccountAmount">0.00</p>
               </div>
           </div>

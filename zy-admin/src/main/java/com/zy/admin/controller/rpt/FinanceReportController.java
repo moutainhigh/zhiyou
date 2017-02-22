@@ -191,6 +191,10 @@ public class FinanceReportController {
 			financeReportVo.setWithdrawAmount(zero);
 			financeReportVo.setProfitAmount(zero);
 			financeReportVo.setAccountAmount(zero);
+			financeReportVo.setAccountPointAmount(zero);
+			financeReportVo.setPaymentPointAmount(zero);
+			financeReportVo.setProfitPointAmount(zero);
+			financeReportVo.setWithdrawPointAmount(zero);
 			return financeReportVo;
 		}));
 		
@@ -198,13 +202,16 @@ public class FinanceReportController {
 			Long userId = payment.getUserId();
 			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
 			if(financeReportVo != null) {
-				BigDecimal amount = financeReportVo.getPaymentAmount();
-				if(amount == null) {
-					amount = new BigDecimal("0.00");
+				{
+					BigDecimal amount = financeReportVo.getPaymentAmount() == null? zero : financeReportVo.getPaymentAmount();
+					BigDecimal amount1 = payment.getAmount1() == null? zero : payment.getAmount1();
+					financeReportVo.setPaymentAmount(amount.add(amount1));
 				}
-				amount = amount.add(payment.getAmount1());
-				financeReportVo.setPaymentAmount(amount);
-				
+				{
+					BigDecimal amount = financeReportVo.getPaymentPointAmount() == null? zero : financeReportVo.getPaymentPointAmount();
+					BigDecimal amount2 = payment.getAmount2() == null? zero : payment.getAmount2();
+					financeReportVo.setPaymentPointAmount(amount.add(amount2));
+				}
 				userFinanceReportMap.put(userId, financeReportVo);
 			}
 		}
@@ -224,46 +231,61 @@ public class FinanceReportController {
 			}
 		}
 
-		for(Withdraw withdraw : filterWithdraws) {
+		for (Withdraw withdraw : filterWithdraws) {
 			Long userId = withdraw.getUserId();
 			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
-			if(financeReportVo != null) {
-				BigDecimal amount = financeReportVo.getWithdrawAmount();
-				if(amount == null) {
-					amount = new BigDecimal("0.00");
+			if (financeReportVo != null) {
+
+				CurrencyType currencyType = withdraw.getCurrencyType();
+				BigDecimal withdrawAmount = withdraw.getAmount();
+
+				if (currencyType == CurrencyType.现金) {
+					BigDecimal amount = financeReportVo.getWithdrawAmount() == null? zero : financeReportVo.getWithdrawAmount();
+					financeReportVo.setWithdrawAmount(amount.add(withdrawAmount));
+				} else if (currencyType == CurrencyType.积分) {
+					BigDecimal amount = financeReportVo.getWithdrawPointAmount() == null? zero : financeReportVo.getWithdrawPointAmount();
+					financeReportVo.setWithdrawPointAmount(amount.add(withdrawAmount));
 				}
-				amount = amount.add(withdraw.getAmount());
-				financeReportVo.setWithdrawAmount(amount);
-				
+
 				userFinanceReportMap.put(userId, financeReportVo);
 			}
 		}
 		
-		for(Profit profit : filterProfits) {
+		for (Profit profit : filterProfits) {
 			Long userId = profit.getUserId();
 			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
-			if(financeReportVo != null) {
-				BigDecimal amount = financeReportVo.getProfitAmount();
-				if(amount == null) {
-					amount = new BigDecimal("0.00");
+			if (financeReportVo != null) {
+
+				CurrencyType currencyType = profit.getCurrencyType();
+				BigDecimal profitAmount = profit.getAmount();
+
+				if (currencyType == CurrencyType.现金) {
+					BigDecimal amount = financeReportVo.getProfitAmount() == null? zero : financeReportVo.getProfitAmount();
+					financeReportVo.setProfitAmount(amount.add(profitAmount));
+				} else if (currencyType == CurrencyType.积分) {
+					BigDecimal amount = financeReportVo.getProfitPointAmount() == null? zero : financeReportVo.getProfitPointAmount();
+					financeReportVo.setProfitPointAmount(amount.add(profitAmount));
 				}
-				amount = amount.add(profit.getAmount());
-				financeReportVo.setProfitAmount(amount);
 				
 				userFinanceReportMap.put(userId, financeReportVo);
 			}
 		}
 
-		for(Account account : filterAccounts) {
+		for (Account account : filterAccounts) {
 			Long userId = account.getUserId();
 			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
-			if(financeReportVo != null) {
-				BigDecimal amount = financeReportVo.getAccountAmount();
-				if(amount == null) {
-					amount = new BigDecimal("0.00");
+			if (financeReportVo != null) {
+
+				CurrencyType currencyType = account.getCurrencyType();
+				BigDecimal profitAmount = account.getAmount();
+
+				if (currencyType == CurrencyType.现金) {
+					BigDecimal amount = financeReportVo.getAccountAmount() == null? zero : financeReportVo.getAccountAmount();
+					financeReportVo.setProfitAmount(amount.add(profitAmount));
+				} else if (currencyType == CurrencyType.积分) {
+					BigDecimal amount = financeReportVo.getAccountPointAmount() == null? zero : financeReportVo.getAccountPointAmount();
+					financeReportVo.setProfitPointAmount(amount.add(profitAmount));
 				}
-				amount = amount.add(account.getAmount());
-				financeReportVo.setAccountAmount(amount);
 				
 				userFinanceReportMap.put(userId, financeReportVo);
 			}

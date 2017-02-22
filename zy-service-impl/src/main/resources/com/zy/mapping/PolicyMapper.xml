@@ -4,6 +4,7 @@
 
 	<resultMap id="baseResultMap" type="com.zy.entity.act.Policy">
 		<id column="id" property="id" />
+		<result column="policy_status" property="policyStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="report_id" property="reportId" />
 		<result column="user_id" property="userId" />
 		<result column="realname" property="realname" />
@@ -15,12 +16,14 @@
 		<result column="image1" property="image1" />
 		<result column="image2" property="image2" />
 		<result column="created_time" property="createdTime" />
+		<result column="valid_time_begin" property="validTimeBegin" />
+		<result column="valid_time_end" property="validTimeEnd" />
 		<result column="version" property="version" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.act.Policy" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_policy` (report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,version)
-	  values (#{reportId},#{userId},#{realname},#{birthday},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{code},#{idCardNumber},#{image1},#{image2},#{createdTime},#{version})
+	  insert into `act_policy` (policy_status,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,valid_time_begin,valid_time_end,version)
+	  values (#{policyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{reportId},#{userId},#{realname},#{birthday},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{code},#{idCardNumber},#{image1},#{image2},#{createdTime},#{validTimeBegin},#{validTimeEnd},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -30,6 +33,7 @@
 	<update id="update" parameterType="com.zy.entity.act.Policy">
 		update `act_policy`
 		<set>
+			policy_status = #{policyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			report_id = #{reportId},
 			user_id = #{userId},
 			realname = #{realname},
@@ -41,6 +45,8 @@
 			image1 = #{image1},
 			image2 = #{image2},
 			created_time = #{createdTime},
+			valid_time_begin = #{validTimeBegin},
+			valid_time_end = #{validTimeEnd},
 			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
@@ -51,6 +57,7 @@
 			<set>
 				<foreach collection="fields" item="field">
 				<choose>
+					<when test="field == 'policyStatus'">policy_status = #{policy.policyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.act.Policy$PolicyStatus},</when>
 					<when test="field == 'reportId'">report_id = #{policy.reportId},</when>
 					<when test="field == 'userId'">user_id = #{policy.userId},</when>
 					<when test="field == 'realname'">realname = #{policy.realname},</when>
@@ -62,6 +69,8 @@
 					<when test="field == 'image1'">image1 = #{policy.image1},</when>
 					<when test="field == 'image2'">image2 = #{policy.image2},</when>
 					<when test="field == 'createdTime'">created_time = #{policy.createdTime},</when>
+					<when test="field == 'validTimeBegin'">valid_time_begin = #{policy.validTimeBegin},</when>
+					<when test="field == 'validTimeEnd'">valid_time_end = #{policy.validTimeEnd},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -70,21 +79,38 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,version
+		id,policy_status,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,valid_time_begin,valid_time_end,version
 		from `act_policy`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.PolicyQueryModel">
 		select
-		id,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,version
+		id,policy_status,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,valid_time_begin,valid_time_end,version
 		from `act_policy`
 		<where>
+			<if test="validTimeBeginLT != null">
+				and valid_time_begin &lt; #{validTimeBeginLT}
+			</if>
 			<if test="reportIdEQ != null">
 				and report_id = #{reportIdEQ}
 			</if>
+			<if test="policyStatusIN != null">
+				<if test="policyStatusIN.length != 0">
+				and policy_status in
+				<foreach collection="policyStatusIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+				</if>
+				<if test="policyStatusIN.length == 0">
+				1 = 2
+				</if>
+			</if>
 			<if test="codeEQ != null">
 				and code = #{codeEQ}
+			</if>
+			<if test="validTimeEndGTE != null">
+				and valid_time_end &gt;= #{validTimeEndGTE}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
@@ -118,11 +144,20 @@
 			<if test="idCardNumberLK != null">
 				<bind name="idCardNumberLK" value="'%' + idCardNumberLK + '%'"/> and id_card_number like #{idCardNumberLK}
 			</if>
+			<if test="policyStatusEQ != null">
+				and policy_status = #{policyStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="validTimeEndLT != null">
+				and valid_time_end &lt; #{validTimeEndLT}
+			</if>
 			<if test="phoneEQ != null">
 				and phone = #{phoneEQ}
 			</if>
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="validTimeBeginGTE != null">
+				and valid_time_begin &gt;= #{validTimeBeginGTE}
 			</if>
 		</where>
 		<choose>
@@ -141,11 +176,28 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.PolicyQueryModel">
 		select count(*) from `act_policy`
 		<where>
+			<if test="validTimeBeginLT != null">
+				and valid_time_begin &lt; #{validTimeBeginLT}
+			</if>
 			<if test="reportIdEQ != null">
 				and report_id = #{reportIdEQ}
 			</if>
+			<if test="policyStatusIN != null">
+				<if test="policyStatusIN.length != 0">
+				and policy_status in
+				<foreach collection="policyStatusIN" item="item" open="(" separator="," close=")">
+				#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+				</foreach>
+				</if>
+				<if test="policyStatusIN.length == 0">
+				1 = 2
+				</if>
+			</if>
 			<if test="codeEQ != null">
 				and code = #{codeEQ}
+			</if>
+			<if test="validTimeEndGTE != null">
+				and valid_time_end &gt;= #{validTimeEndGTE}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
@@ -179,11 +231,20 @@
 			<if test="idCardNumberLK != null">
 				<bind name="idCardNumberLK" value="'%' + idCardNumberLK + '%'"/> and id_card_number like #{idCardNumberLK}
 			</if>
+			<if test="policyStatusEQ != null">
+				and policy_status = #{policyStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="validTimeEndLT != null">
+				and valid_time_end &lt; #{validTimeEndLT}
+			</if>
 			<if test="phoneEQ != null">
 				and phone = #{phoneEQ}
 			</if>
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="validTimeBeginGTE != null">
+				and valid_time_begin &gt;= #{validTimeBeginGTE}
 			</if>
 		</where>
 	</select>

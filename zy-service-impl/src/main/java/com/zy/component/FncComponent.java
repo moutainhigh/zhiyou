@@ -161,8 +161,9 @@ public class FncComponent {
 		return profit;
 	}
 
-	public Profit createProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
-	                                          @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount, Date createdTime) {
+	public Profit createProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title
+	                                          , @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount
+												, Date createdTime, String remark) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
@@ -182,6 +183,7 @@ public class FncComponent {
 		profit.setProfitStatus(Profit.ProfitStatus.待发放);
 		profit.setGrantedTime(null);
 		profit.setVersion(0);
+		profit.setRemark(remark);
 		validate(profit);
 		profitMapper.insert(profit);
 		return profit;

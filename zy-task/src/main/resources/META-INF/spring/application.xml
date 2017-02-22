@@ -24,6 +24,7 @@
 	<dubbo:reference interface="com.zy.service.TransferService" id="transferService"/>
 	<dubbo:reference interface="com.zy.Config" id="config"/>
 	<dubbo:reference interface="com.zy.service.NotifyService" id="notifyService"/>
+	<dubbo:reference interface="com.zy.service.PolicyService" id="policyService"/>
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
 
@@ -112,6 +113,19 @@
 					</property>
 				</bean>
 
+				<!-- 保单过期检查 -->
+				<bean id="policyCheckJob"
+				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.PolicyCheckJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0 6 * * ? *</value>
+					</property>
+				</bean>
 				<!--收益单结算job-->
 				<!--<bean id="profitGrantJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
 					<!--<property name="jobDetail">-->

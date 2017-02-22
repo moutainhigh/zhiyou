@@ -1,11 +1,13 @@
 package com.zy.service.impl;
 
 import com.zy.common.exception.BizException;
+import com.zy.common.exception.ValidationException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.act.Policy;
 import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
 import com.zy.entity.usr.User;
+import com.zy.extend.Producer;
 import com.zy.mapper.PolicyCodeMapper;
 import com.zy.mapper.PolicyMapper;
 import com.zy.mapper.ReportMapper;
@@ -18,10 +20,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.*;
+import static com.zy.model.Constants.TOPIC_POLICY_EXPIRE_SOON;
 
 @Service
 @Validated
@@ -38,7 +44,10 @@ public class PolicyServiceImpl implements PolicyService {
 	
 	@Autowired
 	private UserMapper userMapper;
-	
+
+	@Autowired
+	private Producer producer;
+
 	@Override
 	public Policy create(@NotNull Policy policy) {
 		Long reportId = policy.getReportId();
@@ -73,6 +82,7 @@ public class PolicyServiceImpl implements PolicyService {
 		policy.setUserId(report.getUserId());
 		policy.setCreatedTime(new Date());
 		policy.setReportId(reportId);
+		policy.setPolicyStatus(Policy.PolicyStatus.审核中);
 		policy.setVersion(0);
 		validate(policy);
 		if(policyMapper.insert(policy) > 0) {
@@ -110,4 +120,59 @@ public class PolicyServiceImpl implements PolicyService {
 		return policyMapper.findOne(id);
 	}
 
+	@Override
+	public void modifyValidTime(@NotNull Long id , @NotNull Date beginTime, @NotNull Date endTime) {
+		Policy policy = findOne(id);
+		validate(policy, NOT_NULL, "policy id " + id + " not found");
+		Policy.PolicyStatus policyStatus = policy.getPolicyStatus();
+		if (policyStatus == Policy.PolicyStatus.已生效) {
+			return;
+		}
+		if (policyStatus != Policy.PolicyStatus.审核中) {
+			throw new BizException(BizCode.ERROR, "policy status error: " + policyStatus);
+		}
+
+		if(beginTime.after(endTime) || beginTime.equals(endTime)) {
+			 throw new ValidationException("保险单生效时间异常, 结束时间应大于起始时间");
+		}
+		if (endTime.before(new Date())) {
+			throw new ValidationException("保险单生效时间异常, 结束时间应大于当前时间");
+		}
+
+		policy.setPolicyStatus(Policy.PolicyStatus.已生效);
+		policy.setValidTimeBegin(beginTime);
+		policy.setValidTimeEnd(endTime);
+		policyMapper.merge(policy, "policyStatus", "validTimeBegin", "validTimeEnd");
+	}
+
+	@Override
+	public void checkAndModify(@NotNull Long id) {
+		Policy policy = findOne(id);
+		validate(policy, NOT_NULL, "policy id " + id + " not found");
+		if (policy.getPolicyStatus() != Policy.PolicyStatus.已生效) {
+			return ;
+		}
+
+		Instant instant = policy.getValidTimeEnd().toInstant();
+		ZoneId zone = ZoneId.systemDefault();
+		LocalDateTime validTimeEnd = LocalDateTime.ofInstant(instant, zone);
+		LocalDateTime now = LocalDateTime.now();
+		if (validTimeEnd.isBefore(now)) {
+			Policy merge = new Policy();
+			merge.setId(id);
+			merge.setPolicyStatus(Policy.PolicyStatus.已到期);
+			policyMapper.merge(merge, "policyStatus");
+		} else {
+			LocalDateTime fifteenDaysAgo = validTimeEnd.minusDays(15);
+			if(fifteenDaysAgo.isBefore(now)) {
+				producer.send(TOPIC_POLICY_EXPIRE_SOON, id);
+			}
+
+		}
+	}
+
+	public static void main(String[] args) {
+		LocalDateTime localDateTime = LocalDateTime.now();
+		System.out.println(localDateTime.minusDays(15));
+	}
 }

@@ -67,6 +67,9 @@
         'code' : {
           required : true
         },
+        'image1' : {
+	        required : true
+        },
         'idCardNumber' : {
           required : true
         },
@@ -143,6 +146,20 @@
       }
     });
 
+	  $('.image-single').imageupload({
+		  width : 120,
+		  height : 75,
+	  });
+
+	  $('.image-view').click(function() {
+		  var url = $(this).attr('data-src');
+		  var title = $(this).attr('data-title');
+		  $.imageview({
+			  url : url,
+			  title : title
+		  });
+	  });
+
   });
   
   function showProductList() {
@@ -162,6 +179,7 @@
     $('.product-info .list-unit').html('<span>' + product.title + '</span>');
     $('.product-info .list-icon').removeClass('list-icon').html('<img class="image-40" src="' + product.image + '">');
   }
+
 </script>
 <script id="productListTpl" type="text/html">
   <aside id="productList" class="abs-lt size-100p bg-gray zindex-1000">
@@ -341,6 +359,19 @@
             <label class="list-label" for="idCardNumber">身份证号</label>
             <div class="list-text">
               <input type="text" name="idCardNumber" class="form-input" value="${policy.idCardNumber}" placeholder="填写身份证号">
+            </div>
+          </div>
+          <div class="list-item">
+            <label class="list-label">正面照</label>
+            <div class="list-text image-upload">
+              <div class="image-item image-single ">
+                <input type="hidden" name="image1" id="image1" value="">
+                <img src="${stccdn}/image/upload_240_150.png">
+                <input type="file">
+              </div>
+            </div>
+            <div class="list-unit">
+              <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_1.jpg" data-title="身份证正面"><i class="fa fa-question-circle-o"></i> 示意图</a>
             </div>
           </div>
           <div class="list-item">

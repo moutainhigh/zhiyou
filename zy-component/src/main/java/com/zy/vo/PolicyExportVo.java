@@ -1,7 +1,8 @@
 package com.zy.vo;
 
-import io.gd.generator.annotation.Field;
+import com.zy.entity.act.Policy.PolicyStatus;
 import com.zy.entity.usr.UserInfo.Gender;
+import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,8 @@ public class PolicyExportVo implements Serializable {
 	/* 原生 */
 	@Field(label = "序号", order = 10)
 	private Long id;
+	@Field(label = "保险进度状态")
+	private PolicyStatus policyStatus;
 	@Field(label = "姓名", order = 20)
 	private String realname;
 	@Field(label = "性别", order = 40)
@@ -21,6 +24,8 @@ public class PolicyExportVo implements Serializable {
 	private String phone;
 	@Field(label = "证件号码", order = 30)
 	private String idCardNumber;
+	@Field(label = "图片1")
+	private String image1;
 
 	/* 扩展 */
 	@Field(label = "出生年月", order = 50)

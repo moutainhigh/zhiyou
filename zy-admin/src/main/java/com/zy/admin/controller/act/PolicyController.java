@@ -1,22 +1,9 @@
 package com.zy.admin.controller.act;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.common.util.ExcelUtils;
 import com.zy.common.util.WebUtils;
@@ -26,6 +13,25 @@ import com.zy.model.query.PolicyQueryModel;
 import com.zy.service.PolicyService;
 import com.zy.vo.PolicyAdminVo;
 import com.zy.vo.PolicyExportVo;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 @RequestMapping("/policy")
 @Controller
@@ -68,5 +74,28 @@ public class PolicyController {
 		ExcelUtils.exportExcel(policyExportVos, PolicyExportVo.class, os);
 
 		return null;
+	}
+
+	@RequiresPermissions("policy:modifyValidTime")
+	@RequestMapping(value = "/modifyValidTime")
+	@ResponseBody
+	public Result<?> modifyValidTime(@NotBlank String ids, Date beginTime, Date endTime) {
+		if(StringUtils.isBlank(ids)){
+			return ResultBuilder.error("请至少选择一条记录！");
+		} else {
+			String[] idStringArray = ids.split(",");
+			for(String idString : idStringArray){
+				Long id = new Long(idString);
+				Policy policy = policyService.findOne(id);
+				validate(policy, NOT_NULL, "policy id" + id + " not found");
+				validate(policy, v -> (v.getPolicyStatus() == Policy.PolicyStatus.审核中), "PolicyStatus is error, policy id is " + id + "");
+				try {
+					policyService.modifyValidTime(id, beginTime, endTime);
+				} catch (Exception e) {
+					return ResultBuilder.error(e.getMessage());
+				}
+			}
+			return ResultBuilder.ok("收益发放成功！");
+		}
 	}
 }

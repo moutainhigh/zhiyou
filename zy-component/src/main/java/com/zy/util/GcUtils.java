@@ -2,6 +2,7 @@ package com.zy.util;
 
 import com.zy.common.exception.ValidationException;
 import com.zy.common.util.Identities;
+import com.zy.entity.act.Policy;
 import com.zy.entity.fnc.*;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.ProductReplacement;
@@ -348,6 +349,27 @@ public class GcUtils {
 				labelClass = "success";
 				break;
 			case 已驳回:
+				labelClass = "default";
+				break;
+			default:
+				break;
+		}
+		return labelClass;
+	}
+
+	public static String getPolicyStatusStyle(Policy.PolicyStatus policyStatus) {
+		String labelClass = "default";
+		switch (policyStatus) {
+			case 审核中:
+				labelClass = "info";
+				break;
+			case 已生效:
+				labelClass = "success";
+				break;
+			case 未通过:
+				labelClass = "default";
+				break;
+			case 已到期:
 				labelClass = "default";
 				break;
 			default:

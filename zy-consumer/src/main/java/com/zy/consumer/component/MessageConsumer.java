@@ -1,22 +1,21 @@
 package com.zy.consumer.component;
 
 import com.zy.consumer.extend.AbstractConsumer;
+import com.zy.entity.act.Policy;
 import com.zy.entity.sys.Message;
 import com.zy.entity.usr.User;
 import com.zy.service.MessageService;
+import com.zy.service.PolicyService;
 import com.zy.service.UserService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 
 import static com.zy.entity.usr.User.UserRank.*;
-import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
-import static com.zy.model.Constants.TOPIC_USER_RANK_CHANGED;
-import static java.math.BigDecimal.ZERO;
+import static com.zy.model.Constants.*;
 import static java.util.Objects.isNull;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -33,10 +32,14 @@ public class MessageConsumer extends AbstractConsumer {
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private PolicyService policyService;
+
     public MessageConsumer() {
         super(MessageConsumer.class.getSimpleName()
                 , TOPIC_REGISTER_SUCCESS
-                , TOPIC_USER_RANK_CHANGED);
+                , TOPIC_USER_RANK_CHANGED
+                , TOPIC_POLICY_EXPIRE_SOON);
     }
 
     //String TOPIC_REGISTER_SUCCESS = "register-success"; // 注册成功
@@ -71,6 +74,13 @@ public class MessageConsumer extends AbstractConsumer {
                 if (isNotBlank(desc)) {
                     sendMessage(message(user.getId(), "等级变动", String.format("恭喜你已成功升级为【%s】", desc), token));
                 }
+            }
+        } else if (TOPIC_POLICY_EXPIRE_SOON.intern() == intern) {
+            final Policy policy = policyService.findOne(refId);
+            if (isNull(policy)) {
+                warn(topic, refId, token, version);
+            } else {
+                sendMessage(message(policy.getUserId(), "保单即将过期提醒", "您的保单即将过期, 请重新投保", token));
             }
         }
     }
