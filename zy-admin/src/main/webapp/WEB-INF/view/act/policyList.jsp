@@ -328,6 +328,16 @@
               </div>
 
               <div class="form-group">
+                <select name="policyStatusEQ" class="form-control">
+                  <option value="">-- 保险进度状态 --</option>
+                  <option value="0">审核中</option>
+                  <option value="1">已生效</option>
+                  <option value="2">未通过</option>
+                  <option value="3">已到期</option>
+                </select>
+              </div>
+
+              <div class="form-group">
                 <button class="btn blue filter-submit">
                   <i class="fa fa-search"></i> 查询
                 </button>
