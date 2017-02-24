@@ -58,7 +58,7 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 		Report report = reportMapper.findOne(reportId);
 		validate(report, NOT_NULL, "report id " + reportId + "not found");
 		if(report.getPreConfirmStatus() != 已通过) {
-			throw new ValidationException("pre confirm status error: " + report.getPreConfirmStatus());
+			throw new ValidationException("preConfirm status error: " + report.getPreConfirmStatus());
 		}
 		if(report.getConfirmStatus() != 待审核) {
 			return ;
@@ -111,6 +111,9 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 		validate(reportId, NOT_NULL, "report id " + reportId + " is null");
 		Report report = reportMapper.findOne(reportId);
 		validate(report, NOT_NULL, "report id " + reportId + "not found");
+		if(report.getPreConfirmStatus() != 已通过) {
+			throw new ValidationException("preConfirm status error: " + report.getPreConfirmStatus());
+		}
 		if(report.getConfirmStatus() != 待审核) {
 			return ;
 		}
