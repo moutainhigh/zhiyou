@@ -3,6 +3,7 @@ package com.zy.service.impl;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ValidationException;
 import com.zy.common.model.query.Page;
+import com.zy.component.ActComponent;
 import com.zy.entity.act.Report;
 import com.zy.entity.act.ReportVisitedLog;
 import com.zy.entity.sys.ConfirmStatus;
@@ -39,6 +40,9 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 
 	@Autowired
 	private UserMapper userMapper;
+
+	@Autowired
+	private ActComponent actComponent;
 
 	@Override
 	public ReportVisitedLog findOne(@NotNull Long id) {
@@ -81,7 +85,7 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 				report.setConfirmedTime(new Date());
 			}
 			reportMapper.update(report);
-
+			actComponent.recordReportLog(reportId, "新增回访结果");
 		} else {
 			reportVisitedLog.setConfirmStatus(待审核);
 		}
@@ -208,6 +212,7 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 		validate(persistence);
 		reportVisitedLogMapper.update(persistence);
 		reportMapper.update(report);
+		actComponent.recordReportLog(reportId, "检测报告再次回访");
 	}
 
 	private ConfirmStatus checkSuccessAndReturnStatus(String visitedStatus) {

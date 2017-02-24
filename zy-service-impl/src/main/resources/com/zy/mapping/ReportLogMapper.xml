@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.ReportLogMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.act.ReportLog">
+		<id column="id" property="id" />
+		<result column="report_id" property="reportId" />
+		<result column="report_pre_confirm_status" property="reportPreConfirmStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="report_confirm_status" property="reportConfirmStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="created_time" property="createdTime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.act.ReportLog" useGeneratedKeys="true" keyProperty="id">
+	  insert into `act_report_log` (report_id,report_pre_confirm_status,report_confirm_status,created_time,remark)
+	  values (#{reportId},#{reportPreConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{reportConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{createdTime},#{remark})
+	</insert>
+
+	<delete id="delete">
+		delete from `act_report_log` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.act.ReportLog">
+		update `act_report_log`
+		<set>
+			report_id = #{reportId},
+			report_pre_confirm_status = #{reportPreConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			report_confirm_status = #{reportConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			created_time = #{createdTime},
+			remark = #{remark},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `act_report_log`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'reportId'">report_id = #{reportLog.reportId},</when>
+					<when test="field == 'reportPreConfirmStatus'">report_pre_confirm_status = #{reportLog.reportPreConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.sys.ConfirmStatus},</when>
+					<when test="field == 'reportConfirmStatus'">report_confirm_status = #{reportLog.reportConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.sys.ConfirmStatus},</when>
+					<when test="field == 'createdTime'">created_time = #{reportLog.createdTime},</when>
+					<when test="field == 'remark'">remark = #{reportLog.remark},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{reportLog.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,report_id,report_pre_confirm_status,report_confirm_status,created_time,remark
+		from `act_report_log`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ReportLogQueryModel">
+		select
+		id,report_id,report_pre_confirm_status,report_confirm_status,created_time,remark
+		from `act_report_log`
+		<where>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="reportIdEQ != null">
+				and report_id = #{reportIdEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="reportPreConfirmStatusEQ != null">
+				and report_pre_confirm_status = #{reportPreConfirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="reportIdIN != null">
+				<if test="reportIdIN.length != 0">
+				and report_id in
+				<foreach collection="reportIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="reportIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="reportConfirmStatusEQ != null">
+				and report_confirm_status = #{reportConfirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.ReportLogQueryModel">
+		select count(*) from `act_report_log`
+		<where>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="reportIdEQ != null">
+				and report_id = #{reportIdEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="reportPreConfirmStatusEQ != null">
+				and report_pre_confirm_status = #{reportPreConfirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="reportIdIN != null">
+				<if test="reportIdIN.length != 0">
+				and report_id in
+				<foreach collection="reportIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="reportIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
+			<if test="reportConfirmStatusEQ != null">
+				and report_confirm_status = #{reportConfirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+		</where>
+	</select>
+
+</mapper>

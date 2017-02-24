@@ -4,6 +4,7 @@ import com.zy.Config;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
+import com.zy.component.ActComponent;
 import com.zy.component.FncComponent;
 import com.zy.entity.act.Report;
 import com.zy.entity.adm.Admin;
@@ -45,6 +46,9 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	private FncComponent fncComponent;
+
+	@Autowired
+	private ActComponent actComponent;
 
 	@Autowired
 	private Config config;
@@ -158,6 +162,7 @@ public class ReportServiceImpl implements ReportService {
 		}
 		
 		reportMapper.update(persistence);
+		actComponent.recordReportLog(id, "admin修改检测报告");
 		return persistence;
 	}
 	
@@ -197,6 +202,7 @@ public class ReportServiceImpl implements ReportService {
 		if (reportMapper.update(report) == 0) {
 			throw new ConcurrentException();
 		}
+		actComponent.recordReportLog(id, "终审确认");
 	}
 
 	@Override
@@ -299,7 +305,7 @@ public class ReportServiceImpl implements ReportService {
 			}
 
 		}
-
+		actComponent.recordReportLog(id, "检测报告结算");
 	}
 
 	@Override
@@ -318,6 +324,7 @@ public class ReportServiceImpl implements ReportService {
 		}
 		report.setCheckReportResult(reportResult);
 		reportMapper.update(report);
+		actComponent.recordReportLog(id, "客服检测结果");
 	}
 
 	@Override
@@ -345,6 +352,7 @@ public class ReportServiceImpl implements ReportService {
 
 		report.setVisitUserId(userId);
 		reportMapper.update(report);
+		actComponent.recordReportLog(id, "分配回访客服");
 	}
 
 	@Override
@@ -390,6 +398,7 @@ public class ReportServiceImpl implements ReportService {
 		}
 		validate(persistence);
 		reportMapper.update(persistence);
+		actComponent.recordReportLog(id, "用户修改检测报告");
 		return persistence;
 	}
 
@@ -417,7 +426,7 @@ public class ReportServiceImpl implements ReportService {
 		if (reportMapper.update(report) == 0) {
 			throw new ConcurrentException();
 		}
-
+		actComponent.recordReportLog(id, "预审核");
 	}
 
 	@Override

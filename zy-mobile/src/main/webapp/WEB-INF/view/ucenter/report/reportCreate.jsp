@@ -87,10 +87,13 @@
           messageAlert('请选择产品');
           return;
         }
-	      if(!$('#image1').val()) {
-		      messageAlert('请上传身份证正面照');
-		      return;
-	      }
+        if (!$('#policyInfo').is(':hidden')) {
+	        if(!$('#image1').val()) {
+		        messageAlert('请上传身份证正面照');
+		        return;
+	        }
+        }
+
         <c:if test="${userRank == 'V0' && empty parent}">
         var parentPhone = $('#parentPhone').val();
         if(!parentPhone) {
