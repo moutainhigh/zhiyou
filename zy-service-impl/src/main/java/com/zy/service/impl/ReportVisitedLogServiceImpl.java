@@ -72,11 +72,9 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 		validate(visitedStatus1, NOT_BLANK, "visited status1 is blank");
 		if(!visitContinueCheckList.contains(visitedStatus1)) {  //判断是否需要再次回访
 			reportVisitedLog.setVisitedStatus(visitedStatus1);      //无需回访 设置最终回访状态
-			if(StringUtils.isBlank(reportVisitedLog.getRemark())) {
-				reportVisitedLog.setRemark(reportVisitedLog.getRemark());
-			}
 			ConfirmStatus confirmStatus = checkSuccessAndReturnStatus(visitedStatus1);  //是否回访成功
 			reportVisitedLog.setConfirmStatus(confirmStatus);
+
 			report.setConfirmStatus(confirmStatus);
 			report.setConfirmRemark(visitedStatus1);
 			if(confirmStatus == 已通过) {
@@ -102,8 +100,11 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 		Long id = reportVisitedLog.getId();
 		ReportVisitedLog persistence = reportVisitedLogMapper.findOne(id);
 		validate(persistence, NOT_NULL, "report visited log id " + id + " not found");
-		if(persistence.getConfirmStatus() != 待审核) {
+		if(persistence.getConfirmStatus() == 已通过) {
 			return ;
+		}
+		if(persistence.getConfirmStatus() != 待审核) {
+			throw new ValidationException("report visited log confirm status error");
 		}
 
 		Long reportId = reportVisitedLog.getReportId();
@@ -119,43 +120,58 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 
 		String visitedStatus3 = reportVisitedLog.getVisitedStatus3();
 		String visitedStatus2 = reportVisitedLog.getVisitedStatus2();
-		if(StringUtils.isNotBlank(visitedStatus3)) {
-			ConfirmStatus confirmStatus = checkSuccessAndReturnStatus(visitedStatus3);
-			String confirmRemark = visitedStatus3;
-
-			reportVisitedLog.setCustomerServiceName3(user.getNickname());
-			reportVisitedLog.setConfirmStatus(confirmStatus);
-			reportVisitedLog.setVisitedStatus(confirmRemark);
-			report.setConfirmStatus(confirmStatus);
-			report.setConfirmRemark(confirmRemark);
-			if(confirmStatus == 已通过) {
-				report.setConfirmedTime(new Date());
+		if (persistence.getVisitedStatus2() == null) {
+			if (StringUtils.isBlank(visitedStatus2)) {
+				throw new BizException(BizCode.ERROR, "回访记录已进行到二访,二访回访结果为空");
 			}
+			if (reportVisitedLog.getVisitedTime2() == null) {
+				throw new BizException(BizCode.ERROR, "回访记录已进行到二访,二访回访时间为空");
+			}
+			persistence.setCustomerServiceName2(user.getNickname());
+			persistence.setVisitedStatus2(visitedStatus2);
+			persistence.setVisitedTime2(reportVisitedLog.getVisitedTime2());
+			if (!visitContinueCheckList.contains(visitedStatus2)) {  //判断是否需要再次回访
 
-		} else if(StringUtils.isNotBlank(visitedStatus2)) {
-			if(!visitContinueCheckList.contains(visitedStatus2)) {  //判断是否需要再次回访
-				reportVisitedLog.setCustomerServiceName2(user.getNickname());
-				reportVisitedLog.setVisitedStatus(visitedStatus2);      //无需回访 设置最终回访状态
-				if(StringUtils.isBlank(reportVisitedLog.getRemark())) {
-					reportVisitedLog.setRemark(reportVisitedLog.getRemark());
-				}
 				ConfirmStatus confirmStatus = checkSuccessAndReturnStatus(visitedStatus2);  //是否回访成功
-				reportVisitedLog.setConfirmStatus(confirmStatus);
+				persistence.setVisitedStatus(visitedStatus2);  //无需回访 设置最终回访状态
+				persistence.setConfirmStatus(confirmStatus);
+
 				report.setConfirmStatus(confirmStatus);
 				report.setConfirmRemark(visitedStatus2);
 				if(confirmStatus == 已通过) {
 					report.setConfirmedTime(new Date());
 				}
+
 			} else {
 				reportVisitedLog.setConfirmStatus(待审核);
+			}
+		} else {
+			if (StringUtils.isBlank(visitedStatus3)) {
+				throw new BizException(BizCode.ERROR, "回访记录已进行到三访,三访回访结果为空");
+			}
+			if (reportVisitedLog.getVisitedTime3() == null) {
+				throw new BizException(BizCode.ERROR, "回访记录已进行到三访,三访回访时间为空");
+			}
+
+			ConfirmStatus confirmStatus = checkSuccessAndReturnStatus(visitedStatus3);
+			String confirmRemark = visitedStatus3;
+
+			persistence.setCustomerServiceName3(user.getNickname());
+			persistence.setConfirmStatus(confirmStatus);
+			persistence.setVisitedStatus(confirmRemark);
+			persistence.setVisitedStatus3(visitedStatus3);
+			persistence.setVisitedTime3(reportVisitedLog.getVisitedTime3());
+
+			report.setConfirmStatus(confirmStatus);
+			report.setConfirmRemark(confirmRemark);
+			if(confirmStatus == 已通过) {
+				report.setConfirmedTime(new Date());
 			}
 		}
 
 		persistence.setRemark(reportVisitedLog.getRemark());
-		persistence.setVisitedStatus(reportVisitedLog.getVisitedStatus());
 		persistence.setCause(reportVisitedLog.getCause());
 		persistence.setCauseText(reportVisitedLog.getCauseText());
-		persistence.setConfirmStatus(reportVisitedLog.getConfirmStatus());
 		persistence.setContactWay(reportVisitedLog.getContactWay());
 		persistence.setContactWayText(reportVisitedLog.getContactWayText());
 		persistence.setDrink(reportVisitedLog.getDrink());
@@ -186,30 +202,6 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 		persistence.setSmoke(reportVisitedLog.getSmoke());
 		persistence.setToAgent(reportVisitedLog.getToAgent());
 		persistence.setVisitedInfo(reportVisitedLog.getVisitedInfo());
-		persistence.setVisitedStatus(reportVisitedLog.getVisitedStatus());
-		if(StringUtils.isBlank(persistence.getCustomerServiceName2())) {
-			persistence.setCustomerServiceName2(user.getNickname());
-			if(reportVisitedLog.getVisitedStatus2() == null) {
-				throw new BizException(BizCode.ERROR, "回访结果为空");
-			}
-			if(reportVisitedLog.getVisitedTime2() == null) {
-				throw new BizException(BizCode.ERROR, "回访时间为空");
-			}
-			persistence.setVisitedStatus2(reportVisitedLog.getVisitedStatus2());
-			persistence.setVisitedTime2(reportVisitedLog.getVisitedTime2());
-		} else if(StringUtils.isBlank(persistence.getCustomerServiceName3())) {
-			persistence.setCustomerServiceName3(user.getNickname());
-			if(reportVisitedLog.getVisitedStatus3() == null) {
-				throw new BizException(BizCode.ERROR, "回访结果为空");
-			}
-			if(reportVisitedLog.getVisitedTime3() == null) {
-				throw new BizException(BizCode.ERROR, "回访时间为空");
-			}
-			persistence.setVisitedStatus3(reportVisitedLog.getVisitedStatus3());
-			persistence.setVisitedTime3(reportVisitedLog.getVisitedTime3());
-		}else {
-			throw new ValidationException("客服信息为空");
-		}
 		validate(persistence);
 		reportVisitedLogMapper.update(persistence);
 		reportMapper.update(report);
