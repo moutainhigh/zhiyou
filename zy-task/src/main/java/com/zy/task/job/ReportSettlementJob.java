@@ -17,6 +17,7 @@ import static com.zy.model.query.ReportQueryModel.builder;
 /**
  * Created by freeman on 16/9/8.
  */
+@Deprecated
 public class ReportSettlementJob implements Job {
 
 	private Logger logger = LoggerFactory.getLogger(ReportSettlementJob.class);

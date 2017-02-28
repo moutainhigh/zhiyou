@@ -140,7 +140,7 @@
 				<!--</bean>-->
 
 				<!--report 结算-->
-				<bean id="reportSettlementJobTrigger"
+				<!--<bean id="reportSettlementJobTrigger"
 				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
 						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
@@ -151,7 +151,7 @@
 					<property name="cronExpression">
 						<value>0 0/2 * * * ?</value>
 					</property>
-				</bean>
+				</bean>-->
 				<!--转账 job-->
 				<!--<bean id="transferJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
 					<!--<property name="jobDetail">-->
