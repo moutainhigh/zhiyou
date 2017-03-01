@@ -504,6 +504,11 @@ public class OrderServiceImpl implements OrderService {
 			Long v4UserId = calculateV4UserId(user);
 			Long rootId = calculateRootId(user);
 
+			LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+			LocalDateTime localDateTime = LocalDateTime.of(lastDate, LocalTime.parse("23:59:59"));
+			Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+			Date expiredTime = Date.from(instant);
+
 			Date date = new Date();
 			Order order = new Order();
 			order.setUserId(userId);
@@ -527,7 +532,7 @@ public class OrderServiceImpl implements OrderService {
 			order.setSn(ServiceUtils.generateOrderSn());
 			order.setIsSettledUp(false);
 			order.setDiscountFee(new BigDecimal("0.00"));
-			order.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_ORDER_EXPIRE_IN_MINUTES));
+			order.setExpiredTime(expiredTime);
 			order.setOrderType(persistentOrder.getOrderType());
 
 			order.setIsCopied(true);
