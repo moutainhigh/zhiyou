@@ -219,6 +219,9 @@ public class LocalCacheComponent {
 				    throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + userId);
 			    }
 			    User parent = newUserMap.get(tmpParentId);
+			    if (parent == null) {
+				    throw new BizException(BizCode.ERROR, "关联了错误的parent id " + tmpParentId);
+			    }
 			    if (parent.getUserRank() == User.UserRank.V4) {
 				    v4UserId =  tmpParentId;
 				    break;
