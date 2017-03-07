@@ -89,9 +89,34 @@
         'isAgree' : {
             required : true
         }
-      }
+      },
+	    messages : {},
+      submitHandler : function(form) {
+		    var parentPhone = $('#parentPhone').val();
+		    if(parentPhone != null && parentPhone != '') {
+			    $.ajax({
+				    url: '${ctx}/checkParentPhone',
+				    data: {
+					    phone: parentPhone
+				    },
+				    type: 'POST',
+				    dataType: 'JSON',
+				    success: function(result){
+					    if(result.code == 0) {
+						    $('#parentId').val(result.message);
+						    form.submit();
+					    } else {
+						    messageFlash(result.message);
+						    return ;
+					    }
+				    }
+			    });
+		    } else {
+			    form.submit();
+		    }
+	    }
     });
-    
+
     //注册协议
   	$('#protocol').click(function(){
   	  showProtocol();
@@ -161,7 +186,8 @@
         <div class="list-item">
           <label class="list-label" for="phone">上级手机号</label>
           <div class="list-text">
-            <input type="text" name="parentPhone" class="form-input" placeholder="输入上级手机号" value="">
+            <input type="text" id="parentPhone" name="parentPhone" class="form-input" placeholder="输入上级手机号" value="">
+            <input type="hidden" id="parentId" name="parentId" value="">
           </div>
         </div>
         <div class="list-item form-checkbox">

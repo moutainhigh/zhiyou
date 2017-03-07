@@ -128,13 +128,13 @@ public class LoginController {
 			model.addAttribute("avatar", agentRegisterDto.getAvatar());
 			model.addAttribute("nickname", agentRegisterDto.getNickname());
 		}
-		
+
 		return "register";
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, @RequestParam String smsCode,
-	                       @RequestParam String phone, String parentPhone) {
+	                       @RequestParam String phone, Long parentId) {
 
 		if (GcUtils.getPrincipal() != null) {
 			return "redirect:/u";
@@ -168,9 +168,13 @@ public class LoginController {
 
 		agentRegisterDto.setPhone(phone);
 		agentRegisterDto.setRegisterIp(GcUtils.getHost());
-		agentRegisterDto.setParentPhone(parentPhone);
-		user = userService.registerAgent(agentRegisterDto);
-
+		agentRegisterDto.setParentId(parentId);
+		try{
+			user = userService.registerAgent(agentRegisterDto);
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return "redirect:/u";
+		}
 		session.removeAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS);
 
 		String redirectUrl = (String) session.getAttribute(SESSION_ATTRIBUTE_REDIRECT_URL);
@@ -224,6 +228,22 @@ public class LoginController {
 		session.setAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS, new PhoneAndSmsCode(phone, smsCode));
 		cacheSupport.set(CACHE_NAME_BIND_PHONE_SMS_LAST_SEND_TIME, phone, new Date(), 600);
 		return ResultBuilder.ok("短信发送成功");
+	}
+
+	@RequestMapping(value = "/checkParentPhone", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> checkParentPhone(@RequestParam String phone) {
+		User user = userService.findByPhone(phone);
+		if (user == null) {
+			return ResultBuilder.error("上级手机号不存在");
+		}
+		if (user.getUserType() != User.UserType.代理) {
+			return ResultBuilder.error("上级用户类型必须是代理");
+		}
+		if (user.getUserRank() == User.UserRank.V0) {
+			return ResultBuilder.error("上级必须成为代理");
+		}
+		return ResultBuilder.ok(String.valueOf(user.getId()));
 	}
 
 	private void onLoginSuccess(HttpServletRequest request, HttpServletResponse response, Long userId) {

@@ -62,7 +62,7 @@
           required : true
         }
       },
-      submitHandler : function(form) {
+	    submitHandler : function(form) {
         if($('input[name="image"]').length < 1) {
           messageFlash('请至少上传一张图片');
           return;
