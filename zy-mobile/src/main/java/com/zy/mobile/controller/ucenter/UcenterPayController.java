@@ -116,7 +116,7 @@ public class UcenterPayController {
 		if(userRank == User.UserRank.V3 || userRank == User.UserRank.V4) {
 			useShengPay = true;
 		}
-		model.addAttribute("userShengPay", useShengPay);
+		model.addAttribute("useShengPay", useShengPay);
 		return "ucenter/account/moneyDeposit";
 	}
 

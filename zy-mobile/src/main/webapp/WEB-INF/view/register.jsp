@@ -158,6 +158,12 @@
             <a id="btnSend" class="btn blue btn-sm">发送验证码</a>
           </div>
         </div>
+        <div class="list-item">
+          <label class="list-label" for="phone">上级手机号</label>
+          <div class="list-text">
+            <input type="text" name="parentPhone" class="form-input" placeholder="输入上级手机号" value="">
+          </div>
+        </div>
         <div class="list-item form-checkbox">
           <div class="list-icon">
             <input type="checkbox" checked="checked" value="0" name="isAgree" id="isAgree">

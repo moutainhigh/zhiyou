@@ -82,7 +82,7 @@
           </div>
         </label>
 
-        <c:if test="${userShengPay}">
+        <c:if test="${useShengPay}">
         <label class="list-item form-radio" for="payType6">
           <div class="list-text">盛付通</div>
           <div class="list-unit">

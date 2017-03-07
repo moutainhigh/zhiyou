@@ -107,6 +107,7 @@ public class UserServiceImpl implements UserService {
         String openId = agentRegisterDto.getOpenId();
         String phone = agentRegisterDto.getPhone();
         String unionId = agentRegisterDto.getUnionId();
+        String parentPhone = agentRegisterDto.getParentPhone();
 
         String avatar = agentRegisterDto.getAvatar();
         String nickname = agentRegisterDto.getNickname();
@@ -162,6 +163,13 @@ public class UserServiceImpl implements UserService {
             userMapper.insert(user);
             insertAccount(user); // 初始化
         }
+
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(parentPhone)) {
+            User parent = userMapper.findByPhone(parentPhone);
+            validate(parent, NOT_NULL, "parent user phone[ " + parentPhone + " ] not found");
+            setParentId(user.getId(), parent.getId());
+        }
+
 
         producer.send(TOPIC_REGISTER_SUCCESS, user.getId());
         return user;

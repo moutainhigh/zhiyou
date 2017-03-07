@@ -134,7 +134,7 @@ public class LoginController {
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, @RequestParam String smsCode,
-	                       @RequestParam String phone) {
+	                       @RequestParam String phone, String parentPhone) {
 
 		if (GcUtils.getPrincipal() != null) {
 			return "redirect:/u";
@@ -168,7 +168,7 @@ public class LoginController {
 
 		agentRegisterDto.setPhone(phone);
 		agentRegisterDto.setRegisterIp(GcUtils.getHost());
-
+		agentRegisterDto.setParentPhone(parentPhone);
 		user = userService.registerAgent(agentRegisterDto);
 
 		session.removeAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS);

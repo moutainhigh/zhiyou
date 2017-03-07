@@ -32,4 +32,7 @@ public class AgentRegisterDto implements Serializable {
 
 	private Long inviterId;
 
+	@Pattern(regexp = "^1[\\d]{10}$")
+	private String parentPhone;
+
 }
