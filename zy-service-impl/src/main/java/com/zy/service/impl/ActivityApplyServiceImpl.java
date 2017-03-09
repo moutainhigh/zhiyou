@@ -5,13 +5,11 @@ import com.zy.entity.act.ActivityApply;
 import com.zy.mapper.ActivityApplyMapper;
 import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.service.ActivityApplyService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
-
 import java.util.List;
 
 @Service
@@ -49,7 +47,16 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 	public ActivityApply findByActivityIdAndUserId(@NotNull Long activityId, @NotNull Long userId) {
 		return activityApplyMapper.findByActivityIdAndUserId(activityId, userId);
 	}
-	
-	
+
+	@Override
+	public ActivityApply findOne(Long id) {
+		return activityApplyMapper.findOne(id);
+	}
+
+	@Override
+	public void success(Long id, String outerSn) {
+
+	}
+
 
 }
