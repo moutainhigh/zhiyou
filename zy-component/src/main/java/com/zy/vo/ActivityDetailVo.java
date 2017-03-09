@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -40,6 +40,8 @@ public class ActivityDetailVo implements Serializable {
 	private String city;
 	@Field(label = "地区")
 	private String district;
+	@Field(label = "活动报名费")
+	private String amountLabel;
 	@Field(label = "活动主图")
 	private String imageBig;
 	@Field(label = "活动主图")

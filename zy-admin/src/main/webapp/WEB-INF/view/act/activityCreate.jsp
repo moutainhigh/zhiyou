@@ -51,6 +51,9 @@
           required: true,
           maxlength: 60
         },
+	      'amount': {
+		      required: true
+	      },
         areaId: {
           required: true
         },
@@ -157,6 +160,12 @@
               <label class="control-label col-md-3">标题<span class="required"> * </span></label>
               <div class="col-md-5">
                 <input type="text" class="form-control" name="title" value=""/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-3">报名费<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <input type="text" class="form-control" name="amount" value=""/>
               </div>
             </div>
             <div class="form-group">

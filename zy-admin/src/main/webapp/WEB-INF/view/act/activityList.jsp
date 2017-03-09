@@ -33,6 +33,10 @@
             data: 'title',
             title: '标题'
           },
+	        {
+		        data: 'amountLabel',
+		        title: '报名费'
+	        },
           {
             data: 'areaId',
             title: '详细地址',

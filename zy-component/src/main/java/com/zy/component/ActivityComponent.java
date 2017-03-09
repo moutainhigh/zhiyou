@@ -46,8 +46,9 @@ public class ActivityComponent {
 		String shortFmt = "yyyy年M月d日 HH:mm";
 		ActivityAdminFullVo activityAdminFullVo = new ActivityAdminFullVo();
 		BeanUtils.copyProperties(activity, activityAdminFullVo);
-		Long activityId = activity.getId();
 
+		activityAdminFullVo.setAmountLabel(GcUtils.formatCurreny(activity.getAmount()));
+		Long activityId = activity.getId();
 		Long areaId = activity.getAreaId();
 		if(areaId != null) {
 			AreaDto areaDto = cacheComponent.getAreaDto(activity.getAreaId());
@@ -119,6 +120,7 @@ public class ActivityComponent {
 		String shortFmt = "M月d日 HH:mm";
 		ActivityAdminVo activityAdminVo = new ActivityAdminVo();
 		BeanUtils.copyProperties(activity, activityAdminVo, "detail");
+		activityAdminVo.setAmountLabel(GcUtils.formatCurreny(activity.getAmount()));
 
 		if (withDetail) {
 			activityAdminVo.setDetail(activity.getDetail());
@@ -158,7 +160,8 @@ public class ActivityComponent {
 	public ActivityDetailVo buildDetailVo(Activity activity) {
 		ActivityDetailVo activityDetailVo = new ActivityDetailVo();
 		BeanUtils.copyProperties(activity, activityDetailVo);
-		
+		activityDetailVo.setAmountLabel(GcUtils.formatCurreny(activity.getAmount()));
+
 		Long areaId = activity.getAreaId();
 		if(!isNull(areaId)) {
 			AreaDto areaDto = cacheComponent.getAreaDto(activity.getAreaId());
@@ -199,6 +202,7 @@ public class ActivityComponent {
 	public ActivityListVo buildListVo(Activity activity) {
 		ActivityListVo activityListVo = new ActivityListVo();
 		BeanUtils.copyProperties(activity, activityListVo);
+		activityListVo.setAmountLabel(GcUtils.formatCurreny(activity.getAmount()));
 		
 		Long areaId = activity.getAreaId();
 		if(!isNull(areaId)) {

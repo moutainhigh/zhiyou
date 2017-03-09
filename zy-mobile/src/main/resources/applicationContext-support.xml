@@ -91,4 +91,9 @@
 		<constructor-arg index="1" value="${shengPay.key}"/>
 	</bean>
 
+	<bean id="shengPayMobileClient" class="com.zy.common.support.shengpay.ShengPayMobileClient">
+		<constructor-arg index="0" value="${shengPay.merchantNo}"/>
+		<constructor-arg index="1" value="${shengPay.secret}"/>
+	</bean>
+
 </beans>

@@ -4,7 +4,10 @@
 
 	<resultMap id="baseResultMap" type="com.zy.entity.act.ActivityApply">
 		<id column="id" property="id" />
+		<result column="activity_apply_status" property="activityApplyStatus" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="user_id" property="userId" />
+		<result column="payer_user_id" property="payerUserId" />
+		<result column="amount" property="amount" />
 		<result column="activity_id" property="activityId" />
 		<result column="applied_time" property="appliedTime" />
 		<result column="is_cancelled" property="isCancelled" />
@@ -13,8 +16,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.act.ActivityApply" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_activity_apply` (user_id,activity_id,applied_time,is_cancelled,inviter_id,is_sms_sent)
-	  values (#{userId},#{activityId},#{appliedTime},#{isCancelled},#{inviterId},#{isSmsSent})
+	  insert into `act_activity_apply` (activity_apply_status,user_id,payer_user_id,amount,activity_id,applied_time,is_cancelled,inviter_id,is_sms_sent)
+	  values (#{activityApplyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userId},#{payerUserId},#{amount},#{activityId},#{appliedTime},#{isCancelled},#{inviterId},#{isSmsSent})
 	</insert>
 
 	<delete id="delete">
@@ -24,7 +27,10 @@
 	<update id="update" parameterType="com.zy.entity.act.ActivityApply">
 		update `act_activity_apply`
 		<set>
+			activity_apply_status = #{activityApplyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			user_id = #{userId},
+			payer_user_id = #{payerUserId},
+			amount = #{amount},
 			activity_id = #{activityId},
 			applied_time = #{appliedTime},
 			is_cancelled = #{isCancelled},
@@ -39,7 +45,10 @@
 			<set>
 				<foreach collection="fields" item="field">
 				<choose>
+					<when test="field == 'activityApplyStatus'">activity_apply_status = #{activityApply.activityApplyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.act.ActivityApply$ActivityApplyStatus},</when>
 					<when test="field == 'userId'">user_id = #{activityApply.userId},</when>
+					<when test="field == 'payerUserId'">payer_user_id = #{activityApply.payerUserId},</when>
+					<when test="field == 'amount'">amount = #{activityApply.amount},</when>
 					<when test="field == 'activityId'">activity_id = #{activityApply.activityId},</when>
 					<when test="field == 'appliedTime'">applied_time = #{activityApply.appliedTime},</when>
 					<when test="field == 'isCancelled'">is_cancelled = #{activityApply.isCancelled},</when>
@@ -53,21 +62,47 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,activity_id,applied_time,is_cancelled,inviter_id,is_sms_sent
+		id,activity_apply_status,user_id,payer_user_id,amount,activity_id,applied_time,is_cancelled,inviter_id,is_sms_sent
 		from `act_activity_apply`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ActivityApplyQueryModel">
 		select
-		id,user_id,activity_id,applied_time,is_cancelled,inviter_id,is_sms_sent
+		id,activity_apply_status,user_id,payer_user_id,amount,activity_id,applied_time,is_cancelled,inviter_id,is_sms_sent
 		from `act_activity_apply`
 		<where>
+			<if test="payerUserIdIN != null">
+				<if test="payerUserIdIN.length != 0">
+				and payer_user_id in
+				<foreach collection="payerUserIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="payerUserIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
 			<if test="appliedTimeGTE != null">
 				and applied_time &gt;= #{appliedTimeGTE}
 			</if>
 			<if test="appliedTimeLT != null">
 				and applied_time &lt; #{appliedTimeLT}
+			</if>
+			<if test="isCancelledEQ != null">
+				and is_cancelled = #{isCancelledEQ}
+			</if>
+			<if test="payerUserIdEQ != null">
+				and payer_user_id = #{payerUserIdEQ}
+			</if>
+			<if test="activityIdEQ != null">
+				and activity_id = #{activityIdEQ}
+			</if>
+			<if test="inviterIdEQ != null">
+				and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
@@ -80,17 +115,8 @@
 				1 = 2
 				</if>
 			</if>
-			<if test="isCancelledEQ != null">
-				and is_cancelled = #{isCancelledEQ}
-			</if>
-			<if test="activityIdEQ != null">
-				and activity_id = #{activityIdEQ}
-			</if>
-			<if test="inviterIdEQ != null">
-				and inviter_id = #{inviterIdEQ}
-			</if>
-			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+			<if test="activityApplyStatusEQ != null">
+				and activity_apply_status = #{activityApplyStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="inviterIdIN != null">
 				<if test="inviterIdIN.length != 0">
@@ -134,11 +160,37 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.ActivityApplyQueryModel">
 		select count(*) from `act_activity_apply`
 		<where>
+			<if test="payerUserIdIN != null">
+				<if test="payerUserIdIN.length != 0">
+				and payer_user_id in
+				<foreach collection="payerUserIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="payerUserIdIN.length == 0">
+				1 = 2
+				</if>
+			</if>
 			<if test="appliedTimeGTE != null">
 				and applied_time &gt;= #{appliedTimeGTE}
 			</if>
 			<if test="appliedTimeLT != null">
 				and applied_time &lt; #{appliedTimeLT}
+			</if>
+			<if test="isCancelledEQ != null">
+				and is_cancelled = #{isCancelledEQ}
+			</if>
+			<if test="payerUserIdEQ != null">
+				and payer_user_id = #{payerUserIdEQ}
+			</if>
+			<if test="activityIdEQ != null">
+				and activity_id = #{activityIdEQ}
+			</if>
+			<if test="inviterIdEQ != null">
+				and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
@@ -151,17 +203,8 @@
 				1 = 2
 				</if>
 			</if>
-			<if test="isCancelledEQ != null">
-				and is_cancelled = #{isCancelledEQ}
-			</if>
-			<if test="activityIdEQ != null">
-				and activity_id = #{activityIdEQ}
-			</if>
-			<if test="inviterIdEQ != null">
-				and inviter_id = #{inviterIdEQ}
-			</if>
-			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+			<if test="activityApplyStatusEQ != null">
+				and activity_apply_status = #{activityApplyStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 			<if test="inviterIdIN != null">
 				<if test="inviterIdIN.length != 0">

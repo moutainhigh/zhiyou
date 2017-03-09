@@ -6,6 +6,7 @@
 		<id column="id" property="id" />
 		<result column="title" property="title" />
 		<result column="area_id" property="areaId" />
+		<result column="amount" property="amount" />
 		<result column="address" property="address" />
 		<result column="latitude" property="latitude" />
 		<result column="longitude" property="longitude" />
@@ -23,8 +24,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.act.Activity" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_activity` (title,area_id,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version)
-	  values (#{title},#{areaId},#{address},#{latitude},#{longitude},#{image},#{detail},#{applyDeadline},#{startTime},#{endTime},#{signedInCount},#{collectedCount},#{appliedCount},#{viewedCount},#{isReleased},#{version})
+	  insert into `act_activity` (title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version)
+	  values (#{title},#{areaId},#{amount},#{address},#{latitude},#{longitude},#{image},#{detail},#{applyDeadline},#{startTime},#{endTime},#{signedInCount},#{collectedCount},#{appliedCount},#{viewedCount},#{isReleased},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -36,6 +37,7 @@
 		<set>
 			title = #{title},
 			area_id = #{areaId},
+			amount = #{amount},
 			address = #{address},
 			latitude = #{latitude},
 			longitude = #{longitude},
@@ -61,6 +63,7 @@
 				<choose>
 					<when test="field == 'title'">title = #{activity.title},</when>
 					<when test="field == 'areaId'">area_id = #{activity.areaId},</when>
+					<when test="field == 'amount'">amount = #{activity.amount},</when>
 					<when test="field == 'address'">address = #{activity.address},</when>
 					<when test="field == 'latitude'">latitude = #{activity.latitude},</when>
 					<when test="field == 'longitude'">longitude = #{activity.longitude},</when>
@@ -82,14 +85,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,title,area_id,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version
+		id,title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version
 		from `act_activity`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ActivityQueryModel">
 		select
-		id,title,area_id,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version
+		id,title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version
 		from `act_activity`
 		<where>
 			<if test="idIN != null">

@@ -18,6 +18,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import static com.zy.entity.act.Activity.*;
@@ -67,6 +68,11 @@ public class Activity implements Serializable {
 	@View(name = "district", type = String.class)
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
 	private Long areaId;
+
+	@Field(label = "活动报名费")
+	@NotNull
+	@View(name = "amountLabel", type = String.class)
+	private BigDecimal amount;
 
 	@NotBlank
 	@Field(label = "详细地址", description = "精确到门牌号")

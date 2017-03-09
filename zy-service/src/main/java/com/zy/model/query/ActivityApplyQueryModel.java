@@ -1,17 +1,13 @@
 package com.zy.model.query;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.io.Serializable;
-
+import com.zy.entity.act.ActivityApply.ActivityApplyStatus;
 import io.gd.generator.api.query.Direction;
+import lombok.*;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,9 +16,15 @@ import java.util.Date;
 @AllArgsConstructor
 public class ActivityApplyQueryModel implements Serializable {
 
+	private ActivityApplyStatus activityApplyStatusEQ;
+
 	private Long[] userIdIN;
 
 	private Long userIdEQ;
+
+	private Long[] payerUserIdIN;
+
+	private Long payerUserIdEQ;
 
 	private Long[] activityIdIN;
 
@@ -93,10 +95,13 @@ public class ActivityApplyQueryModel implements Serializable {
 
 	static {
 		fieldNames.add("activityId");
+		fieldNames.add("amount");
 		fieldNames.add("isCancelled");
 		fieldNames.add("appliedTime");
 		fieldNames.add("inviterId");
 		fieldNames.add("id");
+		fieldNames.add("activityApplyStatus");
+		fieldNames.add("payerUserId");
 		fieldNames.add("userId");
 		fieldNames.add("isSmsSent");
 	}

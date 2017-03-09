@@ -68,7 +68,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public void modify(@NotNull Activity activity) {
-		String[] fields = new String[] { "areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime", "title" };
+		String[] fields = new String[] { "areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime", "title", "amount" };
 		validate(activity, fields);
 		checkAndFindActivity(activity.getId());
 		checkArea(activity.getAreaId());
@@ -132,6 +132,8 @@ public class ActivityServiceImpl implements ActivityService {
 			activityApply.setInviterId(inviterId);
 			activityApply.setIsCancelled(false);
 			activityApply.setIsSmsSent(false);
+			activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已报名);
+			activityApply.setAmount(activity.getAmount());
 			validate(activityApply);
 			activityApplyMapper.insert(activityApply);
 		}

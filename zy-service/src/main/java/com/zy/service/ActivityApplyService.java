@@ -14,4 +14,7 @@ public interface ActivityApplyService {
 	
 	ActivityApply findByActivityIdAndUserId(Long activityId, Long userId);
 
+	ActivityApply findOne(Long id);
+
+	void success(Long id, String outerSn);
 }

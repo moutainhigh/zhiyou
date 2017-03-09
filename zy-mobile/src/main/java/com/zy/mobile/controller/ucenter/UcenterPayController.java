@@ -4,6 +4,9 @@ import com.zy.common.exception.BizException;
 import com.zy.common.extend.BigDecimalBinder;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.shengpay.ShengPayClient;
+import com.zy.common.support.shengpay.ShengPayMobileClient;
+import com.zy.entity.act.Activity;
+import com.zy.entity.act.ActivityApply;
 import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.Deposit.DepositStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
@@ -14,9 +17,11 @@ import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.DepositQueryModel;
+import com.zy.model.query.PaymentQueryModel;
 import com.zy.service.*;
 import com.zy.util.GcUtils;
 import io.gd.generator.api.query.Direction;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +62,16 @@ public class UcenterPayController {
 	private UserService userService;
 
 	@Autowired
+	private ActivityService activityService;
+
+	@Autowired
+	private ActivityApplyService activityApplyService;
+
+	@Autowired
 	private ShengPayClient shengPayClient;
+
+	@Autowired
+	private ShengPayMobileClient shengPayMobileClient;
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String depositPay(@BigDecimalBinder BigDecimal money, @RequestParam PayType payType, Model model,
@@ -234,5 +248,77 @@ public class UcenterPayController {
 		} else {
 			throw new BizException(BizCode.ERROR, "不支持的付款方式");
 		}
+	}
+
+	@RequestMapping(path = "/activityApply/{activityId}", method = RequestMethod.GET)
+	public String orderPay(@PathVariable Long activityId, Model model, Principal principal) {
+
+		Activity activity = activityService.findOne(activityId);
+		validate(activity, NOT_NULL, "activity id " + activityId + " not found");
+
+		ActivityApply byActivityIdAndUserId = activityApplyService.findByActivityIdAndUserId(activityId, principal.getUserId());
+		validate(byActivityIdAndUserId, NOT_NULL, "activity apply id" + activityId + " not found");
+		if(!byActivityIdAndUserId.getUserId().equals(principal.getUserId())){
+			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
+		}
+		if(byActivityIdAndUserId.getActivityApplyStatus() != ActivityApply.ActivityApplyStatus.已报名){
+			return "redirect:/activity/" + activityId;
+		}
+
+		model.addAttribute("title", activity.getTitle());
+		model.addAttribute("activityId", activityId);
+		model.addAttribute("amount", byActivityIdAndUserId.getAmount());
+		return "ucenter/pay/activityPay";
+	}
+
+	@RequestMapping(path = "/activityApply/payment", method = RequestMethod.POST)
+	public String paymentPay(@RequestParam Long activityId, String payerPhone, RedirectAttributes redirectAttributes,
+	                         Principal principal) {
+
+		Activity activity = activityService.findOne(activityId);
+		validate(activity, NOT_NULL, "activity id " + activityId + " not found");
+
+		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, principal.getUserId());
+		validate(activityApply, NOT_NULL, "activity apply id" + activityId + " not found");
+		Long userId = activityApply.getUserId();
+		if(!userId.equals(principal.getUserId())){
+			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
+		}
+		if(activityApply.getActivityApplyStatus() != ActivityApply.ActivityApplyStatus.已报名){
+			return "redirect:/activity/" + activityId;
+		}
+
+		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(activityApply.getId()).paymentTypeEQ(PaymentType.活动报名).build());
+		Payment payment = payments.stream()
+				.filter(v -> (v.getPaymentStatus() == Payment.PaymentStatus.待支付 || v.getPaymentStatus() == Payment.PaymentStatus.待确认))
+				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
+				.filter(v -> v.getAmount1().equals(activityApply.getAmount()))
+				.filter(v -> v.getCurrencyType1() == CurrencyType.人民币)
+				.filter(v -> v.getAmount2() == null)
+				.filter(v -> v.getCurrencyType2() == null)
+				.findFirst()
+				.orElse(null);
+
+		if (payment == null) {
+			payment = new Payment();
+			payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
+			payment.setAmount1(activityApply.getAmount());
+			payment.setCurrencyType1(CurrencyType.人民币);
+			payment.setPaymentType(PaymentType.活动报名);
+			payment.setRefId(activityApply.getId());
+			payment.setUserId(userId);
+			payment.setTitle(activity.getTitle());
+			payment.setPayType(PayType.盛付通);
+			paymentService.create(payment);
+		}
+
+		User user = userService.findOne(userId);
+		String registerIp = StringUtils.isBlank(user.getRegisterIp())? "127.0.0.1" : user.getRegisterIp();
+
+		String payUrl = shengPayMobileClient.getPayCreateUrl(new Date(), userId, user.getRegisterTime(), registerIp, "0"
+				, user.getNickname(), user.getPhone(), activityApply.getId(), activity.getTitle(), activity.getTitle()
+				, activityApply.getAmount(), Constants.SHENGPAY_RETURN_MOBILE, Constants.SHENGPAY_NOTIFY_MOBILE, "127.0.0.1");
+		logger.error(payUrl);
+		return "redirect:" + payUrl;
 	}
 }

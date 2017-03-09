@@ -206,7 +206,7 @@
       </div>
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-cny font-gray"></i></div>
-        <div class="list-text fs-14"><span class="font-green">免费</span></div>
+        <div class="list-text fs-14"><span class="font-green">${activity.amountLabel}</span></div>
       </div>
     </div>
     
@@ -295,7 +295,12 @@
     
     <c:if test="${activity.status == '报名中' || activity.status == '进行中'}">
     <c:if test="${isApplied}">
-    <a class="flex-3 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-check"></i> 您已报名</div></a>
+      <c:if test="${!toPay}">
+        <a class="flex-3 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-check"></i> 您已报名</div></a>
+      </c:if>
+      <c:if test="${toPay}">
+        <a class="flex-3 bg-green fs-14 font-white" href="${ctx}/u/pay/activityApply/${activity.id}"><div><i class="fa fa-check"></i> 点击付费</div></a>
+      </c:if>
     </c:if>
     <c:if test="${!isApplied}">
     <a id="btnApply" class="flex-3 bg-blue fs-14 font-white" href="javascript:;">报名参与</a>

@@ -32,6 +32,8 @@ public class ActivityListVo implements Serializable {
 	private String city;
 	@Field(label = "地区")
 	private String district;
+	@Field(label = "活动报名费")
+	private String amountLabel;
 	@Field(label = "活动主图")
 	private String imageBig;
 	@Field(label = "活动主图")

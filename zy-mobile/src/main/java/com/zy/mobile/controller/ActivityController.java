@@ -4,10 +4,10 @@ import com.zy.common.model.query.Page;
 import com.zy.component.ActivityComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.act.Activity;
+import com.zy.entity.act.ActivityApply;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
-import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.model.query.ActivityCollectQueryModel;
 import com.zy.model.query.ActivityQueryModel;
 import com.zy.model.query.ActivitySignInQueryModel;
@@ -78,12 +78,14 @@ public class ActivityController {
 			activityCollectQueryModel.setActivityIdEQ(id);
 			activityCollectQueryModel.setUserIdEQ(principal.getUserId());
 			model.addAttribute("isCollected", !activityCollectService.findPage(activityCollectQueryModel).getData().isEmpty());
-			
-			ActivityApplyQueryModel activityApplyQueryModel = new ActivityApplyQueryModel();
-			activityApplyQueryModel.setActivityIdEQ(id);
-			activityApplyQueryModel.setUserIdEQ(principal.getUserId());
-			model.addAttribute("isApplied", !activityApplyService.findPage(activityApplyQueryModel).getData().isEmpty());
-			
+
+			ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(id, userId);
+			boolean isApplied = activityApply != null;
+			model.addAttribute("isApplied", isApplied);
+			if(isApplied) {
+				model.addAttribute("toPay", activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已报名);
+			}
+
 			ActivitySignInQueryModel activitySignInQueryModel = new ActivitySignInQueryModel();
 			activitySignInQueryModel.setActivityIdEQ(id);
 			activitySignInQueryModel.setUserIdEQ(principal.getUserId());

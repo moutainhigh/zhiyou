@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import static com.zy.entity.act.ActivityApply.VO_ADMIN;
@@ -33,10 +34,21 @@ public class ActivityApply implements Serializable {
 
 	public static final String VO_ADMIN = "ActivityApplyAdminVo";
 
+	@Type(label = "活动报名状态")
+	public enum ActivityApplyStatus {
+		已报名, 已支付
+	}
+
 	@Id
 	@Field(label = "id")
 	@View(groups = VO_ADMIN)
 	private Long id;
+
+	@NotNull
+	@Query(Predicate.EQ)
+	@Field(label = "活动报名状态")
+	@View(groups = VO_ADMIN)
+	private ActivityApplyStatus activityApplyStatus;
 
 	@NotNull
 	@Field(label = "用户id")
@@ -44,6 +56,17 @@ public class ActivityApply implements Serializable {
 	@View(groups = VO_ADMIN)
 	@AssociationView(name = "user", associationGroup = User.VO_ADMIN_SIMPLE, groups = VO_ADMIN)
 	private Long userId;
+
+	@Field(label = "代付人id")
+	@Query({Predicate.IN, Predicate.EQ})
+	@View(groups = VO_ADMIN)
+	@AssociationView(name = "payerUser", associationGroup = User.VO_ADMIN_SIMPLE, groups = VO_ADMIN)
+	private Long payerUserId;
+
+	@Field(label = "活动报名费")
+	@NotNull
+	@View(name = "amountLabel", type = String.class)
+	private BigDecimal amount;
 
 	@NotNull
 	@Field(label = "活动id")
