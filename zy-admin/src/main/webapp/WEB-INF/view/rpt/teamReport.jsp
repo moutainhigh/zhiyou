@@ -113,7 +113,7 @@
                 <select class="form-control pull-left" id="city" name="cityIdEQ">
                   <option value="">-- 请选择市 --</option>
                 </select>
-                <select class="form-control pull-left" id="district" name="districtEQ">
+                <select class="form-control pull-left" id="district" name="districtIdEQ">
                   <option value="">-- 请选择区 --</option>
                 </select>
               </div>
