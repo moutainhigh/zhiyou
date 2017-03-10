@@ -33,7 +33,7 @@
       <p class="font-555 fs-14 lh-30">${activity.province}${activity.city}${activity.district}${activity.address}</p>
     </div>
     <div class="form-btn mt-30">
-      <a href="javascript:history.back();" class="btn green btn-block round-2">确 定</a>
+      <a href="${ctx}/activity/${activity.id}" class="btn green btn-block round-2">确 定</a>
     </div>
   </article>
 

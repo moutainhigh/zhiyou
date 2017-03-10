@@ -100,4 +100,6 @@ public class ActivityApply implements Serializable {
 	@NotNull
 	private Boolean isSmsSent;
 
+	@Field(label = "外部sn")
+	private String outerSn;
 }

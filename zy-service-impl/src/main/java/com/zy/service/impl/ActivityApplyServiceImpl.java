@@ -5,12 +5,16 @@ import com.zy.entity.act.ActivityApply;
 import com.zy.mapper.ActivityApplyMapper;
 import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.service.ActivityApplyService;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 @Service
 @Validated
@@ -49,14 +53,21 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 	}
 
 	@Override
-	public ActivityApply findOne(Long id) {
+	public ActivityApply findOne(@NotNull Long id) {
 		return activityApplyMapper.findOne(id);
 	}
 
 	@Override
-	public void success(Long id, String outerSn) {
+	public void success(@NotNull Long id, @NotBlank String outerSn) {
+		ActivityApply activityApply = findOne(id);
+		validate(activityApply, NOT_NULL, "activity apply id " + id + " not found");
+		if (activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已支付) {
+			return;
+		}
 
+		activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
+		activityApply.setOuterSn(outerSn);
+		activityApplyMapper.update(activityApply);
 	}
-
 
 }

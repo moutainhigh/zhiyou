@@ -13,11 +13,12 @@
 		<result column="is_cancelled" property="isCancelled" />
 		<result column="inviter_id" property="inviterId" />
 		<result column="is_sms_sent" property="isSmsSent" />
+		<result column="outer_sn" property="outerSn" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.act.ActivityApply" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_activity_apply` (activity_apply_status,user_id,payer_user_id,amount,activity_id,applied_time,is_cancelled,inviter_id,is_sms_sent)
-	  values (#{activityApplyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userId},#{payerUserId},#{amount},#{activityId},#{appliedTime},#{isCancelled},#{inviterId},#{isSmsSent})
+	  insert into `act_activity_apply` (activity_apply_status,user_id,payer_user_id,amount,activity_id,applied_time,is_cancelled,inviter_id,is_sms_sent,outer_sn)
+	  values (#{activityApplyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userId},#{payerUserId},#{amount},#{activityId},#{appliedTime},#{isCancelled},#{inviterId},#{isSmsSent},#{outerSn})
 	</insert>
 
 	<delete id="delete">
@@ -36,6 +37,7 @@
 			is_cancelled = #{isCancelled},
 			inviter_id = #{inviterId},
 			is_sms_sent = #{isSmsSent},
+			outer_sn = #{outerSn},
 		</set>
 		where id = #{id}
 	</update>
@@ -54,6 +56,7 @@
 					<when test="field == 'isCancelled'">is_cancelled = #{activityApply.isCancelled},</when>
 					<when test="field == 'inviterId'">inviter_id = #{activityApply.inviterId},</when>
 					<when test="field == 'isSmsSent'">is_sms_sent = #{activityApply.isSmsSent},</when>
+					<when test="field == 'outerSn'">outer_sn = #{activityApply.outerSn},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -62,14 +65,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,activity_apply_status,user_id,payer_user_id,amount,activity_id,applied_time,is_cancelled,inviter_id,is_sms_sent
+		id,activity_apply_status,user_id,payer_user_id,amount,activity_id,applied_time,is_cancelled,inviter_id,is_sms_sent,outer_sn
 		from `act_activity_apply`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ActivityApplyQueryModel">
 		select
-		id,activity_apply_status,user_id,payer_user_id,amount,activity_id,applied_time,is_cancelled,inviter_id,is_sms_sent
+		id,activity_apply_status,user_id,payer_user_id,amount,activity_id,applied_time,is_cancelled,inviter_id,is_sms_sent,outer_sn
 		from `act_activity_apply`
 		<where>
 			<if test="payerUserIdIN != null">

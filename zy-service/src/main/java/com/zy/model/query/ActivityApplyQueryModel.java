@@ -99,6 +99,7 @@ public class ActivityApplyQueryModel implements Serializable {
 		fieldNames.add("isCancelled");
 		fieldNames.add("appliedTime");
 		fieldNames.add("inviterId");
+		fieldNames.add("outerSn");
 		fieldNames.add("id");
 		fieldNames.add("activityApplyStatus");
 		fieldNames.add("payerUserId");

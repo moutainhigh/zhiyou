@@ -24,7 +24,7 @@ public class PayCreateMobile {
 	String outMemberMobile;  // 商户会员注册手机号	outMemberMobile	是	String(11)	商户会员注册手机号
 	String merchantOrderNo;  // 商户订单号	merchantOrderNo	是	String(32)	商户订单号，必须唯一, 商户订单号不能重复
 	String productName;  // 商品名称	productName	是	String(256)	商品名称
-	String productDesc;  // 商品描述	productDesc	否	String(1000)	商品描述
+	//String productDesc;  // 商品描述	productDesc	否	String(1000)	商品描述
 	String currency = "CNY";  // 货币类型	currency	是	String()	货币类型，见枚举常量定义：Currency
 	String amount;  // 交易金额	amount	是	String(20)	交易金额,单位是元
 	String pageUrl;  // 前台通知回调地址	pageUrl	否	String(256)	用户选择新快捷支付,支付成功后,将附带回调数据跳转到此页面,商户可以进行相关处理并显示给终端用户,如:http://www.testpay.com/testpay.jsp
@@ -49,7 +49,6 @@ public class PayCreateMobile {
 		map.put("outMemberMobile", outMemberMobile);
 		map.put("merchantOrderNo", merchantOrderNo);
 		map.put("productName", productName);
-		map.put("productDesc", productDesc);
 		map.put("currency", currency);
 		map.put("amount", amount);
 		map.put("pageUrl", pageUrl);

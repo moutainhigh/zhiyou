@@ -280,6 +280,7 @@ public class UcenterPayController {
 
 		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, principal.getUserId());
 		validate(activityApply, NOT_NULL, "activity apply id" + activityId + " not found");
+
 		Long userId = activityApply.getUserId();
 		if(!userId.equals(principal.getUserId())){
 			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
@@ -316,7 +317,7 @@ public class UcenterPayController {
 		String registerIp = StringUtils.isBlank(user.getRegisterIp())? "127.0.0.1" : user.getRegisterIp();
 
 		String payUrl = shengPayMobileClient.getPayCreateUrl(new Date(), userId, user.getRegisterTime(), registerIp, "0"
-				, user.getNickname(), user.getPhone(), activityApply.getId(), activity.getTitle(), activity.getTitle()
+				, user.getNickname(), user.getPhone(), activityApply.getId(), activity.getTitle()
 				, activityApply.getAmount(), Constants.SHENGPAY_RETURN_MOBILE, Constants.SHENGPAY_NOTIFY_MOBILE, "127.0.0.1");
 		logger.error(payUrl);
 		return "redirect:" + payUrl;

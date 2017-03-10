@@ -13,14 +13,14 @@ import java.util.Date;
  */
 public class ShengPayMobileClient {
 
-	public static final String URL_PAY = "http://61.152.90.48:8088/html5-gateway-general/express.htm?page=mobile";
+	public static final String URL_PAY = "https://api.shengpay.com/html5-gateway/express.htm?page=mobile";
 
 	private String merchantId;
-	private String secret;
+	private String key;
 
-	public ShengPayMobileClient(String merchantId, String secret) {
+	public ShengPayMobileClient(String merchantId, String key) {
 		this.merchantId = merchantId;
-		this.secret = secret;
+		this.key = key;
 	}
 
 	public boolean checkPayNotify(PayNotify payNotify) {
@@ -73,7 +73,7 @@ public class ShengPayMobileClient {
 		forSign.append(payNotify.getSignType());
 		forSign.append(s);
 
-		forSign.append(secret);
+		forSign.append(key);
 
 		String signed = Encodes.encodeHex(Digests.md5(forSign.toString().getBytes(Charset.forName("UTF-8")))).toUpperCase();
 		if (signed.equals(payNotify.getSignMsg())) {
@@ -85,12 +85,12 @@ public class ShengPayMobileClient {
 	}
 
 	public boolean isSuccess(PayNotify payNotify) {
-		return "OK".equals(payNotify.getTransStatus());
+		return "01".equals(payNotify.getTransStatus());
 	}
 
 	public String getPayCreateUrl(Date requestTime, Long outMemberId, Date outMemberRegistTime, String outMemberRegistIP
 			, String outMemberVerifyStatus, String outMemberName, String outMemberMobile, Long merchantOrderNo, String productName
-			, String productDesc, BigDecimal amount, String pageUrl, String notifyUrl, String userIP) {
+			, BigDecimal amount, String pageUrl, String notifyUrl, String userIP) {
 
 		PayCreateMobile payCreate = new PayCreateMobile();
 		payCreate.setMerchantNo(merchantId);
@@ -103,7 +103,6 @@ public class ShengPayMobileClient {
 		payCreate.setOutMemberMobile(outMemberMobile);
 		payCreate.setMerchantOrderNo(String.valueOf(merchantOrderNo));
 		payCreate.setProductName(productName);
-		payCreate.setProductDesc(productDesc);
 		payCreate.setAmount(amount.setScale(2, BigDecimal.ROUND_UNNECESSARY).toString());
 		payCreate.setPageUrl(pageUrl);
 		payCreate.setNotifyUrl(notifyUrl);
@@ -117,10 +116,10 @@ public class ShengPayMobileClient {
 
 	private String getPayCreateSign(PayCreateMobile payCreate) {
 
-		// Origin ＝ merchantNo+|+ charset+|+ requestTime+|+ outMemberId+|+
+		// Origin ＝ merchantNo+|+ charset(忽略)+|+ requestTime+|+ outMemberId+|+
 		// outMemberRegistTime+|+ outMemberRegistIP+|+ outMemberVerifyStatus+|+
 		// outMemberName+|+ outMemberMobile+|+ merchantOrderNo+|+ productName+|+
-		// productDesc+|+ currency+|+ amount+|+ pageUrl+|+ notifyUrl+|+ userIP+|+
+		// productDesc(忽略)+|+ currency+|+ amount+|+ pageUrl+|+ notifyUrl+|+ userIP+|+
 		//bankCardType(忽略)+|+ bankCode(忽略)+|+ exts(忽略)+|+signType+|；
 
 		String seperator = "|";
@@ -143,11 +142,9 @@ public class ShengPayMobileClient {
 		forSign.append(seperator);
 		forSign.append(payCreate.getOutMemberMobile());
 		forSign.append(seperator);
-		forSign.append(payCreate.getMerchantNo());
+		forSign.append(payCreate.getMerchantOrderNo());
 		forSign.append(seperator);
 		forSign.append(payCreate.getProductName());
-		forSign.append(seperator);
-		forSign.append(payCreate.getProductDesc());
 		forSign.append(seperator);
 		forSign.append(payCreate.getCurrency());
 		forSign.append(seperator);
@@ -162,7 +159,7 @@ public class ShengPayMobileClient {
 		forSign.append(payCreate.getSignType());
 		forSign.append(seperator);
 
-		forSign.append(secret);
+		forSign.append(key);
 		System.out.println(forSign);
 		return Encodes.encodeHex(Digests.md5(forSign.toString().getBytes(Charset.forName("UTF-8")))).toUpperCase();
 	}
