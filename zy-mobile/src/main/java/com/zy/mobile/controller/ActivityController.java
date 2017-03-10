@@ -83,6 +83,7 @@ public class ActivityController {
 			boolean isApplied = activityApply != null;
 			model.addAttribute("isApplied", isApplied);
 			if(isApplied) {
+				model.addAttribute("payerId", activityApply.getPayerUserId());
 				model.addAttribute("toPay", activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已报名);
 			}
 

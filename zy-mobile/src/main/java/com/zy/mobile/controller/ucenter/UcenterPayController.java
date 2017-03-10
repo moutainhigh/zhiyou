@@ -256,18 +256,18 @@ public class UcenterPayController {
 		Activity activity = activityService.findOne(activityId);
 		validate(activity, NOT_NULL, "activity id " + activityId + " not found");
 
-		ActivityApply byActivityIdAndUserId = activityApplyService.findByActivityIdAndUserId(activityId, principal.getUserId());
-		validate(byActivityIdAndUserId, NOT_NULL, "activity apply id" + activityId + " not found");
-		if(!byActivityIdAndUserId.getUserId().equals(principal.getUserId())){
-			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
+		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, principal.getUserId());
+		validate(activityApply, NOT_NULL, "activity apply id" + activityId + " not found");
+		if(!activityApply.getUserId().equals(principal.getUserId())){
+			throw new BizException(BizCode.ERROR, "非自己的订单, 不能操作");
 		}
-		if(byActivityIdAndUserId.getActivityApplyStatus() != ActivityApply.ActivityApplyStatus.已报名){
+		if(activityApply.getActivityApplyStatus() != ActivityApply.ActivityApplyStatus.已报名){
 			return "redirect:/activity/" + activityId;
 		}
 
 		model.addAttribute("title", activity.getTitle());
 		model.addAttribute("activityId", activityId);
-		model.addAttribute("amount", byActivityIdAndUserId.getAmount());
+		model.addAttribute("amount", activityApply.getAmount());
 		return "ucenter/pay/activityPay";
 	}
 
@@ -280,8 +280,34 @@ public class UcenterPayController {
 
 		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, principal.getUserId());
 		validate(activityApply, NOT_NULL, "activity apply id" + activityId + " not found");
+		if (activityApply.getPayerUserId() != null) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("请等待他人付款"));
+			return "redirect:/activity/" + activityId;
+		}
 
 		Long userId = activityApply.getUserId();
+		if (StringUtils.isNotBlank(payerPhone)) {
+			User payer = userService.findByPhone(payerPhone);
+			if (payer == null) {
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("手机号不存在"));
+				return "redirect:/u/pay/activityApply/" + activityId;
+			}
+			if (payer.getUserType() != User.UserType.代理) {
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("待付人必须是代理"));
+				return "redirect:/u/pay/activityApply/" + activityId;
+			}
+			Long payerId = payer.getId();
+			if (userId.equals(payerId)) {
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请输入他人的手机号"));
+				return "redirect:/u/pay/activityApply/" + activityId;
+			}
+
+			activityApply.setPayerUserId(payerId);
+			activityApplyService.modifyPayerUserId(activityApply.getId(), payerId);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("请等待他人付款"));
+			return "redirect:/activity/" + activityId;
+		}
+
 		if(!userId.equals(principal.getUserId())){
 			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
 		}
@@ -289,6 +315,27 @@ public class UcenterPayController {
 			return "redirect:/activity/" + activityId;
 		}
 
+		return shengPay(activityApply, userId, activity.getTitle());
+
+	}
+
+	@RequestMapping(path = "/activityApply/payment/{activityApplyId}", method = RequestMethod.GET)
+	public String payerPaymentPay(@PathVariable Long activityApplyId, Principal principal) {
+		ActivityApply activityApply = activityApplyService.findOne(activityApplyId);
+		validate(activityApply, NOT_NULL, "activity apply id " + activityApplyId + " not found");
+
+		Long userId = principal.getUserId();
+		if (!userId.equals(activityApply.getPayerUserId())) {
+			throw new BizException(BizCode.ERROR, "非自己代付的订单, 不能操作");
+		}
+		if (activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已支付) {
+			return "redirect:/u/activity/payer";
+		}
+
+		return shengPay(activityApply, userId, activityService.findOne(activityApply.getActivityId()).getTitle());
+	}
+
+	private String shengPay(ActivityApply activityApply, Long userId, String title) {
 		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(activityApply.getId()).paymentTypeEQ(PaymentType.活动报名).build());
 		Payment payment = payments.stream()
 				.filter(v -> (v.getPaymentStatus() == Payment.PaymentStatus.待支付 || v.getPaymentStatus() == Payment.PaymentStatus.待确认))
@@ -308,7 +355,7 @@ public class UcenterPayController {
 			payment.setPaymentType(PaymentType.活动报名);
 			payment.setRefId(activityApply.getId());
 			payment.setUserId(userId);
-			payment.setTitle(activity.getTitle());
+			payment.setTitle(title);
 			payment.setPayType(PayType.盛付通);
 			paymentService.create(payment);
 		}
@@ -317,7 +364,7 @@ public class UcenterPayController {
 		String registerIp = StringUtils.isBlank(user.getRegisterIp())? "127.0.0.1" : user.getRegisterIp();
 
 		String payUrl = shengPayMobileClient.getPayCreateUrl(new Date(), userId, user.getRegisterTime(), registerIp, "0"
-				, user.getNickname(), user.getPhone(), activityApply.getId(), activity.getTitle()
+				, user.getNickname(), user.getPhone(), activityApply.getId(), title
 				, activityApply.getAmount(), Constants.SHENGPAY_RETURN_MOBILE, Constants.SHENGPAY_NOTIFY_MOBILE, "127.0.0.1");
 		logger.error(payUrl);
 		return "redirect:" + payUrl;

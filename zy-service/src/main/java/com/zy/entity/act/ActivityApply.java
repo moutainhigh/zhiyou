@@ -21,18 +21,17 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import static com.zy.entity.act.ActivityApply.VO_ADMIN;
-
 @Entity
 @Table(name = "act_activity_apply", uniqueConstraints = @UniqueConstraint(columnNames = {"activityId", "userId"}))
 @Getter
 @Setter
 @Type(label = "活动报名")
 @QueryModel
-@ViewObject(groups = VO_ADMIN)
+@ViewObject(groups = {ActivityApply.VO_ADMIN, ActivityApply.VO_LIST})
 public class ActivityApply implements Serializable {
 
 	public static final String VO_ADMIN = "ActivityApplyAdminVo";
+	public static final String VO_LIST = "ActivityApplyListVo";
 
 	@Type(label = "活动报名状态")
 	public enum ActivityApplyStatus {
@@ -41,20 +40,20 @@ public class ActivityApply implements Serializable {
 
 	@Id
 	@Field(label = "id")
-	@View(groups = VO_ADMIN)
+	@View
 	private Long id;
 
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "活动报名状态")
-	@View(groups = VO_ADMIN)
+	@View(groups = {VO_ADMIN, VO_LIST})
 	private ActivityApplyStatus activityApplyStatus;
 
 	@NotNull
 	@Field(label = "用户id")
 	@Query({Predicate.IN, Predicate.EQ})
 	@View(groups = VO_ADMIN)
-	@AssociationView(name = "user", associationGroup = User.VO_ADMIN_SIMPLE, groups = VO_ADMIN)
+	@AssociationView(name = "user", associationGroup = User.VO_ADMIN_SIMPLE, groups = {VO_ADMIN, VO_LIST})
 	private Long userId;
 
 	@Field(label = "代付人id")
@@ -71,14 +70,16 @@ public class ActivityApply implements Serializable {
 	@NotNull
 	@Field(label = "活动id")
 	@Query({Predicate.IN, Predicate.EQ})
-	@View(groups = VO_ADMIN)
+	@View
+	@View(name = "activityTitle", type = String.class, groups = {VO_ADMIN, VO_LIST})
+	@View(name = "activityImageThumbnail", type = String.class, groups = {VO_ADMIN, VO_LIST})
 	private Long activityId;
 
 	@NotNull
 	@Field(label = "报名时间")
 	@Query({Predicate.GTE, Predicate.LT})
 	@View(groups = VO_ADMIN)
-	@View(name = "appliedTimeLabel", type = String.class, groups = VO_ADMIN)
+	@View(name = "appliedTimeLabel", type = String.class, groups = {VO_ADMIN, VO_LIST})
 	private Date appliedTime;
 
 	@NotNull

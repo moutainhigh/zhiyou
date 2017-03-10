@@ -1,8 +1,12 @@
 package com.zy.service.impl;
 
+import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.act.ActivityApply;
+import com.zy.entity.usr.User;
 import com.zy.mapper.ActivityApplyMapper;
+import com.zy.mapper.UserMapper;
+import com.zy.model.BizCode;
 import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.service.ActivityApplyService;
 import org.hibernate.validator.constraints.NotBlank;
@@ -22,6 +26,9 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 
 	@Autowired
 	private ActivityApplyMapper activityApplyMapper;
+
+	@Autowired
+	private UserMapper userMapper;
 
 	@Override
 	public Page<ActivityApply> findPage(
@@ -67,6 +74,24 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 
 		activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
 		activityApply.setOuterSn(outerSn);
+		activityApplyMapper.update(activityApply);
+	}
+
+	@Override
+	public void modifyPayerUserId(@NotNull Long activityApplyId, @NotNull Long payerUserId) {
+		User user = userMapper.findOne(payerUserId);
+		validate(user, NOT_NULL, "user id " + payerUserId + " not found");
+		if (user.getUserType() != User.UserType.代理) {
+			throw new BizException(BizCode.ERROR, "代付人用户类型必须为代理");
+		}
+
+		ActivityApply activityApply = findOne(activityApplyId);
+		validate(activityApply, NOT_NULL, "activity apply id " + activityApplyId + " not found");
+		if (activityApply.getUserId().equals(payerUserId)) {
+			throw new BizException(BizCode.ERROR, "请输入他人手机号");
+		}
+
+		activityApply.setPayerUserId(payerUserId);
 		activityApplyMapper.update(activityApply);
 	}
 

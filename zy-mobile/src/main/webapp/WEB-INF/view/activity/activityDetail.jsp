@@ -298,7 +298,10 @@
       <c:if test="${!toPay}">
         <a class="flex-3 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-check"></i> 您已报名</div></a>
       </c:if>
-      <c:if test="${toPay}">
+      <c:if test="${toPay and not empty payerId}">
+        <a class="flex-3 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-check"></i> 待他人付款</div></a>
+      </c:if>
+      <c:if test="${toPay and empty payerId}">
         <a class="flex-3 bg-green fs-14 font-white" href="${ctx}/u/pay/activityApply/${activity.id}"><div><i class="fa fa-check"></i> 点击付费</div></a>
       </c:if>
     </c:if>

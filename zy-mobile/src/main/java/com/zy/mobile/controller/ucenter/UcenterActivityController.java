@@ -2,6 +2,7 @@ package com.zy.mobile.controller.ucenter;
 
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.component.ActivityApplyComponent;
 import com.zy.component.ActivityComponent;
 import com.zy.component.CacheComponent;
 import com.zy.component.UserComponent;
@@ -49,7 +50,10 @@ public class UcenterActivityController {
 	
 	@Autowired
 	private ActivityComponent activityComponent;
-	
+
+	@Autowired
+	private ActivityApplyComponent activityApplyComponent;
+
 	@Autowired
 	private CacheComponent cacheComponent;
 
@@ -66,6 +70,15 @@ public class UcenterActivityController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名异常," + e.getMessage()));
 			return "redirect:/activity/" + id;
 		}
+	}
+
+	@RequestMapping(value = "/payer")
+	public String payer(Principal principal, Model model) {
+		List<ActivityApply> all = activityApplyService.findAll(ActivityApplyQueryModel.builder().payerUserIdEQ(principal.getUserId()).build());
+		if (!all.isEmpty()) {
+			model.addAttribute("activityApplyVos", all.stream().map(activityApplyComponent::buildListVo).collect(Collectors.toList()));
+		}
+		return "ucenter/activity/payerList";
 	}
 
 	@RequestMapping("/applyList")

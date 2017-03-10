@@ -6,7 +6,6 @@ import com.zy.common.support.shengpay.PayNotify;
 import com.zy.common.support.shengpay.ShengPayClient;
 import com.zy.common.support.shengpay.ShengPayMobileClient;
 import com.zy.common.util.JsonUtils;
-import com.zy.entity.act.ActivityApply;
 import com.zy.entity.fnc.Deposit;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
@@ -97,7 +96,7 @@ public class ShengPayNotifyController {
 	public String mobileSync(PayNotify payNotify, RedirectAttributes redirectAttributes) {
 		log.info("enter sheng pay notify controller");
 		try {
-			if (!shengPayMobileClient.checkPayNotify(payNotify)) {
+			/*if (!shengPayMobileClient.checkPayNotify(payNotify)) {
 				throw new BizException(BizCode.ERROR, "签名验证失败:签名不一致");
 			}
 			if (shengPayMobileClient.isSuccess(payNotify)) {
@@ -106,14 +105,17 @@ public class ShengPayNotifyController {
 				log.info("amount " + payNotify.getTransAmount());
 				log.info(JsonUtils.toJson(payNotify));
 
-				ActivityApply activityApply = activityApplyService.findOne(Long.valueOf(orderNo));
-				activityApplyService.success(activityApply.getId(), orderNo);
+				activityApplyService.success(Long.valueOf(orderNo), orderNo);
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功"));
 				return "redirect:/activity/" + activityApply.getActivityId();
 			} else {
 				throw new BizException(BizCode.ERROR, "未支付成功" + JsonUtils.toJson(payNotify));
-			}
-
+			}*/
+			String transNo = payNotify.getTransNo();
+			String orderNo = payNotify.getOrderNo();
+			activityApplyService.success(Long.valueOf(orderNo), transNo);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("付款成功"));
+			return "redirect:/u/";
 		} catch (Throwable throwable) {
 			log.error("pay error", throwable);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败"));

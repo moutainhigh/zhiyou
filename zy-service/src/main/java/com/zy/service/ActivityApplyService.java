@@ -17,4 +17,6 @@ public interface ActivityApplyService {
 	ActivityApply findOne(Long id);
 
 	void success(Long id, String outerSn);
+
+	void modifyPayerUserId(Long activityApplyId, Long payerUserId);
 }

@@ -23,7 +23,7 @@
 
 	 $('#userPay').click(function() {
     $('.payer-phone').addClass('hide');
-    $('#phone').value('');
+    $('#phone').val('');
 	 });
 
 	 $('#otherPay').click(function() {
@@ -31,6 +31,13 @@
 	 });
 
 	 $('#btnSubmit').click(function() {
+	 	if ($('#otherPay').is(':checked')) {
+	 		var val = $('#phone').val();
+	 		if (!val) {
+			  messageShow('请输入代付人手机号', 'error', 2);
+			  return;
+      }
+    }
 	 	$('#form').submit();
    });
  });
@@ -82,7 +89,7 @@
         </div>
         <div class="list-item  payer-phone hide">
           <div class="list-text">代付人手机</div>
-          <div class="list-unit"><input type="text" name="phone" id="phone" value="" /></div>
+          <div class="list-unit"><input type="text" name="payerPhone" id="phone" value="" /></div>
         </div>
       </div>
 
