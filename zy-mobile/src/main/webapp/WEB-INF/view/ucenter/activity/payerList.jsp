@@ -46,7 +46,7 @@
             <label class="label green">去付款</label>
           </c:if>
           <c:if test="${vo.activityApplyStatus == '已支付'}">
-            <label class="label gray">已付款</label>
+            <label class="label blue">已付款</label>
           </c:if>
         </div>
         <c:if test="${vo.activityApplyStatus == '已报名'}">
