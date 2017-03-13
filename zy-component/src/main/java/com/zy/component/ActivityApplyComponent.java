@@ -53,7 +53,7 @@ public class ActivityApplyComponent {
 
 		Long payerUserId = activityApply.getPayerUserId();
 		if (payerUserId != null) {
-			User payerUser = cacheComponent.getUser(userId);
+			User payerUser = cacheComponent.getUser(payerUserId);
 			activityApplyAdminVo.setPayerUser(VoHelper.buildUserAdminSimpleVo(payerUser));
 		}
 

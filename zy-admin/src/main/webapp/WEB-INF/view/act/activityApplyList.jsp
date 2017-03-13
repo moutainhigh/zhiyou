@@ -22,21 +22,46 @@
         },
         columns: [
 	        {
-		        data: 'activityId',
-		        title: '活动Id'
+		        data: '',
+		        title: '活动',
+		        orderable: false,
+            render: function(data, type, full) {
+              return '<img class="image-view" data-title="活动" src="' + full.activityImageThumbnail + '" width="120" height="80" />' + full.activityTitle;
+            }
 	        },
 	        {
-		        data: 'userId',
-		        title: '用户Id'
+		        data: '',
+		        title: '用户',
+		        orderable: false,
+            render: function(data, type, full) {
+              return formatUser(full.user);
+            }
 	        },
           {
             data: 'activityApplyStatus',
-            title: '活动报名状态'
+            title: '活动报名状态',
+	          orderable: false,
+	          render: function(data, type, full) {
+		          if (data == '已报名') {
+		          	return '<label class="label label-info">已报名</label>';
+              } else {
+			          return '<label class="label label-success">已支付</label>';
+              }
+	          }
           },
 	        {
-		        data: 'payerUserId',
-		        title: '代付人Id'
-	        }]
+		        data: '',
+		        title: '代付人Id',
+		        orderable: false,
+		        render: function(data, type, full) {
+			        return formatUser(full.payerUser);
+		        }
+	        },
+	        {
+		        data: 'amountLabel',
+		        title: '活动报名费',
+		        orderable: false
+	        },]
       }
     });
 
