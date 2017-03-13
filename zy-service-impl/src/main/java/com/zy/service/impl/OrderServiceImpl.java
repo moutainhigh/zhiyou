@@ -1152,7 +1152,7 @@ public class OrderServiceImpl implements OrderService {
 					amount = amount.subtract(v4Amount);
 					/*fncComponent.createAndGrantProfit(sysUserId, Profit.ProfitType.平台收款, orderId, "订单" + order.getSn() + "平台收款", currencyType, v4Amount);*/
 				}
-				fncComponent.createAndGrantProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单" + order.getSn() + "收款", CurrencyType.现金, amount, paidTime);
+				fncComponent.createAndGrantProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单" + order.getSn() + "收款", CurrencyType.积分, amount, paidTime);
 			}
 		}
 
@@ -1160,7 +1160,7 @@ public class OrderServiceImpl implements OrderService {
 		if (order.getIsUseLogistics() && order.getIsBuyerPayLogisticsFee()) {
 			BigDecimal logisticsFee = order.getLogisticsFee();
 			if (logisticsFee.compareTo(new BigDecimal("0.00")) > 0) {
-				fncComponent.createTransfer(buyerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.现金, logisticsFee, paidTime);
+				fncComponent.createTransfer(buyerId, sysUserId, Transfer.TransferType.邮费, orderId, "邮费", CurrencyType.积分, logisticsFee, paidTime);
 			}
 		}
 
