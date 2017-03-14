@@ -277,7 +277,7 @@
     <div class="portlet light bordered">
     <div class="portlet-title">
       <div class="caption">
-        <i class="icon-docs"></i><span>订单管理 </span>
+        <i class="icon-docs"></i><span>充值管理 </span>
       </div>
       <div class="tools"></div>
       </div>

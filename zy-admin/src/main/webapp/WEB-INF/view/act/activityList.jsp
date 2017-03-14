@@ -2,8 +2,83 @@
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 
 <!-- BEGIN JAVASCRIPTS -->
+<script id="addApplyImpl" type="text/x-handlebars-template">
+  <form id="addApplyForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+    <input type="hidden" name="activityId" value="{{id}}"/>
+    <div class="form-body">
+      <div class="alert alert-danger display-hide">
+        <i class="fa fa-exclamation-circle"></i>
+        <button class="close" data-close="alert"></button>
+        <span class="form-errors">您填写的信息有误，请检查。</span>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">手机<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions fluid">
+      <div class="col-md-offset-3 col-md-9">
+        <button id="addApplySubmit{{id}}" type="button" class="btn green">
+          <i class="fa fa-save"></i> 保存
+        </button>
+        <button id="addApplyCancel{{id}}" class="btn default" data-href="">
+          <i class="fa fa-chevron-left"></i> 返回
+        </button>
+      </div>
+    </div>
+  </form>
+</script>
+
 <script>
   var grid = new Datatable();
+
+  var addApplyTemplate = Handlebars.compile($('#addApplyImpl').html());
+  $('#dataTable').on('click', '.btn-add-apply', function () {
+	  var id = $(this).data('id');
+	  var data = {
+		  id: id
+	  };
+	  var html = addApplyTemplate(data);
+	  var index = layer.open({
+		  type: 1,
+		  //skin: 'layui-layer-rim', //加上边框
+		  area: ['600px', '360px'], //宽高
+		  content: html
+	  });
+
+	  $form = $('#addApplyForm' + id);
+	  $form.validate({
+		  rules: {
+			  'phone': {
+				  required: true
+			  }
+		  },
+		  messages: {}
+	  });
+
+	  $('#addApplySubmit' + id).bind('click', function () {
+		  var result = $form.validate().form();
+		  if (result) {
+			  var url = '${ctx}/activityApply/create';
+			  $.post(url, $form.serialize(), function (data) {
+				  if (data.code === 0) {
+					  layer.alert('操作成功');
+					  layer.close(index);
+					  grid.getDataTable().ajax.reload(null, false);
+				  } else {
+					  layer.alert('操作失败,原因' + data.message);
+				  }
+			  });
+		  }
+	  })
+
+	  $('#addApplyCancel' + id).bind('click', function () {
+		  layer.close(index);
+	  })
+
+  });
 
   $(function () {
     grid.init({
@@ -106,7 +181,11 @@
               } else {
                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/activity/release?id=' + data + '&isReleased=true"><i class="fa fa-check"></i> 上架 </a>';
               }
-              //optionHtml += '<a class="btn btn-xs default red-stripe" href="javascript:;" data-href="${ctx}/activity/delete?id=' + data + '" data-confirm="您确定要删除选中数据吗?"><i class="fa fa-trash-o"></i> 删除 </a>';
+              <shiro:hasPermission name="activityApply:edit">
+              if (full.status == '进行中') {
+	              optionHtml += '<a class="btn btn-xs default green-stripe btn-add-apply" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-plus"></i> 免费报名 </a>';
+              }
+              </shiro:hasPermission>
               return optionHtml;
             }
           }]

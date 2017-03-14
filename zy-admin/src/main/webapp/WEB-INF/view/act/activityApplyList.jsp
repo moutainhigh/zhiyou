@@ -85,7 +85,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-social-dropbox"></i> 活动管理
+          <i class="icon-social-dropbox"></i> 活动报名管理
         </div>
       </div>
       <div class="portlet-body clearfix">

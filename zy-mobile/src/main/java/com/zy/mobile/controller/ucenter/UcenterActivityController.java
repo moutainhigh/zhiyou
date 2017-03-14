@@ -135,7 +135,7 @@ public class UcenterActivityController {
 		}
 		if (activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已报名) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您还没有付费, 不能签到"));
-			return "redirect:/activity/" + id;
+			return "redirect:/activity/";
 		}
 		activityService.signIn(id, principal.getUserId());
 		return "activity/signInSuccess";
