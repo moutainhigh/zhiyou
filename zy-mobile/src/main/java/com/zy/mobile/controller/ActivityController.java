@@ -5,6 +5,7 @@ import com.zy.component.ActivityComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
+import com.zy.entity.act.ActivitySignIn;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
@@ -78,6 +79,9 @@ public class ActivityController {
 			activityCollectQueryModel.setActivityIdEQ(id);
 			activityCollectQueryModel.setUserIdEQ(principal.getUserId());
 			model.addAttribute("isCollected", !activityCollectService.findPage(activityCollectQueryModel).getData().isEmpty());
+
+			ActivitySignIn activitySignIn = activitySignInService.findByActivityIdAndUserId(id, userId);
+			model.addAttribute("isSigned", activitySignIn != null);
 
 			ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(id, userId);
 			boolean isApplied = activityApply != null;

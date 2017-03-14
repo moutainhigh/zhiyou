@@ -289,9 +289,20 @@
     <a id="btnShare" class="flex-1" href="javascript:;">
       <i class="fa fa-share-alt"></i><span>分享</span>
     </a>
-    <a class="flex-1" href="https://static.meiqia.com/dist/standalone.html?eid=32013">
+    <c:if test="${isSigned}">
+      <a class="flex-1" href="javascript:;">
+        <i class="fa fa-heart fa-calendar"></i><span>已签到 </span>
+      </a>
+    </c:if>
+    <c:if test="${!isSigned}">
+      <a id="btnSign" class="flex-1" href="${ctx}/u/activity/signIn?id=${activity.id}">
+        <i class="fa fa-calendar-o"></i><span>签到 </span>
+      </a>
+    </c:if>
+
+    <%--<a class="flex-1" href="https://static.meiqia.com/dist/standalone.html?eid=32013">
       <i class="fa fa-headphones"></i><span>客服</span>
-    </a>
+    </a>--%>
     
     <c:if test="${activity.status == '报名中' || activity.status == '进行中'}">
     <c:if test="${isApplied}">

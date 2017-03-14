@@ -3,6 +3,7 @@ package com.zy.mobile.controller.ucenter;
 import com.zy.common.exception.BizException;
 import com.zy.common.extend.BigDecimalBinder;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.support.shengpay.PayCreateMobile;
 import com.zy.common.support.shengpay.ShengPayClient;
 import com.zy.common.support.shengpay.ShengPayMobileClient;
 import com.zy.entity.act.Activity;
@@ -72,6 +73,8 @@ public class UcenterPayController {
 
 	@Autowired
 	private ShengPayMobileClient shengPayMobileClient;
+
+	public static final String URL_SHENGPAY = "https://api.shengpay.com/html5-gateway/express.htm?page=mobile";
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String depositPay(@BigDecimalBinder BigDecimal money, @RequestParam PayType payType, Model model,
@@ -272,7 +275,7 @@ public class UcenterPayController {
 	}
 
 	@RequestMapping(path = "/activityApply/payment", method = RequestMethod.POST)
-	public String paymentPay(@RequestParam Long activityId, String payerPhone, RedirectAttributes redirectAttributes,
+	public String paymentPay(@RequestParam Long activityId, String payerPhone, Model model, RedirectAttributes redirectAttributes,
 	                         Principal principal) {
 
 		Activity activity = activityService.findOne(activityId);
@@ -315,12 +318,14 @@ public class UcenterPayController {
 			return "redirect:/activity/" + activityId;
 		}
 
-		return shengPay(activityApply, userId, activity.getTitle());
+		model.addAttribute("payCreateMobile", shengPay(activityApply, userId, activity.getTitle()));
+		model.addAttribute("payUrl", URL_SHENGPAY);
+		return "shengpay/mobilePost";
 
 	}
 
 	@RequestMapping(path = "/activityApply/payment/{activityApplyId}", method = RequestMethod.GET)
-	public String payerPaymentPay(@PathVariable Long activityApplyId, Principal principal) {
+	public String payerPaymentPay(@PathVariable Long activityApplyId, Principal principal, Model model) {
 		ActivityApply activityApply = activityApplyService.findOne(activityApplyId);
 		validate(activityApply, NOT_NULL, "activity apply id " + activityApplyId + " not found");
 
@@ -331,11 +336,12 @@ public class UcenterPayController {
 		if (activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已支付) {
 			return "redirect:/u/activity/payer";
 		}
-
-		return shengPay(activityApply, userId, activityService.findOne(activityApply.getActivityId()).getTitle());
+		model.addAttribute("payCreateMobile", shengPay(activityApply, userId, activityService.findOne(activityApply.getActivityId()).getTitle()));
+		model.addAttribute("payUrl", URL_SHENGPAY);
+		return "shengpay/mobilePost";
 	}
 
-	private String shengPay(ActivityApply activityApply, Long userId, String title) {
+	private PayCreateMobile shengPay(ActivityApply activityApply, Long userId, String title) {
 		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(activityApply.getId()).paymentTypeEQ(PaymentType.活动报名).build());
 		Payment payment = payments.stream()
 				.filter(v -> (v.getPaymentStatus() == Payment.PaymentStatus.待支付 || v.getPaymentStatus() == Payment.PaymentStatus.待确认))
@@ -363,10 +369,9 @@ public class UcenterPayController {
 		User user = userService.findOne(userId);
 		String registerIp = StringUtils.isBlank(user.getRegisterIp())? "127.0.0.1" : user.getRegisterIp();
 
-		String payUrl = shengPayMobileClient.getPayCreateUrl(new Date(), userId, user.getRegisterTime(), registerIp, "0"
+		PayCreateMobile payCreateMobile = shengPayMobileClient.getPayCreateUrl(new Date(), userId, user.getRegisterTime(), registerIp, "0"
 				, user.getNickname(), user.getPhone(), activityApply.getId(), title
-				, activityApply.getAmount(), Constants.SHENGPAY_RETURN_MOBILE, Constants.SHENGPAY_NOTIFY_MOBILE, "127.0.0.1");
-		logger.error(payUrl);
-		return "redirect:" + payUrl;
+				, activityApply.getAmount(), Constants.SHENGPAY_RETURN_MOBILE, Constants.SHENGPAY_NOTIFY_MOBILE, GcUtils.getHost());
+		return payCreateMobile;
 	}
 }

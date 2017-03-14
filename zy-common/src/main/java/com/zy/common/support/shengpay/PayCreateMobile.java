@@ -30,8 +30,8 @@ public class PayCreateMobile {
 	String pageUrl;  // 前台通知回调地址	pageUrl	否	String(256)	用户选择新快捷支付,支付成功后,将附带回调数据跳转到此页面,商户可以进行相关处理并显示给终端用户,如:http://www.testpay.com/testpay.jsp
 	String notifyUrl;  // 后台通知回调地址	notifyUrl	否	String(1024)	通知回调地址
 	String userIP;  // 用户IP	userIP	是	String(20)	用户IP（用户下单时的IP），如何获取见 FAQ 5.7.1参考枚举常量定义：bankCardType
-	//String bankCardType;  // 银行卡类型	bankCardType	否	String(2)	银行卡类型，参考枚举常量定义：bankCardType
-	//String bankCode;  // 机构代码	bankCode	否	String(10)	机构代码，参考银行机构列表
+	//String bankCardType = "DR";  // 银行卡类型	bankCardType	否	String(2)	银行卡类型，参考枚举常量定义：bankCardType
+	//String bankCode = "ICBC";  // 机构代码	bankCode	否	String(10)	机构代码，参考银行机构列表
 	//String exts;  // 扩展字段	exts	否	String(256)	扩展属性,JSON串,例如：{key:value}特殊商户该字段如何传入请参阅FAQ 5.7.2
 	String signType = "MD5";  // 签名类型	signType	是	String(10)	签名类型，支持的签名方式有: MD5, RSA，SNKRSA
 	String signMsg;  // 签名消息	signMsg	是	String(512)	签名消息
@@ -49,11 +49,15 @@ public class PayCreateMobile {
 		map.put("outMemberMobile", outMemberMobile);
 		map.put("merchantOrderNo", merchantOrderNo);
 		map.put("productName", productName);
+		//map.put("productDesc", productDesc);
 		map.put("currency", currency);
 		map.put("amount", amount);
 		map.put("pageUrl", pageUrl);
 		map.put("notifyUrl", notifyUrl);
 		map.put("userIP", userIP);
+		//map.put("bankCardType", bankCardType);
+		//map.put("bankCode", bankCode);
+		//map.put("exts", exts);
 		map.put("signType", signType);
 		map.put("signMsg", signMsg);
 		return map;

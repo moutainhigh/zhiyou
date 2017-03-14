@@ -9,7 +9,6 @@ import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.service.ActivityApplyService;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -65,7 +64,7 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 	}
 
 	@Override
-	public void success(@NotNull Long id, @NotBlank String outerSn) {
+	public void success(@NotNull Long id, String outerSn) {
 		ActivityApply activityApply = findOne(id);
 		validate(activityApply, NOT_NULL, "activity apply id " + id + " not found");
 		if (activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已支付) {

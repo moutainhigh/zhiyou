@@ -13,8 +13,6 @@ import java.util.Date;
  */
 public class ShengPayMobileClient {
 
-	public static final String URL_PAY = "https://api.shengpay.com/html5-gateway/express.htm?page=mobile";
-
 	private String merchantId;
 	private String key;
 
@@ -23,7 +21,7 @@ public class ShengPayMobileClient {
 		this.key = key;
 	}
 
-	public boolean checkPayNotify(PayNotify payNotify) {
+	public boolean checkPayNotify(PayNotifyMobile payNotify) {
 
 		// 支付通知签名原始串是：Origin = Name +|+ Version +|+ Charset +|+ TraceNo +|+ MsgSender +|+ SendTime +|+
 		// InstCode +|+ OrderNo +|+ OrderAmount +|+ TransNo +|+ TransAmount +|+ TransStatus
@@ -62,14 +60,12 @@ public class ShengPayMobileClient {
 		forSign.append(s);
 		forSign.append(payNotify.getMerchantNo());
 		forSign.append(s);
-		if (payNotify.getErrorCode() != null) {
-			forSign.append(payNotify.getErrorCode());
-			forSign.append(s);
-		}
-		if (payNotify.getErrorMsg() != null) {
-			forSign.append(payNotify.getErrorMsg());
-			forSign.append(s);
-		}
+		forSign.append(payNotify.getErrorCode());
+		forSign.append(s);
+		forSign.append(payNotify.getErrorMsg());
+		forSign.append(s);
+		forSign.append(payNotify.getExt1());
+		forSign.append(s);
 		forSign.append(payNotify.getSignType());
 		forSign.append(s);
 
@@ -84,11 +80,11 @@ public class ShengPayMobileClient {
 
 	}
 
-	public boolean isSuccess(PayNotify payNotify) {
+	public boolean isSuccess(PayNotifyMobile payNotify) {
 		return "01".equals(payNotify.getTransStatus());
 	}
 
-	public String getPayCreateUrl(Date requestTime, Long outMemberId, Date outMemberRegistTime, String outMemberRegistIP
+	public PayCreateMobile getPayCreateUrl(Date requestTime, Long outMemberId, Date outMemberRegistTime, String outMemberRegistIP
 			, String outMemberVerifyStatus, String outMemberName, String outMemberMobile, Long merchantOrderNo, String productName
 			, BigDecimal amount, String pageUrl, String notifyUrl, String userIP) {
 
@@ -110,8 +106,8 @@ public class ShengPayMobileClient {
 
 		payCreate.setSignMsg(getPayCreateSign(payCreate));
 
-		return URL_PAY + "&" + payCreate.toMap().entrySet().stream().map(v -> v.getKey() + "=" + Encodes.urlEncode(v.getValue())).reduce((u, v) -> u + "&" + v).get();
-
+		//return URL_PAY + "&" + payCreate.toMap().entrySet().stream().map(v -> v.getKey() + "=" + Encodes.urlEncode(v.getValue())).reduce((u, v) -> u + "&" + v).get();
+		return payCreate;
 	}
 
 	private String getPayCreateSign(PayCreateMobile payCreate) {
@@ -156,11 +152,13 @@ public class ShengPayMobileClient {
 		forSign.append(seperator);
 		forSign.append(payCreate.getUserIP());
 		forSign.append(seperator);
+//		forSign.append(payCreate.getExts());
+//		forSign.append(seperator);
 		forSign.append(payCreate.getSignType());
 		forSign.append(seperator);
 
 		forSign.append(key);
-		System.out.println(forSign);
 		return Encodes.encodeHex(Digests.md5(forSign.toString().getBytes(Charset.forName("UTF-8")))).toUpperCase();
 	}
+
 }

@@ -126,12 +126,16 @@ public class UcenterActivityController {
 	}
 
 	@RequestMapping(value = "/signIn")
-	public String signIn(Long id, Principal principal, Model model) {
+	public String signIn(Long id, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(id, principal.getUserId());
 		model.addAttribute("user", userComponent.buildSimpleVo(userService.findOne(principal.getUserId())));
-		if(activityApply == null) {
+		if (activityApply == null) {
 			model.addAttribute("id", id);
 			return "activity/signInFail";
+		}
+		if (activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已报名) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您还没有付费, 不能签到"));
+			return "redirect:/activity/" + id;
 		}
 		activityService.signIn(id, principal.getUserId());
 		return "activity/signInSuccess";

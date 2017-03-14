@@ -209,6 +209,9 @@ public class ActivityServiceImpl implements ActivityService {
 		if (activityApply == null) {
 			throw new BizException(BizCode.ERROR, "您还没有报名该活动, 不能签到");
 		}
+		if (activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已报名) {
+			throw new BizException(BizCode.ERROR, "您还没付费, 不能签到");
+		}
 		Long signedInCount = activity.getSignedInCount();
 
 		ActivitySignIn activitySignIn = activitySignInMapper.findByActivityIdAndUserId(activityId, userId);

@@ -402,4 +402,5 @@ public class GcUtils {
 		map.put("fangshi", Constants.contactWayList);
 		return map;
 	}
+
 }
