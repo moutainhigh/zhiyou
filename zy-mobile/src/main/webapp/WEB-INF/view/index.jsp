@@ -59,7 +59,7 @@
       <div class="swipe-items">
         <c:forEach items="${banners}" var="banner">
           <a href="${banner.url}" <c:if test="${banner.isOpenBlank}"> target="_blank"</c:if>>
-            <img src="${banner.image}" alt="${banner.title}" />
+            <img src="${banner.image}@250h_750w_1e_1c.jpg" alt="${banner.title}" />
           </a>
         </c:forEach>
       </div>
