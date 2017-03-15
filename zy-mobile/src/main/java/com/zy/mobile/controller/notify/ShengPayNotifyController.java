@@ -157,7 +157,7 @@ public class ShengPayNotifyController {
 			if (shengPayMobileClient.isSuccess(payNotify)) {
 				String transNo = payNotify.getTransNo();
 				String orderNo = payNotify.getOrderNo();
-				activityApplyService.success(Long.valueOf(orderNo), orderNo);
+				activityApplyService.success(Long.valueOf(orderNo), transNo);
 				log.info("sheng pay nofity success");
 				return "OK";
 			} else {
