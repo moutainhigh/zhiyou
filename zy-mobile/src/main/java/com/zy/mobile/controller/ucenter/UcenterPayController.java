@@ -371,7 +371,7 @@ public class UcenterPayController {
 
 		PayCreateMobile payCreateMobile = shengPayMobileClient.getPayCreateUrl(new Date(), userId, user.getRegisterTime(), registerIp, "0"
 				, user.getNickname(), user.getPhone(), activityApply.getId(), title
-				, activityApply.getAmount(), Constants.SHENGPAY_RETURN_MOBILE, Constants.SHENGPAY_NOTIFY_MOBILE, GcUtils.getHost());
+				, activityApply.getAmount(), Constants.SHENGPAY_RETURN_MOBILE, Constants.SHENGPAY_NOTIFY_MOBILE, "180.175.161.57");
 		return payCreateMobile;
 	}
 }

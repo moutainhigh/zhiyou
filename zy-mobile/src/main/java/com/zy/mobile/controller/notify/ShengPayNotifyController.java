@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/notify/shengPay")
 @Slf4j
@@ -92,13 +94,15 @@ public class ShengPayNotifyController {
 	}
 
 	@RequestMapping("/mobile/sync")
-	public String mobileSync(RedirectAttributes redirectAttributes, String backMessage) {
+	public String mobileSync(RedirectAttributes redirectAttributes, HttpServletRequest request) {
+
+		String result = request.getParameter("backMessage");
 		log.info("enter sheng pay mobile notify controller");
-		log.info(backMessage);
+		log.info(result);
 		try {
 
-			PayMobileResponse payMobileResponse = JsonUtils.fromJson(backMessage, PayMobileResponse.class);
-
+			PayMobileResponse payMobileResponse = JsonUtils.fromJson(result, PayMobileResponse.class);
+			log.info(payMobileResponse.getTransStatus());
 			if ("01".equals(payMobileResponse.getTransStatus())) {
 				Long id = Long.valueOf(payMobileResponse.getOrderNo());
 				activityApplyService.success(id, null);
