@@ -124,10 +124,15 @@ public class ShengPayNotifyController {
 
 		log.info("enter sheng pay mobile notify controller");
 		PayNotifyMobile payNotify = new PayNotifyMobile();
-		payNotify.setName(request.getParameter("name"));
-		payNotify.setVersion(request.getParameter("version"));
-		payNotify.setCharset(request.getParameter("charset"));
-		payNotify.setTraceNo(request.getParameter("traceNo"));
+		String name = request.getParameter("name");
+		String version = request.getParameter("version");
+		String charset = request.getParameter("charset");
+		String traceNo = request.getParameter("traceNo");
+		log.info("name:" + name + ";version:" + version + ";charset:" + charset + ";traceNo:" + traceNo);
+		payNotify.setName(name);
+		payNotify.setVersion(version);
+		payNotify.setCharset(charset);
+		payNotify.setTraceNo(traceNo);
 		payNotify.setMsgSender(request.getParameter("msgSender"));
 		payNotify.setSendTime(request.getParameter("sendTime"));
 		payNotify.setInstCode(request.getParameter("instCode"));
