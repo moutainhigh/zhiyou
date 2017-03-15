@@ -13,30 +13,34 @@
 
 <title>盛付通支付</title>
   <script src="${stccdn}/plugin/jquery-1.11.0/jquery.min.js"></script>
+  <script>
+    $(function(){
+    	$('#form').submit();
+    });
+  </script>
 </head>
 
 <body>
-<form action="${payUrl}" method="POST">
-  <input type="text" name="merchantNo" value="${payCreateMobile.merchantNo}"/>
-  <input type="text" name="charset" value="${payCreateMobile.charset}"/>
-  <input type="text" name="requestTime" value="${payCreateMobile.requestTime}"/>
-  <input type="text" name="outMemberId" value="${payCreateMobile.outMemberId}"/>
-  <input type="text" name="outMemberRegistTime" value="${payCreateMobile.outMemberRegistTime}"/>
-  <input type="text" name="outMemberRegistIP" value="${payCreateMobile.outMemberRegistIP}"/>
-  <input type="text" name="outMemberVerifyStatus" value="${payCreateMobile.outMemberVerifyStatus}"/>
-  <input type="text" name="outMemberName" value="${payCreateMobile.outMemberName}"/>
-  <input type="text" name="outMemberMobile" value="${payCreateMobile.outMemberMobile}"/>
-  <input type="text" name="merchantOrderNo" value="${payCreateMobile.merchantOrderNo}"/>
-  <input type="text" name="productName" value="${payCreateMobile.productName}"/>
-  <input type="text" name="currency" value="${payCreateMobile.currency}"/>
-  <input type="text" name="amount" value="${payCreateMobile.amount}"/>
-  <input type="text" name="pageUrl" value="${payCreateMobile.pageUrl}"/>
-  <input type="text" name="notifyUrl" value="${payCreateMobile.notifyUrl}"/>
-  <input type="text" name="userIP" value="${payCreateMobile.userIP}"/>
-  <input type="text" name="signType" value="${payCreateMobile.signType}"/>
-  <input type="text" name="signMsg" value="${payCreateMobile.signMsg}"/>
+<form id="form" action="${payUrl}" method="POST">
+  <input type="hidden" name="merchantNo" value="${payCreateMobile.merchantNo}"/>
+  <input type="hidden" name="charset" value="${payCreateMobile.charset}"/>
+  <input type="hidden" name="requestTime" value="${payCreateMobile.requestTime}"/>
+  <input type="hidden" name="outMemberId" value="${payCreateMobile.outMemberId}"/>
+  <input type="hidden" name="outMemberRegistTime" value="${payCreateMobile.outMemberRegistTime}"/>
+  <input type="hidden" name="outMemberRegistIP" value="${payCreateMobile.outMemberRegistIP}"/>
+  <input type="hidden" name="outMemberVerifyStatus" value="${payCreateMobile.outMemberVerifyStatus}"/>
+  <input type="hidden" name="outMemberName" value="${payCreateMobile.outMemberName}"/>
+  <input type="hidden" name="outMemberMobile" value="${payCreateMobile.outMemberMobile}"/>
+  <input type="hidden" name="merchantOrderNo" value="${payCreateMobile.merchantOrderNo}"/>
+  <input type="hidden" name="productName" value="${payCreateMobile.productName}"/>
+  <input type="hidden" name="currency" value="${payCreateMobile.currency}"/>
+  <input type="hidden" name="amount" value="${payCreateMobile.amount}"/>
+  <input type="hidden" name="pageUrl" value="${payCreateMobile.pageUrl}"/>
+  <input type="hidden" name="notifyUrl" value="${payCreateMobile.notifyUrl}"/>
+  <input type="hidden" name="userIP" value="${payCreateMobile.userIP}"/>
+  <input type="hidden" name="signType" value="${payCreateMobile.signType}"/>
+  <input type="hidden" name="signMsg" value="${payCreateMobile.signMsg}"/>
 
-  <input type="submit" value="提交"/>
 </form>
 
 

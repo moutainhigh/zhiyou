@@ -60,12 +60,9 @@ public class UcenterActivityController {
 	@RequestMapping(value = "/apply")
 	public String apply(Long id, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		try {
-			Long inviterId = (Long)request.getAttribute(Constants.REQUEST_ATTRIBUTE_INVITER_ID);
-			activityService.apply(id, principal.getUserId(), inviterId);
-			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功!"));
-			model.addAttribute("activity", activityComponent.buildListVo(activityService.findOne(id)));
-			model.addAttribute("user", userComponent.buildSimpleVo(userService.findOne(principal.getUserId())));
-			return "activity/activityApplySuccess";
+			activityService.apply(id, principal.getUserId(), null);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功,请点击付费完成报名"));
+			return "redirect:/u/pay/activityApply/" + id;
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名异常," + e.getMessage()));
 			return "redirect:/activity/" + id;
