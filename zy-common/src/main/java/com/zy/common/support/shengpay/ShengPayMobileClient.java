@@ -74,7 +74,7 @@ public class ShengPayMobileClient {
 		forSign.append(key);
 		log.info("sheng pay notify for sign: " + forSign.toString());
 		String signed = Encodes.encodeHex(Digests.md5(forSign.toString().getBytes(Charset.forName("UTF-8")))).toUpperCase();
-		log.info("sheng pay notify sign: " + signed + "pay nofity signMsg:" + payNotify.getSignMsg());
+		log.info("sheng pay notify sign: " + signed + "; pay nofity signMsg:" + payNotify.getSignMsg());
 		if (signed.equals(payNotify.getSignMsg())) {
 			return true;
 		} else {

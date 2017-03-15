@@ -122,6 +122,50 @@ public class ShengPayNotifyController {
 	@ResponseBody
 	public String mobileAsync(PayNotifyMobile payNotify) {
 		log.info("enter sheng pay mobile notify controller");
+
+		String s = "|";
+		StringBuilder forSign = new StringBuilder();
+		forSign.append(payNotify.getName());
+		forSign.append(s);
+		forSign.append(payNotify.getVersion());
+		forSign.append(s);
+		forSign.append(payNotify.getCharset());
+		forSign.append(s);
+		forSign.append(payNotify.getTraceNo());
+		forSign.append(s);
+		forSign.append(payNotify.getMsgSender());
+		forSign.append(s);
+		forSign.append(payNotify.getSendTime());
+		forSign.append(s);
+		forSign.append(payNotify.getInstCode());
+		forSign.append(s);
+		forSign.append(payNotify.getOrderNo());
+		forSign.append(s);
+		forSign.append(payNotify.getOrderAmount());
+		forSign.append(s);
+		forSign.append(payNotify.getTransNo());
+		forSign.append(s);
+		forSign.append(payNotify.getTransAmount());
+		forSign.append(s);
+		forSign.append(payNotify.getTransStatus());
+		forSign.append(s);
+		forSign.append(payNotify.getTransType());
+		forSign.append(s);
+		forSign.append(payNotify.getTransTime());
+		forSign.append(s);
+		forSign.append(payNotify.getMerchantNo());
+		forSign.append(s);
+		forSign.append(payNotify.getErrorCode());
+		forSign.append(s);
+		forSign.append(payNotify.getErrorMsg());
+		forSign.append(s);
+		forSign.append(payNotify.getExt1());
+		forSign.append(s);
+		forSign.append(payNotify.getSignType());
+		forSign.append(s);
+
+		log.info("sheng pay notify for sign: " + forSign.toString());
+
 		try {
 			if (!shengPayMobileClient.checkPayNotify(payNotify)) {
 				throw new BizException(BizCode.ERROR, "签名验证失败:签名不一致");
