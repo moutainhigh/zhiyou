@@ -3,6 +3,7 @@ package com.zy.common.support.shengpay;
 import com.zy.common.util.Digests;
 import com.zy.common.util.Encodes;
 import com.zy.common.util.RSAUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 2017/3/9.
  */
+@Slf4j
 public class ShengPayMobileClient {
 
 	private String merchantId;
@@ -77,7 +79,6 @@ public class ShengPayMobileClient {
 		forSign.append(payNotify.getSignType());
 		forSign.append(s);
 
-		forSign.append(key);
 		String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC69veKW1X9GETEFr49gu9PN8w7H6alWec8wmF8SoP3tqQLAflZp8g83UZPX2UWhClnm53P5ZwesaeSTHkXkSI0iSjwd27N07bc8puNgB5BAGhJ80KYqTv3Zovl04C8AepVmxy9iFniJutJSYYtsRcnHYyUNoJai4VXhJsp5ZRMqwIDAQAB";
 		return RSAUtils.verify(forSign.toString(), payNotify.getSignMsg(), publicKey, payNotify.getCharset());
 

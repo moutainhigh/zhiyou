@@ -130,4 +130,9 @@ public class RSAUtils {
         }
     }
 
+    public static void main(String[] args) {
+        String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC69veKW1X9GETEFr49gu9PN8w7H6alWec8wmF8SoP3tqQLAflZp8g83UZPX2UWhClnm53P5ZwesaeSTHkXkSI0iSjwd27N07bc8puNgB5BAGhJ80KYqTv3Zovl04C8AepVmxy9iFniJutJSYYtsRcnHYyUNoJai4VXhJsp5ZRMqwIDAQAB";
+        String orgin = "REP_B2CPAYMENT|V4.1.2.1.1|UTF-8|40562010-1426-4378-9905-53815ce36ad8|SFT|20170315184026|ICBC|5|1.00|20170315183906608409|1.00|01|PT021|20170315183906|10213209|{\"agreementNo\":\"5770381\"}|RSA|";
+        System.out.println(verify(orgin, "BRcZQUsc+16hYlW2lErDVmbZBAgdbVMw6A15rGB6Njc+rB5fYv+ReM+Ha9Qut1H1yX7SzUuEjuCpIvAodXDLU07upoRTS6W/gIu/+qjYyeMxfM8Xj8wdJVYRt0hfcSPIK+elKflWoEFeI+03p6naxK3/L5dNagJVq7hG6gMTZWE=", publicKey, "UTF-8"));
+    }
 }
