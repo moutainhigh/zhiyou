@@ -2,6 +2,7 @@ package com.zy.common.support.shengpay;
 
 import com.zy.common.util.Digests;
 import com.zy.common.util.Encodes;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.DateFormatUtils;
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 2017/3/9.
  */
+@Slf4j
 public class ShengPayMobileClient {
 
 	private String merchantId;
@@ -70,8 +72,9 @@ public class ShengPayMobileClient {
 		forSign.append(s);
 
 		forSign.append(key);
-
+		log.info("sheng pay notify for sign: " + forSign.toString());
 		String signed = Encodes.encodeHex(Digests.md5(forSign.toString().getBytes(Charset.forName("UTF-8")))).toUpperCase();
+		log.info("sheng pay notify sign: " + signed + "pay nofity signMsg:" + payNotify.getSignMsg());
 		if (signed.equals(payNotify.getSignMsg())) {
 			return true;
 		} else {
