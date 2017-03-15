@@ -60,13 +60,15 @@ public class ActicityApplyController {
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<?> create(Long activityId, String phone) {
-		User byPhone = userService.findByPhone(phone);
-		if (byPhone == null) {
-			return ResultBuilder.error("手机号不存在");
-		}
-
 		try{
-			activityApplyService.createAndPaid(activityId, byPhone.getId());
+			String[] phones = phone.split(",");
+			for(String p : phones) {
+				User byPhone = userService.findByPhone(p);
+				if (byPhone == null) {
+					return ResultBuilder.error("手机号不存在");
+				}
+				activityApplyService.createAndPaid(activityId, byPhone.getId());
+			}
 			return ResultBuilder.ok("ok");
 		} catch (Exception e) {
 			return ResultBuilder.error(e.getMessage());

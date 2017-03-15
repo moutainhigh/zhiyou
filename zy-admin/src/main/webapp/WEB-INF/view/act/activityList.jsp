@@ -16,6 +16,81 @@
         <div class="col-md-5">
           <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
         </div>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">手机<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">手机<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">手机<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">手机<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">手机<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">手机<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">手机<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">手机<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
+        <div class="col-md-5">
+          <input type="text" name="phone" value="" class="form-control" placeholder="请输入手机号"/>
+        </div>
       </div>
     </div>
     <div class="form-actions fluid">
@@ -44,7 +119,7 @@
 	  var index = layer.open({
 		  type: 1,
 		  //skin: 'layui-layer-rim', //加上边框
-		  area: ['600px', '360px'], //宽高
+		  area: ['600px', '560px'], //宽高
 		  content: html
 	  });
 
