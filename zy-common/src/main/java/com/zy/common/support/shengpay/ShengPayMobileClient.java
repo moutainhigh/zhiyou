@@ -2,8 +2,9 @@ package com.zy.common.support.shengpay;
 
 import com.zy.common.util.Digests;
 import com.zy.common.util.Encodes;
-import lombok.extern.slf4j.Slf4j;
+import com.zy.common.util.RSAUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
@@ -12,7 +13,6 @@ import java.util.Date;
 /**
  * Created by Administrator on 2017/3/9.
  */
-@Slf4j
 public class ShengPayMobileClient {
 
 	private String merchantId;
@@ -62,24 +62,24 @@ public class ShengPayMobileClient {
 		forSign.append(s);
 		forSign.append(payNotify.getMerchantNo());
 		forSign.append(s);
-		forSign.append(payNotify.getErrorCode());
-		forSign.append(s);
-		forSign.append(payNotify.getErrorMsg());
-		forSign.append(s);
-		forSign.append(payNotify.getExt1());
-		forSign.append(s);
+		if (StringUtils.isNotEmpty(payNotify.getErrorCode())) {
+			forSign.append(payNotify.getErrorCode());
+			forSign.append(s);
+		}
+		if (StringUtils.isNotEmpty(payNotify.getErrorMsg())) {
+			forSign.append(payNotify.getErrorMsg());
+			forSign.append(s);
+		}
+		if (StringUtils.isNotEmpty(payNotify.getExt1())) {
+			forSign.append(payNotify.getExt1());
+			forSign.append(s);
+		}
 		forSign.append(payNotify.getSignType());
 		forSign.append(s);
 
 		forSign.append(key);
-		log.info("sheng pay notify for sign: " + forSign.toString());
-		String signed = Encodes.encodeHex(Digests.md5(forSign.toString().getBytes(Charset.forName("UTF-8")))).toUpperCase();
-		log.info("sheng pay notify sign: " + signed + "; pay nofity signMsg:" + payNotify.getSignMsg());
-		if (signed.equals(payNotify.getSignMsg())) {
-			return true;
-		} else {
-			return false;
-		}
+		String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC69veKW1X9GETEFr49gu9PN8w7H6alWec8wmF8SoP3tqQLAflZp8g83UZPX2UWhClnm53P5ZwesaeSTHkXkSI0iSjwd27N07bc8puNgB5BAGhJ80KYqTv3Zovl04C8AepVmxy9iFniJutJSYYtsRcnHYyUNoJai4VXhJsp5ZRMqwIDAQAB";
+		return RSAUtils.verify(forSign.toString(), payNotify.getSignMsg(), publicKey, payNotify.getCharset());
 
 	}
 

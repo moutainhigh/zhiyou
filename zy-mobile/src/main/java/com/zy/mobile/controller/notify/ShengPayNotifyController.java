@@ -120,52 +120,31 @@ public class ShengPayNotifyController {
 
 	@RequestMapping("/mobile/async")
 	@ResponseBody
-	public String mobileAsync(PayNotifyMobile payNotify) {
+	public String mobileAsync(HttpServletRequest request) {
+
 		log.info("enter sheng pay mobile notify controller");
-
-		String s = "|";
-		StringBuilder forSign = new StringBuilder();
-		forSign.append(payNotify.getName());
-		forSign.append(s);
-		forSign.append(payNotify.getVersion());
-		forSign.append(s);
-		forSign.append(payNotify.getCharset());
-		forSign.append(s);
-		forSign.append(payNotify.getTraceNo());
-		forSign.append(s);
-		forSign.append(payNotify.getMsgSender());
-		forSign.append(s);
-		forSign.append(payNotify.getSendTime());
-		forSign.append(s);
-		forSign.append(payNotify.getInstCode());
-		forSign.append(s);
-		forSign.append(payNotify.getOrderNo());
-		forSign.append(s);
-		forSign.append(payNotify.getOrderAmount());
-		forSign.append(s);
-		forSign.append(payNotify.getTransNo());
-		forSign.append(s);
-		forSign.append(payNotify.getTransAmount());
-		forSign.append(s);
-		forSign.append(payNotify.getTransStatus());
-		forSign.append(s);
-		forSign.append(payNotify.getTransType());
-		forSign.append(s);
-		forSign.append(payNotify.getTransTime());
-		forSign.append(s);
-		forSign.append(payNotify.getMerchantNo());
-		forSign.append(s);
-		forSign.append(payNotify.getErrorCode());
-		forSign.append(s);
-		forSign.append(payNotify.getErrorMsg());
-		forSign.append(s);
-		forSign.append(payNotify.getExt1());
-		forSign.append(s);
-		forSign.append(payNotify.getSignType());
-		forSign.append(s);
-
-		log.info("sheng pay notify for sign: " + forSign.toString());
-
+		PayNotifyMobile payNotify = new PayNotifyMobile();
+		payNotify.setName(request.getParameter("name"));
+		payNotify.setVersion(request.getParameter("version"));
+		payNotify.setCharset(request.getParameter("charset"));
+		payNotify.setTraceNo(request.getParameter("traceNo"));
+		payNotify.setMsgSender(request.getParameter("msgSender"));
+		payNotify.setSendTime(request.getParameter("sendTime"));
+		payNotify.setInstCode(request.getParameter("instCode"));
+		payNotify.setOrderNo(request.getParameter("orderNo"));
+		payNotify.setOrderAmount(request.getParameter("orderAmount"));
+		payNotify.setTransNo(request.getParameter("transNo"));
+		payNotify.setTransAmount(request.getParameter("transAmount"));
+		payNotify.setTransStatus(request.getParameter("transStatus"));
+		payNotify.setTransType(request.getParameter("transType"));
+		payNotify.setTransTime(request.getParameter("transTime"));
+		payNotify.setMerchantNo(request.getParameter("merchantNo"));
+		payNotify.setErrorCode(request.getParameter("errorCode"));
+		payNotify.setErrorMsg(request.getParameter("errorMsg"));
+		payNotify.setExt1(request.getParameter("ext1"));
+		payNotify.setSignType(request.getParameter("signType"));
+		payNotify.setSignMsg(request.getParameter("signMsg"));
+		log.info(JsonUtils.toJson(payNotify));
 		try {
 			if (!shengPayMobileClient.checkPayNotify(payNotify)) {
 				throw new BizException(BizCode.ERROR, "签名验证失败:签名不一致");
@@ -173,9 +152,8 @@ public class ShengPayNotifyController {
 			if (shengPayMobileClient.isSuccess(payNotify)) {
 				String transNo = payNotify.getTransNo();
 				String orderNo = payNotify.getOrderNo();
-				log.info("amount " + payNotify.getTransAmount());
-				log.info(JsonUtils.toJson(payNotify));
 				activityApplyService.success(Long.valueOf(orderNo), orderNo);
+				log.info("sheng pay nofity success");
 				return "OK";
 			} else {
 				throw new BizException(BizCode.ERROR, "未支付成功" + JsonUtils.toJson(payNotify));
