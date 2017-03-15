@@ -94,7 +94,7 @@ public class ShengPayNotifyController {
 	@RequestMapping("/mobile/sync")
 	public String mobileSync(RedirectAttributes redirectAttributes, String backMessage) {
 		log.info("enter sheng pay mobile notify controller");
-
+		log.info(backMessage);
 		try {
 
 			PayMobileResponse payMobileResponse = JsonUtils.fromJson(backMessage, PayMobileResponse.class);
@@ -117,7 +117,7 @@ public class ShengPayNotifyController {
 	@RequestMapping("/mobile/async")
 	@ResponseBody
 	public String mobileAsync(PayNotifyMobile payNotify) {
-		log.info("enter sheng pay notify controller");
+		log.info("enter sheng pay mobile notify controller");
 		try {
 			if (!shengPayMobileClient.checkPayNotify(payNotify)) {
 				throw new BizException(BizCode.ERROR, "签名验证失败:签名不一致");
