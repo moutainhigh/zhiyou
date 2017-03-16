@@ -108,7 +108,8 @@ public class ActivityComponent {
 					BeanUtils.copyProperties(activity, activitySignInAdminVo);
 					Long userId = activitySignIn.getUserId();
 					activitySignInAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(userId)));
-					activitySignInAdminVo.setSignedInTimeLabel(formatDate(activitySignInAdminVo.getSignedInTime(), shortFmt));
+					System.out.println();
+					activitySignInAdminVo.setSignedInTimeLabel(formatDate(activitySignIn.getSignedInTime(), shortFmt));
 					return activitySignInAdminVo;
 				}).collect(Collectors.toList()));
 
