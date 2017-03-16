@@ -1,12 +1,15 @@
 package com.zy.service.impl;
 
 import com.zy.common.exception.BizException;
+import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
+import com.zy.entity.fnc.Payment;
 import com.zy.entity.usr.User;
 import com.zy.mapper.ActivityApplyMapper;
 import com.zy.mapper.ActivityMapper;
+import com.zy.mapper.PaymentMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.ActivityApplyQueryModel;
@@ -19,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -35,6 +39,9 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 
 	@Autowired
 	private UserMapper userMapper;
+
+	@Autowired
+	private PaymentMapper paymentMapper;
 
 	@Override
 	public Page<ActivityApply> findPage(
@@ -105,6 +112,17 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 		validate(activityApply, NOT_NULL, "activity apply id " + id + " not found");
 		if (activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已支付) {
 			return;
+		}
+
+		List<Payment> payments = paymentMapper.findByRefId(id);
+		payments = payments.stream().filter(v -> v.getPaymentStatus() == Payment.PaymentStatus.待支付)
+				.filter(v -> v.getPaymentType() == Payment.PaymentType.活动报名).collect(Collectors.toList());
+		for(Payment payment : payments) {
+			payment.setPaymentStatus(Payment.PaymentStatus.已支付);
+			payment.setPaidTime(new Date());
+			if (paymentMapper.update(payment) == 0) {
+				throw new ConcurrentException();
+			}
 		}
 
 		activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
