@@ -39,12 +39,14 @@
     </div>
     </c:if>
 
-    <c:if test="${bankCardCount > 0 and currencyType == '积分'}">
-      <div class="form-btn">
-        <c:if test="${isWithdrawOn}">
-          <a href="${ctx}/u/money/withdraw?currencyType=${currencyType}" class="btn green btn-block round-2">提现</a>
-        </c:if>
-      </div>
+    <c:if test="${bankCardCount > 0}">
+      <c:if test="${currencyType == '积分' || moneyWithdraw}">
+        <div class="form-btn">
+          <c:if test="${isWithdrawOn}">
+            <a href="${ctx}/u/money/withdraw?currencyType=${currencyType}" class="btn green btn-block round-2">提现</a>
+          </c:if>
+        </div>
+      </c:if>
     </c:if>
     <a href="${ctx}/help/money" class="mt-30 mb-10 block width-100p font-999 fs-12 text-center"><i class="fa fa-question-circle-o"></i> 积分余额问题</a>
   </article>

@@ -36,22 +36,22 @@
   <nav class="flex account-nav pb-30 mb-10">
     <a class="flex-1 text-center" href="${ctx}/u/money?currencyType=0">
       <div class="mb-10"><i class="icon icon-account-umoney"></i></div>
-      <div class="fs-16 lh-24">U币余额</div>
+      <div class="fs-16 lh-24">U币</div>
       <div class="fs-12 lh-20 font-ccc">${amount1}</div>
     </a>
     <a class="flex-1 text-center" href="${ctx}/u/money?currencyType=1">
       <div class="mb-10"><i class="icon icon-account-money"></i></div>
-      <div class="fs-16 lh-24">积分余额</div>
+      <div class="fs-16 lh-24">积分</div>
       <div class="fs-12 lh-20 font-ccc">${amount2}</div>
     </a>
     <a class="flex-1 text-center" href="${ctx}/u/money?currencyType=2">
       <div class="mb-10"><i class="icon icon-account-option"></i></div>
-      <div class="fs-16 lh-24">货币期权</div>
+      <div class="fs-16 lh-24">期权</div>
       <div class="fs-12 lh-20 font-ccc">${amount3}</div>
     </a>
     <a class="flex-1 text-center" href="${ctx}/u/money?currencyType=3">
       <div class="mb-10"><i class="icon icon-account-share"></i></div>
-      <div class="fs-16 lh-24">货币股份</div>
+      <div class="fs-16 lh-24">股份</div>
       <div class="fs-12 lh-20 font-ccc">${amount4}</div>
     </a>
     <%--<a class="flex-1 text-center" href="${ctx}/u/bankCard">

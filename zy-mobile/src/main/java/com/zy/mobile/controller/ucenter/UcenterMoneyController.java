@@ -8,6 +8,7 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.AccountLogComponent;
 import com.zy.component.BankCardComponent;
 import com.zy.entity.fnc.*;
+import com.zy.entity.usr.User;
 import com.zy.model.Principal;
 import com.zy.model.query.AccountLogQueryModel;
 import com.zy.model.query.BankCardQueryModel;
@@ -26,10 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.zy.entity.usr.User.UserType.代理;
@@ -77,8 +75,15 @@ public class UcenterMoneyController {
 		bankCardQueryModel.setIsDeletedEQ(false);
 		Long bankCardCount = bankCardService.count(bankCardQueryModel);
 		model.addAttribute("bankCardCount", bankCardCount);
-		model.addAttribute("userRank", userService.findOne(userId).getUserRank());
 		model.addAttribute("isWithdrawOn", config.isWithdrawOn());
+
+		/* 这些人可以U币提现 */
+		User user = userService.findOne(userId);
+		String[] phones = new String[]{"13811308708", "15088300008", "15958500707", "15961330693"};
+		if (Arrays.asList(phones).contains(user.getPhone())) {
+			model.addAttribute("moneyWithdraw", true);
+		}
+
 		return "ucenter/account/money";
 	}
 	
