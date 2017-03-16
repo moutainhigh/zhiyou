@@ -8,9 +8,8 @@ import com.zy.common.util.JsonUtils;
 import com.zy.entity.fnc.Deposit;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
-import com.zy.service.ActivityApplyService;
-import com.zy.service.ActivityService;
 import com.zy.service.DepositService;
+import com.zy.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,10 +34,7 @@ public class ShengPayNotifyController {
 	private DepositService depositService;
 
 	@Autowired
-	private ActivityApplyService activityApplyService;
-
-	@Autowired
-	private ActivityService activityService;
+	private PaymentService paymentService;
 
 	@RequestMapping("/sync")
 	public String sync(PayNotify payNotify, RedirectAttributes redirectAttributes) {
@@ -105,7 +101,7 @@ public class ShengPayNotifyController {
 			log.info(payMobileResponse.getTransStatus());
 			if ("01".equals(payMobileResponse.getTransStatus())) {
 				Long id = Long.valueOf(payMobileResponse.getOrderNo());
-				activityApplyService.success(id, null);
+				paymentService.success(id, null);
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("支付成功"));
 			} else {
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("支付失败"));
@@ -156,8 +152,8 @@ public class ShengPayNotifyController {
 			}
 			if (shengPayMobileClient.isSuccess(payNotify)) {
 				String transNo = payNotify.getTransNo();
-				String orderNo = payNotify.getOrderNo();
-				activityApplyService.success(Long.valueOf(orderNo), transNo);
+				Long id = Long.valueOf(payNotify.getOrderNo());
+				paymentService.success(Long.valueOf(id), transNo);
 				log.info("sheng pay nofity success");
 				return "OK";
 			} else {

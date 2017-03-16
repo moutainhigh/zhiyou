@@ -1,7 +1,9 @@
 package com.zy.component;
 
+import com.zy.entity.act.ActivityApply;
 import com.zy.entity.act.Report;
 import com.zy.entity.act.ReportLog;
+import com.zy.mapper.ActivityApplyMapper;
 import com.zy.mapper.ReportLogMapper;
 import com.zy.mapper.ReportMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -24,19 +26,14 @@ import static com.zy.common.util.ValidateUtils.validate;
 @Slf4j
 public class ActComponent {
 
-
-	/*@Autowired
-	private Config config;
-
-	@Autowired
-	private UserMapper userMapper;
-*/
-
 	@Autowired
 	private ReportMapper reportMapper;
 
 	@Autowired
 	private ReportLogMapper reportLogMapper;
+
+	@Autowired
+	private ActivityApplyMapper activityApplyMapper;
 
 	public void recordReportLog(@NotNull Long reportId, @NotBlank String remark) {
 		Report report = reportMapper.findOne(reportId);
@@ -49,5 +46,16 @@ public class ActComponent {
 		reportLog.setRemark(remark);
 		reportLog.setCreatedTime(new Date());
 		reportLogMapper.insert(reportLog);
+	}
+
+	public void successActivityApply(@NotNull Long activityApplyId) {
+		ActivityApply activityApply = activityApplyMapper.findOne(activityApplyId);
+		validate(activityApply, NOT_NULL, "activity apply id " + activityApplyId + " not found");
+		if (activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已支付) {
+			return;
+		}
+
+		activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
+		activityApplyMapper.update(activityApply);
 	}
 }

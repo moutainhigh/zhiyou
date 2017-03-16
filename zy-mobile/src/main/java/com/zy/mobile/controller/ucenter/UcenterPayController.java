@@ -363,15 +363,15 @@ public class UcenterPayController {
 			payment.setUserId(userId);
 			payment.setTitle(title);
 			payment.setPayType(PayType.盛付通);
-			paymentService.create(payment);
+			payment = paymentService.create(payment);
 		}
 
 		User user = userService.findOne(userId);
 		String registerIp = StringUtils.isBlank(user.getRegisterIp())? "127.0.0.1" : user.getRegisterIp();
 
 		PayCreateMobile payCreateMobile = shengPayMobileClient.getPayCreateUrl(new Date(), userId, user.getRegisterTime(), registerIp, "0"
-				, user.getNickname(), user.getPhone(), activityApply.getId(), title
-				, activityApply.getAmount(), Constants.SHENGPAY_RETURN_MOBILE, Constants.SHENGPAY_NOTIFY_MOBILE, "180.175.161.57");
+				, user.getNickname(), user.getPhone(), payment.getId(), title
+				, payment.getAmount1(), Constants.SHENGPAY_RETURN_MOBILE, Constants.SHENGPAY_NOTIFY_MOBILE, "180.175.161.57");
 		return payCreateMobile;
 	}
 }

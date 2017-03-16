@@ -5,6 +5,7 @@ import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
+import com.zy.component.ActComponent;
 import com.zy.component.FncComponent;
 import com.zy.component.MalComponent;
 import com.zy.entity.fnc.*;
@@ -54,6 +55,9 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Autowired
 	private MalComponent malComponent;
+
+	@Autowired
+	private ActComponent actComponent;
 
 	@Autowired
 	private AccountMapper accountMapper;
@@ -136,11 +140,11 @@ public class PaymentServiceImpl implements PaymentService {
 		validate(payment, NOT_NULL, "payment id " + id + "is not found null");
 
 		PayType payType = payment.getPayType();
-		if (payType != PayType.支付宝 && payType != PayType.微信 && payType != PayType.支付宝手机 && payType != PayType.微信公众号) {
+		if (payType != PayType.支付宝 && payType != PayType.微信 && payType != PayType.支付宝手机 && payType != PayType.微信公众号 && payType != PayType.盛付通) {
 			throw new BizException(BizCode.ERROR, "支付方式错误");
 		}
 
-		if (payType != PayType.微信 && payType != PayType.微信公众号 && StringUtils.isBlank(outerSn)) {
+		if (payType != PayType.微信 && payType != PayType.微信公众号 && payType != PayType.盛付通 &&  StringUtils.isBlank(outerSn)) {
 			throw new BizException(BizCode.ERROR, "outer sn参数缺失");
 		}
 
@@ -250,6 +254,8 @@ public class PaymentServiceImpl implements PaymentService {
 		Long refId = payment.getRefId();
 		if (paymentType == Payment.PaymentType.订单支付) {
 			malComponent.successOrder(refId);
+		} else if (paymentType == Payment.PaymentType.活动报名) {
+			actComponent.successActivityApply(refId);
 		}
 	}
 
