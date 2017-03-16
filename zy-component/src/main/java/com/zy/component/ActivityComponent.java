@@ -11,6 +11,7 @@ import com.zy.model.query.ActivitySignInQueryModel;
 import com.zy.service.ActivityApplyService;
 import com.zy.service.ActivityCollectService;
 import com.zy.service.ActivitySignInService;
+import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.*;
@@ -36,6 +37,9 @@ public class ActivityComponent {
 
 	@Autowired
 	private ActivityCollectService activityCollectService;
+
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private ActivitySignInService activitySignInService;
@@ -81,8 +85,9 @@ public class ActivityComponent {
 					ActivityApplyAdminVo activityApplyAdminVo = new ActivityApplyAdminVo();
 					BeanUtils.copyProperties(activityApply, activityApplyAdminVo);
 					Long userId = activityApply.getUserId();
-					Long inviterId = activityApply.getInviterId();
-					activityApplyAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(userId)));
+					User user = cacheComponent.getUser(userId);
+					activityApplyAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
+					Long inviterId = user.getInviterId();
 					if (inviterId != null) {
 						activityApplyAdminVo.setInviter(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(inviterId)));
 					}
