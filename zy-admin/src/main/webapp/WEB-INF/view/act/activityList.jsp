@@ -257,7 +257,7 @@
                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/activity/release?id=' + data + '&isReleased=true"><i class="fa fa-check"></i> 上架 </a>';
               }
               <shiro:hasPermission name="activityApply:edit">
-              if (full.status == '进行中') {
+              if (full.status != '活动已结束') {
 	              optionHtml += '<a class="btn btn-xs default green-stripe btn-add-apply" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-plus"></i> 免费报名 </a>';
               }
               </shiro:hasPermission>
