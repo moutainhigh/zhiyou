@@ -174,7 +174,11 @@
             title: '应付金额',
             orderable: false,
 	          render: function (data, type, full) {
-		          return '<p>U币: ' + full.amount1Label + '</p><p>积分: ' + full.amount2Label + '</p>'
+            	var html = '<p>' + full.currencyType1 + ': ' + full.amount1Label + '</p>';
+            	if(full.currencyType2 != null) {
+            		html += '<p>' + full.currencyType2 + ': ' + full.amount2Label + '</p>';
+              }
+		          return html;
 	          }
           },
           {
