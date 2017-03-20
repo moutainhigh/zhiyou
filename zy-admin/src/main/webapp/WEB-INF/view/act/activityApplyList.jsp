@@ -97,6 +97,40 @@
               <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
               <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
+              <div class="form-group">
+                <input type="text" name="activityTitleLK" class="form-control" placeholder="活动标题"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="phoneEQ" class="form-control" placeholder="手机号"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="nicknameLK" class="form-control" placeholder="昵称"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="payerPhoneEQ" class="form-control" placeholder="待付人手机号"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="payerNicknameLK" class="form-control" placeholder="待付人昵称"/>
+              </div>
+
+
+              <div class="form-group">
+                <select name="activityApplyStatusEQ" class="form-control">
+                  <option value="">-- 报名状态 --</option>
+                  <option value="0">已报名</option>
+                  <option value="1">已付费</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <button class="btn blue filter-submit">
+                  <i class="fa fa-search"></i> 查询
+                </button>
+              </div>
 
             </form>
           </div>

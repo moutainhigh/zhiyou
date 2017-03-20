@@ -213,7 +213,7 @@
     <div class="list-group">
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-user font-gray"></i></div>
-        <div class="list-text fs-14"><span class="font-orange">${activity.appliedCount}</span> 人已报名</div>
+        <div class="list-text fs-14"><%--<span class="font-orange">${activity.appliedCount}</span> 人已报名--%></div>
       </div>
       <c:if test="${not empty activity.appliedUsers}">
       <div class="list-item pt-5 pl-20 users">
