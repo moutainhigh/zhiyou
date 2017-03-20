@@ -211,20 +211,20 @@
     </div>
     
     <div class="list-group">
-      <div class="list-item">
-        <div class="list-icon"><i class="fa fa-user font-gray"></i></div>
-        <div class="list-text fs-14"><%--<span class="font-orange">${activity.appliedCount}</span> 人已报名--%></div>
-      </div>
-      <c:if test="${not empty activity.appliedUsers}">
-      <div class="list-item pt-5 pl-20 users">
-        <div class="list-text">
-          <c:forEach items="${activity.appliedUsers}" var="user">
-          <img class="image-40 mt-5 round" src="${user.avatarThumbnail}">
-          </c:forEach>
-        </div>
-      </div>
-      </c:if>
-    </div>
+      <%--<div class="list-item">--%>
+        <%--<div class="list-icon"><i class="fa fa-user font-gray"></i></div>--%>
+        <%--<div class="list-text fs-14"><span class="font-orange">${activity.appliedCount}</span> 人已报名</div>--%>
+      <%--</div>--%>
+      <%--<c:if test="${not empty activity.appliedUsers}">--%>
+      <%--<div class="list-item pt-5 pl-20 users">--%>
+        <%--<div class="list-text">--%>
+          <%--<c:forEach items="${activity.appliedUsers}" var="user">--%>
+          <%--<img class="image-40 mt-5 round" src="${user.avatarThumbnail}">--%>
+          <%--</c:forEach>--%>
+        <%--</div>--%>
+      <%--</div>--%>
+      <%--</c:if>--%>
+    <%--</div>--%>
     
     <div class="list-group mb-0">
       <div class="list-item">
@@ -280,10 +280,10 @@
   <nav class="footer footer-nav flex bd-0">
     <a id="btnCollect" class="flex-1${isCollected ? ' collected' : ''}" href="javascript:;">
       <c:if test="${isCollected}">
-      <i class="fa fa-heart font-orange"></i><span>已关注 (<em>${activity.collectedCount}</em>)</span>
+      <i class="fa fa-heart font-orange"></i><span>已关注 <%--(<em>${activity.collectedCount}</em>)--%></span>
       </c:if>
       <c:if test="${!isCollected}">
-      <i class="fa fa-heart-o"></i><span>关注 (<em>${activity.collectedCount}</em>)</span>
+      <i class="fa fa-heart-o"></i><span>关注 <%--(<em>${activity.collectedCount}</em>)--%></span>
       </c:if>
     </a>
     <a id="btnShare" class="flex-1" href="javascript:;">
