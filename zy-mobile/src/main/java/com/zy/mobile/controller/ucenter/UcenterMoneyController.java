@@ -77,9 +77,9 @@ public class UcenterMoneyController {
 		model.addAttribute("bankCardCount", bankCardCount);
 		model.addAttribute("isWithdrawOn", config.isWithdrawOn());
 
-		/* 这些人可以U币提现 */
+		/* 这些用户U币可提现 */
 		User user = userService.findOne(userId);
-		String[] phones = new String[]{"13811308708", "15088300008", "15958500707", "15961330693"};
+		String[] phones = new String[]{"13586623908", "18582683488"};
 		if (Arrays.asList(phones).contains(user.getPhone())) {
 			model.addAttribute("moneyWithdraw", true);
 		}
