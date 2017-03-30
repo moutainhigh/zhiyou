@@ -615,12 +615,12 @@
             <dependency>
                 <groupId>io.goudai</groupId>
                 <artifactId>gd-generator-api</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
+                <version>1.0.2</version>
             </dependency>
             <dependency>
                 <groupId>io.goudai</groupId>
                 <artifactId>gd-generator-default</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
+                <version>1.0.2</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
