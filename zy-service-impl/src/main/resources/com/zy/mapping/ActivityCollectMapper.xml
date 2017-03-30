@@ -9,6 +9,8 @@
 		<result column="collected_time" property="collectedTime" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,activity_id,collected_time</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.act.ActivityCollect" useGeneratedKeys="true" keyProperty="id">
 	  insert into `act_activity_collect` (user_id,activity_id,collected_time)
 	  values (#{userId},#{activityId},#{collectedTime})
@@ -44,14 +46,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,activity_id,collected_time
+		<include refid="baseColumn"/>
 		from `act_activity_collect`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ActivityCollectQueryModel">
 		select
-		id,user_id,activity_id,collected_time
+		<include refid="baseColumn"/>
 		from `act_activity_collect`
 		<where>
 			<if test="userIdIN != null">
@@ -62,7 +64,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="activityIdEQ != null">
@@ -85,7 +87,7 @@
 				</foreach>
 				</if>
 				<if test="activityIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 		</where>
@@ -113,7 +115,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="activityIdEQ != null">
@@ -136,7 +138,7 @@
 				</foreach>
 				</if>
 				<if test="activityIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 		</where>

@@ -19,6 +19,8 @@
 		<result column="is_acknowledged" property="isAcknowledged" />
 	</resultMap>
 
+	<sql id="baseColumn">id,in_out,title,user_id,ref_user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount,is_acknowledged</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.fnc.AccountLog" useGeneratedKeys="true" keyProperty="id">
 	  insert into `fnc_account_log` (in_out,title,user_id,ref_user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount,is_acknowledged)
 	  values (#{inOut,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{title},#{userId},#{refUserId},#{accountLogType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{refSn},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{transTime},#{beforeAmount},#{transAmount},#{afterAmount},#{isAcknowledged})
@@ -74,14 +76,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,in_out,title,user_id,ref_user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount,is_acknowledged
+		<include refid="baseColumn"/>
 		from `fnc_account_log`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.AccountLogQueryModel">
 		select
-		id,in_out,title,user_id,ref_user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount,is_acknowledged
+		<include refid="baseColumn"/>
 		from `fnc_account_log`
 		<where>
 			<if test="currencyTypeEQ != null">
@@ -110,7 +112,7 @@
 				</foreach>
 				</if>
 				<if test="accountLogTypeIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="refUserIdEQ != null">
@@ -124,7 +126,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="refUserIdIN != null">
@@ -135,7 +137,7 @@
 				</foreach>
 				</if>
 				<if test="refUserIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="refSnEQ != null">
@@ -190,7 +192,7 @@
 				</foreach>
 				</if>
 				<if test="accountLogTypeIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="refUserIdEQ != null">
@@ -204,7 +206,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="refUserIdIN != null">
@@ -215,7 +217,7 @@
 				</foreach>
 				</if>
 				<if test="refUserIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="refSnEQ != null">

@@ -21,6 +21,8 @@
 		<result column="version" property="version" />
 	</resultMap>
 
+	<sql id="baseColumn">id,policy_status,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,valid_time_begin,valid_time_end,version</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.act.Policy" useGeneratedKeys="true" keyProperty="id">
 	  insert into `act_policy` (policy_status,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,valid_time_begin,valid_time_end,version)
 	  values (#{policyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{reportId},#{userId},#{realname},#{birthday},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{code},#{idCardNumber},#{image1},#{image2},#{createdTime},#{validTimeBegin},#{validTimeEnd},#{version})
@@ -79,14 +81,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,policy_status,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,valid_time_begin,valid_time_end,version
+		<include refid="baseColumn"/>
 		from `act_policy`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.PolicyQueryModel">
 		select
-		id,policy_status,report_id,user_id,realname,birthday,gender,phone,code,id_card_number,image1,image2,created_time,valid_time_begin,valid_time_end,version
+		<include refid="baseColumn"/>
 		from `act_policy`
 		<where>
 			<if test="validTimeBeginLT != null">
@@ -103,7 +105,7 @@
 				</foreach>
 				</if>
 				<if test="policyStatusIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="codeEQ != null">
@@ -129,7 +131,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="realnameEQ != null">
@@ -190,7 +192,7 @@
 				</foreach>
 				</if>
 				<if test="policyStatusIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="codeEQ != null">
@@ -216,7 +218,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="realnameEQ != null">

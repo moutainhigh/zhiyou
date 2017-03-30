@@ -14,6 +14,8 @@
 		<result column="amount" property="amount" />
 	</resultMap>
 
+	<sql id="baseColumn">id,order_id,product_id,title,image,market_price,price,quantity,amount</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.mal.OrderItem" useGeneratedKeys="true" keyProperty="id">
 	  insert into `mal_order_item` (order_id,product_id,title,image,market_price,price,quantity,amount)
 	  values (#{orderId},#{productId},#{title},#{image},#{marketPrice},#{price},#{quantity},#{amount})
@@ -59,14 +61,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,order_id,product_id,title,image,market_price,price,quantity,amount
+		<include refid="baseColumn"/>
 		from `mal_order_item`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap">
 		select
-		id,order_id,product_id,title,image,market_price,price,quantity,amount
+		<include refid="baseColumn"/>
 		from `mal_order_item`
 		order by id desc
 	</select>

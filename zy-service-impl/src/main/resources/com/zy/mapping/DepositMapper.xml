@@ -28,6 +28,8 @@
 		<result column="version" property="version" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,title,sn,currency_type1,amount1,currency_type2,amount2,total_amount,is_outer_created,outer_sn,qr_code_url,weixin_open_id,pay_type,paid_time,created_time,expired_time,deposit_status,remark,offline_image,offline_memo,operator_id,version</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.fnc.Deposit" useGeneratedKeys="true" keyProperty="id">
 	  insert into `fnc_deposit` (user_id,title,sn,currency_type1,amount1,currency_type2,amount2,total_amount,is_outer_created,outer_sn,qr_code_url,weixin_open_id,pay_type,paid_time,created_time,expired_time,deposit_status,remark,offline_image,offline_memo,operator_id,version)
 	  values (#{userId},#{title},#{sn},#{currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount1},#{currencyType2,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount2},#{totalAmount},#{isOuterCreated},#{outerSn},#{qrCodeUrl},#{weixinOpenId},#{payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{paidTime},#{createdTime},#{expiredTime},#{depositStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{remark},#{offlineImage},#{offlineMemo},#{operatorId},#{version})
@@ -100,14 +102,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,title,sn,currency_type1,amount1,currency_type2,amount2,total_amount,is_outer_created,outer_sn,qr_code_url,weixin_open_id,pay_type,paid_time,created_time,expired_time,deposit_status,remark,offline_image,offline_memo,operator_id,version
+		<include refid="baseColumn"/>
 		from `fnc_deposit`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.DepositQueryModel">
 		select
-		id,user_id,title,sn,currency_type1,amount1,currency_type2,amount2,total_amount,is_outer_created,outer_sn,qr_code_url,weixin_open_id,pay_type,paid_time,created_time,expired_time,deposit_status,remark,offline_image,offline_memo,operator_id,version
+		<include refid="baseColumn"/>
 		from `fnc_deposit`
 		<where>
 			<if test="snEQ != null">
@@ -124,7 +126,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="depositStatusIN != null">
@@ -135,7 +137,7 @@
 				</foreach>
 				</if>
 				<if test="depositStatusIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="payTypeEQ != null">
@@ -190,7 +192,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="depositStatusIN != null">
@@ -201,7 +203,7 @@
 				</foreach>
 				</if>
 				<if test="depositStatusIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="payTypeEQ != null">

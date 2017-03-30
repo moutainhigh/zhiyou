@@ -1,18 +1,18 @@
 package com.zy.vo;
 
-import com.zy.entity.mal.Order.OrderStatus;
-import com.zy.entity.mal.Order.OrderType;
-import com.zy.entity.usr.User.UserRank;
-import com.zy.model.ImageVo;
 import io.gd.generator.annotation.Field;
+import com.zy.model.ImageVo;
+import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.usr.User.UserRank;
+import com.zy.entity.mal.Order.OrderType;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Date;
+import java.util.ArrayList;
 
 @Getter
 @Setter

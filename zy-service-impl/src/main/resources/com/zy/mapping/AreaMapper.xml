@@ -11,6 +11,8 @@
 		<result column="code" property="code" />
 	</resultMap>
 
+	<sql id="baseColumn">id,area_type,parent_id,name,order_number,code</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.sys.Area" useGeneratedKeys="true" keyProperty="id">
 	  insert into `sys_area` (area_type,parent_id,name,order_number,code)
 	  values (#{areaType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{parentId},#{name},#{orderNumber},#{code})
@@ -50,14 +52,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,area_type,parent_id,name,order_number,code
+		<include refid="baseColumn"/>
 		from `sys_area`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.AreaQueryModel">
 		select
-		id,area_type,parent_id,name,order_number,code
+		<include refid="baseColumn"/>
 		from `sys_area`
 		<where>
 			<if test="idIN != null">
@@ -68,7 +70,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="parentIdEQ != null">
@@ -85,7 +87,7 @@
 				</foreach>
 				</if>
 				<if test="parentIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 		</where>
@@ -113,7 +115,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="parentIdEQ != null">
@@ -130,7 +132,7 @@
 				</foreach>
 				</if>
 				<if test="parentIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 		</where>

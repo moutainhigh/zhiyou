@@ -11,6 +11,8 @@
 		<result column="remark" property="remark" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,operation,operator_id,operated_time,remark</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.usr.UserLog" useGeneratedKeys="true" keyProperty="id">
 	  insert into `usr_user_log` (user_id,operation,operator_id,operated_time,remark)
 	  values (#{userId},#{operation},#{operatorId},#{operatedTime},#{remark})
@@ -50,14 +52,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,operation,operator_id,operated_time,remark
+		<include refid="baseColumn"/>
 		from `usr_user_log`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap">
 		select
-		id,user_id,operation,operator_id,operated_time,remark
+		<include refid="baseColumn"/>
 		from `usr_user_log`
 		order by id desc
 	</select>

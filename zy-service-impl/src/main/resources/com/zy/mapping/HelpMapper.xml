@@ -11,6 +11,8 @@
 		<result column="index_number" property="indexNumber" />
 	</resultMap>
 
+	<sql id="baseColumn">id,title,content,created_time,help_category_id,index_number</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.cms.Help" useGeneratedKeys="true" keyProperty="id">
 	  insert into `cms_help` (title,content,created_time,help_category_id,index_number)
 	  values (#{title},#{content},#{createdTime},#{helpCategoryId},#{indexNumber})
@@ -50,14 +52,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,title,content,created_time,help_category_id,index_number
+		<include refid="baseColumn"/>
 		from `cms_help`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap">
 		select
-		id,title,content,created_time,help_category_id,index_number
+		<include refid="baseColumn"/>
 		from `cms_help`
 		order by id desc
 	</select>

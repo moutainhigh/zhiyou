@@ -24,6 +24,8 @@
 		<result column="version" property="version" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,currency_type,title,sn,amount,fee_rate,fee,real_amount,outer_fee,created_time,withdrawed_time,withdraw_status,operator_id,is_to_bank_card,bank_card_id,open_id,remark,version</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.fnc.Withdraw" useGeneratedKeys="true" keyProperty="id">
 	  insert into `fnc_withdraw` (user_id,currency_type,title,sn,amount,fee_rate,fee,real_amount,outer_fee,created_time,withdrawed_time,withdraw_status,operator_id,is_to_bank_card,bank_card_id,open_id,remark,version)
 	  values (#{userId},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{title},#{sn},#{amount},#{feeRate},#{fee},#{realAmount},#{outerFee},#{createdTime},#{withdrawedTime},#{withdrawStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{operatorId},#{isToBankCard},#{bankCardId},#{openId},#{remark},#{version})
@@ -88,14 +90,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,currency_type,title,sn,amount,fee_rate,fee,real_amount,outer_fee,created_time,withdrawed_time,withdraw_status,operator_id,is_to_bank_card,bank_card_id,open_id,remark,version
+		<include refid="baseColumn"/>
 		from `fnc_withdraw`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.WithdrawQueryModel">
 		select
-		id,user_id,currency_type,title,sn,amount,fee_rate,fee,real_amount,outer_fee,created_time,withdrawed_time,withdraw_status,operator_id,is_to_bank_card,bank_card_id,open_id,remark,version
+		<include refid="baseColumn"/>
 		from `fnc_withdraw`
 		<where>
 			<if test="createdTimeLT != null">
@@ -115,7 +117,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="createdTimeGTE != null">
@@ -155,7 +157,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="createdTimeGTE != null">

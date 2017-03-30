@@ -9,6 +9,8 @@
 		<result column="site_id" property="siteId" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,role_names,site_id</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.adm.Admin" useGeneratedKeys="true" keyProperty="id">
 	  insert into `adm_admin` (user_id,role_names,site_id)
 	  values (#{userId},#{roleNames},#{siteId})
@@ -44,14 +46,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,role_names,site_id
+		<include refid="baseColumn"/>
 		from `adm_admin`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.AdminQueryModel">
 		select
-		id,user_id,role_names,site_id
+		<include refid="baseColumn"/>
 		from `adm_admin`
 		<where>
 			<if test="userIdIN != null">
@@ -62,7 +64,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 		</where>
@@ -90,7 +92,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 		</where>

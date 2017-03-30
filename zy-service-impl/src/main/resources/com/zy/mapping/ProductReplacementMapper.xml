@@ -24,6 +24,8 @@
 		<result column="remark" property="remark" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,product_replacement_status,from_product,to_product,quantity,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,created_time,delivered_time,logistics_name,logistics_sn,logistics_fee,remark</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.mal.ProductReplacement" useGeneratedKeys="true" keyProperty="id">
 	  insert into `mal_product_replacement` (user_id,product_replacement_status,from_product,to_product,quantity,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,created_time,delivered_time,logistics_name,logistics_sn,logistics_fee,remark)
 	  values (#{userId},#{productReplacementStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{fromProduct},#{toProduct},#{quantity},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{createdTime},#{deliveredTime},#{logisticsName},#{logisticsSn},#{logisticsFee},#{remark})
@@ -89,14 +91,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,product_replacement_status,from_product,to_product,quantity,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,created_time,delivered_time,logistics_name,logistics_sn,logistics_fee,remark
+		<include refid="baseColumn"/>
 		from `mal_product_replacement`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ProductReplacementQueryModel">
 		select
-		id,user_id,product_replacement_status,from_product,to_product,quantity,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,created_time,delivered_time,logistics_name,logistics_sn,logistics_fee,remark
+		<include refid="baseColumn"/>
 		from `mal_product_replacement`
 		<where>
 			<if test="userIdIN != null">
@@ -107,7 +109,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="logisticsNameLK != null">
@@ -153,7 +155,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="logisticsNameLK != null">

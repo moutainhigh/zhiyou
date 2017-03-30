@@ -11,6 +11,8 @@
 		<result column="remark" property="remark" />
 	</resultMap>
 
+	<sql id="baseColumn">id,report_id,report_pre_confirm_status,report_confirm_status,created_time,remark</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.act.ReportLog" useGeneratedKeys="true" keyProperty="id">
 	  insert into `act_report_log` (report_id,report_pre_confirm_status,report_confirm_status,created_time,remark)
 	  values (#{reportId},#{reportPreConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{reportConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{createdTime},#{remark})
@@ -50,14 +52,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,report_id,report_pre_confirm_status,report_confirm_status,created_time,remark
+		<include refid="baseColumn"/>
 		from `act_report_log`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ReportLogQueryModel">
 		select
-		id,report_id,report_pre_confirm_status,report_confirm_status,created_time,remark
+		<include refid="baseColumn"/>
 		from `act_report_log`
 		<where>
 			<if test="idIN != null">
@@ -68,7 +70,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="reportIdEQ != null">
@@ -88,7 +90,7 @@
 				</foreach>
 				</if>
 				<if test="reportIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="reportConfirmStatusEQ != null">
@@ -119,7 +121,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="reportIdEQ != null">
@@ -139,7 +141,7 @@
 				</foreach>
 				</if>
 				<if test="reportIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="reportConfirmStatusEQ != null">

@@ -13,6 +13,8 @@
 		<result column="replied_time" property="repliedTime" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,feedback_type,feedback_status,content,reply,created_time,replied_time</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.cms.Feedback" useGeneratedKeys="true" keyProperty="id">
 	  insert into `cms_feedback` (user_id,feedback_type,feedback_status,content,reply,created_time,replied_time)
 	  values (#{userId},#{feedbackType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{feedbackStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{content},#{reply},#{createdTime},#{repliedTime})
@@ -56,14 +58,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,feedback_type,feedback_status,content,reply,created_time,replied_time
+		<include refid="baseColumn"/>
 		from `cms_feedback`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.FeedbackQueryModel">
 		select
-		id,user_id,feedback_type,feedback_status,content,reply,created_time,replied_time
+		<include refid="baseColumn"/>
 		from `cms_feedback`
 		<where>
 			<if test="userIdEQ != null">

@@ -1,14 +1,19 @@
 package com.zy.model.query;
 
-import com.zy.entity.usr.User.UserRank;
-import com.zy.entity.usr.User.UserType;
-import io.gd.generator.api.query.Direction;
-import lombok.*;
-
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.HashSet;
+import java.io.Serializable;
+
+import io.gd.generator.api.query.Direction;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import com.zy.entity.usr.User.UserType;
+import java.util.Date;
+import com.zy.entity.usr.User.UserRank;
 
 @Getter
 @Setter

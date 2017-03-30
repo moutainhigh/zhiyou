@@ -22,6 +22,8 @@
 		<result column="tag_ids" property="tagIds" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,realname,id_card_number,image1,image2,confirm_status,confirm_remark,applied_time,confirmed_time,gender,birthday,job_id,area_id,hometown_area_id,consumption_level,tag_ids</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.usr.UserInfo" useGeneratedKeys="true" keyProperty="id">
 	  insert into `usr_user_info` (user_id,realname,id_card_number,image1,image2,confirm_status,confirm_remark,applied_time,confirmed_time,gender,birthday,job_id,area_id,hometown_area_id,consumption_level,tag_ids)
 	  values (#{userId},#{realname},#{idCardNumber},#{image1},#{image2},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{appliedTime},#{confirmedTime},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{birthday},#{jobId},#{areaId},#{hometownAreaId},#{consumptionLevel,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{tagIds})
@@ -83,14 +85,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,realname,id_card_number,image1,image2,confirm_status,confirm_remark,applied_time,confirmed_time,gender,birthday,job_id,area_id,hometown_area_id,consumption_level,tag_ids
+		<include refid="baseColumn"/>
 		from `usr_user_info`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserInfoQueryModel">
 		select
-		id,user_id,realname,id_card_number,image1,image2,confirm_status,confirm_remark,applied_time,confirmed_time,gender,birthday,job_id,area_id,hometown_area_id,consumption_level,tag_ids
+		<include refid="baseColumn"/>
 		from `usr_user_info`
 		<where>
 			<if test="userIdIN != null">
@@ -101,7 +103,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="idCardNumberLK != null">
@@ -115,7 +117,7 @@
 				</foreach>
 				</if>
 				<if test="areaIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="userIdEQ != null">
@@ -155,7 +157,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="idCardNumberLK != null">
@@ -169,7 +171,7 @@
 				</foreach>
 				</if>
 				<if test="areaIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="userIdEQ != null">

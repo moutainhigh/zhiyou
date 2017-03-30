@@ -7,6 +7,8 @@
 		<result column="job_name" property="jobName" />
 	</resultMap>
 
+	<sql id="baseColumn">id,job_name</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.usr.Job" useGeneratedKeys="true" keyProperty="id">
 	  insert into `usr_job` (job_name)
 	  values (#{jobName})
@@ -38,14 +40,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,job_name
+		<include refid="baseColumn"/>
 		from `usr_job`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap">
 		select
-		id,job_name
+		<include refid="baseColumn"/>
 		from `usr_job`
 		order by id desc
 	</select>

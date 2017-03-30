@@ -16,6 +16,8 @@
 		<result column="is_deleted" property="isDeleted" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,is_default,area_id,realname,phone,province,city,district,address,is_deleted</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.usr.Address" useGeneratedKeys="true" keyProperty="id">
 	  insert into `usr_address` (user_id,is_default,area_id,realname,phone,province,city,district,address,is_deleted)
 	  values (#{userId},#{isDefault},#{areaId},#{realname},#{phone},#{province},#{city},#{district},#{address},#{isDeleted})
@@ -65,14 +67,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,is_default,area_id,realname,phone,province,city,district,address,is_deleted
+		<include refid="baseColumn"/>
 		from `usr_address`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.AddressQueryModel">
 		select
-		id,user_id,is_default,area_id,realname,phone,province,city,district,address,is_deleted
+		<include refid="baseColumn"/>
 		from `usr_address`
 		<where>
 			<if test="isDeletedEQ != null">

@@ -12,6 +12,8 @@
 		<result column="version" property="version" />
 	</resultMap>
 
+	<sql id="baseColumn">id,code,created_time,used_time,is_used,batch_code,version</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.act.PolicyCode" useGeneratedKeys="true" keyProperty="id">
 	  insert into `act_policy_code` (code,created_time,used_time,is_used,batch_code,version)
 	  values (#{code},#{createdTime},#{usedTime},#{isUsed},#{batchCode},#{version})
@@ -52,14 +54,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,code,created_time,used_time,is_used,batch_code,version
+		<include refid="baseColumn"/>
 		from `act_policy_code`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.PolicyCodeQueryModel">
 		select
-		id,code,created_time,used_time,is_used,batch_code,version
+		<include refid="baseColumn"/>
 		from `act_policy_code`
 		<where>
 			<if test="createdTimeLT != null">

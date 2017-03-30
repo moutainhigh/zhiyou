@@ -32,6 +32,8 @@
 		<result column="version" property="version" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,product_id,report_result,check_report_result,visit_user_id,text,image,times,reported_date,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.act.Report" useGeneratedKeys="true" keyProperty="id">
 	  insert into `act_report` (user_id,realname,age,gender,phone,job_id,area_id,tag_ids,product_id,report_result,check_report_result,visit_user_id,text,image,times,reported_date,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version)
 	  values (#{userId},#{realname},#{age},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{jobId},#{areaId},#{tagIds},#{productId},#{reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{checkReportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{visitUserId},#{text},#{image},#{times},#{reportedDate},#{appliedTime},#{createdTime},#{preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{preConfirmedTime},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{confirmedTime},#{isSettledUp},#{isHot},#{version})
@@ -112,14 +114,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,product_id,report_result,check_report_result,visit_user_id,text,image,times,reported_date,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version
+		<include refid="baseColumn"/>
 		from `act_report`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ReportQueryModel">
 		select
-		id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,product_id,report_result,check_report_result,visit_user_id,text,image,times,reported_date,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version
+		<include refid="baseColumn"/>
 		from `act_report`
 		<where>
 			<if test="preConfirmedTimeGTE != null">
@@ -154,7 +156,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="createdTimeLT != null">
@@ -171,7 +173,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="realnameEQ != null">
@@ -250,7 +252,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="createdTimeLT != null">
@@ -267,7 +269,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="realnameEQ != null">

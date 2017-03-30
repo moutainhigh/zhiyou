@@ -10,6 +10,8 @@
 		<result column="order_number" property="orderNumber" />
 	</resultMap>
 
+	<sql id="baseColumn">id,name,code,is_deleted,order_number</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.fnc.Bank" useGeneratedKeys="true" keyProperty="id">
 	  insert into `fnc_bank` (name,code,is_deleted,order_number)
 	  values (#{name},#{code},#{isDeleted},#{orderNumber})
@@ -47,14 +49,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,name,code,is_deleted,order_number
+		<include refid="baseColumn"/>
 		from `fnc_bank`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.BankQueryModel">
 		select
-		id,name,code,is_deleted,order_number
+		<include refid="baseColumn"/>
 		from `fnc_bank`
 		<where>
 			<if test="isDeletedEQ != null">

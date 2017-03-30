@@ -8,6 +8,8 @@
 		<result column="role_id" property="roleId" />
 	</resultMap>
 
+	<sql id="baseColumn">id,admin_id,role_id</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.adm.AdminRole" useGeneratedKeys="true" keyProperty="id">
 	  insert into `adm_admin_role` (admin_id,role_id)
 	  values (#{adminId},#{roleId})
@@ -41,14 +43,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,admin_id,role_id
+		<include refid="baseColumn"/>
 		from `adm_admin_role`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap">
 		select
-		id,admin_id,role_id
+		<include refid="baseColumn"/>
 		from `adm_admin_role`
 		order by id desc
 	</select>

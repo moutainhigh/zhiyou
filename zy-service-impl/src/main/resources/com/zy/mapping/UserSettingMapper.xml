@@ -8,6 +8,8 @@
 		<result column="is_receive_task_sms" property="isReceiveTaskSms" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,is_receive_task_sms</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.usr.UserSetting" useGeneratedKeys="true" keyProperty="id">
 	  insert into `usr_user_setting` (user_id,is_receive_task_sms)
 	  values (#{userId},#{isReceiveTaskSms})
@@ -41,14 +43,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,is_receive_task_sms
+		<include refid="baseColumn"/>
 		from `usr_user_setting`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap">
 		select
-		id,user_id,is_receive_task_sms
+		<include refid="baseColumn"/>
 		from `usr_user_setting`
 		order by id desc
 	</select>

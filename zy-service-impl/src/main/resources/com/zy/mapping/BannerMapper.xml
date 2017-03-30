@@ -13,6 +13,8 @@
 		<result column="is_open_blank" property="isOpenBlank" />
 	</resultMap>
 
+	<sql id="baseColumn">id,is_released,image,url,title,order_number,banner_position,is_open_blank</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.cms.Banner" useGeneratedKeys="true" keyProperty="id">
 	  insert into `cms_banner` (is_released,image,url,title,order_number,banner_position,is_open_blank)
 	  values (#{isReleased},#{image},#{url},#{title},#{orderNumber},#{bannerPosition,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{isOpenBlank})
@@ -56,14 +58,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,is_released,image,url,title,order_number,banner_position,is_open_blank
+		<include refid="baseColumn"/>
 		from `cms_banner`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.BannerQueryModel">
 		select
-		id,is_released,image,url,title,order_number,banner_position,is_open_blank
+		<include refid="baseColumn"/>
 		from `cms_banner`
 		<where>
 			<if test="titleLK != null">

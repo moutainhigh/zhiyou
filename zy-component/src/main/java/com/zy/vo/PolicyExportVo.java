@@ -1,8 +1,8 @@
 package com.zy.vo;
 
-import com.zy.entity.act.Policy.PolicyStatus;
-import com.zy.entity.usr.UserInfo.Gender;
 import io.gd.generator.annotation.Field;
+import com.zy.entity.usr.UserInfo.Gender;
+import com.zy.entity.act.Policy.PolicyStatus;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -9,6 +9,8 @@
 		<result column="role_id" property="roleId" />
 	</resultMap>
 
+	<sql id="baseColumn">id,permission,permission_name,role_id</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.adm.RolePermission" useGeneratedKeys="true" keyProperty="id">
 	  insert into `adm_role_permission` (permission,permission_name,role_id)
 	  values (#{permission},#{permissionName},#{roleId})
@@ -44,14 +46,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,permission,permission_name,role_id
+		<include refid="baseColumn"/>
 		from `adm_role_permission`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap">
 		select
-		id,permission,permission_name,role_id
+		<include refid="baseColumn"/>
 		from `adm_role_permission`
 		order by id desc
 	</select>

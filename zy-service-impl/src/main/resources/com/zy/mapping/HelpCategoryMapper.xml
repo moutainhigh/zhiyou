@@ -11,6 +11,8 @@
 		<result column="index_number" property="indexNumber" />
 	</resultMap>
 
+	<sql id="baseColumn">id,code,name,created_time,user_type,index_number</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.cms.HelpCategory" useGeneratedKeys="true" keyProperty="id">
 	  insert into `cms_help_category` (code,name,created_time,user_type,index_number)
 	  values (#{code},#{name},#{createdTime},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{indexNumber})
@@ -50,14 +52,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,code,name,created_time,user_type,index_number
+		<include refid="baseColumn"/>
 		from `cms_help_category`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.HelpCategoryQueryModel">
 		select
-		id,code,name,created_time,user_type,index_number
+		<include refid="baseColumn"/>
 		from `cms_help_category`
 		<where>
 			<if test="userTypeEQ != null">

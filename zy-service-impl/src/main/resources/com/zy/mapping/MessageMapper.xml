@@ -15,6 +15,8 @@
 		<result column="token" property="token" />
 	</resultMap>
 
+	<sql id="baseColumn">id,title,content,user_id,is_read,created_time,read_time,message_type,batch_number,token</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.sys.Message" useGeneratedKeys="true" keyProperty="id">
 	  insert into `sys_message` (title,content,user_id,is_read,created_time,read_time,message_type,batch_number,token)
 	  values (#{title},#{content},#{userId},#{isRead},#{createdTime},#{readTime},#{messageType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{batchNumber},#{token})
@@ -62,14 +64,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,title,content,user_id,is_read,created_time,read_time,message_type,batch_number,token
+		<include refid="baseColumn"/>
 		from `sys_message`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.MessageQueryModel">
 		select
-		id,title,content,user_id,is_read,created_time,read_time,message_type,batch_number,token
+		<include refid="baseColumn"/>
 		from `sys_message`
 		<where>
 			<if test="titleLK != null">

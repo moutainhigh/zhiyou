@@ -23,6 +23,8 @@
 		<result column="version" property="version" />
 	</resultMap>
 
+	<sql id="baseColumn">id,title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.act.Activity" useGeneratedKeys="true" keyProperty="id">
 	  insert into `act_activity` (title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version)
 	  values (#{title},#{areaId},#{amount},#{address},#{latitude},#{longitude},#{image},#{detail},#{applyDeadline},#{startTime},#{endTime},#{signedInCount},#{collectedCount},#{appliedCount},#{viewedCount},#{isReleased},#{version})
@@ -85,14 +87,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version
+		<include refid="baseColumn"/>
 		from `act_activity`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ActivityQueryModel">
 		select
-		id,title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version
+		<include refid="baseColumn"/>
 		from `act_activity`
 		<where>
 			<if test="idIN != null">
@@ -103,7 +105,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="startTimeGTE != null">
@@ -123,7 +125,7 @@
 				</foreach>
 				</if>
 				<if test="areaIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="startTimeLT != null">
@@ -163,7 +165,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="startTimeGTE != null">
@@ -183,7 +185,7 @@
 				</foreach>
 				</if>
 				<if test="areaIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="startTimeLT != null">

@@ -10,6 +10,8 @@
 		<result column="notice_type" property="noticeType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 	</resultMap>
 
+	<sql id="baseColumn">id,title,content,created_time,notice_type</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.cms.Notice" useGeneratedKeys="true" keyProperty="id">
 	  insert into `cms_notice` (title,content,created_time,notice_type)
 	  values (#{title},#{content},#{createdTime},#{noticeType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler})
@@ -47,14 +49,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,title,content,created_time,notice_type
+		<include refid="baseColumn"/>
 		from `cms_notice`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.NoticeQueryModel">
 		select
-		id,title,content,created_time,notice_type
+		<include refid="baseColumn"/>
 		from `cms_notice`
 		<where>
 			<if test="noticeTypeIN != null">
@@ -65,7 +67,7 @@
 				</foreach>
 				</if>
 				<if test="noticeTypeIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="titleLK != null">
@@ -99,7 +101,7 @@
 				</foreach>
 				</if>
 				<if test="noticeTypeIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="titleLK != null">

@@ -1,7 +1,7 @@
 package com.zy.vo;
 
-import com.zy.entity.act.ActivityApply.ActivityApplyStatus;
 import io.gd.generator.annotation.Field;
+import com.zy.entity.act.ActivityApply.ActivityApplyStatus;
 import lombok.Getter;
 import lombok.Setter;
 

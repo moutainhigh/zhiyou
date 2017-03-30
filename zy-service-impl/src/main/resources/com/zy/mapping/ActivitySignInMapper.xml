@@ -9,6 +9,8 @@
 		<result column="signed_in_time" property="signedInTime" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,activity_id,signed_in_time</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.act.ActivitySignIn" useGeneratedKeys="true" keyProperty="id">
 	  insert into `act_activity_sign_in` (user_id,activity_id,signed_in_time)
 	  values (#{userId},#{activityId},#{signedInTime})
@@ -44,14 +46,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,activity_id,signed_in_time
+		<include refid="baseColumn"/>
 		from `act_activity_sign_in`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ActivitySignInQueryModel">
 		select
-		id,user_id,activity_id,signed_in_time
+		<include refid="baseColumn"/>
 		from `act_activity_sign_in`
 		<where>
 			<if test="signedInTimeLT != null">
@@ -65,7 +67,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="activityIdEQ != null">
@@ -85,7 +87,7 @@
 				</foreach>
 				</if>
 				<if test="activityIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 		</where>
@@ -116,7 +118,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="activityIdEQ != null">
@@ -136,7 +138,7 @@
 				</foreach>
 				</if>
 				<if test="activityIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 		</where>

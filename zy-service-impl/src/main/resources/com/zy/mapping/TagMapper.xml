@@ -8,6 +8,8 @@
 		<result column="tag_name" property="tagName" />
 	</resultMap>
 
+	<sql id="baseColumn">id,tag_type,tag_name</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.usr.Tag" useGeneratedKeys="true" keyProperty="id">
 	  insert into `usr_tag` (tag_type,tag_name)
 	  values (#{tagType},#{tagName})
@@ -41,14 +43,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,tag_type,tag_name
+		<include refid="baseColumn"/>
 		from `usr_tag`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap">
 		select
-		id,tag_type,tag_name
+		<include refid="baseColumn"/>
 		from `usr_tag`
 		order by id desc
 	</select>

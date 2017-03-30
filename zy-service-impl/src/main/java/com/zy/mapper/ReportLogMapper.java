@@ -1,11 +1,11 @@
 package com.zy.mapper;
 
 
-import com.zy.entity.act.ReportLog;
-import com.zy.model.query.ReportLogQueryModel;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import com.zy.entity.act.ReportLog;
+import com.zy.model.query.ReportLogQueryModel;
 
 
 public interface ReportLogMapper {

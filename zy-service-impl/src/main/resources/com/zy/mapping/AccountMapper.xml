@@ -10,6 +10,8 @@
 		<result column="version" property="version" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,amount,currency_type,version</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.fnc.Account" useGeneratedKeys="true" keyProperty="id">
 	  insert into `fnc_account` (user_id,amount,currency_type,version)
 	  values (#{userId},#{amount},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{version})
@@ -46,14 +48,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,amount,currency_type,version
+		<include refid="baseColumn"/>
 		from `fnc_account`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.AccountQueryModel">
 		select
-		id,user_id,amount,currency_type,version
+		<include refid="baseColumn"/>
 		from `fnc_account`
 		<where>
 			<if test="currencyTypeEQ != null">
@@ -70,7 +72,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 		</where>
@@ -104,7 +106,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 		</where>

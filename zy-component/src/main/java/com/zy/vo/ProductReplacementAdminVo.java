@@ -1,7 +1,7 @@
 package com.zy.vo;
 
-import com.zy.entity.mal.ProductReplacement.ProductReplacementStatus;
 import io.gd.generator.annotation.Field;
+import com.zy.entity.mal.ProductReplacement.ProductReplacementStatus;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -7,6 +7,8 @@
 		<result column="name" property="name" />
 	</resultMap>
 
+	<sql id="baseColumn">id,name</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.adm.Role" useGeneratedKeys="true" keyProperty="id">
 	  insert into `adm_role` (name)
 	  values (#{name})
@@ -38,14 +40,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,name
+		<include refid="baseColumn"/>
 		from `adm_role`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.RoleQueryModel">
 		select
-		id,name
+		<include refid="baseColumn"/>
 		from `adm_role`
 		<where>
 			<if test="nameLK != null">

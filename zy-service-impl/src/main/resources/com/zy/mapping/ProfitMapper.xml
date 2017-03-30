@@ -18,6 +18,8 @@
 		<result column="version" property="version" />
 	</resultMap>
 
+	<sql id="baseColumn">id,profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark,version</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.fnc.Profit" useGeneratedKeys="true" keyProperty="id">
 	  insert into `fnc_profit` (profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark,version)
 	  values (#{profitStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userId},#{sn},#{title},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount},#{createdTime},#{grantedTime},#{profitType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{remark},#{version})
@@ -70,14 +72,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark,version
+		<include refid="baseColumn"/>
 		from `fnc_profit`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
 		select
-		id,profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark,version
+		<include refid="baseColumn"/>
 		from `fnc_profit`
 		<where>
 			<if test="snEQ != null">
@@ -94,7 +96,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="grantedTimeLT != null">
@@ -120,7 +122,7 @@
 				</foreach>
 				</if>
 				<if test="profitTypeIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="grantedTimeGTE != null">
@@ -160,7 +162,7 @@
 				</foreach>
 				</if>
 				<if test="userIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="grantedTimeLT != null">
@@ -186,7 +188,7 @@
 				</foreach>
 				</if>
 				<if test="profitTypeIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="grantedTimeGTE != null">

@@ -51,6 +51,8 @@
 		<result column="contact_way_text" property="contactWayText" />
 	</resultMap>
 
+	<sql id="baseColumn">id,report_id,relationship,relationship_text,customer_service_name1,visited_time1,visited_status1,customer_service_name2,visited_time2,visited_status2,customer_service_name3,visited_time3,visited_status3,visited_status,confirm_status,remark,rest_time_label,rest_time_text,sleep_quality,sleep_quality_text,drink,smoke,exercise,exercise_text,hobby,hobby_text,remark1,cause,cause_text,health,sickness,family_history,remark2,health_product,health_product_text,monthly_cost,monthly_cost_text,product_name,interfering_factors,remark3,visited_info,product_sharing,product_sharing_text,to_agent,contact_way,contact_way_text</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.act.ReportVisitedLog" useGeneratedKeys="true" keyProperty="id">
 	  insert into `act_report_visited_log` (report_id,relationship,relationship_text,customer_service_name1,visited_time1,visited_status1,customer_service_name2,visited_time2,visited_status2,customer_service_name3,visited_time3,visited_status3,visited_status,confirm_status,remark,rest_time_label,rest_time_text,sleep_quality,sleep_quality_text,drink,smoke,exercise,exercise_text,hobby,hobby_text,remark1,cause,cause_text,health,sickness,family_history,remark2,health_product,health_product_text,monthly_cost,monthly_cost_text,product_name,interfering_factors,remark3,visited_info,product_sharing,product_sharing_text,to_agent,contact_way,contact_way_text)
 	  values (#{reportId},#{relationship},#{relationshipText},#{customerServiceName1},#{visitedTime1},#{visitedStatus1},#{customerServiceName2},#{visitedTime2},#{visitedStatus2},#{customerServiceName3},#{visitedTime3},#{visitedStatus3},#{visitedStatus},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{remark},#{restTimeLabel},#{restTimeText},#{sleepQuality},#{sleepQualityText},#{drink},#{smoke},#{exercise},#{exerciseText},#{hobby},#{hobbyText},#{remark1},#{cause},#{causeText},#{health},#{sickness},#{familyHistory},#{remark2},#{healthProduct},#{healthProductText},#{monthlyCost},#{monthlyCostText},#{productName},#{interferingFactors},#{remark3},#{visitedInfo},#{productSharing},#{productSharingText},#{toAgent},#{contactWay},#{contactWayText})
@@ -170,14 +172,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,report_id,relationship,relationship_text,customer_service_name1,visited_time1,visited_status1,customer_service_name2,visited_time2,visited_status2,customer_service_name3,visited_time3,visited_status3,visited_status,confirm_status,remark,rest_time_label,rest_time_text,sleep_quality,sleep_quality_text,drink,smoke,exercise,exercise_text,hobby,hobby_text,remark1,cause,cause_text,health,sickness,family_history,remark2,health_product,health_product_text,monthly_cost,monthly_cost_text,product_name,interfering_factors,remark3,visited_info,product_sharing,product_sharing_text,to_agent,contact_way,contact_way_text
+		<include refid="baseColumn"/>
 		from `act_report_visited_log`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ReportVisitedLogQueryModel">
 		select
-		id,report_id,relationship,relationship_text,customer_service_name1,visited_time1,visited_status1,customer_service_name2,visited_time2,visited_status2,customer_service_name3,visited_time3,visited_status3,visited_status,confirm_status,remark,rest_time_label,rest_time_text,sleep_quality,sleep_quality_text,drink,smoke,exercise,exercise_text,hobby,hobby_text,remark1,cause,cause_text,health,sickness,family_history,remark2,health_product,health_product_text,monthly_cost,monthly_cost_text,product_name,interfering_factors,remark3,visited_info,product_sharing,product_sharing_text,to_agent,contact_way,contact_way_text
+		<include refid="baseColumn"/>
 		from `act_report_visited_log`
 		<where>
 			<if test="reportIdEQ != null">
@@ -200,7 +202,7 @@
 				</foreach>
 				</if>
 				<if test="reportIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="restTimeLabelGTE != null">
@@ -247,7 +249,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="visitedStatus1EQ != null">
@@ -314,7 +316,7 @@
 				</foreach>
 				</if>
 				<if test="reportIdIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="restTimeLabelGTE != null">
@@ -361,7 +363,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="visitedStatus1EQ != null">

@@ -1,16 +1,16 @@
 package com.zy.vo;
 
+import io.gd.generator.annotation.Field;
+import com.zy.entity.usr.UserInfo.Gender;
 import com.zy.entity.act.Report.ReportResult;
 import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.usr.UserInfo.Gender;
-import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Date;
+import java.util.ArrayList;
 
 @Getter
 @Setter

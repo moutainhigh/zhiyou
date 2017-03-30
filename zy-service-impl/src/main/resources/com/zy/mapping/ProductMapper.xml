@@ -21,6 +21,8 @@
 		<result column="created_time" property="createdTime" />
 	</resultMap>
 
+	<sql id="baseColumn">id,title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.mal.Product" useGeneratedKeys="true" keyProperty="id">
 	  insert into `mal_product` (title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time)
 	  values (#{title},#{detail},#{productPriceType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{price},#{priceScript},#{marketPrice},#{skuCode},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime})
@@ -80,14 +82,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time
+		<include refid="baseColumn"/>
 		from `mal_product`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ProductQueryModel">
 		select
-		id,title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time
+		<include refid="baseColumn"/>
 		from `mal_product`
 		<where>
 			<if test="idIN != null">
@@ -98,7 +100,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="createdTimeLT != null">
@@ -138,7 +140,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="createdTimeLT != null">

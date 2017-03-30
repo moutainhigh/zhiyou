@@ -12,6 +12,8 @@
 		<result column="order_fill_time" property="orderFillTime" />
 	</resultMap>
 
+	<sql id="baseColumn">id,sys_user_id,withdraw_fee_rate_script,is_dev,is_withdraw_on,is_open_order_fill,order_fill_time</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.sys.Setting" useGeneratedKeys="true" keyProperty="id">
 	  insert into `sys_setting` (sys_user_id,withdraw_fee_rate_script,is_dev,is_withdraw_on,is_open_order_fill,order_fill_time)
 	  values (#{sysUserId},#{withdrawFeeRateScript},#{isDev},#{isWithdrawOn},#{isOpenOrderFill},#{orderFillTime})
@@ -53,14 +55,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,sys_user_id,withdraw_fee_rate_script,is_dev,is_withdraw_on,is_open_order_fill,order_fill_time
+		<include refid="baseColumn"/>
 		from `sys_setting`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap">
 		select
-		id,sys_user_id,withdraw_fee_rate_script,is_dev,is_withdraw_on,is_open_order_fill,order_fill_time
+		<include refid="baseColumn"/>
 		from `sys_setting`
 		order by id desc
 	</select>

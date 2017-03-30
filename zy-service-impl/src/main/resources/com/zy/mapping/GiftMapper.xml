@@ -22,6 +22,8 @@
 		<result column="created_time" property="createdTime" />
 	</resultMap>
 
+	<sql id="baseColumn">id,title,detail,price,market_price,sku_code,stock_quantity,locked_count,is_on,order_number,image1,image2,image3,image4,image5,image6,created_time</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.mal.Gift" useGeneratedKeys="true" keyProperty="id">
 	  insert into `mal_gift` (title,detail,price,market_price,sku_code,stock_quantity,locked_count,is_on,order_number,image1,image2,image3,image4,image5,image6,created_time)
 	  values (#{title},#{detail},#{price},#{marketPrice},#{skuCode},#{stockQuantity},#{lockedCount},#{isOn},#{orderNumber},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime})
@@ -83,14 +85,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,title,detail,price,market_price,sku_code,stock_quantity,locked_count,is_on,order_number,image1,image2,image3,image4,image5,image6,created_time
+		<include refid="baseColumn"/>
 		from `mal_gift`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.GiftQueryModel">
 		select
-		id,title,detail,price,market_price,sku_code,stock_quantity,locked_count,is_on,order_number,image1,image2,image3,image4,image5,image6,created_time
+		<include refid="baseColumn"/>
 		from `mal_gift`
 		<where>
 			<if test="idIN != null">
@@ -101,7 +103,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="createdTimeLT != null">
@@ -141,7 +143,7 @@
 				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="createdTimeLT != null">

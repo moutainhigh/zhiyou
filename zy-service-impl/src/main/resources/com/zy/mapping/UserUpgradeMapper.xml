@@ -10,6 +10,8 @@
 		<result column="upgraded_time" property="upgradedTime" />
 	</resultMap>
 
+	<sql id="baseColumn">id,user_id,from_user_rank,to_user_rank,upgraded_time</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.usr.UserUpgrade" useGeneratedKeys="true" keyProperty="id">
 	  insert into `usr_user_upgrade` (user_id,from_user_rank,to_user_rank,upgraded_time)
 	  values (#{userId},#{fromUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{toUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{upgradedTime})
@@ -47,14 +49,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,from_user_rank,to_user_rank,upgraded_time
+		<include refid="baseColumn"/>
 		from `usr_user_upgrade`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserUpgradeQueryModel">
 		select
-		id,user_id,from_user_rank,to_user_rank,upgraded_time
+		<include refid="baseColumn"/>
 		from `usr_user_upgrade`
 		<where>
 			<if test="userIdEQ != null">

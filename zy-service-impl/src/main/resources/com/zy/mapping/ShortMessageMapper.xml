@@ -11,6 +11,8 @@
 		<result column="token" property="token" />
 	</resultMap>
 
+	<sql id="baseColumn">id,phone,content,created_time,ip,token</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.sys.ShortMessage" useGeneratedKeys="true" keyProperty="id">
 	  insert into `sys_short_message` (phone,content,created_time,ip,token)
 	  values (#{phone},#{content},#{createdTime},#{ip},#{token})
@@ -50,14 +52,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,content,created_time,ip,token
+		<include refid="baseColumn"/>
 		from `sys_short_message`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ShortMessageQueryModel">
 		select
-		id,phone,content,created_time,ip,token
+		<include refid="baseColumn"/>
 		from `sys_short_message`
 		<where>
 			<if test="createdTimeLT != null">
