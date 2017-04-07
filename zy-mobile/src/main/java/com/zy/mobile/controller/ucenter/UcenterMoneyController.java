@@ -79,7 +79,7 @@ public class UcenterMoneyController {
 
 		/* 这些用户U币可提现 */
 		User user = userService.findOne(userId);
-		String[] phones = new String[]{"18678961296"};
+		String[] phones = new String[]{"13339573333","18373817333"};
 		if (Arrays.asList(phones).contains(user.getPhone())) {
 			model.addAttribute("moneyWithdraw", true);
 		}
