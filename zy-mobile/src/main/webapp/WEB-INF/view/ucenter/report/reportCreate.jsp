@@ -381,6 +381,7 @@
               <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_1.jpg" data-title="身份证正面"><i class="fa fa-question-circle-o"></i> 示意图</a>
             </div>
           </div>
+          <label style="margin-left: 20px; color:red;">(非必填)上传身份证图片可方便核验您的身份证号码的准确性</label>
           <div class="list-item">
             <label class="list-label">生日</label>
             <div class="list-text">
