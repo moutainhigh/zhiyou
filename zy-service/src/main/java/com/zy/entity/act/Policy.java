@@ -115,7 +115,6 @@ public class Policy implements Serializable {
 	@View(groups = VO_EXPORT, field = @Field(label = "证件号码", order = 30))
 	private String idCardNumber;
 
-	@NotBlank
 	@URL
 	@StringBinder
 	@Field(label = "图片1", description = "身份证正面照")

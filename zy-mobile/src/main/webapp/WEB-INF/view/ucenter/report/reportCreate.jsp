@@ -87,12 +87,12 @@
           messageAlert('请选择产品');
           return;
         }
-        if (!$('#policyInfo').is(':hidden')) {
-	        if(!$('#image1').val()) {
-		        messageAlert('请上传身份证正面照');
-		        return;
-	        }
-        }
+//        if (!$('#policyInfo').is(':hidden')) {
+//	        if(!$('#image1').val()) {
+//		        messageAlert('请上传身份证正面照');
+//		        return;
+//	        }
+//        }
 
         <c:if test="${userRank == 'V0' && empty parent}">
         var parentPhone = $('#parentPhone').val();
@@ -359,13 +359,13 @@
           <div class="list-item bd-t-0">
             <label class="list-label" for="code">产品编码</label>
             <div class="list-text">
-              <input type="text" name="code" class="form-input" value="" placeholder="填写产品编码">
+              <input type="text" name="code" id="code" class="form-input" value="" placeholder="填写产品编码">
             </div>
           </div>
           <div class="list-item">
             <label class="list-label" for="idCardNumber">身份证号</label>
             <div class="list-text">
-              <input type="text" name="idCardNumber" class="form-input" value="${policy.idCardNumber}" placeholder="填写身份证号">
+              <input type="text" name="idCardNumber" id="idCardNumber" class="form-input" value="${policy.idCardNumber}" placeholder="填写身份证号">
             </div>
           </div>
           <div class="list-item">
