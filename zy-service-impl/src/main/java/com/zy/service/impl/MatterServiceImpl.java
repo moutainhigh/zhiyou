@@ -1,6 +1,5 @@
 package com.zy.service.impl;
 
-import com.sun.istack.internal.NotNull;
 import com.zy.common.model.query.Page;
 import com.zy.entity.cms.Matter;
 import com.zy.entity.cms.MatterCollect;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Service
