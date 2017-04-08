@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.MatterMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.cms.Matter">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="description" property="description" />
+		<result column="type" property="type" />
+		<result column="url" property="url" />
+		<result column="authority" property="authority" />
+		<result column="upload_time" property="uploadTime" />
+		<result column="upload_user_id" property="uploadUserId" />
+		<result column="status" property="status" />
+		<result column="clicked_count" property="clickedCount" />
+		<result column="collected_count" property="collectedCount" />
+		<result column="download_count" property="downloadCount" />
+	</resultMap>
+
+	<!-- 后台查询所有资源 -->
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.MatterQueryModel">
+		SELECT
+			id,
+			title,
+			description,
+			type,
+			url,
+			authority,
+			upload_time,
+			upload_user_id,
+			status,
+			clicked_count,
+			collected_count,
+			download_count
+		FROM
+			cms_matter
+		<where>
+			<if test="title != null">
+				<bind name="title" value="'%' + title + '%'"/>
+				and title like #{title}
+			</if>
+			<if test="type != null">
+				and type = #{type}
+			</if>
+			<if test="status != null">
+				and status = #{status}
+			</if>
+			<if test="authority != null">
+				and authority = #{authority}
+			</if>
+			<if test="uploadStartTime != null">
+				and upload_time &gt;= #{uploadStartTime}
+			</if>
+			<if test="uploadEndTime != null">
+				and upload_time &lt;= #{uploadEndTime}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				ORDER BY
+				${orderByAndDirection}
+			</when>
+			<otherwise>
+				ORDER BY
+				upload_time DESC
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<!-- mobile查询所有对应资源 -->
+	<select id="mobileFindAll" resultMap="baseResultMap" parameterType="com.zy.model.query.MatterQueryModel">
+		SELECT
+			id,
+			title,
+			description,
+			type,
+			url,
+			authority,
+			upload_time,
+			upload_user_id,
+			status,
+			clicked_count,
+			collected_count,
+			download_count
+		FROM
+			cms_matter
+		<where>
+			<if test="type != null">
+				and type = #{type}
+			</if>
+			<if test="authority != null">
+				and authority &lt;= #{authority}
+			</if>
+		</where>
+		AND status = 1
+		<choose>
+			<when test="orderByAndDirection != null">
+				ORDER BY
+				${orderByAndDirection}
+			</when>
+			<otherwise>
+				ORDER BY
+				upload_time DESC
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+
+	<!-- 后台查询所有资源数量 -->
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.MatterQueryModel">
+		select count(*) from `cms_matter`
+		<where>
+			<if test="title != null">
+				<bind name="title" value="'%' + title + '%'"/>
+				and title like #{title}
+			</if>
+			<if test="type != null">
+				and type = #{type}
+			</if>
+			<if test="status != null">
+				and status = #{status}
+			</if>
+			<if test="authority != null">
+				and authority = #{authority}
+			</if>
+			<if test="uploadStartTime != null">
+				and upload_time &gt;= #{uploadStartTime}
+			</if>
+			<if test="uploadEndTime != null">
+				and upload_time &lt;= #{uploadEndTime}
+			</if>
+		</where>
+	</select>
+
+	<!-- mobile查询所有对应资源数量 -->
+	<select id="mobileCount" resultType="_long" parameterType="com.zy.model.query.MatterQueryModel">
+		select count(*) from `cms_matter`
+		<where>
+			<if test="type != null">
+				and type = #{type}
+			</if>
+			<if test="authority != null">
+				and authority &lt;= #{authority}
+			</if>
+		</where>
+		AND status = 1
+	</select>
+
+	<!-- 根据ID查询资源 -->
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		SELECT
+			id,
+			title,
+			description,
+			type,
+			url,
+			authority,
+			upload_time,
+			upload_user_id,
+			status,
+			clicked_count,
+			collected_count,
+			download_count
+		FROM
+			cms_matter
+		WHERE
+			id = #{id}
+	</select>
+
+
+
+
+	<!-- 更改资源信息 -->
+	<update id="updateMatter" parameterType="com.zy.entity.cms.Matter">
+		UPDATE
+		cms_matter
+		<set>
+			<if test="title != null"> title = #{title},</if>
+			<if test="description != null"> description = #{description},</if>
+			<if test="type != null"> type = #{type},</if>
+			<if test="url != null"> url = #{url},</if>
+			<if test="authority != null"> authority = #{authority},</if>
+			<if test="uploadTime != null"> upload_time = #{uploadTime},</if>
+			<if test="uploadUserId != null"> upload_user_id = #{uploadUserId},</if>
+		</set>
+		WHERE
+			id = #{id}
+	</update>
+
+	<!-- 更改资源状态信息 -->
+	<update id="update" parameterType="com.zy.entity.cms.Matter">
+		UPDATE
+		cms_matter
+		<set>
+			<if test="status != null"> status = #{status}</if>
+		</set>
+		WHERE
+			id = #{id}
+	</update>
+
+	<!-- 新增资源
+		useGeneratedKeys="true" keyProperty="id"
+	-->
+	<insert id="insert" parameterType="com.zy.entity.cms.Matter" >
+		INSERT INTO
+			cms_matter
+		(	title,
+			description,
+			type,
+			url,
+			authority,
+			upload_time,
+			upload_user_id
+		)
+		VALUES
+		(#{title},#{description},#{type},#{url},#{authority},#{uploadTime},#{uploadUserId})
+	</insert>
+
+	<!-- 点击量 +1 -->
+	<update id="click" parameterType="long">
+		UPDATE
+			cms_matter
+		SET clicked_count = clicked_count + 1
+		WHERE
+			id = #{id}
+	</update>
+
+	<!-- 关注量 +1 -->
+	<update id="collect" parameterType="long">
+		UPDATE
+			cms_matter
+		SET collected_count = collected_count + 1
+		WHERE
+			id = #{id}
+	</update>
+
+	<!-- 关注量 -1 -->
+	<update id="updateNum" parameterType="long">
+		UPDATE
+			cms_matter
+		SET collected_count = collected_count - 1
+		WHERE
+			id = #{id}
+	</update>
+</mapper>

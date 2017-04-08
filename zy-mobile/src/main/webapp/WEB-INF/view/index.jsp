@@ -76,11 +76,11 @@
       </div>
       <div class="mt-5 text-center">检测报告</div>
     </a>
-    <a class="flex-1" href="${ctx}/activity">
+    <a class="flex-1" href="${ctx}/matter">
       <div class="text-center">
         <img class="round" src="${stccdn}/image/icon/icon_bag.png">
       </div>
-      <div class="mt-5 text-center">活动</div>
+      <div class="mt-5 text-center">资源库</div>
     </a>
     <a class="flex-1" href="${ctx}/code">
       <div class="text-center">

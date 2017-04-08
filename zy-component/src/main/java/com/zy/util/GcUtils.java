@@ -157,7 +157,7 @@ public class GcUtils {
 		if (file == null || file.isEmpty()) {
 			throw new ValidationException("[上传图片]图片不能为空");
 		}
-		
+
 		String[] typeAllowed = new String[] { "image/jpeg", "image/png", "image/bmp", "image/gif" };
 		String contentType = file.getContentType();
 		List<String> types = new ArrayList<String>();
@@ -167,11 +167,77 @@ public class GcUtils {
 		if (!types.contains(contentType)) {
 			throw new ValidationException("[上传图片]文件类型必须为" + StringUtils.join(typeAllowed, ","));
 		}
-		
-		int maxSize = 10;
+
+		int maxSize = 4;
 		long fileSize = file.getSize();
 		if (fileSize > maxSize * 1024 * 1024) {
 			throw new ValidationException("[上传图片]文件大小不能超过" + maxSize + "MB");
+		}
+	}
+	public static void checkVideo(MultipartFile file) {
+		if (file == null || file.isEmpty()) {
+			throw new ValidationException("[上传视频]视频不能为空");
+		}
+
+		//String[] typeAllowed = new String[] { "video/Ogg", "video/MPEG4", "video/WebM", "video/flv" };
+		String[] typeAllowed = new String[] {  "video/mp4" };
+		String contentType = file.getContentType();
+		List<String> types = new ArrayList<String>();
+		for (String type : typeAllowed) {
+			types.add(type);
+		}
+		if (!types.contains(contentType)) {
+			throw new ValidationException("[上传视频]文件类型必须为" + StringUtils.join(typeAllowed, ","));
+		}
+
+		int maxSize = 3;
+		long fileSize = file.getSize()/1048576;
+		if (fileSize > maxSize * 1024 ) {
+			throw new ValidationException("[上传视频]文件大小不能超过" + maxSize + "GB");
+		}
+	}
+	public static void checkAudio(MultipartFile file) {
+		if (file == null || file.isEmpty()) {
+			throw new ValidationException("[上传音频]音频不能为空");
+		}
+
+		//String[] typeAllowed = new String[] { "video/Ogg", "video/MPEG4", "video/WebM", "video/flv" };
+		String[] typeAllowed = new String[] {  "audio/mp3" };
+		String contentType = file.getContentType();
+		List<String> types = new ArrayList<String>();
+		for (String type : typeAllowed) {
+			types.add(type);
+		}
+		if (!types.contains(contentType)) {
+			throw new ValidationException("[上传音频]文件类型必须为" + StringUtils.join(typeAllowed, ","));
+		}
+
+		int maxSize = 10;
+		long fileSize = file.getSize();
+		if (fileSize > maxSize * 1024 * 1024) {
+			throw new ValidationException("[上传音频]文件大小不能超过" + maxSize + "MB");
+		}
+	}
+	public static void checkDocument(MultipartFile file) {
+		if (file == null || file.isEmpty()) {
+			throw new ValidationException("[上传文档]文档不能为空");
+		}
+
+		//String[] typeAllowed = new String[] { "application/pdf", "application/doc", "application/xls","application/txt" };
+		String[] typeAllowed = new String[] {  "application/pdf" , "application/pdfx"};
+		String contentType = file.getContentType();
+		List<String> types = new ArrayList<String>();
+		for (String type : typeAllowed) {
+			types.add(type);
+		}
+		if (!types.contains(contentType)) {
+			throw new ValidationException("[上传文档]文件类型必须为" + StringUtils.join(typeAllowed, ","));
+		}
+
+		int maxSize = 10;
+		long fileSize = file.getSize();
+		if (fileSize > maxSize * 1024 * 1024) {
+			throw new ValidationException("[上传文档]文件大小不能超过" + maxSize + "MB");
 		}
 	}
 
@@ -190,21 +256,21 @@ public class GcUtils {
 			return "-";
 		}
 	}
-	
+
 	public static String getConfirmStatusStyle(ConfirmStatus confirmStatus) {
 		String labelClass = "default";
 		switch (confirmStatus) {
-		case 待审核:
-			labelClass = "danger";
-			break;
-		case 已通过:
-			labelClass = "success";
-			break;
-		case 未通过:
-			labelClass = "default";
-			break;
-		default:
-			break;
+			case 待审核:
+				labelClass = "danger";
+				break;
+			case 已通过:
+				labelClass = "success";
+				break;
+			case 未通过:
+				labelClass = "default";
+				break;
+			default:
+				break;
 		}
 		return labelClass;
 	}
@@ -212,29 +278,29 @@ public class GcUtils {
 	public static String getOrderStatusStyle(Order.OrderStatus orderStatus) {
 		String labelClass = "default";
 		switch (orderStatus) {
-		case 待支付:
-			labelClass = "danger";
-			break;
-		case 已支付:
-			labelClass = "warning";
-			break;
-		case 已发货:
-			labelClass = "info";
-			break;
-		case 已完成:
-			labelClass = "success";
-			break;
-		case 已退款:
-			labelClass = "default";
-			break;
-		case 已取消:
-			labelClass = "default";
-			break;
-		case 待确认:
-			labelClass = "warning";
-			break;
-		default:
-			break;
+			case 待支付:
+				labelClass = "danger";
+				break;
+			case 已支付:
+				labelClass = "warning";
+				break;
+			case 已发货:
+				labelClass = "info";
+				break;
+			case 已完成:
+				labelClass = "success";
+				break;
+			case 已退款:
+				labelClass = "default";
+				break;
+			case 已取消:
+				labelClass = "default";
+				break;
+			case 待确认:
+				labelClass = "warning";
+				break;
+			default:
+				break;
 		}
 		return labelClass;
 	}
@@ -242,17 +308,17 @@ public class GcUtils {
 	public static String getTransferStatusStyle(Transfer.TransferStatus transferStatus) {
 		String labelClass = "default";
 		switch (transferStatus) {
-		case 待转账:
-			labelClass = "danger";
-			break;
-		case 已转账:
-			labelClass = "success";
-			break;
-		case 已取消:
-			labelClass = "default";
-			break;
-		default:
-			break;
+			case 待转账:
+				labelClass = "danger";
+				break;
+			case 已转账:
+				labelClass = "success";
+				break;
+			case 已取消:
+				labelClass = "default";
+				break;
+			default:
+				break;
 		}
 		return labelClass;
 	}
@@ -260,17 +326,17 @@ public class GcUtils {
 	public static String getProfitStatusStyle(Profit.ProfitStatus profitStatus) {
 		String labelClass = "default";
 		switch (profitStatus) {
-		case 待发放:
-			labelClass = "danger";
-			break;
-		case 已发放:
-			labelClass = "success";
-			break;
-		case 已取消:
-			labelClass = "default";
-			break;
-		default:
-			break;
+			case 待发放:
+				labelClass = "danger";
+				break;
+			case 已发放:
+				labelClass = "success";
+				break;
+			case 已取消:
+				labelClass = "default";
+				break;
+			default:
+				break;
 		}
 		return labelClass;
 	}
@@ -278,19 +344,19 @@ public class GcUtils {
 	public static String getDepositStatusStyle(Deposit.DepositStatus depositStatus) {
 		String labelClass = "default";
 		switch (depositStatus) {
-		case 待充值:
-			labelClass = "danger";
-			break;
-		case 充值成功:
-			labelClass = "success";
-			break;
-		case 已取消:
-			labelClass = "default";
-			break;
-		case 待确认:
-			labelClass = "warning";
-		default:
-			break;
+			case 待充值:
+				labelClass = "danger";
+				break;
+			case 充值成功:
+				labelClass = "success";
+				break;
+			case 已取消:
+				labelClass = "default";
+				break;
+			case 待确认:
+				labelClass = "warning";
+			default:
+				break;
 		}
 		return labelClass;
 	}
@@ -298,17 +364,17 @@ public class GcUtils {
 	public static String getWithdrawStatusStyle(Withdraw.WithdrawStatus withdrawStatus) {
 		String labelClass = "default";
 		switch (withdrawStatus) {
-		case 已申请:
-			labelClass = "danger";
-			break;
-		case 提现成功:
-			labelClass = "success";
-			break;
-		case 已取消:
-			labelClass = "default";
-			break;
-		default:
-			break;
+			case 已申请:
+				labelClass = "danger";
+				break;
+			case 提现成功:
+				labelClass = "success";
+				break;
+			case 已取消:
+				labelClass = "default";
+				break;
+			default:
+				break;
 		}
 		return labelClass;
 	}
@@ -316,22 +382,22 @@ public class GcUtils {
 	public static String getPaymentStatusStyle(Payment.PaymentStatus paymentStatus) {
 		String labelClass = "default";
 		switch (paymentStatus) {
-		case 待支付:
-			labelClass = "danger";
-			break;
-		case 已支付:
-			labelClass = "success";
-			break;
-		case 已退款:
-			labelClass = "default";
-			break;
-		case 已取消:
-			labelClass = "default";
-			break;
-		case 待确认:
-			labelClass = "warning";
-		default:
-			break;
+			case 待支付:
+				labelClass = "danger";
+				break;
+			case 已支付:
+				labelClass = "success";
+				break;
+			case 已退款:
+				labelClass = "default";
+				break;
+			case 已取消:
+				labelClass = "default";
+				break;
+			case 待确认:
+				labelClass = "warning";
+			default:
+				break;
 		}
 		return labelClass;
 	}

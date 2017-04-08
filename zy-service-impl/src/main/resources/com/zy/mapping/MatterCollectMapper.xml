@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.MatterCollectMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.cms.MatterCollect">
+		<id column="id" property="id" />
+		<result column="matter_id" property="matterId" />
+		<result column="user_id" property="userId" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+	<!-- 查看关注 -->
+	<select id="queryMatterCollect" resultType="com.zy.entity.cms.MatterCollect" parameterType="com.zy.model.query.MatterQueryModel">
+		SELECT
+			a.id,
+			a.matter_id,
+			a.user_id,
+			a.create_time
+		FROM cms_matter_collect a
+		WHERE a.matter_id = #{id}
+		AND a.user_id = #{userId}
+	</select>
+
+	<!-- 关注 -->
+	<insert id="insert" parameterType="com.zy.model.query.MatterQueryModel">
+		INSERT INTO
+			cms_matter_collect
+		(	matter_id,
+			user_id,
+			create_time
+		)
+		VALUES
+		(#{id},#{userId},now())
+	</insert>
+
+	<!-- 取消关注 -->
+	<delete id="delete" parameterType="com.zy.model.query.MatterQueryModel">
+		DELETE FROM
+			cms_matter_collect
+		WHERE
+			matter_id = #{id}
+		AND user_id = #{userId}
+	</delete>
+</mapper>

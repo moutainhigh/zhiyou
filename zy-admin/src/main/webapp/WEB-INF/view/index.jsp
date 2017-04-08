@@ -356,7 +356,7 @@
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="banner:view,notice:view,article:view,help:view">
+        <shiro:hasAnyPermissions name="banner:view,matter:view,notice:view,article:view,help:view">
           <li>
             <a href="javascript:;">
               <i class="icon-screen-desktop"></i>
@@ -368,6 +368,11 @@
               <shiro:hasPermission name="banner:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/banner"><i class="icon-directions"></i> Banner管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="matter:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/matter"><i class="icon-arrow-down"></i> 资源管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="notice:view">
