@@ -71,7 +71,7 @@ public class OrderController {
 	@RequiresPermissions("order:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
-		List<Product> products = productService.findAll(ProductQueryModel.builder().isOnEQ(true).build());
+		List<Product> products = productService.findAll(ProductQueryModel.builder().build());
 		Map<Long, String> productMap = products.stream().collect(Collectors.toMap(Product::getId, v -> v.getTitle()));
 		model.addAttribute("productMap", productMap);
 		return "mal/orderList";
@@ -107,7 +107,7 @@ public class OrderController {
 		long count = orderService.count(OrderQueryModel.builder().sellerIdEQ(sysUserId).orderStatusEQ(OrderStatus.已支付).build());
 		model.addAttribute("count", count);
 		model.addAttribute("orderStatuses", OrderStatus.values());
-		List<Product> products = productService.findAll(ProductQueryModel.builder().isOnEQ(true).build());
+		List<Product> products = productService.findAll(ProductQueryModel.builder().build());
 		Map<Long, String> productMap = products.stream().collect(Collectors.toMap(Product::getId, v -> v.getTitle()));
 		model.addAttribute("productMap", productMap);
 		return "mal/orderPlatformDeliverList";
