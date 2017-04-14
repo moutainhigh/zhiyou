@@ -4,12 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -58,11 +53,12 @@ public class OrderReportMonthController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public Grid<OrderReportVo> listMonth(OrderReportVo.OrderReportVoQueryModel orderReportVoQueryModel) {
-		
+
+		UserRank userRank = orderReportVoQueryModel.getUserRankEQ() == null ? UserRank.V4 : orderReportVoQueryModel.getUserRankEQ();
 		List<UserReportVo> data = new ArrayList<>();
 		List<UserReportVo> all = localCacheComponent.getuserReportVos();
 		List<UserReportVo> filtered = all.stream()
-			.filter(v -> v.getUserRank() == UserRank.V4)
+			.filter(v -> v.getUserRank() == userRank)
 			.filter(userReportVo -> {
 			boolean result = true;
 			Long provinceIdEQ = orderReportVoQueryModel.getProvinceIdEQ();

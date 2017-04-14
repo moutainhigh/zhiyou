@@ -72,11 +72,12 @@ public class OrderReportDailyController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public Grid<OrderReportVo> listMonth(OrderReportVo.OrderReportVoQueryModel orderReportVoQueryModel, @RequestParam String queryDate) throws ParseException {
-		
+
+		UserRank userRank = orderReportVoQueryModel.getUserRankEQ() == null ? UserRank.V4 : orderReportVoQueryModel.getUserRankEQ();
 		List<UserReportVo> data = new ArrayList<>();
 		List<UserReportVo> all = localCacheComponent.getuserReportVos();
 		List<UserReportVo> filtered = all.stream()
-			.filter(v -> v.getUserRank() == UserRank.V4)
+			.filter(v -> v.getUserRank() == userRank)
 			.filter(userReportVo -> {
 			boolean result = true;
 			Long provinceIdEQ = orderReportVoQueryModel.getProvinceIdEQ();

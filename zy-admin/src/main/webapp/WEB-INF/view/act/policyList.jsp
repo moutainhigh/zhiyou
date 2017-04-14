@@ -327,6 +327,15 @@
                        name="createdTimeLT" value="" placeholder="创建时间止"/>
               </div>
 
+              <div class="form-group input-inline">
+                <input class="Wdate form-control" type="text"
+                       onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="validTimeEndGTE" value="" placeholder="有效时间止(大于等于)"/>
+              </div>
+              <div class="form-group input-inline">
+                <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                       name="validTimeEndLT" value="" placeholder="有效时间止(小于)"/>
+              </div>
+
               <div class="form-group">
                 <select name="policyStatusEQ" class="form-control">
                   <option value="">-- 保险进度状态 --</option>
