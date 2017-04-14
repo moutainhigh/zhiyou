@@ -101,6 +101,14 @@
           },
           {
             data: '',
+            title: '收货人信息',
+            orderable: false,
+            render: function (data, type, full) {
+              return '<p>姓名：' + full.receiverRealname + '</p><p>手机：' + full.receiverPhone + '</p>';
+            }
+          },
+          {
+            data: '',
             title: '金额信息',
             orderable: false,
             render: function (data, type, full) {
@@ -257,6 +265,23 @@
 
               <div class="form-group input-inline">
                 <input type="text" name="userNicknameLK" class="form-control" placeholder="用户昵称"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="receiverPhoneEQ" class="form-control" placeholder="收货人手机号"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="receiverRealnameEQ" class="form-control" placeholder="收货人姓名"/>
+              </div>
+
+              <div class="form-group">
+                <select name="productIdEQ" class="form-control">
+                  <option value="">-- 选择商品 --</option>
+                  <c:forEach items="${productMap}" var="map">
+                    <option value="${map.key}">${map.value}</option>
+                  </c:forEach>
+                </select>
               </div>
 
               <div class="form-group input-inline">

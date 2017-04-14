@@ -94,30 +94,30 @@
 //	        }
 //        }
 
-        <c:if test="${userRank == 'V0' && empty parent}">
-        var parentPhone = $('#parentPhone').val();
-        if(!parentPhone) {
-          messageFlash('请填写上级手机号');
-          return;
-        }
-        $.ajax({
-          url: '${ctx}/u/checkPhone',
-          data: {
-            phone: parentPhone
-          },
-          type: 'POST',
-          dataType: 'JSON',
-          success: function(result){
-            if(result.code == 0) {
-              $('[name="parentId"]').val(result.message);
-              form.submit();
-            } else {
-              messageAlert(result.message);
-            }
-          }
-        });
-        return;
-        </c:if>
+        <%--<c:if test="${userRank == 'V0' && empty parent}">--%>
+        <%--var parentPhone = $('#parentPhone').val();--%>
+        <%--if(!parentPhone) {--%>
+          <%--messageFlash('请填写上级手机号');--%>
+          <%--return;--%>
+        <%--}--%>
+        <%--$.ajax({--%>
+          <%--url: '${ctx}/u/checkPhone',--%>
+          <%--data: {--%>
+            <%--phone: parentPhone--%>
+          <%--},--%>
+          <%--type: 'POST',--%>
+          <%--dataType: 'JSON',--%>
+          <%--success: function(result){--%>
+            <%--if(result.code == 0) {--%>
+              <%--$('[name="parentId"]').val(result.message);--%>
+              <%--form.submit();--%>
+            <%--} else {--%>
+              <%--messageAlert(result.message);--%>
+            <%--}--%>
+          <%--}--%>
+        <%--});--%>
+        <%--return;--%>
+        <%--</c:if>--%>
         form.submit();
       }
     });
@@ -229,7 +229,7 @@
         <div class="list-item">
           <label class="list-label" for="realname">姓名</label>
           <div class="list-text">
-            <input type="text" name="realname" class="form-input" value="${report.realname}" placeholder="填写客户姓名">
+            <input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写客户姓名">
           </div>
         </div>
         <div class="list-item">
@@ -278,24 +278,24 @@
         <div class="list-item">
           <label class="list-label" for="age">年龄</label>
           <div class="list-text">
-            <input type="number" name="age" class="form-input" value="${report.age}" placeholder="填写客户年龄">
+            <input type="number" name="age" id="age" class="form-input" value="${report.age}" placeholder="填写客户年龄">
           </div>
         </div>
         <div class="list-item">
           <label class="list-label" for="phone">手机号</label>
           <div class="list-text">
-            <input type="number" name="phone" class="form-input" value="${report.phone}" placeholder="填写客户手机号">
+            <input type="number" name="phone" id="phone" class="form-input" value="${report.phone}" placeholder="填写客户手机号">
           </div>
         </div>
-        <c:if test="${userRank == 'V0' && empty parent}">
-          <div class="list-item">
-            <label class="list-label">上级手机号</label>
-            <div class="list-text">
-              <input id="parentPhone" name="parentPhone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">
-              <input type="hidden" name="parentId" value="${inviter.id}">
-            </div>
-          </div>
-        </c:if>
+        <%--<c:if test="${userRank == 'V0' && empty parent}">--%>
+          <%--<div class="list-item">--%>
+            <%--<label class="list-label">上级手机号</label>--%>
+            <%--<div class="list-text">--%>
+              <%--<input id="parentPhone" name="parentPhone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">--%>
+              <%--<input type="hidden" name="parentId" value="${inviter.id}">--%>
+            <%--</div>--%>
+          <%--</div>--%>
+        <%--</c:if>--%>
       </div>
 
       <div class="list-group">
@@ -303,7 +303,7 @@
         <div class="list-item">
           <label class="list-label" for="times">检测次数</label>
           <div class="list-text">
-            <input type="number" name="times" class="form-input" value="${report.times}" placeholder="第几次检测">
+            <input type="number" name="times" id="times" class="form-input" value="${report.times}" placeholder="第几次检测">
           </div>
         </div>
         <div class="list-item">

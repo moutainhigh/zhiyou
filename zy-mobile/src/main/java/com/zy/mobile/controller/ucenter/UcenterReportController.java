@@ -136,22 +136,22 @@ public class UcenterReportController {
 		
 		User user = userService.findOne(principal.getUserId());
 		
-		if (user.getUserRank() == User.UserRank.V0) {
-			Long parentId = user.getParentId();
-			Long inviterId = user.getInviterId();
-			if (parentId != null) {
-				User parent = userService.findOne(parentId);
-				if (parent != null) {
-					model.addAttribute("parent", userComponent.buildListVo(parent));
-				}
-			}
-			if (inviterId != null) {
-				User inviter = userService.findOne(inviterId);
-				if (inviter != null) {
-					model.addAttribute("inviter", userComponent.buildListVo(inviter));
-				}
-			}
-		}
+//		if (user.getUserRank() == User.UserRank.V0) {
+//			Long parentId = user.getParentId();
+//			Long inviterId = user.getInviterId();
+//			if (parentId != null) {
+//				User parent = userService.findOne(parentId);
+//				if (parent != null) {
+//					model.addAttribute("parent", userComponent.buildListVo(parent));
+//				}
+//			}
+//			if (inviterId != null) {
+//				User inviter = userService.findOne(inviterId);
+//				if (inviter != null) {
+//					model.addAttribute("inviter", userComponent.buildListVo(inviter));
+//				}
+//			}
+//		}
 		ProductQueryModel productQueryModel = new ProductQueryModel();
 		List<Product> products = productService.findAll(productQueryModel);
 		model.addAttribute("products", products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
@@ -169,13 +169,13 @@ public class UcenterReportController {
 		
 		User user = userService.findOne(principal.getUserId());
 		try {
-			//设置上级
-			if (user.getUserRank() == UserRank.V0 && user.getParentId() == null) {
-				if (parentId == null) {
-					throw new BizException(BizCode.ERROR, "首次下单必须填写邀请人");
-				}
-				userService.setParentId(principal.getUserId(), parentId);
-			}
+//			//设置上级
+//			if (user.getUserRank() == UserRank.V0 && user.getParentId() == null) {
+//				if (parentId == null) {
+//					throw new BizException(BizCode.ERROR, "首次下单必须填写邀请人");
+//				}
+//				userService.setParentId(principal.getUserId(), parentId);
+//			}
 			
 			if(config.isOld(report.getProductId()) && hasPolicy){
 				throw new BizException(BizCode.ERROR, "一代产品不能提交保单.");

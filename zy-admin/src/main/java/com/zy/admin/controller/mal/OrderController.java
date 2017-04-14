@@ -12,14 +12,17 @@ import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.PaymentQueryModel;
+import com.zy.model.query.ProductQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.OrderService;
 import com.zy.service.PaymentService;
+import com.zy.service.ProductService;
 import com.zy.service.UserService;
 import com.zy.vo.OrderAdminVo;
 import io.gd.generator.api.query.Direction;
@@ -36,6 +39,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -56,13 +61,19 @@ public class OrderController {
 	
 	@Autowired
 	private UserService userService;
-	
+
+	@Autowired
+	private ProductService productService;
+
 	@Autowired
 	private Config config;
 	
 	@RequiresPermissions("order:view")
 	@RequestMapping(method = RequestMethod.GET)
-	public String list() {
+	public String list(Model model) {
+		List<Product> products = productService.findAll(ProductQueryModel.builder().isOnEQ(true).build());
+		Map<Long, String> productMap = products.stream().collect(Collectors.toMap(Product::getId, v -> v.getTitle()));
+		model.addAttribute("productMap", productMap);
 		return "mal/orderList";
 	}
 	
@@ -96,6 +107,9 @@ public class OrderController {
 		long count = orderService.count(OrderQueryModel.builder().sellerIdEQ(sysUserId).orderStatusEQ(OrderStatus.已支付).build());
 		model.addAttribute("count", count);
 		model.addAttribute("orderStatuses", OrderStatus.values());
+		List<Product> products = productService.findAll(ProductQueryModel.builder().isOnEQ(true).build());
+		Map<Long, String> productMap = products.stream().collect(Collectors.toMap(Product::getId, v -> v.getTitle()));
+		model.addAttribute("productMap", productMap);
 		return "mal/orderPlatformDeliverList";
 	}
 	

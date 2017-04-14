@@ -264,12 +264,14 @@ public class Order implements Serializable {
 	@StringBinder
 	@Field(label = "收件人姓名")
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
+	@Query(Predicate.EQ)
 	private String receiverRealname;
 
 	@NotBlank
 	@StringBinder
 	@Field(label = "收件人电话")
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
+	@Query(Predicate.EQ)
 	private String receiverPhone;
 
 	@NotBlank

@@ -278,6 +278,12 @@
 			<if test="orderTypeEQ != null">
 				and order_type = #{orderTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
+			<if test="receiverRealnameEQ != null">
+				and receiver_realname = #{receiverRealnameEQ}
+			</if>
+			<if test="receiverPhoneEQ != null">
+				and receiver_phone = #{receiverPhoneEQ}
+			</if>
 			<if test="sellerIdIN != null">
 				<if test="sellerIdIN.length != 0">
 				and seller_id in
