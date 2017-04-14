@@ -149,10 +149,10 @@ public class PolicyServiceImpl implements PolicyService {
 	public void checkAndModify(@NotNull Long id) {
 		Policy policy = findOne(id);
 		validate(policy, NOT_NULL, "policy id " + id + " not found");
-		if (policy.getPolicyStatus() == Policy.PolicyStatus.已生效) {
+		if (policy.getPolicyStatus() == Policy.PolicyStatus.已到期) {
 			return ;
 		}
-		if(policy.getPolicyStatus() != Policy.PolicyStatus.审核中) {
+		if(policy.getPolicyStatus() != Policy.PolicyStatus.已生效) {
 			throw new BizException(BizCode.ERROR, "policy status error");
 		}
 
