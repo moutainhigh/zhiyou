@@ -30,7 +30,10 @@
     <div class="font-333 fs-36 lh-60 text-center">${amount}</div>
     <c:if test="${currencyType == '现金'}">
     <div class="form-btn mt-20">
-      <a href="${ctx}/u/pay/deposit" class="btn orange btn-block round-2">充值</a>
+      <a href="${ctx}/u/pay/deposit" class="btn green btn-block round-2">充值</a>
+    </div>
+    <div class="form-btn mt-20">
+      <a href="${ctx}/u/account/transfer/create" class="btn orange btn-block round-2">转账</a>
     </div>
     </c:if>
     <c:if test="${bankCardCount == 0 and currencyType == '积分'}">
@@ -43,7 +46,14 @@
       <c:if test="${currencyType == '积分' || moneyWithdraw}">
         <div class="form-btn">
           <c:if test="${isWithdrawOn}">
+            <c:if test="${!hasUserInfo}">
+              <nav class="footer footer-nav flex">
+                <a class="flex-2 btn-order" href="${ctx}/u/userInfo">请先完成实名认证再下单</a>
+              </nav>
+            </c:if>
+            <c:if test="${hasUserInfo}">
             <a href="${ctx}/u/money/withdraw?currencyType=${currencyType}" class="btn green btn-block round-2">提现</a>
+            </c:if>
           </c:if>
         </div>
       </c:if>

@@ -1,6 +1,7 @@
 package com.zy.mobile.controller.ucenter;
 
 import com.zy.common.exception.UnauthorizedException;
+import com.zy.common.exception.ValidationException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -10,9 +11,12 @@ import com.zy.component.ProfitComponent;
 import com.zy.component.TransferComponent;
 import com.zy.component.WithdrawComponent;
 import com.zy.entity.fnc.*;
+import com.zy.entity.usr.User;
+import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.*;
 import com.zy.service.*;
+import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +27,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +45,9 @@ public class UcenterAccountController {
 
 	@Autowired
 	private AccountService accountService;
+
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private ProfitService profitService;
@@ -214,7 +223,7 @@ public class UcenterAccountController {
 
 	@RequestMapping(value = "/transfer", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> transfer(Long id, String remark, Principal principal) {
+	public Result<?> transferAjax(Long id, String remark, Principal principal) {
 		Transfer transfer = transferService.findOne(id);
 		if(!transfer.getFromUserId().equals(principal.getUserId())) {
 			throw new UnauthorizedException();
@@ -250,6 +259,33 @@ public class UcenterAccountController {
 		map.put("page", PageBuilder.copyAndConvert(page, withdrawComponent::buildListVo));
 		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
 		return ResultBuilder.result(map);
+	}
+
+	@RequestMapping(value = "/transfer/create", method = RequestMethod.GET)
+	public String transferGet(Principal principal , Model model) {
+		Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.现金);
+		model.addAttribute("amount", account.getAmount());
+		return "ucenter/account/transfer";
+	}
+
+	@RequestMapping(value = "/transfer/create", method = RequestMethod.POST)
+	public String transferPost(Principal principal, @RequestParam String toUserPhone, @RequestParam BigDecimal amount
+			, String remark, RedirectAttributes redirectAttributes) {
+
+		User toUser = userService.findByPhone(toUserPhone);
+		if (toUser == null) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("用户手机号不存在"));
+			return "redirect:/u/account/transfer/create";
+		}
+
+		try {
+			transferService.createAndTransfer(principal.getUserId(), toUser.getId(), amount, remark);
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return "redirect:/u/account/transfer/create";
+		}
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("转账成功"));
+		return "redirect:/u/account/transferOut?status=1";
 	}
 
 	@RequestMapping(value = "/deposit", method = RequestMethod.GET)

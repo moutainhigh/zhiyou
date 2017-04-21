@@ -11,6 +11,12 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.zy.ServiceUtils;
+import com.zy.common.exception.ValidationException;
+import com.zy.entity.fnc.Account;
+import com.zy.entity.usr.User;
+import com.zy.mapper.AccountMapper;
+import com.zy.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -33,6 +39,12 @@ public class TransferServiceImpl implements TransferService {
 
 	@Autowired
 	private TransferMapper transferMapper;
+
+	@Autowired
+	private AccountMapper accountMapper;
+
+	@Autowired
+	private UserMapper userMapper;
 	
 	@Autowired
 	private FncComponent fncComponent;
@@ -63,6 +75,34 @@ public class TransferServiceImpl implements TransferService {
 		Long toUserId = transfer.getToUserId();
 		fncComponent.recordAccountLog(fromUserId, title, currencyType, amount, 支出, transfer, toUserId);
 		fncComponent.recordAccountLog(toUserId, title, currencyType, amount, 收入, transfer, fromUserId);
+	}
+
+	@Override
+	public void createAndTransfer(@NotNull Long fromUserId, @NotNull Long toUserId, @NotNull BigDecimal amount, String remark) {
+
+		User fromUser = userMapper.findOne(fromUserId);
+		validate(fromUser, NOT_NULL, "from user id " + fromUserId + " not found");
+		User toUser = userMapper.findOne(toUserId);
+		validate(toUser, NOT_NULL, "to user id " + toUserId + " not found");
+		if (fromUserId.equals(toUserId)) {
+			throw new ValidationException("转账人与被转账人相同");
+		}
+		if (fromUser.getUserType() != User.UserType.代理 || toUser.getUserType() != User.UserType.代理) {
+			throw new ValidationException("转账人与被转账人必须同是代理");
+		}
+		if (fromUser.getIsFrozen()) {
+			throw new BizException(BizCode.ERROR, "转账账户已被冻结");
+		}
+
+		Account account = accountMapper.findByUserIdAndCurrencyType(fromUserId, CurrencyType.现金);
+		if (account.getAmount().compareTo(amount) < 0) {
+			throw new BizException(BizCode.ERROR, "U币余额不足");
+		}
+
+		Transfer transfer = fncComponent.createTransfer(fromUserId, toUserId, Transfer.TransferType.U币转账, null, "U币转账"
+				, CurrencyType.现金, amount, new Date());
+		transfer(transfer.getId(), remark);
+
 	}
 
 	@Override

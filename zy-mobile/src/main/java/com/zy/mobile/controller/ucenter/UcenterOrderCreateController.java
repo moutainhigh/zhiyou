@@ -7,10 +7,8 @@ import com.zy.component.UserComponent;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.OrderFillUser;
 import com.zy.entity.mal.Product;
-import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
-import com.zy.entity.usr.UserInfo;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.dto.OrderCreateDto;
@@ -48,9 +46,6 @@ public class UcenterOrderCreateController {
 	private UserService userService;
 
 	@Autowired
-	private UserInfoService userInfoService;
-
-	@Autowired
 	private ProductService productService;
 
 	@Autowired
@@ -71,11 +66,6 @@ public class UcenterOrderCreateController {
 		Long userId = principal.getUserId();
 		User user = userService.findOne(userId);
 		User.UserRank userRank = user.getUserRank();
-
-		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
-		if(userInfo != null && userInfo.getConfirmStatus() == ConfirmStatus.已通过) {
-			model.addAttribute("hasUserInfo", true);
-		}
 
 		Address address = addressService.findDefaultByUserId(userId);
 		Product product = productService.findOne(productId);

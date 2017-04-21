@@ -43,6 +43,7 @@ public class Transfer implements Serializable {
 		邮费,
 		平级推荐奖,  //2.0
 		特级推荐奖,  //2.0
+		U币转账,
 	}
 
 	public enum TransferStatus {

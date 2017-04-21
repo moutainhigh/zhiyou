@@ -208,8 +208,8 @@ public class FncComponent {
 		transfer.setCreatedTime(createdTime);
 		transfer.setTitle(title);
 		transfer.setVersion(0);
-		transferMapper.insert(transfer);
 		validate(transfer);
+		transferMapper.insert(transfer);
 		return transfer;
 	}
 

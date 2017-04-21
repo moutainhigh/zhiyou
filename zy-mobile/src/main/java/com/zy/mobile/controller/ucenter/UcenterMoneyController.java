@@ -8,7 +8,9 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.AccountLogComponent;
 import com.zy.component.BankCardComponent;
 import com.zy.entity.fnc.*;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo;
 import com.zy.model.Principal;
 import com.zy.model.query.AccountLogQueryModel;
 import com.zy.model.query.BankCardQueryModel;
@@ -44,6 +46,9 @@ public class UcenterMoneyController {
 	
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private UserInfoService userInfoService;
 	
 	@Autowired
 	private AccountLogService accountLogService;
@@ -82,6 +87,11 @@ public class UcenterMoneyController {
 		String[] phones = new String[]{"13389637222"};
 		if (Arrays.asList(phones).contains(user.getPhone())) {
 			model.addAttribute("moneyWithdraw", true);
+		}
+
+		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
+		if(userInfo != null && userInfo.getConfirmStatus() == ConfirmStatus.已通过) {
+			model.addAttribute("hasUserInfo", true);
 		}
 
 		return "ucenter/account/money";
@@ -124,6 +134,13 @@ public class UcenterMoneyController {
 	
 	@RequestMapping(value = "/withdraw", method = RequestMethod.GET)
 	public String withdraw(@RequestParam CurrencyType currencyType, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+
+		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
+		if(userInfo == null || userInfo.getConfirmStatus() != ConfirmStatus.已通过) {
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成实名认证再提现"));
+			return "redirect:/u/money";
+		}
+
 		BankCardQueryModel bankCardQueryModel = new BankCardQueryModel();
 		bankCardQueryModel.setUserIdEQ(principal.getUserId());
 		bankCardQueryModel.setIsDeletedEQ(false);
@@ -151,6 +168,11 @@ public class UcenterMoneyController {
 	public String withdraw(Principal principal, Model model, BigDecimal amount, @RequestParam CurrencyType currencyType, Long bankCardId, RedirectAttributes redirectAttributes) {
 		if (!config.isWithdrawOn()) {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("提现暂时关闭, 如有疑问请联系平台客服"));
+			return "redirect:/u/money";
+		}
+		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
+		if(userInfo == null || userInfo.getConfirmStatus() != ConfirmStatus.已通过) {
+			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先完成实名认证再提现"));
 			return "redirect:/u/money";
 		}
 		/*
