@@ -71,9 +71,11 @@ public class BankCardServiceImpl implements BankCardService {
 			throw new BizException(BizCode.ERROR, "当前银行不存在");
 		}
 
+		Date now = new Date();
 		bankCard.setId(null);
-		bankCard.setConfirmStatus(ConfirmStatus.待审核);
-		bankCard.setAppliedTime(new Date());
+		bankCard.setConfirmStatus(ConfirmStatus.已通过);
+		bankCard.setAppliedTime(now);
+		bankCard.setConfirmedTime(now);
 		bankCard.setIsDeleted(false);
 		validate(bankCard);
 		bankCardMapper.insert(bankCard);

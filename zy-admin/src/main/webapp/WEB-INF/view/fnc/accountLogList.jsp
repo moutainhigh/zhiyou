@@ -77,7 +77,7 @@
           },
           {
             data: 'afterAmountLabel',
-            title: '交易后(余额)',
+            title: '交易后',
             orderable: false
           },
           {

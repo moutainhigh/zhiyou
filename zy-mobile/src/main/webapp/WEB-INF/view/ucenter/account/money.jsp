@@ -38,7 +38,7 @@
     </c:if>
     <c:if test="${bankCardCount == 0 and currencyType == '积分'}">
     <div class="form-btn">
-      <a href="javascript:;" class="btn disabled btn-block round-2">提现(请先添加银行卡)</a>
+      <a href="${ctx}/u/bankCard" class="btn disabled btn-block round-2">提现(请先添加银行卡)</a>
     </div>
     </c:if>
 
@@ -48,7 +48,7 @@
           <c:if test="${isWithdrawOn}">
             <c:if test="${!hasUserInfo}">
               <nav class="footer footer-nav flex">
-                <a class="flex-2 btn-order" href="${ctx}/u/userInfo">请先完成实名认证再下单</a>
+                <a class="flex-2 btn-order" href="${ctx}/u/userInfo">请先完成实名认证再提现</a>
               </nav>
             </c:if>
             <c:if test="${hasUserInfo}">
