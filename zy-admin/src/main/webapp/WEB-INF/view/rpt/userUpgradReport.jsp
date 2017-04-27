@@ -121,61 +121,61 @@
                         </c:forEach>
                     </tr>
                     <tr>
-                        <td> 特级转化率（本月新增特级/上月一级数量） </td>
+                        <td> 特级转化率（本月新增特级/上月省级数量） </td>
                         <c:forEach items="${data}" varStatus="varStatus">
                         <td> ${data[varStatus.index].v4ConversionRateLabel} </td>
                         </c:forEach>
                     </tr>
                     <tr>
-                        <td> 一级服务商总量 </td>
+                        <td> 省级服务商总量 </td>
                         <c:forEach items="${data}" varStatus="varStatus">
                         <td> ${data[varStatus.index].v3Count} </td>
                         </c:forEach>
                     </tr>
                     <tr>
-                        <td> 当月新增一级</td>
+                        <td> 当月新增省级</td>
                         <c:forEach items="${data}" varStatus="varStatus">
                         <td> ${data[varStatus.index].v3GrowthCount} </td>
                         </c:forEach>
                     </tr>
                     <tr>
-                        <td> 环比增长率（一级） </td>
+                        <td> 环比增长率（省级） </td>
                         <c:forEach items="${data}" varStatus="varStatus">
                         <td> ${data[varStatus.index].v3GrowthRateLabel} </td>
                         </c:forEach>
                     </tr>
                     <tr>
-                        <td> 二级服务商总量 </td>
+                        <td> 市级服务商总量 </td>
                         <c:forEach items="${data}" varStatus="varStatus">
                         <td> ${data[varStatus.index].v2Count} </td>
                         </c:forEach>
                     </tr>
                     <tr>
-                        <td> 当月新增二级 </td>
+                        <td> 当月新增市级 </td>
                         <c:forEach items="${data}" varStatus="varStatus">
                         <td> ${data[varStatus.index].v2GrowthCount} </td>
                         </c:forEach>
                     </tr>
                     <tr>
-                        <td> 环比增长率（二级） </td>
+                        <td> 环比增长率（市级） </td>
                         <c:forEach items="${data}" varStatus="varStatus">
                         <td> ${data[varStatus.index].v2GrowthRateLabel} </td>
                         </c:forEach>
                     </tr>
                     <tr>
-                        <td> 三级服务商总量 </td>
+                        <td> VIP服务商总量 </td>
                         <c:forEach items="${data}" varStatus="varStatus">
                         <td> ${data[varStatus.index].v1Count} </td>
                         </c:forEach>
                     </tr>
                     <tr>
-                        <td> 当月新增三级 </td>
+                        <td> 当月新增VIP服务商 </td>
                         <c:forEach items="${data}" varStatus="varStatus">
                         <td> ${data[varStatus.index].v1GrowthCount} </td>
                         </c:forEach>
                     </tr>
                     <tr>
-                        <td> 环比增长率（三级） </td>
+                        <td> 环比增长率（VIP服务商） </td>
                         <c:forEach items="${data}" varStatus="varStatus">
                         <td> ${data[varStatus.index].v1GrowthRateLabel} </td>
                         </c:forEach>

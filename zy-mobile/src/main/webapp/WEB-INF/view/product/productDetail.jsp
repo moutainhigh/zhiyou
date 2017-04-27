@@ -63,7 +63,7 @@
     $('#btnOrder').click(function() {
       var quantity = $("#quantity").val();
       if(quantity < MIN_QUANTITY || quantity % MIN_QUANTITY != 0) {
-        messageAlert('一级服务商和特级服务商每次购买最小单位' + MIN_QUANTITY + '次');
+        messageAlert('省级服务商和特级服务商每次购买最小单位' + MIN_QUANTITY + '次');
         return;
       }
       $('#form').submit();

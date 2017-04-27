@@ -19,13 +19,13 @@ public class TeamReportVo {
 	@Field(label = "直属特级", order = 30)
 	private String v4UserNickname;
 
-	@Field(label = "一级", order = 40)
+	@Field(label = "省级", order = 40)
 	private Long v1Count;
 
-	@Field(label = "二级", order = 50)
+	@Field(label = "市级", order = 50)
 	private Long v2Count;
 
-	@Field(label = "三级", order = 60)
+	@Field(label = "VIP", order = 60)
 	private Long v3Count;
 
 	@Field(label = "意向服务商", order = 70)

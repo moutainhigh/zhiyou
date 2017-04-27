@@ -208,9 +208,9 @@ public class TeamReportController {
 			columnMap.put("服务商", v.getNickname());
 			columnMap.put("系统", v.getRootRootName());
 			columnMap.put("直属特级", v.getV4UserNickname());
-			columnMap.put("一级", v.getV3Count());
-			columnMap.put("二级", v.getV2Count());
-			columnMap.put("三级", v.getV1Count());
+			columnMap.put("省级", v.getV3Count());
+			columnMap.put("市级", v.getV2Count());
+			columnMap.put("VIP", v.getV1Count());
 			columnMap.put("意向服务商", v.getV0Count());
 			columnMap.put("服务商总数量", v.getV123Count());
 			return columnMap;

@@ -49,9 +49,9 @@
         <i class="list-icon fa fa-map-marker"></i>
         <div class="list-text">服务商等级</div>
         <div class="list-unit">
-          <c:if test="${user.userRank == 'V1'}"><label class="label purple">三级服务商</label></c:if>
-          <c:if test="${user.userRank == 'V2'}"><label class="label blue">二级服务商</label></c:if>
-          <c:if test="${user.userRank == 'V3'}"><label class="label orange">一级服务商</label></c:if>
+          <c:if test="${user.userRank == 'V1'}"><label class="label purple">VIP</label></c:if>
+          <c:if test="${user.userRank == 'V2'}"><label class="label blue">市级服务商</label></c:if>
+          <c:if test="${user.userRank == 'V3'}"><label class="label orange">省级服务商</label></c:if>
           <c:if test="${user.userRank == 'V4'}"><label class="label red">特级服务商</label></c:if>
         </div>
       </div>
@@ -80,9 +80,9 @@
           <div class="font-777 fs-14"><i class="fa fa-phone font-999"></i> ${inviteUser.phone}</div>
         </div>
         <div class="list-unit">
-          <c:if test="${inviteUser.userRank == 'V1'}"><label class="label purple">三级服务商</label></c:if>
-          <c:if test="${inviteUser.userRank == 'V2'}"><label class="label blue">二级服务商</label></c:if>
-          <c:if test="${inviteUser.userRank == 'V3'}"><label class="label orange">一级服务商</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V1'}"><label class="label purple">VIP服务商</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V2'}"><label class="label blue">市级服务商</label></c:if>
+          <c:if test="${inviteUser.userRank == 'V3'}"><label class="label orange">省级服务商</label></c:if>
           <c:if test="${inviteUser.userRank == 'V4'}"><label class="label red">特级服务商</label></c:if>
         </div>
         <i class="list-arrow"></i>

@@ -64,13 +64,13 @@ public class OrderQueryModel implements Serializable {
 
 	private String logisticsSnLK;
 
-	private Boolean isDeletedEQ;
-
-	private Long productIdEQ;
-
 	private String receiverRealnameEQ;
 
 	private String receiverPhoneEQ;
+
+	private Boolean isDeletedEQ;
+
+	private Long productIdEQ;
 
 	private Integer pageNumber;
 

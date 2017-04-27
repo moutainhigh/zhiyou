@@ -40,17 +40,17 @@
           },
           {
             data: 'v3Count',
-            title: '一级',
+            title: '省级',
             orderable: false
           },
           {
             data: 'v2Count',
-            title: '二级',
+            title: '市级',
             orderable: false
           },
           {
             data: 'v1Count',
-            title: '三级',
+            title: 'VIP',
             orderable: false
           },
 

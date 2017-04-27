@@ -89,7 +89,7 @@
           <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
           <div class="list-text">
             <h2 class="font-777 fs-15 lh-24">${productNewd.title}服务商套餐 <span class="quantity">${quantity1New}</span>次</h2>
-            <div class="lh-30"><label class="label red">一级服务商</label></div>
+            <div class="lh-30"><label class="label red">省级服务商</label></div>
             <div class="font-orange lh-24">¥ ${amount1New}</div>
           </div>
         </div>
@@ -118,7 +118,7 @@
           <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
           <div class="list-text">
             <h2 class="font-777 fs-15 lh-24">${productNew.title}服务商套餐 <span class="quantity">${quantity2New}</span>次</h2>
-            <div class="lh-30"><label class="label yellow">二级服务商</label></div>
+            <div class="lh-30"><label class="label yellow">市级服务商</label></div>
             <div class="font-orange lh-24">¥ ${amount2New}</div>
           </div>
         </div>
@@ -131,7 +131,7 @@
           <%--<img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">--%>
           <%--<div class="list-text">--%>
             <%--<h2 class="font-777 fs-15 lh-24">${productOld.title}服务商套餐 <span class="quantity">${quantity2Old}</span>次</h2>--%>
-            <%--<div class="lh-30"><label class="label yellow">二级服务商</label></div>--%>
+            <%--<div class="lh-30"><label class="label yellow">市级服务商</label></div>--%>
             <%--<div class="font-orange lh-24">¥ ${amount2Old}</div>--%>
           <%--</div>--%>
         <%--</div>--%>
@@ -146,7 +146,7 @@
           <img class="image-80 block mr-10" src="${productNew.image1Thumbnail}">
           <div class="list-text">
             <h2 class="font-777 fs-15 lh-24">${productNew.title}服务商套餐 <span class="quantity">${quantity3New}</span>次</h2>
-            <div class="lh-30"><label class="label green">三级服务商</label></div>
+            <div class="lh-30"><label class="label green">VIP服务商</label></div>
             <div class="font-orange lh-24">¥ ${amount3New}</div>
           </div>
         </div>
@@ -158,7 +158,7 @@
           <%--<img class="image-80 block mr-10" src="${productOld.image1Thumbnail}">--%>
           <%--<div class="list-text">--%>
             <%--<h2 class="font-777 fs-15 lh-24">${productOld.title}服务商套餐 <span class="quantity">${quantity3Old}</span>次</h2>--%>
-            <%--<div class="lh-30"><label class="label green">三级服务商</label></div>--%>
+            <%--<div class="lh-30"><label class="label green">市级服务商</label></div>--%>
             <%--<div class="font-orange lh-24">¥ ${amount3Old}</div>--%>
           <%--</div>--%>
         <%--</div>--%>

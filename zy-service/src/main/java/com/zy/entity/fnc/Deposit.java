@@ -36,11 +36,12 @@ import lombok.Setter;
 @Setter
 @QueryModel
 @Type(label = "充值单")
-@ViewObject(groups = {Deposit.VO_ADMIN, Deposit.VO_LIST})
+@ViewObject(groups = {Deposit.VO_ADMIN, Deposit.VO_LIST, Deposit.VO_EXPORT})
 public class Deposit implements Serializable {
 
 	public static final String VO_ADMIN = "DepositAdminVo";
 	public static final String VO_LIST = "DepositListVo";
+	public static final String VO_EXPORT = "DepositExportVo";
 
 	public enum DepositStatus {
 		待充值, 待确认, 充值成功, 已取消
@@ -56,23 +57,28 @@ public class Deposit implements Serializable {
 	@Field(label = "用户id")
 	@View
 	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
+	@View(groups = VO_EXPORT, type = String.class,  name = "userNickname", field = @Field(label = "昵称", order = 5))
+	@View(groups = VO_EXPORT, type = String.class,  name = "userPhone", field = @Field(label = "手机", order = 10))
 	private Long userId;
 
 	@NotBlank
 	@Field(label = "标题")
 	@View
+	@View(groups = VO_EXPORT, field = @Field(label = "标题", order = 15))
 	private String title;
 
 	@Column(length = 60, unique = true)
 	@NotBlank
 	@Field(label = "充值单号")
 	@View
+	@View(groups = VO_EXPORT, field = @Field(label = "充值单号", order = 20))
 	@Query(Predicate.EQ)
 	private String sn;
 
 	@NotNull
 	@Field(label = "充值货币1")
 	@View
+	@View(groups = VO_EXPORT, field = @Field(label = "充值货币1", order = 25))
 	private CurrencyType currencyType1;
 
 	@NotNull
@@ -80,6 +86,7 @@ public class Deposit implements Serializable {
 	@Field(label = "充值货币1金额")
 	@View
 	@View(name = "amount1Label", type = String.class, groups = {VO_LIST, VO_ADMIN})
+	@View(name = "amount1Label", type = String.class, groups = VO_EXPORT, field = @Field(label = "充值货币1金额", order = 30))
 	private BigDecimal amount1;
 
 	@Field(label = "充值货币2")
@@ -120,18 +127,21 @@ public class Deposit implements Serializable {
 	@Query(Predicate.EQ)
 	@Field(label = "支付方式", description = "不能为余额支付")
 	@View
+	@View(groups = VO_EXPORT, field = @Field(label = "支付方式", order = 40))
 	private PayType payType;
 
 	@Query({Predicate.GTE, Predicate.LT})
 	@Field(label = "支付成功时间")
 	@View
 	@View(name = "paidTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
+	@View(name = "paidTimeLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "支付成功时间", order = 45))
 	private Date paidTime;
 
 	@NotNull
 	@Field(label = "创建时间")
 	@View
 	@View(name = "createdTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
+	@View(name = "createdTimeLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "创建时间", order = 50))
 	@Query({Predicate.LT, Predicate.GTE})
 	private Date createdTime;
 
@@ -139,6 +149,7 @@ public class Deposit implements Serializable {
 	@View
 	@Query(Predicate.LT)
 	@NotNull
+	@View(name = "expiredTimeLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "过期时间", order = 55))
 	private Date expiredTime;
 
 	@NotNull
@@ -146,21 +157,25 @@ public class Deposit implements Serializable {
 	@Field(label = "充值单状态")
 	@View
 	@View(name = "depositStatusStyle", type = String.class, groups = {VO_ADMIN})
+	@View(groups = VO_EXPORT, field = @Field(label = "充值单状态", order = 60))
 	private DepositStatus depositStatus;
 
 	@View(groups = VO_ADMIN)
 	@Field(label = "备注")
 	@Column(length = 1000)
+	@View(groups = VO_EXPORT, field = @Field(label = "备注", order = 65))
 	private String remark;
 
 	@Field(label = "银行汇款截图")
 	@View
 	@Column(length = 1000)
 	@CollectionView(name= "offlineImages", type = ArrayList.class, elementType = ImageVo.class)
+	@View(groups = VO_EXPORT, field = @Field(label = "银行汇款截图", order = 70))
 	private String offlineImage;
 	
 	@Field(label = "银行汇款备注")
 	@View
+	@View(groups = VO_EXPORT, field = @Field(label = "银行汇款备注", order = 75))
 	private String offlineMemo;
 	
 	@NotNull
