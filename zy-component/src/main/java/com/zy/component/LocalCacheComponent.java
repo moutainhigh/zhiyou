@@ -47,6 +47,8 @@ public class LocalCacheComponent {
     private List<Withdraw> withdraws = new ArrayList<>();
     
     private List<Profit> profits = new ArrayList<>();
+
+    private List<Transfer> transfers = new ArrayList<>();
     
     private List<Account> accounts = new ArrayList<>();
 
@@ -95,6 +97,9 @@ public class LocalCacheComponent {
 	private UserInfoService userInfoService;
 
 	@Autowired
+	private TransferService transferService;
+
+	@Autowired
 	private UserUpgradeService userUpgradeService;
 
     public List<User> getUsers() {
@@ -128,6 +133,8 @@ public class LocalCacheComponent {
     public List<Profit> getProfits() {
         return profits;
     }
+
+    public List<Transfer> getTransfers() { return transfers; }
     
     public List<Account> getAccounts() {
         return accounts;
@@ -161,6 +168,7 @@ public class LocalCacheComponent {
         List<Deposit> newDeposits = depositService.findAll(DepositQueryModel.builder().depositStatusEQ(DepositStatus.充值成功).build());
         List<Withdraw> newWithdraws = withdrawService.findAll(WithdrawQueryModel.builder().withdrawStatusEQ(WithdrawStatus.提现成功).build());
         List<Profit> newProfits = profitService.findAll(ProfitQueryModel.builder().profitStatusEQ(ProfitStatus.已发放).build());
+        List<Transfer> newTransfer = transferService.findAll(TransferQueryModel.builder().transferTypeEQ(Transfer.TransferType.U币转账).transferStatusEQ(Transfer.TransferStatus.已转账).build());
         List<Account> newAccounts = accountService.findAll(AccountQueryModel.builder().build());
         Map<Long, OrderItem> newOrderItemMap = orderItemService.findAll().stream().collect(Collectors.toMap(v -> v.getOrderId(), v -> v));
 	    Map<Long, User> newUserMap = newUsers.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
@@ -175,6 +183,7 @@ public class LocalCacheComponent {
         deposits = newDeposits;
         withdraws = newWithdraws;
         profits = newProfits;
+        transfers = newTransfer;
         accounts = newAccounts;
         orderItemMap = newOrderItemMap;
 	    userMap = newUserMap;

@@ -71,7 +71,7 @@
         if(data != null) {
           $('#totalPaymentAmount').text(data.totalPaymentAmount);
           $('#totalDepositAmount').text(data.totalDepositAmount);
-          $('#totalWithdrawAmount').text(data.totalWithdrawAmount);
+          $('#totalTransferAmount').text(data.totalTransferAmount);
           $('#totalProfitAmount').text(data.totalProfitAmount);
           $('#totalAccountAmount').text(data.totalAccountAmount);
         }
@@ -154,8 +154,8 @@
             orderable: false
           },
           {
-            data: 'withdrawAmount',
-            title: 'U币提现',
+            data: 'transferAmount',
+            title: 'U币赠送',
             orderable: false
           },
           {
@@ -164,13 +164,13 @@
             orderable: false
           },
           {
-            data: 'profitAmount',
-            title: 'U币收益',
+            data: 'accountAmount',
+            title: 'U币余额',
             orderable: false
           },
           {
-            data: 'accountAmount',
-            title: 'U币余额',
+            data: 'profitPointAmount',
+            title: '积分收益',
             orderable: false
           },
 	        {
@@ -178,14 +178,14 @@
 		        title: '积分提现',
 		        orderable: false
 	        },
+          {
+            data: 'differencePointAmount',
+            title: '差价收益',
+            orderable: false
+          },
 	        {
 		        data: 'paymentPointAmount',
 		        title: '积分支付',
-		        orderable: false
-	        },
-	        {
-		        data: 'profitPointAmount',
-		        title: '积分收益',
 		        orderable: false
 	        },
 	        {
@@ -245,20 +245,20 @@
           </div>
           <div class="col-md-2">
               <div class="note note-success">
-                  <h4 class="block">提现总U币</h4>
-                  <p id="totalWithdrawAmount">0.00</p>
+                  <h4 class="block">赠送总U币</h4>
+                  <p id="totalTransferAmount">0.00</p>
               </div>
           </div>
+        <div class="col-md-2">
+          <div class="note note-success">
+            <h4 class="block">收益总U币</h4>
+            <p id="totalProfitAmount">0.00</p>
+          </div>
+        </div>
           <div class="col-md-2">
               <div class="note note-danger">
                   <h4 class="block">支付总U币</h4>
                   <p id="totalPaymentAmount">0.00</p>
-              </div>
-          </div>
-          <div class="col-md-2">
-              <div class="note note-success">
-                  <h4 class="block">收益总U币</h4>
-                  <p id="totalProfitAmount">0.00</p>
               </div>
           </div>
           <div class="col-md-2">

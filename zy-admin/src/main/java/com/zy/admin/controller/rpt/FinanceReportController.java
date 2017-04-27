@@ -35,10 +35,10 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/report/finance")
 public class FinanceReportController {
-	
+
 	@Autowired
 	private LocalCacheComponent localCacheComponent;
-	
+
 	@Autowired
 	private ProfitComponent profitComponent;
 
@@ -48,12 +48,12 @@ public class FinanceReportController {
 		model.addAttribute("userRankMap", Arrays.asList(User.UserRank.values()).stream().collect(Collectors.toMap(v->v, v-> GcUtils.getUserRankLabel(v),(u, v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new)) );
 		return "rpt/financeReport";
 	}
-	
+
 	@RequiresPermissions("financeReport:view")
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public Grid<FinanceReportVo> list(FinanceReportVo.FinanceReportVoQueryModel financeReportVoQueryModel) {
-		
+
 		List<User> date = new ArrayList<User>();
 		List<User> users = localCacheComponent.getUsers();
 		List<User> filterUser = users.stream().filter(user -> {
@@ -61,7 +61,7 @@ public class FinanceReportController {
 			String nicknameLK = financeReportVoQueryModel.getNicknameLK();
 			String phoneEQ = financeReportVoQueryModel.getPhoneEQ();
 			UserRank userRankEQ = financeReportVoQueryModel.getUserRankEQ();
-			
+
 			if (!StringUtils.isBlank(nicknameLK)) {
 				result = result && StringUtils.contains(user.getNickname(), nicknameLK);
 			}
@@ -78,21 +78,21 @@ public class FinanceReportController {
 			return new Grid<>(PageBuilder.empty(financeReportVoQueryModel.getPageSize(), 0));
 		}
 		Map<Long, Boolean> userIdMap = userIds.stream().collect(Collectors.toMap(v -> v, v -> true));
-		
+
 		List<Payment> payments = localCacheComponent.getPayments();
 		List<Deposit> deposits = localCacheComponent.getDeposits();
 		List<Withdraw> withdraws = localCacheComponent.getWithdraws();
 		List<Profit> profits = localCacheComponent.getProfits();
-		List<Account> accounts = localCacheComponent.getAccounts();
-		
+		List<Transfer> transfers = localCacheComponent.getTransfers();
+
 		List<Payment> filterPayments = payments.stream()
 			.filter(payment -> {
-				
+
 			boolean result = userIdMap.get(payment.getUserId()) != null;
-			
+
 			Date paymentPaidTimeGTE = financeReportVoQueryModel.getTimeGTE();
 			Date paymentPaidTimeLT = financeReportVoQueryModel.getTimeLT();
-			
+
 			if (paymentPaidTimeGTE != null) {
 				result = result && (payment.getPaidTime().after(paymentPaidTimeGTE) || payment.equals(paymentPaidTimeGTE));
 			}
@@ -101,15 +101,15 @@ public class FinanceReportController {
 			}
 			return result;
 		}).collect(Collectors.toList());
-		
+
 		List<Deposit> filterDeposits = deposits.stream()
 			.filter(deposit -> {
-				
+
 			boolean result = userIdMap.get(deposit.getUserId()) != null;
-			
+
 			Date depositPaidTimeGTE = financeReportVoQueryModel.getTimeGTE();
 			Date depositPaidTimeLT = financeReportVoQueryModel.getTimeLT();
-			
+
 			Date paidTime = deposit.getPaidTime();
 			if (depositPaidTimeGTE != null) {
 				result = result && (paidTime.after(depositPaidTimeGTE) || depositPaidTimeGTE.equals(paidTime));
@@ -119,15 +119,15 @@ public class FinanceReportController {
 			}
 			return result;
 		}).collect(Collectors.toList());
-		
+
 		List<Withdraw> filterWithdraws = withdraws.stream()
 			.filter(withdraw -> {
-				
+
 			boolean result = userIdMap.get(withdraw.getUserId()) != null;
-			
+
 			Date withdrawWithdrawedTimeGTE = financeReportVoQueryModel.getTimeGTE();
 			Date withdrawWithdrawedTimeLT = financeReportVoQueryModel.getTimeLT();
-			
+
 			Date withdrawedTime = withdraw.getWithdrawedTime();
 			if (withdrawWithdrawedTimeGTE != null) {
 				result = result && (withdrawedTime.after(withdrawWithdrawedTimeGTE) || withdrawWithdrawedTimeGTE.equals(withdrawedTime));
@@ -137,15 +137,15 @@ public class FinanceReportController {
 			}
 			return result;
 		}).collect(Collectors.toList());
-		
+
 		List<Profit> filterProfits = profits.stream()
 			.filter(profit -> {
-				
+
 			boolean result = userIdMap.get(profit.getUserId()) != null;
-			
+
 			Date profitGrantedTimeGTE = financeReportVoQueryModel.getTimeGTE();
 			Date profitGrantedTimeLT = financeReportVoQueryModel.getTimeLT();
-			
+
 			Date grantedTime = profit.getGrantedTime();
 			if (profitGrantedTimeGTE != null) {
 				result = result && (grantedTime.after(profitGrantedTimeGTE) || profitGrantedTimeGTE.equals(grantedTime));
@@ -155,12 +155,25 @@ public class FinanceReportController {
 			}
 			return result;
 		}).collect(Collectors.toList());
-		
-		List<Account> filterAccounts = accounts.stream()
-			.filter(account -> {
-			return userIdMap.get(account.getUserId()) != null;
-		}).collect(Collectors.toList());
-		
+
+		List<Transfer> filterTransfers = transfers.stream()
+				.filter(transfer -> {
+
+					boolean result = userIdMap.get(transfer.getToUserId()) != null;
+
+					Date transferredTimeGTE = financeReportVoQueryModel.getTimeGTE();
+					Date transferredTimeLT = financeReportVoQueryModel.getTimeLT();
+
+					Date transferredTime = transfer.getTransferredTime();
+					if (transferredTimeGTE != null) {
+						result = result && (transferredTime.after(transferredTimeGTE) || transferredTimeGTE.equals(transferredTime));
+					}
+					if (transferredTimeLT != null) {
+						result = result && transferredTime.before(transferredTimeLT);
+					}
+					return result;
+				}).collect(Collectors.toList());
+
 		int totalCount = filterUser.size();
 		Integer pageSize = financeReportVoQueryModel.getPageSize();
 		Integer pageNumber = financeReportVoQueryModel.getPageNumber();
@@ -179,7 +192,7 @@ public class FinanceReportController {
 				date.add(filterUser.get(index));
 			}
 		}
-		
+
 		BigDecimal zero = new BigDecimal("0.00");
 		Map<Long, FinanceReportVo> userFinanceReportMap = date.stream().collect(Collectors.toMap(v -> v.getId(), v -> {
 			FinanceReportVo financeReportVo = new FinanceReportVo();
@@ -188,8 +201,8 @@ public class FinanceReportController {
 			financeReportVo.setUserPhone(v.getPhone());
 			financeReportVo.setPaymentAmount(zero);
 			financeReportVo.setDepositAmount(zero);
-			financeReportVo.setWithdrawAmount(zero);
-			financeReportVo.setProfitAmount(zero);
+			financeReportVo.setTransferAmount(zero);
+			financeReportVo.setDifferencePointAmount(zero);
 			financeReportVo.setAccountAmount(zero);
 			financeReportVo.setAccountPointAmount(zero);
 			financeReportVo.setPaymentPointAmount(zero);
@@ -197,7 +210,7 @@ public class FinanceReportController {
 			financeReportVo.setWithdrawPointAmount(zero);
 			return financeReportVo;
 		}));
-		
+
 		for(Payment payment : filterPayments) {
 			Long userId = payment.getUserId();
 			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
@@ -215,7 +228,7 @@ public class FinanceReportController {
 				userFinanceReportMap.put(userId, financeReportVo);
 			}
 		}
-		
+
 		for(Deposit deposit : filterDeposits) {
 			Long userId = deposit.getUserId();
 			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
@@ -226,7 +239,7 @@ public class FinanceReportController {
 				}
 				amount = amount.add(deposit.getAmount1());
 				financeReportVo.setDepositAmount(amount);
-				
+
 				userFinanceReportMap.put(userId, financeReportVo);
 			}
 		}
@@ -239,10 +252,11 @@ public class FinanceReportController {
 				CurrencyType currencyType = withdraw.getCurrencyType();
 				BigDecimal withdrawAmount = withdraw.getAmount();
 
-				if (currencyType == CurrencyType.现金) {
-					BigDecimal amount = financeReportVo.getWithdrawAmount() == null? zero : financeReportVo.getWithdrawAmount();
-					financeReportVo.setWithdrawAmount(amount.add(withdrawAmount));
-				} else if (currencyType == CurrencyType.积分) {
+//				if (currencyType == CurrencyType.现金) {
+//					BigDecimal amount = financeReportVo.getWithdrawAmount() == null? zero : financeReportVo.getWithdrawAmount();
+//					financeReportVo.setWithdrawAmount(amount.add(withdrawAmount));
+//				} else
+				if (currencyType == CurrencyType.积分) {
 					BigDecimal amount = financeReportVo.getWithdrawPointAmount() == null? zero : financeReportVo.getWithdrawPointAmount();
 					financeReportVo.setWithdrawPointAmount(amount.add(withdrawAmount));
 				}
@@ -250,7 +264,7 @@ public class FinanceReportController {
 				userFinanceReportMap.put(userId, financeReportVo);
 			}
 		}
-		
+
 		for (Profit profit : filterProfits) {
 			Long userId = profit.getUserId();
 			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
@@ -259,44 +273,34 @@ public class FinanceReportController {
 				CurrencyType currencyType = profit.getCurrencyType();
 				BigDecimal profitAmount = profit.getAmount();
 
-				if (currencyType == CurrencyType.现金) {
-					BigDecimal amount = financeReportVo.getProfitAmount() == null? zero : financeReportVo.getProfitAmount();
-					financeReportVo.setProfitAmount(amount.add(profitAmount));
-				} else if (currencyType == CurrencyType.积分) {
-					BigDecimal amount = financeReportVo.getProfitPointAmount() == null? zero : financeReportVo.getProfitPointAmount();
-					financeReportVo.setProfitPointAmount(amount.add(profitAmount));
+//				if (currencyType == CurrencyType.现金) {
+//					BigDecimal amount = financeReportVo.getProfitAmount() == null? zero : financeReportVo.getProfitAmount();
+//					financeReportVo.setProfitAmount(amount.add(profitAmount));
+				//} else
+				if (currencyType == CurrencyType.积分) {
+					if (profit.getProfitType() == Profit.ProfitType.订单收款) {
+						BigDecimal amount = financeReportVo.getDifferencePointAmount() == null? zero : financeReportVo.getDifferencePointAmount();
+						financeReportVo.setDifferencePointAmount(amount.add(profitAmount));
+					} else {
+						BigDecimal amount = financeReportVo.getProfitPointAmount() == null? zero : financeReportVo.getProfitPointAmount();
+						financeReportVo.setProfitPointAmount(amount.add(profitAmount));
+					}
 				}
-				
+
 				userFinanceReportMap.put(userId, financeReportVo);
 			}
 		}
 
-		for (Account account : filterAccounts) {
-			Long userId = account.getUserId();
-			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
-			if (financeReportVo != null) {
-
-				CurrencyType currencyType = account.getCurrencyType();
-				BigDecimal profitAmount = account.getAmount();
-
-				if (currencyType == CurrencyType.现金) {
-					BigDecimal amount = financeReportVo.getAccountAmount() == null? zero : financeReportVo.getAccountAmount();
-					financeReportVo.setProfitAmount(amount.add(profitAmount));
-				} else if (currencyType == CurrencyType.积分) {
-					BigDecimal amount = financeReportVo.getAccountPointAmount() == null? zero : financeReportVo.getAccountPointAmount();
-					financeReportVo.setProfitPointAmount(amount.add(profitAmount));
-				}
-				
-				userFinanceReportMap.put(userId, financeReportVo);
-			}
-		}
-		
 		List<FinanceReportVo> financeReportVos = new ArrayList<>(userFinanceReportMap.values());
-		
+
 		Page<FinanceReportVo> page = new Page<>();
 		page.setPageNumber(pageNumber);
 		page.setPageSize(pageSize);
-		page.setData(financeReportVos);
+		page.setData(financeReportVos.stream().map(v -> {
+			v.setAccountAmount((v.getDepositAmount().add(v.getTransferAmount())).subtract(v.getPaymentAmount()));
+			v.setAccountPointAmount(v.getProfitPointAmount().subtract(v.getWithdrawPointAmount()).subtract(v.getPaymentPointAmount()));
+			return v;
+		}).collect(Collectors.toList()));
 		page.setTotal(Long.valueOf(filterUser.size()));
 		return new Grid<>(page);
 	}
@@ -338,7 +342,7 @@ public class FinanceReportController {
 		List<Deposit> deposits = localCacheComponent.getDeposits();
 		List<Withdraw> withdraws = localCacheComponent.getWithdraws();
 		List<Profit> profits = localCacheComponent.getProfits();
-		List<Account> accounts = localCacheComponent.getAccounts();
+		List<Transfer> transfers = localCacheComponent.getTransfers();
 
 		List<Payment> filterPayments = payments.stream()
 				.filter(payment -> {
@@ -411,9 +415,22 @@ public class FinanceReportController {
 					return result;
 				}).collect(Collectors.toList());
 
-		List<Account> filterAccounts = accounts.stream()
-				.filter(account -> {
-					return userIdMap.get(account.getUserId()) != null;
+		List<Transfer> filterTransfers = transfers.stream()
+				.filter(transfer -> {
+
+					boolean result = userIdMap.get(transfer.getToUserId()) != null;
+
+					Date transferredTimeGTE = financeReportVoQueryModel.getTimeGTE();
+					Date transferredTimeLT = financeReportVoQueryModel.getTimeLT();
+
+					Date transferredTime = transfer.getTransferredTime();
+					if (transferredTimeGTE != null) {
+						result = result && (transferredTime.after(transferredTimeGTE) || transferredTimeGTE.equals(transferredTime));
+					}
+					if (transferredTimeLT != null) {
+						result = result && transferredTime.before(transferredTimeLT);
+					}
+					return result;
 				}).collect(Collectors.toList());
 
 		BigDecimal zero = new BigDecimal("0.00");
@@ -424,9 +441,13 @@ public class FinanceReportController {
 			financeReportVo.setUserPhone(v.getPhone());
 			financeReportVo.setPaymentAmount(zero);
 			financeReportVo.setDepositAmount(zero);
-			financeReportVo.setWithdrawAmount(zero);
-			financeReportVo.setProfitAmount(zero);
+			financeReportVo.setTransferAmount(zero);
+			financeReportVo.setDifferencePointAmount(zero);
 			financeReportVo.setAccountAmount(zero);
+			financeReportVo.setAccountPointAmount(zero);
+			financeReportVo.setPaymentPointAmount(zero);
+			financeReportVo.setProfitPointAmount(zero);
+			financeReportVo.setWithdrawPointAmount(zero);
 			return financeReportVo;
 		}));
 
@@ -434,13 +455,16 @@ public class FinanceReportController {
 			Long userId = payment.getUserId();
 			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
 			if(financeReportVo != null) {
-				BigDecimal amount = financeReportVo.getPaymentAmount();
-				if(amount == null) {
-					amount = new BigDecimal("0.00");
+				{
+					BigDecimal amount = financeReportVo.getPaymentAmount() == null? zero : financeReportVo.getPaymentAmount();
+					BigDecimal amount1 = payment.getAmount1() == null? zero : payment.getAmount1();
+					financeReportVo.setPaymentAmount(amount.add(amount1));
 				}
-				amount = amount.add(payment.getAmount1());
-				financeReportVo.setPaymentAmount(amount);
-
+				{
+					BigDecimal amount = financeReportVo.getPaymentPointAmount() == null? zero : financeReportVo.getPaymentPointAmount();
+					BigDecimal amount2 = payment.getAmount2() == null? zero : payment.getAmount2();
+					financeReportVo.setPaymentPointAmount(amount.add(amount2));
+				}
 				userFinanceReportMap.put(userId, financeReportVo);
 			}
 		}
@@ -460,63 +484,84 @@ public class FinanceReportController {
 			}
 		}
 
-		for(Withdraw withdraw : filterWithdraws) {
+		for (Withdraw withdraw : filterWithdraws) {
 			Long userId = withdraw.getUserId();
 			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
-			if(financeReportVo != null) {
-				BigDecimal amount = financeReportVo.getWithdrawAmount();
-				if(amount == null) {
-					amount = new BigDecimal("0.00");
+			if (financeReportVo != null) {
+
+				CurrencyType currencyType = withdraw.getCurrencyType();
+				BigDecimal withdrawAmount = withdraw.getAmount();
+
+//				if (currencyType == CurrencyType.现金) {
+//					BigDecimal amount = financeReportVo.getWithdrawAmount() == null? zero : financeReportVo.getWithdrawAmount();
+//					financeReportVo.setWithdrawAmount(amount.add(withdrawAmount));
+//				} else
+				if (currencyType == CurrencyType.积分) {
+					BigDecimal amount = financeReportVo.getWithdrawPointAmount() == null? zero : financeReportVo.getWithdrawPointAmount();
+					financeReportVo.setWithdrawPointAmount(amount.add(withdrawAmount));
 				}
-				amount = amount.add(withdraw.getAmount());
-				financeReportVo.setWithdrawAmount(amount);
 
 				userFinanceReportMap.put(userId, financeReportVo);
 			}
 		}
 
-		for(Profit profit : filterProfits) {
+		for (Profit profit : filterProfits) {
 			Long userId = profit.getUserId();
 			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
-			if(financeReportVo != null) {
-				BigDecimal amount = financeReportVo.getProfitAmount();
-				if(amount == null) {
-					amount = new BigDecimal("0.00");
+			if (financeReportVo != null) {
+
+				CurrencyType currencyType = profit.getCurrencyType();
+				BigDecimal profitAmount = profit.getAmount();
+
+//				if (currencyType == CurrencyType.现金) {
+//					BigDecimal amount = financeReportVo.getProfitAmount() == null? zero : financeReportVo.getProfitAmount();
+//					financeReportVo.setProfitAmount(amount.add(profitAmount));
+				//} else
+				if (currencyType == CurrencyType.积分) {
+					if (profit.getProfitType() == Profit.ProfitType.订单收款) {
+						BigDecimal amount = financeReportVo.getDifferencePointAmount() == null? zero : financeReportVo.getDifferencePointAmount();
+						financeReportVo.setDifferencePointAmount(amount.add(profitAmount));
+					} else {
+						BigDecimal amount = financeReportVo.getProfitPointAmount() == null? zero : financeReportVo.getProfitPointAmount();
+						financeReportVo.setProfitPointAmount(amount.add(profitAmount));
+					}
 				}
-				amount = amount.add(profit.getAmount());
-				financeReportVo.setProfitAmount(amount);
 
 				userFinanceReportMap.put(userId, financeReportVo);
 			}
 		}
 
-		for(Account account : filterAccounts) {
-			Long userId = account.getUserId();
+		for (Transfer transfer : filterTransfers) {
+			Long userId = transfer.getToUserId();
 			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
-			if(financeReportVo != null) {
-				BigDecimal amount = financeReportVo.getAccountAmount();
-				if(amount == null) {
-					amount = new BigDecimal("0.00");
-				}
-				amount = amount.add(account.getAmount());
-				financeReportVo.setAccountAmount(amount);
+			if (financeReportVo != null) {
+
+				BigDecimal amount = transfer.getAmount();
+				BigDecimal transferAmount = financeReportVo.getTransferAmount();
+				financeReportVo.setTransferAmount(amount.add(transferAmount));
 
 				userFinanceReportMap.put(userId, financeReportVo);
 			}
 		}
 
 		List<FinanceReportVo> financeReportVos = new ArrayList<>(userFinanceReportMap.values());
+		financeReportVos = financeReportVos.stream().map(v -> {
+			v.setAccountAmount((v.getDepositAmount().add(v.getTransferAmount())).subtract(v.getPaymentAmount()));
+			v.setAccountPointAmount(v.getProfitPointAmount().subtract(v.getWithdrawPointAmount()).subtract(v.getPaymentPointAmount()));
+			return v;
+		}).collect(Collectors.toList());
 		String fileName = "财务报表.xlsx";
 		WebUtils.setFileDownloadHeader(response, fileName);
 		OutputStream os = response.getOutputStream();
 		ExcelUtils.exportExcel(financeReportVos, FinanceReportVo.class, os);
 		return null;
+
 	}
 
 	@RequestMapping(value = "/sum", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<?> sum(FinanceReportVo.FinanceReportVoQueryModel financeReportVoQueryModel) {
-		
+
 		List<User> users = localCacheComponent.getUsers();
 		List<User> filterUser = users.stream().filter(user -> {
 			boolean result = true;
@@ -541,21 +586,22 @@ public class FinanceReportController {
 			return ResultBuilder.result(null);
 		}
 		Map<Long, Boolean> userIdMap = userIds.stream().collect(Collectors.toMap(v -> v, v -> true));
-		
+
 		List<Payment> payments = localCacheComponent.getPayments();
 		List<Deposit> deposits = localCacheComponent.getDeposits();
 		List<Withdraw> withdraws = localCacheComponent.getWithdraws();
 		List<Profit> profits = localCacheComponent.getProfits();
+		List<Transfer> transfers = localCacheComponent.getTransfers();
 		List<Account> accounts = localCacheComponent.getAccounts();
-		
+
 		List<Payment> filterPayments = payments.stream()
 			.filter(payment -> {
-				
+
 			boolean result = userIdMap.get(payment.getUserId()) != null;
-			
+
 			Date paymentPaidTimeGTE = financeReportVoQueryModel.getTimeGTE();
 			Date paymentPaidTimeLT = financeReportVoQueryModel.getTimeLT();
-			
+
 			if (paymentPaidTimeGTE != null) {
 				result = result && (payment.getPaidTime().after(paymentPaidTimeGTE) || payment.equals(paymentPaidTimeGTE));
 			}
@@ -564,15 +610,15 @@ public class FinanceReportController {
 			}
 			return result;
 		}).collect(Collectors.toList());
-		
+
 		List<Deposit> filterDeposits = deposits.stream()
 			.filter(deposit -> {
-				
+
 			boolean result = userIdMap.get(deposit.getUserId()) != null;
-			
+
 			Date depositPaidTimeGTE = financeReportVoQueryModel.getTimeGTE();
 			Date depositPaidTimeLT = financeReportVoQueryModel.getTimeLT();
-			
+
 			Date paidTime = deposit.getPaidTime();
 			if (depositPaidTimeGTE != null) {
 				result = result && (paidTime.after(depositPaidTimeGTE) || depositPaidTimeGTE.equals(paidTime));
@@ -582,15 +628,15 @@ public class FinanceReportController {
 			}
 			return result;
 		}).collect(Collectors.toList());
-		
+
 		List<Withdraw> filterWithdraws = withdraws.stream()
 			.filter(withdraw -> {
-				
+
 			boolean result = userIdMap.get(withdraw.getUserId()) != null;
-			
+
 			Date withdrawWithdrawedTimeGTE = financeReportVoQueryModel.getTimeGTE();
 			Date withdrawWithdrawedTimeLT = financeReportVoQueryModel.getTimeLT();
-			
+
 			Date withdrawedTime = withdraw.getWithdrawedTime();
 			if (withdrawWithdrawedTimeGTE != null) {
 				result = result && (withdrawedTime.after(withdrawWithdrawedTimeGTE) || withdrawWithdrawedTimeGTE.equals(withdrawedTime));
@@ -600,15 +646,15 @@ public class FinanceReportController {
 			}
 			return result;
 		}).collect(Collectors.toList());
-		
+
 		List<Profit> filterProfits = profits.stream()
 			.filter(profit -> {
-				
+
 			boolean result = userIdMap.get(profit.getUserId()) != null;
-			
+
 			Date profitGrantedTimeGTE = financeReportVoQueryModel.getTimeGTE();
 			Date profitGrantedTimeLT = financeReportVoQueryModel.getTimeLT();
-			
+
 			Date grantedTime = profit.getGrantedTime();
 			if (profitGrantedTimeGTE != null) {
 				result = result && (grantedTime.after(profitGrantedTimeGTE) || profitGrantedTimeGTE.equals(grantedTime));
@@ -618,17 +664,36 @@ public class FinanceReportController {
 			}
 			return result;
 		}).collect(Collectors.toList());
-		
+
+		List<Transfer> filterTransfers = transfers.stream()
+				.filter(transfer -> {
+
+					boolean result = userIdMap.get(transfer.getToUserId()) != null;
+
+					Date transferredTimeGTE = financeReportVoQueryModel.getTimeGTE();
+					Date transferredTimeLT = financeReportVoQueryModel.getTimeLT();
+
+					Date transferredTime = transfer.getTransferredTime();
+					if (transferredTimeGTE != null) {
+						result = result && (transferredTime.after(transferredTimeGTE) || transferredTimeGTE.equals(transferredTime));
+					}
+					if (transferredTimeLT != null) {
+						result = result && transferredTime.before(transferredTimeLT);
+					}
+					return result;
+				}).collect(Collectors.toList());
+
 		List<Account> filterAccounts = accounts.stream()
-			.filter(account -> {
-			return userIdMap.get(account.getUserId()) != null;
+				.filter(account -> account.getCurrencyType() == CurrencyType.现金)
+				.filter(account -> {
+				return userIdMap.get(account.getUserId()) != null;
 		}).collect(Collectors.toList());
-		
+
 		BigDecimal zero = new BigDecimal("0.00");
 		Map<Long, Boolean> userMap = filterUser.stream().collect(Collectors.toMap(v -> v.getId(), v -> true));
 		BigDecimal totalPaymentAmount = zero;
 		BigDecimal totalDepositAmount = zero;
-		BigDecimal totalWithdrawAmount = zero;
+		BigDecimal totalTransferAmount = zero;
 		BigDecimal totalProfitAmount = zero;
 		BigDecimal totalAccountAmount = zero;
 
@@ -639,7 +704,7 @@ public class FinanceReportController {
 				totalPaymentAmount = totalPaymentAmount.add(payment.getAmount1());
 			}
 		}
-		
+
 		for(Deposit deposit : filterDeposits) {
 			Long userId = deposit.getUserId();
 			Boolean status = userMap.get(userId);
@@ -648,15 +713,15 @@ public class FinanceReportController {
 			}
 		}
 
-		for(Withdraw withdraw : filterWithdraws) {
-			Long userId = withdraw.getUserId();
+		for(Transfer transfer : filterTransfers) {
+			Long userId = transfer.getToUserId();
 			Boolean status = userMap.get(userId);
 			if(status != null) {
-				totalWithdrawAmount = totalWithdrawAmount.add(withdraw.getAmount());
+				totalTransferAmount = totalTransferAmount.add(transfer.getAmount());
 			}
 		}
-		
-		for(Profit profit : filterProfits) {
+
+		for (Profit profit : filterProfits) {
 			Long userId = profit.getUserId();
 			Boolean status = userMap.get(userId);
 			if(status != null) {
@@ -671,26 +736,26 @@ public class FinanceReportController {
 				totalAccountAmount = totalAccountAmount.add(account.getAmount());
 			}
 		}
-		
+
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("totalPaymentAmount", totalPaymentAmount);
 		resultMap.put("totalDepositAmount", totalDepositAmount);
-		resultMap.put("totalWithdrawAmount", totalWithdrawAmount);
+		resultMap.put("totalTransferAmount", totalTransferAmount);
 		resultMap.put("totalProfitAmount", totalProfitAmount);
 		resultMap.put("totalAccountAmount", totalAccountAmount);
 		return ResultBuilder.result(resultMap);
 	}
-	
+
 	@RequiresPermissions("financeReport:view")
 	@RequestMapping(value = "/profit", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<Object, Object> listAjax(@RequestParam Long userId, Date timeGTE, Date timeLT) {
-		
+
 		List<Profit> profits = localCacheComponent.getProfits();
 		List<Profit> filterProfits = profits.stream().filter(profit -> {
 			boolean result = profit.getUserId().equals(userId);
 			Date grantedTime = profit.getGrantedTime();
-			
+
 			if (timeGTE != null) {
 				result = result && (grantedTime.after(timeGTE) || timeGTE.equals(grantedTime));
 			}
@@ -699,7 +764,7 @@ public class FinanceReportController {
 			}
 			return result;
 		}).collect(Collectors.toList());
-		
+
 		BigDecimal zero = new BigDecimal("0.00");
 		BigDecimal tjpjj = zero;
 		BigDecimal xlj = zero;
@@ -727,7 +792,7 @@ public class FinanceReportController {
 				break;
 			}
 		}
-		
+
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		map.put("tjpjj", tjpjj);
 		map.put("xlj", xlj);
