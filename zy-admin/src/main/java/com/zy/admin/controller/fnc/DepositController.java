@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.zy.vo.DepositExportVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -99,13 +100,15 @@ public class DepositController {
 
 
 		fillQueryModel(depositQueryModel, phoneEQ, nicknameLK);
+		depositQueryModel.setPageNumber(null);
+		depositQueryModel.setPageSize(null);
 		List<Deposit> deposits = depositService.findAll(depositQueryModel);
 		String fileName = "充值数据.xlsx";
 		WebUtils.setFileDownloadHeader(response, fileName);
 
-		List<DepositAdminVo> depositAdminVos = deposits.stream().map(depositComponent::buildAdminVo).collect(Collectors.toList());
+		List<DepositExportVo> depositExportVos = deposits.stream().map(depositComponent::buildExportVo).collect(Collectors.toList());
 		OutputStream os = response.getOutputStream();
-		ExcelUtils.exportExcel(depositAdminVos, DepositAdminVo.class, os);
+		ExcelUtils.exportExcel(depositExportVos, DepositExportVo.class, os);
 		return null;
 	}
 

@@ -49,13 +49,13 @@ public class Deposit implements Serializable {
 
 	@Id
 	@Field(label = "id")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private Long id;
 
 	@NotNull
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "用户id")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	@View(groups = VO_EXPORT, type = String.class,  name = "userNickname", field = @Field(label = "昵称", order = 5))
 	@View(groups = VO_EXPORT, type = String.class,  name = "userPhone", field = @Field(label = "手机", order = 10))
@@ -63,90 +63,90 @@ public class Deposit implements Serializable {
 
 	@NotBlank
 	@Field(label = "标题")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@View(groups = VO_EXPORT, field = @Field(label = "标题", order = 15))
 	private String title;
 
 	@Column(length = 60, unique = true)
 	@NotBlank
 	@Field(label = "充值单号")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@View(groups = VO_EXPORT, field = @Field(label = "充值单号", order = 20))
 	@Query(Predicate.EQ)
 	private String sn;
 
 	@NotNull
 	@Field(label = "充值货币1")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@View(groups = VO_EXPORT, field = @Field(label = "充值货币1", order = 25))
 	private CurrencyType currencyType1;
 
 	@NotNull
 	@DecimalMin("0.01")
 	@Field(label = "充值货币1金额")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@View(name = "amount1Label", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	@View(name = "amount1Label", type = String.class, groups = VO_EXPORT, field = @Field(label = "充值货币1金额", order = 30))
 	private BigDecimal amount1;
 
 	@Field(label = "充值货币2")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private CurrencyType currencyType2;
 
 	@DecimalMin("0.01")
 	@Field(label = "充值货币2金额")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@View(name = "amount2Label", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal amount2;
 
 	@NotNull
 	@DecimalMin("0.01")
 	@Field(label = "充值总金额")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@View(name = "totalAmountLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal totalAmount;
 
 	@NotNull
 	@Field(label = "外部单据是否已经创建")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private Boolean isOuterCreated;
 
 	@Field(label = "外部sn")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private String outerSn;
 
 	@Field(label = "二维码")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private String qrCodeUrl;
 
 	@Field(label = "微信openid", description = "微信支付专用")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	private String weixinOpenId;
 
 	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "支付方式", description = "不能为余额支付")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@View(groups = VO_EXPORT, field = @Field(label = "支付方式", order = 40))
 	private PayType payType;
 
 	@Query({Predicate.GTE, Predicate.LT})
 	@Field(label = "支付成功时间")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@View(name = "paidTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	@View(name = "paidTimeLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "支付成功时间", order = 45))
 	private Date paidTime;
 
 	@NotNull
 	@Field(label = "创建时间")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@View(name = "createdTimeLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	@View(name = "createdTimeLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "创建时间", order = 50))
 	@Query({Predicate.LT, Predicate.GTE})
 	private Date createdTime;
 
 	@Field(label = "过期时间")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@Query(Predicate.LT)
 	@NotNull
 	@View(name = "expiredTimeLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "过期时间", order = 55))
@@ -155,7 +155,7 @@ public class Deposit implements Serializable {
 	@NotNull
 	@Query({Predicate.EQ, Predicate.IN})
 	@Field(label = "充值单状态")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@View(name = "depositStatusStyle", type = String.class, groups = {VO_ADMIN})
 	@View(groups = VO_EXPORT, field = @Field(label = "充值单状态", order = 60))
 	private DepositStatus depositStatus;
@@ -167,14 +167,14 @@ public class Deposit implements Serializable {
 	private String remark;
 
 	@Field(label = "银行汇款截图")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@Column(length = 1000)
 	@CollectionView(name= "offlineImages", type = ArrayList.class, elementType = ImageVo.class)
 	@View(groups = VO_EXPORT, field = @Field(label = "银行汇款截图", order = 70))
 	private String offlineImage;
 	
 	@Field(label = "银行汇款备注")
-	@View
+	@View(groups = {VO_LIST, VO_ADMIN})
 	@View(groups = VO_EXPORT, field = @Field(label = "银行汇款备注", order = 75))
 	private String offlineMemo;
 	

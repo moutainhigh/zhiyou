@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.zy.vo.DepositExportVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -70,6 +71,25 @@ public class DepositComponent {
 			depositListVo.setPaidTimeLabel(simpleDateFormat.format(deposit.getPaidTime()));
 		}
 		return depositListVo;
+	}
+
+	public DepositExportVo buildExportVo(Deposit deposit) {
+		DepositExportVo depositExportVo = new DepositExportVo();
+		BeanUtils.copyProperties(deposit, depositExportVo);
+
+		User user = cacheComponent.getUser(deposit.getUserId());
+		depositExportVo.setUserNickname(user.getNickname());
+		depositExportVo.setUserPhone(user.getPhone());
+		depositExportVo.setAmount1Label(GcUtils.formatCurreny(deposit.getAmount1()));
+		depositExportVo.setCreatedTimeLabel(dateFormat.format(deposit.getCreatedTime()));
+		if (deposit.getPaidTime() != null) {
+			depositExportVo.setPaidTimeLabel(dateFormat.format(deposit.getPaidTime()));
+		}
+		if (deposit.getExpiredTime() != null) {
+			depositExportVo.setExpiredTimeLabel(dateFormat.format(deposit.getExpiredTime()));
+		}
+
+		return depositExportVo;
 	}
 	
 }
