@@ -63,13 +63,13 @@ public class MessageConsumer extends AbstractConsumer {
                 String desc = null;
                 final User.UserRank userRank = user.getUserRank();
                 if (userRank == V4) {
-                    desc = "特级代理";
+                    desc = "特级服务商";
                 } else if (userRank == V3) {
-                    desc = "一级代理";
+                    desc = "省级服务商";
                 } else if (userRank == V2) {
-                    desc = "二级代理";
+                    desc = "市级服务商";
                 } else if (userRank == V1) {
-                    desc = "三级代理";
+                    desc = "VIP服务商";
                 }
                 if (isNotBlank(desc)) {
                     sendMessage(message(user.getId(), "等级变动", String.format("恭喜你已成功升级为【%s】", desc), token));
