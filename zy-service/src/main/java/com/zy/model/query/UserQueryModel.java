@@ -52,6 +52,8 @@ public class UserQueryModel implements Serializable {
 
 	private Boolean isBossEQ;
 
+	private String bossNameLK;
+
 	private Long bossIdEQ;
 
 	private Integer pageNumber;
@@ -123,6 +125,7 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("registerIp");
 		fieldNames.add("unionId");
 		fieldNames.add("registerTime");
+		fieldNames.add("bossName");
 		fieldNames.add("bossId");
 		fieldNames.add("lastUpgradedTime");
 		fieldNames.add("avatar");

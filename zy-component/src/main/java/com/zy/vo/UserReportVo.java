@@ -37,6 +37,8 @@ public class UserReportVo implements Serializable {
 	private String rootName;
 	@Field(label = "是否总经理")
 	private Boolean isBoss;
+	@Field(label = "总经理团队名称")
+	private String bossName;
 	@Field(label = "上级总经理id")
 	private Long bossId;
 	@Field(label = "是否董事")

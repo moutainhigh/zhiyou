@@ -294,14 +294,14 @@ public class UserController {
 			return ResultBuilder.error(e.getMessage());
 		}
 	}
-	
-	@RequiresPermissions("user:setRoot")
-	@RequestMapping(value = "/setRoot", method = RequestMethod.POST)
-	@ResponseBody
-	public Result<?> setRoot(@RequestParam Long id, @RequestParam String rootName, Boolean isRoot, String remark) {
-		userService.modifyIsRootAdmin(id, isRoot, rootName, getPrincipalUserId(), remark);
-		return ResultBuilder.ok("操作成功");
-	}
+
+//	@RequiresPermissions("user:setRoot")
+//	@RequestMapping(value = "/setRoot", method = RequestMethod.POST)
+//	@ResponseBody
+//	public Result<?> setRoot(@RequestParam Long id, @RequestParam String rootName, Boolean isRoot, String remark) {
+//		userService.modifyIsRootAdmin(id, isRoot, rootName, getPrincipalUserId(), remark);
+//		return ResultBuilder.ok("操作成功");
+//	}
 
 	@RequiresPermissions("user:setDirector")
 	@RequestMapping(value = "/setDirector", method = RequestMethod.GET)
@@ -317,13 +317,13 @@ public class UserController {
 		return "redirect:/user";
 	}
 	
-	@RequiresPermissions("user:setRoot")
-	@RequestMapping(value = "/setRoot", method = RequestMethod.GET)
-	public String setRoot(@RequestParam Long id, RedirectAttributes redirectAttributes) {
-		userService.modifyIsRootAdmin(id, false, null, getPrincipalUserId(), null);
-		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
-		return "redirect:/user";
-	}
+//	@RequiresPermissions("user:setRoot")
+//	@RequestMapping(value = "/setRoot", method = RequestMethod.GET)
+//	public String setRoot(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+//		userService.modifyIsRootAdmin(id, false, null, getPrincipalUserId(), null);
+//		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
+//		return "redirect:/user";
+//	}
 	
 	private void checkAndValidateIsPlatform(Long userId) {
 		User user = userService.findOne(userId);

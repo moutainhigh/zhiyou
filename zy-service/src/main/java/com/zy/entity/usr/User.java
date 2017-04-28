@@ -192,6 +192,11 @@ public class User implements Serializable {
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
 	private Boolean isBoss;
 
+	@Query(Predicate.LK)
+	@Field(label = "总经理团队名称")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
+	private String bossName;
+
 	@Query(Predicate.EQ)
 	@Field(label = "上级总经理id")
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})

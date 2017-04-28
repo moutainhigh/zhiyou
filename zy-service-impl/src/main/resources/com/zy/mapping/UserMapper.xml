@@ -24,6 +24,7 @@
 		<result column="is_root" property="isRoot" />
 		<result column="root_name" property="rootName" />
 		<result column="is_boss" property="isBoss" />
+		<result column="boss_name" property="bossName" />
 		<result column="boss_id" property="bossId" />
 		<result column="code" property="code" />
 		<result column="is_director" property="isDirector" />
@@ -31,8 +32,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_id,code,is_director,is_shareholder)
-	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossId},#{code},#{isDirector},#{isShareholder})
+	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_shareholder)
+	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossName},#{bossId},#{code},#{isDirector},#{isShareholder})
 	</insert>
 
 	<delete id="delete">
@@ -62,6 +63,7 @@
 			is_root = #{isRoot},
 			root_name = #{rootName},
 			is_boss = #{isBoss},
+			boss_name = #{bossName},
 			boss_id = #{bossId},
 			code = #{code},
 			is_director = #{isDirector},
@@ -95,6 +97,7 @@
 					<when test="field == 'isRoot'">is_root = #{user.isRoot},</when>
 					<when test="field == 'rootName'">root_name = #{user.rootName},</when>
 					<when test="field == 'isBoss'">is_boss = #{user.isBoss},</when>
+					<when test="field == 'bossName'">boss_name = #{user.bossName},</when>
 					<when test="field == 'bossId'">boss_id = #{user.bossId},</when>
 					<when test="field == 'code'">code = #{user.code},</when>
 					<when test="field == 'isDirector'">is_director = #{user.isDirector},</when>
@@ -107,14 +110,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_id,code,is_director,is_shareholder
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_shareholder
 		from `usr_user`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_id,code,is_director,is_shareholder
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_shareholder
 		from `usr_user`
 		<where>
 			<if test="userRankEQ != null">
@@ -168,6 +171,9 @@
 			</if>
 			<if test="parentIdEQ != null">
 				and parent_id = #{parentIdEQ}
+			</if>
+			<if test="bossNameLK != null">
+				<bind name="bossNameLK" value="'%' + bossNameLK + '%'"/> and boss_name like #{bossNameLK}
 			</if>
 			<if test="isBossEQ != null">
 				and is_boss = #{isBossEQ}
@@ -257,6 +263,9 @@
 			</if>
 			<if test="parentIdEQ != null">
 				and parent_id = #{parentIdEQ}
+			</if>
+			<if test="bossNameLK != null">
+				<bind name="bossNameLK" value="'%' + bossNameLK + '%'"/> and boss_name like #{bossNameLK}
 			</if>
 			<if test="isBossEQ != null">
 				and is_boss = #{isBossEQ}
