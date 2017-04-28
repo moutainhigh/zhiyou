@@ -30,6 +30,9 @@ public class FinanceReportVo {
 	@Field(label = "U币支付", order = 60)
 	private BigDecimal paymentAmount;  //U币支付
 
+	@Field(label = "U币收益", order = 70)
+	private BigDecimal profitAmount;  //U币收益
+
 	@Field(label = "U币余额", order = 80)
 	private BigDecimal accountAmount;  //U币余额
 

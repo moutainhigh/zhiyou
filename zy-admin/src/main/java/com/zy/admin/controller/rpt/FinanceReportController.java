@@ -203,6 +203,7 @@ public class FinanceReportController {
 			financeReportVo.setDepositAmount(zero);
 			financeReportVo.setTransferAmount(zero);
 			financeReportVo.setDifferencePointAmount(zero);
+			financeReportVo.setProfitAmount(zero);
 			financeReportVo.setAccountAmount(zero);
 			financeReportVo.setAccountPointAmount(zero);
 			financeReportVo.setPaymentPointAmount(zero);
@@ -273,11 +274,10 @@ public class FinanceReportController {
 				CurrencyType currencyType = profit.getCurrencyType();
 				BigDecimal profitAmount = profit.getAmount();
 
-//				if (currencyType == CurrencyType.现金) {
-//					BigDecimal amount = financeReportVo.getProfitAmount() == null? zero : financeReportVo.getProfitAmount();
-//					financeReportVo.setProfitAmount(amount.add(profitAmount));
-				//} else
-				if (currencyType == CurrencyType.积分) {
+				if (currencyType == CurrencyType.现金) {
+					BigDecimal amount = financeReportVo.getProfitAmount() == null? zero : financeReportVo.getProfitAmount();
+					financeReportVo.setProfitAmount(amount.add(profitAmount));
+				} else if (currencyType == CurrencyType.积分) {
 					if (profit.getProfitType() == Profit.ProfitType.订单收款) {
 						BigDecimal amount = financeReportVo.getDifferencePointAmount() == null? zero : financeReportVo.getDifferencePointAmount();
 						financeReportVo.setDifferencePointAmount(amount.add(profitAmount));
@@ -297,7 +297,7 @@ public class FinanceReportController {
 		page.setPageNumber(pageNumber);
 		page.setPageSize(pageSize);
 		page.setData(financeReportVos.stream().map(v -> {
-			v.setAccountAmount((v.getDepositAmount().add(v.getTransferAmount())).subtract(v.getPaymentAmount()));
+			v.setAccountAmount((v.getDepositAmount().add(v.getTransferAmount().add(v.getProfitAmount()))).subtract(v.getPaymentAmount()));
 			v.setAccountPointAmount(v.getProfitPointAmount().subtract(v.getWithdrawPointAmount()).subtract(v.getPaymentPointAmount()));
 			return v;
 		}).collect(Collectors.toList()));
@@ -443,6 +443,7 @@ public class FinanceReportController {
 			financeReportVo.setDepositAmount(zero);
 			financeReportVo.setTransferAmount(zero);
 			financeReportVo.setDifferencePointAmount(zero);
+			financeReportVo.setProfitAmount(zero);
 			financeReportVo.setAccountAmount(zero);
 			financeReportVo.setAccountPointAmount(zero);
 			financeReportVo.setPaymentPointAmount(zero);
@@ -513,11 +514,10 @@ public class FinanceReportController {
 				CurrencyType currencyType = profit.getCurrencyType();
 				BigDecimal profitAmount = profit.getAmount();
 
-//				if (currencyType == CurrencyType.现金) {
-//					BigDecimal amount = financeReportVo.getProfitAmount() == null? zero : financeReportVo.getProfitAmount();
-//					financeReportVo.setProfitAmount(amount.add(profitAmount));
-				//} else
-				if (currencyType == CurrencyType.积分) {
+				if (currencyType == CurrencyType.现金) {
+					BigDecimal amount = financeReportVo.getProfitAmount() == null? zero : financeReportVo.getProfitAmount();
+					financeReportVo.setProfitAmount(amount.add(profitAmount));
+				} else if (currencyType == CurrencyType.积分) {
 					if (profit.getProfitType() == Profit.ProfitType.订单收款) {
 						BigDecimal amount = financeReportVo.getDifferencePointAmount() == null? zero : financeReportVo.getDifferencePointAmount();
 						financeReportVo.setDifferencePointAmount(amount.add(profitAmount));
@@ -546,7 +546,7 @@ public class FinanceReportController {
 
 		List<FinanceReportVo> financeReportVos = new ArrayList<>(userFinanceReportMap.values());
 		financeReportVos = financeReportVos.stream().map(v -> {
-			v.setAccountAmount((v.getDepositAmount().add(v.getTransferAmount())).subtract(v.getPaymentAmount()));
+			v.setAccountAmount((v.getDepositAmount().add(v.getTransferAmount().add(v.getProfitAmount()))).subtract(v.getPaymentAmount()));
 			v.setAccountPointAmount(v.getProfitPointAmount().subtract(v.getWithdrawPointAmount()).subtract(v.getPaymentPointAmount()));
 			return v;
 		}).collect(Collectors.toList());

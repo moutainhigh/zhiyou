@@ -164,6 +164,11 @@
             orderable: false
           },
           {
+            data: 'profitAmount',
+            title: 'U币收益',
+            orderable: false
+          },
+          {
             data: 'accountAmount',
             title: 'U币余额',
             orderable: false

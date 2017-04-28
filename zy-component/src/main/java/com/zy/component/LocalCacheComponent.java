@@ -102,6 +102,8 @@ public class LocalCacheComponent {
 	@Autowired
 	private UserUpgradeService userUpgradeService;
 
+	public List<Area> getAreas() { return areas; }
+
     public List<User> getUsers() {
         return users;
     }
