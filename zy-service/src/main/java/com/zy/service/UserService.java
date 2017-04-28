@@ -57,6 +57,10 @@ public interface UserService {
 
 	void modifyIsRootAdmin(Long id, boolean isRoot, String rootName, Long operatorId, String remark);
 
+	void modifyIsBoss(Long id, boolean isBoss, String bossName, Long operatorId);
+
+	void modifyBossId(Long id, Long bossId);
+
 	void modifyIsDirector(Long id, boolean isDirector);
 
 	void modifyIsShareholder(Long id, boolean isShareholder);

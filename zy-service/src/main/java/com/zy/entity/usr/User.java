@@ -194,7 +194,7 @@ public class User implements Serializable {
 
 	@Query(Predicate.LK)
 	@Field(label = "总经理团队名称")
-	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT, VO_ADMIN_SIMPLE})
 	private String bossName;
 
 	@Query(Predicate.EQ)

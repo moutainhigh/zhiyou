@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import static com.zy.common.util.ValidateUtils.NOT_BLANK;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 import static com.zy.entity.fnc.CurrencyType.现金;
@@ -384,21 +385,47 @@ public class UserServiceImpl implements UserService {
     public void modifyIsRootAdmin(@NotNull Long id, boolean isRoot, String rootName, Long operatorId, String remark) {
         User user = findAndValidate(id);
         String label = isRoot ? "设置" : "取消";
-        if (user.getIsRoot() == null) {
-            // 无视
-        } else if (user.getIsRoot()) {
-            if (isRoot) {
-                return; // 幂等操作
-            }
-        } else {
-            if (!isRoot) {
-                return; // 幂等操作
+        if (user.getIsRoot() != null) {
+            if (user.getIsRoot() == isRoot) {
+                return;
             }
         }
         user.setIsRoot(isRoot);
         user.setRootName(rootName);
         userMapper.update(user);
         usrComponent.recordUserLog(id, operatorId, label + "子系统", remark);
+    }
+
+    @Override
+    public void modifyIsBoss(@NotNull Long id, boolean isBoss, String bossName, Long operatorId) {
+        User user = findAndValidate(id);
+        String label = isBoss ? "设置" : "取消";
+        if (user.getIsBoss() != null) {
+            if (user.getIsBoss() == isBoss) {
+                return;
+            }
+        }
+        if (isBoss) {
+            validate(bossName, NOT_BLANK, "boss name is blank");
+        }
+        user.setIsBoss(isBoss);
+        user.setBossId(null);
+        user.setBossName(bossName);
+        userMapper.update(user);
+        usrComponent.recordUserLog(id, operatorId, label + "总经理", null);
+    }
+
+    @Override
+    public void modifyBossId(@NotNull Long id, @NotNull Long bossId) {
+        validate(id, v -> !v.equals(bossId), "user id is same to bossId, error");
+        findAndValidate(id);
+        User boss = findAndValidate(bossId);
+        validate(boss, v -> v.getIsBoss(), "boss id " + bossId + " is wrong");
+
+        User merge = new User();
+        merge.setId(id);
+        merge.setBossId(bossId);
+        userMapper.merge(merge, "bossId");
     }
 
     @Override
@@ -505,6 +532,5 @@ public class UserServiceImpl implements UserService {
         validate(user, NOT_NULL, "user id " + userId + "not found");
         return user;
     }
-
 
 }

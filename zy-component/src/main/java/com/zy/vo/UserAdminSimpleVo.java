@@ -26,6 +26,8 @@ public class UserAdminSimpleVo implements Serializable {
 	private Boolean isDirector;
 	@Field(label = "是否股东")
 	private Boolean isShareholder;
+	@Field(label = "总经理团队名称")
+	private String bossName;
 
 	/* 扩展 */
 	@Field(label = "用户等级")

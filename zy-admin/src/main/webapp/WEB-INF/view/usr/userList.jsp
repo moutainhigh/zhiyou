@@ -142,7 +142,7 @@
 			  content: html
 		  });
 
-		  $form = $('#modifyForm' + id);
+		  var $form = $('#modifyForm' + id);
 		  $form.validate({
 			  rules: {
 				  'nickname': {
@@ -192,7 +192,7 @@
 			  content: html
 		  });
 
-		  $form = $('#modifyPasswordForm' + id);
+		  var $form = $('#modifyPasswordForm' + id);
 		  $form.validate({
 			  rules: {
 				  'newPassword': {
@@ -242,7 +242,7 @@
 			  content: html
 		  });
 
-		  $form = $('#modifyParentForm' + id);
+		  var $form = $('#modifyParentForm' + id);
 		  $form.validate({
 			  rules: {
 				  'parentPhone': {
@@ -277,8 +277,8 @@
 
 	  });
 
-    var template = Handlebars.compile($('#confirmTmpl').html());
-    $('#dataTable').on('click', '.root-confirm', function () {
+    var template = Handlebars.compile($('#setBossTmpl').html());
+    $('#dataTable').on('click', '.set-boss', function () {
       var id = $(this).data('id');
       var data = {
         id: id
@@ -287,24 +287,24 @@
       var index = layer.open({
         type: 1,
         //skin: 'layui-layer-rim', //加上边框
-        area: ['600px', '360px'], //宽高
+        area: ['600px', '300px'], //宽高
         content: html
       });
 
-      $form = $('#confirmForm' + id);
+      var $form = $('#setBossForm' + id);
       $form.validate({
         rules: {
-          rootName: {
+          bossName: {
             required: true
           }
         },
         messages: {}
       });
 
-      $('#rootConfirmSubmit' + id).bind('click', function () {
+      $('#setBossSubmit' + id).bind('click', function () {
         var result = $form.validate().form();
         if (result) {
-          var url = '${ctx}/user/setRoot';
+          var url = '${ctx}/user/setBoss';
           $.post(url, $form.serialize(), function (data) {
             if (data.code === 0) {
               layer.close(index);
@@ -316,7 +316,52 @@
         }
       })
 
-      $('#rootConfirmCancel' + id).bind('click', function () {
+      $('#setBossCancel' + id).bind('click', function () {
+        layer.close(index);
+      })
+
+    });
+
+    var joinTeamTemplate = Handlebars.compile($('#joinTeamTmpl').html());
+    $('#dataTable').on('click', '.join-team', function () {
+      var id = $(this).data('id');
+      var data = {
+        id: id
+      };
+      var html = joinTeamTemplate(data);
+      var index = layer.open({
+        type: 1,
+        //skin: 'layui-layer-rim', //加上边框
+        area: ['600px', '300px'], //宽高
+        content: html
+      });
+
+      var $form = $('#joinTeamForm' + id);
+      $form.validate({
+        rules: {
+           bossPhone: {
+            required: true
+          }
+        },
+        messages: {}
+      });
+
+      $('#joinTeamSubmit' + id).bind('click', function () {
+        var result = $form.validate().form();
+        if (result) {
+          var url = '${ctx}/user/boss/joinTeam';
+          $.post(url, $form.serialize(), function (data) {
+            if (data.code === 0) {
+              layer.close(index);
+              grid.getDataTable().ajax.reload(null, false);
+            } else {
+              layer.alert('操作失败,原因' + data.message);
+            }
+          });
+        }
+      })
+
+      $('#joinTeamCancel' + id).bind('click', function () {
         layer.close(index);
       })
 
@@ -338,41 +383,40 @@
         },
         columns: [
           {
-            data: 'nickname',
-            title: '昵称',
+            data: '',
+            title: '用户信息',
             render: function (data, type, full) {
-              return '<p><img src="' + full.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.nickname + '</p>';
+              return '<p><img src="' + full.avatarThumbnail + '" width="30" height="30" style="border-radius: 40px !important; margin-right:5px"/>' + full.nickname + '</p>'
+                + '<p>手机：' + full.phone + '</p><p>用户等级：' + full.userRankLabel + '</p>';
             }
-          },
-          {
-            data: 'phone',
-            title: '手机'
-          },
-          {
-            data: 'userRankLabel',
-            title: '用户等级',
-            orderable: false
           },
           {
             data: 'userType',
             title: '用户类型'
           },
 	        {
-		        data: 'isDirector',
-		        title: '是否董事',
+		        data: '',
+		        title: '管理层职位',
 		        orderable: false,
             render: function(data, type, full) {
-		        	return data? '董事' : '';
+		          var html = '';
+              html += full.isDirector? '<p>懂事</p>' : '';
+              html += full.isShareholder? '<p>股东</p>' : '';
+              html += full.isBoss? '<p>总经理</p>' : '';
+		        	return html;
             }
 	        },
-	        {
-		        data: 'isShareholder',
-		        title: '是否股东',
-		        orderable: false,
-		        render: function(data, type, full) {
-			        return data? '股东' : '';
-		        }
-	        },
+          {
+            data: '',
+            title: '总经理信息',
+            orderable: false,
+            render: function (data, type, full) {
+              if (full.boss) {
+                return formatUser(full.boss) + '<p>' + full.boss.bossName + '</p>';
+              }
+              return '';
+            }
+          },
           {
             data: 'registerTime',
             title: '注册时间',
@@ -401,6 +445,7 @@
           {
             data: 'id',
             title: '操作',
+            width: '20%',
             orderable: false,
             render: function (data, type, full) {
               var optionHtml = '';
@@ -423,11 +468,12 @@
                   optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/freeze/' + data + '" data-confirm="您确定要冻结用户[' + full.nickname + ']？"><i class="fa fa-meh-o"></i> 冻结 </a>';
                 }
                 </shiro:hasPermission>
-                <shiro:hasPermission name="user:setRoot">
-                if (full.isRoot == null || full.isRoot == false) {
-                  optionHtml += '<a class="btn btn-xs default yellow-stripe root-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 设置子系统 </a>';
-                } else if (full.isRoot) {
-                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setRoot?id=' + full.id + '" data-confirm="您确定要取消子系统？"><i class="fa fa-edit"></i> 取消子系统 </a>';
+                <shiro:hasPermission name="user:setBoss">
+                if (full.isBoss == null || full.isBoss == false) {
+                  optionHtml += '<a class="btn btn-xs default yellow-stripe set-boss" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-male"></i> 设置总经理 </a>';
+                  optionHtml += '<a class="btn btn-xs default blue-stripe join-team" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-child"></i> 加入总经理团队 </a>';
+                } else if (full.isBoss) {
+                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setBoss?id=' + full.id + '" data-confirm="您确定要取消总经理团队？"><i class="fa fa-edit"></i> 取消总经理 </a>';
                 }
                 </shiro:hasPermission>
 	              if(full.userRank == 'V4') {
@@ -498,10 +544,9 @@
   }
 </script>
 
-<script id="confirmTmpl" type="text/x-handlebars-template">
-  <form id="confirmForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+<script id="setBossTmpl" type="text/x-handlebars-template">
+  <form id="setBossForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
     <input type="hidden" name="id" value="{{id}}"/>
-	<input type="hidden" name="isRoot" value="1"/>
     <div class="form-body">
       <div class="alert alert-danger display-hide">
         <i class="fa fa-exclamation-circle"></i>
@@ -509,25 +554,47 @@
         <span class="form-errors">您填写的信息有误，请检查。</span>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-2">子系统名称<span class="required"> * </span></label>
+        <label class="control-label col-md-3">总经理团队名称<span class="required"> * </span></label>
         <div class="col-md-5">
-          <input type="text" name="rootName" value="" class="form-control" placeholder="请输入子系统名称"/>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-2">操作备注<span class="required"> * </span>
-        </label>
-        <div class="col-md-5">
-          <textarea type="text" class="form-control" name="remark"></textarea>
+          <input type="text" name="bossName" value="" class="form-control" placeholder="总经理团队名称"/>
         </div>
       </div>
     </div>
     <div class="form-actions fluid">
       <div class="col-md-offset-3 col-md-9">
-        <button id="rootConfirmSubmit{{id}}" type="button" class="btn green">
+        <button id="setBossSubmit{{id}}" type="button" class="btn green">
           <i class="fa fa-save"></i> 保存
         </button>
-        <button id="rootConfirmCancel{{id}}" class="btn default" data-href="">
+        <button id="setBossCancel{{id}}" class="btn default" data-href="">
+          <i class="fa fa-chevron-left"></i> 返回
+        </button>
+      </div>
+    </div>
+  </form>
+</script>
+
+<script id="joinTeamTmpl" type="text/x-handlebars-template">
+  <form id="joinTeamForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+    <input type="hidden" name="id" value="{{id}}"/>
+    <div class="form-body">
+      <div class="alert alert-danger display-hide">
+        <i class="fa fa-exclamation-circle"></i>
+        <button class="close" data-close="alert"></button>
+        <span class="form-errors">您填写的信息有误，请检查。</span>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-3">总经理手机号<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="bossPhone" value="" class="form-control" placeholder="总经理手机号"/>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions fluid">
+      <div class="col-md-offset-3 col-md-9">
+        <button id="joinTeamSubmit{{id}}" type="button" class="btn green">
+          <i class="fa fa-save"></i> 保存
+        </button>
+        <button id="joinTeamCancel{{id}}" class="btn default" data-href="">
           <i class="fa fa-chevron-left"></i> 返回
         </button>
       </div>
@@ -584,6 +651,14 @@
               <div class="form-group">
                 <select name="userRankEQ" class="form-control">
                   <option value="">-- 是否冻结 --</option>
+                  <option value="1">是</option>
+                  <option value="0">否</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <select name="isBossEQ" class="form-control">
+                  <option value="">-- 是否总经理 --</option>
                   <option value="1">是</option>
                   <option value="0">否</option>
                 </select>

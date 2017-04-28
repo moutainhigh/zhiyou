@@ -303,6 +303,38 @@ public class UserController {
 //		return ResultBuilder.ok("操作成功");
 //	}
 
+	@RequiresPermissions("user:setBoss")
+	@RequestMapping(value = "/setBoss", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Void> setBoss(@RequestParam Long id, @RequestParam String bossName) {
+		userService.modifyIsBoss(id, true, bossName, getPrincipalUserId());
+		return ResultBuilder.ok("操作成功");
+	}
+
+	@RequiresPermissions("user:setBoss")
+	@RequestMapping(value = "/setBoss", method = RequestMethod.GET)
+	public String setBoss(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+		try {
+			userService.modifyIsBoss(id, false, null, getPrincipalUserId());
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+		}
+		return "redirect:/user";
+	}
+
+	@RequiresPermissions("user:setBoss")
+	@RequestMapping(value = "/boss/joinTeam", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Void> joinTeam(@RequestParam Long id, @RequestParam String bossPhone) {
+		User boss = userService.findByPhone(bossPhone);
+		if (boss == null) {
+			return ResultBuilder.error("总经理手机号不存在");
+		}
+		userService.modifyBossId(id, boss.getId());
+		return ResultBuilder.ok("已加入: " + boss.getBossName());
+	}
+
 	@RequiresPermissions("user:setDirector")
 	@RequestMapping(value = "/setDirector", method = RequestMethod.GET)
 	public String setDirector(@RequestParam Long id) {

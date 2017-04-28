@@ -68,6 +68,10 @@ public class UserComponent {
 			userAdminVo.setParent(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(user.getParentId())));
 		}
 		userAdminVo.setUserRankLabel(GcUtils.getUserRankLabel(user.getUserRank()));
+		Long bossId = user.getBossId();
+		if (bossId != null) {
+			userAdminVo.setBoss(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(bossId)));
+		}
 		return userAdminVo;
 	}
 
