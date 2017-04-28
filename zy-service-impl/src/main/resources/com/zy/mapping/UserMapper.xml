@@ -23,16 +23,16 @@
 		<result column="last_upgraded_time" property="lastUpgradedTime" />
 		<result column="is_root" property="isRoot" />
 		<result column="root_name" property="rootName" />
+		<result column="is_boss" property="isBoss" />
+		<result column="boss_id" property="bossId" />
 		<result column="code" property="code" />
 		<result column="is_director" property="isDirector" />
 		<result column="is_shareholder" property="isShareholder" />
 	</resultMap>
 
-	<sql id="baseColumn">id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,code,is_director,is_shareholder</sql>
-
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,code,is_director,is_shareholder)
-	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{code},#{isDirector},#{isShareholder})
+	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_id,code,is_director,is_shareholder)
+	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossId},#{code},#{isDirector},#{isShareholder})
 	</insert>
 
 	<delete id="delete">
@@ -61,6 +61,8 @@
 			last_upgraded_time = #{lastUpgradedTime},
 			is_root = #{isRoot},
 			root_name = #{rootName},
+			is_boss = #{isBoss},
+			boss_id = #{bossId},
 			code = #{code},
 			is_director = #{isDirector},
 			is_shareholder = #{isShareholder},
@@ -92,6 +94,8 @@
 					<when test="field == 'lastUpgradedTime'">last_upgraded_time = #{user.lastUpgradedTime},</when>
 					<when test="field == 'isRoot'">is_root = #{user.isRoot},</when>
 					<when test="field == 'rootName'">root_name = #{user.rootName},</when>
+					<when test="field == 'isBoss'">is_boss = #{user.isBoss},</when>
+					<when test="field == 'bossId'">boss_id = #{user.bossId},</when>
 					<when test="field == 'code'">code = #{user.code},</when>
 					<when test="field == 'isDirector'">is_director = #{user.isDirector},</when>
 					<when test="field == 'isShareholder'">is_shareholder = #{user.isShareholder},</when>
@@ -103,14 +107,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		<include refid="baseColumn"/>
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_id,code,is_director,is_shareholder
 		from `usr_user`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
 		select
-		<include refid="baseColumn"/>
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_id,code,is_director,is_shareholder
 		from `usr_user`
 		<where>
 			<if test="userRankEQ != null">
@@ -135,6 +139,9 @@
 				<if test="parentIdIN.length == 0">
 				and 1 = 2
 				</if>
+			</if>
+			<if test="bossIdEQ != null">
+				and boss_id = #{bossIdEQ}
 			</if>
 			<if test="isFrozenEQ != null">
 				and is_frozen = #{isFrozenEQ}
@@ -161,6 +168,9 @@
 			</if>
 			<if test="parentIdEQ != null">
 				and parent_id = #{parentIdEQ}
+			</if>
+			<if test="isBossEQ != null">
+				and is_boss = #{isBossEQ}
 			</if>
 			<if test="phoneEQ != null">
 				and phone = #{phoneEQ}
@@ -219,6 +229,9 @@
 				and 1 = 2
 				</if>
 			</if>
+			<if test="bossIdEQ != null">
+				and boss_id = #{bossIdEQ}
+			</if>
 			<if test="isFrozenEQ != null">
 				and is_frozen = #{isFrozenEQ}
 			</if>
@@ -245,6 +258,9 @@
 			<if test="parentIdEQ != null">
 				and parent_id = #{parentIdEQ}
 			</if>
+			<if test="isBossEQ != null">
+				and is_boss = #{isBossEQ}
+			</if>
 			<if test="phoneEQ != null">
 				and phone = #{phoneEQ}
 			</if>
@@ -264,6 +280,8 @@
 			</if>
 		</where>
 	</select>
+
+	<sql id="baseColumn">id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,code,is_director,is_shareholder</sql>
 
 	<select id="findByPhone" resultMap="baseResultMap">
 		select * from `usr_user` where phone = #{phone}

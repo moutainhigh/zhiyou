@@ -50,6 +50,10 @@ public class UserQueryModel implements Serializable {
 
 	private Boolean isRootEQ;
 
+	private Boolean isBossEQ;
+
+	private Long bossIdEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
@@ -102,29 +106,31 @@ public class UserQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
-		fieldNames.add("qq");
-		fieldNames.add("registerIp");
-		fieldNames.add("unionId");
 		fieldNames.add("code");
 		fieldNames.add("isRoot");
-		fieldNames.add("registerTime");
 		fieldNames.add("openId");
 		fieldNames.add("rootName");
 		fieldNames.add("remark");
-		fieldNames.add("lastUpgradedTime");
 		fieldNames.add("userRank");
-		fieldNames.add("avatar");
-		fieldNames.add("parentId");
 		fieldNames.add("password");
-		fieldNames.add("phone");
-		fieldNames.add("inviterId");
+		fieldNames.add("isBoss");
 		fieldNames.add("isShareholder");
-		fieldNames.add("isDirector");
 		fieldNames.add("nickname");
 		fieldNames.add("vipExpiredDate");
 		fieldNames.add("id");
-		fieldNames.add("userType");
 		fieldNames.add("isFrozen");
+		fieldNames.add("qq");
+		fieldNames.add("registerIp");
+		fieldNames.add("unionId");
+		fieldNames.add("registerTime");
+		fieldNames.add("bossId");
+		fieldNames.add("lastUpgradedTime");
+		fieldNames.add("avatar");
+		fieldNames.add("parentId");
+		fieldNames.add("phone");
+		fieldNames.add("inviterId");
+		fieldNames.add("isDirector");
+		fieldNames.add("userType");
 	}
 
 }

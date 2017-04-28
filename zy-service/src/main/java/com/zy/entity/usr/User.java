@@ -187,6 +187,17 @@ public class User implements Serializable {
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
 	private String rootName;
 
+	@Query(Predicate.EQ)
+	@Field(label = "是否总经理")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
+	private Boolean isBoss;
+
+	@Query(Predicate.EQ)
+	@Field(label = "上级总经理id")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL, VO_REPORT})
+	@AssociationView(name = "boss", associationGroup = VO_ADMIN_SIMPLE, groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private Long bossId;
+
 	@Field(label = "授权码")
 	@Column(length = 60, unique = true)
 	private String code;

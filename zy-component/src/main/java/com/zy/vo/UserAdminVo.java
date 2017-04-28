@@ -37,6 +37,10 @@ public class UserAdminVo implements Serializable {
 	private Boolean isRoot;
 	@Field(label = "子系统名称")
 	private String rootName;
+	@Field(label = "是否总经理")
+	private Boolean isBoss;
+	@Field(label = "上级总经理id")
+	private Long bossId;
 	@Field(label = "是否董事")
 	private Boolean isDirector;
 	@Field(label = "是否股东")
@@ -51,5 +55,7 @@ public class UserAdminVo implements Serializable {
 	private UserAdminSimpleVo inviter;
 	@Field(label = "上级id")
 	private UserAdminSimpleVo parent;
+	@Field(label = "上级总经理id")
+	private UserAdminSimpleVo boss;
 
 }
