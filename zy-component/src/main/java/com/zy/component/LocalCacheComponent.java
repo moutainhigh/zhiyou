@@ -30,11 +30,13 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static com.zy.component.ThreadPool.counter;
 import static com.zy.component.ThreadPool.executorService;
 
-@Component
+
 public class LocalCacheComponent {
 
 	final Logger logger = LoggerFactory.getLogger(LocalCacheComponent.class);
@@ -168,35 +170,39 @@ public class LocalCacheComponent {
 	}
 
 	public void refresh() throws InterruptedException {
-		CountDownLatch downLatch = new CountDownLatch(12);
+		CountDownLatch downLatch = new CountDownLatch(13);
+		CountDownLatch userReportVoContunDownLatch = new CountDownLatch(2);
+
 
 		logger.info("refresh begin...");
 		List<Area> newAreas = new ArrayList<>();
 		List<User> newUsers = new ArrayList<>();
-		Map<Long, User> newUserMap = new HashMap<>();
-		Map<Long, Area> newAreaMap = new HashMap<>();
+		Map<Long, User> newUserMap = new HashMap<>(256);
+		Map<Long, Area> newAreaMap = new HashMap<>(64);
 		List<String> newRootNames = new ArrayList<>();
 		List<Order> newOrders = new ArrayList<>();
-		List<Payment> newPayments = new ArrayList<>();
-		List<Deposit> newDeposits = new ArrayList<>();
-		List<Withdraw> newWithdraws = new ArrayList<>();
-		List<Profit> newProfits = new ArrayList<>();
-		List<Transfer> newTransfer = new ArrayList<>();
-		List<Account> newAccounts = new ArrayList<>();
-		Map<Long, OrderItem> newOrderItemMap = new HashMap<>();
-		Map<Long, UserInfo> newUserInfoMap = new HashMap<>();
-		List<UserUpgrade> newUserUpgrades = new ArrayList<>();
+		List<Payment> newPayments = new ArrayList<>(3000*10);
+		List<Deposit> newDeposits = new ArrayList<>(3000*10);
+		List<Withdraw> newWithdraws = new ArrayList<>(3000*10);
+		List<Profit> newProfits = new ArrayList<>(2000*10);
+		List<Transfer> newTransfer = new ArrayList<>(1000*10);
+		List<Account> newAccounts = new ArrayList<>(1000*10);
+		Map<Long, OrderItem> newOrderItemMap = new HashMap<>(256);
+		Map<Long, UserInfo> newUserInfoMap = new HashMap<>(1000*10);
+		List<UserUpgrade> newUserUpgrades = new ArrayList<>(1000*10);
 
 		executorService.execute(() -> {
 			newAreas.addAll(areaService.findAll(new AreaQueryModel()));
 			newAreaMap.putAll(newAreas.stream().collect(Collectors.toMap(v -> v.getId(), v -> v)));
 			downLatch.countDown();
+			userReportVoContunDownLatch.countDown();
 		});
 		executorService.execute(() -> {
 			newUsers.addAll(userService.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build()));
 			newRootNames.addAll(newUsers.stream().filter(v -> v.getIsRoot() != null && v.getIsRoot()).map(User::getRootName).distinct().collect(Collectors.toList()));
 			newUserMap.putAll(newUsers.stream().collect(Collectors.toMap(v -> v.getId(), v -> v)));
 			downLatch.countDown();
+			userReportVoContunDownLatch.countDown();
 		});
 		executorService.execute(() -> {
 			newOrders.addAll(orderService.findAll(OrderQueryModel.builder().build()));
@@ -239,8 +245,97 @@ public class LocalCacheComponent {
 			downLatch.countDown();
 		});
 
-		downLatch.await();
+		executorService.execute(()->{
+			try {
+				userReportVoContunDownLatch.await();
+			} catch (InterruptedException e) {
+				logger.error(e.getMessage(),e);
+			}
+			userReportVos = newUsers.stream().map(user -> {
+				UserReportVo userReportVo = new UserReportVo();
+				BeanUtils.copyProperties(user, userReportVo);
+				Long userId = user.getId();
+				UserInfo userInfo = newUserInfoMap.get(userId);
+				if (userInfo != null) {
+					Long areaId = userInfo.getAreaId();
+					if (areaId != null) {
+						Long districtId = areaId;
+						Area district = areaMap.get(districtId);
+						if (district != null && district.getAreaType() == Area.AreaType.区) {
+							userReportVo.setDistrictId(districtId);
+							Long cityId = district.getParentId();
+							Area city = areaMap.get(cityId);
+							if (city != null && city.getAreaType() == Area.AreaType.市) {
+								userReportVo.setCityId(cityId);
+								Long provinceId = city.getParentId();
+								Area province = areaMap.get(provinceId);
+								if (province != null && province.getAreaType() == Area.AreaType.省) {
+									userReportVo.setProvinceId(provinceId);
+								}
+							}
 
+						}
+					}
+				}
+
+				Long parentId = user.getParentId();
+				int whileTimes = 0;
+
+				Long v4UserId = null;
+				Long tmpParentId = parentId;
+				while (tmpParentId != null) {
+					if (whileTimes > 1000) {
+						throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + userId);
+					}
+					User parent = newUserMap.get(tmpParentId);
+					if (parent == null) {
+						throw new BizException(BizCode.ERROR, "关联了错误的parent id " + tmpParentId);
+					}
+					if (parent.getUserRank() == User.UserRank.V4) {
+						v4UserId = tmpParentId;
+						break;
+					}
+					tmpParentId = parent.getParentId();
+					whileTimes++;
+				}
+				if (v4UserId != null) {
+					User v4User = newUserMap.get(v4UserId);
+					userReportVo.setV4UserId(v4UserId);
+					userReportVo.setV4UserNickname(v4User.getNickname());
+				}
+
+				Long rootId = null;
+				if (user.getIsRoot() != null && user.getIsRoot()) {
+					rootId = userId;
+				} else {
+					tmpParentId = parentId;
+					whileTimes = 0;
+					while (tmpParentId != null) {
+						if (whileTimes > 1000) {
+							throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
+						}
+						User parent = newUserMap.get(tmpParentId);
+						if (parent.getIsRoot() != null && parent.getIsRoot()) {
+							rootId = tmpParentId;
+							break;
+						}
+						tmpParentId = parent.getParentId();
+						whileTimes++;
+					}
+				}
+				if (rootId != null) {
+					User root = newUserMap.get(rootId);
+					userReportVo.setRootId(rootId);
+					userReportVo.setRootRootName(root.getRootName());
+				}
+				return userReportVo;
+
+			}).collect(Collectors.toList());
+			downLatch.countDown();
+		});
+
+
+		downLatch.await();
 		areas = newAreas;
 		areaMap = newAreaMap;
 		users = newUsers;
@@ -256,88 +351,6 @@ public class LocalCacheComponent {
 		userInfoMap = newUserInfoMap;
 		userUpgrades = newUserUpgrades;
 		rootNames = newRootNames;
-
-		userReportVos = newUsers.stream().map(user -> {
-			UserReportVo userReportVo = new UserReportVo();
-			BeanUtils.copyProperties(user, userReportVo);
-			Long userId = user.getId();
-			UserInfo userInfo = newUserInfoMap.get(userId);
-			if (userInfo != null) {
-				Long areaId = userInfo.getAreaId();
-				if (areaId != null) {
-					Long districtId = areaId;
-					Area district = areaMap.get(districtId);
-					if (district != null && district.getAreaType() == Area.AreaType.区) {
-						userReportVo.setDistrictId(districtId);
-						Long cityId = district.getParentId();
-						Area city = areaMap.get(cityId);
-						if (city != null && city.getAreaType() == Area.AreaType.市) {
-							userReportVo.setCityId(cityId);
-							Long provinceId = city.getParentId();
-							Area province = areaMap.get(provinceId);
-							if (province != null && province.getAreaType() == Area.AreaType.省) {
-								userReportVo.setProvinceId(provinceId);
-							}
-						}
-
-					}
-				}
-			}
-
-			Long parentId = user.getParentId();
-			int whileTimes = 0;
-
-			Long v4UserId = null;
-			Long tmpParentId = parentId;
-			while (tmpParentId != null) {
-				if (whileTimes > 1000) {
-					throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + userId);
-				}
-				User parent = newUserMap.get(tmpParentId);
-				if (parent == null) {
-					throw new BizException(BizCode.ERROR, "关联了错误的parent id " + tmpParentId);
-				}
-				if (parent.getUserRank() == User.UserRank.V4) {
-					v4UserId = tmpParentId;
-					break;
-				}
-				tmpParentId = parent.getParentId();
-				whileTimes++;
-			}
-			if (v4UserId != null) {
-				User v4User = newUserMap.get(v4UserId);
-				userReportVo.setV4UserId(v4UserId);
-				userReportVo.setV4UserNickname(v4User.getNickname());
-			}
-
-			Long rootId = null;
-			if (user.getIsRoot() != null && user.getIsRoot()) {
-				rootId = userId;
-			} else {
-				tmpParentId = parentId;
-				whileTimes = 0;
-				while (tmpParentId != null) {
-					if (whileTimes > 1000) {
-						throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
-					}
-					User parent = newUserMap.get(tmpParentId);
-					if (parent.getIsRoot() != null && parent.getIsRoot()) {
-						rootId = tmpParentId;
-						break;
-					}
-					tmpParentId = parent.getParentId();
-					whileTimes++;
-				}
-			}
-			if (rootId != null) {
-				User root = newUserMap.get(rootId);
-				userReportVo.setRootId(rootId);
-				userReportVo.setRootRootName(root.getRootName());
-			}
-			return userReportVo;
-
-		}).collect(Collectors.toList());
-
 		logger.info("refresh end...");
 
 	}
@@ -349,7 +362,13 @@ public class LocalCacheComponent {
 }
 
 class ThreadPool {
-	public final static ExecutorService executorService = Executors.newFixedThreadPool(12);
+	static final AtomicInteger counter = new AtomicInteger(0);
+	public final static ExecutorService executorService = Executors.newFixedThreadPool(12,r -> {
+		Thread thread = new Thread(r);
+		thread.setName(String.format("local-cache-component-refresh-%s-thread",counter.getAndIncrement()));
+		thread.setDaemon(true);
+		return thread;
+	});
 
 }
 

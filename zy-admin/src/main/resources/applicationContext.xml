@@ -1,49 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:task="http://www.springframework.org/schema/task"
-	xsi:schemaLocation="
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/task  http://www.springframework.org/schema/task/spring-task.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 		">
 
-	<context:property-placeholder location="file:${user.home}/zy.properties" />
+	<context:property-placeholder location="file:${user.home}/zy.properties"/>
 
 	<context:component-scan base-package="com.zy">
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
-		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation"
+		                        expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
 	</context:component-scan>
-	
-	<aop:config proxy-target-class="true" />
+
+	<aop:config proxy-target-class="true"/>
+
+	<bean id="localCacheComponent" class="com.zy.component.LocalCacheComponent"/>
 
 	<task:scheduled-tasks>
-		<task:scheduled ref="localCacheComponent" method="refresh" cron="0 0/5 * * * ?"  />
+		<task:scheduled ref="localCacheComponent" method="refresh" cron="0 0/5 * * * ?"/>
 	</task:scheduled-tasks>
 
-	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
-	
-	<bean id="collectionToStringConverter" class="com.zy.common.extend.CollectionToStringConverter" />
-	
-	<bean id="arrayToStringConverter" class="com.zy.common.extend.ArrayToStringConverter" />
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+	<bean id="collectionToStringConverter" class="com.zy.common.extend.CollectionToStringConverter"/>
+
+	<bean id="arrayToStringConverter" class="com.zy.common.extend.ArrayToStringConverter"/>
 
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="converters">
 			<set>
-				<bean class="com.zy.common.extend.StringToStringConverter" />
-				<bean class="com.zy.common.extend.StringToBigDecimalConverter" />
-				<bean class="com.zy.common.extend.StringToEnumConverterFactory" />
-				<bean class="com.zy.common.extend.StringToDateConverter" />
-				<bean class="com.zy.common.extend.NumberToBooleanConverter" />
-				<ref bean="collectionToStringConverter" />
-				<ref bean="arrayToStringConverter" />
+				<bean class="com.zy.common.extend.StringToStringConverter"/>
+				<bean class="com.zy.common.extend.StringToBigDecimalConverter"/>
+				<bean class="com.zy.common.extend.StringToEnumConverterFactory"/>
+				<bean class="com.zy.common.extend.StringToDateConverter"/>
+				<bean class="com.zy.common.extend.NumberToBooleanConverter"/>
+				<ref bean="collectionToStringConverter"/>
+				<ref bean="arrayToStringConverter"/>
 			</set>
 		</property>
 	</bean>
-	
-	
-	
+
+
 	<import resource="classpath:applicationContext-support.xml"/>
 	<import resource="classpath:applicationContext-shiro.xml"/>
 	<import resource="classpath:applicationContext-file.xml"/>
