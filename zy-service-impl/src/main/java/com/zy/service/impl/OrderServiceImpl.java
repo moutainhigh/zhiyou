@@ -914,8 +914,6 @@ public class OrderServiceImpl implements OrderService {
 
 		Date begin = Date.from(beginDateTime.atZone(ZoneId.systemDefault()).toInstant());
 		Date end = Date.from(endDateTime.atZone(ZoneId.systemDefault()).toInstant());
-		System.out.println(begin);
-		System.out.println(end);
 
 		List<Order> orders = orderMapper.findAll(OrderQueryModel.builder()
 				.orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成})

@@ -159,7 +159,7 @@ public class FinanceReportController {
 		List<Transfer> filterTransfers = transfers.stream()
 				.filter(transfer -> {
 
-					boolean result = userIdMap.get(transfer.getToUserId()) != null;
+					boolean result = userIdMap.get(transfer.getToUserId()) != null || userIdMap.get(transfer.getFromUserId()) != null;
 
 					Date transferredTimeGTE = financeReportVoQueryModel.getTimeGTE();
 					Date transferredTimeLT = financeReportVoQueryModel.getTimeLT();
@@ -291,6 +291,35 @@ public class FinanceReportController {
 			}
 		}
 
+		for(Transfer transfer : filterTransfers) {
+			Long fromUserId = transfer.getFromUserId();
+			Long toUserId = transfer.getToUserId();
+
+			FinanceReportVo financeReportVo = userFinanceReportMap.get(fromUserId);
+			if(financeReportVo != null) {
+				BigDecimal amount = financeReportVo.getTransferAmount();
+				if(amount == null) {
+					amount = new BigDecimal("0.00");
+				}
+				amount = amount.subtract(transfer.getAmount());
+				financeReportVo.setTransferAmount(amount);
+
+				userFinanceReportMap.put(fromUserId, financeReportVo);
+			}
+
+			FinanceReportVo financeReportVo1 = userFinanceReportMap.get(toUserId);
+			if(financeReportVo1 != null) {
+				BigDecimal amount = financeReportVo1.getTransferAmount();
+				if(amount == null) {
+					amount = new BigDecimal("0.00");
+				}
+				amount = amount.add(transfer.getAmount());
+				financeReportVo1.setTransferAmount(amount);
+
+				userFinanceReportMap.put(toUserId, financeReportVo1);
+			}
+		}
+
 		List<FinanceReportVo> financeReportVos = new ArrayList<>(userFinanceReportMap.values());
 
 		Page<FinanceReportVo> page = new Page<>();
@@ -418,7 +447,7 @@ public class FinanceReportController {
 		List<Transfer> filterTransfers = transfers.stream()
 				.filter(transfer -> {
 
-					boolean result = userIdMap.get(transfer.getToUserId()) != null;
+					boolean result = userIdMap.get(transfer.getToUserId()) != null || userIdMap.get(transfer.getFromUserId()) != null;
 
 					Date transferredTimeGTE = financeReportVoQueryModel.getTimeGTE();
 					Date transferredTimeLT = financeReportVoQueryModel.getTimeLT();
@@ -668,8 +697,7 @@ public class FinanceReportController {
 		List<Transfer> filterTransfers = transfers.stream()
 				.filter(transfer -> {
 
-					boolean result = userIdMap.get(transfer.getToUserId()) != null;
-
+					boolean result = userIdMap.get(transfer.getToUserId()) != null || userIdMap.get(transfer.getFromUserId()) != null;
 					Date transferredTimeGTE = financeReportVoQueryModel.getTimeGTE();
 					Date transferredTimeLT = financeReportVoQueryModel.getTimeLT();
 
@@ -714,8 +742,14 @@ public class FinanceReportController {
 		}
 
 		for(Transfer transfer : filterTransfers) {
-			Long userId = transfer.getToUserId();
-			Boolean status = userMap.get(userId);
+			Long fromUserId = transfer.getFromUserId();
+			Boolean status = userMap.get(fromUserId);
+			if(status != null) {
+				totalTransferAmount = totalTransferAmount.subtract(transfer.getAmount());
+			}
+
+			Long toUserId = transfer.getToUserId();
+			status = userMap.get(toUserId);
 			if(status != null) {
 				totalTransferAmount = totalTransferAmount.add(transfer.getAmount());
 			}
