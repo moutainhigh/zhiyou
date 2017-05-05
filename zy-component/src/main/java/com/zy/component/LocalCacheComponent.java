@@ -363,7 +363,7 @@ public class LocalCacheComponent {
 
 class ThreadPool {
 	static final AtomicInteger counter = new AtomicInteger(0);
-	public final static ExecutorService executorService = Executors.newFixedThreadPool(12,r -> {
+	public final static ExecutorService executorService = Executors.newFixedThreadPool(13,r -> {
 		Thread thread = new Thread(r);
 		thread.setName(String.format("local-cache-component-refresh-%s-thread",counter.getAndIncrement()));
 		thread.setDaemon(true);

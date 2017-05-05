@@ -451,6 +451,11 @@
                   <a href="javascript:;" data-href="${ctx}/report/cityAgent"><i class="icon-bar-chart"></i> 服务商活跃数排行<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="profitMOM:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/profitMOM"><i class="icon-bar-chart"></i> 收入环比<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
             </ul>
           </li>
         </shiro:hasAnyPermissions>

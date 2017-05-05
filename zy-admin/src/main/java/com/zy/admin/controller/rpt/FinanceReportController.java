@@ -86,6 +86,7 @@ public class FinanceReportController {
 		List<Transfer> transfers = localCacheComponent.getTransfers();
 
 		List<Payment> filterPayments = payments.stream()
+			.filter(payment -> payment.getPaymentType() == Payment.PaymentType.订单支付)
 			.filter(payment -> {
 
 			boolean result = userIdMap.get(payment.getUserId()) != null;
@@ -374,6 +375,7 @@ public class FinanceReportController {
 		List<Transfer> transfers = localCacheComponent.getTransfers();
 
 		List<Payment> filterPayments = payments.stream()
+				.filter(payment -> payment.getPaymentType() == Payment.PaymentType.订单支付)
 				.filter(payment -> {
 
 					boolean result = userIdMap.get(payment.getUserId()) != null;
@@ -624,6 +626,7 @@ public class FinanceReportController {
 		List<Account> accounts = localCacheComponent.getAccounts();
 
 		List<Payment> filterPayments = payments.stream()
+			.filter(payment -> payment.getPaymentType() == Payment.PaymentType.订单支付)
 			.filter(payment -> {
 
 			boolean result = userIdMap.get(payment.getUserId()) != null;

@@ -124,6 +124,7 @@ public class AdminConstants {
 			sub.put("orderQuantity:view", "订单核算报表");
 			sub.put("orderQuantity:export", "订单核算报表(导出)");
 			sub.put("cityAgent:view", "服务商活跃数量排行");
+			sub.put("profitMOM:view", "收入环比");
 			/*sub.put("financeReport:export", "财务导出");*/
 	 		SETTING_PERMISSION_MAP.put("报表管理", sub);
 		}
