@@ -31,14 +31,32 @@
 	 });
 
 	 $('#btnSubmit').click(function() {
-	 	if ($('#otherPay').is(':checked')) {
+     var payChecked = $('#otherPay').is(':checked');
+     if (payChecked) {
 	 		var val = $('#phone').val();
 	 		if (!val) {
 			  messageShow('请输入代付人手机号', 'error', 2);
 			  return;
       }
     }
-	 	$('#form').submit();
+     var payTypeVal = $('input:radio[name="payType"]:checked').val();
+     if (payTypeVal == null && !payChecked) {
+      messageShow('请选择支付类型', 'error', 2);
+      return;
+    }
+
+    if (payTypeVal == '0' && !payChecked) {
+      $.dialog({
+        content : '您确定积分支付？',
+        callback : function(index) {
+          if (index == 1) {
+            $('#form').submit();
+          }
+        }
+      });
+      return;
+    }
+     $('#form').submit();
    });
  });
 </script>
@@ -72,7 +90,26 @@
         </div>
       </div>
 
-      <div class="list-title">支付方式</div><div class="list-group">
+      <div class="list-title">支付类型</div>
+      <div class="list-group">
+        <div class="list-item form-radio">
+          <label class="list-text" for="shengpay">盛付通支付</label>
+          <div class="list-unit">
+            <input id="shengpay" type="radio" name="payType" value="6" >
+            <label class="i-checked" for="shengpay"></label>
+          </div>
+        </div>
+        <div class="list-item form-radio">
+          <label class="list-text" for="otherPay">积分支付</label>
+          <div class="list-unit">
+            <input id="pointPay" type="radio" name="payType" value="0">
+            <label class="i-checked" for="pointPay"></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-title">支付方式</div>
+      <div class="list-group">
         <div class="list-item form-radio">
           <label class="list-text" for="userPay">自己支付</label>
           <div class="list-unit">

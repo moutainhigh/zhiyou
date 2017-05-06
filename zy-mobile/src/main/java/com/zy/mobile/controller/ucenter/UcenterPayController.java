@@ -275,7 +275,7 @@ public class UcenterPayController {
 	}
 
 	@RequestMapping(path = "/activityApply/payment", method = RequestMethod.POST)
-	public String paymentPay(@RequestParam Long activityId, String payerPhone, Model model, RedirectAttributes redirectAttributes,
+	public String paymentPay(@RequestParam Long activityId, String payerPhone, PayType payType, Model model, RedirectAttributes redirectAttributes,
 	                         Principal principal) {
 
 		Activity activity = activityService.findOne(activityId);
@@ -318,6 +318,20 @@ public class UcenterPayController {
 			return "redirect:/activity/" + activityId;
 		}
 
+		validate(payType, NOT_NULL, "pay type is null");
+		if (payType == PayType.余额) {
+			Payment payment = createPayment(activityApply, userId, activity.getTitle(), CurrencyType.积分, PayType.余额);
+
+			try {
+				paymentService.balancePay(payment.getId(), true);
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分支付成功"));
+			} catch (Exception e) {
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+				return "redirect:/u/pay/activityApply/" + activityId;
+			}
+			return "redirect:/activity/" + activityId;
+		}
+
 		model.addAttribute("payCreateMobile", shengPay(activityApply, userId, activity.getTitle()));
 		model.addAttribute("payUrl", URL_SHENGPAY);
 		return "shengpay/mobilePost";
@@ -342,12 +356,24 @@ public class UcenterPayController {
 	}
 
 	private PayCreateMobile shengPay(ActivityApply activityApply, Long userId, String title) {
+		Payment payment = createPayment(activityApply, userId, title, CurrencyType.现金, PayType.盛付通);
+
+		User user = userService.findOne(userId);
+		String registerIp = StringUtils.isBlank(user.getRegisterIp())? "127.0.0.1" : user.getRegisterIp();
+
+		PayCreateMobile payCreateMobile = shengPayMobileClient.getPayCreateUrl(new Date(), userId, user.getRegisterTime(), registerIp, "0"
+				, user.getNickname(), user.getPhone(), payment.getId(), title
+				, payment.getAmount1(), Constants.SHENGPAY_RETURN_MOBILE, Constants.SHENGPAY_NOTIFY_MOBILE, GcUtils.getHost());
+		return payCreateMobile;
+	}
+
+	private Payment createPayment(ActivityApply activityApply, Long userId, String title, CurrencyType currencyType, PayType payType) {
 		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(activityApply.getId()).paymentTypeEQ(PaymentType.活动报名).build());
 		Payment payment = payments.stream()
 				.filter(v -> (v.getPaymentStatus() == Payment.PaymentStatus.待支付 || v.getPaymentStatus() == Payment.PaymentStatus.待确认))
 				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
 				.filter(v -> v.getAmount1().equals(activityApply.getAmount()))
-				.filter(v -> v.getCurrencyType1() == CurrencyType.人民币)
+				.filter(v -> v.getCurrencyType1() == currencyType)
 				.filter(v -> v.getAmount2() == null)
 				.filter(v -> v.getCurrencyType2() == null)
 				.findFirst()
@@ -357,21 +383,14 @@ public class UcenterPayController {
 			payment = new Payment();
 			payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
 			payment.setAmount1(activityApply.getAmount());
-			payment.setCurrencyType1(CurrencyType.人民币);
+			payment.setCurrencyType1(currencyType);
 			payment.setPaymentType(PaymentType.活动报名);
 			payment.setRefId(activityApply.getId());
 			payment.setUserId(userId);
 			payment.setTitle(title);
-			payment.setPayType(PayType.盛付通);
+			payment.setPayType(payType);
 			payment = paymentService.create(payment);
 		}
-
-		User user = userService.findOne(userId);
-		String registerIp = StringUtils.isBlank(user.getRegisterIp())? "127.0.0.1" : user.getRegisterIp();
-
-		PayCreateMobile payCreateMobile = shengPayMobileClient.getPayCreateUrl(new Date(), userId, user.getRegisterTime(), registerIp, "0"
-				, user.getNickname(), user.getPhone(), payment.getId(), title
-				, payment.getAmount1(), Constants.SHENGPAY_RETURN_MOBILE, Constants.SHENGPAY_NOTIFY_MOBILE, GcUtils.getHost());
-		return payCreateMobile;
+		return payment;
 	}
 }
