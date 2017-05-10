@@ -423,7 +423,7 @@ public class UcenterPayController {
 	}
 
 	private PayCreateMobile shengPay(ActivityApply activityApply, Long userId, String title) {
-		Payment payment = createPayment(activityApply, userId, title, CurrencyType.现金, PayType.盛付通);
+		Payment payment = createPayment(activityApply, userId, title, CurrencyType.人民币, PayType.盛付通);
 
 		User user = userService.findOne(userId);
 		String registerIp = StringUtils.isBlank(user.getRegisterIp())? "127.0.0.1" : user.getRegisterIp();
