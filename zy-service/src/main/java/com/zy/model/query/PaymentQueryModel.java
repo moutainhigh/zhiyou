@@ -99,6 +99,7 @@ public class PaymentQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
+		fieldNames.add("isOuterCreated");
 		fieldNames.add("remark");
 		fieldNames.add("title");
 		fieldNames.add("refund1");

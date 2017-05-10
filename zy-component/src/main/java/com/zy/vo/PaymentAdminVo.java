@@ -61,6 +61,8 @@ public class PaymentAdminVo implements Serializable {
 	private String cancelRemark;
 	@Field(label = "备注")
 	private String remark;
+	@Field(label = "外部单据是否已经创建")
+	private Boolean isOuterCreated;
 	@Field(label = "外部sn")
 	private String outerSn;
 	@Field(label = "银行汇款截图")

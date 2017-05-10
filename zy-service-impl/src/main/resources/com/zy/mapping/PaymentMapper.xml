@@ -24,6 +24,7 @@
 		<result column="refund_remark" property="refundRemark" />
 		<result column="cancel_remark" property="cancelRemark" />
 		<result column="remark" property="remark" />
+		<result column="is_outer_created" property="isOuterCreated" />
 		<result column="outer_sn" property="outerSn" />
 		<result column="offline_image" property="offlineImage" />
 		<result column="offline_memo" property="offlineMemo" />
@@ -31,11 +32,9 @@
 		<result column="version" property="version" />
 	</resultMap>
 
-	<sql id="baseColumn">id,sn,user_id,title,pay_type,payment_type,ref_id,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,offline_image,offline_memo,operator_id,version</sql>
-
 	<insert id="insert" parameterType="com.zy.entity.fnc.Payment" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_payment` (sn,user_id,title,pay_type,payment_type,ref_id,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,offline_image,offline_memo,operator_id,version)
-	  values (#{sn},#{userId},#{title},#{payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{paymentType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{createdTime},#{expiredTime},#{paidTime},#{paymentStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount1},#{currencyType2,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount2},#{refund1},#{refund2},#{refundedTime},#{refundRemark},#{cancelRemark},#{remark},#{outerSn},#{offlineImage},#{offlineMemo},#{operatorId},#{version})
+	  insert into `fnc_payment` (sn,user_id,title,pay_type,payment_type,ref_id,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,is_outer_created,outer_sn,offline_image,offline_memo,operator_id,version)
+	  values (#{sn},#{userId},#{title},#{payType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{paymentType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{createdTime},#{expiredTime},#{paidTime},#{paymentStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{currencyType1,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount1},#{currencyType2,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount2},#{refund1},#{refund2},#{refundedTime},#{refundRemark},#{cancelRemark},#{remark},#{isOuterCreated},#{outerSn},#{offlineImage},#{offlineMemo},#{operatorId},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -65,6 +64,7 @@
 			refund_remark = #{refundRemark},
 			cancel_remark = #{cancelRemark},
 			remark = #{remark},
+			is_outer_created = #{isOuterCreated},
 			outer_sn = #{outerSn},
 			offline_image = #{offlineImage},
 			offline_memo = #{offlineMemo},
@@ -99,6 +99,7 @@
 					<when test="field == 'refundRemark'">refund_remark = #{payment.refundRemark},</when>
 					<when test="field == 'cancelRemark'">cancel_remark = #{payment.cancelRemark},</when>
 					<when test="field == 'remark'">remark = #{payment.remark},</when>
+					<when test="field == 'isOuterCreated'">is_outer_created = #{payment.isOuterCreated},</when>
 					<when test="field == 'outerSn'">outer_sn = #{payment.outerSn},</when>
 					<when test="field == 'offlineImage'">offline_image = #{payment.offlineImage},</when>
 					<when test="field == 'offlineMemo'">offline_memo = #{payment.offlineMemo},</when>
@@ -111,14 +112,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		<include refid="baseColumn"/>
+		id,sn,user_id,title,pay_type,payment_type,ref_id,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,is_outer_created,outer_sn,offline_image,offline_memo,operator_id,version
 		from `fnc_payment`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.PaymentQueryModel">
 		select
-		<include refid="baseColumn"/>
+		id,sn,user_id,title,pay_type,payment_type,ref_id,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,is_outer_created,outer_sn,offline_image,offline_memo,operator_id,version
 		from `fnc_payment`
 		<where>
 			<if test="paymentTypeEQ != null">
@@ -228,6 +229,8 @@
 			</if>
 		</where>
 	</select>
+
+	<sql id="baseColumn">id,sn,user_id,title,pay_type,payment_type,ref_id,created_time,expired_time,paid_time,payment_status,currency_type1,amount1,currency_type2,amount2,refund1,refund2,refunded_time,refund_remark,cancel_remark,remark,outer_sn,offline_image,offline_memo,operator_id,version</sql>
 
 	<select id="findBySn" resultMap="baseResultMap" parameterType="string">
 		select *
