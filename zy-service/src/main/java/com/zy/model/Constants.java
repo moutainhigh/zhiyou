@@ -82,6 +82,9 @@ public  interface Constants {
     String WEIXIN_PAY_NOTIFY = "http://www.zhi-you.net/notify/weixinPay";
     int WEIXIN_PAY_EXPIRE_IN_MINUTES = 60 * 2;
 
+    /* fy weixin wap pay */
+    String FY_WEIXIN_PAY_NOTIFY = "http://www.zhi-you.net/notify/fyWeixinPay";
+
     /* weixin wap pay */
     String WEIXIN_MP_PAY_NOTIFY = "http://m.zhi-you.net/notify/weixinPay";
     String WEIXIN_MP_PAY_STATE = "weixinMpPay";

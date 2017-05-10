@@ -166,6 +166,11 @@ public class Payment implements Serializable {
 	@Column(length = 1000)
 	private String remark;
 
+	@NotNull
+	@Field(label = "外部单据是否已经创建")
+	@View
+	private Boolean isOuterCreated;
+
 	@Field(label = "外部sn")
 	@View
 	private String outerSn;

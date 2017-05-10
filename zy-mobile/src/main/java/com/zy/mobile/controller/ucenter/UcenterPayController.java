@@ -2,11 +2,16 @@ package com.zy.mobile.controller.ucenter;
 
 import com.zy.common.exception.BizException;
 import com.zy.common.extend.BigDecimalBinder;
+import com.zy.common.extend.StringBinder;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.support.fuiou.FuiouClient;
+import com.zy.common.support.fuiou.req.FuiouWeixinPayReq;
+import com.zy.common.support.fuiou.res.FuiouWeixinPayRes;
 import com.zy.common.support.shengpay.PayCreateMobile;
 import com.zy.common.support.shengpay.ShengPayClient;
 import com.zy.common.support.shengpay.ShengPayMobileClient;
 import com.zy.common.util.Identities;
+import com.zy.common.util.JsonUtils;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
 import com.zy.entity.fnc.*;
@@ -81,60 +86,100 @@ public class UcenterPayController {
 	private ShengPayMobileClient shengPayMobileClient;
 
 	@Autowired
-	private WxMpConfigStorage wxMpConfigStorage;
-
-	@Autowired
-	private WxMpService wxMpService;
+	private FuiouClient fuiouClient;
 
 	public static final String URL_SHENGPAY = "https://api.shengpay.com/html5-gateway/express.htm?page=mobile";
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String depositPay(@BigDecimalBinder BigDecimal money, @RequestParam PayType payType, Model model,
-			Principal principal) {
+	public String pay(@BigDecimalBinder BigDecimal money, @RequestParam PayType payType, @StringBinder String paymentSn, Model model, Principal principal) {
 
 		final BigDecimal zero = new BigDecimal("0.00");
 		String title = "积分余额充值";
 		Long userId = principal.getUserId();
 		validate(money, v -> v.compareTo(zero) > 0, "money must be more than 0.00");
 
-		DepositQueryModel depositQueryModel = new DepositQueryModel();
-		depositQueryModel.setUserIdEQ(principal.getUserId());
-		depositQueryModel.setDepositStatusIN(new DepositStatus[] {DepositStatus.待充值});
-		depositQueryModel.setOrderBy("createdTime");
-		depositQueryModel.setDirection(Direction.DESC);
-		List<Deposit> deposits = depositService.findAll(depositQueryModel);
-		Deposit deposit = deposits.stream().filter(v -> v.getPayType() == payType)
-				.filter(v -> (v.getDepositStatus() == DepositStatus.待充值))
-				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
-				.filter(v -> v.getAmount1().equals(money) && v.getCurrencyType1() == CurrencyType.现金
-						&& v.getCurrencyType2() == null)
-				.findFirst().orElse(null);
+		if (StringUtils.isBlank(paymentSn)) {
+			final BigDecimal amount = money;
+			DepositQueryModel depositQueryModel = new DepositQueryModel();
+			depositQueryModel.setUserIdEQ(principal.getUserId());
+			depositQueryModel.setDepositStatusIN(new DepositStatus[] {DepositStatus.待充值});
+			depositQueryModel.setOrderBy("createdTime");
+			depositQueryModel.setDirection(Direction.DESC);
+			List<Deposit> deposits = depositService.findAll(depositQueryModel);
+			Deposit deposit = deposits.stream().filter(v -> v.getPayType() == payType)
+					.filter(v -> (v.getDepositStatus() == DepositStatus.待充值))
+					.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
+					.filter(v -> v.getAmount1().equals(amount) && v.getCurrencyType1() == CurrencyType.现金
+							&& v.getCurrencyType2() == null)
+					.findFirst().orElse(null);
 
-		if (deposit == null) {
-			deposit = new Deposit();
-			deposit.setPayType(payType);
-			deposit.setCurrencyType1(CurrencyType.现金);
-			deposit.setTitle(title);
-			deposit.setAmount1(money);
-			deposit.setUserId(userId);
-			deposit.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_DEPOSIT_OFFLINE_EXPIRE_IN_MINUTES));
-			deposit = depositService.create(deposit);
-		}
+			if (deposit == null) {
+				deposit = new Deposit();
+				deposit.setPayType(payType);
+				deposit.setCurrencyType1(CurrencyType.现金);
+				deposit.setTitle(title);
+				deposit.setAmount1(money);
+				deposit.setUserId(userId);
+				deposit.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_DEPOSIT_OFFLINE_EXPIRE_IN_MINUTES));
+				deposit = depositService.create(deposit);
+			}
 
-		if (payType == PayType.银行汇款) {
-			model.addAttribute("title", deposit.getTitle());
-			model.addAttribute("sn", deposit.getSn());
-			model.addAttribute("amount", deposit.getAmount1());
-			model.addAttribute("refId", deposit.getId());
-			model.addAttribute("offlineImage", deposit.getOfflineImage());
-			model.addAttribute("offlineMemo", deposit.getOfflineMemo());
-			return "ucenter/account/moneyDepositOffline";
-		} else if(payType == PayType.盛付通) {
-			String payUrl = shengPayClient.getPayCreateUrl(deposit.getTitle(), deposit.getSn(), deposit.getAmount1(), new Date(), GcUtils.getHost(), Constants.SHENGPAY_RETURN, Constants.SHENGPAY_NOTIFY, Constants.URL_MOBILE);
-			return "redirect:" + payUrl;
+			if (payType == PayType.银行汇款) {
+				model.addAttribute("title", deposit.getTitle());
+				model.addAttribute("sn", deposit.getSn());
+				model.addAttribute("amount", deposit.getAmount1());
+				model.addAttribute("refId", deposit.getId());
+				model.addAttribute("offlineImage", deposit.getOfflineImage());
+				model.addAttribute("offlineMemo", deposit.getOfflineMemo());
+				return "ucenter/account/moneyDepositOffline";
+			} else if(payType == PayType.盛付通) {
+				String payUrl = shengPayClient.getPayCreateUrl(deposit.getTitle(), deposit.getSn(), deposit.getAmount1(), new Date(), GcUtils.getHost(), Constants.SHENGPAY_RETURN, Constants.SHENGPAY_NOTIFY, Constants.URL_MOBILE);
+				return "redirect:" + payUrl;
+			} else {
+				return null;
+			}
+		} else if (StringUtils.isNotBlank(paymentSn) && paymentSn.startsWith("ZF")) {
+			Payment payment = paymentService.findBySn(paymentSn);
+			validate(payment, NOT_NULL, "payment is null!");
+			validate(payment, v -> v.getPayType() == PayType.富友支付, "payment payType is not fuiouPay!");
+			User user = userService.findOne(payment.getUserId());
+
+			String sn = payment.getSn();
+			Date expiredTime = DateUtils.addMinutes(new Date(), Constants.WEIXIN_PAY_EXPIRE_IN_MINUTES);
+			int weixinAmount = (payment.getAmount1().multiply(new BigDecimal("100"))).intValue();
+			String remark = Identities.uuid2();
+			FuiouWeixinPayReq fuiouWeixinPayReq = buildFuiouWeixinPayReq(user.getPhone(), user.getOpenId(), sn, weixinAmount + "", remark);
+			FuiouWeixinPayRes fuiouWeixinPayRes = fuiouClient.getWeixinPayInfo(fuiouWeixinPayReq);
+			model.addAttribute("fuiouWeixinPayRes", fuiouWeixinPayRes);
+			logger.error("fuiouWeixinPayReq:" + JsonUtils.toJson(fuiouWeixinPayReq));
+			logger.error("fuiouWeixinPayRes:" + JsonUtils.toJson(fuiouWeixinPayRes));
+
+			payment.setRemark(remark);
+			payment.setExpiredTime(expiredTime);
+			payment.setOuterSn(fuiouWeixinPayRes.getMchnt_order_no());
+			payment.setIsOuterCreated(true);
+			paymentService.update(payment);
+
+			model.addAttribute("title", payment.getTitle());
+			model.addAttribute("amount", payment.getAmount1());
+			return "ucenter/pay/weixinPay";
 		} else {
 			return null;
 		}
+
+	}
+
+	private FuiouWeixinPayReq buildFuiouWeixinPayReq(String userPhone, String userOpenId, String sn, String amount, String remark) {
+		FuiouWeixinPayReq fuiouWeixinPayReq = new FuiouWeixinPayReq();
+		fuiouWeixinPayReq.setPhone(userPhone);
+		fuiouWeixinPayReq.setMchCreateIp(GcUtils.getHost());
+		fuiouWeixinPayReq.setNotifyUrl(Constants.FY_WEIXIN_PAY_NOTIFY);
+		fuiouWeixinPayReq.setOpenid(userOpenId);
+		fuiouWeixinPayReq.setOutOrderNum(sn);
+		fuiouWeixinPayReq.setTranAmt(amount);
+		fuiouWeixinPayReq.setTerm_id("ft00001");
+		fuiouWeixinPayReq.setRemark(remark);
+		return fuiouWeixinPayReq;
 	}
 
 	@RequestMapping(path = "/deposit", method = RequestMethod.GET)
@@ -269,7 +314,7 @@ public class UcenterPayController {
 	public String paymentPay(@RequestParam Long activityId, String payerPhone, PayType payType, Model model, RedirectAttributes redirectAttributes,
 	                         Principal principal) {
 
-		if (payType == PayType.微信公众号) {
+		if (payType == PayType.富友支付) {
 			return "redirect:/u/pay/activity/weixin?activityId=" + activityId;
 		}
 
@@ -354,35 +399,10 @@ public class UcenterPayController {
 			return "redirect:/activity/" + activityId;
 		}
 
-		Payment payment = createPayment(activityApply, userId, activity.getTitle(), CurrencyType.现金, PayType.微信公众号);
+		PayType payType = PayType.富友支付;
+		Payment payment = createPayment(activityApply, userId, activity.getTitle(), CurrencyType.人民币, payType);
 
-		User user = userService.findOne(userId);
-		String openId = user.getOpenId();
-		String sn = payment.getSn();
-		Date expiredTime = DateUtils.addMinutes(new Date(), Constants.WEIXIN_PAY_EXPIRE_IN_MINUTES);
-		int weixinAmount = (payment.getAmount1().multiply(new BigDecimal("100"))).intValue();
-
-		String tradeType = "JSAPI"; // tradeType 交易类型 JSAPI，NATIVE，APP，WAP
-		WxMpPrepayIdResult wxMpPrepayIdResult = wxMpService.getPrepayId(getPrepayIdModel(openId, sn, weixinAmount, activity.getTitle(), tradeType,
-				GcUtils.getHost(), Constants.WEIXIN_MP_PAY_NOTIFY));
-		String prepayId = wxMpPrepayIdResult.getPrepay_id();
-
-		if (StringUtils.isBlank(prepayId)) {
-			throw new BizException(BizCode.ERROR, "获取微信预支付交易会话标识码失败");
-		}
-
-		payment = paymentService.modifyOuterSn(payment.getId(), prepayId, expiredTime);
-
-		String url = request.getRequestURL().toString();
-		String queryStr = request.getQueryString();
-		if (StringUtils.isNotBlank(queryStr)) {
-			url = url + '?' + queryStr;
-		}
-		model.addAttribute("title", activity.getTitle());
-		model.addAttribute("amount", activity.getAmount());
-		model.addAttribute("weixinJsModel", getWeixinJsModel(url));
-		model.addAttribute("weixinPayModel", getWeixinPayModel(payment.getOuterSn()));
-		return "ucenter/pay/weixinPay";
+		return "redirect:/u/pay?paymentSn=" + payment.getSn() + "&payType=" + payType.ordinal();
 	}
 
 	@RequestMapping(path = "/activityApply/payment/{activityApplyId}", method = RequestMethod.GET)
@@ -441,55 +461,4 @@ public class UcenterPayController {
 		return payment;
 	}
 
-	private Map<String, String> getPrepayIdModel(String openId, String outTradeNo, int amount, String body, String tradeType, String ip, String notifyUrl) {
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("appid", wxMpConfigStorage.getAppId());
-		params.put("mch_id", wxMpConfigStorage.getPartnerId());
-		params.put("body", body);
-		params.put("out_trade_no", outTradeNo);
-		params.put("total_fee", amount + "");
-		params.put("spbill_create_ip", ip);
-		params.put("notify_url", notifyUrl);
-		params.put("trade_type", tradeType);
-		params.put("openid", openId);
-		return params;
-	}
-
-	private Map<String, String> getWeixinJsModel(String url) {
-		WxJsapiSignature wxJsapiSignature;
-		Map<String, String> params = new HashMap<>();
-		try {
-			wxJsapiSignature = wxMpService.createJsapiSignature(url);
-			params.put("appId", wxJsapiSignature.getAppid());
-			params.put("timestamp", wxJsapiSignature.getTimestamp() + "");
-			params.put("nonceStr", wxJsapiSignature.getNoncestr());
-			params.put("signature", wxJsapiSignature.getSignature());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		return params;
-	}
-
-	public Map<String, String> getWeixinPayModel(String prepayId) {
-		Map<String, String> result = new HashMap<>();
-		Map<String, String> mapForSign = new TreeMap<>();
-		Long timeStamp = System.currentTimeMillis() / 1000;
-		String nonceStr = Identities.uuid2();
-		String pkg = "prepay_id=" + prepayId;
-		String signType = "MD5";
-		String paySign = null;
-		mapForSign.put("appId", wxMpConfigStorage.getAppId());
-		mapForSign.put("timeStamp", timeStamp.toString());
-		mapForSign.put("nonceStr", nonceStr);
-		mapForSign.put("package", pkg);
-		mapForSign.put("signType", signType);
-		paySign = WxCryptUtil.createSign(mapForSign, wxMpConfigStorage.getPartnerKey());
-
-		result.put("timeStamp", timeStamp.toString());
-		result.put("nonceStr", nonceStr);
-		result.put("pkg", pkg);
-		result.put("signType", signType);
-		result.put("paySign", paySign);
-		return result;
-	}
 }

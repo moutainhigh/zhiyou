@@ -17,31 +17,32 @@
 
 <script>
 
-  wx.config({
-	debug: false,
-	appId: '${weixinJsModel.appId}',
-	timestamp: ${weixinJsModel.timestamp},
-	nonceStr: '${weixinJsModel.nonceStr}',
-	signature: '${weixinJsModel.signature}',
-	jsApiList: ['wxChoosePay']
-  });
   $(function() {
     $('#btnPay').click(function() {
-      wx.chooseWXPay({
-    	 "timestamp": "${weixinPayModel.timeStamp}",
-    	 "nonceStr":  "${weixinPayModel.nonceStr}",
-    	 "package":	"${weixinPayModel.pkg}",
-    	 "signType":	"${weixinPayModel.signType}",
-    	 "paySign":	"${weixinPayModel.paySign}",
-    	 "success":	function(res) {
-    		 //printMap(res);
-    		 alert('支付成功');
-    		 window.location.href="${ctx}/u";
-    	 },
-    	 "fail": function(res) {
-    		 alert('支付失败, 原因' + JSON.stringify(res));
-    	 }
-      });
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+          "appId": "${fuiouWeixinPayRes.sdk_appid}", //公众号名称，由商户传入
+          "timeStamp": "${fuiouWeixinPayRes.sdk_timestamp}", //时间戳，自1970年以来的秒数
+          "nonceStr": "${fuiouWeixinPayRes.sdk_noncestr}", //随机串
+          "package": "${fuiouWeixinPayRes.sdk_package}",
+          "signType": "${fuiouWeixinPayRes.sdk_signtype}", //微信签名方式:
+          "paySign": "${fuiouWeixinPayRes.sdk_paysign}" //微信签名
+        },
+        function(res){
+          // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+          alert(res.err_msg);
+          if (res.err_msg == "get_brand_wcpay_request:ok") {
+            alert("支付成功");
+            window.location.href="${ctx}/u/";
+          }
+          if (res.err_msg == "get_brand_wcpay_request:cancel") {
+            alert("交易取消");
+          }
+          if (res.err_msg == "get_brand_wcpay_request:fail") {
+            alert("支付失败");
+          }
+        }
+      );
     });
   });
 </script>

@@ -96,4 +96,9 @@
 		<constructor-arg index="1" value="${shengPayMobile.key}"/>
 	</bean>
 
+	<bean id="fuiouClient" class="com.zy.common.support.fuiou.FuiouClient">
+		<constructor-arg index="0" value="${fuiou.fyMerchantCD}"/>
+		<constructor-arg index="1" ref="closeableHttpClient"/>
+	</bean>
+
 </beans>

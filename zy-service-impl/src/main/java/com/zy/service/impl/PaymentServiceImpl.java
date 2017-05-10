@@ -71,6 +71,14 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
+	public void update(Payment payment) {
+		validate(payment);
+		if (paymentMapper.update(payment) == 0) {
+			throw new ConcurrentException();
+		}
+	}
+
+	@Override
 	public Page<Payment> findPage(@NotNull PaymentQueryModel paymentQueryModel) {
 		if (paymentQueryModel.getPageNumber() == null)
 			paymentQueryModel.setPageNumber(0);
@@ -128,6 +136,7 @@ public class PaymentServiceImpl implements PaymentService {
 		payment.setSn(ServiceUtils.generatePaymentSn());
 		payment.setCreatedTime(new Date());
 		payment.setPaymentStatus(PaymentStatus.待支付);
+		payment.setIsOuterCreated(false);
 		payment.setVersion(0);
 		validate(payment);
 		paymentMapper.insert(payment);
@@ -140,11 +149,11 @@ public class PaymentServiceImpl implements PaymentService {
 		validate(payment, NOT_NULL, "payment id " + id + "is not found null");
 
 		PayType payType = payment.getPayType();
-		if (payType != PayType.支付宝 && payType != PayType.微信 && payType != PayType.支付宝手机 && payType != PayType.微信公众号 && payType != PayType.盛付通) {
+		if (payType != PayType.支付宝 && payType != PayType.微信 && payType != PayType.支付宝手机 && payType != PayType.富友支付 && payType != PayType.盛付通) {
 			throw new BizException(BizCode.ERROR, "支付方式错误");
 		}
 
-		if (payType != PayType.微信 && payType != PayType.微信公众号 && payType != PayType.盛付通 &&  StringUtils.isBlank(outerSn)) {
+		if (payType != PayType.微信 && payType != PayType.富友支付 && payType != PayType.盛付通 &&  StringUtils.isBlank(outerSn)) {
 			throw new BizException(BizCode.ERROR, "outer sn参数缺失");
 		}
 

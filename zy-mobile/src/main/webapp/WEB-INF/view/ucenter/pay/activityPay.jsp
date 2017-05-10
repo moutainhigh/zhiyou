@@ -109,7 +109,7 @@
         <div class="list-item form-radio">
           <label class="list-text" for="weixinPay">微信支付</label>
           <div class="list-unit">
-            <input id="weixinPay" type="radio" name="payType" value="5">
+            <input id="weixinPay" type="radio" name="payType" value="7">
             <label class="i-checked" for="weixinPay"></label>
           </div>
         </div>

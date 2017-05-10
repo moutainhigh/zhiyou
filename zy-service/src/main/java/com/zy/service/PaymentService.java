@@ -11,6 +11,8 @@ public interface PaymentService {
 
 	Payment findOne(Long id);
 
+	void update(Payment payment);
+
 	long count(PaymentQueryModel paymentQueryModel);
 	
 	Page<Payment> findPage(PaymentQueryModel paymentQueryModel);
