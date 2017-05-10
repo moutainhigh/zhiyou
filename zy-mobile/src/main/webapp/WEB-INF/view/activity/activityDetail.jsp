@@ -16,44 +16,7 @@
 
 <link href="${stccdn}/css/activity.css" rel="stylesheet" />
 <%@ include file="/WEB-INF/view/include/weixinJsApi.jsp"%>
-<script type="text/javascript">
-  $(function() {
-    wx.config(WeixinApi.getConfig([ 'onMenuShareTimeline', 'onMenuShareAppMessage' ]));
-  });
-  
-  /* wx.error(function (res) {
-    alert(res);
-  }); */
-  
-  wx.ready(function() {
-    wx.onMenuShareTimeline({
-      title: '优检一生，为爱而生', // 分享标题
-      link: '${url}', // 分享链接
-      imgUrl: '${activity.imageBig}', // 分享图标
-      success: function() {
-       // 用户确认分享后执行的回调函数
-      },
-      cancel: function() {
-       // 用户取消分享后执行的回调函数
-      }
-    });
-     
-    wx.onMenuShareAppMessage({
-      title: '优检一生，为爱而生', // 分享标题
-      desc: '${activity.title}', // 分享描述
-      link: '${url}', // 分享链接
-      imgUrl: '${activity.imageBig}', // 分享图标
-      type: '', // 分享类型,music、video或link，不填默认为link
-      dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-      success: function() {
-       // 用户确认分享后执行的回调函数
-      },
-      cancel: function() {
-      // 用户取消分享后执行的回调函数
-      }
-    });
-  });
-</script>
+
 <script>
   $(function() {
     $('.tab-nav > a').tabs('.tab-content');
@@ -303,7 +266,7 @@
         <a class="flex-3 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-circle-o-notch"></i> 待他人付款</div></a>
       </c:if>
       <c:if test="${toPay and empty payerId}">
-        <a class="flex-3 bg-green fs-14 font-white" href="${ctx}/u/pay/activityApply/${activity.id}"><div><i class="fa fa-hand-o-right"></i> 点击付费</div></a>
+        <a class="flex-3 bg-green fs-14 font-white" href="${ctx}/u/activity/activityApply/${activity.id}"><div><i class="fa fa-hand-o-right"></i> 点击付费</div></a>
       </c:if>
     </c:if>
     <c:if test="${!isApplied}">

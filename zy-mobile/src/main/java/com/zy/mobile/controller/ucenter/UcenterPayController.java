@@ -6,6 +6,7 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.shengpay.PayCreateMobile;
 import com.zy.common.support.shengpay.ShengPayClient;
 import com.zy.common.support.shengpay.ShengPayMobileClient;
+import com.zy.common.util.Identities;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
 import com.zy.entity.fnc.*;
@@ -22,6 +23,11 @@ import com.zy.model.query.PaymentQueryModel;
 import com.zy.service.*;
 import com.zy.util.GcUtils;
 import io.gd.generator.api.query.Direction;
+import me.chanjar.weixin.common.bean.WxJsapiSignature;
+import me.chanjar.weixin.common.util.crypto.WxCryptUtil;
+import me.chanjar.weixin.mp.api.WxMpConfigStorage;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.result.WxMpPrepayIdResult;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -35,9 +41,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.zy.common.util.ValidateUtils.*;
 
@@ -73,6 +79,12 @@ public class UcenterPayController {
 
 	@Autowired
 	private ShengPayMobileClient shengPayMobileClient;
+
+	@Autowired
+	private WxMpConfigStorage wxMpConfigStorage;
+
+	@Autowired
+	private WxMpService wxMpService;
 
 	public static final String URL_SHENGPAY = "https://api.shengpay.com/html5-gateway/express.htm?page=mobile";
 
@@ -253,30 +265,13 @@ public class UcenterPayController {
 		}
 	}
 
-	@RequestMapping(path = "/activityApply/{activityId}", method = RequestMethod.GET)
-	public String orderPay(@PathVariable Long activityId, Model model, Principal principal) {
-
-		Activity activity = activityService.findOne(activityId);
-		validate(activity, NOT_NULL, "activity id " + activityId + " not found");
-
-		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, principal.getUserId());
-		validate(activityApply, NOT_NULL, "activity apply id" + activityId + " not found");
-		if(!activityApply.getUserId().equals(principal.getUserId())){
-			throw new BizException(BizCode.ERROR, "非自己的订单, 不能操作");
-		}
-		if(activityApply.getActivityApplyStatus() != ActivityApply.ActivityApplyStatus.已报名){
-			return "redirect:/activity/" + activityId;
-		}
-
-		model.addAttribute("title", activity.getTitle());
-		model.addAttribute("activityId", activityId);
-		model.addAttribute("amount", activityApply.getAmount());
-		return "ucenter/pay/activityPay";
-	}
-
 	@RequestMapping(path = "/activityApply/payment", method = RequestMethod.POST)
 	public String paymentPay(@RequestParam Long activityId, String payerPhone, PayType payType, Model model, RedirectAttributes redirectAttributes,
 	                         Principal principal) {
+
+		if (payType == PayType.微信公众号) {
+			return "redirect:/u/pay/activity/weixin?activityId=" + activityId;
+		}
 
 		Activity activity = activityService.findOne(activityId);
 		validate(activity, NOT_NULL, "activity id " + activityId + " not found");
@@ -288,21 +283,22 @@ public class UcenterPayController {
 			return "redirect:/activity/" + activityId;
 		}
 
+		//他人代付
 		Long userId = activityApply.getUserId();
 		if (StringUtils.isNotBlank(payerPhone)) {
 			User payer = userService.findByPhone(payerPhone);
 			if (payer == null) {
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("手机号不存在"));
-				return "redirect:/u/pay/activityApply/" + activityId;
+				return "redirect:/u/activity/activityApply/" + activityId;
 			}
 			if (payer.getUserType() != User.UserType.代理) {
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("待付人必须是代理"));
-				return "redirect:/u/pay/activityApply/" + activityId;
+				return "redirect:/u/activity/activityApply/" + activityId;
 			}
 			Long payerId = payer.getId();
 			if (userId.equals(payerId)) {
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请输入他人的手机号"));
-				return "redirect:/u/pay/activityApply/" + activityId;
+				return "redirect:/u/activity/activityApply/" + activityId;
 			}
 
 			activityApply.setPayerUserId(payerId);
@@ -311,6 +307,7 @@ public class UcenterPayController {
 			return "redirect:/activity/" + activityId;
 		}
 
+		// 自己支付
 		if(!userId.equals(principal.getUserId())){
 			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
 		}
@@ -327,7 +324,7 @@ public class UcenterPayController {
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分支付成功"));
 			} catch (Exception e) {
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-				return "redirect:/u/pay/activityApply/" + activityId;
+				return "redirect:/u/activity/activityApply/" + activityId;
 			}
 			return "redirect:/activity/" + activityId;
 		}
@@ -335,7 +332,57 @@ public class UcenterPayController {
 		model.addAttribute("payCreateMobile", shengPay(activityApply, userId, activity.getTitle()));
 		model.addAttribute("payUrl", URL_SHENGPAY);
 		return "shengpay/mobilePost";
+	}
 
+	@RequestMapping(path = "/activity/weixin", method = RequestMethod.GET)
+	public String activityWXPay(@RequestParam Long activityId, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+		Activity activity = activityService.findOne(activityId);
+		validate(activity, NOT_NULL, "activity id " + activityId + " not found");
+
+		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, principal.getUserId());
+		validate(activityApply, NOT_NULL, "activity apply id" + activityId + " not found");
+		if (activityApply.getPayerUserId() != null) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("请等待他人付款"));
+			return "redirect:/activity/" + activityId;
+		}
+
+		Long userId = activityApply.getUserId();
+		if(!userId.equals(principal.getUserId())){
+			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
+		}
+		if(activityApply.getActivityApplyStatus() != ActivityApply.ActivityApplyStatus.已报名){
+			return "redirect:/activity/" + activityId;
+		}
+
+		Payment payment = createPayment(activityApply, userId, activity.getTitle(), CurrencyType.现金, PayType.微信公众号);
+
+		User user = userService.findOne(userId);
+		String openId = user.getOpenId();
+		String sn = payment.getSn();
+		Date expiredTime = DateUtils.addMinutes(new Date(), Constants.WEIXIN_PAY_EXPIRE_IN_MINUTES);
+		int weixinAmount = (payment.getAmount1().multiply(new BigDecimal("100"))).intValue();
+
+		String tradeType = "JSAPI"; // tradeType 交易类型 JSAPI，NATIVE，APP，WAP
+		WxMpPrepayIdResult wxMpPrepayIdResult = wxMpService.getPrepayId(getPrepayIdModel(openId, sn, weixinAmount, activity.getTitle(), tradeType,
+				GcUtils.getHost(), Constants.WEIXIN_MP_PAY_NOTIFY));
+		String prepayId = wxMpPrepayIdResult.getPrepay_id();
+
+		if (StringUtils.isBlank(prepayId)) {
+			throw new BizException(BizCode.ERROR, "获取微信预支付交易会话标识码失败");
+		}
+
+		payment = paymentService.modifyOuterSn(payment.getId(), prepayId, expiredTime);
+
+		String url = request.getRequestURL().toString();
+		String queryStr = request.getQueryString();
+		if (StringUtils.isNotBlank(queryStr)) {
+			url = url + '?' + queryStr;
+		}
+		model.addAttribute("title", activity.getTitle());
+		model.addAttribute("amount", activity.getAmount());
+		model.addAttribute("weixinJsModel", getWeixinJsModel(url));
+		model.addAttribute("weixinPayModel", getWeixinPayModel(payment.getOuterSn()));
+		return "ucenter/pay/weixinPay";
 	}
 
 	@RequestMapping(path = "/activityApply/payment/{activityApplyId}", method = RequestMethod.GET)
@@ -392,5 +439,57 @@ public class UcenterPayController {
 			payment = paymentService.create(payment);
 		}
 		return payment;
+	}
+
+	private Map<String, String> getPrepayIdModel(String openId, String outTradeNo, int amount, String body, String tradeType, String ip, String notifyUrl) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("appid", wxMpConfigStorage.getAppId());
+		params.put("mch_id", wxMpConfigStorage.getPartnerId());
+		params.put("body", body);
+		params.put("out_trade_no", outTradeNo);
+		params.put("total_fee", amount + "");
+		params.put("spbill_create_ip", ip);
+		params.put("notify_url", notifyUrl);
+		params.put("trade_type", tradeType);
+		params.put("openid", openId);
+		return params;
+	}
+
+	private Map<String, String> getWeixinJsModel(String url) {
+		WxJsapiSignature wxJsapiSignature;
+		Map<String, String> params = new HashMap<>();
+		try {
+			wxJsapiSignature = wxMpService.createJsapiSignature(url);
+			params.put("appId", wxJsapiSignature.getAppid());
+			params.put("timestamp", wxJsapiSignature.getTimestamp() + "");
+			params.put("nonceStr", wxJsapiSignature.getNoncestr());
+			params.put("signature", wxJsapiSignature.getSignature());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		return params;
+	}
+
+	public Map<String, String> getWeixinPayModel(String prepayId) {
+		Map<String, String> result = new HashMap<>();
+		Map<String, String> mapForSign = new TreeMap<>();
+		Long timeStamp = System.currentTimeMillis() / 1000;
+		String nonceStr = Identities.uuid2();
+		String pkg = "prepay_id=" + prepayId;
+		String signType = "MD5";
+		String paySign = null;
+		mapForSign.put("appId", wxMpConfigStorage.getAppId());
+		mapForSign.put("timeStamp", timeStamp.toString());
+		mapForSign.put("nonceStr", nonceStr);
+		mapForSign.put("package", pkg);
+		mapForSign.put("signType", signType);
+		paySign = WxCryptUtil.createSign(mapForSign, wxMpConfigStorage.getPartnerKey());
+
+		result.put("timeStamp", timeStamp.toString());
+		result.put("nonceStr", nonceStr);
+		result.put("pkg", pkg);
+		result.put("signType", signType);
+		result.put("paySign", paySign);
+		return result;
 	}
 }

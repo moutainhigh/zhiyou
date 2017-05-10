@@ -4,6 +4,7 @@ import com.zy.common.model.query.Page;
 import com.zy.entity.fnc.Payment;
 import com.zy.model.query.PaymentQueryModel;
 
+import java.util.Date;
 import java.util.List;
 
 public interface PaymentService {
@@ -27,6 +28,8 @@ public interface PaymentService {
 	void balancePay(Long paymentId, boolean checkBalance);
 	
 	void modifyOffline(Long paymentId, String offlineImage, String offlineMemo);
+
+	Payment modifyOuterSn(Long paymentId, String outerSn, Date expiredTime);
 
 	Payment create(Payment payment);
 

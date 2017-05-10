@@ -106,6 +106,13 @@
             <label class="i-checked" for="pointPay"></label>
           </div>
         </div>
+        <div class="list-item form-radio">
+          <label class="list-text" for="otherPay">微信支付</label>
+          <div class="list-unit">
+            <input id="weixinPay" type="radio" name="payType" value="5">
+            <label class="i-checked" for="pointPay"></label>
+          </div>
+        </div>
       </div>
 
       <div class="list-title">支付方式</div>

@@ -344,6 +344,21 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
+	public Payment modifyOuterSn(@NotNull Long paymentId, @NotBlank String outerSn, @NotNull Date expiredTime) {
+		Payment payment = paymentMapper.findOne(paymentId);
+		validate(payment, NOT_NULL, "payment id " + paymentId + " is not found");
+
+		if (StringUtils.isNotBlank(payment.getOuterSn())) {
+			return payment;
+		}
+
+		payment.setOuterSn(outerSn);
+		payment.setExpiredTime(expiredTime);
+		paymentMapper.update(payment);
+		return paymentMapper.findOne(paymentId);
+	}
+
+	@Override
 	public void cancel(@NotNull Long id) {
 		Payment payment = paymentMapper.findOne(id);
 		validate(payment, NOT_NULL, "payment id " + id + "is not found");
