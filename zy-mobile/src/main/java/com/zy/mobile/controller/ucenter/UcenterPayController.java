@@ -90,7 +90,7 @@ public class UcenterPayController {
 
 	public static final String URL_SHENGPAY = "https://api.shengpay.com/html5-gateway/express.htm?page=mobile";
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping
 	public String pay(@BigDecimalBinder BigDecimal money, @RequestParam PayType payType, @StringBinder String paymentSn, Model model, Principal principal) {
 
 		final BigDecimal zero = new BigDecimal("0.00");
