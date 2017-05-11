@@ -21,25 +21,25 @@
 <script type="text/javascript">
  $(function() {
 
-	 $('#btnSubmit').click(function() {
-     var payTypeVal = $('input:radio[name="payType"]:checked').val();
-     if (payTypeVal == null) {
-       messageShow('请选择支付类型', 'error', 2);
-       return;
-     }
+	 $('#userPay').click(function() {
+    $('.payer-phone').addClass('hide');
+    $('#phone').val('');
+	 });
 
-     if (payTypeVal == '0') {
-      $.dialog({
-        content : '您确定积分支付？',
-        callback : function(index) {
-          if (index == 1) {
-            $('.valid-form').submit();
-          }
-        }
-      });
-       return;
-     }
-     $('.valid-form').submit();
+	 $('#otherPay').click(function() {
+		 $('.payer-phone').removeClass('hide');
+	 });
+
+	 $('#btnSubmit').click(function() {
+     var payChecked = $('#otherPay').is(':checked');
+     if (payChecked) {
+	 		var val = $('#phone').val();
+	 		if (!val) {
+			  messageShow('请输入代付人手机号', 'error', 2);
+			  return;
+      }
+    }
+    $('.valid-form').submit();
    });
  });
 </script>
@@ -52,7 +52,7 @@
     <a href="javascript:history.go(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
-  <form action="${ctx}/u/pay/activityApply/payment" class="valid-form" method="post">
+  <form action="${ctx}/u/activity/activityApply" class="valid-form"  method="post">
     <input type="hidden" name="activityApplyId" value="${activityApplyId}">
 
     <article class="mt-15 mb-15 clearfix">
@@ -74,33 +74,31 @@
         </div>
       </div>
 
-      <div class="list-title">支付类型</div>
+      <div class="list-title">支付方式</div>
       <div class="list-group">
         <div class="list-item form-radio">
-          <label class="list-text" for="weixinPay">微信支付</label>
+          <label class="list-text" for="userPay">自己支付</label>
           <div class="list-unit">
-            <input id="weixinPay" type="radio" name="payType" value="7">
-            <label class="i-checked" for="weixinPay"></label>
+            <input id="userPay" type="radio" name="userPay" value="true" checked="checked" >
+            <label class="i-checked" for="userPay"></label>
           </div>
         </div>
         <div class="list-item form-radio">
-          <label class="list-text" for="shengpay">盛付通支付</label>
+          <label class="list-text" for="otherPay">他人代付</label>
           <div class="list-unit">
-            <input id="shengpay" type="radio" name="payType" value="6" >
-            <label class="i-checked" for="shengpay"></label>
+            <input id="otherPay" type="radio" name="userPay" value="false">
+            <label class="i-checked" for="otherPay"></label>
           </div>
         </div>
-        <div class="list-item form-radio">
-          <label class="list-text" for="pointPay">积分支付</label>
-          <div class="list-unit">
-            <input id="pointPay" type="radio" name="payType" value="0">
-            <label class="i-checked" for="pointPay"></label>
-          </div>
+        <div class="list-item  payer-phone hide">
+          <div class="list-text">代付人手机</div>
+          <div class="list-unit"><input type="text" name="payerPhone" id="phone" value="" /></div>
         </div>
       </div>
 
+
       <div class="form-btn ">
-        <a id="btnSubmit" href="javascript:;" class="btn green btn-block round-2">确认支付</a>
+        <a id="btnSubmit" href="javascript:;" class="btn green btn-block round-2">下一步</a>
       </div>
 
     </article>

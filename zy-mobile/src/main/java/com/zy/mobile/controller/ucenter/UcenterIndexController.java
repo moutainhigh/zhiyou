@@ -85,7 +85,7 @@ public class UcenterIndexController {
 //				model.addAttribute("coin", account.getAmount());
 //				break;
 			case 积分:
-				model.addAttribute("point", account.getAmount().setScale(0));
+				model.addAttribute("point", account.getAmount());
 				break;
 			default:
 				break;

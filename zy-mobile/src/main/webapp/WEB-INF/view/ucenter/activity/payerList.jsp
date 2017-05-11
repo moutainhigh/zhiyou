@@ -29,7 +29,7 @@
     <div class="list-group">
       <c:forEach items="${activityApplyVos}" var="vo">
       <c:if test="${vo.activityApplyStatus == '已报名'}">
-        <a class="list-item invite" href="${ctx}/u/pay/activityApply/payment/${vo.id}">
+        <a class="list-item invite" href="${ctx}/u/activity/activityApply/${vo.id}/payer">
       </c:if>
       <c:if test="${vo.activityApplyStatus == '已支付'}">
         <a class="list-item invite" href="javascript:;">
