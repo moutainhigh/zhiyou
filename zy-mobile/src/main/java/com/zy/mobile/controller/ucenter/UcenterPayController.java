@@ -329,7 +329,7 @@ public class UcenterPayController {
 		}
 
 		if (payType == PayType.富友支付) {
-			return "redirect:/u/pay/activity/weixin?activityId=" + activityId;
+			return "redirect:/u/pay/activity/weixin?activityApplyId=" + activityApplyId;
 		} else if (payType == PayType.余额) {
 			try {
 				Payment payment = createPayment(activityApply, userId, activity.getTitle(), CurrencyType.积分, PayType.余额);
@@ -358,12 +358,12 @@ public class UcenterPayController {
 	}
 
 	@RequestMapping(path = "/activity/weixin", method = RequestMethod.GET)
-	public String activityWXPay(@RequestParam Long activityId, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+	public String activityWXPay(@RequestParam Long activityApplyId, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+		ActivityApply activityApply = activityApplyService.findOne(activityApplyId);
+		validate(activityApply, NOT_NULL, "activity apply id" + activityApplyId + " not found");
+		Long activityId = activityApply.getActivityId();
 		Activity activity = activityService.findOne(activityId);
 		validate(activity, NOT_NULL, "activity id " + activityId + " not found");
-
-		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, principal.getUserId());
-		validate(activityApply, NOT_NULL, "activity apply id" + activityId + " not found");
 		if (activityApply.getPayerUserId() != null) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("请等待他人付款"));
 			return "redirect:/activity/" + activityId;
