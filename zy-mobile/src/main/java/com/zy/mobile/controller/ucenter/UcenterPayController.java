@@ -361,13 +361,12 @@ public class UcenterPayController {
 		Activity activity = activityService.findOne(activityId);
 		validate(activity, NOT_NULL, "activity id " + activityId + " not found");
 
-		Long userId = activityApply.getPayerUserId();
 		if(activityApply.getActivityApplyStatus() != ActivityApply.ActivityApplyStatus.已报名){
 			return "redirect:/activity/" + activityId;
 		}
 
 		PayType payType = PayType.富友支付;
-		Payment payment = createPayment(activityApply, userId, activity.getTitle(), CurrencyType.人民币, payType);
+		Payment payment = createPayment(activityApply, principal.getUserId(), activity.getTitle(), CurrencyType.人民币, payType);
 
 		return "redirect:/u/pay?paymentSn=" + payment.getSn() + "&payType=" + payType.ordinal();
 	}
