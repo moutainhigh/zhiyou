@@ -84,6 +84,7 @@ public  interface Constants {
 
     /* fy weixin wap pay */
     String FY_WEIXIN_PAY_NOTIFY = "http://agentsystem.zhi-you.net/notify/fyWeixinPay";
+    String FY_TERM_ID = "zy00001";
 
     /* weixin wap pay */
     String WEIXIN_MP_PAY_NOTIFY = "http://m.zhi-you.net/notify/weixinPay";

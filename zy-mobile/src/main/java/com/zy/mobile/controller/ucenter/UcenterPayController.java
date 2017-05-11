@@ -175,7 +175,7 @@ public class UcenterPayController {
 		fuiouWeixinPayReq.setOpenid(userOpenId);
 		fuiouWeixinPayReq.setOutOrderNum(sn);
 		fuiouWeixinPayReq.setTranAmt(amount);
-		fuiouWeixinPayReq.setTerm_id("zy00001");
+		fuiouWeixinPayReq.setTerm_id(Constants.FY_TERM_ID);
 		fuiouWeixinPayReq.setRemark(remark);
 		return fuiouWeixinPayReq;
 	}
