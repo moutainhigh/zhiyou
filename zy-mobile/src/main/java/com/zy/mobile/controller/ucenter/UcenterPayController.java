@@ -362,9 +362,6 @@ public class UcenterPayController {
 		validate(activity, NOT_NULL, "activity id " + activityId + " not found");
 
 		Long userId = activityApply.getPayerUserId();
-		if(!userId.equals(principal.getUserId())){
-			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
-		}
 		if(activityApply.getActivityApplyStatus() != ActivityApply.ActivityApplyStatus.已报名){
 			return "redirect:/activity/" + activityId;
 		}
