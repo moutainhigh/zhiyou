@@ -90,15 +90,13 @@ public class UcenterPayController {
 
 	public static final String URL_SHENGPAY = "https://api.shengpay.com/html5-gateway/express.htm?page=mobile";
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping
 	public String pay(@BigDecimalBinder BigDecimal money, @RequestParam PayType payType, @StringBinder String paymentSn, Model model, Principal principal) {
-
-		final BigDecimal zero = new BigDecimal("0.00");
-		String title = "积分余额充值";
-		Long userId = principal.getUserId();
-		validate(money, v -> v.compareTo(zero) > 0, "money must be more than 0.00");
-
 		if (StringUtils.isBlank(paymentSn)) {
+			final BigDecimal zero = new BigDecimal("0.00");
+			String title = "积分余额充值";
+			Long userId = principal.getUserId();
+			validate(money, v -> v.compareTo(zero) > 0, "money must be more than 0.00");
 			final BigDecimal amount = money;
 			DepositQueryModel depositQueryModel = new DepositQueryModel();
 			depositQueryModel.setUserIdEQ(principal.getUserId());
@@ -177,7 +175,7 @@ public class UcenterPayController {
 		fuiouWeixinPayReq.setOpenid(userOpenId);
 		fuiouWeixinPayReq.setOutOrderNum(sn);
 		fuiouWeixinPayReq.setTranAmt(amount);
-		fuiouWeixinPayReq.setTerm_id("ft00001");
+		fuiouWeixinPayReq.setTerm_id(Constants.FY_TERM_ID);
 		fuiouWeixinPayReq.setRemark(remark);
 		return fuiouWeixinPayReq;
 	}
