@@ -404,6 +404,7 @@ public class UcenterPayController {
 				.filter(v -> v.getCurrencyType1() == currencyType)
 				.filter(v -> v.getAmount2() == null)
 				.filter(v -> v.getCurrencyType2() == null)
+				.filter(v -> v.getPayType() == payType)
 				.findFirst()
 				.orElse(null);
 
