@@ -20,10 +20,12 @@
 		<result column="applied_count" property="appliedCount" />
 		<result column="viewed_count" property="viewedCount" />
 		<result column="is_released" property="isReleased" />
+		<result column="max_count" property="maxCount" />
+		<result column="ticket_type" property="ticketType" />
 		<result column="version" property="version" />
 	</resultMap>
 
-	<sql id="baseColumn">id,title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version</sql>
+	<sql id="baseColumn">id,title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,max_count,ticket_type,version</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.act.Activity" useGeneratedKeys="true" keyProperty="id">
 	  insert into `act_activity` (title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version)
@@ -53,6 +55,8 @@
 			applied_count = #{appliedCount},
 			viewed_count = #{viewedCount},
 			is_released = #{isReleased},
+			max_count = #{maxCount},
+			ticket_type = #{ticketType},
 			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
@@ -79,6 +83,8 @@
 					<when test="field == 'appliedCount'">applied_count = #{activity.appliedCount},</when>
 					<when test="field == 'viewedCount'">viewed_count = #{activity.viewedCount},</when>
 					<when test="field == 'isReleased'">is_released = #{activity.isReleased},</when>
+					<when test="field == 'maxCount'">max_count = #{activity.maxCount},</when>
+					<when test="field == 'ticketType'">ticket_type = #{activity.ticketType},</when>
 				</choose>
 				</foreach>
 			</set>

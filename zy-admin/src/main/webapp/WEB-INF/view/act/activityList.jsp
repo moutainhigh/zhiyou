@@ -113,6 +113,17 @@
 		        data: 'amountLabel',
 		        title: '报名费'
 	        },
+	        {
+		        data: 'ticketType',
+		        title: '活动票务类型',
+              render: function (data, type, full) {
+                if(full.ticketType == 1){
+                  return "自购";
+                }else if(full.ticketType == 2){
+                  return "团购";
+                }
+              }
+	        },
           {
             data: 'areaId',
             title: '详细地址',
@@ -150,6 +161,10 @@
             data: 'appliedCount',
             title: '报名数',
             width: '60px'
+          },
+          {
+            data: 'maxCount',
+            title: '活动限制人数'
           },
           {
             data: 'signedInCount',

@@ -74,6 +74,10 @@ public class Activity implements Serializable {
 	@View(name = "amountLabel", type = String.class)
 	private BigDecimal amount;
 
+	@Field(label = "活动票务类型")
+	@NotNull
+	private Integer ticketType;
+
 	@NotBlank
 	@Field(label = "详细地址", description = "精确到门牌号")
 	@View
@@ -141,6 +145,12 @@ public class Activity implements Serializable {
 	@Field(label = "报名数")
 	@View
 	private Long appliedCount;
+
+	@NotNull
+	@Min(0)
+	@Field(label = "活动限制人数")
+	@View
+	private Long maxCount;
 
 	@NotNull
 	@Min(0)

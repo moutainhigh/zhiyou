@@ -169,6 +169,15 @@
               </div>
             </div>
             <div class="form-group">
+              <label class="control-label col-md-3">活动票务类型<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <select style="display: block; width: 40%;" class="form-control pull-left" id="ticketType" name="ticketType">
+                  <option value="1">自购</option>
+                  <option value="2">团购</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
               <label class="control-label col-md-3">图片<span class="required"> * </span></label>
               <div class="col-md-5">
                 <img data-target="image" class="product-image bd" src="${ctx}/image/upload_240_150.jpg">
