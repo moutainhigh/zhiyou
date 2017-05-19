@@ -51,6 +51,8 @@ public class ActivityController {
 	
 	@Autowired
 	private ActivityComponent activityComponent;
+
+
 	
 	@RequestMapping
 	public String list(Model model) {
