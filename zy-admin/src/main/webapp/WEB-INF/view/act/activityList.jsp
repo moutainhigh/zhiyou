@@ -107,14 +107,17 @@
           },
           {
             data: 'title',
-            title: '标题'
+            title: '标题',
+            orderable: false
           },
 	        {
 		        data: 'amountLabel',
-		        title: '报名费'
+		        title: '报名费',
+                orderable: false
 	        },
 	        {
 		        data: 'ticketType',
+                orderable: false,
 		        title: '活动票务类型',
               render: function (data, type, full) {
                 if(full.ticketType == 1){
@@ -127,6 +130,7 @@
 	        {
 		        data: 'level',
 		        title: '自购权限',
+                orderable: false,
               render: function (data, type, full) {
                 if(full.level == 4){
                   return "特级服务商";
@@ -144,6 +148,7 @@
           {
             data: 'areaId',
             title: '详细地址',
+            orderable: false,
             render: function (data, type, full) {
               return '<p>' + full.province + '-' + full.city + '-' + full.district + '</p>'
                 + '<p class="small">' + full.address + '</p>';
@@ -181,7 +186,8 @@
           },
           {
             data: 'maxCount',
-            title: '活动限制人数'
+            title: '活动限制人数',
+            orderable: false
           },
           {
             data: 'signedInCount',
@@ -194,6 +200,7 @@
           {
             data: 'isReleased',
             title: '是否上架',
+            orderable: false,
             render: function (data, type, full) {
               if (data) {
                 return '<i class="fa fa-check font-green"></i> <span class="badge badge-success"> 已上架 </span>';
