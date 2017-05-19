@@ -68,6 +68,15 @@ public class UcenterActivityController {
 	@Autowired
 	private CacheComponent cacheComponent;
 
+	/**
+	 * 报名后跳转到选择支付方式页面
+	 * @param id
+	 * @param principal
+	 * @param model
+	 * @param redirectAttributes
+	 * @param request
+     * @return
+     */
 	@RequestMapping(value = "/apply")
 	public String apply(Long id, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		try {
@@ -110,7 +119,15 @@ public class UcenterActivityController {
 		return "ucenter/activity/activityApply1";
 	}
 
-
+	/**
+	 * 跳转到支付类型页面
+	 * @param activityApplyId
+	 * @param payerPhone
+	 * @param model
+	 * @param redirectAttributes
+	 * @param principal
+     * @return
+     */
 	@RequestMapping(path = "/activityApply", method = RequestMethod.POST)
 	public String activityApply1(@RequestParam Long activityApplyId, String payerPhone, Model model, RedirectAttributes redirectAttributes,
 	                             Principal principal) {
