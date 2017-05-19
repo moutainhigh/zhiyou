@@ -23,13 +23,14 @@
 		<result column="max_count" property="maxCount" />
 		<result column="ticket_type" property="ticketType" />
 		<result column="version" property="version" />
+		<result column="level" property="level" />
 	</resultMap>
 
-	<sql id="baseColumn">id,title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,max_count,ticket_type,version</sql>
+	<sql id="baseColumn">id,title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,max_count,ticket_type,version,level</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.act.Activity" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_activity` (title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version)
-	  values (#{title},#{areaId},#{amount},#{address},#{latitude},#{longitude},#{image},#{detail},#{applyDeadline},#{startTime},#{endTime},#{signedInCount},#{collectedCount},#{appliedCount},#{viewedCount},#{isReleased},#{version})
+	  insert into `act_activity` (title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version,max_count,ticket_type,level)
+	  values (#{title},#{areaId},#{amount},#{address},#{latitude},#{longitude},#{image},#{detail},#{applyDeadline},#{startTime},#{endTime},#{signedInCount},#{collectedCount},#{appliedCount},#{viewedCount},#{isReleased},#{version},#{maxCount},#{ticketType},#{level})
 	</insert>
 
 	<delete id="delete">
@@ -58,6 +59,7 @@
 			max_count = #{maxCount},
 			ticket_type = #{ticketType},
 			version = version + 1,
+			level = #{level}
 		</set>
 		where id = #{id} and version=#{version}
 	</update>
@@ -85,6 +87,7 @@
 					<when test="field == 'isReleased'">is_released = #{activity.isReleased},</when>
 					<when test="field == 'maxCount'">max_count = #{activity.maxCount},</when>
 					<when test="field == 'ticketType'">ticket_type = #{activity.ticketType},</when>
+					<when test="field == 'level'">level = #{activity.level},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -146,6 +149,9 @@
 			<if test="areaIdEQ != null">
 				and area_id = #{areaIdEQ}
 			</if>
+			<if test="level != null">
+				and level = #{level}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -205,6 +211,9 @@
 			</if>
 			<if test="areaIdEQ != null">
 				and area_id = #{areaIdEQ}
+			</if>
+			<if test="level != null">
+				and level = #{level}
 			</if>
 		</where>
 	</select>

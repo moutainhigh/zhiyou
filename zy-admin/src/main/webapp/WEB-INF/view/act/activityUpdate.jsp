@@ -75,9 +75,24 @@
         },
         applyDeadline: {
           required: true
+        },
+        ticketType: {
+          required: true
+        },
+        level: {
+          required: true
+        },
+        maxCount:{
+          required: true,
+          number : true
         }
       },
-      messages: {},
+      messages: {
+        maxCount: {
+          required: '请输入限制人数',
+          number : '只能输入数字'
+        }
+      },
       submitHandler: function (form) {
         var content = ue.getContent();
         if (!content) {
@@ -170,11 +185,30 @@
               </div>
             </div>
             <div class="form-group">
+              <label class="control-label col-md-3">活动限制人数<span class="required"> * </span>
+              </label>
+              <div class="col-md-5">
+                <input type="text" class="form-control" id="maxCount" name="maxCount" value="${activity.maxCount}" />
+              </div>
+            </div>
+            <div class="form-group">
               <label class="control-label col-md-3">活动票务类型<span class="required"> * </span></label>
               <div class="col-md-5">
                 <select style="display: block; width: 40%;" class="form-control pull-left" id="ticketType" name="ticketType">
                   <option value="1"<c:if test="${activity.ticketType == 1}"> selected="selected"</c:if>>自购</option>
                   <option value="2"<c:if test="${activity.ticketType == 2}"> selected="selected"</c:if>>团购</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-3">自购权限<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <select style="display: block; width: 40%;" class="form-control pull-left" id="level" name="level">
+                  <option value="1"<c:if test="${activity.level == 4}"> selected="selected"</c:if>>特级服务商</option>
+                  <option value="1"<c:if test="${activity.level == 3}"> selected="selected"</c:if>>省级服务商</option>
+                  <option value="1"<c:if test="${activity.level == 2}"> selected="selected"</c:if>>市级服务商</option>
+                  <option value="1"<c:if test="${activity.level == 1}"> selected="selected"</c:if>>VIP</option>
+                  <option value="1"<c:if test="${activity.level == 0}"> selected="selected"</c:if>>无权限</option>
                 </select>
               </div>
             </div>

@@ -124,6 +124,23 @@
                 }
               }
 	        },
+	        {
+		        data: 'level',
+		        title: '自购权限',
+              render: function (data, type, full) {
+                if(full.level == 4){
+                  return "特级服务商";
+                }else if(full.level == 3){
+                  return "省级服务商";
+                }else if(full.level == 2){
+                  return "市级服务商";
+                }else if(full.level == 1){
+                  return "VIP";
+                }else if(full.level == 0){
+                  return "无权限";
+                }
+              }
+	        },
           {
             data: 'areaId',
             title: '详细地址',

@@ -64,8 +64,11 @@ public class ActivityAdminFullVo implements Serializable {
 	private List<ActivityCollectAdminVo> activityCollects = new ArrayList<>();
 	@Field(label = "活动签到")
 	private List<ActivitySignInAdminVo> activitySignIns = new ArrayList<>();
+	@Field(label = "活动限制人数")
 	private Long maxCount;
 	@Field(label = "活动票务类型")
 	private Integer ticketType;
+	@Field(label = "自购权限")
+	private Integer level;
 
 }

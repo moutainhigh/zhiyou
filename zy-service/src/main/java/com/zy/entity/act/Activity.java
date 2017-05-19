@@ -78,6 +78,10 @@ public class Activity implements Serializable {
 	@NotNull
 	private Integer ticketType;
 
+	@Field(label = "自购权限")
+	@NotNull
+	private Integer level;
+
 	@NotBlank
 	@Field(label = "详细地址", description = "精确到门牌号")
 	@View

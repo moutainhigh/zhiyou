@@ -42,6 +42,8 @@ public class ActivityQueryModel implements Serializable {
 
 	private Integer pageSize;
 
+	private Integer level;
+
 	private String orderBy;
 
 	private Direction direction;
@@ -108,6 +110,7 @@ public class ActivityQueryModel implements Serializable {
 		fieldNames.add("isReleased");
 		fieldNames.add("longitude");
 		fieldNames.add("collectedCount");
+		fieldNames.add("level");
 	}
 
 }
