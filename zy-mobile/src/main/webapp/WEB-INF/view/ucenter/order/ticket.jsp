@@ -14,56 +14,152 @@
 <title>票务订单</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/order.css" />
+  <style>
+    .header .button-right   {  right:20px;  }
+    .ticket_address,.ticket_time {
+      font-size: 12px;
+      color: #808080;
+      line-height: 20px;
+    }
+    a {display: block;}
+    .ticket_innor {  line-height: 25px; font-size:16px;width:190px !important;overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .font-gray {  margin-top:5px;  }
+    .ticket-gray {
+       margin-top:5px;width:80px !important;border:1px solid #ccc;display: none;
+    }
+    .order {margin-bottom:15px;}
+    /*
+    .ticket_button {width:80px;border:1px solid #333;text-align: center;margin-left:20px;margin-top:10px;margin-bottom:10px;font-size:13px;}
+    .ticket_play {border:1px solid red;color:red;}
+    */
+    .ticket_button {
+      width:80px;text-align: center;margin-left:20px;margin-top:10px;margin-bottom:10px;font-size:13px;background: #f86b3d;
+      color: #fff;
+    }
+    .ticket_play {background: #ccc;}
+  </style>
 <script>
   $(function() {
-    $('.miui-scroll-nav').scrollableNav();
+       $('.miui-scroll-nav').scrollableNav();
   });
+  function editSum(obj){
+       if($(obj).attr("edit")=="edit"){
+           for(var i=0;i<$(".none_grap").length;i++){
+             $(".none_grap").eq(i).siblings(".ticket-gray").css("display","block");
+             $(".none_grap").eq(i).css("display","none");
+           }
+           $(".ticket-gray").eq(0).focus();
+           $(obj).attr("edit","finish")
+           $(obj).text("完成");
+
+       }else {
+         for(var i=0;i<$(".ticket-gray").length;i++){
+           $(".ticket-gray").eq(i).siblings(".none_grap").css("display","block");
+           $(".ticket-gray").eq(i).siblings(".none_grap").text("x"+$(".ticket-gray").eq(i).val());
+           $(".ticket-gray").eq(i).css("display","none");
+
+         }
+
+         $(obj).attr("edit","edit");
+         $(obj).text("编辑");
+       }
+
+  }
 </script>
 </head>
 <body>
 <body class="header-fixed footer-fixed">
   <header class="header">
     <h1>订单状态</h1>
-    <a href="${ctx}/u/productReplacement/create" class="button-right"><i class="fa fa-edit"></i>换货</a>
+    <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <span class="button-right" onclick="editSum(this)" edit="edit">编辑</span>
   </header>
   
   <article class="order-list">
-    <c:if test="${empty page.data}">
-    <div class="page-empty">
+    <!--没有订单时显示!-->
+    <div class="page-empty" style="display: none;">
       <i class="fa fa-file-o"></i>
       <span>空空如也!</span>
     </div>
-    </c:if>
-    
-    <c:forEach items="${page.data}" var="order">
-    <a class="order mt-15 bd-t bd-b" href="${ctx}/u/order/${order.id}">
-      <div class="order-sn pl-15 pr-15 font-777 fs-12">订单编号：${order.sn}</div>
-      <label class="order-status label<c:if test="${order.orderStatus == '待支付'}"> red</c:if>
-      <c:if test="${order.orderStatus == '待确认'}"> orange</c:if>
-      <c:if test="${order.orderStatus == '已支付'}"> green</c:if>
-      <c:if test="${order.orderStatus == '已发货'}"> yellow</c:if>
-      <c:if test="${order.orderStatus == '已完成'}"> green</c:if>
-      <c:if test="${order.orderStatus == '已退款'}"> blue</c:if>
-      <c:if test="${order.orderStatus == '已取消'}"> gray</c:if>">${order.orderStatus}</label>
+    <!--没有订单时!-->
+    <div class="order bd-t bd-b">
       <div class="product-info pl-15 pr-15">
         <div class="product relative clearfix mt-5">
-          <img class="product-image abs-lt" alt="" src="${order.orderItems[0].imageThumbnail}">
-          <div class="product-title">${order.orderItems[0].title}</div>
+          <img class="product-image abs-lt" alt="" src="">
+          <a href="#" class="product-title">
+               <div class="ticket_innor">深圳经济财富风暴</div>
+               <div class="ticket_time">5月29日 09:00 开始</div>
+               <div class="ticket_address">广东省 深圳市 罗湖区</div>
+          </a>
           <div class="product-price abs-rt text-right">
-            <div class="lh-24 fs-12">¥ ${order.orderItems[0].price}</div>
-            <div class="lh-24 fs-12 font-gray">x${order.orderItems[0].quantity}</div>
+            <div class="fs-15">¥ 238</div>
+            <div class="fs-15 font-gray">x10</div>
           </div>
         </div>
       </div>
+      <div class="order_div"></div>
       <div class="order-info pl-15 pr-15 mt-5 bdd-t">
         <div class="flex lh-30">
-          <div class="flex-1 font-999 fs-12"><span>下单时间：${order.createdTimeLabel}</span></div>
-          <div class="flex-1 font-777 text-right">总金额：<span class="fs-14 font-orange bold">¥ ${order.amount}</span></div>
+          <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：5月10号 18:30</span></div>
+          <div class="ticket_button">查看票据</div>
+          <div class="ticket_button ticket_play">支付成功</div>
         </div>
       </div>
-    </a>
-    </c:forEach>
-    
+    </div>
+
+    <div class="order bd-t bd-b">
+      <div class="product-info pl-15 pr-15">
+        <div class="product relative clearfix mt-5">
+          <img class="product-image abs-lt" alt="" src="">
+          <a href="#" class="product-title">
+            <div class="ticket_innor">深圳经济财富风暴</div>
+            <div class="ticket_time">5月29日 09:00 开始</div>
+            <div class="ticket_address">广东省 深圳市 罗湖区</div>
+          </a>
+          <div class="product-price abs-rt text-right">
+            <div class="fs-15">¥ 238</div>
+            <div class="fs-15 font-gray none_grap">x10</div>
+            <input type="text" class="fs-15 font-gray ticket-gray" value="10" />
+          </div>
+        </div>
+      </div>
+      <div class="order_div"></div>
+      <div class="order-info pl-15 pr-15 mt-5 bdd-t">
+        <div class="flex lh-30">
+          <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：5月10号 18:30</span></div>
+          <div class="ticket_button ticket_now">立即支付</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="order bd-t bd-b">
+      <div class="product-info pl-15 pr-15">
+        <div class="product relative clearfix mt-5">
+          <img class="product-image abs-lt" alt="" src="">
+          <a href="#" class="product-title">
+            <div class="ticket_innor">深圳经济财富风暴</div>
+            <div class="ticket_time">5月29日 09:00 开始</div>
+            <div class="ticket_address">广东省 深圳市 罗湖区</div>
+          </a>
+          <div class="product-price abs-rt text-right">
+            <div class="fs-15">¥ 238</div>
+            <div class="fs-15 font-gray none_grap">x10</div>
+            <input type="text" class="fs-15 font-gray ticket-gray" value="10" />
+          </div>
+        </div>
+      </div>
+      <div class="order_div"></div>
+      <div class="order-info pl-15 pr-15 mt-5 bdd-t">
+        <div class="flex lh-30">
+          <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：5月10号 18:30</span></div>
+          <div class="ticket_button ticket_now">立即支付</div>
+        </div>
+      </div>
+    </div>
+
   </article>
 
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
