@@ -16,7 +16,11 @@
 
 <link href="${stccdn}/css/activity.css" rel="stylesheet" />
 <%@ include file="/WEB-INF/view/include/weixinJsApi.jsp"%>
-
+  <style>
+    .flex-3 {
+      -webkit-flex: 2;
+    }
+  </style>
 <script>
   $(function() {
     $('.tab-nav > a').tabs('.tab-content');
@@ -256,7 +260,7 @@
     <a class="flex-1" href="https://static.meiqia.com/dist/standalone.html?eid=32013">
       <i class="fa fa-headphones"></i><span>客服</span>
     </a>
-    
+    <a id="btnApplyTeam" class="flex-3 bg-blue fs-14 font-white" href="javascript:;" style="border-right:1px solid #fff;">团队报名</a>
     <c:if test="${activity.status == '报名中' || activity.status == '进行中'}">
     <c:if test="${isApplied}">
       <c:if test="${!toPay}">
