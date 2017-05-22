@@ -458,16 +458,8 @@
     }
   }
   function showDis(){
-    $.dialog({
-      content : '确定要团队报名吗？',
-      callback : function(index) {
-        if (index == 1) {
-          $(".miui-animation-scale,.miui-dialog-shade").hide();
-          $(".teamBlock").addClass("team_animat");
-          $(".teamBlock,.disDiv").show();
-        }
-      }
-    });
+      $(".teamBlock").addClass("team_animat");
+      $(".teamBlock,.disDiv").show();
 
   }
   function hideDis(){
