@@ -469,8 +469,10 @@
       $(".teamBlock").removeClass("team_animatTwo");
       $(".teamBlock,.disDiv").hide();
     },800)
-
+    var text;
+    alert("text"+text);
   }
+
 </script>
 </body>
 </html>
