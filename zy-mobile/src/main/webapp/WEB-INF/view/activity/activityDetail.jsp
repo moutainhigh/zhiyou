@@ -162,7 +162,6 @@
           }
         }
       });
-      
     });
     
     $('#btnShare').click(function(){
@@ -379,7 +378,7 @@
       </c:if>
     </c:if>
     <c:if test="${!isApplied}">
-    <a id="btnApply" class="flex-3 bg-blue fs-14 font-white" href="javascript:;">报名参与</a>
+    <a id="btnApply" class="flex-3 bg-blue fs-14 font-white" href="javascript:;">个人报名</a>
     </c:if>
     </c:if>
     <c:if test="${activity.status == '报名已结束'}">
@@ -447,8 +446,17 @@
     }
   }
   function showDis(){
-    $(".teamBlock").addClass("team_animat");
-    $(".teamBlock,.disDiv").show();
+    $.dialog({
+      content : '确定要团队报名吗？',
+      callback : function(index) {
+        if (index == 1) {
+          $(".miui-animation-scale,.miui-dialog-shade").hide();
+          $(".teamBlock").addClass("team_animat");
+          $(".teamBlock,.disDiv").show();
+        }
+      }
+    });
+
   }
   function hideDis(){
     $(".teamBlock").removeClass("team_animat");
