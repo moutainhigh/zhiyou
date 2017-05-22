@@ -133,7 +133,7 @@ public class UcenterActivityController {
 	public String applyTeam(Long id, Long count, BigDecimal amount, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		try {
 			ActivityTeamApply  activityTeamApply = new ActivityTeamApply();
-			activityTeamApply.setId(id);
+			activityTeamApply.setActivityId(id);
 			activityTeamApply.setCount(count);
 			activityTeamApply.setAmount(amount);
 			activityTeamApplyService.insert(activityTeamApply);

@@ -137,7 +137,6 @@
     }
   </style>
   <script>
-
     var count;
     var amount;
 
@@ -420,7 +419,7 @@
 <div class="disDiv" onclick="hideDis()"></div>
 <div class="teamBlock">
   <div class="teamPlay">
-    <a class="clearfloat" href="${ctx}/u/activity/applyTeam><div class="ticket_button ticket_now">立即支付</div></a>
+    <a class="clearfloat" href="${ctx}/u/activity/applyTeam?id=${activity.id}&count="+count><div class="ticket_button ticket_now">立即支付</div></a>
   </div>
   <div class="team_people">
     <span>人数</span>
