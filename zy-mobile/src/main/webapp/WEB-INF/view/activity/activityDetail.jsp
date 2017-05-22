@@ -123,6 +123,18 @@
         transform: translate3d(0, 200px, 0);
       }
     }
+    a {display: block;}
+    .clearfloat:before, .clearfloat:after {
+      content:"";
+      display:table;
+    }
+    .clearfloat:after{
+      clear:both;
+      overflow:hidden;
+    }
+    .clearfloat{
+      zoom:1;
+    }
   </style>
 <script>
   $(function() {
@@ -404,7 +416,7 @@
   <div class="disDiv" onclick="hideDis()"></div>
   <div class="teamBlock">
         <div class="teamPlay">
-          <div class="ticket_button ticket_now">立即支付</div>
+          <a class="clearfloat" href="#"><div class="ticket_button ticket_now">立即支付</div></a>
         </div>
         <div class="team_people">
             <span>人数</span>
