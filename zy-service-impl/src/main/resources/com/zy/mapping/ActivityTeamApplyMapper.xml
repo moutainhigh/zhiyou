@@ -99,7 +99,8 @@
 				order by ${orderByAndDirection}
 			</when>
 			<otherwise>
-				order by id desc
+				order by
+				paid_time desc
 			</otherwise>
 		</choose>
 		<if test="offset != null">
