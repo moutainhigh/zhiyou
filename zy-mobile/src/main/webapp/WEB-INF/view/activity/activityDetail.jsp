@@ -137,11 +137,9 @@
     }
   </style>
   <script>
-    var count=2;
-    var amount;
-
+    var count = 1;
     $(function() {
-      $(".newHref").attr("href",$(".newHref").attr("href")+count);
+      $(".newHref").attr("href",$(".newHref").attr("href")+count+"amount="+number * count);
       $('.tab-nav > a').tabs('.tab-content');
 
       $('#btnCollect').click(function(){
@@ -444,6 +442,7 @@
     $(".team_price").text("￥"+number*parseInt($(".inputPeople").val()));
 
     count = $(".inputPeople").val();
+    $(".newHref").attr("href",$(".newHref").attr("href")+count+"amount="+number * count);
   }
   //减去
   function removePeople(){
@@ -455,6 +454,7 @@
       $(".team_price").text("￥"+number*($(".inputPeople").val()-0));
     }
     count = $(".inputPeople").val();
+    $(".newHref").attr("href",$(".newHref").attr("href")+count+"amount="+number * count);
   }
   //input输入
   function changePeople(){
@@ -464,6 +464,7 @@
       $(".team_price").text("￥"+number*($(".inputPeople").val()-0));
     }
     count = $(".inputPeople").val();
+    $(".newHref").attr("href",$(".newHref").attr("href")+count+"amount="+number * count);
   }
   function showDis(){
     $(".teamBlock").addClass("team_animat");
