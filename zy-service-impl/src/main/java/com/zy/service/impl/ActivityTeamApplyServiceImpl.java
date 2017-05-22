@@ -76,6 +76,11 @@ public class ActivityTeamApplyServiceImpl implements ActivityTeamApplyService {
 		return activityTeamApplyMapper.findOne(id);
 	}
 
+	@Override
+	public void insert(ActivityTeamApply activityTeamApply) {
+		activityTeamApplyMapper.insert(activityTeamApply);
+	}
+
 //	@Override
 //	public void createAndPaid(@NotNull Long activityId, @NotNull Long userId) {
 //		Activity activity = activityMapper.findOne(activityId);
