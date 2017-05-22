@@ -137,10 +137,11 @@
     }
   </style>
   <script>
-    var count;
+    var count=2;
     var amount;
 
     $(function() {
+      $(".newHref").attr("href",$(".newHref").attr("href")+count);
       $('.tab-nav > a').tabs('.tab-content');
 
       $('#btnCollect').click(function(){
@@ -419,7 +420,7 @@
 <div class="disDiv" onclick="hideDis()"></div>
 <div class="teamBlock">
   <div class="teamPlay">
-    <a class="clearfloat" href="${ctx}/u/activity/applyTeam?id=${activity.id}&count="+count><div class="ticket_button ticket_now">立即支付</div></a>
+    <a class="newHref clearfloat" href="${ctx}/u/activity/applyTeam?id=${activity.id}&count="><div class="ticket_button ticket_now">立即支付</div></a>
   </div>
   <div class="team_people">
     <span>人数</span>
