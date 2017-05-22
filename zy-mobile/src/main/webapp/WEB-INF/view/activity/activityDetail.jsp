@@ -162,16 +162,17 @@
           }
         }
       });
+
     });
-    
+
     $('#btnShare').click(function(){
         $('#asideShare').show();
     });
-    
+
     $(document).on('click', '#asideShare', function() {
 		$(this).hide();
 	});
-    
+
     <c:if test="${not empty inviter}">
     $('.inviter-alert > a').click(function(){
       $('.inviter-alert').slideUp(300, function(){
@@ -182,22 +183,22 @@
     });
     </c:if>
   });
-  
+
   <%-- 加载地图插件 --%>
   <c:if test="${not empty activity.latitude && not empty activity.longitude}">
-  
+
   var latitude = ${activity.latitude};
   var longitude = ${activity.longitude};
-  
+
   function loadScript() {
     var script = document.createElement("script");
     script.charset = "utf-8";
     script.src = "http://map.qq.com/api/js?v=2.exp&callback=init";
     document.body.appendChild(script);
   }
-  
+
   window.onload = loadScript;
-  
+
   $(function() {
     var number=${activity.amountLabel};
     $(".team_price").text("￥"+number*parseInt($(".inputPeople").val()));
@@ -207,7 +208,7 @@
       initMap();
     });
   });
-  
+
   function initMap() {
     var center = new qq.maps.LatLng(latitude, longitude);
     var map = new qq.maps.Map(document.getElementById('asideMap'), {
@@ -219,7 +220,7 @@
     });
     infoWin.open();
     //tips  自定义内容
-    var html = '<div class="width-200">' 
+    var html = '<div class="width-200">'
     	+ '<p class="fs-14 font-orange lh-24">活动地址：</p>'
     	+ '<p class="fs-12 font-555 lh-24">${activity.province} ${activity.city} ${activity.district}</p>'
     	+ '<p class="fs-12 font-555 lh-24">${activity.address}</p>'
@@ -227,20 +228,20 @@
     infoWin.setContent(html);
     infoWin.setPosition(center);
   }
-  
+
   function closeMap(){
     $('article').show();
     $('#asideMap').fadeOut();
   }
-  
+
   </c:if>
-  
+
 </script>
 
 </head>
 <body class="activity-detail footer-fixed${not empty inviter ? ' header-fixed' : ''}">
   <form id="form" action="${ctx}/u/activity/apply" method="post">
-  
+
   <input type="hidden" name="id" value="${activity.id}">
   <c:if test="${not empty inviter}">
   <input type="hidden" name="inviterPhone" value="${inviter.phone}">
@@ -280,7 +281,7 @@
         <div class="list-text fs-14"><span class="font-green">${activity.amountLabel}</span></div>
       </div>
     </div>
-    
+
     <div class="list-group">
       <%--<div class="list-item">--%>
         <%--<div class="list-icon"><i class="fa fa-user font-gray"></i></div>--%>
@@ -296,7 +297,7 @@
       <%--</div>--%>
       <%--</c:if>--%>
     <%--</div>--%>
-    
+
     <div class="list-group mb-0">
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-list-alt font-gray"></i></div>
@@ -311,7 +312,7 @@
         </div>
       </div>
     </div>
-    
+
     <%--
     <div class="mb-15">
       <nav class="tab-nav">
@@ -378,7 +379,7 @@
       </c:if>
     </c:if>
     <c:if test="${!isApplied}">
-    <a id="btnApply" class="flex-3 bg-blue fs-14 font-white" href="javascript:;">个人报名</a>
+    <a id="btnApply" class="flex-3 bg-blue fs-14 font-white" href="javascript:;">报名参与</a>
     </c:if>
     </c:if>
     <c:if test="${activity.status == '报名已结束'}">
@@ -388,13 +389,13 @@
     <a class="flex-3 fs-14 disabled" href="javascript:;">活动已结束</a>
     </c:if>
   </nav>
-  
+
   </form>
-  
+
   <aside id="asideMap" class="abs-lt size-100p bg-white hide zindex-1000">
     <a class="header-back" href="javascript:closeMap();"><i class="fa fa-angle-left"></i></a>
   </aside>
-  
+
   <aside id="asideShare" class="hide fix-lt size-100p zindex-1000" style="background: rgba(0,0,0,.75);">
     <img class="right width-50p m-30" src="${stccdn}/image/arrow.png">
     <p class="left width-100p text-center font-white fs-24">点击右上角</p>
@@ -446,17 +447,8 @@
     }
   }
   function showDis(){
-    $.dialog({
-      content : '确定要团队报名吗？',
-      callback : function(index) {
-        if (index == 1) {
-          $(".miui-animation-scale,.miui-dialog-shade").hide();
-          $(".teamBlock").addClass("team_animat");
-          $(".teamBlock,.disDiv").show();
-        }
-      }
-    });
-
+    $(".teamBlock").addClass("team_animat");
+    $(".teamBlock,.disDiv").show();
   }
   function hideDis(){
     $(".teamBlock").removeClass("team_animat");
