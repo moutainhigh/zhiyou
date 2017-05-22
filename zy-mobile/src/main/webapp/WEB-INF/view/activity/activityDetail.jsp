@@ -446,6 +446,7 @@
     $(".team_price").text("￥"+number*parseInt($(".inputPeople").val()));
 
     count = $(".inputPeople").val();
+    amount=count*number;
     $(".newHref").attr("href","");
     $(".newHref").attr("href",hrefNew+count+"amount="+amount);
   }
@@ -459,6 +460,7 @@
       $(".team_price").text("￥"+number*($(".inputPeople").val()-0));
     }
     count = $(".inputPeople").val();
+    amount=count*number;
     $(".newHref").attr("href","");
     $(".newHref").attr("href",hrefNew+count+"amount="+amount);
   }
@@ -470,6 +472,7 @@
       $(".team_price").text("￥"+number*($(".inputPeople").val()-0));
     }
     count = $(".inputPeople").val();
+    amount=count*number;
     $(".newHref").attr("href","");
     $(".newHref").attr("href",hrefNew+count+"amount="+amount);
   }
