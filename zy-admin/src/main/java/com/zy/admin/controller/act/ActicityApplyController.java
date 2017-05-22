@@ -88,6 +88,12 @@ public class ActicityApplyController {
 		return new Grid<>(voPage);
 	}
 
+	/**
+	 * 后台操作免费报名
+	 * @param activityId
+	 * @param phone
+     * @return
+     */
 	@RequiresPermissions("activityApply:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	@ResponseBody

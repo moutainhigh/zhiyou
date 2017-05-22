@@ -41,6 +41,7 @@
     <dubbo:reference id="activityService" interface="com.zy.service.ActivityService" protocol="dubbo"/>
     <dubbo:reference id="activityCollectService" interface="com.zy.service.ActivityCollectService" protocol="dubbo"/>
     <dubbo:reference id="activityApplyService" interface="com.zy.service.ActivityApplyService" protocol="dubbo"/>
+    <dubbo:reference id="activityTeamApplyService" interface="com.zy.service.ActivityTeamApplyService" protocol="dubbo"/>
     <dubbo:reference id="activitySignInService" interface="com.zy.service.ActivitySignInService" protocol="dubbo"/>
     <dubbo:reference id="bankService" interface="com.zy.service.BankService" protocol="dubbo"/>
     <dubbo:reference id="userUpgradeService" interface="com.zy.service.UserUpgradeService" protocol="dubbo"/>
