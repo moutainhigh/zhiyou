@@ -17,8 +17,111 @@
 <link href="${stccdn}/css/activity.css" rel="stylesheet" />
 <%@ include file="/WEB-INF/view/include/weixinJsApi.jsp"%>
   <style>
+    body,html{height:100%;}
     .flex-3 {
       -webkit-flex: 2;
+    }
+    .disDiv {
+      width:100%;
+      height:100%;
+      background: #000;
+      opacity: 0.5;
+      -webkit-opacity:0.5;
+      position: fixed;
+      left:0;
+      top:0;
+      z-index:8;
+      display: none;
+    }
+    .teamBlock {
+      width:100%;
+      height:200px;
+      position: absolute;
+      left:0;
+      bottom:49px;
+      background: #fff;
+      z-index:8;
+      display: none;
+    }
+    .teamPlay {width:100%;height:60px;background: #f2f3f5;}
+    .ticket_button {
+      width:80px;
+      height:40px;
+      float:right;
+      margin-right:20px;
+      margin-top:10px;
+      margin-bottom: 10px;
+      line-height: 40px;
+      text-align: center;
+      font-size:14px;
+      background: #f86b3d;
+      color: #fff;
+    }
+    .team_people {
+        width:100%;
+        height:80px;
+      text-align: center;
+      line-height: 80px;
+      padding:20px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .team_people span {float:left;line-height: 40px;font-size: 16px;}
+    .team_people div,.team_people input {
+      float:right;
+      width:40px;
+      height:40px;
+      line-height: 40px;
+      border: 1px solid #333;
+      font-size: 16px;
+    }
+    .team_people input {width:60px;}
+    .team_animat {
+      -webkit-animation:bounce .8s;
+      animation:bounce .8s;
+    }
+    @-webkit-keyframes bounce {
+      from {
+        -webkit-transform: translate3d(0, 200px, 0);
+        transform: translate3d(0, 200px, 0);
+      }
+      to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+      }
+    }
+    @keyframes bounce {
+      from {
+        -webkit-transform: translate3d(0, 200px, 0);
+        transform: translate3d(0, 200px, 0);
+      }
+      to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+      }
+    }
+    .team_animatTwo {
+      -webkit-animation:bounceTwo .8s;
+      animation:bounceTwo .8s;
+    }
+    @-webkit-keyframes bounceTwo {
+      from {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+      }
+      to {
+        -webkit-transform: translate3d(0, 200px, 0);
+        transform: translate3d(0, 200px, 0);
+      }
+    }
+    @keyframes bounceTwo {
+      from {
+        -webkit-transform: translate3d(0,0, 0);
+        transform: translate3d(0, 0, 0);
+      }
+      to {
+        -webkit-transform: translate3d(0, 200px, 0);
+        transform: translate3d(0, 200px, 0);
+      }
     }
   </style>
 <script>
@@ -97,6 +200,8 @@
   window.onload = loadScript;
   
   $(function() {
+    var number=${activity.amountLabel};
+    $(".team_price").text("￥"+number*parseInt($(".inputPeople").val()));
     $('#location').click(function() {
       $('article').hide();
       $('#asideMap').show();
@@ -260,7 +365,7 @@
     <a class="flex-1" href="https://static.meiqia.com/dist/standalone.html?eid=32013">
       <i class="fa fa-headphones"></i><span>客服</span>
     </a>
-    <a id="btnApplyTeam" class="flex-3 bg-blue fs-14 font-white" href="javascript:;" style="border-right:1px solid #fff;">团队报名</a>
+    <a id="btnApplyTeam" class="flex-3 bg-green fs-14 font-white" href="javascript:;" style="border-right:1px solid #fff;" onclick="showDis()">团队报名</a>
     <c:if test="${activity.status == '报名中' || activity.status == '进行中'}">
     <c:if test="${isApplied}">
       <c:if test="${!toPay}">
@@ -296,6 +401,64 @@
     <p class="left width-100p text-center font-white fs-24">点击右上角</p>
     <p class="left width-100p text-center font-white fs-18 mt-10">发送给朋友 或 分享到朋友圈</p>
   </aside>
+
+  <div class="disDiv" onclick="hideDis()"></div>
+  <div class="teamBlock">
+        <div class="teamPlay">
+          <div class="ticket_button ticket_now">立即支付</div>
+        </div>
+        <div class="team_people">
+            <span>人数</span>
+            <div style="border-left: none;" onclick="addPeople()">+</div>
+            <input type="text" style="text-align:center;border-left: none;" value="1" onkeyup="changePeople()" class="inputPeople"/>
+            <div onclick="removePeople()">-</div>
+        </div>
+      <div class="team_people" style="padding-top:10px;">
+         <span>价格</span>
+         <div class="team_price" style="float:right;border:none;margin-right:30px;color:#f86b3d;"></div>
+      </div>
+  </div>
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
+<script>
+  var number=${activity.amountLabel};
+  //添加
+  function addPeople(){
+
+    $(".inputPeople").val(($(".inputPeople").val()-0)+1);
+    $(".team_price").text("￥"+number*parseInt($(".inputPeople").val()));
+  }
+  //减去
+  function removePeople(){
+    if($(".inputPeople").val()==1){
+        alert("人数不能为0！");
+      return false;
+    }else {
+      $(".inputPeople").val($(".inputPeople").val()-1);
+
+      $(".team_price").text("￥"+number*($(".inputPeople").val()-0));
+    }
+  }
+  //input输入
+  function changePeople(){
+    if($(".inputPeople").val()==""){
+       $(".team_price").text("￥"+number);
+    }else {
+      $(".team_price").text("￥"+number*($(".inputPeople").val()-0));
+    }
+  }
+  function showDis(){
+    $(".teamBlock").addClass("team_animat");
+    $(".teamBlock,.disDiv").show();
+  }
+  function hideDis(){
+    $(".teamBlock").removeClass("team_animat");
+    $(".teamBlock").addClass("team_animatTwo");
+    setTimeout(function () {
+      $(".teamBlock").removeClass("team_animatTwo");
+      $(".teamBlock,.disDiv").hide();
+    },800)
+
+  }
+</script>
 </body>
 </html>
