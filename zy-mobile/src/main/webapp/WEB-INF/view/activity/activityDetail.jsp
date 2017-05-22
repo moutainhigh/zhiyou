@@ -138,8 +138,13 @@
   </style>
   <script>
     var count = 1;
+    var number=${activity.amountLabel};
+    var amount=count*number;
+    var hrefNew= "${ctx}/u/activity/applyTeam?id=${activity.id}&count=";
     $(function() {
-      $(".newHref").attr("href",$(".newHref").attr("href")+count+"amount="+number * count);
+
+      $(".newHref").attr("href",$(".newHref").attr("href")+count+"amount="+amount);
+
       $('.tab-nav > a').tabs('.tab-content');
 
       $('#btnCollect').click(function(){
@@ -434,7 +439,6 @@
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 <script>
 
-  var number=${activity.amountLabel};
   //添加
   function addPeople(){
 
@@ -442,7 +446,8 @@
     $(".team_price").text("￥"+number*parseInt($(".inputPeople").val()));
 
     count = $(".inputPeople").val();
-    $(".newHref").attr("href",$(".newHref").attr("href")+count+"amount="+number * count);
+    $(".newHref").attr("href","");
+    $(".newHref").attr("href",hrefNew+count+"amount="+amount);
   }
   //减去
   function removePeople(){
@@ -454,7 +459,8 @@
       $(".team_price").text("￥"+number*($(".inputPeople").val()-0));
     }
     count = $(".inputPeople").val();
-    $(".newHref").attr("href",$(".newHref").attr("href")+count+"amount="+number * count);
+    $(".newHref").attr("href","");
+    $(".newHref").attr("href",hrefNew+count+"amount="+amount);
   }
   //input输入
   function changePeople(){
@@ -464,7 +470,8 @@
       $(".team_price").text("￥"+number*($(".inputPeople").val()-0));
     }
     count = $(".inputPeople").val();
-    $(".newHref").attr("href",$(".newHref").attr("href")+count+"amount="+number * count);
+    $(".newHref").attr("href","");
+    $(".newHref").attr("href",hrefNew+count+"amount="+amount);
   }
   function showDis(){
     $(".teamBlock").addClass("team_animat");
