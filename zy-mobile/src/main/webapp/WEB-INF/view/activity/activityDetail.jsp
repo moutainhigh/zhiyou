@@ -137,6 +137,10 @@
     }
   </style>
   <script>
+
+    var count;
+    var amount;
+
     $(function() {
       $('.tab-nav > a').tabs('.tab-content');
 
@@ -416,12 +420,12 @@
 <div class="disDiv" onclick="hideDis()"></div>
 <div class="teamBlock">
   <div class="teamPlay">
-    <a class="clearfloat" href="#"><div class="ticket_button ticket_now">立即支付</div></a>
+    <a class="clearfloat" href="${ctx}/u/activity/applyTeam><div class="ticket_button ticket_now">立即支付</div></a>
   </div>
   <div class="team_people">
     <span>人数</span>
     <div style="border-left: none;" onclick="addPeople()">+</div>
-    <input type="text" style="text-align:center;border-left: none;" value="1" onkeyup="changePeople()" class="inputPeople"/>
+    <input type="number" style="text-align:center;border-left: none;" value="1" onkeyup="changePeople()" class="inputPeople"/>
     <div onclick="removePeople()">-</div>
   </div>
   <div class="team_people" style="padding-top:10px;">
@@ -431,23 +435,26 @@
 </div>
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 <script>
+
   var number=${activity.amountLabel};
   //添加
   function addPeople(){
 
     $(".inputPeople").val(($(".inputPeople").val()-0)+1);
     $(".team_price").text("￥"+number*parseInt($(".inputPeople").val()));
+
+    count = $(".inputPeople").val();
   }
   //减去
   function removePeople(){
     if($(".inputPeople").val()==1){
-      alert("人数不能为0！");
       return false;
     }else {
       $(".inputPeople").val($(".inputPeople").val()-1);
 
       $(".team_price").text("￥"+number*($(".inputPeople").val()-0));
     }
+    count = $(".inputPeople").val();
   }
   //input输入
   function changePeople(){
@@ -456,6 +463,7 @@
     }else {
       $(".team_price").text("￥"+number*($(".inputPeople").val()-0));
     }
+    count = $(".inputPeople").val();
   }
   function showDis(){
     $(".teamBlock").addClass("team_animat");
