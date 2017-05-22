@@ -8,10 +8,7 @@ import com.zy.component.ActivityApplyComponent;
 import com.zy.component.ActivityComponent;
 import com.zy.component.CacheComponent;
 import com.zy.component.UserComponent;
-import com.zy.entity.act.Activity;
-import com.zy.entity.act.ActivityApply;
-import com.zy.entity.act.ActivityCollect;
-import com.zy.entity.act.ActivitySignIn;
+import com.zy.entity.act.*;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.PayType;
 import com.zy.entity.fnc.Payment;
@@ -31,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +50,9 @@ public class UcenterActivityController {
 	
 	@Autowired
 	private ActivityApplyService activityApplyService;
+
+	@Autowired
+	private ActivityTeamApplyService activityTeamApplyService;
 
 	@Autowired
 	private ActivitySignInService activitySignInService;
@@ -116,6 +117,52 @@ public class UcenterActivityController {
 		model.addAttribute("title", activity.getTitle());
 		model.addAttribute("activityApplyId", activityApply.getId());
 		model.addAttribute("amount", activityApply.getAmount());
+		return "ucenter/activity/activityApply1";
+	}
+
+	/**
+	 * 团队报名后跳转到选择支付方式页面
+	 * @param id
+	 * @param principal
+	 * @param model
+	 * @param redirectAttributes
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/applyTeam")
+	public String applyTeam(Long id, Long count, BigDecimal amount, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+		try {
+			ActivityTeamApply  activityTeamApply = new ActivityTeamApply();
+			activityTeamApply.setActivityId(id);
+			activityTeamApply.setCount(count);
+			activityTeamApply.setAmount(amount);
+			activityTeamApplyService.insert(activityTeamApply);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功,请点击付费完成报名"));
+			return "redirect:/u/activity/" + id + "/activityTeamApply";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名异常," + e.getMessage()));
+			return "redirect:/activity/" + id;
+		}
+	}
+
+	@RequestMapping(path = "/{activityId}/activityTeamApply", method = RequestMethod.GET)
+	public String activityTeamApply(@PathVariable Long activityId, Model model, Principal principal) {
+		Activity activity = activityService.findOne(activityId);
+		ActivityTeamApply activityTeamApply = activityTeamApplyService.findOne(activityId);
+		validate(activityTeamApply, NOT_NULL, "activity id " + activityId + " not found");
+
+		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, principal.getUserId());
+		validate(activityApply, NOT_NULL, "activity apply id" + activityId + " not found");
+		if(!activityApply.getUserId().equals(principal.getUserId())){
+			throw new BizException(BizCode.ERROR, "非自己的订单, 不能操作");
+		}
+		if(activityApply.getActivityApplyStatus() != ActivityApply.ActivityApplyStatus.已报名){
+			return "redirect:/activity/" + activityId;
+		}
+
+		model.addAttribute("title", activity.getTitle());
+		model.addAttribute("activityApplyId", activityTeamApply.getId());
+		model.addAttribute("amount", activityTeamApply.getAmount());
 		return "ucenter/activity/activityApply1";
 	}
 
