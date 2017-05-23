@@ -324,12 +324,8 @@ public class UcenterPayController {
 		}
 
 		Long userId = principal.getUserId();
-		if (!activityApply.getUserId().equals(userId) && !activityApply.getPayerUserId().equals(userId)) {
-			throw new UnauthenticatedException("权限不足");
-		}
-
 		if (payType == PayType.富友支付) {
-			return "redirect:/u/pay/activity/weixin?activityId=" + activityId;
+			return "redirect:/u/pay/activity/weixin?activityApplyId=" + activityApplyId;
 		} else if (payType == PayType.余额) {
 			try {
 				Payment payment = createPayment(activityApply, userId, activity.getTitle(), CurrencyType.积分, PayType.余额);
@@ -358,27 +354,19 @@ public class UcenterPayController {
 	}
 
 	@RequestMapping(path = "/activity/weixin", method = RequestMethod.GET)
-	public String activityWXPay(@RequestParam Long activityId, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+	public String activityWXPay(@RequestParam Long activityApplyId, Principal principal) {
+		ActivityApply activityApply = activityApplyService.findOne(activityApplyId);
+		validate(activityApply, NOT_NULL, "activity apply id" + activityApplyId + " not found");
+		Long activityId = activityApply.getActivityId();
 		Activity activity = activityService.findOne(activityId);
 		validate(activity, NOT_NULL, "activity id " + activityId + " not found");
 
-		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, principal.getUserId());
-		validate(activityApply, NOT_NULL, "activity apply id" + activityId + " not found");
-		if (activityApply.getPayerUserId() != null) {
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("请等待他人付款"));
-			return "redirect:/activity/" + activityId;
-		}
-
-		Long userId = activityApply.getUserId();
-		if(!userId.equals(principal.getUserId())){
-			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
-		}
 		if(activityApply.getActivityApplyStatus() != ActivityApply.ActivityApplyStatus.已报名){
 			return "redirect:/activity/" + activityId;
 		}
 
 		PayType payType = PayType.富友支付;
-		Payment payment = createPayment(activityApply, userId, activity.getTitle(), CurrencyType.人民币, payType);
+		Payment payment = createPayment(activityApply, principal.getUserId(), activity.getTitle(), CurrencyType.人民币, payType);
 
 		return "redirect:/u/pay?paymentSn=" + payment.getSn() + "&payType=" + payType.ordinal();
 	}
