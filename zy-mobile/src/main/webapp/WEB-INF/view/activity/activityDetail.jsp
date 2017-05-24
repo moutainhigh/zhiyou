@@ -460,7 +460,6 @@
   function showDis(){
     $(".teamBlock").addClass("team_animat");
     $(".teamBlock,.disDiv").show();
-
   }
   function hideDis(){
     $(".teamBlock").removeClass("team_animat");
@@ -469,7 +468,6 @@
       $(".teamBlock").removeClass("team_animatTwo");
       $(".teamBlock,.disDiv").hide();
     },800)
-
   }
 </script>
 </body>

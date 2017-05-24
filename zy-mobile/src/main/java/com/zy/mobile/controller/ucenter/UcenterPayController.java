@@ -249,6 +249,7 @@ public class UcenterPayController {
 		Payment payment =createPayment(order, amount2);
 
 		paymentService.balancePay(payment.getId(), true);
+
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分余额支付成功"));
 		return "redirect:/u/order/" + orderId;
 	}

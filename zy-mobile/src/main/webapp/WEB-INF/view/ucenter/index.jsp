@@ -108,9 +108,9 @@
         <div class="list-text">关注的活动</div>
         <i class="list-arrow"></i>
       </a>
-      <a class="list-item list-item-icon" href="${ctx}/u/order/ticket">
+      <a class="list-item list-item-icon" href="${ctx}/u/activity/teamApplyList">
         <i class="list-icon icon icon-heart"></i>
-        <div class="list-text">票务管理</div>
+        <div class="list-text">团队报名的活动</div>
         <i class="list-arrow"></i>
       </a>
     </div>

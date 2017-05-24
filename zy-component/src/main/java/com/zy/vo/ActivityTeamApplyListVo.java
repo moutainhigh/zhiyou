@@ -1,6 +1,6 @@
 package com.zy.vo;
 
-import com.zy.entity.act.ActivityTeamApply;
+import com.zy.entity.act.ActivityTeamApply.PaidStatus;
 import io.gd.generator.annotation.Field;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +16,7 @@ public class ActivityTeamApplyListVo implements Serializable {
 	@Field(label = "id")
 	private Long id;
 	@Field(label = "活动团队报名单支付状态")
-	private ActivityTeamApply.PaidStatus paidStatus;
+	private PaidStatus paidStatus;
 	@Field(label = "活动id")
 	private Long activityId;
 	@Field(label = "数量")

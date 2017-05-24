@@ -42,8 +42,24 @@
     .ticket_play {background: #ccc;}
   </style>
 <script>
+  var count,hrefAct,hiddenNew,newHref;
+
   $(function() {
        $('.miui-scroll-nav').scrollableNav();
+//        alert($(".hiddenActivity").val());//这个是href
+//        alert($(".hiddenNew").val());//订单ID
+//        alert($(".ticket_now").attr("href"));
+        <%--hrefAct=$(".hiddenActivity").val();//4--%>
+        <%--hiddenNew=$(".hiddenNew").val();--%>
+        <%--newHref="${ctx}/u/activity/"+hrefAct+"/activityApply";--%>
+
+//        for(var i=0;i<$(".ticket_now").length;i++){
+//            count=$(".ticket-gray").eq(i).val();
+//           $(".ticket_now").eq(i).attr("href",newHref+"?count="+count+"&id="+hiddenNew);
+//        }
+
+
+
   });
   function editSum(obj){
        if($(obj).attr("edit")=="edit"){
@@ -62,104 +78,143 @@
            $(".ticket-gray").eq(i).css("display","none");
 
          }
+         hrefAct=$(".hiddenActivity").val();//4
+         hiddenNew=$(".hiddenNew").val();
+         newHref="${ctx}/u/activity/"+hrefAct+"/activityApply";
 
+         for(var i=0;i<$(".ticket_now").length;i++){
+           count=$(".ticket-gray").eq(i).val();
+           $(".ticket_now").eq(i).attr("href",newHref+"?count="+count+"&id="+hiddenNew);
+         }
          $(obj).attr("edit","edit");
          $(obj).text("编辑");
        }
 
   }
+  <%--function newPlay(obj){--%>
+     <%--var text=${activity.id};--%>
+     <%--var hrefNew=$(obj).parents(".order-info").siblings(".product-info").find(".ticket-gray").val();--%>
+     <%--var amount=$(obj).parents(".order-info").siblings(".product-info").find(".amount span").html();--%>
+
+     <%--window.location.href="${ctx}/u/activity/${activity.id}/activityApply?number="+hrefNew+"&aoumt="+amount+"&activityId="+text;--%>
+  <%--}--%>
 </script>
 </head>
-<body>
 <body class="header-fixed footer-fixed">
   <header class="header">
     <h1>订单状态</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <span class="button-right" onclick="editSum(this)" edit="edit">编辑</span>
+    <%--<span class="button-right" onclick="editSum(this)" edit="edit">编辑</span>--%>
   </header>
-  
+
   <article class="order-list">
-    <!--没有订单时显示!-->
+    <c:if test="${empty activityTeamApplys}">
     <div class="page-empty" style="display: none;">
       <i class="fa fa-file-o"></i>
       <span>空空如也!</span>
     </div>
-    <!--没有订单时!-->
-    <div class="order bd-t bd-b">
-      <div class="product-info pl-15 pr-15">
-        <div class="product relative clearfix mt-5">
-          <img class="product-image abs-lt" alt="" src="">
-          <a href="#" class="product-title">
-               <div class="ticket_innor">深圳经济财富风暴</div>
-               <div class="ticket_time">5月29日 09:00 开始</div>
-               <div class="ticket_address">广东省 深圳市 罗湖区</div>
-          </a>
-          <div class="product-price abs-rt text-right">
-            <div class="fs-15">¥ 238</div>
-            <div class="fs-15 font-gray">x10</div>
+    </c:if>
+
+    <c:if test="${not empty activityTeamApplys}">
+    <c:forEach items="${activityTeamApplys}" var="activityTeamApply" >
+      <%--有效订单待支付--%>
+      <c:if test="${activityTeamApply.activity.status != '活动已结束' && activityTeamApply.paidStatus == '未支付'}">
+        <div class="order bd-t bd-b">
+        <div class="product-info pl-15 pr-15">
+          <div class="product relative clearfix mt-5">
+
+            <a href="${ctx}/activity/${activityTeamApply.activity.id}" class="product-title">
+              <img class="product-image abs-lt" src="${activityTeamApply.activity.imageThumbnail}">
+              <div class="ticket_innor">${activityTeamApply.activity.title}</div>
+              <div class="ticket_time">${activityTeamApply.activity.startTimeLabel} 开始</div>
+              <div class="ticket_address">${activityTeamApply.activity.province} ${activityTeamApply.activity.city} ${activityTeamApply.activity.district}</div>
+            </a>
+            <div class="product-price abs-rt text-right">
+              <div class="fs-15 amount">¥ <span>${activityTeamApply.activity.amountLabel}</span></div>
+              <div class="fs-15 font-gray none_grap">x${activityTeamApply.count}</div>
+              <input type="number" class="fs-15 font-gray ticket-gray" value="${activityTeamApply.count}" />
+            </div>
+          </div>
+        </div>
+        <div class="order_div"></div>
+        <div class="order-info pl-15 pr-15 mt-5 bdd-t">
+          <div class="flex lh-30">
+            <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：${activityTeamApply.createTimeLabel}</span></div>
+            <a href="${ctx}/u/activity/${activityTeamApply.id}/activityTeamApply" class="ticket_button ticket_now">立即支付</a>
+            <input type="hidden" value="${activityTeamApply.activity.id}" class="hiddenActivity"/>
+            <input type="hidden" value="${activityTeamApply.id}" class="hiddenNew"/>
           </div>
         </div>
       </div>
-      <div class="order_div"></div>
-      <div class="order-info pl-15 pr-15 mt-5 bdd-t">
-        <div class="flex lh-30">
-          <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：5月10号 18:30</span></div>
-          <div class="ticket_button">查看票据</div>
-          <div class="ticket_button ticket_play">支付成功</div>
-        </div>
-      </div>
-    </div>
+      </c:if>
+    </c:forEach>
 
-    <div class="order bd-t bd-b">
-      <div class="product-info pl-15 pr-15">
-        <div class="product relative clearfix mt-5">
-          <img class="product-image abs-lt" alt="" src="">
-          <a href="#" class="product-title">
-            <div class="ticket_innor">深圳经济财富风暴</div>
-            <div class="ticket_time">5月29日 09:00 开始</div>
-            <div class="ticket_address">广东省 深圳市 罗湖区</div>
-          </a>
-          <div class="product-price abs-rt text-right">
-            <div class="fs-15">¥ 238</div>
-            <div class="fs-15 font-gray none_grap">x10</div>
-            <input type="text" class="fs-15 font-gray ticket-gray" value="10" />
+      <c:forEach items="${activityTeamApplys}" var="activityTeamApply" >
+      <%--有效订单已支付--%>
+      <c:if test="${activityTeamApply.activity.status != '活动已结束' && activityTeamApply.paidStatus == '已支付'}">
+      <div class="order bd-t bd-b">
+        <div class="product-info pl-15 pr-15">
+          <div class="product relative clearfix mt-5">
+            <a href="${ctx}/activity/${activityTeamApply.activity.id}" class="product-title">
+              <img class="product-image abs-lt"  src="${activityTeamApply.activity.imageThumbnail}">
+              <div class="ticket_innor">${activityTeamApply.activity.title}</div>
+                 <div class="ticket_time">${activityTeamApply.activity.startTimeLabel} 开始</div>
+                 <div class="ticket_address">${activityTeamApply.activity.province} ${activityTeamApply.activity.city} ${activityTeamApply.activity.district}</div>
+            </a>
+            <div class="product-price abs-rt text-right">
+              <div class="fs-15">¥ ${activityTeamApply.activity.amountLabel}</div>
+              <div class="fs-15 font-gray">x${activityTeamApply.count}</div>
+
+            </div>
+          </div>
+        </div>
+        <div class="order_div"></div>
+        <div class="order-info pl-15 pr-15 mt-5 bdd-t">
+          <div class="flex lh-30">
+            <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：${activityTeamApply.createTimeLabel}</span></div>
+            <div class="ticket_button">查看票据</div>
+            <div class="ticket_button ticket_play">支付成功</div>
           </div>
         </div>
       </div>
-      <div class="order_div"></div>
-      <div class="order-info pl-15 pr-15 mt-5 bdd-t">
-        <div class="flex lh-30">
-          <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：5月10号 18:30</span></div>
-          <div class="ticket_button ticket_now">立即支付</div>
-        </div>
-      </div>
-    </div>
+      </c:if>
+      </c:forEach>
 
-    <div class="order bd-t bd-b">
-      <div class="product-info pl-15 pr-15">
-        <div class="product relative clearfix mt-5">
-          <img class="product-image abs-lt" alt="" src="">
-          <a href="#" class="product-title">
-            <div class="ticket_innor">深圳经济财富风暴</div>
-            <div class="ticket_time">5月29日 09:00 开始</div>
-            <div class="ticket_address">广东省 深圳市 罗湖区</div>
-          </a>
-          <div class="product-price abs-rt text-right">
-            <div class="fs-15">¥ 238</div>
-            <div class="fs-15 font-gray none_grap">x10</div>
-            <input type="text" class="fs-15 font-gray ticket-gray" value="10" />
+    <c:forEach items="${activityTeamApplys}" var="activityTeamApply" >
+    <%--失效订单--%>
+    <c:if test="${activityTeamApply.activity.status == '活动已结束'}">
+      <div class="order bd-t bd-b">
+        <div class="product-info pl-15 pr-15">
+          <div class="product relative clearfix mt-5">
+            <a href="${ctx}/activity/${activityTeamApply.activity.id}" class="product-title">
+              <img class="product-image abs-lt" src="${activityTeamApply.activity.imageThumbnail}">
+              <div class="ticket_innor">${activityTeamApply.activity.title}</div>
+              <div class="ticket_time">${activityTeamApply.activity.startTimeLabel} 开始</div>
+              <div class="ticket_address">${activityTeamApply.activity.province} ${activityTeamApply.activity.city} ${activityTeamApply.activity.district}</div>
+            </a>
+            <div class="product-price abs-rt text-right">
+              <div class="fs-15 amount">¥ <span>${activityTeamApply.activity.amountLabel}</span></div>
+              <div class="fs-15 font-gray none_grap">x${activityTeamApply.count}</div>
+              <input type="number" class="fs-15 font-gray ticket-gray" value="${activityTeamApply.count}" />
+            </div>
+          </div>
+        </div>
+        <div class="order_div"></div>
+        <div class="order-info pl-15 pr-15 mt-5 bdd-t">
+          <div class="flex lh-30">
+            <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：${activityTeamApply.createTimeLabel}</span></div>
+            <c:if test="${activityTeamApply.activity.status == '报名中'}"><div class="ticket_button" ticket_play>报名中</div></c:if>
+            <c:if test="${order.orderStatus == '待确认'}"> orange</c:if>
+            <c:if test="${activityTeamApply.activity.status == '报名已结束'}"><div class="ticket_button ticket_play">报名已结束</div></c:if>
+            <c:if test="${activityTeamApply.activity.status == '进行中'}"><div class="ticket_button ticket_play">进行中</div></c:if>
+            <c:if test="${activityTeamApply.activity.status == '活动已结束'}"><div class="ticket_button ticket_play">活动已结束</div></c:if>
           </div>
         </div>
       </div>
-      <div class="order_div"></div>
-      <div class="order-info pl-15 pr-15 mt-5 bdd-t">
-        <div class="flex lh-30">
-          <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：5月10号 18:30</span></div>
-          <div class="ticket_button ticket_now">立即支付</div>
-        </div>
-      </div>
-    </div>
+    </c:if>
+    </c:forEach>
 
+    </c:if>
   </article>
 
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>

@@ -2,12 +2,11 @@ package com.zy.mobile.controller.ucenter;
 
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.UnauthenticatedException;
+import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
-import com.zy.component.ActivityApplyComponent;
-import com.zy.component.ActivityComponent;
-import com.zy.component.CacheComponent;
-import com.zy.component.UserComponent;
+import com.zy.component.*;
 import com.zy.entity.act.*;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.PayType;
@@ -18,8 +17,11 @@ import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.model.query.ActivityCollectQueryModel;
+import com.zy.model.query.ActivityTeamApplyQueryModel;
 import com.zy.service.*;
 import com.zy.vo.ActivityListVo;
+import com.zy.vo.ActivityTeamApplyAdminVo;
+import com.zy.vo.ActivityTeamApplyListVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -65,6 +67,9 @@ public class UcenterActivityController {
 
 	@Autowired
 	private ActivityApplyComponent activityApplyComponent;
+
+    @Autowired
+    private ActivityTeamApplyComponent activityTeamApplyComponent;
 
 	@Autowired
 	private CacheComponent cacheComponent;
@@ -265,7 +270,25 @@ public class UcenterActivityController {
 		
 		return "activity/applyActivityList";
 	}
-	
+
+	/**
+	 * 团队活动报名列表
+	 * @param principal
+	 * @param model
+     * @return
+     */
+	@RequestMapping("/teamApplyList")
+	public String teamApplyList(Principal principal, Model model) {
+        ActivityTeamApplyQueryModel activityTeamApplyQueryModel = new ActivityTeamApplyQueryModel();
+        activityTeamApplyQueryModel.setPageNumber(0);
+        activityTeamApplyQueryModel.setPageSize(100);
+        activityTeamApplyQueryModel.setBuyerId(principal.getUserId());
+        Page<ActivityTeamApply> page = activityTeamApplyService.findPage(activityTeamApplyQueryModel);
+        Page<ActivityTeamApplyListVo> activityTeamApplys = PageBuilder.copyAndConvert(page, v -> activityTeamApplyComponent.buildListVo(v));
+		model.addAttribute("activityTeamApplys", activityTeamApplys.getData());
+		return "ucenter/order/ticket";
+	}
+
 	@RequestMapping(value = "/collect")
 	@ResponseBody
 	public Result<? > collect(Long id, Principal principal, Model model) {
