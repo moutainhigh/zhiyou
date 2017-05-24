@@ -2,10 +2,8 @@ package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
 import com.zy.entity.act.ActivityTeamApply;
-import com.zy.mapper.ActivityMapper;
+import com.zy.mapper.*;
 import com.zy.mapper.ActivityTeamApplyMapper;
-import com.zy.mapper.PaymentMapper;
-import com.zy.mapper.UserMapper;
 import com.zy.model.query.ActivityTeamApplyQueryModel;
 import com.zy.service.ActivityTeamApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,8 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import static com.zy.common.util.ValidateUtils.validate;
 
 @Service
 @Validated
@@ -67,10 +67,46 @@ public class ActivityTeamApplyServiceImpl implements ActivityTeamApplyService {
 	}
 
 	@Override
-	public void insert(ActivityTeamApply activityTeamApply) {
+	public Long insert(ActivityTeamApply activityTeamApply) {
 		activityTeamApplyMapper.insert(activityTeamApply);
+		Long id = activityTeamApply.getId();
+		return id;
 	}
 
+	@Override
+	public Long findPayNumber(Long activityId) {
+		return activityTeamApplyMapper.findPayNumber(activityId);
+	}
+
+//	@Override
+//	public void createAndPaid(@NotNull Long activityId, @NotNull Long userId) {
+//		Activity activity = activityMapper.findOne(activityId);
+//		validate(activity, NOT_NULL, "activity id " + userId + " not found");
+//
+//		User user = userMapper.findOne(userId);
+//		validate(user, NOT_NULL, "user id " + userId + " not found");
+//
+//		ActivityTeamApply persistence = activityTeamApplyMapper.findByActivityIdAndBuyerId(activityId, userId);
+//		if (persistence != null) {
+//			if (persistence.getActivityTeamApplyStatus() == ActivityTeamApply.ActivityTeamApplyStatus.已报名) {
+//				persistence.setActivityTeamApplyStatus(ActivityTeamApply.ActivityTeamApplyStatus.已支付);
+//				ActivityTeamApplyMapper.update(persistence);
+//			}
+//			return ;
+//		}
+//
+//		ActivityTeamApply ActivityTeamApply = new ActivityTeamApply();
+//		ActivityTeamApply.setActivityTeamApplyStatus(ActivityTeamApply.ActivityTeamApplyStatus.已支付);
+//		ActivityTeamApply.setActivityId(activityId);
+//		ActivityTeamApply.setAmount(new BigDecimal("0.00"));
+//		ActivityTeamApply.setAppliedTime(new Date());
+//		ActivityTeamApply.setIsCancelled(false);
+//		ActivityTeamApply.setIsSmsSent(false);
+//		ActivityTeamApply.setUserId(userId);
+//		validate(ActivityTeamApply);
+//		ActivityTeamApplyMapper.insert(ActivityTeamApply);
+//	}
+//
 //	@Override
 //	public void success(@NotNull Long id, String outerSn) {
 //		ActivityTeamApply ActivityTeamApply = findOne(id);
@@ -95,5 +131,22 @@ public class ActivityTeamApplyServiceImpl implements ActivityTeamApplyService {
 //		ActivityTeamApplyMapper.update(ActivityTeamApply);
 //	}
 
+//	@Override
+//	public void modifyPayerUserId(@NotNull Long ActivityTeamApplyId, @NotNull Long payerUserId) {
+//		User user = userMapper.findOne(payerUserId);
+//		validate(user, NOT_NULL, "user id " + payerUserId + " not found");
+//		if (user.getUserType() != User.UserType.代理) {
+//			throw new BizException(BizCode.ERROR, "代付人用户类型必须为代理");
+//		}
+//
+//		ActivityTeamApply ActivityTeamApply = findOne(ActivityTeamApplyId);
+//		validate(ActivityTeamApply, NOT_NULL, "activity apply id " + ActivityTeamApplyId + " not found");
+//		if (ActivityTeamApply.getUserId().equals(payerUserId)) {
+//			throw new BizException(BizCode.ERROR, "请输入他人手机号");
+//		}
+//
+//		ActivityTeamApply.setPayerUserId(payerUserId);
+//		ActivityTeamApplyMapper.update(ActivityTeamApply);
+//	}
 
 }

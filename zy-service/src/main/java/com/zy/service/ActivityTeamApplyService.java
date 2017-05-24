@@ -16,7 +16,10 @@ public interface ActivityTeamApplyService {
 
 	ActivityTeamApply findOne(Long id);
 
-	void insert(ActivityTeamApply activityTeamApply);
+	Long insert(ActivityTeamApply activityTeamApply);
+
+	Long findPayNumber(Long activityId);
+
 
 //	void createAndPaid(Long activityId, Long userId);
 
