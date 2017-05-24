@@ -202,6 +202,7 @@ public class FinanceReportController {
 			financeReportVo.setUserPhone(v.getPhone());
 			financeReportVo.setPaymentAmount(zero);
 			financeReportVo.setDepositAmount(zero);
+			financeReportVo.setWithdrawAmount(zero);
 			financeReportVo.setTransferAmount(zero);
 			financeReportVo.setDifferencePointAmount(zero);
 			financeReportVo.setProfitAmount(zero);
@@ -254,10 +255,10 @@ public class FinanceReportController {
 				CurrencyType currencyType = withdraw.getCurrencyType();
 				BigDecimal withdrawAmount = withdraw.getAmount();
 
-//				if (currencyType == CurrencyType.现金) {
-//					BigDecimal amount = financeReportVo.getWithdrawAmount() == null? zero : financeReportVo.getWithdrawAmount();
-//					financeReportVo.setWithdrawAmount(amount.add(withdrawAmount));
-//				} else
+				if (currencyType == CurrencyType.现金) {
+					BigDecimal amount = financeReportVo.getWithdrawAmount() == null? zero : financeReportVo.getWithdrawAmount();
+					financeReportVo.setWithdrawAmount(amount.add(withdrawAmount));
+				} else
 				if (currencyType == CurrencyType.积分) {
 					BigDecimal amount = financeReportVo.getWithdrawPointAmount() == null? zero : financeReportVo.getWithdrawPointAmount();
 					financeReportVo.setWithdrawPointAmount(amount.add(withdrawAmount));
@@ -327,7 +328,7 @@ public class FinanceReportController {
 		page.setPageNumber(pageNumber);
 		page.setPageSize(pageSize);
 		page.setData(financeReportVos.stream().map(v -> {
-			v.setAccountAmount((v.getDepositAmount().add(v.getTransferAmount().add(v.getProfitAmount()))).subtract(v.getPaymentAmount()));
+			v.setAccountAmount((v.getDepositAmount().add(v.getTransferAmount().add(v.getProfitAmount()))).subtract(v.getWithdrawAmount()).subtract(v.getPaymentAmount()));
 			v.setAccountPointAmount(v.getProfitPointAmount().subtract(v.getWithdrawPointAmount()).subtract(v.getPaymentPointAmount()));
 			return v;
 		}).collect(Collectors.toList()));
@@ -472,6 +473,7 @@ public class FinanceReportController {
 			financeReportVo.setUserPhone(v.getPhone());
 			financeReportVo.setPaymentAmount(zero);
 			financeReportVo.setDepositAmount(zero);
+			financeReportVo.setWithdrawAmount(zero);
 			financeReportVo.setTransferAmount(zero);
 			financeReportVo.setDifferencePointAmount(zero);
 			financeReportVo.setProfitAmount(zero);
@@ -524,10 +526,10 @@ public class FinanceReportController {
 				CurrencyType currencyType = withdraw.getCurrencyType();
 				BigDecimal withdrawAmount = withdraw.getAmount();
 
-//				if (currencyType == CurrencyType.现金) {
-//					BigDecimal amount = financeReportVo.getWithdrawAmount() == null? zero : financeReportVo.getWithdrawAmount();
-//					financeReportVo.setWithdrawAmount(amount.add(withdrawAmount));
-//				} else
+				if (currencyType == CurrencyType.现金) {
+					BigDecimal amount = financeReportVo.getWithdrawAmount() == null? zero : financeReportVo.getWithdrawAmount();
+					financeReportVo.setWithdrawAmount(amount.add(withdrawAmount));
+				} else
 				if (currencyType == CurrencyType.积分) {
 					BigDecimal amount = financeReportVo.getWithdrawPointAmount() == null? zero : financeReportVo.getWithdrawPointAmount();
 					financeReportVo.setWithdrawPointAmount(amount.add(withdrawAmount));
@@ -563,21 +565,37 @@ public class FinanceReportController {
 		}
 
 		for (Transfer transfer : filterTransfers) {
-			Long userId = transfer.getToUserId();
-			FinanceReportVo financeReportVo = userFinanceReportMap.get(userId);
-			if (financeReportVo != null) {
+			Long fromUserId = transfer.getFromUserId();
+			Long toUserId = transfer.getToUserId();
 
-				BigDecimal amount = transfer.getAmount();
-				BigDecimal transferAmount = financeReportVo.getTransferAmount();
-				financeReportVo.setTransferAmount(amount.add(transferAmount));
+			FinanceReportVo financeReportVo = userFinanceReportMap.get(fromUserId);
+			if(financeReportVo != null) {
+				BigDecimal amount = financeReportVo.getTransferAmount();
+				if(amount == null) {
+					amount = new BigDecimal("0.00");
+				}
+				amount = amount.subtract(transfer.getAmount());
+				financeReportVo.setTransferAmount(amount);
 
-				userFinanceReportMap.put(userId, financeReportVo);
+				userFinanceReportMap.put(fromUserId, financeReportVo);
+			}
+
+			FinanceReportVo financeReportVo1 = userFinanceReportMap.get(toUserId);
+			if(financeReportVo1 != null) {
+				BigDecimal amount = financeReportVo1.getTransferAmount();
+				if(amount == null) {
+					amount = new BigDecimal("0.00");
+				}
+				amount = amount.add(transfer.getAmount());
+				financeReportVo1.setTransferAmount(amount);
+
+				userFinanceReportMap.put(toUserId, financeReportVo1);
 			}
 		}
 
 		List<FinanceReportVo> financeReportVos = new ArrayList<>(userFinanceReportMap.values());
 		financeReportVos = financeReportVos.stream().map(v -> {
-			v.setAccountAmount((v.getDepositAmount().add(v.getTransferAmount().add(v.getProfitAmount()))).subtract(v.getPaymentAmount()));
+			v.setAccountAmount((v.getDepositAmount().add(v.getTransferAmount().add(v.getProfitAmount()))).subtract(v.getWithdrawAmount()).subtract(v.getPaymentAmount()));
 			v.setAccountPointAmount(v.getProfitPointAmount().subtract(v.getWithdrawPointAmount()).subtract(v.getPaymentPointAmount()));
 			return v;
 		}).collect(Collectors.toList());

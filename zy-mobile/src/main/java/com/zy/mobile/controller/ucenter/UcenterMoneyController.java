@@ -88,6 +88,7 @@ public class UcenterMoneyController {
 		if (Arrays.asList(phones).contains(user.getPhone())) {
 			model.addAttribute("moneyWithdraw", true);
 		}
+		model.addAttribute("userRank", user.getUserRank());
 
 		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
 		if(userInfo != null && userInfo.getConfirmStatus() == ConfirmStatus.已通过) {

@@ -32,9 +32,11 @@
     <div class="form-btn mt-20">
       <a href="${ctx}/u/pay/deposit" class="btn green btn-block round-2">充值</a>
     </div>
+    <c:if test="${userRank == 'V4'}">
     <div class="form-btn mt-20">
       <a href="${ctx}/u/account/transfer/create" class="btn orange btn-block round-2">转账</a>
     </div>
+    </c:if>
     </c:if>
     <c:if test="${bankCardCount == 0 and currencyType == '积分'}">
     <div class="form-btn">

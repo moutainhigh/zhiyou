@@ -209,4 +209,37 @@ public class OrderController {
 		}
 		return "redirect:/order";
 	}
+
+	/* 只能查看已支付的订单并发货 */
+	@RequiresPermissions("order:deliver")
+	@RequestMapping( value="/paid", method = RequestMethod.GET)
+	public String paidList(Model model) {
+		List<Product> products = productService.findAll(ProductQueryModel.builder().build());
+		Map<Long, String> productMap = products.stream().collect(Collectors.toMap(Product::getId, v -> v.getTitle()));
+		model.addAttribute("productMap", productMap);
+		return "mal/orderPaidList";
+	}
+
+	@RequiresPermissions("order:deliver")
+	@RequestMapping(value="/paid", method = RequestMethod.POST)
+	@ResponseBody
+	public Grid<OrderAdminVo> paidList(OrderQueryModel orderQueryModel, String paidTimeOrderBy, String userPhoneEQ, String userNicknameLK) {
+
+		if (StringUtils.isNotBlank(userPhoneEQ) || StringUtils.isNotBlank(userNicknameLK)) {
+			UserQueryModel userQueryModel = new UserQueryModel();
+			userQueryModel.setPhoneEQ(userPhoneEQ);
+			userQueryModel.setNicknameLK(userNicknameLK);
+			List<User> users = userService.findAll(userQueryModel);
+			Long[] userIds = users.stream().map(v -> v.getId()).toArray(Long[]::new);
+			orderQueryModel.setUserIdIN(userIds);
+		}
+		if(StringUtils.isNotBlank(paidTimeOrderBy)) {
+			orderQueryModel.setOrderBy("paidTime");
+			orderQueryModel.setDirection(Direction.DESC);
+		}
+		orderQueryModel.setOrderStatusEQ(OrderStatus.已支付);
+		Page<Order> page = orderService.findPage(orderQueryModel);
+		Page<OrderAdminVo> voPage = PageBuilder.copyAndConvert(page, orderComponent::buildAdminVo);
+		return new Grid<>(voPage);
+	}
 }

@@ -218,6 +218,11 @@
                   <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 平台发货订单<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="order:deliver">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/order/paid"><i class="icon-docs"></i> 已支付订单<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
               <shiro:hasPermission name="orderFillUser:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/orderFillUser"><i class="icon-users"></i> 用户补单管理<span class="badge badge-danger"></span></a>
