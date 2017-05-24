@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ActivityTeamApplyMapper {
 
-	int insert(ActivityTeamApply activityTeamApply);
+	Long insert(ActivityTeamApply activityTeamApply);
 
 	int update(ActivityTeamApply activityTeamApply);
 
@@ -25,5 +25,7 @@ public interface ActivityTeamApplyMapper {
 	long count(ActivityTeamApplyQueryModel activityTeamApplyQueryModel);
 
 	ActivityTeamApply findByActivityIdAndBuyerId(@Param("activityId") Long activityId, @Param("buyerId") Long buyerId);
+
+	Long findPayNumber(Long activityId);
 
 }

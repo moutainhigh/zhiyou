@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,7 +123,7 @@ public class UcenterActivityController {
 
 	/**
 	 * 团队报名后跳转到选择支付方式页面
-	 * @param id
+	 * @param
 	 * @param principal
 	 * @param model
 	 * @param redirectAttributes
@@ -130,35 +131,42 @@ public class UcenterActivityController {
 	 * @return
 	 */
 	@RequestMapping(value = "/applyTeam")
-	public String applyTeam(Long id, Long count, BigDecimal amount, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+	public String applyTeam(Long activityId, Long count, BigDecimal amount, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		try {
+			Long a = querySurplus(activityId);
 			ActivityTeamApply  activityTeamApply = new ActivityTeamApply();
-			activityTeamApply.setActivityId(id);
-			activityTeamApply.setCount(count);
-			activityTeamApply.setAmount(amount);
-			activityTeamApplyService.insert(activityTeamApply);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功,请点击付费完成报名"));
-			return "redirect:/u/activity/" + id + "/activityTeamApply";
+			if (a >= count){
+				activityTeamApply.setActivityId(activityId);
+				activityTeamApply.setBuyerId(principal.getUserId());
+				activityTeamApply.setCreateTime(new Date());
+				activityTeamApply.setPaidStatus(ActivityTeamApply.PaidStatus.未支付);
+				activityTeamApply.setCount(count);
+				activityTeamApply.setAmount(amount);
+                Long id = activityTeamApplyService.insert(activityTeamApply);
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功,请点击付费完成报名"));
+				return "redirect:/u/activity/" + id + "/activityTeamApply";
+			}else {
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("票量不足,剩余"+ a + "张，请重新选折"));
+				return "redirect:/activity/" + activityId;
+			}
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名异常," + e.getMessage()));
-			return "redirect:/activity/" + id;
+			return "redirect:/activity/" + activityId;
 		}
 	}
 
-	@RequestMapping(path = "/{activityId}/activityTeamApply", method = RequestMethod.GET)
-	public String activityTeamApply(@PathVariable Long activityId, Model model, Principal principal) {
-		Activity activity = activityService.findOne(activityId);
-		ActivityTeamApply activityTeamApply = activityTeamApplyService.findOne(activityId);
-		validate(activityTeamApply, NOT_NULL, "activity id " + activityId + " not found");
+	private Long querySurplus(Long activityId) {
+		Long id = activityId;
+		Long number = activityTeamApplyService.findPayNumber(activityId);
+		Activity activity = activityService.findOne(id);
+		return activity.getMaxCount() - number;
+	}
 
-		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, principal.getUserId());
-		validate(activityApply, NOT_NULL, "activity apply id" + activityId + " not found");
-		if(!activityApply.getUserId().equals(principal.getUserId())){
-			throw new BizException(BizCode.ERROR, "非自己的订单, 不能操作");
-		}
-		if(activityApply.getActivityApplyStatus() != ActivityApply.ActivityApplyStatus.已报名){
-			return "redirect:/activity/" + activityId;
-		}
+	@RequestMapping(path = "/{id}/activityTeamApply", method = RequestMethod.GET)
+	public String activityTeamApply(@PathVariable Long id, Model model, Principal principal) {
+		ActivityTeamApply activityTeamApply = activityTeamApplyService.findOne(id);
+		Activity activity = activityService.findOne(activityTeamApply.getActivityId());
+		validate(activityTeamApply, NOT_NULL, "activity id " + id + " not found");
 
 		model.addAttribute("title", activity.getTitle());
 		model.addAttribute("activityApplyId", activityTeamApply.getId());

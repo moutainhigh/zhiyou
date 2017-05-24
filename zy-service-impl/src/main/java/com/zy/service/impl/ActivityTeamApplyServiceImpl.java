@@ -1,15 +1,9 @@
 package com.zy.service.impl;
 
-import com.zy.common.exception.BizException;
-import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
-import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityTeamApply;
-import com.zy.entity.fnc.Payment;
-import com.zy.entity.usr.User;
 import com.zy.mapper.*;
 import com.zy.mapper.ActivityTeamApplyMapper;
-import com.zy.model.BizCode;
 import com.zy.model.query.ActivityTeamApplyQueryModel;
 import com.zy.service.ActivityTeamApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 
 @Service
@@ -77,8 +67,15 @@ public class ActivityTeamApplyServiceImpl implements ActivityTeamApplyService {
 	}
 
 	@Override
-	public void insert(ActivityTeamApply activityTeamApply) {
+	public Long insert(ActivityTeamApply activityTeamApply) {
 		activityTeamApplyMapper.insert(activityTeamApply);
+		Long id = activityTeamApply.getId();
+		return id;
+	}
+
+	@Override
+	public Long findPayNumber(Long activityId) {
+		return activityTeamApplyMapper.findPayNumber(activityId);
 	}
 
 //	@Override

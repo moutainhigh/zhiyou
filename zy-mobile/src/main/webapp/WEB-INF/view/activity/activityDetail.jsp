@@ -140,10 +140,10 @@
     var count = 1;
     var number=${activity.amountLabel};
     var amount=count*number;
-    var hrefNew= "${ctx}/u/activity/applyTeam?id=${activity.id}&count=";
+    var hrefNew= "${ctx}/u/activity/applyTeam?activityId=${activity.id}&count=";
     $(function() {
 
-      $(".newHref").attr("href",$(".newHref").attr("href")+count+"amount="+amount);
+      $(".newHref").attr("href",$(".newHref").attr("href")+count+"&amount="+amount);
 
       $('.tab-nav > a').tabs('.tab-content');
 
@@ -423,7 +423,7 @@
 <div class="disDiv" onclick="hideDis()"></div>
 <div class="teamBlock">
   <div class="teamPlay">
-    <a class="newHref clearfloat" href="${ctx}/u/activity/applyTeam?id=${activity.id}&count="><div class="ticket_button ticket_now">立即支付</div></a>
+    <a class="newHref clearfloat" href="${ctx}/u/activity/applyTeam?activityId=${activity.id}&count="><div class="ticket_button ticket_now">立即支付</div></a>
   </div>
   <div class="team_people">
     <span>人数</span>
@@ -448,7 +448,7 @@
     count = $(".inputPeople").val();
     amount=count*number;
     $(".newHref").attr("href","");
-    $(".newHref").attr("href",hrefNew+count+"amount="+amount);
+    $(".newHref").attr("href",hrefNew+count+"&amount="+amount);
   }
   //减去
   function removePeople(){
@@ -462,7 +462,7 @@
     count = $(".inputPeople").val();
     amount=count*number;
     $(".newHref").attr("href","");
-    $(".newHref").attr("href",hrefNew+count+"amount="+amount);
+    $(".newHref").attr("href",hrefNew+count+"&amount="+amount);
   }
   //input输入
   function changePeople(){
@@ -474,7 +474,7 @@
     count = $(".inputPeople").val();
     amount=count*number;
     $(".newHref").attr("href","");
-    $(".newHref").attr("href",hrefNew+count+"amount="+amount);
+    $(".newHref").attr("href",hrefNew+count+"&amount="+amount);
   }
   function showDis(){
     $(".teamBlock").addClass("team_animat");

@@ -159,9 +159,19 @@
 
 	<select id="findByActivityIdAndBuyerId" resultMap="baseResultMap">
 		select
-		*
+			*
 		from `act_activity_team_apply`
 		where activity_id = #{activityId} and buyer_id = #{buyerId}
+	</select>
+
+	<!-- 查询已经支付的单子 -->
+	<select id="findPayNumber" resultType="_long" parameterType="long">
+		SELECT
+			count(*)
+		FROM act_activity_team_apply a
+		WHERE
+			a.activity_id = #{activityId}
+		AND a.paid_status = 1
 	</select>
 
 </mapper>
