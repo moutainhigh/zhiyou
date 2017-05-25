@@ -1,9 +1,6 @@
 package com.zy.component;
 
-import com.zy.entity.act.ActivityApply;
-import com.zy.entity.act.ActivityTeamApply;
-import com.zy.entity.act.Report;
-import com.zy.entity.act.ReportLog;
+import com.zy.entity.act.*;
 import com.zy.mapper.ActivityApplyMapper;
 import com.zy.mapper.ReportLogMapper;
 import com.zy.mapper.ReportMapper;
@@ -73,5 +70,13 @@ public class ActComponent {
 		activityTeamApply.setPaidTime(new Date());
 		activityTeamApply.setPaidStatus(ActivityTeamApply.PaidStatus.已支付);
 		activityTeamApplyService.insert(activityTeamApply);
+
+		ActivityTicket activityTicket = new ActivityTicket();
+		for (int i = 0; i < activityTeamApply.getCount(); i++) {
+			activityTicket.setTeamApplyId(activityTeamApplyId);
+			activityTicket.setIsUsed(0);
+
+
+		}
 	}
 }
