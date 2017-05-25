@@ -39,7 +39,7 @@ public class Payment implements Serializable {
 	public static final String VO_ADMIN = "PaymentAdminVo";
 
 	public enum PaymentType {
-		订单支付, 活动报名
+		订单支付, 活动报名, 团队报名
 	}
 
 	public enum PaymentStatus {

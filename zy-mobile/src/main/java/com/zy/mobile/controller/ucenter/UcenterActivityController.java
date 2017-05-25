@@ -171,8 +171,41 @@ public class UcenterActivityController {
 		model.addAttribute("title", activity.getTitle());
 		model.addAttribute("activityApplyId", activityTeamApply.getId());
 		model.addAttribute("amount", activityTeamApply.getAmount());
-		return "ucenter/activity/activityApply1";
+		return "ucenter/activity/activityApply2";
 	}
+
+	/**
+	 * 团队跳转到支付类型页面
+	 * @param activityApplyId
+	 * @param payerPhone
+	 * @param model
+	 * @param redirectAttributes
+	 * @param principal
+     * @return
+     */
+	@RequestMapping(path = "/activityApply2", method = RequestMethod.POST)
+	public String activityApply2(@RequestParam Long activityApplyId, String payerPhone, Model model, RedirectAttributes redirectAttributes,
+								 Principal principal) {
+
+		ActivityTeamApply activityTeamApply = activityTeamApplyService.findOne(activityApplyId);
+		validate(activityTeamApply, NOT_NULL, "activity apply " + activityApplyId + " id not found");
+
+		Long activityId = activityTeamApply.getActivityId();
+		Activity activity = activityService.findOne(activityId);
+		if (activityTeamApply.getPaidStatus()== ActivityTeamApply.PaidStatus.已支付) {
+			return "redirect:/activity/" + activityId;
+		}
+		Long userId = activityTeamApply.getBuyerId();
+		// 自己支付
+		if(!userId.equals(principal.getUserId())){
+			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
+		}
+		model.addAttribute("title", activity.getTitle());
+		model.addAttribute("activityTeamApplyId", activityTeamApply.getId());
+		model.addAttribute("amount", activityTeamApply.getAmount());
+		return "ucenter/pay/activityTeamPay";
+	}
+
 
 	/**
 	 * 跳转到支付类型页面

@@ -1,7 +1,6 @@
 package com.zy.mobile.controller.ucenter;
 
 import com.zy.common.exception.BizException;
-import com.zy.common.exception.UnauthenticatedException;
 import com.zy.common.extend.BigDecimalBinder;
 import com.zy.common.extend.StringBinder;
 import com.zy.common.model.result.ResultBuilder;
@@ -15,6 +14,7 @@ import com.zy.common.util.Identities;
 import com.zy.common.util.JsonUtils;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
+import com.zy.entity.act.ActivityTeamApply;
 import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.Deposit.DepositStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
@@ -29,11 +29,6 @@ import com.zy.model.query.PaymentQueryModel;
 import com.zy.service.*;
 import com.zy.util.GcUtils;
 import io.gd.generator.api.query.Direction;
-import me.chanjar.weixin.common.bean.WxJsapiSignature;
-import me.chanjar.weixin.common.util.crypto.WxCryptUtil;
-import me.chanjar.weixin.mp.api.WxMpConfigStorage;
-import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.result.WxMpPrepayIdResult;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -47,9 +42,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.*;
 
@@ -88,6 +83,9 @@ public class UcenterPayController {
 
 	@Autowired
 	private FuiouClient fuiouClient;
+
+	@Autowired
+	private ActivityTeamApplyService activityTeamApplyService;
 
 	public static final String URL_SHENGPAY = "https://api.shengpay.com/html5-gateway/express.htm?page=mobile";
 
@@ -409,6 +407,113 @@ public class UcenterPayController {
 			payment = paymentService.create(payment);
 		}
 		return payment;
+	}
+
+	/**
+	 *团对支付
+	 * @param activityTeamApplyId
+	 * @param payType
+	 * @param model
+	 * @param redirectAttributes
+	 * @param principal
+     * @return
+     */
+	@RequestMapping(path = "/activityTeamApply/payment", method = RequestMethod.POST)
+	public String paymentTeamPay(@RequestParam Long activityTeamApplyId, PayType payType, Model model, RedirectAttributes redirectAttributes,
+							 Principal principal) {
+
+		validate(payType, NOT_NULL, "pay type is null");
+
+		ActivityTeamApply activityTeamApply = activityTeamApplyService.findOne(activityTeamApplyId);
+		validate(activityTeamApply, NOT_NULL, "activity team apply id" + activityTeamApplyId + " not found");
+		Long activityId = activityTeamApply.getActivityId();
+		Activity activity = activityService.findOne(activityId);
+		if (activityTeamApply.getPaidStatus() == ActivityTeamApply.PaidStatus.已支付) {
+			return "redirect:/activity/" + activityTeamApply.getActivityId();
+		}
+
+		Long userId = principal.getUserId();
+		if (payType == PayType.富友支付) {
+			return "redirect:/u/pay/activityTeam/weixin?activityTeamApplyId=" + activityTeamApplyId;
+		} else if (payType == PayType.余额) {
+			try {
+				Payment payment = createTeamPayment(activityTeamApply, userId, activity.getTitle(), CurrencyType.积分, PayType.余额);
+				paymentService.balancePay(payment.getId(), true);
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分支付成功"));
+				return "redirect:/activity/" + activityId;
+			} catch (Exception e) {
+				model.addAttribute("title", activity.getTitle());
+				model.addAttribute("activityTeamApplyId", activityTeamApply.getId());
+				model.addAttribute("amount", activityTeamApply.getAmount());
+				model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+				return "ucenter/pay/activityTeamPay";
+			}
+		} else if (payType == PayType.盛付通) {
+			model.addAttribute("payCreateMobile", shengTeamPay(activityTeamApply, userId, activity.getTitle()));
+			model.addAttribute("payUrl", URL_SHENGPAY);
+			return "shengpay/mobilePost";
+		} else {
+			throw new BizException(BizCode.ERROR, "不存在的情况");
+		}
+
+	}
+
+	private Payment createTeamPayment(ActivityTeamApply activityTeamApply, Long userId, String title, CurrencyType currencyType, PayType payType) {
+		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(activityTeamApply.getId()).paymentTypeEQ(PaymentType.活动报名).build());
+		Payment payment = payments.stream()
+				.filter(v -> (v.getPaymentStatus() == Payment.PaymentStatus.待支付 || v.getPaymentStatus() == Payment.PaymentStatus.待确认))
+				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
+				.filter(v -> v.getAmount1().equals(activityTeamApply.getAmount()))
+				.filter(v -> v.getCurrencyType1() == currencyType)
+				.filter(v -> v.getAmount2() == null)
+				.filter(v -> v.getCurrencyType2() == null)
+				.filter(v -> v.getPayType() == payType)
+				.findFirst()
+				.orElse(null);
+
+		if (payment == null) {
+			payment = new Payment();
+			payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
+			payment.setAmount1(activityTeamApply.getAmount());
+			payment.setCurrencyType1(currencyType);
+			payment.setPaymentType(PaymentType.团队报名);
+			payment.setRefId(activityTeamApply.getId());
+			payment.setUserId(userId);
+			payment.setTitle(title);
+			payment.setPayType(payType);
+			payment = paymentService.create(payment);
+		}
+		return payment;
+	}
+
+	private PayCreateMobile shengTeamPay(ActivityTeamApply activityTeamApply, Long userId, String title) {
+		Payment payment = createTeamPayment(activityTeamApply, userId, title, CurrencyType.人民币, PayType.盛付通);
+
+		User user = userService.findOne(userId);
+		String registerIp = StringUtils.isBlank(user.getRegisterIp())? "127.0.0.1" : user.getRegisterIp();
+
+		PayCreateMobile payCreateMobile = shengPayMobileClient.getPayCreateUrl(new Date(), userId, user.getRegisterTime(), registerIp, "0"
+				, user.getNickname(), user.getPhone(), payment.getId(), title
+				, payment.getAmount1(), Constants.SHENGPAY_RETURN_MOBILE, Constants.SHENGPAY_NOTIFY_MOBILE, GcUtils.getHost());
+		return payCreateMobile;
+	}
+
+	@RequestMapping(path = "/activityTeam/weixin", method = RequestMethod.GET)
+	public String activityTeamWXPay(@RequestParam Long activityTeamApplyId, Principal principal) {
+		ActivityTeamApply activityTeamApply = activityTeamApplyService.findOne(activityTeamApplyId);
+		validate(activityTeamApply, NOT_NULL, "activity team apply id" + activityTeamApplyId + " not found");
+		Long activityId = activityTeamApply.getActivityId();
+		Activity activity = activityService.findOne(activityId);
+		validate(activity, NOT_NULL, "activity id " + activityId + " not found");
+
+		if(activityTeamApply.getPaidStatus() != ActivityTeamApply.PaidStatus.未支付){
+			return "redirect:/activity/" + activityId;
+		}
+
+		PayType payType = PayType.富友支付;
+		Payment payment = createTeamPayment(activityTeamApply, principal.getUserId(), activity.getTitle(), CurrencyType.人民币, payType);
+
+		return "redirect:/u/pay?paymentSn=" + payment.getSn() + "&payType=" + payType.ordinal();
 	}
 
 }
