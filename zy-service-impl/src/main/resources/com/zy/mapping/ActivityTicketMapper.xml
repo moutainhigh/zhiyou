@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.ActivityTicketMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.act.ActivityTicket">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="team_apply_id" property="teamApplyId" />
+		<result column="code_image_url" property="codeImageUrl" />
+		<result column="is_used" property="isUsed" />
+	</resultMap>
+	<sql id="baseColumn">id,user_id,team_apply_id,code_image_url,is_used</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.act.ActivityTicket" useGeneratedKeys="true" keyProperty="id">
+	  insert into `act_activity_ticket` (user_id,team_apply_id,code_image_url,is_used)
+	  values (#{userId},#{teamApplyId},#{codeImageUrl},#{isUsed})
+	</insert>
+
+	<delete id="delete">
+		delete from `act_activity_ticket` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.act.ActivityTicket">
+		update `act_activity_ticket`
+		<set>
+			<if test="userId != null"> user_id = #{userId},</if>
+			<if test="isUsed != null"> is_used = #{isUsed},</if>
+		</set>
+		WHERE
+		id = #{id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		<include refid="baseColumn"/>
+		from `act_activity_ticket`
+		where id = #{id}
+	</select>
+
+	<!--<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ActivityTicketQueryModel">-->
+		<!--select-->
+		<!--<include refid="baseColumn"/>-->
+		<!--from `act_activity_ticket`-->
+		<!--<where>-->
+			<!--<if test="buyerIdIN != null">-->
+				<!--<if test="buyerIdIN.length != 0">-->
+				<!--and buyer_id in-->
+				<!--<foreach collection="buyerIdIN" item="item" open="(" separator="," close=")">-->
+				<!--#{item}-->
+				<!--</foreach>-->
+				<!--</if>-->
+				<!--<if test="buyerIdIN.length == 0">-->
+				<!--and 1 = 2-->
+				<!--</if>-->
+			<!--</if>-->
+			<!--<if test="createTimeGTE != null">-->
+				<!--and create_time &gt;= #{createTimeGTE}-->
+			<!--</if>-->
+			<!--<if test="createTimeLT != null">-->
+				<!--and create_time &lt; #{createTimeLT}-->
+			<!--</if>-->
+			<!--<if test="paidTimeGTE != null">-->
+				<!--and paid_time &gt;= #{paidTimeGTE}-->
+			<!--</if>-->
+			<!--<if test="paidTimeLT != null">-->
+				<!--and paid_time &lt; #{paidTimeLT}-->
+			<!--</if>-->
+			<!--<if test="buyerId != null">-->
+				<!--and buyer_id = #{buyerId}-->
+			<!--</if>-->
+			<!--<if test="activityId != null">-->
+				<!--and activity_id = #{activityId}-->
+			<!--</if>-->
+			<!--<if test="paidStatus != null">-->
+				<!--and paid_status = #{paidStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}-->
+			<!--</if>-->
+			<!--<if test="activityIdIN != null">-->
+				<!--<if test="activityIdIN.length != 0">-->
+				<!--and activity_id in-->
+				<!--<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">-->
+				<!--#{item}-->
+				<!--</foreach>-->
+				<!--</if>-->
+				<!--<if test="activityIdIN.length == 0">-->
+				<!--and 1 = 2-->
+				<!--</if>-->
+			<!--</if>-->
+		<!--</where>-->
+		<!--<choose>-->
+			<!--<when test="orderByAndDirection != null">-->
+				<!--order by ${orderByAndDirection}-->
+			<!--</when>-->
+			<!--<otherwise>-->
+				<!--order by-->
+				<!--paid_time desc-->
+			<!--</otherwise>-->
+		<!--</choose>-->
+		<!--<if test="offset != null">-->
+			<!--limit #{offset}, #{pageSize}-->
+		<!--</if>-->
+	<!--</select>-->
+
+	<!--<select id="count" resultType="_long" parameterType="com.zy.model.query.ActivityApplyQueryModel">-->
+		<!--select count(*) from `act_activity_ticket`-->
+		<!--<where>-->
+			<!--<if test="buyerIdIN != null">-->
+				<!--<if test="buyerIdIN.length != 0">-->
+					<!--and buyer_id in-->
+					<!--<foreach collection="buyerIdIN" item="item" open="(" separator="," close=")">-->
+						<!--#{item}-->
+					<!--</foreach>-->
+				<!--</if>-->
+				<!--<if test="buyerIdIN.length == 0">-->
+					<!--and 1 = 2-->
+				<!--</if>-->
+			<!--</if>-->
+			<!--<if test="createTimeGTE != null">-->
+				<!--and create_time &gt;= #{createTimeGTE}-->
+			<!--</if>-->
+			<!--<if test="createTimeLT != null">-->
+				<!--and create_time &lt; #{createTimeLT}-->
+			<!--</if>-->
+			<!--<if test="paidTimeGTE != null">-->
+				<!--and paid_time &gt;= #{paidTimeGTE}-->
+			<!--</if>-->
+			<!--<if test="paidTimeLT != null">-->
+				<!--and paid_time &lt; #{paidTimeLT}-->
+			<!--</if>-->
+			<!--<if test="buyerId != null">-->
+				<!--and buyer_id = #{buyerId}-->
+			<!--</if>-->
+			<!--<if test="activityId != null">-->
+				<!--and activity_id = #{activityId}-->
+			<!--</if>-->
+			<!--<if test="paidStatus != null">-->
+				<!--and paid_status = #{paidStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}-->
+			<!--</if>-->
+			<!--<if test="activityIdIN != null">-->
+				<!--<if test="activityIdIN.length != 0">-->
+					<!--and activity_id in-->
+					<!--<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">-->
+						<!--#{item}-->
+					<!--</foreach>-->
+				<!--</if>-->
+				<!--<if test="activityIdIN.length == 0">-->
+					<!--and 1 = 2-->
+				<!--</if>-->
+			<!--</if>-->
+		<!--</where>-->
+	<!--</select>-->
+
+
+</mapper>
