@@ -460,7 +460,7 @@ public class UcenterPayController {
 	}
 
 	private Payment createTeamPayment(ActivityTeamApply activityTeamApply, Long userId, String title, CurrencyType currencyType, PayType payType) {
-		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(activityTeamApply.getId()).paymentTypeEQ(PaymentType.活动报名).build());
+		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(activityTeamApply.getId()).paymentTypeEQ(PaymentType.团队报名).build());
 		Payment payment = payments.stream()
 				.filter(v -> (v.getPaymentStatus() == Payment.PaymentStatus.待支付 || v.getPaymentStatus() == Payment.PaymentStatus.待确认))
 				.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))

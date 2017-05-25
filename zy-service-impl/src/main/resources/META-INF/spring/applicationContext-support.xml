@@ -54,7 +54,12 @@
         <constructor-arg index="1" value="${memcached.group}"/>
     </bean>
 
-
+    <bean id="aliyunOssSupport" class="com.zy.common.support.AliyunOssSupport">
+        <constructor-arg index="0" value="${aliyun.ossEndpoint}"/>
+        <constructor-arg index="1" value="${aliyun.accessKeyId}"/>
+        <constructor-arg index="2" value="${aliyun.accessKeySecret}"/>
+        <constructor-arg index="3" value="${aliyun.ossGroup}"/>
+    </bean>
 
      <bean id="wxMpConfigStorage" class="com.zy.extend.SKWxMpServiceImpl$SkWxMpInMemoryConfigStorage">
         <constructor-arg index="0" value="${weixinPay.cert.path}"/>

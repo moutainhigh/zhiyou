@@ -265,7 +265,8 @@ public class PaymentServiceImpl implements PaymentService {
 			malComponent.successOrder(refId);
 		} else if (paymentType == Payment.PaymentType.活动报名) {
 			actComponent.successActivityApply(refId);
-		}else if(paymentType == Payment.PaymentType.团队报名){
+		}
+		else if(paymentType == Payment.PaymentType.团队报名){
 			actComponent.successActivityTeamApply(refId);
 		}
 	}
