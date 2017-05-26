@@ -167,11 +167,12 @@
 	<!-- 查询已经支付的单子 -->
 	<select id="findPayNumber" resultType="_long" parameterType="long">
 		SELECT
-			count(*)
+			sum(a.count)
 		FROM act_activity_team_apply a
 		WHERE
 			a.activity_id = #{activityId}
 		AND a.paid_status = 1
+		GROUP BY activity_id
 	</select>
 
 </mapper>

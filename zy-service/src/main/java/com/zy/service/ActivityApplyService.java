@@ -21,4 +21,6 @@ public interface ActivityApplyService {
 	void success(Long id, String outerSn);
 
 	void modifyPayerUserId(Long activityApplyId, Long payerUserId);
+
+	Long queryCount(Long activityId);
 }

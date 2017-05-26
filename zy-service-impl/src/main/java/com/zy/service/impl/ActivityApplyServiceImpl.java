@@ -148,4 +148,9 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 		activityApplyMapper.update(activityApply);
 	}
 
+	@Override
+	public Long queryCount(Long activityId) {
+		return activityApplyMapper.queryCount(activityId);
+	}
+
 }

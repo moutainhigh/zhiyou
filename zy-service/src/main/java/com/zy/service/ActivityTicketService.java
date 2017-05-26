@@ -21,6 +21,8 @@ public interface ActivityTicketService {
 
 	void update(ActivityTicket ActivityTicket);
 
+	List<Long> add(List<ActivityTicket> list);
+
 //	Long findPayNumber(Long activityId);
 
 

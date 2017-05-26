@@ -26,4 +26,5 @@ public interface ActivityApplyMapper {
 
 	ActivityApply findByActivityIdAndUserId(@Param("activityId") Long activityId, @Param("userId") Long userId);
 
+	Long queryCount(Long activityId);
 }
