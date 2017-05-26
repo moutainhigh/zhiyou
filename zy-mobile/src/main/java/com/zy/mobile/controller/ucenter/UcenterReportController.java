@@ -153,6 +153,7 @@ public class UcenterReportController {
 //			}
 //		}
 		ProductQueryModel productQueryModel = new ProductQueryModel();
+		productQueryModel.setIdIN(new Long[] {1L, 2L}); // TODO 暂时写死
 		List<Product> products = productService.findAll(productQueryModel);
 		model.addAttribute("products", products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
 		
