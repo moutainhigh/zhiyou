@@ -191,7 +191,7 @@
           <!-- END RESPONSIVE QUICK SEARCH FORM -->
         </li>
 
-        <shiro:hasAnyPermissions name="product:view,order:view">
+        <shiro:hasAnyPermissions name="product:view,order:view,order:deliver">
           <li>
             <a href="javascript:;">
               <i class="icon-basket"></i>
