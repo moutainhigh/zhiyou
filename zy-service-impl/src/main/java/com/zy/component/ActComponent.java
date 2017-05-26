@@ -6,6 +6,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.zy.common.exception.BizException;
+import com.zy.common.exception.ConcurrentException;
 import com.zy.common.support.AliyunOssSupport;
 import com.zy.entity.act.*;
 import com.zy.mapper.ActivityApplyMapper;
@@ -97,7 +98,9 @@ public class ActComponent {
 		}
 		activityTeamApply.setPaidTime(new Date());
 		activityTeamApply.setPaidStatus(ActivityTeamApply.PaidStatus.已支付);
-		activityTeamApplyService.insert(activityTeamApply);
+		if (activityTeamApplyService.update(activityTeamApply) == 0) {
+			throw new ConcurrentException();
+		}
 
 		ActivityTicket activityTicket = new ActivityTicket();
 		for (int i = 0; i < activityTeamApply.getCount(); i++) {
@@ -119,7 +122,7 @@ public class ActComponent {
                 InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
                 byte[] bytes = IOUtils.toByteArray(inputStream);
                 String contentType = "image/jpeg";
-                String imageUrl = aliyunOssSupport.putPublicObject(Constants.ALIYUN_BUCKET_NAME_IMAGE, "qrCode/", inputStream, bytes.length, contentType, Constants.ALIYUN_URL_IMAGE);
+                String imageUrl = aliyunOssSupport.putPublicObject(Constants.ALIYUN_BUCKET_NAME_IMAGE, "qrCode/", new ByteArrayInputStream(bytes), bytes.length, contentType, Constants.ALIYUN_URL_IMAGE);
                 //存储URL路径
                 insertTicket.setCodeImageUrl(imageUrl);
                 activityTicketService.update(insertTicket);
