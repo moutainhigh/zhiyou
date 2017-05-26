@@ -182,7 +182,7 @@
               var optionHtml = '<a class="btn btn-xs default blue-stripe detail-view" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-search"></i> 查看 </a>';
               <shiro:hasPermission name="order:deliver">
               if (full.orderStatus == '已支付' && full.isPlatformDeliver) {
-                optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/order/deliver?id=' + data + '"><i class="fa fa-car"></i> 发货 </a>';
+                optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/order/paid/deliver?id=' + data + '"><i class="fa fa-car"></i> 发货 </a>';
               }
               </shiro:hasPermission>
               return optionHtml;

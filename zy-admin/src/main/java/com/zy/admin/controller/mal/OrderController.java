@@ -242,4 +242,27 @@ public class OrderController {
 		Page<OrderAdminVo> voPage = PageBuilder.copyAndConvert(page, orderComponent::buildAdminVo);
 		return new Grid<>(voPage);
 	}
+
+	@RequiresPermissions("order:deliver")
+	@RequestMapping(value = "/paid/deliver", method = RequestMethod.GET)
+	public String paidDeliver(@RequestParam Long id, Model model) {
+		Order order = orderService.findOne(id);
+		validate(order, NOT_NULL, "order id " + id + "not found");
+
+		model.addAttribute("order", orderComponent.buildAdminVo(order));
+		return "mal/orderPaidDeliver";
+	}
+
+	@RequiresPermissions("order:deliver")
+	@RequestMapping(value = "/paid/deliver", method = RequestMethod.POST)
+	public String paidDeliver(OrderDeliverDto orderDeliverDto, RedirectAttributes redirectAttributes) {
+		try {
+			orderService.platformDeliver(orderDeliverDto);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("发货成功"));
+			return "redirect:/order/paid";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return "redirect:/order/paid/deliver?id=" + orderDeliverDto.getId();
+		}
+	}
 }
