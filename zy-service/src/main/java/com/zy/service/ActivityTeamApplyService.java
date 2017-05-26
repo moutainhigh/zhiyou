@@ -20,6 +20,8 @@ public interface ActivityTeamApplyService {
 
 	Long findPayNumber(Long activityId);
 
+	int update(ActivityTeamApply activityTeamApply);
+
 
 //	void createAndPaid(Long activityId, Long userId);
 

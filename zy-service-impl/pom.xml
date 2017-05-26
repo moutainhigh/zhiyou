@@ -59,7 +59,6 @@
         </dependency>
         <!-- SPRING end -->
 
-
         <!-- jdbc driver -->
         <dependency>
             <groupId>mysql</groupId>
@@ -229,6 +228,25 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zy</groupId>
+            <artifactId>zy-common-web</artifactId>
         </dependency>
 
     </dependencies>

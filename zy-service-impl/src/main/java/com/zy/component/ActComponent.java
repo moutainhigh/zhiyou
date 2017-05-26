@@ -71,12 +71,12 @@ public class ActComponent {
 		activityTeamApply.setPaidStatus(ActivityTeamApply.PaidStatus.已支付);
 		activityTeamApplyService.insert(activityTeamApply);
 
-//		ActivityTicket activityTicket = new ActivityTicket();
-//		for (int i = 0; i < activityTeamApply.getCount(); i++) {
-//			activityTicket.setTeamApplyId(activityTeamApplyId);
-//			activityTicket.setIsUsed(0);
-//
-//
-//		}
+		ActivityTicket activityTicket = new ActivityTicket();
+		for (int i = 0; i < activityTeamApply.getCount(); i++) {
+			activityTicket.setTeamApplyId(activityTeamApplyId);
+			activityTicket.setIsUsed(0);
+
+
+		}
 	}
 }

@@ -78,6 +78,11 @@ public class ActivityTeamApplyServiceImpl implements ActivityTeamApplyService {
 		return activityTeamApplyMapper.findPayNumber(activityId);
 	}
 
+	@Override
+	public int update(ActivityTeamApply activityTeamApply) {
+		return activityTeamApplyMapper.update(activityTeamApply);
+	}
+
 //	@Override
 //	public void createAndPaid(@NotNull Long activityId, @NotNull Long userId) {
 //		Activity activity = activityMapper.findOne(activityId);

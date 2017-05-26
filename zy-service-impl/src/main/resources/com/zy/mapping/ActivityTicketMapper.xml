@@ -25,6 +25,7 @@
 		<set>
 			<if test="userId != null"> user_id = #{userId},</if>
 			<if test="isUsed != null"> is_used = #{isUsed},</if>
+			<if test="codeImageUrl != null"> code_image_url = #{codeImageUrl},</if>
 		</set>
 		WHERE
 		id = #{id}
