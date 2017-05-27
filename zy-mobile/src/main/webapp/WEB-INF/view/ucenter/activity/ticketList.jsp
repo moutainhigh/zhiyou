@@ -46,10 +46,10 @@
     .erweima {
       float: left;
       width:320px;
-      border-bottom:1px solid #333;
+      border-bottom:1px dashed #333;
     }
     .erweima:nth-child(2n-1) {
-      border-right:1px solid #333;
+      border-right:1px dashed #333;
       box-sizing:border-box;
     }
     .erweima:last-child {
@@ -64,7 +64,7 @@
     }
     .erweima div {
       width:320px;
-      height:30px;
+      height:40px;
       text-align: center;
       line-height: 30px;
       font-size: 24px;

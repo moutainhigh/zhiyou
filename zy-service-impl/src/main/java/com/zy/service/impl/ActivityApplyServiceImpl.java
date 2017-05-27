@@ -192,7 +192,7 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 
 	@Override
 	public Long queryCount(Long activityId) {
-		return  null;
+		return  activityApplyMapper.queryCount(activityId);
 	}
 
 }

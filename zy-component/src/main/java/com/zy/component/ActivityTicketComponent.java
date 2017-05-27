@@ -33,6 +33,7 @@ public class ActivityTicketComponent {
 
 	public ActivityTicketListVo buildListVo(ActivityTicket activityTicket) {
 		ActivityTicketListVo activityTicketListVo = new ActivityTicketListVo();
+		BeanUtils.copyProperties(activityTicket, activityTicketListVo);
 		if( activityTicket.getUserId() != null && activityTicket.getIsUsed() == 1){
 			User user = userService.findOne(activityTicket.getUserId());
 			activityTicketListVo.setUsedUserName(user.getNickname());

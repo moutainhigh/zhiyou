@@ -57,7 +57,8 @@ public class ActivityTeamApplyServiceImpl implements ActivityTeamApplyService {
 
 	@Override
 	public Long findPayNumber(Long activityId) {
-		return activityTeamApplyMapper.findPayNumber(activityId);
+		Long count = activityTeamApplyMapper.findPayNumber(activityId);
+		return count == null ? 0L : count;
 	}
 
 	@Override

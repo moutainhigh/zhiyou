@@ -54,9 +54,8 @@
 				and 1 = 2
 				</if>
 			</if>
-
-			<if test="teamApplyIdIN != null">
-				and team_apply_id = #{teamApplyIdIN}
+			<if test="teamApplyId != null">
+				and team_apply_id = #{teamApplyId}
 			</if>
 			<if test="userId != null">
 				and user_id = #{userId}

@@ -36,7 +36,7 @@
     .ticket_play {border:1px solid red;color:red;}
     */
     .ticket_button {
-      width:80px;text-align: center;margin-left:20px;margin-top:10px;margin-bottom:10px;font-size:13px;background: #f86b3d;
+      width:80px;height:30px;text-align: center;margin-left:20px;margin-top:10px;margin-bottom:10px;font-size:13px;background: #f86b3d;
       color: #fff;
     }
     .ticket_play {background: #ccc;}
@@ -139,7 +139,7 @@
         <div class="order_div"></div>
         <div class="order-info pl-15 pr-15 mt-5 bdd-t">
           <div class="flex lh-30">
-            <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：${activityTeamApply.createTimeLabel}</span></div>
+            <div class="flex-1 font-999 fs-12" style="line-height: 24px !important;"><span>下单时间：<br/>${activityTeamApply.createTimeLabel}</span></div>
             <a href="${ctx}/u/activity/${activityTeamApply.id}/activityTeamApply" class="ticket_button ticket_now">立即支付</a>
             <input type="hidden" value="${activityTeamApply.activity.id}" class="hiddenActivity"/>
             <input type="hidden" value="${activityTeamApply.id}" class="hiddenNew"/>
@@ -171,7 +171,7 @@
         <div class="order_div"></div>
         <div class="order-info pl-15 pr-15 mt-5 bdd-t">
           <div class="flex lh-30">
-            <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：${activityTeamApply.createTimeLabel}</span></div>
+            <div class="flex-1 font-999 fs-12" style="line-height: 24px !important;"><span>下单时间：<br/>${activityTeamApply.createTimeLabel}</span></div>
             <a href="${ctx}/u/activity/${activityTeamApply.id}/ticketList"><div class="ticket_button">查看票据</div></a>
             <div class="ticket_button ticket_play">支付成功</div>
           </div>
@@ -202,7 +202,7 @@
         <div class="order_div"></div>
         <div class="order-info pl-15 pr-15 mt-5 bdd-t">
           <div class="flex lh-30">
-            <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：${activityTeamApply.createTimeLabel}</span></div>
+            <div class="flex-1 font-999 fs-12" style="line-height: 24px !important;"><span>下单时间：<br/>${activityTeamApply.createTimeLabel}</span></div>
             <c:if test="${activityTeamApply.activity.status == '报名中'}"><div class="ticket_button" ticket_play>报名中</div></c:if>
             <c:if test="${order.orderStatus == '待确认'}"> orange</c:if>
             <c:if test="${activityTeamApply.activity.status == '报名已结束'}"><div class="ticket_button ticket_play">报名已结束</div></c:if>

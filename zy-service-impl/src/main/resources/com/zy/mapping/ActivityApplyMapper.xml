@@ -251,11 +251,14 @@
 	<update id="updateActApply" parameterType="com.zy.entity.act.ActivityApply">
 		update `act_activity_apply`
 		<set>
-			activity_apply_status = #{activityApplyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
-			inviter_id = #{inviterId},
+			<if test="activityApplyStatus != null">activity_apply_status = #{activityApplyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},</if>
+			<if test="inviterId != null">inviter_id = #{inviterId},</if>
 		</set>
 		where id = #{id}
 	</update>
+
+
+
 
 	<!--查询已支付人数-->
 	<select id="queryCount" resultType="_long" parameterType="long">

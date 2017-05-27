@@ -164,7 +164,7 @@
 		where activity_id = #{activityId} and buyer_id = #{buyerId}
 	</select>
 
-	<!-- 查询已经支付的单子 -->
+	<!--  -->
 	<select id="findPayNumber" resultType="_long" parameterType="long">
 		SELECT
 			sum(a.count)
@@ -172,7 +172,6 @@
 		WHERE
 			a.activity_id = #{activityId}
 		AND a.paid_status = 1
-		GROUP BY activity_id
 	</select>
 
 </mapper>
