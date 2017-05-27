@@ -25,4 +25,6 @@ public interface ActivityApplyService {
 	void modifyPayerUserId(Long activityApplyId, Long payerUserId);
 
 	int update(ActivityApply activityApply);
+
+	Long queryCount(Long activityId);
 }

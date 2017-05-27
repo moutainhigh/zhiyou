@@ -181,7 +181,6 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 		if (activityApply.getUserId().equals(payerUserId)) {
 			throw new BizException(BizCode.ERROR, "请输入他人手机号");
 		}
-
 		activityApply.setPayerUserId(payerUserId);
 		activityApplyMapper.update(activityApply);
 	}
@@ -189,6 +188,11 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 	@Override
 	public int update(ActivityApply activityApply) {
 		return activityApplyMapper.updateActApply(activityApply);
+	}
+
+	@Override
+	public Long queryCount(Long activityId) {
+		return  null;
 	}
 
 }

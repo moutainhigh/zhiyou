@@ -257,4 +257,13 @@
 		where id = #{id}
 	</update>
 
+	<!--查询已支付人数-->
+	<select id="queryCount" resultType="_long" parameterType="long">
+		SELECT count(*)
+		FROM act_activity_apply a
+		WHERE a.activity_id = #{activityId}
+		AND a.activity_apply_status = 1
+		AND a.inviter_id IS NULL
+	</select>
+
 </mapper>
