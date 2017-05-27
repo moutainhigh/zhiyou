@@ -30,9 +30,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -101,7 +99,6 @@ public class ActComponent {
 		if (activityTeamApplyService.update(activityTeamApply) == 0) {
 			throw new ConcurrentException();
 		}
-
 		ActivityTicket activityTicket = new ActivityTicket();
 		for (int i = 0; i < activityTeamApply.getCount(); i++) {
 			activityTicket.setTeamApplyId(activityTeamApplyId);

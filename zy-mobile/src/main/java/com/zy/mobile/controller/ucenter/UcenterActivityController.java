@@ -87,9 +87,15 @@ public class UcenterActivityController {
 	@RequestMapping(value = "/apply")
 	public String apply(Long id, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		try {
-			activityService.apply(id, principal.getUserId(), null);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功,请点击付费完成报名"));
-			return "redirect:/u/activity/" + id + "/activityApply";
+			Long a = querySurplus(id);
+			if (a > 0){
+				activityService.apply(id, principal.getUserId(), null);
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功,请点击付费完成报名"));
+				return "redirect:/u/activity/" + id + "/activityApply";
+			}else {
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败,票不足"));
+				return "redirect:/activity/" + id;
+			}
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名异常," + e.getMessage()));
 			return "redirect:/activity/" + id;
@@ -163,8 +169,9 @@ public class UcenterActivityController {
 	private Long querySurplus(Long activityId) {
 		Long id = activityId;
 		Long number = activityTeamApplyService.findPayNumber(activityId);
+		Long count = activityApplyService.queryCount(activityId);
 		Activity activity = activityService.findOne(id);
-		return activity.getMaxCount() - number;
+		return activity.getMaxCount() - number - count;
 	}
 
 	@RequestMapping(path = "/{id}/activityTeamApply", method = RequestMethod.GET)
