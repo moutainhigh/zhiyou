@@ -4,6 +4,7 @@ package com.zy.mapper;
 import com.zy.entity.act.ActivityTeamApply;
 import com.zy.entity.act.ActivityTicket;
 import com.zy.model.query.ActivityTeamApplyQueryModel;
+import com.zy.model.query.ActivityTicketQueryModel;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -19,9 +20,9 @@ public interface ActivityTicketMapper {
 
 	ActivityTicket findOne(Long id);
 
-//	List<ActivityTicket> findAll(ActivityTeamApplyQueryModel activityTeamApplyQueryModel);
-//
-//	long count(ActivityTeamApplyQueryModel activityTeamApplyQueryModel);
+	List<ActivityTicket> findAll(ActivityTicketQueryModel activityTicketQueryModel);
+
+	long count(ActivityTicketQueryModel activityTicketQueryModel);
 
 
 

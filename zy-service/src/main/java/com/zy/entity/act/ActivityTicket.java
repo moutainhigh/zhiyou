@@ -5,6 +5,7 @@ import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.annotation.view.View;
+import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,16 +17,16 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "act_activity_team_apply")
+@Table(name = "act_activity_ticket")
 @Getter
 @Setter
 @Type(label = "活动团队报名")
 @QueryModel
-//@ViewObject(groups = {ActivityTicket.VO_ADMIN, ActivityTicket.VO_LIST})
+@ViewObject(groups = {ActivityTicket.VO_ADMIN, ActivityTicket.VO_LIST})
 public class ActivityTicket implements Serializable {
 
-//	public static final String VO_ADMIN = "ActivityTeamApplyAdminVo";
-//	public static final String VO_LIST = "ActivityTeamApplyListVo";
+	public static final String VO_ADMIN = "ActivityTicketAdminVo";
+	public static final String VO_LIST = "ActivityTicketListVo";
 
 
 	@Id
@@ -45,6 +46,7 @@ public class ActivityTicket implements Serializable {
 	@Query({Predicate.IN, Predicate.EQ})
 	//@View(groups = VO_ADMIN)
 	//@AssociationView(name = "buyerUser", associationGroup = User.VO_ADMIN_SIMPLE, groups = VO_ADMIN)
+	@View(name = "usedUserName", type = String.class)
 	private Long userId;
 
 

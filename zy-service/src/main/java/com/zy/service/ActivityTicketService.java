@@ -4,29 +4,21 @@ import com.zy.common.model.query.Page;
 import com.zy.entity.act.ActivityTeamApply;
 import com.zy.entity.act.ActivityTicket;
 import com.zy.model.query.ActivityTeamApplyQueryModel;
+import com.zy.model.query.ActivityTicketQueryModel;
 
 import java.util.List;
 
 public interface ActivityTicketService {
 
-	//Page<ActivityTeamApply> findPage(ActivityTeamApplyQueryModel ActivityTeamApplyQueryModel);
+	Page<ActivityTicket> findPage(ActivityTicketQueryModel ActivityTicketQueryModel);
 
-	//List<ActivityTeamApply> findAll(ActivityTeamApplyQueryModel ActivityTeamApplyQueryModel);
+	List<ActivityTicket> findAll(ActivityTicketQueryModel ActivityTicketQueryModel);
 
-	//ActivityTeamApply findByActivityIdAndBuyerId(Long activityId, Long userId);
 
 	ActivityTicket findOne(Long id);
 
 	ActivityTicket insert(ActivityTicket ActivityTicket);
 
-	void update(ActivityTicket ActivityTicket);
+	int update(ActivityTicket ActivityTicket);
 
-//	Long findPayNumber(Long activityId);
-
-
-//	void createAndPaid(Long activityId, Long userId);
-
-//	void success(Long id, String outerSn);
-
-//	void modifyPayerUserId(Long ActivityTeamApplyId, Long payerUserId);
 }

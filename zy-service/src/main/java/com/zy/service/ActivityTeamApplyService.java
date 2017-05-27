@@ -12,8 +12,6 @@ public interface ActivityTeamApplyService {
 
 	List<ActivityTeamApply> findAll(ActivityTeamApplyQueryModel ActivityTeamApplyQueryModel);
 
-	ActivityTeamApply findByActivityIdAndBuyerId(Long activityId, Long userId);
-
 	ActivityTeamApply findOne(Long id);
 
 	Long insert(ActivityTeamApply activityTeamApply);
@@ -22,10 +20,4 @@ public interface ActivityTeamApplyService {
 
 	int update(ActivityTeamApply activityTeamApply);
 
-
-//	void createAndPaid(Long activityId, Long userId);
-
-//	void success(Long id, String outerSn);
-
-//	void modifyPayerUserId(Long ActivityTeamApplyId, Long payerUserId);
 }

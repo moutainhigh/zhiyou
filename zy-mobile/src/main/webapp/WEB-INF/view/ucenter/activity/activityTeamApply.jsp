@@ -172,7 +172,7 @@
         <div class="order-info pl-15 pr-15 mt-5 bdd-t">
           <div class="flex lh-30">
             <div class="flex-1 font-999 fs-12" style="line-height: 50px !important;"><span>下单时间：${activityTeamApply.createTimeLabel}</span></div>
-            <div class="ticket_button">查看票据</div>
+            <a href="${ctx}/u/activity/${activityTeamApply.id}/ticketList"><div class="ticket_button">查看票据</div></a>
             <div class="ticket_button ticket_play">支付成功</div>
           </div>
         </div>

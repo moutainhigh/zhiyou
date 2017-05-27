@@ -246,4 +246,15 @@
 		where activity_id = #{activityId} and user_id = #{userId}
 	</select>
 
+
+	<!--修改状态和邀请人，二维码识别报名活动特用-->
+	<update id="updateActApply" parameterType="com.zy.entity.act.ActivityApply">
+		update `act_activity_apply`
+		<set>
+			activity_apply_status = #{activityApplyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			inviter_id = #{inviterId},
+		</set>
+		where id = #{id}
+	</update>
+
 </mapper>
