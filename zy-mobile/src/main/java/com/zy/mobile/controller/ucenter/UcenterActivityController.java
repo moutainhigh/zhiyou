@@ -446,10 +446,10 @@ public class UcenterActivityController {
 								//个人报名已经操作过，但是未支付，修改活动报名已支付，邀请人为购票人
 								activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
 								activityApply.setInviterId(buyerId);
+								activityApplyService.update(activityApply);
+								activityTicket.setUserId(userId);
 								activityTicket.setIsUsed(1);
-								if (activityApplyService.update(activityApply) == 0 || activityTicketService.update(activityTicket) == 0) {
-									throw new ConcurrentException();
-								}
+								activityTicketService.update(activityTicket);
 								redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("活动报名成功"));
 								model.addAttribute("userName", user.getNickname());
 								model.addAttribute("activityId", activityId);
@@ -463,9 +463,8 @@ public class UcenterActivityController {
 							//个人报名首次操作
 							activityApplyService.useTicket(activityId,userId,buyerId,false);
 							activityTicket.setIsUsed(1);
-							if (activityTicketService.update(activityTicket) == 0 ) {
-								throw new ConcurrentException();
-							}
+							activityTicket.setUserId(userId);
+							activityTicketService.update(activityTicket);
 							redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("活动报名成功"));
 							model.addAttribute("userName", user.getNickname());
 							model.addAttribute("activityId", activityId);
