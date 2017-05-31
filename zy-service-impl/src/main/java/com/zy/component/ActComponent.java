@@ -108,7 +108,7 @@ public class ActComponent {
             Activity activity = activityService.findOne(activityTeamApply.getActivityId());
             validate(activity, NOT_NULL, "activity id " + activityTeamApply.getActivityId() + " is not found");
             //String qrCodeUrl = Constants.URL_MOBILE + "/u/activity/actQrCodeApply?activityId=" + activityTeamApply.getActivityId() + "&ticketId=" + insertTicket.getId() ;
-            String qrCodeUrl = "http://192.168.1.93:8080" + "/u/activity/actQrCodeApply?activityId=" + activityTeamApply.getActivityId() + "&ticketId=" + insertTicket.getId() ;
+            String qrCodeUrl = "http://192.168.1.64:8080" + "/u/activity/actQrCodeApply?activityId=" + activityTeamApply.getActivityId() + "&ticketId=" + insertTicket.getId() ;
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
             Map<EncodeHintType, String> hints = new HashMap<>();
             hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
