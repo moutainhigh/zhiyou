@@ -422,7 +422,7 @@ public class UcenterActivityController {
 		Date now = new Date();
 		if (activity.getApplyDeadline().before(now)) {
 			//活动报名已结束
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败，活动报名已结束"));
+			model.addAttribute("msg","活动报名已结束");
 			model.addAttribute("activityId", activityId);
 			return "activity/applyFail";
 		} else {
@@ -434,7 +434,7 @@ public class UcenterActivityController {
 					//票未被使用过
 					if ( userId.longValue() == buyerId.longValue()){
 						//自己团购票，自己再使用
-						redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败，请使用个人报名方式报名"));
+						model.addAttribute("msg","请使用个人报名方式报名");
 						model.addAttribute("activityId", activityId);
 						return "activity/applyFail";
 					}else{
@@ -450,7 +450,6 @@ public class UcenterActivityController {
 								activityTicket.setUserId(userId);
 								activityTicket.setIsUsed(1);
 								activityTicketService.update(activityTicket);
-								redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("活动报名成功"));
 								model.addAttribute("userName", user.getNickname());
 								model.addAttribute("activityId", activityId);
 								return "activity/applySuccess" ;
@@ -465,7 +464,6 @@ public class UcenterActivityController {
 							activityTicket.setIsUsed(1);
 							activityTicket.setUserId(userId);
 							activityTicketService.update(activityTicket);
-							redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("活动报名成功"));
 							model.addAttribute("userName", user.getNickname());
 							model.addAttribute("activityId", activityId);
 							return "activity/applySuccess" ;
@@ -473,13 +471,13 @@ public class UcenterActivityController {
 					}
 				}else{
 					//票已经被使用
-					redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败，票已被使用过，请勿重复使用"));
+					model.addAttribute("msg","票已被使用过，请勿重复使用");
 					model.addAttribute("activityId", activityId);
 					return "activity/applyFail";
 				}
 			}else {
 				//票不存在
-				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败，无对应的票存在"));
+				model.addAttribute("msg","无对应的票存在");
 				model.addAttribute("activityId", activityId);
 				return "activity/applyFail";
 			}
