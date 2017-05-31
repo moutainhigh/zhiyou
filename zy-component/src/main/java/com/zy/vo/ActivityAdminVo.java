@@ -64,5 +64,11 @@ public class ActivityAdminVo implements Serializable {
 	private String endTimeLabel;
 	@Field(label = "活动结束时间")
 	private String endTimeFormatted;
+	@Field(label = "活动限制人数")
+	private Long maxCount;
+	@Field(label = "活动票务类型")
+	private Integer ticketType;
+	@Field(label = "自购权限")
+	private Integer level;
 
 }

@@ -25,5 +25,4 @@ public interface ActivityMapper {
 	long count(ActivityQueryModel activityQueryModel);
 
 	int view(Long id);
-
 }

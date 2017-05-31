@@ -106,6 +106,44 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 		activityApplyMapper.insert(activityApply);
 	}
 
+	/**
+	 * 识别二维码报名活动
+	 * @param activityId
+	 * @param userId
+	 * @param inviterId
+     */
+	@Override
+	public void useTicket(@NotNull Long activityId, @NotNull Long userId, @NotNull Long inviterId, Boolean isSelf) {
+		Activity activity = activityMapper.findOne(activityId);
+		validate(activity, NOT_NULL, "activity id " + userId + " not found");
+
+		User user = userMapper.findOne(userId);
+		validate(user, NOT_NULL, "user id " + userId + " not found");
+
+		ActivityApply persistence = activityApplyMapper.findByActivityIdAndUserId(activityId, userId);
+		if (persistence != null) {
+			if (persistence.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已报名) {
+				persistence.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
+				activityApplyMapper.update(persistence);
+			}
+			return ;
+		}
+
+		ActivityApply activityApply = new ActivityApply();
+		activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
+		activityApply.setActivityId(activityId);
+		activityApply.setAmount(activity.getAmount());
+		activityApply.setAppliedTime(new Date());
+		activityApply.setIsCancelled(false);
+		activityApply.setIsSmsSent(false);
+		activityApply.setUserId(userId);
+		if(!isSelf){
+			activityApply.setInviterId(inviterId);
+		}
+		validate(activityApply);
+		activityApplyMapper.insert(activityApply);
+	}
+
 	@Override
 	public void success(@NotNull Long id, String outerSn) {
 		ActivityApply activityApply = findOne(id);
@@ -143,9 +181,18 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 		if (activityApply.getUserId().equals(payerUserId)) {
 			throw new BizException(BizCode.ERROR, "请输入他人手机号");
 		}
-
 		activityApply.setPayerUserId(payerUserId);
 		activityApplyMapper.update(activityApply);
+	}
+
+	@Override
+	public int update(ActivityApply activityApply) {
+		return activityApplyMapper.updateActApply(activityApply);
+	}
+
+	@Override
+	public Long queryCount(Long activityId) {
+		return  activityApplyMapper.queryCount(activityId);
 	}
 
 }

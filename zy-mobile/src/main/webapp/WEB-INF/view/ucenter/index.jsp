@@ -98,14 +98,19 @@
         <div class="list-text">报名的活动</div>
         <i class="list-arrow"></i>
       </a>
-      <a class="list-item list-item-icon" href="${ctx}/u/activity/payer">
-        <i class="list-icon icon icon-money"></i>
-        <div class="list-text">代付款活动</div>
-        <i class="list-arrow"></i>
-      </a>
+      <%--<a class="list-item list-item-icon" href="${ctx}/u/activity/payer">--%>
+        <%--<i class="list-icon icon icon-money"></i>--%>
+        <%--<div class="list-text">代付款活动</div>--%>
+        <%--<i class="list-arrow"></i>--%>
+      <%--</a>--%>
       <a class="list-item list-item-icon" href="${ctx}/u/activity/collectList">
         <i class="list-icon icon icon-heart"></i>
         <div class="list-text">关注的活动</div>
+        <i class="list-arrow"></i>
+      </a>
+      <a class="list-item list-item-icon" href="${ctx}/u/activity/teamApplyList">
+        <i class="list-icon icon icon-heart"></i>
+        <div class="list-text">团队报名的活动</div>
         <i class="list-arrow"></i>
       </a>
     </div>

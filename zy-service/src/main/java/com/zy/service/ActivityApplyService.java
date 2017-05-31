@@ -18,7 +18,13 @@ public interface ActivityApplyService {
 
 	void createAndPaid(Long activityId, Long userId);
 
+	void useTicket(Long activityId, Long userId, Long inviterId, Boolean isSelf);
+
 	void success(Long id, String outerSn);
 
 	void modifyPayerUserId(Long activityApplyId, Long payerUserId);
+
+	int update(ActivityApply activityApply);
+
+	Long queryCount(Long activityId);
 }
