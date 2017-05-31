@@ -71,9 +71,9 @@
 <body>
 <div class="main">
     <div class="mainFont">操作失败,请<span>前去报名</span></div>
-    <%--<c:if test="${not empty activityId}">--%>
+    <c:if test="${not empty activityId}">
         <a href="${ctx}/activity/${activityId}" class="successHref">去报名</a>
-    <%--</c:if>--%>
+    </c:if>
 </div>
 </body>
 </html>
