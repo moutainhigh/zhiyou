@@ -434,42 +434,9 @@ public class UcenterActivityController {
 					//票未被使用过
 					if ( userId.longValue() == buyerId.longValue()){
 						//自己团购票，自己再使用
-						ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, userId);
-						if(activityApply != null){
-							//活动个人报名已经操作过
-							if(activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已报名){
-								//个人报名已经操作过，但是未支付，修改活动报名已支付
-								activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
-								activityTicket.setIsUsed(1);
-
-								//int a = activityApplyService.update(activityApply);
-
-								//int b = activityTicketService.update(activityTicket);
-
-								if (activityApplyService.update(activityApply) == 0 || activityTicketService.update(activityTicket) == 0) {
-									throw new ConcurrentException();
-								}
-								redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("活动报名成功"));
-								model.addAttribute("userName", user.getNickname());
-								model.addAttribute("activityId", activityId);
-								return "activity/applySuccess" ;
-							}else{
-								//个人报名已经操作过，且已支付
-								redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您已报名过该活动，请勿重复报名"));
-								return "redirect:/activity/" + activityId;
-							}
-						}else{
-							//个人报名首次操作
-							activityApplyService.useTicket(activityId,userId,buyerId,true);
-							activityTicket.setIsUsed(1);
-							if (activityApplyService.update(activityApply) == 0 ) {
-								throw new ConcurrentException();
-							}
-							redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("活动报名成功"));
-							model.addAttribute("userName", user.getNickname());
-							model.addAttribute("activityId", activityId);
-							return "activity/applySuccess" ;
-						}
+						redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败，请使用个人报名方式报名"));
+						model.addAttribute("activityId", activityId);
+						return "activity/applyFail";
 					}else{
 						//使用他人购买的票
 						ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, userId);
@@ -496,7 +463,7 @@ public class UcenterActivityController {
 							//个人报名首次操作
 							activityApplyService.useTicket(activityId,userId,buyerId,false);
 							activityTicket.setIsUsed(1);
-							if (activityApplyService.update(activityApply) == 0 ) {
+							if (activityTicketService.update(activityTicket) == 0 ) {
 								throw new ConcurrentException();
 							}
 							redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("活动报名成功"));
