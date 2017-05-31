@@ -40,11 +40,13 @@
             background-size: cover;
         }
         .mainFont {
-            width:300px;
-            padding:170px;
+            width: 450px;
+            height: 30px;
             text-align: center;
             font-size: 30px;
-            padding-top:480px;
+            padding-top: 500px;
+            line-height: 60px;
+            padding-left: 170px;
         }
         .mainFont span {
             color: #f0b536;

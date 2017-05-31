@@ -8,7 +8,7 @@
     <meta content="no-cache, must-revalidate" http-equiv="Cache-Control" />
     <meta content="Wed, 26 Feb 1997 08:21:57GMT" http-equiv="expires">
     <meta name="format-detection" content="telephone=no"/>
-    <title>成功报名</title>
+    <title>报名失败</title>
     <%@ include file="/WEB-INF/view/include/head.jsp"%>
     <!--移动端版本兼容 -->
     <script type="text/javascript">
@@ -39,12 +39,13 @@
             background-size: cover;
         }
         .mainFont {
-            width:300px;
-            padding:170px;
+            width: 450px;
+            height: 30px;
             text-align: center;
             font-size: 30px;
-            padding-top:480px;
+            padding-top: 500px;
             line-height: 60px;
+            padding-left: 170px;
         }
         .mainFont span {
             color: #f0b536;
@@ -70,9 +71,9 @@
 <body>
 <div class="main">
     <div class="mainFont">操作失败,请<span>前去报名</span></div>
-    <c:if test="${not empty activityId}">
+    <%--<c:if test="${not empty activityId}">--%>
         <a href="${ctx}/activity/${activityId}" class="successHref">去报名</a>
-    </c:if>
+    <%--</c:if>--%>
 </div>
 </body>
 </html>
