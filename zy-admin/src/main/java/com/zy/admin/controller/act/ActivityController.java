@@ -29,8 +29,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -147,4 +150,11 @@ public class ActivityController {
 	}
 
 
+	public static void main(String[] args) {
+		Integer[] arr = new Integer[]{1,1,1,2,2,2,3,3,4,5,6,7,5,4,6,4};
+		List<Integer> list = Arrays.asList(arr).stream().filter(v -> v == 1).collect(Collectors.toList());
+		System.out.println(list);
+		list = Arrays.asList(arr).stream().filter(v -> v > 2 && v < 5).collect(Collectors.toList());
+		System.out.println(list);
+	}
 }

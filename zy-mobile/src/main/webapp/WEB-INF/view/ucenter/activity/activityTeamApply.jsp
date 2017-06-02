@@ -108,21 +108,19 @@
   </header>
 
   <article class="order-list">
-    <c:if test="${empty activityTeamApplys}">
-    <div class="page-empty" style="display: none;">
-      <i class="fa fa-file-o"></i>
-      <span>空空如也!</span>
-    </div>
-    </c:if>
+    <%--<c:if test="${empty activityTeamApplys}">--%>
+    <%--<div class="page-empty" style="display: none;">--%>
+      <%--<i class="fa fa-file-o"></i>--%>
+      <%--<span>空空如也!</span>--%>
+    <%--</div>--%>
+    <%--</c:if>--%>
 
-    <c:if test="${not empty activityTeamApplys}">
-    <c:forEach items="${activityTeamApplys}" var="activityTeamApply" >
       <%--有效订单待支付--%>
-      <c:if test="${activityTeamApply.activity.status != '活动已结束' && activityTeamApply.paidStatus == '未支付'}">
+      <c:if test="${not empty unpaidOrders}">
+      <c:forEach items="${unpaidOrders}" var="activityTeamApply" >
         <div class="order bd-t bd-b">
         <div class="product-info pl-15 pr-15">
           <div class="product relative clearfix mt-5">
-
             <a href="${ctx}/activity/${activityTeamApply.activity.id}" class="product-title">
               <img class="product-image abs-lt" src="${activityTeamApply.activity.imageThumbnail}">
               <div class="ticket_innor">${activityTeamApply.activity.title}</div>
@@ -146,75 +144,74 @@
           </div>
         </div>
       </div>
-      </c:if>
     </c:forEach>
+    </c:if>
 
-      <c:forEach items="${activityTeamApplys}" var="activityTeamApply" >
-      <%--有效订单已支付--%>
-      <c:if test="${activityTeamApply.activity.status != '活动已结束' && activityTeamApply.paidStatus == '已支付'}">
+    <%--有效订单已支付--%>
+    <c:if test="${not empty paidOrders}">
+    <c:forEach items="${paidOrders}" var="activityTeamApply" >
       <div class="order bd-t bd-b">
-        <div class="product-info pl-15 pr-15">
-          <div class="product relative clearfix mt-5">
-            <a href="${ctx}/activity/${activityTeamApply.activity.id}" class="product-title">
-              <img class="product-image abs-lt"  src="${activityTeamApply.activity.imageThumbnail}">
-              <div class="ticket_innor">${activityTeamApply.activity.title}</div>
-                 <div class="ticket_time">${activityTeamApply.activity.startTimeLabel} 开始</div>
-                 <div class="ticket_address">${activityTeamApply.activity.province} ${activityTeamApply.activity.city} ${activityTeamApply.activity.district}</div>
-            </a>
-            <div class="product-price abs-rt text-right">
-              <div class="fs-15">¥ ${activityTeamApply.activity.amountLabel}</div>
-              <div class="fs-15 font-gray">x${activityTeamApply.count}</div>
+      <div class="product-info pl-15 pr-15">
+        <div class="product relative clearfix mt-5">
+          <a href="${ctx}/activity/${activityTeamApply.activity.id}" class="product-title">
+            <img class="product-image abs-lt"  src="${activityTeamApply.activity.imageThumbnail}">
+            <div class="ticket_innor">${activityTeamApply.activity.title}</div>
+               <div class="ticket_time">${activityTeamApply.activity.startTimeLabel} 开始</div>
+               <div class="ticket_address">${activityTeamApply.activity.province} ${activityTeamApply.activity.city} ${activityTeamApply.activity.district}</div>
+          </a>
+          <div class="product-price abs-rt text-right">
+            <div class="fs-15">¥ ${activityTeamApply.activity.amountLabel}</div>
+            <div class="fs-15 font-gray">x${activityTeamApply.count}</div>
 
-            </div>
-          </div>
-        </div>
-        <div class="order_div"></div>
-        <div class="order-info pl-15 pr-15 mt-5 bdd-t">
-          <div class="flex lh-30">
-            <div class="flex-1 font-999 fs-12" style="line-height: 24px !important;"><span>下单时间：<br/>${activityTeamApply.createTimeLabel}</span></div>
-            <a href="${ctx}/u/activity/${activityTeamApply.id}/ticketList"><div class="ticket_button">查看票据</div></a>
-            <div class="ticket_button ticket_play">支付成功</div>
           </div>
         </div>
       </div>
-      </c:if>
-      </c:forEach>
+      <div class="order_div"></div>
+      <div class="order-info pl-15 pr-15 mt-5 bdd-t">
+        <div class="flex lh-30">
+          <div class="flex-1 font-999 fs-12" style="line-height: 24px !important;"><span>下单时间：<br/>${activityTeamApply.createTimeLabel}</span></div>
+          <a href="${ctx}/u/activity/${activityTeamApply.id}/ticketList"><div class="ticket_button">查看票据</div></a>
+          <div class="ticket_button ticket_play">支付成功</div>
+        </div>
+      </div>
+    </div>
+    </c:forEach>
+    </c:if>
 
-    <c:forEach items="${activityTeamApplys}" var="activityTeamApply" >
     <%--失效订单--%>
-    <c:if test="${activityTeamApply.activity.status == '活动已结束'}">
-      <div class="order bd-t bd-b">
-        <div class="product-info pl-15 pr-15">
-          <div class="product relative clearfix mt-5">
-            <a href="${ctx}/activity/${activityTeamApply.activity.id}" class="product-title">
-              <img class="product-image abs-lt" src="${activityTeamApply.activity.imageThumbnail}">
-              <div class="ticket_innor">${activityTeamApply.activity.title}</div>
-              <div class="ticket_time">${activityTeamApply.activity.startTimeLabel} 开始</div>
-              <div class="ticket_address">${activityTeamApply.activity.province} ${activityTeamApply.activity.city} ${activityTeamApply.activity.district}</div>
-            </a>
-            <div class="product-price abs-rt text-right">
-              <div class="fs-15 amount">¥ <span>${activityTeamApply.activity.amountLabel}</span></div>
-              <div class="fs-15 font-gray none_grap">x${activityTeamApply.count}</div>
-              <input type="number" class="fs-15 font-gray ticket-gray" value="${activityTeamApply.count}" />
-            </div>
-          </div>
-        </div>
-        <div class="order_div"></div>
-        <div class="order-info pl-15 pr-15 mt-5 bdd-t">
-          <div class="flex lh-30">
-            <div class="flex-1 font-999 fs-12" style="line-height: 24px !important;"><span>下单时间：<br/>${activityTeamApply.createTimeLabel}</span></div>
-            <c:if test="${activityTeamApply.activity.status == '报名中'}"><div class="ticket_button" ticket_play>报名中</div></c:if>
-            <c:if test="${order.orderStatus == '待确认'}"> orange</c:if>
-            <c:if test="${activityTeamApply.activity.status == '报名已结束'}"><div class="ticket_button ticket_play">报名已结束</div></c:if>
-            <c:if test="${activityTeamApply.activity.status == '进行中'}"><div class="ticket_button ticket_play">进行中</div></c:if>
-            <c:if test="${activityTeamApply.activity.status == '活动已结束'}"><div class="ticket_button ticket_play">活动已结束</div></c:if>
+    <c:if test="${not empty historyActivities}">
+    <c:forEach items="${historyActivities}" var="activityTeamApply" >
+    <div class="order bd-t bd-b">
+      <div class="product-info pl-15 pr-15">
+        <div class="product relative clearfix mt-5">
+          <a href="${ctx}/activity/${activityTeamApply.activity.id}" class="product-title">
+            <img class="product-image abs-lt" src="${activityTeamApply.activity.imageThumbnail}">
+            <div class="ticket_innor">${activityTeamApply.activity.title}</div>
+            <div class="ticket_time">${activityTeamApply.activity.startTimeLabel} 开始</div>
+            <div class="ticket_address">${activityTeamApply.activity.province} ${activityTeamApply.activity.city} ${activityTeamApply.activity.district}</div>
+          </a>
+          <div class="product-price abs-rt text-right">
+            <div class="fs-15 amount">¥ <span>${activityTeamApply.activity.amountLabel}</span></div>
+            <div class="fs-15 font-gray none_grap">x${activityTeamApply.count}</div>
+            <input type="number" class="fs-15 font-gray ticket-gray" value="${activityTeamApply.count}" />
           </div>
         </div>
       </div>
-    </c:if>
-    </c:forEach>
+      <div class="order_div"></div>
+      <div class="order-info pl-15 pr-15 mt-5 bdd-t">
+        <div class="flex lh-30">
+          <div class="flex-1 font-999 fs-12" style="line-height: 24px !important;"><span>下单时间：<br/>${activityTeamApply.createTimeLabel}</span></div>
+          <c:if test="${activityTeamApply.activity.status == '报名中'}"><div class="ticket_button" ticket_play>报名中</div></c:if>
+          <c:if test="${order.orderStatus == '待确认'}"> orange</c:if>
+          <c:if test="${activityTeamApply.activity.status == '报名已结束'}"><div class="ticket_button ticket_play">报名已结束</div></c:if>
+          <c:if test="${activityTeamApply.activity.status == '进行中'}"><div class="ticket_button ticket_play">进行中</div></c:if>
+          <c:if test="${activityTeamApply.activity.status == '活动已结束'}"><div class="ticket_button ticket_play">活动已结束</div></c:if>
+        </div>
+      </div>
+    </div>
+  </c:forEach>
+  </c:if>
 
-    </c:if>
   </article>
 
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>

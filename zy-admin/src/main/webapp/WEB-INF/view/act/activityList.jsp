@@ -74,7 +74,6 @@
 			  });
 		  }
 	  })
-
 	  $('#addApplyCancel' + id).bind('click', function () {
 		  layer.close(index);
 	  })

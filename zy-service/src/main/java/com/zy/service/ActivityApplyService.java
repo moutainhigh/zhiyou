@@ -18,7 +18,7 @@ public interface ActivityApplyService {
 
 	void createAndPaid(Long activityId, Long userId);
 
-	void useTicket(Long activityId, Long userId, Long inviterId, Boolean isSelf);
+	void useTicket(Long activityId, Long userId, Long inviterId);
 
 	void success(Long id, String outerSn);
 
