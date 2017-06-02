@@ -59,7 +59,7 @@ public class UserAdminFullVo implements Serializable {
 	private String avatarThumbnail;
 	@Field(label = "邀请人id")
 	private UserAdminSimpleVo inviter;
-	@Field(label = "上级id")
+	@Field(label = "推荐人id")
 	private UserAdminSimpleVo parent;
 	@Field(label = "上级总经理id")
 	private UserAdminSimpleVo boss;

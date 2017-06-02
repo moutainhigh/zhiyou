@@ -235,13 +235,13 @@ public class LoginController {
 	public Result<?> checkParentPhone(@RequestParam String phone) {
 		User user = userService.findByPhone(phone);
 		if (user == null) {
-			return ResultBuilder.error("上级手机号不存在");
+			return ResultBuilder.error("推荐人手机号不存在");
 		}
 		if (user.getUserType() != User.UserType.代理) {
-			return ResultBuilder.error("上级用户类型必须是代理");
+			return ResultBuilder.error("推荐人用户类型必须是代理");
 		}
 		if (user.getUserRank() == User.UserRank.V0) {
-			return ResultBuilder.error("上级必须成为代理");
+			return ResultBuilder.error("推荐人必须成为代理");
 		}
 		return ResultBuilder.ok(String.valueOf(user.getId()));
 	}

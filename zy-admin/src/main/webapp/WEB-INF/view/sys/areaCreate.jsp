@@ -61,7 +61,7 @@
             </div>
             
             <div class="form-group">
-              <label class="control-label col-md-3">上级名称<span class="required"> * </span>
+              <label class="control-label col-md-3">推荐人名称<span class="required"> * </span>
               </label>
               <div class="col-md-5">
               	<input type="text" class="form-control" value="${area.name}" readonly="readonly"/>

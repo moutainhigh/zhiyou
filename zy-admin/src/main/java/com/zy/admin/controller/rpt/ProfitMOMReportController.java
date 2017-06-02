@@ -1,7 +1,5 @@
 package com.zy.admin.controller.rpt;
 
-import com.sun.org.apache.bcel.internal.generic.MONITORENTER;
-import com.zy.common.extend.BigDecimalBinder;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
@@ -10,10 +8,8 @@ import com.zy.component.LocalCacheComponent;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.usr.User;
-import com.zy.model.OrderReportVo;
 import com.zy.model.ProfitMOMReportVo;
 import com.zy.model.TeamModel;
-import com.zy.util.GcUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +18,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.swing.StringUIClientPropertyKey;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -84,13 +81,13 @@ public class ProfitMOMReportController {
 		List<User> users = localCacheComponent.getUsers();
 		List<Profit> profits = localCacheComponent.getProfits();
 
-		List<User> filterUsers = users.stream().filter(v -> v.getBossId() != null).collect(Collectors.toList());
+		List<User> v4Children = users.stream().filter(v -> v.getBossId() != null).filter(v -> v.getUserRank() == User.UserRank.V4).collect(Collectors.toList());
 		List<User> bossUsers = users.stream().filter(v -> v.getIsBoss() != null && v.getIsBoss()).collect(Collectors.toList());
 
 		Map<Long, TeamModel> teamMap = bossUsers.stream().map(v -> {
 			TeamModel teamModel = new TeamModel();
 			teamModel.setUser(v);
-			teamModel.setV4Children(TreeHelper.sortBreadth2(filterUsers, String.valueOf(v.getId()), u -> {
+			teamModel.setV4Children(TreeHelper.sortBreadth2(v4Children, String.valueOf(v.getId()), u -> {
 				TreeNode treeNode = new TreeNode();
 				treeNode.setId(String.valueOf(u.getId()));
 				treeNode.setParentId(u.getBossId().toString());
@@ -99,7 +96,7 @@ public class ProfitMOMReportController {
 			return teamModel;
 		}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
 
-		List<Long> filterUserIds = filterUsers.stream().map(v -> v.getId()).collect(Collectors.toList());
+		List<Long> childrenIds = v4Children.stream().map(v -> v.getId()).collect(Collectors.toList());
 		List<Long> bossUserIds = bossUsers.stream().map(v -> v.getId()).collect(Collectors.toList());
 
 		Date targetMonthFirstDateTime = null;
@@ -112,11 +109,11 @@ public class ProfitMOMReportController {
 		if (StringUtils.isEmpty(monthLabel)) {
 			LocalDate now = LocalDate.now();
 			LocalDate localDate = now.minusMonths(1);
-			targetMonthFirstDateTime = getFirstDateTime(localDate.getYear(), localDate.getMonthValue());
-			targetMonthLastDateTime = getLastDateTime(localDate.getYear(), localDate.getMonthValue());
+			targetMonthFirstDateTime = getBeginDateTime(localDate.getYear(), localDate.getMonthValue());
+			targetMonthLastDateTime = getEndDateTime(localDate.getYear(), localDate.getMonthValue());
 			localDate = now.minusMonths(2);
-			sourceMonthFirstDateTime = getFirstDateTime(localDate.getYear(), localDate.getMonthValue());
-			sourceMonthLastDateTime = getLastDateTime(localDate.getYear(), localDate.getMonthValue());
+			sourceMonthFirstDateTime = getBeginDateTime(localDate.getYear(), localDate.getMonthValue());
+			sourceMonthLastDateTime = getEndDateTime(localDate.getYear(), localDate.getMonthValue());
 
 			sourceMonthLabel = buildDateLabel(now.minusMonths(-1));
 			targetMonthLabel = buildDateLabel(now.minusMonths(-2));
@@ -124,8 +121,8 @@ public class ProfitMOMReportController {
 			String[] split = monthLabel.split(SPLIT_PATTERN);
 			Integer year = Integer.valueOf(split[0]);
 			Integer month = Integer.valueOf(split[1]);
-			sourceMonthFirstDateTime = getFirstDateTime(year, month);
-			sourceMonthLastDateTime = getLastDateTime(year, month);
+			sourceMonthFirstDateTime = getBeginDateTime(year, month);
+			sourceMonthLastDateTime = getEndDateTime(year, month);
 
 			sourceMonthLabel = year + SPLIT_PATTERN + month;
 			if (month == 1) {
@@ -134,8 +131,8 @@ public class ProfitMOMReportController {
 			} else {
 				month = month - 1;
 			}
-			targetMonthFirstDateTime = getFirstDateTime(year, month);
-			targetMonthLastDateTime = getLastDateTime(year, month);
+			targetMonthFirstDateTime = getBeginDateTime(year, month);
+			targetMonthLastDateTime = getEndDateTime(year, month);
 			targetMonthLabel = year + SPLIT_PATTERN + month;
 		}
 		Date targetMonthFirstDateTimeUsed = targetMonthFirstDateTime;
@@ -149,7 +146,7 @@ public class ProfitMOMReportController {
 				.filter(v -> v.getProfitStatus() == Profit.ProfitStatus.已发放)
 				.filter(v -> v.getProfitType() != Profit.ProfitType.订单收款)
 				.filter(v -> v.getCurrencyType() == CurrencyType.现金)
-				.filter(v -> filterUserIds.contains(v.getUserId()) || bossUserIds.contains(v.getUserId()))
+				.filter(v -> childrenIds.contains(v.getUserId()) || bossUserIds.contains(v.getUserId()))
 				.filter(v -> {
 					boolean result = true;
 					result = result && (v.getGrantedTime().after(targetMonthFirstDateTimeUsed) && v.getGrantedTime().before(sourceMonthLastDateTimeUsed));
@@ -181,7 +178,7 @@ public class ProfitMOMReportController {
 			return myProfit.add(teamProfit);
 		}));
 
-		Map<Long, ProfitMOMReportVo> resultMap = bossUsers.stream().collect(Collectors.toMap(v -> v.getId(), v -> {
+		List<ProfitMOMReportVo> result = bossUsers.stream().map(v -> {
 			ProfitMOMReportVo profitMOMReportVo = new ProfitMOMReportVo();
 			Long id = v.getId();
 			profitMOMReportVo.setBossId(id);
@@ -204,9 +201,8 @@ public class ProfitMOMReportController {
 			DecimalFormat decimalFormat = new DecimalFormat("0.00%");
 			profitMOMReportVo.setProfitMOMRateLabel(decimalFormat.format(divide));
 			return profitMOMReportVo;
-		}));
+		}).collect(Collectors.toList());
 
-		List<ProfitMOMReportVo> result = new ArrayList<>(resultMap.values());
 		Page<ProfitMOMReportVo> page = new Page<>();
 		page.setData(result);
 		page.setPageNumber(0);
@@ -215,7 +211,7 @@ public class ProfitMOMReportController {
 		return new Grid<>(page);
 	}
 
-	private Date getFirstDateTime(Integer year, Integer month) {
+	private Date getBeginDateTime(Integer year, Integer month) {
 		LocalDate now = LocalDate.of(year, month, 1);
 		LocalDate localDate = now.with(TemporalAdjusters.firstDayOfMonth());
 		LocalDateTime localDateTime = LocalDateTime.of(localDate, LocalTime.parse("00:00:00"));
@@ -223,7 +219,7 @@ public class ProfitMOMReportController {
 		return Date.from(instant);
 	}
 
-	private Date getLastDateTime(Integer year, Integer month) {
+	private Date getEndDateTime(Integer year, Integer month) {
 		LocalDate now = LocalDate.of(year, month, 1);
 		LocalDate localDate = now.with(TemporalAdjusters.lastDayOfMonth());
 		LocalDateTime localDateTime = LocalDateTime.of(localDate, LocalTime.parse("23:59:59"));

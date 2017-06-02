@@ -92,28 +92,28 @@
       },
 	    messages : {},
       submitHandler : function(form) {
-		    var parentPhone = $('#parentPhone').val();
-		    if(parentPhone != null && parentPhone != '') {
-			    $.ajax({
-				    url: '${ctx}/checkParentPhone',
-				    data: {
-					    phone: parentPhone
-				    },
-				    type: 'POST',
-				    dataType: 'JSON',
-				    success: function(result){
-					    if(result.code == 0) {
-						    $('#parentId').val(result.message);
-						    form.submit();
-					    } else {
-						    messageFlash(result.message);
-						    return ;
-					    }
-				    }
-			    });
-		    } else {
+		    <%--var parentPhone = $('#parentPhone').val();--%>
+		    <%--if(parentPhone != null && parentPhone != '') {--%>
+			    <%--$.ajax({--%>
+				    <%--url: '${ctx}/checkParentPhone',--%>
+				    <%--data: {--%>
+					    <%--phone: parentPhone--%>
+				    <%--},--%>
+				    <%--type: 'POST',--%>
+				    <%--dataType: 'JSON',--%>
+				    <%--success: function(result){--%>
+					    <%--if(result.code == 0) {--%>
+						    <%--$('#parentId').val(result.message);--%>
+						    <%--form.submit();--%>
+					    <%--} else {--%>
+						    <%--messageFlash(result.message);--%>
+						    <%--return ;--%>
+					    <%--}--%>
+				    <%--}--%>
+			    <%--});--%>
+		    <%--} else {--%>
 			    form.submit();
-		    }
+//		    }
 	    }
     });
 
@@ -183,13 +183,13 @@
             <a id="btnSend" class="btn blue btn-sm">发送验证码</a>
           </div>
         </div>
-        <div class="list-item">
-          <label class="list-label" for="phone">上级手机号</label>
-          <div class="list-text">
-            <input type="text" id="parentPhone" name="parentPhone" class="form-input" placeholder="输入上级手机号" value="">
-            <input type="hidden" id="parentId" name="parentId" value="">
-          </div>
-        </div>
+        <%--<div class="list-item">--%>
+          <%--<label class="list-label" for="phone">推荐人手机号</label>--%>
+          <%--<div class="list-text">--%>
+            <%--<input type="text" id="parentPhone" name="parentPhone" class="form-input" placeholder="输入推荐人手机号" value="">--%>
+            <%--<input type="hidden" id="parentId" name="parentId" value="">--%>
+          <%--</div>--%>
+        <%--</div>--%>
         <div class="list-item form-checkbox">
           <div class="list-icon">
             <input type="checkbox" checked="checked" value="0" name="isAgree" id="isAgree">
@@ -292,7 +292,7 @@
         <span style=";font-family:微软雅黑;font-size:16px"><span style="font-family:微软雅黑">（</span>4）严格遵守公司制度，严格遵守公司产品价格体系，终端零售价按智优产品统一价格执行。若违反相关规定，智优有权采取警告、停货或取消服务商资格等措施。</span>
       </p>
       <p style="margin-top: 5px;margin-bottom: 5px;text-indent: 32px">
-        <span style=";font-family:微软雅黑;font-size:16px"><span style="font-family:微软雅黑">（</span>5）服务商出单后，应及时通知上级服务商，并按公司要求及时下单。</span>
+        <span style=";font-family:微软雅黑;font-size:16px"><span style="font-family:微软雅黑">（</span>5）服务商出单后，应及时通知推荐人，并按公司要求及时下单。</span>
       </p>
       <p style="margin-top: 5px;margin-bottom: 5px;text-indent: 32px">
         <span style=";font-family:微软雅黑;font-size:16px"><span style="font-family:微软雅黑">（</span>6）您购买智优产品为自用或销售终端用户自用。您承诺批发智优品时只批发给具备国家相应要求正规资质的单位或个人。</span>

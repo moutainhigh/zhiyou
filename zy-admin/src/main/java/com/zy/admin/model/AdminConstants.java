@@ -23,7 +23,7 @@ public class AdminConstants {
 			sub.put("user:edit", "用户信息(编辑)");
 			sub.put("user:addVip", "用户信息(加VIP)");
 			sub.put("user:freeze", "用户信息(冻结账号)");
-			sub.put("user:modifyParent", "用户信息(修改上级)");
+			sub.put("user:modifyParent", "用户信息(修改推荐人)");
 			sub.put("user:setDirector", "用户信息(升级董事)");
 			sub.put("user:setShareholder", "用户信息(升级股东)");
 			sub.put("user:setBoss", "用户信息(设置总经理)");
@@ -125,6 +125,9 @@ public class AdminConstants {
 			sub.put("orderQuantity:export", "订单核算报表(导出)");
 			sub.put("cityAgent:view", "服务商活跃数量排行");
 			sub.put("profitMOM:view", "收入环比");
+			sub.put("v4Activity:view", "特级服务商团队活跃度报表-总经理");
+			sub.put("teamOrderMonth:view", "团队月销量及环比-总经理");
+			sub.put("teamOrderDaily:view", "团队日销量及环比-总经理");
 			/*sub.put("financeReport:export", "财务导出");*/
 	 		SETTING_PERMISSION_MAP.put("报表管理", sub);
 		}
