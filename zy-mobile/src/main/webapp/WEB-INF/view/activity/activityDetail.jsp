@@ -36,7 +36,7 @@
     .teamBlock {
       width:100%;
       height:200px;
-      position: absolute;
+      position: fixed;
       left:0;
       bottom:49px;
       background: #fff;
