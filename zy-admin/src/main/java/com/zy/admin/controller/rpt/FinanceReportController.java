@@ -329,7 +329,7 @@ public class FinanceReportController {
 		page.setPageSize(pageSize);
 		page.setData(financeReportVos.stream().map(v -> {
 			v.setAccountAmount((v.getDepositAmount().add(v.getTransferAmount().add(v.getProfitAmount()))).subtract(v.getWithdrawAmount()).subtract(v.getPaymentAmount()));
-			v.setAccountPointAmount(v.getProfitPointAmount().subtract(v.getWithdrawPointAmount()).subtract(v.getPaymentPointAmount()));
+			v.setAccountPointAmount(v.getProfitPointAmount().add(v.getDifferencePointAmount()).subtract(v.getWithdrawPointAmount()).subtract(v.getPaymentPointAmount()));
 			return v;
 		}).collect(Collectors.toList()));
 		page.setTotal(Long.valueOf(filterUser.size()));
@@ -596,7 +596,7 @@ public class FinanceReportController {
 		List<FinanceReportVo> financeReportVos = new ArrayList<>(userFinanceReportMap.values());
 		financeReportVos = financeReportVos.stream().map(v -> {
 			v.setAccountAmount((v.getDepositAmount().add(v.getTransferAmount().add(v.getProfitAmount()))).subtract(v.getWithdrawAmount()).subtract(v.getPaymentAmount()));
-			v.setAccountPointAmount(v.getProfitPointAmount().subtract(v.getWithdrawPointAmount()).subtract(v.getPaymentPointAmount()));
+			v.setAccountPointAmount(v.getProfitPointAmount().add(v.getDifferencePointAmount()).subtract(v.getWithdrawPointAmount()).subtract(v.getPaymentPointAmount()));
 			return v;
 		}).collect(Collectors.toList());
 		String fileName = "财务报表.xlsx";
