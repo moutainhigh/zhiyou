@@ -113,35 +113,55 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 	 * @param inviterId
      */
 	@Override
-	public void useTicket(@NotNull Long activityId, @NotNull Long userId, @NotNull Long inviterId, Boolean isSelf) {
+	public void useTicket(@NotNull Long activityId, @NotNull Long userId, @NotNull Long inviterId) {
 		Activity activity = activityMapper.findOne(activityId);
 		validate(activity, NOT_NULL, "activity id " + userId + " not found");
 
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + " not found");
 
-		ActivityApply persistence = activityApplyMapper.findByActivityIdAndUserId(activityId, userId);
-		if (persistence != null) {
-			if (persistence.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已报名) {
-				persistence.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
-				activityApplyMapper.update(persistence);
+		Long appliedCount = activity.getAppliedCount();
+		ActivityApply activityApply = activityApplyMapper.findByActivityIdAndUserId(activityId, userId);
+		if (activityApply != null) {
+			if (activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已报名) {
+				activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
+				activityApply.setInviterId(inviterId);
+				activityApplyMapper.update(activityApply);
+			}
+			if (activityApply.getIsCancelled()) {
+				activity.setAppliedCount(appliedCount + 1);
+				activityApply.setIsCancelled(false);
+				if (activityMapper.update(activity) == 0) {
+					throw new ConcurrentException();
+				}
+				activityApplyMapper.update(activityApply);
 			}
 			return ;
-		}
+		} else {
+			if (!activity.getIsReleased()) {
+				throw new BizException(BizCode.ERROR, "活动暂未开放不能报名");
+			}
 
-		ActivityApply activityApply = new ActivityApply();
-		activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
-		activityApply.setActivityId(activityId);
-		activityApply.setAmount(activity.getAmount());
-		activityApply.setAppliedTime(new Date());
-		activityApply.setIsCancelled(false);
-		activityApply.setIsSmsSent(false);
-		activityApply.setUserId(userId);
-		if(!isSelf){
-			activityApply.setInviterId(inviterId);
+			if (activity.getApplyDeadline().before(new Date())) {
+				throw new BizException(BizCode.ERROR, "活动已经停止报名");
+			}
+
+			activity.setAppliedCount(appliedCount + 1);
+			if (activityMapper.update(activity) == 0) {
+				throw new ConcurrentException();
+			}
+			ActivityApply newActivityApply = new ActivityApply();
+			newActivityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
+			newActivityApply.setActivityId(activityId);
+			newActivityApply.setAmount(activity.getAmount());
+			newActivityApply.setAppliedTime(new Date());
+			newActivityApply.setIsCancelled(false);
+			newActivityApply.setIsSmsSent(false);
+			newActivityApply.setUserId(userId);
+			newActivityApply.setInviterId(inviterId);
+			validate(newActivityApply);
+			activityApplyMapper.insert(newActivityApply);
 		}
-		validate(activityApply);
-		activityApplyMapper.insert(activityApply);
 	}
 
 	@Override

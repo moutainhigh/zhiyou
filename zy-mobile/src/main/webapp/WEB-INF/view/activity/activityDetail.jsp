@@ -384,7 +384,9 @@
       <i class="fa fa-headphones"></i><span>客服</span>
     </a>
     <c:if test="${activity.status == '报名中' || activity.status == '进行中'}">
-      <a id="btnApplyTeam" class="flex-3 bg-green fs-14 font-white" href="javascript:;" style="border-right:1px solid #fff;" onclick="showDis()">团队报名</a>
+      <c:if test="${activity.ticketType == 2}">
+        <a id="btnApplyTeam" class="flex-3 bg-green fs-14 font-white" href="javascript:;" style="border-right:1px solid #fff;" onclick="showDis()">团队报名</a>
+      </c:if>
       <c:if test="${isApplied}">
         <c:if test="${!toPay}">
           <a class="flex-3 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-check"></i> 您已报名</div></a>
@@ -488,8 +490,6 @@
       $(".teamBlock").removeClass("team_animatTwo");
       $(".teamBlock,.disDiv").hide();
     },800)
-    var text;
-    alert("text"+text);
   }
 
 </script>

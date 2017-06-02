@@ -1,17 +1,11 @@
 package com.zy.mobile.controller.ucenter;
 
 import com.zy.common.exception.BizException;
-import com.zy.common.exception.ConcurrentException;
 import com.zy.common.exception.UnauthenticatedException;
-import com.zy.common.model.query.Page;
-import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.*;
 import com.zy.entity.act.*;
-import com.zy.entity.fnc.CurrencyType;
-import com.zy.entity.fnc.PayType;
-import com.zy.entity.fnc.Payment;
 import com.zy.entity.usr.User;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
@@ -22,7 +16,6 @@ import com.zy.model.query.ActivityTeamApplyQueryModel;
 import com.zy.model.query.ActivityTicketQueryModel;
 import com.zy.service.*;
 import com.zy.vo.ActivityListVo;
-import com.zy.vo.ActivityTeamApplyAdminVo;
 import com.zy.vo.ActivityTeamApplyListVo;
 import com.zy.vo.ActivityTicketListVo;
 import org.apache.commons.lang3.StringUtils;
@@ -96,15 +89,28 @@ public class UcenterActivityController {
 	@RequestMapping(value = "/apply")
 	public String apply(Long id, Principal principal, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		try {
-			Long a = querySurplus(id);
-			if (a > 0){
-				activityService.apply(id, principal.getUserId(), null);
-				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功,请点击付费完成报名"));
-				return "redirect:/u/activity/" + id + "/activityApply";
-			}else {
-				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败,票不足"));
+			Long userId = principal.getUserId();
+			validate(userId, NOT_NULL, "user id is null");
+			User user = userService.findOne(userId);
+			validate(user, NOT_NULL, "user id " + userId + " is not found");
+			validate(id, NOT_NULL, "activity id is null");
+			Activity activity = activityService.findOne(id);
+			validate(activity, NOT_NULL, "activity id " + id + " is not found");
+			if(activity.getLevel() <= user.getUserRank().getLevel()){
+				Long a = querySurplus(id);
+				if (a > 0){
+					activityService.apply(id, userId, null);
+					redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功,请点击付费完成报名"));
+					return "redirect:/u/activity/" + id + "/activityApply";
+				}else {
+					redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败,活动报名人数已达上限"));
+					return "redirect:/activity/" + id;
+				}
+			}else{
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败,您的权限不足"));
 				return "redirect:/activity/" + id;
 			}
+
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名异常," + e.getMessage()));
 			return "redirect:/activity/" + id;
@@ -166,7 +172,7 @@ public class UcenterActivityController {
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功,请点击付费完成报名"));
 				return "redirect:/u/activity/" + id + "/activityTeamApply";
 			}else {
-				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("票量不足,剩余"+ a + "张，请重新选折"));
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("票量不足,剩余"+ a + "张，请重新购买"));
 				return "redirect:/activity/" + activityId;
 			}
 		} catch (Exception e) {
@@ -351,12 +357,14 @@ public class UcenterActivityController {
 	@RequestMapping("/teamApplyList")
 	public String teamApplyList(Principal principal, Model model) {
         ActivityTeamApplyQueryModel activityTeamApplyQueryModel = new ActivityTeamApplyQueryModel();
-        activityTeamApplyQueryModel.setPageNumber(0);
-        activityTeamApplyQueryModel.setPageSize(100);
         activityTeamApplyQueryModel.setBuyerId(principal.getUserId());
-        Page<ActivityTeamApply> page = activityTeamApplyService.findPage(activityTeamApplyQueryModel);
-        Page<ActivityTeamApplyListVo> activityTeamApplys = PageBuilder.copyAndConvert(page, v -> activityTeamApplyComponent.buildListVo(v));
-		model.addAttribute("activityTeamApplys", activityTeamApplys.getData());
+		List<ActivityTeamApply> all = activityTeamApplyService.findAll(activityTeamApplyQueryModel);
+		List<ActivityTeamApplyListVo> list = all.stream().map(v -> {
+			return activityTeamApplyComponent.buildListVo(v);
+		}).collect(Collectors.toList());
+		model.addAttribute("unpaidOrders", list.stream().filter(v -> !"活动已结束".equals(v.getActivity().getStatus()) && "未支付".equals(v.getPaidStatus().toString())).collect(Collectors.toList()));
+		model.addAttribute("paidOrders", list.stream().filter(v -> !"活动已结束".equals(v.getActivity().getStatus()) && "已支付".equals(v.getPaidStatus().toString())).collect(Collectors.toList()));
+		model.addAttribute("historyActivities", list.stream().filter(v -> "活动已结束".equals(v.getActivity().getStatus())).collect(Collectors.toList()));
 		return "ucenter/activity/activityTeamApply";
 	}
 
@@ -434,7 +442,7 @@ public class UcenterActivityController {
 					//票未被使用过
 					if ( userId.longValue() == buyerId.longValue()){
 						//自己团购票，自己再使用
-						model.addAttribute("msg","请使用个人报名方式报名");
+						model.addAttribute("msg","请选择“个人报名”方式报名");
 						model.addAttribute("activityId", activityId);
 						return "activity/applyFail";
 					}else{
@@ -460,7 +468,7 @@ public class UcenterActivityController {
 							}
 						}else{
 							//个人报名首次操作
-							activityApplyService.useTicket(activityId,userId,buyerId,false);
+							activityApplyService.useTicket(activityId,userId,buyerId);
 							activityTicket.setIsUsed(1);
 							activityTicket.setUserId(userId);
 							activityTicketService.update(activityTicket);
@@ -483,5 +491,6 @@ public class UcenterActivityController {
 			}
 		}
 	}
+
 
 }

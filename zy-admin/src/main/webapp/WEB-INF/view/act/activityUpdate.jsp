@@ -204,11 +204,11 @@
               <label class="control-label col-md-3">自购权限<span class="required"> * </span></label>
               <div class="col-md-5">
                 <select style="display: block; width: 40%;" class="form-control pull-left" id="level" name="level">
-                  <option value="1"<c:if test="${activity.level == 4}"> selected="selected"</c:if>>特级服务商</option>
-                  <option value="1"<c:if test="${activity.level == 3}"> selected="selected"</c:if>>省级服务商</option>
-                  <option value="1"<c:if test="${activity.level == 2}"> selected="selected"</c:if>>市级服务商</option>
-                  <option value="1"<c:if test="${activity.level == 1}"> selected="selected"</c:if>>VIP</option>
-                  <option value="1"<c:if test="${activity.level == 0}"> selected="selected"</c:if>>无权限</option>
+                  <option value="4"<c:if test="${activity.level == 4}"> selected="selected"</c:if>>特级服务商及以上</option>
+                  <option value="3"<c:if test="${activity.level == 3}"> selected="selected"</c:if>>省级服务商及以上</option>
+                  <option value="2"<c:if test="${activity.level == 2}"> selected="selected"</c:if>>市级服务商及以上</option>
+                  <option value="1"<c:if test="${activity.level == 1}"> selected="selected"</c:if>>VIP及以上</option>
+                  <option value="0"<c:if test="${activity.level == 0}"> selected="selected"</c:if>>无限制</option>
                 </select>
               </div>
             </div>
