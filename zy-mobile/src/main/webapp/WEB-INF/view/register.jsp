@@ -88,6 +88,9 @@
         },
         'isAgree' : {
             required : true
+        },
+        'realname' : {
+          required : true
         }
       },
 	    messages : {},
@@ -190,6 +193,12 @@
             <%--<input type="hidden" id="parentId" name="parentId" value="">--%>
           <%--</div>--%>
         <%--</div>--%>
+        <div class="list-item">
+          <label class="list-label" for="phone">真实姓名</label>
+          <div class="list-text">
+            <input type="text" id="realname" name="realname" class="form-input" placeholder="输入真实姓名" value="">
+          </div>
+        </div>
         <div class="list-item form-checkbox">
           <div class="list-icon">
             <input type="checkbox" checked="checked" value="0" name="isAgree" id="isAgree">

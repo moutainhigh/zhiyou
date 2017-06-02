@@ -8,11 +8,14 @@ import com.zy.component.UsrComponent;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
+import com.zy.entity.usr.UserInfo;
 import com.zy.extend.Producer;
 import com.zy.mapper.AccountMapper;
+import com.zy.mapper.UserInfoMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.dto.AgentRegisterDto;
@@ -47,6 +50,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
     @Autowired
     private UsrComponent usrComponent;
@@ -109,6 +115,8 @@ public class UserServiceImpl implements UserService {
         String phone = agentRegisterDto.getPhone();
         String unionId = agentRegisterDto.getUnionId();
         Long parentId = agentRegisterDto.getParentId();
+        String realname = agentRegisterDto.getRealname();
+        validate(realname, NOT_BLANK, "realname is blank");
 
         String avatar = agentRegisterDto.getAvatar();
         String nickname = agentRegisterDto.getNickname();
@@ -163,6 +171,7 @@ public class UserServiceImpl implements UserService {
             validate(user);
             userMapper.insert(user);
             insertAccount(user); // 初始化
+            insertUserInfo(user.getId(), realname);
         }
 
         if (parentId != null) {
@@ -266,6 +275,20 @@ public class UserServiceImpl implements UserService {
 			accountMapper.insert(account);
 		}*/
 
+    }
+
+    private void insertUserInfo(Long userId, String realname) {
+        validate(realname, NOT_BLANK, "realname is blank");
+        UserInfo userInfo = userInfoMapper.findByUserId(userId);
+        if (userInfo != null) {
+            return;
+        }
+        userInfo = new UserInfo();
+        userInfo.setUserId(userId);
+        userInfo.setRealname(realname);
+        userInfo.setConfirmStatus(ConfirmStatus.待审核);
+        userInfo.setAppliedTime(new Date());
+        userInfoMapper.insert(userInfo);
     }
 
     @Override
