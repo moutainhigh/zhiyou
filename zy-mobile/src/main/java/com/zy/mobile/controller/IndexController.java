@@ -67,13 +67,14 @@ public class IndexController {
 		
 		return "index";
 	}
-	
+
+
 	@RequestMapping("/task")
 	public String task(Model model) {
 		
 		return "task";
 	}
-	
+
 	@RequestMapping("/html")
 	public String html(String path) {
 		return path;

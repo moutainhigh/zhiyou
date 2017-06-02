@@ -83,17 +83,17 @@
             <label class="i-checked" for="userPay"></label>
           </div>
         </div>
-        <div class="list-item form-radio">
-          <label class="list-text" for="otherPay">他人代付</label>
-          <div class="list-unit">
-            <input id="otherPay" type="radio" name="userPay" value="false">
-            <label class="i-checked" for="otherPay"></label>
-          </div>
-        </div>
-        <div class="list-item  payer-phone hide">
-          <div class="list-text">代付人手机</div>
-          <div class="list-unit"><input type="text" name="payerPhone" id="phone" value="" /></div>
-        </div>
+        <%--<div class="list-item form-radio">--%>
+          <%--<label class="list-text" for="otherPay">他人代付</label>--%>
+          <%--<div class="list-unit">--%>
+            <%--<input id="otherPay" type="radio" name="userPay" value="false">--%>
+            <%--<label class="i-checked" for="otherPay"></label>--%>
+          <%--</div>--%>
+        <%--</div>--%>
+        <%--<div class="list-item  payer-phone hide">--%>
+          <%--<div class="list-text">代付人手机</div>--%>
+          <%--<div class="list-unit"><input type="text" name="payerPhone" id="phone" value="" /></div>--%>
+        <%--</div>--%>
       </div>
 
 

@@ -124,7 +124,6 @@ public class ActivityController {
 	@ResponseBody
 	public BufferedImage signInQrCode(@RequestParam Long id) throws WriterException {
 		Activity activity = activityService.findOne(id);
-
 		validate(activity, NOT_NULL, "activity id " + id + " is not found");
 		String qrCodeUrl = Constants.URL_MOBILE + "/u/activity/signIn?id=" + id;
 		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
@@ -138,7 +137,6 @@ public class ActivityController {
 	@ResponseBody
 	public BufferedImage detailQrCode(@RequestParam Long id) throws WriterException {
 		Activity activity = activityService.findOne(id);
-
 		validate(activity, NOT_NULL, "activity id " + id + " is not found");
 		String qrCodeUrl = Constants.URL_MOBILE + "/activity/" + id;
 		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
