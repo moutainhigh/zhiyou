@@ -148,13 +148,4 @@ public class ActivityController {
 		BitMatrix bitMatrix = multiFormatWriter.encode(qrCodeUrl, BarcodeFormat.QR_CODE, 480, 480, hints);
 		return MatrixToImageWriter.toBufferedImage(bitMatrix);
 	}
-
-
-	public static void main(String[] args) {
-		Integer[] arr = new Integer[]{1,1,1,2,2,2,3,3,4,5,6,7,5,4,6,4};
-		List<Integer> list = Arrays.asList(arr).stream().filter(v -> v == 1).collect(Collectors.toList());
-		System.out.println(list);
-		list = Arrays.asList(arr).stream().filter(v -> v > 2 && v < 5).collect(Collectors.toList());
-		System.out.println(list);
-	}
 }
