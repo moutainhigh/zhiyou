@@ -54,6 +54,8 @@ public class AdminConstants {
 			sub = new LinkedHashMap<>();
 			sub.put("activity:view", "活动查看");
 			sub.put("activity:edit", "活动编辑");
+			sub.put("activityReport:view", "活动报表查看");
+			sub.put("activityReport:export", "活动报表导出");
 			sub.put("activityApply:view", "活动报名管理(查看)");
 			sub.put("activityApply:edit", "活动报名管理(新增)");
 			sub.put("policy:view", "保险单管理(查看)");

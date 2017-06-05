@@ -241,6 +241,11 @@
                   <a href="javascript:;" data-href="${ctx}/activity"><i class="icon-social-dropbox"></i> 活动管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="activityReport:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/activity/activityReport"><i class="icon-bar-chart"></i> 活动报表管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
               <shiro:hasPermission name="activityApply:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/activityApply"><i class="icon-social-dropbox"></i> 活动报名管理<span class="badge badge-danger"></span></a>
