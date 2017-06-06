@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -131,6 +132,11 @@ public class OrderComponent {
 			orderAdminFullVo.setIsUseLogisticsLabel("物流发货");
 		} else {
 			orderAdminFullVo.setIsUseLogisticsLabel("面对面发货");
+		}
+
+		Date copiedTime = order.getCopiedTime();
+		if (copiedTime != null) {
+			orderAdminFullVo.setCopiedTimeLabel(GcUtils.formatDate(copiedTime, TIME_PATTERN));
 		}
 		return orderAdminFullVo;
 	}

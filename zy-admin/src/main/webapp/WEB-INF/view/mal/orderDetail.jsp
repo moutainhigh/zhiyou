@@ -164,6 +164,33 @@
                 </div>
               </div>
             </div>
+            <c:if test="${order.isCopied}">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">是否转订单:</label>
+                    <div class="col-md-9">
+                      <p class="form-control-static">${order.isCopied ? '是' : '否'}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">转订单ID:</label>
+                    <div class="col-md-9">
+                      <p class="form-control-static">${order.refId}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">转订单时间:</label>
+                    <div class="col-md-9">
+                      <p class="form-control-static">${order.copiedTimeLabel}</p>
+                    </div>
+                  </div>
+                </div>
+            </c:if>
 
             <h4 class="form-section">买家卖家:</h4>
 
