@@ -103,6 +103,11 @@ public class UserInfoController {
         }
 		
 		Page<UserInfo> page = userInfoService.findPage(userInfoQueryModel);
+		List<UserInfo> data = page.getData();
+		long count = data.stream().filter(v -> StringUtils.isBlank(v.getIdCardNumber())).count();
+		List<UserInfo> filter = data.stream().filter(v -> StringUtils.isNotBlank(v.getIdCardNumber())).collect(Collectors.toList());
+		page.setData(filter);
+		page.setTotal(page.getTotal() - count);
 		Page<UserInfoAdminVo> voPage = PageBuilder.copyAndConvert(page, userInfoComponent::buildAdminVo);
 		return new Grid<>(voPage);
 	}
