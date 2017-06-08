@@ -252,6 +252,27 @@ public class ActivityServiceImpl implements ActivityService {
 		return page;
 	}
 
+	@Override
+	public Page<Activity> findReport(ActivityQueryModel activityQueryModel) {
+		if (activityQueryModel.getPageNumber() == null)
+			activityQueryModel.setPageNumber(0);
+		if (activityQueryModel.getPageSize() == null)
+			activityQueryModel.setPageSize(20);
+		long total = activityMapper.count(activityQueryModel);
+		List<Activity> data = activityMapper.findReport(activityQueryModel);
+		Page<Activity> page = new Page<>();
+		page.setPageNumber(activityQueryModel.getPageNumber());
+		page.setPageSize(activityQueryModel.getPageSize());
+		page.setData(data);
+		page.setTotal(total);
+		return page;
+	}
+
+	@Override
+	public List<Activity> findExReport(ActivityQueryModel activityQueryModel) {
+		return activityMapper.findReport(activityQueryModel);
+	}
+
 	private void checkUser(Long userId) {
 		validate(userId, NOT_NULL, "user id is null");
 		User user = userMapper.findOne(userId);

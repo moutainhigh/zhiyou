@@ -20,4 +20,5 @@ public interface ActivityTeamApplyService {
 
 	int update(ActivityTeamApply activityTeamApply);
 
+	Long findNoPayNumber(Long id);
 }
