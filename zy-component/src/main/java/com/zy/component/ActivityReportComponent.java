@@ -6,6 +6,7 @@ import com.zy.entity.act.ActivityApply;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.query.ActivityReportQueryModel;
+import com.zy.service.ActivityApplyService;
 import com.zy.service.ActivityService;
 import com.zy.service.UserInfoService;
 import com.zy.service.UserService;
@@ -36,6 +37,10 @@ public class ActivityReportComponent {
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private ActivityApplyService activityApplyService;
+
+
     public ActivityReportVo buildReportVo(ActivityApply activityApply, boolean flag, Map<String,Object>dataMap) {
         String shortFmt = "yyyy年M月d日 HH:mm";
         ActivityReportVo activityReportVo = new ActivityReportVo();
@@ -53,15 +58,28 @@ public class ActivityReportComponent {
         activityReportVo.setNickname(user.getNickname());
         activityReportVo.setPhone(user.getPhone());
         activityReportVo.setUserRankLable(GcUtils.getUserRankLabel(user.getUserRank()));
-        if(null!=user.getParentId()){
-            UserInfo puserInfo = userInfoService.findByUserId(user.getParentId());
-            if (null!=puserInfo){
-                activityReportVo.setParentName(puserInfo.getRealname()==null?"":puserInfo.getRealname());
+        if((null!=activityApply.getActivityId()&& !"null".equals(activityApply.getActivityId()))&&(null!=activityApply.getUserId()&&!"null".equals(activityApply.getUserId()))) {
+            ActivityApply activityApply1 = activityApplyService.findByActivityIdAndUserId(activityApply.getActivityId(), activityApply.getUserId());
+            if (activityApply1 != null&&null!=activityApply1.getInviterId()) {
+                UserInfo puserInfo = userInfoService.findByUserId(activityApply1.getInviterId());
+                if (null != puserInfo) {
+                    activityReportVo.setParentName(puserInfo.getRealname() == null ? "" : puserInfo.getRealname());
+                } else {
+                    User userInt = userService.findOne(activityApply1.getInviterId());
+                    if (null != userInt) {
+                        activityReportVo.setParentName(userInt.getNickname() == null ? "" : userInt.getNickname());
+                    }
+                }
             }
         }
         UserInfo userInfo = userInfoService.findByUserId(user.getId());
         if (userInfo!=null){
             activityReportVo.setRealname(userInfo.getRealname()==null?"":userInfo.getRealname());
+        }else{
+            User userInt = userService.findOne(user.getId());
+            if (null!=userInt){
+                activityReportVo.setRealname(userInt.getNickname()==null?"":userInt.getNickname());
+            }
         }
         return activityReportVo;
     }
