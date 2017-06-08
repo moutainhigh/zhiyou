@@ -454,7 +454,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyIsDirector(@NotNull Long id, boolean isDirector) {
         User user = findAndValidate(id);
-        if(user.getIsDirector()) {
+        if(user.getIsDirector() != null) {
             return ;
         }
         User userForMerge = new User();
@@ -466,7 +466,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyIsShareholder(@NotNull Long id, boolean isShareholder) {
         User user = findAndValidate(id);
-        if(user.getIsShareholder()) {
+        if(user.getIsShareholder() != null) {
             return ;
         }
         User userForMerge = new User();

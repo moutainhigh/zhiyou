@@ -1018,7 +1018,7 @@ public class OrderServiceImpl implements OrderService {
 			BigDecimal amount = entry.getValue();
 			Long userId = entry.getKey();
 			if (amount.compareTo(zero) > 0) {
-				try {TimeUnit.MILLISECONDS.sleep(100);} catch (InterruptedException e1) {}
+				try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
 				BigDecimal fee = amount.multiply(FEE_RATE);
 				BigDecimal amountAfter = amount.subtract(fee);
 				fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
@@ -1036,7 +1036,7 @@ public class OrderServiceImpl implements OrderService {
 			if(userQuantity != null) {
 				BigDecimal quantity = new BigDecimal(userQuantity);
 				BigDecimal profit = quantity.multiply(new BigDecimal("0.4"));  //特级服务商：每人新增服务量*0.4股计算；
-				if(v.getIsDirector()) {  //联席董事: 每人新增服务量*0.4股+公司月总服务量*0.6股；
+				if(v.getIsDirector() != null && v.getIsDirector()) {  //联席董事: 每人新增服务量*0.4股+公司月总服务量*0.6股；
 					BigDecimal company = new BigDecimal(companySales).multiply(new BigDecimal("0.6"));
 					profit = profit.add(company);
 				}
@@ -1051,7 +1051,7 @@ public class OrderServiceImpl implements OrderService {
 			BigDecimal amount = entry.getValue();
 			Long userId = entry.getKey();
 			if (amount.compareTo(zero) > 0) {
-				try {TimeUnit.MILLISECONDS.sleep(100);} catch (InterruptedException e1) {}
+				try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
 				BigDecimal fee = amount.multiply(FEE_RATE);
 				BigDecimal amountAfter = amount.subtract(fee);
 				fncComponent.createProfit(userId, Profit.ProfitType.期权奖励, null, year + "年" + month + "期权奖励", CurrencyType.货币期权, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
@@ -1060,7 +1060,7 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 		/* 董事贡献奖 */
-		List<User> v4Directors = v4Users.stream().filter(v -> v.getIsDirector()).collect(Collectors.toList());
+		List<User> v4Directors = v4Users.stream().filter(v -> v.getIsDirector() != null && v.getIsDirector()).collect(Collectors.toList());
 		Map<Long, TeamModel> teamV4Map = v4Directors.stream()
 				.map(v -> {
 					TeamModel teamModel = new TeamModel();
@@ -1084,7 +1084,7 @@ public class OrderServiceImpl implements OrderService {
 					.map(u -> {
 						Long quantity = userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId());
 						BigDecimal innerProfit = new BigDecimal("0.00");
-						if(u.getIsDirector()) {
+						if(v.getIsDirector() != null && u.getIsDirector()) {
 							innerProfit = new BigDecimal(quantity);
 						} else {
 							innerProfit = new BigDecimal(quantity).multiply(new BigDecimal("2.00"));
@@ -1099,7 +1099,7 @@ public class OrderServiceImpl implements OrderService {
 			BigDecimal amount = entry.getValue();
 			Long userId = entry.getKey();
 			if (amount.compareTo(zero) > 0) {
-				try {TimeUnit.MILLISECONDS.sleep(100);} catch (InterruptedException e1) {}
+				try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
 				BigDecimal fee = amount.multiply(FEE_RATE);
 				BigDecimal amountAfter = amount.subtract(fee);
 				fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "董事贡献奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
@@ -1265,7 +1265,7 @@ public class OrderServiceImpl implements OrderService {
 		if (plist == null) {
 			return;
 		}
-		plist = plist.stream().filter(u -> !u.getIsDirector()).collect(Collectors.toList());
+		plist = plist.stream().filter(u -> u.getIsDirector() != null && !u.getIsDirector()).collect(Collectors.toList());
 		result.addAll(plist);
 		for (User user : plist) {
 			sortBreadth2(childrenMap, result, treeNodeResolver.apply(user).getId(), treeNodeResolver);
@@ -1292,4 +1292,5 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return directV4ParentId;
 	}
+
 }
