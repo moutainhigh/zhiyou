@@ -184,7 +184,7 @@
                             <a href="javascript:void(0)" onclick="addDate('0')" data-toggle="tab" aria-expanded="false"> 未支付 <span class="badge badge-primary" id="notPayNum">0</span></a>
                         </li>
                         <li class="">
-                            <a href="javascript:void(0)" onclick="addDate('1')"data-toggle="tab" aria-expanded="false"> 已支付 <span class="badge badge-primary" id="payNum">0</span></a>
+                            <a href="javascript:void(0)" onclick="addDate('1')"data-toggle="tab" aria-expanded="false"> 已报名 <span class="badge badge-primary" id="payNum">0</span></a>
                         </li>
                         <li class="">
                             <a href="javascript:void(0)" onclick="addDate('2')" data-toggle="tab" aria-expanded="false"> 已签到 <span class="badge badge-primary" id="signNum">0</span></a>
