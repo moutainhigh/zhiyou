@@ -33,11 +33,11 @@ public class ActivitySummaryExReportVo  implements Serializable {
     private Long collectedCount;
     @Field(label = "未支付人数")
     private Long nonPayment;
-    @Field(label = "已支付人数")
+    @Field(label = "已购票数")
     private Long payment;
-    @Field(label = "报名数")
+    @Field(label = "已报名人数")
     private Long appliedCount;
-    @Field(label = "签到数")
+    @Field(label = "已签到人数")
     private Long signedInCount;
     @Field(label = "签到率(%)")
     private BigDecimal attendanceRate;

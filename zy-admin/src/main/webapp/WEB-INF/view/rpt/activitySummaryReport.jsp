@@ -73,17 +73,17 @@
           },
           {
             data: 'payment',
-            title: '已支付人数',
+            title: '已购票数',
             orderable: false
           },
           {
             data: 'appliedCount',
-            title: '报名人数',
+            title: '已报名人数',
             width: '60px'
           },
           {
             data: 'signedInCount',
-            title: '签到人数'
+            title: '已签到人数'
           },
           {
             data: '',
