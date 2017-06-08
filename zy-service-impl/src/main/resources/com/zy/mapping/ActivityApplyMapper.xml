@@ -246,17 +246,6 @@
 		where activity_id = #{activityId} and user_id = #{userId}
 	</select>
 
-
-	<!--修改状态和邀请人，二维码识别报名活动特用-->
-	<update id="updateActApply" parameterType="com.zy.entity.act.ActivityApply">
-		update `act_activity_apply`
-		<set>
-			<if test="activityApplyStatus != null">activity_apply_status = #{activityApplyStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},</if>
-			<if test="inviterId != null">inviter_id = #{inviterId},</if>
-		</set>
-		where id = #{id}
-	</update>
-
 	<!--查询已支付人数-->
 	<select id="queryCount" resultType="_long" parameterType="long">
 		SELECT count(*)
@@ -273,12 +262,12 @@
 		from `act_activity_apply`
 		<where>
 			<if test="activityIdIN!=null">
-			  <if test="activityIdIN.length!=0">
-				  and activity_id in
-				  <foreach collection="activityIdIN" item="item" open="(" separator="," close=")">
-					  #{item}
-				  </foreach>
-			 </if>
+				<if test="activityIdIN.length!=0">
+					and activity_id in
+					<foreach collection="activityIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
 			</if>
 			<if test="userIdIN!=null">
 				<if test="userIdIN.length!=0">

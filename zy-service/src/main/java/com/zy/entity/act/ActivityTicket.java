@@ -1,9 +1,11 @@
 package com.zy.entity.act;
 
+import com.zy.entity.usr.User;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
+import io.gd.generator.annotation.view.AssociationView;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
@@ -38,35 +40,26 @@ public class ActivityTicket implements Serializable {
 	@NotNull
 	@Field(label = "团队订单id")
 	@Query({Predicate.IN, Predicate.EQ})
-	@View
-	//@AssociationView(name = "activity", associationGroup =Activity.VO_LIST, groups = {VO_ADMIN, VO_LIST})
+	@View(groups = VO_ADMIN)
+	@AssociationView(name = "activityTeamApply", associationGroup =Activity.VO_LIST, groups = {VO_ADMIN})
 	private Long teamApplyId;
 
 	@Field(label = "用户id")
 	@Query({Predicate.IN, Predicate.EQ})
-	//@View(groups = VO_ADMIN)
-	//@AssociationView(name = "buyerUser", associationGroup = User.VO_ADMIN_SIMPLE, groups = VO_ADMIN)
-	@View(name = "usedUserName", type = String.class)
+	@View(groups = VO_ADMIN)
+	@AssociationView(name = "usedUser", associationGroup = User.VO_LIST, groups = {VO_ADMIN, VO_LIST})
 	private Long userId;
-
 
 
 	@Field(label = "二维码存储路径")
 	@NotNull
 	@Query({Predicate.EQ})
-	//@View(name = "amountLabel", type = String.class)
 	private String codeImageUrl;
 
 
 	@Field(label = "是否被使用")
 	@NotNull
 	@Query({Predicate.EQ})
-	//@View(name = "amountLabel", type = String.class)
 	private Integer isUsed;
-
-
-
-
-
 
 }
