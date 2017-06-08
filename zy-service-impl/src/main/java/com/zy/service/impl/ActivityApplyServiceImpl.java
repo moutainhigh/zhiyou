@@ -207,7 +207,7 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 
 	@Override
 	public int update(ActivityApply activityApply) {
-		return activityApplyMapper.updateActApply(activityApply);
+		return activityApplyMapper.update(activityApply);
 	}
 
 	@Override

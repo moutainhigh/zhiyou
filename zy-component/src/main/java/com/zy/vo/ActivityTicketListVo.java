@@ -20,6 +20,6 @@ public class ActivityTicketListVo implements Serializable {
 	private Integer isUsed;
 
 	/* 扩展 */
-	@Field(label = "使用者姓名")
-	private String usedUserName;
+	@Field(label = "使用者")
+	private UserListVo usedUser;
 }
