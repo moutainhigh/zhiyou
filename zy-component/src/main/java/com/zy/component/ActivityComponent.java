@@ -264,8 +264,12 @@ public class ActivityComponent {
 		Long number = activityTeamApplyService.findNoPayNumber(activity.getId());
 		Long count = activityApplyService.queryNoPayCount(activity.getId());
 
+		Long a = activityTeamApplyService.findPayNumber(activity.getId());
+		Long b = activityApplyService.queryCount(activity.getId());
+
 		ActivitySummaryReportVo activitySummaryReportVo = new ActivitySummaryReportVo();
 		activitySummaryReportVo.setNonPayment(number + count);
+		activitySummaryReportVo.setPayment(a + b);
 		BeanUtils.copyProperties(activity, activitySummaryReportVo, "detail");
 		Long areaId = activity.getAreaId();
 		if(!isNull(areaId)) {
@@ -296,6 +300,9 @@ public class ActivityComponent {
 		Long number = activityTeamApplyService.findNoPayNumber(activity.getId());
 		Long count = activityApplyService.queryNoPayCount(activity.getId());
 
+		Long a = activityTeamApplyService.findPayNumber(activity.getId());
+		Long b = activityApplyService.queryCount(activity.getId());
+
 		ActivitySummaryExReportVo activitySummaryExReportVo = new ActivitySummaryExReportVo();
 
 		if (activity.getSignedInCount() != null && activity.getAppliedCount() != null && activity.getAppliedCount() != 0){
@@ -306,6 +313,7 @@ public class ActivityComponent {
 		}
 
 		activitySummaryExReportVo.setNonPayment(number + count);
+		activitySummaryExReportVo.setPayment(a + b);
 		BeanUtils.copyProperties(activity, activitySummaryExReportVo, "detail");
 		Long areaId = activity.getAreaId();
 		if(!isNull(areaId)) {
