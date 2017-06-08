@@ -72,6 +72,11 @@
             orderable: false
           },
           {
+            data: 'payment',
+            title: '已支付人数',
+            orderable: false
+          },
+          {
             data: 'appliedCount',
             title: '报名人数',
             width: '60px'

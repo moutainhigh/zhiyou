@@ -58,4 +58,6 @@ public class ActivitySummaryReportVo implements Serializable {
 	private String endTimeFormatted;
 	@Field(label = "未支付人数")
 	private Long nonPayment;
+	@Field(label = "已支付人数")
+	private Long payment;
 }
