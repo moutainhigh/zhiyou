@@ -1,5 +1,6 @@
 package com.zy.admin.controller;
 
+import com.alibaba.dubbo.remoting.TimeoutException;
 import com.zy.Config;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.support.cache.CacheSupport;
@@ -47,33 +48,34 @@ public class IndexController {
 
 	@Autowired
 	private PaymentService paymentService;
-	
+
 	@Autowired
 	private DepositService depositService;
-	
+
 	@Autowired
 	private WithdrawService withdrawService;
 
 	@Autowired
 	private ReportService reportService;
-	
+
 	@Autowired
 	private OrderService orderService;
-	
+
 	@Autowired
 	private UserInfoService userInfoService;
-	
-	@Autowired
-	private CacheSupport cacheSupport;
+
 
 	@Autowired
 	private Config config;
-	
+
 	@Autowired
 	private UserComponent userComponent;
 
 	@Autowired
 	private LocalCacheComponent localCacheComponent;
+
+	@Autowired
+	private CacheSupport cacheSupport;
 
 	private static final int DEFAULT_EXPIRE = 300;
 
@@ -96,7 +98,7 @@ public class IndexController {
 				cacheSupport.set(CACHE_NAME_STATISTICS, Constants.CACHE_NAME_AGENT_REGISTER_COUNT, agentCount, DEFAULT_EXPIRE);
 			}
 			model.addAttribute("agentCount", agentCount);
-		
+
 		}
 			
 		/* 统计待处理信息 */
@@ -110,36 +112,36 @@ public class IndexController {
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_USER_BANK_INFO_COUNT, userBankInfoUnconfirmCount, DEFAULT_EXPIRE);
 			}
 			model.addAttribute("userBankInfoCount", userBankInfoUnconfirmCount);
-	
+
 			Long userInfoCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_USER_INFO_COUNT);
-			if(userInfoCount == null) {
+			if (userInfoCount == null) {
 				userInfoCount = userInfoService.count(UserInfoQueryModel.builder().confirmStatusEQ(ConfirmStatus.待审核).build());
-				
+
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_USER_INFO_COUNT, userInfoCount, DEFAULT_EXPIRE);
 			}
 			model.addAttribute("userInfoCount", userInfoCount);
 
 			Long reportPreCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_PRE_COUNT);
-			if(reportPreCount == null) {
+			if (reportPreCount == null) {
 				reportPreCount = reportService.count(ReportQueryModel.builder().preConfirmStatusEQ(ConfirmStatus.待审核).build());
-				
+
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_PRE_COUNT, reportPreCount, DEFAULT_EXPIRE);
 			}
 			model.addAttribute("reportPreCount", reportPreCount);
-			
+
 			Long reportCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_COUNT);
-			if(reportCount == null) {
+			if (reportCount == null) {
 				reportCount = reportService.count(ReportQueryModel.builder().confirmStatusEQ(ConfirmStatus.待审核).build());
-				
+
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_REPORT_COUNT, reportCount, DEFAULT_EXPIRE);
 			}
 			model.addAttribute("reportCount", reportCount);
-			
+
 			Long orderPlatformDeliverCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT);
-			if(orderPlatformDeliverCount == null) {
+			if (orderPlatformDeliverCount == null) {
 				Long sysUserId = config.getSysUserId();
 				orderPlatformDeliverCount = orderService.count(OrderQueryModel.builder().sellerIdEQ(sysUserId).orderStatusEQ(OrderStatus.已支付).build());
-				
+
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_ORDER_PLATFORM_DELIVER_COUNT, orderPlatformDeliverCount, DEFAULT_EXPIRE);
 			}
 			model.addAttribute("orderPlatformDeliverCount", orderPlatformDeliverCount);
@@ -154,19 +156,19 @@ public class IndexController {
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_WITHDRAW_COUNT, withdrawCount, DEFAULT_EXPIRE);
 			}
 			model.addAttribute("withdrawCount", withdrawCount);
-			
+
 			Long paymentCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_PAYMENT_COUNT);
-			if(paymentCount == null) {
+			if (paymentCount == null) {
 				paymentCount = paymentService.count(PaymentQueryModel.builder().paymentStatusEQ(PaymentStatus.待确认).payTypeEQ(PayType.银行汇款).build());
-				
+
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_PAYMENT_COUNT, paymentCount, DEFAULT_EXPIRE);
 			}
 			model.addAttribute("paymentCount", paymentCount);
-			
+
 			Long depositCount = (Long) cacheSupport.get(CACHE_NAME_STATISTICS, CACHE_NAME_DEPOSIT_COUNT);
-			if(depositCount == null) {
+			if (depositCount == null) {
 				depositCount = depositService.count(DepositQueryModel.builder().depositStatusEQ(DepositStatus.待确认).payTypeEQ(PayType.银行汇款).build());
-				
+
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_DEPOSIT_COUNT, depositCount, DEFAULT_EXPIRE);
 			}
 			model.addAttribute("depositCount", depositCount);
@@ -247,14 +249,14 @@ public class IndexController {
 			List<Order> orders = localCacheComponent.getOrders().stream()
 					.filter(v -> {
 						OrderStatus orderStatus = v.getOrderStatus();
-						if(orderStatus == OrderStatus.已支付 || orderStatus == OrderStatus.已发货 || orderStatus == OrderStatus.已完成) {
+						if (orderStatus == OrderStatus.已支付 || orderStatus == OrderStatus.已发货 || orderStatus == OrderStatus.已完成) {
 							return true;
 						}
 						return false;
 					})
 					.filter(v -> {
 						Date paidTime = v.getPaidTime();
-						if(paidTime.after(calendar.getTime()) || calendar.getTime().equals(paidTime)) {
+						if (paidTime.after(calendar.getTime()) || calendar.getTime().equals(paidTime)) {
 							return true;
 						}
 						return false;
@@ -288,13 +290,13 @@ public class IndexController {
 
 		return dataMap;
 	}
-	
+
 	@RequestMapping("/dev")
 	public String dev() {
 		return "dev";
 	}
 
-	@RequestMapping({ "", "/login" })
+	@RequestMapping({"", "/login"})
 	public String login(HttpServletRequest request, HttpServletResponse response) {
 		Subject subject = SecurityUtils.getSubject();
 		if (subject.getPrincipal() != null) {
@@ -303,12 +305,12 @@ public class IndexController {
 		String authenticationException = (String) request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
 		if (authenticationException != null) {
 			switch (authenticationException) {
-			case "com.sk.admin.extend.IncorrectCaptchaException":
-				request.setAttribute("failureInfo", "登录失败, 验证码错误");
-				break;
-			default:
-				request.setAttribute("failureInfo", "登录失败, 用户名或者密码错误");
-				break;
+				case "com.sk.admin.extend.IncorrectCaptchaException":
+					request.setAttribute("failureInfo", "登录失败, 验证码错误");
+					break;
+				default:
+					request.setAttribute("failureInfo", "登录失败, 用户名或者密码错误");
+					break;
 			}
 		}
 		return "login";
@@ -316,11 +318,23 @@ public class IndexController {
 
 	@RequestMapping("/settlementMonthly")
 	@ResponseBody
-	public String orderSettlementMonthlyJob(String yeahAndMonth) {
-		try{
-			orderService.settleUpMonthly(yeahAndMonth);
-			return "success";
+	public String orderSettlementMonthlyJob(String yeahAndMonth, HttpServletRequest request) {
+		try {
+			if (StringUtils.isNotBlank(yeahAndMonth)) {
+				Date beginDate = cacheSupport.get("settlementMonthlyKey", yeahAndMonth);
+				if (beginDate == null) {
+					cacheSupport.set("settlementMonthlyKey", yeahAndMonth, new Date(), 60);
+					orderService.settleUpMonthly(yeahAndMonth);
+					cacheSupport.delete("settlementMonthlyKey", yeahAndMonth);
+					return yeahAndMonth + "的结算处理完成";
+				} else {
+					return yeahAndMonth + "的结算正在运行中 结算开始时间为：" + beginDate;
+				}
+			} else {
+				return "传入的日期不合法" + yeahAndMonth;
+			}
 		} catch (Exception e) {
+			cacheSupport.delete("settlementMonthlyKey", yeahAndMonth);
 			return e.getMessage();
 		}
 
