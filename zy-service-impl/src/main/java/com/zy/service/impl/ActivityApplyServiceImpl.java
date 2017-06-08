@@ -215,4 +215,9 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 		return  activityApplyMapper.queryCount(activityId);
 	}
 
+	@Override
+	public Long queryNoPayCount(Long activityId) {
+		return  activityApplyMapper.queryNoPayCount(activityId);
+	}
+
 }

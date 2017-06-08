@@ -29,4 +29,6 @@ public interface ActivityApplyMapper {
 	int updateActApply(ActivityApply activityApply);
 
 	Long queryCount(Long activityId);
+
+	Long queryNoPayCount(Long activityId);
 }

@@ -174,4 +174,14 @@
 		AND a.paid_status = 1
 	</select>
 
+	<!--  -->
+	<select id="findNoPayNumber" resultType="_long" parameterType="long">
+		SELECT
+			sum(a.count)
+		FROM act_activity_team_apply a
+		WHERE
+			a.activity_id = #{activityId}
+		AND a.paid_status = 0
+	</select>
+
 </mapper>

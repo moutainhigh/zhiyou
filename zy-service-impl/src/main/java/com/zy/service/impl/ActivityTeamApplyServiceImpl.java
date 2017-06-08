@@ -66,4 +66,10 @@ public class ActivityTeamApplyServiceImpl implements ActivityTeamApplyService {
 		return activityTeamApplyMapper.update(activityTeamApply);
 	}
 
+	@Override
+	public Long findNoPayNumber(Long activityId) {
+		Long count = activityTeamApplyMapper.findNoPayNumber(activityId);
+		return count == null ? 0L : count;
+	}
+
 }

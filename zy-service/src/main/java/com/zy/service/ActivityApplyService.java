@@ -27,4 +27,6 @@ public interface ActivityApplyService {
 	int update(ActivityApply activityApply);
 
 	Long queryCount(Long activityId);
+
+	Long queryNoPayCount(Long id);
 }
