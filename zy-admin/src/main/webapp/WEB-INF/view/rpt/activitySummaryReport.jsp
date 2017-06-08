@@ -79,7 +79,7 @@
           {
             data: 'appliedCount',
             title: '已报名人数',
-            width: '60px'
+            width: '80px'
           },
           {
             data: 'signedInCount',
