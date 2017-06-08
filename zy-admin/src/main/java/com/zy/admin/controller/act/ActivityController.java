@@ -10,12 +10,22 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
+import com.zy.common.util.ExcelUtils;
+import com.zy.common.util.WebUtils;
 import com.zy.component.ActivityComponent;
+import com.zy.component.ActivityReportComponent;
 import com.zy.entity.act.Activity;
+import com.zy.entity.act.ActivityApply;
+import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.query.ActivityQueryModel;
+import com.zy.model.query.ActivityReportQueryModel;
+import com.zy.service.ActivityApplyService;
 import com.zy.service.ActivityService;
+import com.zy.util.GcUtils;
+import com.zy.vo.ActionReportExportVo;
 import com.zy.vo.ActivityAdminVo;
+import com.zy.vo.ActivityReportVo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +38,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
@@ -49,6 +59,12 @@ public class ActivityController {
 
 	@Autowired
 	private ActivityComponent activityComponent;
+
+	@Autowired
+	private ActivityApplyService activityApplyService;
+
+	@Autowired
+	private ActivityReportComponent activityReportComponent;
 
 	@RequiresPermissions("activity:view")
 	@RequestMapping(method = RequestMethod.GET)
@@ -149,12 +165,67 @@ public class ActivityController {
 		return MatrixToImageWriter.toBufferedImage(bitMatrix);
 	}
 
+	/**
+	 * 跳转到 活动报表导出页面
+	 * @return
+     */
+	@RequiresPermissions("activityReport:view")
+	@RequestMapping(value = "/activityReport")
+	public String toActivityReport(Model model){
+		model.addAttribute("userRankMap", Arrays.asList(User.UserRank.values()).stream().collect(Collectors.toMap(v->v, v-> GcUtils.getUserRankLabel(v),(u, v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new)) );
+		return "act/activityReport";
+	}
 
-	public static void main(String[] args) {
-		Integer[] arr = new Integer[]{1,1,1,2,2,2,3,3,4,5,6,7,5,4,6,4};
-		List<Integer> list = Arrays.asList(arr).stream().filter(v -> v == 1).collect(Collectors.toList());
-		System.out.println(list);
-		list = Arrays.asList(arr).stream().filter(v -> v > 2 && v < 5).collect(Collectors.toList());
-		System.out.println(list);
+	/**
+	 * 查询报表数据数据
+	 * @return
+     */
+	@RequiresPermissions("activity:view")
+	@RequestMapping(value = "activityReportList" ,method = RequestMethod.POST)
+	@ResponseBody
+	public Grid<ActivityReportVo>  activityReportList(ActivityReportQueryModel activityReportQueryModel){
+          if("0".equals(activityReportQueryModel.getInitFalg())){//不需要初始化页面
+			  Page<ActivityReportVo> page = new Page<ActivityReportVo>();
+				  page.setPageNumber(0);
+				  page.setPageSize(20);
+				  page.setTotal(0L);
+			    return new Grid<>(page);
+		  }
+		//处理逻辑
+		Page<ActivityReportVo> voPage=null;
+		try {
+			Map<String,Object> dataMap = activityApplyService.findPageByReport(activityReportQueryModel);
+			Page<ActivityApply> page =(Page<ActivityApply>)dataMap.get("page");
+			voPage = PageBuilder.copyAndConvert(page, v-> activityReportComponent.buildReportVo(v, false,dataMap));
+
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return new Grid<>(voPage);
+	}
+
+
+
+	@RequiresPermissions("activityReport:export")
+	@RequestMapping("/export")
+	public String export(ActivityReportQueryModel activityReportQueryModel,HttpServletResponse response) throws IOException {
+
+		  activityReportQueryModel.setPageSize(null);
+		  activityReportQueryModel.setPageNumber(null);
+		  Map<String,Object> dataMap = activityApplyService.findPageByReport(activityReportQueryModel);
+		  Page<ActivityApply> page =(Page<ActivityApply>)dataMap.get("page");
+		  List<ActivityApply> activityApplyList = page.getData();
+		  String fileName = "活动报表_签到.xlsx";
+		  if(0==activityReportQueryModel.getActivityApplyStatus()){
+			  fileName = "活动报表_未支付.xlsx";
+		  }else if(1==activityReportQueryModel.getActivityApplyStatus()){
+			  fileName = "活动报表_已支付.xlsx";
+		  }
+		  WebUtils.setFileDownloadHeader(response, fileName);
+
+		List<ActionReportExportVo> actionReportExportVoList= activityApplyList.stream().map(activityReportComponent::buildExportVo).collect(Collectors.toList());
+		OutputStream os = response.getOutputStream();
+		ExcelUtils.exportExcel(actionReportExportVoList, ActionReportExportVo.class, os);
+		return null;
 	}
 }

@@ -25,4 +25,6 @@ public interface ActivityMapper {
 	long count(ActivityQueryModel activityQueryModel);
 
 	int view(Long id);
+
+	List<Activity> findReport(ActivityQueryModel activityQueryModel);
 }

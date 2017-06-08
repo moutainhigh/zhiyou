@@ -28,4 +28,5 @@ public interface ActivityTeamApplyMapper {
 
 	Long findPayNumber(Long activityId);
 
+	Long findNoPayNumber(Long activityId);
 }

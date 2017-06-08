@@ -88,10 +88,10 @@
     <c:forEach items="${activityTickets}" var="activityTicket" >
       <div class="erweima">
         <img src="${activityTicket.codeImageUrl}" class="erweimaImg"/>
-        <c:if test="${not empty activityTicket.usedUserName && activityTicket.isUsed == 1}">
-          <div>使用者：${activityTicket.usedUserName}</div>
+        <c:if test="${not empty activityTicket.usedUser && activityTicket.isUsed == 1}">
+          <div>使用者：${activityTicket.usedUser.nickname}</div>
         </c:if>
-        <c:if test="${empty activityTicket.usedUserName && activityTicket.isUsed == 0}">
+        <c:if test="${empty activityTicket.usedUser && activityTicket.isUsed == 0}">
           <div>无人使用</div>
         </c:if>
       </div>

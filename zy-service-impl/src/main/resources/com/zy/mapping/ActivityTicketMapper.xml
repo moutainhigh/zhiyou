@@ -23,7 +23,7 @@
 	<update id="update" parameterType="com.zy.entity.act.ActivityTicket">
 		update `act_activity_ticket`
 		<set>
-			<if test="userId != null"> user_id = #{userId},</if>
+			user_id = #{userId},
 			<if test="isUsed != null"> is_used = #{isUsed},</if>
 			<if test="codeImageUrl != null"> code_image_url = #{codeImageUrl},</if>
 		</set>
@@ -78,7 +78,7 @@
 		</if>
 	</select>
 
-	<select id="count" resultType="_long" parameterType="com.zy.model.query.ActivityApplyQueryModel">
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.ActivityTicketQueryModel">
 		select count(*) from `act_activity_ticket`
 		<where>
 			<if test="teamApplyIdIN != null">
@@ -92,9 +92,8 @@
 					and 1 = 2
 				</if>
 			</if>
-
-			<if test="teamApplyIdIN != null">
-				and team_apply_id = #{teamApplyIdIN}
+			<if test="teamApplyId != null">
+				and team_apply_id = #{teamApplyId}
 			</if>
 			<if test="userId != null">
 				and user_id = #{userId}

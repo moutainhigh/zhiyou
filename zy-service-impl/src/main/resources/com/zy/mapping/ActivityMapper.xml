@@ -152,6 +152,9 @@
 			<if test="level != null">
 				and level = #{level}
 			</if>
+			<if test="address != null">
+				<bind name="address" value="'%' + address + '%'"/> and address like #{address}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -159,6 +162,71 @@
 			</when>
 			<otherwise>
 				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="findReport" resultMap="baseResultMap" parameterType="com.zy.model.query.ActivityQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `act_activity`
+		<where>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="startTimeGTE != null">
+				and start_time &gt;= #{startTimeGTE}
+			</if>
+			<if test="startTimeLT != null">
+				and end_time &lt;= #{startTimeLT}
+			</if>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
+			<if test="applyDeadlineGTE != null">
+				and apply_deadline &gt;= #{applyDeadlineGTE}
+			</if>
+			<if test="areaIdIN != null">
+				<if test="areaIdIN.length != 0">
+				and area_id in
+				<foreach collection="areaIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="areaIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="applyDeadlineLT != null">
+				and apply_deadline &lt; #{applyDeadlineLT}
+			</if>
+			<if test="isReleasedEQ != null">
+				and is_released = #{isReleasedEQ}
+			</if>
+			<if test="areaIdEQ != null">
+				and area_id = #{areaIdEQ}
+			</if>
+			<if test="level != null">
+				and level = #{level}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by start_time desc
 			</otherwise>
 		</choose>
 		<if test="offset != null">
@@ -183,6 +251,9 @@
 			<if test="startTimeGTE != null">
 				and start_time &gt;= #{startTimeGTE}
 			</if>
+			<if test="startTimeLT != null">
+				and end_time &lt;= #{startTimeLT}
+			</if>
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>
@@ -199,9 +270,6 @@
 				<if test="areaIdIN.length == 0">
 				and 1 = 2
 				</if>
-			</if>
-			<if test="startTimeLT != null">
-				and start_time &lt; #{startTimeLT}
 			</if>
 			<if test="applyDeadlineLT != null">
 				and apply_deadline &lt; #{applyDeadlineLT}
