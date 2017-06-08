@@ -152,6 +152,9 @@
 			<if test="level != null">
 				and level = #{level}
 			</if>
+			<if test="address != null">
+				<bind name="address" value="'%' + address + '%'"/> and address like #{address}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">

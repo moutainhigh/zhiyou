@@ -5,23 +5,21 @@ import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
+import com.zy.entity.act.ActivitySignIn;
 import com.zy.entity.fnc.Payment;
 import com.zy.entity.usr.User;
-import com.zy.mapper.ActivityApplyMapper;
-import com.zy.mapper.ActivityMapper;
-import com.zy.mapper.PaymentMapper;
-import com.zy.mapper.UserMapper;
+import com.zy.mapper.*;
 import com.zy.model.BizCode;
-import com.zy.model.query.ActivityApplyQueryModel;
+import com.zy.model.query.*;
 import com.zy.service.ActivityApplyService;
+import io.gd.generator.api.query.Direction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
@@ -42,6 +40,9 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 
 	@Autowired
 	private PaymentMapper paymentMapper;
+
+	@Autowired
+	private ActivitySignInMapper activitySignInMapper;
 
 	@Override
 	public Page<ActivityApply> findPage(
@@ -213,6 +214,99 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 	@Override
 	public Long queryCount(Long activityId) {
 		return  activityApplyMapper.queryCount(activityId);
+	}
+
+	/**
+	 * 查询报活动表数据
+	 * @param activityReportQueryModel
+	 * @return
+     */
+	@Override
+	public Map<String,Object> findPageByReport(ActivityReportQueryModel activityReportQueryModel) {
+		Map<String,Object> dataMap = new HashMap<String,Object>();
+		List<Activity>  activityList=new ArrayList<Activity>();
+		List<ActivityApply> data = new ArrayList<ActivityApply>();//查询数据
+		long total=0L;//总条数
+		boolean flag = true;
+		if (null!=activityReportQueryModel.getActivityAddress()||null!=activityReportQueryModel.getActivityName()||null!=activityReportQueryModel.getActivityTime()){
+			ActivityQueryModel activityQueryModel = new ActivityQueryModel();
+			activityQueryModel.setTitleLK(activityReportQueryModel.getActivityName());
+			activityQueryModel.setStartTimeGTE(activityReportQueryModel.getActivityTime());
+			activityQueryModel.setAddress(activityReportQueryModel.getActivityAddress());
+			activityList= activityMapper.findAll(activityQueryModel);
+			if(activityList==null||activityList.isEmpty()){
+				flag=false;
+			}
+		}
+		List<User> userList = new ArrayList<User>();
+		if(null!=activityReportQueryModel.getUserName()||null!=activityReportQueryModel.getUserLevel()||null!=activityReportQueryModel.getUserPhone() ) {
+			UserQueryModel userQueryModel = new UserQueryModel();
+			if ("V0".equals(activityReportQueryModel.getUserLevel())) {
+				userQueryModel.setUserRankEQ(User.UserRank.V0);
+			} else if ("V1".equals(activityReportQueryModel.getUserLevel())) {
+				userQueryModel.setUserRankEQ(User.UserRank.V1);
+			} else if ("V2".equals(activityReportQueryModel.getUserLevel())) {
+				userQueryModel.setUserRankEQ(User.UserRank.V2);
+			} else if ("V3".equals(activityReportQueryModel.getUserLevel())) {
+				userQueryModel.setUserRankEQ(User.UserRank.V3);
+			} else if ("V4".equals(activityReportQueryModel.getUserLevel())) {
+				userQueryModel.setUserRankEQ(User.UserRank.V4);
+			}
+			userQueryModel.setNicknameLK(activityReportQueryModel.getUserName());
+			userQueryModel.setPhoneEQ(activityReportQueryModel.getUserPhone());
+			userList= userMapper.findAll(userQueryModel);
+			if(userList==null||userList.isEmpty()){
+				flag=false;
+			}
+		}
+		if (flag) {
+				activityReportQueryModel.setActivityIdIN(activityList.stream().map(v -> v.getId()).toArray(Long[]::new));
+				activityReportQueryModel.setUserIdIN(userList.stream().map(v -> v.getId()).toArray(Long[]::new));
+				activityReportQueryModel.setOrderBy("id");
+				activityReportQueryModel.setDirection(Direction.ASC);
+				ActivitySignInQueryModel activitySignInQueryModel = new ActivitySignInQueryModel(); //构建查询参数
+				activitySignInQueryModel.setActivityIdIN((activityReportQueryModel.getActivityIdIN() == null || activityReportQueryModel.getActivityIdIN().length == 0) ? null : activityReportQueryModel.getActivityIdIN());
+				activitySignInQueryModel.setUserIdIN((activityReportQueryModel.getUserIdIN() == null || activityReportQueryModel.getUserIdIN().length == 0) ? null : activityReportQueryModel.getUserIdIN());
+				activitySignInQueryModel.setPageNumber(activityReportQueryModel.getPageNumber());
+				activitySignInQueryModel.setPageSize(activityReportQueryModel.getPageSize());
+				activitySignInQueryModel.setOrderBy(activityReportQueryModel.getOrderBy());
+				activitySignInQueryModel.setDirection(activityReportQueryModel.getDirection());
+				activitySignInQueryModel.setOrderBy(activityReportQueryModel.getOrderBy());
+				activitySignInQueryModel.setDirection(activityReportQueryModel.getDirection());
+				dataMap.put("signNum", activitySignInMapper.count(activitySignInQueryModel));
+				int activityApplyStatusOld = activityReportQueryModel.getActivityApplyStatus();//讲原始查询状态暂存下来
+				if (activityApplyStatusOld == 2) {//已签到的去签到查询
+					List<ActivitySignIn> activitySignInsList = activitySignInMapper.findAll(activitySignInQueryModel);
+					for (ActivitySignIn activitySignIn : activitySignInsList) {
+						ActivityApply activityApply = new ActivityApply();
+						activityApply.setId(activitySignIn.getId());
+						activityApply.setActivityId(activitySignIn.getActivityId());
+						activityApply.setUserId(activitySignIn.getUserId());
+						data.add(activityApply);
+					}
+
+				} else {
+					data = activityApplyMapper.findAllByReport(activityReportQueryModel);//查询数据
+				}
+				activityReportQueryModel.setActivityApplyStatus(0);
+				dataMap.put("notPayNum", activityApplyMapper.queryCountReport(activityReportQueryModel));//统计未支付 数据
+				activityReportQueryModel.setActivityApplyStatus(1);
+				dataMap.put("payNum", activityApplyMapper.queryCountReport(activityReportQueryModel));//统计已支付的
+				if (activityApplyStatusOld==0){
+					 total =(Long) dataMap.get("notPayNum");
+				}else if(activityApplyStatusOld==1){
+					total =(Long) dataMap.get("payNum");
+				}else if(activityApplyStatusOld==2){
+					total =(Long) dataMap.get("signNum");
+				}
+		}
+		Page<ActivityApply> page = new Page<>();
+		page.setPageNumber(activityReportQueryModel.getPageNumber());
+		page.setPageSize(activityReportQueryModel.getPageSize());
+		page.setData(data);
+		page.setTotal(total);
+		dataMap.put("page",page);
+		return dataMap;
 	}
 
 }
