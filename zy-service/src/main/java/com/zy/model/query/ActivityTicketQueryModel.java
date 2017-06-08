@@ -18,8 +18,6 @@ public class ActivityTicketQueryModel implements Serializable {
 
 	private Long id;
 
-	private Long buyerId;
-
 	private Long[] teamApplyIdIN;
 
 	private Long teamApplyId;
