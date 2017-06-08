@@ -57,6 +57,12 @@ public class ActivityApplyComponent {
 			activityApplyAdminVo.setPayerUser(VoHelper.buildUserAdminSimpleVo(payerUser));
 		}
 
+		Long inviterId = activityApply.getInviterId();
+		if(inviterId != null){
+			User inviter = cacheComponent.getUser(inviterId);
+			activityApplyAdminVo.setInviter(VoHelper.buildUserAdminSimpleVo(inviter));
+		}
+
 		activityApplyAdminVo.setAmountLabel(GcUtils.formatCurreny(activityApply.getAmount()));
 		Activity activity = activityService.findOne(activityApply.getActivityId());
 		if (activity != null) {

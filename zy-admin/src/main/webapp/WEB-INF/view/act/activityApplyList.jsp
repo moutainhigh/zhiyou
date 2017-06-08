@@ -58,6 +58,14 @@
 		        }
 	        },
 	        {
+		        data: '',
+		        title: '邀请人',
+		        orderable: false,
+		        render: function(data, type, full) {
+                    return formatUser(full.inviter);
+		        }
+	        },
+	        {
 		        data: 'amountLabel',
 		        title: '活动报名费',
 		        orderable: false
@@ -110,11 +118,11 @@
               </div>
 
               <div class="form-group">
-                <input type="text" name="payerPhoneEQ" class="form-control" placeholder="待付人手机号"/>
+                <input type="text" name="payerPhoneEQ" class="form-control" placeholder="代付人手机号"/>
               </div>
 
               <div class="form-group">
-                <input type="text" name="payerNicknameLK" class="form-control" placeholder="待付人昵称"/>
+                <input type="text" name="payerNicknameLK" class="form-control" placeholder="代付人昵称"/>
               </div>
 
 

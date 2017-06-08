@@ -41,7 +41,7 @@
 	        {
 		        data: '',
 		        title: '活动开始时间',
-		        orderable: false,
+                orderable: false,
             render: function(data, type, full) {
               return full.activityTeamApply.activity.startTimeLabel;
             }
@@ -65,7 +65,7 @@
 	        {
 		        data: '',
 		        title: '购票时间',
-		        orderable: false,
+                orderable: false,
             render: function(data, type, full) {
               return full.activityTeamApply.paidTime;
             }
@@ -103,14 +103,13 @@
           {
             data: 'isUsed',
             title: '状态',
-	          orderable: false,
-	          render: function(data, type, full) {
-		          if (data == 0) {
-		          	return '<label class="label label-info">未使用</label>';
+            render: function(data, type, full) {
+              if (data == 0) {
+                return '<label class="label label-info">未使用</label>';
               } else {
-			          return '<label class="label label-success">已使用</label>';
+                  return '<label class="label label-success">已使用</label>';
               }
-	          }
+            }
           },
             {
                 data: 'id',
