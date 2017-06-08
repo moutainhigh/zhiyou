@@ -2,6 +2,8 @@ package com.zy.mapper;
 
 
 import java.util.List;
+
+import com.zy.model.query.ActivityReportQueryModel;
 import org.apache.ibatis.annotations.Param;
 
 import com.zy.entity.act.ActivitySignIn;
@@ -25,5 +27,6 @@ public interface ActivitySignInMapper {
 	long count(ActivitySignInQueryModel activitySignInQueryModel);
 
 	ActivitySignIn findByActivityIdAndUserId(@Param("activityId") Long activityId, @Param("userId") Long userId);
+
 
 }

@@ -2,6 +2,8 @@ package com.zy.mapper;
 
 
 import java.util.List;
+
+import com.zy.model.query.ActivityReportQueryModel;
 import org.apache.ibatis.annotations.Param;
 
 import com.zy.entity.act.ActivityApply;
@@ -29,4 +31,8 @@ public interface ActivityApplyMapper {
 	Long queryCount(Long activityId);
 
 	Long queryNoPayCount(Long activityId);
+
+	List<ActivityApply> findAllByReport(ActivityReportQueryModel activityApplyQueryModel);
+
+	long queryCountReport(ActivityReportQueryModel activityReportQueryModel);
 }

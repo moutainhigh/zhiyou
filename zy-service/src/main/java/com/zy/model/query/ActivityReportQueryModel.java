@@ -1,50 +1,50 @@
 package com.zy.model.query;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.io.Serializable;
-
+import com.zy.entity.act.Activity;
+import com.zy.entity.act.ActivityApply;
+import com.zy.entity.usr.User;
 import io.gd.generator.api.query.Direction;
+import lombok.*;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ActivityQueryModel implements Serializable {
+public class ActivityReportQueryModel implements Serializable {
 
-	private Long[] idIN;
+	private String activityName;//活动名称
 
-	private String titleLK;
+	private Date activityTime;//活动时间
 
-	private Long areaIdEQ;
+	private String activityAddress;//活动地址
 
-	private Long[] areaIdIN;
+	private String userName; //客户名称
 
-	private Date applyDeadlineGTE;
+	private String userPhone;//客户电话号码
 
-	private Date applyDeadlineLT;
+	private String userLevel;//客户jibie
 
-	private Date startTimeGTE;
+	private String  initFalg; //是否初始或页面
 
-	private Date startTimeLT;
+	private String payType; //付款类型
 
-	private Boolean isReleasedEQ;
+	private Long[] activityIdIN;//活动集合
 
-	private String address;
+	private Long[] userIdIN;//用户集合
 
+	private int activityApplyStatus;//报名状态
+
+	//分页所需制字段
 	private Integer pageNumber;
 
 	private Integer pageSize;
-
-	private Integer level;
 
 	private String orderBy;
 
@@ -94,25 +94,17 @@ public class ActivityQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
-		fieldNames.add("image");
+		fieldNames.add("activityId");
 		fieldNames.add("amount");
-		fieldNames.add("address");
-		fieldNames.add("appliedCount");
-		fieldNames.add("latitude");
-		fieldNames.add("title");
-		fieldNames.add("version");
-		fieldNames.add("signedInCount");
-		fieldNames.add("areaId");
-		fieldNames.add("viewedCount");
-		fieldNames.add("applyDeadline");
-		fieldNames.add("startTime");
+		fieldNames.add("isCancelled");
+		fieldNames.add("appliedTime");
+		fieldNames.add("inviterId");
+		fieldNames.add("outerSn");
 		fieldNames.add("id");
-		fieldNames.add("detail");
-		fieldNames.add("endTime");
-		fieldNames.add("isReleased");
-		fieldNames.add("longitude");
-		fieldNames.add("collectedCount");
-		fieldNames.add("level");
+		fieldNames.add("activityApplyStatus");
+		fieldNames.add("payerUserId");
+		fieldNames.add("userId");
+		fieldNames.add("isSmsSent");
 	}
 
 }
