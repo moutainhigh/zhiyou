@@ -1,6 +1,7 @@
 package com.zy.component;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,17 +37,19 @@ public class UserInfoComponent {
         BeanUtils.copyProperties(userInfo, userInfoVo);
 
         String idCardNumber = userInfo.getIdCardNumber();
-        userInfoVo.setIdCardNumberLabel(StringUtils.overlay(idCardNumber, "***********", 6, idCardNumber.length()));
+        if (StringUtils.isNotBlank(idCardNumber)) {
+            userInfoVo.setIdCardNumberLabel(StringUtils.overlay(idCardNumber, "***********", 6, idCardNumber.length()));
+        }
 
         String image1 = userInfo.getImage1();
+        if (StringUtils.isNotBlank(image1)) {
+            userInfoVo.setImage1Thumbnail(StringUtils.isBlank(image1) ? null : GcUtils.getThumbnail(image1, 240, 150));
+        }
         String image2 = userInfo.getImage2();
-
-        userInfoVo.setImage1Thumbnail(StringUtils.isBlank(image1) ? null : GcUtils.getThumbnail(image1, 240, 150));
-        userInfoVo.setImage2Thumbnail(StringUtils.isBlank(image2) ? null : GcUtils.getThumbnail(image2, 240, 150));
-
+        if (StringUtils.isNotBlank(image2)) {
+            userInfoVo.setImage2Thumbnail(StringUtils.isBlank(image2) ? null : GcUtils.getThumbnail(image2, 240, 150));
+        }
         logger.error( "user info  " + userInfo );
-
-
 
         Long areaId = userInfo.getAreaId();
         if (areaId != null) {
@@ -80,7 +83,10 @@ public class UserInfoComponent {
             userInfoVo.setTagNames(tagNames);
         }
 
-        userInfoVo.setBirthdayLabel(GcUtils.formatDate(userInfo.getBirthday(), "yyyy-MM-dd"));
+        Date birthday = userInfo.getBirthday();
+        if (birthday != null) {
+            userInfoVo.setBirthdayLabel(GcUtils.formatDate(birthday, "yyyy-MM-dd"));
+        }
 
         return userInfoVo;
     }

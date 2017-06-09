@@ -39,7 +39,7 @@
           },
           {
             data: 'v4UserNickname',
-            title: '直属上级',
+            title: '直属推荐人',
             orderable: false
           }
           <c:forEach items='${timeLabels}' var='timeLabel' varStatus='varStatus'>

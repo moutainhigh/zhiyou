@@ -8,11 +8,14 @@ import com.zy.component.UsrComponent;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
+import com.zy.entity.usr.UserInfo;
 import com.zy.extend.Producer;
 import com.zy.mapper.AccountMapper;
+import com.zy.mapper.UserInfoMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.dto.AgentRegisterDto;
@@ -47,6 +50,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
     @Autowired
     private UsrComponent usrComponent;
@@ -109,6 +115,8 @@ public class UserServiceImpl implements UserService {
         String phone = agentRegisterDto.getPhone();
         String unionId = agentRegisterDto.getUnionId();
         Long parentId = agentRegisterDto.getParentId();
+        String realname = agentRegisterDto.getRealname();
+        validate(realname, NOT_BLANK, "realname is blank");
 
         String avatar = agentRegisterDto.getAvatar();
         String nickname = agentRegisterDto.getNickname();
@@ -163,6 +171,7 @@ public class UserServiceImpl implements UserService {
             validate(user);
             userMapper.insert(user);
             insertAccount(user); // 初始化
+            insertUserInfo(user.getId(), realname);
         }
 
         if (parentId != null) {
@@ -266,6 +275,20 @@ public class UserServiceImpl implements UserService {
 			accountMapper.insert(account);
 		}*/
 
+    }
+
+    private void insertUserInfo(Long userId, String realname) {
+        validate(realname, NOT_BLANK, "realname is blank");
+        UserInfo userInfo = userInfoMapper.findByUserId(userId);
+        if (userInfo != null) {
+            return;
+        }
+        userInfo = new UserInfo();
+        userInfo.setUserId(userId);
+        userInfo.setRealname(realname);
+        userInfo.setConfirmStatus(ConfirmStatus.待审核);
+        userInfo.setAppliedTime(new Date());
+        userInfoMapper.insert(userInfo);
     }
 
     @Override
@@ -431,7 +454,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyIsDirector(@NotNull Long id, boolean isDirector) {
         User user = findAndValidate(id);
-        if(user.getIsDirector()) {
+        if(user.getIsDirector() != null) {
             return ;
         }
         User userForMerge = new User();
@@ -443,7 +466,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyIsShareholder(@NotNull Long id, boolean isShareholder) {
         User user = findAndValidate(id);
-        if(user.getIsShareholder()) {
+        if(user.getIsShareholder() != null) {
             return ;
         }
         User userForMerge = new User();
@@ -462,22 +485,22 @@ public class UserServiceImpl implements UserService {
 		User user = findAndValidate(id);
         User parent = findAndValidate(parentId);
         if (parent.getUserType() != UserType.代理) {
-            throw new BizException(BizCode.ERROR, "上级用户类型必须是代理");
+            throw new BizException(BizCode.ERROR, "推荐人用户类型必须是代理");
         }
         if (parent.getUserRank() == UserRank.V0) {
-            throw new BizException(BizCode.ERROR, "上级用户必须成为代理");
+            throw new BizException(BizCode.ERROR, "推荐人用户必须成为代理");
         }
         Long originParentId = parentId;
         Long plainParentId = user.getParentId();
         if (plainParentId != null && !originParentId.equals(plainParentId)) {
-        	throw new BizException(BizCode.ERROR, "用户[id=" + id + "]已经存在上级, 不能设置上级");
+        	throw new BizException(BizCode.ERROR, "用户[id=" + id + "]已经存在推荐人, 不能设置推荐人");
         }
         if (parentId.equals(plainParentId)) {
             return; // 幂等操作
         }
 
         if (id.equals(parentId)) {
-            throw new BizException(BizCode.ERROR, "上级不能是自己");
+            throw new BizException(BizCode.ERROR, "推荐人不能是自己");
         }
 
         while (parentId != null) {
@@ -496,7 +519,7 @@ public class UserServiceImpl implements UserService {
         User user = findAndValidate(id);
         User parent = findAndValidate(parentId);
         if (parent.getUserType() != UserType.代理) {
-            throw new BizException(BizCode.ERROR, "上级用户类型必须是代理");
+            throw new BizException(BizCode.ERROR, "推荐人用户类型必须是代理");
         }
         /*
         if (parent.getUserRank() == UserRank.V0) {
@@ -510,7 +533,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (id.equals(parentId)) {
-            throw new BizException(BizCode.ERROR, "上级不能是自己");
+            throw new BizException(BizCode.ERROR, "推荐人不能是自己");
         }
 
         while (parentId != null) {
@@ -523,7 +546,7 @@ public class UserServiceImpl implements UserService {
 
         user.setParentId(originParentId);
         userMapper.update(user);
-        usrComponent.recordUserLog(id, operatorId, "设置上级", "从" + plainParentId + "设置为" + originParentId + ", 备注" + remark);
+        usrComponent.recordUserLog(id, operatorId, "设置推荐人", "从" + plainParentId + "设置为" + originParentId + ", 备注" + remark);
     }
 
 

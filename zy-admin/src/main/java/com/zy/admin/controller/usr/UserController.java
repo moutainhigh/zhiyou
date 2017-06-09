@@ -289,7 +289,7 @@ public class UserController {
 		}
 		try {
 			userService.modifyParentIdAdmin(userId, parentUser.getId(), getPrincipalUserId(), remark);
-			return ResultBuilder.ok("修改上级成功");
+			return ResultBuilder.ok("修改推荐人成功");
 		} catch (Exception e) {
 			return ResultBuilder.error(e.getMessage());
 		}

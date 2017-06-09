@@ -154,7 +154,7 @@ public class User implements Serializable {
 	private Long inviterId;
 
 	@Query({Predicate.EQ, Predicate.IN, Predicate.NL})
-	@Field(label = "上级id")
+	@Field(label = "推荐人id")
 	@AssociationView(name = "parent", associationGroup = VO_ADMIN_SIMPLE, groups = {VO_ADMIN, VO_ADMIN_FULL})
 	@View(groups = {VO_REPORT})
 	private Long parentId;

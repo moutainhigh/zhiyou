@@ -424,7 +424,7 @@
           },
           {
             data: '',
-            title: '上级',
+            title: '推荐人',
             orderable: false,
             render: function (data, type, full) {
               return formatUser(full.parent);

@@ -414,7 +414,8 @@
           </li>
         </shiro:hasAnyPermissions>
         
-        <shiro:hasAnyPermissions name="userTreeReport:view,teamReport:view,userUpgradeReport:view,orderReport:view,financeReport:view,orderQuantity:view">
+        <shiro:hasAnyPermissions name="userTreeReport:view,teamReport:view,userUpgradeReport:view,orderReport:view,financeReport:view,orderQuantity:view
+                                      ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view">
           <li>
             <a href="javascript:;">
               <i class="icon-grid"></i>
@@ -479,6 +480,21 @@
               <shiro:hasPermission name="activitySummaryReport:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/report/activitySummary"><i class="icon-bar-chart"></i> 活动汇总报表<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="v4Activity:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/v4Activity"><i class="icon-bar-chart"></i> 特级服务商团队活跃度报表-总经理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="teamOrderMonth:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/teamOrderMonth"><i class="icon-bar-chart"></i> 团队月销量及环比-总经理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="teamOrderDaily:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/teamOrderDaily"><i class="icon-bar-chart"></i> 团队月销量及环比-总经理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>

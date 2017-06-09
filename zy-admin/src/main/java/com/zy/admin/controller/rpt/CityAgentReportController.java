@@ -6,6 +6,7 @@ import com.zy.component.LocalCacheComponent;
 import com.zy.entity.mal.Order;
 import com.zy.entity.sys.Area;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserUpgrade;
 import com.zy.model.CityAgentReportVo;
 import com.zy.model.FinanceReportVo;
 import com.zy.vo.UserReportVo;
@@ -20,10 +21,7 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -47,17 +45,27 @@ public class CityAgentReportController {
 		List<Area> areas = localCacheComponent.getAreas();
 		List<UserReportVo> users = localCacheComponent.getuserReportVos();
 		List<Order> orders = localCacheComponent.getOrders();
+		List<UserUpgrade> userUpgrades = localCacheComponent.getUserUpgrades();
+
+		LocalDate now = LocalDate.now();
+		Date beginDateTime = getBeginDateTime(now.getYear(), now.getMonthValue());
+		users = users.stream().filter(v -> v.getRegisterTime().before(beginDateTime)).collect(Collectors.toList());
+		List<Long> userIds = Arrays.asList(users.stream().map(v -> v.getId()).toArray(Long[]::new));
+		userUpgrades = userUpgrades.stream().filter(v -> v.getUpgradedTime().before(beginDateTime)).collect(Collectors.toList());
+
+		Map<Long, Boolean> userUpgradeMap = userUpgrades.stream()
+				.filter(v -> v.getToUserRank() == User.UserRank.V4 || v.getToUserRank() == User.UserRank.V3)
+				.filter(v -> userIds.contains(v.getUserId()))
+				.collect(Collectors.toMap(v -> v.getUserId(), v -> true, (existingValue, newValue) -> existingValue));
 
 		List<Area> filterAreas = areas.stream()
 				.filter(v -> v.getAreaType() == Area.AreaType.省)
 				.collect(Collectors.toList());
-		Map<Long, String> areaMap = filterAreas.stream().collect(Collectors.toMap(Area::getId, v -> v.getName()));
 		List<UserReportVo> filterUsers = users.stream()
-				.filter(v -> v.getUserRank() == User.UserRank.V4 || v.getUserRank() == User.UserRank.V3)
+				.filter(v -> userUpgradeMap.get(v.getV4UserId()) != null)
 				.filter(v -> v.getProvinceId() != null)
 				.collect(Collectors.toList());
 
-		LocalDate now = LocalDate.now();
 		LocalDate lastDate = now.minusMonths(1).with(TemporalAdjusters.lastDayOfMonth());
 		LocalDateTime localDateTime = LocalDateTime.of(lastDate, LocalTime.parse("23:59:59"));
 		Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
@@ -127,5 +135,13 @@ public class CityAgentReportController {
 		instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 		Date begin = Date.from(instant);
 		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(begin));
+	}
+
+	private Date getBeginDateTime(Integer year, Integer month) {
+		LocalDate now = LocalDate.of(year, month, 1);
+		LocalDate localDate = now.with(TemporalAdjusters.firstDayOfMonth());
+		LocalDateTime localDateTime = LocalDateTime.of(localDate, LocalTime.parse("00:00:00"));
+		Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+		return Date.from(instant);
 	}
 }

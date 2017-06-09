@@ -25,6 +25,9 @@ public class AgentRegisterDto implements Serializable {
 	private String nickname;
 
 	@NotBlank
+	private String realname;
+
+	@NotBlank
 	@Pattern(regexp = "^1[\\d]{10}$")
 	private String phone;
 

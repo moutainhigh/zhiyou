@@ -5,7 +5,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-    <dubbo:consumer cluster="failfast" timeout="10000"/>
+    <dubbo:consumer cluster="failfast" timeout="100000"/>
 
     <dubbo:reference id="adminService" interface="com.zy.service.AdminService" protocol="dubbo"/>
     <dubbo:reference id="areaService" interface="com.zy.service.AreaService" protocol="dubbo"/>
