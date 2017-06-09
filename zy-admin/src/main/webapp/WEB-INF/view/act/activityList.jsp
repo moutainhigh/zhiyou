@@ -132,15 +132,15 @@
                 orderable: false,
               render: function (data, type, full) {
                 if(full.level == 4){
-                  return "特级服务商";
+                  return "特级服务商及以上";
                 }else if(full.level == 3){
-                  return "省级服务商";
+                  return "省级服务商及以上";
                 }else if(full.level == 2){
-                  return "市级服务商";
+                  return "市级服务商及以上";
                 }else if(full.level == 1){
-                  return "VIP";
+                  return "VIP及以上";
                 }else if(full.level == 0){
-                  return "无权限";
+                  return "无限制";
                 }
               }
 	        },
@@ -178,11 +178,11 @@
             data: 'viewedCount',
             title: '浏览数'
           },
-          {
-            data: 'appliedCount',
-            title: '报名数',
-            width: '60px'
-          },
+//          {
+//            data: 'appliedCount',
+//            title: '报名数',
+//            width: '60px'
+//          },
           {
             data: 'maxCount',
             title: '活动限制人数',
@@ -196,6 +196,7 @@
             data: 'collectedCount',
             title: '关注数'
           },
+
           {
             data: 'isReleased',
             title: '是否上架',
