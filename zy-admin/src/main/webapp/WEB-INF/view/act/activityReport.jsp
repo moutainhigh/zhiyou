@@ -25,11 +25,6 @@
                         title: '序号',
                         orderable: false,
                         render: function(data, type, full) {
-                            if(type=="display"){
-                                $("#notPayNum").text(full.notPayNum);
-                                $("#payNum").text(full.payNum);
-                                $("#signNum").text(full.signNum);
-                            }
                             return full.id;
                         }
                     },
@@ -83,19 +78,21 @@
 <script>
     function changeInitGlagDate(){
         $("#initFalg").val("1");
-        $("#notPayNum").text("");
-        $("#payNum").text("");
-        $("#signNum").text("");
         $("#notPayNum").text(0);
         $("#payNum").text(0);
         $("#signNum").text(0);
+            $.post("${ctx}/activity/sum", $('#searchForm').serialize(), function(result) {//统计数据
+                if(result.code == 0) {
+                    var data = result.data;
+                    $("#notPayNum").text(data.notPayNum);
+                    $("#payNum").text(data.payNum);
+                    $("#signNum").text(data.signNum);
+                }
+            });
     }
     function addDate(flag) {
         $("#activityApplyStatus").val(flag);
         var flag =  $("#initFalg").val();
-        $("#notPayNum").text("0");
-        $("#payNum").text("0");
-        $("#signNum").text("0");
         if(0!=flag){
             $("#filter-submit").click();
         }

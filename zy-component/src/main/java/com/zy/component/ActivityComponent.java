@@ -270,6 +270,7 @@ public class ActivityComponent {
 		ActivitySummaryReportVo activitySummaryReportVo = new ActivitySummaryReportVo();
 		activitySummaryReportVo.setNonPayment(number + count);
 		activitySummaryReportVo.setPayment(a + b);
+		activitySummaryReportVo.setAppliedCount(b);
 		BeanUtils.copyProperties(activity, activitySummaryReportVo, "detail");
 		Long areaId = activity.getAreaId();
 		if(!isNull(areaId)) {
@@ -304,7 +305,7 @@ public class ActivityComponent {
 		Long b = activityApplyService.queryCount(activity.getId());
 
 		ActivitySummaryExReportVo activitySummaryExReportVo = new ActivitySummaryExReportVo();
-
+		activitySummaryExReportVo.setAppliedCount(b);
 		if (activity.getSignedInCount() != null && activity.getAppliedCount() != null && activity.getAppliedCount() != 0){
 			BigDecimal bg = new BigDecimal(Double.valueOf(activity.getSignedInCount()) / Double.valueOf(activity.getAppliedCount()) * 100).setScale(2, RoundingMode.UP);
 			activitySummaryExReportVo.setAttendanceRate(bg);
