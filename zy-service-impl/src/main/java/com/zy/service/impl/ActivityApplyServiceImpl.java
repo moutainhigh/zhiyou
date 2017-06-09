@@ -314,4 +314,9 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 		return dataMap;
 	}
 
+	@Override
+	public Long queryAppliedCount(Long activityId) {
+		return activityApplyMapper.queryAppliedCount(activityId);
+	}
+
 }

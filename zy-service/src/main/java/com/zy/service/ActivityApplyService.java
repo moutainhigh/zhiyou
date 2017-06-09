@@ -33,4 +33,6 @@ public interface ActivityApplyService {
 	Long queryNoPayCount(Long id);
 
 	Map<String,Object> findPageByReport(ActivityReportQueryModel activityReportQueryModel);
+
+	Long queryAppliedCount(Long id);
 }
