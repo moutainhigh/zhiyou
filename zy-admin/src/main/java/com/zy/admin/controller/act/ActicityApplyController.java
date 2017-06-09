@@ -57,7 +57,7 @@ public class ActicityApplyController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public Grid<ActivityApplyAdminVo> list(ActivityApplyQueryModel activityApplyQueryModel, String activityTitleLK
-										, String nicknameLK, String phoneEQ, String payerNicknameLK, String payerPhoneEQ) {
+										, String nicknameLK, String phoneEQ, String payerNicknameLK, String payerPhoneEQ , String inviterNicknameLK, String inviterPhoneEQ) {
 		if (StringUtils.isNotBlank(activityTitleLK)) {
 			Page<Activity> page = activityService.findPage(ActivityQueryModel.builder().titleLK(activityTitleLK).build());
 			List<Activity> data = page.getData();
@@ -81,6 +81,14 @@ public class ActicityApplyController {
 				return new Grid<ActivityApplyAdminVo>(PageBuilder.empty(activityApplyQueryModel.getPageSize(), activityApplyQueryModel.getPageNumber()));
 			}
 			activityApplyQueryModel.setPayerUserIdIN(all.stream().map(v -> v.getId()).toArray(Long[]::new));
+		}
+
+		if (StringUtils.isNotBlank(inviterNicknameLK) || StringUtils.isNotBlank(inviterPhoneEQ)) {
+			List<User> all = userService.findAll(UserQueryModel.builder().nicknameLK(inviterNicknameLK).phoneEQ(inviterPhoneEQ).build());
+			if (all.isEmpty()) {
+				return new Grid<ActivityApplyAdminVo>(PageBuilder.empty(activityApplyQueryModel.getPageSize(), activityApplyQueryModel.getPageNumber()));
+			}
+			activityApplyQueryModel.setInviterIdIN(all.stream().map(v -> v.getId()).toArray(Long[]::new));
 		}
 
 		Page<ActivityApply> page = activityApplyService.findPage(activityApplyQueryModel);
