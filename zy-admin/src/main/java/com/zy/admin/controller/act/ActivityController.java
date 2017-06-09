@@ -8,6 +8,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.common.util.ExcelUtils;
@@ -197,13 +198,23 @@ public class ActivityController {
 			Map<String,Object> dataMap = activityApplyService.findPageByReport(activityReportQueryModel);
 			Page<ActivityApply> page =(Page<ActivityApply>)dataMap.get("page");
 			voPage = PageBuilder.copyAndConvert(page, v-> activityReportComponent.buildReportVo(v, false,dataMap));
-
 		}catch (Exception e){
 			e.printStackTrace();
 		}
 		return new Grid<>(voPage);
 	}
 
+	/**
+	 * 统计活动数据（分类统计）
+	 * @param activityReportQueryModel
+	 * @return
+     */
+	@RequestMapping(value = "/sum", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> sum(ActivityReportQueryModel activityReportQueryModel) {
+		Map<String,Object> dataMap = activityApplyService.findPageByReport(activityReportQueryModel);
+		return ResultBuilder.result(dataMap);
+	}
 
 
 	@RequiresPermissions("activityReport:export")

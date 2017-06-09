@@ -20,7 +20,7 @@ import com.zy.entity.mal.Order.OrderType;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderQueryModel implements Serializable {
+public class  OrderQueryModel implements Serializable {
 
 	private String snLK;
 
