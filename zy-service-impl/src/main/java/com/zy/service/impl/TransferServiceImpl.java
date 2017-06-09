@@ -82,8 +82,12 @@ public class TransferServiceImpl implements TransferService {
 
 		User fromUser = userMapper.findOne(fromUserId);
 		validate(fromUser, NOT_NULL, "from user id " + fromUserId + " not found");
+		validate(fromUser.getUserRank(), v -> v == User.UserRank.V4, "只有特级才能转账");
+
 		User toUser = userMapper.findOne(toUserId);
 		validate(toUser, NOT_NULL, "to user id " + toUserId + " not found");
+		validate(toUser.getUserRank(), v -> v == User.UserRank.V4, "被转账人只能是特级");
+
 		if (fromUserId.equals(toUserId)) {
 			throw new ValidationException("转账人与被转账人相同");
 		}

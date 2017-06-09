@@ -1,5 +1,6 @@
 package com.zy.mobile.controller.ucenter;
 
+import com.zy.common.exception.BizException;
 import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
@@ -11,6 +12,7 @@ import com.zy.component.TransferComponent;
 import com.zy.component.WithdrawComponent;
 import com.zy.entity.fnc.*;
 import com.zy.entity.usr.User;
+import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.*;
@@ -261,6 +263,12 @@ public class UcenterAccountController {
 
 	@RequestMapping(value = "/transfer/create", method = RequestMethod.GET)
 	public String transferGet(Principal principal , Model model) {
+
+		User user = userService.findOne(principal.getUserId());
+		if (user.getUserRank() != User.UserRank.V4) {
+			throw new BizException(BizCode.ERROR, "只有特技服务商才可以转账");
+		}
+
 		Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.现金);
 		model.addAttribute("amount", account.getAmount());
 		return "ucenter/account/transfer";
@@ -270,9 +278,18 @@ public class UcenterAccountController {
 	public String transferPost(Principal principal, @RequestParam String toUserPhone, @RequestParam BigDecimal amount
 			, String remark, RedirectAttributes redirectAttributes) {
 
+		User user = userService.findOne(principal.getUserId());
+		if (user.getUserRank() != User.UserRank.V4) {
+			throw new BizException(BizCode.ERROR, "只有特技服务商才可以转账");
+		}
+
 		User toUser = userService.findByPhone(toUserPhone);
 		if (toUser == null) {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("用户手机号不存在"));
+			return "redirect:/u/account/transfer/create";
+		}
+		if (toUser.getUserRank() != User.UserRank.V4) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("转入用户必须是特级服务商"));
 			return "redirect:/u/account/transfer/create";
 		}
 

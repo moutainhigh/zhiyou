@@ -227,72 +227,72 @@ public class ReportServiceImpl implements ReportService {
 
 		if (config.isOld(productId)) { // 旧产品, 按原有规则结算
 
-			String title = "数据奖,检测报告编号" + id;
-			Long topId = null; // 找到第一个特级代理
-			Long transferUserId = null; // transfer 给到的代理
-
-			Long parentId = user.getParentId();
-			if (parentId == null && userRank != User.UserRank.V4) {
-				//logger.error("上级为空暂不结算,编号" + id);
-				return; // 上级为空 暂不做结算
-			}
-
-			boolean hasTransfer = true;
-			if (userRank == User.UserRank.V4) {
-				/* 如果自己是特级代理 */
-				topId = userId;
-				hasTransfer = false;
-			} else {
-
-				boolean hitTransferUserId = false;
-				if (userRank != User.UserRank.V0) {
-					hitTransferUserId = true;
-					transferUserId = userId;
-				}
-
-
-				/* 否则递归查找 */
-				int times = 0;
-				while (parentId != null) {
-					if (times > 1000) {
-						throw new BizException(BizCode.ERROR, "循环引用");
-					}
-					User parent = userMapper.findOne(parentId);
-					if (parent.getUserType() != User.UserType.代理) {
-						logger.error("代理父级数据错误,parentId=" + parentId);
-						throw new BizException(BizCode.ERROR, "代理父级数据错误"); // 防御性校验
-					}
-					if (!hitTransferUserId && parent.getUserRank() != User.UserRank.V0) {
-						hitTransferUserId = true;
-						transferUserId = parentId;
-					}
-
-					if (parent.getUserRank() == User.UserRank.V4) {
-						topId = parentId;
-						break;
-					}
-					parentId = parent.getParentId();
-					times ++;
-				}
-
-				if (topId == null) {
-					//logger.error("特级代理为空暂不结算,编号" + id);
-					return; // 特级代理 暂不做结算
-				}
-
-				if (hitTransferUserId && transferUserId.equals(topId)) {
-					hasTransfer = false;
-				}
-			}
-
-
-
-			/* 全额给一个人 */
-			fncComponent.createProfit(topId, ProfitType.数据奖, id, title, CurrencyType.现金, new BigDecimal("18.00"), new Date(), null); // TODO	 写死
-
-			if (hasTransfer) {
-				fncComponent.createTransfer(topId, transferUserId, Transfer.TransferType.数据奖, id, title, CurrencyType.现金, new BigDecimal("15.00"), new Date());
-			}
+//			String title = "数据奖,检测报告编号" + id;
+//			Long topId = null; // 找到第一个特级代理
+//			Long transferUserId = null; // transfer 给到的代理
+//
+//			Long parentId = user.getParentId();
+//			if (parentId == null && userRank != User.UserRank.V4) {
+//				//logger.error("上级为空暂不结算,编号" + id);
+//				return; // 上级为空 暂不做结算
+//			}
+//
+//			boolean hasTransfer = true;
+//			if (userRank == User.UserRank.V4) {
+//				/* 如果自己是特级代理 */
+//				topId = userId;
+//				hasTransfer = false;
+//			} else {
+//
+//				boolean hitTransferUserId = false;
+//				if (userRank != User.UserRank.V0) {
+//					hitTransferUserId = true;
+//					transferUserId = userId;
+//				}
+//
+//
+//				/* 否则递归查找 */
+//				int times = 0;
+//				while (parentId != null) {
+//					if (times > 1000) {
+//						throw new BizException(BizCode.ERROR, "循环引用");
+//					}
+//					User parent = userMapper.findOne(parentId);
+//					if (parent.getUserType() != User.UserType.代理) {
+//						logger.error("代理父级数据错误,parentId=" + parentId);
+//						throw new BizException(BizCode.ERROR, "代理父级数据错误"); // 防御性校验
+//					}
+//					if (!hitTransferUserId && parent.getUserRank() != User.UserRank.V0) {
+//						hitTransferUserId = true;
+//						transferUserId = parentId;
+//					}
+//
+//					if (parent.getUserRank() == User.UserRank.V4) {
+//						topId = parentId;
+//						break;
+//					}
+//					parentId = parent.getParentId();
+//					times ++;
+//				}
+//
+//				if (topId == null) {
+//					//logger.error("特级代理为空暂不结算,编号" + id);
+//					return; // 特级代理 暂不做结算
+//				}
+//
+//				if (hitTransferUserId && transferUserId.equals(topId)) {
+//					hasTransfer = false;
+//				}
+//			}
+//
+//
+//
+//			/* 全额给一个人 */
+//			fncComponent.createProfit(topId, ProfitType.数据奖, id, title, CurrencyType.现金, new BigDecimal("18.00"), new Date(), null); // TODO	 写死
+//
+//			if (hasTransfer) {
+//				fncComponent.createTransfer(topId, transferUserId, Transfer.TransferType.数据奖, id, title, CurrencyType.现金, new BigDecimal("15.00"), new Date());
+//			}
 
 			report.setIsSettledUp(true);
 			if (reportMapper.update(report) == 0) {

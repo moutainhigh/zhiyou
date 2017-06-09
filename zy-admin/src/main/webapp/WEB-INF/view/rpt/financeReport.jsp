@@ -164,6 +164,11 @@
             orderable: false
           },
           {
+            data: 'withdrawAmount',
+            title: 'U币提现',
+            orderable: false
+          },
+          {
             data: 'profitAmount',
             title: 'U币收益',
             orderable: false
@@ -178,16 +183,16 @@
             title: '积分收益',
             orderable: false
           },
-	        {
-		        data: 'withdrawPointAmount',
-		        title: '积分提现',
-		        orderable: false
-	        },
           {
             data: 'differencePointAmount',
             title: '差价收益',
             orderable: false
           },
+	        {
+		        data: 'withdrawPointAmount',
+		        title: '积分提现',
+		        orderable: false
+	        },
 	        {
 		        data: 'paymentPointAmount',
 		        title: '积分支付',
