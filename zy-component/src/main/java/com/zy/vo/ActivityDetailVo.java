@@ -30,6 +30,10 @@ public class ActivityDetailVo implements Serializable {
 	private Long appliedCount;
 	@Field(label = "浏览数")
 	private Long viewedCount;
+	@Field(label = "活动票务类型")
+	private Integer ticketType;
+	@Field(label = "自购权限")
+	private Integer level;
 
 	/* 扩展 */
 	@Field(label = "活动状态")

@@ -38,9 +38,13 @@ public class ActivityQueryModel implements Serializable {
 
 	private Boolean isReleasedEQ;
 
+	private String address;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
+
+	private Integer level;
 
 	private String orderBy;
 
@@ -108,6 +112,7 @@ public class ActivityQueryModel implements Serializable {
 		fieldNames.add("isReleased");
 		fieldNames.add("longitude");
 		fieldNames.add("collectedCount");
+		fieldNames.add("level");
 	}
 
 }

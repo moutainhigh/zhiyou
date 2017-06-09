@@ -141,6 +141,11 @@ public class UcenterIndexController {
         return "ucenter/user/userAvatar";
     }
 
+    @RequestMapping(value = "/order/ticket", method = RequestMethod.GET)
+    public String tikcet( Model model) {
+        return "ucenter/order/ticket";
+    }
+
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     @ResponseBody
     public Result<String> avatar(MultipartFile file, RedirectAttributes redirectAttributes, Principal principal, HttpServletResponse response, HttpSession session) throws IOException {

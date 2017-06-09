@@ -74,7 +74,6 @@
 			  });
 		  }
 	  })
-
 	  $('#addApplyCancel' + id).bind('click', function () {
 		  layer.close(index);
 	  })
@@ -107,15 +106,48 @@
           },
           {
             data: 'title',
-            title: '标题'
+            title: '标题',
+            orderable: false
           },
 	        {
 		        data: 'amountLabel',
-		        title: '报名费'
+		        title: '报名费',
+                orderable: false
+	        },
+	        {
+		        data: 'ticketType',
+                orderable: false,
+		        title: '活动票务类型',
+              render: function (data, type, full) {
+                if(full.ticketType == 1){
+                  return "自购";
+                }else if(full.ticketType == 2){
+                  return "团购";
+                }
+              }
+	        },
+	        {
+		        data: 'level',
+		        title: '自购权限',
+                orderable: false,
+              render: function (data, type, full) {
+                if(full.level == 4){
+                  return "特级服务商及以上";
+                }else if(full.level == 3){
+                  return "省级服务商及以上";
+                }else if(full.level == 2){
+                  return "市级服务商及以上";
+                }else if(full.level == 1){
+                  return "VIP及以上";
+                }else if(full.level == 0){
+                  return "无限制";
+                }
+              }
 	        },
           {
             data: 'areaId',
             title: '详细地址',
+            orderable: false,
             render: function (data, type, full) {
               return '<p>' + full.province + '-' + full.city + '-' + full.district + '</p>'
                 + '<p class="small">' + full.address + '</p>';
@@ -146,10 +178,15 @@
             data: 'viewedCount',
             title: '浏览数'
           },
+//          {
+//            data: 'appliedCount',
+//            title: '报名数',
+//            width: '60px'
+//          },
           {
-            data: 'appliedCount',
-            title: '报名数',
-            width: '60px'
+            data: 'maxCount',
+            title: '活动限制人数',
+            orderable: false
           },
           {
             data: 'signedInCount',
@@ -162,6 +199,7 @@
           {
             data: 'isReleased',
             title: '是否上架',
+            orderable: false,
             render: function (data, type, full) {
               if (data) {
                 return '<i class="fa fa-check font-green"></i> <span class="badge badge-success"> 已上架 </span>';

@@ -51,7 +51,9 @@
 	<dubbo:service ref="activityServiceImpl" interface="com.zy.service.ActivityService"/>
 	<dubbo:service ref="activityCollectServiceImpl" interface="com.zy.service.ActivityCollectService"/>
 	<dubbo:service ref="activityApplyServiceImpl" interface="com.zy.service.ActivityApplyService"/>
+	<dubbo:service ref="activityTeamApplyServiceImpl" interface="com.zy.service.ActivityTeamApplyService"/>
 	<dubbo:service ref="activitySignInServiceImpl" interface="com.zy.service.ActivitySignInService"/>
+	<dubbo:service ref="activityTicketServiceImpl" interface="com.zy.service.ActivityTicketService"/>
 	<dubbo:service ref="bankServiceImpl" interface="com.zy.service.BankService"/>
 	<dubbo:service ref="transferServiceImpl" interface="com.zy.service.TransferService"/>
 	<dubbo:service ref="userUpgradeServiceImpl" interface="com.zy.service.UserUpgradeService"/>

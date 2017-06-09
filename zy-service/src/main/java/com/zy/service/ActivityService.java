@@ -4,6 +4,8 @@ import com.zy.common.model.query.Page;
 import com.zy.entity.act.Activity;
 import com.zy.model.query.ActivityQueryModel;
 
+import java.util.List;
+
 public interface ActivityService {
 
 	Activity create(Activity activity);
@@ -27,4 +29,8 @@ public interface ActivityService {
 	Activity findOne(Long activityId);
 
 	Page<Activity> findPage(ActivityQueryModel activityQueryModel);
+
+	Page<Activity> findReport(ActivityQueryModel activityQueryModel);
+
+	List<Activity> findExReport(ActivityQueryModel activityQueryModel);
 }

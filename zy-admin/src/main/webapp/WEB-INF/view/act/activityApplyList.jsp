@@ -43,9 +43,9 @@
 	          orderable: false,
 	          render: function(data, type, full) {
 		          if (data == '已报名') {
-		          	return '<label class="label label-info">已报名</label>';
+		          	return '<label class="label label-info">未支付</label>';
               } else {
-			          return '<label class="label label-success">已支付</label>';
+			          return '<label class="label label-success">已报名</label>';
               }
 	          }
           },
@@ -55,6 +55,14 @@
 		        orderable: false,
 		        render: function(data, type, full) {
 			        return formatUser(full.payerUser);
+		        }
+	        },
+	        {
+		        data: '',
+		        title: '邀请人',
+		        orderable: false,
+		        render: function(data, type, full) {
+                    return formatUser(full.inviter);
 		        }
 	        },
 	        {
@@ -110,19 +118,27 @@
               </div>
 
               <div class="form-group">
-                <input type="text" name="payerPhoneEQ" class="form-control" placeholder="待付人手机号"/>
+                <input type="text" name="payerPhoneEQ" class="form-control" placeholder="代付人手机号"/>
               </div>
 
               <div class="form-group">
-                <input type="text" name="payerNicknameLK" class="form-control" placeholder="待付人昵称"/>
+                <input type="text" name="payerNicknameLK" class="form-control" placeholder="代付人昵称"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="inviterPhoneEQ" class="form-control" placeholder="邀请人手机号"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="inviterNicknameLK" class="form-control" placeholder="邀请人昵称"/>
               </div>
 
 
               <div class="form-group">
                 <select name="activityApplyStatusEQ" class="form-control">
                   <option value="">-- 报名状态 --</option>
-                  <option value="0">已报名</option>
-                  <option value="1">已付费</option>
+                  <option value="0">未支付</option>
+                  <option value="1">已报名</option>
                 </select>
               </div>
 

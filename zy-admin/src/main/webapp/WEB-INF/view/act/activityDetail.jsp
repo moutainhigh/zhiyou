@@ -84,6 +84,32 @@
               </div>
             </div>
 
+            <div class="form-group">
+              <label class="control-label col-md-3">活动限制人数<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <p class="form-control-static">${activity.maxCount}</p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-md-3">活动票务类型<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <c:if test="${activity.ticketType == 1}"><p class="form-control-static">自购</p></c:if>
+                <c:if test="${activity.ticketType == 2}"><p class="form-control-static">团购</p></c:if>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-md-3">自购权限<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <c:if test="${activity.level == 4}"><p class="form-control-static">特级服务商</p></c:if>
+                <c:if test="${activity.level == 3}"><p class="form-control-static">省级服务商</p></c:if>
+                <c:if test="${activity.level == 2}"><p class="form-control-static">市级服务商</p></c:if>
+                <c:if test="${activity.level == 1}"><p class="form-control-static">VIP</p></c:if>
+                <c:if test="${activity.level == 0}"><p class="form-control-static">无权限</p></c:if>
+              </div>
+            </div>
+
             <ul class="nav nav-tabs">
               <li class="active">
                 <a href="#detail" data-toggle="tab" aria-expanded="true"> 详情 </a>

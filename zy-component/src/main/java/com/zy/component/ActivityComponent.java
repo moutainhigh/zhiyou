@@ -8,16 +8,15 @@ import com.zy.model.dto.AreaDto;
 import com.zy.model.query.ActivityApplyQueryModel;
 import com.zy.model.query.ActivityCollectQueryModel;
 import com.zy.model.query.ActivitySignInQueryModel;
-import com.zy.service.ActivityApplyService;
-import com.zy.service.ActivityCollectService;
-import com.zy.service.ActivitySignInService;
-import com.zy.service.UserService;
+import com.zy.service.*;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +39,9 @@ public class ActivityComponent {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private ActivityTeamApplyService activityTeamApplyService;
 
 	@Autowired
 	private ActivitySignInService activitySignInService;
@@ -253,5 +255,84 @@ public class ActivityComponent {
 			}
 		}
 		return "活动已结束";
+	}
+
+	public ActivitySummaryReportVo buildActivitySummaryReportVo(Activity activity) {
+		String fullFmt = "yyyy-MM-dd HH:mm:ss";
+		String shortFmt = "M月d日 HH:mm";
+
+		Long number = activityTeamApplyService.findNoPayNumber(activity.getId());
+		Long count = activityApplyService.queryNoPayCount(activity.getId());
+
+		Long a = activityTeamApplyService.findPayNumber(activity.getId());
+		Long b = activityApplyService.queryCount(activity.getId());
+
+		ActivitySummaryReportVo activitySummaryReportVo = new ActivitySummaryReportVo();
+		activitySummaryReportVo.setNonPayment(number + count);
+		activitySummaryReportVo.setPayment(a + b);
+		activitySummaryReportVo.setAppliedCount(b);
+		BeanUtils.copyProperties(activity, activitySummaryReportVo, "detail");
+		Long areaId = activity.getAreaId();
+		if(!isNull(areaId)) {
+			AreaDto areaDto = cacheComponent.getAreaDto(activity.getAreaId());
+			if (areaDto != null) {
+				activitySummaryReportVo.setProvince(areaDto.getProvince());
+				activitySummaryReportVo.setCity(areaDto.getCity());
+				activitySummaryReportVo.setDistrict(areaDto.getDistrict());
+			}
+		}
+		Date startTime = activity.getStartTime();
+		Date endTime = activity.getEndTime();
+		if(startTime != null) {
+			activitySummaryReportVo.setStartTimeLabel(formatDate(startTime, fullFmt));
+			activitySummaryReportVo.setStartTimeFormatted(formatDate(startTime, fullFmt));
+		}
+		if(endTime != null) {
+			activitySummaryReportVo.setEndTimeLabel(formatDate(endTime, fullFmt));
+			activitySummaryReportVo.setEndTimeFormatted(formatDate(endTime, fullFmt));
+		}
+		return activitySummaryReportVo;
+	}
+
+	public ActivitySummaryExReportVo buildActivitySummaryExReportVo(Activity activity) {
+		String fullFmt = "yyyy-MM-dd HH:mm:ss";
+		String shortFmt = "M月d日 HH:mm";
+
+		Long number = activityTeamApplyService.findNoPayNumber(activity.getId());
+		Long count = activityApplyService.queryNoPayCount(activity.getId());
+
+		Long a = activityTeamApplyService.findPayNumber(activity.getId());
+		Long b = activityApplyService.queryCount(activity.getId());
+
+		ActivitySummaryExReportVo activitySummaryExReportVo = new ActivitySummaryExReportVo();
+		activitySummaryExReportVo.setAppliedCount(b);
+		if (activity.getSignedInCount() != null && activity.getAppliedCount() != null && activity.getAppliedCount() != 0){
+			BigDecimal bg = new BigDecimal(Double.valueOf(activity.getSignedInCount()) / Double.valueOf(activity.getAppliedCount()) * 100).setScale(2, RoundingMode.UP);
+			activitySummaryExReportVo.setAttendanceRate(bg);
+		}else {
+			activitySummaryExReportVo.setAttendanceRate(BigDecimal.valueOf(0.00));
+		}
+
+		activitySummaryExReportVo.setNonPayment(number + count);
+		activitySummaryExReportVo.setPayment(a + b);
+		BeanUtils.copyProperties(activity, activitySummaryExReportVo, "detail");
+		Long areaId = activity.getAreaId();
+		if(!isNull(areaId)) {
+			AreaDto areaDto = cacheComponent.getAreaDto(activity.getAreaId());
+			if (areaDto != null) {
+				activitySummaryExReportVo.setProvince(areaDto.getProvince());
+				activitySummaryExReportVo.setCity(areaDto.getCity());
+				activitySummaryExReportVo.setDistrict(areaDto.getDistrict());
+			}
+		}
+		Date startTime = activity.getStartTime();
+		Date endTime = activity.getEndTime();
+		if(startTime != null) {
+			activitySummaryExReportVo.setStartTimeLabel(formatDate(startTime, fullFmt));
+		}
+		if(endTime != null) {
+			activitySummaryExReportVo.setEndTimeLabel(formatDate(endTime, fullFmt));
+		}
+		return activitySummaryExReportVo;
 	}
 }

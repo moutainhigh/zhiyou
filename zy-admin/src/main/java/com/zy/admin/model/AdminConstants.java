@@ -54,6 +54,10 @@ public class AdminConstants {
 			sub = new LinkedHashMap<>();
 			sub.put("activity:view", "活动查看");
 			sub.put("activity:edit", "活动编辑");
+			sub.put("activityReport:view", "活动报表查看");
+			sub.put("activityReport:export", "活动报表导出");
+			sub.put("activityTicket:view", "活动票务管理(查看)");
+			sub.put("activityTicket:edit", "活动票务管理(编辑)");
 			sub.put("activityApply:view", "活动报名管理(查看)");
 			sub.put("activityApply:edit", "活动报名管理(新增)");
 			sub.put("policy:view", "保险单管理(查看)");
@@ -125,6 +129,8 @@ public class AdminConstants {
 			sub.put("orderQuantity:export", "订单核算报表(导出)");
 			sub.put("cityAgent:view", "服务商活跃数量排行");
 			sub.put("profitMOM:view", "收入环比");
+			sub.put("activitySummaryReport:view", "活动汇总报表");
+			sub.put("activitySummaryReport:export", "活动汇总报表导出");
 			/*sub.put("financeReport:export", "财务导出");*/
 	 		SETTING_PERMISSION_MAP.put("报表管理", sub);
 		}

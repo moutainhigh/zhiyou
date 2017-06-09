@@ -246,9 +246,24 @@
                   <a href="javascript:;" data-href="${ctx}/activity"><i class="icon-social-dropbox"></i> 活动管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="activityReport:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/activity/activityReport"><i class="icon-bar-chart"></i> 活动报表管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="activityTicket:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/activityTeamApply/ticket"><i class="icon-tag"></i> 活动票务管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
               <shiro:hasPermission name="activityApply:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/activityApply"><i class="icon-social-dropbox"></i> 活动报名管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="activityApply:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/activityTeamApply"><i class="icon-social-dropbox"></i> 活动团队报名管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="report:view">
@@ -459,6 +474,11 @@
               <shiro:hasPermission name="profitMOM:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/report/profitMOM"><i class="icon-bar-chart"></i> 收入环比<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="activitySummaryReport:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/activitySummary"><i class="icon-bar-chart"></i> 活动汇总报表<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>

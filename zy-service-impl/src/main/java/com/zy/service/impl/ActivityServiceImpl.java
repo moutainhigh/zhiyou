@@ -68,7 +68,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public void modify(@NotNull Activity activity) {
-		String[] fields = new String[] { "areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime", "title", "amount" };
+		String[] fields = new String[] { "areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime", "title", "amount" , "level" , "ticketType" , "maxCount" };
 		validate(activity, fields);
 		checkAndFindActivity(activity.getId());
 		checkArea(activity.getAreaId());
@@ -250,6 +250,27 @@ public class ActivityServiceImpl implements ActivityService {
 		page.setData(data);
 		page.setTotal(total);
 		return page;
+	}
+
+	@Override
+	public Page<Activity> findReport(ActivityQueryModel activityQueryModel) {
+		if (activityQueryModel.getPageNumber() == null)
+			activityQueryModel.setPageNumber(0);
+		if (activityQueryModel.getPageSize() == null)
+			activityQueryModel.setPageSize(20);
+		long total = activityMapper.count(activityQueryModel);
+		List<Activity> data = activityMapper.findReport(activityQueryModel);
+		Page<Activity> page = new Page<>();
+		page.setPageNumber(activityQueryModel.getPageNumber());
+		page.setPageSize(activityQueryModel.getPageSize());
+		page.setData(data);
+		page.setTotal(total);
+		return page;
+	}
+
+	@Override
+	public List<Activity> findExReport(ActivityQueryModel activityQueryModel) {
+		return activityMapper.findReport(activityQueryModel);
 	}
 
 	private void checkUser(Long userId) {
