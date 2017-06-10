@@ -98,6 +98,11 @@ public class ProfitServiceImpl implements ProfitService {
 	}
 
 	@Override
+	public List<BigDecimal> queryRevenue(@NotNull ProfitQueryModel profitQueryModel) {
+		return profitMapper.queryRevenue(profitQueryModel);
+	}
+
+	@Override
 	public void cancel(@NotNull Long id) {
 		Profit profit = profitMapper.findOne(id);
 		validate(profit, NOT_NULL, "profit id " + id + " not found");

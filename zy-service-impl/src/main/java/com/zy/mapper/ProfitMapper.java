@@ -1,6 +1,7 @@
 package com.zy.mapper;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -24,4 +25,5 @@ public interface ProfitMapper {
 
 	long count(ProfitQueryModel profitQueryModel);
 
+	List<BigDecimal> queryRevenue(ProfitQueryModel profitQueryModel);
 }
