@@ -50,7 +50,7 @@
   </aside>
   
   <div class="user-account flex">
-    <a class="flex-1 bd-r" href="${ctx}/u/account">
+    <a class="flex-1 bd-r" href="${ctx}/u/account/countIncomeDataByUser">
       <i class="icon icon-money icon-2x"></i>
       <em>积分钱包</em>
       <span>¥${money}</span>

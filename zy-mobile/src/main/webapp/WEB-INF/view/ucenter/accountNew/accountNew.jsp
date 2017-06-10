@@ -310,6 +310,7 @@
 </article>
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">
+  var array=${map.PL};
   $(function(){
     $(".percentNum").css("width",$(".all img").css("width"));
   })
@@ -355,7 +356,7 @@
       {
         name:'月收益',
         type:'line',
-        data:[9, 4, 8, 13, 10, 18, 10,12,11,9,7,10],
+        data:array,
         markPoint: {
           data: [
             {type: 'max', name: '1'},
@@ -370,7 +371,7 @@
 </script>
 
 <script>
-  var array=[10,12,15,18,5,8,6,10];
+  var array=${map.pie};
   var myChartSec = echarts.init(document.getElementById('last'));
   optionSec = {
     title : {
