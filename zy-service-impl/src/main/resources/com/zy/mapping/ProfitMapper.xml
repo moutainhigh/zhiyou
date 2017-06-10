@@ -200,4 +200,16 @@
 		</where>
 	</select>
 
+	<!-- 查询每月奖项金额-->
+	<select id="queryRevenue" resultType="_long" parameterType="long">
+		SELECT SUM(amount)
+		FROM fnc_profit a
+		WHERE a.profit_type = {profitTypeEQ} AND a.user_id = {userIdEQ}
+		AND a.profit_status = 2
+		AND DATE_FORMAT(a.created_time, '%y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL dayofyear(now()) - 1 DAY)
+		AND DATE_FORMAT(a.created_time, '%y-%m-%d') &lt;=
+			DATE_SUB(DATE_SUB(DATE_FORMAT(now(), '%y-%m-%d'), INTERVAL extract(DAY FROM now()) DAY), INTERVAL 0 MONTH)
+		GROUP BY DATE_FORMAT(a.created_time, '%y-%m')
+		ORDER BY a.created_time ASC
+	</select>
 </mapper>

@@ -22,4 +22,6 @@ public interface ProfitService {
 	void cancel(Long id);
 	
 	Profit findOne(Long id);
+
+	List<BigDecimal> queryRevenue(ProfitQueryModel profitQueryModel);
 }
