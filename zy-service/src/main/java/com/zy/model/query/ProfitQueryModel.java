@@ -44,6 +44,8 @@ public class ProfitQueryModel implements Serializable {
 
 	private Long refIdEQ;
 
+	private Integer groupby;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;

@@ -8,6 +8,7 @@ import com.zy.model.query.ProfitQueryModel;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface ProfitService {
 
@@ -24,4 +25,6 @@ public interface ProfitService {
 	Profit findOne(Long id);
 
 	List<BigDecimal> queryRevenue(ProfitQueryModel profitQueryModel);
+
+	Map<String,Object> countIncomeDataByUser(Long userId, Map<String, Object> map);
 }

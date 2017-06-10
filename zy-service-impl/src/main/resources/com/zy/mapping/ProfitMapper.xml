@@ -200,6 +200,126 @@
 		</where>
 	</select>
 
+	<!--求和查询-->
+
+	<select id="sum" resultType="_long" parameterType="com.zy.model.query.ProfitQueryModel">
+		select sum(amount) sumAmount from `fnc_profit`
+		<where>
+			<if test="snEQ != null">
+				and sn = #{snEQ}
+			</if>
+			<if test="createdTimeLT != null">
+				and created_time &lt;= #{createdTimeLT}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and user_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+			<if test="grantedTimeLT != null">
+				and granted_time &lt; #{grantedTimeLT}
+			</if>
+			<if test="profitTypeEQ != null">
+				and profit_type = #{profitTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="refIdEQ != null">
+				and ref_id = #{refIdEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="profitTypeIN != null">
+				<if test="profitTypeIN.length != 0">
+					and profit_type in
+					<foreach collection="profitTypeIN" item="item" open="(" separator="," close=")">
+						#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+					</foreach>
+				</if>
+				<if test="profitTypeIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+			<if test="grantedTimeGTE != null">
+				and granted_time &gt;= #{grantedTimeGTE}
+			</if>
+			<if test="profitStatusEQ != null">
+				and profit_status = #{profitStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+		</where>
+	</select>
+
+	<resultMap id="sumProResultMap" type="com.zy.model.dto.ProfitSumDto">
+		<result column="profitTtype" property="profitType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="sumAmount" property="sumAmount"/>
+	</resultMap>
+
+	<select id="sumGroupBy" resultMap="sumProResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
+		select profit_type profitTtype ,sum(amount)　sumAmount from `fnc_profit`
+		<where>
+			<if test="snEQ != null">
+				and sn = #{snEQ}
+			</if>
+			<if test="createdTimeLT != null">
+				and created_time &lt;= #{createdTimeLT}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and user_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+			<if test="grantedTimeLT != null">
+				and granted_time &lt; #{grantedTimeLT}
+			</if>
+			<if test="profitTypeEQ != null">
+				and profit_type = #{profitTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="refIdEQ != null">
+				and ref_id = #{refIdEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="createdTimeGTE != null">
+				and created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="profitTypeIN != null">
+				<if test="profitTypeIN.length != 0">
+					and profit_type in
+					<foreach collection="profitTypeIN" item="item" open="(" separator="," close=")">
+						#{item,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+					</foreach>
+				</if>
+				<if test="profitTypeIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+			<if test="grantedTimeGTE != null">
+				and granted_time &gt;= #{grantedTimeGTE}
+			</if>
+			<if test="profitStatusEQ != null">
+				and profit_status = #{profitStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="groupby!=null">
+				GROUP BY profit_type;
+			</if>
+		</where>
+	</select>
+
 	<!-- 查询每月奖项金额-->
 	<select id="queryRevenue" resultType="_long" parameterType="long">
 		SELECT SUM(amount)

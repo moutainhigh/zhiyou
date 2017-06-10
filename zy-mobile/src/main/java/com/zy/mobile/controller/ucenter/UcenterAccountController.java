@@ -327,4 +327,38 @@ public class UcenterAccountController {
 		return ResultBuilder.result(map);
 	}
 
+	/**
+	 * 统计用户受益情况
+	 * @param principal
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/countIncomeDataByUser", method = RequestMethod.GET)
+	public  String countIncomeDataByUser(Principal principal, Model model) {
+		Long userId = principal.getUserId();
+		Map<String, Object> map = new HashMap<>();
+		List<Account> accounts = accountService.findByUserId(userId);//统计u币 ，积分，股权
+		accounts.stream().forEach(v -> {
+			switch (v.getCurrencyType()) {
+				case 现金:
+					map.put("amount1", v.getAmount());
+					break;
+				case 积分:
+					map.put("amount2", v.getAmount());
+					break;
+				case 货币期权:
+					map.put("amount3", v.getAmount());
+					break;
+				case 货币股份:
+					map.put("amount4", v.getAmount());
+					break;
+				default:
+					break;
+			}
+		});
+		 Map<String ,Object> returnMap= profitService.countIncomeDataByUser(userId,map);
+		model.addAttribute("dataMap",returnMap);
+		return "ucenter/accountNew/accountNew";
+	}
+
 }
