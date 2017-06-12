@@ -16,6 +16,12 @@
 <title>活动</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/activity.css" rel="stylesheet" />
+  <link rel="stylesheet" href="${stccdn}/css/ucenter/index.css" />
+  <style>
+    .user-account {
+      margin-bottom: 20px;
+    }
+  </style>
 <script>
   $(function() {
     
@@ -30,6 +36,20 @@
 
   <article>
     <div class="list-group mb-15">
+      <div class="user-account flex">
+        <a class="flex-1 bd-r" href="${ctx}/u/activity/applyList">
+          <i class="list-icon icon icon-join"></i>
+          <em>报名的活动</em>
+        </a>
+        <a class="flex-1 bd-r" href="${ctx}/u/activity/collectList">
+          <i class="list-icon icon icon-heart"></i>
+          <em>关注的活动</em>
+        </a>
+        <a class="flex-1" href="${ctx}/u/activity/teamApplyList">
+          <i class="list-icon icon icon-heart"></i>
+          <em>团队报名的活动</em>
+        </a>
+      </div>
       <c:forEach items="${activities}" var="activity">
       <a class="list-item" href="${ctx}/activity/${activity.id}">
         <div class="activity">
