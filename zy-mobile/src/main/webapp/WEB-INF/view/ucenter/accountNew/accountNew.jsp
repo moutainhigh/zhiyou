@@ -169,17 +169,10 @@
   <div class="bgSum clearfloat">
       <p>上月收入：<span>¥<fmt:formatNumber type="number" value="${dataMap.BM}" pattern="0.00" maxFractionDigits="2"/></span></p>
       <p>当前累计：<span>¥<fmt:formatNumber type="number" value="${dataMap.TOT}" pattern="0.00" maxFractionDigits="2"/></span></p>
-      <p class="percent">上月环比：<span><fmt:formatNumber type="number" value="${dataMap.QoQ}" pattern="0.00" maxFractionDigits="2"/>%</span></p>
-      <p class="percent last">上月同比：<span><fmt:formatNumber type="number" value="${dataMap.YoY}" pattern="0.00" maxFractionDigits="2"/>%</span></p>
+      <p>上月环比：<span>¥<fmt:formatNumber type="number" value="${dataMap.QoQ}" pattern="0.00" maxFractionDigits="2"/>%</span></p>
+      <%--<p>上月同比：<span>¥<fmt:formatNumber type="number" value="${dataMap.YoY}" pattern="0.00" maxFractionDigits="2"/>%</span></p>--%>
   </div>
-  <%--<div class="bgSum clearfloat">--%>
-    <%--<p>上月收入：<span>¥${dataMap.BM}</span></p>--%>
-    <%--<p>当前累计：<span>¥${dataMap.TOT}</span></p>--%>
-    <%--<p>上月环比：<span>${dataMap.QoQ}%</span></p>--%>
-    <%--&lt;%&ndash;<p>上月同比：<span>${dataMap.YoY}%</span></p>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;<p class="percent">上月环比：<span>${dataMap.QoQ}%</span></p>&ndash;%&gt;--%>
-    <%--&lt;%&ndash;<p class="percent last">上月同比：<span>${dataMap.YoY}%</span></p>&ndash;%&gt;--%>
-  <%--</div>--%>
+
   <div id="echartFir"></div>
   <div id="last" style="width: 100%;height: 400px;padding: 10px;"></div>
 
