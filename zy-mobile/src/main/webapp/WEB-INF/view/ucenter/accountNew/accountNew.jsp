@@ -167,10 +167,10 @@
     </a>
   </nav>
   <div class="bgSum clearfloat">
-      <p>上月收入：<span>¥${dataMap.BM}</span></p>
-      <p>当前累计：<span>¥${dataMap.TOT}</span></p>
-      <p class="percent">上月环比：<span>${dataMap.QoQ}%</span></p>
-      <p class="percent last">上月同比：<span>${dataMap.YoY}%</span></p>
+      <p>上月收入：<span>¥<fmt:formatNumber type="number" value="${dataMap.BM}" pattern="0.00" maxFractionDigits="2"/></span></p>
+      <p>当前累计：<span>¥<fmt:formatNumber type="number" value="${dataMap.TOT}" pattern="0.00" maxFractionDigits="2"/></span></p>
+      <p class="percent">上月环比：<span><fmt:formatNumber type="number" value="${dataMap.QoQ}" pattern="0.00" maxFractionDigits="2"/>%</span></p>
+      <p class="percent last">上月同比：<span><fmt:formatNumber type="number" value="${dataMap.YoY}" pattern="0.00" maxFractionDigits="2"/>%</span></p>
   </div>
   <div id="echartFir"></div>
   <div id="last" style="width: 100%;height: 400px;padding: 10px;"></div>
@@ -184,8 +184,8 @@
                    <span>订单收益</span>
                  </div>
                <div class="fontImg clearfloat">
-                    <p><span>上月收益：</span>￥${dataMap.ord[0]}</p>
-                    <p><span>累计收益：</span>￥${dataMap.ord[1]}</p>
+                    <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ord[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+                    <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ord[1]}" pattern="0.00" maxFractionDigits="2"/></p>
                </div>
            </div>
            <a href="#" class="look">查看详情</a>
@@ -201,8 +201,8 @@
           <span>返利奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.red[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.red[1]}</p>
+          <p><span>上月收益：</span>￥</span>￥<fmt:formatNumber type="number" value="${dataMap.red[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.red[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="#" class="look">查看详情</a>
@@ -218,8 +218,8 @@
           <span>数据奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.dat[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.dat[1]}</p>
+          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.dat[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.dat[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="#" class="look">查看详情</a>
@@ -234,8 +234,8 @@
           <span>销量奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.sal[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.sal[1]}</p>
+          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sal[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sal[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="#" class="look">查看详情</a>
@@ -250,8 +250,8 @@
           <span>特级平级奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.ftl[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.ftl[1]}</p>
+          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ftl[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ftl[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="#" class="look">查看详情</a>
@@ -266,8 +266,8 @@
           <span>董事贡献奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.sen[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.sen[1]}</p>
+          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sen[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sen[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="#" class="look">查看详情</a>
@@ -282,8 +282,8 @@
           <span>平级推荐奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.ltl[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.ltl[1]}</p>
+          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ltl[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ltl[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="#" class="look">查看详情</a>
@@ -298,8 +298,8 @@
           <span>特级推荐奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.rec[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.rec[1]}</p>
+          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.rec[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.rec[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="${ctx}/u/profit/orderRevenue?type=2" class="look">查看详情</a>
