@@ -169,8 +169,10 @@
   <div class="bgSum clearfloat">
       <p>上月收入：<span>¥${dataMap.BM}</span></p>
       <p>当前累计：<span>¥${dataMap.TOT}</span></p>
-      <p class="percent">上月环比：<span>${dataMap.QoQ}%</span></p>
-      <p class="percent last">上月同比：<span>${dataMap.YoY}%</span></p>
+      <p>上月环比：<span>${dataMap.QoQ}%</span></p>
+      <%--<p>上月同比：<span>${dataMap.YoY}%</span></p>--%>
+      <%--<p class="percent">上月环比：<span>${dataMap.QoQ}%</span></p>--%>
+      <%--<p class="percent last">上月同比：<span>${dataMap.YoY}%</span></p>--%>
   </div>
   <div id="echartFir"></div>
   <div id="last" style="width: 100%;height: 400px;padding: 10px;"></div>
@@ -310,6 +312,17 @@
 <script type="text/javascript">
   var arrays="${dataMap.PL}";
   var array=arrays.split(",");
+  var arrayNew=[];
+  var arrayNewT=[];
+  for(var i=0;i<array.length;i++){
+    if(i%2==0){
+      arrayNew.push(array[i]);
+      arrayNewT.push('-');
+    }else {
+      arrayNew.push('-');
+      arrayNewT.push(array[i]);
+    }
+  }
   $(function(){
     $(".percentNum").css("width",$(".all img").css("width"));
   })
@@ -333,18 +346,20 @@
           show: true,
           type: ['pie', 'funnel']
         },
-
         saveAsImage : {show: true}
       }
     },
-    xAxis:  {
-      type: 'category',
-      splitLine: {
-        show: false
+      xAxis: {
+        type : 'category',
+        splitLine: {show:false},
+        data :  function (){
+          var list = [];
+          for (var i = 1; i <= 12; i++) {
+            list.push(i + '月');
+          }
+          return list;
+        }()
       },
-      boundaryGap: false,
-      data: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
-    },
     yAxis: {
       type: 'value',
       axisLabel: {
@@ -353,15 +368,28 @@
     },
     series: [
       {
-        name:'月收益',
-        type:'line',
-        data:array,
-        markPoint: {
-          data: [
-            {type: 'max', name: '1'},
-            {type: 'min', name: '2'},
-          ]
-        }
+        name: '',
+        type: 'bar',
+        stack: '总量',
+        label: {
+          normal: {
+            show: true,
+            position: 'top'
+          }
+        },
+        data: arrayNew
+      },
+      {
+        name: '',
+        type: 'bar',
+        stack: '总量',
+        label: {
+          normal: {
+            show: true,
+            position: 'top'
+          }
+        },
+        data: arrayNewT
       }
     ]
   };
