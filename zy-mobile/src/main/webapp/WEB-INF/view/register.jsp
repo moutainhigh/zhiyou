@@ -49,7 +49,7 @@
           type : 'POST',
           data : {
             phone : phone,
-            captcha : captcha
+            //captcha : captcha
           },
           success : function(result) {
             if (result.code != 0) {
