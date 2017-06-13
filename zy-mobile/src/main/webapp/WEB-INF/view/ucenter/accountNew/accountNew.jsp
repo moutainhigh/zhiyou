@@ -403,27 +403,21 @@
     calculable : true,
     series : [
       {
-        name:'',
+        name:'累计收益',
         type:'pie',
-        radius : [20, 110],
-        center : ['25%', '50%'],
-        roseType : 'radius',
-        label: {
-          normal: {
-            show: false
-          },
-          emphasis: {
-            show: true
-          }
-        },
-        lableLine: {
-          normal: {
-            show: false
-          },
-          emphasis: {
-            show: true
-          }
-        }
+        radius : [30, 110],
+        center : ['50%', '50%'],
+        roseType : 'area',
+        data:[
+          {value:array[0], name:'特级平级奖'},
+          {value:array[1], name:'订单收益'},
+          {value:array[2], name:'返利奖'},
+          {value:array[3], name:'数据奖'},
+          {value:array[4], name:'董事贡献奖'},
+          {value:array[5], name:'特级推荐奖'},
+          {value:array[6], name:'平级推荐奖'},
+          {value:array[7], name:'销量奖'}
+        ]
       },
       {
         name:'累计收益',
@@ -431,6 +425,15 @@
         radius : [30, 110],
         center : ['50%', '50%'],
         roseType : 'area',
+        label: {
+          normal: {
+            position: 'inside',
+            formatter: '{d}%',
+            textStyle: {
+              color: '#fff'
+            }
+          }
+        },
         data:[
           {value:array[0], name:'特级平级奖'},
           {value:array[1], name:'订单收益'},
