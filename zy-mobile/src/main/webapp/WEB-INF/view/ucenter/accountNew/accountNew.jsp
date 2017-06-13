@@ -304,7 +304,7 @@
           <p><span>累计收益：</span>￥${dataMap.rec[1]}</p>
         </div>
       </div>
-      <a href="${ctx}/u/profit/type=2" class="look">查看详情</a>
+      <a href="${ctx}/u/profit/orderRevenue?type=2" class="look">查看详情</a>
     </div>
   </div>
 </article>
