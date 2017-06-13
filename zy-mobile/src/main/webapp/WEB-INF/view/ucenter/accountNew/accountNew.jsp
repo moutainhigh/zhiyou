@@ -388,18 +388,18 @@
       y : 'bottom',
       data:['特级平级奖','订单收益','返利奖','数据奖','董事贡献奖','特级推荐奖','平级推荐奖','销量奖']
     },
-    toolbox: {
-      show : true,
-      feature : {
-        mark : {show: false},
-        dataView : {show: true, readOnly: false},
-        magicType : {
-          show: true,
-          type: ['pie', 'funnel']
-        },
-        saveAsImage : {show: true}
-      }
-    },
+//    toolbox: {
+//      show : true,
+//      feature : {
+//        mark : {show: false},
+//        dataView : {show: true, readOnly: false},
+//        magicType : {
+//          show: true,
+//          type: ['pie', 'funnel']
+//        },
+//        saveAsImage : {show: true}
+//      }
+//    },
     calculable : true,
     series : [
       {
