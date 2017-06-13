@@ -698,4 +698,17 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * 处理排名
+     * @param userId
+     * @param flag 潘多是否是详细页面
+     * @return
+     */
+    @Override
+    public Map<String, Object> disposeRank(Long userId, boolean flag) {
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+
+        return null;
+    }
+
 }

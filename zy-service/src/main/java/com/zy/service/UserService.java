@@ -73,4 +73,6 @@ public interface UserService {
 	Map<String,Object> countNewMemTotal(Long userId, boolean b);
 
 	String findRealName(Long userId);
+
+	Map<String,Object> disposeRank(Long userId, boolean b);
 }

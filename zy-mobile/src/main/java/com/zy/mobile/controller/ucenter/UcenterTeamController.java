@@ -122,7 +122,7 @@ public class UcenterTeamController {
 		dataMap.put("MTot", DateUtil.longarryToString(newMem,false));
 		dataMap.put("pro",DateUtil.countPro((long[])map.get("MTot"),(long)map.get("total")));
         //处理排名
-		//Map<String,Object>rankMap = userService.disposeRank();
+		Map<String,Object>rankMap = userService.disposeRank(userId,false);
 		return null;
 	}
 
