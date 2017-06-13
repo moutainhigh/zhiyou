@@ -2,6 +2,7 @@ package com.zy.common.util;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -72,16 +73,17 @@ public class DateUtil {
      */
     public static String arryToString(double[]arry,boolean flag){
         StringBuffer str = new StringBuffer("");
+        DecimalFormat df = new DecimalFormat("###0.00");
         if (arry==null&&arry.length==0){
             return str.toString();
         }
         if (!flag) {
             for (int i = 0; i < arry.length; i++) {
-                str.append(arry[i]).append(",");
+                str.append(df.format(arry[i])).append(",");
             }
         }else{
             for (int i = arry.length-1; i >=0; i--) {
-                str.append(arry[i]).append(",");
+                str.append(df.format(arry[i])).append(",");
             }
         }
         if (str.length() > 0) {
@@ -132,7 +134,8 @@ public class DateUtil {
     public static void  main(String []age){
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthBegin(new Date(),-1,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
-        System.out.print(DateUtil.getMoth(new Date()));
+        System.out.println(DateUtil.getMoth(new Date()));
+        System.out.println(DateUtil.formatDouble(10123456789.0));
     }
 
 

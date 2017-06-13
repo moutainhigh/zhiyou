@@ -701,7 +701,7 @@ public class UserServiceImpl implements UserService {
     /**
      * 处理排名
      * @param userId
-     * @param flag 潘多是否是详细页面
+     * @param flag 判断是否是详细页面
      * @return
      */
     @Override
