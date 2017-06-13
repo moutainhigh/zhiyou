@@ -3,6 +3,8 @@ package com.zy.service.impl;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
+import com.zy.common.model.tree.TreeHelper;
+import com.zy.common.model.tree.TreeNode;
 import com.zy.component.FncComponent;
 import com.zy.component.UsrComponent;
 import com.zy.entity.fnc.Account;
@@ -30,9 +32,8 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_BLANK;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
@@ -417,6 +418,7 @@ public class UserServiceImpl implements UserService {
         user.setRootName(rootName);
         userMapper.update(user);
         usrComponent.recordUserLog(id, operatorId, label + "子系统", remark);
+
     }
 
     @Override
@@ -436,6 +438,35 @@ public class UserServiceImpl implements UserService {
         user.setBossName(bossName);
         userMapper.update(user);
         usrComponent.recordUserLog(id, operatorId, label + "总经理", null);
+
+        for(Long userId : findChildren(id)) {
+            User merge = new User();
+            merge.setId(userId);
+            merge.setBossId(id);
+            userMapper.merge(merge, "bossId");
+        }
+    }
+
+    private List<Long> findChildren(Long id) {
+        List<Long> userIds = new ArrayList<>();
+
+        List<User> v4Children = userMapper.findAll(UserQueryModel.builder().parentIdEQ(id).userRankEQ(UserRank.V4).build());
+        if (!v4Children.isEmpty()) {
+            Long[] v4UserIds = v4Children.stream().map(v -> v.getId()).toArray(Long[]::new);
+            List<User> v3User = userMapper.findAll(UserQueryModel.builder().parentIdIN(v4UserIds).userRankEQ(UserRank.V3).build());
+            Long[] v3UserIds = v3User.stream().map(v -> v.getId()).toArray(Long[]::new);
+
+            userIds.addAll(Arrays.asList(v4UserIds));
+            userIds.addAll(Arrays.asList(v3UserIds));
+
+            while(v3UserIds != null && v3UserIds.length > 0) {
+                List<User> all = userMapper.findAll(UserQueryModel.builder().parentIdIN(v3UserIds).userRankEQ(UserRank.V3).build());
+                v3UserIds = all.stream().map(v -> v.getId()).toArray(Long[]::new);
+                userIds.addAll(Arrays.asList(v3UserIds));
+            }
+
+        }
+        return userIds;
     }
 
     @Override
