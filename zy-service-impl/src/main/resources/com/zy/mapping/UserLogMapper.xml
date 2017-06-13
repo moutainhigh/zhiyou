@@ -64,7 +64,7 @@
 		order by id desc
 	</select>
 
-	<select id="count" resultType="_long">
+	<!--<select id="count" resultType="_long">
 		select count(*) FROM `usr_user_log` where remark lik #{remark} and operated_Time &gt;=#{operatedTimeBegin} and operated_Time &lt;=#{operatedTimeEnd}
 	</select>
 
@@ -129,5 +129,5 @@
 			and operated_Time &lt;=#{operatedTimeEnd}
 		</if>
 		GROUP BY u.parent_id )a,
-	</select>
+	</select>-->
 </mapper>
