@@ -310,7 +310,8 @@
 </article>
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">
-  var array=${map.PL};
+  var arrays="${dataMap.PL}";
+  var array=arrays.split(",");
   $(function(){
     $(".percentNum").css("width",$(".all img").css("width"));
   })
@@ -371,7 +372,8 @@
 </script>
 
 <script>
-  var array=${map.pie};
+  var piedata ="${dataMap.pie}";
+  var array=piedata.split(",");
   var myChartSec = echarts.init(document.getElementById('last'));
   optionSec = {
     title : {

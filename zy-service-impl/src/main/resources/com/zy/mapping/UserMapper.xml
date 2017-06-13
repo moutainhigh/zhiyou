@@ -304,4 +304,12 @@
 		select * from `usr_user` where code = #{code}
 	</select>
 
+	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
+		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="countNum" property="countNum"/>
+	</resultMap>
+	<select id="countByUserId" resultType="countResultMap" parameterType="long">
+		select user_rank userRankEQ,COUNT(*) countNum FROM `usr_user` where user_rank!=0 AND parent_id = #{parentId} GROUP BY user_rank
+	</select>
+
 </mapper>

@@ -2,6 +2,8 @@ package com.zy.mapper;
 
 
 import java.util.List;
+
+import com.zy.model.dto.UserTeamCountDto;
 import org.apache.ibatis.annotations.Param;
 
 import com.zy.entity.usr.User;
@@ -29,5 +31,7 @@ public interface UserMapper {
 	User findByOpenId(String openId);
 
 	User findByCode(String code);
+
+	List<UserTeamCountDto> countByUserId(long userId);
 
 }
