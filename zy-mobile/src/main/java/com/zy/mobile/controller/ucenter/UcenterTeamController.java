@@ -1,5 +1,6 @@
 package com.zy.mobile.controller.ucenter;
 
+import com.zy.common.util.DateUtil;
 import com.zy.component.UserComponent;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
@@ -15,9 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
@@ -100,5 +99,34 @@ public class UcenterTeamController {
 		model.addAttribute("level", level);
 		return "ucenter/team/userDetail";
 	}
-	
+
+	/**
+	 * 我的团队新的  业务逻辑
+	 * @param principal
+	 * @param model
+     * @return
+     */
+	@RequestMapping(value = "/newTeam", method = RequestMethod.GET)
+	public String  newTeam(Principal principal, Model model){
+		Long userId = principal.getUserId();
+        Map<String,Object> dataMap = new HashMap<String,Object>();
+		//统计团队人数
+		long[]teamTotal = userService.conyteamTotal(userId);
+		dataMap.put("TTot", DateUtil.longarryToString(teamTotal,false));
+		//直属团队 人数统计
+		long [] dirTotal = userService.countdirTotal(userId);
+		dataMap.put("DTot", DateUtil.longarryToString(dirTotal,false));
+        //统计团队新成员
+		 Map<String,Object>map =userService.countNewMemTotal(userId,false);
+		long [] newMem = (long[])map.get("MTot");
+		dataMap.put("MTot", DateUtil.longarryToString(newMem,false));
+		dataMap.put("pro",DateUtil.countPro((long[])map.get("MTot"),(long)map.get("total")));
+        //处理排名
+		//Map<String,Object>rankMap = userService.disposeRank();
+		return null;
+	}
+
+
+
+
 }

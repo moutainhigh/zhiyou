@@ -7,6 +7,7 @@ import com.zy.model.dto.AgentRegisterDto;
 import com.zy.model.query.UserQueryModel;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -64,4 +65,12 @@ public interface UserService {
 	void modifyIsDirector(Long id, boolean isDirector);
 
 	void modifyIsShareholder(Long id, boolean isShareholder);
+
+	long[] conyteamTotal(Long userId);
+
+	long[] countdirTotal(Long userId);
+
+	Map<String,Object> countNewMemTotal(Long userId, boolean b);
+
+	String findRealName(Long userId);
 }

@@ -200,10 +200,13 @@
 		</where>
 	</select>
 
-	<!--求和查询-->
-
-	<select id="sum" resultType="_long" parameterType="com.zy.model.query.ProfitQueryModel">
-		select sum(amount) sumAmount from `fnc_profit`
+	<!--求和查询 -->
+	<resultMap id="sumResultMap" type="com.zy.model.dto.DepositSumDto">
+		<result column="countId" property="count"/>
+		<result column="sumAmount" property="sumAmount"/>
+	</resultMap>
+	<select id="sum" resultMap="sumResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
+		select count(id) countId,sum(amount) sumAmount from `fnc_profit`
 		<where>
 			<if test="snEQ != null">
 				and sn = #{snEQ}
@@ -263,7 +266,7 @@
 	</resultMap>
 
 	<select id="sumGroupBy" resultMap="sumProResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
-		select profit_type profitTtype ,sum(amount)　sumAmount from `fnc_profit`
+		select profit_type profitTtype,sum(amount) sumAmount from `fnc_profit`
 		<where>
 			<if test="snEQ != null">
 				and sn = #{snEQ}

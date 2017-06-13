@@ -3,6 +3,7 @@ package com.zy.service.impl;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
+import com.zy.common.util.DateUtil;
 import com.zy.component.FncComponent;
 import com.zy.component.UsrComponent;
 import com.zy.entity.fnc.Account;
@@ -11,11 +12,15 @@ import com.zy.entity.fnc.Profit;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
+import com.zy.entity.usr.UserInfo;
 import com.zy.extend.Producer;
 import com.zy.mapper.AccountMapper;
+import com.zy.mapper.UserInfoMapper;
+import com.zy.mapper.UserLogMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.dto.AgentRegisterDto;
+import com.zy.model.dto.UserTeamCountDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.UserService;
 import me.chanjar.weixin.common.util.StringUtils;
@@ -27,9 +32,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static com.zy.common.util.ValidateUtils.NOT_BLANK;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
@@ -56,6 +59,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private FncComponent fncComponent;
+
+    @Autowired
+    private UserLogMapper userLogMapper;
+
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
     @Override
     public User findOne(@NotNull Long id) {
@@ -531,6 +540,162 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.findOne(userId);
         validate(user, NOT_NULL, "user id " + userId + "not found");
         return user;
+    }
+
+
+
+    /**
+     * 统计 团队 总人数
+     * @param userId
+     * @return
+     */
+    @Override
+    public long[] conyteamTotal(Long userId) {
+        User user = this.findAndValidate(userId);
+        validate(user, NOT_NULL, "user id " + userId + "not found");
+        long []data = new long[]{0,0,0,0};
+        if(user.getUserRank()==UserRank.V4){//特级的做   递归处理
+         Map<String,Long> dataMap = conyteamTotalV4(userId);
+            data[0] = dataMap.get("V4");
+            data[1] = dataMap.get("V3");
+            data[2] = dataMap.get("V2");
+            data[3] = dataMap.get("V1");
+         }else{ //直属查询
+            List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
+            for (UserTeamCountDto userTeamDto :dataList){
+                if (UserRank.V4==userTeamDto.getUserRankEQ()){
+                    data[0] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                } else if (UserRank.V3==userTeamDto.getUserRankEQ()){
+                    data[1] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                }else if (UserRank.V2==userTeamDto.getUserRankEQ()){
+                    data[2] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
+                    data[4] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                }
+            }
+         }
+        return data;
+    }
+
+    /**
+     * 递归统计数据
+     * @return
+     */
+   private Map<String,Long> conyteamTotalV4(Long userId){
+       Map<String,Long> returnMap = new HashMap<String,Long>();
+       List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
+       for (UserTeamCountDto userTeamDto :dataList){
+           if (UserRank.V4==userTeamDto.getUserRankEQ()){
+               Long countV4 = returnMap.get("V4")==null?0L:returnMap.get("V4");
+                  if (userTeamDto.getCountNum()!=null){
+                      countV4=countV4+userTeamDto.getCountNum();
+                  }
+               returnMap.put("V4",countV4);
+           }else if (UserRank.V3==userTeamDto.getUserRankEQ()){
+               Long countV3 = returnMap.get("V3")==null?0L:returnMap.get("V3");
+                   if (userTeamDto.getCountNum()!=null){
+                       countV3=countV3+userTeamDto.getCountNum();
+                   }
+               returnMap.put("V3",countV3);
+
+           }else if(UserRank.V2==userTeamDto.getUserRankEQ()){
+               Long countV2 = returnMap.get("V2")==null?0L:returnMap.get("V2");
+                   if (userTeamDto.getCountNum()!=null){
+                       countV2=countV2+userTeamDto.getCountNum();
+                   }
+               returnMap.put("V2",countV2);
+
+           }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
+               Long countV1 = returnMap.get("V1")==null?0L:returnMap.get("V1");
+               if (userTeamDto.getCountNum()!=null){
+                   countV1=countV1+userTeamDto.getCountNum();
+               }
+               returnMap.put("V1",countV1);
+           }
+       }
+       UserQueryModel userQueryModel = new UserQueryModel();
+       userQueryModel.setParentIdNL(userId);
+       List<User> userList = userMapper.findAll(userQueryModel);
+       for (User user :userList){
+           conyteamTotalV4(user.getId());
+       }
+       return returnMap;
+   }
+
+    /**
+     * 统计 直属团队
+     * @param userId
+     * @return
+     */
+    @Override
+    public long[] countdirTotal(Long userId) {
+        long []data = new long[]{0,0,0,0};
+        List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
+        for (UserTeamCountDto userTeamDto :dataList){
+            if (UserRank.V4==userTeamDto.getUserRankEQ()){
+                data[0] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+            } else if (UserRank.V3==userTeamDto.getUserRankEQ()){
+                data[1] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+            }else if (UserRank.V2==userTeamDto.getUserRankEQ()){
+                data[2] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+            }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
+                data[4] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+            }
+        }
+        return data;
+    }
+
+    /**
+     * 统计新增成员
+     * @param userId
+     * @param flag  是否统计 总数
+     * @return
+     */
+    @Override
+    public Map<String,Object> countNewMemTotal(Long userId, boolean flag) {
+        Map<String,Object> returnMap = new HashMap<String,Object>();
+        long []data = new long[]{0,0,0,0};
+        Map<String,Object>dataMap = new HashMap<String,Object>();
+        dataMap.put("remark","%从V0%");
+        dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),-1,0));
+        dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthBegin(new Date(),0,0));
+          if(flag){
+              long total=userLogMapper.count(dataMap);
+              returnMap.put("total",total);
+          }
+        dataMap.put("parentid",userId);
+        List<UserTeamCountDto>userTeamDtoList=userLogMapper.counyGByRank(dataMap);
+        for (UserTeamCountDto userTeamDto :userTeamDtoList){
+            if (UserRank.V4==userTeamDto.getUserRankEQ()){
+                data[0] = userTeamDto.getCountNum()==null?0l:userTeamDto.getCountNum();
+            } else if (UserRank.V3==userTeamDto.getUserRankEQ()){
+                data[1] = userTeamDto.getCountNum()==null?0l:userTeamDto.getCountNum();
+            }else if (UserRank.V2==userTeamDto.getUserRankEQ()){
+                data[2] = userTeamDto.getCountNum()==null?0l:userTeamDto.getCountNum();
+            }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
+                data[4] = userTeamDto.getCountNum()==null?0l:userTeamDto.getCountNum();
+            }
+        }
+        returnMap.put("MTot",data);
+        return returnMap;
+    }
+
+    /**
+     * 获取 真实姓名
+     * @param userId
+     * @return
+     */
+    @Override
+    public String findRealName(Long userId) {
+        validate(userId, NOT_NULL, "user id null");
+        validate(userMapper.findOne(userId), NOT_NULL, "user id null");
+        UserInfo userInfo = userInfoMapper.findByUserId(userId);
+        if(userInfo!=null&&userInfo.getRealname()!=null){
+            return userInfo.getRealname();
+        }else{
+            User user = userMapper.findOne(userId);
+            return user.getNickname();
+        }
     }
 
 }

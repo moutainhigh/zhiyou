@@ -4,6 +4,7 @@ package com.zy.mapper;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.zy.model.dto.DepositSumDto;
 import com.zy.model.dto.ProfitSumDto;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,7 +28,7 @@ public interface ProfitMapper {
 
 	long count(ProfitQueryModel profitQueryModel);
 
-	Double sum(ProfitQueryModel profitQueryModel);
+	DepositSumDto sum(ProfitQueryModel profitQueryModel);
 
 	List<ProfitSumDto> sumGroupBy(ProfitQueryModel profitQueryModel);
 
