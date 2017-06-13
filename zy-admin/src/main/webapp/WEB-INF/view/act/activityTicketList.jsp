@@ -22,12 +22,12 @@
         },
         columns: [
 	        {
-		        data: '',
+		        data: 'codeImageUrl',
 		        title: '二维码',
 		        orderable: false,
                 width: '60px',
             render: function(data, type, full) {
-              return '<img  src="${ctx}/image/qrCode.jpg" width="120" height="80" />';
+                return '<a target="_blank" href="' + data + '"><img style="width:120px;height:80px;"  src="' + full.codeImageUrl + '"/></a>';
             }
 	        },
 	        {

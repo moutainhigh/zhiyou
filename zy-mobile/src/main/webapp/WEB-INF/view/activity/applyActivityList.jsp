@@ -24,7 +24,7 @@
 <body class="activity-list">
   <header class="header">
     <h1>我报名的活动</h1>
-    <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/activity" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
   <article>

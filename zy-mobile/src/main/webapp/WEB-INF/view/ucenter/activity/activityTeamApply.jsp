@@ -103,7 +103,7 @@
 <body class="header-fixed footer-fixed">
   <header class="header">
     <h1>订单状态</h1>
-    <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/activity" class="button-left"><i class="fa fa-angle-left"></i></a>
     <%--<span class="button-right" onclick="editSum(this)" edit="edit">编辑</span>--%>
   </header>
 

@@ -201,14 +201,14 @@ public class LoginController {
 			return ResultBuilder.error("两次发送间隔为120秒");
 		}
 
-		String cachedCaptcha = (String) session.getAttribute(SESSION_ATTRIBUTE_CAPTCHA);
-		if (captcha == null || !captcha.equalsIgnoreCase(cachedCaptcha)) {
-			try {
-				session.removeAttribute(SESSION_ATTRIBUTE_CAPTCHA);
-			} catch (Exception e) {
-			}
-			return ResultBuilder.error("图形验证码错误");
-		}
+//		String cachedCaptcha = (String) session.getAttribute(SESSION_ATTRIBUTE_CAPTCHA);
+//		if (captcha == null || !captcha.equalsIgnoreCase(cachedCaptcha)) {
+//			try {
+//				session.removeAttribute(SESSION_ATTRIBUTE_CAPTCHA);
+//			} catch (Exception e) {
+//			}
+//			return ResultBuilder.error("图形验证码错误");
+//		}
 
 		String smsCode = RandomStringUtils.randomNumeric(6);
 		String message = "您的短信验证码为" + smsCode;

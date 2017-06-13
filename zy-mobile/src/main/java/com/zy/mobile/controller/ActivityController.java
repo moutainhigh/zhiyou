@@ -82,15 +82,14 @@ public class ActivityController {
 			activityCollectQueryModel.setUserIdEQ(principal.getUserId());
 			model.addAttribute("isCollected", !activityCollectService.findPage(activityCollectQueryModel).getData().isEmpty());
 
-			ActivitySignIn activitySignIn = activitySignInService.findByActivityIdAndUserId(id, userId);
-			model.addAttribute("isSigned", activitySignIn != null);
-
 			ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(id, userId);
 			boolean isApplied = activityApply != null;
 			model.addAttribute("isApplied", isApplied);
 			if(isApplied) {
 				model.addAttribute("payerId", activityApply.getPayerUserId());
 				model.addAttribute("toPay", activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已报名);
+				ActivitySignIn signIn = activitySignInService.findByActivityIdAndUserId(id, userId);
+				model.addAttribute("isSignIn" , signIn != null);
 			}
 
 			ActivitySignInQueryModel activitySignInQueryModel = new ActivitySignInQueryModel();
@@ -110,7 +109,6 @@ public class ActivityController {
 				}
 			}
 		}
-		
 		return "activity/activityDetail";
 	}
 

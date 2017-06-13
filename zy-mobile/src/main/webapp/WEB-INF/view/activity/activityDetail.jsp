@@ -135,6 +135,19 @@
     .clearfloat{
       zoom:1;
     }
+    .newHref {
+      width:100%;
+      position: relative;
+    }
+    .newHref span {
+      width:66%;
+      position: absolute;
+      top:50%;
+      -webkit-transform:translate(0,-50%);
+      transform:translate(0,-50%);
+      color:red;
+      margin-left: 20px;
+    }
   </style>
   <script>
     var count = 1;
@@ -253,7 +266,9 @@
     }
 
     </c:if>
-
+    $(function(){
+      $(".newHref span").css("width",$(".newHref").css("width")-120);
+    })
   </script>
 
 </head>
@@ -394,12 +409,15 @@
         <c:if test="${toPay and not empty payerId}">
           <a class="flex-3 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-circle-o-notch"></i> 待他人付款</div></a>
         </c:if>
+        <c:if test="${isSignIn}">
+          <a class="flex-3 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-check"></i> 您已签到</div></a>
+        </c:if>
         <c:if test="${toPay and empty payerId}">
           <a class="flex-3 bg-green fs-14 font-white" href="${ctx}/u/activity/${activity.id}/activityApply"><div><i class="fa fa-hand-o-right"></i> 点击付费</div></a>
         </c:if>
       </c:if>
       <c:if test="${!isApplied}">
-        <a id="btnApply" class="flex-3 bg-blue fs-14 font-white" href="javascript:;">个人报名</a>
+        <a id="btnApply" class="flex-3 bg-blue fs-14 font-white" href="javascript:;">本人报名</a>
       </c:if>
     </c:if>
     <c:if test="${activity.status == '报名已结束'}">
@@ -425,7 +443,7 @@
 <div class="disDiv" onclick="hideDis()"></div>
 <div class="teamBlock">
   <div class="teamPlay">
-    <a class="newHref clearfloat" href="${ctx}/u/activity/applyTeam?activityId=${activity.id}&count="><div class="ticket_button ticket_now">立即支付</div></a>
+    <a class="newHref clearfloat" href="${ctx}/u/activity/applyTeam?activityId=${activity.id}&count="><span><b>注意：*团购票暂不支持本人领用,如本人需要参加,请采用"本人报名"方式。</b></span><div class="ticket_button ticket_now">立即支付</div></a>
   </div>
   <div class="team_people">
     <span>人数</span>
