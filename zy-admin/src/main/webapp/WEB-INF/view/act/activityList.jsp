@@ -196,6 +196,7 @@
             data: 'collectedCount',
             title: '关注数'
           },
+
           {
             data: 'isReleased',
             title: '是否上架',
