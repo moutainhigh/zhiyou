@@ -402,8 +402,8 @@
       <c:if test="${activity.ticketType == 2}">
         <a id="btnApplyTeam" class="flex-3 bg-green fs-14 font-white" href="javascript:;" style="border-right:1px solid #fff;" onclick="showDis()">团队报名</a>
       </c:if>
-      <c:if test="${isApplied}">
-        <c:if test="${!toPay}">
+      <c:if test="${isApplied }">
+        <c:if test="${!toPay && !isSignIn}">
           <a class="flex-3 bg-green fs-14 font-white" href="javascript:;"><div><i class="fa fa-check"></i> 您已报名</div></a>
         </c:if>
         <c:if test="${toPay and not empty payerId}">
