@@ -265,12 +265,12 @@ public class ActivityComponent {
 		Long count = activityApplyService.queryNoPayCount(activity.getId());
 
 		Long a = activityTeamApplyService.findPayNumber(activity.getId());
-		Long b = activityApplyService.queryCount(activity.getId());
+		Long b = activityApplyService.queryAppliedCount(activity.getId());
+		Long c = activityApplyService.queryCount(activity.getId());
 
 		ActivitySummaryReportVo activitySummaryReportVo = new ActivitySummaryReportVo();
 		activitySummaryReportVo.setNonPayment(number + count);
-		activitySummaryReportVo.setPayment(a + b);
-		activitySummaryReportVo.setAppliedCount(b);
+		activitySummaryReportVo.setPayment(a + c);
 		BeanUtils.copyProperties(activity, activitySummaryReportVo, "detail");
 		Long areaId = activity.getAreaId();
 		if(!isNull(areaId)) {
@@ -291,6 +291,7 @@ public class ActivityComponent {
 			activitySummaryReportVo.setEndTimeLabel(formatDate(endTime, fullFmt));
 			activitySummaryReportVo.setEndTimeFormatted(formatDate(endTime, fullFmt));
 		}
+		activitySummaryReportVo.setAppliedCount(b);
 		return activitySummaryReportVo;
 	}
 
@@ -302,10 +303,10 @@ public class ActivityComponent {
 		Long count = activityApplyService.queryNoPayCount(activity.getId());
 
 		Long a = activityTeamApplyService.findPayNumber(activity.getId());
-		Long b = activityApplyService.queryCount(activity.getId());
+		Long c = activityApplyService.queryCount(activity.getId());
+		Long b = activityApplyService.queryAppliedCount(activity.getId());
 
 		ActivitySummaryExReportVo activitySummaryExReportVo = new ActivitySummaryExReportVo();
-		activitySummaryExReportVo.setAppliedCount(b);
 		if (activity.getSignedInCount() != null && activity.getAppliedCount() != null && activity.getAppliedCount() != 0){
 			BigDecimal bg = new BigDecimal(Double.valueOf(activity.getSignedInCount()) / Double.valueOf(activity.getAppliedCount()) * 100).setScale(2, RoundingMode.UP);
 			activitySummaryExReportVo.setAttendanceRate(bg);
@@ -314,7 +315,7 @@ public class ActivityComponent {
 		}
 
 		activitySummaryExReportVo.setNonPayment(number + count);
-		activitySummaryExReportVo.setPayment(a + b);
+		activitySummaryExReportVo.setPayment(a + c);
 		BeanUtils.copyProperties(activity, activitySummaryExReportVo, "detail");
 		Long areaId = activity.getAreaId();
 		if(!isNull(areaId)) {
@@ -333,6 +334,7 @@ public class ActivityComponent {
 		if(endTime != null) {
 			activitySummaryExReportVo.setEndTimeLabel(formatDate(endTime, fullFmt));
 		}
+		activitySummaryExReportVo.setAppliedCount(b);
 		return activitySummaryExReportVo;
 	}
 }

@@ -35,4 +35,6 @@ public interface ActivityApplyMapper {
 	List<ActivityApply> findAllByReport(ActivityReportQueryModel activityApplyQueryModel);
 
 	long queryCountReport(ActivityReportQueryModel activityReportQueryModel);
+
+	Long queryAppliedCount(Long activityId);
 }

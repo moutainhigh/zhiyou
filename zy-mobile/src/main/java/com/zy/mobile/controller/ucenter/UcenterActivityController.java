@@ -18,6 +18,7 @@ import com.zy.service.*;
 import com.zy.vo.ActivityListVo;
 import com.zy.vo.ActivityTeamApplyListVo;
 import com.zy.vo.ActivityTicketListVo;
+import io.gd.generator.api.query.Direction;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -331,6 +332,8 @@ public class UcenterActivityController {
 		validate(activityTeamApply, NOT_NULL, "activityTeamApply id " + id + " not found");
 		ActivityTicketQueryModel activityTicketQueryModel = new ActivityTicketQueryModel();
 		activityTicketQueryModel.setTeamApplyId(id);
+		activityTicketQueryModel.setOrderBy("isUsed");
+		activityTicketQueryModel.setDirection(Direction.DESC);
 		List<ActivityTicket> activityTickets = activityTicketService.findAll(activityTicketQueryModel);
 		List<ActivityTicketListVo> list = activityTickets.stream().map(v -> {
 			return activityTicketComponent.buildListVo(v);

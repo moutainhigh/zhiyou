@@ -8,7 +8,7 @@
   <meta content="no-cache, must-revalidate" http-equiv="Cache-Control" />
   <meta content="Wed, 26 Feb 1997 08:21:57GMT" http-equiv="expires">
   <meta name="format-detection" content="telephone=no"/>
-  <title>二维码详情</title>
+  <title>票务详情</title>
   <%@ include file="/WEB-INF/view/include/head.jsp"%>
   <!--移动端版本兼容 -->
   <script type="text/javascript">
@@ -64,16 +64,27 @@
     }
     .erweima div {
       width:320px;
-      height:40px;
+      height:70px;
       text-align: center;
       line-height: 30px;
       font-size: 24px;
       color: red;
       padding-bottom:10px;
     }
+    .error-font {
+      padding:30px 30px 0 30px;
+      color: red;
+      font-size:24px;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
+<%--<header class="header">--%>
+  <%--<a href="${ctx}/u/activity/teamApplyList" class="button-left"><i class="fa fa-angle-left"></i></a>--%>
+  <%--<h1>票务详情</h1>--%>
+<%--</header>--%>
+<p class="error-font"><b>注意：*购票成功，请务必将二维码发送给好友，让好友识别二维码报名。否则好友现场无法签到！！！</b></p>
 <div class="main clearfloat">
 
   <c:if test="${empty activityTickets}">
@@ -92,7 +103,7 @@
           <div>使用者：${activityTicket.usedUser.nickname}</div>
         </c:if>
         <c:if test="${empty activityTicket.usedUser && activityTicket.isUsed == 0}">
-          <div>无人使用</div>
+          <div><p style="color: limegreen">无人使用</p></div>
         </c:if>
       </div>
     </c:forEach>
