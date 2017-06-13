@@ -15,7 +15,6 @@
 <title>积分钱包</title>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/account.css">
-  <link rel="stylesheet" href="${ctx}/style.css">
   <style>
     @charset "utf-8";
     html, body, div, p, ul, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, select, button, textarea, iframe, table, th, td { margin: 0; padding: 0; }
@@ -74,7 +73,6 @@
       margin-right: 10px;
     }
     #echartFir {
-      margin-top:20px;
       padding: 10px;
       width:100%;
       height:300px;
@@ -175,7 +173,7 @@
       <p class="percent last">上月同比：<span>${dataMap.YoY}%</span></p>
   </div>
   <div id="echartFir"></div>
-  <div id="last" style="width: 100%;height: 400px;margin-top: 20px;padding: 10px;"></div>
+  <div id="last" style="width: 100%;height: 400px;padding: 10px;"></div>
 
     <div class="all">
       <img src="${ctx}/percent.png" />
