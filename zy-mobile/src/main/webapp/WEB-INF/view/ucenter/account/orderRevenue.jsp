@@ -115,6 +115,10 @@
         }
     </style>
     <script>
+        <%--var reArrays = "${dateMap.revenues}";--%>
+        <%--var reArray= reArrays.split(",");--%>
+        <%--var len = reArray.length;--%>
+        <%--console.info(${dateMap.len});--%>
         $(function() {
             $('.header .button-popmenu').click(function(){
                 $('.header-popmenu').toggle(300);
@@ -127,275 +131,65 @@
 
 <article>
     <div id="echartFir"></div>
-    <!--5月份的!-->
-    <div class="detilAll" onclick="changeTriangle(this)">
-        <div class="echartdetil">
-            <div class="triangle" >
-                <div class="triangle-up"></div>
-            </div>
-            <div class="font-triangle">
-                <p>
-                    5月<span class="firSpan">2017</span><br>
-                    <span class="lastSpan">04.01-05.01</span>
-                </p>
-            </div>
-            <div class="font-triangleT">
-                ￥100000.00
-            </div>
-        </div>
-        <div class="changeDetil">
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
+    <a href="${ctx}/u/profit/orderRevenueDetail?month=2&type=2" class="look">查看详情</a>
+    <c:forEach items="${dateMap.revenues}" var="revenue" varStatus="num">
+        <div class="detilAll" onclick="changeTriangle(this)">
+            <div class="echartdetil">
+                <div class="triangle" >
+                    <div class="triangle-up"></div>
+                </div>
+                <div class="font-triangle">
                     <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
+                            ${dateMap.len - num.index}月
                     </p>
                 </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
+                <div class="font-triangleT">
+                    ￥${revenue}
                 </div>
             </div>
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
+            <div class="changeDetil">
+                <div class="echartdetil echartdetilD">
+                    <div class="font-triangle font-triangleD">
+                        <p>
+                            订单号：<span class="firSpan">3541258744</span><br>
+                            <span class="lastSpan">05.20 15:30</span>
+                        </p>
+                    </div>
+                    <div class="font-triangleT font-triangleTD">
+                        +1200.00
+                    </div>
                 </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
+                <div class="echartdetil echartdetilD">
+                    <div class="font-triangle font-triangleD">
+                        <p>
+                            订单号：<span class="firSpan">3541258744</span><br>
+                            <span class="lastSpan">05.20 15:30</span>
+                        </p>
+                    </div>
+                    <div class="font-triangleT font-triangleTD">
+                        +1200.00
+                    </div>
                 </div>
-            </div>
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--4月份的!-->
-    <div class="detilAll" onclick="changeTriangle(this)">
-        <div class="echartdetil">
-            <div class="triangle" >
-                <div class="triangle-up"></div>
-            </div>
-            <div class="font-triangle">
-                <p>
-                    4月<span class="firSpan">2017</span><br>
-                    <span class="lastSpan">04.01-05.01</span>
-                </p>
-            </div>
-            <div class="font-triangleT">
-                ￥100000.00
-            </div>
-        </div>
-        <div class="changeDetil">
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
-                </div>
-            </div>
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
-                </div>
-            </div>
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
-                </div>
-            </div>
-            <a href="#" class="lookDetil">查看明细</a>
-        </div>
-    </div>
-    <!--3月份的!-->
-    <div class="detilAll" onclick="changeTriangle(this)">
-        <div class="echartdetil">
-            <div class="triangle" >
-                <div class="triangle-up"></div>
-            </div>
-            <div class="font-triangle">
-                <p>
-                    3月<span class="firSpan">2017</span><br>
-                    <span class="lastSpan">04.01-05.01</span>
-                </p>
-            </div>
-            <div class="font-triangleT">
-                ￥100000.00
-            </div>
-        </div>
-        <div class="changeDetil">
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
-                </div>
-            </div>
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
-                </div>
-            </div>
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
+                <div class="echartdetil echartdetilD">
+                    <div class="font-triangle font-triangleD">
+                        <p>
+                            订单号：<span class="firSpan">3541258744</span><br>
+                            <span class="lastSpan">05.20 15:30</span>
+                        </p>
+                    </div>
+                    <div class="font-triangleT font-triangleTD">
+                        +1200.00
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!--2月份的!-->
-    <div class="detilAll" onclick="changeTriangle(this)">
-        <div class="echartdetil">
-            <div class="triangle" >
-                <div class="triangle-up"></div>
-            </div>
-            <div class="font-triangle">
-                <p>
-                    2月<span class="firSpan">2017</span><br>
-                    <span class="lastSpan">04.01-05.01</span>
-                </p>
-            </div>
-            <div class="font-triangleT">
-                ￥100000.00
-            </div>
-        </div>
-        <div class="changeDetil">
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
-                </div>
-            </div>
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
-                </div>
-            </div>
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--1月份的!-->
-    <div class="detilAll" onclick="changeTriangle(this)">
-        <div class="echartdetil">
-            <div class="triangle" >
-                <div class="triangle-up"></div>
-            </div>
-            <div class="font-triangle">
-                <p>
-                    1月<span class="firSpan">2017</span><br>
-                    <span class="lastSpan">04.01-05.01</span>
-                </p>
-            </div>
-            <div class="font-triangleT">
-                ￥100000.00
-            </div>
-        </div>
-        <div class="changeDetil">
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
-                </div>
-            </div>
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
-                </div>
-            </div>
-            <div class="echartdetil echartdetilD">
-                <div class="font-triangle font-triangleD">
-                    <p>
-                        订单号：<span class="firSpan">3541258744</span><br>
-                        <span class="lastSpan">05.20 15:30</span>
-                    </p>
-                </div>
-                <div class="font-triangleT font-triangleTD">
-                    +1200.00
-                </div>
-            </div>
-        </div>
-    </div>
-
+    </c:forEach>
 </article>
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">
-    var array=${revenue};
+    var arrays = "${dateMap.revenue}";
+    var array= arrays.split(",");
+    <%--console.info(${revenues});--%>
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echartFir'));
     // 指定图表的配置项和数据
@@ -408,7 +202,7 @@
             }
         },
         title: {
-            text: '订单收益月度图'
+            text: '${types}月度图'
         },
         grid: {
             left: '3%',

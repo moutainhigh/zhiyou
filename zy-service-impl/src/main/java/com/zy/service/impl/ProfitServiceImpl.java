@@ -16,7 +16,6 @@ import com.zy.model.dto.DepositSumDto;
 import com.zy.model.dto.ProfitSumDto;
 import com.zy.model.query.ProfitQueryModel;
 import com.zy.service.ProfitService;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -104,8 +104,33 @@ public class ProfitServiceImpl implements ProfitService {
 
 
 	@Override
-	public List<BigDecimal> queryRevenue(@NotNull ProfitQueryModel profitQueryModel) {
-		return profitMapper.queryRevenue(profitQueryModel);
+	public Map<String, Object> queryRevenue(@NotNull ProfitQueryModel profitQueryModel) {
+		Map<String ,Object> returnMap = new HashMap<>();
+		int moth = DateUtil.getMoth(new Date());
+		double polyLineData [] = new double[moth-1];
+		List<Profit> list = null;
+		for (int i = moth - 1; i >= 1;i--){
+			profitQueryModel.setCreatedTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
+			profitQueryModel.setCreatedTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
+			double data = 0d;
+			DepositSumDto dto = profitMapper.queryRevenue(profitQueryModel);
+			if (dto != null && dto.getSumAmount() != null){
+				data= dto.getSumAmount().doubleValue();
+			}
+			polyLineData[i-1]=data;
+		}
+		returnMap.put("revenue", DateUtil.arryToString(polyLineData,true));
+		returnMap.put("revenues", DateUtil.arryToString(polyLineData,false));
+		returnMap.put("len", moth - 1);
+		return returnMap;
+	}
+
+	@Override
+	public List<Profit> orderRevenueDetail(@NotNull ProfitQueryModel profitQueryModel) {
+		profitQueryModel.setCreatedTimeGTE(DateUtil.getMonthBegin(new Date(),profitQueryModel.getMonth(),0));
+		profitQueryModel.setCreatedTimeLT(DateUtil.getBeforeMonthEnd(new Date(),profitQueryModel.getMonth() + 7,-1));
+		List<Profit> list = profitMapper.orderRevenueDetail(profitQueryModel);
+		return list;
 	}
 
 	@Override

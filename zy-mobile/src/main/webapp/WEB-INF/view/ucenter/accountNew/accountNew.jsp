@@ -190,7 +190,7 @@
                     <p><span>累计收益：</span>￥${dataMap.ord[1]}</p>
                </div>
            </div>
-           <a href="#" class="look">查看详情</a>
+        <a href="${ctx}/u/profit/orderRevenue?type=1" class="look">查看详情</a>
       </div>
     </div>
 
@@ -207,7 +207,7 @@
           <p><span>累计收益：</span>￥${dataMap.red[1]}</p>
         </div>
       </div>
-      <a href="#" class="look">查看详情</a>
+      <a href="${ctx}/u/profit/orderRevenue?type=7" class="look">查看详情</a>
     </div>
   </div>
 
@@ -224,7 +224,7 @@
           <p><span>累计收益：</span>￥${dataMap.dat[1]}</p>
         </div>
       </div>
-      <a href="#" class="look">查看详情</a>
+      <a href="${ctx}/u/profit/orderRevenue?type=2" class="look">查看详情</a>
     </div>
   </div>
   <div class="all">
@@ -240,7 +240,7 @@
           <p><span>累计收益：</span>￥${dataMap.sal[1]}</p>
         </div>
       </div>
-      <a href="#" class="look">查看详情</a>
+      <a href="${ctx}/u/profit/orderRevenue?type=3" class="look">查看详情</a>
     </div>
   </div>
   <div class="all">
@@ -256,7 +256,7 @@
           <p><span>累计收益：</span>￥${dataMap.ftl[1]}</p>
         </div>
       </div>
-      <a href="#" class="look">查看详情</a>
+      <a href="${ctx}/u/profit/orderRevenue?type=4" class="look">查看详情</a>
     </div>
   </div>
   <div class="all">
@@ -272,7 +272,7 @@
           <p><span>累计收益：</span>￥${dataMap.sen[1]}</p>
         </div>
       </div>
-      <a href="#" class="look">查看详情</a>
+      <a href="${ctx}/u/profit/orderRevenue?type=8" class="look">查看详情</a>
     </div>
   </div>
   <div class="all">
@@ -288,7 +288,7 @@
           <p><span>累计收益：</span>￥${dataMap.ltl[1]}</p>
         </div>
       </div>
-      <a href="#" class="look">查看详情</a>
+      <a href="${ctx}/u/profit/orderRevenue?type=5" class="look">查看详情</a>
     </div>
   </div>
   <div class="all">
@@ -304,7 +304,7 @@
           <p><span>累计收益：</span>￥${dataMap.rec[1]}</p>
         </div>
       </div>
-      <a href="${ctx}/u/profit/orderRevenue?type=2" class="look">查看详情</a>
+      <a href="${ctx}/u/profit/orderRevenue?type=6" class="look">查看详情</a>
     </div>
   </div>
 </article>

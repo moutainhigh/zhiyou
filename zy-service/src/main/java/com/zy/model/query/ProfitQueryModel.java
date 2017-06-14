@@ -50,6 +50,8 @@ public class ProfitQueryModel implements Serializable {
 
 	private Integer pageSize;
 
+	private Integer month;
+
 	private String orderBy;
 
 	private Direction direction;

@@ -24,7 +24,9 @@ public interface ProfitService {
 	
 	Profit findOne(Long id);
 
-	List<BigDecimal> queryRevenue(ProfitQueryModel profitQueryModel);
+	Map<String, Object> queryRevenue(ProfitQueryModel profitQueryModel);
 
 	Map<String,Object> countIncomeDataByUser(Long userId, Map<String, Object> map);
+
+	List<Profit> orderRevenueDetail(ProfitQueryModel profitQueryModel);
 }

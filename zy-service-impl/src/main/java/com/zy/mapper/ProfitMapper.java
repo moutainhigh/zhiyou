@@ -3,8 +3,10 @@ package com.zy.mapper;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import com.zy.model.dto.DepositSumDto;
+import com.zy.model.dto.ProfitCountDto;
 import com.zy.model.dto.ProfitSumDto;
 import org.apache.ibatis.annotations.Param;
 
@@ -32,5 +34,7 @@ public interface ProfitMapper {
 
 	List<ProfitSumDto> sumGroupBy(ProfitQueryModel profitQueryModel);
 
-	List<BigDecimal> queryRevenue(ProfitQueryModel profitQueryModel);
+	List<Profit> orderRevenueDetail(ProfitQueryModel profitQueryModel);
+
+	DepositSumDto queryRevenue(ProfitQueryModel profitQueryModel);
 }

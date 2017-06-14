@@ -324,15 +324,28 @@
 	</select>
 
 	<!-- 查询每月奖项金额-->
-	<select id="queryRevenue" resultType="_long" parameterType="long">
-		SELECT SUM(amount)
+	<select id="queryRevenue" resultMap="sumResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
+		SELECT
+	 		 SUM(a.amount) AS sumAmount
 		FROM fnc_profit a
-		WHERE a.profit_type = {profitTypeEQ} AND a.user_id = {userIdEQ}
-		AND a.profit_status = 2
-		AND DATE_FORMAT(a.created_time, '%y-%m-%d') &gt;= DATE_SUB(CURDATE(), INTERVAL dayofyear(now()) - 1 DAY)
-		AND DATE_FORMAT(a.created_time, '%y-%m-%d') &lt;=
-			DATE_SUB(DATE_SUB(DATE_FORMAT(now(), '%y-%m-%d'), INTERVAL extract(DAY FROM now()) DAY), INTERVAL 0 MONTH)
-		GROUP BY DATE_FORMAT(a.created_time, '%y-%m')
-		ORDER BY a.created_time ASC
+		WHERE a.profit_type = #{profitTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+		AND a.user_id = #{userIdEQ}
+		AND a.profit_status = 1
+		AND a.created_time &gt;= #{createdTimeGTE}
+		AND a.created_time &lt;= #{createdTimeLT}
 	</select>
+
+	<select id="orderRevenueDetail" resultMap="baseResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
+		SELECT
+		<include refid="baseColumn"/>
+		FROM fnc_profit
+		WHERE
+			profit_type = #{profitTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			AND user_id = #{userIdEQ}
+			AND profit_status = #{profitStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			AND created_time &gt;= #{createdTimeGTE}
+			AND created_time &lt;= #{createdTimeLT}
+		ORDER BY created_time DESC
+	</select>
+
 </mapper>
