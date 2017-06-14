@@ -147,6 +147,7 @@
         $('body').removeClass('o-hidden');
         $('#protocolList').hide();
       });
+
     }
   </script>
 </head>
