@@ -131,7 +131,6 @@
 
 <article>
     <div id="echartFir"></div>
-    <a href="${ctx}/u/profit/orderRevenueDetail?month=2&type=2" class="look">查看详情</a>
     <c:forEach items="${dateMap.revenues}" var="revenue" varStatus="num">
         <div class="detilAll" onclick="changeTriangle(this)">
             <div class="echartdetil">
@@ -140,7 +139,7 @@
                 </div>
                 <div class="font-triangle">
                     <p>
-                            ${dateMap.len - num.index}月
+                            <span>${dateMap.len - num.index}</span>月
                     </p>
                 </div>
                 <div class="font-triangleT">
@@ -148,45 +147,53 @@
                 </div>
             </div>
             <div class="changeDetil">
-                <div class="echartdetil echartdetilD">
-                    <div class="font-triangle font-triangleD">
-                        <p>
-                            订单号：<span class="firSpan">3541258744</span><br>
-                            <span class="lastSpan">05.20 15:30</span>
-                        </p>
-                    </div>
-                    <div class="font-triangleT font-triangleTD">
-                        +1200.00
-                    </div>
-                </div>
-                <div class="echartdetil echartdetilD">
-                    <div class="font-triangle font-triangleD">
-                        <p>
-                            订单号：<span class="firSpan">3541258744</span><br>
-                            <span class="lastSpan">05.20 15:30</span>
-                        </p>
-                    </div>
-                    <div class="font-triangleT font-triangleTD">
-                        +1200.00
-                    </div>
-                </div>
-                <div class="echartdetil echartdetilD">
-                    <div class="font-triangle font-triangleD">
-                        <p>
-                            订单号：<span class="firSpan">3541258744</span><br>
-                            <span class="lastSpan">05.20 15:30</span>
-                        </p>
-                    </div>
-                    <div class="font-triangleT font-triangleTD">
-                        +1200.00
-                    </div>
-                </div>
             </div>
         </div>
     </c:forEach>
 </article>
+<input type="hidden" value="-" />
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">
+    function changeTriangle(obj) {
+        var type = ${type};
+        var moth = $(obj).find(".font-triangle p span").text();
+        var change = $(obj).find(".triangle-up").attr("class");
+        if(change=="triangle-up"){
+            $(obj).find(".triangle-up").addClass("triangle-down");
+            $(obj).siblings(".detilAll").find(".triangle-up").removeClass("triangle-down");
+            $(obj).find(".changeDetil").show();
+            $.ajax({
+                url : '${ctx}/u/profit/revenueDetail',
+                data : {
+                    type : type,
+                    month : moth
+                },
+                dataType : 'json',
+                type : 'POST',
+                success : function(result) {
+                    var detailArray = result.data;
+                    console.info(detailArray.length);
+                    for(var i = 0; i < detailArray.length; i++){
+                        if( i < 3){
+                            $(obj).find(".changeDetil").append('<div class="echartdetil echartdetilD"><div class="font-triangle font-triangleD"><p>订单号：<span class="firSpan">'detailArray[i].sn'</span><br><span class="lastSpan">detailArray[i].createdTimeLabel</span></p></div><div class="font-triangleT font-triangleTD">+ detailArray[i].amountLabel</div></div>');
+                        }else if( i == 3){
+                            $(obj).find(".changeDetil").append('<a href="${ctx}/u/profit/orderRevenueDetail?mouth='+moth+'&type=${type}" class="lookDetil">查看明细</a>');
+                        }
+                    }
+                    $(obj).siblings(".detilAll").find(".changeDetil").html("");
+
+                    $(obj).siblings(".detilAll").find(".changeDetil").hide();
+                }
+
+            });
+        }else {
+            $(obj).find(".triangle-up").removeClass("triangle-down");
+            $(obj).find(".changeDetil").html("");
+            $(obj).find(".changeDetil").hide();
+        }
+    }
+
+
     var arrays = "${dateMap.revenue}";
     var array= arrays.split(",");
     <%--console.info(${revenues});--%>
@@ -247,19 +254,7 @@
     };
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
-    function changeTriangle(obj) {
-        var change=$(obj).find(".triangle-up").attr("class");
-        if(change=="triangle-up"){
-            $(obj).find(".triangle-up").addClass("triangle-down");
-            $(obj).siblings(".detilAll").find(".triangle-up").removeClass("triangle-down");
-            $(obj).find(".changeDetil").show();
-            $(obj).siblings(".detilAll").find(".changeDetil").hide();
-        }else {
-            $(obj).find(".triangle-up").removeClass("triangle-down");
-            $(obj).find(".changeDetil").hide();
-        }
 
-    }
 </script>
 </body>
 

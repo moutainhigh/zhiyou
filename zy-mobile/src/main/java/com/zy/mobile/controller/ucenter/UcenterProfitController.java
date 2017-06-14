@@ -1,5 +1,7 @@
 package com.zy.mobile.controller.ucenter;
 
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.ProfitComponent;
 import com.zy.entity.fnc.Profit;
 import com.zy.model.Principal;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.Map;
@@ -61,5 +64,20 @@ public class UcenterProfitController {
         model.addAttribute("orderRevenueDetails", detailVoPage);
         model.addAttribute("type", type.ordinal());
         return "ucenter/account/orderRevenueDetail";
+    }
+
+    @RequestMapping(value = "/revenueDetail", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> revenueDetailAjax(@RequestParam Profit.ProfitType type, int month, Principal principal, Model model) {
+        ProfitQueryModel profitQueryModel = new ProfitQueryModel();
+        profitQueryModel.setUserIdEQ(principal.getUserId());
+        profitQueryModel.setProfitTypeEQ(type);
+        profitQueryModel.setMonth(month);
+        profitQueryModel.setProfitStatusEQ(Profit.ProfitStatus.已发放);
+        List<Profit> orderRevenueDetails = profitService.orderRevenueDetail(profitQueryModel);
+        List<ProfitListVo> detailVoPage = orderRevenueDetails.stream().map(v -> {
+            return profitComponent.buildListVo(v);
+        }).collect(Collectors.toList());
+        return ResultBuilder.result(detailVoPage);
     }
 }
