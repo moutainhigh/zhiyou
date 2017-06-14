@@ -452,9 +452,9 @@ public class UcenterActivityController {
 		Long userId = principal.getUserId();
 		User user = userService.findOne(userId);
 		Date now = new Date();
-		if (activity.getApplyDeadline().before(now)) {
-			//活动报名已结束
-			model.addAttribute("msg","活动报名已结束");
+		if (activity.getEndTime().before(now)) {
+			//活动已结束
+			model.addAttribute("msg","活动已结束");
 			model.addAttribute("activityId", activityId);
 			return "activity/applyFail";
 		} else {
