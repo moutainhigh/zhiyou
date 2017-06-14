@@ -172,10 +172,10 @@
                 type : 'POST',
                 success : function(result) {
                     var detailArray = result.data;
-                    console.info(detailArray.length);
+//                    console.info(detailArray.length);
                     for(var i = 0; i < detailArray.length; i++){
                         if( i < 3){
-                            $(obj).find(".changeDetil").append('<div class="echartdetil echartdetilD"><div class="font-triangle font-triangleD"><p>订单号：<span class="firSpan">'detailArray[i].sn'</span><br><span class="lastSpan">detailArray[i].createdTimeLabel</span></p></div><div class="font-triangleT font-triangleTD">+ detailArray[i].amountLabel</div></div>');
+                            $(obj).find(".changeDetil").append('<div class="echartdetil echartdetilD"><div class="font-triangle font-triangleD"><p>订单号：<span class="firSpan">'+ detailArray[i].sn +'</span><br><span class="lastSpan">'+ detailArray[i].createdTimeLabel +'</span></p></div><div class="font-triangleT font-triangleTD">+ '+ detailArray[i].amountLabel +'</div></div>');
                         }else if( i == 3){
                             $(obj).find(".changeDetil").append('<a href="${ctx}/u/profit/orderRevenueDetail?mouth='+moth+'&type=${type}" class="lookDetil">查看明细</a>');
                         }
