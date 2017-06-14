@@ -15,7 +15,6 @@
 <title>积分钱包</title>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/account.css">
-  <link rel="stylesheet" href="${ctx}/style.css">
   <style>
     @charset "utf-8";
     html, body, div, p, ul, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, select, button, textarea, iframe, table, th, td { margin: 0; padding: 0; }
@@ -74,7 +73,6 @@
       margin-right: 10px;
     }
     #echartFir {
-      margin-top:20px;
       padding: 10px;
       width:100%;
       height:300px;
@@ -169,13 +167,14 @@
     </a>
   </nav>
   <div class="bgSum clearfloat">
-      <p>上月收入：<span>¥${dataMap.BM}</span></p>
-      <p>当前累计：<span>¥${dataMap.TOT}</span></p>
-      <p class="percent">上月环比：<span>${dataMap.QoQ}%</span></p>
-      <p class="percent last">上月同比：<span>${dataMap.YoY}%</span></p>
+      <p>上月收入：<span>¥<fmt:formatNumber type="number" value="${dataMap.BM}" pattern="0.00" maxFractionDigits="2"/></span></p>
+      <p>当前累计：<span>¥<fmt:formatNumber type="number" value="${dataMap.TOT}" pattern="0.00" maxFractionDigits="2"/></span></p>
+      <p>上月环比：<span>¥<fmt:formatNumber type="number" value="${dataMap.QoQ}" pattern="0.00" maxFractionDigits="2"/>%</span></p>
+      <%--<p>上月同比：<span>¥<fmt:formatNumber type="number" value="${dataMap.YoY}" pattern="0.00" maxFractionDigits="2"/>%</span></p>--%>
   </div>
+
   <div id="echartFir"></div>
-  <div id="last" style="width: 100%;height: 400px;margin-top: 20px;padding: 10px;"></div>
+  <div id="last" style="width: 100%;height: 400px;padding: 10px;"></div>
 
     <div class="all">
       <img src="${ctx}/percent.png" />
@@ -186,8 +185,8 @@
                    <span>订单收益</span>
                  </div>
                <div class="fontImg clearfloat">
-                    <p><span>上月收益：</span>￥${dataMap.ord[0]}</p>
-                    <p><span>累计收益：</span>￥${dataMap.ord[1]}</p>
+                    <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ord[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+                    <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ord[1]}" pattern="0.00" maxFractionDigits="2"/></p>
                </div>
            </div>
         <a href="${ctx}/u/profit/orderRevenue?type=1" class="look">查看详情</a>
@@ -203,8 +202,8 @@
           <span>返利奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.red[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.red[1]}</p>
+          <p><span>上月收益：</span>￥</span>￥<fmt:formatNumber type="number" value="${dataMap.red[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.red[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="${ctx}/u/profit/orderRevenue?type=7" class="look">查看详情</a>
@@ -220,8 +219,8 @@
           <span>数据奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.dat[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.dat[1]}</p>
+          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.dat[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.dat[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="${ctx}/u/profit/orderRevenue?type=2" class="look">查看详情</a>
@@ -236,8 +235,8 @@
           <span>销量奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.sal[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.sal[1]}</p>
+          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sal[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sal[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="${ctx}/u/profit/orderRevenue?type=3" class="look">查看详情</a>
@@ -252,8 +251,8 @@
           <span>特级平级奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.ftl[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.ftl[1]}</p>
+          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ftl[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ftl[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="${ctx}/u/profit/orderRevenue?type=4" class="look">查看详情</a>
@@ -268,8 +267,8 @@
           <span>董事贡献奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.sen[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.sen[1]}</p>
+          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sen[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sen[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="${ctx}/u/profit/orderRevenue?type=8" class="look">查看详情</a>
@@ -284,8 +283,8 @@
           <span>平级推荐奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.ltl[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.ltl[1]}</p>
+          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ltl[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ltl[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="${ctx}/u/profit/orderRevenue?type=5" class="look">查看详情</a>
@@ -300,8 +299,8 @@
           <span>特级推荐奖</span>
         </div>
         <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥${dataMap.rec[0]}</p>
-          <p><span>累计收益：</span>￥${dataMap.rec[1]}</p>
+          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.rec[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.rec[1]}" pattern="0.00" maxFractionDigits="2"/></p>
         </div>
       </div>
       <a href="${ctx}/u/profit/orderRevenue?type=6" class="look">查看详情</a>
@@ -312,6 +311,17 @@
 <script type="text/javascript">
   var arrays="${dataMap.PL}";
   var array=arrays.split(",");
+  var arrayNew=[];
+  var arrayNewT=[];
+  for(var i=0;i<array.length;i++){
+    if(i%2==0){
+      arrayNew.push(array[i]);
+      arrayNewT.push('-');
+    }else {
+      arrayNew.push('-');
+      arrayNewT.push(array[i]);
+    }
+  }
   $(function(){
     $(".percentNum").css("width",$(".all img").css("width"));
   })
@@ -335,18 +345,20 @@
           show: true,
           type: ['pie', 'funnel']
         },
-
         saveAsImage : {show: true}
       }
     },
-    xAxis:  {
-      type: 'category',
-      splitLine: {
-        show: false
+      xAxis: {
+        type : 'category',
+        splitLine: {show:false},
+        data :  function (){
+          var list = [];
+          for (var i = 1; i <= 12; i++) {
+            list.push(i + '月');
+          }
+          return list;
+        }()
       },
-      boundaryGap: false,
-      data: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
-    },
     yAxis: {
       type: 'value',
       axisLabel: {
@@ -355,15 +367,28 @@
     },
     series: [
       {
-        name:'月收益',
-        type:'line',
-        data:array,
-        markPoint: {
-          data: [
-            {type: 'max', name: '1'},
-            {type: 'min', name: '2'},
-          ]
-        }
+        name: '',
+        type: 'bar',
+        stack: '总量',
+        label: {
+          normal: {
+            show: true,
+            position: 'top'
+          }
+        },
+        data: arrayNew
+      },
+      {
+        name: '',
+        type: 'bar',
+        stack: '总量',
+        label: {
+          normal: {
+            show: true,
+            position: 'top'
+          }
+        },
+        data: arrayNewT
       }
     ]
   };
@@ -388,42 +413,36 @@
       y : 'bottom',
       data:['特级平级奖','订单收益','返利奖','数据奖','董事贡献奖','特级推荐奖','平级推荐奖','销量奖']
     },
-    toolbox: {
-      show : true,
-      feature : {
-        mark : {show: false},
-        dataView : {show: true, readOnly: false},
-        magicType : {
-          show: true,
-          type: ['pie', 'funnel']
-        },
-        saveAsImage : {show: true}
-      }
-    },
+//    toolbox: {
+//      show : true,
+//      feature : {
+//        mark : {show: false},
+//        dataView : {show: true, readOnly: false},
+//        magicType : {
+//          show: true,
+//          type: ['pie', 'funnel']
+//        },
+//        saveAsImage : {show: true}
+//      }
+//    },
     calculable : true,
     series : [
       {
-        name:'',
+        name:'累计收益',
         type:'pie',
-        radius : [20, 110],
-        center : ['25%', '50%'],
-        roseType : 'radius',
-        label: {
-          normal: {
-            show: false
-          },
-          emphasis: {
-            show: true
-          }
-        },
-        lableLine: {
-          normal: {
-            show: false
-          },
-          emphasis: {
-            show: true
-          }
-        }
+        radius : [30, 110],
+        center : ['50%', '50%'],
+        roseType : 'area',
+        data:[
+          {value:array[0], name:'特级平级奖'},
+          {value:array[1], name:'订单收益'},
+          {value:array[2], name:'返利奖'},
+          {value:array[3], name:'数据奖'},
+          {value:array[4], name:'董事贡献奖'},
+          {value:array[5], name:'特级推荐奖'},
+          {value:array[6], name:'平级推荐奖'},
+          {value:array[7], name:'销量奖'}
+        ]
       },
       {
         name:'累计收益',
@@ -431,6 +450,15 @@
         radius : [30, 110],
         center : ['50%', '50%'],
         roseType : 'area',
+        label: {
+          normal: {
+            position: 'inside',
+            formatter: '{d}%',
+            textStyle: {
+              color: '#fff'
+            }
+          }
+        },
         data:[
           {value:array[0], name:'特级平级奖'},
           {value:array[1], name:'订单收益'},

@@ -171,7 +171,7 @@ public class ProfitServiceImpl implements ProfitService {
 		if (depositSumDto!=null&&depositSumDto.getSumAmount()!=null){
 			beforeData=depositSumDto.getSumAmount().doubleValue();
 		}
-		map.put("BM",beforeData);
+		map.put("BM",com.zy.common.util.DateUtil.formatDouble(beforeData));
         //构建查询累计 受益参数
 		profitQueryModel.setCreatedTimeLT(new Date());
 		profitQueryModel.setCreatedTimeGTE(null);
@@ -180,7 +180,7 @@ public class ProfitServiceImpl implements ProfitService {
 		if (depositSumDtoTot!=null&&depositSumDtoTot.getSumAmount()!=null){
 			totalData=depositSumDtoTot.getSumAmount().doubleValue();
 		}
-		map.put("TOT",totalData);
+		map.put("TOT",com.zy.common.util.DateUtil.formatDouble(totalData));
 		//处理环比
 		profitQueryModel.setCreatedTimeGTE(com.zy.common.util.DateUtil.getBeforeMonthBegin(new Date(),-2,0));
 		profitQueryModel.setCreatedTimeLT(com.zy.common.util.DateUtil.getBeforeMonthEnd(new Date(),-1,0));
@@ -240,35 +240,35 @@ public class ProfitServiceImpl implements ProfitService {
 		List<ProfitSumDto> porfitList = profitMapper.sumGroupBy(profitQueryModel);
          for (ProfitSumDto profitSumDto :porfitList){
 			 if(profitSumDto.getProfitType()==ProfitType.特级平级奖){
-				 pieDate[0]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				 pieDate[0]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				 continue;
 			 }
 			 if(profitSumDto.getProfitType()==ProfitType.订单收款){
-				 pieDate[1]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				 pieDate[1]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				 continue;
 			 }
 			 if(profitSumDto.getProfitType()==ProfitType.返利奖){
-				 pieDate[2]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				 pieDate[2]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				 continue;
 			 }
 			 if(profitSumDto.getProfitType()==ProfitType.数据奖){
-				 pieDate[3]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				 pieDate[3]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				 continue;
 			 }
 			 if(profitSumDto.getProfitType()==ProfitType.董事贡献奖){
-				 pieDate[4]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				 pieDate[4]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				 continue;
 			 }
 			 if(profitSumDto.getProfitType()==ProfitType.特级推荐奖){
-				 pieDate[5]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				 pieDate[5]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				 continue;
 			 }
 			 if(profitSumDto.getProfitType()==ProfitType.平级推荐奖){
-				 pieDate[6]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				 pieDate[6]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				 continue;
 			 }
 			 if(profitSumDto.getProfitType()==ProfitType.销量奖){
-				 pieDate[7]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				 pieDate[7]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				 continue;
 			 }
 		 }
@@ -278,60 +278,60 @@ public class ProfitServiceImpl implements ProfitService {
 		profitQueryModel.setCreatedTimeLT(com.zy.common.util.DateUtil.getBeforeMonthEnd(new Date(),0,0));
 		List<ProfitSumDto> porfitMothList = profitMapper.sumGroupBy(profitQueryModel);
 		//先初始化值
-		map.put("ftl",new double[]{0,pieDate[0]});
-		map.put("ord",new double[]{0,pieDate[1]});
-		map.put("red",new double[]{0,pieDate[2]});
-		map.put("dat",new double[]{0,pieDate[3]});
-		map.put("sen",new double[]{0,pieDate[4]});
-		map.put("rec",new double[]{0,pieDate[5]});
-		map.put("ltl",new double[]{0,pieDate[6]});
-		map.put("sal",new double[]{0,pieDate[7]});
+		map.put("ftl",new double[]{0.00,pieDate[0]});
+		map.put("ord",new double[]{0.00,pieDate[1]});
+		map.put("red",new double[]{0.00,pieDate[2]});
+		map.put("dat",new double[]{0.00,pieDate[3]});
+		map.put("sen",new double[]{0.00,pieDate[4]});
+		map.put("rec",new double[]{0.00,pieDate[5]});
+		map.put("ltl",new double[]{0.00,pieDate[6]});
+		map.put("sal",new double[]{0.00,pieDate[7]});
 		for (ProfitSumDto profitSumDto :porfitMothList){
 			double mothDate[] = new double[2];
 			if(profitSumDto.getProfitType()==ProfitType.特级平级奖){
-				mothDate[0]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				mothDate[0]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				mothDate[1]=pieDate[0];
 				map.put("ftl",mothDate);
 				continue;
 			}
 			if(profitSumDto.getProfitType()==ProfitType.订单收款){
-				mothDate[0]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				mothDate[0]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				mothDate[1]=pieDate[1];
 				map.put("ord",mothDate);
 				continue;
 			}
 			if(profitSumDto.getProfitType()==ProfitType.返利奖){
-				mothDate[0]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				mothDate[0]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				mothDate[1]=pieDate[2];
 				map.put("red",mothDate);
 				continue;
 			}
 			if(profitSumDto.getProfitType()==ProfitType.数据奖){
-				mothDate[0]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				mothDate[0]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				mothDate[1]=pieDate[3];
 				map.put("dat",mothDate);
 				continue;
 			}
 			if(profitSumDto.getProfitType()==ProfitType.董事贡献奖){
-				mothDate[0]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				mothDate[0]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				mothDate[1]=pieDate[4];
 				map.put("sen",mothDate);
 				continue;
 			}
 			if(profitSumDto.getProfitType()==ProfitType.特级推荐奖){
-				mothDate[0]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				mothDate[0]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				mothDate[1]=pieDate[5];
 				map.put("rec",mothDate);
 				continue;
 			}
 			if(profitSumDto.getProfitType()==ProfitType.平级推荐奖){
-				mothDate[0]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				mothDate[0]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				mothDate[1]=pieDate[6];
 				map.put("ltl",mothDate);
 				continue;
 			}
 			if(profitSumDto.getProfitType()==ProfitType.销量奖){
-				mothDate[0]=profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue();
+				mothDate[0]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				mothDate[1]=pieDate[7];
 				map.put("sal",mothDate);
 				continue;
