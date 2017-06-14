@@ -61,8 +61,8 @@
         .font-triangle p {
             position: absolute;
             top:50%;
-            margin-top: -24px;
-            line-height: 25px;
+            -webkit-transform:translate(0,-50%);
+            transform:translate(0,-50%);
         }
         .font-triangle .firSpan,.font-triangle .lastSpan {
             font-size: 16px;
