@@ -85,23 +85,21 @@
             border-top:none;
         }
         .font-triangleT {
-            float: right;
-            width:45%;
-            height:100%;
             margin-right: 5%;
             text-align: right;
             font-size: 16px;
             line-height: 80px;
+            position: absolute;
+            right:10px;
         }
         .echartdetilD {
             background: none;
         }
         .font-triangleD {
-            width:50%;
-            margin-left: 10%;
+            width:95%;
+            margin-left: 5%;
             font-size: 16px;
         }
-        .font-triangleTD {width:35%;}
         .lookDetil {
             width:100%;
             height:40px;
@@ -146,8 +144,8 @@
                     ￥${revenue}
                 </div>
             </div>
-            <div class="changeDetil">
-            </div>
+        </div>
+        <div class="changeDetil">
         </div>
     </c:forEach>
 </article>
@@ -155,13 +153,14 @@
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">
     function changeTriangle(obj) {
+
         var type = ${type};
         var moth = $(obj).find(".font-triangle p span").text();
         var change = $(obj).find(".triangle-up").attr("class");
         if(change=="triangle-up"){
             $(obj).find(".triangle-up").addClass("triangle-down");
             $(obj).siblings(".detilAll").find(".triangle-up").removeClass("triangle-down");
-            $(obj).find(".changeDetil").show();
+            $(obj).next(".changeDetil").show();
             $.ajax({
                 url : '${ctx}/u/profit/revenueDetail',
                 data : {
@@ -172,24 +171,23 @@
                 type : 'POST',
                 success : function(result) {
                     var detailArray = result.data;
-//                    console.info(detailArray.length);
                     for(var i = 0; i < detailArray.length; i++){
                         if( i < 3){
-                            $(obj).find(".changeDetil").append('<div class="echartdetil echartdetilD"><div class="font-triangle font-triangleD"><p>订单号：<span class="firSpan">'+ detailArray[i].sn +'</span><br><span class="lastSpan">'+ detailArray[i].createdTimeLabel +'</span></p></div><div class="font-triangleT font-triangleTD">+ '+ detailArray[i].amountLabel +'</div></div>');
+                            $(obj).next(".changeDetil").append('<div class="echartdetil echartdetilD"><div class="font-triangle font-triangleD"><p>订单号：<span class="firSpan">'+ detailArray[i].sn +'</span><br><span class="lastSpan">'+ detailArray[i].createdTimeLabel +'</span></p></div><div class="font-triangleT font-triangleTD">+ '+ detailArray[i].amountLabel +'</div></div>');
                         }else if( i == 3){
-                            $(obj).find(".changeDetil").append('<a href="${ctx}/u/profit/orderRevenueDetail?mouth='+moth+'&type=${type}" class="lookDetil">查看明细</a>');
+                            $(obj).next(".changeDetil").append('<a href="${ctx}/u/profit/orderRevenueDetail?month='+ moth +'&type=${type}" class="lookDetil">查看明细</a>');
                         }
                     }
-                    $(obj).siblings(".detilAll").find(".changeDetil").html("");
+                    $(obj).siblings(".detilAll").next(".changeDetil").html("");
 
-                    $(obj).siblings(".detilAll").find(".changeDetil").hide();
+                    $(obj).siblings(".detilAll").next(".changeDetil").hide();
                 }
 
             });
         }else {
             $(obj).find(".triangle-up").removeClass("triangle-down");
-            $(obj).find(".changeDetil").html("");
-            $(obj).find(".changeDetil").hide();
+            $(obj).next(".changeDetil").html("");
+            $(obj).next(".changeDetil").hide();
         }
     }
 
