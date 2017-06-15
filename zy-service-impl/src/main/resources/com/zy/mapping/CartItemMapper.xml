@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.CartItemMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.mal.CartItem">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="product_id" property="productId" />
+		<result column="price" property="price" />
+		<result column="quantity" property="quantity" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.zy.entity.mal.CartItem" useGeneratedKeys="true" keyProperty="id">
+	  insert into `mal_cart_item` (user_id,product_id,price,quantity)
+	  values (#{userId},#{productId},#{price},#{quantity})
+	</insert>
+
+	<delete id="delete">
+		delete from `mal_cart_item` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.mal.CartItem">
+		update `mal_cart_item`
+		<set>
+			user_id = #{userId},
+			product_id = #{productId},
+			price = #{price},
+			quantity = #{quantity},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `mal_cart_item`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{cartItem.userId},</when>
+					<when test="field == 'productId'">product_id = #{cartItem.productId},</when>
+					<when test="field == 'price'">price = #{cartItem.price},</when>
+					<when test="field == 'quantity'">quantity = #{cartItem.quantity},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{cartItem.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		id,user_id,product_id,price,quantity
+		from `mal_cart_item`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.CartItemQueryModel">
+		select
+		id,user_id,product_id,price,quantity
+		from `mal_cart_item`
+		<where>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.CartItemQueryModel">
+		select count(*) from `mal_cart_item`
+		<where>
+		</where>
+	</select>
+
+</mapper>
