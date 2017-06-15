@@ -194,9 +194,8 @@
     }
 
 
-    <%--var arrays = "${dateMap.revenue}";--%>
-    <%--var array= arrays.split(",");--%>
-    var array=[48,56,54,36,28,58];
+    var arrays = "${dateMap.revenue}";
+    var array= arrays.split(",");
     <%--console.info(${revenues});--%>
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echartFir'));
