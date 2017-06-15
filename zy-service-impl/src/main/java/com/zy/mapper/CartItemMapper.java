@@ -24,4 +24,10 @@ public interface CartItemMapper {
 
 	long count(CartItemQueryModel cartItemQueryModel);
 
+	CartItem findByUserIdAndProductId(@Param("userId") Long userId, @Param("productId") Long productId);
+
+	List<CartItem> findByUserId(@Param("userId") Long userId);
+
+	void deleteByUserId(@Param("userId") Long userId);
+
 }

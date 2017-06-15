@@ -77,4 +77,23 @@
 		</where>
 	</select>
 
+	<select id="findByUserIdAndProductId" resultMap="baseResultMap">
+		select
+		*
+		from `mal_cart_item`
+		where user_id = #{userId}
+		and product_id = #{productId}
+	</select>
+
+	<delete id="deleteByUserId" parameterType="long">
+		delete from `mal_cart_item` where user_id = #{userId}
+	</delete>
+
+	<select id="findByUserId" resultMap="baseResultMap" parameterType="long">
+		select
+		*
+		from `mal_cart_item`
+		where user_id = #{userId}
+	</select>
+
 </mapper>
