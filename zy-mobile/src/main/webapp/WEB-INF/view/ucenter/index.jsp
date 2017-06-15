@@ -16,6 +16,11 @@
 <title>${sys} - 我的</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/index.css" />
+  <style>
+    .icon-heartNew {
+      background-image: url(${ctx}/icon_heartNew.png);
+    }
+  </style>
 </head>
 <body class="footer-fixed">
 
@@ -104,7 +109,7 @@
         <%--<i class="list-arrow"></i>--%>
       <%--</a>--%>
       <a class="list-item list-item-icon" href="${ctx}/u/activity/collectList">
-        <i class="list-icon icon icon-heart"></i>
+        <i class="list-icon icon icon-heart icon-heartNew"></i>
         <div class="list-text">关注的活动</div>
         <i class="list-arrow"></i>
       </a>

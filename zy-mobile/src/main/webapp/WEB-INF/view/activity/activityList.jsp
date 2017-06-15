@@ -21,6 +21,9 @@
     .user-account {
       margin-bottom: 20px;
     }
+     .icon-heartNew {
+       background-image: url(${ctx}/icon_heartNew.png);
+     }
   </style>
 <script>
   $(function() {
@@ -42,7 +45,7 @@
           <em>报名的活动</em>
         </a>
         <a class="flex-1 bd-r" href="${ctx}/u/activity/collectList">
-          <i class="list-icon icon icon-heart"></i>
+          <i class="list-icon icon icon-heart icon-heartNew"></i>
           <em>关注的活动</em>
         </a>
         <a class="flex-1" href="${ctx}/u/activity/teamApplyList">
