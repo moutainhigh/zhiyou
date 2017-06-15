@@ -336,18 +336,18 @@
     tooltip: {
       trigger: 'axis'
     },
-    toolbox: {
-      show : true,
-      feature : {
-        mark : {show: false},
-        dataView : {show: true, readOnly: false},
-        magicType : {
-          show: true,
-          type: ['pie', 'funnel']
-        },
-        saveAsImage : {show: true}
-      }
-    },
+//    toolbox: {
+//      show : true,
+//      feature : {
+//        mark : {show: false},
+//        dataView : {show: true, readOnly: false},
+//        magicType : {
+//          show: true,
+//          type: ['pie', 'funnel']
+//        },
+//        saveAsImage : {show: true}
+//      }
+//    },
       xAxis: {
         type : 'category',
         splitLine: {show:false},
@@ -367,7 +367,7 @@
     },
     series: [
       {
-        name: '',
+        name: '金额',
         type: 'bar',
         stack: '总量',
         label: {
@@ -379,7 +379,7 @@
         data: arrayNew
       },
       {
-        name: '',
+        name: '金额 ',
         type: 'bar',
         stack: '总量',
         label: {

@@ -31,6 +31,7 @@
         a { display:block; }
         a,input,textarea,p,span,h2,em,li,div{text-decoration: none; }
         input,textarea{font-family:"Microsoft YaHei"}
+        .account {background-color: #fff;}
         #echartFir {
             padding: 10px;
             padding-top: 0;
@@ -105,11 +106,12 @@
             height:40px;
             text-align: center;
             line-height: 40px;
-            color: #74c2db;
+            color: #6cb92d;
             font-size: 20px;
         }
         .changeDetil {
             display: none;
+            background: #e9eaed;
         }
     </style>
     <script>
@@ -199,7 +201,7 @@
     var myChart = echarts.init(document.getElementById('echartFir'));
     // 指定图表的配置项和数据
     option = {
-        color: ['#31d9a5'],
+        color: ['#6cb92d'],
         tooltip : {
             trigger: 'axis',
             axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -242,12 +244,18 @@
             }
         },
         series : [
-            {
-                name:'直接访问',
-                type:'bar',
-                barWidth: '60%',
-                data:array
+           {
+            name:'金额',
+            type:'bar',
+            stack: '金额',
+            label: {
+            normal: {
+                show: true,
+                        position: 'top'
             }
+        },
+        data:array
+    }
         ]
     };
     // 使用刚指定的配置项和数据显示图表。
