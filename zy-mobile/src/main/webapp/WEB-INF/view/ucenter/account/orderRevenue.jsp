@@ -194,8 +194,9 @@
     }
 
 
-    var arrays = "${dateMap.revenue}";
-    var array= arrays.split(",");
+    <%--var arrays = "${dateMap.revenue}";--%>
+    <%--var array= arrays.split(",");--%>
+    var array=[48,56,54,36,28,58];
     <%--console.info(${revenues});--%>
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echartFir'));
@@ -236,6 +237,7 @@
             name:'金额',
             type:'bar',
             stack: '金额',
+               barCategoryGap:'40%',
             label: {
             normal: {
                 show: true,
