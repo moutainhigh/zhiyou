@@ -231,18 +231,6 @@
                 type : 'value'
             }
         ],
-        toolbox: {
-            show : true,
-            feature : {
-                mark : {show: false},
-                dataView : {show: true, readOnly: false},
-                magicType : {
-                    show: true,
-                    type: ['pie', 'funnel']
-                },
-                saveAsImage : {show: true}
-            }
-        },
         series : [
            {
             name:'金额',
