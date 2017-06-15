@@ -191,7 +191,7 @@
           <!-- END RESPONSIVE QUICK SEARCH FORM -->
         </li>
 
-        <shiro:hasAnyPermissions name="product:view,order:view,order:deliver">
+        <shiro:hasAnyPermissions name="product:view,order:view,order:deliver,orderFillUser:view,productReplacement:view">
           <li>
             <a href="javascript:;">
               <i class="icon-basket"></i>
@@ -232,7 +232,7 @@
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="activity:view,report:view">
+        <shiro:hasAnyPermissions name="activity:view,report:view,activityReport:view,activityTicket:view,activityApply:view,policy:view,policyCode:view,reportVisitedLog:view">
           <li>
             <a href="javascript:;">
               <i class="icon-globe"></i>
@@ -414,8 +414,8 @@
           </li>
         </shiro:hasAnyPermissions>
         
-        <shiro:hasAnyPermissions name="userTreeReport:view,teamReport:view,userUpgradeReport:view,orderReport:view,financeReport:view,orderQuantity:view
-                                      ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view">
+        <shiro:hasAnyPermissions name="userTreeReport:view,v4TreeReport:view,orderReport:view,teamReport:view,userUpgradeReport:view,financeReport:view,orderQuantity:view
+                                      ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view,activitySummaryReport:view">
           <li>
             <a href="javascript:;">
               <i class="icon-grid"></i>
