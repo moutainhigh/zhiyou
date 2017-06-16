@@ -60,10 +60,10 @@ public class FyWeixinPayNotifyController {
 				logger.info("OutOrderNum sn :" + sn);
 				if (sn != null && sn.startsWith("ZF")){
 					Payment payment = paymentService.findBySn(sn);
-					String remark = fuiouWeixinPayNotifyReq.getRemark();
+					/*String remark = fuiouWeixinPayNotifyReq.getRemark();
 					if (StringUtils.isBlank(remark) || !remark.equalsIgnoreCase(payment.getRemark())) {
 						throw new BizException(BizCode.ERROR, "备注信息验证失败：备注信息不一致");
-					}
+					}*/
 					paymentService.success(payment.getId(), payment.getOuterSn());
 				}
 			} else {
