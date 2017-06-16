@@ -126,7 +126,7 @@ public class ProfitServiceImpl implements ProfitService {
 
 	@Override
 	public List<Profit> orderRevenueDetail(@NotNull ProfitQueryModel profitQueryModel) {
-		profitQueryModel.setCreatedTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),profitQueryModel.getMonth(),0));
+		profitQueryModel.setCreatedTimeGTE(DateUtil.getMonthBegin(new Date(),profitQueryModel.getMonth(),0));
 		profitQueryModel.setCreatedTimeLT(DateUtil.getBeforeMonthEnd(new Date(),profitQueryModel.getMonth() + 7,-1));
 		List<Profit> list = profitMapper.orderRevenueDetail(profitQueryModel);
 		return list;
