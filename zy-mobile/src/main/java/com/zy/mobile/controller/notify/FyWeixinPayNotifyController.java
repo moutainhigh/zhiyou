@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -37,7 +38,7 @@ public class FyWeixinPayNotifyController {
 
 	@RequestMapping
 	@ResponseBody
-	public FuiouWeixinPayNotifyRes payNotify(FuiouWeixinPayNotifyReq fuiouWeixinPayNotifyReq) {
+	public FuiouWeixinPayNotifyRes payNotify(FuiouWeixinPayNotifyReq fuiouWeixinPayNotifyReq, HttpServletResponse response) {
 		logger.info("enter fy weixin pay notify controller");
 		logger.info("fuiouWeixinPayNotifyReq: " + JsonUtils.toJson(fuiouWeixinPayNotifyReq));
 		FuiouWeixinPayNotifyRes fuiouWeixinPayNotifyRes = new FuiouWeixinPayNotifyRes();
@@ -72,6 +73,7 @@ public class FyWeixinPayNotifyController {
 			fuiouWeixinPayNotifyRes.setResult("SUCCESS");
 		} catch (Throwable throwable) {
 			fuiouWeixinPayNotifyRes.setResult("FAIL");
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 		return fuiouWeixinPayNotifyRes;
 	}
