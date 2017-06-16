@@ -47,6 +47,22 @@ public class DateUtil {
     }
 
     /**
+     * 获取指定月份的第一天的开始
+     * @param date
+     */
+    public static Date getMonthBegin(Date date,int month,int year){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.MONTH, month-1);
+        calendar.add(Calendar.YEAR, year);
+        return calendar.getTime();
+    }
+
+    /**
      * 查询 当前 时间所属月份
      * @param date
      * @return
