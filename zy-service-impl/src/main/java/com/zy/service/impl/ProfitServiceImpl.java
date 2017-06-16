@@ -127,7 +127,7 @@ public class ProfitServiceImpl implements ProfitService {
 
 	@Override
 	public List<Profit> orderRevenueDetail(@NotNull ProfitQueryModel profitQueryModel) {
-		profitQueryModel.setCreatedTimeGTE(DateUtil.getMonthBegin(new Date(),profitQueryModel.getMonth(),0));
+		profitQueryModel.setCreatedTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),profitQueryModel.getMonth(),0));
 		profitQueryModel.setCreatedTimeLT(DateUtil.getBeforeMonthEnd(new Date(),profitQueryModel.getMonth() + 7,-1));
 		List<Profit> list = profitMapper.orderRevenueDetail(profitQueryModel);
 		return list;
@@ -173,7 +173,7 @@ public class ProfitServiceImpl implements ProfitService {
 		}
 		map.put("BM",com.zy.common.util.DateUtil.formatDouble(beforeData));
         //构建查询累计 受益参数
-		profitQueryModel.setCreatedTimeLT(new Date());
+		profitQueryModel.setCreatedTimeLT(com.zy.common.util.DateUtil.getBeforeMonthEnd(new Date(),0,0));
 		profitQueryModel.setCreatedTimeGTE(null);
 		double totalData =0d;
 		DepositSumDto depositSumDtoTot =profitMapper.sum(profitQueryModel);//截止到当前时间  总的收益
@@ -233,7 +233,7 @@ public class ProfitServiceImpl implements ProfitService {
        map.put("PL",com.zy.common.util.DateUtil.arryToString(polyLineData,true)); //折线图数据
 		//处理饼图 及 详细显示  特级平级奖,订单收益,返利奖,数据奖,董事贡献奖,特级推荐奖,平级推荐奖,销量奖
 		double pieDate[] = new double[]{0,0,0,0,0,0,0,0};  //sumGroupBy
-		profitQueryModel.setCreatedTimeLT(new Date());
+		profitQueryModel.setCreatedTimeLT(com.zy.common.util.DateUtil.getBeforeMonthEnd(new Date(),0,0));
 		profitQueryModel.setCreatedTimeGTE(null);
 		profitQueryModel.setProfitTypeIN(null);
 		profitQueryModel.setGroupby(1);
