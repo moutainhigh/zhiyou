@@ -137,15 +137,16 @@ public class DateUtil {
      * @param data
      * @return
      */
-    public  static Double countPro(long[]arrydata,long data){
-        long coun =0;
+    public  static String countPro(long[]arrydata,long data){
+        DecimalFormat df = new DecimalFormat("###0.00");
+        long coun =0L;
        if (data==0){
-           return 0d;
+           return "0.00";
        }
         for (int i=0;i<arrydata.length;i++){
             coun=coun+arrydata[i];
         }
-     return DateUtil.formatDouble(coun/data*100);
+     return df.format(coun/data*100);
     }
     public static void  main(String []age){
         System.out.print(dateFormat.format(DateUtil.getBeforeMonthEnd(new Date(),11+7,-1)));

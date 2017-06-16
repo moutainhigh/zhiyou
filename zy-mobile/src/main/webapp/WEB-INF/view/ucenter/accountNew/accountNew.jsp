@@ -292,7 +292,7 @@
   </div>
   <div class="all">
     <img src="${ctx}/percent.png" />
-    <div class="percentNum">
+      <div class="percentNum">
       <div class="percentNumDiv">
         <div class="fontImg clearfloat">
           <img src="${ctx}/08.png" />
