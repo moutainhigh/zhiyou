@@ -517,4 +517,24 @@
 		)
 	</select>
 
+	<!-- 进货量 -->
+	<select id="queryRetailPurchases" resultType="_long" parameterType="com.zy.model.query.OrderQueryModel">
+		SELECT IFNULL(SUM(a.quantity), 0)
+		FROM mal_order a
+		WHERE a.user_id = #{userIdEQ}
+			  AND a.order_status IN (3, 4, 5)
+			  AND a.paid_time &gt;= #{paidTimeGTE}
+			  AND a.paid_time &lt;= #{paidTimeLT}
+	</select>
+
+	<!-- 出货量 -->
+	<select id="queryShipment" resultType="_long" parameterType="com.zy.model.query.OrderQueryModel">
+		SELECT IFNULL(SUM(a.quantity), 0)
+		FROM mal_order a
+		WHERE a.seller_id = #{sellerIdEQ}
+			  AND a.order_status IN (3, 4, 5)
+			  AND a.paid_time &gt;= #{paidTimeGTE}
+			  AND a.paid_time &lt;= #{paidTimeLT}
+	</select>
+
 </mapper>

@@ -108,7 +108,6 @@ public class ProfitServiceImpl implements ProfitService {
 		Map<String ,Object> returnMap = new HashMap<>();
 		int moth = DateUtil.getMoth(new Date());
 		double polyLineData [] = new double[moth-1];
-		List<Profit> list = null;
 		for (int i = moth - 1; i >= 1;i--){
 			profitQueryModel.setCreatedTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
 			profitQueryModel.setCreatedTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));

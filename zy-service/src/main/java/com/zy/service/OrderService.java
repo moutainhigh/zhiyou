@@ -8,6 +8,7 @@ import com.zy.model.dto.OrderSumDto;
 import com.zy.model.query.OrderQueryModel;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService {
 
@@ -50,4 +51,6 @@ public interface OrderService {
 	void delete(Long orderId);
 	
 	void undelete(Long orderId);
+
+	Map<String,Object> querySalesVolume(OrderQueryModel orderQueryModel);
 }
