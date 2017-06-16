@@ -110,7 +110,8 @@
     myChart.setOption(option);
   </script>
   <script type="text/javascript">
-    var array=[100,310,234,135,125];
+    var counts = "${dataMap.DTot}";
+    var array=counts.split(",");
     var mbolSize = 20;
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echartTeamTwo'));
@@ -193,7 +194,8 @@
     myChart.setOption(optionTwo);
   </script>
   <script type="text/javascript">
-    var array=[335,310,234,135,125];
+    var counts = "${dataMap.MTot}";
+    var array=counts.split(",");
     var mbolSize = 20;
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echartTeamFor'));
