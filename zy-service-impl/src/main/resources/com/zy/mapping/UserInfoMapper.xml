@@ -189,6 +189,107 @@
 		</where>
 	</select>
 
+	<select id="findAllAdmin" resultMap="baseResultMap" parameterType="com.zy.model.query.UserInfoQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `usr_user_info`
+		<where>
+			and confirm_status = 1 OR id_card_number IS NOT NULL
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and user_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+			<if test="idCardNumberLK != null">
+				<bind name="idCardNumberLK" value="'%' + idCardNumberLK + '%'"/> and id_card_number like #{idCardNumberLK}
+			</if>
+			<if test="areaIdIN != null">
+				<if test="areaIdIN.length != 0">
+					and area_id in
+					<foreach collection="areaIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="areaIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="confirmStatusEQ != null">
+				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="realnameLK != null">
+				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+			<if test="areaIdEQ != null">
+				and area_id = #{areaIdEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="countAdmin" resultType="_long" parameterType="com.zy.model.query.UserInfoQueryModel">
+		select count(*) from `usr_user_info`
+		<where>
+			and confirm_status = 1 OR id_card_number IS NOT NULL
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and user_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+			<if test="idCardNumberLK != null">
+				<bind name="idCardNumberLK" value="'%' + idCardNumberLK + '%'"/> and id_card_number like #{idCardNumberLK}
+			</if>
+			<if test="areaIdIN != null">
+				<if test="areaIdIN.length != 0">
+					and area_id in
+					<foreach collection="areaIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="areaIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="confirmStatusEQ != null">
+				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="realnameLK != null">
+				<bind name="realnameLK" value="'%' + realnameLK + '%'"/> and realname like #{realnameLK}
+			</if>
+			<if test="areaIdEQ != null">
+				and area_id = #{areaIdEQ}
+			</if>
+		</where>
+	</select>
+
 	<select id="findByUserId" resultMap="baseResultMap" parameterType="long">
 		select *
 		from `usr_user_info`

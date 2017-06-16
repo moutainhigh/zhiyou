@@ -22,7 +22,11 @@ public interface UserInfoMapper {
 
 	List<UserInfo> findAll(UserInfoQueryModel userInfoQueryModel);
 
+	List<UserInfo> findAllAdmin(UserInfoQueryModel userInfoQueryModel);
+
 	long count(UserInfoQueryModel userInfoQueryModel);
+
+	long countAdmin(UserInfoQueryModel userInfoQueryModel);
 
 	UserInfo findByUserId(Long userId);
 
