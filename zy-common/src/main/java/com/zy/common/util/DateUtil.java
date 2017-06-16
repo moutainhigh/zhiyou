@@ -2,8 +2,8 @@ package com.zy.common.util;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -13,7 +13,6 @@ import java.util.Map;
  */
 public class DateUtil {
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     /**
      * 获取之前月份的第一天的开始
      * @param date
@@ -26,22 +25,6 @@ public class DateUtil {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         calendar.add(Calendar.MONTH, month);
-        calendar.add(Calendar.YEAR, year);
-        return calendar.getTime();
-    }
-
-    /**
-     * 获取指定月份的第一天的开始
-     * @param date
-     */
-    public static Date getMonthBegin(Date date,int month,int year){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.MONTH, month-1);
         calendar.add(Calendar.YEAR, year);
         return calendar.getTime();
     }
@@ -90,16 +73,17 @@ public class DateUtil {
      */
     public static String arryToString(double[]arry,boolean flag){
         StringBuffer str = new StringBuffer("");
+        DecimalFormat df = new DecimalFormat("###0.00");
         if (arry==null&&arry.length==0){
             return str.toString();
         }
         if (!flag) {
             for (int i = 0; i < arry.length; i++) {
-                str.append(arry[i]).append(",");
+                str.append(df.format(arry[i])).append(",");
             }
         }else{
             for (int i = arry.length-1; i >=0; i--) {
-                str.append(arry[i]).append(",");
+                str.append(df.format(arry[i])).append(",");
             }
         }
         if (str.length() > 0) {
@@ -139,16 +123,20 @@ public class DateUtil {
      */
     public  static Double countPro(long[]arrydata,long data){
         long coun =0;
-       if (data==0){
-           return 0d;
-       }
+        if (data==0){
+            return 0d;
+        }
         for (int i=0;i<arrydata.length;i++){
             coun=coun+arrydata[i];
         }
-     return DateUtil.formatDouble(coun/data*100);
+        return DateUtil.formatDouble(coun/data*100);
     }
     public static void  main(String []age){
-        System.out.print(dateFormat.format(DateUtil.getBeforeMonthEnd(new Date(),11+7,-1)));
+        System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthBegin(new Date(),-1,0),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateUtil.getMoth(new Date()));
+        System.out.println(DateUtil.formatDouble(10123456789.0));
     }
+
 
 }

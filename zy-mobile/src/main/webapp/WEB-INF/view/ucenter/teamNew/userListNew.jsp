@@ -44,7 +44,8 @@
   </article>
   <script src="${ctx}/echarts.min.js"></script>
   <script type="text/javascript">
-    var array=[100,310,234,135,125];
+    var counts = "${dataMap.TTot}";
+    var array=counts.split(",");
     var mbolSize = 20;
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echartTeam'));
@@ -80,8 +81,7 @@
             {value:array[0], name:'特级服务商'},
             {value:array[1], name:'省级服务商'},
             {value:array[2], name:'市级服务商'},
-            {value:array[3], name:'VIP服务商'},
-            {value:array[4], name:'普通服务商'}
+            {value:array[3], name:'VIP服务商'}
           ]
         },
         {
@@ -101,8 +101,7 @@
             {value:array[0], name:'特级服务商'},
             {value:array[1], name:'省级服务商'},
             {value:array[2], name:'市级服务商'},
-            {value:array[3], name:'VIP服务商'},
-            {value:array[4], name:'普通服务商'}
+            {value:array[3], name:'VIP服务商'}
           ]
         }
       ]
@@ -111,7 +110,8 @@
     myChart.setOption(option);
   </script>
   <script type="text/javascript">
-    var array=[100,310,234,135,125];
+    var counts = "${dataMap.DTot}";
+    var array=counts.split(",");
     var mbolSize = 20;
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echartTeamTwo'));
@@ -194,7 +194,8 @@
     myChart.setOption(optionTwo);
   </script>
   <script type="text/javascript">
-    var array=[335,310,234,135,125];
+    var counts = "${dataMap.MTot}";
+    var array=counts.split(",");
     var mbolSize = 20;
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echartTeamFor'));

@@ -6,6 +6,7 @@ import com.zy.common.model.query.Page;
 import com.zy.common.util.DateUtil;
 import com.zy.component.FncComponent;
 import com.zy.component.UsrComponent;
+import com.zy.entity.cms.Article;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
@@ -20,8 +21,11 @@ import com.zy.mapper.UserLogMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.dto.AgentRegisterDto;
+import com.zy.model.dto.DepositSumDto;
 import com.zy.model.dto.UserTeamCountDto;
+import com.zy.model.dto.UserTeamDto;
 import com.zy.model.query.UserQueryModel;
+import com.zy.model.query.UserlongQueryModel;
 import com.zy.service.UserService;
 import me.chanjar.weixin.common.util.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
@@ -555,7 +559,8 @@ public class UserServiceImpl implements UserService {
         validate(user, NOT_NULL, "user id " + userId + "not found");
         long []data = new long[]{0,0,0,0};
         if(user.getUserRank()==UserRank.V4){//特级的做   递归处理
-         Map<String,Long> dataMap = conyteamTotalV4(userId);
+            Map<String,Long> returnMap = new HashMap<String,Long>();
+         Map<String,Long> dataMap = conyteamTotalV4(userId,returnMap);
             data[0] = dataMap.get("V4");
             data[1] = dataMap.get("V3");
             data[2] = dataMap.get("V2");
@@ -581,9 +586,11 @@ public class UserServiceImpl implements UserService {
      * 递归统计数据
      * @return
      */
-   private Map<String,Long> conyteamTotalV4(Long userId){
-       Map<String,Long> returnMap = new HashMap<String,Long>();
+   private Map<String,Long> conyteamTotalV4(Long userId, Map<String,Long> returnMap){
        List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
+       if (dataList==null||dataList.isEmpty()){
+           return returnMap;
+       }
        for (UserTeamCountDto userTeamDto :dataList){
            if (UserRank.V4==userTeamDto.getUserRankEQ()){
                Long countV4 = returnMap.get("V4")==null?0L:returnMap.get("V4");
@@ -617,7 +624,7 @@ public class UserServiceImpl implements UserService {
        userQueryModel.setParentIdNL(userId);
        List<User> userList = userMapper.findAll(userQueryModel);
        for (User user :userList){
-           conyteamTotalV4(user.getId());
+           conyteamTotalV4(user.getId(),returnMap);
        }
        return returnMap;
    }
@@ -629,7 +636,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public long[] countdirTotal(Long userId) {
-        long []data = new long[]{0,0,0,0};
+        long []data = new long[]{0,0,0,0,0};
         List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
         for (UserTeamCountDto userTeamDto :dataList){
             if (UserRank.V4==userTeamDto.getUserRankEQ()){
@@ -639,6 +646,8 @@ public class UserServiceImpl implements UserService {
             }else if (UserRank.V2==userTeamDto.getUserRankEQ()){
                 data[2] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
             }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
+                data[3] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+            }else if (UserRank.V0==userTeamDto.getUserRankEQ()){
                 data[4] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
             }
         }
@@ -654,9 +663,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<String,Object> countNewMemTotal(Long userId, boolean flag) {
         Map<String,Object> returnMap = new HashMap<String,Object>();
-        long []data = new long[]{0,0,0,0};
+        long []data = new long[]{0,0,0,0,0};
         Map<String,Object>dataMap = new HashMap<String,Object>();
-        dataMap.put("remark","%从V0%");
+        dataMap.put("remark","从V0%");
         dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),-1,0));
         dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthBegin(new Date(),0,0));
           if(flag){
@@ -673,6 +682,8 @@ public class UserServiceImpl implements UserService {
             }else if (UserRank.V2==userTeamDto.getUserRankEQ()){
                 data[2] = userTeamDto.getCountNum()==null?0l:userTeamDto.getCountNum();
             }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
+                data[3] = userTeamDto.getCountNum()==null?0l:userTeamDto.getCountNum();
+            }else if (UserRank.V0==userTeamDto.getUserRankEQ()){
                 data[4] = userTeamDto.getCountNum()==null?0l:userTeamDto.getCountNum();
             }
         }
@@ -700,15 +711,99 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 处理排名
-     * @param userId
+     * @param
      * @param flag 判断是否是详细页面
      * @return
      */
     @Override
-    public Map<String, Object> disposeRank(Long userId, boolean flag) {
-        Map<String,Object> returnMap = new HashMap<String,Object>();
-
-        return null;
+    public Page<UserTeamDto> disposeRank(UserlongQueryModel userlongQueryModel, boolean flag) {
+        Long parentId = userlongQueryModel.getParentIdNL();//将id暂存下来
+        userlongQueryModel.setRemark("从V0%");
+        userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthBegin(new Date(),0,0));
+        userlongQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-1,0));
+        userlongQueryModel.setParentIdNL(null);
+        List<UserTeamDto> userRankList= userLogMapper.findByRank(userlongQueryModel);
+        Page<UserTeamDto> page = new Page<>();
+        if (flag){//详情页
+           long total =userLogMapper.countByRank(userlongQueryModel);
+            page.setTotal(total);
+        }
+        page.setPageNumber(userlongQueryModel.getPageNumber());
+        page.setPageSize(userlongQueryModel.getPageSize());
+        page.setData(userRankList);
+        return page;
     }
+
+    /**
+     * 统计查询 活跃人数
+     * @param userQueryModel
+     * @return
+     */
+    @Override
+    public long countByActive(UserQueryModel userQueryModel) {
+        return userMapper.countByActive(userQueryModel);
+    }
+
+    /**
+     * 查询  不活跃的人数
+     * @param userQueryModel
+     * @param flag
+     * @return
+     */
+    @Override
+    public Page<User> findActive(UserQueryModel userQueryModel, boolean flag) {
+        userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthBegin(new Date(),0,0));
+        userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-3,0));
+        List<User> userRankList= userMapper.findByNotActive(userQueryModel);
+        Page<User> page = new Page<>();
+        if (flag) {
+            long total = userMapper.countByNotActive(userQueryModel);
+            page.setTotal(total);
+        }
+        page.setPageNumber(userQueryModel.getPageNumber());
+        page.setPageSize(userQueryModel.getPageSize());
+        page.setData(userRankList);
+        return page;
+    }
+
+    /**
+     * 统计 排名级别
+     * @param userlongQueryModel
+     * @return
+     */
+    @Override
+    public List<DepositSumDto> findRankGroup(UserlongQueryModel userlongQueryModel) {
+        return userLogMapper.findRankGroup(userlongQueryModel);
+    }
+
+    /**
+     * 查询  当前人的排名
+     * @param userlongQueryModel
+     * @return
+     */
+    @Override
+    public List<UserTeamDto> findByRank(UserlongQueryModel userlongQueryModel) {
+        return userLogMapper.findByRank(userlongQueryModel);
+    }
+
+    /**
+     *新进特级
+     * @param ids
+     * @return
+     */
+    @Override
+    public Map<String, Object> findNewSup(long[] ids) {
+        Map<String,Object>dataMap = new HashMap<String,Object>();
+        dataMap.put("remark","%改为V4%");
+        dataMap.put("endTime", DateUtil.getBeforeMonthBegin(new Date(),-1,0));
+        dataMap.put("beginTime",DateUtil.getBeforeMonthBegin(new Date(),0,0));
+        List<User>userList = userMapper.findSupAll(dataMap);
+        dataMap.put("parentIdIN",ids);
+        List<User>myuserList = userMapper.findSupAll(dataMap);
+        dataMap.put("UA",userList);
+        dataMap.put("MY",myuserList);
+        return dataMap;
+    }
+
 
 }

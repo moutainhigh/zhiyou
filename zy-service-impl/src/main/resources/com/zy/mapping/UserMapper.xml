@@ -195,6 +195,9 @@
 				and 1 = 2
 				</if>
 			</if>
+			<if test="nameorPhone != null">
+				and (phone = #{nameorPhone} or nickname like #{nameorPhone}}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -287,6 +290,9 @@
 				and 1 = 2
 				</if>
 			</if>
+			<if test="nameorPhone != null">
+				and (phone = #{nameorPhone} or nickname like #{nameorPhone})
+			</if>
 		</where>
 	</select>
 
@@ -304,12 +310,110 @@
 		select * from `usr_user` where code = #{code}
 	</select>
 
-	<!--<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
+	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
 		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="countNum" property="countNum"/>
 	</resultMap>
 	<select id="countByUserId" resultMap="countResultMap" parameterType="long">
-		select user_rank userRankEQ,COUNT(*) countNum FROM `usr_user` where user_rank!=0 AND parent_id = #{parentId} GROUP BY user_rank
-	</select>-->
+		select user_rank userRankEQ,COUNT(*) countNum FROM `usr_user` where parent_id = #{parentId} GROUP BY user_rank
+	</select>
+
+	<select id="countByActive" resultType="_long"  parameterType="com.zy.model.query.UserQueryModel">
+		select count(m.id) from usr_user u,mal_order m where m.user_id=u.id
+		<if test="parentIdNL !=null">
+			AND u.parent_id =#{parentIdNL}
+		</if>
+		<if test="registerTimeLT !=null">
+			and m.created_time &lt;=#{registerTimeLT}
+		</if>
+		<if test="registerTimeGTE !=null">
+			and m.created_time &gt;=#{registerTimeGTE}
+		</if>
+	</select>
+
+	<select id="findByNotActive" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT * from usr_user uu
+		<where>
+			<if test="parentIdNL !=null">
+			   AND uu.parent_id =#{parentIdNL}
+			</if>
+			<if test="nameorPhone != null">
+				and (uu.phone = #{nameorPhone} or uu.nickname like #{nameorPhone})
+			</if>
+			AND uu.id not in( SELECT DISTINCT(u.id) from usr_user u,mal_order m
+			where m.user_id = u.id
+			<if test="parentIdNL !=null">
+				and u.parent_id =#{parentIdNL}
+			</if>
+			<if test="registerTimeGTE !=null">
+				AND m.created_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="registerTimeLT !=null">
+				AND m.created_time &lt;= #{registerTimeLT}
+			</if>
+			)
+		</where>
+			<if test="offset != null">
+				limit #{offset}, #{pageSize}
+			</if>
+
+	</select>
+
+
+	<select id="countByNotActive" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT count(*) from usr_user
+		<where>
+			<if test="parentIdNL !=null">
+			  and parent_id =#{parentIdNL}
+			</if>
+			<if test="nameorPhone != null">
+				and (uu.phone = #{nameorPhone} or uu.nickname like #{nameorPhone})
+			</if>
+			and id not in( SELECT DISTINCT(u.id)
+			FROM
+			usr_user u,
+			mal_order m
+			WHERE
+			m.user_id = u.id
+			<if test="parentIdNL !=null">
+				u.parent_id =#{parentIdNL}
+			</if>
+			<if test="registerTimeGTE !=null">
+				AND m.created_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="registerTimeLT !=null">
+				AND m.created_time &lt;= #{registerTimeLT}
+			</if>
+			)
+		</where>
+	</select>
+	<select id="findSupAll" resultMap="baseResultMap">
+		 select * from `usr_user` u where
+	    u.id in(
+		    select l.user_id from usr_user_log l
+		  <where>
+			  <if test="parentIdIN != null">
+				  <if test="parentIdIN.length != 0">
+					  and l.user_id in
+					  <foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+						  #{item}
+					  </foreach>
+					  <if test="endTime !=null">
+						  AND l.operated_Time &gt;= #{registerTimeGTE}
+					  </if>
+					  <if test="beginTime !=null">
+						  AND l.operated_Time &lt;= #{registerTimeLT}
+					  </if>
+					  <if test="remark !=null">
+						  AND l.remark LIKE #{remark}
+					  </if>
+				  </if>
+
+			  </if>
+
+		 </where>
+      )
+
+	</select>
 
 </mapper>

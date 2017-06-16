@@ -2,6 +2,7 @@ package com.zy.mapper;
 
 
 import java.util.List;
+import java.util.Map;
 
 import com.zy.model.dto.UserTeamCountDto;
 import org.apache.ibatis.annotations.Param;
@@ -34,4 +35,11 @@ public interface UserMapper {
 
 	List<UserTeamCountDto> countByUserId(long userId);
 
+	long countByActive(UserQueryModel userQueryModel);
+
+	List<User> findByNotActive(UserQueryModel userQueryModel);
+
+	long countByNotActive(UserQueryModel userQueryModel);
+
+	List<User> findSupAll(Map<String, Object> dataMap);
 }
