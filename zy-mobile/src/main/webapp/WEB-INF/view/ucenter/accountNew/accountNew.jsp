@@ -176,136 +176,157 @@
   <div id="echartFir"></div>
   <div id="last" style="width: 100%;height: 400px;padding: 10px;"></div>
 
+  <c:if test="${dataMap.ord[0] > 0 || dataMap.ord[1] > 0}">
+      <div class="all">
+        <img src="${ctx}/percent.png" />
+        <div class="percentNum">
+             <div class="percentNumDiv">
+                   <div class="fontImg clearfloat">
+                     <img src="${ctx}/01.png" />
+                     <span>订单收益</span>
+                   </div>
+                 <div class="fontImg clearfloat">
+                      <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ord[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+                      <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ord[1]}" pattern="0.00" maxFractionDigits="2"/></p>
+                 </div>
+             </div>
+          <a href="${ctx}/u/profit/orderRevenue?type=1" class="look">查看详情</a>
+        </div>
+      </div>
+  </c:if>
+
+    <c:if test="${dataMap.red[0] > 0 || dataMap.red[1] > 0}">
+      <div class="all">
+        <img src="${ctx}/percent.png" />
+        <div class="percentNum">
+          <div class="percentNumDiv">
+            <div class="fontImg clearfloat">
+              <img src="${ctx}/02.png" />
+              <span>返利奖</span>
+            </div>
+            <div class="fontImg clearfloat">
+              <p><span>上月收益：</span>￥</span>￥<fmt:formatNumber type="number" value="${dataMap.red[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+              <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.red[1]}" pattern="0.00" maxFractionDigits="2"/></p>
+            </div>
+          </div>
+          <a href="${ctx}/u/profit/orderRevenue?type=7" class="look">查看详情</a>
+        </div>
+      </div>
+    </c:if>
+
+    <c:if test="${dataMap.dat[0] > 0 || dataMap.dat[1] > 0}">
+      <div class="all">
+        <img src="${ctx}/percent.png" />
+        <div class="percentNum">
+          <div class="percentNumDiv">
+            <div class="fontImg clearfloat">
+              <img src="${ctx}/03.png" />
+              <span>数据奖</span>
+            </div>
+            <div class="fontImg clearfloat">
+              <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.dat[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+              <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.dat[1]}" pattern="0.00" maxFractionDigits="2"/></p>
+            </div>
+          </div>
+          <a href="${ctx}/u/profit/orderRevenue?type=2" class="look">查看详情</a>
+        </div>
+      </div>
+    </c:if>
+
+  <c:if test="${dataMap.sal[0] > 0 || dataMap.sal[1] > 0}">
     <div class="all">
       <img src="${ctx}/percent.png" />
       <div class="percentNum">
-           <div class="percentNumDiv">
-                 <div class="fontImg clearfloat">
-                   <img src="${ctx}/01.png" />
-                   <span>订单收益</span>
-                 </div>
-               <div class="fontImg clearfloat">
-                    <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ord[0]}" pattern="0.00" maxFractionDigits="2"/></p>
-                    <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ord[1]}" pattern="0.00" maxFractionDigits="2"/></p>
-               </div>
-           </div>
-        <a href="${ctx}/u/profit/orderRevenue?type=1" class="look">查看详情</a>
+        <div class="percentNumDiv">
+          <div class="fontImg clearfloat">
+            <img src="${ctx}/04.png" />
+            <span>销量奖</span>
+          </div>
+          <div class="fontImg clearfloat">
+            <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sal[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+            <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sal[1]}" pattern="0.00" maxFractionDigits="2"/></p>
+          </div>
+        </div>
+        <a href="${ctx}/u/profit/orderRevenue?type=3" class="look">查看详情</a>
       </div>
     </div>
+  </c:if>
 
-  <div class="all">
-    <img src="${ctx}/percent.png" />
-    <div class="percentNum">
-      <div class="percentNumDiv">
-        <div class="fontImg clearfloat">
-          <img src="${ctx}/02.png" />
-          <span>返利奖</span>
+  <c:if test="${dataMap.ftl[0] > 0 || dataMap.ftl[1] > 0}">
+    <div class="all">
+      <img src="${ctx}/percent.png" />
+      <div class="percentNum">
+        <div class="percentNumDiv">
+          <div class="fontImg clearfloat">
+            <img src="${ctx}/05.png" />
+            <span>特级平级奖</span>
+          </div>
+          <div class="fontImg clearfloat">
+            <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ftl[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+            <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ftl[1]}" pattern="0.00" maxFractionDigits="2"/></p>
+          </div>
         </div>
-        <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥</span>￥<fmt:formatNumber type="number" value="${dataMap.red[0]}" pattern="0.00" maxFractionDigits="2"/></p>
-          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.red[1]}" pattern="0.00" maxFractionDigits="2"/></p>
-        </div>
+        <a href="${ctx}/u/profit/orderRevenue?type=4" class="look">查看详情</a>
       </div>
-      <a href="${ctx}/u/profit/orderRevenue?type=7" class="look">查看详情</a>
     </div>
-  </div>
+  </c:if>
 
-  <div class="all">
-    <img src="${ctx}/percent.png" />
-    <div class="percentNum">
-      <div class="percentNumDiv">
-        <div class="fontImg clearfloat">
-          <img src="${ctx}/03.png" />
-          <span>数据奖</span>
+  <c:if test="${dataMap.sen[0] > 0 || dataMap.sen[1] > 0}">
+    <div class="all">
+      <img src="${ctx}/percent.png" />
+      <div class="percentNum">
+        <div class="percentNumDiv">
+          <div class="fontImg clearfloat">
+            <img src="${ctx}/06.png" />
+            <span>董事贡献奖</span>
+          </div>
+          <div class="fontImg clearfloat">
+            <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sen[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+            <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sen[1]}" pattern="0.00" maxFractionDigits="2"/></p>
+          </div>
         </div>
-        <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.dat[0]}" pattern="0.00" maxFractionDigits="2"/></p>
-          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.dat[1]}" pattern="0.00" maxFractionDigits="2"/></p>
-        </div>
+        <a href="${ctx}/u/profit/orderRevenue?type=8" class="look">查看详情</a>
       </div>
-      <a href="${ctx}/u/profit/orderRevenue?type=2" class="look">查看详情</a>
     </div>
-  </div>
-  <div class="all">
-    <img src="${ctx}/percent.png" />
-    <div class="percentNum">
-      <div class="percentNumDiv">
-        <div class="fontImg clearfloat">
-          <img src="${ctx}/04.png" />
-          <span>销量奖</span>
+  </c:if>
+
+  <c:if test="${dataMap.ltl[0] > 0 || dataMap.ltl[1] > 0}">
+    <div class="all">
+      <img src="${ctx}/percent.png" />
+      <div class="percentNum">
+        <div class="percentNumDiv">
+          <div class="fontImg clearfloat">
+            <img src="${ctx}/07.png" />
+            <span>平级推荐奖</span>
+          </div>
+          <div class="fontImg clearfloat">
+            <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ltl[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+            <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ltl[1]}" pattern="0.00" maxFractionDigits="2"/></p>
+          </div>
         </div>
-        <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sal[0]}" pattern="0.00" maxFractionDigits="2"/></p>
-          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sal[1]}" pattern="0.00" maxFractionDigits="2"/></p>
-        </div>
+        <a href="${ctx}/u/profit/orderRevenue?type=5" class="look">查看详情</a>
       </div>
-      <a href="${ctx}/u/profit/orderRevenue?type=3" class="look">查看详情</a>
     </div>
-  </div>
-  <div class="all">
-    <img src="${ctx}/percent.png" />
-    <div class="percentNum">
-      <div class="percentNumDiv">
-        <div class="fontImg clearfloat">
-          <img src="${ctx}/05.png" />
-          <span>特级平级奖</span>
+  </c:if>
+
+  <c:if test="${dataMap.rec[0] > 0 || dataMap.rec[1] > 0}">
+    <div class="all">
+      <img src="${ctx}/percent.png" />
+      <div class="percentNum">
+        <div class="percentNumDiv">
+          <div class="fontImg clearfloat">
+            <img src="${ctx}/08.png" />
+            <span>特级推荐奖</span>
+          </div>
+          <div class="fontImg clearfloat">
+            <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.rec[0]}" pattern="0.00" maxFractionDigits="2"/></p>
+            <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.rec[1]}" pattern="0.00" maxFractionDigits="2"/></p>
+          </div>
         </div>
-        <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ftl[0]}" pattern="0.00" maxFractionDigits="2"/></p>
-          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ftl[1]}" pattern="0.00" maxFractionDigits="2"/></p>
-        </div>
+        <a href="${ctx}/u/profit/orderRevenue?type=6" class="look">查看详情</a>
       </div>
-      <a href="${ctx}/u/profit/orderRevenue?type=4" class="look">查看详情</a>
     </div>
-  </div>
-  <div class="all">
-    <img src="${ctx}/percent.png" />
-    <div class="percentNum">
-      <div class="percentNumDiv">
-        <div class="fontImg clearfloat">
-          <img src="${ctx}/06.png" />
-          <span>董事贡献奖</span>
-        </div>
-        <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sen[0]}" pattern="0.00" maxFractionDigits="2"/></p>
-          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.sen[1]}" pattern="0.00" maxFractionDigits="2"/></p>
-        </div>
-      </div>
-      <a href="${ctx}/u/profit/orderRevenue?type=8" class="look">查看详情</a>
-    </div>
-  </div>
-  <div class="all">
-    <img src="${ctx}/percent.png" />
-    <div class="percentNum">
-      <div class="percentNumDiv">
-        <div class="fontImg clearfloat">
-          <img src="${ctx}/07.png" />
-          <span>平级推荐奖</span>
-        </div>
-        <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ltl[0]}" pattern="0.00" maxFractionDigits="2"/></p>
-          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.ltl[1]}" pattern="0.00" maxFractionDigits="2"/></p>
-        </div>
-      </div>
-      <a href="${ctx}/u/profit/orderRevenue?type=5" class="look">查看详情</a>
-    </div>
-  </div>
-  <div class="all">
-    <img src="${ctx}/percent.png" />
-    <div class="percentNum">
-      <div class="percentNumDiv">
-        <div class="fontImg clearfloat">
-          <img src="${ctx}/08.png" />
-          <span>特级推荐奖</span>
-        </div>
-        <div class="fontImg clearfloat">
-          <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.rec[0]}" pattern="0.00" maxFractionDigits="2"/></p>
-          <p><span>累计收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.rec[1]}" pattern="0.00" maxFractionDigits="2"/></p>
-        </div>
-      </div>
-      <a href="${ctx}/u/profit/orderRevenue?type=6" class="look">查看详情</a>
-    </div>
-  </div>
+  </c:if>
 </article>
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">
