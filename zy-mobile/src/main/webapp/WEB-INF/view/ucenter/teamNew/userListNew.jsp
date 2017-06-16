@@ -35,14 +35,14 @@
     }
     #echartTeam,#echartTeamTwo,#echartTeamFor {
       width:100%;
-      height:250px;
+      height:200px;
       background: #fff !important;
     }
     #echartTeamFor {
-      height:300px;
+      height:250px;
     }
     .teamAll {height: 50px;}
-    .teamAll img {float: left;width: 50px;height: 50px;margin-left: 15px;}
+    .teamAll img {float: left;width: 50px;height: 50px;margin-left: 8px;}
     .teamAll span {
       float: left;line-height: 50px;margin-left: 20px;font-size: 18px;
       color: #838385;
@@ -54,14 +54,74 @@
       margin-right: 15px;
     }
     .allList {
-       border-bottom: 1px solid #ccc;
+       border-bottom: 1px solid #e5e5e5;
     }
     .TeamName {
         float: left;
         width:33%;
+      text-align: center;
     }
+    .allName {padding-bottom: 20px;}
     .TeamName img {
-      width:80px;
+      width:55%;
+      margin-top:20px;
+    }
+    .TeamName span {
+      display: block;
+      margin-top:10px;
+    }
+    .lookDetil {
+      display: block;
+      width:100%;
+      height:40px;
+      text-align: center;
+      line-height: 40px;
+      color: #6cb92d;
+      font-size: 15px;
+    }
+    .rankingAll {
+      border-bottom: 1px solid #e5e5e5;
+      width:100%;
+      height:60px;
+    }
+    .rankingAll>span {
+      float: left;
+      display: block;;
+      width:65px;
+      height:100%;
+      text-align: center;
+      line-height:60px;
+    }
+    .rankingAll>img {
+      float: left;
+      width: 40px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .ranking {
+      float: left;
+      width:150px;
+      height:100%;
+      text-align: center;
+      line-height: 60px;
+    }
+    .rankingSpan {
+      padding:0 8px 0 8px;
+      color: #fff;
+      font-size: 12px;
+    }
+    /*特级*/
+    .must {
+       background: #22b5d4;
+    }
+    .province {
+       background: #fe543e;
+    }
+    .city {
+      background: #fb8604;
+    }
+    .allLast {
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -99,36 +159,100 @@
             <div id="echartTeamFor"></div>
       </div>
 
-    <div class="all clearfloat">
+    <div class="all allName clearfloat">
           <div class="teamAll allList">
             <img src="${ctx}/team4.png"/>
             <span>新晋直属特级</span>
           </div>
           <div class="TeamName">
                <img src="${ctx}/headPortrait.png" />
+               <span>赵春华</span>
+               <span>13656174839</span>
           </div>
           <div class="TeamName">
-
+            <img src="${ctx}/headPortrait2.png" />
+            <span>赵春华</span>
+            <span>13656174839</span>
           </div>
           <div class="TeamName">
-
+            <img src="${ctx}/headPortrait.png" />
+            <span>赵春华</span>
+            <span>13656174839</span>
           </div>
     </div>
 
     <div class="all">
           <div class="teamAll allList">
-            <img src="${ctx}/team4.png"/>
+            <img src="${ctx}/team6.png"/>
             <span>新晋占比排名</span>
           </div>
-
+          <div class="rankingAll">
+               <span>1</span>
+               <img src="${ctx}/headPortrait.png" />
+               <div class="ranking">
+                 <span>赵春华</span>
+                 <span class="rankingSpan must">特级</span>
+               </div>
+               <span class="tel">13656174839</span>
+          </div>
+          <div class="rankingAll">
+            <span>2</span>
+            <img src="${ctx}/headPortrait.png" />
+            <div class="ranking">
+              <span>赵春华</span>
+              <span class="rankingSpan province">省级</span>
+            </div>
+            <span class="tel">13656174839</span>
+          </div>
+          <div class="rankingAll">
+            <span>3</span>
+            <img src="${ctx}/headPortrait.png" />
+            <div class="ranking">
+              <span>赵春华</span>
+              <span class="rankingSpan city">市级</span>
+            </div>
+            <span class="tel">13656174839</span>
+          </div>
+          <a href="#" class="lookDetil">更多详情>></a>
     </div>
 
-    <div class="all">
+    <div class="all allLast">
           <div class="teamAll allList">
-            <img src="${ctx}/team4.png"/>
+            <img src="${ctx}/team7.png"/>
             <span>活跃度：90%</span>
           </div>
-
+          <div class="teamAll allList">
+            <img src="${ctx}/team1.png"/>
+            <span>沉睡成员</span>
+          </div>
+      <div class="rankingAll">
+        <span>1</span>
+        <img src="${ctx}/headPortrait.png" />
+        <div class="ranking">
+          <span>赵春华</span>
+          <span class="rankingSpan must">特级</span>
+        </div>
+        <span class="tel">13656174839</span>
+      </div>
+      <div class="rankingAll">
+        <span>2</span>
+        <img src="${ctx}/headPortrait.png" />
+        <div class="ranking">
+          <span>赵春华</span>
+          <span class="rankingSpan province">省级</span>
+        </div>
+        <span class="tel">13656174839</span>
+      </div>
+      <div class="rankingAll">
+        <span>3</span>
+        <img src="${ctx}/headPortrait.png" />
+        <div class="ranking">
+          <span>赵春华</span>
+          <span class="rankingSpan city">市级</span>
+        </div>
+        <span class="tel">13656174839</span>
+      </div>
+      <a href="#" class="lookDetil">更多详情>></a>
     </div>
   </article>
   <script src="${ctx}/echarts.min.js"></script>
