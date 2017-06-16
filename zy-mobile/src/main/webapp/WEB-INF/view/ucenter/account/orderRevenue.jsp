@@ -140,7 +140,7 @@
                 </div>
                 <div class="font-triangle">
                     <p>
-                            <span>${dateMap.len - num.index}</span>月
+                            <span class="spanTriange">${dateMap.len - num.index}</span>月
                     </p>
                 </div>
                 <div class="font-triangleT">
@@ -157,9 +157,8 @@
 <script type="text/javascript">
 
     function changeTriangle(obj) {
-
         var type = ${type};
-        var moth = $(obj).find(".font-triangle p span").text();
+        var moth = $(obj).find(".spanTriange").text();
         var change = $(obj).find(".triangle-up").attr("class");
         if(change=="triangle-up"){
             $(obj).find(".triangle-up").addClass("triangle-down");
