@@ -154,6 +154,7 @@
 <input type="hidden" value="-" />
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">
+
     function changeTriangle(obj) {
 
         var type = ${type};
