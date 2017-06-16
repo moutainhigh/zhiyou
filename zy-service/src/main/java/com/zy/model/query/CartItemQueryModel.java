@@ -19,6 +19,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CartItemQueryModel implements Serializable {
 
+	private Boolean isSettlementEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
@@ -71,6 +73,7 @@ public class CartItemQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
+		fieldNames.add("isSettlement");
 		fieldNames.add("quantity");
 		fieldNames.add("productId");
 		fieldNames.add("price");

@@ -8,11 +8,12 @@
 		<result column="product_id" property="productId" />
 		<result column="price" property="price" />
 		<result column="quantity" property="quantity" />
+		<result column="is_settlement" property="isSettlement" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.CartItem" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_cart_item` (user_id,product_id,price,quantity)
-	  values (#{userId},#{productId},#{price},#{quantity})
+	  insert into `mal_cart_item` (user_id,product_id,price,quantity,is_settlement)
+	  values (#{userId},#{productId},#{price},#{quantity},#{isSettlement})
 	</insert>
 
 	<delete id="delete">
@@ -26,6 +27,7 @@
 			product_id = #{productId},
 			price = #{price},
 			quantity = #{quantity},
+			is_settlement = #{isSettlement},
 		</set>
 		where id = #{id}
 	</update>
@@ -39,6 +41,7 @@
 					<when test="field == 'productId'">product_id = #{cartItem.productId},</when>
 					<when test="field == 'price'">price = #{cartItem.price},</when>
 					<when test="field == 'quantity'">quantity = #{cartItem.quantity},</when>
+					<when test="field == 'isSettlement'">is_settlement = #{cartItem.isSettlement},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -47,16 +50,19 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,user_id,product_id,price,quantity
+		id,user_id,product_id,price,quantity,is_settlement
 		from `mal_cart_item`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.CartItemQueryModel">
 		select
-		id,user_id,product_id,price,quantity
+		id,user_id,product_id,price,quantity,is_settlement
 		from `mal_cart_item`
 		<where>
+			<if test="isSettlementEQ != null">
+				and is_settlement = #{isSettlementEQ}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -74,6 +80,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.CartItemQueryModel">
 		select count(*) from `mal_cart_item`
 		<where>
+			<if test="isSettlementEQ != null">
+				and is_settlement = #{isSettlementEQ}
+			</if>
 		</where>
 	</select>
 
