@@ -2,9 +2,11 @@ package com.zy.entity.mal;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
+import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
+import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -58,5 +60,11 @@ public class CartItem implements Serializable {
 	@Field(label = "数量")
 	@View
 	private Long quantity;
+
+	@View
+	@NotNull
+	@Field(label = "是否结算")
+	@Query(Predicate.EQ)
+	private Boolean isSettlement;
 
 }
