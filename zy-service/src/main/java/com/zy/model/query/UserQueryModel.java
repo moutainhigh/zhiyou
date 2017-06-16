@@ -56,6 +56,8 @@ public class UserQueryModel implements Serializable {
 
 	private Long bossIdEQ;
 
+	private String nameorPhone;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;

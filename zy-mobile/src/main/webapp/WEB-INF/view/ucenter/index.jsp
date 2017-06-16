@@ -89,7 +89,7 @@
       </a>
       </c:if>
       <c:if test="${user.userRank != 'V0'}">
-      <a class="list-item list-item-icon" href="${ctx}/u/team">
+      <a class="list-item list-item-icon" href="${ctx}/u/team/newTeam">
         <i class="list-icon icon icon-users"></i>
         <div class="list-text">我的团队</div>
         <i class="list-arrow"></i>

@@ -41,6 +41,8 @@ public class UserlongQueryModel implements Serializable {
 
 	private String remark;
 
+	private String nameorPhone;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;

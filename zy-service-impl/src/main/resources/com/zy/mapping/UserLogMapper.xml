@@ -64,20 +64,20 @@
 		order by id desc
 	</select>
 
-	<!--<select id="count" resultType="_long">
-		select count(*) FROM `usr_user_log` where remark lik #{remark} and operated_Time &gt;=#{operatedTimeBegin} and operated_Time &lt;=#{operatedTimeEnd}
+	<select id="count" resultType="_long">
+		select count(*) FROM `usr_user_log` where remark like #{remark} and operated_Time &gt;=#{operatedTimeBegin} and operated_Time &lt;=#{operatedTimeEnd}
 	</select>
 
 	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
 		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="countNum" property="countNum"/>
 	</resultMap>
-	<select id="counyGByRank" resultType="countResultMap">
-		SELECT u.user_rank userRankEQ,count(*) countNum from 	usr_user_log l,usr_user u WHERE
+	<select id="counyGByRank" resultMap="countResultMap">
+		SELECT u.user_rank userRankEQ,count(*) countNum from usr_user_log l,usr_user u WHERE
 	      l.user_id = u.id
-	      AND remark lik #{remark}
-	      and operated_Time &gt;=#{operatedTimeBegin}
-	      and operated_Time &lt;=#{operatedTimeEnd}
+	      AND l.remark like #{remark}
+	      and l.operated_Time &gt;=#{operatedTimeBegin}
+	      and l.operated_Time &lt;=#{operatedTimeEnd}
 	      AND u.parent_id =#{parentid}
 	      GROUP BY u.user_rank
 	</select>
@@ -89,24 +89,31 @@
 		<result column="avatar" property="avatar"/>
 		<result column="phone" property="phone"/>
 	</resultMap>
-	<select id="findByRank" resultType="rankResultMap" parameterType="com.zy.model.query.UserlongQueryModel">
+	<select id="findByRank" resultMap="rankResultMap" parameterType="com.zy.model.query.UserlongQueryModel">
 	  SELECT a.parent_id userId, a.num num,b.nickname,b.avatar,b.phone from
 		   (SELECT count(*) num,u.parent_id FROM
 			 usr_user_log l,
 			 usr_user u
 		    WHERE
-			 l.user_id = u.id AND parent_id is NOT null
+			 l.user_id = u.id AND u.parent_id is NOT null
 			 <if test="remark !=null">
 		       AND l.remark LIKE #{remark}
 			 </if>
 		     <if test="registerTimeGTE !=null">
-				 and operated_Time &gt;=#{operatedTimeBegin}
+				 and l.operated_Time &gt;=#{registerTimeGTE}
 			 </if>
 		     <if test="registerTimeLT !=null">
-				 and operated_Time &lt;=#{operatedTimeEnd}
+				 and l.operated_Time &lt;=#{registerTimeLT}
 			 </if>
+		    <if test="parentIdNL !=null">
+				AND u.parent_id =#{parentIdNL}
+			</if>
 		     GROUP BY u.parent_id )a,
-	         usr_user b where a.parent_id =b.id order by num;
+	         usr_user b where a.parent_id =b.id
+			<if test="nameorPhone != null">
+				and (b.phone = #{nameorPhone} or b.nickname like #{nameorPhone})
+			</if>
+		     order by num
 		    <if test="offset != null">
 			   limit #{offset}, #{pageSize}
 		    </if>
@@ -118,16 +125,50 @@
 		usr_user_log l,
 		usr_user u
 		WHERE
-		l.user_id = u.id AND parent_id is NOT null
+		l.user_id = u.id AND u.parent_id is NOT null
 		<if test="remark !=null">
 			AND l.remark LIKE #{remark}
 		</if>
 		<if test="registerTimeGTE !=null">
-			and operated_Time &gt;=#{operatedTimeBegin}
+			and l.operated_Time &gt;=#{registerTimeGTE}
 		</if>
 		<if test="registerTimeLT !=null">
-			and operated_Time &lt;=#{operatedTimeEnd}
+			and l.operated_Time &lt;=#{registerTimeLT}
+		</if>
+		<if test="parentIdNL !=null">
+			AND u.parent_id =#{parentIdNL}
+		</if>
+		<if test="nameorPhone != null">
+			and (u.phone = #{nameorPhone} or u.nickname like #{nameorPhone})
 		</if>
 		GROUP BY u.parent_id )a,
-	</select>-->
+	</select>
+	<!--暂借用这个dto-->
+	<resultMap id="sumResultMap" type="com.zy.model.dto.DepositSumDto">
+		<result column="countId" property="count"/>
+		<result column="sumAmount" property="sumAmount"/>
+	</resultMap>
+	<select id="findRankGroup" resultMap="sumResultMap" parameterType="com.zy.model.query.UserlongQueryModel">
+		SELECT  a.num sumAmount,count(pid) countId from
+		(SELECT
+			count(*) num,
+		  u.parent_id pid
+		FROM
+			usr_user_log l,
+			usr_user u
+		WHERE
+			l.user_id = u.id AND parent_id is NOT null
+		<if test="remark !=null">
+			AND l.remark LIKE #{remark}
+		</if>
+		<if test="registerTimeGTE !=null">
+			and l.operated_Time &gt;=#{registerTimeGTE}
+		</if>
+		<if test="registerTimeLT !=null">
+			and l.operated_Time &lt;=#{registerTimeLT}
+		</if>
+		  GROUP BY u.parent_id
+		)a  group by a.num ORDER BY a.num DESC;
+
+	</select>
 </mapper>
