@@ -186,7 +186,7 @@
                <img src="${ctx}/headPortrait.png" />
                <div class="ranking">
                  <span>赵春华</span>
-                 <span class="rankingSpan must">特级</span>
+                 <span class="rank">(12人)</span>
                </div>
                <span class="tel">13656174839</span>
           </div>
@@ -195,7 +195,7 @@
             <img src="${ctx}/headPortrait.png" />
             <div class="ranking">
               <span>赵春华</span>
-              <span class="rankingSpan province">省级</span>
+              <span class="rank">(12人)</span>
             </div>
             <span class="tel">13656174839</span>
           </div>
@@ -204,7 +204,7 @@
             <img src="${ctx}/headPortrait.png" />
             <div class="ranking">
               <span>赵春华</span>
-              <span class="rankingSpan city">市级</span>
+              <span class="rank">(12人)</span>
             </div>
             <span class="tel">13656174839</span>
           </div>
