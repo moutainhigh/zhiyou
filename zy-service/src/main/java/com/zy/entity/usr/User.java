@@ -214,4 +214,8 @@ public class User implements Serializable {
 	@Field(label = "是否股东")
 	@View(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT})
 	private Boolean isShareholder;
+
+	@Column(length = 1, unique = true)
+	@Field(label = "是否有权限")
+	private int viewflag;
 }

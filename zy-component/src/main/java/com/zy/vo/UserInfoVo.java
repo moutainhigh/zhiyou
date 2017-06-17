@@ -62,5 +62,12 @@ public class UserInfoVo implements Serializable {
 	private String district;
 	@Field(label = "标签")
 	private List<String> tagNames = new ArrayList<>();
+	@Field(label = "推荐人name")
+	private String pName;
+	@Field(label = "手机号")
+	private String phone;
+	@Field(label = "推荐人手机号")
+	private String pPhone;
+
 
 }

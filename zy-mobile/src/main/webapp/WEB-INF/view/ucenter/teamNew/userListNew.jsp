@@ -132,15 +132,16 @@
   </header>
 
   <article>
-
-       <div class="all" >
-             <div class="teamAll">
-                 <img src="${ctx}/team2.png"/>
-                 <span>团队总人数</span>
-                 <a href="#">直属特级详情>></a>
-             </div>
-             <div id="echartTeam"></div>
-       </div>
+      <c:if test="${dataMap.flag != null}">
+         <div class="all" >
+               <div class="teamAll">
+                   <img src="${ctx}/team2.png"/>
+                   <span>团队总人数</span>
+                  <c:if test="${dataMap.flag == 'T'}"> <a href="#">直属特级详情>></a></c:if>
+               </div>
+               <div id="echartTeam"></div>
+         </div>
+      </c:if>
       <div class="all" >
             <div class="teamAll">
               <img src="${ctx}/team3.png"/>
