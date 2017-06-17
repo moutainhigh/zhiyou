@@ -29,7 +29,7 @@ public interface UserLogMapper {
 
 	long count(Map<String,Object> dataMap);
 
-	List<UserTeamCountDto> counyGByRank(Map<String,Object> dataMap);
+	List<UserTeamCountDto> findGByRank(Map<String,Object> dataMap);
 
 	List<UserTeamDto> findByRank(UserlongQueryModel userlongQueryModel);
 

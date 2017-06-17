@@ -313,10 +313,10 @@
 
 	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
 		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
-		<result column="countNum" property="countNum"/>
+		<result column="totalnumber" property="totalnumber"/>
 	</resultMap>
 	<select id="countByUserId" resultMap="countResultMap" parameterType="long">
-		select user_rank userRankEQ,COUNT(*) countNum FROM `usr_user` where parent_id = #{parentId} GROUP BY user_rank
+		select user_rank userRankEQ,COUNT(*) totalnumber FROM `usr_user` where parent_id = #{parentId} GROUP BY user_rank
 	</select>
 
 	<select id="countByActive" resultType="_long"  parameterType="com.zy.model.query.UserQueryModel">
@@ -377,7 +377,7 @@
 			WHERE
 			m.user_id = u.id
 			<if test="parentIdNL !=null">
-				u.parent_id =#{parentIdNL}
+				and u.parent_id =#{parentIdNL}
 			</if>
 			<if test="registerTimeGTE !=null">
 				AND m.created_time &gt;= #{registerTimeGTE}
@@ -426,8 +426,8 @@
 		<if test="registerTimeLT !=null">
 		  and l.operated_Time &lt;=#{registerTimeLT}
 		</if>
-		<if test="parentid !=null">
-		   AND u.parent_id =#{parentid}
+		<if test="parentIdNL !=null">
+		   AND u.parent_id =#{parentIdNL}
 		</if>
 		<if test="nameorPhone !=null">
 			and (u.phone = #{nameorPhone} or u.nickname like #{nameorPhone})

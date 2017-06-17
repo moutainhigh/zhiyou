@@ -569,13 +569,13 @@ public class UserServiceImpl implements UserService {
             List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
             for (UserTeamCountDto userTeamDto :dataList){
                 if (UserRank.V4==userTeamDto.getUserRankEQ()){
-                    data[0] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                    data[0] = userTeamDto.getTotalnumber()==null?0L:userTeamDto.getTotalnumber();
                 } else if (UserRank.V3==userTeamDto.getUserRankEQ()){
-                    data[1] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                    data[1] = userTeamDto.getTotalnumber()==null?0L:userTeamDto.getTotalnumber();
                 }else if (UserRank.V2==userTeamDto.getUserRankEQ()){
-                    data[2] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                    data[2] = userTeamDto.getTotalnumber()==null?0L:userTeamDto.getTotalnumber();
                 }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
-                    data[4] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                    data[4] = userTeamDto.getTotalnumber()==null?0L:userTeamDto.getTotalnumber();
                 }
             }
          }
@@ -594,28 +594,28 @@ public class UserServiceImpl implements UserService {
        for (UserTeamCountDto userTeamDto :dataList){
            if (UserRank.V4==userTeamDto.getUserRankEQ()){
                Long countV4 = returnMap.get("V4")==null?0L:returnMap.get("V4");
-                  if (userTeamDto.getCountNum()!=null){
-                      countV4=countV4+userTeamDto.getCountNum();
+                  if (userTeamDto.getTotalnumber()!=null){
+                      countV4=countV4+userTeamDto.getTotalnumber();
                   }
                returnMap.put("V4",countV4);
            }else if (UserRank.V3==userTeamDto.getUserRankEQ()){
                Long countV3 = returnMap.get("V3")==null?0L:returnMap.get("V3");
-                   if (userTeamDto.getCountNum()!=null){
-                       countV3=countV3+userTeamDto.getCountNum();
+                   if (userTeamDto.getTotalnumber()!=null){
+                       countV3=countV3+userTeamDto.getTotalnumber();
                    }
                returnMap.put("V3",countV3);
 
            }else if(UserRank.V2==userTeamDto.getUserRankEQ()){
                Long countV2 = returnMap.get("V2")==null?0L:returnMap.get("V2");
-                   if (userTeamDto.getCountNum()!=null){
-                       countV2=countV2+userTeamDto.getCountNum();
+                   if (userTeamDto.getTotalnumber()!=null){
+                       countV2=countV2+userTeamDto.getTotalnumber();
                    }
                returnMap.put("V2",countV2);
 
            }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
                Long countV1 = returnMap.get("V1")==null?0L:returnMap.get("V1");
-               if (userTeamDto.getCountNum()!=null){
-                   countV1=countV1+userTeamDto.getCountNum();
+               if (userTeamDto.getTotalnumber()!=null){
+                   countV1=countV1+userTeamDto.getTotalnumber();
                }
                returnMap.put("V1",countV1);
            }
@@ -640,15 +640,15 @@ public class UserServiceImpl implements UserService {
         List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
         for (UserTeamCountDto userTeamDto :dataList){
             if (UserRank.V4==userTeamDto.getUserRankEQ()){
-                data[0] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                data[0] = userTeamDto.getTotalnumber()==null?0L:userTeamDto.getTotalnumber();
             } else if (UserRank.V3==userTeamDto.getUserRankEQ()){
-                data[1] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                data[1] = userTeamDto.getTotalnumber()==null?0L:userTeamDto.getTotalnumber();
             }else if (UserRank.V2==userTeamDto.getUserRankEQ()){
-                data[2] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                data[2] = userTeamDto.getTotalnumber()==null?0L:userTeamDto.getTotalnumber();
             }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
-                data[3] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                data[3] = userTeamDto.getTotalnumber()==null?0L:userTeamDto.getTotalnumber();
             }else if (UserRank.V0==userTeamDto.getUserRankEQ()){
-                data[4] = userTeamDto.getCountNum()==null?0L:userTeamDto.getCountNum();
+                data[4] = userTeamDto.getTotalnumber()==null?0L:userTeamDto.getTotalnumber();
             }
         }
         return data;
@@ -673,18 +673,18 @@ public class UserServiceImpl implements UserService {
               returnMap.put("total",total);
           }
         dataMap.put("parentid",userId);
-        List<UserTeamCountDto>userTeamDtoList=userLogMapper.counyGByRank(dataMap);
+        List<UserTeamCountDto>userTeamDtoList=userLogMapper.findGByRank(dataMap);
         for (UserTeamCountDto userTeamDto :userTeamDtoList){
             if (UserRank.V4==userTeamDto.getUserRankEQ()){
-                data[0] = userTeamDto.getCountNum()==null?0l:userTeamDto.getCountNum();
+                data[0] = userTeamDto.getTotalnumber()==null?0l:userTeamDto.getTotalnumber();
             } else if (UserRank.V3==userTeamDto.getUserRankEQ()){
-                data[1] = userTeamDto.getCountNum()==null?0l:userTeamDto.getCountNum();
+                data[1] = userTeamDto.getTotalnumber()==null?0l:userTeamDto.getTotalnumber();
             }else if (UserRank.V2==userTeamDto.getUserRankEQ()){
-                data[2] = userTeamDto.getCountNum()==null?0l:userTeamDto.getCountNum();
+                data[2] = userTeamDto.getTotalnumber()==null?0l:userTeamDto.getTotalnumber();
             }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
-                data[3] = userTeamDto.getCountNum()==null?0l:userTeamDto.getCountNum();
+                data[3] = userTeamDto.getTotalnumber()==null?0l:userTeamDto.getTotalnumber();
             }else if (UserRank.V0==userTeamDto.getUserRankEQ()){
-                data[4] = userTeamDto.getCountNum()==null?0l:userTeamDto.getCountNum();
+                data[4] = userTeamDto.getTotalnumber()==null?0l:userTeamDto.getTotalnumber();
             }
         }
         returnMap.put("MTot",data);
@@ -719,8 +719,8 @@ public class UserServiceImpl implements UserService {
     public Page<UserTeamDto> disposeRank(UserlongQueryModel userlongQueryModel, boolean flag) {
         Long parentId = userlongQueryModel.getParentIdNL();//将id暂存下来
         userlongQueryModel.setRemark("从V0%");
-        userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0,0));
-        userlongQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-1,0));
+        userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+        userlongQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0,0));
         userlongQueryModel.setParentIdNL(null);
         List<UserTeamDto> userRankList= userLogMapper.findByRank(userlongQueryModel);
         Page<UserTeamDto> page = new Page<>();
@@ -752,8 +752,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Page<User> findActive(UserQueryModel userQueryModel, boolean flag) {
-        userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0,0));
-        userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-3,0));
+        userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+        userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-2,0));
         List<User> userRankList= userMapper.findByNotActive(userQueryModel);
         Page<User> page = new Page<>();
         if (flag) {
@@ -795,7 +795,7 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> findNewSup(long[] ids) {
         Map<String,Object>dataMap = new HashMap<String,Object>();
         dataMap.put("remark","%改为V4%");
-        dataMap.put("endTime", DateUtil.getBeforeMonthEnd(new Date(),-1,0));
+        dataMap.put("endTime", DateUtil.getBeforeMonthEnd(new Date(),1,0));
         dataMap.put("beginTime",DateUtil.getBeforeMonthBegin(new Date(),0,0));
         List<User>userList = userMapper.findSupAll(dataMap);
         dataMap.put("parentIdIN",ids);

@@ -146,7 +146,7 @@
     <div class="teamAll">
       <img src="${ctx}/team3.png"/>
       <span>直属团队</span>
-      <a href="#">直属详情>></a>
+      <a href="${ctx}/u/team/teamDetail">直属详情>></a>
     </div>
     <div id="echartTeamTwo"></div>
   </div>
@@ -155,7 +155,7 @@
     <div class="teamAll">
       <img src="${ctx}/team5.png"/>
       <span>团队新成员</span>
-      <a href="#">新成员详情>></a>
+      <a href="${ctx}/u/team/teamNew">新成员详情>></a>
     </div>
     <div id="echartTeamFor"></div>
   </div>
