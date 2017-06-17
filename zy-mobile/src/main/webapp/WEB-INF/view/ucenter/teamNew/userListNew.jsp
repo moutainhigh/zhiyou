@@ -65,6 +65,8 @@
     .TeamName img {
       width:55%;
       margin-top:20px;
+      border-radius: 50%;
+      -webkit-border-radius: 50%;
     }
     .TeamName span {
       display: block;
@@ -95,6 +97,9 @@
     .rankingAll>img {
       float: left;
       width: 40px;
+      height:40px;
+      border-radius: 50%;
+      -webkit-border-radius: 50%;
       margin-top: 10px;
       margin-bottom: 10px;
     }
@@ -120,6 +125,9 @@
     .city {
       background: #fb8604;
     }
+    .VIP {
+      background: #d58364;
+    }
     .allLast {
       margin-bottom: 10px;
     }
@@ -137,7 +145,7 @@
       <div class="teamAll">
         <img src="${ctx}/team2.png"/>
         <span>团队总人数</span>
-        <c:if test="${dataMap.flag eq 'T'}"> <a href="#">直属特级详情>></a></c:if>
+        <c:if test="${dataMap.flag eq 'T'}"> <a href="${ctx}/u/team/findDirectlySup">直属特级详情>></a></c:if>
       </div>
       <div id="echartTeam"></div>
     </div>
@@ -167,7 +175,7 @@
     </div>
     <c:forEach items="${dataMap.mynT}" var="tlist">
       <div class="TeamName">
-        <img src="${ctx}/${tlist.avatar}" />
+        <img src="${tlist.avatar}" />
         <span>${tlist.nickname}</span>
         <span>${tlist.phone}</span>
       </div>
@@ -180,72 +188,42 @@
       <span>新晋排名</span>
       <span class="paim">我的排名：${dataMap.myRank}</span>
     </div>
-    <div class="rankingAll">
-      <span>1</span>
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
-        <span class="rank">(12人)</span>
+    <c:forEach items="${dataMap.rankList}" var="udto" begin="0" end="2">
+      <div class="rankingAll">
+        <span>${udto.rank}</span>
+        <img src="${udto.avatar}" />
+        <div class="ranking">
+          <span>${udto.nickname}</span>
+          <span class="rank">(${udto.num}人)</span>
+        </div>
+        <span class="tel">13656174839</span>
       </div>
-      <span class="tel">13656174839</span>
-    </div>
-    <div class="rankingAll">
-      <span>2</span>
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
-        <span class="rank">(12人)</span>
-      </div>
-      <span class="tel">13656174839</span>
-    </div>
-    <div class="rankingAll">
-      <span>3</span>
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
-        <span class="rank">(12人)</span>
-      </div>
-      <span class="tel">13656174839</span>
-    </div>
-    <a href="#" class="lookDetil">更多详情>></a>
+    </c:forEach>
+    <c:if test="${fn:length(dataMap.rankList)>3}">
+      <a href="${ctx}/u/team/teamNew" class="lookDetil">更多详情>></a>
+    </c:if>
   </div>
 
   <div class="all allLast">
     <div class="teamAll allList">
       <img src="${ctx}/team7.png"/>
-      <span>活跃度：90%</span>
+      <span>活跃度：${dataMap.actPer}%</span>
     </div>
     <div class="teamAll allList">
       <img src="${ctx}/team1.png"/>
       <span>沉睡成员</span>
     </div>
+    <c:forEach items="${dataMap.act}" var="user" begin="0" end="2" varStatus="index">
     <div class="rankingAll">
-      <span>1</span>
-      <img src="${ctx}/headPortrait.png" />
+      <span>${index.index+1}</span>
+      <img src="${user.avatar}" />
       <div class="ranking">
-        <span>赵春华</span>
-        <span class="rankingSpan must">特级</span>
+        <span>${user.nickname}</span>
+        <span class="rankingSpan ${user.userRank.level==4?"must":user.userRank.level==3?"province":user.userRank.level==2?"city":user.userRank.level==1?"VIP":user.userRank.level==0?"普通用户":""}">${user.userRank.level==4?"特级":user.userRank.level==3?"省级":user.userRank.level==2?"市级":user.userRank.level==1?"VIP":user.userRank.level==0?"普通用户":""}</span>
       </div>
-      <span class="tel">13656174839</span>
+      <span class="tel">${user.phone}</span>
     </div>
-    <div class="rankingAll">
-      <span>2</span>
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
-        <span class="rankingSpan province">省级</span>
-      </div>
-      <span class="tel">13656174839</span>
-    </div>
-    <div class="rankingAll">
-      <span>3</span>
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
-        <span class="rankingSpan city">市级</span>
-      </div>
-      <span class="tel">13656174839</span>
-    </div>
+    </c:forEach>
     <a href="#" class="lookDetil">更多详情>></a>
   </div>
 </article>
