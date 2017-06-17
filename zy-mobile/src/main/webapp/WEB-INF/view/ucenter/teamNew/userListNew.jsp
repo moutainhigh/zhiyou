@@ -47,7 +47,7 @@
       float: left;line-height: 50px;margin-left: 20px;font-size: 18px;
       color: #838385;
     }
-    .teamAll a {
+    .teamAll a,.teamAll span.paim {
       float: right;
       line-height: 50px;
       color: #6cb92d;
@@ -184,7 +184,8 @@
     <div class="all">
           <div class="teamAll allList">
             <img src="${ctx}/team6.png"/>
-            <span>新晋占比排名</span>
+            <span>新晋排名</span>
+            <span class="paim">我的排名：25</span>
           </div>
           <div class="rankingAll">
                <span>1</span>
