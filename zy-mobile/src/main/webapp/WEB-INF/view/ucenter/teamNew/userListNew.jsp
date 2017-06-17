@@ -137,7 +137,7 @@
                <div class="teamAll">
                    <img src="${ctx}/team2.png"/>
                    <span>团队总人数</span>
-                  <c:if test="${dataMap.flag == 'T'}"> <a href="#">直属特级详情>></a></c:if>
+                  <c:if test="${dataMap.flag eq 'T'}"> <a href="#">直属特级详情>></a></c:if>
                </div>
                <div id="echartTeam"></div>
          </div>
@@ -165,29 +165,22 @@
             <img src="${ctx}/team4.png"/>
             <span>新晋直属特级</span>
           </div>
+      <c:forEach items="${dataMap.mynT}" var="tlist">
           <div class="TeamName">
-               <img src="${ctx}/headPortrait.png" />
-               <span>赵春华</span>
-               <span>13656174839</span>
+               <img src="${ctx}/${tlist.avatar}" />
+               <span>${tlist.nickname}</span>
+               <span>${tlist.phone}</span>
           </div>
-          <div class="TeamName">
-            <img src="${ctx}/headPortrait2.png" />
-            <span>赵春华</span>
-            <span>13656174839</span>
-          </div>
-          <div class="TeamName">
-            <img src="${ctx}/headPortrait.png" />
-            <span>赵春华</span>
-            <span>13656174839</span>
-          </div>
+      </c:forEach>
     </div>
 
     <div class="all">
           <div class="teamAll allList">
             <img src="${ctx}/team6.png"/>
             <span>新晋排名</span>
-            <span class="paim">我的排名：25</span>
+            <span class="paim">我的排名：${dataMap.myRank}</span>
           </div>
+      <c:forEach ></c:forEach>
           <div class="rankingAll">
                <span>1</span>
                <img src="${ctx}/headPortrait.png" />
@@ -446,9 +439,7 @@
         {
           name:'团队新成员',
           type:'pie',
-          radius : [30, 110],
-          center : ['50%', '50%'],
-          roseType : 'area',
+          radius: ['40%', '55%'],
           data:[
             {value:array[0], name:'特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
             {value:array[1], name:'省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},

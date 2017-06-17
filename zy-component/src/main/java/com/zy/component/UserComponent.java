@@ -305,7 +305,7 @@ public class UserComponent {
 	public String  findRole(User user) {
 		String falg = "F";
 		 if (user!=null&&user.getUserRank()==User.UserRank.V4){
-			 if (0!=user.getViewflag()){
+			 if (1!=user.getViewflag()){
 				 falg ="T";
 			 }
 		 }
