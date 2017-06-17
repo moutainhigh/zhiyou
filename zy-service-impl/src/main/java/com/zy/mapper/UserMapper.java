@@ -42,4 +42,6 @@ public interface UserMapper {
 	long countByNotActive(UserQueryModel userQueryModel);
 
 	List<User> findSupAll(Map<String, Object> dataMap);
+
+	List<User> findAddpeople(UserQueryModel userQueryModel);
 }

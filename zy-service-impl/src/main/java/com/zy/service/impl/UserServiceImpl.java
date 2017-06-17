@@ -666,8 +666,8 @@ public class UserServiceImpl implements UserService {
         long []data = new long[]{0,0,0,0,0};
         Map<String,Object>dataMap = new HashMap<String,Object>();
         dataMap.put("remark","从V0%");
-        dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),-1,0));
-        dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthBegin(new Date(),0,0));
+        dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),0,0));
+        dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthEnd(new Date(),1,0));
           if(flag){
               long total=userLogMapper.count(dataMap);
               returnMap.put("total",total);
@@ -719,7 +719,7 @@ public class UserServiceImpl implements UserService {
     public Page<UserTeamDto> disposeRank(UserlongQueryModel userlongQueryModel, boolean flag) {
         Long parentId = userlongQueryModel.getParentIdNL();//将id暂存下来
         userlongQueryModel.setRemark("从V0%");
-        userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthBegin(new Date(),0,0));
+        userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0,0));
         userlongQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-1,0));
         userlongQueryModel.setParentIdNL(null);
         List<UserTeamDto> userRankList= userLogMapper.findByRank(userlongQueryModel);
@@ -752,7 +752,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Page<User> findActive(UserQueryModel userQueryModel, boolean flag) {
-        userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthBegin(new Date(),0,0));
+        userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0,0));
         userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-3,0));
         List<User> userRankList= userMapper.findByNotActive(userQueryModel);
         Page<User> page = new Page<>();
@@ -795,7 +795,7 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> findNewSup(long[] ids) {
         Map<String,Object>dataMap = new HashMap<String,Object>();
         dataMap.put("remark","%改为V4%");
-        dataMap.put("endTime", DateUtil.getBeforeMonthBegin(new Date(),-1,0));
+        dataMap.put("endTime", DateUtil.getBeforeMonthEnd(new Date(),-1,0));
         dataMap.put("beginTime",DateUtil.getBeforeMonthBegin(new Date(),0,0));
         List<User>userList = userMapper.findSupAll(dataMap);
         dataMap.put("parentIdIN",ids);
@@ -803,6 +803,24 @@ public class UserServiceImpl implements UserService {
         dataMap.put("UA",userList);
         dataMap.put("MY",myuserList);
         return dataMap;
+    }
+
+    /**
+     * 查询端对新成员
+     * @param userQueryModel
+     * @return
+     */
+    @Override
+    public Page<User> findAddpeople(UserQueryModel userQueryModel) {
+        userQueryModel.setRemark("从V0%");
+        userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+        userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0,0));
+        List<User>myuserList = userMapper.findAddpeople(userQueryModel);
+        Page<User> page = new Page<>();
+        page.setPageNumber(userQueryModel.getPageNumber());
+        page.setPageSize(userQueryModel.getPageSize());
+        page.setData(myuserList);
+        return page;
     }
 
 

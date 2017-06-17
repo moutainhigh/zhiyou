@@ -15,7 +15,9 @@ import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserlongQueryModel;
 import com.zy.service.AddressService;
 import com.zy.service.UserService;
+import com.zy.vo.UserInfoVo;
 import io.gd.generator.api.query.Direction;
+import org.apache.poi.ss.formula.functions.Mode;
 import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,7 +94,7 @@ public class UcenterTeamController {
 				}
 			}
 		}
-		
+
 		Address address = addressService.findDefaultByUserId(id);
 		model.addAttribute("address", address);
 		
@@ -117,9 +119,13 @@ public class UcenterTeamController {
 		Long userId = principal.getUserId();
         Map<String,Object> dataMap = new HashMap<String,Object>();
 		//统计团队人数
-        long[]teamTotal=userComponent.conyteamTotal(userId);
-		/*long[]teamTotal = userService.conyteamTotal(userId);*/
-		dataMap.put("TTot", DateUtil.longarryToString(teamTotal,false));
+		User user = userService.findOne(userId);
+		if (user.getUserRank()==User.UserRank.V4||user.getUserRank()==User.UserRank.V3){
+			long[]teamTotal=userComponent.conyteamTotal(userId);
+			/*long[]teamTotal = userService.conyteamTotal(userId);*/
+			dataMap.put("TTot", DateUtil.longarryToString(teamTotal,false));
+			dataMap.put("flag", userComponent.findRole(user));//是否 能查看到 直属特级按钮
+		}
 		//直属团队 人数统计
 		long [] dirTotal = userService.countdirTotal(userId);
 		/*long [] dirTotal = userComponent.countdirTotal(userId);*/
@@ -155,9 +161,29 @@ public class UcenterTeamController {
 	}
 
 	/**
+	 * 查看直属特级详情
+	 * @return
+     */
+	@RequestMapping(value = "findDirectlySup")
+	public String  findDirectlySup(Principal principal, Model model){
+	    List<UserInfoVo> userList= userComponent.conyteamTotalV4Vo(principal.getUserId());
+		model.addAttribute("data",userList);
+		return "";
+	}
+	/**
+	 * 查看直属特级详情
+	 * @return
+	 */
+	/*@RequestMapping(value = "ajaxfindDirectlySup")
+	public String ajaxfindDirectlySup(Principal principal,String nameorPhone,@RequestParam(required = true) Integer pageNumber){
+		List<User> userList= userComponent.conyteamTotalV4page(principal.getUserId(),nameorPhone,pageNumber);//模拟分页查询
+		return null;
+	}*/
+	/**
 	 *  跳转到直属团队详情 页面
 	 */
 	@RequestMapping(value = "teamDetail")
+	@ResponseBody
 	public String  teamDetail(Principal principal, Model model){
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
@@ -165,7 +191,12 @@ public class UcenterTeamController {
 		userQueryModel.setDirection(Direction.DESC);
 		userQueryModel.setOrderBy("user_rank");
 		Page<User> page= userService.findPage(userQueryModel);
-		model.addAttribute("page",page);
+		/*model.addAttribute("page",page);*/
+		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
 		return null;//TODO
 	}
 
@@ -198,10 +229,14 @@ public class UcenterTeamController {
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
-		userQueryModel.setPageNumber(0);
-		userQueryModel.setPageSize(10);
+		/*userQueryModel.setPageNumber(0);
+		userQueryModel.setPageSize(10);*/
         Page<User> page = userService.findActive(userQueryModel,true);
-		model.addAttribute("page",page);
+		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
 		return "";//TODo
 	}
 
@@ -252,6 +287,8 @@ public class UcenterTeamController {
 	 * @param pageNumber
      * @return
      */
+	@RequestMapping(value = "ajaxteamRank",method = RequestMethod.POST)
+	@ResponseBody
 	public  Result<?> ajaxteamRank(Principal principal,String nameorPhone, @RequestParam(required = true) Integer pageNumber){
 		Long userId = principal.getUserId();
 		UserlongQueryModel userlongQueryModel= new UserlongQueryModel();
@@ -265,4 +302,61 @@ public class UcenterTeamController {
 		return ResultBuilder.result(page.getData());
 	}
 
+	/**
+	 *团队 新成员
+	 * @return
+     */
+	@RequestMapping(value = "teamNew")
+	public String teamNew(Principal principal,Model model){
+		Long userId = principal.getUserId();
+		UserQueryModel userQueryModel = new UserQueryModel();
+		userQueryModel.setParentIdNL(userId);
+		Page<User> page =userService.findAddpeople(userQueryModel);
+		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		return null;
+	}
+
+	/**
+	 * 动态加载  团队新成员
+	 * @param principal
+	 * @param nameorPhone
+	 * @param pageNumber
+	 * @return
+	 */
+	@RequestMapping(value = "ajaxteamNew",method = RequestMethod.POST)
+	@ResponseBody
+	public  Result<?> ajaxteamNew(Principal principal,String nameorPhone, @RequestParam(required = true) Integer pageNumber){
+		Long userId = principal.getUserId();
+		UserQueryModel userQueryModel = new UserQueryModel();
+		userQueryModel.setParentIdNL(userId);
+		userQueryModel.setPageNumber(pageNumber);
+		userQueryModel.setPageSize(10);
+		if (null!=nameorPhone){
+			userQueryModel.setNameorPhone(nameorPhone);
+		}
+		Page<User> page =userService.findAddpeople(userQueryModel);
+		return ResultBuilder.result(page.getData());
+	}
+
+	/**
+	 * 查询 直属 团队的人数
+	 * @param userId
+	 * @return
+     */
+	public String findDirectlyNum(Long userId, Model model){
+		long [] dirTotal = userService.countdirTotal(userId);
+		return null;
+	}
+
+	/**
+	 *查询  直属特级的团队人数
+	 */
+	public String findDirectlySupNum(Long userId, Model model){
+		long[]teamTotal=userComponent.conyteamTotal(userId);
+		return null;
+	}
 }

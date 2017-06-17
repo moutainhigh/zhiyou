@@ -88,9 +88,10 @@
 		<result column="nickname" property="nickname"/>
 		<result column="avatar" property="avatar"/>
 		<result column="phone" property="phone"/>
+		<result column="userRank" property="userRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
 	</resultMap>
 	<select id="findByRank" resultMap="rankResultMap" parameterType="com.zy.model.query.UserlongQueryModel">
-	  SELECT a.parent_id userId, a.num num,b.nickname,b.avatar,b.phone from
+	  SELECT a.parent_id userId, a.num num,b.nickname,b.avatar avatar,b.phone phone,b.user_rank userRank from
 		   (SELECT count(*) num,u.parent_id FROM
 			 usr_user_log l,
 			 usr_user u
