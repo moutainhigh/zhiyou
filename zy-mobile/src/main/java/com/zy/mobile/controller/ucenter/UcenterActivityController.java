@@ -482,7 +482,7 @@ public class UcenterActivityController {
 									activityTicket.setUserId(userId);
 									activityTicket.setIsUsed(1);
 									activityTicketService.update(activityTicket);
-									model.addAttribute("userName", user.getNickname());
+									model.addAttribute("userName", userService.findRealName(userId));
 									model.addAttribute("activityId", activityId);
 									return "activity/applySuccess" ;
 								}else{
@@ -496,7 +496,7 @@ public class UcenterActivityController {
 								activityTicket.setIsUsed(1);
 								activityTicket.setUserId(userId);
 								activityTicketService.update(activityTicket);
-								model.addAttribute("userName", user.getNickname());
+								model.addAttribute("userName", userService.findRealName(userId));
 								model.addAttribute("activityId", activityId);
 								return "activity/applySuccess" ;
 							}

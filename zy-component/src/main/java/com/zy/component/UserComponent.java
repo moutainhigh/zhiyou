@@ -181,7 +181,7 @@ public class UserComponent {
 	}
 
 	/**
-	 * 统计 新进直属特级人数
+	 * 统计 直属特级人数
 	 * @param userID
 	 * @return
      */
