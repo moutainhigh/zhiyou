@@ -70,10 +70,10 @@
 
 	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
 		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
-		<result column="countNum" property="countNum"/>
+		<result column="totalnumber" property="totalnumber"/>
 	</resultMap>
-	<select id="counyGByRank" resultMap="countResultMap">
-		SELECT u.user_rank userRankEQ,count(*) countNum from usr_user_log l,usr_user u WHERE
+	<select id="findGByRank" resultMap="countResultMap">
+		SELECT u.user_rank userRankEQ,count(*) totalnumber from usr_user_log l,usr_user u WHERE
 	      l.user_id = u.id
 	      AND l.remark like #{remark}
 	      and l.operated_Time &gt;=#{operatedTimeBegin}
@@ -109,7 +109,7 @@
 		    <if test="parentIdNL !=null">
 				AND u.parent_id =#{parentIdNL}
 			</if>
-		     GROUP BY u.parent_id )a,
+		     GROUP BY u.parent_id ) a,
 	         usr_user b where a.parent_id =b.id
 			<if test="nameorPhone != null">
 				and (b.phone = #{nameorPhone} or b.nickname like #{nameorPhone})
@@ -142,7 +142,7 @@
 		<if test="nameorPhone != null">
 			and (u.phone = #{nameorPhone} or u.nickname like #{nameorPhone})
 		</if>
-		GROUP BY u.parent_id )a,
+		GROUP BY u.parent_id ) a
 	</select>
 	<!--暂借用这个dto-->
 	<resultMap id="sumResultMap" type="com.zy.model.dto.DepositSumDto">

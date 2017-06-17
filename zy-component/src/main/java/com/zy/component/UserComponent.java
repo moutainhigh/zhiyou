@@ -141,8 +141,8 @@ public class UserComponent {
 		int myrank=0;
 		UserlongQueryModel userlongQueryModel = new UserlongQueryModel();
 		userlongQueryModel.setRemark("从V0%");
-		userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0,0));
-		userlongQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-1,0));
+		userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+		userlongQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0,0));
 		List<DepositSumDto> depositSumDtoList = userService.findRankGroup(userlongQueryModel);
 		Map<String,Integer> dataMap = new HashMap<String,Integer>();
 		if (depositSumDtoList!=null && !depositSumDtoList.isEmpty()){
@@ -167,8 +167,8 @@ public class UserComponent {
      */
 	public String activeProportion(Long userId) {
 		UserQueryModel userQueryModel = new UserQueryModel();
-		userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0,0));
-		userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-3,0));
+		userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+		userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-2,0));
 		long total = userService.countByActive(userQueryModel);
 		userQueryModel.setParentIdNL(userId);
 		long mytotal = userService.countByActive(userQueryModel);
@@ -176,7 +176,7 @@ public class UserComponent {
 		if (total==0){
 			return "0.00";
 		}else{
-		return df.format(total/mytotal*100);
+		return df.format((double)mytotal/(double)total*100);
 		}
 	}
 
@@ -305,7 +305,7 @@ public class UserComponent {
 	public String  findRole(User user) {
 		String falg = "F";
 		 if (user!=null&&user.getUserRank()==User.UserRank.V4){
-			 if (0!=user.getViewflag()){
+			 if (1!=user.getViewflag()){
 				 falg ="T";
 			 }
 		 }
@@ -368,6 +368,7 @@ public class UserComponent {
 			userVo.setPhone(newUser.getPhone());
 			userVo.setPName(newUser.getNickname());
 			userVo.setPPhone(newUser.getPhone());
+			dataList.add(userVo);
 		}
 		return dataList;
 	}

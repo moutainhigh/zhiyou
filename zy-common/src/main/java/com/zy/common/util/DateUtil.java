@@ -145,15 +145,18 @@ public class DateUtil {
         for (int i=0;i<arrydata.length;i++){
             coun=coun+arrydata[i];
         }
-        return DateUtil.formatDouble(coun/data*100);
+        return DateUtil.formatDouble(((double)coun/(double)data)*100);
     }
     public static void  main(String []age){
-       System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthBegin(new Date(),-4,1),"yyyy-MM-dd HH:mm:ss"));
+       System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateUtil.getMoth(new Date()));
         System.out.println(DateUtil.formatDouble(10123456789.0));
         String ll="qwertyui";
         System.out.println("1111"+ll.contains("ty"));
+
+
+        System.out.print(((double)1l/(double)2l));
     }
 
 

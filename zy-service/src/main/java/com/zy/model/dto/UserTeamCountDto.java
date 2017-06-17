@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class UserTeamCountDto implements Serializable {
-    private Long countNum;
+    private Long totalnumber;
     private User.UserRank userRankEQ;
 
 }

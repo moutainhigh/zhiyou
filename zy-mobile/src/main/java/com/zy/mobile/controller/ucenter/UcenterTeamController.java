@@ -183,21 +183,18 @@ public class UcenterTeamController {
 	 *  跳转到直属团队详情 页面
 	 */
 	@RequestMapping(value = "teamDetail")
-	@ResponseBody
 	public String  teamDetail(Principal principal, Model model){
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdEQ(userId);
-		userQueryModel.setDirection(Direction.DESC);
-		userQueryModel.setOrderBy("user_rank");
 		Page<User> page= userService.findPage(userQueryModel);
 		/*model.addAttribute("page",page);*/
-		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		return null;//TODO
+		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
+		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
+		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
+		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
+		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
+		return "ucenter/teamNew/teamDetil";
 	}
 
 	/**
@@ -229,14 +226,12 @@ public class UcenterTeamController {
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
-		/*userQueryModel.setPageNumber(0);
-		userQueryModel.setPageSize(10);*/
         Page<User> page = userService.findActive(userQueryModel,true);
-		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
+		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
+		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
+		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
+		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
+		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
 		return "";//TODo
 	}
 
@@ -312,12 +307,12 @@ public class UcenterTeamController {
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
 		Page<User> page =userService.findAddpeople(userQueryModel);
-		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() != UserRank.V0).collect(Collectors.toList()));
-		return null;
+		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
+		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
+		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
+		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
+		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
+		return "ucenter/teamNew/newTeamDetil";
 	}
 
 	/**
