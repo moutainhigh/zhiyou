@@ -180,7 +180,6 @@
             <span>新晋排名</span>
             <span class="paim">我的排名：${dataMap.myRank}</span>
           </div>
-      <c:forEach ></c:forEach>
           <div class="rankingAll">
                <span>1</span>
                <img src="${ctx}/headPortrait.png" />
