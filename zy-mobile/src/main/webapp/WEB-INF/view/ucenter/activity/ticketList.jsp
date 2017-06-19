@@ -67,7 +67,7 @@
       height:40px;
       text-align: center;
       line-height: 30px;
-      font-size: 24px;
+      font-size: 30px;
       color: red;
       padding-bottom:10px;
     }
@@ -90,16 +90,15 @@
         <img src="${activityTicket.codeImageUrl}" class="erweimaImg"/>
         <c:if test="${not empty activityTicket.usedUser && activityTicket.isUsed == 1}">
           <div>使用者：${activityTicket.usedUser.nickname}</div>
+          <div><a href="tel:${activityTicket.usedUser.phone}" style="">${activityTicket.usedUser.phone}&nbsp;&nbsp;<i class="fa fa-phone font-blue"></i></a></div>
         </c:if>
         <c:if test="${empty activityTicket.usedUser && activityTicket.isUsed == 0}">
-          <div>无人使用</div>
+          <div style="height: 80px;">无人使用</div>
         </c:if>
       </div>
     </c:forEach>
   </c:if>
-
 </div>
-<script src="js/jquery-1.10.2.min.js"></script>
 <script>
   $(function(){
     if($(".erweima").length%2==0){

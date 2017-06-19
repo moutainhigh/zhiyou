@@ -29,6 +29,7 @@
 		<result column="code" property="code" />
 		<result column="is_director" property="isDirector" />
 		<result column="is_shareholder" property="isShareholder" />
+		<result column="viewflag" property="viewflag"></result>
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
@@ -110,7 +111,7 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_shareholder
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_shareholder,viewflag
 		from `usr_user`
 		where id = #{id}
 	</select>
@@ -312,10 +313,10 @@
 
 	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
 		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
-		<result column="countNum" property="countNum"/>
+		<result column="totalnumber" property="totalnumber"/>
 	</resultMap>
 	<select id="countByUserId" resultMap="countResultMap" parameterType="long">
-		select user_rank userRankEQ,COUNT(*) countNum FROM `usr_user` where parent_id = #{parentId} GROUP BY user_rank
+		select user_rank userRankEQ,COUNT(*) totalnumber FROM `usr_user` where parent_id = #{parentId} GROUP BY user_rank
 	</select>
 
 	<select id="countByActive" resultType="_long"  parameterType="com.zy.model.query.UserQueryModel">
@@ -360,7 +361,7 @@
 	</select>
 
 
-	<select id="countByNotActive" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
+	<select id="countByNotActive" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
 		SELECT count(*) from usr_user
 		<where>
 			<if test="parentIdNL !=null">
@@ -376,7 +377,7 @@
 			WHERE
 			m.user_id = u.id
 			<if test="parentIdNL !=null">
-				u.parent_id =#{parentIdNL}
+				and u.parent_id =#{parentIdNL}
 			</if>
 			<if test="registerTimeGTE !=null">
 				AND m.created_time &gt;= #{registerTimeGTE}
@@ -399,10 +400,10 @@
 						  #{item}
 					  </foreach>
 					  <if test="endTime !=null">
-						  AND l.operated_Time &gt;= #{registerTimeGTE}
+						  AND l.operated_Time &lt;= #{endTime}
 					  </if>
 					  <if test="beginTime !=null">
-						  AND l.operated_Time &lt;= #{registerTimeLT}
+						  AND l.operated_Time &gt;= #{beginTime}
 					  </if>
 					  <if test="remark !=null">
 						  AND l.remark LIKE #{remark}
@@ -415,5 +416,24 @@
       )
 
 	</select>
-
+	<select id="findAddpeople" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT u.* from usr_user_log l,usr_user u WHERE
+		l.user_id = u.id
+		AND l.remark like #{remark}
+		<if test="registerTimeGTE !=null">
+		  and l.operated_Time &gt;=#{registerTimeGTE}
+		</if>
+		<if test="registerTimeLT !=null">
+		  and l.operated_Time &lt;=#{registerTimeLT}
+		</if>
+		<if test="parentIdNL !=null">
+		   AND u.parent_id =#{parentIdNL}
+		</if>
+		<if test="nameorPhone !=null">
+			and (u.phone = #{nameorPhone} or u.nickname like #{nameorPhone})
+		</if>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
 </mapper>

@@ -22,6 +22,7 @@ import com.zy.service.UserUpgradeService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.*;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -140,8 +141,8 @@ public class UserComponent {
 		int myrank=0;
 		UserlongQueryModel userlongQueryModel = new UserlongQueryModel();
 		userlongQueryModel.setRemark("从V0%");
-		userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthBegin(new Date(),0,0));
-		userlongQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-1,0));
+		userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+		userlongQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0,0));
 		List<DepositSumDto> depositSumDtoList = userService.findRankGroup(userlongQueryModel);
 		Map<String,Integer> dataMap = new HashMap<String,Integer>();
 		if (depositSumDtoList!=null && !depositSumDtoList.isEmpty()){
@@ -166,8 +167,8 @@ public class UserComponent {
      */
 	public String activeProportion(Long userId) {
 		UserQueryModel userQueryModel = new UserQueryModel();
-		userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthBegin(new Date(),-3,0));
-		userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthEnd(new Date(),0,0));
+		userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+		userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-2,0));
 		long total = userService.countByActive(userQueryModel);
 		userQueryModel.setParentIdNL(userId);
 		long mytotal = userService.countByActive(userQueryModel);
@@ -175,27 +176,90 @@ public class UserComponent {
 		if (total==0){
 			return "0.00";
 		}else{
-		return df.format(total/mytotal*100);
+		return df.format((double)mytotal/(double)total*100);
 		}
 	}
 
 	/**
-	 * 统计 新进直属特级人数
-	 * @param userId
+	 * 统计 直属特级人数
+	 * @param userID
 	 * @return
      */
-	public  List<User> conyteamTotalV4(Long userId) {
-		List<User> users = userService.findAll(new UserQueryModel());
-		List<User> children = TreeHelper.sortBreadth2(users, userId.toString(), v -> {
-			TreeNode treeNode = new TreeNode();
-			treeNode.setId(v.getId().toString());
-			treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
-			return treeNode;
-		});
-		return children.stream().filter(v -> v.getUserRank() == User.UserRank.V4).collect(Collectors.toList());
+	public  List<User> conyteamTotalV4(Long userID) {
+		List<User> pageV4Users = new ArrayList<User>();
+		UserQueryModel userQueryModel= new UserQueryModel();
+		Predicate<User> predicate = v -> {
+			User.UserRank userRank = v.getUserRank();
+			if (userRank == User.UserRank.V4) {
+				return true;
+			}
+			return false;
+		};
+		List<User> users = userService.findAll(userQueryModel);
+		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
+		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
+		Map<Long, TeamModel> teamMap = v4Users.stream()
+				.map(v -> {
+					TeamModel teamModel = new TeamModel();
+					teamModel.setUser(v);
+					teamModel.setV4Children(TreeHelper.sortBreadth2(v4Users, String.valueOf(v.getId()), u -> {
+						TreeNode treeNode = new TreeNode();
+						treeNode.setId(String.valueOf(u.getId()));
+						Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
+						treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(directV4ParentId));
+						return treeNode;
+
+					}));
+					teamModel.setDirectV4Children(v4Users.stream().filter(u -> {
+						Long userId = u.getId();
+						if (userId.equals(v.getId())) {
+							return false;
+						}
+						Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
+						if (directV4ParentId != null && directV4ParentId.equals(v.getId())) {
+							return true;
+						}
+						return false;
+					}).collect(Collectors.toList()));
+					return teamModel;
+				}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
+		TeamModel teamModel = teamMap.get(userID);
+		List<User> filterV4User = teamModel.getDirectV4Children().stream().filter(user -> {
+			boolean result = true;
+			String nicknameLK = userQueryModel.getNicknameLK();
+			String phoneEQ = userQueryModel.getPhoneEQ();
+
+			if (!StringUtils.isBlank(nicknameLK)) {
+				result = result && StringUtils.contains(user.getNickname(), nicknameLK);
+			}
+			if (!StringUtils.isBlank(phoneEQ)) {
+				result = result && phoneEQ.equals(user.getPhone());
+			}
+			return result;
+		}).collect(Collectors.toList());
+		return filterV4User;
 	}
 
-
+	private Long getDirectV4ParentId(Predicate<User> predicate, Map<Long, User> userMap, User u) {
+		int times = 0;
+		Long directV4ParentId = null;
+		Long parentId = u.getParentId();
+		while(parentId != null) {
+			if (times > 1000) {
+				throw new BizException(BizCode.ERROR, "循环引用");
+			}
+			User parent = userMap.get(parentId);
+			if(parent != null) {
+				if (predicate.test(parent)) {
+					directV4ParentId = parentId;
+					break;
+				}
+			}
+			parentId = parent.getParentId();
+			times ++;
+		}
+		return directV4ParentId;
+	}
 	/**
 	 * 返回直属特接的ID
 	 * @return
@@ -231,5 +295,81 @@ public class UserComponent {
 		data[2]= children.stream().filter(v -> v.getUserRank() == User.UserRank.V2).collect(Collectors.toList()).size();
 		data[3]= children.stream().filter(v -> v.getUserRank() == User.UserRank.V1).collect(Collectors.toList()).size();
 		return data;
+	}
+
+	/**
+	 * 查看权限
+	 * @param user
+	 * @return
+     */
+	public String  findRole(User user) {
+		String falg = "F";
+		 if (user!=null&&user.getUserRank()==User.UserRank.V4){
+			 if (1!=user.getViewflag()){
+				 falg ="T";
+			 }
+		 }
+		return  falg;
+	}
+
+	/**
+	 * 模糊查询   直属特价
+	 * @param userId
+	 * @param nameorPhone
+	 * @param pageNumber
+     * @return
+     */
+	public List<User> conyteamTotalV4page(Long userId, String nameorPhone, Integer pageNumber) {
+		List<User> returnList = new ArrayList<User>();
+		List<User> users = userService.findAll(new UserQueryModel());
+		List<User> children = TreeHelper.sortBreadth2(users, userId.toString(), v -> {
+			TreeNode treeNode = new TreeNode();
+			treeNode.setId(v.getId().toString());
+			treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
+			return treeNode;
+		});
+		children = children.stream().filter(v -> v.getUserRank() == User.UserRank.V4).collect(Collectors.toList());
+		List<User> nameorphoneList = new ArrayList<User>();
+		if (children!=null) {
+			for (User user :children){
+				if (user.getNickname()!=null) {//contains
+				    if (user.getPhone()!=null){
+						if (user.getNickname().contains(nameorPhone)||user.getPhone().contains(nameorPhone)){
+							nameorphoneList.add(user);
+						  }
+						}else{
+						  if (user.getNickname().contains(nameorPhone)){
+							  nameorphoneList.add(user);
+						 }
+					   }
+					}else{
+							if (user.getPhone().contains(nameorPhone)){
+								nameorphoneList.add(user);
+							}
+					}
+			     }
+		}
+		if (nameorphoneList.size()>(pageNumber*10)+1) {
+			for (int i = (pageNumber * 10) + 1; i < (pageNumber * 10) + 1; i++) {
+				returnList.add(nameorphoneList.get(i));
+			}
+		}
+		return returnList;
+	}
+
+
+	public List<UserInfoVo> conyteamTotalV4Vo(long userId){
+        List<User> userList = this.conyteamTotalV4(userId);
+		List<UserInfoVo> dataList = new ArrayList<UserInfoVo>();
+		for(User user :userList){
+			User newUser = userService.findOne(user.getParentId());
+			UserInfoVo userVo = new UserInfoVo();
+			userVo.setRealname(newUser.getNickname());
+			userVo.setPhone(newUser.getPhone());
+			userVo.setPName(newUser.getNickname());
+			userVo.setPPhone(newUser.getPhone());
+			dataList.add(userVo);
+		}
+		return dataList;
 	}
 }

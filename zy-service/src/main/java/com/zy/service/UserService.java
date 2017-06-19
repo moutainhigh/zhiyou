@@ -89,4 +89,6 @@ public interface UserService {
 	List<UserTeamDto> findByRank(UserlongQueryModel userlongQueryModel);
 
 	Map<String,Object> findNewSup(long[] ids);
+
+	Page<User> findAddpeople(UserQueryModel userQueryModel);
 }

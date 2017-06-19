@@ -1,5 +1,6 @@
 package com.zy.model.dto;
 
+import com.zy.entity.usr.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,5 +18,6 @@ public class UserTeamDto implements Serializable {
     private long num;
     private String avatar;
     private int rank;
+    private User.UserRank userRank;
 
 }

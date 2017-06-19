@@ -58,6 +58,8 @@ public class UserQueryModel implements Serializable {
 
 	private String nameorPhone;
 
+	private String remark;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
