@@ -208,7 +208,6 @@
       <img src="${ctx}/headPortrait.png" />
       <div class="ranking">
         <span>赵春华</span>
-        <span class="rankingSpan must">特级</span>
       </div>
       <span class="tel">13656174839</span>
       <a href="#"  class="rankingBtn">查看销量</a>
@@ -217,7 +216,6 @@
       <img src="${ctx}/headPortrait.png" />
       <div class="ranking">
         <span>赵春华</span>
-        <span class="rankingSpan province">省级</span>
       </div>
       <span class="tel">13656174839</span>
       <a href="#" class="rankingBtn">查看销量</a>
@@ -226,7 +224,6 @@
       <img src="${ctx}/headPortrait.png" />
       <div class="ranking">
         <span>赵春华</span>
-        <span class="rankingSpan city">市级</span>
       </div>
       <span class="tel">13656174839</span>
       <a href="#" class="rankingBtn">查看销量</a>
