@@ -161,7 +161,7 @@
 <article>
   <div class="teamTop">
     <img src="${ctx}/seatch.png" />
-    <input type="search" class="searchInput" placeholder="搜索" />
+    <input type="search" class="searchInput" placeholder="请输入姓名或手机号" />
     <img src="${ctx}/searchBtn.png" class="seatchImg" onclick="seatch()" />
     <div class="searchBtn" onclick="seatch()">搜索</div>
   </div>
