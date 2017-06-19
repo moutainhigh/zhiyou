@@ -53,4 +53,6 @@ public interface OrderService {
 	void undelete(Long orderId);
 
 	Map<String,Object> querySalesVolume(OrderQueryModel orderQueryModel);
+
+	Map<String,Object> querySalesVolumeDetail(OrderQueryModel orderQueryModel);
 }

@@ -35,6 +35,7 @@ import com.zy.model.query.OrderFillUserQueryModel;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.OrderService;
+import com.zy.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.validator.constraints.NotBlank;
@@ -100,6 +101,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private Producer producer;
+
+	@Autowired
+	private UserService userService;
 
 	public static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -1264,6 +1268,10 @@ public class OrderServiceImpl implements OrderService {
 		int moth = DateUtil.getMoth(new Date());
 		Long salesVolumeData [] = new Long[moth-1];
 		Long shipmentData [] = new Long[moth-1];
+        double svData [] = new double[moth-1];
+        double sData [] = new double[moth-1];
+        Long salesVolumeTeamData [] = new Long[moth-1];
+        Long shipmentTeamData [] = new Long[moth-1];
 		for (int i = moth - 1; i >= 1;i--){
 			orderQueryModel.setPaidTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
 			orderQueryModel.setPaidTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
@@ -1278,8 +1286,6 @@ public class OrderServiceImpl implements OrderService {
 			shipmentData[i-1] = data;
 		}
 		//计算环比
-		double svData [] = new double[moth-1];
-		double sData [] = new double[moth-1];
 		for (int i = moth - 1; i >= 1;i--){
 			double data = 0d;
 			//进货量环比
@@ -1301,14 +1307,72 @@ public class OrderServiceImpl implements OrderService {
 			data = s;
 			sData[i-1] = data;
 		}
+
+		//查询我的团队进、出货量
+		List<Long> userIdList = new ArrayList<>();
+		List<User> userList = new ArrayList<>();
+		List<User> users = userService.findAll(new UserQueryModel());
+		List<User> children = TreeHelper.sortBreadth2(users, orderQueryModel.getUserIdEQ().toString(), v -> {
+			TreeNode treeNode = new TreeNode();
+			treeNode.setId(v.getId().toString());
+			treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
+			return treeNode;
+		});
+		userList = children.stream().filter(v -> v.getUserRank() == User.UserRank.V4).collect(Collectors.toList());
+        if (userList.size() > 0 && userList != null){
+            for (User user: userList) {
+                userIdList.add(user.getId());
+            }
+            orderQueryModel.setUserIdList(userIdList);
+            orderQueryModel.setSellerIdList(userIdList);
+            for (int i = moth - 1; i >= 1;i--){
+                orderQueryModel.setPaidTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
+                orderQueryModel.setPaidTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
+                Long data = 0l;
+                //进货量
+                Long salesVolumeTeam  = orderMapper.queryRetailPurchases(orderQueryModel);
+                data = salesVolumeTeam;
+                salesVolumeTeamData[i-1] = data;
+                //出货量
+                Long shipmentTeam  = orderMapper.queryShipment(orderQueryModel);
+                data = shipmentTeam;
+                shipmentTeamData[i-1] = data;
+            }
+        }
 		returnMap.put("salesVolumeData", salesVolumeData);
 		returnMap.put("shipmentData", shipmentData);
 		returnMap.put("svData", svData);
 		returnMap.put("sData", sData);
+        returnMap.put("salesVolumeTeamData", salesVolumeTeamData);
+        returnMap.put("shipmentTeamData", shipmentTeamData);
 		return returnMap;
 	}
 
-	private static List<User> sortBreadth2(Collection<User> entities, String parentId, TreeNodeResolver<User> treeNodeResolver) {
+    @Override
+    public Map<String, Object> querySalesVolumeDetail(OrderQueryModel orderQueryModel) {
+        Map<String ,Object> returnMap = new HashMap<>();
+        int moth = DateUtil.getMoth(new Date());
+        Long salesVolumeData [] = new Long[moth-1];
+        Long shipmentData [] = new Long[moth-1];
+        for (int i = moth - 1; i >= 1;i--){
+            orderQueryModel.setPaidTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
+            orderQueryModel.setPaidTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
+            Long data = 0l;
+            //进货量
+            Long salesVolume  = orderMapper.queryRetailPurchases(orderQueryModel);
+            data = salesVolume;
+            salesVolumeData[i-1] = data;
+            //出货量
+            Long shipment  = orderMapper.queryShipment(orderQueryModel);
+            data = shipment;
+            shipmentData[i-1] = data;
+        }
+        returnMap.put("salesVolumeData", salesVolumeData);
+        returnMap.put("shipmentData", shipmentData);
+        return returnMap;
+    }
+
+    private static List<User> sortBreadth2(Collection<User> entities, String parentId, TreeNodeResolver<User> treeNodeResolver) {
 		List<User> result = new ArrayList<>();
 		Map<String, List<User>> childrenMap = entities.stream().collect(Collectors.groupingBy(v -> treeNodeResolver.apply(v).getParentId() == null ? "DEFAULT_NULL_KEY" : treeNodeResolver.apply(v).getParentId()));
 		sortBreadth2(childrenMap, result, parentId, treeNodeResolver);

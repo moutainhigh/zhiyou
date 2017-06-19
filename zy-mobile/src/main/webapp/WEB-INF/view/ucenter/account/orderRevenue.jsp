@@ -131,6 +131,7 @@
 
 <article>
     <a href="${ctx}/u/salesVolume/salesVolume" class="lookDetil">查看明细</a>
+    <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=222" class="lookDetil">查看明</a>
     <div id="echartFir"></div>
     <c:forEach items="${dateMap.revenues}" var="revenue" varStatus="num">
         <div class="detilAll" onclick="changeTriangle(this)">

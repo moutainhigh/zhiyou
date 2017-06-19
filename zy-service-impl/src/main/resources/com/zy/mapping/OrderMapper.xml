@@ -521,20 +521,54 @@
 	<select id="queryRetailPurchases" resultType="_long" parameterType="com.zy.model.query.OrderQueryModel">
 		SELECT IFNULL(SUM(a.quantity), 0)
 		FROM mal_order a
-		WHERE a.user_id = #{userIdEQ}
-			  AND a.order_status IN (3, 4, 5)
-			  AND a.paid_time &gt;= #{paidTimeGTE}
-			  AND a.paid_time &lt;= #{paidTimeLT}
+		<where>
+			1 = 1
+			AND a.order_status IN (3,4,5)
+			<if test="userIdEQ != null">
+				AND a.user_id = #{userIdEQ}
+			</if>
+			<if test="userIdList != null">
+				<if test="userIdList.size > 0">
+					AND a.user_id IN
+					<foreach collection="userIdList" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+			</if>
+			<if test="paidTimeGTE != null">
+				AND a.paid_time &gt;= #{paidTimeGTE}
+			</if>
+			<if test="paidTimeLT != null">
+				AND a.paid_time &lt; #{paidTimeLT}
+			</if>
+		</where>
 	</select>
 
 	<!-- 出货量 -->
 	<select id="queryShipment" resultType="_long" parameterType="com.zy.model.query.OrderQueryModel">
 		SELECT IFNULL(SUM(a.quantity), 0)
 		FROM mal_order a
-		WHERE a.seller_id = #{sellerIdEQ}
-			  AND a.order_status IN (3, 4, 5)
-			  AND a.paid_time &gt;= #{paidTimeGTE}
-			  AND a.paid_time &lt;= #{paidTimeLT}
+		<where>
+			1 = 1
+			AND a.order_status IN (3,4,5)
+			<if test="sellerIdEQ != null">
+				AND a.seller_id = #{sellerIdEQ}
+			</if>
+			<if test="sellerIdList != null">
+				<if test="sellerIdList.size > 0">
+					AND a.seller_id IN
+					<foreach collection="sellerIdList" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+			</if>
+			<if test="paidTimeGTE != null">
+				AND a.paid_time &gt;= #{paidTimeGTE}
+			</if>
+			<if test="paidTimeLT != null">
+				AND a.paid_time &lt; #{paidTimeLT}
+			</if>
+		</where>
 	</select>
 
 </mapper>
