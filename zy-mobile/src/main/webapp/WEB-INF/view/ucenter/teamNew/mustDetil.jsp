@@ -57,6 +57,10 @@
     .rankingAll>img {
       float: left;
       width: 40px;
+      height:40px;
+      -webkit-border-radius:50%;
+      -moz-border-radius:50%;
+      border-radius:50%;
       margin-top: 10px;
       margin-bottom: 10px;
     }

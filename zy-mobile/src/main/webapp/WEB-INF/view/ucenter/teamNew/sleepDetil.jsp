@@ -72,6 +72,10 @@
             width: 40px;
             margin-top: 10px;
             margin-bottom: 10px;
+            height:40px;
+            -webkit-border-radius:50%;
+            -moz-border-radius:50%;
+            border-radius:50%;
         }
         .ranking {
             float: left;
