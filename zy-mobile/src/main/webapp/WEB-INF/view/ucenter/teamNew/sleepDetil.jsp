@@ -439,8 +439,7 @@
 <script id="rowTpl" type="text/html">
     <div class="rankingAllList">
         <div class="rankingAll">
-           <span></span>
-            <img src="{{d.avatar}}" />
+            <img src="{{d.avatar}}" style="margin-left: 20px;"/>
             <div class="ranking">
                 <span>{{ d.nickname }}</span>
                 <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通用户':''}}</span>

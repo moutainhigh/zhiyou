@@ -75,15 +75,15 @@
       margin-right: 10px;
     }
     #echartFir {
-      padding: 10px;
       width:100%;
-      height:300px;
+      height:280px;
       color: #49494a;
       background: #fff !important;
-      margin-bottom: 15px;
     }
     #last {background: #fff !important;}
     .all {
+      width: 100%;
+      height: 150px;
       position: relative;
       padding:10px 15px 0 15px;
     }
@@ -92,16 +92,18 @@
       height:135px;
     }
     .percentNum {
+      width:100%;
       height:135px;
-      position: absolute;
-      top:20px;
-      left:15px;
+      background: #fff;
+      -webkit-border-radius:5px;
+      -moz-border-radius:5px;
+      border-radius:5px;
     }
     .percentNumDiv {
-      width:98%;
-      margin-left:1%;
-      height:80px;
-      border-bottom: 1px solid #aaabae;
+      width:100%;
+      height:90px;
+      border-bottom: 1px solid #ddd;
+      padding-top: 10px;
     }
     .fontImg {
       width:100%;
@@ -133,9 +135,20 @@
       color:#32b1d2;
       font-size: 16px;
       text-align: center;
-      line-height: 40px;
+      line-height: 45px;
     }
-
+    .teamAllAccount {height: 50px;background: #fff;padding-top: 10px;}
+    .teamAllAccount img {float: left;width: 50px;height: 50px;margin-left: 8px;}
+    .teamAllAccount span {
+      float: left;line-height: 50px;margin-left: 20px;font-size: 18px;
+      color: #838385;
+    }
+    .teamAllAccount a,.teamAllAccount span.paim {
+      float: right;
+      line-height: 50px;
+      color: #6cb92d;
+      margin-right: 15px;
+    }
   </style>
   <script>
 	  $(function() {
@@ -178,14 +191,22 @@
       <p>上月环比：<span><fmt:formatNumber type="number" value="${dataMap.QoQ}" pattern="0.00" maxFractionDigits="2"/>%</span></p>
       <%--<p>上月同比：<span>¥<fmt:formatNumber type="number" value="${dataMap.YoY}" pattern="0.00" maxFractionDigits="2"/>%</span></p>--%>
   </div>
-
+  <div class="allAccount" style="padding-bottom: 20px;">
+    <div class="teamAllAccount">
+      <img src="${ctx}/peopleVolume.png"/>
+      <span>个人销量</span>
+    </div>
     <div id="echartFir"></div>
-
-  <div id="last" style="width: 100%;height: 400px;padding: 10px;"></div>
-
+  </div>
+  <div class="allAccount">
+    <div class="teamAllAccount">
+      <img src="${ctx}/peopleVolume.png" />
+      <span>累计收益占比</span>
+    </div>
+    <div id="last" style="width: 100%;height: 350px;padding: 10px;"></div>
+  </div>
   <c:if test="${dataMap.ord[0] > 0 || dataMap.ord[1] > 0}">
       <div class="all">
-        <img src="${ctx}/percent.png" />
         <div class="percentNum">
              <div class="percentNumDiv">
                    <div class="fontImg clearfloat">
@@ -204,7 +225,6 @@
 
     <c:if test="${dataMap.red[0] > 0 || dataMap.red[1] > 0}">
       <div class="all">
-        <img src="${ctx}/percent.png" />
         <div class="percentNum">
           <div class="percentNumDiv">
             <div class="fontImg clearfloat">
@@ -223,7 +243,6 @@
 
     <c:if test="${dataMap.dat[0] > 0 || dataMap.dat[1] > 0}">
       <div class="all">
-        <img src="${ctx}/percent.png" />
         <div class="percentNum">
           <div class="percentNumDiv">
             <div class="fontImg clearfloat">
@@ -242,7 +261,6 @@
 
   <c:if test="${dataMap.sal[0] > 0 || dataMap.sal[1] > 0}">
     <div class="all">
-      <img src="${ctx}/percent.png" />
       <div class="percentNum">
         <div class="percentNumDiv">
           <div class="fontImg clearfloat">
@@ -261,7 +279,6 @@
 
   <c:if test="${dataMap.ftl[0] > 0 || dataMap.ftl[1] > 0}">
     <div class="all">
-      <img src="${ctx}/percent.png" />
       <div class="percentNum">
         <div class="percentNumDiv">
           <div class="fontImg clearfloat">
@@ -280,7 +297,6 @@
 
   <c:if test="${dataMap.sen[0] > 0 || dataMap.sen[1] > 0}">
     <div class="all">
-      <img src="${ctx}/percent.png" />
       <div class="percentNum">
         <div class="percentNumDiv">
           <div class="fontImg clearfloat">
@@ -299,7 +315,6 @@
 
   <c:if test="${dataMap.ltl[0] > 0 || dataMap.ltl[1] > 0}">
     <div class="all">
-      <img src="${ctx}/percent.png" />
       <div class="percentNum">
         <div class="percentNumDiv">
           <div class="fontImg clearfloat">
@@ -318,7 +333,6 @@
 
   <c:if test="${dataMap.rec[0] > 0 || dataMap.rec[1] > 0}">
     <div class="all">
-      <img src="${ctx}/percent.png" />
       <div class="percentNum">
         <div class="percentNumDiv">
           <div class="fontImg clearfloat">
@@ -350,9 +364,6 @@
 //      arrayNewT.push(array[i]);
 //    }
 //  }
-  $(function(){
-    $(".percentNum").css("width",$(".all img").css("width"));
-  })
   var symbolSize = 20;
   // 基于准备好的dom，初始化echarts实例
   var myChart = echarts.init(document.getElementById('echartFir'));
@@ -360,6 +371,12 @@
   option = {
     tooltip: {
       trigger: 'axis'
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      top: '15%',
+      containLabel: true
     },
     xAxis: {
       type: 'category',
@@ -390,6 +407,7 @@
         type: 'line',
         stack: '总量',
         areaStyle: {normal: {}},
+
         label: {
           normal: {
             show: true,
@@ -414,9 +432,6 @@
   var array=piedata.split(",");
   var myChartSec = echarts.init(document.getElementById('last'));
   optionSec = {
-    title : {
-      text: '累计收益占比'
-    },
     tooltip : {
       trigger: 'item',
       formatter: "{a} <br/>{b} : {c} ({d}%)"

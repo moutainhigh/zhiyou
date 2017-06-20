@@ -15,10 +15,9 @@
     <title></title>
     <%@ include file="/WEB-INF/view/include/head.jsp" %>
     <link rel="stylesheet" href="${stccdn}/css/ucenter/account.css">
-    <link rel="stylesheet" href="${ctx}/style.css">
     <style>
         html, body, div, p, ul, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, select, button, textarea, iframe, table, th, td { margin: 0; padding: 0; }
-        body { font-family:"Microsoft YaHei";background: #fff; font-size: 26px; color: #151515; margin: 0; padding: 0; }
+        body { font-family:"Microsoft YaHei";background: #eee; font-size: 26px; color: #151515; margin: 0; padding: 0; }
         img { border: 0 none; vertical-align: top; display:inline-block; -ms-interpolation-mode: bicubic; image-rendering:optimizeQuality; }
         button { cursor: pointer; border:0 none; }
         input{ border:0 none; background:transparent; }
@@ -31,10 +30,8 @@
         a { display:block; }
         a,input,textarea,p,span,h2,em,li,div{text-decoration: none; }
         input,textarea{font-family:"Microsoft YaHei"}
-        .account {background-color: #fff;}
+        .account {background-color: #eee;}
         #echartFir {
-            padding: 10px;
-            padding-top: 0;
             width:100%;
             height:280px;
             color: #49494a;
@@ -111,7 +108,24 @@
         }
         .changeDetil {
             display: none;
-            background: #e9eaed;
+            background: #eee;
+        }
+        .allAccount {background: #fff;margin-bottom: 15px;}
+        .teamAllAccount {height: 50px;background: #fff;padding-top: 10px;}
+        .teamAllAccount img {float: left;width: 50px;height: 50px;margin-left: 8px;}
+        .teamAllAccount span {
+            float: left;line-height: 50px;margin-left: 20px;font-size: 18px;
+            color: #838385;
+        }
+        .teamAllAccount a,.teamAllAccount span.paim {
+            float: right;
+            line-height: 50px;
+            color: #6cb92d;
+            margin-right: 15px;
+        }
+        .color {
+            font-size:14px;
+            color: #c7c7c7;
         }
     </style>
     <script>
@@ -130,9 +144,14 @@
 <body class="account">
 
 <article>
-    <a href="${ctx}/u/salesVolume/salesVolume" class="lookDetil">查看明细</a>
-    <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=222" class="lookDetil">查看明</a>
-    <div id="echartFir"></div>
+    <div class="allAccount">
+        <div class="teamAllAccount">
+            <img src="${ctx}/peopleVolume.png"/>
+            <span>${types}月度表</span>
+        </div>
+        <div id="echartFir"></div>
+    </div>
+
     <c:forEach items="${dateMap.revenues}" var="revenue" varStatus="num">
         <div class="detilAll" onclick="changeTriangle(this)">
             <div class="echartdetil">
@@ -141,7 +160,8 @@
                 </div>
                 <div class="font-triangle">
                     <p>
-                            <span class="spanTriange">${dateMap.len - num.index}</span>月
+                            <span class="spanTriange">${dateMap.len - num.index}</span>月<br/>
+                            <span class="color">${dateMap.len - num.index}月01-${dateMap.len - num.index}月30</span>
                     </p>
                 </div>
                 <div class="font-triangleT">
@@ -156,7 +176,6 @@
 <input type="hidden" value="-" />
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">
-
     function changeTriangle(obj) {
         var type = ${type};
         var moth = $(obj).find(".spanTriange").text();
@@ -194,28 +213,24 @@
             $(obj).next(".changeDetil").hide();
         }
     }
-
-
     var arrays = "${dateMap.revenue}";
     var array= arrays.split(",");
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echartFir'));
+    var colorText='#68dcc1';
     // 指定图表的配置项和数据
     option = {
-        color: ['#6cb92d'],
+        color: [colorText],
         tooltip : {
             trigger: 'axis',
             axisPointer : {            // 坐标轴指示器，坐标轴触发有效
                 type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
             }
         },
-        title: {
-            text: '${types}月度图'
-        },
         grid: {
             left: '3%',
             right: '4%',
-            bottom: '3%',
+            top: '15%',
             containLabel: true
         },
         xAxis : [
@@ -224,13 +239,26 @@
                 data: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
                 axisTick: {
                     alignWithLabel: true
+                },
+                axisLine: {
+                    onZero: false,
+                    lineStyle: {
+                        color: colorText
+                    }
                 }
             }
         ],
         yAxis : [
             {
-                type : 'value'
-            }
+                type : 'value',
+                axisLine: {
+                    onZero: false,
+                    lineStyle: {
+                        color: colorText
+                    }
+                }
+            },
+
         ],
         series : [
            {
