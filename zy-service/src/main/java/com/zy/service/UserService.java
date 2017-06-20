@@ -93,4 +93,6 @@ public interface UserService {
 	Page<User> findAddpeople(UserQueryModel userQueryModel);
 
 	boolean findNewOne(Long id);
+
+	Page<User> findPage1(UserQueryModel userQueryModel);
 }

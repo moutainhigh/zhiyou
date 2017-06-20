@@ -207,9 +207,11 @@ public class UcenterTeamController {
 		if (null!=nameorPhone){
 			userQueryModel.setNameorPhone("%"+nameorPhone+"%");
 		}
-	   /*	userQueryModel.setPageNumber(pageNumber);*/
-		userQueryModel.setPageSize(1000);
-		Page<User> page= userService.findPage(userQueryModel);
+		if (pageNumber!=null){
+			userQueryModel.setPageNumber(pageNumber);
+			userQueryModel.setPageSize(10);
+		}
+		Page<User> page= userService.findPage1(userQueryModel);
 		Map<String, Object> map = new HashMap<>();
 		map.put("page",page);
 		return ResultBuilder.result(map);
@@ -229,7 +231,7 @@ public class UcenterTeamController {
 		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
 		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
 		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
-		return "";//TODo
+		return "ucenter/teamNew/sleepDetil";
 	}
 
 	/**
@@ -241,15 +243,17 @@ public class UcenterTeamController {
      */
 	@RequestMapping(value = "ajaxTeamSleep",method = RequestMethod.POST)
 	@ResponseBody
-	public  Result<?> ajaxTeamSleep(Principal principal,String nameorPhone, @RequestParam(required = true) Integer pageNumber){
+	public  Result<?> ajaxTeamSleep(Principal principal,String nameorPhone,Integer pageNumber){
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
 		if (null!=nameorPhone){
 			userQueryModel.setNameorPhone("%"+nameorPhone+"%");
 		}
-		userQueryModel.setPageNumber(pageNumber);
-		userQueryModel.setPageSize(10);
+		if (-1!=pageNumber){//不需要分页
+		  userQueryModel.setPageNumber(pageNumber);
+		  userQueryModel.setPageSize(10);
+		}
 		Page<User> page = userService.findActive(userQueryModel,true);
 		return ResultBuilder.result(page.getData());
 	}
@@ -266,10 +270,10 @@ public class UcenterTeamController {
 		UserlongQueryModel userlongQueryModel= new UserlongQueryModel();
 		userlongQueryModel.setParentIdNL(userId);
 		userlongQueryModel.setPageNumber(0);
-		userlongQueryModel.setPageSize(10);
+		userlongQueryModel.setPageSize(1);
 		Page<UserTeamDto> page = userService.disposeRank(userlongQueryModel,true);
-		model.addAttribute("page",page);
-		return "ucenter/teamNew/teamDetil";
+		model.addAttribute("page",PageBuilder.copyAndConvert(page, v-> userComponent.buildUserTeamDto(v)));
+		return "ucenter/teamNew/rankingNew";
 	}
 
 	/**
@@ -285,13 +289,17 @@ public class UcenterTeamController {
 		Long userId = principal.getUserId();
 		UserlongQueryModel userlongQueryModel= new UserlongQueryModel();
 		userlongQueryModel.setParentIdNL(userId);
-		userlongQueryModel.setPageNumber(pageNumber);
-		userlongQueryModel.setPageSize(10);
+		if (-1!=pageNumber){
+		 userlongQueryModel.setPageNumber(pageNumber);
+		 userlongQueryModel.setPageSize(1);
+		}
 		if (null!=nameorPhone){
-			userlongQueryModel.setNameorPhone(nameorPhone);
+			userlongQueryModel.setNameorPhone("%"+nameorPhone+"%");
 		}
 		Page<UserTeamDto> page = userService.disposeRank(userlongQueryModel,true);
-		return ResultBuilder.result(page.getData());
+		Map<String, Object> map = new HashMap<>();
+		map.put("page",PageBuilder.copyAndConvert(page, v-> userComponent.buildUserTeamDto(v)));
+		return ResultBuilder.result(map);
 	}
 
 	/**
@@ -325,9 +333,11 @@ public class UcenterTeamController {
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
-		/*userQueryModel.setPageNumber(pageNumber);*/
-		userQueryModel.setPageNumber(0);
-		userQueryModel.setPageSize(1000); //不分页查询1000条
+		if (pageNumber!=null){
+			userQueryModel.setPageNumber(pageNumber);
+			userQueryModel.setPageSize(10);
+		}
+
 		if (null!=nameorPhone){
 			userQueryModel.setNameorPhone("%"+nameorPhone+"%");
 		}

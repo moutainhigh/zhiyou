@@ -13,6 +13,7 @@
 
     <title>沉睡成员详情</title>
     <%@ include file="/WEB-INF/view/include/head.jsp"%>
+    <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
     <style>
         body {background: #f7f7f9}
         /*清除浮动代码*/
@@ -218,7 +219,7 @@
 <body>
 <header class="header">
     <h1>沉睡成员详情</h1>
-    <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/team/newTeam" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
 <article>
@@ -238,41 +239,23 @@
                     <span class="rankingTop">特级服务商</span>
                     <span class="rankingSpan must">特级</span>
                 </div>
-                <span class="tel telDetil">136人</span>
+                <span class="tel telDetil">${fn:length(v4)}人</span>
             </div>
         </div>
         <div class="all allLast">
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <span>1</span>
-                    <img src="${ctx}/headPortrait.png" />
-                    <div class="ranking">
-                        <span>赵春华</span>
+            <c:forEach items="${v4}" var="v4user" varStatus="indexs">
+                <div class="rankingAllList">
+                    <div class="rankingAll">
+                        <span>${indexs.index+1}</span>
+                        <img src="${v4user.avatar}" />
+                        <div class="ranking">
+                            <span>${v4user.nickname}</span>
+                        </div>
+                        <a href="tel:${v4user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${v4user.phone}</a>
                     </div>
-                    <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
                 </div>
-            </div>
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <span>2</span>
-                    <img src="${ctx}/headPortrait.png" />
-                    <div class="ranking">
-                        <span>赵春华</span>
-                    </div>
-                    <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
-                </div>
+            </c:forEach>
 
-            </div>
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <span>3</span>
-                    <img src="${ctx}/headPortrait.png" />
-                    <div class="ranking">
-                        <span>赵春华</span>
-                    </div>
-                    <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
-                </div>
-            </div>
         </div>
 
         <div class="all" change="false" onclick="showList(this)">
@@ -284,19 +267,22 @@
                     <span class="rankingTop">省级服务商</span>
                     <span class="rankingSpan province">省级</span>
                 </div>
-                <span class="tel telDetil">136人</span>
+                <span class="tel telDetil">${fn:length(v3)}人</span>
             </div>
         </div>
         <div class="all allLast">
-            <div class="rankingAllList">
-
-            </div>
-            <div class="rankingAllList">
-
-            </div>
-            <div class="rankingAllList">
-
-            </div>
+            <c:forEach items="${v3}" var="v3user" varStatus="indexs">
+                <div class="rankingAllList">
+                    <div class="rankingAll">
+                        <span>${indexs.index+1}</span>
+                        <img src="${v3user.avatar}" />
+                        <div class="ranking">
+                            <span>${v3user.nickname}</span>
+                        </div>
+                        <a href="tel:${v3user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${v3user.phone}</a>
+                    </div>
+                </div>
+            </c:forEach>
 
         </div>
         <div class="all" change="false" onclick="showList(this)">
@@ -308,20 +294,23 @@
                     <span class="rankingTop">市级服务商</span>
                     <span class="rankingSpan city">市级</span>
                 </div>
-                <span class="tel telDetil">136人</span>
+                <span class="tel telDetil">${fn:length(v2)}人</span>
             </div>
         </div>
 
         <div class="all allLast">
-            <div class="rankingAllList">
-
-            </div>
-            <div class="rankingAllList">
-
-            </div>
-            <div class="rankingAllList">
-
-            </div>
+            <c:forEach items="${v2}" var="v2user" varStatus="indexs">
+                <div class="rankingAllList">
+                    <div class="rankingAll">
+                        <span>${indexs.index+1}</span>
+                        <img src="${v2user.avatar}" />
+                        <div class="ranking">
+                            <span>${v2user.nickname}</span>
+                        </div>
+                        <a href="tel:${v2user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${v2user.phone}</a>
+                    </div>
+                </div>
+            </c:forEach>
 
         </div>
         <div class="all" change="false" onclick="showList(this)">
@@ -333,58 +322,57 @@
                     <span class="rankingTop">VIP服务商</span>
                     <span class="rankingSpan must">VIP</span>
                 </div>
-                <span class="tel telDetil">136人</span>
+                <span class="tel telDetil">${fn:length(v1)}人</span>
             </div>
         </div>
         <div class="all allLast">
-
+            <c:forEach items="${v1}" var="v1user" varStatus="indexs">
+                <div class="rankingAllList">
+                    <div class="rankingAll">
+                        <span>${indexs.index+1}</span>
+                        <img src="${v1user.avatar}" />
+                        <div class="ranking">
+                            <span>${v1user.nickname}</span>
+                        </div>
+                        <a href="tel:${v1user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${v1user.phone}</a>
+                    </div>
+                </div>
+            </c:forEach>
 
         </div>
-        <div class="rankingAllList">
-
+        <div class="all" change="false" onclick="showList(this)">
+            <div class="rankingAll">
+                <div class="ranking">
+                    <div class="sanjiao">
+                        <div class="jiaoOne"></div>
+                    </div>
+                    <span class="rankingTop">普通服务商</span>
+                    <span class="rankingSpan must">普通服务商</span>
+                </div>
+                <span class="tel telDetil">${fn:length(v0)}人</span>
+            </div>
+        </div>
+        <div class="all allLast">
+            <c:forEach items="${v0}" var="v0user" varStatus="indexs">
+                <div class="rankingAllList">
+                    <div class="rankingAll">
+                        <span>${indexs.index+1}</span>
+                        <img src="${v0user.avatar}" />
+                        <div class="ranking">
+                            <span>${v0user.nickname}</span>
+                        </div>
+                        <a href="tel:${v0user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${v0user.phone}</a>
+                    </div>
+                </div>
+            </c:forEach>
 
         </div>
-        <div class="rankingAllList">
 
-
-        </div>
     </div>
     </div>
     <div class="searchList">查无此人!</div>
     <div class="searchListShow">
-        <div class="rankingAllList">
-            <div class="rankingAll">
-                <span>1</span>
-                <img src="${ctx}/headPortrait.png" />
-                <div class="ranking">
-                    <span>赵春华</span>
-                    <span class="rankingSpan city">市级</span>
-                </div>
-                <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
-            </div>
-        </div>
-        <div class="rankingAllList">
-            <div class="rankingAll">
-                <span>2</span>
-                <img src="${ctx}/headPortrait.png" />
-                <div class="ranking">
-                    <span>赵春华</span>
-                    <span class="rankingSpan city">市级</span>
-                </div>
-                <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
-            </div>
-        </div>
-        <div class="rankingAllList">
-            <div class="rankingAll">
-                <span>3</span>
-                <img src="${ctx}/headPortrait.png" />
-                <div class="ranking">
-                    <span>赵春华</span>
-                    <span class="rankingSpan city">市级</span>
-                </div>
-                <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
-            </div>
-        </div>
+
     </div>
 
     </div>
@@ -405,15 +393,61 @@
 
     //点击搜索
     function seatch() {
+        $(".searchList").hide();
+        $(".searchListShow").html("");
         if($(".searchInput").val()==""){
             $(".numberList").show();
             $(".searchListShow").hide();
         }else {
             $(".numberList").hide();
             $(".searchListShow").show();
+            $.ajax({
+                url : '${ctx}/u/team/ajaxTeamSleep',
+                data : {
+                    nameorPhone:$(".searchInput").val(),
+                    pageNumber:-1
+                },
+                dataType : 'json',
+                type : 'POST',
+                success : function(result) {
+                    if(result.code != 0) {
+                        return;
+                    }
+                    var pageData= result.data;
+                    if (pageData.length) {
+                        for ( var i in pageData) {
+                            var row = pageData[i];
+                            buildRow(row);
+                        }
+                    }
+                    if (!pageData.length || pageData.length < 0) {
+                        $(".searchList").show();
+                    }
+                }
+            });
         }
 
     }
+    function buildRow(row,indexs){
+        var rowTpl = document.getElementById('rowTpl').innerHTML;
+        laytpl(rowTpl).render(row,function(html) {
+            $('.searchListShow').append(html);
+            $(".searchList").hide();
+        });
+    }
+</script>
+<script id="rowTpl" type="text/html">
+    <div class="rankingAllList">
+        <div class="rankingAll">
+           <span></span>
+            <img src="{{d.avatar}}" />
+            <div class="ranking">
+                <span>{{ d.nickname }}</span>
+                <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通用户':''}}</span>
+            </div>
+            <a href="tel:{{ d.phone }}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">{{ d.phone }}</a>
+        </div>
+    </div>
 </script>
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>

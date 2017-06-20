@@ -223,7 +223,7 @@
         <span class="tel">${user.phone}</span>
       </div>
     </c:forEach>
-    <a href="#" class="lookDetil">更多详情>></a>
+    <a href="${ctx}/u/team/teamSleep" class="lookDetil">更多详情>></a>
   </div>
 </article>
 <script src="${ctx}/echarts.min.js"></script>

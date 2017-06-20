@@ -13,6 +13,7 @@
 
   <title>新晋占比排名</title>
   <%@ include file="/WEB-INF/view/include/head.jsp"%>
+  <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
   <style>
     body {background: #f7f7f9}
     body,html {font-family:  "Microsoft YaHei";text-overflow: ellipsis;
@@ -159,7 +160,7 @@
 <body>
 <header class="header">
   <h1>新晋占比排名</h1>
-  <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+  <a href="${ctx}/u/team/newTeam" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
 <article>
@@ -170,74 +171,30 @@
     <div class="searchBtn" onclick="seatch()">搜索</div>
   </div>
   <div class="numberList">
-    <div class="all allLast">
-      <div class="rankingAllList">
-        <div class="rankingAll">
-          <span>1</span>
-          <img src="${ctx}/headPortrait.png" />
-          <div class="ranking">
-            <span>赵春华(12人)</span>
+    <c:forEach items="${page.data}" var="udto">
+     <div class="all allLast">
+        <div class="rankingAllList">
+          <div class="rankingAll">
+            <span>${udto.rank}</span>
+            <img src="${udto.avatar}" />
+            <div class="ranking">
+              <span>${udto.nickname}(${udto.num}人)</span>
+            </div>
+            <a href="tel:{{d.phone}}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${udto.phone}</a>
           </div>
-          <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
         </div>
       </div>
-
-      <div class="rankingAllList">
-        <div class="rankingAll">
-          <span>2</span>
-          <img src="${ctx}/headPortrait.png" />
-          <div class="ranking">
-            <span>赵春华(12人)</span>
-          </div>
-          <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
-        </div>
-      </div>
-
-      <div class="rankingAllList">
-        <div class="rankingAll">
-          <span>3</span>
-          <img src="${ctx}/headPortrait.png" />
-          <div class="ranking">
-            <span>赵春华(12人)</span>
-          </div>
-          <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
-        </div>
-      </div>
-    </div>
+    </c:forEach>
   </div>
-
+  <c:if test="${page.total > page.pageSize}">
+    <div class="page-more"><span>点击加载更多</span></div>
+  </c:if>
+  <c:if test="${page.total <= page.pageSize}">
+    <div class="page-more disabled" id="page-moredis"><span>没有更多数据了</span></div>
+  </c:if>
   <div class="searchList">查无此人!</div>
   <div class="searchListShow">
-    <div class="rankingAllList">
-      <div class="rankingAll">
-        <span>1</span>
-        <img src="${ctx}/headPortrait.png" />
-        <div class="ranking">
-          <span>赵春华(12人)</span>
-        </div>
-        <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
-      </div>
-    </div>
-    <div class="rankingAllList">
-      <div class="rankingAll">
-        <span>2</span>
-        <img src="${ctx}/headPortrait.png" />
-        <div class="ranking">
-          <span>赵春华(12人)</span>
-        </div>
-        <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
-      </div>
-    </div>
-    <div class="rankingAllList">
-      <div class="rankingAll">
-        <span>3</span>
-        <img src="${ctx}/headPortrait.png" />
-        <div class="ranking">
-          <span>赵春华(12人)</span>
-        </div>
-        <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
-      </div>
-    </div>
+
   </div>
 
   </div>
@@ -258,15 +215,102 @@
 
   //点击搜索
   function seatch() {
+    $(".searchList").hide();
+    $(".searchListShow").html("");
+    $(".page-more").hide();
+    $(".page-moredis").hide();
     if($(".searchInput").val()==""){
       $(".numberList").show();
       $(".searchListShow").hide();
     }else {
       $(".numberList").hide();
       $(".searchListShow").show();
+      $.ajax({
+        url : '${ctx}/u/team/ajaxteamRank',
+        data : {
+          nameorPhone:$(".searchInput").val(),
+          pageNumber : -1
+        },
+        dataType : 'json',
+        type : 'POST',
+        success : function(result) {
+          if(result.code != 0) {
+            return;
+          }
+          var page = result.data.page;
+          if (page.data.length) {
+            var pageData = page.data;
+            for ( var i in pageData) {
+              var row = pageData[i];
+              buildRow(row,"searchListShow");
+              $(".searchList").hide();
+            }
+          }
+          if (!page.data.length || page.data.length < 0) {
+            $(".searchList").show();
+          }
+        }
+      });
     }
 
   }
+
+  $(function() {
+    if (!$('.page-more').hasClass('disabled')) {
+      $('.page-more').click(loadMore);
+    }
+  });
+  var pageNumber = 0;
+
+  function loadMore() {
+    $.ajax({
+      url : '${ctx}/u/team/ajaxteamRank',
+      data : {
+        pageNumber : pageNumber + 1
+      },
+      dataType : 'json',
+      type : 'POST',
+      success : function(result) {
+        if(result.code != 0) {
+          return;
+        }
+        var page = result.data.page;
+        if (page.data.length) {
+          timeLT = result.data.timeLT;
+          pageNumber = page.pageNumber;
+          var pageData = page.data;
+          for ( var i in pageData) {
+            var row = pageData[i];
+            buildRow(row,"numberList");
+          }
+        }
+        if (!page.data.length || page.data.length < page.pageSize) {
+          $('.page-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
+        }
+      }
+    });
+  }
+
+  function buildRow(row,obj){
+    var rowTpl = document.getElementById('rowTpl').innerHTML;
+    laytpl(rowTpl).render(row, function(html) {
+      $('.'+obj).append(html);
+    });
+  }
+</script>
+<script id="rowTpl" type="text/html">
+  <div class="all allLast">
+    <div class="rankingAllList">
+      <div class="rankingAll">
+        <span>{{d.rank}}</span>
+        <img src="{{d.avatar}}" />
+        <div class="ranking">
+          <span>{{d.nickname}}({{d.num}}人)</span>
+        </div>
+        <a href="tel:{{d.phone}}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">{{d.phone}}</a>
+      </div>
+    </div>
+  </div>
 </script>
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
