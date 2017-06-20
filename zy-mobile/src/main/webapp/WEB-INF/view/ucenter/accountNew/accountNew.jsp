@@ -454,6 +454,7 @@
         radius : [30, 110],
         center : ['50%', '50%'],
         roseType : 'area',
+        color:['#62f89e','#86dcd4','#5bd0c4','#68dcc1','#6cbbe3','#88c3db','#5c97e8','#31d9a5'],
         data:[
           {value:array[0], name:'特级平级奖'},
           {value:array[1], name:'订单收益'},

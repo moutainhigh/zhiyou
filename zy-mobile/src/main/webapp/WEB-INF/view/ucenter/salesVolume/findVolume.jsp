@@ -159,13 +159,19 @@
     }
     /*特级*/
     .must {
-      background: #22b5d4;
+      background: #5d77e5;
     }
     .province {
-      background: #fe543e;
+      background: #ef7b54;
     }
     .city {
-      background: #fb8604;
+      background: #ffb558;
+    }
+    .VIP {
+      background: #51c187;
+    }
+    .com {
+      background: #91c7ae;
     }
     .telAll img {
       width:20px;
@@ -310,7 +316,7 @@
             <div class="jiaoOne"></div>
           </div>
           <span class="rankingTop">VIP服务商</span>
-          <span class="rankingSpan must">VIP</span>
+          <span class="rankingSpan VIP">VIP</span>
         </div>
         <span class="tel telDetil">${fn:length(v1)}人</span>
       </div>
@@ -334,7 +340,7 @@
             <div class="jiaoOne"></div>
           </div>
           <span class="rankingTop">普通用户</span>
-          <span class="rankingSpan must">用户</span>
+          <span class="rankingSpan com">普通</span>
         </div>
         <span class="tel telDetil">${fn:length(v0)}人</span>
       </div>
@@ -423,7 +429,7 @@
       <img src="{{d.avatar}}" />
       <div class="ranking">
         <span>{{ d.nickname }}</span>
-        <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通用户':''}}</span>
+        <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通':''}}</span>
       </div>
       <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId={{ d.id }}&userName={{ d.nickname }}"  class="rankingBtn">查看销量</a>
       <span class="tel">{{d.phone}}</span>

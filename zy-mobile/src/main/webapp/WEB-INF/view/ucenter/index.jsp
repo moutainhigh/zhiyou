@@ -95,13 +95,12 @@
         <i class="list-arrow"></i>
       </a>
       </c:if>
+      <a class="list-item list-item-icon" href="${ctx}/u/salesVolume/salesVolume?userRank=${user.userRank}">
+        <i class="list-icon icon icon-users"></i>
+        <div class="list-text">我的销量</div>
+        <i class="list-arrow"></i>
+      </a>
     </div>
-
-    <a class="list-item list-item-icon" href="${ctx}/u/salesVolume/salesVolume?userRank=${user.userRank}">
-      <i class="list-icon icon icon-users"></i>
-      <div class="list-text">我的销量</div>
-      <i class="list-arrow"></i>
-    </a>
 
     <div class="list-group">
       <a class="list-item list-item-icon" href="${ctx}/u/activity/applyList">
