@@ -13,6 +13,7 @@
 
   <title>直属下级进销单详情</title>
   <%@ include file="/WEB-INF/view/include/head.jsp"%>
+  <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
   <style>
     body {background: #f7f7f9}
     body,html {font-family:  "Microsoft YaHei";text-overflow: ellipsis;
@@ -326,13 +327,36 @@
         </div>
       </c:forEach>
     </div>
+    <div class="all" change="false" onclick="showList(this)">
+      <div class="rankingAll">
+        <div class="ranking">
+          <div class="sanjiao">
+            <div class="jiaoOne"></div>
+          </div>
+          <span class="rankingTop">普通用户</span>
+          <span class="rankingSpan must">用户</span>
+        </div>
+        <span class="tel telDetil">${fn:length(v0)}人</span>
+      </div>
+    </div>
+    <div class="all allLast">
+      <c:forEach items="${v0}" var="user">
+        <div class="rankingAll">
+          <img src="${user.avatar}" />
+          <div class="ranking">
+            <span>${user.nickname}</span>
+          </div>
+          <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
+          <span class="tel">${user.phone}</span>
+        </div>
+      </c:forEach>
+    </div>
   </div>
   </div>
   <div class="searchList">查无此人!</div>
   <div class="searchListShow">
 
   </div>
-
   </div>
 </article>
 <script>
@@ -350,20 +374,63 @@
   }
   //点击搜索
   function seatch() {
-
     if($(".searchInput").val()==""){
       $(".numberList").show();
       $(".searchListShow").hide();
     }else {
       $(".numberList").hide();
       $(".searchListShow").show();
-
-      $(".searchListShow").append('<div class="rankingAllList"><div class="rankingAll"><img src="${ctx}/headPortrait.png" />'
-              +'<div class="ranking"><span>赵春华</span><span class="rankingSpan city">市级</span></div>'
-              +'<a href="#" class="rankingBtn">查看销量</a> <span class="tel">13656174839</span></div></div>');
+      var phoneOrmame = $(".searchInput").val();
+      $.ajax({
+        url : '${ctx}/u/salesVolume/ajaxTeamDetail',
+        data : {
+          nameorPhone:phoneOrmame
+        },
+        dataType : 'json',
+        type : 'POST',
+        success : function(result) {
+          if(result.code != 0) {
+            return;
+          }
+          var page = result.data.page;
+          if (page.data.length) {
+            var pageData = page.data;
+            for ( var i in pageData) {
+              var row = pageData[i];
+              buildRow(row);
+            }
+          }
+          if (!page.data.length || page.data.length < page.pageSize) {
+            $('.page-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
+          }
+        }
+      });
     }
-
   }
+  function buildRow(row,indexs){
+    var rowTpl = document.getElementById('rowTpl').innerHTML;
+    laytpl(rowTpl).render(row,function(html) {
+      $('.searchListShow').append(html);
+    });
+  }
+</script>
+<script id="rowTpl" type="text/html">
+  <div class="rankingAllList">
+    <div class="rankingAll">
+      <img src="{{d.avatar}}" />
+      <div class="ranking">
+        <span>{{ d.nickname }}</span>
+        <c:if test="{{d.userRank}} == 'V4'"><span class="rankingSpan must">特级</span></c:if>
+        <c:if test="{{d.userRank}} == 'V3'"><span class="rankingSpan province">省级</span></c:if>
+        <c:if test="{{d.userRank}} == 'V2'"><span class="rankingSpan city">市级</span></c:if>
+        <c:if test="{{d.userRank}} == 'V1'"><span class="rankingSpan must">VIP级</span></c:if>
+        <c:if test="{{d.userRank}} == 'V0'"><span class="rankingSpan must">普通</span></c:if>
+      </div>
+      <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId={{ d.id }}&userName={{ d.nickname }}"  class="rankingBtn">查看销量</a>
+      <span class="tel">{{d.phone}}</span>
+
+    </div>
+  </div>
 </script>
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
