@@ -17,8 +17,6 @@ import com.zy.service.AddressService;
 import com.zy.service.UserService;
 import com.zy.vo.UserInfoVo;
 import io.gd.generator.api.query.Direction;
-import org.apache.poi.ss.formula.functions.Mode;
-import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -168,7 +166,7 @@ public class UcenterTeamController {
 	public String  findDirectlySup(Principal principal, Model model){
 	    List<UserInfoVo> userList= userComponent.conyteamTotalV4Vo(principal.getUserId());
 		model.addAttribute("data",userList);
-		return "";
+		return "ucenter/teamNew/mustDetil";
 	}
 	/**
 	 * 查看直属特级详情
@@ -344,14 +342,17 @@ public class UcenterTeamController {
      */
 	public String findDirectlyNum(Long userId, Model model){
 		long [] dirTotal = userService.countdirTotal(userId);
-		return null;
+		return null;//ResultBuilder.result(dirTotal);
 	}
 
 	/**
 	 *查询  直属特级的团队人数
 	 */
-	public String findDirectlySupNum(Long userId, Model model){
+	@RequestMapping(value = "ajaxfindDirectlySup",method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Object> findDirectlySupNum(Long userId, Model model){
 		long[]teamTotal=userComponent.conyteamTotal(userId);
-		return null;
+		String result= DateUtil.longarryToString(teamTotal,false);
+		 return ResultBuilder.ok(result);
 	}
 }

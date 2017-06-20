@@ -544,56 +544,10 @@
             </div>
         </div>
     </div>
+
     <div class="searchList">查无此人!</div>
     <div class="searchListShow">
-        <div class="rankingAllList">
-            <div class="rankingAll">
-                <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                <div class="ranking" style="text-align: left;font-size: 18px;">
-                    <span>赵春华</span>
-                    <img src="${ctx}/new.png"style="width: 30px;"/>
-                </div>
-                <div class="telAll jian" onclick="showNum(this)" change="true">
-                    <img src="${ctx}/jian.png" />
-                </div>
-                <a href="tel:13656174839" class="telAll">
-                    <img src="${ctx}/tel.png" />
-                </a>
-            </div>
 
-        </div>
-        <div class="rankingAllList">
-            <div class="rankingAll">
-                <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                <div class="ranking" style="text-align: left;font-size: 18px;">
-                    <span>赵春华</span>
-                    <img src="${ctx}/new.png"style="width: 30px;"/>
-                </div>
-                <div class="telAll jian" onclick="showNum(this)" change="true">
-                    <img src="${ctx}/jian.png" />
-                </div>
-                <a href="tel:13656174839" class="telAll">
-                    <img src="${ctx}/tel.png" />
-                </a>
-            </div>
-
-        </div>
-        <div class="rankingAllList">
-            <div class="rankingAll">
-                <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                <div class="ranking" style="text-align: left;font-size: 18px;">
-                    <span>赵春华</span>
-                    <img src="${ctx}/new.png"style="width: 30px;"/>
-                </div>
-                <div class="telAll jian" onclick="showNum(this)" change="true">
-                    <img src="${ctx}/jian.png" />
-                </div>
-                <a href="tel:13656174839" class="telAll">
-                    <img src="${ctx}/tel.png" />
-                </a>
-            </div>
-
-        </div>
     </div>
 
     </div>
@@ -623,6 +577,7 @@
             $(obj).attr("change","true");
         }
 
+
     }
     //点击搜索
     function seatch() {
@@ -632,6 +587,15 @@
         }else {
             $(".numberList").hide();
             $(".searchListShow").show();
+            $(".searchListShow").append('<div class="rankingAllList">' +
+                    '<div class="rankingAll">'
+                    +'<img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>'
+                    +'<div class="ranking" style="text-align: left;font-size: 18px;">'
+                    +'<span>赵春华</span>'
+                    +'<img src="${ctx}/new.png"style="width: 30px;"/>'
+                    +'</div>'
+                    +'<div class="telAll jian" onclick="showNum(this)" change="true">'
+                    +'<img src="${ctx}/jian.png" /></div><a href="tel:13656174839" class="telAll"><img src="${ctx}/tel.png" /></a></div></div>');
         }
 
     }
