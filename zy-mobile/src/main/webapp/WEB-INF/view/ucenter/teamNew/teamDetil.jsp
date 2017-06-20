@@ -473,7 +473,7 @@
                     <div class="sanjiao">
                         <div class="jiaoOne"></div>
                     </div>
-                    <span class="rankingTop">普通服务商</span>
+                    <span class="rankingTop">普通用户</span>
                     <span class="rankingSpan com">普通</span>
                 </div>
                 <span class="tel">${fn:length(v0)}人</span>
