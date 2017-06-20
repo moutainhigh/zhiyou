@@ -480,7 +480,7 @@
             </div>
         </div>
         <div class="all allLast">
-            <c:forEach items="${v0}" var="v1user" varStatus="indexs">
+            <c:forEach items="${v0}" var="v0user" varStatus="indexs">
                 <div class="rankingAllList">
                     <div class="rankingAll">
                         <img src="${v0user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
@@ -488,7 +488,7 @@
                             <span>${v0user.nickname}</span>
                                 <%--   <img src="${ctx}/new.png"style="width: 30px;"/>--%>
                         </div>
-                        <div class="telAll jian" onclick="showNum(this,${v0user.id},'V1',${indexs.index})" change="true">
+                        <div class="telAll jian" onclick="showNum(this,${v0user.id},'V0',${indexs.index})" change="true">
                             <img src="${ctx}/jian.png" />
                         </div>
                         <a href="tel:${v0user.phone}" class="telAll">

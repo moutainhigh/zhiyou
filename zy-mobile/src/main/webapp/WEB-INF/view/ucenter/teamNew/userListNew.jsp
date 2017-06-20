@@ -198,7 +198,7 @@
         <span class="tel">${udto.phone}</span>
       </div>
     </c:forEach>
-    <c:if test="${fn:length(dataMap.rankList)>3}">
+    <c:if test="${fn:length(dataMap.rankList)>1}">
       <a href="${ctx}/u/team/teamNew" class="lookDetil">更多详情>></a>
     </c:if>
   </div>
