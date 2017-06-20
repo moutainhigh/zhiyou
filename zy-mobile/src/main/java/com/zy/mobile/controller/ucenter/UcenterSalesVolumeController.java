@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -116,20 +117,16 @@ public class UcenterSalesVolumeController {
      */
     @RequestMapping(value = "ajaxTeamDetail",method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> ajaxTeamDetail(Principal principal, String nameorPhone, @RequestParam(required = true) Integer pageNumber){
-        Long userId = principal.getUserId();
+    public Result<?> ajaxTeamDetail(Principal principal, String nameorPhone) {
         UserQueryModel userQueryModel = new UserQueryModel();
-        userQueryModel.setParentIdEQ(userId);
-        userQueryModel.setDirection(Direction.DESC);
-        userQueryModel.setOrderBy("user_rank");
-        if (null!=nameorPhone){
-            userQueryModel.setNameorPhone("%"+nameorPhone+"%");
+        userQueryModel.setParentIdEQ(principal.getUserId());
+        if (null != nameorPhone) {
+            userQueryModel.setNameorPhone("%" + nameorPhone + "%");
         }
-
-        userQueryModel.setPageNumber(pageNumber);
-        userQueryModel.setPageSize(10);
-        Page<User> page= userService.findPage(userQueryModel);
-        return ResultBuilder.result(page.getData());
+        Page<User> page = userService.findPage(userQueryModel);
+        Map<String, Object> map = new HashMap<>();
+        map.put("page", page);
+        return ResultBuilder.result(map);
     }
 
     /**

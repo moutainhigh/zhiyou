@@ -174,7 +174,11 @@
         <img src="${user.avatar}" />
         <div class="ranking">
           <span>${user.nickname}</span>
-          <span class="rankingSpan must">${user.userRank}</span>
+          <c:if test="${user.userRank == 'V4'}"><span class="rankingSpan must">特级</span></c:if>
+          <c:if test="${user.userRank == 'V3'}"><span class="rankingSpan province">省级</span></c:if>
+          <c:if test="${user.userRank == 'V2'}"><span class="rankingSpan city">市级</span></c:if>
+          <c:if test="${user.userRank == 'V1'}"><span class="rankingSpan must">VIP级</span></c:if>
+          <c:if test="${user.userRank == 'V0'}"><span class="rankingSpan must">用户</span></c:if>
         </div>
         <span class="tel">${user.phone}</span>
         <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
