@@ -123,7 +123,7 @@
       background: #5d77e5;
     }
     .province {
-      background: #ef7b54;
+      background: #6cb92d;
     }
     .city {
       background: #ffb558;

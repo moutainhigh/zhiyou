@@ -40,13 +40,15 @@
     .clearfloat{
       zoom:1;
     }
+     body{background: #eeeeee;}
     .bgSum {
       width:100%;
       height:120px;
-      background: url("${ctx}/bgSum.png") top center ;
+      background: #fff;
       background-size: cover;
       padding: 30px;
       padding-top: 20px;
+      margin-bottom: 15px;
     }
     .bgSum p {
       width: 100%;
@@ -77,7 +79,10 @@
       width:100%;
       height:300px;
       color: #49494a;
+      background: #fff !important;
+      margin-bottom: 15px;
     }
+    #last {background: #fff !important;}
     .all {
       position: relative;
       padding:10px 15px 0 15px;
@@ -130,6 +135,7 @@
       text-align: center;
       line-height: 40px;
     }
+
   </style>
   <script>
 	  $(function() {
@@ -173,7 +179,8 @@
       <%--<p>上月同比：<span>¥<fmt:formatNumber type="number" value="${dataMap.YoY}" pattern="0.00" maxFractionDigits="2"/>%</span></p>--%>
   </div>
 
-  <div id="echartFir"></div>
+    <div id="echartFir"></div>
+
   <div id="last" style="width: 100%;height: 400px;padding: 10px;"></div>
 
   <c:if test="${dataMap.ord[0] > 0 || dataMap.ord[1] > 0}">
@@ -332,17 +339,17 @@
 <script type="text/javascript">
   var arrays="${dataMap.PL}";
   var array=arrays.split(",");
-  var arrayNew=[];
-  var arrayNewT=[];
-  for(var i=0;i<array.length;i++){
-    if(i%2==0){
-      arrayNew.push(array[i]);
-      arrayNewT.push('-');
-    }else {
-      arrayNew.push('-');
-      arrayNewT.push(array[i]);
-    }
-  }
+//  var arrayNew=[];
+//  var arrayNewT=[];
+//  for(var i=0;i<array.length;i++){
+//    if(i%2==0){
+//      arrayNew.push(array[i]);
+//      arrayNewT.push('-');
+//    }else {
+//      arrayNew.push('-');
+//      arrayNewT.push(array[i]);
+//    }
+//  }
   $(function(){
     $(".percentNum").css("width",$(".all img").css("width"));
   })
@@ -351,65 +358,50 @@
   var myChart = echarts.init(document.getElementById('echartFir'));
   // 指定图表的配置项和数据
   option = {
-    title: {
-      text: '年度收益趋势图'
-    },
     tooltip: {
       trigger: 'axis'
     },
-//    toolbox: {
-//      show : true,
-//      feature : {
-//        mark : {show: false},
-//        dataView : {show: true, readOnly: false},
-//        magicType : {
-//          show: true,
-//          type: ['pie', 'funnel']
-//        },
-//        saveAsImage : {show: true}
-//      }
-//    },
-      xAxis: {
-        type : 'category',
-        splitLine: {show:false},
-        data :  function (){
-          var list = [];
-          for (var i = 1; i <= 12; i++) {
-            list.push(i + '月');
-          }
-          return list;
-        }()
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      axisLine: {
+        onZero: false,
+        lineStyle: {
+          color: "#68dcc1"
+        }
       },
+      data : ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
+    },
     yAxis: {
       type: 'value',
       axisLabel: {
         formatter: '{value}'
-      }
+      },
+      axisLine: {
+        onZero: false,
+        lineStyle: {
+          color: "#68dcc1"
+        }
+      },
     },
     series: [
       {
         name: '金额',
-        type: 'bar',
+        type: 'line',
         stack: '总量',
+        areaStyle: {normal: {}},
         label: {
           normal: {
             show: true,
             position: 'top'
           }
         },
-        data: arrayNew
-      },
-      {
-        name: '金额 ',
-        type: 'bar',
-        stack: '总量',
-        label: {
+        itemStyle: {
           normal: {
-            show: true,
-            position: 'top'
+            color:'#68dcc1'
           }
         },
-        data: arrayNewT
+        data: array
       }
     ]
   };
@@ -428,11 +420,6 @@
     tooltip : {
       trigger: 'item',
       formatter: "{a} <br/>{b} : {c} ({d}%)"
-    },
-    legend: {
-      x : 'center',
-      y : 'bottom',
-      data:['特级平级奖','订单收益','返利奖','数据奖','董事贡献奖','特级推荐奖','平级推荐奖','销量奖']
     },
 //    toolbox: {
 //      show : true,
@@ -465,38 +452,10 @@
           {value:array[6], name:'平级推荐奖'},
           {value:array[7], name:'销量奖'}
         ]
-      },
-      {
-        name:'累计收益',
-        type:'pie',
-        radius : [30, 110],
-        center : ['50%', '50%'],
-        roseType : 'area',
-        label: {
-          normal: {
-            position: 'inside',
-            formatter: '{d}%',
-            textStyle: {
-              color: '#fff'
-            }
-          }
-        },
-        data:[
-          {value:array[0], name:'特级平级奖'},
-          {value:array[1], name:'订单收益'},
-          {value:array[2], name:'返利奖'},
-          {value:array[3], name:'数据奖'},
-          {value:array[4], name:'董事贡献奖'},
-          {value:array[5], name:'特级推荐奖'},
-          {value:array[6], name:'平级推荐奖'},
-          {value:array[7], name:'销量奖'}
-        ]
       }
     ]
   };
   myChartSec.setOption(optionSec);
-  $("#echartFir").css("background","url('${ctx}/bg.png') top center");
-  $("#last").css("background","url('${ctx}/bg.png') top center");
 
 </script>
 
