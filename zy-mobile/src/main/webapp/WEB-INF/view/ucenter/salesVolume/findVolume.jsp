@@ -420,11 +420,7 @@
       <img src="{{d.avatar}}" />
       <div class="ranking">
         <span>{{ d.nickname }}</span>
-        <c:if test="{{d.userRank}} == 'V4'"><span class="rankingSpan must">特级</span></c:if>
-        <c:if test="{{d.userRank}} == 'V3'"><span class="rankingSpan province">省级</span></c:if>
-        <c:if test="{{d.userRank}} == 'V2'"><span class="rankingSpan city">市级</span></c:if>
-        <c:if test="{{d.userRank}} == 'V1'"><span class="rankingSpan must">VIP级</span></c:if>
-        <c:if test="{{d.userRank}} == 'V0'"><span class="rankingSpan must">普通</span></c:if>
+        <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通用户':''}}</span>
       </div>
       <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId={{ d.id }}&userName={{ d.nickname }}"  class="rankingBtn">查看销量</a>
       <span class="tel">{{d.phone}}</span>

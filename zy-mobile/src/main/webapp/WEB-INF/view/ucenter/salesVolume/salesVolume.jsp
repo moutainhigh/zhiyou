@@ -169,7 +169,7 @@
       <img src="${ctx}/team1.png"/>
       <span>直属下级进销单</span>
     </div>
-    <c:forEach items="${dateMap.userList}" var="user" end="4">
+    <c:forEach items="${dateMap.userList}" var="user" end="2">
       <div class="rankingAll">
         <img src="${user.avatar}" />
         <div class="ranking">
@@ -184,7 +184,7 @@
         <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
       </div>
     </c:forEach>
-    <c:if test="${fn:length(dateMap.userList) > 5}">
+    <c:if test="${fn:length(dateMap.userList) > 3}">
       <a href="${ctx}/u/salesVolume/subordinateSubordinateDetail" class="lookDetil">更多详情>></a>
     </c:if>
   </div>
@@ -195,7 +195,7 @@
         <img src="${ctx}/team1.png"/>
         <span>直属特级进销单</span>
       </div>
-      <c:forEach items="${dateMap.v4List}" var="user" end="4">
+      <c:forEach items="${dateMap.v4List}" var="user" end="2">
         <div class="rankingAll">
           <img src="${user.avatar}" />
           <div class="ranking">
@@ -205,7 +205,7 @@
           <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
         </div>
       </c:forEach>
-      <c:if test="${fn:length(dateMap.v4List) > 5}">
+      <c:if test="${fn:length(dateMap.v4List) > 3}">
         <a href="${ctx}/u/salesVolume/directlyUnderGradeDetail" class="lookDetil">更多详情>></a>
       </c:if>
     </div>
