@@ -67,12 +67,46 @@ public class UcenterSalesVolumeController {
      * @return
      */
     @RequestMapping(value = "/salesVolumeDetail", method = RequestMethod.GET)
-    public String salesVolumeDetail(Long userId, Model model) {
+    public String salesVolumeDetail(Long userId,String userName, Model model) {
         OrderQueryModel orderQueryModel = new OrderQueryModel();
         orderQueryModel.setUserIdEQ(userId);
         orderQueryModel.setSellerIdEQ(userId);
         Map<String ,Object> returnMap = orderService.querySalesVolumeDetail(orderQueryModel);
         model.addAttribute("dateMap", returnMap);
-        return "ucenter/salesVolumeDetail/salesVolumeDetail";
+        model.addAttribute("userName", userName);
+        return "ucenter/salesVolume/peopleVolume";
+    }
+
+
+    /**
+     * 查看直属下级详情
+     * @param principal
+     * @param titleLike
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/subordinateSubordinateDetail", method = RequestMethod.GET)
+    public String subordinateSubordinateDetail(Principal principal,String titleLike , Model model) {
+        //我的直属下级
+        UserQueryModel userQueryModel = new UserQueryModel();
+        userQueryModel.setParentIdEQ(principal.getUserId());
+        List<User> userList = userService.findAll(userQueryModel);
+
+        return "ucenter/salesVolume/findVolume";
+    }
+
+    /**
+     * 查看直属特级详情
+     * @param principal
+     * @param titleLike
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/directlyUnderGradeDetail", method = RequestMethod.GET)
+    public String directlyUnderGradeDetail(Principal principal,String titleLike , Model model) {
+        //我的直属特级
+        List<User> v4List = userComponent.conyteamTotalV4(principal.getUserId());
+        model.addAttribute("v4List", v4List);
+        return "ucenter/salesVolume/mustVolume";
     }
 }

@@ -70,8 +70,8 @@
 </head>
 <body>
 <header class="header">
-  <h1>赵春华的销量</h1>
-  <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+  <h1>${userName}的销量</h1>
+  <a href="${ctx}/u/salesVolume/salesVolume" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
 <article>
@@ -79,7 +79,7 @@
   <div class="all" style="padding-bottom: 20px;">
     <div class="teamAll">
       <img src="${ctx}/team2.png"/>
-      <span>赵春华的销量</span>
+      <span>${userName}的销量</span>
     </div>
     <div id="echartTeamTwo"></div>
     <div id="echartTeamFor" style="margin-top: 20px;"></div>
@@ -88,8 +88,11 @@
 </article>
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">
-  var array=[62, 18, 64, 26, 79, 60, 57,87,88,78,90];
-  var arrayT=[22, 18, 19, 23, 29, 33, 31,45,54,65,75];
+  var svArray = "${dateMap.salesVolumeData}";
+  var array = svArray.split(",");
+
+  var sArray = "${dateMap.shipmentData}";
+  var arrayT = sArray.split(",");
   var mbolSize = 20;
   // 基于准备好的dom，初始化echarts实例
   var myChart = echarts.init(document.getElementById('echartTeamTwo'));
@@ -151,9 +154,12 @@
 </script>
 
 <script type="text/javascript">
-  var array=[-62, 18, 64, -26, 79, -60, 57,-87,88,78,90];
-  var arrayT=[22, -18, 19, 23, -29, 33, 31,45,-54,65,75];
-  var mbolSize =40;
+  var svArray = "${dateMap.svData}";
+  var array = svArray.split(",");
+
+  var sArray = "${dateMap.sData}";
+  var arrayT = sArray.split(",");
+  var mbolSize = 40;
   // 基于准备好的dom，初始化echarts实例
   var myChart = echarts.init(document.getElementById('echartTeamFor'));
   // 指定图表的配置项和数据
@@ -162,7 +168,7 @@
       trigger: 'axis'
     },
     legend: {
-      data:['同比','环比']
+      data:['进货量环比','销货量环比']
     },
     grid: {
       left: '3%',
@@ -181,7 +187,7 @@
     },
     series: [
       {
-        name:'同比',
+        name:'进货量环比',
         type:'line',
         stack: '总量',
         itemStyle: {
@@ -192,7 +198,7 @@
         data:array
       },
       {
-        name:'环比',
+        name:'销货量环比',
         type:'line',
         stack: '总量',
 //        label: {
