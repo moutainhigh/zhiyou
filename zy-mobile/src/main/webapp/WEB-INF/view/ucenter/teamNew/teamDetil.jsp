@@ -578,6 +578,8 @@
 
     //点击搜索
     function seatch() {
+        $(".searchList").hide();
+        $(".searchListShow").html("");
         if($(".searchInput").val()==""){
             $(".numberList").show();
             $(".searchListShow").hide();
