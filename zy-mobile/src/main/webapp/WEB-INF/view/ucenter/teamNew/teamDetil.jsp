@@ -569,6 +569,7 @@
             }
         });
     }
+
     //点击搜索
     function seatch() {
         if($(".searchInput").val()==""){
@@ -598,8 +599,8 @@
                             buildRow(row);
                         }
                     }
-                    if (!page.data.length || page.data.length < page.pageSize) {
-                        $('.page-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
+                    if (!page.data.length || page.data.length < 0) {
+                        $(".searchList").show();
                     }
                 }
             });
@@ -610,6 +611,7 @@
         var rowTpl = document.getElementById('rowTpl').innerHTML;
         laytpl(rowTpl).render(row,function(html) {
             $('.searchListShow').append(html);
+            $(".searchList").hide();
         });
     }
 </script>
