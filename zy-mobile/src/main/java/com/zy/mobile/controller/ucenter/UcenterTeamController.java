@@ -17,8 +17,6 @@ import com.zy.service.AddressService;
 import com.zy.service.UserService;
 import com.zy.vo.UserInfoVo;
 import io.gd.generator.api.query.Direction;
-import org.apache.poi.ss.formula.functions.Mode;
-import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -168,7 +166,7 @@ public class UcenterTeamController {
 	public String  findDirectlySup(Principal principal, Model model){
 	    List<UserInfoVo> userList= userComponent.conyteamTotalV4Vo(principal.getUserId());
 		model.addAttribute("data",userList);
-		return "";
+		return "ucenter/teamNew/mustDetil";
 	}
 	/**
 	 * 查看直属特级详情
@@ -202,20 +200,19 @@ public class UcenterTeamController {
 	 */
 	@RequestMapping(value = "ajaxTeamDetail",method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> ajaxTeamDetail(Principal principal,String nameorPhone,@RequestParam(required = true) Integer pageNumber){
+	public Result<?> ajaxTeamDetail(Principal principal,String nameorPhone,Integer pageNumber){
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdEQ(userId);
-		userQueryModel.setDirection(Direction.DESC);
-		userQueryModel.setOrderBy("user_rank");
 		if (null!=nameorPhone){
 			userQueryModel.setNameorPhone("%"+nameorPhone+"%");
 		}
-
-		userQueryModel.setPageNumber(pageNumber);
-		userQueryModel.setPageSize(10);
+	   /*	userQueryModel.setPageNumber(pageNumber);*/
+		userQueryModel.setPageSize(1000);
 		Page<User> page= userService.findPage(userQueryModel);
-		return ResultBuilder.result(page.getData());
+		Map<String, Object> map = new HashMap<>();
+		map.put("page",page);
+		return ResultBuilder.result(map);
 	}
 
 	/**
@@ -324,14 +321,15 @@ public class UcenterTeamController {
 	 */
 	@RequestMapping(value = "ajaxteamNew",method = RequestMethod.POST)
 	@ResponseBody
-	public  Result<?> ajaxteamNew(Principal principal,String nameorPhone, @RequestParam(required = true) Integer pageNumber){
+	public  Result<?> ajaxteamNew(Principal principal,String nameorPhone,Integer pageNumber){
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
-		userQueryModel.setPageNumber(pageNumber);
-		userQueryModel.setPageSize(10);
+		/*userQueryModel.setPageNumber(pageNumber);*/
+		userQueryModel.setPageNumber(0);
+		userQueryModel.setPageSize(1000); //不分页查询1000条
 		if (null!=nameorPhone){
-			userQueryModel.setNameorPhone(nameorPhone);
+			userQueryModel.setNameorPhone("%"+nameorPhone+"%");
 		}
 		Page<User> page =userService.findAddpeople(userQueryModel);
 		return ResultBuilder.result(page.getData());
@@ -342,16 +340,22 @@ public class UcenterTeamController {
 	 * @param userId
 	 * @return
      */
-	public String findDirectlyNum(Long userId, Model model){
+	@RequestMapping(value = "findDirectlyNum",method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Object> findDirectlyNum(Long userId, Model model){
 		long [] dirTotal = userService.countdirTotal(userId);
-		return null;
+		String result= DateUtil.longarryToString(dirTotal,false);
+		return ResultBuilder.ok(result);
 	}
 
 	/**
 	 *查询  直属特级的团队人数
 	 */
-	public String findDirectlySupNum(Long userId, Model model){
+	@RequestMapping(value = "ajaxfindDirectlySup",method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Object> findDirectlySupNum(Long userId, Model model){
 		long[]teamTotal=userComponent.conyteamTotal(userId);
-		return null;
+		String result= DateUtil.longarryToString(teamTotal,false);
+		 return ResultBuilder.ok(result);
 	}
 }

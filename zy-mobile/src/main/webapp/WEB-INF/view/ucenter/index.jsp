@@ -96,7 +96,13 @@
       </a>
       </c:if>
     </div>
-    
+
+    <a class="list-item list-item-icon" href="${ctx}/u/salesVolume/salesVolume?userRank=${user.userRank}">
+      <i class="list-icon icon icon-users"></i>
+      <div class="list-text">我的销量</div>
+      <i class="list-arrow"></i>
+    </a>
+
     <div class="list-group">
       <a class="list-item list-item-icon" href="${ctx}/u/activity/applyList">
         <i class="list-icon icon icon-join"></i>

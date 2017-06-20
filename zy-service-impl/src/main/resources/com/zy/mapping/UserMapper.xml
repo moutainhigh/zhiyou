@@ -197,7 +197,7 @@
 				</if>
 			</if>
 			<if test="nameorPhone != null">
-				and (phone = #{nameorPhone} or nickname like #{nameorPhone}}
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
 			</if>
 		</where>
 		<choose>
@@ -292,7 +292,7 @@
 				</if>
 			</if>
 			<if test="nameorPhone != null">
-				and (phone = #{nameorPhone} or nickname like #{nameorPhone})
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
 			</if>
 		</where>
 	</select>
@@ -430,7 +430,7 @@
 		   AND u.parent_id =#{parentIdNL}
 		</if>
 		<if test="nameorPhone !=null">
-			and (u.phone = #{nameorPhone} or u.nickname like #{nameorPhone})
+			and (u.phone like #{nameorPhone} or u.nickname like #{nameorPhone})
 		</if>
 		<if test="offset != null">
 			limit #{offset}, #{pageSize}

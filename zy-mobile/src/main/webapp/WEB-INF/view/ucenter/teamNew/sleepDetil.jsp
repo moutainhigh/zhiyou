@@ -10,9 +10,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>新成员详情</title>
+
+    <title>沉睡成员详情</title>
     <%@ include file="/WEB-INF/view/include/head.jsp"%>
-    <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
     <style>
         body {background: #f7f7f9}
         /*清除浮动代码*/
@@ -40,7 +40,7 @@
             float: left;line-height: 50px;margin-left: 20px;font-size: 18px;
             color: #838385;
         }
-        .teamAll a,.teamAll span.paim {
+        .teamAll a {
             float: right;
             line-height: 50px;
             color: #6cb92d;
@@ -79,7 +79,7 @@
         }
         .ranking {
             float: left;
-            width:200px;
+            width:100px;
             height:100%;
             text-align: center;
             line-height: 60px;
@@ -89,7 +89,6 @@
             color: #fff;
             font-size: 12px;
         }
-
         .teamTop {
             width:90%;
             height:60px;
@@ -129,12 +128,14 @@
             z-index: 2;
         }
         .rankingTop {font-size: 18px}
-        .rankingAll>span.tel {
-            width:60px;
+        .rankingAll>a.tel,.rankingAll>span.tel {
+            width:110px;
             float: right;
             margin-right: 20px;
             color: #303134;
+            line-height: 60px;
         }
+        .rankingAll>span.telDetil {width:50px;}
         .sanjiao {
             float: left;
             height:60px;
@@ -168,19 +169,13 @@
         }
         /*特级*/
         .must {
-            background: #5d77e5;
+            background: #22b5d4;
         }
         .province {
-            background: #ef7b54;
+            background: #fe543e;
         }
         .city {
-            background: #ffb558;
-        }
-        .VIP {
-            background: #51c187;
-        }
-        .com {
-            background: #91c7ae;
+            background: #fb8604;
         }
         .telAll {
             float: right;
@@ -209,22 +204,8 @@
             background: #fff;
             display: none;
         }
-        .teamListNum {
-            width:100%;
-            height:40px;
-            background: #fff;
-        }
-        .rankingNum {
-            width:100%;
-            height:60px;
-            display: none;
-        }
         .rankingAllList:last-child {
             border-bottom: none;
-        }
-        .ranknumber {
-            float: left;
-            width:25%;
         }
         .ranknumber p {
             width:100%;
@@ -236,8 +217,8 @@
 </head>
 <body>
 <header class="header">
-    <h1>新成员详情</h1>
-    <a href="${ctx}/u/team/newTeam" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <h1>沉睡成员详情</h1>
+    <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
 <article>
@@ -257,23 +238,41 @@
                     <span class="rankingTop">特级服务商</span>
                     <span class="rankingSpan must">特级</span>
                 </div>
-                <span class="tel">${fn:length(v4)}人</span>
+                <span class="tel telDetil">136人</span>
             </div>
         </div>
         <div class="all allLast">
-            <c:forEach items="${v4}" var="v4user">
-                <div class="rankingAllList">
-                    <div class="rankingAll">
-                        <img src="${v4user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
-                        <div class="ranking" style="text-align: left;font-size: 18px;">
-                            <span>${v4user.nickname}</span>
-                        </div>
-                        <a href="tel:${v4user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
-                        </a>
+            <div class="rankingAllList">
+                <div class="rankingAll">
+                    <span>1</span>
+                    <img src="${ctx}/headPortrait.png" />
+                    <div class="ranking">
+                        <span>赵春华</span>
                     </div>
+                    <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
                 </div>
-            </c:forEach>
+            </div>
+            <div class="rankingAllList">
+                <div class="rankingAll">
+                    <span>2</span>
+                    <img src="${ctx}/headPortrait.png" />
+                    <div class="ranking">
+                        <span>赵春华</span>
+                    </div>
+                    <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
+                </div>
+
+            </div>
+            <div class="rankingAllList">
+                <div class="rankingAll">
+                    <span>3</span>
+                    <img src="${ctx}/headPortrait.png" />
+                    <div class="ranking">
+                        <span>赵春华</span>
+                    </div>
+                    <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
+                </div>
+            </div>
         </div>
 
         <div class="all" change="false" onclick="showList(this)">
@@ -285,23 +284,20 @@
                     <span class="rankingTop">省级服务商</span>
                     <span class="rankingSpan province">省级</span>
                 </div>
-                <span class="tel">${fn:length(v3)}人</span>
+                <span class="tel telDetil">136人</span>
             </div>
         </div>
         <div class="all allLast">
-            <c:forEach items="${v3}" var="v3user">
-                <div class="rankingAllList">
-                    <div class="rankingAll">
-                        <img src="${v3user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
-                        <div class="ranking" style="text-align: left;font-size: 18px;">
-                            <span>${v3user.nickname}</span>
-                        </div>
-                        <a href="tel:${v3user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
-                        </a>
-                    </div>
-                </div>
-            </c:forEach>
+            <div class="rankingAllList">
+
+            </div>
+            <div class="rankingAllList">
+
+            </div>
+            <div class="rankingAllList">
+
+            </div>
+
         </div>
         <div class="all" change="false" onclick="showList(this)">
             <div class="rankingAll">
@@ -312,24 +308,20 @@
                     <span class="rankingTop">市级服务商</span>
                     <span class="rankingSpan city">市级</span>
                 </div>
-                <span class="tel">${fn:length(v2)}人</span>
+                <span class="tel telDetil">136人</span>
             </div>
         </div>
 
         <div class="all allLast">
-            <c:forEach items="${v2}" var="v2user">
-                <div class="rankingAllList">
-                    <div class="rankingAll">
-                        <img src="${v2user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
-                        <div class="ranking" style="text-align: left;font-size: 18px;">
-                            <span>${v2user.nickname}</span>
-                        </div>
-                        <a href="tel:${v2user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
-                        </a>
-                    </div>
-                </div>
-            </c:forEach>
+            <div class="rankingAllList">
+
+            </div>
+            <div class="rankingAllList">
+
+            </div>
+            <div class="rankingAllList">
+
+            </div>
 
         </div>
         <div class="all" change="false" onclick="showList(this)">
@@ -341,54 +333,58 @@
                     <span class="rankingTop">VIP服务商</span>
                     <span class="rankingSpan must">VIP</span>
                 </div>
-                <span class="tel">${fn:length(v1)}人</span>
+                <span class="tel telDetil">136人</span>
             </div>
         </div>
         <div class="all allLast">
-            <c:forEach items="${v1}" var="v1user">
-                <div class="rankingAllList">
-                    <div class="rankingAll">
-                        <img src="${v1user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
-                        <div class="ranking" style="text-align: left;font-size: 18px;">
-                            <span>${v1user.nickname}</span>
-                        </div>
-                        <a href="tel:${v1user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
-                        </a>
-                    </div>
-                </div>
-            </c:forEach>
+
+
         </div>
-        <div class="all" change="false" onclick="showList(this)">
-            <div class="rankingAll">
-                <div class="ranking">
-                    <div class="sanjiao">
-                        <div class="jiaoOne"></div>
-                    </div>
-                    <span class="rankingTop">普通用户</span>
-                    <span class="rankingSpan must">VIP</span>
-                </div>
-                <span class="tel">${fn:length(v0)}人</span>
-            </div>
+        <div class="rankingAllList">
+
+
         </div>
-        <div class="all allLast">
-            <c:forEach items="${v0}" var="v0user">
-                <div class="rankingAllList">
-                    <div class="rankingAll">
-                        <img src="${v0user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
-                        <div class="ranking" style="text-align: left;font-size: 18px;">
-                            <span>${v0user.nickname}</span>
-                        </div>
-                        <a href="tel:${v0user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
-                        </a>
-                    </div>
-                </div>
-            </c:forEach>
+        <div class="rankingAllList">
+
+
         </div>
+    </div>
     </div>
     <div class="searchList">查无此人!</div>
     <div class="searchListShow">
+        <div class="rankingAllList">
+            <div class="rankingAll">
+                <span>1</span>
+                <img src="${ctx}/headPortrait.png" />
+                <div class="ranking">
+                    <span>赵春华</span>
+                    <span class="rankingSpan city">市级</span>
+                </div>
+                <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
+            </div>
+        </div>
+        <div class="rankingAllList">
+            <div class="rankingAll">
+                <span>2</span>
+                <img src="${ctx}/headPortrait.png" />
+                <div class="ranking">
+                    <span>赵春华</span>
+                    <span class="rankingSpan city">市级</span>
+                </div>
+                <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
+            </div>
+        </div>
+        <div class="rankingAllList">
+            <div class="rankingAll">
+                <span>3</span>
+                <img src="${ctx}/headPortrait.png" />
+                <div class="ranking">
+                    <span>赵春华</span>
+                    <span class="rankingSpan city">市级</span>
+                </div>
+                <a href="tel:13656174839" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">13656174839</a>
+            </div>
+        </div>
     </div>
 
     </div>
@@ -406,63 +402,18 @@
             $(obj).next(".allLast").hide();
         }
     }
+
     //点击搜索
     function seatch() {
-        $(".searchList").hide();
-        $(".searchListShow").html("");
         if($(".searchInput").val()==""){
             $(".numberList").show();
             $(".searchListShow").hide();
         }else {
             $(".numberList").hide();
             $(".searchListShow").show();
-
-            $.ajax({
-                url : '${ctx}/u/team/ajaxteamNew',
-                data : {
-                    nameorPhone:$(".searchInput").val()
-                },
-                dataType : 'json',
-                type : 'POST',
-                success : function(result) {
-                    if(result.code != 0) {
-                        return;
-                    }
-                    var pageData= result.data;
-                    if (pageData.length) {
-                        /*var pageData = page.data;*/
-                        for ( var i in pageData) {
-                            var row = pageData[i];
-                            buildRow(row);
-                        }
-                    }
-                    if (!pageData.length || pageData.length < 0) {
-                        $(".searchList").show();
-                    }
-                }
-            });
         }
 
     }
-    function buildRow(row,indexs){
-        var rowTpl = document.getElementById('rowTpl').innerHTML;
-        laytpl(rowTpl).render(row,function(html) {
-            $('.searchListShow').append(html);
-            $(".searchList").hide();
-        });
-    }
-</script>
-<script id="rowTpl" type="text/html">
-    <div class="rankingAllList">
-        <div class="rankingAll">
-            <img src="{{d.avatar}}" style="margin-left: 20px;margin-right: 20px;"/>
-            <div class="ranking" style="text-align: left;font-size: 18px;">
-                <span>{{ d.nickname }}</span>
-            </div>
-            <a href="tel:{{ d.phone }}" class="telAll">
-                <img src="${ctx}/tel.png" /></a>
-        </div>
-    </div>
 </script>
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>

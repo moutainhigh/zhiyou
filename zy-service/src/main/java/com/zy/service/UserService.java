@@ -91,4 +91,6 @@ public interface UserService {
 	Map<String,Object> findNewSup(long[] ids);
 
 	Page<User> findAddpeople(UserQueryModel userQueryModel);
+
+	boolean findNewOne(Long id);
 }

@@ -131,6 +131,7 @@
 
 <article>
     <a href="${ctx}/u/salesVolume/salesVolume" class="lookDetil">查看明细</a>
+    <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=222" class="lookDetil">查看明</a>
     <div id="echartFir"></div>
     <c:forEach items="${dateMap.revenues}" var="revenue" varStatus="num">
         <div class="detilAll" onclick="changeTriangle(this)">
@@ -197,7 +198,6 @@
 
     var arrays = "${dateMap.revenue}";
     var array= arrays.split(",");
-    <%--console.info(${revenues});--%>
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echartFir'));
     // 指定图表的配置项和数据
