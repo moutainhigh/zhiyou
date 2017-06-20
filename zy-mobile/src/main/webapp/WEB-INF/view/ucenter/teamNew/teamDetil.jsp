@@ -169,13 +169,19 @@
         }
         /*特级*/
         .must {
-            background: #22b5d4;
+            background: #5d77e5;
         }
         .province {
-            background: #fe543e;
+            background: #ef7b54;
         }
         .city {
-            background: #fb8604;
+            background: #ffb558;
+        }
+        .VIP {
+            background: #51c187;
+        }
+        .com {
+            background: #91c7ae;
         }
         .telAll {
             float: right;
@@ -414,7 +420,7 @@
                         <div class="jiaoOne"></div>
                     </div>
                     <span class="rankingTop">VIP服务商</span>
-                    <span class="rankingSpan must">VIP</span>
+                    <span class="rankingSpan VIP">VIP</span>
                 </div>
                 <span class="tel">${fn:length(v1)}人</span>
             </div>
@@ -467,8 +473,8 @@
                     <div class="sanjiao">
                         <div class="jiaoOne"></div>
                     </div>
-                    <span class="rankingTop">普通用户</span>
-                    <span class="rankingSpan must">VIP</span>
+                    <span class="rankingTop">普通服务商</span>
+                    <span class="rankingSpan com">普通</span>
                 </div>
                 <span class="tel">${fn:length(v0)}人</span>
             </div>

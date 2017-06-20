@@ -128,6 +128,58 @@
       width:100%;
       height:20px;
     }
+
+    .disDiv {
+      width:100%;
+      height:100%;
+      background: #000;
+      opacity:0.8;
+      -webkit-opacity:0.8;
+      position: fixed;
+      top:0;
+      left:0;
+      z-index:80;
+
+    }
+    .disAll {
+      width:70%;
+      height:120px;
+      background: #fff;
+      position: fixed;
+      top:50%;
+      left:50%;
+      -webkit-transform:translate(-50%,-50%);
+      transform:translate(-50%,-50%);
+      z-index: 90;
+      -webkit-border-radius:10px;
+      -moz-border-radius:10px;
+      border-radius:10px;
+    }
+    .disPhone {
+      width:100%;
+      height:60px;
+      border-bottom: 1px solid #ccc;
+    }
+    .disImg {
+      float: left;
+      width:50px;
+      height:60px;
+      position: relative;
+    }
+    .disPhone p {
+      float: left;
+      height:60px;
+      text-align: center;
+      line-height: 60px;
+      font-size: 20px;
+    }
+    .disImg img {
+       position: absolute;
+      top:50%;
+      left:50%;
+      -webkit-transform:translate(-50%,-50%);
+      transform:translate(-50%,-50%);
+    }
   </style>
 </head>
 <body>
@@ -183,6 +235,19 @@
   </div>
   </div>
 </article>
+<div class="disDiv"></div>
+<div class="disAll">
+     <a href="tel:13656174839" class="disPhone">
+       <p>直属特级:</p>
+       <div class="disImg">
+           <img src="${ctx}/tel.png" />
+       </div>
+       <p>13656174839</p>
+     </a>
+     <a href="tel:15854781254" class="disPhone" style="border-bottom: none;">
+
+     </a>
+</div>
 <script>
   //点击下拉箭头
   function showNum(obj,id,index){

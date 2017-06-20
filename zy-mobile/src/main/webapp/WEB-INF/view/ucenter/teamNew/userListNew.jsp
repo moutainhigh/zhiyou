@@ -28,18 +28,13 @@
       zoom:1;
     }
     .all {
-      width: 95%;
       background: #fff !important;
       margin-top: 10px;
-      margin-left: 2.5%;
     }
     #echartTeam,#echartTeamTwo,#echartTeamFor {
       width:100%;
       height:200px;
       background: #fff !important;
-    }
-    #echartTeamFor {
-      height:250px;
     }
     .teamAll {height: 50px;}
     .teamAll img {float: left;width: 50px;height: 50px;margin-left: 8px;}
@@ -115,18 +110,22 @@
       color: #fff;
       font-size: 12px;
     }
+    /*color:['#5d77e5','#ef7b54','#ffb558','#51c187'],*/
     /*特级*/
     .must {
-      background: #22b5d4;
+      background: #5d77e5;
     }
     .province {
-      background: #fe543e;
+      background: #ef7b54;
     }
     .city {
-      background: #fb8604;
+      background: #ffb558;
     }
     .VIP {
-      background: #d58364;
+      background: #51c187;
+    }
+    .com {
+      background: #91c7ae;
     }
     .allLast {
       margin-bottom: 10px;
@@ -214,15 +213,15 @@
       <span>沉睡成员</span>
     </div>
     <c:forEach items="${dataMap.act}" var="user" begin="0" end="2" varStatus="index">
-    <div class="rankingAll">
-      <span>${index.index+1}</span>
-      <img src="${user.avatar}" />
-      <div class="ranking">
-        <span>${user.nickname}</span>
-        <span class="rankingSpan ${user.userRank.level==4?"must":user.userRank.level==3?"province":user.userRank.level==2?"city":user.userRank.level==1?"VIP":user.userRank.level==0?"普通用户":""}">${user.userRank.level==4?"特级":user.userRank.level==3?"省级":user.userRank.level==2?"市级":user.userRank.level==1?"VIP":user.userRank.level==0?"普通用户":""}</span>
+      <div class="rankingAll">
+        <span>${index.index+1}</span>
+        <img src="${user.avatar}" />
+        <div class="ranking">
+          <span>${user.nickname}</span>
+          <span class="rankingSpan ${user.userRank.level==4?"must":user.userRank.level==3?"province":user.userRank.level==2?"city":user.userRank.level==1?"VIP":user.userRank.level==0?"com":""}">${user.userRank.level==4?"特级":user.userRank.level==3?"省级":user.userRank.level==2?"市级":user.userRank.level==1?"VIP":user.userRank.level==0?"普通用户":""}</span>
+        </div>
+        <span class="tel">${user.phone}</span>
       </div>
-      <span class="tel">${user.phone}</span>
-    </div>
     </c:forEach>
     <a href="#" class="lookDetil">更多详情>></a>
   </div>
@@ -262,7 +261,7 @@
         name:'团队总人数',
         type:'pie',
         radius: ['40%', '55%'],
-//          color:['#EEB422','#BEBEBE','#FFA07A','#483D8B'],
+        color:['#5d77e5','#ef7b54','#ffb558','#51c187'],
         data:[
           {value:array[0], name:'特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
           {value:array[1], name:'省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
@@ -329,6 +328,7 @@
         type: 'pie',
         radius: '55%',
         center: ['50%', '50%'],
+        color:['#5d77e5','#ef7b54','#ffb558','#51c187','#91c7ae'],
         data: [
           {value: array[0], name: '特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
           {value: array[1], name: '省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
@@ -417,6 +417,7 @@
         name:'团队新成员',
         type:'pie',
         radius: ['40%', '55%'],
+        color:['#5d77e5','#ef7b54','#ffb558','#51c187','#91c7ae'],
         data:[
           {value:array[0], name:'特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
           {value:array[1], name:'省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
