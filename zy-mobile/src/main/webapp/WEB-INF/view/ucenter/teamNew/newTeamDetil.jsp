@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>新成员详情</title>
     <%@ include file="/WEB-INF/view/include/head.jsp"%>
+    <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
     <style>
         body {background: #f7f7f9}
         /*清除浮动代码*/
@@ -236,7 +237,7 @@
 <body>
 <header class="header">
     <h1>新成员详情</h1>
-    <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/team/newTeam" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
 <article>
@@ -256,106 +257,23 @@
                     <span class="rankingTop">特级服务商</span>
                     <span class="rankingSpan must">特级</span>
                 </div>
-                <span class="tel">136人</span>
+                <span class="tel">${fn:length(v4)}人</span>
             </div>
         </div>
         <div class="all allLast">
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                    <div class="ranking" style="text-align: left;font-size: 18px;">
-                        <span>赵春华</span>
-                    </div>
-                    <div class="telAll jian" onclick="showNum(this)" change="true">
-                        <img src="${ctx}/jian.png" />
-                    </div>
-                    <a href="tel:13656174839" class="telAll">
-                        <img src="${ctx}/tel.png" />
-                    </a>
-                </div>
-                <div class="rankingNum">
-                    <div class="ranknumber">
-                        <p>6人</p>
-                        <p>特级</p>
-                    </div>
-                    <div class="ranknumber">
-                        <p>6人</p>
-                        <p>省级</p>
-                    </div>
-                    <div class="ranknumber">
-                        <p>6人</p>
-                        <p>市级</p>
-                    </div>
-                    <div class="ranknumber">
-                        <p>6人</p>
-                        <p>VIP</p>
+            <c:forEach items="${v4}" var="v4user">
+                <div class="rankingAllList">
+                    <div class="rankingAll">
+                        <img src="${v4user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
+                        <div class="ranking" style="text-align: left;font-size: 18px;">
+                            <span>${v4user.nickname}</span>
+                        </div>
+                        <a href="tel:${v4user.phone}" class="telAll">
+                            <img src="${ctx}/tel.png" />
+                        </a>
                     </div>
                 </div>
-            </div>
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                    <div class="ranking" style="text-align: left;font-size: 18px;">
-                        <span>赵春华</span>
-                    </div>
-                    <div class="telAll jian" onclick="showNum(this)" change="true">
-                        <img src="${ctx}/jian.png" />
-                    </div>
-                    <a href="tel:13656174839" class="telAll">
-                        <img src="${ctx}/tel.png" />
-                    </a>
-                </div>
-                <div class="rankingNum">
-                    <div class="ranknumber">
-                        <p>6人</p>
-                        <p>特级</p>
-                    </div>
-                    <div class="ranknumber">
-                        <p>6人</p>
-                        <p>省级</p>
-                    </div>
-                    <div class="ranknumber">
-                        <p>6人</p>
-                        <p>市级</p>
-                    </div>
-                    <div class="ranknumber">
-                        <p>6人</p>
-                        <p>VIP</p>
-                    </div>
-                </div>
-            </div>
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                    <div class="ranking" style="text-align: left;font-size: 18px;">
-                        <span>赵春华</span>
-                    </div>
-                    <div class="telAll jian" onclick="showNum(this)" change="true">
-                        <img src="${ctx}/jian.png" />
-                    </div>
-                    <a href="tel:13656174839" class="telAll">
-                        <img src="${ctx}/tel.png" />
-                    </a>
-                </div>
-                <div class="rankingNum">
-                    <div class="ranknumber">
-                        <p>6人</p>
-                        <p>特级</p>
-                    </div>
-                    <div class="ranknumber">
-                        <p>6人</p>
-                        <p>省级</p>
-                    </div>
-                    <div class="ranknumber">
-                        <p>6人</p>
-                        <p>市级</p>
-                    </div>
-                    <div class="ranknumber">
-                        <p>6人</p>
-                        <p>VIP</p>
-                    </div>
-                </div>
-            </div>
+            </c:forEach>
         </div>
 
         <div class="all" change="false" onclick="showList(this)">
@@ -367,55 +285,23 @@
                     <span class="rankingTop">省级服务商</span>
                     <span class="rankingSpan province">省级</span>
                 </div>
-                <span class="tel">136人</span>
+                <span class="tel">${fn:length(v3)}人</span>
             </div>
         </div>
         <div class="all allLast">
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                    <div class="ranking" style="text-align: left;font-size: 18px;">
-                        <span>赵春华</span>
+            <c:forEach items="${v3}" var="v3user">
+                <div class="rankingAllList">
+                    <div class="rankingAll">
+                        <img src="${v3user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
+                        <div class="ranking" style="text-align: left;font-size: 18px;">
+                            <span>${v3user.nickname}</span>
+                        </div>
+                        <a href="tel:${v3user.phone}" class="telAll">
+                            <img src="${ctx}/tel.png" />
+                        </a>
                     </div>
-                    <div class="telAll jian" onclick="showNum(this)" change="true">
-                        <img src="${ctx}/jian.png" />
-                    </div>
-                    <a href="tel:13656174839" class="telAll">
-                        <img src="${ctx}/tel.png" />
-                    </a>
                 </div>
-
-            </div>
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                    <div class="ranking" style="text-align: left;font-size: 18px;">
-                        <span>赵春华</span>
-                    </div>
-                    <div class="telAll jian" onclick="showNum(this)" change="true">
-                        <img src="${ctx}/jian.png" />
-                    </div>
-                    <a href="tel:13656174839" class="telAll">
-                        <img src="${ctx}/tel.png" />
-                    </a>
-                </div>
-
-            </div>
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                    <div class="ranking" style="text-align: left;font-size: 18px;">
-                        <span>赵春华</span>
-                    </div>
-                    <div class="telAll jian" onclick="showNum(this)" change="true">
-                        <img src="${ctx}/jian.png" />
-                    </div>
-                    <a href="tel:13656174839" class="telAll">
-                        <img src="${ctx}/tel.png" />
-                    </a>
-                </div>
-            </div>
-
+            </c:forEach>
         </div>
         <div class="all" change="false" onclick="showList(this)">
             <div class="rankingAll">
@@ -426,55 +312,24 @@
                     <span class="rankingTop">市级服务商</span>
                     <span class="rankingSpan city">市级</span>
                 </div>
-                <span class="tel">136人</span>
+                <span class="tel">${fn:length(v2)}人</span>
             </div>
         </div>
 
         <div class="all allLast">
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                    <div class="ranking" style="text-align: left;font-size: 18px;">
-                        <span>赵春华</span>
+            <c:forEach items="${v2}" var="v2user">
+                <div class="rankingAllList">
+                    <div class="rankingAll">
+                        <img src="${v2user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
+                        <div class="ranking" style="text-align: left;font-size: 18px;">
+                            <span>${v2user.nickname}</span>
+                        </div>
+                        <a href="tel:${v2user.phone}" class="telAll">
+                            <img src="${ctx}/tel.png" />
+                        </a>
                     </div>
-                    <div class="telAll jian" onclick="showNum(this)" change="true">
-                        <img src="${ctx}/jian.png" />
-                    </div>
-                    <a href="tel:13656174839" class="telAll">
-                        <img src="${ctx}/tel.png" />
-                    </a>
                 </div>
-
-            </div>
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                    <div class="ranking" style="text-align: left;font-size: 18px;">
-                        <span>赵春华</span>
-                    </div>
-                    <div class="telAll jian" onclick="showNum(this)" change="true">
-                        <img src="${ctx}/jian.png" />
-                    </div>
-                    <a href="tel:13656174839" class="telAll">
-                        <img src="${ctx}/tel.png" />
-                    </a>
-                </div>
-
-            </div>
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                    <div class="ranking" style="text-align: left;font-size: 18px;">
-                        <span>赵春华</span>
-                    </div>
-                    <div class="telAll jian" onclick="showNum(this)" change="true">
-                        <img src="${ctx}/jian.png" />
-                    </div>
-                    <a href="tel:13656174839" class="telAll">
-                        <img src="${ctx}/tel.png" />
-                    </a>
-                </div>
-            </div>
+            </c:forEach>
 
         </div>
         <div class="all" change="false" onclick="showList(this)">
@@ -484,106 +339,56 @@
                         <div class="jiaoOne"></div>
                     </div>
                     <span class="rankingTop">VIP服务商</span>
-                    <span class="rankingSpan VIP">VIP</span>
+                    <span class="rankingSpan must">VIP</span>
                 </div>
-                <span class="tel">136人</span>
+                <span class="tel">${fn:length(v1)}人</span>
             </div>
         </div>
         <div class="all allLast">
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                    <div class="ranking" style="text-align: left;font-size: 18px;">
-                        <span>赵春华</span>
+            <c:forEach items="${v1}" var="v1user">
+                <div class="rankingAllList">
+                    <div class="rankingAll">
+                        <img src="${v1user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
+                        <div class="ranking" style="text-align: left;font-size: 18px;">
+                            <span>${v1user.nickname}</span>
+                        </div>
+                        <a href="tel:${v1user.phone}" class="telAll">
+                            <img src="${ctx}/tel.png" />
+                        </a>
                     </div>
-                    <div class="telAll jian" onclick="showNum(this)" change="true">
-                        <img src="${ctx}/jian.png" />
-                    </div>
-                    <a href="tel:13656174839" class="telAll">
-                        <img src="${ctx}/tel.png" />
-                    </a>
                 </div>
-
-            </div>
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                    <div class="ranking" style="text-align: left;font-size: 18px;">
-                        <span>赵春华</span>
+            </c:forEach>
+        </div>
+        <div class="all" change="false" onclick="showList(this)">
+            <div class="rankingAll">
+                <div class="ranking">
+                    <div class="sanjiao">
+                        <div class="jiaoOne"></div>
                     </div>
-                    <div class="telAll jian" onclick="showNum(this)" change="true">
-                        <img src="${ctx}/jian.png" />
-                    </div>
-                    <a href="tel:13656174839" class="telAll">
-                        <img src="${ctx}/tel.png" />
-                    </a>
+                    <span class="rankingTop">普通用户</span>
+                    <span class="rankingSpan must">VIP</span>
                 </div>
-
+                <span class="tel">${fn:length(v0)}人</span>
             </div>
-            <div class="rankingAllList">
-                <div class="rankingAll">
-                    <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                    <div class="ranking" style="text-align: left;font-size: 18px;">
-                        <span>赵春华</span>
+        </div>
+        <div class="all allLast">
+            <c:forEach items="${v0}" var="v0user">
+                <div class="rankingAllList">
+                    <div class="rankingAll">
+                        <img src="${v0user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
+                        <div class="ranking" style="text-align: left;font-size: 18px;">
+                            <span>${v0user.nickname}</span>
+                        </div>
+                        <a href="tel:${v0user.phone}" class="telAll">
+                            <img src="${ctx}/tel.png" />
+                        </a>
                     </div>
-                    <div class="telAll jian" onclick="showNum(this)" change="true">
-                        <img src="${ctx}/jian.png" />
-                    </div>
-                    <a href="tel:13656174839" class="telAll">
-                        <img src="${ctx}/tel.png" />
-                    </a>
                 </div>
-
-            </div>
+            </c:forEach>
         </div>
     </div>
     <div class="searchList">查无此人!</div>
     <div class="searchListShow">
-        <div class="rankingAllList">
-            <div class="rankingAll">
-                <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                <div class="ranking" style="text-align: left;font-size: 18px;">
-                    <span>赵春华</span>
-                </div>
-                <div class="telAll jian" onclick="showNum(this)" change="true">
-                    <img src="${ctx}/jian.png" />
-                </div>
-                <a href="tel:13656174839" class="telAll">
-                    <img src="${ctx}/tel.png" />
-                </a>
-            </div>
-
-        </div>
-        <div class="rankingAllList">
-            <div class="rankingAll">
-                <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                <div class="ranking" style="text-align: left;font-size: 18px;">
-                    <span>赵春华</span>
-                </div>
-                <div class="telAll jian" onclick="showNum(this)" change="true">
-                    <img src="${ctx}/jian.png" />
-                </div>
-                <a href="tel:13656174839" class="telAll">
-                    <img src="${ctx}/tel.png" />
-                </a>
-            </div>
-
-        </div>
-        <div class="rankingAllList">
-            <div class="rankingAll">
-                <img src="${ctx}/headPortrait.png" style="margin-left: 20px;margin-right: 20px;"/>
-                <div class="ranking" style="text-align: left;font-size: 18px;">
-                    <span>赵春华</span>
-                </div>
-                <div class="telAll jian" onclick="showNum(this)" change="true">
-                    <img src="${ctx}/jian.png" />
-                </div>
-                <a href="tel:13656174839" class="telAll">
-                    <img src="${ctx}/tel.png" />
-                </a>
-            </div>
-
-        </div>
     </div>
 
     </div>
@@ -601,30 +406,63 @@
             $(obj).next(".allLast").hide();
         }
     }
-    //点击下拉箭头
-    function showNum(obj){
-        if($(obj).attr("change")=="true"){
-            $(obj).parents(".rankingAll").next(".rankingNum").show();
-            $(obj).find("img").attr("src","${ctx}/jian2.png");
-            $(obj).attr("change","false");
-        }else {
-            $(obj).parents(".rankingAll").next(".rankingNum").hide();
-            $(obj).find("img").attr("src","${ctx}/jian.png");
-            $(obj).attr("change","true");
-        }
-
-    }
     //点击搜索
     function seatch() {
+        $(".searchList").hide();
+        $(".searchListShow").html("");
         if($(".searchInput").val()==""){
             $(".numberList").show();
             $(".searchListShow").hide();
         }else {
             $(".numberList").hide();
             $(".searchListShow").show();
+
+            $.ajax({
+                url : '${ctx}/u/team/ajaxteamNew',
+                data : {
+                    nameorPhone:$(".searchInput").val()
+                },
+                dataType : 'json',
+                type : 'POST',
+                success : function(result) {
+                    if(result.code != 0) {
+                        return;
+                    }
+                    var pageData= result.data;
+                    if (pageData.length) {
+                        /*var pageData = page.data;*/
+                        for ( var i in pageData) {
+                            var row = pageData[i];
+                            buildRow(row);
+                        }
+                    }
+                    if (!pageData.length || pageData.length < 0) {
+                        $(".searchList").show();
+                    }
+                }
+            });
         }
 
     }
+    function buildRow(row,indexs){
+        var rowTpl = document.getElementById('rowTpl').innerHTML;
+        laytpl(rowTpl).render(row,function(html) {
+            $('.searchListShow').append(html);
+            $(".searchList").hide();
+        });
+    }
+</script>
+<script id="rowTpl" type="text/html">
+    <div class="rankingAllList">
+        <div class="rankingAll">
+            <img src="{{d.avatar}}" style="margin-left: 20px;margin-right: 20px;"/>
+            <div class="ranking" style="text-align: left;font-size: 18px;">
+                <span>{{ d.nickname }}</span>
+            </div>
+            <a href="tel:{{ d.phone }}" class="telAll">
+                <img src="${ctx}/tel.png" /></a>
+        </div>
+    </div>
 </script>
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>

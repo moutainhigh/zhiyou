@@ -195,7 +195,7 @@
           <span>${udto.nickname}</span>
           <span class="rank">(${udto.num}人)</span>
         </div>
-        <span class="tel">13656174839</span>
+        <span class="tel">${udto.phone}</span>
       </div>
     </c:forEach>
     <c:if test="${fn:length(dataMap.rankList)>3}">
