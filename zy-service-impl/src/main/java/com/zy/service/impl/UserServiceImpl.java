@@ -812,7 +812,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Page<User> findAddpeople(UserQueryModel userQueryModel) {
-        userQueryModel.setRemark("从V0%");
+        userQueryModel.setRemark("%改为V4%");
         userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
         userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0,0));
         List<User>myuserList = userMapper.findAddpeople(userQueryModel);
@@ -821,6 +821,26 @@ public class UserServiceImpl implements UserService {
         page.setPageSize(userQueryModel.getPageSize());
         page.setData(myuserList);
         return page;
+    }
+
+
+    /**
+     * 判断是不是新晋特级
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean findNewOne(Long id) {
+        Map<String,Object>dataMap = new HashMap<String,Object>();
+        dataMap.put("remark","从V0%");
+        dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),0,0));
+        dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthEnd(new Date(),1,0));
+        dataMap.put("userId",id);
+        long total=userLogMapper.count(dataMap);
+        if(total>0){
+            return true;
+        }
+        return false;
     }
 
 

@@ -63,11 +63,13 @@ public class UserInfoVo implements Serializable {
 	@Field(label = "标签")
 	private List<String> tagNames = new ArrayList<>();
 	@Field(label = "推荐人name")
-	private String pName;
+	private String pname;
 	@Field(label = "手机号")
 	private String phone;
 	@Field(label = "推荐人手机号")
-	private String pPhone;
+	private String pphone;
+	@Field(label = "是否是新晋")
+	private String newflag;
 
 
 }

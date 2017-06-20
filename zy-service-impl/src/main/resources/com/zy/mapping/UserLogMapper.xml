@@ -66,6 +66,9 @@
 
 	<select id="count" resultType="_long">
 		select count(*) FROM `usr_user_log` where remark like #{remark} and operated_Time &gt;=#{operatedTimeBegin} and operated_Time &lt;=#{operatedTimeEnd}
+		<if test="userId">
+			and user_id=#{userId}
+		</if>
 	</select>
 
 	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
