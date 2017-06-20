@@ -169,34 +169,20 @@
       <img src="${ctx}/team1.png"/>
       <span>直属下级进销单</span>
     </div>
-    <div class="rankingAll">
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
-        <span class="rankingSpan must">特级</span>
+    <c:forEach items="${dateMap.userList}" var="user" end="4">
+      <div class="rankingAll">
+        <img src="${user.avatar}" />
+        <div class="ranking">
+          <span>${user.nickname}</span>
+          <span class="rankingSpan must">${user.userRank}</span>
+        </div>
+        <span class="tel">${user.phone}</span>
+        <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
       </div>
-      <span class="tel">13656174839</span>
-      <a href="#"  class="rankingBtn">查看销量</a>
-    </div>
-    <div class="rankingAll">
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
-        <span class="rankingSpan province">省级</span>
-      </div>
-      <span class="tel">13656174839</span>
-      <a href="#" class="rankingBtn">查看销量</a>
-    </div>
-    <div class="rankingAll">
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
-        <span class="rankingSpan city">市级</span>
-      </div>
-      <span class="tel">13656174839</span>
-      <a href="#" class="rankingBtn">查看销量</a>
-    </div>
-    <a href="#" class="lookDetil">更多详情>></a>
+    </c:forEach>
+    <c:if test="${fn:length(dateMap.userList) > 5}">
+      <a href="${ctx}/u/salesVolume/subordinateSubordinateDetail" class="lookDetil">更多详情>></a>
+    </c:if>
   </div>
 
   <div class="all allLast">
@@ -204,33 +190,20 @@
       <img src="${ctx}/team1.png"/>
       <span>直属特级进销单</span>
     </div>
-    <div class="rankingAll">
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
+    <c:forEach items="${dateMap.v4List}" var="user" end="4">
+      <div class="rankingAll">
+        <img src="${user.avatar}" />
+        <div class="ranking">
+          <span>${user.nickname}</span>
+        </div>
+        <span class="tel">${user.phone}</span>
+        <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
       </div>
-      <span class="tel">13656174839</span>
-      <a href="#"  class="rankingBtn">查看销量</a>
-    </div>
-    <div class="rankingAll">
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
-      </div>
-      <span class="tel">13656174839</span>
-      <a href="#" class="rankingBtn">查看销量</a>
-    </div>
-    <div class="rankingAll">
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
-      </div>
-      <span class="tel">13656174839</span>
-      <a href="#" class="rankingBtn">查看销量</a>
-    </div>
-    <a href="#" class="lookDetil">更多详情>></a>
+    </c:forEach>
+    <c:if test="${fn:length(dateMap.v4List) > 5}">
+      <a href="${ctx}/u/salesVolume/directlyUnderGradeDetail" class="lookDetil">更多详情>></a>
+    </c:if>
   </div>
-
   <div class="all" style="background: #f9f9f9 !important;padding-bottom: 20px;">
     <div class="teamAll">
       <img src="${ctx}/team2.png"/>
@@ -241,8 +214,12 @@
 </article>
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">
-  var array=[62, 18, 64, 26, 79, 60, 57,87,88,78,90];
-  var arrayT=[22, 18, 19, 23, 29, 33, 31,45,54,65,75];
+  var svArray = "${dateMap.salesVolumeData}";
+  var array = svArray.split(",");
+
+  var sArray = "${dateMap.shipmentData}";
+  var arrayT = sArray.split(",");
+
   var mbolSize = 20;
   // 基于准备好的dom，初始化echarts实例
   var myChart = echarts.init(document.getElementById('echartTeamTwo'));
@@ -304,8 +281,12 @@
 </script>
 
 <script type="text/javascript">
-  var array=[-62, 18, 64, -26, 79, -60, 57,-87,88,78,90];
-  var arrayT=[22, -18, 19, 23, -29, 33, 31,45,-54,65,75];
+  var svArray = "${dateMap.svData}";
+  var array = svArray.split(",");
+
+  var sArray = "${dateMap.sData}";
+  var arrayT = sArray.split(",");
+
   var mbolSize =40;
   // 基于准备好的dom，初始化echarts实例
   var myChart = echarts.init(document.getElementById('echartTeamFor'));
@@ -315,7 +296,7 @@
       trigger: 'axis'
     },
     legend: {
-      data:['同比','环比']
+      data:['进货量环比','销货量环比']
     },
     grid: {
       left: '3%',
@@ -334,7 +315,7 @@
     },
     series: [
       {
-        name:'同比',
+        name:'进货量环比',
         type:'line',
         stack: '总量',
         itemStyle: {
@@ -345,7 +326,7 @@
         data:array
       },
       {
-        name:'环比',
+        name:'销货量环比',
         type:'line',
         stack: '总量',
 //        label: {
@@ -367,8 +348,12 @@
   myChart.setOption(optionFor);
 </script>
 <script type="text/javascript">
-  var array=[62, 18, 64, 26, 79, 60, 57,87,88,78,90];
-  var arrayT=[22, 18, 19, 23, 29, 33, 31,45,54,65,75];
+  var svArray = "${dateMap.salesVolumeTeamData}";
+  var array = svArray.split(",");
+
+  var sArray = "${dateMap.shipmentTeamData}";
+  var arrayT = sArray.split(",");
+
   var mbolSize = 20;
   // 基于准备好的dom，初始化echarts实例
   var myChart = echarts.init(document.getElementById('echartTeamAll'));

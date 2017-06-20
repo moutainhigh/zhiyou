@@ -120,7 +120,7 @@
 <body>
 <header class="header">
   <h1>直属特级进销单详情</h1>
-  <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+  <a href="${ctx}/u/salesVolume/salesVolume" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
 <article>

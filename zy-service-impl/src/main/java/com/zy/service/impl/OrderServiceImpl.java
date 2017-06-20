@@ -1266,12 +1266,12 @@ public class OrderServiceImpl implements OrderService {
 	public Map<String, Object> querySalesVolume(OrderQueryModel orderQueryModel) {
 		Map<String ,Object> returnMap = new HashMap<>();
 		int moth = DateUtil.getMoth(new Date());
-		Long salesVolumeData [] = new Long[moth-1];
-		Long shipmentData [] = new Long[moth-1];
+		long salesVolumeData [] = new long[moth-1];
+        long shipmentData [] = new long[moth-1];
         double svData [] = new double[moth-1];
         double sData [] = new double[moth-1];
-        Long salesVolumeTeamData [] = new Long[moth-1];
-        Long shipmentTeamData [] = new Long[moth-1];
+        long salesVolumeTeamData [] = new long[moth-1];
+        long shipmentTeamData [] = new long[moth-1];
 		for (int i = moth - 1; i >= 1;i--){
 			orderQueryModel.setPaidTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
 			orderQueryModel.setPaidTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
@@ -1339,12 +1339,12 @@ public class OrderServiceImpl implements OrderService {
                 shipmentTeamData[i-1] = data;
             }
         }
-		returnMap.put("salesVolumeData", salesVolumeData);
-		returnMap.put("shipmentData", shipmentData);
-		returnMap.put("svData", svData);
-		returnMap.put("sData", sData);
-        returnMap.put("salesVolumeTeamData", salesVolumeTeamData);
-        returnMap.put("shipmentTeamData", shipmentTeamData);
+        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, false));
+        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, false));
+        returnMap.put("svData", DateUtil.arryToString(svData, false));
+        returnMap.put("sData", DateUtil.arryToString(sData, false));
+        returnMap.put("salesVolumeTeamData", DateUtil.longarryToString(salesVolumeTeamData, false));
+        returnMap.put("shipmentTeamData", DateUtil.longarryToString(shipmentTeamData, false));
 		return returnMap;
 	}
 
@@ -1352,8 +1352,10 @@ public class OrderServiceImpl implements OrderService {
     public Map<String, Object> querySalesVolumeDetail(OrderQueryModel orderQueryModel) {
         Map<String ,Object> returnMap = new HashMap<>();
         int moth = DateUtil.getMoth(new Date());
-        Long salesVolumeData [] = new Long[moth-1];
-        Long shipmentData [] = new Long[moth-1];
+        long salesVolumeData [] = new long[moth-1];
+        long shipmentData [] = new long[moth-1];
+		double svData [] = new double[moth-1];
+		double sData [] = new double[moth-1];
         for (int i = moth - 1; i >= 1;i--){
             orderQueryModel.setPaidTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
             orderQueryModel.setPaidTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
@@ -1367,8 +1369,32 @@ public class OrderServiceImpl implements OrderService {
             data = shipment;
             shipmentData[i-1] = data;
         }
-        returnMap.put("salesVolumeData", salesVolumeData);
-        returnMap.put("shipmentData", shipmentData);
+		//计算环比
+		for (int i = moth - 1; i >= 1;i--){
+			double data = 0d;
+			//进货量环比
+			double sv = 0.00d;
+			if (i-2 >= 0 && salesVolumeData [i-2] != 0){
+				sv = new BigDecimal((salesVolumeData [i-1] - salesVolumeData [i-2]) / salesVolumeData [i-2] * 100).setScale(2 , RoundingMode.UP).doubleValue()  ;
+			}else if (i-2 >= 0 && salesVolumeData [i-2] == 0 && salesVolumeData [i-2] > 0){
+				sv = 100;
+			}
+			data = sv;
+			svData[i-1] = data;
+			//出货量环比
+			double s = 0.00d;
+			if (i-2 >= 0 && shipmentData [i-2] != 0){
+				s = new BigDecimal((shipmentData [i-1] - shipmentData [i-2]) / shipmentData [i-2] * 100 ).setScale(2 , RoundingMode.UP).doubleValue() ;
+			}else if (i-2 >= 0 && shipmentData [i-2] == 0 && shipmentData [i-1] > 0){
+				s = 100;
+			}
+			data = s;
+			sData[i-1] = data;
+		}
+        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, false));
+        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, false));
+		returnMap.put("svData", DateUtil.arryToString(svData, false));
+		returnMap.put("sData", DateUtil.arryToString(sData, false));
         return returnMap;
     }
 
