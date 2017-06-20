@@ -185,32 +185,37 @@
     </c:if>
   </div>
 
-  <div class="all allLast">
-    <div class="teamAll allList">
-      <img src="${ctx}/team1.png"/>
-      <span>直属特级进销单</span>
-    </div>
-    <c:forEach items="${dateMap.v4List}" var="user" end="4">
-      <div class="rankingAll">
-        <img src="${user.avatar}" />
-        <div class="ranking">
-          <span>${user.nickname}</span>
-        </div>
-        <span class="tel">${user.phone}</span>
-        <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
+  <c:if test="${dateMap.userRank == 'V4'}">
+    <div class="all allLast">
+      <div class="teamAll allList">
+        <img src="${ctx}/team1.png"/>
+        <span>直属特级进销单</span>
       </div>
-    </c:forEach>
-    <c:if test="${fn:length(dateMap.v4List) > 5}">
-      <a href="${ctx}/u/salesVolume/directlyUnderGradeDetail" class="lookDetil">更多详情>></a>
-    </c:if>
-  </div>
-  <div class="all" style="background: #f9f9f9 !important;padding-bottom: 20px;">
-    <div class="teamAll">
-      <img src="${ctx}/team2.png"/>
-      <span>团队销量</span>
+      <c:forEach items="${dateMap.v4List}" var="user" end="4">
+        <div class="rankingAll">
+          <img src="${user.avatar}" />
+          <div class="ranking">
+            <span>${user.nickname}</span>
+          </div>
+          <span class="tel">${user.phone}</span>
+          <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
+        </div>
+      </c:forEach>
+      <c:if test="${fn:length(dateMap.v4List) > 5}">
+        <a href="${ctx}/u/salesVolume/directlyUnderGradeDetail" class="lookDetil">更多详情>></a>
+      </c:if>
     </div>
-    <div id="echartTeamAll"></div>
-  </div>
+  </c:if>
+
+  <c:if test="${dateMap.userRank == 'V4'}">
+    <div class="all" style="background: #f9f9f9 !important;padding-bottom: 20px;">
+      <div class="teamAll">
+        <img src="${ctx}/team2.png"/>
+        <span>团队销量</span>
+      </div>
+      <div id="echartTeamAll"></div>
+    </div>
+  </c:if>
 </article>
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">

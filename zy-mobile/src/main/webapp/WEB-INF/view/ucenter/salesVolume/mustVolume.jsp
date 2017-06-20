@@ -120,41 +120,27 @@
 <body>
 <header class="header">
   <h1>直属特级进销单详情</h1>
-  <a href="${ctx}/u/salesVolume/salesVolume" class="button-left"><i class="fa fa-angle-left"></i></a>
+  <a href="#" onclick="javascript :history.back(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
 <article>
-  <div class="teamTop">
-    <img src="${ctx}/seatch.png" />
-    <input type="search" class="searchInput" placeholder="请输入姓名或手机号" />
-    <img src="${ctx}/searchBtn.png" class="seatchImg" onclick="seatch()" />
-    <div class="searchBtn" onclick="seatch()">搜索</div>
-  </div>
+  <%--<div class="teamTop">--%>
+    <%--<img src="${ctx}/seatch.png" />--%>
+    <%--<input type="search" class="searchInput" placeholder="请输入姓名或手机号" />--%>
+    <%--<img src="${ctx}/searchBtn.png" class="seatchImg" onclick="seatch()" />--%>
+    <%--<div class="searchBtn" onclick="seatch()">搜索</div>--%>
+  <%--</div>--%>
   <div class="all allLast">
-    <div class="rankingAll">
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
+    <c:forEach items="${v4List}" var="user">
+      <div class="rankingAll">
+        <img src="${user.avatar}" />
+        <div class="ranking">
+          <span>${user.nickname}</span>
+        </div>
+        <span class="tel">${user.phone}</span>
+        <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
       </div>
-      <span class="tel">13656174839</span>
-      <a href="#"  class="rankingBtn">查看销量</a>
-    </div>
-    <div class="rankingAll">
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
-      </div>
-      <span class="tel">13656174839</span>
-      <a href="#" class="rankingBtn">查看销量</a>
-    </div>
-    <div class="rankingAll">
-      <img src="${ctx}/headPortrait.png" />
-      <div class="ranking">
-        <span>赵春华</span>
-      </div>
-      <span class="tel">13656174839</span>
-      <a href="#" class="rankingBtn">查看销量</a>
-    </div>
+    </c:forEach>
   </div>
 </article>
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
