@@ -115,7 +115,7 @@
 		     GROUP BY u.parent_id ) a,
 	         usr_user b where a.parent_id =b.id
 			<if test="nameorPhone != null">
-				and (b.phone = #{nameorPhone} or b.nickname like #{nameorPhone})
+				and (b.phone like #{nameorPhone} or b.nickname like #{nameorPhone})
 			</if>
 		     order by num
 		    <if test="offset != null">
@@ -143,7 +143,7 @@
 			AND u.parent_id =#{parentIdNL}
 		</if>
 		<if test="nameorPhone != null">
-			and (u.phone = #{nameorPhone} or u.nickname like #{nameorPhone})
+			and (u.phone like #{nameorPhone} or u.nickname like #{nameorPhone})
 		</if>
 		GROUP BY u.parent_id ) a
 	</select>

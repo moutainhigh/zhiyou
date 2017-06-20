@@ -844,4 +844,22 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    /**
+     *查询所有  没有默认分页
+     * @param userQueryModel
+     * @return
+     */
+    @Override
+    public Page<User> findPage1(UserQueryModel userQueryModel) {
+        long total = userMapper.count(userQueryModel);
+        List<User> data = userMapper.findAll(userQueryModel);
+        Page<User> page = new Page<>();
+        page.setPageNumber(userQueryModel.getPageNumber());
+        page.setPageSize(userQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
+    }
+
+
 }

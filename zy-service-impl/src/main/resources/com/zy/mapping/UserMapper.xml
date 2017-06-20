@@ -339,7 +339,7 @@
 			   AND uu.parent_id =#{parentIdNL}
 			</if>
 			<if test="nameorPhone != null">
-				and (uu.phone = #{nameorPhone} or uu.nickname like #{nameorPhone})
+				and (uu.phone LIKE #{nameorPhone} or uu.nickname like #{nameorPhone})
 			</if>
 			AND uu.id not in( SELECT DISTINCT(u.id) from usr_user u,mal_order m
 			where m.user_id = u.id
@@ -368,7 +368,7 @@
 			  and parent_id =#{parentIdNL}
 			</if>
 			<if test="nameorPhone != null">
-				and (uu.phone = #{nameorPhone} or uu.nickname like #{nameorPhone})
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
 			</if>
 			and id not in( SELECT DISTINCT(u.id)
 			FROM
