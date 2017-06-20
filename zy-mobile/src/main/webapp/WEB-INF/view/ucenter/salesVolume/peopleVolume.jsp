@@ -71,7 +71,7 @@
 <body>
 <header class="header">
   <h1>${userName}的销量</h1>
-  <a href="${ctx}/u/salesVolume/salesVolume" class="button-left"><i class="fa fa-angle-left"></i></a>
+  <a href="#" onclick="javascript :history.back(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
 <article>

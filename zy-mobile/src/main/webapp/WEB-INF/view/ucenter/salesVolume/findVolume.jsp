@@ -212,7 +212,7 @@
 <body>
 <header class="header">
   <h1>直属下级进销单详情</h1>
-  <a href="${ctx}/u/salesVolume/salesVolume" class="button-left"><i class="fa fa-angle-left"></i></a>
+  <a href="#" onclick="javascript :history.back(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
 <article>
@@ -232,41 +232,21 @@
           <span class="rankingTop">特级服务商</span>
           <span class="rankingSpan must">特级</span>
         </div>
-        <span class="tel telDetil">136人</span>
+        <span class="tel telDetil">${fn:length(v4)}人</span>
       </div>
     </div>
     <div class="all allLast">
       <div class="rankingAllList">
-        <div class="rankingAll">
-          <img src="${ctx}/headPortrait.png" />
-          <div class="ranking">
-            <span>赵春华</span>
+        <c:forEach items="${v4}" var="user">
+          <div class="rankingAll">
+            <img src="${user.avatar}" />
+            <div class="ranking">
+              <span>${user.nickname}</span>
+            </div>
+            <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
+            <span class="tel">${user.phone}</span>
           </div>
-          <a href="#" class="rankingBtn">查看销量</a>
-          <span class="tel">13656174839</span>
-
-        </div>
-      </div>
-      <div class="rankingAllList">
-        <div class="rankingAll">
-          <img src="${ctx}/headPortrait.png" />
-          <div class="ranking">
-            <span>赵春华</span>
-          </div>
-          <a href="#" class="rankingBtn">查看销量</a>
-          <span class="tel">13656174839</span>
-        </div>
-
-      </div>
-      <div class="rankingAllList">
-        <div class="rankingAll">
-          <img src="${ctx}/headPortrait.png" />
-          <div class="ranking">
-            <span>赵春华</span>
-          </div>
-          <a href="#" class="rankingBtn">查看销量</a>
-          <span class="tel">13656174839</span>
-        </div>
+        </c:forEach>
       </div>
     </div>
 
@@ -279,20 +259,22 @@
           <span class="rankingTop">省级服务商</span>
           <span class="rankingSpan province">省级</span>
         </div>
-        <span class="tel telDetil">136人</span>
+        <span class="tel telDetil">${fn:length(v3)}人</span>
       </div>
     </div>
     <div class="all allLast">
       <div class="rankingAllList">
-
+        <c:forEach items="${v3}" var="user">
+          <div class="rankingAll">
+            <img src="${user.avatar}" />
+            <div class="ranking">
+              <span>${user.nickname}</span>
+            </div>
+            <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
+            <span class="tel">${user.phone}</span>
+          </div>
+        </c:forEach>
       </div>
-      <div class="rankingAllList">
-
-      </div>
-      <div class="rankingAllList">
-
-      </div>
-
     </div>
     <div class="all" change="false" onclick="showList(this)">
       <div class="rankingAll">
@@ -303,21 +285,22 @@
           <span class="rankingTop">市级服务商</span>
           <span class="rankingSpan city">市级</span>
         </div>
-        <span class="tel telDetil">136人</span>
+        <span class="tel telDetil">${fn:length(v2)}人</span>
       </div>
     </div>
-
     <div class="all allLast">
       <div class="rankingAllList">
-
+        <c:forEach items="${v2}" var="user">
+          <div class="rankingAll">
+            <img src="${user.avatar}" />
+            <div class="ranking">
+              <span>${user.nickname}</span>
+            </div>
+            <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
+            <span class="tel">${user.phone}</span>
+          </div>
+        </c:forEach>
       </div>
-      <div class="rankingAllList">
-
-      </div>
-      <div class="rankingAllList">
-
-      </div>
-
     </div>
     <div class="all" change="false" onclick="showList(this)">
       <div class="rankingAll">
@@ -328,61 +311,26 @@
           <span class="rankingTop">VIP服务商</span>
           <span class="rankingSpan must">VIP</span>
         </div>
-        <span class="tel telDetil">136人</span>
+        <span class="tel telDetil">${fn:length(v1)}人</span>
       </div>
     </div>
     <div class="all allLast">
-
-
-    </div>
-    <div class="rankingAllList">
-
-
-    </div>
-    <div class="rankingAllList">
-
-
+      <c:forEach items="${v1}" var="user">
+        <div class="rankingAll">
+          <img src="${user.avatar}" />
+          <div class="ranking">
+            <span>${user.nickname}</span>
+          </div>
+          <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
+          <span class="tel">${user.phone}</span>
+        </div>
+      </c:forEach>
     </div>
   </div>
   </div>
   <div class="searchList">查无此人!</div>
   <div class="searchListShow">
-    <div class="rankingAllList">
-      <div class="rankingAll">
-        <img src="${ctx}/headPortrait.png" />
-        <div class="ranking">
-          <span>赵春华</span>
-          <span class="rankingSpan city">市级</span>
-        </div>
-        <a href="#" class="rankingBtn">查看销量</a>
-        <span class="tel">13656174839</span>
 
-      </div>
-    </div>
-    <div class="rankingAllList">
-      <div class="rankingAll">
-        <img src="${ctx}/headPortrait.png" />
-        <div class="ranking">
-          <span>赵春华</span>
-          <span class="rankingSpan must">特级</span>
-        </div>
-        <a href="#" class="rankingBtn">查看销量</a>
-        <span class="tel">13656174839</span>
-
-      </div>
-    </div>
-    <div class="rankingAllList">
-      <div class="rankingAll">
-        <img src="${ctx}/headPortrait.png" />
-        <div class="ranking">
-          <span>赵春华</span>
-          <span class="rankingSpan province">省级</span>
-        </div>
-        <a href="#" class="rankingBtn">查看销量</a>
-        <span class="tel">13656174839</span>
-
-      </div>
-    </div>
   </div>
 
   </div>
@@ -402,12 +350,17 @@
   }
   //点击搜索
   function seatch() {
+
     if($(".searchInput").val()==""){
       $(".numberList").show();
       $(".searchListShow").hide();
     }else {
       $(".numberList").hide();
       $(".searchListShow").show();
+
+      $(".searchListShow").append('<div class="rankingAllList"><div class="rankingAll"><img src="${ctx}/headPortrait.png" />'
+              +'<div class="ranking"><span>赵春华</span><span class="rankingSpan city">市级</span></div>'
+              +'<a href="#" class="rankingBtn">查看销量</a> <span class="tel">13656174839</span></div></div>');
     }
 
   }
