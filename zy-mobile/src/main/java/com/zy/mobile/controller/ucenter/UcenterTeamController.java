@@ -200,20 +200,19 @@ public class UcenterTeamController {
 	 */
 	@RequestMapping(value = "ajaxTeamDetail",method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> ajaxTeamDetail(Principal principal,String nameorPhone,@RequestParam(required = true) Integer pageNumber){
+	public Result<?> ajaxTeamDetail(Principal principal,String nameorPhone,Integer pageNumber){
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdEQ(userId);
-		userQueryModel.setDirection(Direction.DESC);
-		userQueryModel.setOrderBy("user_rank");
 		if (null!=nameorPhone){
 			userQueryModel.setNameorPhone("%"+nameorPhone+"%");
 		}
-
-		userQueryModel.setPageNumber(pageNumber);
-		userQueryModel.setPageSize(10);
+	   /*	userQueryModel.setPageNumber(pageNumber);*/
+		userQueryModel.setPageSize(1000);
 		Page<User> page= userService.findPage(userQueryModel);
-		return ResultBuilder.result(page.getData());
+		Map<String, Object> map = new HashMap<>();
+		map.put("page",page);
+		return ResultBuilder.result(map);
 	}
 
 	/**
@@ -340,9 +339,12 @@ public class UcenterTeamController {
 	 * @param userId
 	 * @return
      */
-	public String findDirectlyNum(Long userId, Model model){
+	@RequestMapping(value = "findDirectlyNum",method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Object> findDirectlyNum(Long userId, Model model){
 		long [] dirTotal = userService.countdirTotal(userId);
-		return null;//ResultBuilder.result(dirTotal);
+		String result= DateUtil.longarryToString(dirTotal,false);
+		return ResultBuilder.ok(result);
 	}
 
 	/**

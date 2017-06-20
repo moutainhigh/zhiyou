@@ -197,7 +197,7 @@
 				</if>
 			</if>
 			<if test="nameorPhone != null">
-				and (phone = #{nameorPhone} or nickname like #{nameorPhone}}
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
 			</if>
 		</where>
 		<choose>
@@ -292,7 +292,7 @@
 				</if>
 			</if>
 			<if test="nameorPhone != null">
-				and (phone = #{nameorPhone} or nickname like #{nameorPhone})
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
 			</if>
 		</where>
 	</select>
