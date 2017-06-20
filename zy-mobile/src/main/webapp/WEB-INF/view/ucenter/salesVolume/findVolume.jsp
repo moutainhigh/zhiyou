@@ -374,6 +374,9 @@
   }
   //点击搜索
   function seatch() {
+    $(".searchList").hide();
+    $(".searchListShow").html("");
+
     if($(".searchInput").val()==""){
       $(".numberList").show();
       $(".searchListShow").hide();
@@ -400,8 +403,8 @@
               buildRow(row);
             }
           }
-          if (!page.data.length || page.data.length < page.pageSize) {
-            $('.page-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
+          if (!page.data.length || page.data.length <= 0) {
+            $(".searchList").show();
           }
         }
       });
