@@ -139,7 +139,7 @@
       top:0;
       left:0;
       z-index:80;
-
+      display: none;
     }
     .disAll {
       width:70%;
@@ -154,6 +154,7 @@
       -webkit-border-radius:10px;
       -moz-border-radius:10px;
       border-radius:10px;
+      display: none;
     }
     .disPhone {
       width:100%;

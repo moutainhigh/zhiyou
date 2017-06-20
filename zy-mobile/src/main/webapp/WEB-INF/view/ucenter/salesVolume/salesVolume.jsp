@@ -120,13 +120,19 @@
     }
     /*特级*/
     .must {
-      background: #22b5d4;
+      background: #5d77e5;
     }
     .province {
-      background: #fe543e;
+      background: #ef7b54;
     }
     .city {
-      background: #fb8604;
+      background: #ffb558;
+    }
+    .VIP {
+      background: #51c187;
+    }
+    .com {
+      background: #91c7ae;
     }
     .allLast {
       margin-bottom: 10px;
@@ -157,7 +163,7 @@
 
   <div class="all" style="padding-bottom: 20px;">
     <div class="teamAll">
-      <img src="${ctx}/team2.png"/>
+      <img src="${ctx}/peopleVolume.png"/>
       <span>个人销量</span>
     </div>
     <div id="echartTeamTwo"></div>
@@ -166,7 +172,7 @@
 
   <div class="all allLast">
     <div class="teamAll allList">
-      <img src="${ctx}/team1.png"/>
+      <img src="${ctx}/findVolume.png"/>
       <span>直属下级进销单</span>
     </div>
     <c:forEach items="${dateMap.userList}" var="user" end="2">
@@ -177,8 +183,8 @@
           <c:if test="${user.userRank == 'V4'}"><span class="rankingSpan must">特级</span></c:if>
           <c:if test="${user.userRank == 'V3'}"><span class="rankingSpan province">省级</span></c:if>
           <c:if test="${user.userRank == 'V2'}"><span class="rankingSpan city">市级</span></c:if>
-          <c:if test="${user.userRank == 'V1'}"><span class="rankingSpan must">VIP级</span></c:if>
-          <c:if test="${user.userRank == 'V0'}"><span class="rankingSpan must">用户</span></c:if>
+          <c:if test="${user.userRank == 'V1'}"><span class="rankingSpan VIP">VIP级</span></c:if>
+          <c:if test="${user.userRank == 'V0'}"><span class="rankingSpan com">普通</span></c:if>
         </div>
         <span class="tel">${user.phone}</span>
         <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId=${user.id}&userName=${user.nickname}"  class="rankingBtn">查看销量</a>
@@ -192,7 +198,7 @@
   <c:if test="${dateMap.userRank == 'V4'}">
     <div class="all allLast">
       <div class="teamAll allList">
-        <img src="${ctx}/team1.png"/>
+        <img src="${ctx}/mustVolume.png"/>
         <span>直属特级进销单</span>
       </div>
       <c:forEach items="${dateMap.v4List}" var="user" end="2">
@@ -214,7 +220,7 @@
   <c:if test="${dateMap.userRank == 'V4'}">
     <div class="all" style="background: #f9f9f9 !important;padding-bottom: 20px;">
       <div class="teamAll">
-        <img src="${ctx}/team2.png"/>
+        <img src="${ctx}/teamVolume.png"/>
         <span>团队销量</span>
       </div>
       <div id="echartTeamAll"></div>
