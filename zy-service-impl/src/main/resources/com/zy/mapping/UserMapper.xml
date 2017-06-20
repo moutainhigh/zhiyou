@@ -430,7 +430,7 @@
 		   AND u.parent_id =#{parentIdNL}
 		</if>
 		<if test="nameorPhone !=null">
-			and (u.phone = #{nameorPhone} or u.nickname like #{nameorPhone})
+			and (u.phone like #{nameorPhone} or u.nickname like #{nameorPhone})
 		</if>
 		<if test="offset != null">
 			limit #{offset}, #{pageSize}

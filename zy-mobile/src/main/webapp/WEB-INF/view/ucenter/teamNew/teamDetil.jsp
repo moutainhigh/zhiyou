@@ -169,13 +169,19 @@
         }
         /*特级*/
         .must {
-            background: #22b5d4;
+            background: #5d77e5;
         }
         .province {
-            background: #fe543e;
+            background: #ef7b54;
         }
         .city {
-            background: #fb8604;
+            background: #ffb558;
+        }
+        .VIP {
+            background: #51c187;
+        }
+        .com {
+            background: #91c7ae;
         }
         .telAll {
             float: right;
@@ -414,7 +420,7 @@
                         <div class="jiaoOne"></div>
                     </div>
                     <span class="rankingTop">VIP服务商</span>
-                    <span class="rankingSpan must">VIP</span>
+                    <span class="rankingSpan VIP">VIP</span>
                 </div>
                 <span class="tel">${fn:length(v1)}人</span>
             </div>
@@ -468,13 +474,13 @@
                         <div class="jiaoOne"></div>
                     </div>
                     <span class="rankingTop">普通用户</span>
-                    <span class="rankingSpan must">VIP</span>
+                    <span class="rankingSpan com">普通</span>
                 </div>
                 <span class="tel">${fn:length(v0)}人</span>
             </div>
         </div>
         <div class="all allLast">
-            <c:forEach items="${v0}" var="v1user" varStatus="indexs">
+            <c:forEach items="${v0}" var="v0user" varStatus="indexs">
                 <div class="rankingAllList">
                     <div class="rankingAll">
                         <img src="${v0user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
@@ -482,7 +488,7 @@
                             <span>${v0user.nickname}</span>
                                 <%--   <img src="${ctx}/new.png"style="width: 30px;"/>--%>
                         </div>
-                        <div class="telAll jian" onclick="showNum(this,${v0user.id},'V1',${indexs.index})" change="true">
+                        <div class="telAll jian" onclick="showNum(this,${v0user.id},'V0',${indexs.index})" change="true">
                             <img src="${ctx}/jian.png" />
                         </div>
                         <a href="tel:${v0user.phone}" class="telAll">
@@ -569,8 +575,11 @@
             }
         });
     }
+
     //点击搜索
     function seatch() {
+        $(".searchList").hide();
+        $(".searchListShow").html("");
         if($(".searchInput").val()==""){
             $(".numberList").show();
             $(".searchListShow").hide();
@@ -598,8 +607,8 @@
                             buildRow(row);
                         }
                     }
-                    if (!page.data.length || page.data.length < page.pageSize) {
-                        $('.page-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
+                    if (!page.data.length || page.data.length < 0) {
+                        $(".searchList").show();
                     }
                 }
             });
@@ -610,6 +619,7 @@
         var rowTpl = document.getElementById('rowTpl').innerHTML;
         laytpl(rowTpl).render(row,function(html) {
             $('.searchListShow').append(html);
+            $(".searchList").hide();
         });
     }
 </script>

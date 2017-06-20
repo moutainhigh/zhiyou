@@ -321,14 +321,15 @@ public class UcenterTeamController {
 	 */
 	@RequestMapping(value = "ajaxteamNew",method = RequestMethod.POST)
 	@ResponseBody
-	public  Result<?> ajaxteamNew(Principal principal,String nameorPhone, @RequestParam(required = true) Integer pageNumber){
+	public  Result<?> ajaxteamNew(Principal principal,String nameorPhone,Integer pageNumber){
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
-		userQueryModel.setPageNumber(pageNumber);
-		userQueryModel.setPageSize(10);
+		/*userQueryModel.setPageNumber(pageNumber);*/
+		userQueryModel.setPageNumber(0);
+		userQueryModel.setPageSize(1000); //不分页查询1000条
 		if (null!=nameorPhone){
-			userQueryModel.setNameorPhone(nameorPhone);
+			userQueryModel.setNameorPhone("%"+nameorPhone+"%");
 		}
 		Page<User> page =userService.findAddpeople(userQueryModel);
 		return ResultBuilder.result(page.getData());
