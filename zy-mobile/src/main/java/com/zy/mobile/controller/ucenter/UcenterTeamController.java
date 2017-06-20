@@ -269,7 +269,7 @@ public class UcenterTeamController {
 		userlongQueryModel.setPageSize(10);
 		Page<UserTeamDto> page = userService.disposeRank(userlongQueryModel,true);
 		model.addAttribute("page",page);
-        return null;
+		return "ucenter/teamNew/teamDetil";
 	}
 
 	/**

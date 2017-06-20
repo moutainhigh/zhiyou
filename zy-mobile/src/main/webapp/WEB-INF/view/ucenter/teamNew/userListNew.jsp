@@ -199,7 +199,7 @@
       </div>
     </c:forEach>
     <c:if test="${fn:length(dataMap.rankList)>1}">
-      <a href="${ctx}/u/team/teamNew" class="lookDetil">更多详情>></a>
+      <a href="${ctx}/u/team/teamRank" class="lookDetil">更多详情>></a>
     </c:if>
   </div>
 
