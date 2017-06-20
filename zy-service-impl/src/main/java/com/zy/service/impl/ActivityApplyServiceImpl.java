@@ -143,9 +143,9 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 				throw new BizException(BizCode.ERROR, "活动暂未开放不能报名");
 			}
 
-			if (activity.getApplyDeadline().before(new Date())) {
-				throw new BizException(BizCode.ERROR, "活动已经停止报名");
-			}
+//			if (activity.getApplyDeadline().before(new Date())) {
+//				throw new BizException(BizCode.ERROR, "活动已经停止报名");
+//			}
 
 			activity.setAppliedCount(appliedCount + 1);
 			if (activityMapper.update(activity) == 0) {
