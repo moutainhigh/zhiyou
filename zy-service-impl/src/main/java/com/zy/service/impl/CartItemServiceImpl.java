@@ -57,7 +57,7 @@ public class CartItemServiceImpl implements CartItemService {
 			cartItem.setUserId(userId);
 			cartItem.setProductId(productId);
 			cartItem.setQuantity(quantity);
-			cartItem.setPrice(product.getPrice());
+			cartItem.setPrice(malComponent.getPrice(productId, user.getUserRank(), quantity));
 			validate(cartItem);
 			cartItemMapper.insert(cartItem);
 		} else {
@@ -86,7 +86,7 @@ public class CartItemServiceImpl implements CartItemService {
 			cartItem.setUserId(userId);
 			cartItem.setProductId(productId);
 			cartItem.setQuantity(quantity);
-			cartItem.setPrice(product.getPrice());
+			cartItem.setPrice(malComponent.getPrice(productId, user.getUserRank(), quantity));
 			validate(cartItem);
 			cartItemMapper.insert(cartItem);
 		} else {
