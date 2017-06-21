@@ -100,7 +100,7 @@
     }
     .ranking {
       float: left;
-      width:150px;
+      width:130px;
       height:100%;
       text-align: center;
       line-height: 60px;
@@ -129,6 +129,13 @@
     }
     .allLast {
       margin-bottom: 10px;
+    }
+    .tel {
+      width:10px;
+      float: left;
+      margin-right: 10px;
+      color: #303134;
+      line-height: 60px;
     }
     @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
       .rankingAll>span{
@@ -203,6 +210,7 @@
           <span>${udto.nickname}</span>
           <span class="rank">(${udto.num}人)</span>
         </div>
+        <a href="tel:${v0user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${v0user.phone}</a>
         <span class="tel">${udto.phone}</span>
       </div>
     </c:forEach>
@@ -228,6 +236,7 @@
           <span>${user.nickname}</span>
           <span class="rankingSpan ${user.userRank.level==4?"must":user.userRank.level==3?"province":user.userRank.level==2?"city":user.userRank.level==1?"VIP":user.userRank.level==0?"com":""}">${user.userRank.level==4?"特级":user.userRank.level==3?"省级":user.userRank.level==2?"市级":user.userRank.level==1?"VIP":user.userRank.level==0?"普通用户":""}</span>
         </div>
+        <a href="tel:${v0user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${v0user.phone}</a>
         <span class="tel">${user.phone}</span>
       </div>
     </c:forEach>
