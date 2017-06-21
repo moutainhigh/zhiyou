@@ -194,7 +194,7 @@
 		<include refid="baseColumn"/>
 		from `usr_user_info`
 		<where>
-			and confirm_status = 1 OR id_card_number IS NOT NULL
+			and (confirm_status = 1 OR id_card_number IS NOT NULL)
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
 					and user_id in
@@ -249,7 +249,7 @@
 	<select id="countAdmin" resultType="_long" parameterType="com.zy.model.query.UserInfoQueryModel">
 		select count(*) from `usr_user_info`
 		<where>
-			and confirm_status = 1 OR id_card_number IS NOT NULL
+			and (confirm_status = 1 OR id_card_number IS NOT NULL)
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
 					and user_id in
