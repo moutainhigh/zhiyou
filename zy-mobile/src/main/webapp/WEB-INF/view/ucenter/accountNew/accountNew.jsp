@@ -193,14 +193,14 @@
   </div>
   <div class="allAccount" style="padding-bottom: 20px;">
     <div class="teamAllAccount">
-      <img src="${ctx}/peopleVolume.png"/>
+      <img src="${ctx}/pvoluer.png"/>
       <span>个人销量</span>
     </div>
     <div id="echartFir"></div>
   </div>
   <div class="allAccount">
     <div class="teamAllAccount">
-      <img src="${ctx}/peopleVolume.png" />
+      <img src="${ctx}/leiji.png" />
       <span>累计收益占比</span>
     </div>
     <div id="last" style="width: 100%;height: 350px;padding: 10px;"></div>
