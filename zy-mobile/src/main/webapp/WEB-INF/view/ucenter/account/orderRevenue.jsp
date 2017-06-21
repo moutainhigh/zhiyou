@@ -217,6 +217,24 @@
     var array= arrays.split(",");
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echartFir'));
+    if(type == 1){
+//订单收益
+    }else if(type == 2){
+//数据奖
+    }else if(type == 3){
+//销量奖
+    }else if(type == 4){
+//特级平级奖
+    }else if(type == 5){
+//平级推荐奖
+    }else if(type == 6){
+//特级推荐奖
+    }else if(type == 7){
+//返利奖
+    }else if(type == 8){
+//董事贡献奖
+    }
+
     var colorText='#68dcc1';
     // 指定图表的配置项和数据
     option = {
