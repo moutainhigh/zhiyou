@@ -170,6 +170,11 @@
       line-height: 60px;
       font-size: 17px;
     }
+    @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+      .ranking {
+        width:150px;
+      }
+    }
   </style>
 </head>
 <body>

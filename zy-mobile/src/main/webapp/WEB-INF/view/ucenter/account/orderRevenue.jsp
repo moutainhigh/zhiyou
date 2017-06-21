@@ -88,7 +88,7 @@
             font-size: 16px;
             line-height: 80px;
             position: absolute;
-            right:10px;
+            right:0;
         }
         .echartdetilD {
             background: none;

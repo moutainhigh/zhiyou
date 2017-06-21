@@ -115,6 +115,16 @@
       top:15px;
       z-index: 1;
     }
+    @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+      .ranking {
+        width:80px;
+      }
+      .rankingBtn {
+        width: 65px;
+        font-size: 12px;
+      }
+      .rankingAll>a.tel, .rankingAll>span.tel {margin-right: 10px;width: 90px;}
+    }
   </style>
 </head>
 <body>

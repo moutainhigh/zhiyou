@@ -151,6 +151,22 @@
       border-radius:5px;
       color: #00d747;
     }
+    @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+      .ranking {
+        width:105px;
+      }
+      .rankingBtn {
+        width: 55px;
+        font-size: 12px;
+      }
+      .rankingAll>img {margin-left: 10px;}
+      .teamAll span {font-size: 16px;}
+      .teamAll img {
+        width:45px;
+        height:45px;
+        margin-top: 5px;
+      }
+    }
   </style>
 </head>
 <body>

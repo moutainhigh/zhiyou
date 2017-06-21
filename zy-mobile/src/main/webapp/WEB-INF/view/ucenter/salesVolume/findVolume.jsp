@@ -69,7 +69,7 @@
     }
     .ranking {
       float: left;
-      width:100px;
+      width:80px;
       height:100%;
       text-align: center;
       line-height: 60px;
@@ -121,7 +121,7 @@
     .rankingAll>a.tel,.rankingAll>span.tel {
       width:110px;
       float: right;
-      margin-right: 20px;
+      margin-right: 15px;
       color: #303134;
       line-height: 60px;
     }
@@ -213,6 +213,21 @@
       -moz-border-radius:5px;
       border-radius:5px;
       color: #00d747;
+    }
+    @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+      .ranking {
+        width:80px;
+      }
+      .rankingBtn {
+        width: 65px;
+        font-size: 12px;
+      }
+      .rankingAll>a.tel, .rankingAll>span.tel {margin-right: 10px;width: 90px;}
+      .rankingBtnNew {
+        width: 55px;
+        font-size: 12px;
+      }
+      .rankingNew {    width: 100px;}
     }
   </style>
 </head>
@@ -427,11 +442,11 @@
   <div class="rankingAllList">
     <div class="rankingAll">
       <img src="{{d.avatar}}" />
-      <div class="ranking">
+      <div class="ranking rankingNew">
         <span>{{ d.nickname }}</span>
         <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通':''}}</span>
       </div>
-      <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId={{ d.id }}&userName={{ d.nickname }}"  class="rankingBtn">查看销量</a>
+      <a href="${ctx}/u/salesVolume/salesVolumeDetail?userId={{ d.id }}&userName={{ d.nickname }}"  class="rankingBtn rankingBtnNew">查看销量</a>
       <span class="tel">{{d.phone}}</span>
 
     </div>

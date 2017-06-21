@@ -130,6 +130,14 @@
     .allLast {
       margin-bottom: 10px;
     }
+    @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+      .rankingAll>span{
+        width:55px;
+      }
+      .ranking {
+        width:120px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -198,7 +206,7 @@
         <span class="tel">${udto.phone}</span>
       </div>
     </c:forEach>
-    <c:if test="${fn:length(dataMap.rankList)>1}">
+    <c:if test="${fn:length(dataMap.rankList)>3}">
       <a href="${ctx}/u/team/teamRank" class="lookDetil">更多详情>></a>
     </c:if>
   </div>
