@@ -133,8 +133,8 @@
       width:100%;
       height:100%;
       background: #000;
-      opacity:0.8;
-      -webkit-opacity:0.8;
+      opacity:0.5;
+      -webkit-opacity:0.5;
       position: fixed;
       top:0;
       left:0;
@@ -142,7 +142,7 @@
       display: none;
     }
     .disAll {
-      width:70%;
+      width:80%;
       height:120px;
       background: #fff;
       position: fixed;
@@ -159,27 +159,16 @@
     .disPhone {
       width:100%;
       height:60px;
-      border-bottom: 1px solid #ccc;
-    }
-    .disImg {
-      float: left;
-      width:50px;
-      height:60px;
-      position: relative;
+      border-bottom: 1px solid #e5e5e5;
+      color: #6cb92d;
     }
     .disPhone p {
       float: left;
+      width:100%;
       height:60px;
       text-align: center;
       line-height: 60px;
       font-size: 20px;
-    }
-    .disImg img {
-       position: absolute;
-      top:50%;
-      left:50%;
-      -webkit-transform:translate(-50%,-50%);
-      transform:translate(-50%,-50%);
     }
   </style>
 </head>
@@ -205,9 +194,15 @@
             <div class="telAll jian" onclick="showNum(this,${uvo.id},${indexs.index})" change="true">
               <img src="${ctx}/jian.png" />
             </div>
-            <a href="tel:${uvo.phone}" class="telAll" title="自己">
+            <div class="telAll" onclick="showDis(this)">
               <img src="${ctx}/tel.png" />
-            </a>
+            </div>
+            <input type="hidden" class="my" value="tel:${uvo.phone}" />
+            <input type="hidden" class="parentPeoplr" value="tel:${uvo.pphone}" />
+
+            <%--<a href="tel:${uvo.phone}" class="telAll" title="自己">--%>
+              <%--<img src="${ctx}/tel.png" />--%>
+            <%--</a>--%>
             <%--<a href="tel:${uvo.pphone}" class="telAll" title="推荐人">
               <img src="${ctx}/tel.png" />
             </a>--%>
@@ -238,18 +233,20 @@
 </article>
 <div class="disDiv"></div>
 <div class="disAll">
-     <a href="tel:13656174839" class="disPhone">
-       <p>直属特级:</p>
-       <div class="disImg">
-           <img src="${ctx}/tel.png" />
-       </div>
-       <p>13656174839</p>
+     <a href="#" class="disPhone">
+         <p>呼叫<span class="font">赵春华</span>：<span style="margin-left: 20px;">13656174839</span></p>
      </a>
-     <a href="tel:15854781254" class="disPhone" style="border-bottom: none;">
-
+     <a href="#" class="disPhone disPhonePeople" style="border-bottom: none;">
+         <p>呼叫<span class="font">推荐人</span>：<span style="margin-left: 20px;">13656174839</span></p>
      </a>
 </div>
 <script>
+  //点击电话
+  function showDis(obj){
+          $(".disDiv,.disAll").show();
+          $(".disPhone").attr("href",$(obj).siblings(".my").val());
+          $(".disPhonePeople").attr("href",$(obj).siblings(".parentPeoplr").val());
+  }
   //点击下拉箭头
   function showNum(obj,id,index){
     $.ajax({
@@ -281,7 +278,6 @@
 
       }
     });
-
 
   }
 </script>
