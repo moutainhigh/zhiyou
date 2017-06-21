@@ -200,7 +200,9 @@
       <div class="TeamName">
         <img src="${tlist.avatar}" />
         <span>${tlist.nickname}</span>
-        <span>${tlist.phone}</span>
+        <a href="tel:${tlist.phone}">
+            <span>${tlist.phone}</span>
+        </a>
       </div>
     </c:forEach>
   </div>
