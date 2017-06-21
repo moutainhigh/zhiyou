@@ -339,7 +339,7 @@
                         <div class="jiaoOne"></div>
                     </div>
                     <span class="rankingTop">VIP服务商</span>
-                    <span class="rankingSpan must">VIP</span>
+                    <span class="rankingSpan VIP">VIP</span>
                 </div>
                 <span class="tel">${fn:length(v1)}人</span>
             </div>
@@ -366,7 +366,7 @@
                         <div class="jiaoOne"></div>
                     </div>
                     <span class="rankingTop">普通用户</span>
-                    <span class="rankingSpan must">VIP</span>
+                    <span class="rankingSpan com">普通</span>
                 </div>
                 <span class="tel">${fn:length(v0)}人</span>
             </div>
