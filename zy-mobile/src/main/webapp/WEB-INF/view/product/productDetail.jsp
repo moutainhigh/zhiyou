@@ -154,7 +154,7 @@
       <a class="flex-2 bg-blue font-white" href="${ctx}/cart" style="line-height: normal">
         <i class="fa fa-shopping-cart"></i>
         <em>购物车</em>
-        <span id="cartNum" class="badge red"<c:if test="${empty cartTotalQuantity || cartTotalQuantity == 0}"> style="display:none"</c:if>>${cartTotalQuantity}</span>
+        <span id="cartNum" class="badge red"   style="height: 18px; line-height: 18px; padding: 0;<c:if test="${empty cartTotalQuantity || cartTotalQuantity == 0}"> display:none</c:if>">${cartTotalQuantity}</span>
       </a>
       <div class="flex-3">
         <div class="quantity-wrap bd-t">

@@ -14,7 +14,7 @@
 
 <title>购物车</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<link href="${stc}/css/cart.css" rel="stylesheet" />
+<link href="${stccdn}/css/cart.css" rel="stylesheet" />
 <script>
   $(function() {
     var MAX_QUANTITY = 10000;

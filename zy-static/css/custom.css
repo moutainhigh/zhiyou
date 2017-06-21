@@ -43,7 +43,7 @@ a.disabled, a.disabled:hover, a.disabled:focus {
 .header .logo {
   display: block;
   float: left; margin: 9px 0 0 12px;
-  width: 90px; height: 30px;  
+  width: 90px; height: 30px;
 }
 .header .logo img {
   width: 90px; height: 30px;
@@ -51,7 +51,7 @@ a.disabled, a.disabled:hover, a.disabled:focus {
 .header .avatar {
   float: left;
   margin: 9px 5px 0 0;
-  width: 32px; height: 32px; 
+  width: 32px; height: 32px;
   border: 1px solid #afafaf;
 }
 .header-fixed {
@@ -330,14 +330,14 @@ a.disabled, a.disabled:hover, a.disabled:focus {
 }
 .currency-in:before {
   content: '+'; font-weight: 600;
-  margin-right: 2px; margin-left: 2px; 
+  margin-right: 2px; margin-left: 2px;
 }
 .currency-out {
   color: #00e74f!important; font-weight: 600;
 }
 .currency-out:before {
   content: '-'; font-weight: 600;
-  margin-right: 2px; margin-left: 2px; 
+  margin-right: 2px; margin-left: 2px;
 }
 
 .i-arrow {
