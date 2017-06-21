@@ -194,7 +194,7 @@
   <div class="allAccount" style="padding-bottom: 20px;">
     <div class="teamAllAccount">
       <img src="${ctx}/peopleVolume.png"/>
-      <span>个人销量</span>
+      <span>个人收益</span>
     </div>
     <div id="echartFir"></div>
   </div>

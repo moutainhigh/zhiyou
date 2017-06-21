@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <title>直属下级进销单详情</title>
+  <title>直属团队进销单详情</title>
   <%@ include file="/WEB-INF/view/include/head.jsp"%>
   <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
   <style>
@@ -218,7 +218,7 @@
 </head>
 <body>
 <header class="header">
-  <h1>直属下级进销单详情</h1>
+  <h1>直属团队进销单详情</h1>
   <a href="#" onclick="javascript :history.back(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
