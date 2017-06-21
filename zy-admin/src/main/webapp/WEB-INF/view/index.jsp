@@ -494,7 +494,7 @@
               </shiro:hasPermission>
               <shiro:hasPermission name="teamOrderDaily:view">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/report/teamOrderDaily"><i class="icon-bar-chart"></i> 团队月销量及环比-总经理<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/report/teamOrderDaily"><i class="icon-bar-chart"></i> 团队日销量及环比-总经理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>
