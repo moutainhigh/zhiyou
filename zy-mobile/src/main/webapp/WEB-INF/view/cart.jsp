@@ -205,7 +205,7 @@
   <article>
     <div class="page-empty<c:if test="${not empty cart.cartItems}"> hide</c:if>">
       <i class="fa fa-shopping-cart"></i>
-      <a href="/product">您的购物车空空如也<br>赶紧去抢购商品吧!</a>
+      <span>您的购物车空空如也<br>赶紧去抢购商品吧!</span>
     </div>
 
     <div class="list-group">
@@ -240,7 +240,7 @@
     <div class="total-wrap flex-2 pl-20">
       <div class="cart-total">合计: <span class="ml-5 font-red bold">¥ <span id="totalPrice">${cart.amount}</span></span></div>
     </div>
-    <a id="btnSubmit" class="flex-1 bg-red font-white fs-16 text-center<c:if test="${empty cart.cartItems}"> disabled</c:if>" href="javascript:;">去结算(<span id="totalQuantity">${cart.totalQuantity}</span>)</a>
+    <a id="btnSubmit" class="flex-1 bg-red font-white fs-16 text-center<c:if test="${empty cart.cartItems}"> disabled</c:if>" href="javascript:;">去结算(<span id="totalQuantity" style="display: none">${cart.totalQuantity}</span>)</a>
   </nav>
 
 </body>
