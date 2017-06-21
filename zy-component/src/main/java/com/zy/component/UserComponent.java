@@ -255,7 +255,7 @@ public class UserComponent {
 					break;
 				}
 			}
-			parentId = parent.getParentId();
+			parentId = parent==null?null:parent.getParentId();
 			times ++;
 		}
 		return directV4ParentId;
