@@ -270,7 +270,7 @@ public class UcenterTeamController {
 		UserlongQueryModel userlongQueryModel= new UserlongQueryModel();
 		userlongQueryModel.setParentIdNL(userId);
 		userlongQueryModel.setPageNumber(0);
-		userlongQueryModel.setPageSize(1);
+		userlongQueryModel.setPageSize(5);
 		Page<UserTeamDto> page = userService.disposeRank(userlongQueryModel,true);
 		model.addAttribute("page",PageBuilder.copyAndConvert(page, v-> userComponent.buildUserTeamDto(v)));
 		return "ucenter/teamNew/rankingNew";
@@ -291,7 +291,7 @@ public class UcenterTeamController {
 		userlongQueryModel.setParentIdNL(userId);
 		if (-1!=pageNumber){
 		 userlongQueryModel.setPageNumber(pageNumber);
-		 userlongQueryModel.setPageSize(1);
+		 userlongQueryModel.setPageSize(10);
 		}
 		if (null!=nameorPhone){
 			userlongQueryModel.setNameorPhone("%"+nameorPhone+"%");
