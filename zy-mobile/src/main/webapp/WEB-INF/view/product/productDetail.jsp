@@ -16,12 +16,12 @@
 <title>服务详情</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link href="${stccdn}/css/product.css" rel="stylesheet" />
+<script src="${stccdn}/plugin/jquery-fly-1.0.0/jquery.fly.min.js"></script>
 <script>
   $(function() {
-    
-    var MIN_QUANTITY = ${minQuantity}; 
+    var MIN_QUANTITY = ${minQuantity};
+
     var MAX_QUANTITY = 10000;
-    
     function editQuantity(quantity) {
       if (isNaN(quantity) || quantity < MIN_QUANTITY) {
         quantity = MIN_QUANTITY;
@@ -58,24 +58,52 @@
       var quantity = $("#quantity").val();
       editQuantity(parseInt(quantity) - MIN_QUANTITY);
     });
-    
-    //下单
-    $('#btnOrder').click(function() {
-      var quantity = $("#quantity").val();
-      if(quantity < MIN_QUANTITY || quantity % MIN_QUANTITY != 0) {
-        messageAlert('省级服务商和特级服务商每次购买最小单位' + MIN_QUANTITY + '次');
-        return;
-      }
-      $('#form').submit();
+
+
+    var num = parseInt('${cart.totalQuantity}') || 0;
+    $('#btnCart').click(function() {
+      var quantity = parseInt($('#quantity').val());
+      $.ajax({
+        url : '${ctx}/cart/add',
+        data : {
+          productId : '${product.id}',
+          quantity : quantity
+        },
+        type : 'POST',
+        dataType : 'json',
+        success : function() {
+          //购物车 抛物线
+          var flyer = $('<img class="u-flyer round image-60" src="${product.image1Thumbnail}"/>');
+          flyer.fly({
+            start : {
+              left : $(window).width(),
+              top : 150
+            },
+            end : {
+              left : 0.2 * $(window).width(),
+              top : $(window).height(),
+              width : 20,
+              height : 20
+            },
+            onEnd : function() { //结束回调
+              num += quantity;
+              setTimeout(function() {
+                $('.u-flyer').remove();
+              }, 3000)
+              $('#cartNum').show().text(num);
+            }
+          });
+        }
+      });
     });
 
   })
 </script>
 </head>
- 
+
 <body class="product-detail footer-fixed">
   <a class="header-back" href="${ctx}/product"><i class="fa fa-angle-left"></i></a>
-  
+
   <form id="form" action="${ctx}/u/order/create" method="get">
   <input type="hidden" name="productId" value="${product.id}">
   <article class="product-wrap">
@@ -104,7 +132,7 @@
         </div>
       </c:if>
     </div>
-    
+
     <div class="list-group mb-0">
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-list-alt font-orange"></i></div>
@@ -119,19 +147,24 @@
         </div>
       </div>
     </div>
-    
+
   </article>
-  
-  <nav class="footer footer-nav flex">
-    <div class="flex-2">
-      <div class="quantity-wrap">
-        <i class="fa fa-minus disabled"></i>
-        <input type="text" class="input-quantity text-center fs-14" id="quantity" name="quantity" value="${minQuantity}">
-        <i class="fa fa-plus"></i>
+
+    <nav class="footer footer-nav flex">
+      <a class="flex-2 bg-blue font-white" href="${ctx}/cart" style="line-height: normal">
+        <i class="fa fa-shopping-cart"></i>
+        <em>购物车</em>
+        <span id="cartNum" class="badge red"   style="height: 18px; line-height: 18px; padding: 0;<c:if test="${empty cartTotalQuantity || cartTotalQuantity == 0}"> display:none</c:if>">${cartTotalQuantity}</span>
+      </a>
+      <div class="flex-3">
+        <div class="quantity-wrap bd-t">
+          <i class="fa fa-minus disabled"></i>
+          <input type="text" class="input-quantity text-center fs-14" id="quantity" name="quantity" value="${minQuantity}">
+          <i class="fa fa-plus"></i>
+        </div>
       </div>
-    </div>
-    <a id="btnOrder" class="flex-2 btn-order" href="javascript:;">购买</a>
-  </nav>
+      <a id="btnCart" class="flex-3 bg-red font-white fs-16" href="javascript:;">加入购物车</a>
+    </nav>
 
   </form>
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>

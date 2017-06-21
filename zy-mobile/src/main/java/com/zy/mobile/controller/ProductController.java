@@ -58,6 +58,7 @@ public class ProductController {
 		if(principal == null) {
 			model.addAttribute("isFirst", true);
 		}
+		int minQuantity = 1;
 		if(principal != null) {
 			User user = userService.findOne(principal.getUserId());
 			UserRank userRank = user.getUserRank();
@@ -70,8 +71,6 @@ public class ProductController {
 				model.addAttribute("isUpgrade", true);
 			}
 			*/
-
-			int minQuantity = 1;
 			if (userRank == UserRank.V3 || userRank == UserRank.V4) {
 				if (config.isOld(id)) {
 					minQuantity = SETTING_OLD_MIN_QUANTITY;
@@ -79,9 +78,9 @@ public class ProductController {
 					minQuantity = SETTING_NEW_MIN_QUANTITY;
 				}
 			}
-			model.addAttribute("minQuantity", minQuantity);
 
 		}
+		model.addAttribute("minQuantity", minQuantity);
 		validate(product, NOT_NULL, "product id" + id + " not found");
 		validate(product.getIsOn(), v -> true, "product is not on");
 		model.addAttribute("product", productComponent.buildDetailVo(product));

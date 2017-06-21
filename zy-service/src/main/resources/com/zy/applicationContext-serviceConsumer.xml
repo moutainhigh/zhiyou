@@ -53,4 +53,5 @@
     <dubbo:reference id="orderFillUserService" interface="com.zy.service.OrderFillUserService" protocol="dubbo"/>
     <dubbo:reference id="productReplacementService" interface="com.zy.service.ProductReplacementService" protocol="dubbo"/>
     <dubbo:reference id="matterService" interface="com.zy.service.MatterService" protocol="dubbo"/>
+    <dubbo:reference id="cartItemService" interface="com.zy.service.CartItemService" protocol="dubbo"/>
 </beans>
