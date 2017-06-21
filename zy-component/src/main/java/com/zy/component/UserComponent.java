@@ -362,12 +362,12 @@ public class UserComponent {
         List<User> userList = this.conyteamTotalV4(userId);
 		List<UserInfoVo> dataList = new ArrayList<UserInfoVo>();
 		for(User user :userList){
-			User newUser = userService.findOne(user.getId());
+			User newUser = userService.findOne(user.getParentId());
 			UserInfoVo userVo = new UserInfoVo();
-			userVo.setImage1(newUser.getAvatar());
-			userVo.setId(newUser.getId());
-			userVo.setRealname(newUser.getNickname());
-			userVo.setPhone(newUser.getPhone());
+			userVo.setImage1(user.getAvatar());
+			userVo.setId(user.getId());
+			userVo.setRealname(user.getNickname());
+			userVo.setPhone(user.getPhone());
 			userVo.setPname(newUser.getNickname());
 			userVo.setPphone(newUser.getPhone());
 			//判断是不是 新晋成员
