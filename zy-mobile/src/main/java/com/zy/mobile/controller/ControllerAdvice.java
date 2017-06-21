@@ -7,11 +7,9 @@ import com.zy.common.exception.ValidationException;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.util.JsonUtils;
 import com.zy.common.util.WebUtils;
-import com.zy.entity.mal.CartItem;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
-import com.zy.service.CartItemService;
 import com.zy.util.GcUtils;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
@@ -38,7 +36,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.zy.model.Constants.SESSION_ATTRIBUTE_REDIRECT_URL;
@@ -51,9 +48,6 @@ public class ControllerAdvice {
 
 	@Autowired
 	private WxMpService wxMpService;
-
-	@Autowired
-	private CartItemService cartItemService;
 
 	@ModelAttribute
 	void pre(HttpServletRequest request, Model model) {
@@ -68,7 +62,7 @@ public class ControllerAdvice {
 			if (queryStr != null){
 				pureUrl += "?" + queryStr;
 			}
-			
+
 			/* 处理转发Url  加__u参数 */
 			if (principal != null) {
 				Long userId = principal.getUserId();
@@ -86,21 +80,9 @@ public class ControllerAdvice {
 					url += "?" + queryStr;
 				}
 			}
-			
+
 			model.addAttribute("url", url);
 			//model.addAttribute("weixinJsModel", getWeixinJsModel(pureUrl));
-		}
-
-		if(principal != null){
-			Long userId = principal.getUserId();
-			List<CartItem> cartItems = cartItemService.findByUserId(userId);
-			model.addAttribute("cartTotalQuantity", cartItems.stream().mapToLong(CartItem::getQuantity).sum());
-
-			long badge = 0;
-			//TODO ucenter badge
-			model.addAttribute("badge", badge);
-		} else {
-			model.addAttribute("cartTotalQuantity", 0);
 		}
 	}
 
@@ -118,7 +100,7 @@ public class ControllerAdvice {
 		}
 		return params;
 	}
-	
+
 	@ExceptionHandler(UnauthenticatedException.class)
 	public String handleUnauthenticatedException(UnauthenticatedException e, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		logger.info("UnauthenticatedException");

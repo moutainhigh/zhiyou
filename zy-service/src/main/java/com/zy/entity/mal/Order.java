@@ -348,7 +348,6 @@ public class Order implements Serializable {
 	private Long quantity;
 
 	@View
-	@NotNull
 	@Field(label = "是否结算")
 	@Query(Predicate.EQ)
 	private Boolean isSettlement;

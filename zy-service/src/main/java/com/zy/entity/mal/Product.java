@@ -120,7 +120,6 @@ public class Product implements Serializable {
 	private Date createdTime;
 
 	@View
-	@NotNull
 	@Field(label = "是否结算")
 	@Query(Predicate.EQ)
 	private Boolean isSettlement;
