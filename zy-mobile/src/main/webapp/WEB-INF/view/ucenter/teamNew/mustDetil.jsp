@@ -146,7 +146,7 @@
       height:120px;
       background: #fff;
       position: fixed;
-      top:50%;
+      top:40%;
       left:50%;
       -webkit-transform:translate(-50%,-50%);
       transform:translate(-50%,-50%);
@@ -168,7 +168,7 @@
       height:60px;
       text-align: center;
       line-height: 60px;
-      font-size: 20px;
+      font-size: 17px;
     }
   </style>
 </head>
@@ -231,21 +231,36 @@
   </div>
   </div>
 </article>
-<div class="disDiv"></div>
+<div class="disDiv" onclick="hideDiv()"></div>
 <div class="disAll">
      <a href="#" class="disPhone">
-         <p>呼叫<span class="font">赵春华</span>：<span style="margin-left: 20px;">13656174839</span></p>
+         <p>呼叫<span class="fontName">赵春华</span>：<span class="phone" style="margin-left: 20px;"></span></p>
      </a>
      <a href="#" class="disPhone disPhonePeople" style="border-bottom: none;">
-         <p>呼叫<span class="font">推荐人</span>：<span style="margin-left: 20px;">13656174839</span></p>
+         <p>呼叫<span class="font">推荐人</span>：<span class="phoneT" style="margin-left: 20px;"></span></p>
      </a>
 </div>
 <script>
+  //点击黑幕
+  function hideDiv(){
+      $(".disDiv,.disAll").hide();
+  }
   //点击电话
   function showDis(obj){
           $(".disDiv,.disAll").show();
           $(".disPhone").attr("href",$(obj).siblings(".my").val());
           $(".disPhonePeople").attr("href",$(obj).siblings(".parentPeoplr").val());
+
+          var length=$(obj).siblings(".my").val();
+          var phone=length.substring(4,length.length);
+          $(".disPhone .phone").text(phone);
+
+          var lengthT=$(obj).siblings(".parentPeoplr").val();
+          var phoneT=lengthT.substring(4,length.length);
+          $(".disPhone .phoneT").text(phoneT);
+
+          $(".disPhone .fontName").text($(obj).siblings(".ranking").find("span").text());
+
   }
   //点击下拉箭头
   function showNum(obj,id,index){
