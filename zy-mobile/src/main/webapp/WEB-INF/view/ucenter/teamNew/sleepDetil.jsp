@@ -170,10 +170,10 @@
         }
         /*特级*/
         .must {
-            background: #5d77e5;
+            background: #ffcd48;
         }
         .province {
-            background: #6cb92d;
+            background: #7ed1df;
         }
         .city {
             background: #ffb558;
@@ -219,6 +219,17 @@
             text-align: center;
             line-height: 25px;
             color: #a6a6a6;
+        }
+        @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+            .rankingAll>span{
+                width:55px;
+            }
+            .ranking {
+                width:90px;
+            }
+            .rankingNew {
+                width:110px;
+            }
         }
     </style>
 </head>
@@ -446,7 +457,7 @@
     <div class="rankingAllList">
         <div class="rankingAll">
             <img src="{{d.avatar}}" style="margin-left: 20px;"/>
-            <div class="ranking">
+            <div class="ranking rankingNew">
                 <span>{{ d.nickname }}</span>
                 <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通用户':''}}</span>
             </div>

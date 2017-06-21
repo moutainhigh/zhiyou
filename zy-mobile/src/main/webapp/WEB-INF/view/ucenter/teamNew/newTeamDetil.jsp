@@ -168,10 +168,10 @@
         }
         /*特级*/
         .must {
-            background: #5d77e5;
+            background: #ffcd48;
         }
         .province {
-            background: #6cb92d;
+            background: #7ed1df;
         }
         .city {
             background: #ffb558;
@@ -231,6 +231,11 @@
             text-align: center;
             line-height: 25px;
             color: #a6a6a6;
+        }
+        @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+            .ranking {
+                width:150px;
+            }
         }
     </style>
 </head>

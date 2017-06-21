@@ -100,7 +100,7 @@
     }
     .ranking {
       float: left;
-      width:150px;
+      width:130px;
       height:100%;
       text-align: center;
       line-height: 60px;
@@ -113,10 +113,10 @@
     /*color:['#5d77e5','#ef7b54','#ffb558','#51c187'],*/
     /*特级*/
     .must {
-      background: #5d77e5;
+      background: #ffcd48;
     }
     .province {
-      background: #6cb92d;
+      background: #7ed1df;
     }
     .city {
       background: #ffb558;
@@ -129,6 +129,21 @@
     }
     .allLast {
       margin-bottom: 10px;
+    }
+    .tel {
+      width:10px;
+      float: left;
+      margin-right: 10px;
+      color: #303134;
+      line-height: 60px;
+    }
+    @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+      .rankingAll>span{
+        width:55px;
+      }
+      .ranking {
+        width:120px;
+      }
     }
   </style>
 </head>
@@ -195,10 +210,11 @@
           <span>${udto.nickname}</span>
           <span class="rank">(${udto.num}人)</span>
         </div>
+        <a href="tel:${v0user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${v0user.phone}</a>
         <span class="tel">${udto.phone}</span>
       </div>
     </c:forEach>
-    <c:if test="${fn:length(dataMap.rankList)>1}">
+    <c:if test="${fn:length(dataMap.rankList)>3}">
       <a href="${ctx}/u/team/teamRank" class="lookDetil">更多详情>></a>
     </c:if>
   </div>
@@ -220,6 +236,7 @@
           <span>${user.nickname}</span>
           <span class="rankingSpan ${user.userRank.level==4?"must":user.userRank.level==3?"province":user.userRank.level==2?"city":user.userRank.level==1?"VIP":user.userRank.level==0?"com":""}">${user.userRank.level==4?"特级":user.userRank.level==3?"省级":user.userRank.level==2?"市级":user.userRank.level==1?"VIP":user.userRank.level==0?"普通用户":""}</span>
         </div>
+        <a href="tel:${v0user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${v0user.phone}</a>
         <span class="tel">${user.phone}</span>
       </div>
     </c:forEach>
@@ -261,7 +278,7 @@
         name:'团队总人数',
         type:'pie',
         radius: ['40%', '55%'],
-        color:['#5d77e5','#6cb92d','#ffb558','#51c187'],
+        color:['#ffcd48','#7ed1df','#ffb558','#51c187'],
         data:[
           {value:array[0], name:'特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
           {value:array[1], name:'省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
@@ -328,7 +345,7 @@
         type: 'pie',
         radius: '55%',
         center: ['50%', '50%'],
-        color:['#5d77e5','#6cb92d','#ffb558','#51c187','#91c7ae'],
+        color:['#ffcd48','#7ed1df','#ffb558','#51c187','#91c7ae'],
         data: [
           {value: array[0], name: '特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
           {value: array[1], name: '省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
@@ -417,7 +434,7 @@
         name:'团队新成员',
         type:'pie',
         radius: ['40%', '55%'],
-        color:['#5d77e5','#6cb92d','#ffb558','#51c187','#91c7ae'],
+        color:['#ffcd48','#7ed1df','#ffb558','#51c187','#91c7ae'],
         data:[
           {value:array[0], name:'特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
           {value:array[1], name:'省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},

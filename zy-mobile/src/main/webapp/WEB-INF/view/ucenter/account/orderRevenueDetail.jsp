@@ -67,11 +67,21 @@
             line-height: 80px;
         }
         .font-triangleD {
-            width:70%;
+            width:80%;
             margin-left: 5%;
             font-size: 16px;
         }
-        .font-triangleTD {width:20%;}
+        .font-triangleTD {
+            position: absolute;
+            right:0;
+        }
+        @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+            .font-triangleTD {width:20%;position: absolute;
+                right:0;}
+            .font-triangleT {
+                line-height:100px;
+            }
+        }
     </style>
     <title>我的团队</title>
     <%@ include file="/WEB-INF/view/include/head.jsp"%>

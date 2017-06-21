@@ -88,7 +88,7 @@
             font-size: 16px;
             line-height: 80px;
             position: absolute;
-            right:10px;
+            right:0;
         }
         .echartdetilD {
             background: none;
@@ -146,7 +146,6 @@
 <article>
     <div class="allAccount">
         <div class="teamAllAccount">
-            <img src="${ctx}/peopleVolume.png"/>
             <span>${types}月度表</span>
         </div>
         <div id="echartFir"></div>
@@ -176,8 +175,8 @@
 <input type="hidden" value="-" />
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">
+    var type = ${type};
     function changeTriangle(obj) {
-        var type = ${type};
         var moth = $(obj).find(".spanTriange").text();
         var change = $(obj).find(".triangle-up").attr("class");
         if(change=="triangle-up"){
@@ -217,25 +216,32 @@
     var array= arrays.split(",");
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echartFir'));
+    var colorText='#68dcc1';
     if(type == 1){
 //订单收益
+        colorText='#86dcd4';
     }else if(type == 2){
 //数据奖
+        colorText='#68dcc1';
     }else if(type == 3){
 //销量奖
+        colorText='#31d9a5';
     }else if(type == 4){
 //特级平级奖
+        colorText='#62f89e';
     }else if(type == 5){
 //平级推荐奖
+        colorText='#5c97e8';
     }else if(type == 6){
 //特级推荐奖
+        colorText='#88c3db';
     }else if(type == 7){
 //返利奖
+        colorText='#5bd0c4';
     }else if(type == 8){
 //董事贡献奖
+        colorText='#6cbbe3';
     }
-
-    var colorText='#68dcc1';
     // 指定图表的配置项和数据
     option = {
         color: [colorText],

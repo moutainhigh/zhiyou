@@ -155,6 +155,17 @@
       line-height: 25px;
       color: #a6a6a6;
     }
+    @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+      .rankingAll>span{
+        width:55px;
+      }
+      .ranking {
+        width:90px;
+      }
+      .rankingNew {
+        width:110px;
+      }
+    }
   </style>
 </head>
 <body>
