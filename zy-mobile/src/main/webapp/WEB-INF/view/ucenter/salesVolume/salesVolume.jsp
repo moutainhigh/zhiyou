@@ -120,10 +120,10 @@
     }
     /*特级*/
     .must {
-      background: #5d77e5;
+      background: #ffcd48;
     }
     .province {
-      background: #6cb92d;
+      background: #7ed1df;
     }
     .city {
       background: #ffb558;

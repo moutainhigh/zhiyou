@@ -113,10 +113,10 @@
     /*color:['#5d77e5','#ef7b54','#ffb558','#51c187'],*/
     /*特级*/
     .must {
-      background: #5d77e5;
+      background: #ffcd48;
     }
     .province {
-      background: #6cb92d;
+      background: #7ed1df;
     }
     .city {
       background: #ffb558;
@@ -269,7 +269,7 @@
         name:'团队总人数',
         type:'pie',
         radius: ['40%', '55%'],
-        color:['#5d77e5','#6cb92d','#ffb558','#51c187'],
+        color:['#ffcd48','#7ed1df','#ffb558','#51c187'],
         data:[
           {value:array[0], name:'特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
           {value:array[1], name:'省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
@@ -336,7 +336,7 @@
         type: 'pie',
         radius: '55%',
         center: ['50%', '50%'],
-        color:['#5d77e5','#6cb92d','#ffb558','#51c187','#91c7ae'],
+        color:['#ffcd48','#7ed1df','#ffb558','#51c187','#91c7ae'],
         data: [
           {value: array[0], name: '特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
           {value: array[1], name: '省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
@@ -425,7 +425,7 @@
         name:'团队新成员',
         type:'pie',
         radius: ['40%', '55%'],
-        color:['#5d77e5','#6cb92d','#ffb558','#51c187','#91c7ae'],
+        color:['#ffcd48','#7ed1df','#ffb558','#51c187','#91c7ae'],
         data:[
           {value:array[0], name:'特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
           {value:array[1], name:'省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
