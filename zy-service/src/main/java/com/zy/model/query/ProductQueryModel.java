@@ -30,6 +30,8 @@ public class ProductQueryModel implements Serializable {
 
 	private Date createdTimeLT;
 
+	private Boolean isSettlementEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
@@ -86,6 +88,7 @@ public class ProductQueryModel implements Serializable {
 		fieldNames.add("image6");
 		fieldNames.add("marketPrice");
 		fieldNames.add("image3");
+		fieldNames.add("isSettlement");
 		fieldNames.add("image4");
 		fieldNames.add("title");
 		fieldNames.add("image1");

@@ -23,6 +23,8 @@ public class ProductDetailVo implements Serializable {
 	private BigDecimal marketPrice;
 	@Field(label = "商品编码")
 	private String skuCode;
+	@Field(label = "是否结算")
+	private Boolean isSettlement;
 
 	/* 扩展 */
 	@Field(label = "主图")

@@ -20,7 +20,7 @@ import com.zy.entity.mal.Order.OrderType;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class  OrderQueryModel implements Serializable {
+public class OrderQueryModel implements Serializable {
 
 	private String snLK;
 
@@ -71,6 +71,8 @@ public class  OrderQueryModel implements Serializable {
 	private Boolean isDeletedEQ;
 
 	private Long productIdEQ;
+
+	private Boolean isSettlementEQ;
 
 	private Integer pageNumber;
 
@@ -139,6 +141,7 @@ public class  OrderQueryModel implements Serializable {
 		fieldNames.add("sellerUserRank");
 		fieldNames.add("receiverAreaId");
 		fieldNames.add("image");
+		fieldNames.add("isSettlement");
 		fieldNames.add("isBuyerPayLogisticsFee");
 		fieldNames.add("productId");
 		fieldNames.add("isProfitSettledUp");
