@@ -78,7 +78,7 @@
 
   <div class="all" style="padding-bottom: 20px;">
     <div class="teamAll">
-      <img src="${ctx}/team2.png"/>
+      <img src="${ctx}/teamNew.png"/>
       <span>${userName}的销量</span>
     </div>
     <div id="echartTeamTwo"></div>

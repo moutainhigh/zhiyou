@@ -364,33 +364,33 @@
                 </div>
             </c:forEach>
         </div>
-        <div class="all" change="false" onclick="showList(this)">
-            <div class="rankingAll">
-                <div class="ranking">
-                    <div class="sanjiao">
-                        <div class="jiaoOne"></div>
-                    </div>
-                    <span class="rankingTop">普通用户</span>
-                    <span class="rankingSpan com">普通</span>
-                </div>
-                <span class="tel">${fn:length(v0)}人</span>
-            </div>
-        </div>
-        <div class="all allLast">
-            <c:forEach items="${v0}" var="v0user">
-                <div class="rankingAllList">
-                    <div class="rankingAll">
-                        <img src="${v0user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
-                        <div class="ranking" style="text-align: left;font-size: 18px;">
-                            <span>${v0user.nickname}</span>
-                        </div>
-                        <a href="tel:${v0user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
-                        </a>
-                    </div>
-                </div>
-            </c:forEach>
-        </div>
+        <%--<div class="all" change="false" onclick="showList(this)">--%>
+            <%--<div class="rankingAll">--%>
+                <%--<div class="ranking">--%>
+                    <%--<div class="sanjiao">--%>
+                        <%--<div class="jiaoOne"></div>--%>
+                    <%--</div>--%>
+                    <%--<span class="rankingTop">普通用户</span>--%>
+                    <%--<span class="rankingSpan com">普通</span>--%>
+                <%--</div>--%>
+                <%--<span class="tel">${fn:length(v0)}人</span>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+        <%--<div class="all allLast">--%>
+            <%--<c:forEach items="${v0}" var="v0user">--%>
+                <%--<div class="rankingAllList">--%>
+                    <%--<div class="rankingAll">--%>
+                        <%--<img src="${v0user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>--%>
+                        <%--<div class="ranking" style="text-align: left;font-size: 18px;">--%>
+                            <%--<span>${v0user.nickname}</span>--%>
+                        <%--</div>--%>
+                        <%--<a href="tel:${v0user.phone}" class="telAll">--%>
+                            <%--<img src="${ctx}/tel.png" />--%>
+                        <%--</a>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</c:forEach>--%>
+        <%--</div>--%>
     </div>
     <div class="searchList">查无此人!</div>
     <div class="searchListShow">
@@ -438,7 +438,9 @@
                         /*var pageData = page.data;*/
                         for ( var i in pageData) {
                             var row = pageData[i];
-                            buildRow(row);
+                            if (row.userRank!="V0"){
+                             buildRow(row);
+                            }
                         }
                     }
                     if (!pageData.length || pageData.length < 0) {
