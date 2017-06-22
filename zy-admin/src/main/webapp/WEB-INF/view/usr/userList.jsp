@@ -401,7 +401,7 @@
             render: function(data, type, full) {
               var html = '';
               if (full.isDirector) {
-                html += '<p>懂事</p>';
+                html += '<p>董事</p>';
               }
               if (full.isShareholder) {
                 html += '<p>股东</p>';
