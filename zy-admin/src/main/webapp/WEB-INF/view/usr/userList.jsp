@@ -400,7 +400,7 @@
 		        orderable: false,
             render: function(data, type, full) {
 		          var html = '';
-              html += full.isDirector? '<p>懂事</p>' : '';
+              html += full.isDirector? '<p>董事</p>' : '';
               html += full.isShareholder? '<p>股东</p>' : '';
               html += full.isBoss? '<p>总经理</p>' : '';
 		        	return html;

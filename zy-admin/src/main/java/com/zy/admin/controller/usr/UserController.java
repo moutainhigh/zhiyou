@@ -337,15 +337,17 @@ public class UserController {
 
 	@RequiresPermissions("user:setDirector")
 	@RequestMapping(value = "/setDirector", method = RequestMethod.GET)
-	public String setDirector(@RequestParam Long id) {
+	public String setDirector(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 		userService.modifyIsDirector(id, true);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		return "redirect:/user";
 	}
 
 	@RequiresPermissions("user:setShareholder")
 	@RequestMapping(value = "/setShareholder", method = RequestMethod.GET)
-	public String setShareholder(@RequestParam Long id) {
+	public String setShareholder(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 		userService.modifyIsShareholder(id, true);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		return "redirect:/user";
 	}
 	
