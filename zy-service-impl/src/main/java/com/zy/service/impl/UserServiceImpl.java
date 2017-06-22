@@ -484,10 +484,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void modifyIsDirector(@NotNull Long id, boolean isDirector) {
-        User user = findAndValidate(id);
-        if(user.getIsDirector() != null) {
-            return ;
-        }
         User userForMerge = new User();
         userForMerge.setId(id);
         userForMerge.setIsDirector(isDirector);
