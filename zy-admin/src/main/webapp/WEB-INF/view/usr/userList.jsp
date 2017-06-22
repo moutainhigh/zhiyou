@@ -394,18 +394,24 @@
             data: 'userType',
             title: '用户类型'
           },
-	        {
-		        data: '',
-		        title: '管理层职位',
-		        orderable: false,
+          {
+            data: '',
+            title: '管理层职位',
+            orderable: false,
             render: function(data, type, full) {
-		          var html = '';
-              html += full.isDirector? '<p>董事</p>' : '';
-              html += full.isShareholder? '<p>股东</p>' : '';
-              html += full.isBoss? '<p>总经理</p>' : '';
-		        	return html;
+              var html = '';
+              if (full.isDirector) {
+                html += '<p>懂事</p>';
+              }
+              if (full.isShareholder) {
+                html += '<p>股东</p>';
+              }
+              if (full.isBoss) {
+                html += '<p>总经理</p>'
+              }
+              return html;
             }
-	        },
+          },
           {
             data: '',
             title: '总经理信息',
