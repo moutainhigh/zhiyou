@@ -72,6 +72,8 @@ public class  OrderQueryModel implements Serializable {
 
 	private Long productIdEQ;
 
+	private Boolean isSettlementEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;

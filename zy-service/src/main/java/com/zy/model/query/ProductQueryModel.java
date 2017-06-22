@@ -30,6 +30,8 @@ public class ProductQueryModel implements Serializable {
 
 	private Date createdTimeLT;
 
+	private Boolean isSettlementEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
