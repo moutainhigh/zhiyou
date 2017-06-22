@@ -19,13 +19,12 @@
 		<result column="image5" property="image5" />
 		<result column="image6" property="image6" />
 		<result column="created_time" property="createdTime" />
+		<result column="is_settlement" property="isSettlement" />
 	</resultMap>
 
-	<sql id="baseColumn">id,title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time</sql>
-
 	<insert id="insert" parameterType="com.zy.entity.mal.Product" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_product` (title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time)
-	  values (#{title},#{detail},#{productPriceType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{price},#{priceScript},#{marketPrice},#{skuCode},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime})
+		insert into `mal_product` (title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time,is_settlement)
+		values (#{title},#{detail},#{productPriceType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{price},#{priceScript},#{marketPrice},#{skuCode},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime},#{isSettlement})
 	</insert>
 
 	<delete id="delete">
@@ -50,14 +49,15 @@
 			image5 = #{image5},
 			image6 = #{image6},
 			created_time = #{createdTime},
+			is_settlement = #{isSettlement},
 		</set>
 		where id = #{id}
 	</update>
 
 	<update id="merge">
 		update `mal_product`
-			<set>
-				<foreach collection="fields" item="field">
+		<set>
+			<foreach collection="fields" item="field">
 				<choose>
 					<when test="field == 'title'">title = #{product.title},</when>
 					<when test="field == 'detail'">detail = #{product.detail},</when>
@@ -74,33 +74,34 @@
 					<when test="field == 'image5'">image5 = #{product.image5},</when>
 					<when test="field == 'image6'">image6 = #{product.image6},</when>
 					<when test="field == 'createdTime'">created_time = #{product.createdTime},</when>
+					<when test="field == 'isSettlement'">is_settlement = #{product.isSettlement},</when>
 				</choose>
-				</foreach>
-			</set>
+			</foreach>
+		</set>
 		where id = #{product.id}
 	</update>
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		<include refid="baseColumn"/>
+		id,title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time,is_settlement
 		from `mal_product`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.ProductQueryModel">
 		select
-		<include refid="baseColumn"/>
+		id,title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time,is_settlement
 		from `mal_product`
 		<where>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
-				and id in
-				<foreach collection="idIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
+					and id in
+					<foreach collection="idIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				and 1 = 2
+					and 1 = 2
 				</if>
 			</if>
 			<if test="createdTimeLT != null">
@@ -111,6 +112,9 @@
 			</if>
 			<if test="isOnEQ != null">
 				and is_on = #{isOnEQ}
+			</if>
+			<if test="isSettlementEQ != null">
+				and is_settlement = #{isSettlementEQ}
 			</if>
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
@@ -134,13 +138,13 @@
 		<where>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
-				and id in
-				<foreach collection="idIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
+					and id in
+					<foreach collection="idIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				and 1 = 2
+					and 1 = 2
 				</if>
 			</if>
 			<if test="createdTimeLT != null">
@@ -152,10 +156,15 @@
 			<if test="isOnEQ != null">
 				and is_on = #{isOnEQ}
 			</if>
+			<if test="isSettlementEQ != null">
+				and is_settlement = #{isSettlementEQ}
+			</if>
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
 			</if>
 		</where>
 	</select>
+
+	<sql id="baseColumn">id,title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time</sql>
 
 </mapper>
