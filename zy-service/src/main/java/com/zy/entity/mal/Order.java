@@ -347,4 +347,8 @@ public class Order implements Serializable {
 	@View(name = "quantity", type = Long.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL})
 	private Long quantity;
 
+	@View
+	@Field(label = "是否结算")
+	@Query(Predicate.EQ)
+	private Boolean isSettlement;
 }

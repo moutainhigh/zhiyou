@@ -6,6 +6,7 @@ import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
+import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -117,5 +118,10 @@ public class Product implements Serializable {
 	@Field(label = "创建时间")
 	@View(groups = { VO_ADMIN })
 	private Date createdTime;
+
+	@View
+	@Field(label = "是否结算")
+	@Query(Predicate.EQ)
+	private Boolean isSettlement;
 
 }
