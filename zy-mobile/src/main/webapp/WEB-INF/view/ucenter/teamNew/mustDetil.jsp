@@ -12,6 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>直属特级详情</title>
   <%@ include file="/WEB-INF/view/include/head.jsp"%>
+  <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
   <style>
     body {background: #f7f7f9}
     body,html {font-family:  "Microsoft YaHei";text-overflow: ellipsis;
@@ -170,6 +171,60 @@
       line-height: 60px;
       font-size: 17px;
     }
+    .teamTop {
+      width:90%;
+      height:60px;
+      margin-left: 5%;
+      position: relative;
+    }
+    .teamTop img {
+      position: absolute;
+      width:70%;
+      height:30px;
+      top: 15px;
+      z-index: 1;
+    }
+    .teamTop input {
+      position: absolute;
+      background: none;
+      width:70%;
+      height:30px;
+      border: none;
+      top: 15px;
+      z-index: 2;
+    }
+    .teamTop img.seatchImg,.searchBtn {
+      width:20%;
+      height:30px;
+      color: #6cb92d;
+      text-align: center;
+      line-height: 30px;
+      position: absolute;
+      left:80%;
+      top:15px;
+      z-index: 1;
+    }
+    .rankingSpan {
+      padding:0 8px 0 8px;
+      color: #fff;
+      font-size: 12px;
+    }
+    /*特级*/
+    .must {
+      background: #ffcd48;
+    }
+    .province {
+      background: #7ed1df;
+    }
+    .city {
+      background: #ffb558;
+    }
+    .VIP {
+      background: #51c187;
+    }
+    .com {
+      background: #91c7ae;
+    }
     @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
       .ranking {
         width:150px;
@@ -182,9 +237,14 @@
   <h1>直属特级详情</h1>
   <a href="${ctx}/u/team/newTeam" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
+<div class="teamTop">
+  <img src="${ctx}/seatch.png" />
+  <input type="search" class="searchInput" placeholder="请输入姓名或手机号" />
+  <img src="${ctx}/searchBtn.png" class="seatchImg" onclick="seatch()" />
+  <div class="searchBtn" onclick="seatch()">搜索</div>
+</div>
 
 <article>
-  <div class="must-bu"></div>
   <div class="numberList">
     <div class="all allLast">
       <c:forEach items="${data}" var="uvo" varStatus="indexs">
@@ -234,6 +294,11 @@
       </c:forEach>
     </div>
   </div>
+  <div class="searchList">查无此人!</div>
+  <div class="searchListShow">
+
+  </div>
+
   </div>
 </article>
 <div class="disDiv" onclick="hideDiv()"></div>
@@ -246,6 +311,20 @@
      </a>
 </div>
 <script>
+  //点击搜索
+  function seatch() {
+    if($(".searchInput").val()==""){
+      $(".numberList").show();
+      $(".searchListShow").hide();
+    }else {
+      $(".numberList").hide();
+      $(".searchListShow").show();
+      $(".searchList").hide();
+      $(".searchListShow").html("");
+      pageNumber=0;
+      addTate();
+    }
+  }
   //点击黑幕
   function hideDiv(){
       $(".disDiv,.disAll").hide();
@@ -267,6 +346,7 @@
           $(".disPhone .fontName").text($(obj).siblings(".ranking").find("span").text());
 
   }
+  var pageNumber = 0;
   //点击下拉箭头
   function showNum(obj,id,index){
     $.ajax({
@@ -300,6 +380,66 @@
     });
 
   }
+  function addTate(){
+    $(".searchList").hide();
+    $.ajax({
+      url : '${ctx}/u/team/ajaxfindUserAll',
+      data : {
+        nameorPhone:$(".searchInput").val(),
+        pageNumber : pageNumber
+      },
+      dataType : 'json',
+      type : 'POST',
+      success : function(result) {
+        if(result.code != 0) {
+          return;
+        }
+        var page = result.data.page;
+        if (page.data.length) {
+          timeLT = result.data.timeLT;
+          pageNumber = page.pageNumber;
+          var pageData = page.data;
+          for ( var i in pageData) {
+            var row = pageData[i];
+            buildRow(row,"numberList");
+          }
+        }
+        if (!page.data.length || page.data.length <0) {
+          $(".page-more").remove();
+          $(".searchList").show();
+          //$('.page-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
+        }else if(!page.data.length || page.data.length >=page.pageSize){
+          $(".page-more").remove();
+          $(".searchListShow").append('<div class="page-more" onclick="addTate()"><span>点击加载更多</span></div>');
+        }
+        pageNumber=pageNumber+1;
+      }
+    });
+  }
+  function buildRow(row,indexs){
+    var rowTpl = document.getElementById('rowTpl').innerHTML;
+    laytpl(rowTpl).render(row,function(html) {
+      $('.searchListShow').append(html);
+      $(".searchList").hide();
+    });
+  }
+</script>
+<script id="rowTpl" type="text/html">
+  <div class="rankingAllList">
+    <div class="rankingAll">
+      <img src="{{d.avatar}}" style="margin-left: 20px;margin-right: 20px;"/>
+      <div class="ranking" style="text-align: left;font-size: 18px;">
+        <span>{{d.nickname == null?"":d.nickname}}</span>
+        <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通':''}}</span>
+        <p class="tuijian">[推荐人：{{d.pnickname==null?"":d.pnickname}}</p>
+      </div>
+      <%--<div class="telAll" onclick="showDis(this)">
+        <img src="${ctx}/tel.png" />
+      </div>--%>
+      <input type="hidden" class="my" value="tel:{{d.phone}}" />
+      <input type="hidden" class="parentPeoplr" value="tel:{{d.pphone==null?'':d.pphone}}" />
+    </div>
+  </div>
 </script>
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>

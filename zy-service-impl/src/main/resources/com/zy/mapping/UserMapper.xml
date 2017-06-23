@@ -436,4 +436,30 @@
 			limit #{offset}, #{pageSize}
 		</if>
 	</select>
+
+	<resultMap id="userdtoResultMap" type="com.zy.model.dto.UserDto">
+		<result column="id" property="id"/>
+		<result column="userRank" property="userRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="nickname" property="nickname"/>
+		<result column="pnickname" property="pnickname"/>
+		<result column="avatar" property="avatar"/>
+		<result column="phone" property="phone"/>
+		<result column="pphone" property="pphone"/>
+	</resultMap>
+	<select id="findUserAll" resultMap="userdtoResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		select a.id id,a.user_rank userRank,a.nickname nickname,b.nickname pnickname,a.avatar avatar, a.phone phone ,b.phone pphone from usr_user a LEFT JOIN usr_user b ON a.parent_id=b.id where a.user_type!=0
+		<if test="nameorPhone !=null">
+			and (a.phone like #{nameorPhone} or a.nickname like #{nameorPhone})
+		</if>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+	<select id="countUserAll" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
+		select count(*) from usr_user where user_type!=0
+		<if test="nameorPhone !=null">
+			and (phone like #{nameorPhone} or nickname like #{nameorPhone})
+		</if>
+	</select>
+
 </mapper>

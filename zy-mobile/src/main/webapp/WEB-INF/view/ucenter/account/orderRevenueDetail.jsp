@@ -60,7 +60,6 @@
         .font-triangleT {
             float: right;
             width:45%;
-            height:100%;
             margin-right: 5%;
             text-align: right;
             font-size: 16px;

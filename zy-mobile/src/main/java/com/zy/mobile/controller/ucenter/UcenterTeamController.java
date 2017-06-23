@@ -10,6 +10,7 @@ import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Principal;
+import com.zy.model.dto.UserDto;
 import com.zy.model.dto.UserTeamDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserlongQueryModel;
@@ -367,5 +368,26 @@ public class UcenterTeamController {
 		long[]teamTotal=userComponent.conyteamTotal(userId);
 		String result= DateUtil.longarryToString(teamTotal,false);
 		 return ResultBuilder.ok(result);
+	}
+
+	/**
+	 * 搜索  所有人
+	 * @return
+     */
+	@RequestMapping(value = "ajaxfindUserAll",method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Object> findUserAll(String nameorPhone,Integer pageNumber){
+		UserQueryModel userQueryModel = new UserQueryModel();
+		if (pageNumber!=null){
+			userQueryModel.setPageNumber(pageNumber);
+			userQueryModel.setPageSize(10);
+		}
+		if (null!=nameorPhone){
+			userQueryModel.setNameorPhone("%"+nameorPhone+"%");
+		}
+		Page<UserDto> page =userComponent.findUserAll(userQueryModel);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("page",page);
+		return ResultBuilder.result(map);
 	}
 }

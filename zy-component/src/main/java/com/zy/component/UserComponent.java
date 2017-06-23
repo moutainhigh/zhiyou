@@ -1,6 +1,7 @@
 package com.zy.component;
 
 import com.zy.common.exception.BizException;
+import com.zy.common.model.query.Page;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
 import com.zy.common.util.BeanUtils;
@@ -11,8 +12,8 @@ import com.zy.entity.usr.UserUpgrade;
 import com.zy.model.BizCode;
 import com.zy.model.TeamModel;
 import com.zy.model.dto.DepositSumDto;
-import com.zy.model.dto.UserTeamCountDto;
 import com.zy.model.dto.UserTeamDto;
+import com.zy.model.dto.UserDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserUpgradeQueryModel;
 import com.zy.model.query.UserlongQueryModel;
@@ -22,7 +23,6 @@ import com.zy.service.UserUpgradeService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.*;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -377,5 +377,22 @@ public class UserComponent {
 			dataList.add(userVo);
 		}
 		return dataList;
+	}
+
+
+	/**
+	 * 查询  所有 用户 信息
+	 * @param userQueryModel
+	 * @return
+     */
+	public Page<UserDto> findUserAll(UserQueryModel userQueryModel) {
+		List<UserDto> userList = userService.findUserAll(userQueryModel);
+		long total = userService.countUserAll(userQueryModel);
+		Page<UserDto> page = new Page<>();
+		page.setPageNumber(userQueryModel.getPageNumber());
+		page.setPageSize(userQueryModel.getPageSize());
+		page.setData(userList);
+		page.setTotal(total);
+		return page;
 	}
 }

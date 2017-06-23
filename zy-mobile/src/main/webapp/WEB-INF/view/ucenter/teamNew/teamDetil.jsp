@@ -225,7 +225,7 @@
         }
         .ranknumber {
             float: left;
-            width:20%;
+            width:25%;
         }
         .ranknumber p {
             width:100%;
@@ -299,10 +299,10 @@
                             <p id="V4vip${indexs.index}"></p>
                             <p>VIP</p>
                         </div>
-                        <div class="ranknumber">
-                            <p id="V4com${indexs.index}"></p>
-                            <p>普通用户</p>
-                        </div>
+                        <%--<div class="ranknumber">--%>
+                            <%--<p id="V4com${indexs.index}"></p>--%>
+                            <%--<p>普通用户</p>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
             </c:forEach>
@@ -354,10 +354,10 @@
                             <p id="V3vip${indexs.index}"></p>
                             <p>VIP</p>
                         </div>
-                        <div class="ranknumber">
-                            <p id="V3com${indexs.index}"></p>
-                            <p>普通用户</p>
-                        </div>
+                        <%--<div class="ranknumber">--%>
+                            <%--<p id="V3com${indexs.index}"></p>--%>
+                            <%--<p>普通用户</p>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
             </c:forEach>
@@ -410,10 +410,10 @@
                             <p id="V2vip${indexs.index}"></p>
                             <p>VIP</p>
                         </div>
-                        <div class="ranknumber">
-                            <p id="V2com${indexs.index}"></p>
-                            <p>普通用户</p>
-                        </div>
+                        <%--<div class="ranknumber">--%>
+                            <%--<p id="V2com${indexs.index}"></p>--%>
+                            <%--<p>普通用户</p>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
             </c:forEach>
@@ -463,68 +463,68 @@
                             <p id="V1vip${indexs.index}"></p>
                             <p>VIP</p>
                         </div>
-                        <div class="ranknumber">
-                            <p id="V1com${indexs.index}"></p>
-                            <p>普通用户</p>
-                        </div>
+                        <%--<div class="ranknumber">--%>
+                            <%--<p id="V1com${indexs.index}"></p>--%>
+                            <%--<p>普通用户</p>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
             </c:forEach>
         </div>
 
-        <div class="all" change="false" onclick="showList(this)">
-            <div class="rankingAll">
-                <div class="ranking">
-                    <div class="sanjiao">
-                        <div class="jiaoOne"></div>
-                    </div>
-                    <span class="rankingTop">普通用户</span>
-                    <span class="rankingSpan com">普通</span>
-                </div>
-                <span class="tel">${fn:length(v0)}人</span>
-            </div>
-        </div>
-        <div class="all allLast">
-            <c:forEach items="${v0}" var="v0user" varStatus="indexs">
-                <div class="rankingAllList">
-                    <div class="rankingAll">
-                        <img src="${v0user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>
-                        <div class="ranking" style="text-align: left;font-size: 18px;">
-                            <span>${v0user.nickname}</span>
-                                <%--   <img src="${ctx}/new.png"style="width: 30px;"/>--%>
-                        </div>
-                        <div class="telAll jian" onclick="showNum(this,${v0user.id},'V0',${indexs.index})" change="true">
-                            <img src="${ctx}/jian.png" />
-                        </div>
-                        <a href="tel:${v0user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
-                        </a>
-                    </div>
-                    <div class="rankingNum">
-                        <div class="ranknumber">
-                            <p id="V0must${indexs.index}"></p>
-                            <p>特级</p>
-                        </div>
-                        <div class="ranknumber">
-                            <p id="V0pro${indexs.index}"></p>
-                            <p>省级</p>
-                        </div>
-                        <div class="ranknumber">
-                            <p id="V0city${indexs.index}"></p>
-                            <p>市级</p>
-                        </div>
-                        <div class="ranknumber">
-                            <p id="V0vip${indexs.index}"></p>
-                            <p>VIP</p>
-                        </div>
-                        <div class="ranknumber">
-                            <p id="V0com${indexs.index}"></p>
-                            <p>普通用户</p>
-                        </div>
-                    </div>
-                </div>
-            </c:forEach>
-        </div>
+        <%--<div class="all" change="false" onclick="showList(this)">--%>
+            <%--<div class="rankingAll">--%>
+                <%--<div class="ranking">--%>
+                    <%--<div class="sanjiao">--%>
+                        <%--<div class="jiaoOne"></div>--%>
+                    <%--</div>--%>
+                    <%--<span class="rankingTop">普通用户</span>--%>
+                    <%--<span class="rankingSpan com">普通</span>--%>
+                <%--</div>--%>
+                <%--<span class="tel">${fn:length(v0)}人</span>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+        <%--<div class="all allLast">--%>
+            <%--<c:forEach items="${v0}" var="v0user" varStatus="indexs">--%>
+                <%--<div class="rankingAllList">--%>
+                    <%--<div class="rankingAll">--%>
+                        <%--<img src="${v0user.avatar}" style="margin-left: 20px;margin-right: 20px;"/>--%>
+                        <%--<div class="ranking" style="text-align: left;font-size: 18px;">--%>
+                            <%--<span>${v0user.nickname}</span>--%>
+                                <%--&lt;%&ndash;   <img src="${ctx}/new.png"style="width: 30px;"/>&ndash;%&gt;--%>
+                        <%--</div>--%>
+                        <%--<div class="telAll jian" onclick="showNum(this,${v0user.id},'V0',${indexs.index})" change="true">--%>
+                            <%--<img src="${ctx}/jian.png" />--%>
+                        <%--</div>--%>
+                        <%--<a href="tel:${v0user.phone}" class="telAll">--%>
+                            <%--<img src="${ctx}/tel.png" />--%>
+                        <%--</a>--%>
+                    <%--</div>--%>
+                    <%--<div class="rankingNum">--%>
+                        <%--<div class="ranknumber">--%>
+                            <%--<p id="V0must${indexs.index}"></p>--%>
+                            <%--<p>特级</p>--%>
+                        <%--</div>--%>
+                        <%--<div class="ranknumber">--%>
+                            <%--<p id="V0pro${indexs.index}"></p>--%>
+                            <%--<p>省级</p>--%>
+                        <%--</div>--%>
+                        <%--<div class="ranknumber">--%>
+                            <%--<p id="V0city${indexs.index}"></p>--%>
+                            <%--<p>市级</p>--%>
+                        <%--</div>--%>
+                        <%--<div class="ranknumber">--%>
+                            <%--<p id="V0vip${indexs.index}"></p>--%>
+                            <%--<p>VIP</p>--%>
+                        <%--</div>--%>
+                        <%--<div class="ranknumber">--%>
+                            <%--<p id="V0com${indexs.index}"></p>--%>
+                            <%--<p>普通用户</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+            <%--</c:forEach>--%>
+        <%--</div>--%>
     </div>
 
     <div class="searchList">查无此人!</div>
@@ -609,7 +609,9 @@
                         var pageData = page.data;
                         for ( var i in pageData) {
                             var row = pageData[i];
-                            buildRow(row);
+                            if (row.userRank!="V0"){
+                             buildRow(row);
+                            }
                         }
                     }
                     if (!page.data.length || page.data.length < 0) {
@@ -634,7 +636,7 @@
             <img src="{{d.avatar}}" style="margin-left: 20px;margin-right: 20px;"/>
              <div class="ranking" style="text-align: left;font-size: 18px;">
                  <span>{{ d.nickname }}</span>
-                 <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通用户':''}}</span>
+                 <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通':''}}</span>
                 <%-- <img src="${ctx}/new.png"style="width: 30px;"/>--%>
              </div>
             <div class="telAll jian" onclick="showNum(this,'{{ d.id }}','qv','{{ d.id }}')" change="true">
@@ -660,10 +662,10 @@
                 <p id="qvvip{{d.id}}"></p>
                 <p>VIP</p>
             </div>
-            <div class="ranknumber">
-                <p id="qvcom{{d.id}}"></p>
-                <p>普通用户</p>
-            </div>
+            <%--<div class="ranknumber">--%>
+                <%--<p id="qvcom{{d.id}}"></p>--%>
+                <%--<p>普通用户</p>--%>
+            <%--</div>--%>
         </div>
     </div>
 </script>

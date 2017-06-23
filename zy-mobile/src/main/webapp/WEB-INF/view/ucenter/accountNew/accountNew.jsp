@@ -135,15 +135,15 @@
     }
     .look {
       width:100%;
-      color:#32b1d2;
+      color:#6cb92d;
       font-size: 16px;
       text-align: center;
       line-height: 45px;
     }
     .teamAllAccount {height: 50px;background: #fff;padding-top: 10px;}
-    .teamAllAccount img {float: left;width: 50px;height: 50px;margin-left: 8px;}
+    .teamAllAccount img {float: left;width: 40px;height: 40px;margin-left: 8px;margin-top: 5px;}
     .teamAllAccount span {
-      float: left;line-height: 50px;margin-left: 20px;font-size: 18px;
+      float: left;line-height: 50px;margin-left: 0px;font-size: 18px;
       color: #838385;
     }
     .teamAllAccount a,.teamAllAccount span.paim {

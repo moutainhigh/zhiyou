@@ -208,11 +208,11 @@
       text-align: center;
       line-height: 30px;
       margin-right: 10px;
-      border:1px solid #00d747;
+      border:1px solid #6cb92d;
       -webkit-border-radius:5px;
       -moz-border-radius:5px;
       border-radius:5px;
-      color: #00d747;
+      color: #6cb92d;
     }
     @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
       .ranking {

@@ -37,9 +37,9 @@
       background: #fff !important;
     }
     .teamAll {height: 50px;}
-    .teamAll img {float: left;width: 50px;height: 50px;margin-left: 8px;}
+    .teamAll img {float: left;width: 40px;height: 40px;margin-left: 8px;margin-top: 5px;}
     .teamAll span {
-      float: left;line-height: 50px;margin-left: 20px;font-size: 18px;
+      float: left;line-height: 50px;margin-left: 0px;font-size: 18px;
       color: #838385;
     }
     .teamAll a,.teamAll span.paim {
@@ -131,11 +131,20 @@
       margin-bottom: 10px;
     }
     .tel {
-      width:10px;
       float: left;
       margin-right: 10px;
       color: #303134;
       line-height: 60px;
+    }
+    .teamAll span#teamNewCount{
+      margin-left: 0;
+      font-size: 12px;
+      color: #6cb92d;
+      line-height: 50px;
+    }
+    .tel img {
+      float: left;
+      margin-top: 22px;
     }
     @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
       .rankingAll>span{
@@ -157,8 +166,8 @@
   <c:if test="${dataMap.flag != null}">
     <div class="all" >
       <div class="teamAll">
-        <img src="${ctx}/team2.png"/>
-        <span>团队总人数</span>
+        <img src="${ctx}/teamNew.png"/>
+        <span>团队总人数</span><span id="teamNewCount"></span>
         <c:if test="${dataMap.flag eq 'T'}"> <a href="${ctx}/u/team/findDirectlySup">直属特级详情>></a></c:if>
       </div>
       <div id="echartTeam"></div>
@@ -191,33 +200,35 @@
       <div class="TeamName">
         <img src="${tlist.avatar}" />
         <span>${tlist.nickname}</span>
-        <span>${tlist.phone}</span>
+        <a href="tel:${tlist.phone}">
+            <span>${tlist.phone}</span>
+        </a>
       </div>
     </c:forEach>
   </div>
 
-  <div class="all">
-    <div class="teamAll allList">
-      <img src="${ctx}/team6.png"/>
-      <span>新晋排名</span>
-      <span class="paim">我的排名：${dataMap.myRank}</span>
-    </div>
-    <c:forEach items="${dataMap.rankList}" var="udto" begin="0" end="2">
-      <div class="rankingAll">
-        <span>${udto.rank}</span>
-        <img src="${udto.avatar}" />
-        <div class="ranking">
-          <span>${udto.nickname}</span>
-          <span class="rank">(${udto.num}人)</span>
-        </div>
-        <a href="tel:${v0user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${v0user.phone}</a>
-        <span class="tel">${udto.phone}</span>
-      </div>
-    </c:forEach>
-    <c:if test="${fn:length(dataMap.rankList)>3}">
-      <a href="${ctx}/u/team/teamRank" class="lookDetil">更多详情>></a>
-    </c:if>
-  </div>
+  <%--<div class="all">--%>
+    <%--<div class="teamAll allList">--%>
+      <%--<img src="${ctx}/team6.png"/>--%>
+      <%--<span>新晋排名</span>--%>
+      <%--<span class="paim">我的排名：${dataMap.myRank}</span>--%>
+    <%--</div>--%>
+    <%--<c:forEach items="${dataMap.rankList}" var="udto" begin="0" end="2">--%>
+      <%--<div class="rankingAll">--%>
+        <%--<span>${udto.rank}</span>--%>
+        <%--<img src="${udto.avatar}" />--%>
+        <%--<div class="ranking">--%>
+          <%--<span>${udto.nickname}</span>--%>
+          <%--<span class="rank">(${udto.num}人)</span>--%>
+        <%--</div>--%>
+        <%--<a href="tel:${v0user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${v0user.phone}</a>--%>
+        <%--<span class="tel">${udto.phone}</span>--%>
+      <%--</div>--%>
+    <%--</c:forEach>--%>
+    <%--<c:if test="${fn:length(dataMap.rankList)>3}">--%>
+      <%--<a href="${ctx}/u/team/teamRank" class="lookDetil">更多详情>></a>--%>
+    <%--</c:if>--%>
+  <%--</div>--%>
 
   <div class="all allLast">
     <div class="teamAll allList">
@@ -229,22 +240,25 @@
       <span>沉睡成员</span>
     </div>
     <c:forEach items="${dataMap.act}" var="user" begin="0" end="2" varStatus="index">
+      <c:if test="${user.userRank.level!=0}">
       <div class="rankingAll">
         <span>${index.index+1}</span>
         <img src="${user.avatar}" />
         <div class="ranking">
           <span>${user.nickname}</span>
-          <span class="rankingSpan ${user.userRank.level==4?"must":user.userRank.level==3?"province":user.userRank.level==2?"city":user.userRank.level==1?"VIP":user.userRank.level==0?"com":""}">${user.userRank.level==4?"特级":user.userRank.level==3?"省级":user.userRank.level==2?"市级":user.userRank.level==1?"VIP":user.userRank.level==0?"普通用户":""}</span>
+          <span class="rankingSpan ${user.userRank.level==4?"must":user.userRank.level==3?"province":user.userRank.level==2?"city":user.userRank.level==1?"VIP":user.userRank.level==0?"com":""}">${user.userRank.level==4?"特级":user.userRank.level==3?"省级":user.userRank.level==2?"市级":user.userRank.level==1?"VIP":user.userRank.level==0?"普通":""}</span>
         </div>
-        <a href="tel:${v0user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${v0user.phone}</a>
-        <span class="tel">${user.phone}</span>
+        <a href="tel:${user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px"><span class="tel">${user.phone}</span></a>
+
       </div>
+      </c:if>
     </c:forEach>
-    <a href="${ctx}/u/team/teamSleep" class="lookDetil">更多详情>></a>
+    <a href="${ctx}/u/team/teamSleep" class="lookDetil">查看详情>></a>
   </div>
 </article>
 <script src="${ctx}/echarts.min.js"></script>
 <script type="text/javascript">
+
   var counts = "${dataMap.TTot}";
   var array=counts.split(",");
   var mbolSize = 20;
@@ -252,6 +266,7 @@
   if(arrayNum==0){
     arrayNum=1;
   }
+  $("#teamNewCount").text("("+arrayNum+"人)");
   // 基于准备好的dom，初始化echarts实例
   var myChart = echarts.init(document.getElementById('echartTeam'));
   // 指定图表的配置项和数据
@@ -314,7 +329,8 @@
 <script type="text/javascript">
   var counts = "${dataMap.DTot}";
   var array=counts.split(",");
-  var arrayNum=parseInt(array[0])+parseInt(array[1])+parseInt(array[2])+parseInt(array[3])+parseInt(array[4]);
+  var arrayNum=parseInt(array[0])+parseInt(array[1])+parseInt(array[2])+parseInt(array[3]);
+//  var arrayNum=parseInt(array[0])+parseInt(array[1])+parseInt(array[2])+parseInt(array[3])+parseInt(array[4]);
   if(arrayNum==0){
     arrayNum=1;
   }
@@ -345,13 +361,14 @@
         type: 'pie',
         radius: '55%',
         center: ['50%', '50%'],
-        color:['#ffcd48','#7ed1df','#ffb558','#51c187','#91c7ae'],
+        color:['#ffcd48','#7ed1df','#ffb558','#51c187'],
+//        color:['#ffcd48','#7ed1df','#ffb558','#51c187','#91c7ae'],
         data: [
           {value: array[0], name: '特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
           {value: array[1], name: '省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
           {value: array[2], name: '市级服务商('+Math.round(array[2]/arrayNum*100*100)/100+'%)'},
-          {value: array[3], name: 'VIP服务商('+Math.round(array[3]/arrayNum*100*100)/100+'%)'},
-          {value: array[4], name: '普通服务商('+Math.round(array[4]/arrayNum*100*100)/100+'%)'}
+          {value: array[3], name: 'VIP服务商('+Math.round(array[3]/arrayNum*100*100)/100+'%)'}
+//          {value: array[4], name: '普通服务商('+Math.round(array[4]/arrayNum*100*100)/100+'%)'}
         ],
         itemStyle: {
           emphasis: {
@@ -399,7 +416,8 @@
 <script type="text/javascript">
   var counts = "${dataMap.MTot}";
   var array=counts.split(",");
-  var arrayNum=parseInt(array[0])+parseInt(array[1])+parseInt(array[2])+parseInt(array[3])+parseInt(array[4]);
+  var arrayNum=parseInt(array[0])+parseInt(array[1])+parseInt(array[2])+parseInt(array[3]);
+//  var arrayNum=parseInt(array[0])+parseInt(array[1])+parseInt(array[2])+parseInt(array[3])+parseInt(array[4]);
   if(arrayNum==0){
     arrayNum=1;
   }
@@ -434,13 +452,14 @@
         name:'团队新成员',
         type:'pie',
         radius: ['40%', '55%'],
-        color:['#ffcd48','#7ed1df','#ffb558','#51c187','#91c7ae'],
+        color:['#ffcd48','#7ed1df','#ffb558','#51c187'],
+//        color:['#ffcd48','#7ed1df','#ffb558','#51c187','#91c7ae'],
         data:[
           {value:array[0], name:'特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
           {value:array[1], name:'省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
           {value:array[2], name:'市级服务商('+Math.round(array[2]/arrayNum*100*100)/100+'%)'},
           {value:array[3], name:'VIP服务商('+Math.round(array[3]/arrayNum*100*100)/100+'%)'},
-          {value:array[4], name:'普通服务商('+Math.round(array[4]/arrayNum*100*100)/100+'%)'}
+//          {value:array[4], name:'普通服务商('+Math.round(array[4]/arrayNum*100*100)/100+'%)'}
         ]
       },
 //        {
