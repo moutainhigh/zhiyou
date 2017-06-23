@@ -3,8 +3,11 @@ package com.zy.admin.controller.fnc;
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 
+import com.zy.util.GcUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +73,12 @@ public class PaymentController {
 			paymentService.offlineFailure(id, principal.getUserId(), remark);
 		}
 		return ResultBuilder.ok("支付单[" + payment.getTitle() + "]确认支付成功");
+	}
+
+	@RequestMapping(value = "/sum", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> sum(PaymentQueryModel paymentQueryModel) {
+		List<Payment> all = paymentService.findAll(paymentQueryModel);
+		return ResultBuilder.result(GcUtils.formatCurreny(all.stream().map(v -> v.getAmount1()).reduce((x, y) -> x.add(y)).orElse(new BigDecimal("0.00"))));
 	}
 }
