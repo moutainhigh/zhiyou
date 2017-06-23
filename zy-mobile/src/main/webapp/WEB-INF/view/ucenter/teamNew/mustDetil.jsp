@@ -321,6 +321,7 @@
       $(".searchListShow").show();
       $(".searchList").hide();
       $(".searchListShow").html("");
+      pageNumber=0;
       addTate();
     }
   }
