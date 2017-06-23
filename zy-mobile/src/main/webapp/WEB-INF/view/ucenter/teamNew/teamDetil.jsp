@@ -636,7 +636,7 @@
             <img src="{{d.avatar}}" style="margin-left: 20px;margin-right: 20px;"/>
              <div class="ranking" style="text-align: left;font-size: 18px;">
                  <span>{{ d.nickname }}</span>
-                 <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通用户':''}}</span>
+                 <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通':''}}</span>
                 <%-- <img src="${ctx}/new.png"style="width: 30px;"/>--%>
              </div>
             <div class="telAll jian" onclick="showNum(this,'{{ d.id }}','qv','{{ d.id }}')" change="true">

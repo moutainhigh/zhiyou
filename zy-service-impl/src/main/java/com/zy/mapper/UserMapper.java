@@ -4,6 +4,7 @@ package com.zy.mapper;
 import java.util.List;
 import java.util.Map;
 
+import com.zy.model.dto.UserDto;
 import com.zy.model.dto.UserTeamCountDto;
 import org.apache.ibatis.annotations.Param;
 
@@ -44,4 +45,8 @@ public interface UserMapper {
 	List<User> findSupAll(Map<String, Object> dataMap);
 
 	List<User> findAddpeople(UserQueryModel userQueryModel);
+
+	List<UserDto> findUserAll(UserQueryModel userQueryModel);
+
+	long countUserAll(UserQueryModel userQueryModel);
 }

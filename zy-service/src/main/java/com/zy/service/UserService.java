@@ -3,12 +3,10 @@ package com.zy.service;
 import com.zy.common.model.query.Page;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
-import com.zy.model.dto.AgentRegisterDto;
-import com.zy.model.dto.DepositSumDto;
-import com.zy.model.dto.UserTeamCountDto;
-import com.zy.model.dto.UserTeamDto;
+import com.zy.model.dto.*;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserlongQueryModel;
+
 
 import java.util.List;
 import java.util.Map;
@@ -96,5 +94,7 @@ public interface UserService {
 
 	Page<User> findPage1(UserQueryModel userQueryModel);
 
+	List<UserDto> findUserAll(UserQueryModel userQueryModel);
 
+	long countUserAll(UserQueryModel userQueryModel);
 }

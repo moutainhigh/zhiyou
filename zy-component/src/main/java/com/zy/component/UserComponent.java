@@ -12,8 +12,8 @@ import com.zy.entity.usr.UserUpgrade;
 import com.zy.model.BizCode;
 import com.zy.model.TeamModel;
 import com.zy.model.dto.DepositSumDto;
-import com.zy.model.dto.UserTeamCountDto;
 import com.zy.model.dto.UserTeamDto;
+import com.zy.model.dto.UserDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserUpgradeQueryModel;
 import com.zy.model.query.UserlongQueryModel;
@@ -23,7 +23,6 @@ import com.zy.service.UserUpgradeService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.*;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -386,29 +385,14 @@ public class UserComponent {
 	 * @param userQueryModel
 	 * @return
      */
-	public Page<UserInfoVo> findUserAll(UserQueryModel userQueryModel) {
-		List<UserInfoVo> userVoList = new ArrayList<UserInfoVo>();
-		List<User> userList = userService.findAll(userQueryModel);
-		for (User user :userList){
-			UserInfoVo userinfoVo = new UserInfoVo();
-			userinfoVo.setRealname(user.getNickname());
-			userinfoVo.setPhone(user.getPhone());
-			userinfoVo.setImage1Thumbnail(user.getAvatar());
-			userinfoVo.setUserlevel(user.getUserRank().getLevel());
-			if (user.getParentId()!=null) {
-				User puser = userService.findOne(user.getParentId());
-			    if (puser!=null){
-					userinfoVo.setPphone(puser.getPhone());
-					userinfoVo.setPname(puser.getNickname());
-				}
-			}
-			userVoList.add(userinfoVo);
-		}
-		Page<UserInfoVo> page = new Page<>();
+	public Page<UserDto> findUserAll(UserQueryModel userQueryModel) {
+		List<UserDto> userList = userService.findUserAll(userQueryModel);
+		long total = userService.countUserAll(userQueryModel);
+		Page<UserDto> page = new Page<>();
 		page.setPageNumber(userQueryModel.getPageNumber());
 		page.setPageSize(userQueryModel.getPageSize());
-		page.setData(userVoList);
-		/*page.setTotal(total);*/
+		page.setData(userList);
+		page.setTotal(total);
 		return page;
 	}
 }

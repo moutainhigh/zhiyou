@@ -246,7 +246,7 @@
         <img src="${user.avatar}" />
         <div class="ranking">
           <span>${user.nickname}</span>
-          <span class="rankingSpan ${user.userRank.level==4?"must":user.userRank.level==3?"province":user.userRank.level==2?"city":user.userRank.level==1?"VIP":user.userRank.level==0?"com":""}">${user.userRank.level==4?"特级":user.userRank.level==3?"省级":user.userRank.level==2?"市级":user.userRank.level==1?"VIP":user.userRank.level==0?"普通用户":""}</span>
+          <span class="rankingSpan ${user.userRank.level==4?"must":user.userRank.level==3?"province":user.userRank.level==2?"city":user.userRank.level==1?"VIP":user.userRank.level==0?"com":""}">${user.userRank.level==4?"特级":user.userRank.level==3?"省级":user.userRank.level==2?"市级":user.userRank.level==1?"VIP":user.userRank.level==0?"普通":""}</span>
         </div>
         <a href="tel:${user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px"><span class="tel">${user.phone}</span></a>
 

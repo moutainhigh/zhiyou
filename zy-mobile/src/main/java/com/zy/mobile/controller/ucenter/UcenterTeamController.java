@@ -10,6 +10,7 @@ import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Principal;
+import com.zy.model.dto.UserDto;
 import com.zy.model.dto.UserTeamDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserlongQueryModel;
@@ -373,7 +374,7 @@ public class UcenterTeamController {
 	 * 搜索  所有人
 	 * @return
      */
-	@RequestMapping(value = "ajaxteamNew",method = RequestMethod.POST)
+	@RequestMapping(value = "ajaxfindUserAll",method = RequestMethod.POST)
 	@ResponseBody
 	public Result<Object> findUserAll(String nameorPhone,Integer pageNumber){
 		UserQueryModel userQueryModel = new UserQueryModel();
@@ -384,7 +385,9 @@ public class UcenterTeamController {
 		if (null!=nameorPhone){
 			userQueryModel.setNameorPhone("%"+nameorPhone+"%");
 		}
-		Page<UserInfoVo> page =userComponent.findUserAll(userQueryModel);
-		return ResultBuilder.result(page.getData());
+		Page<UserDto> page =userComponent.findUserAll(userQueryModel);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("page",page);
+		return ResultBuilder.result(map);
 	}
 }

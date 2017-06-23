@@ -6,7 +6,6 @@ import com.zy.common.model.query.Page;
 import com.zy.common.util.DateUtil;
 import com.zy.component.FncComponent;
 import com.zy.component.UsrComponent;
-import com.zy.entity.cms.Article;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
@@ -27,6 +26,7 @@ import com.zy.model.dto.UserTeamDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserlongQueryModel;
 import com.zy.service.UserService;
+import com.zy.model.dto.UserDto;
 import me.chanjar.weixin.common.util.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
@@ -859,6 +859,21 @@ public class UserServiceImpl implements UserService {
         page.setData(data);
         page.setTotal(total);
         return page;
+    }
+
+    /**
+     * 查询说有用户
+     * @param userQueryModel
+     * @return
+     */
+    @Override
+    public List<UserDto> findUserAll(UserQueryModel userQueryModel) {
+        return userMapper.findUserAll(userQueryModel);
+    }
+
+    @Override
+    public long countUserAll(UserQueryModel userQueryModel) {
+        return userMapper.countUserAll(userQueryModel);
     }
 
 
