@@ -1,6 +1,7 @@
 package com.zy.component;
 
 import com.zy.common.exception.BizException;
+import com.zy.common.model.query.Page;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
 import com.zy.common.util.BeanUtils;
@@ -377,5 +378,37 @@ public class UserComponent {
 			dataList.add(userVo);
 		}
 		return dataList;
+	}
+
+
+	/**
+	 * 查询  所有 用户 信息
+	 * @param userQueryModel
+	 * @return
+     */
+	public Page<UserInfoVo> findUserAll(UserQueryModel userQueryModel) {
+		List<UserInfoVo> userVoList = new ArrayList<UserInfoVo>();
+		List<User> userList = userService.findAll(userQueryModel);
+		for (User user :userList){
+			UserInfoVo userinfoVo = new UserInfoVo();
+			userinfoVo.setRealname(user.getNickname());
+			userinfoVo.setPhone(user.getPhone());
+			userinfoVo.setImage1Thumbnail(user.getAvatar());
+			userinfoVo.setUserlevel(user.getUserRank().getLevel());
+			if (user.getParentId()!=null) {
+				User puser = userService.findOne(user.getParentId());
+			    if (puser!=null){
+					userinfoVo.setPphone(puser.getPhone());
+					userinfoVo.setPname(puser.getNickname());
+				}
+			}
+			userVoList.add(userinfoVo);
+		}
+		Page<UserInfoVo> page = new Page<>();
+		page.setPageNumber(userQueryModel.getPageNumber());
+		page.setPageSize(userQueryModel.getPageSize());
+		page.setData(userVoList);
+		/*page.setTotal(total);*/
+		return page;
 	}
 }

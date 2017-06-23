@@ -368,4 +368,23 @@ public class UcenterTeamController {
 		String result= DateUtil.longarryToString(teamTotal,false);
 		 return ResultBuilder.ok(result);
 	}
+
+	/**
+	 * 搜索  所有人
+	 * @return
+     */
+	@RequestMapping(value = "ajaxteamNew",method = RequestMethod.POST)
+	@ResponseBody
+	public Result<Object> findUserAll(String nameorPhone,Integer pageNumber){
+		UserQueryModel userQueryModel = new UserQueryModel();
+		if (pageNumber!=null){
+			userQueryModel.setPageNumber(pageNumber);
+			userQueryModel.setPageSize(10);
+		}
+		if (null!=nameorPhone){
+			userQueryModel.setNameorPhone("%"+nameorPhone+"%");
+		}
+		Page<UserInfoVo> page =userComponent.findUserAll(userQueryModel);
+		return ResultBuilder.result(page.getData());
+	}
 }

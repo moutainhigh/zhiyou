@@ -70,6 +70,8 @@ public class UserInfoVo implements Serializable {
 	private String pphone;
 	@Field(label = "是否是新晋")
 	private String newflag;
+	@Field(label = "级别")
+	private int userlevel;
 
 
 }

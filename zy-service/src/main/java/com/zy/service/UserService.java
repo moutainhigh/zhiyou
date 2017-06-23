@@ -95,4 +95,6 @@ public interface UserService {
 	boolean findNewOne(Long id);
 
 	Page<User> findPage1(UserQueryModel userQueryModel);
+
+
 }
