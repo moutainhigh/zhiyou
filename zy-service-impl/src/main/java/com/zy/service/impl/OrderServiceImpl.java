@@ -232,7 +232,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setImage(product.getImage1());
 		order.setV4UserId(v4UserId);
 		order.setRootId(rootId);
-
+		order.setIsSettlement(product.getIsSettlement());
 		if (StringUtils.isNotBlank(title)) {
 			order.setTitle(title);
 		} else {
