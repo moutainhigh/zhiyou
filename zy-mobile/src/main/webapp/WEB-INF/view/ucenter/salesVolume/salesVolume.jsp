@@ -45,9 +45,10 @@
       background: #f9f9f9 !important;
     }
     .teamAll {height: 50px;}
-    .teamAll img {float: left;width: 50px;height: 50px;margin-left: 8px;}
+    .teamAll img {float: left;width: 40px;height: 40px;margin-left: 8px;
+      margin-top:5px;}
     .teamAll span {
-      float: left;line-height: 50px;margin-left: 20px;font-size: 18px;
+      float: left;line-height: 50px;margin-left: 0px;font-size: 18px;
       color: #838385;
     }
     .teamAll a,.teamAll span.paim {
@@ -145,11 +146,11 @@
       text-align: center;
       line-height: 30px;
       margin-right: 10px;
-      border:1px solid #00d747;
+      border:1px solid #6cb92d;
       -webkit-border-radius:5px;
       -moz-border-radius:5px;
       border-radius:5px;
-      color: #00d747;
+      color: #6cb92d;
     }
     @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
       .ranking {

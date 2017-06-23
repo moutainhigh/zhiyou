@@ -39,7 +39,7 @@
     .teamAll {height: 50px;}
     .teamAll img {float: left;width: 40px;height: 40px;margin-left: 8px;margin-top: 5px;}
     .teamAll span {
-      float: left;line-height: 50px;margin-left: 5px;font-size: 18px;
+      float: left;line-height: 50px;margin-left: 0px;font-size: 18px;
       color: #838385;
     }
     .teamAll a,.teamAll span.paim {
