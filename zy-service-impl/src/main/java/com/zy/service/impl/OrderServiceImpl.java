@@ -760,11 +760,11 @@ public class OrderServiceImpl implements OrderService {
 								final BigDecimal saleBonus = new BigDecimal("10.00").multiply(BigDecimal.valueOf(quantity));
 								BigDecimal fee = saleBonus.multiply(FEE_RATE);
 								BigDecimal saleBonusAfter = saleBonus.subtract(fee);
-								fncComponent.createProfit(parentId, Profit.ProfitType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+								fncComponent.createProfit(parentId, Profit.ProfitType.业绩奖, orderId, "业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
 
 								final BigDecimal flatBonus = new BigDecimal("9.00").multiply(BigDecimal.valueOf(quantity));
 								BigDecimal flatBonusAfter = flatBonus.subtract(flatBonus.multiply(FEE_RATE));
-								fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, flatBonusAfter, paidTime);
+								fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.业绩奖, orderId, "业绩奖", CurrencyType.积分, flatBonusAfter, paidTime);
 								break;
 							}
 
@@ -798,7 +798,7 @@ public class OrderServiceImpl implements OrderService {
 						final BigDecimal saleBonus = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
 						BigDecimal fee = saleBonus.multiply(FEE_RATE);
 						BigDecimal saleBonusAfter = saleBonus.subtract(fee);
-						fncComponent.createProfit(parentId, Profit.ProfitType.特级推荐奖, orderId, "特级推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+						fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, "推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
 						break;
 					}
 
@@ -811,7 +811,7 @@ public class OrderServiceImpl implements OrderService {
 						Date lastUpgradedTime = seller.getLastUpgradedTime();
 						if (lastUpgradedTime != null && DateUtils.addMonths(lastUpgradedTime, 3).after(new Date())) {
 							final BigDecimal saleBonus = new BigDecimal("3.00").multiply(BigDecimal.valueOf(quantity));
-							fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.特级推荐奖, orderId, "特级推荐奖", CurrencyType.积分, saleBonus, paidTime);
+							fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.推荐奖, orderId, "推荐奖", CurrencyType.积分, saleBonus, paidTime);
 						}
 					}
 				}
