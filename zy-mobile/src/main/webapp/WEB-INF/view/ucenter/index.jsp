@@ -240,9 +240,20 @@
         <%--<i class="list-arrow"></i>--%>
       <%--</a>--%>
     <%--</div>--%>
-    <div class="quitBack">安全退出</div>
+    <a href="#"><div class="quitBack">安全退出</div></a>
   </article>
-
+  <script>
+    $('.quitBack').click(function(){
+      $.dialog({
+        content : '您确定要退出吗？',
+        callback : function(index) {
+          if (index == 1) {
+              window.location.href="${ctx}/logout";
+          }
+        }
+      });
+    });
+  </script>
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
 </html>
