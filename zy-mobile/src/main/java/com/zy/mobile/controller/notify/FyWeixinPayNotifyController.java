@@ -75,6 +75,7 @@ public class FyWeixinPayNotifyController {
 			fuiouWeixinPayNotifyRes.setResult("FAIL");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
+		logger.info("fuiouWeixinPayNotifyRes: " + JsonUtils.toJson(fuiouWeixinPayNotifyRes));
 		return fuiouWeixinPayNotifyRes;
 	}
 
