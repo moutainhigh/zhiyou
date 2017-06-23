@@ -118,6 +118,11 @@
 		                + ')"><i class="fa fa-edit"></i> 提现推送 </a></p>';
 	                </shiro:hasPermission>
                 }
+                <shiro:hasPermission name="withdraw:confirm">
+                if (full.withdrawStatus == '处理失败') {
+                  operationHtml += '<p><a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/withdraw/cancel?id=' + full.id + '" data-confirm="您确定要取消提现吗？"><i class="fa fa-file-sound-o"></i> 取消提现 </a></p>';
+                }
+                </shiro:hasPermission>
                 //operationHtml += '<p><a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/transaction?phoneEQ='+full.phone+'&fromParent=true"><i class="fa fa-file-sound-o"></i> 查看流水 </a></p>';
                 return operationHtml;
               }

@@ -919,14 +919,10 @@ public class OrderServiceImpl implements OrderService {
 		List<Order> orders = orderMapper.findAll(OrderQueryModel.builder()
 				.orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成})
 				.productIdEQ(2L)  //月结算只针对2.0的产品
-				.paidTimeGTE(begin).paidTimeLT(end).build());
-		orders = orders.stream().filter(v -> {
-			OrderStatus orderStatus = v.getOrderStatus();
-			if(orderStatus == OrderStatus.已发货 || orderStatus == OrderStatus.已完成) {
-				return Constants.SETTING_SUPER_ADMIN_ID.equals(v.getSellerId());
-			}
-			return true;
-		}).collect(Collectors.toList());
+				.paidTimeGTE(begin).paidTimeLT(end)
+				.sellerIdEQ(Constants.SETTING_SETTING_ID)
+				.build());
+
 		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
 		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
 		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
@@ -1052,9 +1048,9 @@ public class OrderServiceImpl implements OrderService {
 			Long userId = entry.getKey();
 			if (amount.compareTo(zero) > 0) {
 				try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
-				BigDecimal fee = amount.multiply(FEE_RATE);
-				BigDecimal amountAfter = amount.subtract(fee);
-				fncComponent.createProfit(userId, Profit.ProfitType.期权奖励, null, year + "年" + month + "期权奖励", CurrencyType.货币期权, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+//				BigDecimal fee = amount.multiply(FEE_RATE);
+//				BigDecimal amountAfter = amount.subtract(fee);
+				fncComponent.createProfit(userId, Profit.ProfitType.期权奖励, null, year + "年" + month + "期权奖励", CurrencyType.货币期权, amount, now, null);
 				logger.error(userMap.get(userId).getNickname() + "期权奖励" + amount + "货币期权");
 			}
 		}
