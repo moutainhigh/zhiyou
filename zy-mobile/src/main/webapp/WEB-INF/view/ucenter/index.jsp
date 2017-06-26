@@ -111,17 +111,7 @@
             <em>成为服务商</em>
           </a>
         </c:if>
-        <c:if test="${user.userRank == 'V1' || user.userRank == 'V2'}">
-          <%--<a class="list-item" href="${ctx}/u/agent">--%>
-            <%--<i class="list-icon icon icon-agent"></i>--%>
-            <%--<div class="list-text">升级服务商</div>--%>
-            <%--<i class="list-arrow"></i>--%>
-          <%--</a>--%>
-          <a class="flex-1 bd-r" href="${ctx}/u/agent">
-            <i class="icon icon-agent icon-2x"></i>
-            <em>升级服务商</em>
-          </a>
-        </c:if>
+
 
         <c:if test="${user.userRank != 'V0'}">
         <a class="flex-1 bd-r" href="${ctx}/u/team/newTeam">
@@ -133,10 +123,31 @@
           <i class="icon icon-2x" style='background: url("${ctx}/images/xiaoliang.png")'></i>
           <em>我的销量</em>
         </a>
-        <a class="flex-1" href="#">
-          <i class="icon icon-out icon-2x" style="background: none;"></i>
-          <em></em>
-        </a>
+      <%--  <c:if test="${user.userRank == 'V1' || user.userRank == 'V2'}">
+          &lt;%&ndash;<a class="list-item" href="${ctx}/u/agent">&ndash;%&gt;
+          &lt;%&ndash;<i class="list-icon icon icon-agent"></i>&ndash;%&gt;
+          &lt;%&ndash;<div class="list-text">升级服务商</div>&ndash;%&gt;
+          &lt;%&ndash;<i class="list-arrow"></i>&ndash;%&gt;
+          &lt;%&ndash;</a>&ndash;%&gt;
+          <a class="flex-1 bd-r" href="${ctx}/u/agent">
+            <i class="icon icon-agent icon-2x"></i>
+            <em>升级服务商</em>
+          </a>
+        </c:if>--%>
+        <c:choose><c:when test="${user.userRank == 'V1' || user.userRank == 'V2'}">
+          <a class="flex-1 bd-r" href="${ctx}/u/agent">
+            <i class="icon icon-agent icon-2x"></i>
+            <em>升级服务商</em>
+          </a>
+        </c:when>
+         <c:otherwise>
+           <a class="flex-1" href="#">
+             <i class="icon icon-out icon-2x" style="background: none;"></i>
+             <em></em>
+           </a>
+         </c:otherwise>
+        </c:choose>
+
       </div>
 
       <div class="user-account flex list-group">
