@@ -166,7 +166,7 @@
   <c:if test="${dataMap.flag != null}">
     <div class="all" >
       <div class="teamAll">
-        <img src="${ctx}/teamNew.png"/>
+        <img src="${ctx}/images/teamNew.png"/>
         <span>团队总人数</span><span id="teamNewCount"></span>
         <c:if test="${dataMap.flag eq 'T'}"> <a href="${ctx}/u/team/findDirectlySup">直属特级详情>></a></c:if>
       </div>
@@ -175,7 +175,7 @@
   </c:if>
   <div class="all" >
     <div class="teamAll">
-      <img src="${ctx}/team3.png"/>
+      <img src="${ctx}/images/team3.png"/>
       <span>直属团队</span>
       <a href="${ctx}/u/team/teamDetail">直属详情>></a>
     </div>
@@ -184,7 +184,7 @@
 
   <div class="all" >
     <div class="teamAll">
-      <img src="${ctx}/team5.png"/>
+      <img src="${ctx}/images/team5.png"/>
       <span>团队新成员</span>
       <a href="${ctx}/u/team/teamNew">新成员详情>></a>
     </div>
@@ -193,7 +193,7 @@
 
   <div class="all allName clearfloat">
     <div class="teamAll allList">
-      <img src="${ctx}/team4.png"/>
+      <img src="${ctx}/images/team4.png"/>
       <span>新晋直属特级</span>
     </div>
     <c:forEach items="${dataMap.mynT}" var="tlist">
@@ -232,11 +232,11 @@
 
   <div class="all allLast">
     <div class="teamAll allList">
-      <img src="${ctx}/team7.png"/>
+      <img src="${ctx}/images/team7.png"/>
       <span>活跃度：${dataMap.actPer}%</span>
     </div>
     <div class="teamAll allList">
-      <img src="${ctx}/team1.png"/>
+      <img src="${ctx}/images/team1.png"/>
       <span>沉睡成员</span>
     </div>
     <c:forEach items="${dataMap.act}" var="user" begin="0" end="2" varStatus="index">
@@ -248,7 +248,7 @@
           <span>${user.nickname}</span>
           <span class="rankingSpan ${user.userRank.level==4?"must":user.userRank.level==3?"province":user.userRank.level==2?"city":user.userRank.level==1?"VIP":user.userRank.level==0?"com":""}">${user.userRank.level==4?"特级":user.userRank.level==3?"省级":user.userRank.level==2?"市级":user.userRank.level==1?"VIP":user.userRank.level==0?"普通":""}</span>
         </div>
-        <a href="tel:${user.phone}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px"><span class="tel">${user.phone}</span></a>
+        <a href="tel:${user.phone}" class="tel"><img src="${ctx}/images/tel.png" style="width: 15px;height: 15px;padding-right: 5px"><span class="tel">${user.phone}</span></a>
 
       </div>
       </c:if>
@@ -256,7 +256,7 @@
     <a href="${ctx}/u/team/teamSleep" class="lookDetil">查看详情>></a>
   </div>
 </article>
-<script src="${ctx}/echarts.min.js"></script>
+<script src="${ctx}/js/echarts.min.js"></script>
 <script type="text/javascript">
 
   var counts = "${dataMap.TTot}";

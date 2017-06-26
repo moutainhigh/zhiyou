@@ -176,9 +176,9 @@
 
 <article>
   <div class="teamTop">
-    <img src="${ctx}/seatch.png" />
+    <img src="${ctx}/images/seatch.png" />
     <input type="search" class="searchInput" placeholder="请输入姓名或手机号" />
-    <img src="${ctx}/searchBtn.png" class="seatchImg" onclick="seatch()" />
+    <img src="${ctx}/images/searchBtn.png" class="seatchImg" onclick="seatch()" />
     <div class="searchBtn" onclick="seatch()">搜索</div>
   </div>
   <div class="numberList">
@@ -191,7 +191,7 @@
             <div class="ranking">
               <span>${udto.nickname}(${udto.num}人)</span>
             </div>
-            <a href="tel:{{d.phone}}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${udto.phone}</a>
+            <a href="tel:{{d.phone}}" class="tel"><img src="${ctx}/images/tel.png" style="width: 15px;height: 15px;padding-right: 5px">${udto.phone}</a>
           </div>
         </div>
       </div>
@@ -318,7 +318,7 @@
         <div class="ranking">
           <span>{{d.nickname}}({{d.num}}人)</span>
         </div>
-        <a href="tel:{{d.phone}}" class="tel"><img src="${ctx}/tel.png" style="width: 15px;height: 15px;padding-right: 5px">{{d.phone}}</a>
+        <a href="tel:{{d.phone}}" class="tel"><img src="${ctx}/images/tel.png" style="width: 15px;height: 15px;padding-right: 5px">{{d.phone}}</a>
       </div>
     </div>
   </div>

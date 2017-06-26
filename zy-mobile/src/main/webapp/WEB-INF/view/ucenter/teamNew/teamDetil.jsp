@@ -248,9 +248,9 @@
 
 <article>
     <div class="teamTop">
-        <img src="${ctx}/seatch.png" />
+        <img src="${ctx}/images/seatch.png" />
         <input type="search" class="searchInput" placeholder="请输入姓名或手机号" />
-        <img src="${ctx}/searchBtn.png" class="seatchImg" onclick="seatch()" />
+        <img src="${ctx}/images/searchBtn.png" class="seatchImg" onclick="seatch()" />
         <div class="searchBtn" onclick="seatch()">搜索</div>
     </div>
     <div class="numberList">
@@ -279,7 +279,7 @@
                             <img src="${ctx}/jian.png" />
                         </div>
                         <a href="tel:${v4user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
+                            <img src="${ctx}/images/tel.png" />
                         </a>
                     </div>
                     <div class="rankingNum">
@@ -334,7 +334,7 @@
                             <img src="${ctx}/jian.png" />
                         </div>
                         <a href="tel:${v3user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
+                            <img src="${ctx}/images/tel.png" />
                         </a>
                     </div>
                     <div class="rankingNum">
@@ -390,7 +390,7 @@
                             <img src="${ctx}/jian.png" />
                         </div>
                         <a href="tel:${v2user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
+                            <img src="${ctx}/images/tel.png" />
                         </a>
                     </div>
                     <div class="rankingNum">
@@ -443,7 +443,7 @@
                             <img src="${ctx}/jian.png" />
                         </div>
                         <a href="tel:${v1user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
+                            <img src="${ctx}/images/tel.png" />
                         </a>
                     </div>
                     <div class="rankingNum">
@@ -643,7 +643,7 @@
                 <img src="${ctx}/jian.png" />
             </div>
             <a href="tel:{{ d.phone }}" class="telAll">
-              <img src="${ctx}/tel.png" /></a>
+              <img src="${ctx}/images/tel.png" /></a>
         </div>
         <div class="rankingNum">
             <div class="ranknumber">

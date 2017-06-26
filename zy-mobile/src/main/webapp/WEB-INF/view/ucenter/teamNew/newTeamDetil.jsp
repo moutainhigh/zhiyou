@@ -247,9 +247,9 @@
 
 <article>
     <div class="teamTop">
-        <img src="${ctx}/seatch.png" />
+        <img src="${ctx}/images/seatch.png" />
         <input type="search" class="searchInput" placeholder="请输入姓名或手机号" />
-        <img src="${ctx}/searchBtn.png" class="seatchImg" onclick="seatch()" />
+        <img src="${ctx}/images/searchBtn.png" class="seatchImg" onclick="seatch()" />
         <div class="searchBtn" onclick="seatch()">搜索</div>
     </div>
     <div class="numberList">
@@ -274,7 +274,7 @@
                             <span>${v4user.nickname}</span>
                         </div>
                         <a href="tel:${v4user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
+                            <img src="${ctx}/images/tel.png" />
                         </a>
                     </div>
                 </div>
@@ -302,7 +302,7 @@
                             <span>${v3user.nickname}</span>
                         </div>
                         <a href="tel:${v3user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
+                            <img src="${ctx}/images/tel.png" />
                         </a>
                     </div>
                 </div>
@@ -330,7 +330,7 @@
                             <span>${v2user.nickname}</span>
                         </div>
                         <a href="tel:${v2user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
+                            <img src="${ctx}/images/tel.png" />
                         </a>
                     </div>
                 </div>
@@ -358,7 +358,7 @@
                             <span>${v1user.nickname}</span>
                         </div>
                         <a href="tel:${v1user.phone}" class="telAll">
-                            <img src="${ctx}/tel.png" />
+                            <img src="${ctx}/images/tel.png" />
                         </a>
                     </div>
                 </div>
@@ -468,7 +468,7 @@
                 <span class="rankingSpan {{ d.userRank =='V4'?'must':d.userRank =='V3'?'province':d.userRank =='V2'?'city':d.userRank =='V1'?'VIP':d.userRank=='V0'?'com':''}}">{{d.userRank =='V4'?'特级':d.userRank =='V3'?'省级':d.userRank =='V2'?'市级':d.userRank =='V1'?'VIP':d.userRank =='V0'?'普通':''}}</span>
             </div>
             <a href="tel:{{ d.phone }}" class="telAll">
-                <img src="${ctx}/tel.png" /></a>
+                <img src="${ctx}/images/tel.png" /></a>
         </div>
     </div>
 </script>

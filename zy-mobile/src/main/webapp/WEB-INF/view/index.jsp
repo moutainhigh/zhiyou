@@ -110,6 +110,7 @@
   <%--<%@ include file="/WEB-INF/view/include/footer.jsp"%>--%>
 <%--</body>--%>
 <%--</html>--%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -119,7 +120,7 @@
     <meta content="Wed, 26 Feb 1997 08:21:57GMT" http-equiv="expires">
     <meta name="format-detection" content="telephone=no"/>
     <title>首页</title>
-    <link rel="stylesheet" href="${ctx}/swiper.min.css">
+    <link rel="stylesheet" href="${ctx}/css/swiper.min.css">
     <style>
         * {margin:0;padding:0;border:none;}
         body,html {
@@ -152,7 +153,7 @@
             float: left;
             width:168px;
             font-size: 28px;
-            margin: 20px 25px 0px 40px;
+            margin: 45px 25px 0px 40px;
             text-align: center;
         }
         .notice span {display:block;width: 100%;}
@@ -179,53 +180,53 @@
 <div class="main">
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <div class="swiper-slide slide"><a href="#"><img src="${ctx}/banner.png" /></a></div>
-            <div class="swiper-slide slide"><a href="#"><img src="${ctx}/banner.png" /></a></div>
-            <div class="swiper-slide slide"><a href="#"><img src="${ctx}/banner.png" /></a></div>
-            <div class="swiper-slide slide"><a href="#"><img src="${ctx}/banner.png" /></a></div>
+            <div class="swiper-slide slide"><a href="#"><img src="${ctx}/images/banner.png" /></a></div>
+            <div class="swiper-slide slide"><a href="#"><img src="${ctx}/images/banner.png" /></a></div>
+            <div class="swiper-slide slide"><a href="#"><img src="${ctx}/images/banner.png" /></a></div>
+            <div class="swiper-slide slide"><a href="#"><img src="${ctx}/images/banner.png" /></a></div>
         </div>
         <div class="swiper-pagination"></div>
     </div>
     <article class="clearfloat">
         <a href="#" class="notice">
-            <img src="${ctx}/notice.png" />
+            <img src="${ctx}/images/notice.png" />
             <span>通知公告</span>
         </a>
         <a href="#" class="notice">
-            <img src="${ctx}/newActivity.png" />
+            <img src="${ctx}/images/newActivity.png" />
             <span>最新活动</span>
         </a>
         <a href="#" class="notice">
-            <img src="${ctx}/new.png" />
+            <img src="${ctx}/images/new.png" />
             <span>新闻资讯</span>
         </a>
         <a href="#" class="notice">
-            <img src="${ctx}/myMessage.png" />
+            <img src="${ctx}/images/myMessage.png" />
             <span>我的信息</span>
         </a>
         <a href="#" class="notice">
-            <img src="${ctx}/shop.png" />
+            <img src="${ctx}/images/shop.png" />
             <span>商品服务</span>
         </a>
         <a href="#" class="notice">
-            <img src="${ctx}/report.png" />
+            <img src="${ctx}/images/report.png" />
             <span>检测报告</span>
         </a>
         <a href="#" class="notice">
-            <img src="${ctx}/inquiry.png" />
+            <img src="${ctx}/images/inquiry.png" />
             <span>授权查询</span>
         </a>
         <a href="#" class="notice">
-            <img src="${ctx}/realName.png" />
+            <img src="${ctx}/images/realName.png" />
             <span>实名认证</span>
         </a>
         <a href="#" class="notice">
-            <img src="${ctx}/aboutT.png" />
+            <img src="${ctx}/images/aboutT.png" />
             <span>关于智优</span>
         </a>
     </article>
 </div>
-<script src="${ctx}/swiper.min.js"></script>
+<script src="${ctx}/js/swiper.min.js"></script>
 <script>
     var mySwiper = new Swiper('.swiper-container',{
         autoplay : 2000,

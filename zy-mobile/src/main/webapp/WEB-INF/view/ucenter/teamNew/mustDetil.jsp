@@ -238,9 +238,9 @@
   <a href="${ctx}/u/team/newTeam" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 <div class="teamTop">
-  <img src="${ctx}/seatch.png" />
+  <img src="${ctx}/images/seatch.png" />
   <input type="search" class="searchInput" placeholder="请输入姓名或手机号" />
-  <img src="${ctx}/searchBtn.png" class="seatchImg" onclick="seatch()" />
+  <img src="${ctx}/images/searchBtn.png" class="seatchImg" onclick="seatch()" />
   <div class="searchBtn" onclick="seatch()">搜索</div>
 </div>
 
@@ -260,7 +260,7 @@
               <img src="${ctx}/jian.png" />
             </div>
             <div class="telAll" onclick="showDis(this)">
-              <img src="${ctx}/tel.png" />
+              <img src="${ctx}/images/tel.png" />
             </div>
             <input type="hidden" class="my" value="tel:${uvo.phone}" />
             <input type="hidden" class="parentPeoplr" value="tel:${uvo.pphone}" />

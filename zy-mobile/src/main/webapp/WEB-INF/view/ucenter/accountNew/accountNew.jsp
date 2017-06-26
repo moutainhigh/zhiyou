@@ -197,14 +197,14 @@
   </div>
   <div class="allAccount" style="padding-bottom: 20px;">
     <div class="teamAllAccount">
-      <img src="${ctx}/pvoluer.png"/>
+      <img src="${ctx}/images/pvoluer.png"/>
       <span>个人销量</span>
     </div>
     <div id="echartFir"></div>
   </div>
   <div class="allAccount">
     <div class="teamAllAccount">
-      <img src="${ctx}/leiji.png" />
+      <img src="${ctx}/images/leiji.png" />
       <span>累计收益占比</span>
     </div>
     <div id="last" style="width: 100%;height: 350px;padding: 10px;"></div>
@@ -353,7 +353,7 @@
     </div>
   </c:if>
 </article>
-<script src="${ctx}/echarts.min.js"></script>
+<script src="${ctx}/js/echarts.min.js"></script>
 <script type="text/javascript">
   var arrays="${dataMap.PL}";
   var array=arrays.split(",");

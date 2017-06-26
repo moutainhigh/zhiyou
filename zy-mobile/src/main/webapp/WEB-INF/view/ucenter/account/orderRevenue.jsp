@@ -180,7 +180,7 @@
     </c:forEach>
 </article>
 <input type="hidden" value="-" />
-<script src="${ctx}/echarts.min.js"></script>
+<script src="${ctx}/js/echarts.min.js"></script>
 <script type="text/javascript">
     var type = ${type};
     function changeTriangle(obj) {

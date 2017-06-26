@@ -180,7 +180,7 @@
 
   <div class="all" style="padding-bottom: 20px;">
     <div class="teamAll">
-      <img src="${ctx}/peopleVolume.png"/>
+      <img src="${ctx}/images/peopleVolume.png"/>
       <span>个人销量</span>
     </div>
     <div id="echartTeamTwo"></div>
@@ -215,7 +215,7 @@
   <c:if test="${dateMap.userRank == 'V4'}">
     <div class="all allLast">
       <div class="teamAll allList">
-        <img src="${ctx}/mustVolume.png"/>
+        <img src="${ctx}/images/mustVolume.png"/>
         <span>直属特级进销单</span>
       </div>
       <c:forEach items="${dateMap.v4List}" var="user" end="2">
@@ -237,14 +237,14 @@
   <c:if test="${dateMap.userRank == 'V4'}">
     <div class="all" style="background: #f9f9f9 !important;padding-bottom: 20px;">
       <div class="teamAll">
-        <img src="${ctx}/teamVolume.png"/>
+        <img src="${ctx}/images/teamVolume.png"/>
         <span>团队销量</span>
       </div>
       <div id="echartTeamAll"></div>
     </div>
   </c:if>
 </article>
-<script src="${ctx}/echarts.min.js"></script>
+<script src="${ctx}/js/echarts.min.js"></script>
 <script type="text/javascript">
   var svArray = "${dateMap.salesVolumeData}";
   var array = svArray.split(",");
