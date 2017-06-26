@@ -36,6 +36,9 @@
             height:280px;
             color: #49494a;
         }
+        .account .header {
+            background-color: #6cb92d;
+        }
         .echartdetil {
             width:100%;
             height:80px;
@@ -110,7 +113,7 @@
             display: none;
             background: #eee;
         }
-        .allAccount {background: #fff;margin-bottom: 15px;}
+        .allAccount {background: #fff;margin-bottom: 10px;}
         .teamAllAccount {height: 50px;background: #fff;padding-top: 10px;}
         .teamAllAccount img {float: left;width: 50px;height: 50px;margin-left: 8px;}
         .teamAllAccount span {
@@ -142,8 +145,12 @@
 </head>
 
 <body class="account">
-
+<header class="header">
+    <h1>${types}月度表</h1>
+    <a href="#" onclick="javascript :history.back(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
+</header>
 <article>
+    <div style="width: 100%;padding-bottom: 10px;"></div>
     <div class="allAccount">
         <div class="teamAllAccount">
             <span>${types}月度表</span>
@@ -160,7 +167,7 @@
                 <div class="font-triangle">
                     <p>
                             <span class="spanTriange">${dateMap.len - num.index}</span>月<br/>
-                            <span class="color">${dateMap.len - num.index}月01-${dateMap.len - num.index}月30</span>
+                            <span class="color">${dateMap.len - num.index}月01-${dateMap.len - num.index}月底</span>
                     </p>
                 </div>
                 <div class="font-triangleT">
