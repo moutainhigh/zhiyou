@@ -24,18 +24,14 @@ public class AccountLogComponent {
 
 	public AccountLogSimpleVo buildSimpleVo(AccountLog accountLog) {
 		AccountLogSimpleVo accountLogSimpleVo = new AccountLogSimpleVo();
+		BeanUtils.copyProperties(accountLog, accountLogSimpleVo);
 		accountLogSimpleVo.setTransTimeLabel(DateFormatUtils.format(accountLog.getTransTime(), TIME_PATTERN));
 		accountLogSimpleVo.setTitle(accountLog.getTitle());
 		BigDecimal transAmount = accountLog.getTransAmount();
 		BigDecimal afterAmount = accountLog.getAfterAmount();
 		accountLogSimpleVo.setInOut(accountLog.getInOut());
-		if (accountLog.getCurrencyType() == CurrencyType.积分) {
-			accountLogSimpleVo.setTransAmount(transAmount.setScale(0));
-			accountLogSimpleVo.setAfterAmount(afterAmount.setScale(0));
-		} else {
-			accountLogSimpleVo.setTransAmount(transAmount);
-			accountLogSimpleVo.setAfterAmount(afterAmount);
-		}
+		accountLogSimpleVo.setTransAmount(transAmount);
+		accountLogSimpleVo.setAfterAmount(afterAmount);
 
 		User user = cacheComponent.getUser(accountLog.getUserId());
 		accountLogSimpleVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
