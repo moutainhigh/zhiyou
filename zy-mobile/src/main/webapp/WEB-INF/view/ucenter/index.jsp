@@ -121,7 +121,7 @@
         </a>
         </c:if>
         <a class="flex-1 bd-r" href="${ctx}/u/salesVolume/salesVolume?userRank=${user.userRank}">
-          <i class="icon icon-2x" style='background: url("${ctx}/xiaoliang.png")'></i>
+          <i class="icon icon-2x" style='background: url("${ctx}/images/xiaoliang.png")'></i>
           <em>我的销量</em>
         </a>
         <a class="flex-1" href="#">
@@ -193,8 +193,8 @@
         <i class="icon icon-2x icon-policy"></i>
         <em>保险申请</em>
       </a>
-      <a class="flex-1"  href="#" style="background: #f2f3f5;">
-        <i class="icon icon-2x" style='background: url("${ctx}/lvyou.png")'></i>
+      <a class="flex-1"  href="#" style="background: #f7f7f7;">
+        <i class="icon icon-2x" style='background: url("${ctx}/images/lvyou.png")'></i>
         <em>旅游申请</em>
       </a>
     </div>
@@ -214,12 +214,12 @@
     <div class="user-account flex list-group">
 
       <a class="flex-1 bd-r" href="${ctx}/u/userSetting">
-        <i class="icon icon-2x" style='background: url("${ctx}/shezhi.png")'></i>
+        <i class="icon icon-2x" style='background: url("${ctx}/images/shezhi.png")'></i>
         <em>设置</em>
       </a>
 
       <a class="flex-1 bd-r" href="#">
-        <i class="icon icon-2x" style='background: url("${ctx}/banben.png")'></i>
+        <i class="icon icon-2x" style='background: url("${ctx}/images/banben.png")'></i>
         <em>版本通知</em>
       </a>
       <a class="flex-1"  href="#" style="background: #f2f3f5;">
