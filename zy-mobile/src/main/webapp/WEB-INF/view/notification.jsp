@@ -69,62 +69,8 @@
 </head>
 <body>
 <div class="main">
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <c:forEach items="${banners}" var="banner">
-                <div class="swiper-slide slide"><a href="${banner.url}"><img src="${banner.image}@250h_750w_1e_1c.jpg" /></a></div>
-            </c:forEach>
-        </div>
-        <div class="swiper-pagination"></div>
-    </div>
-    <article class="clearfloat">
-        <a href="${ctx}/notification" class="notice">
-            <img src="${ctx}/images/notice.png" />
-            <span>通知公告</span>
-        </a>
-        <a href="${ctx}/activity" class="notice">
-            <img src="${ctx}/images/newActivity.png" />
-            <span>最新活动</span>
-        </a>
-        <a href="${ctx}/article" class="notice">
-            <img src="${ctx}/images/new.png" />
-            <span>新闻资讯</span>
-        </a>
-        <a href="${ctx}/u" class="notice">
-            <img src="${ctx}/images/myMessage.png" />
-            <span>我的信息</span>
-        </a>
-        <a href="${ctx}/product" class="notice">
-            <img src="${ctx}/images/shop.png" />
-            <span>商品服务</span>
-        </a>
-        <a href="${ctx}/u/report" class="notice">
-            <img src="${ctx}/images/report.png" />
-            <span>检测报告</span>
-        </a>
-        <a href="${ctx}/code" class="notice">
-            <img src="${ctx}/images/inquiry.png" />
-            <span>授权查询</span>
-        </a>
-        <a href="${ctx}/u/userInfo" class="notice">
-            <img src="${ctx}/images/realName.png" />
-            <span>实名认证</span>
-        </a>
-        <a href="${ctx}/about" class="notice">
-            <img src="${ctx}/images/aboutT.png" />
-            <span>关于智优</span>
-        </a>
-    </article>
+     <img src="${ctx}/images/notification23.png" style="width:720px;" />
 </div>
-<script src="${ctx}/js/swiper.min.js"></script>
-<script>
 
-    var mySwiper = new Swiper('.swiper-container',{
-        autoplay : 2000,
-        speed:300,
-        loop:true,
-        pagination : '.swiper-pagination'
-    });
-</script>
 </body>
 </html>

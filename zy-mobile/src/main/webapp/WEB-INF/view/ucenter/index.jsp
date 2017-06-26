@@ -97,29 +97,38 @@
   
   <article>
 
-      <%--<c:if test="${user.userRank == 'V0'}">--%>
-      <%--<a class="list-item" href="${ctx}/u/agent">--%>
-        <%--<i class="list-icon icon icon-agent"></i>--%>
-        <%--<div class="list-text">成为服务商</div>--%>
-        <%--<i class="list-arrow"></i>--%>
-      <%--</a>--%>
-      <%--</c:if>--%>
-      <%--<c:if test="${user.userRank == 'V1' || user.userRank == 'V2'}">--%>
-        <%--<a class="list-item" href="${ctx}/u/agent">--%>
-          <%--<i class="list-icon icon icon-upgrade"></i>--%>
-          <%--<div class="list-text">升级服务商</div>--%>
-          <%--<i class="list-arrow"></i>--%>
-        <%--</a>--%>
-      <%--</c:if>--%>
+
 
       <div class="user-account flex list-group">
+        <c:if test="${user.userRank == 'V0'}">
+          <%--<a class="list-item" href="${ctx}/u/agent">--%>
+            <%--<i class="list-icon icon icon-agent"></i>--%>
+            <%--<div class="list-text">成为服务商</div>--%>
+            <%--<i class="list-arrow"></i>--%>
+          <%--</a>--%>
+          <a class="flex-1 bd-r" href="${ctx}/u/agent">
+            <i class="icon icon-agent icon-2x"></i>
+            <em>成为服务商</em>
+          </a>
+        </c:if>
+        <c:if test="${user.userRank == 'V1' || user.userRank == 'V2'}">
+          <%--<a class="list-item" href="${ctx}/u/agent">--%>
+            <%--<i class="list-icon icon icon-agent"></i>--%>
+            <%--<div class="list-text">升级服务商</div>--%>
+            <%--<i class="list-arrow"></i>--%>
+          <%--</a>--%>
+          <a class="flex-1 bd-r" href="${ctx}/u/agent">
+            <i class="icon icon-agent icon-2x"></i>
+            <em>升级服务商</em>
+          </a>
+        </c:if>
 
+        <c:if test="${user.userRank != 'V0'}">
         <a class="flex-1 bd-r" href="${ctx}/u/team/newTeam">
           <i class="icon icon-users icon-2x"></i>
           <em>我的团队</em>
         </a>
-        <%--<c:if test="${user.userRank != 'V0'}">--%>
-        <%--</c:if>--%>
+        </c:if>
         <a class="flex-1 bd-r" href="${ctx}/u/salesVolume/salesVolume?userRank=${user.userRank}">
           <i class="icon icon-2x" style='background: url("${ctx}/images/xiaoliang.png")'></i>
           <em>我的销量</em>
