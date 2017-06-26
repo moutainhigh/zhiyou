@@ -234,7 +234,7 @@
 </head>
 <body>
 <header class="header">
-  <h1>直属特级详情</h1>
+  <h1 id="h1must">直属特级详情</h1>
   <a href="${ctx}/u/team/newTeam" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 <div class="teamTop">
@@ -313,10 +313,13 @@
 <script>
   //点击搜索
   function seatch() {
+    $("#h1must").text("");
     if($(".searchInput").val()==""){
+      $("#h1must").text("直属特级详情");
       $(".numberList").show();
       $(".searchListShow").hide();
     }else {
+      $("#h1must").text("找人");
       $(".numberList").hide();
       $(".searchListShow").show();
       $(".searchList").hide();
