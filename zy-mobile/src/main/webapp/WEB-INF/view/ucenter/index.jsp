@@ -124,7 +124,7 @@
           <i class="icon icon-2x" style='background: url("${ctx}/xiaoliang.png")'></i>
           <em>我的销量</em>
         </a>
-        <a class="flex-1" href="${ctx}/u/order/out">
+        <a class="flex-1" href="#">
           <i class="icon icon-out icon-2x" style="background: none;"></i>
           <em></em>
         </a>

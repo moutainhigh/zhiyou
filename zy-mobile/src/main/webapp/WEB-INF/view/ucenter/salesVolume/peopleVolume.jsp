@@ -78,7 +78,7 @@
 
   <div class="all" style="padding-bottom: 20px;">
     <div class="teamAll">
-      <img src="${ctx}/teamNew.png"/>
+      <img src="${ctx}/images/teamNew.png"/>
       <span>${userName}的销量</span>
     </div>
     <div id="echartTeamTwo"></div>
@@ -86,7 +86,7 @@
   </div>
 
 </article>
-<script src="${ctx}/echarts.min.js"></script>
+<script src="${ctx}/js/echarts.min.js"></script>
 <script type="text/javascript">
   var svArray = "${dateMap.salesVolumeData}";
   var array = svArray.split(",");
