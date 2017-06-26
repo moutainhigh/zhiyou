@@ -189,7 +189,7 @@
 
   <div class="all allLast">
     <div class="teamAll allList">
-      <img src="${ctx}/findVolume.png"/>
+      <img src="${ctx}/images/findVolume.png"/>
       <span>直属团队进销单</span>
     </div>
     <c:forEach items="${dateMap.userList}" var="user" end="2">

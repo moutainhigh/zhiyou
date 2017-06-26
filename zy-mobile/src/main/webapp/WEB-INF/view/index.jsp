@@ -118,6 +118,7 @@
 </div>
 <script src="${ctx}/js/swiper.min.js"></script>
 <script>
+
     var mySwiper = new Swiper('.swiper-container',{
         autoplay : 2000,
         speed:300,

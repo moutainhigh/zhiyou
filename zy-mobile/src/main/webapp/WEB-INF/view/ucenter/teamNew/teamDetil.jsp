@@ -276,7 +276,7 @@
                          <%--   <img src="${ctx}/new.png"style="width: 30px;"/>--%>
                         </div>
                         <div class="telAll jian" onclick="showNum(this,${v4user.id},'V4',${indexs.index})" change="true">
-                            <img src="${ctx}/jian.png" />
+                            <img src="${ctx}/images/jian.png" />
                         </div>
                         <a href="tel:${v4user.phone}" class="telAll">
                             <img src="${ctx}/images/tel.png" />
@@ -331,7 +331,7 @@
                                 <%--   <img src="${ctx}/new.png"style="width: 30px;"/>--%>
                         </div>
                         <div class="telAll jian" onclick="showNum(this,${v3user.id},'V3',${indexs.index})" change="true">
-                            <img src="${ctx}/jian.png" />
+                            <img src="${ctx}/images/jian.png" />
                         </div>
                         <a href="tel:${v3user.phone}" class="telAll">
                             <img src="${ctx}/images/tel.png" />
@@ -387,7 +387,7 @@
                                 <%--   <img src="${ctx}/new.png"style="width: 30px;"/>--%>
                         </div>
                         <div class="telAll jian" onclick="showNum(this,${v2user.id},'V2',${indexs.index})" change="true">
-                            <img src="${ctx}/jian.png" />
+                            <img src="${ctx}/images/jian.png" />
                         </div>
                         <a href="tel:${v2user.phone}" class="telAll">
                             <img src="${ctx}/images/tel.png" />
@@ -440,7 +440,7 @@
                                 <%--   <img src="${ctx}/new.png"style="width: 30px;"/>--%>
                         </div>
                         <div class="telAll jian" onclick="showNum(this,${v1user.id},'V1',${indexs.index})" change="true">
-                            <img src="${ctx}/jian.png" />
+                            <img src="${ctx}/images/jian.png" />
                         </div>
                         <a href="tel:${v1user.phone}" class="telAll">
                             <img src="${ctx}/images/tel.png" />
@@ -569,11 +569,11 @@
                 $("#"+type+"com"+index).text(arry[4]+"人");
                 if($(obj).attr("change")=="true"){
                     $(obj).parents(".rankingAll").next(".rankingNum").show();
-                    $(obj).find("img").attr("src","${ctx}/jian2.png");
+                    $(obj).find("img").attr("src","${ctx}/images/jian2.png");
                     $(obj).attr("change","false");
                 }else {
                     $(obj).parents(".rankingAll").next(".rankingNum").hide();
-                    $(obj).find("img").attr("src","${ctx}/jian.png");
+                    $(obj).find("img").attr("src","${ctx}/images/jian.png");
                     $(obj).attr("change","true");
                 }
 
@@ -640,7 +640,7 @@
                 <%-- <img src="${ctx}/new.png"style="width: 30px;"/>--%>
              </div>
             <div class="telAll jian" onclick="showNum(this,'{{ d.id }}','qv','{{ d.id }}')" change="true">
-                <img src="${ctx}/jian.png" />
+                <img src="${ctx}/images/jian.png" />
             </div>
             <a href="tel:{{ d.phone }}" class="telAll">
               <img src="${ctx}/images/tel.png" /></a>

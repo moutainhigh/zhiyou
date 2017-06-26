@@ -22,7 +22,7 @@
       margin-bottom: 20px;
     }
      .icon-heartNew {
-       background-image: url(${ctx}/icon_heartNew.png);
+       background-image: url(${ctx}/images/icon_heartNew.png);
      }
   </style>
 <script>

@@ -214,7 +214,7 @@
         <div class="percentNum">
              <div class="percentNumDiv">
                    <div class="fontImg clearfloat">
-                     <img src="${ctx}/01.png" />
+                     <img src="${ctx}/images/01.png" />
                      <span>订单收益</span>
                    </div>
                  <div class="fontImg clearfloat">
@@ -232,7 +232,7 @@
         <div class="percentNum">
           <div class="percentNumDiv">
             <div class="fontImg clearfloat">
-              <img src="${ctx}/02.png" />
+              <img src="${ctx}/images/02.png" />
               <span>返利奖</span>
             </div>
             <div class="fontImg clearfloat">
@@ -250,7 +250,7 @@
         <div class="percentNum">
           <div class="percentNumDiv">
             <div class="fontImg clearfloat">
-              <img src="${ctx}/03.png" />
+              <img src="${ctx}/images/03.png" />
               <span>数据奖</span>
             </div>
             <div class="fontImg clearfloat">
@@ -268,7 +268,7 @@
       <div class="percentNum">
         <div class="percentNumDiv">
           <div class="fontImg clearfloat">
-            <img src="${ctx}/04.png" />
+            <img src="${ctx}/images/04.png" />
             <span >销量奖</span>
           </div>
           <div class="fontImg clearfloat">
@@ -286,7 +286,7 @@
       <div class="percentNum">
         <div class="percentNumDiv">
           <div class="fontImg clearfloat">
-            <img src="${ctx}/05.png" />
+            <img src="${ctx}/images/05.png" />
             <span>特级平级奖</span>
           </div>
           <div class="fontImg clearfloat">
@@ -304,7 +304,7 @@
       <div class="percentNum">
         <div class="percentNumDiv">
           <div class="fontImg clearfloat">
-            <img src="${ctx}/06.png" />
+            <img src="${ctx}/images/06.png" />
             <span>董事贡献奖</span>
           </div>
           <div class="fontImg clearfloat">
@@ -322,7 +322,7 @@
       <div class="percentNum">
         <div class="percentNumDiv">
           <div class="fontImg clearfloat">
-            <img src="${ctx}/07.png" />
+            <img src="${ctx}/images/07.png" />
             <span>平级推荐奖</span>
           </div>
           <div class="fontImg clearfloat">
@@ -340,7 +340,7 @@
       <div class="percentNum">
         <div class="percentNumDiv">
           <div class="fontImg clearfloat">
-            <img src="${ctx}/08.png" />
+            <img src="${ctx}/images/08.png" />
             <span>特级推荐奖</span>
           </div>
           <div class="fontImg clearfloat">

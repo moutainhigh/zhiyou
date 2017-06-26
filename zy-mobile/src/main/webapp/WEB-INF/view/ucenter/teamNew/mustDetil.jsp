@@ -257,7 +257,7 @@
               <p class="tuijian">[推荐人：${uvo.pname}]</p>
             </div>
             <div class="telAll jian" onclick="showNum(this,${uvo.id},${indexs.index})" change="true">
-              <img src="${ctx}/jian.png" />
+              <img src="${ctx}/images/jian.png" />
             </div>
             <div class="telAll" onclick="showDis(this)">
               <img src="${ctx}/images/tel.png" />
