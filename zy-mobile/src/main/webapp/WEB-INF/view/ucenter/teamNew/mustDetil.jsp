@@ -253,7 +253,7 @@
             <img src="${uvo.image1}" style="margin-left: 20px;margin-right: 20px;"/>
             <div class="ranking" style="text-align: left;font-size: 18px;">
               <span>${uvo.realname}</span>
-              <c:if test="${uvo.newflag eq 'T'}"><img src="${ctx}/new.png"style="width: 30px;"/></c:if>
+              <c:if test="${uvo.newflag eq 'T'}"><img src="${ctx}/images/new.png"style="width: 30px;"/></c:if>
               <p class="tuijian">[推荐人：${uvo.pname}]</p>
             </div>
             <div class="telAll jian" onclick="showNum(this,${uvo.id},${indexs.index})" change="true">

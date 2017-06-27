@@ -87,7 +87,7 @@
             <span>最新活动</span>
         </a>
         <a href="${ctx}/article" class="notice">
-            <img src="${ctx}/images/new.png" />
+            <img src="${ctx}/images/news.png" />
             <span>新闻资讯</span>
         </a>
         <a href="${ctx}/u" class="notice">
