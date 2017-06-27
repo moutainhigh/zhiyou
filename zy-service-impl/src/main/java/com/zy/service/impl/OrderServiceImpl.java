@@ -9,6 +9,7 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
 import com.zy.common.model.tree.TreeNodeResolver;
+import com.zy.common.util.BeanUtils;
 import com.zy.component.FncComponent;
 import com.zy.component.MalComponent;
 import com.zy.entity.fnc.*;
@@ -923,9 +924,47 @@ public class OrderServiceImpl implements OrderService {
 				.sellerIdEQ(Constants.SETTING_SETTING_ID)
 				.build());
 
+		final Long toV4Quantity = 3600L;
+		final BigDecimal zero = new BigDecimal("0.00");
+		final Date now = new Date();
+
+		Map<Long, Boolean> toV4Map = orders.stream()
+				.filter(v -> v.getQuantity() >= toV4Quantity && v.getBuyerUserRank().ordinal() < UserRank.V4.ordinal())
+				.collect(Collectors.toMap(v -> v.getUserId(), v -> true, (existingValue, newValue) -> existingValue));
+
 		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
 		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
 		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
+		Map<Long, List<User>> userChildrenMap = users.stream().filter(v -> v.getParentId() != null).collect(Collectors.groupingBy(v -> v.getParentId()));
+		List<Order> copyOrders = orders.stream().map(v -> {
+			Long userId = v.getUserId();
+
+			Order copy = new Order();
+			BeanUtils.copyProperties(v, copy);
+
+			Boolean toV4 = toV4Map.get(userId);
+			User user = userMap.get(userId);
+			if (toV4 != null) {
+//				List<User> userList = userChildrenMap.get(userId);
+//				long count = userList.stream().filter(u -> toV4Map.get(u.getId()) != null).count();
+//				logger.error(user.getNickname() + "直升特级" + count);
+//				if (count == 0L) {
+//					User parent = userMap.get(user.getParentId());
+//					while(parent.getUserRank() != UserRank.V4) {
+//						parent = userMap.get(parent.getParentId());
+//					}
+//					logger.error(user.getNickname() + "直升特级，订单给上级：" + parent.getNickname() + parent.getUserRank());
+//					copy.setUserId(parent.getId());
+//				}
+				User parent = userMap.get(user.getParentId());
+				while(parent.getUserRank() != UserRank.V4 && userMap.get(parent.getId()) == null) {
+					parent = userMap.get(parent.getParentId());
+				}
+				copy.setUserId(parent.getId());
+				logger.error(user.getNickname() + "直升特级，订单给上级：" + parent.getNickname() + parent.getUserRank());
+			}
+			return copy;
+		}).collect(Collectors.toList());
 
 		Map<Long, TeamModel> teamMap = v4Users.stream()
 				.map(v -> {
@@ -967,60 +1006,70 @@ public class OrderServiceImpl implements OrderService {
 					return teamModel;
 				}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
 
-		Map<Long, Long> userQuantityMap = orders.stream().collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x , y) -> x + y));
+		{
+			Map<Long, Long> userQuantityMap = copyOrders.stream().collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x, y) -> x + y));
+			userQuantityMap.entrySet().stream().forEach(v -> {
+				if (v.getValue() > 0) {
+					System.out.println(userMap.get(v.getKey()).getNickname() + "个人销量" + v.getValue() + "元");
+				}
+			});
+
+			Map<Long, Long> teamQuantityMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
+				Long userId = v.getId();
+				Long myQuantity = userQuantityMap.get(userId) == null ? 0L : userQuantityMap.get(userId);
+				Long teamQuantity = teamMap.get(userId).getV4Children().stream()
+						.map(u -> userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId()))
+						.reduce(0L, (x, y) -> x + y);
+				return teamQuantity + myQuantity;
+			}));
+
+			teamQuantityMap.entrySet().stream().forEach(v -> {
+				if (v.getValue() > 0) {
+					logger.error(userMap.get(v.getKey()).getNickname() + "团队业绩" + v.getValue() + "次");
+				}
+			});
+
+			BigDecimal rate = new BigDecimal("128");
+			Map<Long, BigDecimal> profitMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
+				Long userId = v.getId();
+				BigDecimal quantity = new BigDecimal(teamQuantityMap.get(userId));
+				BigDecimal rate1 = getMonthlyRate(quantity);
+				BigDecimal profit = quantity.multiply(rate1).multiply(rate);
+				for (User user : teamMap.get(userId).getDirectV4Children()) {
+					if (predicate.test(user)) {
+						Long childUserId = user.getId();
+						BigDecimal childQuantity = new BigDecimal(teamQuantityMap.get(childUserId));
+						BigDecimal childRate = getMonthlyRate(childQuantity);
+						BigDecimal childProfit = childQuantity.multiply(childRate).multiply(rate);
+						profit = profit.subtract(childProfit);
+					}
+				}
+
+				return profit;
+			}));
+
+			for (Map.Entry<Long, BigDecimal> entry : profitMap.entrySet()) {
+				BigDecimal amount = entry.getValue();
+				Long userId = entry.getKey();
+				if (amount.compareTo(zero) > 0) {
+					try {
+						TimeUnit.MILLISECONDS.sleep(200);
+					} catch (InterruptedException e1) {
+					}
+					BigDecimal fee = amount.multiply(FEE_RATE);
+					BigDecimal amountAfter = amount.subtract(fee);
+					fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+					logger.error(userMap.get(userId).getNickname() + "返利奖" + amount + "积分");
+				}
+			}
+		}
+
+		Map<Long, Long> userQuantityMap = orders.stream().collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x, y) -> x + y));
 		userQuantityMap.entrySet().stream().forEach(v -> {
 			if (v.getValue() > 0) {
 				System.out.println(userMap.get(v.getKey()).getNickname() + "个人销量" + v.getValue() + "元");
 			}
 		});
-
-		Map<Long, Long> teamQuantityMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
-			Long userId = v.getId();
-			Long myQuantity = userQuantityMap.get(userId) == null ? 0L : userQuantityMap.get(userId);
-			Long teamQuantity = teamMap.get(userId).getV4Children().stream()
-					.map(u -> userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId()))
-					.reduce(0L, (x, y) -> x + y);
-			return teamQuantity + myQuantity;
-		}));
-
-		teamQuantityMap.entrySet().stream().forEach(v -> {
-			if (v.getValue() > 0) {
-				logger.error(userMap.get(v.getKey()).getNickname() + "团队业绩" + v.getValue() + "次");
-			}
-		});
-
-		BigDecimal rate = new BigDecimal("128");
-		Map<Long, BigDecimal> profitMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
-			Long userId = v.getId();
-			BigDecimal quantity = new BigDecimal(teamQuantityMap.get(userId));
-			BigDecimal rate1 = getMonthlyRate(quantity);
-			BigDecimal profit = quantity.multiply(rate1).multiply(rate);
-			for (User user : teamMap.get(userId).getDirectV4Children()) {
-				if (predicate.test(user)) {
-					Long childUserId = user.getId();
-					BigDecimal childQuantity = new BigDecimal(teamQuantityMap.get(childUserId));
-					BigDecimal childRate = getMonthlyRate(childQuantity);
-					BigDecimal childProfit = childQuantity.multiply(childRate).multiply(rate);
-					profit = profit.subtract(childProfit);
-				}
-			}
-
-			return profit;
-		}));
-
-		BigDecimal zero = new BigDecimal("0.00");
-		Date now = new Date();
-		for (Map.Entry<Long, BigDecimal> entry : profitMap.entrySet()) {
-			BigDecimal amount = entry.getValue();
-			Long userId = entry.getKey();
-			if (amount.compareTo(zero) > 0) {
-				try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
-				BigDecimal fee = amount.multiply(FEE_RATE);
-				BigDecimal amountAfter = amount.subtract(fee);
-				fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
-				logger.error(userMap.get(userId).getNickname() + "返利奖" + amount + "积分");
-			}
-		}
 
 		/* 期权奖励 */
 		LongSummaryStatistics summaryStatistics = orders.stream().mapToLong((x) -> x.getQuantity()).summaryStatistics();
@@ -1103,10 +1152,10 @@ public class OrderServiceImpl implements OrderService {
 			}
 		}
 
-		orderMonthlySettlement = new OrderMonthlySettlement();
-		orderMonthlySettlement.setYearAndMonth(yearAndMonth);
-		orderMonthlySettlement.setSettledUpTime(now);
-		orderMonthlySettlementMapper.insert(orderMonthlySettlement);
+//		orderMonthlySettlement = new OrderMonthlySettlement();
+//		orderMonthlySettlement.setYearAndMonth(yearAndMonth);
+//		orderMonthlySettlement.setSettledUpTime(now);
+//		orderMonthlySettlementMapper.insert(orderMonthlySettlement);
 	}
 
 	@Override
