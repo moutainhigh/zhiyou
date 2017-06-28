@@ -935,7 +935,6 @@ public class OrderServiceImpl implements OrderService {
 		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
 		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
 		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
-		Map<Long, List<User>> userChildrenMap = users.stream().filter(v -> v.getParentId() != null).collect(Collectors.groupingBy(v -> v.getParentId()));
 		List<Order> copyOrders = orders.stream().map(v -> {
 			Long userId = v.getUserId();
 
@@ -945,19 +944,10 @@ public class OrderServiceImpl implements OrderService {
 			Boolean toV4 = toV4Map.get(userId);
 			User user = userMap.get(userId);
 			if (toV4 != null) {
-//				List<User> userList = userChildrenMap.get(userId);
-//				long count = userList.stream().filter(u -> toV4Map.get(u.getId()) != null).count();
-//				logger.error(user.getNickname() + "直升特级" + count);
-//				if (count == 0L) {
-//					User parent = userMap.get(user.getParentId());
-//					while(parent.getUserRank() != UserRank.V4) {
-//						parent = userMap.get(parent.getParentId());
-//					}
-//					logger.error(user.getNickname() + "直升特级，订单给上级：" + parent.getNickname() + parent.getUserRank());
-//					copy.setUserId(parent.getId());
-//				}
 				User parent = userMap.get(user.getParentId());
-				while(parent.getUserRank() != UserRank.V4 && userMap.get(parent.getId()) == null) {
+				logger.error(parent.getNickname()+ "是否直升特级：" + toV4Map.get(parent.getId()));
+				logger.error(parent.getNickname()+ "用户等级：" + parent.getUserRank());
+				while(parent.getUserRank() != UserRank.V4) {
 					parent = userMap.get(parent.getParentId());
 				}
 				copy.setUserId(parent.getId());
