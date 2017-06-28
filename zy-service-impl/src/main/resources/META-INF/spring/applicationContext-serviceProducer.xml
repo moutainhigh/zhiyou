@@ -64,4 +64,5 @@
 	<dubbo:service ref="orderFillUserServiceImpl" interface="com.zy.service.OrderFillUserService"/>
 	<dubbo:service ref="productReplacementServiceImpl" interface="com.zy.service.ProductReplacementService"/>
 	<dubbo:service ref="matterServiceImpl" interface="com.zy.service.MatterService"/>
+	<dubbo:service ref="tourServiceImpl" interface="com.zy.service.TourService"/>
 </beans>
