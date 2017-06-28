@@ -1152,10 +1152,10 @@ public class OrderServiceImpl implements OrderService {
 			}
 		}
 
-//		orderMonthlySettlement = new OrderMonthlySettlement();
-//		orderMonthlySettlement.setYearAndMonth(yearAndMonth);
-//		orderMonthlySettlement.setSettledUpTime(now);
-//		orderMonthlySettlementMapper.insert(orderMonthlySettlement);
+		orderMonthlySettlement = new OrderMonthlySettlement();
+		orderMonthlySettlement.setYearAndMonth(yearAndMonth);
+		orderMonthlySettlement.setSettledUpTime(now);
+		orderMonthlySettlementMapper.insert(orderMonthlySettlement);
 	}
 
 	@Override
