@@ -633,193 +633,269 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public void settleUpProfit(@NotNull Long orderId) {
-		Order order = orderMapper.findOne(orderId);
-		validate(order, NOT_NULL, "order id" + orderId + " is not found");
-		if (order.getIsProfitSettledUp()) {
-			return; // 幂等操作
-		}
-		if (order.getOrderStatus() != OrderStatus.已支付 && order.getOrderStatus() != OrderStatus.已发货 && order.getOrderStatus() != OrderStatus.已完成) {
-			throw new BizException(BizCode.ERROR, "只有已支付订单才能结算奖励");
+	public void settleUpProfit(@NotBlank String yearAndMonth) {
+
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM");
+		TemporalAccessor temporalAccessor = df.parse(yearAndMonth);
+
+		int year = temporalAccessor.get(ChronoField.YEAR);
+		int month = temporalAccessor.get(ChronoField.MONTH_OF_YEAR);
+
+		YearMonth yearMonth = YearMonth.of(year, month);
+		YearMonth nowYearMonth = YearMonth.now();
+		if (!nowYearMonth.isAfter(yearMonth)) {
+			throw new BizException(BizCode.ERROR, "未达到发放时间");
 		}
 
-		OrderItem orderItem = orderItemMapper.findByOrderId(orderId).get(0);
+		LocalDate beginDate = LocalDate.of(year, month, 1);
+		LocalDate endDate = beginDate.with(TemporalAdjusters.firstDayOfNextMonth());
 
-		Long quantity = orderItem.getQuantity();
-		@SuppressWarnings("unused")
-		Long productId = orderItem.getProductId();
-		Long buyerId = order.getUserId();
-		Long sellerId = order.getSellerId();
-		User buyer = userMapper.findOne(buyerId);
-		@SuppressWarnings("unused")
-		User seller = userMapper.findOne(sellerId);
-		UserRank buyerUserRank = order.getBuyerUserRank();
-		@SuppressWarnings("unused")
-		UserRank sellerUserRank = order.getSellerUserRank();
+		LocalDateTime beginDateTime = LocalDateTime.of(beginDate, LocalTime.MIN);
+		LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MIN);
+
+		Date begin = Date.from(beginDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		Date end = Date.from(endDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+		List<Order> orders = orderMapper.findAll(OrderQueryModel.builder()
+				.orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成})
+				.productIdEQ(2L)  //月结算只针对2.0的产品
+				.paidTimeGTE(begin).paidTimeLT(end)
+				.build());
+
 		@SuppressWarnings("unused")
 		Long sysUserId = config.getSysUserId();
+		for (Order order : orders) {
 
-		Date paidTime = order.getPaidTime();
+			Long orderId = order.getId();
 
-		if (config.isOld(productId)) {
-
-			/* 销量奖 */
-			if (buyerUserRank == UserRank.V4) {
-				final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
-				fncComponent.createProfit(buyerId, Profit.ProfitType.销量奖, orderId, "销量奖", CurrencyType.积分, saleBonus, paidTime, null);
+			if (order.getIsProfitSettledUp()) {
+				return; // 幂等操作
+			}
+			if (order.getOrderStatus() != OrderStatus.已支付 && order.getOrderStatus() != OrderStatus.已发货 && order.getOrderStatus() != OrderStatus.已完成) {
+				throw new BizException(BizCode.ERROR, "只有已支付订单才能结算奖励");
 			}
 
-			/* 一级平级奖 */
-			if (buyerUserRank == UserRank.V3) {
-				Long buyerParentId = buyer.getParentId();
-				if (buyerParentId != null) {
-					User buyerParent = userMapper.findOne(buyerParentId);
-					if (buyerParent.getUserRank() == UserRank.V3) {
-						final BigDecimal v3FlatBonus = new BigDecimal("7.00").multiply(BigDecimal.valueOf(quantity));
-						fncComponent.createTransfer(sellerId, buyerParentId, Transfer.TransferType.一级平级奖, orderId, "一级平级奖", CurrencyType.积分, v3FlatBonus, paidTime);
+			OrderItem orderItem = orderItemMapper.findByOrderId(orderId).get(0);
+
+			Long quantity = orderItem.getQuantity();
+			@SuppressWarnings("unused")
+			Long productId = orderItem.getProductId();
+			Long buyerId = order.getUserId();
+			Long sellerId = order.getSellerId();
+			User buyer = userMapper.findOne(buyerId);
+			@SuppressWarnings("unused")
+			User seller = userMapper.findOne(sellerId);
+			UserRank buyerUserRank = order.getBuyerUserRank();
+			@SuppressWarnings("unused")
+			UserRank sellerUserRank = order.getSellerUserRank();
+
+			Date paidTime = order.getPaidTime();
+
+			if (config.isOld(productId)) {
+
+				/* 销量奖 */
+				if (buyerUserRank == UserRank.V4) {
+					final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
+					fncComponent.createProfit(buyerId, Profit.ProfitType.销量奖, orderId, "销量奖", CurrencyType.积分, saleBonus, paidTime, null);
+				}
+
+				/* 一级平级奖 */
+				if (buyerUserRank == UserRank.V3) {
+					Long buyerParentId = buyer.getParentId();
+					if (buyerParentId != null) {
+						User buyerParent = userMapper.findOne(buyerParentId);
+						if (buyerParent.getUserRank() == UserRank.V3) {
+							final BigDecimal v3FlatBonus = new BigDecimal("7.00").multiply(BigDecimal.valueOf(quantity));
+							fncComponent.createTransfer(sellerId, buyerParentId, Transfer.TransferType.一级平级奖, orderId, "一级平级奖", CurrencyType.积分, v3FlatBonus, paidTime);
+						}
 					}
 				}
-			}
 
-			/* 特级平级奖 + 一级越级奖 */
-			if (buyerUserRank == UserRank.V4) {
+				/* 特级平级奖 + 一级越级奖 */
+				if (buyerUserRank == UserRank.V4) {
 
-				int index = 0;
-				final BigDecimal v4FlatBonus1 = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
-				final BigDecimal v4FlatBonus2 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
-				final BigDecimal v4FlatBonus3 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
+					int index = 0;
+					final BigDecimal v4FlatBonus1 = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
+					final BigDecimal v4FlatBonus2 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
+					final BigDecimal v4FlatBonus3 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
 
-				final BigDecimal v3SkipBonus = new BigDecimal("3.00").multiply(BigDecimal.valueOf(quantity));
+					final BigDecimal v3SkipBonus = new BigDecimal("3.00").multiply(BigDecimal.valueOf(quantity));
 
-				Long parentId = buyer.getParentId();
+					Long parentId = buyer.getParentId();
 
 
-				Long skipBonusUserId = null;
-				boolean firstParent = true;
+					Long skipBonusUserId = null;
+					boolean firstParent = true;
 
-				int whileTimes = 0;
-				while (parentId != null) {
-					if (whileTimes > 1000) {
-						throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
-					}
-					User parent = userMapper.findOne(parentId);
-					if (firstParent) {
-						if (parent.getUserRank() == UserRank.V3) {
-							Date lastUpgradedTime = parent.getLastUpgradedTime();
-							if (lastUpgradedTime != null && DateUtils.addMonths(lastUpgradedTime, 3).after(new Date())) {
-								skipBonusUserId = parentId;
-							}
+					int whileTimes = 0;
+					while (parentId != null) {
+						if (whileTimes > 1000) {
+							throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
 						}
-						firstParent = false;
-					}
-
-					if (parent.getUserRank() == UserRank.V4) {
-						index++;
-						if (index == 0) {
-							continue;
-						} else if (index == 1) {
-							fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.积分, v4FlatBonus1, paidTime, null);
-							if (skipBonusUserId != null) {
-								/* 一级越级奖 */
-								fncComponent.createTransfer(parentId, skipBonusUserId, Transfer.TransferType.一级越级奖, orderId, "一级越级奖", CurrencyType.积分, v3SkipBonus, paidTime);
+						User parent = userMapper.findOne(parentId);
+						if (firstParent) {
+							if (parent.getUserRank() == UserRank.V3) {
+								Date lastUpgradedTime = parent.getLastUpgradedTime();
+								if (lastUpgradedTime != null && DateUtils.addMonths(lastUpgradedTime, 3).after(new Date())) {
+									skipBonusUserId = parentId;
+								}
 							}
-
-						} else if (index == 2) {
-							fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.积分, v4FlatBonus2, paidTime, null);
-						} else if (index == 3) {
-							fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.积分, v4FlatBonus3, paidTime, null);
-						} else {
-							break;
+							firstParent = false;
 						}
 
-					}
-					parentId = parent.getParentId();
-					whileTimes++;
-				}
-			}
+						if (parent.getUserRank() == UserRank.V4) {
+							index++;
+							if (index == 0) {
+								continue;
+							} else if (index == 1) {
+								fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.积分, v4FlatBonus1, paidTime, null);
+								if (skipBonusUserId != null) {
+									/* 一级越级奖 */
+									fncComponent.createTransfer(parentId, skipBonusUserId, Transfer.TransferType.一级越级奖, orderId, "一级越级奖", CurrencyType.积分, v3SkipBonus, paidTime);
+								}
 
-			order.setIsProfitSettledUp(true);
-			if (orderMapper.update(order) == 0) {
-				throw new ConcurrentException();
-			}
-		} else {
-			/* 平级推荐奖 */
-			if(buyerUserRank == UserRank.V3) {
-				Long parentId = buyer.getParentId();
-				if(parentId != null) {
-					User buyerParent = userMapper.findOne(parentId);
-					if(buyerParent.getUserRank() != UserRank.V4) {
-
-						int whileTimes = 0;
-						while (parentId != null) {
-							if (whileTimes > 1000) {
-								throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
-							}
-
-							buyerParent = userMapper.findOne(parentId);
-							if(buyerParent.getUserRank() == UserRank.V4) {
-								final BigDecimal saleBonus = new BigDecimal("10.00").multiply(BigDecimal.valueOf(quantity));
-								BigDecimal fee = saleBonus.multiply(FEE_RATE);
-								BigDecimal saleBonusAfter = saleBonus.subtract(fee);
-								fncComponent.createProfit(parentId, Profit.ProfitType.业绩奖, orderId, "业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
-
-								final BigDecimal flatBonus = new BigDecimal("9.00").multiply(BigDecimal.valueOf(quantity));
-								BigDecimal flatBonusAfter = flatBonus.subtract(flatBonus.multiply(FEE_RATE));
-								fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.业绩奖, orderId, "业绩奖", CurrencyType.积分, flatBonusAfter, paidTime);
+							} else if (index == 2) {
+								fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.积分, v4FlatBonus2, paidTime, null);
+							} else if (index == 3) {
+								fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.积分, v4FlatBonus3, paidTime, null);
+							} else {
 								break;
 							}
 
-							parentId = buyerParent.getParentId();
-							whileTimes++;
 						}
-
+						parentId = parent.getParentId();
+						whileTimes++;
 					}
 				}
 
-			}
+				order.setIsProfitSettledUp(true);
+				if (orderMapper.update(order) == 0) {
+					throw new ConcurrentException();
+				}
+			} else {
+				/* 业绩奖 */
+				final Long toV4Quantity = 3600L;
+				if (buyerUserRank != UserRank.V4 && order.getQuantity() >= toV4Quantity) {  //直升特级
+					if (sellerId.equals(sysUserId)) {
+						final BigDecimal saleBonus = new BigDecimal("9.00").multiply(BigDecimal.valueOf(quantity));
+						BigDecimal fee = saleBonus.multiply(FEE_RATE);
+						BigDecimal saleBonusAfter = saleBonus.subtract(fee);
+						fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, "业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+						logger.error(buyer.getNickname() + "直升特级, 业绩奖：" + saleBonusAfter + "已扣除手续费：" + fee);
 
-			/* 特级推荐奖 */
-			if(buyerUserRank == UserRank.V4) {
+						Long parentId = buyer.getParentId();
+						User parent = userMapper.findOne(parentId);
+						int whileTimes = 0;
+						while (parent.getUserRank() != UserRank.V4) {
+							if (whileTimes > 1000) {
+								throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+							}
+							parent = userMapper.findOne(parent.getParentId());
+						}
 
-				Long parentId = buyer.getParentId();
-				User buyerParent = null;
-				boolean foundV4Parent = false;
-				int whileTimes = 0;
-				while (parentId != null && !foundV4Parent) {
-					if (whileTimes > 1000) {
-						throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+						if (parent.getUserRank() == UserRank.V4) {
+							final BigDecimal saleBonusToV4Parent = new BigDecimal("1.00").multiply(BigDecimal.valueOf(quantity));
+							BigDecimal feeToV4Parent = saleBonusToV4Parent.multiply(FEE_RATE);
+							BigDecimal saleBonusAfterToV4Parent = saleBonusToV4Parent.subtract(feeToV4Parent);
+							fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, "业绩奖", CurrencyType.积分, saleBonusAfterToV4Parent, paidTime, "已扣除手续费:" + feeToV4Parent + ";费率: " + FEE_RATE);
+
+							logger.error(buyer.getNickname() + "直升特级, 给上级" + parent.getNickname() + "的业绩奖：" + saleBonusAfterToV4Parent + "已扣除手续费：" + feeToV4Parent);
+						}
+					}
+				}
+				if (buyerUserRank == UserRank.V4) {
+					final BigDecimal saleBonus = new BigDecimal("10.00").multiply(BigDecimal.valueOf(quantity));
+					BigDecimal fee = saleBonus.multiply(FEE_RATE);
+					BigDecimal saleBonusAfter = saleBonus.subtract(fee);
+					fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, "业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+					logger.error(buyer.getNickname() + "特级业绩奖：" + saleBonusAfter + "已扣除手续费：" + fee);
+
+				}
+				/*平级推荐奖*/
+				if(buyerUserRank == UserRank.V3 && order.getQuantity() < toV4Quantity) {
+					Long parentId = buyer.getParentId();
+					if(parentId != null) {
+						User buyerParent = userMapper.findOne(parentId);
+						if(buyerParent.getUserRank() != UserRank.V4) {
+
+							int whileTimes = 0;
+							while (parentId != null) {
+								if (whileTimes > 1000) {
+									throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+								}
+
+								buyerParent = userMapper.findOne(parentId);
+								if(buyerParent.getUserRank() == UserRank.V4) {
+									final BigDecimal saleBonus = new BigDecimal("10.00").multiply(BigDecimal.valueOf(quantity));
+									BigDecimal fee = saleBonus.multiply(FEE_RATE);
+									BigDecimal saleBonusAfter = saleBonus.subtract(fee);
+									fncComponent.createProfit(parentId, Profit.ProfitType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+									logger.error(buyer.getNickname() + "给V4上级" + buyerParent.getNickname() + "的平级推荐奖：" + saleBonusAfter + "已扣除手续费：" + fee);
+
+									final BigDecimal flatBonus = new BigDecimal("9.00").multiply(BigDecimal.valueOf(quantity));
+									BigDecimal flatBonusAfter = flatBonus.subtract(flatBonus.multiply(FEE_RATE));
+									fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, flatBonusAfter, paidTime);
+									logger.error(buyer.getNickname() + "的V4上级" + buyerParent.getNickname() + "给上级：" + flatBonusAfter);
+									break;
+								}
+
+								parentId = buyerParent.getParentId();
+								whileTimes++;
+							}
+
+						}
 					}
 
-					buyerParent = userMapper.findOne(parentId);
-					if(buyerParent.getUserRank() == UserRank.V4) {
-						foundV4Parent = true;
+				}
+
+				/* 特级推荐奖 */
+				if(buyerUserRank == UserRank.V4) {
+
+					Long parentId = buyer.getParentId();
+					User buyerParent = null;
+					boolean foundV4Parent = false;
+					int whileTimes = 0;
+					while (parentId != null && !foundV4Parent) {
+						if (whileTimes > 1000) {
+							throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+						}
+
+						buyerParent = userMapper.findOne(parentId);
+						if(buyerParent.getUserRank() == UserRank.V4) {
+							foundV4Parent = true;
+						}
+
+						if(foundV4Parent) {
+							final BigDecimal saleBonus = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
+							BigDecimal fee = saleBonus.multiply(FEE_RATE);
+							BigDecimal saleBonusAfter = saleBonus.subtract(fee);
+							fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, "推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+							logger.error(buyerParent.getNickname() + "推荐奖：" + saleBonusAfter + "已扣除手续费:" + fee);
+							break;
+						}
+
+						parentId = buyerParent.getParentId();
+						whileTimes++;
 					}
 
 					if(foundV4Parent) {
-						final BigDecimal saleBonus = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
-						BigDecimal fee = saleBonus.multiply(FEE_RATE);
-						BigDecimal saleBonusAfter = saleBonus.subtract(fee);
-						fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, "推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
-						break;
-					}
-
-					parentId = buyerParent.getParentId();
-					whileTimes++;
-				}
-
-				if(foundV4Parent) {
-					if(!parentId.equals(buyer.getParentId())) {
-						Date lastUpgradedTime = seller.getLastUpgradedTime();
-						if (lastUpgradedTime != null && DateUtils.addMonths(lastUpgradedTime, 3).after(new Date())) {
-							final BigDecimal saleBonus = new BigDecimal("3.00").multiply(BigDecimal.valueOf(quantity));
-							fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.推荐奖, orderId, "推荐奖", CurrencyType.积分, saleBonus, paidTime);
+						if(!parentId.equals(buyer.getParentId())) {
+							User parent = userMapper.findOne(buyer.getParentId());
+							if (parent.getUserRank() == UserRank.V3) {
+								Date lastUpgradedTime = seller.getLastUpgradedTime();
+								if (lastUpgradedTime != null && DateUtils.addMonths(lastUpgradedTime, 3).after(new Date())) {
+									final BigDecimal saleBonus = new BigDecimal("3.00").multiply(BigDecimal.valueOf(quantity));
+									fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.推荐奖, orderId, "推荐奖", CurrencyType.积分, saleBonus, paidTime);
+									logger.error(parent.getNickname() + "给到" + buyerParent.getNickname() + "推荐奖：" + saleBonus);
+								}
+							}
 						}
 					}
 				}
-			}
-			order.setIsProfitSettledUp(true);
-			if (orderMapper.update(order) == 0) {
-				throw new ConcurrentException();
+//				order.setIsProfitSettledUp(true);
+//				if (orderMapper.update(order) == 0) {
+//					throw new ConcurrentException();
+//				}
 			}
 		}
 

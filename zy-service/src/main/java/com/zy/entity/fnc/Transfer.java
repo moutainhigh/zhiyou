@@ -41,9 +41,10 @@ public class Transfer implements Serializable {
 		一级平级奖,
 		一级越级奖,
 		邮费,
-		业绩奖,  //2.0  平级推荐奖 -> 业绩奖
+		平级推荐奖,  //2.0
 		推荐奖,  //2.0  特级推荐奖 -> 推荐奖
 		U币转账,
+		业绩奖,  //2.0
 	}
 
 	public enum TransferStatus {

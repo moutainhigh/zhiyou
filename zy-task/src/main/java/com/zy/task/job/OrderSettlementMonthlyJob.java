@@ -27,6 +27,7 @@ public class OrderSettlementMonthlyJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("begin...");
         settleUp(StringUtils.left(LocalDate.now().minusMonths(1).toString(), 7));
+        settleUpProfit(StringUtils.left(LocalDate.now().minusMonths(1).toString(), 7));
         logger.info("end...");
     }
 
@@ -42,8 +43,20 @@ public class OrderSettlementMonthlyJob implements Job {
         }
     }
 
+    private void settleUpProfit(String yearAndMonth) {
+        try {
+            this.orderService.settleUpProfit(yearAndMonth);
+            logger.info("月结算 {} 成功", yearAndMonth);
+        } catch (ConcurrentException e) {
+            try {TimeUnit.MINUTES.sleep(1);} catch (InterruptedException e1) {}
+            settleUp(yearAndMonth);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println(StringUtils.left(LocalDate.now().minusMonths(1).toString(), 7));
+        System.out.println(LocalDate.now().minusMonths(1));
     }
 
 }
