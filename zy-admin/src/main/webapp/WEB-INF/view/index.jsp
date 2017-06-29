@@ -544,7 +544,7 @@
         <shiro:hasAnyPermissions name="tour:export,tour:view,tour:edit,tour:release,tourSetting:release">
           <li>
             <a href="javascript:;">
-              <i class="icon-basket"></i>
+              <i class="icon-globe"></i>
               <span class="title">旅游管理</span>
               <span class="selected"></span>
               <span class="arrow "></span>
