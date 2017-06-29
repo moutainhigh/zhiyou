@@ -46,7 +46,7 @@ public class OrderSettlementMonthlyJob implements Job {
     private void settleUpProfit(String yearAndMonth) {
         try {
             this.orderService.settleUpProfit(yearAndMonth);
-            logger.info("月结算 {} 成功", yearAndMonth);
+            logger.info("月结算推荐奖业绩奖等 {} 成功", yearAndMonth);
         } catch (ConcurrentException e) {
             try {TimeUnit.MINUTES.sleep(1);} catch (InterruptedException e1) {}
             settleUp(yearAndMonth);
