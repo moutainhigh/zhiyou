@@ -1,7 +1,6 @@
 package com.zy.mapper;
 
 
-import com.zy.entity.tour.Sequence;
 import com.zy.entity.tour.Tour;
 import com.zy.model.query.TourQueryModel;
 
