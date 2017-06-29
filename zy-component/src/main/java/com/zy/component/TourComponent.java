@@ -3,18 +3,26 @@ package com.zy.component;
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.act.Activity;
 import com.zy.entity.tour.BlackOrWhite;
+import com.zy.common.util.BeanUtils;
+import com.zy.entity.cms.Article;
 import com.zy.entity.tour.Sequence;
 import com.zy.entity.usr.User;
+import com.zy.entity.tour.Tour;
 import com.zy.service.TourService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.ActivityApplyListVo;
 import com.zy.vo.BlackOrWhiteAdminVo;
+import com.zy.service.UserService;
+import com.zy.util.GcUtils;
+import com.zy.vo.TourAdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.zy.util.GcUtils.getThumbnail;
 
 @Component
 public class TourComponent {
@@ -22,6 +30,12 @@ public class TourComponent {
     @Autowired
     private TourService tourService;
 
+
+    @Autowired
+    private UserService userService;
+
+
+    private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
 
     @Autowired
     private CacheComponent cacheComponent;
@@ -89,6 +103,21 @@ public class TourComponent {
         return sdf.format(date);
     }
 
+    /**
+     * 转成VO
+     * @param tour
+     * @param b
+     * @return
+     */
+    public TourAdminVo buildAdminVo(Tour tour, boolean b) {
+        TourAdminVo tourAdminVo = new TourAdminVo();
+        BeanUtils.copyProperties(tour, tourAdminVo);
+        tourAdminVo.setCreatedTime( GcUtils.formatDate(tour.getCreatedTime(), TIME_PATTERN));
+        tourAdminVo.setUpdateTime( GcUtils.formatDate(tour.getUpdateTime(), TIME_PATTERN));
+        tourAdminVo.setImage(getThumbnail(tour.getImage(), 750, 450));
+        tourAdminVo.setCreateName(userService.findRealName(tour.getCreateby()));
+        return tourAdminVo;
+    }
     public BlackOrWhiteAdminVo buildblackOrWhiteAdminVo(BlackOrWhite blackOrWhite) {
         BlackOrWhiteAdminVo blackOrWhiteAdminVo = new BlackOrWhiteAdminVo();
         BeanUtils.copyProperties(blackOrWhite, blackOrWhiteAdminVo);

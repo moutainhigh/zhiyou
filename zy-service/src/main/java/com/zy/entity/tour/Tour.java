@@ -57,8 +57,7 @@ public class Tour implements Serializable {
 	@View(groups = { VO_ADMIN  })
 	private Boolean isReleased;
 
-	@View(name = "imageBig", groups = { VO_DETAIL, VO_ADMIN })
-	@View(name = "imageThumbnail" )
+	@View(name = "image", groups = { VO_DETAIL, VO_ADMIN })
 	@View(groups = { VO_ADMIN })
 	@Field(label = "主图")
 	private String image;
@@ -70,25 +69,25 @@ public class Tour implements Serializable {
 	private String content;
 
 	@NotNull
-	@View(name = "createdTimeLabel", type = String.class, groups = { VO_ADMIN })
+	@View(name = "createdTime", type = String.class, groups = { VO_ADMIN })
 	@Field(label = "创建时间")
 	private Date createdTime;
 
 	@NotBlank
 	@Field(label = "创建人")
 	@View(groups = { VO_DETAIL, VO_LIST, VO_ADMIN })
-	private String createby;
+	private Long createby;
 
 
 	@NotNull
-	@View(name = "createdTimeLabel", type = String.class, groups = { VO_ADMIN })
+	@View(name = "updateTime", type = String.class, groups = { VO_ADMIN })
 	@Field(label = "更新时间")
 	private Date updateTime;
 
 	@NotBlank
 	@Field(label = "更新人")
 	@View(groups = { VO_DETAIL, VO_LIST, VO_ADMIN })
-	private String updateby;
+	private Long updateby;
 
 
 
