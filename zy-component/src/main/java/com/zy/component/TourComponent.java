@@ -1,7 +1,15 @@
 package com.zy.component;
 
+import com.zy.common.util.BeanUtils;
+import com.zy.entity.act.Activity;
+import com.zy.entity.tour.BlackOrWhite;
 import com.zy.entity.tour.Sequence;
+import com.zy.entity.usr.User;
 import com.zy.service.TourService;
+import com.zy.util.GcUtils;
+import com.zy.util.VoHelper;
+import com.zy.vo.ActivityApplyListVo;
+import com.zy.vo.BlackOrWhiteAdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +18,13 @@ import java.util.Date;
 
 @Component
 public class TourComponent {
+
     @Autowired
     private TourService tourService;
 
 
+    @Autowired
+    private CacheComponent cacheComponent;
     /**
      * 处理生成 旅游编号
      生成规则：T+YY(两位的年份)+NUM(7位的数字)
@@ -77,6 +88,19 @@ public class TourComponent {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(date);
     }
+
+    public BlackOrWhiteAdminVo buildblackOrWhiteAdminVo(BlackOrWhite blackOrWhite) {
+        BlackOrWhiteAdminVo blackOrWhiteAdminVo = new BlackOrWhiteAdminVo();
+        BeanUtils.copyProperties(blackOrWhite, blackOrWhiteAdminVo);
+        Long userId = blackOrWhite.getUserId();
+        if (userId != null) {
+            User user = cacheComponent.getUser(userId);
+            blackOrWhiteAdminVo.setUser(VoHelper.buildUserSimpleVo(user));
+        }
+        return blackOrWhiteAdminVo;
+
+    }
+
 
 
 }

@@ -558,7 +558,7 @@
               </shiro:hasPermission>
               <shiro:hasPermission name="tourSetting:*">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 黑白名单管理<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/tour/blackOrWhite"><i class="icon-docs"></i> 黑白名单管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="tourUser:view">
