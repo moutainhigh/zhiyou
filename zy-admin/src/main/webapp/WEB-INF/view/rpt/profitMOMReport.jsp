@@ -24,6 +24,11 @@
         },
         columns: [
           {
+            data: 'bossNickname',
+            title: '总经理昵称',
+            orderable: false
+          },
+          {
             data: 'bossName',
             title: '总经理团队',
             orderable: false
@@ -31,7 +36,7 @@
           <c:forEach items='${monthForHeaders}' var='month' varStatus='varStatus'>
           ,{
             data: '',
-            title: '${month}',
+            title: '${month} 个人收入',
             orderable: false,
             render: function (data, type, full) {
               if (full.profitMOMReportVoItems.length > 0) {
@@ -39,6 +44,57 @@
                   return full.profitMOMReportVoItems[0].profit;
                 }
                 return full.profitMOMReportVoItems[1].profit
+              } else {
+                return '0.00';
+              }
+            }
+          }
+          </c:forEach>
+          <c:forEach items='${monthForHeaders}' var='month' varStatus='varStatus'>
+          ,{
+            data: '',
+            title: '${month} 团队收入',
+            orderable: false,
+            render: function (data, type, full) {
+              if (full.profitMOMReportVoItems.length > 0) {
+                if ('${month}' == full.profitMOMReportVoItems[0].dateLabel) {
+                  return full.profitMOMReportVoItems[0].teamProfit;
+                }
+                return full.profitMOMReportVoItems[1].teamProfit
+              } else {
+                return '0.00';
+              }
+            }
+          }
+          </c:forEach>
+          <c:forEach items='${monthForHeaders}' var='month' varStatus='varStatus'>
+          ,{
+            data: '',
+            title: '${month} 人均收入',
+            orderable: false,
+            render: function (data, type, full) {
+              if (full.profitMOMReportVoItems.length > 0) {
+                if ('${month}' == full.profitMOMReportVoItems[0].dateLabel) {
+                  return full.profitMOMReportVoItems[0].avgProfit;
+                }
+                return full.profitMOMReportVoItems[1].avgProfit
+              } else {
+                return '0.00';
+              }
+            }
+          }
+          </c:forEach>
+          <c:forEach items='${monthForHeaders}' var='month' varStatus='varStatus'>
+          ,{
+            data: '',
+            title: '${month} 个人收入团队占比',
+            orderable: false,
+            render: function (data, type, full) {
+              if (full.profitMOMReportVoItems.length > 0) {
+                if ('${month}' == full.profitMOMReportVoItems[0].dateLabel) {
+                  return full.profitMOMReportVoItems[0].inTeamProfitRate;
+                }
+                return full.profitMOMReportVoItems[1].inTeamProfitRate
               } else {
                 return '0.00';
               }

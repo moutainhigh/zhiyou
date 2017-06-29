@@ -105,7 +105,7 @@ public class V4ActivityReportController {
 
 			Long id = v.getId();
 			List<User> v4Children1 = teamMap.get(id).getV4Children();
-			long v4Count = Long.valueOf(v4Ids.size());
+			long v4Count = Long.valueOf(v4Children1.size());
 			long recentCount = v4Children1.stream().filter(child -> userUpgradeMap.get(child.getId()) != null).count();
 			long activityCount = v4Children1.stream().filter(child -> orderMap.get(child.getId()) != null).count();
 			long inActivityCount = v4Count - activityCount;

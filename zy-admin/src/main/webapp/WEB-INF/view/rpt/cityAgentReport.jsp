@@ -66,7 +66,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/report/cityAgent">服务商活跃度排名</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/report/cityAgent">服务商活跃度排行—省份</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -77,7 +77,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-bar-chart"></i><span>服务商活跃度排名</span>
+          <i class="icon-bar-chart"></i><span>服务商活跃度排行—省份</span>
         </div>
       </div>
 

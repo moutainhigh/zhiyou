@@ -81,6 +81,7 @@ public class ProfitMOMReportController {
 		List<User> users = localCacheComponent.getUsers();
 		List<Profit> profits = localCacheComponent.getProfits();
 
+		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
 		List<User> v4Children = users.stream().filter(v -> v.getBossId() != null).filter(v -> v.getUserRank() == User.UserRank.V4).collect(Collectors.toList());
 		List<User> bossUsers = users.stream().filter(v -> v.getIsBoss() != null && v.getIsBoss()).collect(Collectors.toList());
 
@@ -99,48 +100,48 @@ public class ProfitMOMReportController {
 		List<Long> childrenIds = v4Children.stream().map(v -> v.getId()).collect(Collectors.toList());
 		List<Long> bossUserIds = bossUsers.stream().map(v -> v.getId()).collect(Collectors.toList());
 
-		Date targetMonthFirstDateTime = null;
-		Date targetMonthLastDateTime = null;
-		Date sourceMonthFirstDateTime = null;
-		Date sourceMonthLastDateTime = null;
-		String targetMonthLabel = null;
-		String sourceMonthLabel = null;
+		Date currentMonthBeginDateTime = null;
+		Date currentMonthEndDateTime = null;
+		Date lastMonthBeginDateTime = null;
+		Date lastMonthEndDateTime = null;
+		String currentMonthLabel = null;
+		String lastMonthLabel = null;
 		String monthLabel = queryModel.getMonthLabel();
 		if (StringUtils.isEmpty(monthLabel)) {
 			LocalDate now = LocalDate.now();
 			LocalDate localDate = now.minusMonths(1);
-			targetMonthFirstDateTime = getBeginDateTime(localDate.getYear(), localDate.getMonthValue());
-			targetMonthLastDateTime = getEndDateTime(localDate.getYear(), localDate.getMonthValue());
+			currentMonthBeginDateTime = getBeginDateTime(localDate.getYear(), localDate.getMonthValue());
+			currentMonthEndDateTime = getEndDateTime(localDate.getYear(), localDate.getMonthValue());
 			localDate = now.minusMonths(2);
-			sourceMonthFirstDateTime = getBeginDateTime(localDate.getYear(), localDate.getMonthValue());
-			sourceMonthLastDateTime = getEndDateTime(localDate.getYear(), localDate.getMonthValue());
+			lastMonthBeginDateTime = getBeginDateTime(localDate.getYear(), localDate.getMonthValue());
+			lastMonthEndDateTime = getEndDateTime(localDate.getYear(), localDate.getMonthValue());
 
-			sourceMonthLabel = buildDateLabel(now.minusMonths(-1));
-			targetMonthLabel = buildDateLabel(now.minusMonths(-2));
+			lastMonthLabel = buildDateLabel(now.minusMonths(-1));
+			currentMonthLabel = buildDateLabel(now.minusMonths(-2));
 		} else {
 			String[] split = monthLabel.split(SPLIT_PATTERN);
 			Integer year = Integer.valueOf(split[0]);
 			Integer month = Integer.valueOf(split[1]);
-			sourceMonthFirstDateTime = getBeginDateTime(year, month);
-			sourceMonthLastDateTime = getEndDateTime(year, month);
+			lastMonthBeginDateTime = getBeginDateTime(year, month);
+			lastMonthEndDateTime = getEndDateTime(year, month);
 
-			sourceMonthLabel = year + SPLIT_PATTERN + month;
+			lastMonthLabel = year + SPLIT_PATTERN + month;
 			if (month == 1) {
 				year = year - 1;
 				month = 12;
 			} else {
 				month = month - 1;
 			}
-			targetMonthFirstDateTime = getBeginDateTime(year, month);
-			targetMonthLastDateTime = getEndDateTime(year, month);
-			targetMonthLabel = year + SPLIT_PATTERN + month;
+			currentMonthBeginDateTime = getBeginDateTime(year, month);
+			currentMonthEndDateTime = getEndDateTime(year, month);
+			currentMonthLabel = year + SPLIT_PATTERN + month;
 		}
-		Date targetMonthFirstDateTimeUsed = targetMonthFirstDateTime;
-		Date targetMonthLastDateTimeUsed = targetMonthLastDateTime;
-		Date sourceMonthFirstDateTimeUsed = sourceMonthFirstDateTime;
-		Date sourceMonthLastDateTimeUsed = sourceMonthLastDateTime;
-		String targetMonthLabelUsed = targetMonthLabel;
-		String sourceMonthLabelUsed = sourceMonthLabel;
+		final Date currentMonthBeginDateTimeFinal = currentMonthBeginDateTime;
+		final Date currentMonthEndDateTimeFinal = currentMonthEndDateTime;
+		final Date lastMonthBeginDateTimeFinal = lastMonthBeginDateTime;
+		final Date lastMonthEndDateTimeFinal = lastMonthEndDateTime;
+		final String currentMonthLabelFinal = currentMonthLabel;
+		final String lastMonthLabelFinal = lastMonthLabel;
 
 		List<Profit> filterProfits = profits.stream()
 				.filter(v -> v.getProfitStatus() == Profit.ProfitStatus.已发放)
@@ -149,54 +150,59 @@ public class ProfitMOMReportController {
 				.filter(v -> childrenIds.contains(v.getUserId()) || bossUserIds.contains(v.getUserId()))
 				.filter(v -> {
 					boolean result = true;
-					result = result && (v.getGrantedTime().after(targetMonthFirstDateTimeUsed) && v.getGrantedTime().before(sourceMonthLastDateTimeUsed));
+					result = result && (v.getGrantedTime().after(currentMonthBeginDateTimeFinal) && v.getGrantedTime().before(lastMonthEndDateTimeFinal));
 					return result;
 				})
 				.collect(Collectors.toList());
-		Map<Long, BigDecimal> targetProfitMap = filterProfits.stream()
-				.filter(v -> v.getGrantedTime().before(targetMonthLastDateTimeUsed))
+		Map<Long, BigDecimal> currentMonthProfitMap = filterProfits.stream()
+				.filter(v -> v.getGrantedTime().before(currentMonthEndDateTimeFinal))
 				.collect(Collectors.toMap(Profit::getUserId, Profit::getAmount, (x , y) -> x.add(y)));
-		Map<Long, BigDecimal> sourceProfitMap = filterProfits.stream()
-				.filter(v -> v.getGrantedTime().after(sourceMonthFirstDateTimeUsed))
+		Map<Long, BigDecimal> lastMonthProfitMap = filterProfits.stream()
+				.filter(v -> v.getGrantedTime().after(lastMonthBeginDateTimeFinal))
 				.collect(Collectors.toMap(Profit::getUserId, Profit::getAmount, (x , y) -> x.add(y)));
 
 		BigDecimal zero = BigDecimal.ZERO;
-		Map<Long, BigDecimal> targetTeamProfitMap = bossUsers.stream().collect(Collectors.toMap(v -> v.getId(), v -> {
+		Map<Long, BigDecimal> currentMonthTeamProfitMap = bossUsers.stream().collect(Collectors.toMap(v -> v.getId(), v -> {
 			Long userId = v.getId();
-			BigDecimal myProfit = targetProfitMap.get(userId) == null ? zero : targetProfitMap.get(userId);
+			BigDecimal myProfit = currentMonthProfitMap.get(userId) == null ? zero : currentMonthProfitMap.get(userId);
 			BigDecimal teamProfit = teamMap.get(userId).getV4Children().stream()
-					.map(u -> targetProfitMap.get(u.getId()) == null ? zero : targetProfitMap.get(u.getId()))
+					.map(u -> currentMonthProfitMap.get(u.getId()) == null ? zero : currentMonthProfitMap.get(u.getId()))
 					.reduce(zero, (x, y) -> x.add(y));
 			return myProfit.add(teamProfit);
 		}));
-		Map<Long, BigDecimal> sourceTeamProfitMap = bossUsers.stream().collect(Collectors.toMap(v -> v.getId(), v -> {
+		Map<Long, BigDecimal> lastMonthTeamProfitMap = bossUsers.stream().collect(Collectors.toMap(v -> v.getId(), v -> {
 			Long userId = v.getId();
-			BigDecimal myProfit = sourceProfitMap.get(userId) == null ? zero : sourceProfitMap.get(userId);
+			BigDecimal myProfit = lastMonthProfitMap.get(userId) == null ? zero : lastMonthProfitMap.get(userId);
 			BigDecimal teamProfit = teamMap.get(userId).getV4Children().stream()
-					.map(u -> sourceProfitMap.get(u.getId()) == null ? zero : sourceProfitMap.get(u.getId()))
+					.map(u -> lastMonthProfitMap.get(u.getId()) == null ? zero : lastMonthProfitMap.get(u.getId()))
 					.reduce(zero, (x, y) -> x.add(y));
 			return myProfit.add(teamProfit);
 		}));
 
 		List<ProfitMOMReportVo> result = bossUsers.stream().map(v -> {
-			ProfitMOMReportVo profitMOMReportVo = new ProfitMOMReportVo();
 			Long id = v.getId();
+
+			ProfitMOMReportVo profitMOMReportVo = new ProfitMOMReportVo();
 			profitMOMReportVo.setBossId(id);
+			profitMOMReportVo.setBossNickname(userMap.get(id).getNickname());
 			profitMOMReportVo.setBossName(v.getBossName());
 
-			BigDecimal targetProfit = targetTeamProfitMap.get(id);
-			BigDecimal sourceProfit = sourceTeamProfitMap.get(id);
+			int childrenNumber = teamMap.get(id).getV4Children().size();
+			BigDecimal currentMonthProfit = currentMonthProfitMap.get(id) == null ? zero : currentMonthProfitMap.get(id);
+			BigDecimal lastMonthProfit = lastMonthProfitMap.get(id) == null ? zero : lastMonthProfitMap.get(id);
+			BigDecimal currentMonthTeamProfit = currentMonthTeamProfitMap.get(id);
+			BigDecimal lastMonthTeamProfit = lastMonthTeamProfitMap.get(id);
 
 			List<ProfitMOMReportVo.ProfitMOMReportVoItem> profitMOMReportVoItems = new ArrayList<>();
-			profitMOMReportVoItems.add(buildProfitMOMReportVoItem(targetMonthLabelUsed, targetProfit));
-			profitMOMReportVoItems.add(buildProfitMOMReportVoItem(sourceMonthLabelUsed, sourceProfit));
+			profitMOMReportVoItems.add(buildProfitMOMReportVoItem(currentMonthLabelFinal, currentMonthProfit, currentMonthTeamProfit, childrenNumber));
+			profitMOMReportVoItems.add(buildProfitMOMReportVoItem(lastMonthLabelFinal, lastMonthProfit, lastMonthTeamProfit, childrenNumber));
 			profitMOMReportVo.setProfitMOMReportVoItems(profitMOMReportVoItems);
 
 			BigDecimal divide = null;
-			if (targetProfit.compareTo(zero) > 0) {
-				divide = (sourceProfit.subtract(targetProfit)).divide(targetProfit, 4, RoundingMode.HALF_UP);
+			if (currentMonthTeamProfit.compareTo(zero) > 0) {
+				divide = (lastMonthTeamProfit.subtract(currentMonthTeamProfit)).divide(currentMonthTeamProfit, 4, RoundingMode.HALF_UP);
 			} else {
-				divide = sourceProfit;
+				divide = lastMonthTeamProfit;
 			}
 			DecimalFormat decimalFormat = new DecimalFormat("0.00%");
 			profitMOMReportVo.setProfitMOMRateLabel(decimalFormat.format(divide));
@@ -231,10 +237,24 @@ public class ProfitMOMReportController {
 		return localDate.getYear() + SPLIT_PATTERN + localDate.getMonthValue();
 	}
 
-	private ProfitMOMReportVo.ProfitMOMReportVoItem buildProfitMOMReportVoItem(String dateLabel, BigDecimal profit) {
+	private ProfitMOMReportVo.ProfitMOMReportVoItem buildProfitMOMReportVoItem(String dateLabel, BigDecimal profit, BigDecimal teamProfit, int childrenNumber) {
+		BigDecimal zero = new BigDecimal("0.00");
+		BigDecimal avgProfit = zero;
+		if (teamProfit.compareTo(zero) > 0) {
+			avgProfit = teamProfit.divide(new BigDecimal(childrenNumber), 2, RoundingMode.HALF_UP);  //四舍五入
+		}
+
+		double inTeamProfitRate = 0.00;
+		if (teamProfit.compareTo(zero) > 0) {
+			inTeamProfitRate = profit.divide(teamProfit, 2, RoundingMode.HALF_UP).doubleValue();
+		}
+
 		ProfitMOMReportVo.ProfitMOMReportVoItem profitMOMReportVoItem = new ProfitMOMReportVo.ProfitMOMReportVoItem();
 		profitMOMReportVoItem.setDateLabel(dateLabel);
 		profitMOMReportVoItem.setProfit(profit);
+		profitMOMReportVoItem.setTeamProfit(teamProfit);
+		profitMOMReportVoItem.setAvgProfit(avgProfit);
+		profitMOMReportVoItem.setInTeamProfitRate(inTeamProfitRate);
 		return profitMOMReportVoItem;
 	}
 
@@ -252,7 +272,10 @@ public class ProfitMOMReportController {
 
 	public static void main(String[] args) {
 		BigDecimal zero = BigDecimal.ZERO;
-		BigDecimal bigDecimal = new BigDecimal("1.00");
-		System.out.println(bigDecimal.compareTo(zero));
+		BigDecimal number = new BigDecimal("15");
+		BigDecimal profit = new BigDecimal("12032.21");
+		zero = profit.divide(number, 2, RoundingMode.HALF_UP);
+		System.out.println(zero);
+
 	}
 }

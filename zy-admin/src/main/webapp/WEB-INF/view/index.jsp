@@ -469,7 +469,7 @@
               </shiro:hasPermission>
               <shiro:hasPermission name="cityAgent:view">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/report/cityAgent"><i class="icon-bar-chart"></i> 服务商活跃数排行<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/report/cityAgent"><i class="icon-bar-chart"></i> 服务商活跃度排行—省份<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="profitMOM:view">

@@ -42,7 +42,7 @@ public class TeamOrderMonthReportController {
 	@RequiresPermissions("teamOrderMonth:view")
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Grid<TeamMonthReportVo> ajax() {
+	public Grid<TeamMonthReportVo> ajax(TeamMonthReportVo.TeamMonthReportVoQueryModel queryModel) {
 
 		List<User> users = localCacheComponent.getUsers();
 		List<Order> orders = localCacheComponent.getOrders();

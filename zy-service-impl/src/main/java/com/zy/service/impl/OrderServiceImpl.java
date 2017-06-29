@@ -660,6 +660,7 @@ public class OrderServiceImpl implements OrderService {
 				.orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成})
 				.productIdEQ(2L)  //月结算只针对2.0的产品
 				.paidTimeGTE(begin).paidTimeLT(end)
+				.isProfitSettledUpEQ(false)
 				.build());
 
 		@SuppressWarnings("unused")
@@ -892,10 +893,10 @@ public class OrderServiceImpl implements OrderService {
 						}
 					}
 				}
-//				order.setIsProfitSettledUp(true);
-//				if (orderMapper.update(order) == 0) {
-//					throw new ConcurrentException();
-//				}
+				order.setIsProfitSettledUp(true);
+				if (orderMapper.update(order) == 0) {
+					throw new ConcurrentException();
+				}
 			}
 		}
 
