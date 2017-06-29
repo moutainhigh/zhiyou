@@ -553,7 +553,7 @@
 
               <shiro:hasPermission name="tour:view">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/order"><i class="icon-docs"></i> 旅游信息管理<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/tour"><i class="icon-docs"></i> 旅游信息管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="tourSetting:release">
