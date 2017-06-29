@@ -1,20 +1,15 @@
 package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
-import com.zy.entity.act.Activity;
 import com.zy.entity.tour.BlackOrWhite;
-import com.zy.common.util.BeanUtils;
-import com.zy.entity.cms.Article;
 import com.zy.entity.tour.Sequence;
-import com.zy.entity.usr.User;
 import com.zy.entity.tour.Tour;
+import com.zy.entity.usr.User;
 import com.zy.service.TourService;
-import com.zy.util.GcUtils;
-import com.zy.util.VoHelper;
-import com.zy.vo.ActivityApplyListVo;
-import com.zy.vo.BlackOrWhiteAdminVo;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
+import com.zy.util.VoHelper;
+import com.zy.vo.BlackOrWhiteAdminVo;
 import com.zy.vo.TourAdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,15 +25,15 @@ public class TourComponent {
     @Autowired
     private TourService tourService;
 
-
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CacheComponent cacheComponent;
 
     private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
 
-    @Autowired
-    private CacheComponent cacheComponent;
+
     /**
      * 处理生成 旅游编号
      生成规则：T+YY(两位的年份)+NUM(7位的数字)
@@ -118,7 +113,8 @@ public class TourComponent {
         tourAdminVo.setCreateName(userService.findRealName(tour.getCreateby()));
         return tourAdminVo;
     }
-    public BlackOrWhiteAdminVo buildblackOrWhiteAdminVo(BlackOrWhite blackOrWhite) {
+
+    public BlackOrWhiteAdminVo buildBlackOrWhiteAdminVo(BlackOrWhite blackOrWhite) {
         BlackOrWhiteAdminVo blackOrWhiteAdminVo = new BlackOrWhiteAdminVo();
         BeanUtils.copyProperties(blackOrWhite, blackOrWhiteAdminVo);
         Long userId = blackOrWhite.getUserId();
@@ -127,9 +123,6 @@ public class TourComponent {
             blackOrWhiteAdminVo.setUser(VoHelper.buildUserSimpleVo(user));
         }
         return blackOrWhiteAdminVo;
-
     }
-
-
 
 }
