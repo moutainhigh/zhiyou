@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface TourService {
-     Sequence create(Sequence sequence);
+     void create(Sequence sequence);
      Sequence findSequenceOne(String seqName,String seqType);
      void updateSequence(Sequence sequence);
 

@@ -16,5 +16,5 @@ public interface SequenceMapper {
 
 	Sequence findOne(Map<String,Object> map);
 
-
+	void insert(Sequence sequence);
 }

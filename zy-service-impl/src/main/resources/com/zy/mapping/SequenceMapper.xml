@@ -32,7 +32,7 @@
 		where seq_name = #{sequenceName} and seq_type=#{sequenceType}
 	</select>
 
-	<insert id="insert" parameterType="com.zy.entity.tour.Sequence" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insert" parameterType="com.zy.entity.tour.Sequence">
 		insert into `ts_sequence` (seq_name,current_val,increment_val,seq_type)
 		values (#{sequenceName},#{currentVal},#{incrementval},#{sequenceType})
 	</insert>

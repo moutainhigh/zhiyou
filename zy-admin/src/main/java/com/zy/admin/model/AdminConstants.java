@@ -152,5 +152,14 @@ public class AdminConstants {
 			sub.put("job:edit", "职位管理(编辑)");
 			SETTING_PERMISSION_MAP.put("系统管理", sub);
 		}
+		{
+			sub = new LinkedHashMap<>();
+			sub.put("tour:export", "客户信息(导出)");
+			sub.put("tour:view", "旅游信息管理");
+			sub.put("tour:edit", "旅游管理(编辑)");
+			sub.put("tour:release", "旅游信息添加");
+			sub.put("tourSetting:release", "黑/白名单管理");
+			SETTING_PERMISSION_MAP.put("旅游管理", sub);
+		}
 	}
 }

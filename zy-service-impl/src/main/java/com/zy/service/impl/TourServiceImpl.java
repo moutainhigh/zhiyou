@@ -26,8 +26,8 @@ public class TourServiceImpl implements TourService {
      * @return
      */
     @Override
-    public Sequence create(Sequence sequence) {
-        return null;
+    public void create(Sequence sequence) {
+      equenceMapper.insert(sequence);
     }
 
     /**s

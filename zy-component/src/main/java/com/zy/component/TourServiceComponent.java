@@ -21,7 +21,7 @@ public class TourServiceComponent {
 	 */
 	public String getgetNextTourID(){
       String year = dateToStr(new Date(),"yy");
-		String newSeq = this.getNewSeq("seq_tour_num",7,year);
+		String newSeq = this.getNewSeq("seq_tour_num",7,year,1);
 		return  "T"+year+newSeq;
 	}
 
@@ -31,9 +31,10 @@ public class TourServiceComponent {
 	 * @param seqName （seq 的那么）
 	 * @param length （格式化  多长）
 	 * @param year
+	 * @param incrementval 增长长度
      * @return
      */
-	private  String getNewSeq( String seqName,int length,String year) {
+	private  String getNewSeq( String seqName,int length,String year,int incrementval) {
 		String returnStr = "";
 		Sequence sequence = tourService.findSequenceOne(seqName,year);
 		   if (sequence == null ) {
@@ -42,11 +43,11 @@ public class TourServiceComponent {
 			sequenceIn.setSequenceName(seqName);
 			sequenceIn.setSequenceType(year);
 			sequenceIn.setCurrentVal(1L);
-			sequenceIn.setIncrementval(1);
+			sequenceIn.setIncrementval(incrementval);
 			tourService.create(sequenceIn);
 		} else {
 			int oldSeq = sequence.getCurrentVal().intValue();
-			int newSeq = oldSeq + 1;
+			int newSeq = oldSeq + sequence.getIncrementval();
 			returnStr=newSeq+"";
 			sequence.setCurrentVal(new Long(newSeq));
 			tourService.updateSequence(sequence);
@@ -77,13 +78,6 @@ public class TourServiceComponent {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		return sdf.format(date);
 	}
-
-	public static  void main(String []age){
-		System.out.print(TourServiceComponent.dateToStr(new Date(),"yy"));
-
-	}
-	
-	
 
 	
 }

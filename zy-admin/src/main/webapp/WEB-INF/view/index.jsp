@@ -541,6 +541,34 @@
           </li>
         </shiro:hasAnyPermissions>
 
+        <shiro:hasAnyPermissions name="tour:export,tour:view,tour:edit,tour:release,tourSetting:release">
+          <li>
+            <a href="javascript:;">
+              <i class="icon-basket"></i>
+              <span class="title">旅游管理</span>
+              <span class="selected"></span>
+              <span class="arrow "></span>
+            </a>
+            <ul class="sub-menu">
+
+              <shiro:hasPermission name="tour:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/order"><i class="icon-docs"></i> 旅游信息管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="tourSetting:release">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 客户黑白名单测试<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="tour:export">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 客户信息(导出)<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
       </ul>
       <!-- END SIDEBAR MENU -->
     </div>

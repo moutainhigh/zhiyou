@@ -1,4 +1,4 @@
-package com.zy.entity.cms;
+package com.zy.entity.tour;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
@@ -16,10 +16,10 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-import static com.zy.entity.cms.Tour.*;
+import static com.zy.entity.cms.Article.*;
 
 @Entity
-@Table(name = "cms_Tour")
+@Table(name = "ts_tour")
 @Getter
 @Setter
 @ViewObject(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
@@ -47,16 +47,9 @@ public class Tour implements Serializable {
 	@View(groups = { VO_DETAIL, VO_ADMIN })
 	private String brief;
 
-	@NotBlank
-	@Field(label = "作者")
-	@View(groups = { VO_DETAIL, VO_LIST, VO_ADMIN })
-	private String author;
-
-	@NotNull
-	@Field(label = "发布时间")
-	@View(name = "releasedTimeLabel", type = String.class, groups = { VO_DETAIL, VO_LIST, VO_ADMIN })
-	@Query({Predicate.LT, Predicate.GTE})
-	private Date releasedTime;
+	@Field(label = "天数")
+	@View(groups = { VO_DETAIL, VO_ADMIN })
+	private Integer days;
 
 	@NotNull
 	@Query(Predicate.EQ)
@@ -81,20 +74,22 @@ public class Tour implements Serializable {
 	@Field(label = "创建时间")
 	private Date createdTime;
 
-	@NotNull
+	@NotBlank
+	@Field(label = "创建人")
 	@View(groups = { VO_DETAIL, VO_LIST, VO_ADMIN })
-	@Field(label = "访问数")
-	private Long visitCount;
+	private String createby;
+
 
 	@NotNull
-	@Field(label = "排序")
-	@View(groups = { VO_ADMIN  })
-	private Integer orderNumber;
+	@View(name = "createdTimeLabel", type = String.class, groups = { VO_ADMIN })
+	@Field(label = "更新时间")
+	private Date updateTime;
 
-	@Field(label = "是否热门")
-	@View(groups = { VO_LIST, VO_ADMIN })
-	@NotNull
-	@Query(Predicate.EQ)
-	private Boolean isHot;
+	@NotBlank
+	@Field(label = "更新人")
+	@View(groups = { VO_DETAIL, VO_LIST, VO_ADMIN })
+	private String updateby;
+
+
 
 }
