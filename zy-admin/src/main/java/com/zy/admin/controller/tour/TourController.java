@@ -4,17 +4,21 @@ import com.zy.admin.controller.CaptchaController;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.TourComponent;
+import com.zy.entity.tour.BlackOrWhite;
 import com.zy.entity.tour.Tour;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.query.BlackOrWhiteQueryModel;
 import com.zy.model.query.TourQueryModel;
 import com.zy.model.query.UserQueryModel;
+import com.zy.service.BlackOrWhiteService;
 import com.zy.service.TourService;
 import com.zy.service.UserService;
+import com.zy.util.GcUtils;
 import com.zy.vo.BlackOrWhiteAdminVo;
 import com.zy.vo.TourAdminVo;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +33,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.zy.entity.usr.User.UserRank;
 
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +58,11 @@ public class TourController {
     private TourComponent tourComponent;
 
     @Autowired
+    private BlackOrWhiteService blackOrWhiteService;
+
+    @Autowired
     private UserService userService;
+
 
     @RequestMapping(method = RequestMethod.GET)
     public String list() {
@@ -79,7 +90,6 @@ public class TourController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(Tour tour, Model model, RedirectAttributes redirectAttributes,AdminPrincipal principal) {
         tour.setCreateby(principal.getUserId());
-        tour.setDelfage(0);
         try {
             tourService.createTour(tour);
             redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("旅游信息创建成功"));
@@ -121,34 +131,60 @@ public class TourController {
 
     }
 
-    @RequestMapping(value = "/findTourTime", method = RequestMethod.GET)
-    public String  findTourTime(Model model, @RequestParam Long tourId){
-
-        return "tour/addTourTime";
-    }
-
     @RequiresPermissions("tourSetting:*")
     @RequestMapping(value = "/blackOrWhite" , method = RequestMethod.GET)
     public String list(Model model) {
+        model.addAttribute("userRankMap", Arrays.asList(User.UserRank.values()).stream().collect(Collectors.toMap(v->v, v-> GcUtils.getUserRankLabel(v),(u, v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new)) );
         return "tour/blackOrWhiteList";
     }
 
     @RequiresPermissions("tourSetting:*")
     @RequestMapping(value = "/blackOrWhite" , method = RequestMethod.POST)
     @ResponseBody
-    public Grid<BlackOrWhiteAdminVo> list(BlackOrWhiteQueryModel blackOrWhiteQueryModel, String nicknameLK, String phoneEQ) {
-
-        if (StringUtils.isNotBlank(nicknameLK) || StringUtils.isNotBlank(phoneEQ)) {
-            List<User> all = userService.findAll(UserQueryModel.builder().nicknameLK(nicknameLK).phoneEQ(phoneEQ).build());
+    public Grid<BlackOrWhiteAdminVo> blackOrWhiteList(BlackOrWhiteQueryModel blackOrWhiteQueryModel, String nicknameLK, String phoneEQ,UserRank userRankEQ) {
+        if (StringUtils.isNotBlank(nicknameLK) || StringUtils.isNotBlank(phoneEQ) || null != userRankEQ) {
+            List<User> all = userService.findAll(UserQueryModel.builder().nicknameLK(nicknameLK).phoneEQ(phoneEQ).userRankEQ(userRankEQ).build());
             if (all.isEmpty()) {
                 return new Grid<BlackOrWhiteAdminVo>(PageBuilder.empty(blackOrWhiteQueryModel.getPageSize(), blackOrWhiteQueryModel.getPageNumber()));
             }
             blackOrWhiteQueryModel.setUserIdIN(all.stream().map(v -> v.getId()).toArray(Long[]::new));
         }
-//        Page<Activity> page = activityService.findPage(activityQueryModel);
- //       Page<ActivityAdminVo> voPage = PageBuilder.copyAndConvert(page, v -> activityComponent.buildAdminVo(v, false));
-    //    return new Grid<>(voPage);
-        return null;
+        Page<BlackOrWhite> page = blackOrWhiteService.findPage(blackOrWhiteQueryModel);
+        Page<BlackOrWhiteAdminVo> voPage = PageBuilder.copyAndConvert(page, v -> tourComponent.buildBlackOrWhiteAdminVo(v));
+        return new Grid<>(voPage);
     }
+
+    @RequiresPermissions("tourSetting:*")
+    @RequestMapping(value = "/createBlackWhite", method = RequestMethod.GET)
+    public String createBlackWhite() {
+        return "tour/blackWhiteCreate";
+    }
+    @RequiresPermissions("activity:edit")
+    @RequestMapping(value = "/createBlackWhite", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> create(BlackOrWhite blackOrWhite, @RequestParam String phone) {
+        try{
+            User user = userService.findByPhone(phone);
+            if(null != user){
+                blackOrWhite.setUserId(user.getId());
+                blackOrWhiteService.create(blackOrWhite);
+                return ResultBuilder.ok("新增成功");
+            }else{
+                return ResultBuilder.error("手机号不存在");
+            }
+        } catch (Exception e) {
+            return ResultBuilder.error(e.getMessage());
+        }
+    }
+
+
+
+    @RequiresPermissions("tourSetting:*")
+    @RequestMapping(value = "/editBlackWhite", method = RequestMethod.GET)
+    public String updateBlackWhite() {
+        return "tour/blackWhiteEdit";
+    }
+
+
 
 }

@@ -1,11 +1,8 @@
 package com.zy.mapper;
 
 
-import com.zy.entity.act.Activity;
 import com.zy.entity.tour.BlackOrWhite;
-import com.zy.model.query.ActivityQueryModel;
 import com.zy.model.query.BlackOrWhiteQueryModel;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
