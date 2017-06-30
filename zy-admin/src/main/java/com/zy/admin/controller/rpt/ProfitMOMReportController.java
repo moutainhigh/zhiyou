@@ -44,8 +44,6 @@ public class ProfitMOMReportController {
 	@RequiresPermissions("profitMOM:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model, String monthLabel) {
-		model.addAttribute("monthLabel", monthLabel);
-
 		model.addAttribute("queryDateLabels", getDateLabels());
 
 		List<String> monthForHeaders = new ArrayList<>();
@@ -69,6 +67,7 @@ public class ProfitMOMReportController {
 			}
 			monthForHeaders.add(year + SPLIT_PATTERN + month);
 		}
+		model.addAttribute("monthLabel", monthLabel);
 		model.addAttribute("monthForHeaders", monthForHeaders);
 		return "rpt/profitMOMReport";
 	}
