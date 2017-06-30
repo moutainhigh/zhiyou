@@ -7,36 +7,20 @@ import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.TourComponent;
-import com.zy.entity.cms.Article;
 import com.zy.entity.tour.Tour;
+import com.zy.entity.usr.User;
 import com.zy.model.Constants;
-import com.zy.model.query.ArticleQueryModel;
+import com.zy.model.query.BlackOrWhiteQueryModel;
 import com.zy.model.query.TourQueryModel;
+import com.zy.model.query.UserQueryModel;
 import com.zy.service.TourService;
-import com.zy.util.GcUtils;
-import com.zy.vo.AdminAdminVo;
-import com.zy.vo.ArticleAdminVo;
+import com.zy.service.UserService;
+import com.zy.vo.BlackOrWhiteAdminVo;
 import com.zy.vo.TourAdminVo;
-import io.gd.generator.api.query.Direction;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.ui.Grid;
-import com.zy.entity.act.Activity;
-import com.zy.entity.tour.BlackOrWhite;
-import com.zy.entity.usr.User;
-import com.zy.model.query.ActivityQueryModel;
-import com.zy.model.query.BlackOrWhiteQueryModel;
-import com.zy.model.query.UserQueryModel;
-import com.zy.service.UserService;
-import com.zy.vo.ActivityAdminVo;
-import com.zy.vo.ActivityTeamApplyAdminVo;
-import com.zy.vo.BlackOrWhiteAdminVo;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,10 +35,6 @@ import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 /**
  * Created by it001 on 2017/6/28.

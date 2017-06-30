@@ -25,7 +25,9 @@ public class BlackOrWhiteQueryModel implements Serializable {
 
 	private Long[] userIdIN;
 
-	private Integer number;
+	private Integer numberGTE;
+
+	private Integer numberLT;
 
 	private Integer type;
 

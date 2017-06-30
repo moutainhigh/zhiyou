@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.BlackOrWhiteMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.tour.BlackOrWhite">
+		<id column="id" property="id" />
+		<result column="userId" property="user_id" />
+		<result column="number" property="number" />
+		<result column="type" property="type" />
+	</resultMap>
+
+	<sql id="baseColumn">id,user_id,number,type</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.tour.BlackOrWhite" useGeneratedKeys="true" keyProperty="id">
+	  insert into `ts_black_white` (user_id,number,type)
+	  values (#{userId},#{number},#{type})
+	</insert>
+
+	<update id="update" parameterType="com.zy.entity.tour.BlackOrWhite">
+		update `ts_black_white`
+		<set>
+			user_id = #{userId},
+			number = #{number},
+			type = #{type},
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		<include refid="baseColumn"/>
+		from `ts_black_white`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.BlackOrWhiteQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `ts_black_white`
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="startTimeGTE != null">
+				and start_time &gt;= #{startTimeGTE}
+			</if>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
+			<if test="applyDeadlineGTE != null">
+				and apply_deadline &gt;= #{applyDeadlineGTE}
+			</if>
+			<if test="areaIdIN != null">
+				<if test="areaIdIN.length != 0">
+				and area_id in
+				<foreach collection="areaIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="areaIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="userId != null">
+				and user_id = #{areaIdEQ}
+			</if>
+			<if test="startTimeLT != null">
+				and start_time &lt; #{startTimeLT}
+			</if>
+			<if test="applyDeadlineLT != null">
+				and apply_deadline &lt; #{applyDeadlineLT}
+			</if>
+			<if test="isReleasedEQ != null">
+				and is_released = #{isReleasedEQ}
+			</if>
+			<if test="areaIdEQ != null">
+				and area_id = #{areaIdEQ}
+			</if>
+			<if test="level != null">
+				and level = #{level}
+			</if>
+			<if test="address != null">
+				<bind name="address" value="'%' + address + '%'"/> and address like #{address}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="findReport" resultMap="baseResultMap" parameterType="com.zy.model.query.ActivityQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `ts_black_white`
+		<where>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="startTimeGTE != null">
+				and start_time &gt;= #{startTimeGTE}
+			</if>
+			<if test="startTimeLT != null">
+				and end_time &lt;= #{startTimeLT}
+			</if>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
+			<if test="applyDeadlineGTE != null">
+				and apply_deadline &gt;= #{applyDeadlineGTE}
+			</if>
+			<if test="areaIdIN != null">
+				<if test="areaIdIN.length != 0">
+				and area_id in
+				<foreach collection="areaIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="areaIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="applyDeadlineLT != null">
+				and apply_deadline &lt; #{applyDeadlineLT}
+			</if>
+			<if test="isReleasedEQ != null">
+				and is_released = #{isReleasedEQ}
+			</if>
+			<if test="areaIdEQ != null">
+				and area_id = #{areaIdEQ}
+			</if>
+			<if test="level != null">
+				and level = #{level}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by start_time desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.ActivityQueryModel">
+		select count(*) from `ts_black_white`
+		<where>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="startTimeGTE != null">
+				and start_time &gt;= #{startTimeGTE}
+			</if>
+			<if test="startTimeLT != null">
+				and end_time &lt;= #{startTimeLT}
+			</if>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
+			<if test="applyDeadlineGTE != null">
+				and apply_deadline &gt;= #{applyDeadlineGTE}
+			</if>
+			<if test="areaIdIN != null">
+				<if test="areaIdIN.length != 0">
+				and area_id in
+				<foreach collection="areaIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="areaIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="applyDeadlineLT != null">
+				and apply_deadline &lt; #{applyDeadlineLT}
+			</if>
+			<if test="isReleasedEQ != null">
+				and is_released = #{isReleasedEQ}
+			</if>
+			<if test="areaIdEQ != null">
+				and area_id = #{areaIdEQ}
+			</if>
+			<if test="level != null">
+				and level = #{level}
+			</if>
+		</where>
+	</select>
+
+	<update id="view">
+		update `ts_black_white`
+		set viewed_count = viewed_count + 1
+		where id = #{id}
+	</update>
+
+</mapper>

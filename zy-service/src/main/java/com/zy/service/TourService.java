@@ -1,15 +1,9 @@
 package com.zy.service;
 
 import com.zy.common.model.query.Page;
-import com.zy.entity.cms.Article;
-import com.zy.entity.fnc.Transfer;
 import com.zy.entity.tour.Sequence;
 import com.zy.entity.tour.Tour;
 import com.zy.model.query.TourQueryModel;
-import com.zy.model.query.TransferQueryModel;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 public interface TourService {
      void create(Sequence sequence);
