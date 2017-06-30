@@ -17,23 +17,29 @@ public class TourUserAdminVo implements Serializable {
     @Field(label = "id")
     private Long id;
     @Field(label = "旅游标题")
-    private String tourTitle;
+    private String tourId;
     @Field(label = "用户名称")
     private String userName;
     @Field(label = "上级名称")
     private String parentName;
+    @Field(label = "旅游单号")
+    private String sequenceId;
     @Field(label = "修改人名称")
     private String updateName;
     @Field(label = "是否有效")
     private Integer isEffect;
     @Field(label = "审核状态")
     private Integer auditStatus;
-    @Field(label = "检测报告名称")
-    private String reportTitle;
+    @Field(label = "检测报告编号")
+    private String reportId;
     @Field(label = "是否接车")
     private Integer isTransfers;
     @Field(label = "车次")
-    private Integer carNumber;
+    private String carNumber;
+    @Field(label = "用户备注")
+    private String userRemark;
+    @Field(label = "审核备注")
+    private String revieweRemark;
 
     /* 扩展 */
     @Field(label = "票务照片")

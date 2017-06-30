@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.TourUserMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.tour.TourUser">
+		<id column="id" property="id" />
+		<result column="tour_time_id" property="tourTimeId" />
+		<result column="tour_id" property="tourId" />
+		<result column="user_id" property="userId" />
+		<result column="parent_id" property="parentId" />
+		<result column="sequence_id" property="sequenceId" />
+		<result column="create_date" property="createDate" />
+		<result column="update_date" property="updateDate" />
+		<result column="update_by" property="updateBy" />
+		<result column="is_effect" property="isEffect" />
+		<result column="audit_status" property="auditStatus" />
+		<result column="report_id" property="reportId" />
+		<result column="is_transfers" property="isTransfers" />
+		<result column="car_number" property="carNumber" />
+		<result column="plan_time" property="planTime" />
+		<result column="car_images" property="carImages" />
+		<result column="user_remark" property="userRemark" />
+		<result column="reviewe_remark" property="revieweRemark" />
+	</resultMap>
+
+	<sql id="baseColumn">
+		id,
+		tour_time_id,
+		tour_id,
+		user_id,
+		parent_id,
+		sequence_id,
+		create_date,
+		update_date,
+		update_by,
+		is_effect,
+		audit_status,
+		report_id,
+		is_transfers,
+		car_number,
+		plan_time,
+		car_images,
+		user_remark,
+		reviewe_remark
+	</sql>
+
+	<!-- 查询所有旅客信息 -->
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TourUserQueryModel">
+		SELECT
+		<include refid="baseColumn"/>
+		FROM ts_tour_user
+		<where>
+			<if test="title !=null">
+				and title like #{title},
+			</if>
+			<if test="brief !=null">
+				and brief like #{brief},
+			</if>
+			<if test="days !=null">
+				and days = #{days},
+			</if>
+			<if test="isReleased !=null">
+				and is_released = #{isReleased},
+			</if>
+			<if test="updateTime !=null">
+				and update_date = #{updateTime},
+			</if>
+			<if test="updateTime !=null">
+				and create_date = #{createdTime},
+			</if>
+			<if test="delfage !=null">
+				and del_fage = #{delfage},
+			</if>
+		</where>
+		ORDER BY create_date DESC ,  audit_status ASC
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.TourUserQueryModel">
+		SELECT
+		count(*)
+		FROM ts_tour_user
+		<where>
+			<if test="title !=null">
+				and title like #{title},
+			</if>
+			<if test="brief !=null">
+				and brief like #{brief},
+			</if>
+			<if test="days !=null">
+				and days = #{days},
+			</if>
+			<if test="isReleased !=null">
+				and is_released = #{isReleased},
+			</if>
+			<if test="updateTime !=null">
+				and update_date = #{updateTime},
+			</if>
+			<if test="updateTime !=null">
+				and create_date = #{createdTime},
+			</if>
+			<if test="delfage !=null">
+				and del_fage = #{delfage},
+			</if>
+		</where>
+	</select>
+
+
+	<insert id="insert" parameterType="com.zy.entity.usr.Tag" useGeneratedKeys="true" keyProperty="id">
+		insert into `ts_tour` (title,brief,days,is_released,images,content,create_date,create_by,del_fage)
+		values (#{title},#{brief},#{days},#{isReleased},#{image},#{content},#{createdTime},#{createby},#{delfage})
+	</insert>
+
+	<delete id="delete">
+		delete from `ts_tour` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.tour.Tour">
+		update `ts_tour`
+		<set>
+			<if test="title !=null">
+				title = #{title},
+			</if>
+			<if test="brief !=null">
+				brief = #{brief},
+			</if>
+			<if test="days !=null">
+				days = #{days},
+			</if>
+			<if test="isReleased !=null">
+				is_released = #{isReleased},
+			</if>
+			<if test="image !=null">
+				images = #{image},
+			</if>
+			<if test="content !=null">
+				content = #{content},
+			</if>
+			<if test="updateTime !=null">
+				update_date = #{updateTime},
+			</if>
+			<if test="updateby !=null">
+				update_by = #{updateby},
+			</if>
+			<if test="delfage !=null">
+				and del_fage = #{delfage},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		<include refid="baseColumn"/>
+		from `ts_tour`
+		where id = #{id}
+	</select>
+
+
+</mapper>
+
+
+
+
+

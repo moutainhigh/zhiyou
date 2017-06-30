@@ -3,9 +3,12 @@ package com.zy.service.impl;
 import com.zy.common.model.query.Page;
 import com.zy.entity.tour.Sequence;
 import com.zy.entity.tour.Tour;
+import com.zy.entity.tour.TourUser;
 import com.zy.mapper.SequenceMapper;
 import com.zy.mapper.TourMapper;
+import com.zy.mapper.TourUserMapper;
 import com.zy.model.query.TourQueryModel;
+import com.zy.model.query.TourUserQueryModel;
 import com.zy.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,9 @@ public class TourServiceImpl implements TourService {
 
     @Autowired
     private TourMapper tourMapper;
+
+    @Autowired
+    private TourUserMapper tourUserMapper;
     /**
      * 保存新的seq
      * @param sequence
@@ -121,6 +127,27 @@ public class TourServiceImpl implements TourService {
         tourUp.setTitle(tour.getTitle());
         tourUp.setUpdateTime(new Date());
         tourMapper.update(tourUp);
+    }
+
+    /**
+     * 查询所有旅客信息
+     * @param tourUserQueryModel
+     * @return
+     */
+    @Override
+    public Page<TourUser> findAll(TourUserQueryModel tourUserQueryModel) {
+        if(tourUserQueryModel.getPageNumber() == null)
+            tourUserQueryModel.setPageNumber(0);
+        if(tourUserQueryModel.getPageSize() == null)
+            tourUserQueryModel.setPageSize(20);
+        long total = tourUserMapper.count(tourUserQueryModel);
+        List<TourUser> data = tourUserMapper.findAll(tourUserQueryModel);
+        Page<TourUser> page = new Page<>();
+        page.setPageNumber(tourUserQueryModel.getPageNumber());
+        page.setPageSize(tourUserQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
     }
 
 

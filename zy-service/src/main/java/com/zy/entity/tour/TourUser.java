@@ -42,6 +42,12 @@ public class TourUser implements Serializable {
     private Long id;
 
     @Id
+    @Field(label = "tourTimeId")
+    @View
+    @Query(Predicate.EQ)
+    private Long tourTimeId;
+
+    @Id
     @Field(label = "tourId")
     @View
     @Query(Predicate.EQ)
@@ -102,7 +108,13 @@ public class TourUser implements Serializable {
     @Query(Predicate.EQ)
     @View(groups = { VO_ADMIN })
     @Field(label = "车次")
-    private Integer carNumber;
+    private String carNumber;
+
+    @NotNull
+    @Query(Predicate.EQ)
+    @View(groups = { VO_ADMIN })
+    @Field(label = "旅游单号")
+    private String sequenceId;
 
     @NotNull
     @View(name = "planTimeLabel", type = String.class, groups = { VO_ADMIN })
@@ -114,5 +126,15 @@ public class TourUser implements Serializable {
     @Field(label = "票务照片")
     @View(name = "imageThumbnai", type = String.class, groups = { VO_ADMIN })
     private String carImages;
+
+    @NotBlank
+    @Field(label = "用户备注")
+    @View(groups = { VO_ADMIN })
+    private String userRemark;
+
+    @NotBlank
+    @Field(label = "审核备注")
+    @View(groups = { VO_ADMIN })
+    private String revieweRemark;
 }
 

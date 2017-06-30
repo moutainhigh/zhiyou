@@ -563,7 +563,7 @@
               </shiro:hasPermission>
               <shiro:hasPermission name="tourUser:view">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/order/platformDeliverList"><i class="icon-docs"></i> 游客信息管理<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/tourUser"><i class="icon-docs"></i> 游客信息管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>

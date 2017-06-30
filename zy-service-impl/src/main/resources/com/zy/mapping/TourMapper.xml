@@ -20,8 +20,8 @@
 	<sql id="baseColumn">id,title,brief,days,is_released,images,content,create_date,create_by,update_date,update_by</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.Tag" useGeneratedKeys="true" keyProperty="id">
-	  insert into `ts_tour` (title,brief,days,is_released,images,content,create_date,create_by,del_fage)
-	  values (#{title},#{brief},#{days},#{isReleased},#{image},#{content},#{createdTime},#{createby},#{delfage})
+		insert into `ts_tour` (title,brief,days,is_released,images,content,create_date,create_by,del_fage)
+		values (#{title},#{brief},#{days},#{isReleased},#{image},#{content},#{createdTime},#{createby},#{delfage})
 	</insert>
 
 	<delete id="delete">
@@ -75,25 +75,25 @@
 		from `ts_tour`
 		<where>
 			<if test="title !=null">
-			 and title like #{title},
+				and title like #{title},
 			</if>
 			<if test="brief !=null">
-			  and brief like #{brief},
+				and brief like #{brief},
 			</if>
 			<if test="days !=null">
-			 and days = #{days},
+				and days = #{days},
 			</if>
 			<if test="isReleased !=null">
-			  and is_released = #{isReleased},
+				and is_released = #{isReleased},
 			</if>
 			<if test="updateTime !=null">
-			  and update_date = #{updateTime},
+				and update_date = #{updateTime},
 			</if>
 			<if test="updateTime !=null">
-			  and create_date = #{createdTime},
+				and create_date = #{createdTime},
 			</if>
 			<if test="delfage !=null">
-			  and del_fage = #{delfage},
+				and del_fage = #{delfage},
 			</if>
 		</where>
 		order by id desc
