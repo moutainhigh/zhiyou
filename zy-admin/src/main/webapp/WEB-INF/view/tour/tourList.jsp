@@ -82,7 +82,20 @@
     });
     <shiro:hasPermission name="article:edit">
     function release(id) {
-        releaseAjax(id, true);
+        alert("测试")
+        $.ajax({
+            url: '${ctx}/tour/findTourTime?tourId='+ id,
+            dataType: 'html',
+            success: function(data) {
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['960px', '640px'], //宽高
+                    content: data
+                });
+            }
+        })
+        //releaseAjax(id, true);
     }
     function unrelease(id) {
         releaseAjax(id, false);
@@ -94,7 +107,7 @@
         });
     }
     function deleteAjax(id) {
-        layer.confirm('新闻删除不可恢复，您确认删除此新闻么?', {
+        layer.confirm('您确认删除此旅游信息嘛?', {
             btn: ['删除','取消'] //按钮
         }, function(){
             $.post('${ctx}/article/delete', {id: id}, function (result) {

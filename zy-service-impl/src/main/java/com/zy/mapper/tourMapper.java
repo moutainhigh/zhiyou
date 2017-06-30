@@ -9,6 +9,7 @@ import java.util.List;
 
 
 public interface TourMapper {
+
 	int insert(Tour tour);
 
 	List<Tour> findAll(TourQueryModel tourQueryModel);

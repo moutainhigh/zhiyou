@@ -11,6 +11,7 @@
 <script type="text/javascript">
     //编辑器
     var ue;
+    articleContent = '${tour.content}';
     $(function() {
         ue = UE.getEditor('editor', {
             serverUrl: '${ctx}/editor',
@@ -39,7 +40,9 @@
             initialFrameWidth: 750,
             iframeCssUrl: '${ctx}/css/editor/default.css'
         });
-
+        ue.addListener("ready", function () {
+            ue.setContent(articleContent);
+        });
         $("#createForm").validate({
             rules : {
                 'title' : {
@@ -135,7 +138,7 @@
                             </label>
                             <div class="col-md-4">
                                 <input type="text" name="title" id="title" class="form-control"
-                                       placeholder="请输入标题" />
+                                       value="${tour.title}" placeholder="请输入标题" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -143,15 +146,15 @@
                             </label>
                             <div class="col-md-4">
                                 <input type="text" name="days" id="days" class="form-control"
-                                       placeholder="请输入标题" />
+                                       value="${tour.days}"  placeholder="请输天数" />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-3">主图<span class="required"> * </span></label>
                             <div class="col-md-5">
-                                <img data-target="image" class="product-image bd" src="${ctx}/image/upload_240_150.jpg">
-                                <input type="hidden" name="image" value=""/>
+                                <img data-target="image" class="product-image bd" src="<c:if test='${not empty tour.image}'>${tour.image}</c:if><c:if test='${empty article.image}'>${ctx}/image/upload_240_150.jpg</c:if>">
+                                <input type="hidden" name="image" value="${tour.image}"/>
                                 <p class="help-block">图片尺寸 750*450</p>
                             </div>
                         </div>
@@ -159,7 +162,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-3">旅游信息摘要</label>
                             <div class="col-md-4">
-                                <textarea name="brief" id="brief" cols="30" rows="5" class="form-control"></textarea>
+                                <textarea name="brief" id="brief" cols="30" rows="5" class="form-control">${tour.brief}</textarea>
                             </div>
                         </div>
 

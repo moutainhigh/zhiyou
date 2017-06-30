@@ -32,6 +32,8 @@ public class TourQueryModel implements Serializable {
 
     private String brief;
 
+    private Integer delfage;
+
     private Integer pageNumber;
 
     private Integer pageSize;

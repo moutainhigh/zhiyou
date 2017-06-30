@@ -114,7 +114,9 @@ public class TourComponent {
         BeanUtils.copyProperties(tour, tourAdminVo);
         tourAdminVo.setCreatedTime( GcUtils.formatDate(tour.getCreatedTime(), TIME_PATTERN));
         tourAdminVo.setUpdateTime( GcUtils.formatDate(tour.getUpdateTime(), TIME_PATTERN));
-        tourAdminVo.setImage(getThumbnail(tour.getImage(), 750, 450));
+        if (b) {
+            tourAdminVo.setImage(getThumbnail(tour.getImage(), 750, 450));
+        }
         tourAdminVo.setCreateName(userService.findRealName(tour.getCreateby()));
         return tourAdminVo;
     }

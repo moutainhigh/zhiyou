@@ -70,6 +70,9 @@ public class TourController {
     @Autowired
     private TourComponent tourComponent;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String list() {
         return "tour/tourList";
@@ -96,6 +99,7 @@ public class TourController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(Tour tour, Model model, RedirectAttributes redirectAttributes,AdminPrincipal principal) {
         tour.setCreateby(principal.getUserId());
+        tour.setDelfage(0);
         try {
             tourService.createTour(tour);
             redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("旅游信息创建成功"));
@@ -136,9 +140,12 @@ public class TourController {
         }
 
     }
-    @Autowired
-    private UserService userService;
 
+    @RequestMapping(value = "/findTourTime", method = RequestMethod.GET)
+    public String  findTourTime(Model model, @RequestParam Long tourId){
+
+        return "tour/addTourTime";
+    }
 
     @RequiresPermissions("tourSetting:*")
     @RequestMapping(value = "/blackOrWhite" , method = RequestMethod.GET)

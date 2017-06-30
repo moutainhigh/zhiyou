@@ -147,14 +147,14 @@
                             </label>
                             <div class="col-md-4">
                                 <input type="text" name="days" id="days" class="form-control"
-                                       value="${tour.days}" placeholder="请输入标题" />
+                                       value="${tour.days}" placeholder="请输天数" />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-md-3">主图<span class="required"> * </span></label>
                             <div class="col-md-5">
-                                <img data-target="image" class="product-image bd" src="<c:if test='${not empty tour.image}'>${tour.image}</c:if><c:if test='${empty article.image}'>${ctx}/image/upload_240_150.jpg</c:if>">
+                                <img data-target="image" class="product-image bd" src="<c:if test='${not empty tour.image}'>${tour.image}</c:if><c:if test='${empty tour.image}'>${ctx}/image/upload_240_150.jpg</c:if>">
                                 <input type="hidden" name="image" value="${tour.image}"/>
                                 <p class="help-block">图片尺寸 750*450</p>
                             </div>

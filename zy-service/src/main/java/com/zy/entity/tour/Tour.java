@@ -68,27 +68,26 @@ public class Tour implements Serializable {
 	@Field(label = "内容")
 	private String content;
 
-	@NotNull
 	@View(name = "createdTime", type = String.class, groups = { VO_ADMIN })
 	@Field(label = "创建时间")
 	private Date createdTime;
 
-	@NotBlank
 	@Field(label = "创建人")
 	@View(groups = { VO_DETAIL, VO_LIST, VO_ADMIN })
 	private Long createby;
 
 
-	@NotNull
 	@View(name = "updateTime", type = String.class, groups = { VO_ADMIN })
 	@Field(label = "更新时间")
 	private Date updateTime;
 
-	@NotBlank
 	@Field(label = "更新人")
 	@View(groups = { VO_DETAIL, VO_LIST, VO_ADMIN })
 	private Long updateby;
 
+	@Field(label = "是否删除")
+	@View(groups = { VO_DETAIL, VO_LIST, VO_ADMIN })
+	private Integer delfage;
 
 
 }

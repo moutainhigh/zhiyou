@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zy.mapper.TourMapper" >
+<mapper namespace="com.zy.mapper.TourTimeMapper" >
 
-	<resultMap id="baseResultMap" type="com.zy.entity.tour.Tour">
+	<resultMap id="baseResultMap" type="com.zy.entity.tour.TourTime">
 		<id column="id" property="id" />
-		<result column="title" property="title" />
-		<result column="brief" property="brief" />
-		<result column="days" property="days" />
-		<result column="is_released" property="isReleased" />
-		<result column="images" property="image" />
-		<result column="content" property="content" />
-		<result column="create_date" property="createdTime" />
+		<result column="trou_id" property="title" />
+		<result column="begin_time" property="brief" />
+		<result column="end_time" property="days" />
+		<result column="fee" property="isReleased" />
+		<result column="is_released" property="image" />
+		<result column="del_flag" property="content" />
+		<result column="starAddress" property="createdTime" />
 		<result column="create_by" property="createby" />
 		<result column="update_date" property="updateTime" />
 		<result column="update_by" property="updateby" />
 		<result column="del_fage" property="delfage" />
 	</resultMap>
 
-	<sql id="baseColumn">id,title,brief,days,is_released,images,content,create_date,create_by,update_date,update_by</sql>
+	<sql id="baseColumn">id,trou_id,begin_time,end_time,fee,is_released,del_flag,starAddress,create_date,create_by,update_date,update_by</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.Tag" useGeneratedKeys="true" keyProperty="id">
-	  insert into `ts_tour` (title,brief,days,is_released,images,content,create_date,create_by,del_fage)
-	  values (#{title},#{brief},#{days},#{isReleased},#{image},#{content},#{createdTime},#{createby},#{delfage})
+	  insert into `ts_tour_time` (trou_id,brief,begin_time,end_time,fee,is_released,del_flag,starAddress,create_date,create_by)
+	  values (#{title},#{brief},#{days},#{isReleased},#{image},#{content},#{createdTime},#{createby})
 	</insert>
 
 	<delete id="delete">
