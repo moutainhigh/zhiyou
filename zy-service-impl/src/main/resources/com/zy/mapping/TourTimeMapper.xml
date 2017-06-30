@@ -4,13 +4,13 @@
 
 	<resultMap id="baseResultMap" type="com.zy.entity.tour.TourTime">
 		<id column="id" property="id" />
-		<result column="trou_id" property="title" />
-		<result column="begin_time" property="brief" />
-		<result column="end_time" property="days" />
-		<result column="fee" property="isReleased" />
-		<result column="is_released" property="image" />
-		<result column="del_flag" property="content" />
-		<result column="starAddress" property="createdTime" />
+		<result column="trou_id" property="trouId" />
+		<result column="begin_time" property="begintime" />
+		<result column="end_time" property="endtime" />
+		<result column="fee" property="fee" />
+		<result column="is_released" property="isreleased" />
+		<result column="del_flag" property="delflag" />
+		<result column="starAddress" property="starAddress" />
 		<result column="create_by" property="createby" />
 		<result column="update_date" property="updateTime" />
 		<result column="update_by" property="updateby" />
@@ -24,110 +24,5 @@
 	  values (#{title},#{brief},#{days},#{isReleased},#{image},#{content},#{createdTime},#{createby})
 	</insert>
 
-	<delete id="delete">
-		delete from `ts_tour` where id = #{id}
-	</delete>
 
-	<update id="update" parameterType="com.zy.entity.tour.Tour">
-		update `ts_tour`
-		<set>
-			<if test="title !=null">
-				title = #{title},
-			</if>
-			<if test="brief !=null">
-				brief = #{brief},
-			</if>
-			<if test="days !=null">
-				days = #{days},
-			</if>
-			<if test="isReleased !=null">
-				is_released = #{isReleased},
-			</if>
-			<if test="image !=null">
-				images = #{image},
-			</if>
-			<if test="content !=null">
-				content = #{content},
-			</if>
-			<if test="updateTime !=null">
-				update_date = #{updateTime},
-			</if>
-			<if test="updateby !=null">
-				update_by = #{updateby},
-			</if>
-			<if test="delfage !=null">
-				and del_fage = #{delfage},
-			</if>
-		</set>
-		where id = #{id}
-	</update>
-
-	<select id="findOne" resultMap="baseResultMap" parameterType="long">
-		select
-		<include refid="baseColumn"/>
-		from `ts_tour`
-		where id = #{id}
-	</select>
-
-	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TourQueryModel">
-		select
-		<include refid="baseColumn"/>
-		from `ts_tour`
-		<where>
-			<if test="title !=null">
-			 and title like #{title},
-			</if>
-			<if test="brief !=null">
-			  and brief like #{brief},
-			</if>
-			<if test="days !=null">
-			 and days = #{days},
-			</if>
-			<if test="isReleased !=null">
-			  and is_released = #{isReleased},
-			</if>
-			<if test="updateTime !=null">
-			  and update_date = #{updateTime},
-			</if>
-			<if test="updateTime !=null">
-			  and create_date = #{createdTime},
-			</if>
-			<if test="delfage !=null">
-			  and del_fage = #{delfage},
-			</if>
-		</where>
-		order by id desc
-		<if test="offset != null">
-			limit #{offset}, #{pageSize}
-		</if>
-	</select>
-
-	<select id="count" resultType="_long" parameterType="com.zy.model.query.TourQueryModel">
-		select
-		count(*)
-		from `ts_tour`
-		<where>
-			<if test="title !=null">
-				and title like #{title},
-			</if>
-			<if test="brief !=null">
-				and brief like #{brief},
-			</if>
-			<if test="days !=null">
-				and days = #{days},
-			</if>
-			<if test="isReleased !=null">
-				and is_released = #{isReleased},
-			</if>
-			<if test="updateTime !=null">
-				and update_date = #{updateTime},
-			</if>
-			<if test="updateTime !=null">
-				and create_date = #{createdTime},
-			</if>
-			<if test="delfage !=null">
-				and del_fage = #{delfage},
-			</if>
-		</where>
-	</select>
 </mapper>
