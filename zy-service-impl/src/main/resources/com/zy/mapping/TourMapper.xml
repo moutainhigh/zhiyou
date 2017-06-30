@@ -14,13 +14,13 @@
 		<result column="create_by" property="createby" />
 		<result column="update_date" property="updateTime" />
 		<result column="update_by" property="updateby" />
-		<result column="del_fage" property="delfage" />
+		<result column="del_flage" property="delfage" />
 	</resultMap>
 
 	<sql id="baseColumn">id,title,brief,days,is_released,images,content,create_date,create_by,update_date,update_by</sql>
 
-	<insert id="insert" parameterType="com.zy.entity.usr.Tag" useGeneratedKeys="true" keyProperty="id">
-	  insert into `ts_tour` (title,brief,days,is_released,images,content,create_date,create_by,del_fage)
+	<insert id="insert" parameterType="com.zy.entity.tour.Tour" useGeneratedKeys="true" keyProperty="id">
+	  insert into `ts_tour` (title,brief,days,is_released,images,content,create_date,create_by,del_flage)
 	  values (#{title},#{brief},#{days},#{isReleased},#{image},#{content},#{createdTime},#{createby},#{delfage})
 	</insert>
 
@@ -56,7 +56,7 @@
 				update_by = #{updateby},
 			</if>
 			<if test="delfage !=null">
-				and del_fage = #{delfage},
+				del_flage = #{delfage},
 			</if>
 		</set>
 		where id = #{id}
@@ -75,25 +75,25 @@
 		from `ts_tour`
 		<where>
 			<if test="title !=null">
-			 and title like #{title},
+			 and title like #{title}
 			</if>
 			<if test="brief !=null">
-			  and brief like #{brief},
+			  and brief like #{brief}
 			</if>
 			<if test="days !=null">
-			 and days = #{days},
+			 and days = #{days}
 			</if>
 			<if test="isReleased !=null">
-			  and is_released = #{isReleased},
+			  and is_released = #{isReleased}
 			</if>
 			<if test="updateTime !=null">
-			  and update_date = #{updateTime},
+			  and update_date = #{updateTime}
 			</if>
 			<if test="updateTime !=null">
-			  and create_date = #{createdTime},
+			  and create_date = #{createdTime}
 			</if>
 			<if test="delfage !=null">
-			  and del_fage = #{delfage},
+			  and del_flage = #{delfage}
 			</if>
 		</where>
 		order by id desc
@@ -108,25 +108,25 @@
 		from `ts_tour`
 		<where>
 			<if test="title !=null">
-				and title like #{title},
+				and title like #{title}
 			</if>
 			<if test="brief !=null">
-				and brief like #{brief},
+				and brief like #{brief}
 			</if>
 			<if test="days !=null">
-				and days = #{days},
+				and days = #{days}
 			</if>
 			<if test="isReleased !=null">
-				and is_released = #{isReleased},
+				and is_released = #{isReleased}
 			</if>
 			<if test="updateTime !=null">
-				and update_date = #{updateTime},
+				and update_date = #{updateTime}
 			</if>
 			<if test="updateTime !=null">
-				and create_date = #{createdTime},
+				and create_date = #{createdTime}
 			</if>
 			<if test="delfage !=null">
-				and del_fage = #{delfage},
+				and del_flage = #{delfage}
 			</if>
 		</where>
 	</select>
