@@ -341,14 +341,14 @@
 			});
 		})
 	</script>
-
+	<shiro:hasPermission name="teamReportNew:view">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="portlet light bordered">
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="icon-graph"></i>
-						<span class="caption-subject bold uppercase"> 总经理团队月度报表</span>
+						<span class="caption-subject bold uppercase"> 总经理团队上月度报表</span>
 					</div>
 				</div>
 				<div class="portlet-body">
@@ -359,6 +359,8 @@
 			</div>
 		</div>
 	</div>
+	</shiro:hasPermission>
+
 	<script>
 		$(function(){
 			var myChartTeam = echarts.init(document.getElementById('orderChartTeam'));
