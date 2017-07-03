@@ -43,55 +43,37 @@
 			</if>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
-				and id in
-				<foreach collection="idIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
+					and id in
+					<foreach collection="idIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				and 1 = 2
+					and 1 = 2
 				</if>
 			</if>
-			<if test="startTimeGTE != null">
-				and start_time &gt;= #{startTimeGTE}
+			<if test="numberGTE != null">
+				and number &gt;= #{numberGTE}
 			</if>
-			<if test="titleLK != null">
-				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
-			</if>
-			<if test="applyDeadlineGTE != null">
-				and apply_deadline &gt;= #{applyDeadlineGTE}
-			</if>
-			<if test="areaIdIN != null">
-				<if test="areaIdIN.length != 0">
-				and area_id in
-				<foreach collection="areaIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
-				</if>
-				<if test="areaIdIN.length == 0">
-				and 1 = 2
-				</if>
+			<if test="numberLT != null">
+				and number &lt;= #{numberLT}
 			</if>
 			<if test="userId != null">
-				and user_id = #{areaIdEQ}
+				and user_id = #{userId}
 			</if>
-			<if test="startTimeLT != null">
-				and start_time &lt; #{startTimeLT}
+			<if test="type != null">
+				and type = #{type}
 			</if>
-			<if test="applyDeadlineLT != null">
-				and apply_deadline &lt; #{applyDeadlineLT}
-			</if>
-			<if test="isReleasedEQ != null">
-				and is_released = #{isReleasedEQ}
-			</if>
-			<if test="areaIdEQ != null">
-				and area_id = #{areaIdEQ}
-			</if>
-			<if test="level != null">
-				and level = #{level}
-			</if>
-			<if test="address != null">
-				<bind name="address" value="'%' + address + '%'"/> and address like #{address}
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and area_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
 			</if>
 		</where>
 		<choose>
@@ -107,127 +89,46 @@
 		</if>
 	</select>
 
-	<select id="findReport" resultMap="baseResultMap" parameterType="com.zy.model.query.ActivityQueryModel">
-		select
-		<include refid="baseColumn"/>
-		from `ts_black_white`
-		<where>
-			<if test="idIN != null">
-				<if test="idIN.length != 0">
-				and id in
-				<foreach collection="idIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
-				</if>
-				<if test="idIN.length == 0">
-				and 1 = 2
-				</if>
-			</if>
-			<if test="startTimeGTE != null">
-				and start_time &gt;= #{startTimeGTE}
-			</if>
-			<if test="startTimeLT != null">
-				and end_time &lt;= #{startTimeLT}
-			</if>
-			<if test="titleLK != null">
-				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
-			</if>
-			<if test="applyDeadlineGTE != null">
-				and apply_deadline &gt;= #{applyDeadlineGTE}
-			</if>
-			<if test="areaIdIN != null">
-				<if test="areaIdIN.length != 0">
-				and area_id in
-				<foreach collection="areaIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
-				</if>
-				<if test="areaIdIN.length == 0">
-				and 1 = 2
-				</if>
-			</if>
-			<if test="applyDeadlineLT != null">
-				and apply_deadline &lt; #{applyDeadlineLT}
-			</if>
-			<if test="isReleasedEQ != null">
-				and is_released = #{isReleasedEQ}
-			</if>
-			<if test="areaIdEQ != null">
-				and area_id = #{areaIdEQ}
-			</if>
-			<if test="level != null">
-				and level = #{level}
-			</if>
-		</where>
-		<choose>
-			<when test="orderByAndDirection != null">
-				order by ${orderByAndDirection}
-			</when>
-			<otherwise>
-				order by start_time desc
-			</otherwise>
-		</choose>
-		<if test="offset != null">
-			limit #{offset}, #{pageSize}
-		</if>
-	</select>
-
-	<select id="count" resultType="_long" parameterType="com.zy.model.query.ActivityQueryModel">
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.BlackOrWhiteQueryModel">
 		select count(*) from `ts_black_white`
-		<where>
+		<where><if test="id != null">
+			and id = #{id}
+		</if>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
-				and id in
-				<foreach collection="idIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
+					and id in
+					<foreach collection="idIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				and 1 = 2
+					and 1 = 2
 				</if>
 			</if>
-			<if test="startTimeGTE != null">
-				and start_time &gt;= #{startTimeGTE}
+			<if test="numberGTE != null">
+				and number &gt;= #{numberGTE}
 			</if>
-			<if test="startTimeLT != null">
-				and end_time &lt;= #{startTimeLT}
+			<if test="numberLT != null">
+				and number &lt;= #{numberLT}
 			</if>
-			<if test="titleLK != null">
-				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			<if test="userId != null">
+				and user_id = #{userId}
 			</if>
-			<if test="applyDeadlineGTE != null">
-				and apply_deadline &gt;= #{applyDeadlineGTE}
+			<if test="type != null">
+				and type = #{type}
 			</if>
-			<if test="areaIdIN != null">
-				<if test="areaIdIN.length != 0">
-				and area_id in
-				<foreach collection="areaIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and area_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
 				</if>
-				<if test="areaIdIN.length == 0">
-				and 1 = 2
+				<if test="userIdIN.length == 0">
+					and 1 = 2
 				</if>
-			</if>
-			<if test="applyDeadlineLT != null">
-				and apply_deadline &lt; #{applyDeadlineLT}
-			</if>
-			<if test="isReleasedEQ != null">
-				and is_released = #{isReleasedEQ}
-			</if>
-			<if test="areaIdEQ != null">
-				and area_id = #{areaIdEQ}
-			</if>
-			<if test="level != null">
-				and level = #{level}
 			</if>
 		</where>
 	</select>
-
-	<update id="view">
-		update `ts_black_white`
-		set viewed_count = viewed_count + 1
-		where id = #{id}
-	</update>
 
 </mapper>

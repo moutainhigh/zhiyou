@@ -1,11 +1,9 @@
 package com.zy.model.query;
 
-import com.zy.entity.act.ActivityTeamApply.PaidStatus;
 import io.gd.generator.api.query.Direction;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -87,7 +85,6 @@ public class BlackOrWhiteQueryModel implements Serializable {
 		fieldNames.add("userId");
 		fieldNames.add("number");
 		fieldNames.add("type");
-		fieldNames.add("paidTime");
 	}
 
 }
