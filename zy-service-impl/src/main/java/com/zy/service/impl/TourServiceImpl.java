@@ -1,5 +1,7 @@
 package com.zy.service.impl;
 
+import com.sun.istack.internal.NotNull;
+import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.tour.Sequence;
 import com.zy.entity.tour.Tour;
@@ -148,6 +150,29 @@ public class TourServiceImpl implements TourService {
         page.setData(data);
         page.setTotal(total);
         return page;
+    }
+
+
+    @Override
+    public void updateAuditStatus(@NotNull Long id, boolean isSuccess, String revieweRemark, Long loginUserId) {
+        TourUser tourUser = tourUserMapper.findOne(id);
+        validate(tourUser, NOT_NULL, "report id " + id + " is not found");
+        validate(tourUser.getAuditStatus() == 4, "已完成", "pre auditStatus error");
+        if (tourUser.getAuditStatus() != 1){
+            return;
+        }
+
+        tourUser.setUpdateBy(loginUserId);
+        tourUser.setUpdateDate(new Date());
+
+        if (isSuccess) {
+            tourUser.setAuditStatus(4);
+            tourUser.setRevieweRemark(revieweRemark);
+        } else {
+            tourUser.setAuditStatus(5);
+            tourUser.setRevieweRemark(revieweRemark);
+        }
+        tourUserMapper.updateAuditStatus(tourUser);
     }
 
 

@@ -13,4 +13,8 @@ public interface TourUserMapper {
     long count(TourUserQueryModel tourUserQueryModel);
 
     List<TourUser> findAll(TourUserQueryModel tourUserQueryModel);
+
+    TourUser findOne(Long id);
+
+    void updateAuditStatus(TourUser tourUser);
 }

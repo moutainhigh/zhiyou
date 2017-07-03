@@ -3,6 +3,8 @@ package com.zy.admin.controller.tour;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.TourUserComponent;
 import com.zy.entity.tour.TourUser;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -53,14 +56,22 @@ public class TourUserController {
         }).collect(Collectors.toList());
         return new Grid<TourUserAdminVo>(PageBuilder.copyAndConvert(page, list));
     }
-//
-//    @RequiresPermissions("tourUser:edit")
-//    @RequestMapping(value = "/update", method = RequestMethod.POST)
-//    @ResponseBody
-//    public Result<?> update(TourUserQueryModel tourUserQueryModel) {
-//
-//        return ResultBuilder.ok("审核成功");
-//    }
+
+    /**
+     * 审核
+     * @param id
+     * @param isSuccess
+     * @param revieweRemark
+     * @return
+     */
+    @RequiresPermissions("tourUser:edit")
+    @RequestMapping(value = "/updateAuditStatus", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> updateAuditStatus(@RequestParam Long id, @RequestParam boolean isSuccess, String revieweRemark) {
+        Long loginUserId = getPrincipalUserId();
+        tourService.updateAuditStatus(id, isSuccess, revieweRemark, loginUserId);
+        return ResultBuilder.ok("审核成功");
+    }
 
     /**
      * 获取登录人的id

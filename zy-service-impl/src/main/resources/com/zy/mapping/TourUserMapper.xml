@@ -54,26 +54,11 @@
 		<include refid="baseColumn"/>
 		FROM ts_tour_user
 		<where>
-			<if test="title !=null">
-				and title like #{title},
-			</if>
-			<if test="brief !=null">
-				and brief like #{brief},
-			</if>
-			<if test="days !=null">
-				and days = #{days},
-			</if>
-			<if test="isReleased !=null">
-				and is_released = #{isReleased},
-			</if>
 			<if test="updateTime !=null">
 				and update_date = #{updateTime},
 			</if>
 			<if test="updateTime !=null">
 				and create_date = #{createdTime},
-			</if>
-			<if test="delfage !=null">
-				and del_fage = #{delfage},
 			</if>
 		</where>
 		ORDER BY create_date DESC ,  audit_status ASC
@@ -87,29 +72,26 @@
 		count(*)
 		FROM ts_tour_user
 		<where>
-			<if test="title !=null">
-				and title like #{title},
-			</if>
-			<if test="brief !=null">
-				and brief like #{brief},
-			</if>
-			<if test="days !=null">
-				and days = #{days},
-			</if>
-			<if test="isReleased !=null">
-				and is_released = #{isReleased},
-			</if>
 			<if test="updateTime !=null">
 				and update_date = #{updateTime},
 			</if>
 			<if test="updateTime !=null">
 				and create_date = #{createdTime},
 			</if>
-			<if test="delfage !=null">
-				and del_fage = #{delfage},
-			</if>
 		</where>
 	</select>
+
+
+	<!-- 查询旅客信息 -->
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		SELECT
+			<include refid="baseColumn"/>
+		FROM ts_tour_user a
+		WHERE
+			a.id = #{id}
+	</select>
+
+
 
 
 	<insert id="insert" parameterType="com.zy.entity.usr.Tag" useGeneratedKeys="true" keyProperty="id">
@@ -121,46 +103,26 @@
 		delete from `ts_tour` where id = #{id}
 	</delete>
 
-	<update id="update" parameterType="com.zy.entity.tour.Tour">
-		update `ts_tour`
+	<!-- 审核状态 -->
+	<update id="updateAuditStatus" parameterType="com.zy.entity.tour.TourUser">
+		update ts_tour_user
 		<set>
-			<if test="title !=null">
-				title = #{title},
+			<if test="auditStatus !=null">
+				audit_status = #{auditStatus},
 			</if>
-			<if test="brief !=null">
-				brief = #{brief},
+			<if test="revieweRemark !=null">
+				reviewe_remark = #{revieweRemark},
 			</if>
-			<if test="days !=null">
-				days = #{days},
+			<if test="updateDate !=null">
+				update_date = #{updateDate},
 			</if>
-			<if test="isReleased !=null">
-				is_released = #{isReleased},
-			</if>
-			<if test="image !=null">
-				images = #{image},
-			</if>
-			<if test="content !=null">
-				content = #{content},
-			</if>
-			<if test="updateTime !=null">
-				update_date = #{updateTime},
-			</if>
-			<if test="updateby !=null">
-				update_by = #{updateby},
-			</if>
-			<if test="delfage !=null">
-				and del_fage = #{delfage},
+			<if test="updateBy !=null">
+				update_by = #{updateBy}
 			</if>
 		</set>
 		where id = #{id}
 	</update>
 
-	<select id="findOne" resultMap="baseResultMap" parameterType="long">
-		select
-		<include refid="baseColumn"/>
-		from `ts_tour`
-		where id = #{id}
-	</select>
 
 
 </mapper>

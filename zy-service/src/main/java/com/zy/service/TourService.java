@@ -23,4 +23,6 @@ public interface TourService {
      void updatTour(Tour tour);
 
      Page<TourUser> findAll(TourUserQueryModel tourUserQueryModel);
+
+     void updateAuditStatus(Long id, boolean isSuccess, String revieweRemark, Long loginUserId);
 }
