@@ -15,6 +15,8 @@ public interface BlackOrWhiteMapper {
 
 	BlackOrWhite findOne(Long id);
 
+	BlackOrWhite findByUserId(Long id);
+
 	List<BlackOrWhite> findAll(BlackOrWhiteQueryModel blackOrWhiteQueryModel);
 
 	long count(BlackOrWhiteQueryModel blackOrWhiteQueryModel);

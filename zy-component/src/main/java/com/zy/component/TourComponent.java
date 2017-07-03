@@ -122,7 +122,7 @@ public class TourComponent {
         Long userId = blackOrWhite.getUserId();
         if (userId != null) {
             User user = cacheComponent.getUser(userId);
-            blackOrWhiteAdminVo.setUser(VoHelper.buildUserSimpleVo(user));
+            blackOrWhiteAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
         }
         return blackOrWhiteAdminVo;
     }
