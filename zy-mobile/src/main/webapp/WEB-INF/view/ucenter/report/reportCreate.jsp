@@ -3,90 +3,123 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="Cache-Control" content="no-store" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <meta http-equiv="Cache-Control" content="no-store" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>上传检测报告</title>
-<%@ include file="/WEB-INF/view/include/head.jsp"%>
-<%@ include file="/WEB-INF/view/include/validate.jsp"%>
-<%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
-<script src="${stccdn}/js/area.js"></script>
-<script type="text/javascript">
-  $(function() {
-    var area = new areaInit('province', 'city', 'district', '${report.areaId}');
-    
-    //选择产品
-    showProductList();
-    
-    $('.image-multi .image-add').imageupload({
-      isMultipart : true
-    });
+  <title>上传检测报告</title>
+  <%@ include file="/WEB-INF/view/include/head.jsp"%>
+  <%@ include file="/WEB-INF/view/include/validate.jsp"%>
+  <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
+  <script src="${stc}/js/layer.js"></script>
+  <script src="${stccdn}/js/area.js"></script>
+  <style>
+    .footer {
+      position: fixed;
+      bottom:0;
+      left:0;
+      width:100%;
+      height:50px;
+      background: #6cb92d;
+      z-index: 99;
+    }
+    .footer div {
+      float: left;
+      width:50%;
+      height:50px;
+      text-align: center;
+      line-height: 50px;
+      color: #fff;
+      font-size: 18px;
+      border-right: 1px solid #fff;
+      box-sizing: border-box;
+    }
+    .layer-anim {
+      width:100% !important;
+      left:0 !important;
+      top:0 !important;
+    }
+    .sumbitBtn {
+      width:90%;
+      margin-left: 5%;
+      margin-right: 5%;
+    }
+  </style>
+  <script type="text/javascript">
+    $(function() {
+      var area = new areaInit('province', 'city', 'district', '${report.areaId}');
 
-    //验证
-    $('.valid-form').validate({
-      ignore: ':hidden',
-      rules : {
-        'realname' : {
-          required : true
+      //选择产品
+      showProductList();
+
+      $('.image-multi .image-add').imageupload({
+        isMultipart : true
+      });
+
+      //验证
+      $('.valid-form').validate({
+        ignore: ':hidden',
+        rules : {
+          'realname' : {
+            required : true
+          },
+          'gender' : {
+            required : true
+          },
+          'age' : {
+            required : true
+          },
+          'phone' : {
+            required : true,
+            phone : true
+          },
+          'times' : {
+            required : true,
+            digits : true,
+            max: 999
+          },
+          'reportedDate' : {
+            required : true
+          },
+          'areaId' : {
+            required : true
+          },
+          'jobId' : {
+            required : true
+          },
+          'reportResult' : {
+            required : true
+          },
+          'text' : {
+            required : true
+          },
+          'code' : {
+            required : true
+          },
+          'image1' : {
+            required : true
+          },
+          'idCardNumber' : {
+            required : true
+          },
+          'birthday' : {
+            required : true
+          }
         },
-        'gender' : {
-          required : true
-        },
-        'age' : {
-          required : true
-        },
-        'phone' : {
-          required : true,
-          phone : true
-        },
-        'times' : {
-          required : true,
-          digits : true,
-          max: 999
-        },
-        'reportedDate' : {
-          required : true
-        },
-        'areaId' : {
-          required : true
-        },
-        'jobId' : {
-          required : true
-        },
-        'reportResult' : {
-          required : true
-        },
-        'text' : {
-          required : true
-        },
-        'code' : {
-          required : true
-        },
-        'image1' : {
-	        required : true
-        },
-        'idCardNumber' : {
-          required : true
-        },
-        'birthday' : {
-          required : true
-        }
-      },
-      submitHandler : function(form) {
-        if($('input[name="image"]').length < 1) {
-          messageFlash('请至少上传一张图片');
-          return;
-        }
-        var productId = $('#productId').val();
-        if(!productId) {
-          messageAlert('请选择产品');
-          return;
-        }
+        submitHandler : function(form) {
+          if($('input[name="image"]').length < 1) {
+            messageFlash('请至少上传一张图片');
+            return;
+          }
+          var productId = $('#productId').val();
+          if(!productId) {
+            messageAlert('请选择产品');
+            return;
+          }
 //        if (!$('#policyInfo').is(':hidden')) {
 //	        if(!$('#image1').val()) {
 //		        messageAlert('请上传身份证正面照');
@@ -94,118 +127,118 @@
 //	        }
 //        }
 
-        <%--<c:if test="${userRank == 'V0' && empty parent}">--%>
-        <%--var parentPhone = $('#parentPhone').val();--%>
-        <%--if(!parentPhone) {--%>
+          <%--<c:if test="${userRank == 'V0' && empty parent}">--%>
+          <%--var parentPhone = $('#parentPhone').val();--%>
+          <%--if(!parentPhone) {--%>
           <%--messageFlash('请填写上级手机号');--%>
           <%--return;--%>
-        <%--}--%>
-        <%--$.ajax({--%>
+          <%--}--%>
+          <%--$.ajax({--%>
           <%--url: '${ctx}/u/checkPhone',--%>
           <%--data: {--%>
-            <%--phone: parentPhone--%>
+          <%--phone: parentPhone--%>
           <%--},--%>
           <%--type: 'POST',--%>
           <%--dataType: 'JSON',--%>
           <%--success: function(result){--%>
-            <%--if(result.code == 0) {--%>
-              <%--$('[name="parentId"]').val(result.message);--%>
-              <%--form.submit();--%>
-            <%--} else {--%>
-              <%--messageAlert(result.message);--%>
-            <%--}--%>
+          <%--if(result.code == 0) {--%>
+          <%--$('[name="parentId"]').val(result.message);--%>
+          <%--form.submit();--%>
+          <%--} else {--%>
+          <%--messageAlert(result.message);--%>
           <%--}--%>
-        <%--});--%>
-        <%--return;--%>
-        <%--</c:if>--%>
-        form.submit();
-      }
-    });
-    
-    //选择产品
-  	$('.product-info').click(function(){
-  	  showProductList();
-  	});
-    
-    $('body').on('click', '.product', function() {
-      var $this = $(this);
-      var product = {};
-      product.id = $this.attr('data-id');
-      product.title = $this.attr('data-title');
-      product.image = $this.attr('data-image');
-      setProduct(product);
-      if(product.id == 2) {
-        $('#policy').show();
-      } else {
-        $('#policy').hide();
-        $('#hasPolicy').removeAttr('checked');
-      }
-    });
-    
-    //是否选择保单
-    $('#hasPolicy').click(function() {
-      var checked = $(this).is(':checked');
-      //messageFlash(checked);
-      if(checked) {
-        $('#policyInfo').slideDown(300);
-      } else {
-        $('#policyInfo').slideUp(300);
-      }
+          <%--}--%>
+          <%--});--%>
+          <%--return;--%>
+          <%--</c:if>--%>
+          form.submit();
+        }
+      });
+
+      //选择产品
+      $('.product-info').click(function(){
+        showProductList();
+      });
+
+      $('body').on('click', '.product', function() {
+        var $this = $(this);
+        var product = {};
+        product.id = $this.attr('data-id');
+        product.title = $this.attr('data-title');
+        product.image = $this.attr('data-image');
+        setProduct(product);
+        if(product.id == 2) {
+          $('#policy').show();
+        } else {
+          $('#policy').hide();
+          $('#hasPolicy').removeAttr('checked');
+        }
+      });
+
+      //是否选择保单
+      $('#hasPolicy').click(function() {
+        var checked = $(this).is(':checked');
+        //messageFlash(checked);
+        if(checked) {
+          $('#policyInfo').slideDown(300);
+        } else {
+          $('#policyInfo').slideUp(300);
+        }
+      });
+
+      $('.image-single').imageupload({
+        width : 120,
+        height : 75,
+      });
+
+      $('.image-view').click(function() {
+        var url = $(this).attr('data-src');
+        var title = $(this).attr('data-title');
+        $.imageview({
+          url : url,
+          title : title
+        });
+      });
+
     });
 
-	  $('.image-single').imageupload({
-		  width : 120,
-		  height : 75,
-	  });
+    function showProductList() {
+      var html = document.getElementById('productListTpl').innerHTML;
+      pushDialog(html);
+    }
 
-	  $('.image-view').click(function() {
-		  var url = $(this).attr('data-src');
-		  var title = $(this).attr('data-title');
-		  $.imageview({
-			  url : url,
-			  title : title
-		  });
-	  });
+    function hideProductList() {
+      pullDialog('#productList', function(){
+        $('#productList').remove();
+      });
+    }
 
-  });
-  
-  function showProductList() {
-    var html = document.getElementById('productListTpl').innerHTML;
-    pushDialog(html);
-  }
-	
-  function hideProductList() {
-    pullDialog('#productList', function(){
-      $('#productList').remove();
-    });
-  }
-  
-  function setProduct(product) {
-    hideProductList();
-    $('#productId').val(product.id);
-    $('.product-info .list-unit').html('<span>' + product.title + '</span>');
-    $('.product-info .list-icon').removeClass('list-icon').html('<img class="image-40" src="' + product.image + '">');
-  }
+    function setProduct(product) {
+      hideProductList();
+      $('#productId').val(product.id);
+      $('.product-info .list-unit').html('<span>' + product.title + '</span>');
+      $('.product-info .list-icon').removeClass('list-icon').html('<img class="image-40" src="' + product.image + '">');
+    }
 
-</script>
-<script id="productListTpl" type="text/html">
-  <aside id="productList" class="abs-lt size-100p bg-gray zindex-1000">
-    <header class="header">
-      <h1>选择商品</h1>
-      <a href="javascript:hideProductList();" class="button-left"><i class="fa fa-angle-left"></i></a>
-    </header>
-    <div class="list-group">
-      <c:forEach items="${products}" var="product">
-      <div class="list-item product" data-id="${product.id}" data-title="${product.title}" data-image="${product.image1Thumbnail}">
-        <img class="image-60 mr-10" src="${product.image1Thumbnail}">
-        <div class="list-text">${product.title}</div>
+  </script>
+  <script id="productListTpl" type="text/html">
+    <aside id="productList" class="abs-lt size-100p bg-gray zindex-1000">
+      <header class="header">
+        <h1>选择商品</h1>
+        <a href="javascript:hideProductList();" class="button-left"><i class="fa fa-angle-left"></i></a>
+      </header>
+      <div class="list-group">
+        <c:forEach items="${products}" var="product">
+          <div class="list-item product" data-id="${product.id}" data-title="${product.title}" data-image="${product.image1Thumbnail}">
+            <img class="image-60 mr-10" src="${product.image1Thumbnail}">
+            <div class="list-text">${product.title}</div>
+          </div>
+        </c:forEach>
       </div>
-      </c:forEach>
-    </div>
-  </aside>
-</script>
+    </aside>
+  </script>
 </head>
-<body>
+<div class="main">
   <header class="header">
     <h1>上传检测报告</h1>
     <a href="${ctx}/u/report" class="button-left"><i class="fa fa-angle-left"></i></a>
@@ -223,7 +256,7 @@
           <input id="productId" type="hidden" name="productId" value="">
         </div>
       </div>
-      
+
       <div class="list-group mt-10">
         <div class="list-title">填写客户资料</div>
         <div class="list-item">
@@ -288,13 +321,13 @@
           </div>
         </div>
         <%--<c:if test="${userRank == 'V0' && empty parent}">--%>
-          <%--<div class="list-item">--%>
-            <%--<label class="list-label">上级手机号</label>--%>
-            <%--<div class="list-text">--%>
-              <%--<input id="parentPhone" name="parentPhone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">--%>
-              <%--<input type="hidden" name="parentId" value="${inviter.id}">--%>
-            <%--</div>--%>
-          <%--</div>--%>
+        <%--<div class="list-item">--%>
+        <%--<label class="list-label">上级手机号</label>--%>
+        <%--<div class="list-text">--%>
+        <%--<input id="parentPhone" name="parentPhone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">--%>
+        <%--<input type="hidden" name="parentId" value="${inviter.id}">--%>
+        <%--</div>--%>
+        <%--</div>--%>
         <%--</c:if>--%>
       </div>
 
@@ -333,9 +366,9 @@
             </div>
           </div>
         </div>
-        
+
       </div>
-      
+
       <div class="list-group">
         <div class="list-title">填写产品使用心得</div>
         <div class="list-item">
@@ -344,59 +377,143 @@
           </div>
         </div>
       </div>
-      
-      <div id="policy" class="list-group" style="display: none;">
-        <div class="list-title">保险</div>
-        <div class="list-item">
-          <div class="list-text">是否申请保险</div>
-          <div class="list-unit form-switch">
-            <input type="hidden" name="_hasPolicy" value="false">
-            <input type="checkbox" id="hasPolicy" name="hasPolicy">
-            <label class="i-switch" for="hasPolicy"></label>
-          </div>
-        </div>
-        <div id="policyInfo" class="hide">
-          <div class="list-item bd-t-0">
-            <label class="list-label" for="code">产品编码</label>
-            <div class="list-text">
-              <input type="text" name="code" id="code" class="form-input" value="" placeholder="填写产品编码">
-            </div>
-          </div>
-          <div class="list-item">
-            <label class="list-label" for="idCardNumber">身份证号</label>
-            <div class="list-text">
-              <input type="text" name="idCardNumber" id="idCardNumber" class="form-input" value="${policy.idCardNumber}" placeholder="填写身份证号">
-            </div>
-          </div>
-          <div class="list-item">
-            <label class="list-label">正面照</label>
-            <div class="list-text image-upload">
-              <div class="image-item image-single ">
-                <input type="hidden" name="image1" id="image1" value="">
-                <img src="${stccdn}/image/upload_240_150.png">
-                <input type="file">
-              </div>
-            </div>
-            <div class="list-unit">
-              <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_1.jpg" data-title="身份证正面"><i class="fa fa-question-circle-o"></i> 示意图</a>
-            </div>
-          </div>
-          <label style="margin-left: 20px; color:red;">(非必填)上传身份证图片可方便核验您的身份证号码的准确性</label>
-          <div class="list-item">
-            <label class="list-label">生日</label>
-            <div class="list-text">
-              <input type="date" name="birthday" class="form-input" value="" placeholder="填写生日  1900-01-01">
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="form-btn">
+      <%--<div id="policy" class="list-group" style="display: none;">--%>
+        <%--<div class="list-title">保险</div>--%>
+        <%--<div class="list-item">--%>
+          <%--<div class="list-text">是否申请保险</div>--%>
+          <%--<div class="list-unit form-switch">--%>
+            <%--<input type="hidden" name="_hasPolicy" value="false">--%>
+            <%--<input type="checkbox" id="hasPolicy" name="hasPolicy">--%>
+            <%--<label class="i-switch" for="hasPolicy"></label>--%>
+          <%--</div>--%>
+        <%--</div>--%>
+        <%--<div id="policyInfo" class="hide">--%>
+          <%--<div class="list-item bd-t-0">--%>
+            <%--<label class="list-label" for="code">产品编码</label>--%>
+            <%--<div class="list-text">--%>
+              <%--<input type="text" name="code" id="code" class="form-input" value="" placeholder="填写产品编码">--%>
+            <%--</div>--%>
+          <%--</div>--%>
+          <%--<div class="list-item">--%>
+            <%--<label class="list-label" for="idCardNumber">身份证号</label>--%>
+            <%--<div class="list-text">--%>
+              <%--<input type="text" name="idCardNumber" id="idCardNumber" class="form-input" value="${policy.idCardNumber}" placeholder="填写身份证号">--%>
+            <%--</div>--%>
+          <%--</div>--%>
+          <%--<div class="list-item">--%>
+            <%--<label class="list-label">正面照</label>--%>
+            <%--<div class="list-text image-upload">--%>
+              <%--<div class="image-item image-single ">--%>
+                <%--<input type="hidden" name="image1" id="image1" value="">--%>
+                <%--<img src="${stccdn}/image/upload_240_150.png">--%>
+                <%--<input type="file">--%>
+              <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="list-unit">--%>
+              <%--<a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_1.jpg" data-title="身份证正面"><i class="fa fa-question-circle-o"></i> 示意图</a>--%>
+            <%--</div>--%>
+          <%--</div>--%>
+          <%--<label style="margin-left: 20px; color:red;">(非必填)上传身份证图片可方便核验您的身份证号码的准确性</label>--%>
+          <%--<div class="list-item">--%>
+            <%--<label class="list-label">生日</label>--%>
+            <%--<div class="list-text">--%>
+              <%--<input type="date" name="birthday" class="form-input" value="" placeholder="填写生日  1900-01-01">--%>
+            <%--</div>--%>
+          <%--</div>--%>
+        <%--</div>--%>
+      <%--</div>--%>
+
+      <div class="form-btn" style="padding-bottom: 50px;">
         <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提 交">
       </div>
 
     </form>
   </article>
 
+  <div class="footer" >
+    <div onclick="insurance()">保险申请</div>
+    <div onclick="travel()" style="border-right: none;">旅游申请</div>
+  </div>
+</div>
+
+<%--<iframe src="${ctx}/Iframe/insurance" class="insurance" name="topfram" style="width: 100%;height: 100%;display:none;z-index:999;"></iframe>--%>
+<%--<iframe src="${ctx}/Iframe/travel" class="travel" name="topfram" style="width: 100%;height: 100%;z-index:999;display:none;"></iframe>--%>
+
+<script>
+  //保险申请
+  var insuranceT,travelT,line;
+  function insurance(){
+    insuranceT=layer.open({
+      type: 1,
+      title: false,
+      closeBtn: 0,
+      shadeClose: true,
+      skin: 'yourclass',
+      content: '<header class="header"><h1>填写保险申请</h1><a href="#" onclick="hideBtn()" class="button-left"><i class="fa fa-angle-left"></i></a></header><div id="policy" class="list-group"><div id="policyInfo">'
+            +'<div class="list-item bd-t-0"><label class="list-label" for="code">产品编码</label><div class="list-text"><input type="text" name="code" id="code" class="form-input" value="" placeholder="填写产品编码">'
+            +'</div></div><div class="list-item"><label class="list-label" for="idCardNumber">身份证号</label><div class="list-text"><input type="text" name="idCardNumber" id="idCardNumber" class="form-input" value="${policy.idCardNumber}" placeholder="填写身份证号">'
+            +'</div></div><div class="list-item"><label class="list-label">正面照</label><div class="list-text image-upload"><div class="image-item image-single "><input type="hidden" name="image1" id="image1" value=""><img src="${stccdn}/image/upload_240_150.png">'
+            +'<input type="file"></div></div><div class="list-unit"><a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_1.jpg" data-title="身份证正面"><i class="fa fa-question-circle-o"></i> 示意图</a>'
+            +'</div></div><label style="margin-left: 20px; color:red;">(非必填)上传身份证图片可方便核验您的身份证号码的准确性</label><div class="list-item"><label class="list-label">生日</label><div class="list-text"><input type="date" name="birthday" class="form-input" value="" placeholder="填写生日  1900-01-01"></div></div></div></div>'
+            +'<div class="form-btn" style="padding-bottom: 50px;"><input class="btn orange btn-block round-2" type="submit" value="申 请" style="margin-bottom:10px;" onclick="submitBtn()"><div style="height:35px;background:#f2f3f5;text-align:center;line-height:35px;border:1px solid #c9c9c9;" onclick="hideBtn()">取 消</div></div>'
+    });
+    $(".main").hide();
+  }
+  //提交保险申请
+  function submitBtn(){
+     layer.close(insuranceT);
+     $(".main").show();
+  }
+  //取消保险申请
+  function hideBtn(){
+    layer.close(insuranceT);
+    $(".main").show();
+  }
+  //旅游申请
+  function travel(){
+    travelT=layer.open({
+      type: 1,
+      title: false,
+      closeBtn: 0,
+      shadeClose: true,
+      skin: 'yourclass',
+      content: '<header class="header"><h1>填写旅游申请</h1><a href="#" onclick="hideTravel()" class="button-left"><i class="fa fa-angle-left"></i></a></header><div id="policy" class="list-group"><div id="policyInfo">'
+               +'<div style="margin-left: 5%;margin-bottom: 20px;margin-top: 20px;"><span>填写推荐人手机号：</span><input type="number" style="height: 30px;width:50%;" /></div>'
+               +'<div class="form-btn" style="padding-bottom: 50px;"><input class="btn orange btn-block round-2" type="submit" value="确 认" style="margin-bottom:10px;" onclick="submitTravel()"><div style="height:35px;background:#f2f3f5;text-align:center;line-height:35px;border:1px solid #c9c9c9;" onclick="hideTravel()">取 消</div></div>'
+    });
+    $(".main").hide();
+  }
+  //确认旅游申请
+  function submitTravel(){
+    layer.close(travelT);
+    line=layer.open({
+      type: 1,
+      title: false,
+      closeBtn: 0,
+      shadeClose: true,
+      skin: 'yourclass',
+      content: '<header class="header"><h1>选择旅游路线</h1><a href="#" onclick="hideLine()" class="button-left"><i class="fa fa-angle-left"></i></a></header><div id="policy" class="list-group"><div id="policyInfo">'
+                +'<a href="#" class="opacityAll" style="width:100%;position:relative;"><img class="opacityFirst" src="${ctx}/images/Travel1.png" style="display:block;width:100%;" /><img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" /></a>'
+                +'<a href="#" class="opacityAll" style="width:100%;position:relative;"><img class="opacityFirst" src="${ctx}/images/Travel1.png" style="display:block;width:100%;" /><img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" /></a>'
+    });
+    $(".opacityFirst").load(function(){
+      var opacityT=$(".opacityFirst").height();
+      $(".opacity").css("margin-top",-opacityT);
+    });
+  }
+
+
+
+  //取消旅游申请
+  function hideTravel(){
+    layer.close(travelT);
+    $(".main").show();
+  }
+  function hideLine(){
+    layer.close(layer);
+    travel();
+  }
+</script>
 </body>
 </html>
