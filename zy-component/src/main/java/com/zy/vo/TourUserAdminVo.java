@@ -44,6 +44,8 @@ public class TourUserAdminVo implements Serializable {
     private String revieweRemark;
     @Field(label = "房型")
     private Integer houseType;
+    @Field(label = "是否加床")
+    private Integer isAddBed;
 
     /* 扩展 */
     @Field(label = "票务照片")

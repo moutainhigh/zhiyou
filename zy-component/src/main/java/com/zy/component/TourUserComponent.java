@@ -45,7 +45,7 @@ public class TourUserComponent {
         tourUserAdminVo.setParentName(userIf.getRealname());
         if (tourUser.getUpdateBy() != null){
             UserInfo userI = userInfoService.findOne(tourUser.getUpdateBy());
-            tourUserAdminVo.setUpdateName(userIf.getRealname());
+            tourUserAdminVo.setUpdateName(userI.getRealname());
         }
         Tour tour = tourService.findTourOne(tourUser.getTourId());
         tourUserAdminVo.setTourTitle(tour.getTitle());
