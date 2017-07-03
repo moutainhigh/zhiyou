@@ -21,33 +21,75 @@
                 order: [
                 ], // set first column as a default sort by desc
                 ajax: {
-                    url: '${ctx}/tour', // ajax source
+                    url: '${ctx}/tourUser', // ajax source
                 },
                 columns: [
+                    {
+                        data: 'imageThumbnail',
+                        title: '票务照片',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            return '<a target="_blank" href="' + data + '"><img style="width:180px;height:80px;"  src="' +data+ '"/></a>';
+                        }
+                    },
                     {
                         data: 'sequenceId',
                         title: '旅行申请单号',
                         orderable: false
                     },
                     {
-                        data: 'reportd',
+                        data: 'reportId',
                         title: '检测报告编号',
                         orderable: false
                     },
                     {
-                        data: 'isReleased',
-                        title: '是否发布',
+                        data: 'userName',
+                        title: '用户',
                         orderable: false,
-                        render: function (data, type, full) {
-                            if (data) {
-                                return '<i class="fa fa-check font-green"></i> <span class="badge badge-success"> 已发布 </span>';
-                            }
-                            return '';
-                        }
                     },
                     {
-                        data: 'createdTime',
-                        title: '发布时间',
+                        data: 'tourTitle',
+                        title: '线路',
+                        orderable: false
+                    },
+                    {
+                        data: 'tourTime',
+                        title: '出游时间',
+                        orderable: false
+                    },
+                    {
+                        data: 'parentName',
+                        title: '推荐人',
+                        orderable: false
+                    },
+                    {
+                        data: 'auditStatus',
+                        title: '审核状态',
+                        orderable: false
+                    },
+                    {
+                        data: 'updateDateLabel',
+                        title: '状态时间',
+                        orderable: false
+                    },
+                    {
+                        data: 'houseType',
+                        title: '房型需求',
+                        orderable: false
+                    },
+                    {
+                        data: 'updateName',
+                        title: '审核员',
+                        orderable: false
+                    },
+                    {
+                        data: 'userRemark',
+                        title: '用户备注',
+                        orderable: false
+                    },
+                    {
+                        data: 'revieweRemark',
+                        title: '审核备注',
                         orderable: false
                     },
                     {

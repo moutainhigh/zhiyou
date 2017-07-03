@@ -17,7 +17,9 @@ public class TourUserAdminVo implements Serializable {
     @Field(label = "id")
     private Long id;
     @Field(label = "旅游标题")
-    private String tourId;
+    private String tourTitle;
+    @Field(label = "出游时间")
+    private String tourTime;
     @Field(label = "用户名称")
     private String userName;
     @Field(label = "上级名称")
@@ -31,7 +33,7 @@ public class TourUserAdminVo implements Serializable {
     @Field(label = "审核状态")
     private Integer auditStatus;
     @Field(label = "检测报告编号")
-    private String reportId;
+    private Long reportId;
     @Field(label = "是否接车")
     private Integer isTransfers;
     @Field(label = "车次")
@@ -40,6 +42,8 @@ public class TourUserAdminVo implements Serializable {
     private String userRemark;
     @Field(label = "审核备注")
     private String revieweRemark;
+    @Field(label = "房型")
+    private Integer houseType;
 
     /* 扩展 */
     @Field(label = "票务照片")
@@ -50,4 +54,5 @@ public class TourUserAdminVo implements Serializable {
     private String updateDateLabel;
     @Field(label = "计划到达时间")
     private String planTimeLabel;
+
 }

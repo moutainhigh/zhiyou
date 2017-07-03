@@ -133,6 +133,11 @@ public class TourUser implements Serializable {
     private String userRemark;
 
     @NotBlank
+    @Field(label = "房型")
+    @View(groups = { VO_ADMIN })
+    private Integer houseType;
+
+    @NotBlank
     @Field(label = "审核备注")
     @View(groups = { VO_ADMIN })
     private String revieweRemark;

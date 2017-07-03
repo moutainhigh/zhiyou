@@ -21,6 +21,7 @@
 		<result column="car_images" property="carImages" />
 		<result column="user_remark" property="userRemark" />
 		<result column="reviewe_remark" property="revieweRemark" />
+		<result column="house_type" property="houseType" />
 	</resultMap>
 
 	<sql id="baseColumn">
@@ -41,7 +42,8 @@
 		plan_time,
 		car_images,
 		user_remark,
-		reviewe_remark
+		reviewe_remark,
+		house_type
 	</sql>
 
 	<!-- 查询所有旅客信息 -->

@@ -1,5 +1,6 @@
 package com.zy.admin.controller.tour;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.ui.Grid;
@@ -7,7 +8,9 @@ import com.zy.component.TourUserComponent;
 import com.zy.entity.tour.TourUser;
 import com.zy.model.query.TourUserQueryModel;
 import com.zy.service.TourService;
+import com.zy.service.UserService;
 import com.zy.vo.TourUserAdminVo;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,5 +53,15 @@ public class TourUserController {
             return tourUserComponent.buildAdminVo(v, false);
         }).collect(Collectors.toList());
         return new Grid<TourUserAdminVo>(PageBuilder.copyAndConvert(page, list));
+    }
+
+
+    /**
+     * 获取登录人的id
+     * @return
+     */
+    private Long getPrincipalUserId() {
+        AdminPrincipal principal = (AdminPrincipal) SecurityUtils.getSubject().getPrincipal();
+        return principal.getUserId();
     }
 }
