@@ -31,4 +31,6 @@ public interface TourService {
      void updateTourTime(TourTime tourTime);
 
      Page<TourUser> findAll(TourUserQueryModel tourUserQueryModel);
+
+     void deleteTour(Tour tour);
 }

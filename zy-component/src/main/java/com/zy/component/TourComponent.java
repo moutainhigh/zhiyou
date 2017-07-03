@@ -147,6 +147,7 @@ public class TourComponent {
         tourTimeDetailVo.setEndtimeLible(GcUtils.formatDate(tourTime.getEndtime(), TIME_PATTERN));
         tourTimeDetailVo.setCreatedTimeLible(GcUtils.formatDate(tourTime.getCreatedTime(), TIME_PATTERN));
         tourTimeDetailVo.setCreateby(userService.findRealName(tourTime.getCreateby()));
+        tourTimeDetailVo.setStarAddress(tourTime.getStarAddress());
         if(!isNull(tourTime.getAreaId())) {
             AreaDto areaDto = cacheComponent.getAreaDto(tourTime.getAreaId());
             if (areaDto != null) {
@@ -172,7 +173,7 @@ public class TourComponent {
         tourTime.setIsreleased(tourTimeVo.getIsreleased());
         tourTime.setDelflag(0);
         tourTime.setAreaId(tourTimeVo.getAreaId());
-       /* tourTime.setStarAddress(tourTimeVo.getProvince()+" "+tourTimeVo.getCity()+" "+tourTimeVo.getAreaId()+" "+tourTimeVo.getAddress());*/
+         tourTime.setStarAddress(tourTimeVo.getAddress());
         tourTime.setCreatedTime(new Date());
         tourTime.setCreateby(tourTimeVo.getCreateby());
         return tourTime;

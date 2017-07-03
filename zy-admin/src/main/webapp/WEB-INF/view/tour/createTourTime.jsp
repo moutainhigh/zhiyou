@@ -43,7 +43,7 @@
             }
         }
     });
-     alert(falg.form());
+     if(falg.form()){
      $.ajax({
          url : '${ctx}/tour/ajaxCreateTourTime',
          dataType:"json",
@@ -51,7 +51,7 @@
          async: false,
          data: $('#form').serialize(),
          success: function( result ) {
-             if (result.code != 0) {
+             if (result.code == 0) {
                  layer.alert("添加成功", {icon: 1});
                  parent.layer.closeAll();
                  parent.refreshData();
@@ -61,6 +61,7 @@
              }
          }
      });
+     }
 
  }
 

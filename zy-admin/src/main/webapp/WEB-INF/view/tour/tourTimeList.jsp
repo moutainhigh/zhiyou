@@ -162,6 +162,18 @@
     function refreshData() {
         $(".filter-submit").click();
     }
+    function updateTour (tourId) {
+        layer.confirm('确认启用本条旅游信息？', {
+            btn: ['确认','取消'] //按钮
+        }, function(){
+            $.post('${ctx}/tour/ajaxupdate', {id:tourId}, function (result) {
+                layer.msg(result.message);
+                $("#tourhref").click();
+            });
+
+        }, function(){
+        });
+    }
 </script>
 <!-- END JAVASCRIPTS -->
 
@@ -169,7 +181,7 @@
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-        <li><a href="javascript:;" data-href="${ctx}/tour">旅游信息管理</a></li>
+        <li><a id="tourhref" href="javascript:;" data-href="${ctx}/tour">旅游信息管理</a></li>
     </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -184,9 +196,14 @@
                 </div>
             <shiro:hasPermission name="tour:edit">
                 <div class="actions">
+                    <a class="btn btn-circle green" href="javascript:;"  onclick="updateTour('${tour.id}')">
+                        <i class="fa fa-check font-green"></i>启用旅游信息
+                    </a>
+                    &nbsp;  &nbsp;
                     <a class="btn btn-circle green" href="javascript:;"  onclick="addTourTime('${tour.id}')">
                         <i class="fa fa-plus"></i> 新增
                     </a>
+
                 </div>
             </shiro:hasPermission>
             </div>
