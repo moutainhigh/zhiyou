@@ -3,14 +3,11 @@ package com.zy.admin.controller.tour;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
-import com.zy.common.model.result.Result;
-import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.TourUserComponent;
 import com.zy.entity.tour.TourUser;
 import com.zy.model.query.TourUserQueryModel;
 import com.zy.service.TourService;
-import com.zy.service.UserService;
 import com.zy.vo.TourUserAdminVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -56,14 +53,14 @@ public class TourUserController {
         }).collect(Collectors.toList());
         return new Grid<TourUserAdminVo>(PageBuilder.copyAndConvert(page, list));
     }
-
-    @RequiresPermissions("tourUser:edit")
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    @ResponseBody
-    public Result<?> update(TourUserQueryModel tourUserQueryModel) {
-
-        return ResultBuilder.ok("审核成功");
-    }
+//
+//    @RequiresPermissions("tourUser:edit")
+//    @RequestMapping(value = "/update", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Result<?> update(TourUserQueryModel tourUserQueryModel) {
+//
+//        return ResultBuilder.ok("审核成功");
+//    }
 
     /**
      * 获取登录人的id

@@ -11,6 +11,7 @@ import com.zy.component.TourComponent;
 import com.zy.entity.tour.BlackOrWhite;
 import com.zy.entity.tour.Tour;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Constants;
 import com.zy.model.query.BlackOrWhiteQueryModel;
 import com.zy.model.query.TourQueryModel;
@@ -33,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.zy.entity.usr.User.UserRank;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;

@@ -69,11 +69,13 @@
                             if(data == 1){
                                 return '<label class="label label-danger">审核中</label>';
                             }else if(data == 2){
-                                return '<label class="label label-default">待补充</label>';
+                                return '<label class="label label-warning">待补充</label>';
                             }else if(data == 3){
-                                return "审核中";
+                                return '<label class="label label-info">已生效</label>';
                             }else if(data == 4){
                                 return '<label class="label label-success">已完成</label>';
+                            }else if(data == 5){
+                                return '<label class="label label-default">审核失败</label>';
                             }
                         }
                     },

@@ -81,13 +81,10 @@ public class TourUserQueryModel implements Serializable {
     private static Set<String> fieldNames = new HashSet<>();
 
     static {
-        fieldNames.add("brief");
-        fieldNames.add("image");
+        fieldNames.add("id");
         fieldNames.add("createdTime");
         fieldNames.add("updateTime");
-        fieldNames.add("id");
-        fieldNames.add("title");
-        fieldNames.add("isReleased");
-        fieldNames.add("content");
+        fieldNames.add("auditStatus");
+        fieldNames.add("revieweRemark");
     }
 }
