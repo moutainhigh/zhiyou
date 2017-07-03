@@ -36,7 +36,7 @@ public class TourUserComponent {
 //    @Autowired
 //    private TourService tourService;
 
-    public TourUserAdminVo buildAdminVo(TourUser tourUser, boolean b) {
+    public TourUserAdminVo buildAdminVo(TourUser tourUser) {
         TourUserAdminVo tourUserAdminVo = new TourUserAdminVo();
         BeanUtils.copyProperties(tourUser, tourUserAdminVo);
         UserInfo userInfo = userInfoService.findOne(tourUser.getUserId());

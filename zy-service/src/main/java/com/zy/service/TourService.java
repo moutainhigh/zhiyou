@@ -33,4 +33,6 @@ public interface TourService {
      Page<TourUser> findAll(TourUserQueryModel tourUserQueryModel);
 
      void deleteTour(Tour tour);
+
+     void updateAuditStatus(Long id, boolean isSuccess, String revieweRemark, Long loginUserId);
 }
