@@ -147,7 +147,7 @@
 <body class="account">
 <header class="header">
     <h1>${types}月度表</h1>
-    <a href="#" onclick="javascript :history.back(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/account/countIncomeDataByUser" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 <article>
     <div style="width: 100%;padding-bottom: 10px;"></div>

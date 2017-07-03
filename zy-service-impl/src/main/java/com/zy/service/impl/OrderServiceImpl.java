@@ -1323,6 +1323,8 @@ public class OrderServiceImpl implements OrderService {
             for (User user: userList) {
                 userIdList.add(user.getId());
             }
+			orderQueryModel.setUserIdEQ(null);
+			orderQueryModel.setSellerIdEQ(null);
             orderQueryModel.setUserIdList(userIdList);
             orderQueryModel.setSellerIdList(userIdList);
             for (int i = moth - 1; i >= 1;i--){
@@ -1330,6 +1332,7 @@ public class OrderServiceImpl implements OrderService {
                 orderQueryModel.setPaidTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
                 Long data = 0l;
                 //进货量
+
                 Long salesVolumeTeam  = orderMapper.queryRetailPurchases(orderQueryModel);
                 data = salesVolumeTeam;
                 salesVolumeTeamData[i-1] = data;
