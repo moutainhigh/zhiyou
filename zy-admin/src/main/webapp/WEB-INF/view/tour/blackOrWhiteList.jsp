@@ -58,7 +58,7 @@
                 }
 	        },
             {
-                data: '',
+                data: 'number',
                 title: '限制数量',
             },
 

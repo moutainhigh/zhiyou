@@ -21,6 +21,6 @@ public class BlackOrWhiteAdminVo implements Serializable {
 
 	/* 扩展 */
 	@Field(label = "用户")
-	private UserSimpleVo User;
+	private UserAdminSimpleVo User;
 
 }

@@ -12,5 +12,7 @@ public interface BlackOrWhiteService {
 
 	BlackOrWhite findOne(Long BlackOrWhiteId);
 
+	BlackOrWhite findByUserId(Long BlackOrWhiteId);
+
 	Page<BlackOrWhite> findPage(BlackOrWhiteQueryModel blackOrWhiteQueryModel);
 }

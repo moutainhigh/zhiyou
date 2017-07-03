@@ -15,7 +15,7 @@ import static com.zy.common.util.ValidateUtils.validate;
 
 @Service
 @Validated
-public class BlackOrWhiteServiceImpl implements BlackOrWhiteService {
+class BlackOrWhiteServiceImpl implements BlackOrWhiteService {
 
 	@Autowired
 	private BlackOrWhiteMapper blackOrWhiteMapper;
@@ -35,6 +35,11 @@ public class BlackOrWhiteServiceImpl implements BlackOrWhiteService {
 	@Override
 	public BlackOrWhite findOne(@NotNull Long blackOrWhiteId) {
 		return blackOrWhiteMapper.findOne(blackOrWhiteId);
+	}
+
+	@Override
+	public BlackOrWhite findByUserId(Long userId) {
+		return blackOrWhiteMapper.findByUserId(userId);
 	}
 
 	@Override

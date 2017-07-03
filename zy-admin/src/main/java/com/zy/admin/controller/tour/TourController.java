@@ -166,9 +166,14 @@ public class TourController {
         try{
             User user = userService.findByPhone(phone);
             if(null != user){
-                blackOrWhite.setUserId(user.getId());
-                blackOrWhiteService.create(blackOrWhite);
-                return ResultBuilder.ok("新增成功");
+                BlackOrWhite one = blackOrWhiteService.findByUserId(user.getId());
+                if(null != one){
+                    return ResultBuilder.error("该用户已经加入了黑/白名单");
+                }else {
+                    blackOrWhite.setUserId(user.getId());
+                    blackOrWhiteService.create(blackOrWhite);
+                    return ResultBuilder.ok("新增成功");
+                }
             }else{
                 return ResultBuilder.error("手机号不存在");
             }
