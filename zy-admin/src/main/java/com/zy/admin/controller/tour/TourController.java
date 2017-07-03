@@ -10,11 +10,13 @@ import com.zy.common.model.ui.Grid;
 import com.zy.component.TourComponent;
 import com.zy.entity.tour.BlackOrWhite;
 import com.zy.entity.tour.Tour;
+import com.zy.entity.tour.TourTime;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Constants;
 import com.zy.model.query.BlackOrWhiteQueryModel;
 import com.zy.model.query.TourQueryModel;
+import com.zy.model.query.TourTimeQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.BlackOrWhiteService;
 import com.zy.service.TourService;
@@ -22,6 +24,8 @@ import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import com.zy.vo.BlackOrWhiteAdminVo;
 import com.zy.vo.TourAdminVo;
+import com.zy.vo.TourTimeDetailVo;
+import com.zy.vo.TourTimeVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -119,7 +123,7 @@ public class TourController {
     public String update(Tour tour, RedirectAttributes redirectAttributes,AdminPrincipal principal) {
         Long id = tour.getId();
         validate(id, NOT_NULL, "Tour id is null");
-        tour.setUpdateby(principal.getId());
+        tour.setUpdateby(principal.getUserId());
         try {
             tourService.updatTour(tour);
             redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("旅游信息更新成功"));
@@ -129,6 +133,61 @@ public class TourController {
             return "redirect:/tour/update?id=" + tour.getId();
         }
 
+    }
+
+    @RequestMapping(value = "/findTourTime", method = RequestMethod.GET)
+    public String  findTourTime(Model model, @RequestParam Long tourId){
+        model.addAttribute("tour",tourService.findTourOne(tourId));
+        return "tour/tourTimeList";
+    }
+
+    @RequestMapping(value = "/findTourTime",method = RequestMethod.POST)
+    @ResponseBody
+    public Grid<TourTimeDetailVo> findTourTimelist(TourTimeQueryModel tourTimeQueryModel) {
+        tourTimeQueryModel.setDelfage(0);
+        Page<TourTime> page = tourService.findTourTimePage(tourTimeQueryModel);
+        List<TourTimeDetailVo> list = page.getData().stream().map(v -> {
+            return tourComponent.buildTourTimeVo(v, false);
+        }).collect(Collectors.toList());
+        return new Grid<TourTimeDetailVo>(PageBuilder.copyAndConvert(page, list));
+    }
+
+    @RequestMapping(value = "/createTourTime", method = RequestMethod.GET)
+    public String createTourTime(Model model, @RequestParam Long tourId){
+        model.addAttribute("tourId",tourId);
+        return "tour/createTourTime";
+    }
+
+    @RequestMapping(value = "/ajaxCreateTourTime", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxCreateTourTime(TourTimeVo tourTimeVo, AdminPrincipal principal){
+        tourTimeVo.setCreateby(principal.getUserId());
+        try {
+            TourTime  tourTime =  tourComponent.buildTourTime(tourTimeVo);
+            tourService.createTourTime(tourTime);
+            return ResultBuilder.ok("添加成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultBuilder.error("系统错诶");
+        }
+
+    }
+
+    @RequestMapping(value = "/release", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?>ajaxRelease(Long tourTimeId,Integer isreleased,Integer delFlage,AdminPrincipal principal){
+        TourTime tourTime = new TourTime();
+        tourTime.setUpdateby(principal.getUserId());
+        tourTime.setId(tourTimeId);
+        tourTime.setIsreleased(isreleased);
+        tourTime.setDelflag(delFlage);
+       try{
+          tourService.updateTourTime(tourTime);
+          return ResultBuilder.ok("操作成功");
+         }catch(Exception e){
+          e.printStackTrace();
+          return ResultBuilder.error("系统错诶");
+      }
     }
 
     @RequiresPermissions("tourSetting:*")

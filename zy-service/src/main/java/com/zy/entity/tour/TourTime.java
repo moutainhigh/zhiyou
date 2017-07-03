@@ -2,9 +2,11 @@ package com.zy.entity.tour;
 
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
+import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
 import io.gd.generator.annotation.view.View;
 import io.gd.generator.annotation.view.ViewObject;
+import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,7 +53,7 @@ public class TourTime implements Serializable {
 
     @Field(label = "费用")
     @View(groups = { VO_DETAIL })
-    private Date fee;
+    private Double fee;
 
     @Field(label = "是否有效")
     @View(groups = { VO_DETAIL })
@@ -60,6 +62,13 @@ public class TourTime implements Serializable {
     @Field(label = "是否删除")
     @View(groups = { VO_DETAIL })
     private Integer delflag;
+
+    @Field(label = "地区")
+    @Query({Predicate.EQ, Predicate.IN})
+    @View(name = "province", type = String.class)
+    @View(name = "city", type = String.class)
+    @View(name = "district", type = String.class)
+    private Long areaId;
 
     @Field(label = "集合地点")
     @View(groups = { VO_DETAIL })
