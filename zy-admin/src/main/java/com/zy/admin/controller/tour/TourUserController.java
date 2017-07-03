@@ -6,6 +6,8 @@ import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
+import com.zy.common.util.ExcelUtils;
+import com.zy.common.util.WebUtils;
 import com.zy.component.TourUserComponent;
 import com.zy.entity.tour.TourUser;
 import com.zy.model.query.TourUserQueryModel;
@@ -22,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +57,7 @@ public class TourUserController {
     public Grid<TourUserAdminVo> list(TourUserQueryModel tourUserQueryModel) {
         Page<TourUser> page = tourService.findAll(tourUserQueryModel);
         List<TourUserAdminVo> list = page.getData().stream().map(v -> {
-            return tourUserComponent.buildAdminVo(v, false);
+            return tourUserComponent.buildAdminVo(v);
         }).collect(Collectors.toList());
         return new Grid<TourUserAdminVo>(PageBuilder.copyAndConvert(page, list));
     }
@@ -72,6 +77,25 @@ public class TourUserController {
         tourService.updateAuditStatus(id, isSuccess, revieweRemark, loginUserId);
         return ResultBuilder.ok("审核成功");
     }
+
+
+    @RequiresPermissions("tourUser:export")
+    @RequestMapping("/export")
+    public String export(TourUserQueryModel tourUserQueryModel, HttpServletResponse response) throws IOException {
+
+        tourUserQueryModel.setPageSize(null);
+        tourUserQueryModel.setPageNumber(null);
+        Page<TourUser> page = tourService.findAll(tourUserQueryModel);
+        String fileName = "旅客信息.xlsx";
+        WebUtils.setFileDownloadHeader(response, fileName);
+
+        List<TourUserAdminVo > tourUserAdminVo = page.getData().stream().map(tourUserComponent::buildAdminVo).collect(Collectors.toList());
+        OutputStream os = response.getOutputStream();
+        ExcelUtils.exportExcel(tourUserAdminVo, TourUserAdminVo.class, os);
+
+        return null;
+    }
+
 
     /**
      * 获取登录人的id

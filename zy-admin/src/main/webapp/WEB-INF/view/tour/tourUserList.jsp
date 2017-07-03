@@ -279,7 +279,13 @@
     }
 </script>
 <!-- END JAVASCRIPTS -->
-
+<script type="text/javascript">
+    <shiro:hasPermission name="tourUser:export">
+    function tourUserExport() {
+        location.href = '${ctx}/tourUser/tourUserExport?' + $('#searchForm').serialize();
+    }
+    </shiro:hasPermission>
+</script>
 <!-- BEGIN PAGE HEADER-->
 <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -333,6 +339,13 @@
                                     <i class="fa fa-search"></i> 查询
                                 </button>
                             </div>
+                            <shiro:hasPermission name="tourUser:export">
+                                <div class="form-group">
+                                    <button class="btn yellow" onClick="tourUserExport()">
+                                        <i class="fa fa-file-excel-o"></i> 导出Excel
+                                    </button>
+                                </div>
+                            </shiro:hasPermission>
                         </form>
                     </div>
                     <table class="table table-striped table-bordered table-hover" id="dataTable">
