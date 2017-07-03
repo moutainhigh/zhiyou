@@ -4,7 +4,6 @@
 <!-- BEGIN JAVASCRIPTS -->
 <script>
     var grid = new Datatable();
-    var urlPc = '${rulPc}';
     $(function () {
         grid.init({
             src: $('#dataTable'),
@@ -29,7 +28,7 @@
                         title: '票务照片',
                         orderable: false,
                         render: function (data, type, full) {
-                            return '<a target="_blank" href="' + data + '"><img style="width:180px;height:80px;"  src="' +data+ '"/></a>';
+                            return '<a target="_blank" href="' + data + '"><img style="width:160px;height:80px;"  src="' +data+ '"/></a>';
                         }
                     },
                     {
@@ -65,7 +64,18 @@
                     {
                         data: 'auditStatus',
                         title: '审核状态',
-                        orderable: false
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if(data == 1){
+                                return '<label class="label label-danger">审核中</label>';
+                            }else if(data == 2){
+                                return '<label class="label label-default">待补充</label>';
+                            }else if(data == 3){
+                                return "审核中";
+                            }else if(data == 4){
+                                return '<label class="label label-success">已完成</label>';
+                            }
+                        }
                     },
                     {
                         data: 'updateDateLabel',
@@ -75,7 +85,26 @@
                     {
                         data: 'houseType',
                         title: '房型需求',
-                        orderable: false
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if(data == 1){
+                                return '标准间';
+                            }else if(data == 2){
+                                return '三人间';
+                            }
+                        }
+                    },
+                    {
+                        data: 'isAddBed',
+                        title: '房型需求',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if(data == 0){
+                                return '否';
+                            }else if(data == 1){
+                                return '是';
+                            }
+                        }
                     },
                     {
                         data: 'updateName',
@@ -98,8 +127,8 @@
                         orderable: false,
                         render: function (data, type, full) {
                             var optionHtml = '';
-                            <shiro:hasPermission name="tour:edit">
-                            optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tour/update?id=' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
+                            <shiro:hasPermission name="tourUser:edit">
+                            optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="update(' + full.id + ')"><i class="fa fa-edit"></i> 审核 </a>';
                             if (full.isReleased) {
                                 optionHtml += '<a class="btn btn-xs default red-stripe" href="javascript:;" onclick="unrelease(' + full.id + ')"><i class="fa fa-times X"></i> 取消发布 </a>';
                             } else {
@@ -114,7 +143,7 @@
         });
 
     });
-    <shiro:hasPermission name="article:edit">
+    <shiro:hasPermission name="tourUser:edit">
     function release(id) {
         alert("测试")
         $.ajax({

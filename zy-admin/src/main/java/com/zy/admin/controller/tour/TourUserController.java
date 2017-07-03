@@ -3,6 +3,8 @@ package com.zy.admin.controller.tour;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.TourUserComponent;
 import com.zy.entity.tour.TourUser;
@@ -55,6 +57,13 @@ public class TourUserController {
         return new Grid<TourUserAdminVo>(PageBuilder.copyAndConvert(page, list));
     }
 
+    @RequiresPermissions("tourUser:edit")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> update(TourUserQueryModel tourUserQueryModel) {
+
+        return ResultBuilder.ok("审核成功");
+    }
 
     /**
      * 获取登录人的id

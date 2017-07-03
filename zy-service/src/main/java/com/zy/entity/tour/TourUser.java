@@ -138,6 +138,11 @@ public class TourUser implements Serializable {
     private Integer houseType;
 
     @NotBlank
+    @Field(label = "是否加床")
+    @View(groups = { VO_ADMIN })
+    private Integer isAddBed;
+
+    @NotBlank
     @Field(label = "审核备注")
     @View(groups = { VO_ADMIN })
     private String revieweRemark;
