@@ -122,7 +122,7 @@ public class TourComponent {
         return tourAdminVo;
     }
 
-    public BlackOrWhiteAdminVo buildblackOrWhiteAdminVo(BlackOrWhite blackOrWhite) {
+    public BlackOrWhiteAdminVo buildBlackOrWhiteAdminVo(BlackOrWhite blackOrWhite) {
         BlackOrWhiteAdminVo blackOrWhiteAdminVo = new BlackOrWhiteAdminVo();
         BeanUtils.copyProperties(blackOrWhite, blackOrWhiteAdminVo);
         Long userId = blackOrWhite.getUserId();
