@@ -122,6 +122,11 @@ public class TourComponent {
         return tourAdminVo;
     }
 
+    /**
+     * 转化Vo
+     * @param blackOrWhite
+     * @return
+     */
     public BlackOrWhiteAdminVo buildBlackOrWhiteAdminVo(BlackOrWhite blackOrWhite) {
         BlackOrWhiteAdminVo blackOrWhiteAdminVo = new BlackOrWhiteAdminVo();
         BeanUtils.copyProperties(blackOrWhite, blackOrWhiteAdminVo);

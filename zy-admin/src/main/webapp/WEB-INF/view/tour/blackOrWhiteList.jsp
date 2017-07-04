@@ -114,11 +114,19 @@
               <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
               <div class="form-group">
-                <input type="text" name="buyerNicknameLK" class="form-control" placeholder="昵称"/>
+                <input type="text" name="nicknameLK" class="form-control" placeholder="昵称"/>
               </div>
 
               <div class="form-group">
-                <input type="text" name="buyerPhoneEQ" class="form-control" placeholder="手机号"/>
+                <input type="text" name="phoneEQ" class="form-control" placeholder="手机号"/>
+              </div>
+
+              <div class="form-group">
+                <input type="number" name="numberGTE" class="form-control" placeholder="限制人数下限"/>
+              </div>
+
+              <div class="form-group">
+                <input type="number" name="numberLT" class="form-control" placeholder="限制人数上限"/>
               </div>
 
               <div class="form-group">
@@ -150,9 +158,7 @@
                     </a>
                 </div>
              </shiro:hasPermission>
-
             </form>
-
           </div>
           <table class="table table-striped table-bordered table-hover" id="dataTable">
           </table>

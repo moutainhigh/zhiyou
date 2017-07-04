@@ -73,7 +73,7 @@
 			</if>
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
-					and area_id in
+					and user_id in
 					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 						#{item}
 					</foreach>
@@ -98,9 +98,10 @@
 
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.BlackOrWhiteQueryModel">
 		select count(*) from `ts_black_white`
-		<where><if test="id != null">
-			and id = #{id}
-		</if>
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
 					and id in
@@ -126,7 +127,7 @@
 			</if>
 			<if test="userIdIN != null">
 				<if test="userIdIN.length != 0">
-					and area_id in
+					and user_id in
 					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
 						#{item}
 					</foreach>

@@ -550,22 +550,24 @@
               <span class="arrow "></span>
             </a>
             <ul class="sub-menu">
-
               <shiro:hasPermission name="tour:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/tour"><i class="icon-docs"></i> 旅游信息管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+
               <shiro:hasPermission name="tourSetting:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/tour/blackOrWhite"><i class="icon-docs"></i> 黑白名单管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+
               <shiro:hasPermission name="tourUser:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/tourUser"><i class="icon-docs"></i> 游客信息管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+
             </ul>
           </li>
         </shiro:hasAnyPermissions>

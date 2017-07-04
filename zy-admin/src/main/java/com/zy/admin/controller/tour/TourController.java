@@ -188,7 +188,7 @@ public class TourController {
       }
     }
 
-    @RequiresPermissions("tourSetting:*")
+    @RequiresPermissions("tourSetting:view")
     @RequestMapping(value = "/blackOrWhite" , method = RequestMethod.GET)
     public String blackOrWhiteList(Model model) {
         model.addAttribute("userRankMap", Arrays.asList(User.UserRank.values()).stream().collect(Collectors.toMap(v->v, v-> GcUtils.getUserRankLabel(v),(u, v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new)) );
