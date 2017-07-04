@@ -182,7 +182,7 @@
                             </div>
                             <div class="form-group input-inline">
                                 <input class="Wdate form-control" type="text" id="createdTime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
-                                       name="releasedTimeLT" value="" placeholder="发布时间止"/>
+                                       name="createdTime" value="" placeholder="发布时间止"/>
                             </div>
                             <div class="form-group">
                                 <select name="isReleased" class="form-control">

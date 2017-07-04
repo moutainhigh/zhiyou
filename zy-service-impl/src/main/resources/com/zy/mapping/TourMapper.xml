@@ -89,7 +89,7 @@
 			<if test="updateTime !=null">
 			  and update_date &gt;= #{updateTime}
 			</if>
-			<if test="updateTime !=null">
+			<if test="createdTime !=null">
 			  and create_date &gt;= #{createdTime}
 			</if>
 			<if test="delfage !=null">
@@ -127,10 +127,10 @@
 				and is_released = #{isReleased}
 			</if>
 			<if test="updateTime !=null">
-				and create_date &gt;= #{createdTime}
+				and update_date &gt;= #{updateTime}
 			</if>
-			<if test="delfage !=null">
-				and del_flage = #{delfage}
+			<if test="createdTime !=null">
+				and create_date &gt;= #{createdTime}
 			</if>
 			<if test="delfage !=null">
 				and del_flage = #{delfage}
