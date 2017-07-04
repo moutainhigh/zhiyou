@@ -189,7 +189,8 @@
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-        <li><a id="tourhref" href="javascript:;" data-href="${ctx}/tour">旅游信息管理</a></li>
+        <li><a id="tourhref" href="javascript:;" data-href="${ctx}/tour">旅游信息管理</a><i class="fa fa-angle-right"></i></li>
+        <li><a  href="javascript:;">旅游线路管理</a></li>
     </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -212,7 +213,7 @@
                         &nbsp;  &nbsp;
                  </c:if>
                     <a class="btn btn-circle green" href="javascript:;"  onclick="addTourTime('${tour.id}')">
-                        <i class="fa fa-plus"></i> 新增
+                        <i class="fa fa-plus"></i> 新增线路
                     </a>
 
                 </div>

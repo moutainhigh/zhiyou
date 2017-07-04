@@ -96,7 +96,7 @@
         });
 
     });
-    <shiro:hasPermission name="article:edit">
+    <shiro:hasPermission name="tour:edit">
     function release(id) {
         $.ajax({
             url: '${ctx}/tour/findTourTime?tourId='+ id,
