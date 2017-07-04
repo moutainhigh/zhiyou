@@ -87,16 +87,23 @@
 			  and is_released = #{isReleased}
 			</if>
 			<if test="updateTime !=null">
-			  and update_date = #{updateTime}
+			  and update_date &gt;= #{updateTime}
 			</if>
-			<if test="updateTime !=null">
-			  and create_date = #{createdTime}
+			<if test="createdTime !=null">
+			  and create_date &gt;= #{createdTime}
 			</if>
 			<if test="delfage !=null">
 			  and del_flage = #{delfage}
 			</if>
 		</where>
-		order by id desc
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
 		<if test="offset != null">
 			limit #{offset}, #{pageSize}
 		</if>
@@ -120,10 +127,10 @@
 				and is_released = #{isReleased}
 			</if>
 			<if test="updateTime !=null">
-				and update_date = #{updateTime}
+				and update_date &gt;= #{updateTime}
 			</if>
-			<if test="updateTime !=null">
-				and create_date = #{createdTime}
+			<if test="createdTime !=null">
+				and create_date &gt;= #{createdTime}
 			</if>
 			<if test="delfage !=null">
 				and del_flage = #{delfage}

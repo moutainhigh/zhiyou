@@ -3,6 +3,7 @@
 
 <!-- BEGIN JAVASCRIPTS -->
 <script>
+    var flage = false;
     var grid = new Datatable();
     var urlPc = '${rulPc}';
     $(function () {
@@ -70,6 +71,7 @@
                         orderable: false,
                         render: function (data, type, full) {
                             if (data) {
+                                flage=true;
                                 return '<i class="fa fa-check font-green"></i> <span class="badge badge-success"> 已发布 </span>';
                             }
                             return '';
@@ -120,9 +122,10 @@
         releaseAjax(id, 1);
     }
     function releaseAjax(id, isreleased) {
-     $.post('${ctx}/tour/release', {tourTimeId: id, isreleased: isreleased}, function (result) {
-     grid.getDataTable().ajax.reload(null, false);
-     });
+         $.post('${ctx}/tour/release', {tourTimeId: id, isreleased: isreleased}, function (result) {
+          grid.getDataTable().ajax.reload(null, false);
+          flage = false;
+         });
      }
     function deleteAjax(id) {
         layer.confirm('您确认删除此旅游路线信息嘛?', {
@@ -131,6 +134,7 @@
             $.post('${ctx}/tour/release', {tourTimeId: id,delFlage:1}, function (result) {
                 layer.msg(result.message);
                 grid.getDataTable().ajax.reload(null, false);
+                flage = false;
             });
 
         }, function(){
@@ -162,6 +166,22 @@
     function refreshData() {
         $(".filter-submit").click();
     }
+    function updateTour (tourId) {
+        if(flage){
+            layer.confirm('确认启用本条旅游信息？', {
+                btn: ['确认','取消'] //按钮
+            }, function(){
+                $.post('${ctx}/tour/ajaxupdate', {id:tourId}, function (result) {
+                    layer.msg(result.message);
+                    $("#tourhref").click();
+                });
+
+            }, function(){
+            });
+        }else{
+            layer.msg("没有发团时间或者没有启用的发团时间，请确认后再提交！");
+        }
+    }
 </script>
 <!-- END JAVASCRIPTS -->
 
@@ -169,7 +189,8 @@
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-        <li><a href="javascript:;" data-href="${ctx}/tour">旅游信息管理</a></li>
+        <li><a id="tourhref" href="javascript:;" data-href="${ctx}/tour">旅游信息管理</a><i class="fa fa-angle-right"></i></li>
+        <li><a  href="javascript:;">旅游线路管理</a></li>
     </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -183,10 +204,18 @@
                     <i class="icon-book-open"></i> <span style="color: red">  ${tour.title}</span>
                 </div>
             <shiro:hasPermission name="tour:edit">
+
                 <div class="actions">
+                    <c:if test="${flage ==1}">
+                        <a class="btn btn-circle green" href="javascript:;"  onclick="updateTour('${tour.id}')">
+                            <i class="fa fa-check font-green"></i>发布旅游信息
+                        </a>
+                        &nbsp;  &nbsp;
+                 </c:if>
                     <a class="btn btn-circle green" href="javascript:;"  onclick="addTourTime('${tour.id}')">
-                        <i class="fa fa-plus"></i> 新增
+                        <i class="fa fa-plus"></i> 新增线路
                     </a>
+
                 </div>
             </shiro:hasPermission>
             </div>

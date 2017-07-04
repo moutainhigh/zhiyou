@@ -33,10 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
@@ -77,6 +74,10 @@ public class TourController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Grid<TourAdminVo> list(TourQueryModel tourQueryModel) {
+        tourQueryModel.setDelfage(0);
+        if (tourQueryModel.getTitle()!=null&&!"".equals(tourQueryModel.getTitle())) {
+            tourQueryModel.setTitle("%" + tourQueryModel.getTitle() + "%");
+        }
         Page<Tour> page = tourService.findPageBy(tourQueryModel);
         List<TourAdminVo> list = page.getData().stream().map(v -> {
             return tourComponent.buildAdminVo(v, false);
@@ -90,10 +91,12 @@ public class TourController {
         return "tour/createTour";
     }
 
-    @RequiresPermissions("article:edit")
+    @RequiresPermissions("tour:edit")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(Tour tour, Model model, RedirectAttributes redirectAttributes,AdminPrincipal principal) {
         tour.setCreateby(principal.getUserId());
+        tour.setIsReleased(false);
+        tour.setDelfage(0);
         try {
             tourService.createTour(tour);
             redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("旅游信息创建成功"));
@@ -135,9 +138,29 @@ public class TourController {
 
     }
 
+    @RequiresPermissions("tourSetting:view")
+    @RequestMapping(value = "/ajaxupdate", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxupdate(Long id,AdminPrincipal principal) {
+        validate(id, NOT_NULL, "Tour id is null");
+        Tour tour = new Tour();
+        tour.setId(id);
+        tour.setIsReleased(true);
+        tour.setUpdateby(principal.getUserId());
+        try {
+            tourService.updatTour(tour);
+            return ResultBuilder.ok("操作成功");
+        } catch (Exception e) {
+          e.printStackTrace();
+          return ResultBuilder.error("系统错诶");
+        }
+
+    }
+
     @RequestMapping(value = "/findTourTime", method = RequestMethod.GET)
-    public String  findTourTime(Model model, @RequestParam Long tourId){
+    public String  findTourTime(Model model, @RequestParam Long tourId,Integer flage){
         model.addAttribute("tour",tourService.findTourOne(tourId));
+        model.addAttribute("flage",flage);
         return "tour/tourTimeList";
     }
 
@@ -190,14 +213,55 @@ public class TourController {
       }
     }
 
+    @RequestMapping(value = "/ajaxTourrelease", method = RequestMethod.POST)
+    @ResponseBody
+    public  Result<?>ajaxTourrelease(Long tourId,Boolean isReleased,AdminPrincipal principal){
+        Tour tour = new Tour();
+        tour.setId(tourId);
+        tour.setIsReleased(isReleased);
+        tour.setUpdateby(principal.getUserId());
+        try {
+            tourService.updatTour(tour);
+            return ResultBuilder.ok("操作成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultBuilder.error("系统错诶");
+        }
+
+    }
+
+    @RequestMapping(value = "/ajaxTourDelete", method = RequestMethod.POST)
+    @ResponseBody
+    public  Result<?>ajaxTourDelete(Long tourId,Boolean isReleased,AdminPrincipal principal){
+        Tour tour = new Tour();
+        tour.setId(tourId);
+        tour.setIsReleased(isReleased);
+        tour.setUpdateby(principal.getUserId());
+        try {
+            tourService.deleteTour(tour);
+            return ResultBuilder.ok("操作成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultBuilder.error("系统错诶");
+        }
+    }
+
     @RequiresPermissions("tourSetting:*")
     @RequestMapping(value = "/blackOrWhite" , method = RequestMethod.GET)
-    public String list(Model model) {
+    public String blackOrWhiteList(Model model) {
         model.addAttribute("userRankMap", Arrays.asList(User.UserRank.values()).stream().collect(Collectors.toMap(v->v, v-> GcUtils.getUserRankLabel(v),(u, v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new)) );
         return "tour/blackOrWhiteList";
     }
 
-    @RequiresPermissions("tourSetting:*")
+    /**
+     * 黑白名单列表
+     * @param blackOrWhiteQueryModel
+     * @param nicknameLK
+     * @param phoneEQ
+     * @param userRankEQ
+     * @return
+     */
+    @RequiresPermissions("tourSetting:view")
     @RequestMapping(value = "/blackOrWhite" , method = RequestMethod.POST)
     @ResponseBody
     public Grid<BlackOrWhiteAdminVo> blackOrWhiteList(BlackOrWhiteQueryModel blackOrWhiteQueryModel, String nicknameLK, String phoneEQ,UserRank userRankEQ) {
@@ -213,12 +277,19 @@ public class TourController {
         return new Grid<>(voPage);
     }
 
-    @RequiresPermissions("tourSetting:*")
+    @RequiresPermissions("tourSetting:edit")
     @RequestMapping(value = "/createBlackWhite", method = RequestMethod.GET)
     public String createBlackWhite() {
         return "tour/blackWhiteCreate";
     }
-    @RequiresPermissions("activity:edit")
+
+    /**
+     * 新增黑白名单
+     * @param blackOrWhite
+     * @param phone
+     * @return
+     */
+    @RequiresPermissions("tourSetting:edit")
     @RequestMapping(value = "/createBlackWhite", method = RequestMethod.POST)
     @ResponseBody
     public Result<?> create(BlackOrWhite blackOrWhite, @RequestParam String phone) {
@@ -242,12 +313,47 @@ public class TourController {
     }
 
 
-
-    @RequiresPermissions("tourSetting:*")
-    @RequestMapping(value = "/editBlackWhite", method = RequestMethod.GET)
-    public String updateBlackWhite() {
+    @RequiresPermissions("tourSetting:edit")
+    @RequestMapping(value = "/editBlackWhite/{id}", method = RequestMethod.GET)
+    public String updateBlackWhite(@PathVariable Long id, Model model) {
+        BlackOrWhite blackOrWhite = blackOrWhiteService.findOne(id);
+        BlackOrWhiteAdminVo blackOrWhiteAdminVo = tourComponent.buildBlackOrWhiteAdminVo(blackOrWhite);
+        model.addAttribute("blackOrWhiteAdminVo",blackOrWhiteAdminVo);
         return "tour/blackWhiteEdit";
     }
+
+    /**
+     * 编辑黑白名单
+     * @param blackOrWhite
+     * @return
+     */
+    @RequiresPermissions("tourSetting:edit")
+    @RequestMapping(value = "/editBlackWhite", method = RequestMethod.POST)
+    public String updateBlackWhite(BlackOrWhite blackOrWhite,RedirectAttributes redirectAttributes) {
+        Long blackOrWhiteId = blackOrWhite.getId();
+        validate(blackOrWhite, NOT_NULL, "help id is null");
+        try {
+            blackOrWhiteService.modify(blackOrWhite);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
+            return "redirect:/tour/blackWhiteEdit/" + blackOrWhiteId;
+        }
+        return "redirect:/tour/blackOrWhite";
+    }
+
+
+    @RequiresPermissions("tourSetting:edit")
+    @RequestMapping(value = "/deleteBlackWhite/{id}", method = RequestMethod.GET)
+    public String deleteBlackWhite(@PathVariable Long id ,RedirectAttributes redirectAttributes) {
+        try {
+            blackOrWhiteService.delete(id);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
+        }
+        return "redirect:/tour/blackOrWhite";
+    }
+
+
 
 
 

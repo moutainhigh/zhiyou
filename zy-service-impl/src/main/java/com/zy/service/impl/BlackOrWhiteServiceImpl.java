@@ -38,6 +38,11 @@ class BlackOrWhiteServiceImpl implements BlackOrWhiteService {
 	}
 
 	@Override
+	public void delete(Long blackOrWhiteId) {
+		blackOrWhiteMapper.delete(blackOrWhiteId);
+	}
+
+	@Override
 	public BlackOrWhite findByUserId(Long userId) {
 		return blackOrWhiteMapper.findByUserId(userId);
 	}

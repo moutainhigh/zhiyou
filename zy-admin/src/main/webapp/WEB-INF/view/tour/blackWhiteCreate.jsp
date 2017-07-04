@@ -17,7 +17,8 @@
 				},
 				number : {
 					required : true,
-					number : true
+					number : true,
+
 				}
 			},
 		 messages: {
@@ -40,8 +41,20 @@
 	$form = $('#createForm');
 
 	$('#addBlackWhiteSubmit').bind('click', function () {
+		var count = 8;
 		var result = $form.validate().form();
 		if (result) {
+			var number = $("#number").val();
+			var type = $("#selectType").val();
+			if(type == 1  && (number==null||number > count)){
+				layer.alert('操作失败，黑名单人数不得大于'+count+'个');
+				return false;
+			}else if(type == 2 ){
+				if(number != null && number <= count){
+					layer.alert('操作失败，白名单人数不得小于'+count+'个');
+					return false;
+				}
+			}
 			var url = '${ctx}/tour/createBlackWhite';
 			$.post(url, $form.serialize(), function (data) {
 				console.log(data);
@@ -53,16 +66,21 @@
 			});
 		}
 		return false;
-	})
-	 
-</script>
+	});
+
+	$("#selectType").change(function () {
+		$("#number").val("");
+	});
+
+
+ </script>
 <!-- END JAVASCRIPTS -->
 
 <!-- BEGIN PAGE HEADER-->
 <div class="page-bar">
 	<ul class="page-breadcrumb">
 		<li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-		<li><a href="javascript:;" data-href="${ctx}/helpCategory">帮助管理</a></li>
+		<li><a href="javascript:;" data-href="${ctx}/tour/blackOrWhite">黑白名单管理</a></li>
 	</ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -93,10 +111,9 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">黑/白名单类型<span class="required"> * </span></label>
 							<div class="col-md-5">
-								<select style="display: block; width: 40%;" class="form-control pull-left" id="type" name="type">
-									<option value="">-- 黑/白名单 --</option>
-									<option value="1" <c:if test="${matter.type == 1}"> selected="selected"</c:if>>黑名单</option>
-									<option value="2" <c:if test="${matter.type == 2}"> selected="selected"</c:if>>白名单</option>
+								<select style="display: block; width: 40%;" id="selectType" class="form-control pull-left" id="type" name="type">
+									<option value="1" <c:if test="${blackOrWhite.type == 1}"> selected="selected"</c:if>>黑名单</option>
+									<option value="2" <c:if test="${blackOrWhite.type == 2}"> selected="selected"</c:if>>白名单</option>
 								</select>
 							</div>
 						</div>
