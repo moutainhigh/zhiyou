@@ -138,4 +138,8 @@
 		</where>
 	</select>
 
+	<delete id="delete" parameterType="long">
+		delete from `ts_black_white` where id = #{id}
+	</delete>
+
 </mapper>
