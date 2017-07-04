@@ -1,13 +1,18 @@
 package com.zy.service.impl;
 
+import com.sun.istack.internal.NotNull;
+import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.tour.Sequence;
 import com.zy.entity.tour.Tour;
+import com.zy.entity.tour.TourTime;
 import com.zy.entity.tour.TourUser;
 import com.zy.mapper.SequenceMapper;
 import com.zy.mapper.TourMapper;
+import com.zy.mapper.TourTimeMapper;
 import com.zy.mapper.TourUserMapper;
 import com.zy.model.query.TourQueryModel;
+import com.zy.model.query.TourTimeQueryModel;
 import com.zy.model.query.TourUserQueryModel;
 import com.zy.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +39,9 @@ public class TourServiceImpl implements TourService {
 
     @Autowired
     private TourMapper tourMapper;
+
+    @Autowired
+    private TourTimeMapper  tourTimeMapper;
 
     @Autowired
     private TourUserMapper tourUserMapper;
@@ -130,6 +138,47 @@ public class TourServiceImpl implements TourService {
     }
 
     /**
+     * 查询 旅游相关时间信息
+     * @param tourTimeQueryModel
+     * @return
+     */
+    @Override
+    public Page<TourTime> findTourTimePage(TourTimeQueryModel tourTimeQueryModel) {
+        if(tourTimeQueryModel.getPageNumber() == null)
+            tourTimeQueryModel.setPageNumber(0);
+        if(tourTimeQueryModel.getPageSize() == null)
+            tourTimeQueryModel.setPageSize(20);
+        long total = tourTimeMapper.count(tourTimeQueryModel);
+        List<TourTime> data = tourTimeMapper.findAll(tourTimeQueryModel);
+        Page<TourTime> page = new Page<>();
+        page.setPageNumber(tourTimeQueryModel.getPageNumber());
+        page.setPageSize(tourTimeQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
+}
+
+    /**
+     * 插入  旅游时间信息
+     * @param tourTime
+     */
+    @Override
+    public void createTourTime(TourTime tourTime) {
+        tourTimeMapper.insert(tourTime);
+    }
+
+
+    /**
+     *删除或下架 （更新出发时间信息）
+     * @param tourTime
+     */
+    @Override
+    public void updateTourTime(TourTime tourTime) {
+        tourTime.setUpdateTime(new Date());
+        tourTimeMapper.update(tourTime);
+    }
+
+    /**
      * 查询所有旅客信息
      * @param tourUserQueryModel
      * @return
@@ -148,6 +197,29 @@ public class TourServiceImpl implements TourService {
         page.setData(data);
         page.setTotal(total);
         return page;
+    }
+
+
+    @Override
+    public void updateAuditStatus(@NotNull Long id, boolean isSuccess, String revieweRemark, Long loginUserId) {
+        TourUser tourUser = tourUserMapper.findOne(id);
+        validate(tourUser, NOT_NULL, "report id " + id + " is not found");
+        validate(tourUser.getAuditStatus() == 4, "已完成", "pre auditStatus error");
+        if (tourUser.getAuditStatus() != 1){
+            return;
+        }
+
+        tourUser.setUpdateBy(loginUserId);
+        tourUser.setUpdateDate(new Date());
+
+        if (isSuccess) {
+            tourUser.setAuditStatus(4);
+            tourUser.setRevieweRemark(revieweRemark);
+        } else {
+            tourUser.setAuditStatus(5);
+            tourUser.setRevieweRemark(revieweRemark);
+        }
+        tourUserMapper.updateAuditStatus(tourUser);
     }
 
 

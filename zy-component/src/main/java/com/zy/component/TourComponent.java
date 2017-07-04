@@ -1,16 +1,21 @@
 package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
+import com.zy.entity.act.Activity;
 import com.zy.entity.tour.BlackOrWhite;
+import com.zy.common.util.BeanUtils;
+import com.zy.entity.cms.Article;
 import com.zy.entity.tour.Sequence;
-import com.zy.entity.tour.Tour;
+import com.zy.entity.tour.TourTime;
 import com.zy.entity.usr.User;
+import com.zy.entity.tour.Tour;
+import com.zy.model.dto.AreaDto;
 import com.zy.service.TourService;
-import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
-import com.zy.vo.BlackOrWhiteAdminVo;
-import com.zy.vo.TourAdminVo;
+import com.zy.vo.*;
+import com.zy.service.UserService;
+import com.zy.util.GcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.zy.util.GcUtils.getThumbnail;
+import static java.util.Objects.isNull;
 
 @Component
 public class TourComponent {
@@ -25,15 +31,15 @@ public class TourComponent {
     @Autowired
     private TourService tourService;
 
+
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private CacheComponent cacheComponent;
 
     private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
 
-
+    @Autowired
+    private CacheComponent cacheComponent;
     /**
      * 处理生成 旅游编号
      生成规则：T+YY(两位的年份)+NUM(7位的数字)
@@ -116,7 +122,7 @@ public class TourComponent {
         return tourAdminVo;
     }
 
-    public BlackOrWhiteAdminVo buildBlackOrWhiteAdminVo(BlackOrWhite blackOrWhite) {
+    public BlackOrWhiteAdminVo buildblackOrWhiteAdminVo(BlackOrWhite blackOrWhite) {
         BlackOrWhiteAdminVo blackOrWhiteAdminVo = new BlackOrWhiteAdminVo();
         BeanUtils.copyProperties(blackOrWhite, blackOrWhiteAdminVo);
         Long userId = blackOrWhite.getUserId();
@@ -125,6 +131,52 @@ public class TourComponent {
             blackOrWhiteAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
         }
         return blackOrWhiteAdminVo;
+
     }
+
+    /**
+     * 将tourTime转成Vo
+     * @param tourTime
+     * @param b
+     * @return
+     */
+    public TourTimeDetailVo buildTourTimeVo(TourTime tourTime, boolean b) {
+        TourTimeDetailVo tourTimeDetailVo = new TourTimeDetailVo();
+        BeanUtils.copyProperties(tourTime, tourTimeDetailVo);
+        tourTimeDetailVo.setBegintimeLible(GcUtils.formatDate(tourTime.getBegintime(), TIME_PATTERN));
+        tourTimeDetailVo.setEndtimeLible(GcUtils.formatDate(tourTime.getEndtime(), TIME_PATTERN));
+        tourTimeDetailVo.setCreatedTimeLible(GcUtils.formatDate(tourTime.getCreatedTime(), TIME_PATTERN));
+        tourTimeDetailVo.setCreateby(userService.findRealName(tourTime.getCreateby()));
+        if(!isNull(tourTime.getAreaId())) {
+            AreaDto areaDto = cacheComponent.getAreaDto(tourTime.getAreaId());
+            if (areaDto != null) {
+                tourTimeDetailVo.setProvince(areaDto.getProvince());
+                tourTimeDetailVo.setCity(areaDto.getCity());
+                tourTimeDetailVo.setDistrict(areaDto.getDistrict());
+            }
+        }
+      return tourTimeDetailVo;
+    }
+
+    /**
+     * 将vo转成实体
+     * @param tourTimeVo
+     * @return
+     */
+    public TourTime buildTourTime(TourTimeVo tourTimeVo) {
+        TourTime tourTime = new TourTime();
+        tourTime.setTrouId(tourTimeVo.getTourId());
+        tourTime.setBegintime(tourTimeVo.getBegintime());
+        tourTime.setEndtime(tourTimeVo.getEndtime());
+        tourTime.setFee(tourTimeVo.getFee());
+        tourTime.setIsreleased(tourTimeVo.getIsreleased());
+        tourTime.setDelflag(0);
+        tourTime.setAreaId(tourTimeVo.getAreaId());
+       /* tourTime.setStarAddress(tourTimeVo.getProvince()+" "+tourTimeVo.getCity()+" "+tourTimeVo.getAreaId()+" "+tourTimeVo.getAddress());*/
+        tourTime.setCreatedTime(new Date());
+        tourTime.setCreateby(tourTimeVo.getCreateby());
+        return tourTime;
+    }
+
 
 }

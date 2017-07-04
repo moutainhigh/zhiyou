@@ -9,25 +9,28 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Author: Xuwq
- * Date: 2017/6/30.
+ * Created by it001 on 2017/6/30.
  */
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TourUserQueryModel implements Serializable {
+public class TourTimeQueryModel implements Serializable {
 
-    private Long id;
+    private Date begintime;
 
-    private Date createdTime;
+    private Date endtime;
 
-    private Date updateTime;
+    private Date createtime;
 
-    private Integer auditStatus;
+    private  Integer isreleased;
 
-    private String revieweRemark;
+    private String starAddress;
+
+    private Integer delfage;
+
+    private Long tourId;
 
     private Integer pageNumber;
 
@@ -81,10 +84,11 @@ public class TourUserQueryModel implements Serializable {
     private static Set<String> fieldNames = new HashSet<>();
 
     static {
+        fieldNames.add("fee");
         fieldNames.add("id");
-        fieldNames.add("createdTime");
-        fieldNames.add("updateTime");
-        fieldNames.add("auditStatus");
-        fieldNames.add("revieweRemark");
+        fieldNames.add("beginTime");
+        fieldNames.add("endTime");
+        fieldNames.add("createdDate");
     }
+
 }

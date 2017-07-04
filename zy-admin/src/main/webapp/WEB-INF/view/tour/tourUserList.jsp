@@ -2,8 +2,93 @@
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 
 <!-- BEGIN JAVASCRIPTS -->
+<script id="confirmTmpl" type="text/x-handlebars-template">
+    <form id="confirmForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 100%; margin: 20px;">
+        <input type="hidden" name="id" value="{{id}}"/>
+        <div class="form-body">
+            <div class="alert alert-danger display-hide">
+                <i class="fa fa-exclamation-circle"></i>
+                <button class="close" data-close="alert"></button>
+                <span class="form-errors">您填写的信息有误，请检查。</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">审核结果<span class="required"> * </span></label>
+                <div class="col-md-5">
+                    <select name="isSuccess" class="form-control">
+                        <option value="true">通过</option>
+                        <option value="false">拒绝</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">审核备注
+                </label>
+                <div class="col-md-5" style="width: 300px">
+                    <textarea type="text" class="form-control" name="revieweRemark"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions fluid">
+            <div class="col-md-offset-3 col-md-9">
+                <button id="reportConfirmSubmit{{id}}" type="button" class="btn green">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+                <button id="reportConfirmCancel{{id}}" class="btn default" data-href="">
+                    <i class="fa fa-chevron-left"></i> 返回
+                </button>
+            </div>
+        </div>
+    </form>
+</script>
 <script>
     var grid = new Datatable();
+
+    var template = Handlebars.compile($('#confirmTmpl').html());
+    $('#dataTable').on('click', '.report-confirm', function () {
+        var id = $(this).data('id');
+        var data = {
+            id: id
+        };
+        var html = template(data);
+        var index = layer.open({
+            type: 1,
+            //skin: 'layui-layer-rim', //加上边框
+            area: ['500px', '300px'], //宽高
+            content: html
+        });
+
+        $form = $('#confirmForm' + id);
+        $form.validate({
+            rules: {
+                isSuccess: {
+                    required: true
+                },
+                revieweRemark: {}
+            },
+            messages: {}
+        });
+
+        $('#reportConfirmSubmit' + id).bind('click', function () {
+            var result = $form.validate().form();
+            if (result) {
+                var url = '${ctx}/tourUser/updateAuditStatus';
+                $.post(url, $form.serialize(), function (data) {
+                    if (data.code === 0) {
+                        layer.close(index);
+                        grid.getDataTable().ajax.reload(null, false);
+                    } else {
+                        layer.alert('审核失败,原因' + data.message);
+                    }
+                });
+            }
+        })
+
+        $('#reportConfirmCancel' + id).bind('click', function () {
+            layer.close(index);
+        })
+
+    });
+
     $(function () {
         grid.init({
             src: $('#dataTable'),
@@ -69,11 +154,13 @@
                             if(data == 1){
                                 return '<label class="label label-danger">审核中</label>';
                             }else if(data == 2){
-                                return '<label class="label label-default">待补充</label>';
+                                return '<label class="label label-warning">待补充</label>';
                             }else if(data == 3){
-                                return "审核中";
+                                return '<label class="label label-info">已生效</label>';
                             }else if(data == 4){
                                 return '<label class="label label-success">已完成</label>';
+                            }else if(data == 5){
+                                return '<label class="label label-default">审核失败</label>';
                             }
                         }
                     },
@@ -128,7 +215,9 @@
                         render: function (data, type, full) {
                             var optionHtml = '';
                             <shiro:hasPermission name="tourUser:edit">
-                            optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="update(' + full.id + ')"><i class="fa fa-edit"></i> 审核 </a>';
+                            if (full.auditStatus == 1){
+                                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
+                            }
                             if (full.isReleased) {
                                 optionHtml += '<a class="btn btn-xs default red-stripe" href="javascript:;" onclick="unrelease(' + full.id + ')"><i class="fa fa-times X"></i> 取消发布 </a>';
                             } else {
@@ -190,7 +279,13 @@
     }
 </script>
 <!-- END JAVASCRIPTS -->
-
+<script type="text/javascript">
+    <shiro:hasPermission name="tourUser:export">
+    function tourUserExport() {
+        location.href = '${ctx}/tourUser/tourUserExport?' + $('#searchForm').serialize();
+    }
+    </shiro:hasPermission>
+</script>
 <!-- BEGIN PAGE HEADER-->
 <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -244,6 +339,13 @@
                                     <i class="fa fa-search"></i> 查询
                                 </button>
                             </div>
+                            <shiro:hasPermission name="tourUser:export">
+                                <div class="form-group">
+                                    <button class="btn yellow" onClick="tourUserExport()">
+                                        <i class="fa fa-file-excel-o"></i> 导出Excel
+                                    </button>
+                                </div>
+                            </shiro:hasPermission>
                         </form>
                     </div>
                     <table class="table table-striped table-bordered table-hover" id="dataTable">

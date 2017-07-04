@@ -9,10 +9,8 @@
         grid.init({
             src: $('#dataTable'),
             onSuccess: function (grid) {
-                // execute some code after table records loaded
             },
             onError: function (grid) {
-                // execute some code on network or other general error
             },
             dataTable: {
                 //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
@@ -21,29 +19,53 @@
                 order: [
                 ], // set first column as a default sort by desc
                 ajax: {
-                    url: '${ctx}/tour', // ajax source
+                    url: '${ctx}/tour/findTourTime', // ajax source
                 },
                 columns: [
                     {
-                        data: 'image',
-                        title: '主图',
-                        orderable: false,
-                        render: function (data, type, full) {
-                            return '<a target="_blank" href="' + data + '"><img style="width:180px;height:80px;"  src="' +data+ '"/></a>';
-                        }
-                    },
-                    {
-                        data: 'title',
-                        title: '标题',
-                        orderable: false
-                    },
-                    {
-                        data: 'createName',
+                        data: 'createby',
                         title: '创建人',
                         orderable: false
                     },
                     {
-                        data: 'isReleased',
+                        data: 'beginTime',
+                        title: '开始时间',
+                        render: function (data, type, full) {
+                            return full.begintimeLible;
+                        }
+                    },
+                    {
+                        data: 'endTime',
+                        title: '结束时间',
+                        render: function (data, type, full) {
+                            return full.endtimeLible;
+                        }
+                    },
+                    {
+                        data: 'fee',
+                        title: '费用',
+                        orderable: true
+                    },
+                    {
+                        data: 'createdDate',
+                        title: '发布时间',
+                        orderable: true,
+                        render: function (data, type, full) {
+                            return full.createdTimeLible;
+                        }
+
+                    },
+                    {
+                        data: 'starAddress',
+                        title: '集合地点',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            return '<p>' + full.province + '-' + full.city + '-' + full.district + '</p>'
+                                    + '<p class="small">' + data + '</p>';
+                        }
+                    },
+                    {
+                        data: 'isreleased',
                         title: '是否发布',
                         orderable: false,
                         render: function (data, type, full) {
@@ -54,22 +76,17 @@
                         }
                     },
                     {
-                        data: 'createdTime',
-                        title: '发布时间',
-                        orderable: false
-                    },
-                    {
                         data: 'id',
                         title: '操作',
                         orderable: false,
                         render: function (data, type, full) {
                             var optionHtml = '';
                             <shiro:hasPermission name="tour:edit">
-                            optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tour/update?id=' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
-                            if (full.isReleased) {
+                           /* optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tour/update?id=' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';*/
+                            if (full.isreleased==1) {
                                 optionHtml += '<a class="btn btn-xs default red-stripe" href="javascript:;" onclick="unrelease(' + full.id + ')"><i class="fa fa-times X"></i> 取消发布 </a>';
                             } else {
-                                optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/tour/findTourTime?tourId=' + data + '"><i class="fa fa-check"></i> 发布 </a>';
+                                optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="release(' + full.id + ')"><i class="fa fa-check"></i> 发布 </a>';
                             }
                             optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="deleteAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 删除 </a>';
                             </shiro:hasPermission>
@@ -82,7 +99,6 @@
     });
     <shiro:hasPermission name="article:edit">
     function release(id) {
-        alert("测试")
         $.ajax({
             url: '${ctx}/tour/findTourTime?tourId='+ id,
             dataType: 'html',
@@ -98,24 +114,26 @@
         //releaseAjax(id, true);
     }
     function unrelease(id) {
-        releaseAjax(id, false);
+        releaseAjax(id, 0);
     }
-    /*function releaseAjax(id, isRelease) {
-        $.post('${ctx}/article/release', {id: id, isRelease: isRelease}, function (result) {
-            //grid.getDataTable().ajax.reload();
-            grid.getDataTable().ajax.reload(null, false);
-        });
-    }*/
+    function release(id) {
+        releaseAjax(id, 1);
+    }
+    function releaseAjax(id, isreleased) {
+     $.post('${ctx}/tour/release', {tourTimeId: id, isreleased: isreleased}, function (result) {
+     grid.getDataTable().ajax.reload(null, false);
+     });
+     }
     function deleteAjax(id) {
-        layer.confirm('您确认删除此旅游信息嘛?', {
+        layer.confirm('您确认删除此旅游路线信息嘛?', {
             btn: ['删除','取消'] //按钮
         }, function(){
-            $.post('${ctx}/article/delete', {id: id}, function (result) {
+            $.post('${ctx}/tour/release', {tourTimeId: id,delFlage:1}, function (result) {
+                layer.msg(result.message);
                 grid.getDataTable().ajax.reload(null, false);
             });
-            layer.msg('删除成功！');
-        }, function(){
 
+        }, function(){
         });
     }
     </shiro:hasPermission>
@@ -125,6 +143,25 @@
             content:'<div style="width: 240px; height: 240px;"><img src="${ctx}/article/detailQrCode?id='+ id +'" ></div>'
         });
     }
+
+    function addTourTime(id) {
+        $.ajax({
+            url: '${ctx}/tour/createTourTime?tourId='+ id,
+            dataType: 'html',
+            success: function(data) {
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['960px', '640px'], //宽高
+                    content: data
+                });
+            }
+        })
+    }
+    
+    function refreshData() {
+        $(".filter-submit").click();
+    }
 </script>
 <!-- END JAVASCRIPTS -->
 
@@ -132,7 +169,7 @@
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-        <li><a href="javascript:;" data-href="${ctx}/article">旅游信息管理</a></li>
+        <li><a href="javascript:;" data-href="${ctx}/tour">旅游信息管理</a></li>
     </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -143,11 +180,11 @@
         <div class="portlet light bordered">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="icon-book-open"></i> 旅游信息管理
+                    <i class="icon-book-open"></i> <span style="color: red">  ${tour.title}</span>
                 </div>
             <shiro:hasPermission name="tour:edit">
                 <div class="actions">
-                    <a class="btn btn-circle green" data-href="${ctx}/tour/create">
+                    <a class="btn btn-circle green" href="javascript:;"  onclick="addTourTime('${tour.id}')">
                         <i class="fa fa-plus"></i> 新增
                     </a>
                 </div>
@@ -161,19 +198,20 @@
                             <input id="_direction" name="direction" type="hidden" value=""/>
                             <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
                             <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
-
-                            <div class="form-group">
-                                <input type="text" name="titleLK" class="form-control" placeholder="标题"/>
+                            <input id="tourId" name="tourId" type="hidden" value="${tour.id}"/>
+                            <div class="form-group input-inline">
+                                <input class="Wdate form-control" type="text" id="begintime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                                       name="begintime" value="" placeholder="开始时间"/>
                             </div>
                             <div class="form-group input-inline">
-                                <input class="Wdate form-control" type="text" id="releasedTime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
-                                       name="releasedTimeLT" value="" placeholder="发布时间止"/>
+                                <input class="Wdate form-control" type="text" id="endtime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                                       name="endtime" value="" placeholder="结束时间"/>
                             </div>
                             <div class="form-group">
-                                <select name="isReleasedEQ" class="form-control">
+                                <select name="isreleased" class="form-control">
                                     <option value="">-- 是否发布 --</option>
-                                    <option value="true">是</option>
-                                    <option value="false">否</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
                                 </select>
                             </div>
                             <div class="form-group">
