@@ -69,7 +69,10 @@
                 orderable: false,
                 render: function (data, type, full) {
                     var optionHtml = '';
-                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tour/editBlackWhite"><i class="fa fa-edit"></i> 编辑 </a>';
+                    <shiro:hasPermission name="tourSetting:edit">
+                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tour/editBlackWhite/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
+                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tour/deleteBlackWhite/' + data + '" data-confirm="您确定要撤销该用户的黑/白名单设置吗？"><i class="fa fa-smile-o"></i> 撤销 </a>';
+                    </shiro:hasPermission>
                     return optionHtml;
                 }
             }
@@ -87,7 +90,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/activityTeamApply/ticket">活动票务管理</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/tour/blackOrWhite">黑白名单管理</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -140,11 +143,13 @@
                   <i class="fa fa-search"></i> 查询
                 </button>
               </div>
-            <div class="form-group">
-                <a class="btn btn-circle green" data-href="${ctx}/tour/createBlackWhite">
-                    <i class="fa fa-plus"></i> 新增
-                </a>
-            </div>
+             <shiro:hasPermission name="tourSetting:edit">
+                <div class="form-group">
+                    <a class="btn btn-circle green" data-href="${ctx}/tour/createBlackWhite">
+                        <i class="fa fa-plus"></i> 新增
+                    </a>
+                </div>
+             </shiro:hasPermission>
 
             </form>
 

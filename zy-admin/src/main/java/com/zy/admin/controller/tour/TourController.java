@@ -33,10 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
@@ -141,6 +138,7 @@ public class TourController {
 
     }
 
+    @RequiresPermissions("tourSetting:view")
     @RequestMapping(value = "/ajaxupdate", method = RequestMethod.POST)
     @ResponseBody
     public Result<?> ajaxupdate(Long id,AdminPrincipal principal) {
@@ -249,12 +247,20 @@ public class TourController {
 
     @RequiresPermissions("tourSetting:*")
     @RequestMapping(value = "/blackOrWhite" , method = RequestMethod.GET)
-    public String list(Model model) {
+    public String blackOrWhiteList(Model model) {
         model.addAttribute("userRankMap", Arrays.asList(User.UserRank.values()).stream().collect(Collectors.toMap(v->v, v-> GcUtils.getUserRankLabel(v),(u, v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new)) );
         return "tour/blackOrWhiteList";
     }
 
-    @RequiresPermissions("tourSetting:*")
+    /**
+     * 黑白名单列表
+     * @param blackOrWhiteQueryModel
+     * @param nicknameLK
+     * @param phoneEQ
+     * @param userRankEQ
+     * @return
+     */
+    @RequiresPermissions("tourSetting:view")
     @RequestMapping(value = "/blackOrWhite" , method = RequestMethod.POST)
     @ResponseBody
     public Grid<BlackOrWhiteAdminVo> blackOrWhiteList(BlackOrWhiteQueryModel blackOrWhiteQueryModel, String nicknameLK, String phoneEQ,UserRank userRankEQ) {
@@ -270,12 +276,19 @@ public class TourController {
         return new Grid<>(voPage);
     }
 
-    @RequiresPermissions("tourSetting:*")
+    @RequiresPermissions("tourSetting:edit")
     @RequestMapping(value = "/createBlackWhite", method = RequestMethod.GET)
     public String createBlackWhite() {
         return "tour/blackWhiteCreate";
     }
-    @RequiresPermissions("activity:edit")
+
+    /**
+     * 新增黑白名单
+     * @param blackOrWhite
+     * @param phone
+     * @return
+     */
+    @RequiresPermissions("tourSetting:edit")
     @RequestMapping(value = "/createBlackWhite", method = RequestMethod.POST)
     @ResponseBody
     public Result<?> create(BlackOrWhite blackOrWhite, @RequestParam String phone) {
@@ -299,12 +312,47 @@ public class TourController {
     }
 
 
-
-    @RequiresPermissions("tourSetting:*")
-    @RequestMapping(value = "/editBlackWhite", method = RequestMethod.GET)
-    public String updateBlackWhite() {
+    @RequiresPermissions("tourSetting:edit")
+    @RequestMapping(value = "/editBlackWhite/{id}", method = RequestMethod.GET)
+    public String updateBlackWhite(@PathVariable Long id, Model model) {
+        BlackOrWhite blackOrWhite = blackOrWhiteService.findOne(id);
+        BlackOrWhiteAdminVo blackOrWhiteAdminVo = tourComponent.buildBlackOrWhiteAdminVo(blackOrWhite);
+        model.addAttribute("blackOrWhiteAdminVo",blackOrWhiteAdminVo);
         return "tour/blackWhiteEdit";
     }
+
+    /**
+     * 编辑黑白名单
+     * @param blackOrWhite
+     * @return
+     */
+    @RequiresPermissions("tourSetting:edit")
+    @RequestMapping(value = "/editBlackWhite", method = RequestMethod.POST)
+    public String updateBlackWhite(BlackOrWhite blackOrWhite,RedirectAttributes redirectAttributes) {
+        Long blackOrWhiteId = blackOrWhite.getId();
+        validate(blackOrWhite, NOT_NULL, "help id is null");
+        try {
+            blackOrWhiteService.modify(blackOrWhite);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
+            return "redirect:/tour/blackWhiteEdit/" + blackOrWhiteId;
+        }
+        return "redirect:/tour/blackOrWhite";
+    }
+
+
+    @RequiresPermissions("tourSetting:edit")
+    @RequestMapping(value = "/deleteBlackWhite/{id}", method = RequestMethod.GET)
+    public String deleteBlackWhite(@PathVariable Long id ,RedirectAttributes redirectAttributes) {
+        try {
+            blackOrWhiteService.delete(id);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
+        }
+        return "redirect:/tour/blackOrWhite";
+    }
+
+
 
 
 
