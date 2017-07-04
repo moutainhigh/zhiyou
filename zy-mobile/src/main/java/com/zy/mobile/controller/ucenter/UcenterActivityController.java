@@ -444,92 +444,83 @@ public class UcenterActivityController {
 
 	/**
 	 * 二维码识别报名活动
+	 *
 	 * @param activityId
 	 * @param ticketId
 	 * @param principal
 	 * @param redirectAttributes
 	 * @param model
-     * @return
-     */
-	@RequestMapping(value = "actQrCodeApply" , method = RequestMethod.GET )
-	public String actQrCodeApply(@RequestParam Long activityId , @RequestParam Long ticketId, Principal principal, RedirectAttributes redirectAttributes,Model model){
+	 * @return
+	 */
+	@RequestMapping(value = "actQrCodeApply", method = RequestMethod.GET)
+	public String actQrCodeApply(@RequestParam Long activityId, @RequestParam Long ticketId, Principal principal, RedirectAttributes redirectAttributes, Model model) {
 		ActivityTicket activityTicket = activityTicketService.findOne(ticketId);
 		Activity activity = activityService.findOne(activityId);
 		Long userId = principal.getUserId();
-		User user = userService.findOne(userId);
+		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, userId);
 		Date now = new Date();
-		if (activity.getApplyDeadline().before(now)) {
+		if (activity.getEndTime().before(now)) {
 			//活动报名已结束
-			model.addAttribute("msg","活动报名已结束");
+			model.addAttribute("msg", "活动报名已结束");
 			model.addAttribute("activityId", activityId);
 			return "activity/applyFail";
-		} else {
-			//活动报名中
-			if (activityTicket != null){
-				//票存在
-				Long buyerId = activityTeamApplyService.findOne(activityTicket.getTeamApplyId()).getBuyerId();
-				Long usedUserId = activityTicket.getUserId();
-				if( activityTicket.getIsUsed() == 0){
-					//票未被使用过
-					if ( userId.longValue() == buyerId.longValue()){
-						//自己团购票，自己再使用
-						model.addAttribute("msg","请选择“个人报名”方式报名");
-						model.addAttribute("activityId", activityId);
-						return "activity/applyFail";
-					}else{
-						//使用他人购买的票
-						if(null == usedUserId || usedUserId.longValue() != userId.longValue()){
-							//新票或者被重置的票
-							ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, userId);
-							if(activityApply != null){
-								//活动个人报名已经操作过
-								if(activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已报名){
-									//个人报名已经操作过，但是未支付，修改活动报名已支付，邀请人为购票人
-									activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
-									activityApply.setInviterId(buyerId);
-									activityApplyService.update(activityApply);
-									activityTicket.setUserId(userId);
-									activityTicket.setIsUsed(1);
-									activityTicketService.update(activityTicket);
-									model.addAttribute("userName", user.getNickname());
-									model.addAttribute("activityId", activityId);
-									return "activity/applySuccess" ;
-								}else{
-									//个人报名已经操作过，且已支付
-									redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您已报名过该活动，请勿重复报名"));
-									return "redirect:/activity/" + activityId;
-								}
-							}else{
-								//个人报名首次操作
-								activityApplyService.useTicket(activityId,userId,buyerId);
-								activityTicket.setIsUsed(1);
-								activityTicket.setUserId(userId);
-								activityTicketService.update(activityTicket);
-								model.addAttribute("userName", user.getNickname());
-								model.addAttribute("activityId", activityId);
-								return "activity/applySuccess" ;
-							}
-						}else {
-							//重置后的票，原来使用过该票的人再次使用
-							model.addAttribute("msg","您已使用过该票，请勿二次使用");
-							model.addAttribute("activityId", activityId);
-							return "activity/applyFail";
-						}
-
-					}
-				}else{
-					//票已经被使用
-					model.addAttribute("msg","票已被使用过，请勿重复使用");
-					model.addAttribute("activityId", activityId);
-					return "activity/applyFail";
-				}
-			}else {
-				//票不存在
-				model.addAttribute("msg","无对应的票存在");
+		}
+		if (null == activityTicket) {
+			//票不存在
+			model.addAttribute("msg", "无对应的票存在");
+			model.addAttribute("activityId", activityId);
+			return "activity/applyFail";
+		}
+		if (activityTicket.getIsUsed() == 1) {
+			//票已经被使用
+			model.addAttribute("msg", "票已被使用过，请勿重复使用");
+			model.addAttribute("activityId", activityId);
+			return "activity/applyFail";
+		}
+		Long buyerId = activityTeamApplyService.findOne(activityTicket.getTeamApplyId()).getBuyerId();
+		Long usedUserId = activityTicket.getUserId();
+		if (userId.equals(buyerId)) {
+			//自己团购票，自己再使用
+			model.addAttribute("msg", "请选择“本人报名”方式报名");
+			model.addAttribute("activityId", activityId);
+			return "activity/applyFail";
+		}
+		if (null != usedUserId && usedUserId.equals(userId)) {
+			//重置后的票，原来使用过该票的人再次使用
+			model.addAttribute("msg", "您已使用过该票，请勿二次使用");
+			model.addAttribute("activityId", activityId);
+			return "activity/applyFail";
+		}
+		if (null == activityApply) {
+			//个人报名首次操作
+			try {
+				activityApplyService.useTicket(activityId, userId, buyerId, activityTicket);
+				model.addAttribute("userName", userService.findRealName(userId));
 				model.addAttribute("activityId", activityId);
-				return "activity/applyFail";
+				return "activity/applySuccess";
+			} catch (RuntimeException e) {
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名已关闭"));
+				return "redirect:/activity/" + activityId;
+			}
+		} else {
+			//活动个人报名已经操作过
+			if (activityApply.getActivityApplyStatus() == ActivityApply.ActivityApplyStatus.已报名) {
+				//个人报名已经操作过，但是未支付，修改活动报名已支付，邀请人为购票人
+				activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
+				activityApply.setInviterId(buyerId);
+				activityTicket.setUserId(userId);
+				activityTicket.setIsUsed(1);
+				activityApplyService.editApplyAndTicket(activityApply, activityTicket);
+				model.addAttribute("userName", userService.findRealName(userId));
+				model.addAttribute("activityId", activityId);
+				return "activity/applySuccess";
+			} else {
+				//个人报名已经操作过，且已支付
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您已报名过该活动，请勿重复报名"));
+				return "redirect:/activity/" + activityId;
 			}
 		}
+
 	}
 
 
