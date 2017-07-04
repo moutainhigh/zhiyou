@@ -3,6 +3,7 @@
 
 <!-- BEGIN JAVASCRIPTS -->
 <script>
+    var flage = false;
     var grid = new Datatable();
     var urlPc = '${rulPc}';
     $(function () {
@@ -70,6 +71,7 @@
                         orderable: false,
                         render: function (data, type, full) {
                             if (data) {
+                                flage=true;
                                 return '<i class="fa fa-check font-green"></i> <span class="badge badge-success"> 已发布 </span>';
                             }
                             return '';
@@ -120,9 +122,10 @@
         releaseAjax(id, 1);
     }
     function releaseAjax(id, isreleased) {
-     $.post('${ctx}/tour/release', {tourTimeId: id, isreleased: isreleased}, function (result) {
-     grid.getDataTable().ajax.reload(null, false);
-     });
+         $.post('${ctx}/tour/release', {tourTimeId: id, isreleased: isreleased}, function (result) {
+          grid.getDataTable().ajax.reload(null, false);
+          flage = false;
+         });
      }
     function deleteAjax(id) {
         layer.confirm('您确认删除此旅游路线信息嘛?', {
@@ -131,6 +134,7 @@
             $.post('${ctx}/tour/release', {tourTimeId: id,delFlage:1}, function (result) {
                 layer.msg(result.message);
                 grid.getDataTable().ajax.reload(null, false);
+                flage = false;
             });
 
         }, function(){
@@ -163,16 +167,20 @@
         $(".filter-submit").click();
     }
     function updateTour (tourId) {
-        layer.confirm('确认启用本条旅游信息？', {
-            btn: ['确认','取消'] //按钮
-        }, function(){
-            $.post('${ctx}/tour/ajaxupdate', {id:tourId}, function (result) {
-                layer.msg(result.message);
-                $("#tourhref").click();
-            });
+        if(flage){
+            layer.confirm('确认启用本条旅游信息？', {
+                btn: ['确认','取消'] //按钮
+            }, function(){
+                $.post('${ctx}/tour/ajaxupdate', {id:tourId}, function (result) {
+                    layer.msg(result.message);
+                    $("#tourhref").click();
+                });
 
-        }, function(){
-        });
+            }, function(){
+            });
+        }else{
+            layer.msg("没有发团时间或者没有启用的发团时间，请确认后再提交！");
+        }
     }
 </script>
 <!-- END JAVASCRIPTS -->

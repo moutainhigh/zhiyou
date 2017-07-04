@@ -91,7 +91,7 @@ public class TourController {
         return "tour/createTour";
     }
 
-    @RequiresPermissions("article:edit")
+    @RequiresPermissions("tour:edit")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(Tour tour, Model model, RedirectAttributes redirectAttributes,AdminPrincipal principal) {
         tour.setCreateby(principal.getUserId());
@@ -272,7 +272,7 @@ public class TourController {
             blackOrWhiteQueryModel.setUserIdIN(all.stream().map(v -> v.getId()).toArray(Long[]::new));
         }
         Page<BlackOrWhite> page = blackOrWhiteService.findPage(blackOrWhiteQueryModel);
-        Page<BlackOrWhiteAdminVo> voPage = null;//PageBuilder.copyAndConvert(page, v -> tourComponent.buildBlackOrWhiteAdminVo(v));
+        Page<BlackOrWhiteAdminVo> voPage = PageBuilder.copyAndConvert(page, v -> tourComponent.buildBlackOrWhiteAdminVo(v));
         return new Grid<>(voPage);
     }
 
