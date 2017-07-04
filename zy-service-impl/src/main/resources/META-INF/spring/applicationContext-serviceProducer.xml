@@ -66,4 +66,5 @@
 	<dubbo:service ref="matterServiceImpl" interface="com.zy.service.MatterService"/>
 	<dubbo:service ref="tourServiceImpl" interface="com.zy.service.TourService"/>
 	<dubbo:service ref="blackOrWhiteServiceImpl" interface="com.zy.service.BlackOrWhiteService"/>
+	<dubbo:service ref="tourTimeServiceImpl" interface="com.zy.service.TourTimeService"/>
 </beans>

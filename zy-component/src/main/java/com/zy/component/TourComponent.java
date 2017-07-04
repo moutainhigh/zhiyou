@@ -122,18 +122,6 @@ public class TourComponent {
         return tourAdminVo;
     }
 
-    public BlackOrWhiteAdminVo buildblackOrWhiteAdminVo(BlackOrWhite blackOrWhite) {
-        BlackOrWhiteAdminVo blackOrWhiteAdminVo = new BlackOrWhiteAdminVo();
-        BeanUtils.copyProperties(blackOrWhite, blackOrWhiteAdminVo);
-        Long userId = blackOrWhite.getUserId();
-        if (userId != null) {
-            User user = cacheComponent.getUser(userId);
-            blackOrWhiteAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
-        }
-        return blackOrWhiteAdminVo;
-
-    }
-
     /**
      * 将tourTime转成Vo
      * @param tourTime
@@ -178,5 +166,15 @@ public class TourComponent {
         return tourTime;
     }
 
+    public BlackOrWhiteAdminVo buildBlackOrWhiteAdminVo(BlackOrWhite blackOrWhite) {
+        BlackOrWhiteAdminVo blackOrWhiteAdminVo = new BlackOrWhiteAdminVo();
+        BeanUtils.copyProperties(blackOrWhite, blackOrWhiteAdminVo);
+        Long userId = blackOrWhite.getUserId();
+        if (userId != null) {
+            User user = cacheComponent.getUser(userId);
+            blackOrWhiteAdminVo.setUser(VoHelper.buildUserAdminSimpleVo(user));
+        }
+        return blackOrWhiteAdminVo;
 
+    }
 }

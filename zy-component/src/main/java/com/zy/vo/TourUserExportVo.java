@@ -8,20 +8,16 @@ import java.io.Serializable;
 
 /**
  * Author: Xuwq
- * Date: 2017/6/29.
+ * Date: 2017/7/4.
  */
 @Getter
 @Setter
-public class TourUserAdminVo implements Serializable {
+public class TourUserExportVo implements Serializable {
     /* 原生 */
-    @Field(label = "id")
-    private Long id;
     @Field(label = "旅游标题")
     private String tourTitle;
     @Field(label = "出游时间")
     private String tourTime;
-    @Field(label = "用户id")
-    private Long userId;
     @Field(label = "用户名称")
     private String userName;
     @Field(label = "用户电话")
@@ -35,13 +31,13 @@ public class TourUserAdminVo implements Serializable {
     @Field(label = "修改人名称")
     private String updateName;
     @Field(label = "是否有效")
-    private Integer isEffect;
+    private String isEffect;
     @Field(label = "审核状态")
-    private Integer auditStatus;
+    private String auditStatus;
     @Field(label = "检测报告编号")
     private Long reportId;
     @Field(label = "是否接车")
-    private Integer isTransfers;
+    private String isTransfers;
     @Field(label = "车次")
     private String carNumber;
     @Field(label = "用户备注")
@@ -49,9 +45,9 @@ public class TourUserAdminVo implements Serializable {
     @Field(label = "审核备注")
     private String revieweRemark;
     @Field(label = "房型")
-    private Integer houseType;
+    private String houseType;
     @Field(label = "是否加床")
-    private Integer isAddBed;
+    private String isAddBed;
 
     /* 扩展 */
     @Field(label = "票务照片")
@@ -62,5 +58,4 @@ public class TourUserAdminVo implements Serializable {
     private String updateDateLabel;
     @Field(label = "计划到达时间")
     private String planTimeLabel;
-
 }

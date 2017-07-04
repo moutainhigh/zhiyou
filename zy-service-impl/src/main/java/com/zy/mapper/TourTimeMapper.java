@@ -11,7 +11,7 @@ public interface TourTimeMapper {
 
     void update(TourTime tourTime);
 
-    TourTime findOne(Long yourTimeId);
+    TourTime findOne(Long timeId);
 
     List<TourTime>findAll(TourTimeQueryModel tourTimeQueryModel);
 

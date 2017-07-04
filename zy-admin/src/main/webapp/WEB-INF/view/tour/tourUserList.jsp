@@ -43,6 +43,22 @@
 <script>
     var grid = new Datatable();
 
+   function userDetail(obj){
+        var userId = $(obj).attr("data-id");
+        $.ajax({
+            url: '${ctx}/tourUser/detail?userId=' + userId ,
+            dataType: 'html',
+            success: function(data) {
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['900px', '500px'], //宽高
+                    content: data
+                });
+            }
+        });
+    }
+
     var template = Handlebars.compile($('#confirmTmpl').html());
     $('#dataTable').on('click', '.report-confirm', function () {
         var id = $(this).data('id');
@@ -132,6 +148,11 @@
                         orderable: false,
                     },
                     {
+                        data: 'userPhone',
+                        title: '用户电话',
+                        orderable: false,
+                    },
+                    {
                         data: 'tourTitle',
                         title: '线路',
                         orderable: false
@@ -144,6 +165,11 @@
                     {
                         data: 'parentName',
                         title: '推荐人',
+                        orderable: false
+                    },
+                    {
+                        data: 'parentPhone',
+                        title: '推荐人电话',
                         orderable: false
                     },
                     {
@@ -183,7 +209,7 @@
                     },
                     {
                         data: 'isAddBed',
-                        title: '房型需求',
+                        title: '是否加床',
                         orderable: false,
                         render: function (data, type, full) {
                             if(data == 0){
@@ -194,13 +220,25 @@
                         }
                     },
                     {
-                        data: 'updateName',
-                        title: '审核员',
-                        orderable: false
+                        data: 'isTransfers',
+                        title: '是否接车',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if(data == 0){
+                                return '否';
+                            }else if(data == 1){
+                                return '是';
+                            }
+                        }
                     },
                     {
                         data: 'userRemark',
                         title: '用户备注',
+                        orderable: false
+                    },
+                    {
+                        data: 'updateName',
+                        title: '审核员',
                         orderable: false
                     },
                     {
@@ -209,11 +247,24 @@
                         orderable: false
                     },
                     {
+                        data: 'isEffect',
+                        title: '是否有效',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if(data == 0){
+                                return '否';
+                            }else if(data == 1){
+                                return '是';
+                            }
+                        }
+                    },
+                    {
                         data: 'id',
                         title: '操作',
                         orderable: false,
                         render: function (data, type, full) {
                             var optionHtml = '';
+                            optionHtml += '<a class="btn btn-xs default blue-stripe user-detail" onclick="userDetail(this)" href="javascript:;" data-id="' + full.userId + '"><i class="fa fa-search"></i> 查看旅客信息 </a>';
                             <shiro:hasPermission name="tourUser:edit">
                             if (full.auditStatus == 1){
                                 optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
@@ -258,6 +309,13 @@
             grid.getDataTable().ajax.reload(null, false);
         });
     }
+
+    <shiro:hasPermission name="tourUser:export">
+    function tourUserExport() {
+        location.href = '${ctx}/tourUser/tourUserExport?' + $('#searchForm').serialize();
+    }
+    </shiro:hasPermission>
+
     function deleteAjax(id) {
         layer.confirm('您确认删除此旅游信息嘛?', {
             btn: ['删除','取消'] //按钮
@@ -279,13 +337,6 @@
     }
 </script>
 <!-- END JAVASCRIPTS -->
-<script type="text/javascript">
-    <shiro:hasPermission name="tourUser:export">
-    function tourUserExport() {
-        location.href = '${ctx}/tourUser/tourUserExport?' + $('#searchForm').serialize();
-    }
-    </shiro:hasPermission>
-</script>
 <!-- BEGIN PAGE HEADER-->
 <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -314,7 +365,7 @@
             <div class="portlet-body clearfix">
                 <div class="table-container">
                     <div class="table-toolbar">
-                        <form class="filter-form form-inline">
+                        <form class="filter-form form-inline" id="searchForm">
                             <input id="_orderBy" name="orderBy" type="hidden" value=""/>
                             <input id="_direction" name="direction" type="hidden" value=""/>
                             <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
@@ -341,7 +392,7 @@
                             </div>
                             <shiro:hasPermission name="tourUser:export">
                                 <div class="form-group">
-                                    <button class="btn yellow" onClick="tourUserExport()">
+                                    <button type="button" class="btn yellow" onClick="tourUserExport()">
                                         <i class="fa fa-file-excel-o"></i> 导出Excel
                                     </button>
                                 </div>

@@ -20,8 +20,7 @@ public class AccountComponent {
 
 	@Autowired
 	private AccountService accountService;
-	
-	
+
 	public List<AccountAdminVo> buildAdminVo(List<User> users) {
 		if (users.isEmpty()) {
 			return new ArrayList<>();
