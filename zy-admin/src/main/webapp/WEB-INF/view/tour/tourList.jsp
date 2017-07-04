@@ -54,9 +54,11 @@
                         }
                     },
                     {
-                        data: 'createdTime',
+                        data: 'createDate',
                         title: '发布时间',
-                        orderable: false
+                        render: function (data, type, full) {
+                            return full.createdTime;
+                        }
                     },
                     {
                         data: 'id',
@@ -82,7 +84,6 @@
     });
     <shiro:hasPermission name="article:edit">
     function release(id) {
-        alert("测试")
         $.ajax({
             url: '${ctx}/tour/findTourTime?tourId='+ id,
             dataType: 'html',
@@ -100,20 +101,20 @@
     function unrelease(id) {
         releaseAjax(id, false);
     }
-    /*function releaseAjax(id, isRelease) {
-        $.post('${ctx}/article/release', {id: id, isRelease: isRelease}, function (result) {
-            //grid.getDataTable().ajax.reload();
+    function releaseAjax(id, isRelease) {
+        $.post('${ctx}/tour/ajaxTourrelease', {tourId: id, isReleased: isRelease}, function (result) {
+            layer.msg(result.message);
             grid.getDataTable().ajax.reload(null, false);
-        });
-    }*/
+        })
+    }
     function deleteAjax(id) {
         layer.confirm('您确认删除此旅游信息嘛?', {
             btn: ['删除','取消'] //按钮
         }, function(){
-            $.post('${ctx}/article/delete', {id: id}, function (result) {
+            $.post('${ctx}/tour/ajaxTourDelete', {tourId: id,isReleased:false}, function (result) {
+                layer.msg('删除成功！');
                 grid.getDataTable().ajax.reload(null, false);
             });
-            layer.msg('删除成功！');
         }, function(){
 
         });
@@ -132,7 +133,7 @@
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-        <li><a href="javascript:;" data-href="${ctx}/article">旅游信息管理</a></li>
+        <li><a href="javascript:;" data-href="${ctx}/tour">旅游信息管理</a></li>
     </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -163,17 +164,17 @@
                             <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
                             <div class="form-group">
-                                <input type="text" name="titleLK" class="form-control" placeholder="标题"/>
+                                <input type="text" name="title" class="form-control" placeholder="标题"/>
                             </div>
                             <div class="form-group input-inline">
-                                <input class="Wdate form-control" type="text" id="releasedTime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                                <input class="Wdate form-control" type="text" id="createdTime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
                                        name="releasedTimeLT" value="" placeholder="发布时间止"/>
                             </div>
                             <div class="form-group">
-                                <select name="isReleasedEQ" class="form-control">
+                                <select name="isReleased" class="form-control">
                                     <option value="">-- 是否发布 --</option>
-                                    <option value="true">是</option>
-                                    <option value="false">否</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
                                 </select>
                             </div>
                             <div class="form-group">

@@ -134,6 +134,8 @@ public class TourServiceImpl implements TourService {
         tourUp.setImage(tour.getImage());
         tourUp.setTitle(tour.getTitle());
         tourUp.setUpdateTime(new Date());
+        tourUp.setIsReleased(tour.getIsReleased());
+        tourUp.setDelfage(tour.getDelfage());
         tourMapper.update(tourUp);
     }
 
@@ -197,6 +199,20 @@ public class TourServiceImpl implements TourService {
         page.setData(data);
         page.setTotal(total);
         return page;
+    }
+
+    /**
+     * 删除 旅游信息 以及 相关 时间信息
+     * @param tour
+     */
+    @Override
+    public void deleteTour(Tour tour) {
+       tour.setDelfage(1);
+       this.updatTour(tour);
+        TourTimeQueryModel tourTimeQueryModel = new TourTimeQueryModel();
+        tourTimeQueryModel.setDelfage(1);
+        tourTimeQueryModel.setTourId(tour.getId());
+        tourTimeMapper.delupdate(tourTimeQueryModel);
     }
 
 

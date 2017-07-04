@@ -74,6 +74,10 @@ public class TourController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Grid<TourAdminVo> list(TourQueryModel tourQueryModel) {
+        tourQueryModel.setDelfage(0);
+        if (tourQueryModel.getTitle()!=null&&!"".equals(tourQueryModel.getTitle())) {
+            tourQueryModel.setTitle("%" + tourQueryModel.getTitle() + "%");
+        }
         Page<Tour> page = tourService.findPageBy(tourQueryModel);
         List<TourAdminVo> list = page.getData().stream().map(v -> {
             return tourComponent.buildAdminVo(v, false);
@@ -87,10 +91,12 @@ public class TourController {
         return "tour/createTour";
     }
 
-    @RequiresPermissions("article:edit")
+    @RequiresPermissions("tour:edit")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(Tour tour, Model model, RedirectAttributes redirectAttributes,AdminPrincipal principal) {
         tour.setCreateby(principal.getUserId());
+        tour.setIsReleased(false);
+        tour.setDelfage(0);
         try {
             tourService.createTour(tour);
             redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("旅游信息创建成功"));
@@ -133,6 +139,24 @@ public class TourController {
     }
 
     @RequiresPermissions("tourSetting:view")
+    @RequestMapping(value = "/ajaxupdate", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxupdate(Long id,AdminPrincipal principal) {
+        validate(id, NOT_NULL, "Tour id is null");
+        Tour tour = new Tour();
+        tour.setId(id);
+        tour.setIsReleased(true);
+        tour.setUpdateby(principal.getUserId());
+        try {
+            tourService.updatTour(tour);
+            return ResultBuilder.ok("操作成功");
+        } catch (Exception e) {
+          e.printStackTrace();
+          return ResultBuilder.error("系统错诶");
+        }
+
+    }
+
     @RequestMapping(value = "/findTourTime", method = RequestMethod.GET)
     public String  findTourTime(Model model, @RequestParam Long tourId){
         model.addAttribute("tour",tourService.findTourOne(tourId));
@@ -186,6 +210,39 @@ public class TourController {
           e.printStackTrace();
           return ResultBuilder.error("系统错诶");
       }
+    }
+
+    @RequestMapping(value = "/ajaxTourrelease", method = RequestMethod.POST)
+    @ResponseBody
+    public  Result<?>ajaxTourrelease(Long tourId,Boolean isReleased,AdminPrincipal principal){
+        Tour tour = new Tour();
+        tour.setId(tourId);
+        tour.setIsReleased(isReleased);
+        tour.setUpdateby(principal.getUserId());
+        try {
+            tourService.updatTour(tour);
+            return ResultBuilder.ok("操作成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultBuilder.error("系统错诶");
+        }
+
+    }
+
+    @RequestMapping(value = "/ajaxTourDelete", method = RequestMethod.POST)
+    @ResponseBody
+    public  Result<?>ajaxTourDelete(Long tourId,Boolean isReleased,AdminPrincipal principal){
+        Tour tour = new Tour();
+        tour.setId(tourId);
+        tour.setIsReleased(isReleased);
+        tour.setUpdateby(principal.getUserId());
+        try {
+            tourService.deleteTour(tour);
+            return ResultBuilder.ok("操作成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultBuilder.error("系统错诶");
+        }
     }
 
     @RequiresPermissions("tourSetting:view")

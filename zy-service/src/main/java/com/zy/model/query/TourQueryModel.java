@@ -88,7 +88,7 @@ public class TourQueryModel implements Serializable {
     static {
         fieldNames.add("brief");
         fieldNames.add("image");
-        fieldNames.add("createdTime");
+        fieldNames.add("createDate");
         fieldNames.add("updateTime");
         fieldNames.add("id");
         fieldNames.add("title");
