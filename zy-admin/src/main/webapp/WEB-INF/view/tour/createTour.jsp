@@ -50,17 +50,27 @@
                     maxlength : 100
                 },
                 'image' : {
-                    required : true
+                    required : true,
                 },
                 'brief' : {
-                    required : true
+                    required : true,
+                },
+                'days' : {
+                    required : true,
+                    number: true,
+                }
+            },
+            messages: {
+                days: {
+                    required: '请输入天数',
+                    number: '只能输入数字',
                 }
             },
             submitHandler :
                     function(form){
                         var content = ue.getContent();
                         if(!content) {
-                            layer.alert('请填写新闻详情');
+                            layer.alert('请填写旅游详情');
                             return false;
                         }
                         $(form).find(':submit').prop('disabled', true);
@@ -142,7 +152,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">旅游活动天数
+                            <label class="control-label col-md-3">旅游活动天数<span class="required"> * </span>
                             </label>
                             <div class="col-md-4">
                                 <input type="text" name="days" id="days" class="form-control"
@@ -160,14 +170,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-md-3">旅游信息摘要</label>
+                            <label class="control-label col-md-3">旅游信息摘要<span class="required"> * </span></label>
                             <div class="col-md-4">
                                 <textarea name="brief" id="brief" cols="30" rows="5" class="form-control">${tour.brief}</textarea>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-md-3">旅游信息详情
+                            <label class="control-label col-md-3">旅游信息详情<span class="required"> * </span>
                             </label>
                             <div class="col-md-4">
                                 <div><script id="editor" type="text/plain" style="width:840px; height:500px;"></script></div>
