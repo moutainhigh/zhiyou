@@ -203,11 +203,14 @@
                     <i class="icon-book-open"></i> <span style="color: red">  ${tour.title}</span>
                 </div>
             <shiro:hasPermission name="tour:edit">
+
                 <div class="actions">
-                    <a class="btn btn-circle green" href="javascript:;"  onclick="updateTour('${tour.id}')">
-                        <i class="fa fa-check font-green"></i>启用旅游信息
-                    </a>
-                    &nbsp;  &nbsp;
+                    <c:if test="${flage ==1}">
+                        <a class="btn btn-circle green" href="javascript:;"  onclick="updateTour('${tour.id}')">
+                            <i class="fa fa-check font-green"></i>发布旅游信息
+                        </a>
+                        &nbsp;  &nbsp;
+                 </c:if>
                     <a class="btn btn-circle green" href="javascript:;"  onclick="addTourTime('${tour.id}')">
                         <i class="fa fa-plus"></i> 新增
                     </a>

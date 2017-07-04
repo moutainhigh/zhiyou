@@ -158,8 +158,9 @@ public class TourController {
     }
 
     @RequestMapping(value = "/findTourTime", method = RequestMethod.GET)
-    public String  findTourTime(Model model, @RequestParam Long tourId){
+    public String  findTourTime(Model model, @RequestParam Long tourId,Integer flage){
         model.addAttribute("tour",tourService.findTourOne(tourId));
+        model.addAttribute("flage",flage);
         return "tour/tourTimeList";
     }
 
