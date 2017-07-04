@@ -3,10 +3,13 @@ package com.zy.service;
 import com.zy.common.model.query.Page;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
-import com.zy.model.dto.AgentRegisterDto;
+import com.zy.model.dto.*;
 import com.zy.model.query.UserQueryModel;
+import com.zy.model.query.UserlongQueryModel;
+
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -64,4 +67,34 @@ public interface UserService {
 	void modifyIsDirector(Long id, boolean isDirector);
 
 	void modifyIsShareholder(Long id, boolean isShareholder);
+
+	long[] conyteamTotal(Long userId);
+
+	long[] countdirTotal(Long userId);
+
+	Map<String,Object> countNewMemTotal(Long userId, boolean b);
+
+	String findRealName(Long userId);
+
+	Page<UserTeamDto> disposeRank(UserlongQueryModel userlongQueryModel, boolean b);
+
+	long countByActive(UserQueryModel userQueryModel);
+
+	Page<User> findActive(UserQueryModel userQueryModel, boolean b);
+
+	List<DepositSumDto> findRankGroup(UserlongQueryModel userlongQueryModel);
+
+	List<UserTeamDto> findByRank(UserlongQueryModel userlongQueryModel);
+
+	Map<String,Object> findNewSup(long[] ids);
+
+	Page<User> findAddpeople(UserQueryModel userQueryModel);
+
+	boolean findNewOne(Long id);
+
+	Page<User> findPage1(UserQueryModel userQueryModel);
+
+	List<UserDto> findUserAll(UserQueryModel userQueryModel);
+
+	long countUserAll(UserQueryModel userQueryModel);
 }

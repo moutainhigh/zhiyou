@@ -2,6 +2,7 @@ package com.zy.mapper;
 
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.zy.entity.mal.Order;
@@ -29,4 +30,7 @@ public interface OrderMapper {
 
 	OrderSumDto orderSum(OrderQueryModel orderQueryModel);
 
+	Long queryRetailPurchases(OrderQueryModel orderQueryModel);
+
+	Long queryShipment(OrderQueryModel orderQueryModel);
 }

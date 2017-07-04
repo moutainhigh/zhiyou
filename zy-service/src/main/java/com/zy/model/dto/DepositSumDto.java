@@ -13,5 +13,5 @@ public class DepositSumDto implements Serializable {
 	private Integer count;
 	
 	private BigDecimal sumAmount;
-	
+
 }

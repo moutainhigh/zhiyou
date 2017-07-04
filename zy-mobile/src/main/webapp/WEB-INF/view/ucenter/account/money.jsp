@@ -20,7 +20,7 @@
 
   <header class="header">
     <h1>我的${currencyType.alias}余额</h1>
-    <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/account/countIncomeDataByUser" class="button-left"><i class="fa fa-angle-left"></i></a>
     <a class="button-right" href="${ctx}/u/money/log?currencyType=${currencyType}"><span>明细</span></a>
   </header>
 

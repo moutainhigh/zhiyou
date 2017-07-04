@@ -75,10 +75,10 @@
     <c:if test="${type == 1 || type == 3 || type == 4}">
       <a class="list-item matter" href="${ctx}/matter/{{ d.id }}">
       <c:if test="${type == 1}">
-        <img class="mr-10" src="${ctx}/video.jpg">
+        <img class="mr-10" src="${ctx}/images/video.jpg">
       </c:if>
       <c:if test="${type == 3}">
-        <img class="mr-10" src="${ctx}/word.jpg">
+        <img class="mr-10" src="${ctx}/images/word.jpg">
       </c:if>
       <c:if test="${type == 4}">
         <img class="mr-10" src="${ctx}/audio.jpg">
@@ -225,10 +225,10 @@
       <c:if test="${type == 1 || type == 3 || type == 4}">
         <a class="list-item matter" href="${ctx}/matter/${matter.id}">
           <c:if test="${type == 1}">
-            <img class="mr-10" src="${ctx}/video.jpg">
+            <img class="mr-10" src="${ctx}/images/video.jpg">
           </c:if>
           <c:if test="${type == 3}">
-            <img class="mr-10" src="${ctx}/word.jpg">
+            <img class="mr-10" src="${ctx}/images/word.jpg">
           </c:if>
           <c:if test="${type == 4}">
             <img class="mr-10" src="${ctx}/audio.jpg">
@@ -273,10 +273,10 @@ $(function(){
        $(".mr-10,.list-text,.o-hidden,.fs-12").css("pointer-events","none");
        $(".matter").attr("href","javascript:;");
        $("body").append('<div class="showImage" onclick="displayimage()"></div> <img src="" class="showImageSrc" onclick="displayimage()"> <div class="spanAll clearfloat"><div class="spanInnor"></div>'
-             +'<span></span><div class="spanlove clearfloat" onClick="changeLove(this)" change="love"><img src="../../../love.png"><span class="loveSpan"></span></div></div>');
+             +'<span></span><div class="spanlove clearfloat" onClick="changeLove(this)" change="love"><img src="../../../images/love.png"><span class="loveSpan"></span></div></div>');
    }else {
      $("body").remove('<div class="showImage" onclick="displayimage()"></div> <img src="" class="showImageSrc" onclick="displayimage()"> <div class="spanAll clearfloat"><div class="spanInnor"></div>'
-             +'<span></span><div class="spanlove clearfloat" onClick="changeLove(this)" change="love"><img src="../../../love.png"><span class="loveSpan"></span></div></div>');
+             +'<span></span><div class="spanlove clearfloat" onClick="changeLove(this)" change="love"><img src="../../../images/love.png"><span class="loveSpan"></span></div></div>');
    }
    $(document).on("click",".matter",function(event){
       id = $(event.target).find(".id").val();

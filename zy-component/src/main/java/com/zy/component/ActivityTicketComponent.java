@@ -10,10 +10,7 @@ import com.zy.service.ActivityTeamApplyService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
-import com.zy.vo.ActivityTeamApplyAdminVo;
-import com.zy.vo.ActivityTeamApplyListVo;
-import com.zy.vo.ActivityTicketAdminVo;
-import com.zy.vo.ActivityTicketListVo;
+import com.zy.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +26,9 @@ public class ActivityTicketComponent {
 	@Autowired
 	private ActivityTeamApplyComponent activityTeamApplyComponent;
 
+	@Autowired
+	private UserService userService;
+
 
 	public ActivityTicketListVo buildListVo(ActivityTicket activityTicket) {
 		ActivityTicketListVo activityTicketListVo = new ActivityTicketListVo();
@@ -36,7 +36,9 @@ public class ActivityTicketComponent {
 		Long userId = activityTicket.getUserId();
 		Integer used = activityTicket.getIsUsed();
 		if( userId != null && used == 1){
-			activityTicketListVo.setUsedUser(VoHelper.buildUserListVo(cacheComponent.getUser(activityTicket.getUserId())));
+			UserListVo userListVo = VoHelper.buildUserListVo(cacheComponent.getUser(activityTicket.getUserId()));
+			userListVo.setNickname(userService.findRealName(userId));
+			activityTicketListVo.setUsedUser(userListVo);
 		}else if( null == userId && used == 0){
 
 		}

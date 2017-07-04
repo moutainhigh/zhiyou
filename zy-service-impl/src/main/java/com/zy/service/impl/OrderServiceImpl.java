@@ -9,6 +9,7 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
 import com.zy.common.model.tree.TreeNodeResolver;
+import com.zy.common.util.DateUtil;
 import com.zy.common.util.BeanUtils;
 import com.zy.component.FncComponent;
 import com.zy.component.MalComponent;
@@ -35,6 +36,7 @@ import com.zy.model.query.OrderFillUserQueryModel;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.OrderService;
+import com.zy.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.validator.constraints.NotBlank;
@@ -46,6 +48,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
@@ -99,6 +102,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private Producer producer;
+
+	@Autowired
+	private UserService userService;
 
 	public static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -1382,7 +1388,150 @@ public class OrderServiceImpl implements OrderService {
 		}
 	}
 
-	private static List<User> sortBreadth2(Collection<User> entities, String parentId, TreeNodeResolver<User> treeNodeResolver) {
+	/**
+	 * 查询销量
+	 * @return
+     */
+	@Override
+	public Map<String, Object> querySalesVolume(OrderQueryModel orderQueryModel) {
+		Map<String ,Object> returnMap = new HashMap<>();
+		int moth = DateUtil.getMoth(new Date());
+		long salesVolumeData [] = new long[moth-1];
+        long shipmentData [] = new long[moth-1];
+        double svData [] = new double[moth-1];
+        double sData [] = new double[moth-1];
+        long salesVolumeTeamData [] = new long[moth-1];
+        long shipmentTeamData [] = new long[moth-1];
+		for (int i = moth - 1; i >= 1;i--){
+			orderQueryModel.setPaidTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
+			orderQueryModel.setPaidTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
+			Long data = 0l;
+			//进货量
+			Long salesVolume  = orderMapper.queryRetailPurchases(orderQueryModel);
+			data = salesVolume;
+			salesVolumeData[i-1] = data;
+			//出货量
+			Long shipment  = orderMapper.queryShipment(orderQueryModel);
+			data = shipment;
+			shipmentData[i-1] = data;
+		}
+		//计算环比
+		for (int i = moth - 1; i >= 1;i--){
+			double data = 0d;
+			//进货量环比
+			double sv = 0.00d;
+			if (i-2 >= 0 && salesVolumeData [i-2] != 0){
+				sv = new BigDecimal((salesVolumeData [i-1] - salesVolumeData [i-2]) / salesVolumeData [i-2] * 100).setScale(2 , RoundingMode.UP).doubleValue()  ;
+			}else if (i-2 >= 0 && salesVolumeData [i-2] == 0 && salesVolumeData [i-2] > 0){
+				sv = 100;
+			}
+			data = sv;
+			svData[i-1] = data;
+			//出货量环比
+			double s = 0.00d;
+			if (i-2 >= 0 && shipmentData [i-2] != 0){
+				s = new BigDecimal((shipmentData [i-1] - shipmentData [i-2]) / shipmentData [i-2] * 100 ).setScale(2 , RoundingMode.UP).doubleValue() ;
+			}else if (i-2 >= 0 && shipmentData [i-2] == 0 && shipmentData [i-1] > 0){
+				s = 100;
+			}
+			data = s;
+			sData[i-1] = data;
+		}
+
+		//查询我的团队进、出货量
+		List<Long> userIdList = new ArrayList<>();
+		List<User> userList = new ArrayList<>();
+		List<User> users = userService.findAll(new UserQueryModel());
+		List<User> children = TreeHelper.sortBreadth2(users, orderQueryModel.getUserIdEQ().toString(), v -> {
+			TreeNode treeNode = new TreeNode();
+			treeNode.setId(v.getId().toString());
+			treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
+			return treeNode;
+		});
+		userList = children.stream().filter(v -> v.getUserRank() == User.UserRank.V4).collect(Collectors.toList());
+        if (userList.size() > 0 && userList != null){
+            for (User user: userList) {
+                userIdList.add(user.getId());
+            }
+			orderQueryModel.setUserIdEQ(null);
+			orderQueryModel.setSellerIdEQ(null);
+            orderQueryModel.setUserIdList(userIdList);
+            orderQueryModel.setSellerIdList(userIdList);
+            for (int i = moth - 1; i >= 1;i--){
+                orderQueryModel.setPaidTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
+                orderQueryModel.setPaidTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
+                Long data = 0l;
+                //进货量
+
+                Long salesVolumeTeam  = orderMapper.queryRetailPurchases(orderQueryModel);
+                data = salesVolumeTeam;
+                salesVolumeTeamData[i-1] = data;
+                //出货量
+                Long shipmentTeam  = orderMapper.queryShipment(orderQueryModel);
+                data = shipmentTeam;
+                shipmentTeamData[i-1] = data;
+            }
+        }
+        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, false));
+        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, false));
+        returnMap.put("svData", DateUtil.arryToString(svData, false));
+        returnMap.put("sData", DateUtil.arryToString(sData, false));
+        returnMap.put("salesVolumeTeamData", DateUtil.longarryToString(salesVolumeTeamData, false));
+        returnMap.put("shipmentTeamData", DateUtil.longarryToString(shipmentTeamData, false));
+		return returnMap;
+	}
+
+    @Override
+    public Map<String, Object> querySalesVolumeDetail(OrderQueryModel orderQueryModel) {
+        Map<String ,Object> returnMap = new HashMap<>();
+        int moth = DateUtil.getMoth(new Date());
+        long salesVolumeData [] = new long[moth-1];
+        long shipmentData [] = new long[moth-1];
+		double svData [] = new double[moth-1];
+		double sData [] = new double[moth-1];
+        for (int i = moth - 1; i >= 1;i--){
+            orderQueryModel.setPaidTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
+            orderQueryModel.setPaidTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
+            Long data = 0l;
+            //进货量
+            Long salesVolume  = orderMapper.queryRetailPurchases(orderQueryModel);
+            data = salesVolume;
+            salesVolumeData[i-1] = data;
+            //出货量
+            Long shipment  = orderMapper.queryShipment(orderQueryModel);
+            data = shipment;
+            shipmentData[i-1] = data;
+        }
+		//计算环比
+		for (int i = moth - 1; i >= 1;i--){
+			double data = 0d;
+			//进货量环比
+			double sv = 0.00d;
+			if (i-2 >= 0 && salesVolumeData [i-2] != 0){
+				sv = new BigDecimal((salesVolumeData [i-1] - salesVolumeData [i-2]) / salesVolumeData [i-2] * 100).setScale(2 , RoundingMode.UP).doubleValue()  ;
+			}else if (i-2 >= 0 && salesVolumeData [i-2] == 0 && salesVolumeData [i-2] > 0){
+				sv = 100;
+			}
+			data = sv;
+			svData[i-1] = data;
+			//出货量环比
+			double s = 0.00d;
+			if (i-2 >= 0 && shipmentData [i-2] != 0){
+				s = new BigDecimal((shipmentData [i-1] - shipmentData [i-2]) / shipmentData [i-2] * 100 ).setScale(2 , RoundingMode.UP).doubleValue() ;
+			}else if (i-2 >= 0 && shipmentData [i-2] == 0 && shipmentData [i-1] > 0){
+				s = 100;
+			}
+			data = s;
+			sData[i-1] = data;
+		}
+        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, false));
+        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, false));
+		returnMap.put("svData", DateUtil.arryToString(svData, false));
+		returnMap.put("sData", DateUtil.arryToString(sData, false));
+        return returnMap;
+    }
+
+    private static List<User> sortBreadth2(Collection<User> entities, String parentId, TreeNodeResolver<User> treeNodeResolver) {
 		List<User> result = new ArrayList<>();
 		Map<String, List<User>> childrenMap = entities.stream().collect(Collectors.groupingBy(v -> treeNodeResolver.apply(v).getParentId() == null ? "DEFAULT_NULL_KEY" : treeNodeResolver.apply(v).getParentId()));
 		sortBreadth2(childrenMap, result, parentId, treeNodeResolver);

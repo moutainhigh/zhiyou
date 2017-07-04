@@ -38,7 +38,7 @@ public class Profit implements Serializable {
 
 	public enum ProfitType {
 		补偿,
-		订单收款, 
+		订单收款,
 		数据奖,
 		销量奖,
 		特级平级奖,

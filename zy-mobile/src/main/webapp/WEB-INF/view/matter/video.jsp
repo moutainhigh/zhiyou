@@ -9,7 +9,7 @@
 	<%@ include file="/WEB-INF/view/include/head.jsp"%>
 	<script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
     <title>视频详情</title>
-	<link rel="stylesheet" type="text/css" href="${ctx}/main.css">
+	<link rel="stylesheet" type="text/css" href="${ctx}/css/main.css">
 	<style>
 		#btn-next span:before, #btn-next span:after {
 		  border-left: 15px solid #ccc;
@@ -56,7 +56,7 @@
 </article>
   
 </body>
-<script type="text/javascript" src="${ctx}/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery-1.10.2.min.js"></script>
 <script>
 	$(function(){
 		if(!${matter.isCollected}){

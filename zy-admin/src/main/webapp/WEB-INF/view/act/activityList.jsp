@@ -188,6 +188,7 @@
             title: '活动限制人数',
             orderable: false
           },
+
           {
             data: 'signedInCount',
             title: '签到数'

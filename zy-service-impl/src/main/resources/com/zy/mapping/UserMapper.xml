@@ -29,6 +29,7 @@
 		<result column="code" property="code" />
 		<result column="is_director" property="isDirector" />
 		<result column="is_shareholder" property="isShareholder" />
+		<result column="viewflag" property="viewflag"></result>
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
@@ -110,7 +111,7 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_shareholder
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_shareholder,viewflag
 		from `usr_user`
 		where id = #{id}
 	</select>
@@ -194,6 +195,9 @@
 				<if test="inviterIdIN.length == 0">
 				and 1 = 2
 				</if>
+			</if>
+			<if test="nameorPhone != null">
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
 			</if>
 		</where>
 		<choose>
@@ -287,6 +291,9 @@
 				and 1 = 2
 				</if>
 			</if>
+			<if test="nameorPhone != null">
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
+			</if>
 		</where>
 	</select>
 
@@ -302,6 +309,157 @@
 
 	<select id="findByCode" resultMap="baseResultMap">
 		select * from `usr_user` where code = #{code}
+	</select>
+
+	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
+		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="totalnumber" property="totalnumber"/>
+	</resultMap>
+	<select id="countByUserId" resultMap="countResultMap" parameterType="long">
+		select user_rank userRankEQ,COUNT(*) totalnumber FROM `usr_user` where parent_id = #{parentId} GROUP BY user_rank
+	</select>
+
+	<select id="countByActive" resultType="_long"  parameterType="com.zy.model.query.UserQueryModel">
+		select count(m.id) from usr_user u,mal_order m where m.user_id=u.id
+		<if test="parentIdNL !=null">
+			AND u.parent_id =#{parentIdNL}
+		</if>
+		<if test="registerTimeLT !=null">
+			and m.created_time &lt;=#{registerTimeLT}
+		</if>
+		<if test="registerTimeGTE !=null">
+			and m.created_time &gt;=#{registerTimeGTE}
+		</if>
+	</select>
+
+	<select id="findByNotActive" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT * from usr_user uu
+		<where>
+			<if test="parentIdNL !=null">
+			   AND uu.parent_id =#{parentIdNL}
+			</if>
+			<if test="nameorPhone != null">
+				and (uu.phone LIKE #{nameorPhone} or uu.nickname like #{nameorPhone})
+			</if>
+			AND uu.id not in( SELECT DISTINCT(u.id) from usr_user u,mal_order m
+			where m.user_id = u.id
+			<if test="parentIdNL !=null">
+				and u.parent_id =#{parentIdNL}
+			</if>
+			<if test="registerTimeGTE !=null">
+				AND m.created_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="registerTimeLT !=null">
+				AND m.created_time &lt;= #{registerTimeLT}
+			</if>
+			)
+		</where>
+			<if test="offset != null">
+				limit #{offset}, #{pageSize}
+			</if>
+
+	</select>
+
+
+	<select id="countByNotActive" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT count(*) from usr_user
+		<where>
+			<if test="parentIdNL !=null">
+			  and parent_id =#{parentIdNL}
+			</if>
+			<if test="nameorPhone != null">
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
+			</if>
+			and id not in( SELECT DISTINCT(u.id)
+			FROM
+			usr_user u,
+			mal_order m
+			WHERE
+			m.user_id = u.id
+			<if test="parentIdNL !=null">
+				and u.parent_id =#{parentIdNL}
+			</if>
+			<if test="registerTimeGTE !=null">
+				AND m.created_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="registerTimeLT !=null">
+				AND m.created_time &lt;= #{registerTimeLT}
+			</if>
+			)
+		</where>
+	</select>
+	<select id="findSupAll" resultMap="baseResultMap">
+		 select * from `usr_user` u where
+	    u.id in(
+		    select l.user_id from usr_user_log l
+		  <where>
+			  <if test="parentIdIN != null">
+				  <if test="parentIdIN.length != 0">
+					  and l.user_id in
+					  <foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+						  #{item}
+					  </foreach>
+					  <if test="endTime !=null">
+						  AND l.operated_Time &lt;= #{endTime}
+					  </if>
+					  <if test="beginTime !=null">
+						  AND l.operated_Time &gt;= #{beginTime}
+					  </if>
+					  <if test="remark !=null">
+						  AND l.remark LIKE #{remark}
+					  </if>
+				  </if>
+
+			  </if>
+
+		 </where>
+      )
+
+	</select>
+	<select id="findAddpeople" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT u.* from usr_user_log l,usr_user u WHERE
+		l.user_id = u.id
+		AND l.remark like #{remark}
+		<if test="registerTimeGTE !=null">
+		  and l.operated_Time &gt;=#{registerTimeGTE}
+		</if>
+		<if test="registerTimeLT !=null">
+		  and l.operated_Time &lt;=#{registerTimeLT}
+		</if>
+		<if test="parentIdNL !=null">
+		   AND u.parent_id =#{parentIdNL}
+		</if>
+		<if test="nameorPhone !=null">
+			and (u.phone like #{nameorPhone} or u.nickname like #{nameorPhone})
+		</if>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<resultMap id="userdtoResultMap" type="com.zy.model.dto.UserDto">
+		<result column="id" property="id"/>
+		<result column="userRank" property="userRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="nickname" property="nickname"/>
+		<result column="pnickname" property="pnickname"/>
+		<result column="avatar" property="avatar"/>
+		<result column="phone" property="phone"/>
+		<result column="pphone" property="pphone"/>
+	</resultMap>
+	<select id="findUserAll" resultMap="userdtoResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		select a.id id,a.user_rank userRank,a.nickname nickname,b.nickname pnickname,a.avatar avatar, a.phone phone ,b.phone pphone from usr_user a LEFT JOIN usr_user b ON a.parent_id=b.id where a.user_type!=0
+		<if test="nameorPhone !=null">
+			and (a.phone like #{nameorPhone} or a.nickname like #{nameorPhone})
+		</if>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+	<select id="countUserAll" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
+		select count(*) from usr_user where user_type!=0
+		<if test="nameorPhone !=null">
+			and (phone like #{nameorPhone} or nickname like #{nameorPhone})
+		</if>
 	</select>
 
 </mapper>

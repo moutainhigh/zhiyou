@@ -18,7 +18,7 @@
 <body class="bankcard-list">
   <header class="header">
     <h1>我的银行卡</h1>
-    <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/account/countIncomeDataByUser" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   
   <article>
