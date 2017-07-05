@@ -164,7 +164,7 @@ public class ProfitServiceImpl implements ProfitService {
 		profitQueryModel.setProfitStatusEQ(ProfitStatus.已发放);
 		profitQueryModel.setCreatedTimeGTE(com.zy.common.util.DateUtil.getBeforeMonthBegin(new Date(),-1,0));
 		profitQueryModel.setCreatedTimeLT(com.zy.common.util.DateUtil.getBeforeMonthEnd(new Date(),0,0));
-		profitQueryModel.setProfitTypeIN( new ProfitType[]{ProfitType.订单收款,ProfitType.数据奖,ProfitType.销量奖,ProfitType.特级平级奖,ProfitType.平级推荐奖, ProfitType.特级推荐奖, ProfitType.返利奖,ProfitType.董事贡献奖});
+		profitQueryModel.setProfitTypeIN( new ProfitType[]{ProfitType.订单收款,ProfitType.数据奖,ProfitType.销量奖,ProfitType.特级平级奖,ProfitType.平级推荐奖, ProfitType.推荐奖, ProfitType.返利奖,ProfitType.董事贡献奖});
 		DepositSumDto depositSumDto =profitMapper.sum(profitQueryModel);//上一个月的收益数据
 		double beforeData=0d;
 		if (depositSumDto!=null&&depositSumDto.getSumAmount()!=null){
@@ -258,7 +258,7 @@ public class ProfitServiceImpl implements ProfitService {
 				 pieDate[4]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				 continue;
 			 }
-			 if(profitSumDto.getProfitType()==ProfitType.特级推荐奖){
+			 if(profitSumDto.getProfitType()==ProfitType.推荐奖){
 				 pieDate[5]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				 continue;
 			 }
@@ -317,7 +317,7 @@ public class ProfitServiceImpl implements ProfitService {
 				map.put("sen",mothDate);
 				continue;
 			}
-			if(profitSumDto.getProfitType()==ProfitType.特级推荐奖){
+			if(profitSumDto.getProfitType()==ProfitType.推荐奖){
 				mothDate[0]=com.zy.common.util.DateUtil.formatDouble(profitSumDto.getSumAmount()==null?0:profitSumDto.getSumAmount().doubleValue());
 				mothDate[1]=pieDate[5];
 				map.put("rec",mothDate);

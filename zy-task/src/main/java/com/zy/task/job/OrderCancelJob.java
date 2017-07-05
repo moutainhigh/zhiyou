@@ -12,6 +12,7 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -52,5 +53,12 @@ public class OrderCancelJob implements Job {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
+    }
+
+    public static void main(String[] args) {
+
+        Date date = addMinutes(new Date(), -SETTING_ORDER_EXPIRE_IN_MINUTES);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println(simpleDateFormat.format(date));
     }
 }

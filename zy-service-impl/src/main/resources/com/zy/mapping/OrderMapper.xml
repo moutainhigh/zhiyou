@@ -233,6 +233,9 @@
 			<if test="v4UserIdEQ != null">
 				and v4_user_id = #{v4UserIdEQ}
 			</if>
+			<if test="expiredTimeGTE != null">
+				and expired_time &gt;= #{expiredTimeGTE}
+			</if>
 			<if test="orderStatusEQ != null">
 				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -255,6 +258,9 @@
 			</if>
 			<if test="snLK != null">
 				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
+			</if>
+			<if test="expiredTimeLT != null">
+				and expired_time &lt; #{expiredTimeLT}
 			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
@@ -352,6 +358,9 @@
 			<if test="v4UserIdEQ != null">
 				and v4_user_id = #{v4UserIdEQ}
 			</if>
+			<if test="expiredTimeGTE != null">
+				and expired_time &gt;= #{expiredTimeGTE}
+			</if>
 			<if test="orderStatusEQ != null">
 				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
@@ -374,6 +383,9 @@
 			</if>
 			<if test="snLK != null">
 				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
+			</if>
+			<if test="expiredTimeLT != null">
+				and expired_time &lt; #{expiredTimeLT}
 			</if>
 			<if test="createdTimeLT != null">
 				and created_time &lt; #{createdTimeLT}
@@ -532,7 +544,6 @@
 		)
 	</select>
 
-	<!-- 进货量 -->
 	<select id="queryRetailPurchases" resultType="_long" parameterType="com.zy.model.query.OrderQueryModel">
 		SELECT IFNULL(SUM(a.quantity), 0)
 		FROM mal_order a
@@ -543,7 +554,7 @@
 				AND a.user_id = #{userIdEQ}
 			</if>
 			<if test="userIdList != null">
-				<if test="userIdList.size > 0">
+				<if test="userIdList.size &gt; 0">
 					AND a.user_id IN
 					<foreach collection="userIdList" item="item" open="(" separator="," close=")">
 						#{item}
@@ -559,7 +570,6 @@
 		</where>
 	</select>
 
-	<!-- 出货量 -->
 	<select id="queryShipment" resultType="_long" parameterType="com.zy.model.query.OrderQueryModel">
 		SELECT IFNULL(SUM(a.quantity), 0)
 		FROM mal_order a
@@ -570,7 +580,7 @@
 				AND a.seller_id = #{sellerIdEQ}
 			</if>
 			<if test="sellerIdList != null">
-				<if test="sellerIdList.size > 0">
+				<if test="sellerIdList.size &gt; 0">
 					AND a.seller_id IN
 					<foreach collection="sellerIdList" item="item" open="(" separator="," close=")">
 						#{item}
