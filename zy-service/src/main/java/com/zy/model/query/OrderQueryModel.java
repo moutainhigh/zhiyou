@@ -1,6 +1,5 @@
 package com.zy.model.query;
 
-import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
@@ -33,10 +32,6 @@ public class OrderQueryModel implements Serializable {
 
 	private Long[] sellerIdIN;
 
-	private List<Long> sellerIdList;
-
-	private List<Long> userIdList;
-
 	private Long rootIdEQ;
 
 	private Long v4UserIdEQ;
@@ -48,6 +43,10 @@ public class OrderQueryModel implements Serializable {
 	private Date createdTimeLT;
 
 	private Date createdTimeGTE;
+
+	private Date expiredTimeLT;
+
+	private Date expiredTimeGTE;
 
 	private Date paidTimeLT;
 
