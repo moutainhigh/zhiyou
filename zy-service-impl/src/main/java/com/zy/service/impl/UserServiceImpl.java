@@ -62,9 +62,6 @@ public class UserServiceImpl implements UserService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private UserInfoMapper userInfoMapper;
-
-    @Autowired
     private UsrComponent usrComponent;
 
     @Autowired
