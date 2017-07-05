@@ -27,6 +27,7 @@
                     {
                         data: 'image',
                         title: '主图',
+                        width: '12%',
                         orderable: false,
                         render: function (data, type, full) {
                             return '<a target="_blank" href="' + data + '"><img style="width:180px;height:80px;"  src="' +data+ '"/></a>';
@@ -36,6 +37,11 @@
                         data: 'title',
                         title: '标题',
                         orderable: false
+                    },
+                    {
+                        data: 'days',
+                        title: '旅游天数',
+                        orderable: true
                     },
                     {
                         data: 'createName',
@@ -61,6 +67,13 @@
                         }
                     },
                     {
+                        data: 'updateDate',
+                        title: '更新时间',
+                        render: function (data, type, full) {
+                            return full.updateTime;
+                        }
+                    },
+                    {
                         data: 'id',
                         title: '操作',
                         orderable: false,
@@ -71,9 +84,10 @@
                             if (full.isReleased) {
                                 optionHtml += '<a class="btn btn-xs default red-stripe" href="javascript:;" onclick="unrelease(' + full.id + ')"><i class="fa fa-times X"></i> 取消发布 </a>';
                             } else {
-                                optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/tour/findTourTime?tourId=' + data + '"><i class="fa fa-check"></i> 发布 </a>';
+                                optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/tour/findTourTime?tourId=' + data + '&flage=1"><i class="fa fa-check"></i> 发布 </a>';
                             }
                             optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="deleteAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 删除 </a>';
+                            optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/tour/findTourTime?tourId=' + data + '"><i class="fa fa-search"></i> 路线 </a>';
                             </shiro:hasPermission>
                             return optionHtml;
                         }
@@ -82,7 +96,7 @@
         });
 
     });
-    <shiro:hasPermission name="article:edit">
+    <shiro:hasPermission name="tour:edit">
     function release(id) {
         $.ajax({
             url: '${ctx}/tour/findTourTime?tourId='+ id,
@@ -168,7 +182,7 @@
                             </div>
                             <div class="form-group input-inline">
                                 <input class="Wdate form-control" type="text" id="createdTime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
-                                       name="releasedTimeLT" value="" placeholder="发布时间止"/>
+                                       name="createdTime" value="" placeholder="发布时间止"/>
                             </div>
                             <div class="form-group">
                                 <select name="isReleased" class="form-control">

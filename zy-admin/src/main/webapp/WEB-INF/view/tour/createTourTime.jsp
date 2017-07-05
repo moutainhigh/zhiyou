@@ -44,29 +44,42 @@
         }
     });
      if(falg.form()){
-     $.ajax({
-         url : '${ctx}/tour/ajaxCreateTourTime',
-         dataType:"json",
-         type: "post",
-         async: false,
-         data: $('#form').serialize(),
-         success: function( result ) {
-             if (result.code == 0) {
-                 layer.alert("添加成功", {icon: 1});
-                 parent.layer.closeAll();
-                 parent.refreshData();
-                 /*    grid.getDataTable().ajax.reload(null, false);*/
-             } else {
-                 layer.alert("添加失败", {icon: 0});
+         var begintimestr ="";
+         var endtimestr ="";
+                 $("input[type=text]",document.forms['form']).each(function(){
+             if(this.name=="begintime") {
+                 begintimestr=this.value;
+             }if(this.name=="endtime"){
+                         endtimestr= this.value;
+                     }
+         });
+         var begintime = new Date(begintimestr.replace(/\-/g, "\/"));
+         var endtime = new Date(endtimestr.replace(/\-/g, "\/"));
+         if(begintime>=endtime){
+             layer.alert("开始时间必须小于结束时间", {icon: 0});
+         }else {
+             $.ajax({
+             url : '${ctx}/tour/ajaxCreateTourTime',
+             dataType:"json",
+             type: "post",
+             async: false,
+             data: $('#form').serialize(),
+             success: function( result ) {
+                 if (result.code == 0) {
+                     layer.alert("添加成功", {icon: 1});
+                     parent.layer.closeAll();
+                     parent.refreshData();
+                 } else {
+                     layer.alert("添加失败", {icon: 0});
+                 }
              }
-         }
-     });
+         });
+      }
      }
-
+     return false;
  }
 
     function thisclose() {
-        alert("ewwew");
         parent.layer.closeAll();
         return;
     }
@@ -83,7 +96,7 @@
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <form id="form" action="" data-action="${ctx}/tour/createTourTime" class="form-horizontal" method="post">
+                <form id="form" action="" class="form-horizontal" method="post"  onsubmit="return false;">
                     <div class="form-body">
                         <input type="hidden" name ="tourId" value="${tourId}"/>
                         <div class="alert alert-danger display-hide">
@@ -97,7 +110,7 @@
                                 <div class="input-icon input-medium right">
                                     <i class="fa fa-calendar"></i>
                                     <input class="form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
-                                           name="begintime" value="" placeholder="开始时间"/>
+                                           name="begintime" value="" placeholder="开始时间" id="begintime"/>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +121,7 @@
                                 <div class="input-icon input-medium right">
                                     <i class="fa fa-calendar"></i>
                                     <input class="form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
-                                           name="endtime" value="" placeholder="结束时间"/>
+                                           name="endtime" value="" placeholder="结束时间" id="endtime"/>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +163,7 @@
                     </div>
                     <div class="form-actions fluid">
                         <div class="col-md-offset-3 col-md-9">
-                            <button type="submit" class="btn green" onclick="addsumbit()" >
+                            <button  class="btn green" onclick="addsumbit()" >
                                 <i class="fa fa-save"></i> 保存
                             </button>
                             <button class="btn default" onclick="thisclose()">
