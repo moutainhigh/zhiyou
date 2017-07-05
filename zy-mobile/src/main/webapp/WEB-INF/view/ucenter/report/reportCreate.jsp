@@ -48,6 +48,38 @@
       margin-left: 5%;
       margin-right: 5%;
     }
+    .list-group {
+      margin-bottom: 0;
+    }
+    .font {
+      font-size: 20px;
+      color: #fff;
+      width: 100%;
+      float: left;
+      position: relative;
+      z-index: 99;
+      left: 50%;
+      margin-left: -20px;
+    }
+    .MyApply {
+      width:90%;
+      margin-left: 5%;
+      margin-right: 5%;
+      height:40px;
+      background:#f18200;
+      color: #fff;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      text-align: center;
+      line-height: 40px;
+      font-size: 18px;
+      -webkit-border-radius:10px;
+      -moz-border-radius:10px;
+      border-radius:10px;
+    }
+    .list-item .list-label {
+      width:150px;
+    }
   </style>
   <script type="text/javascript">
     $(function() {
@@ -442,7 +474,7 @@
 
 <script>
   //保险申请
-  var insuranceT,travelT,line;
+  var insuranceT,travelT,line,MyApply;
   function insurance(){
     insuranceT=layer.open({
       type: 1,
@@ -493,17 +525,18 @@
       closeBtn: 0,
       shadeClose: true,
       skin: 'yourclass',
-      content: '<header class="header"><h1>选择旅游路线</h1><a href="#" onclick="hideLine()" class="button-left"><i class="fa fa-angle-left"></i></a></header><div id="policy" class="list-group"><div id="policyInfo">'
-                +'<a href="#" class="opacityAll" style="width:100%;position:relative;"><img class="opacityFirst" src="${ctx}/images/Travel1.png" style="display:block;width:100%;" /><img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" /></a>'
-                +'<a href="#" class="opacityAll" style="width:100%;position:relative;"><img class="opacityFirst" src="${ctx}/images/Travel1.png" style="display:block;width:100%;" /><img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" /></a>'
+      content: '<header class="header"><h1>选择旅游路线</h1><a href="#" onclick="hideLine()" class="button-left"><i class="fa fa-angle-left"></i></a></header>'
+                +'<div onclick="TravelDetil(1)" class="opacityAll" style="width:100%;position:relative;"><img class="opacityFirst" src="${ctx}/images/Travel1.png" style="display:block;width:100%;" /><img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" /><p class="font">北京</p></div>'
+                +'<div onclick="TravelDetil(2)" class="opacityAll" style="width:100%;position:relative;"><img class="opacityFirst" src="${ctx}/images/Travel2.png" style="display:block;width:100%;" /><img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" /><p class="font">南京</p></div>'
+                +'<div onclick="TravelDetil(3)" class="opacityAll" style="width:100%;position:relative;"><img class="opacityFirst" src="${ctx}/images/Travel3.png" style="display:block;width:100%;" /><img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" /><p class="font">西藏</p></div>'
+                +'<div onclick="TravelDetil(4)" class="opacityAll" style="width:100%;position:relative;"><img class="opacityFirst" src="${ctx}/images/Travel4.png" style="display:block;width:100%;" /><img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" /><p class="font">上海</p></div>'
     });
     $(".opacityFirst").load(function(){
       var opacityT=$(".opacityFirst").height();
       $(".opacity").css("margin-top",-opacityT);
+      $(".font").css("margin-top",-opacityT/2-13);
     });
   }
-
-
 
   //取消旅游申请
   function hideTravel(){
@@ -511,8 +544,90 @@
     $(".main").show();
   }
   function hideLine(){
-    layer.close(layer);
+    layer.close(line);
     travel();
+  }
+  //点击线路弹出旅游详情
+  var traveldetil="";
+  var numBack=0;
+  function TravelDetil(num){
+    layer.close(line);
+    if(traveldetil!=""){
+      layer.close(traveldetil);
+    }
+    switch(num)
+    {
+      case 1:
+        numBack=1;
+        traveldetil=layer.open({
+          type: 1,
+          title: false,
+          closeBtn: 0,
+          shadeClose: true,
+          skin: 'yourclass',
+          content: '<header class="header"><h1>旅游路线详情</h1><a href="#" onclick="hideDetil()" class="button-left"><i class="fa fa-angle-left"></i></a></header>'
+          +'<img src="${ctx}/images/TravelDetil.png" style="width:100%;"/><div class="MyApply" onclick="MyApplyFun()">我要报名</div>'
+        });
+        break;
+      case 2:
+        numBack=2;
+        traveldetil=layer.open({
+          type: 1,
+          title: false,
+          closeBtn: 0,
+          shadeClose: true,
+          skin: 'yourclass',
+          content: '<header class="header"><h1>旅游路线详情</h1><a href="#" onclick="hideDetil()" class="button-left"><i class="fa fa-angle-left"></i></a></header>'
+          +'<img src="${ctx}/images/TravelDetil.png" style="width:100%;"/><div class="MyApply" onclick="MyApplyFun()">我要报名2</div>'
+        });
+        break;
+      case 3:
+        break;
+
+      case 4:
+        break;
+    }
+  }
+  //返回选择路线图页面，关闭路线图详情
+  function hideDetil(){
+    layer.close(traveldetil);
+    submitTravel();
+  }
+  //点击我要报名
+  function MyApplyFun(){
+    layer.close(traveldetil);
+    MyApply=layer.open({
+      type: 1,
+      title: false,
+      closeBtn: 0,
+      shadeClose: true,
+      skin: 'yourclass',
+      content: '<header class="header"><h1>旅游报名申请表单</h1><a href="#" onclick="hideApply()" class="button-left"><i class="fa fa-angle-left"></i></a></header>'
+                +'<div class="list-group mt-10"><div class="list-title">旅游报名申请表单</div>'
+                +'<div class="list-item"><label class="list-label" for="realname">旅游路线</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写旅游路线"></div></div>'
+                +'<div class="list-item"><label class="list-label" for="realname">姓名</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写姓名"></div></div>'
+                +'<div class="list-item"><label class="list-label" for="realname">身份证号</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写身份证号"></div></div>'
+                +'<div class="list-item"><label class="list-label" for="realname">性别</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写性别"></div></div>'
+                +'<div class="list-item"><label class="list-label" for="realname">年龄</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写年龄"></div></div>'
+                +'<div class="list-item"><label class="list-label" for="realname">户籍城市</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写户籍城市"></div></div>'
+                +'<div class="list-item"><label class="list-label" for="realname">手机号码</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写手机号码"></div></div>'
+                +'<div class="list-item"><label class="list-label" for="realname">推荐人姓名</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写推荐人姓名"></div></div>'
+                +'<div class="list-item"><label class="list-label" for="realname">推荐人手机号</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写推荐人手机号"></div></div>'
+                +'<div class="list-item"><label class="list-label" for="realname">出游日期</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写出游日期"></div></div>'
+                +'<div class="list-item"><label class="list-label" for="realname">房型需求</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写房型需求"></div></div>'
+                +'<div class="list-item"><label class="list-label" for="realname">特殊需求</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写特殊需求"></div></div>'
+                +'<div class="MyApply" onclick="applyClick()">申请</div></div>'
+    });
+  }
+  //点击报名申请表单中的返回
+  function hideApply(){
+    layer.close(MyApply);
+    TravelDetil(numBack);
+  }
+  //点击申请按钮
+  function applyClick(){
+    layer.close(MyApply);
+    $(".main").show();
   }
 </script>
 </body>
