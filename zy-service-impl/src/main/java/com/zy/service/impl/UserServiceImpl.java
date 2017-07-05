@@ -73,6 +73,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserLogMapper userLogMapper;
 
+    @Autowired
+    private UserInfoMapper userInfoMapper;
+
+
     @Override
     public User findOne(@NotNull Long id) {
         return userMapper.findOne(id);
