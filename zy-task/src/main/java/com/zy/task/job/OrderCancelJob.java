@@ -36,7 +36,8 @@ public class OrderCancelJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("begin..");
-        this.orderService.findAll(builder().createdTimeLT(addMinutes(new Date(), -SETTING_ORDER_EXPIRE_IN_MINUTES)).orderStatusEQ(待支付).build())
+        //this.orderService.findAll(builder().createdTimeLT(addMinutes(new Date(), -SETTING_ORDER_EXPIRE_IN_MINUTES)).orderStatusEQ(待支付).build())
+        this.orderService.findAll(builder().expiredTimeLT(new Date()).orderStatusEQ(待支付).build())
                 .stream()
                 .map(order -> order.getId())
                 .forEach(this::cancel);
@@ -55,10 +56,4 @@ public class OrderCancelJob implements Job {
         }
     }
 
-    public static void main(String[] args) {
-
-        Date date = addMinutes(new Date(), -SETTING_ORDER_EXPIRE_IN_MINUTES);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println(simpleDateFormat.format(date));
-    }
 }
