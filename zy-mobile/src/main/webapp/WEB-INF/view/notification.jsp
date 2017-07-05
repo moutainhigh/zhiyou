@@ -22,7 +22,7 @@
 <body>
 <header class="header">
     <h1>通知公告</h1>
-    <a href="${ctx}" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 <div class="main">
      <img src="${ctx}/images/notification23.png" style="width:100%;" />
