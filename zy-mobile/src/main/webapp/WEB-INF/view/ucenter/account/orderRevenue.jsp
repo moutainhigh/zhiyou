@@ -228,7 +228,7 @@
 //订单收益
         colorText='#86dcd4';
     }else if(type == 2){
-//数据奖
+//历史收益
         colorText='#68dcc1';
     }else if(type == 3){
 //销量奖

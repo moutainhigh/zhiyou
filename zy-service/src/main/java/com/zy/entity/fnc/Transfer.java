@@ -37,7 +37,7 @@ public class Transfer implements Serializable {
 	public static final String VO_ADMIN = "TransferAdminVo";
 
 	public enum TransferType {
-		数据奖,
+		历史收益,
 		一级平级奖,
 		一级越级奖,
 		邮费,

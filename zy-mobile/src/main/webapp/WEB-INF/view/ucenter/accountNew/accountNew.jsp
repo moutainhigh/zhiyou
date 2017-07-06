@@ -251,7 +251,7 @@
           <div class="percentNumDiv">
             <div class="fontImg clearfloat">
               <img src="${ctx}/images/03.png" />
-              <span>数据奖</span>
+              <span>历史收益</span>
             </div>
             <div class="fontImg clearfloat">
               <p><span>上月收益：</span>￥<fmt:formatNumber type="number" value="${dataMap.dat[0]}" pattern="0.00" maxFractionDigits="2"/></p>
@@ -465,7 +465,7 @@
           {value:array[0], name:'特级平级奖'},
           {value:array[1], name:'订单收益'},
           {value:array[2], name:'返利奖'},
-          {value:array[3], name:'数据奖'},
+          {value:array[3], name:'历史收益'},
           {value:array[4], name:'董事贡献奖'},
           {value:array[5], name:'特级推荐奖'},
           {value:array[6], name:'平级推荐奖'},
