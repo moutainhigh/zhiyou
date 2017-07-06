@@ -1,5 +1,6 @@
 package com.zy.admin.controller.sys;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
@@ -7,7 +8,6 @@ import com.zy.common.model.ui.Grid;
 import com.zy.component.SystemCodeComponent;
 import com.zy.entity.sys.SystemCode;
 import com.zy.entity.usr.User;
-import com.zy.model.Principal;
 import com.zy.model.query.SystemCodeQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.SystemCodeService;
@@ -18,10 +18,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Date;
@@ -61,29 +58,29 @@ public class SystemCodeController {
     /**
      * 新增系统默认值
      * @param systemCode
-     * @param principal
+     * @param adminPrincipal
      * @param redirectAttributes
      * @return
      */
     @RequiresPermissions("systemCode:edit")
     @RequestMapping(value = "/createSystemCode", method = RequestMethod.POST)
-    public String create(SystemCode systemCode, Principal principal , RedirectAttributes redirectAttributes) {
+    public String create(SystemCode systemCode, AdminPrincipal adminPrincipal , RedirectAttributes redirectAttributes) {
         try{
             SystemCode code = systemCodeService.findByTypeAndName(systemCode.getSystemType(), systemCode.getSystemName());
-            if(null == code){
-                Long userId = principal.getUserId();
+            if(null == code ){
+                Long userId = adminPrincipal.getUserId();
                 Date date = new Date();
                 systemCode.setCreateBy(userId);
                 systemCode.setCreateDate(date);
                 systemCodeService.create(systemCode);
                 redirectAttributes.addFlashAttribute(ResultBuilder.ok("新增成功"));
             }else{
-                redirectAttributes.addFlashAttribute(ResultBuilder.error("新增失败，该系统默认值已经存在" ));
-                return "redirect:/systemCode/create";
+                redirectAttributes.addFlashAttribute(ResultBuilder.error("新增失败，系统类型码和名字已经存在" ));
+                return "redirect:/systemCode/createSystemCode";
             }
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute(ResultBuilder.error("新增失败, 原因" + e.getMessage()));
-            return "redirect:/systemCode/create";
+            return "redirect:/systemCode/createSystemCode";
         }
         return "redirect:/systemCode";
     }
@@ -98,20 +95,20 @@ public class SystemCodeController {
     @RequestMapping(value = "/editSystemCode/{id}", method = RequestMethod.GET)
     public String editSystemCode(@PathVariable Long id, Model model) {
         SystemCode systemCode = systemCodeService.findOne(id);
-        SystemCodeAdminVo systemCodeAdminVo = systemCodeComponent.buildAdminVo(systemCode);
-        model.addAttribute("systemCodeAdminVo",systemCodeAdminVo);
+        model.addAttribute("systemCode",systemCode);
         return "sys/systemCodeEdit";
     }
 
     @RequiresPermissions("systemCode:edit")
     @RequestMapping(value = "/editSystemCode", method = RequestMethod.POST)
-    public String editSystemCode(SystemCode systemCode ,RedirectAttributes redirectAttributes, Principal principal) {
+    public String editSystemCode(SystemCode systemCode ,RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
         Long systemCodeId = systemCode.getId();
+        validate(systemCodeId, NOT_NULL, "systemCode id is null");
         validate(systemCode, NOT_NULL, "systemCode id is null");
         try {
             SystemCode code = systemCodeService.findByTypeAndName(systemCode.getSystemType(), systemCode.getSystemName());
-            if(code != null){
-                Long userId = principal.getUserId();
+            if(code == null || systemCodeId == code.getId()){
+                Long userId = adminPrincipal.getUserId();
                 Date date = new Date();
                 systemCode.setUpdateBy(userId);
                 systemCode.setUpdateDate(date);
@@ -119,11 +116,11 @@ public class SystemCodeController {
                 redirectAttributes.addFlashAttribute(ResultBuilder.ok("编辑成功"));
             }else{
                 redirectAttributes.addFlashAttribute(ResultBuilder.error("编辑失败, 系统类型码和名字已经存在"));
-                return "redirect:/systemCode/edit/" + systemCodeId;
+                return "redirect:/systemCode/editSystemCode/" + systemCodeId;
             }
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
-            return "redirect:/systemCode/edit/" + systemCodeId;
+            return "redirect:/systemCode/editSystemCode/" + systemCodeId;
         }
         return "redirect:/systemCode";
     }
@@ -168,8 +165,8 @@ public class SystemCodeController {
      * @return
      */
     @RequiresPermissions("systemCode:edit")
-    @RequestMapping(value = "/deleteSystemCode/{id}", method = RequestMethod.GET)
-    public String deleteBlackWhite(@PathVariable Long id ,RedirectAttributes redirectAttributes) {
+    @RequestMapping(value = "/deleteSystemCode", method = RequestMethod.POST)
+    public String deleteBlackWhite(@RequestParam Long id , RedirectAttributes redirectAttributes) {
         try {
             systemCodeService.delete(id);
         } catch (Exception e) {
