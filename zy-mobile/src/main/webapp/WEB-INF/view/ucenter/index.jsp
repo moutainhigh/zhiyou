@@ -151,15 +151,13 @@
       </div>
 
       <div class="user-account flex list-group">
-
-          <a class="flex-1 bd-r" href="${ctx}/u/activity/applyList">
-            <i class="icon icon-2x icon-join"></i>
-            <em>报名的活动</em>
-          </a>
-
         <a class="flex-1 bd-r" href="${ctx}/u/activity/collectList">
           <i class="icon icon-2x icon-heartNew"></i>
           <em>关注的活动</em>
+        </a>
+        <a class="flex-1 bd-r" href="${ctx}/u/activity/applyList">
+          <i class="icon icon-2x icon-join"></i>
+          <em>报名的活动</em>
         </a>
         <a class="flex-1"  href="${ctx}/u/activity/teamApplyList">
           <i class="icon icon-2x icon-heart"></i>
