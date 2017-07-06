@@ -150,6 +150,8 @@ public class AdminConstants {
 			sub.put("tag:delete", "标签管理(删除)");
 			sub.put("job:view", "职位管理(查看)");
 			sub.put("job:edit", "职位管理(编辑)");
+			sub.put("systemCode:view", "系统默认值管理(查看)");
+			sub.put("systemCode:edit", "系统默认值管理(编辑)");
 			SETTING_PERMISSION_MAP.put("系统管理", sub);
 		}
 		{

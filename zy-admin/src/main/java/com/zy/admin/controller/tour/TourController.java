@@ -331,7 +331,7 @@ public class TourController {
     @RequestMapping(value = "/editBlackWhite", method = RequestMethod.POST)
     public String updateBlackWhite(BlackOrWhite blackOrWhite,RedirectAttributes redirectAttributes) {
         Long blackOrWhiteId = blackOrWhite.getId();
-        validate(blackOrWhite, NOT_NULL, "help id is null");
+        validate(blackOrWhite, NOT_NULL, "blackOrWhite id is null");
         try {
             blackOrWhiteService.modify(blackOrWhite);
         } catch (Exception e) {

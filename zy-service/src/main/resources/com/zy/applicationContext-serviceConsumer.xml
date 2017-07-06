@@ -56,4 +56,5 @@
     <dubbo:reference id="tourService" interface="com.zy.service.TourService" protocol="dubbo"/>
     <dubbo:reference id="blackOrWhiteService" interface="com.zy.service.BlackOrWhiteService" protocol="dubbo"/>
     <dubbo:reference id="tourTimeService" interface="com.zy.service.TourTimeService" protocol="dubbo"/>
+    <dubbo:reference id="systemCodeService" interface="com.zy.service.SystemCodeService" protocol="dubbo"/>
 </beans>
