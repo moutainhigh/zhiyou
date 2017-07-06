@@ -485,7 +485,7 @@
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="admin:*,role:*,message:view,setting:*,area:*,tag:view,job:view,bank:view">
+        <shiro:hasAnyPermissions name="admin:*,role:*,message:view,setting:*,area:*,tag:view,job:view,bank:view,systemCode:view">
           <li>
             <a href="javascript:;">
               <i class="icon-settings"></i>
@@ -532,6 +532,11 @@
               <shiro:hasPermission name="bank:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/bank"><i class="icon-home"></i> 银行信息<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="systemCode:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/systemCode"><i class="icon-home"></i> 系统默认值管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <li>
