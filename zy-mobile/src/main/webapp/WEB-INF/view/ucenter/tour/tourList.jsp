@@ -28,7 +28,7 @@
             box-sizing: border-box;
         }
         .on {
-            border-bottom: 2px solid #ff7f00;
+            border-bottom: 2px solid #6cb92f;
         }
         /*清除浮动代码*/
         .clearfloat:before, .clearfloat:after {
@@ -44,7 +44,7 @@
         }
         .tourArticle {
             border-top:1px solid #ccc;
-            padding:20px 10px 20px 20px;
+            padding:10px 10px 20px 20px;
             background: #fff;
             color: #333;
             font-size: 16px;
@@ -58,53 +58,44 @@
         }
         .startTime {
             float:left;
-            border:1px solid #ff7f00;
-            -webkit-border-radius:15px;
-            -moz-border-radius:15px;
-            border-radius:15px;
-            padding:5px 10px 5px 10px;
             margin-left: 10px;
             font-size: 12px;
-            color: #ff7f00;
-        }
-        a {display: block;}
-        .tourFont {
-            float: left;
-            width:200px;
+            color: #333;
             margin-left: 10px;
             margin-top: 15px;
-            overflow : hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 4;    /* 数值代表显示几行 */
-            -webkit-box-orient: vertical;
         }
+        a {display: block;}
+
         .startState {
-            margin-top: 20px;
+            float: left;
+            width:100px;
+            height:35px;
+            border:1px solid #6cb92f;
+            margin-left: 10px;
+            margin-top: 15px;
+            text-align: center;
+            line-height: 35px;
+            color: #6cb92f;
+            -webkit-border-radius:5px;
+            -moz-border-radius:5px;
+            border-radius:5px;
+            font-size: 18px;
+        }
+        .tourImageTFont {
+            float: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-left: 10px;
+        }
+        .startStateFile {
+            color: #cccccc;
+            border:1px solid #cccccc;
         }
         @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
-            .tourFont {
-                float: left;
-                width:150px;
-                margin-left: 10px;
-                margin-top: 10px;
-                overflow : hidden;
-                text-overflow: ellipsis;
-                display: -webkit-box;
-                -webkit-line-clamp: 3;    /* 数值代表显示几行 */
-                -webkit-box-orient: vertical;
-            }
-            .tourImageT img {
-                width:130px;
-            }
+
         }
         @media (device-height:667px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone6 */
-            .tourFont {
-                float: left;
-                width:170px;
-                margin-left: 10px;
-                margin-top: 15px;
-            }
 
         }
     </style>
@@ -115,21 +106,23 @@
         <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
     <%--<div class="tourAll clearfloat">--%>
-        <%--<div class="tourNum">审核中</div>--%>
-        <%--<div class="tourNum on">待补充</div>--%>
-        <%--<div class="tourNum">可编辑</div>--%>
-        <%--<div class="tourNum">已参加</div>--%>
+    <%--<div class="tourNum">审核中</div>--%>
+    <%--<div class="tourNum on">待补充</div>--%>
+    <%--<div class="tourNum">可编辑</div>--%>
+    <%--<div class="tourNum">已参加</div>--%>
     <%--</div>--%>
     <article>
             <a href="${ctx}/tour/addInfo" class="tourArticleAll">
-                 <p class="tourArticle"><b>【青岛】有山有水好风光——青岛三日游</b></p>
+                 <p class="tourArticle"></p>
                  <div class="tourImageT clearfloat">
                      <img src="${ctx}/images/tourImageT1.png" />
+                     <p class="tourImageTFont"><b>【昆明】大理丽江健康之旅</b></p>
                      <p class="startTime">出发时间：2017-02-07</p>
-                     <p class="startTime startState">审核中</p>
-                     <%--<p class="startTime">待补充</p>--%>
-                     <%--<p class="startTime">可编辑</p>--%>
-                     <%--<p class="startTime">已参加</p>--%>
+                     <%--<p class="startState">审核中</p>--%>
+                     <%--<p class="startState">待补充</p>--%>
+                     <%--<p class="startState">可生效</p>--%>
+                     <%--<p class="startState">已完成</p>--%>
+                     <p class="startState startStateFile">审核失败</p>
                      <%--<div class="tourFont">青岛旅游，说白了就是海和崂山 如今的崂山分为七大风景区，但 是对于外来游客来讲，真正值如今的崂山分为七大风景区</div>--%>
                  </div>
             </a>
