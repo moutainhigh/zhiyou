@@ -454,7 +454,7 @@
   var insuranceT,travelT,line,MyApply;
   function insurance(){
     insuranceT=layer.open({
-      type: 2,
+      type: 1,
       title: false,
       closeBtn: 0,
       scrollbar: false,
