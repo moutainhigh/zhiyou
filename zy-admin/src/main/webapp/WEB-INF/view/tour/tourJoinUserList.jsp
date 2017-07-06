@@ -203,7 +203,8 @@
     <shiro:hasPermission name="tourJoinUser:edit">
 
     <shiro:hasPermission name="tourJoinUser:export">
-    function tourUserExport() {
+    function tourJoinUserExport() {
+        alert(111);
         location.href = '${ctx}/tourJoinUser/tourJoinUserExport?' + $('#searchForm').serialize();
     }
     </shiro:hasPermission>
@@ -286,9 +287,9 @@
                                     <i class="fa fa-search"></i> 查询
                                 </button>
                             </div>
-                            <shiro:hasPermission name="tourUser:export">
+                            <shiro:hasPermission name="tourJoinUser:export">
                                 <div class="form-group">
-                                    <button type="button" class="btn yellow" onClick="tourUserExport()">
+                                    <button type="button" class="btn yellow" onClick="tourJoinUserExport()">
                                         <i class="fa fa-file-excel-o"></i> 导出Excel
                                     </button>
                                 </div>
