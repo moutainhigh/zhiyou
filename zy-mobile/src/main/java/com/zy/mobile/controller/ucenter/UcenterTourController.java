@@ -87,6 +87,7 @@ public class UcenterTourController {
     public String findTourApple(String phone,Model model){
         TourQueryModel tourQueryModel = new TourQueryModel();
         tourQueryModel.setDelfage(0);
+        tourQueryModel.setIsReleased(true);
         List<Tour> tourList = tourService.findAllByTour(tourQueryModel);
         List<Tour> nowTourList = new ArrayList<Tour>();
         for (Tour tour:tourList){
@@ -103,16 +104,20 @@ public class UcenterTourController {
      * @return
      */
     @RequestMapping(value = "/tourAppleTable")
-    public String tourAppleTable(){
-    return "ucenter/tour/tourAppleTable";
+    public String tourAppleTable(Long tourId,String parentPhone,Model model){
+
+        return "ucenter/tour/tourAppleTable";
     }
 
     /**
      * 旅游客服 信息
      * @return
      */
-    @RequestMapping(value = "/findTourUserVo")
-    public String findTourUserVo(){
+    @RequestMapping(value = "/findTourDetail")
+    public String findTourUserVo(Long tourId,String parentPhone,Model model){
+        Tour tour = tourService.findTourOne(tourId);
+        model.addAttribute("tour",tour);
+        model.addAttribute("parentPhone",parentPhone);
         return "ucenter/tour/tourDetail";
     }
 }

@@ -93,6 +93,11 @@
         .clearfloat{
             zoom:1;
         }
+        p {
+            color: #f13e00;
+            line-height: 30px;
+            padding:5px 20px 5px 20px;
+        }
         .TravelFont {
             width:100%;
             background: #f0f0f0;
@@ -157,14 +162,16 @@
     <h1>旅游路线详情</h1>
     <a href="#" onclick="hideDetil()" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
+<input type="hidden" name ="parentPhone" id="parentPhone" value="${parentPhone}"/>
 <img src="${ctx}/images/TravelTop.png" style="width:100%;" />
 <div class="TravelFont">
-    <div class="TravelFOne">预定须知</div>
+    ${tour.content}
+   <%-- <div class="TravelFOne">预定须知</div>
     <div class="TravelFOneD">旅游信息有几个限制条件：1、户籍所在地的限制，目前对四川、重庆不参与四川境内游活动，云南籍不参与云南境内游活动；2、年龄限制，年龄在28-58岁旅游费用全免，27岁以下与59岁至65岁者另加960，儿童另加960元且门票住宿自理。66岁以上老人及残疾人也不享受本活动。</div>
     <div class="TravelFOne" style="margin-top:10px;">产品特色</div>
     <div class="TravelFOneD">旅游信息有几个限制条件：1、户籍所在地的限制，目前对四川、重庆不参与四川境内游活动，云南籍不参与云南境内游活动；2、年龄限制，年龄在28-58岁旅游费用全免。</div>
-</div>
-<img src="${ctx}/images/TravelDetilT.png" style="width:100%;"/>'
+--%></div>
+<%--<img src="${tour.image}" style="width:100%;"/>'--%>
 <div class="clearfloat" style="padding:10px 15px;background:#fff;">
     <label class="list-label" style="height:30px;line-height:25px;font-size:16px;width:50%;float:left;">请选择出游时间：</label>
     <div class="list-text form-select" style="width:50%;float:left;">

@@ -44,21 +44,7 @@
         <p class="font">【${tour.title}】</p>
     </div>
 </c:forEach>
-<%--<div onclick="TravelDetil(2)" class="opacityAll" style="width:100%;position:relative;">
-    <img class="opacityFirst" src="${ctx}/images/Travel2.png" style="display:block;width:100%;" />
-    <img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" />
-    <p class="font">【智优生物为爱前行·纵享雨林】</p>
-</div>
-<div onclick="TravelDetil(3)" class="opacityAll" style="width:100%;position:relative;">
-    <img class="opacityFirst" src="${ctx}/images/Travel3.png" style="display:block;width:100%;" />
-    <img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" />
-    <p class="font">【智优生物为爱前行·西蜀问道】</p>
-</div>
-<div onclick="TravelDetil(4)" class="opacityAll" style="width:100%;position:relative;">
-    <img class="opacityFirst" src="${ctx}/images/Travel4.png" style="display:block;width:100%;" />
-    <img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" />
-    <p class="font">【智优生物为爱前行·梦幻时光】</p>
-</div>--%>
+
 <script>
     function TravelDetil(num){
         travelT= layer.open({
@@ -67,7 +53,7 @@
             title: false,
             scrollbar: false,
             closeBtn: 0,
-            content: '${ctx}/tour/findTourUserVo'
+            content: '${ctx}/tour/findTourDetail?tourId='+num+'&parentPhone='+$('#parentPhone').val()
         });
     }
    var  travelT;
@@ -76,8 +62,8 @@
         layer.close(travelT);
     }
     $(function(){
-        $(".opacity").css("margin-top",-$(".opacity").height()+"px");
-        var opacityT=$(".opacityFirst").height();
+        $(".opacity").css("margin-top",-$(".opacity").css("height"));
+        var opacityT=$(".opacityFirst").css("height");
         $(".font").css("margin-top",-opacityT/2-13);
     })
 </script>
