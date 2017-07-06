@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>上传检测报告</title>
+    <title>旅游路线详情</title>
     <%@ include file="/WEB-INF/view/include/head.jsp"%>
     <%@ include file="/WEB-INF/view/include/validate.jsp"%>
     <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>

@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>填写保险申请</title>
+    <title>选择旅游路线</title>
     <%@ include file="/WEB-INF/view/include/head.jsp"%>
     <%@ include file="/WEB-INF/view/include/validate.jsp"%>
     <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
@@ -26,8 +26,7 @@
             float: left;
             position: relative;
             z-index: 99;
-            left: 50%;
-            margin-left: -24px;
+            text-align: center;
         }
 
         .list-item .list-label {
@@ -40,22 +39,22 @@
 <div onclick="TravelDetil(1)" class="opacityAll" style="width:100%;position:relative;">
     <img class="opacityFirst" src="${ctx}/images/Travel1.png" style="display:block;width:100%;" />
     <img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" />
-    <p class="font">北京</p>
+    <p class="font">【智优生物为爱前行·洱语花香】</p>
 </div>
 <div onclick="TravelDetil(2)" class="opacityAll" style="width:100%;position:relative;">
     <img class="opacityFirst" src="${ctx}/images/Travel2.png" style="display:block;width:100%;" />
     <img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" />
-    <p class="font">南京</p>
+    <p class="font">【智优生物为爱前行·纵享雨林】</p>
 </div>
 <div onclick="TravelDetil(3)" class="opacityAll" style="width:100%;position:relative;">
     <img class="opacityFirst" src="${ctx}/images/Travel3.png" style="display:block;width:100%;" />
     <img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" />
-    <p class="font">西藏</p>
+    <p class="font">【智优生物为爱前行·西蜀问道】</p>
 </div>
 <div onclick="TravelDetil(4)" class="opacityAll" style="width:100%;position:relative;">
     <img class="opacityFirst" src="${ctx}/images/Travel4.png" style="display:block;width:100%;" />
     <img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" />
-    <p class="font">上海</p>
+    <p class="font">【智优生物为爱前行·梦幻时光】</p>
 </div>
 <script>
     function TravelDetil(num){
@@ -77,7 +76,7 @@
         $(".opacityFirst").load(function(){
             var opacityT=$(".opacityFirst").height();
             $(".opacity").css("margin-top",-opacityT);
-            $(".font").css("margin-top",-opacityT/2);
+            $(".font").css("margin-top",-opacityT/2-20);
         });
     })
 </script>
