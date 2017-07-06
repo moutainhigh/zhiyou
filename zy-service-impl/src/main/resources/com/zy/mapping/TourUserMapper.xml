@@ -23,45 +23,83 @@
 		<result column="reviewe_remark" property="revieweRemark" />
 		<result column="house_type" property="houseType" />
 		<result column="is_add_bed" property="isAddBed" />
+		<!--<result column="departure_time" property="departureTime" />-->
+		<result column="is_join" property="isJoin" />
+		<result column="amount" property="amount" />
 	</resultMap>
 
 	<sql id="baseColumn">
-		id,
-		tour_time_id,
-		tour_id,
-		user_id,
-		parent_id,
-		sequence_id,
-		create_date,
-		update_date,
-		update_by,
-		is_effect,
-		audit_status,
-		report_id,
-		is_transfers,
-		car_number,
-		plan_time,
-		car_images,
-		user_remark,
-		reviewe_remark,
-		house_type,
-		is_add_bed
+		a.id,
+		a.tour_time_id,
+		a.tour_id,
+		a.user_id,
+		a.parent_id,
+		a.sequence_id,
+		a.create_date,
+		a.update_date,
+		a.update_by,
+		a.is_effect,
+		a.audit_status,
+		a.report_id,
+		a.is_transfers,
+		a.car_number,
+		a.plan_time,
+		a.car_images,
+		a.user_remark,
+		a.reviewe_remark,
+		a.house_type,
+		a.is_add_bed,
+		a.is_join,
+		a.amount
 	</sql>
 
 	<!-- 查询所有旅客信息 -->
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TourUserQueryModel">
 		SELECT
-		<include refid="baseColumn"/>
-		FROM ts_tour_user
+			<include refid="baseColumn"/>
+		FROM ts_tour_user a
+		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
+		LEFT JOIN usr_user_info e ON a.user_id = e.user_id
+		LEFT JOIN usr_user c ON a.user_id = c.id
+		LEFT JOIN usr_user d ON a.user_id = d.id
+		LEFT JOIN ts_tour f ON a.tour_id = f.id
+		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
 		<where>
-			<if test="updateTime !=null">
-				and update_date = #{updateTime},
+			<if test="sequenceId !=null">
+				AND  a.sequence_id = #{sequenceId}
 			</if>
-			<if test="updateTime !=null">
-				and create_date = #{createdTime},
+			<if test="reportId !=null">
+				AND  a.report_id = #{reportId}
+			</if>
+			<if test="auditStatus !=null">
+				AND a.audit_status = #{auditStatus}
+			</if>
+			<if test="isEffect !=null">
+				AND a.is_effect = #{isEffect}
+			</if>
+			<if test="userName !=null">
+				AND  b.realname= #{userName}
+			</if>
+			<if test="parentName !=null">
+				AND  e.realname= #{parentName}
+			</if>
+			<if test="userPhone !=null">
+				AND  c.phone= #{userPhone}
+			</if>
+			<if test="parentPhone !=null">
+				AND  d.phone= #{parentPhone}
+			</if>
+			<if test="tourTitle !=null">
+				<bind name="tourTitle" value="'%' + tourTitle + '%'"/> AND title LIKE #{tourTitle}
+			</if>
+			<if test="beginTime !=null">
+				AND  g.begin_time &gt;= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				AND g.end_time &lt;= #{endTime}
 			</if>
 		</where>
-		ORDER BY create_date DESC ,  audit_status ASC
+		ORDER BY a.create_date DESC ,a.audit_status ASC
 		<if test="offset != null">
 			limit #{offset}, #{pageSize}
 		</if>
@@ -69,14 +107,47 @@
 
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.TourUserQueryModel">
 		SELECT
-		count(*)
-		FROM ts_tour_user
+			count(*)
+		FROM ts_tour_user a
+		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
+		LEFT JOIN usr_user_info e ON a.user_id = e.user_id
+		LEFT JOIN usr_user c ON a.user_id = c.id
+		LEFT JOIN usr_user d ON a.user_id = d.id
+		LEFT JOIN ts_tour f ON a.tour_id = f.id
+		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
 		<where>
-			<if test="updateTime !=null">
-				and update_date = #{updateTime},
+			<if test="sequenceId !=null">
+				AND  a.sequence_id = #{sequenceId}
 			</if>
-			<if test="updateTime !=null">
-				and create_date = #{createdTime},
+			<if test="reportId !=null">
+				AND  a.report_id = #{reportId}
+			</if>
+			<if test="auditStatus !=null">
+				AND a.audit_status = #{auditStatus}
+			</if>
+			<if test="isEffect !=null">
+				AND a.is_effect = #{isEffect}
+			</if>
+			<if test="userName !=null">
+				AND  b.realname = #{userName}
+			</if>
+			<if test="parentName !=null">
+				AND  e.realname = #{parentName}
+			</if>
+			<if test="userPhone !=null">
+				AND  c.phone = #{userPhone}
+			</if>
+			<if test="parentPhone !=null">
+				AND  d.phone = #{parentPhone}
+			</if>
+			<if test="tourTitle !=null">
+				<bind name="tourTitle" value="'%' + tourTitle + '%'"/> AND title LIKE #{tourTitle}
+			</if>
+			<if test="beginTime !=null">
+				AND  g.begin_time &gt;= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				AND g.end_time &lt;= #{endTime}
 			</if>
 		</where>
 	</select>
@@ -91,7 +162,17 @@
 			a.id = #{id}
 	</select>
 
-
+	<!-- 重置-->
+	<update id="reset" parameterType="com.zy.entity.tour.TourUser">
+		update ts_tour_user
+		<set>
+				tour_id = #{tourId},
+				tour_time_id = #{tourTimeId},
+				update_date = #{updateDate},
+				update_by = #{updateBy}
+		</set>
+		where id = #{id}
+	</update>
 
 
 	<insert id="insert" parameterType="com.zy.entity.usr.Tag" useGeneratedKeys="true" keyProperty="id">

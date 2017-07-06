@@ -2,108 +2,9 @@
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 
 <!-- BEGIN JAVASCRIPTS -->
-<script id="confirmTmpl" type="text/x-handlebars-template">
-    <form id="confirmForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 100%; margin: 20px;">
-        <input type="hidden" name="id" value="{{id}}"/>
-        <div class="form-body">
-            <div class="alert alert-danger display-hide">
-                <i class="fa fa-exclamation-circle"></i>
-                <button class="close" data-close="alert"></button>
-                <span class="form-errors">您填写的信息有误，请检查。</span>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">审核结果<span class="required"> * </span></label>
-                <div class="col-md-5">
-                    <select name="isSuccess" class="form-control">
-                        <option value="true">通过</option>
-                        <option value="false">拒绝</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">审核备注
-                </label>
-                <div class="col-md-5" style="width: 300px">
-                    <textarea type="text" class="form-control" name="revieweRemark"></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="form-actions fluid">
-            <div class="col-md-offset-3 col-md-9">
-                <button id="reportConfirmSubmit{{id}}" type="button" class="btn green">
-                    <i class="fa fa-save"></i> 保存
-                </button>
-                <button id="reportConfirmCancel{{id}}" class="btn default" data-href="">
-                    <i class="fa fa-chevron-left"></i> 返回
-                </button>
-            </div>
-        </div>
-    </form>
 </script>
 <script>
     var grid = new Datatable();
-
-   function userDetail(obj){
-        var userId = $(obj).attr("data-id");
-        $.ajax({
-            url: '${ctx}/tourUser/detail?userId=' + userId ,
-            dataType: 'html',
-            success: function(data) {
-                layer.open({
-                    type: 1,
-                    skin: 'layui-layer-rim', //加上边框
-                    area: ['900px', '400px'], //宽高
-                    content: data
-                });
-            }
-        });
-    }
-
-    var template = Handlebars.compile($('#confirmTmpl').html());
-    $('#dataTable').on('click', '.report-confirm', function () {
-        var id = $(this).data('id');
-        var data = {
-            id: id
-        };
-        var html = template(data);
-        var index = layer.open({
-            type: 1,
-            //skin: 'layui-layer-rim', //加上边框
-            area: ['500px', '300px'], //宽高
-            content: html
-        });
-
-        $form = $('#confirmForm' + id);
-        $form.validate({
-            rules: {
-                isSuccess: {
-                    required: true
-                },
-                revieweRemark: {}
-            },
-            messages: {}
-        });
-
-        $('#reportConfirmSubmit' + id).bind('click', function () {
-            var result = $form.validate().form();
-            if (result) {
-                var url = '${ctx}/tourUser/updateAuditStatus';
-                $.post(url, $form.serialize(), function (data) {
-                    if (data.code === 0) {
-                        layer.close(index);
-                        grid.getDataTable().ajax.reload(null, false);
-                    } else {
-                        layer.alert('审核失败,原因' + data.message);
-                    }
-                });
-            }
-        })
-
-        $('#reportConfirmCancel' + id).bind('click', function () {
-            layer.close(index);
-        })
-
-    });
 
     $(function () {
         grid.init({
@@ -121,7 +22,7 @@
                 order: [
                 ], // set first column as a default sort by desc
                 ajax: {
-                    url: '${ctx}/tourUser', // ajax source
+                    url: '${ctx}/tourJoinUser', // ajax source
                 },
                 columns: [
                     {
@@ -219,18 +120,28 @@
                             }
                         }
                     },
-//                    {
-//                        data: 'isTransfers',
-//                        title: '是否接车',
-//                        orderable: false,
-//                        render: function (data, type, full) {
-//                            if(data == 0){
-//                                return '否';
-//                            }else if(data == 1){
-//                                return '是';
-//                            }
-//                        }
-//                    },
+                    {
+                        data: 'isTransfers',
+                        title: '是否接车',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if(data == 0){
+                                return '否';
+                            }else if(data == 1){
+                                return '是';
+                            }
+                        }
+                    },
+                    {
+                        data: 'carNumber',
+                        title: '班号',
+                        orderable: false
+                    },
+                    {
+                        data: 'planTimeLabel',
+                        title: '预计到达时间',
+                        orderable: false
+                    },
                     {
                         data: 'userRemark',
                         title: '用户备注',
@@ -244,6 +155,23 @@
                     {
                         data: 'revieweRemark',
                         title: '审核备注',
+                        orderable: false
+                    },
+                    {
+                        data: 'isJoin',
+                        title: '是否参游',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if(data == 0){
+                            return '否';
+                        }else if(data == 1){
+                            return '是';
+                            }
+                        }
+                    },
+                    {
+                        data: 'amount',
+                        title: '消费金额(元)',
                         orderable: false
                     },
                     {
@@ -265,12 +193,6 @@
                         render: function (data, type, full) {
                             var optionHtml = '';
                             optionHtml += '<a class="btn btn-xs default blue-stripe user-detail" onclick="userDetail(this)" href="javascript:;" data-id="' + full.userId + '"><i class="fa fa-search"></i> 查看</a>';
-                            <shiro:hasPermission name="tourUser:edit">
-                            if (full.auditStatus == 1){
-                                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
-                            }
-                            optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="resetAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 重置 </a>';
-                            </shiro:hasPermission>
                             return optionHtml;
                         }
                     }]
@@ -278,24 +200,11 @@
         });
 
     });
-    <shiro:hasPermission name="tourUser:edit">
+    <shiro:hasPermission name="tourJoinUser:edit">
 
-    function resetAjax(id) {
-        layer.confirm('您确认重置吗?', {
-            btn: ['重置','取消'] //按钮
-        }, function(){
-            $.post('${ctx}/tourUser/reset', {id: id}, function (result) {
-                layer.msg('重置成功！');
-                grid.getDataTable().ajax.reload(null, false);
-            });
-        }, function(){
-
-        });
-    }
-
-    <shiro:hasPermission name="tourUser:export">
+    <shiro:hasPermission name="tourJoinUser:export">
     function tourUserExport() {
-        location.href = '${ctx}/tourUser/tourUserExport?' + $('#searchForm').serialize();
+        location.href = '${ctx}/tourJoinUser/tourJoinUserExport?' + $('#searchForm').serialize();
     }
     </shiro:hasPermission>
 
@@ -306,7 +215,7 @@
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-        <li><a href="javascript:;" data-href="${ctx}/tourUser">旅客信息管理</a></li>
+        <li><a href="javascript:;" data-href="${ctx}/touJoinrUser">参游旅客信息管理</a></li>
     </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -317,15 +226,8 @@
         <div class="portlet light bordered">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="icon-book-open"></i> 旅客信息管理
+                    <i class="icon-book-open"></i> 参游旅客信息管理
                 </div>
-            <%--<shiro:hasPermission name="tour:edit">--%>
-                <%--<div class="actions">--%>
-                    <%--<a class="btn btn-circle green" data-href="${ctx}/tour/create">--%>
-                        <%--<i class="fa fa-plus"></i> 新增--%>
-                    <%--</a>--%>
-                <%--</div>--%>
-            <%--</shiro:hasPermission>--%>
             </div>
             <div class="portlet-body clearfix">
                 <div class="table-container">
@@ -338,9 +240,6 @@
 
                             <div class="form-group">
                                 <input type="text" name="sequenceId" class="form-control" placeholder="旅行申请单号"/>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="reportId" class="form-control" placeholder="检测报告编号"/>
                             </div>
                             <div class="form-group">
                                 <input type="text" name="tourTitle" class="form-control" placeholder="旅行线路"/>

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Author: Xuwq
@@ -62,5 +63,11 @@ public class TourUserAdminVo implements Serializable {
     private String updateDateLabel;
     @Field(label = "计划到达时间")
     private String planTimeLabel;
+//    @Field(label = "计划离开时间")
+//    private String departureTimeLabel;
+    @Field(label = "是否参游")
+    private Integer isJoin;
+    @Field(label = "消费金额")
+    private BigDecimal amount;
 
 }

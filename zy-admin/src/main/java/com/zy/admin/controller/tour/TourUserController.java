@@ -135,6 +135,19 @@ public class TourUserController {
         return "tour/tourUserDetail";
     }
 
+    /**
+     * 重置
+     * @param id
+     * @return
+     */
+    @RequiresPermissions("tourUser:edit")
+    @RequestMapping(value = "/reset", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> reset(@RequestParam Long id) {
+        Long loginUserId = getPrincipalUserId();
+        tourService.reset(id, loginUserId);
+        return ResultBuilder.ok("重置成功");
+    }
 
     /**
      * 获取登录人的id

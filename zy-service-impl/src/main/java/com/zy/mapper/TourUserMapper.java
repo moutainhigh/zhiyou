@@ -17,4 +17,6 @@ public interface TourUserMapper {
     TourUser findOne(Long id);
 
     void updateAuditStatus(TourUser tourUser);
+
+    void reset(TourUser tourUser);
 }

@@ -9,11 +9,11 @@ import java.math.BigDecimal;
 
 /**
  * Author: Xuwq
- * Date: 2017/7/4.
+ * Date: 2017/7/6.
  */
 @Getter
 @Setter
-public class TourUserExportVo implements Serializable {
+public class TourJoinUserExportVo implements Serializable {
     @Field(label = "票务照片")
     private String imageThumbnail;
     @Field(label = "旅游申请单号")
@@ -40,13 +40,22 @@ public class TourUserExportVo implements Serializable {
     private String houseType;
     @Field(label = "是否加床")
     private String isAddBed;
+    @Field(label = "是否接车")
+    private String isTransfers;
+    @Field(label = "车次")
+    private String carNumber;
+    @Field(label = "计划到达时间")
+    private String planTime;
     @Field(label = "用户备注")
     private String userRemark;
     @Field(label = "审核员")
     private String updateName;
     @Field(label = "审核备注")
     private String revieweRemark;
+    @Field(label = "是否参游")
+    private String isJoin;
+    @Field(label = "消费金额(元)")
+    private BigDecimal amount;
     @Field(label = "是否有效")
     private String isEffect;
-
 }

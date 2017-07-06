@@ -11,6 +11,7 @@ import com.zy.service.TourTimeService;
 import com.zy.service.UserInfoService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
+import com.zy.vo.TourJoinUserExportVo;
 import com.zy.vo.TourUserAdminVo;
 import com.zy.vo.TourUserExportVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,16 +61,20 @@ public class TourUserComponent {
             UserInfo userI = userInfoService.findByUserId(tourUser.getUpdateBy());
             tourUserAdminVo.setUpdateName(userI.getRealname());
         }
-        Tour tour = tourService.findTourOne(tourUser.getTourId());
-        tourUserAdminVo.setTourTitle(tour.getTitle());
+        if (tourUser.getTourId() != null){
+            Tour tour = tourService.findTourOne(tourUser.getTourId());
+            tourUserAdminVo.setTourTitle(tour.getTitle());
+        }
         tourUserAdminVo.setCreatedDateLabel( GcUtils.formatDate(tourUser.getCreateDate(), TIME_PATTERN));
         tourUserAdminVo.setUpdateDateLabel( GcUtils.formatDate(tourUser.getUpdateDate(), TIME_PATTERN));
         tourUserAdminVo.setPlanTimeLabel( GcUtils.formatDate(tourUser.getPlanTime(), TIME_PATTERN));
         if (tourUser.getCarImages() != null) {
             tourUserAdminVo.setImageThumbnail(getThumbnail(tourUser.getCarImages(), 750, 450));
         }
-        TourTime tourTime = tourTimeService.findOne(tourUser.getTourTimeId());
-        tourUserAdminVo.setTourTime(GcUtils.formatDate(tourTime.getBegintime(), S_TIME_PATTERN) + "  至  " + GcUtils.formatDate(tourTime.getEndtime(), S_TIME_PATTERN));
+        if (tourUser.getTourTimeId() != null){
+            TourTime tourTime = tourTimeService.findOne(tourUser.getTourTimeId());
+            tourUserAdminVo.setTourTime(GcUtils.formatDate(tourTime.getBegintime(), S_TIME_PATTERN) + "  至  " + GcUtils.formatDate(tourTime.getEndtime(), S_TIME_PATTERN));
+        }
         return tourUserAdminVo;
     }
 
@@ -102,12 +107,6 @@ public class TourUserComponent {
             tourUserExportVo.setIsEffect("否");
         }
 
-        if (tourUser.getIsTransfers() == 1){
-            tourUserExportVo.setIsTransfers("是");
-        }else if (tourUser.getIsTransfers() == 0){
-            tourUserExportVo.setIsTransfers("否");
-        }
-
         if (tourUser.getIsAddBed() == 1){
             tourUserExportVo.setIsAddBed("是");
         }else if (tourUser.getIsAddBed() == 0){
@@ -124,16 +123,97 @@ public class TourUserComponent {
             UserInfo userI = userInfoService.findByUserId(tourUser.getUpdateBy());
             tourUserExportVo.setUpdateName(userI.getRealname());
         }
-        Tour tour = tourService.findTourOne(tourUser.getTourId());
-        tourUserExportVo.setTourTitle(tour.getTitle());
-        tourUserExportVo.setCreatedDateLabel( GcUtils.formatDate(tourUser.getCreateDate(), TIME_PATTERN));
+        if (tourUser.getTourId() != null){
+            Tour tour = tourService.findTourOne(tourUser.getTourId());
+            tourUserExportVo.setTourTitle(tour.getTitle());
+        }
         tourUserExportVo.setUpdateDateLabel( GcUtils.formatDate(tourUser.getUpdateDate(), TIME_PATTERN));
-        tourUserExportVo.setPlanTimeLabel( GcUtils.formatDate(tourUser.getPlanTime(), TIME_PATTERN));
         if (tourUser.getCarImages() != null) {
             tourUserExportVo.setImageThumbnail(getThumbnail(tourUser.getCarImages(), 750, 450));
         }
-        TourTime tourTime = tourTimeService.findOne(tourUser.getTourTimeId());
-        tourUserExportVo.setTourTime(GcUtils.formatDate(tourTime.getBegintime(), S_TIME_PATTERN) + "  至  " + GcUtils.formatDate(tourTime.getEndtime(), S_TIME_PATTERN));
+        if (tourUser.getTourTimeId() != null){
+            TourTime tourTime = tourTimeService.findOne(tourUser.getTourTimeId());
+            tourUserExportVo.setTourTime(GcUtils.formatDate(tourTime.getBegintime(), S_TIME_PATTERN) + "  至  " + GcUtils.formatDate(tourTime.getEndtime(), S_TIME_PATTERN));
+        }
         return tourUserExportVo;
+    }
+
+    public TourJoinUserExportVo buildJoinExportVo(TourUser tourUser) {
+        TourJoinUserExportVo tourJoinUserExportVo = new TourJoinUserExportVo();
+        BeanUtils.copyProperties(tourUser, tourJoinUserExportVo);
+        UserInfo userInfo = userInfoService.findByUserId(tourUser.getUserId());
+        tourJoinUserExportVo.setUserName(userInfo.getRealname());
+        UserInfo userIf = userInfoService.findByUserId(tourUser.getParentId());
+        tourJoinUserExportVo.setParentName(userIf.getRealname());
+        User user = userService.findOne(tourUser.getUserId());
+        tourJoinUserExportVo.setUserPhone(user.getPhone());
+        User use = userService.findOne(tourUser.getParentId());
+        tourJoinUserExportVo.setParentPhone(use.getPhone());
+        if (tourUser.getAuditStatus() == 1){
+            tourJoinUserExportVo.setAuditStatus("审核中");
+        }else if (tourUser.getAuditStatus() == 2){
+            tourJoinUserExportVo.setAuditStatus("待补充");
+        }else if (tourUser.getAuditStatus() == 3){
+            tourJoinUserExportVo.setAuditStatus("已生效");
+        }else if (tourUser.getAuditStatus() == 4){
+            tourJoinUserExportVo.setAuditStatus("已完成");
+        }else if (tourUser.getAuditStatus() == 5){
+            tourJoinUserExportVo.setAuditStatus("审核失败");
+        }
+
+        if (tourUser.getIsEffect() == 1){
+            tourJoinUserExportVo.setIsEffect("是");
+        }else if (tourUser.getIsEffect() == 0){
+            tourJoinUserExportVo.setIsEffect("否");
+        }
+
+        if (tourUser.getIsAddBed() == 1){
+            tourJoinUserExportVo.setIsAddBed("是");
+        }else if (tourUser.getIsAddBed() == 0){
+            tourJoinUserExportVo.setIsAddBed("否");
+        }
+
+        if (tourUser.getHouseType() == 1){
+            tourJoinUserExportVo.setHouseType("标准间");
+        }else if (tourUser.getHouseType() == 2){
+            tourJoinUserExportVo.setHouseType("三人间");
+        }
+
+        if (tourUser.getUpdateBy() != null){
+            UserInfo userI = userInfoService.findByUserId(tourUser.getUpdateBy());
+            tourJoinUserExportVo.setUpdateName(userI.getRealname());
+        }
+        if (tourUser.getTourId() != null){
+            Tour tour = tourService.findTourOne(tourUser.getTourId());
+            tourJoinUserExportVo.setTourTitle(tour.getTitle());
+        }
+        if (tourUser.getIsTransfers() != null){
+            if (tourUser.getIsTransfers() == 1){
+                tourJoinUserExportVo.setIsTransfers("是");
+            }else if (tourUser.getIsTransfers() == 0){
+                tourJoinUserExportVo.setIsTransfers("否");
+            }
+        }
+
+        if (tourUser.getIsJoin() != null){
+            if (tourUser.getIsJoin() == 1){
+                tourJoinUserExportVo.setIsJoin("是");
+            }else if (tourUser.getIsJoin() == 0){
+                tourJoinUserExportVo.setIsJoin("否");
+            }
+        }
+
+        if (tourUser.getPlanTime() != null){
+            tourJoinUserExportVo.setPlanTime(GcUtils.formatDate(tourUser.getPlanTime(), TIME_PATTERN));
+        }
+        tourJoinUserExportVo.setUpdateDateLabel( GcUtils.formatDate(tourUser.getUpdateDate(), TIME_PATTERN));
+        if (tourUser.getCarImages() != null) {
+            tourJoinUserExportVo.setImageThumbnail(getThumbnail(tourUser.getCarImages(), 750, 450));
+        }
+        if (tourUser.getTourTimeId() != null){
+            TourTime tourTime = tourTimeService.findOne(tourUser.getTourTimeId());
+            tourJoinUserExportVo.setTourTime(GcUtils.formatDate(tourTime.getBegintime(), S_TIME_PATTERN) + "  至  " + GcUtils.formatDate(tourTime.getEndtime(), S_TIME_PATTERN));
+        }
+        return tourJoinUserExportVo;
     }
 }

@@ -19,15 +19,27 @@ import java.util.Set;
 @AllArgsConstructor
 public class TourUserQueryModel implements Serializable {
 
-    private Long id;
+    private Long sequenceId;
 
-    private Date createdTime;
-
-    private Date updateTime;
+    private Long reportId;
 
     private Integer auditStatus;
 
-    private String revieweRemark;
+    private Integer isEffect;
+
+    private String userName;
+
+    private String parentName;
+
+    private String userPhone;
+
+    private String parentPhone;
+
+    private String tourTitle;
+
+    private Date beginTime;
+
+    private Date endTime;
 
     private Integer pageNumber;
 

@@ -541,7 +541,7 @@
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="tour:view,tourUser:view,tourSetting:view">
+        <shiro:hasAnyPermissions name="tour:view,tourUser:view,tourSetting:view,tourJoinUser:view">
           <li>
             <a href="javascript:;">
               <i class="icon-globe"></i>
@@ -564,6 +564,11 @@
               <shiro:hasPermission name="tourUser:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/tourUser"><i class="icon-docs"></i> 游客信息管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="tourJoinUser:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/tourJoinUser"><i class="icon-docs"></i> 参与游客信息管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>
