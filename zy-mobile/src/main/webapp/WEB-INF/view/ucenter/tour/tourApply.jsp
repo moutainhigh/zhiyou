@@ -36,12 +36,15 @@
 
 </head>
 <header class="header"><h1>选择旅游路线</h1><a href="${ctx}/tour/findparentInfo"  class="button-left"><i class="fa fa-angle-left"></i></a></header>
-<div onclick="TravelDetil(1)" class="opacityAll" style="width:100%;position:relative;">
-    <img class="opacityFirst" src="${ctx}/images/Travel1.png" style="display:block;width:100%;" />
-    <img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" />
-    <p class="font">【智优生物为爱前行·洱语花香】</p>
-</div>
-<div onclick="TravelDetil(2)" class="opacityAll" style="width:100%;position:relative;">
+<input type="hidden" name="phone" id="parentPhone" value="${parentPhone}" />
+<c:forEach items="${tourList}" var="tour">
+    <div onclick="TravelDetil('${tour.id}')" class="opacityAll" style="width:100%;position:relative;">
+        <img class="opacityFirst" src="${tour.image}" style="display:block;width:100%;" />
+        <img src="${ctx}/images/opacityTwo.png" class="opacity" style="display:block;width:100%;z-index:9;" />
+        <p class="font">【${tour.title}】</p>
+    </div>
+</c:forEach>
+<%--<div onclick="TravelDetil(2)" class="opacityAll" style="width:100%;position:relative;">
     <img class="opacityFirst" src="${ctx}/images/Travel2.png" style="display:block;width:100%;" />
     <img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" />
     <p class="font">【智优生物为爱前行·纵享雨林】</p>
@@ -55,7 +58,7 @@
     <img class="opacityFirst" src="${ctx}/images/Travel4.png" style="display:block;width:100%;" />
     <img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" />
     <p class="font">【智优生物为爱前行·梦幻时光】</p>
-</div>
+</div>--%>
 <script>
     function TravelDetil(num){
         travelT= layer.open({
@@ -73,11 +76,9 @@
         layer.close(travelT);
     }
     $(function(){
-        $(".opacityFirst").load(function(){
-            var opacityT=$(".opacityFirst").height();
-            $(".opacity").css("margin-top",-opacityT);
-            $(".font").css("margin-top",-opacityT/2-20);
-        });
+        $(".opacity").css("margin-top",-$(".opacity").height()+"px");
+        var opacityT=$(".opacityFirst").height();
+        $(".font").css("margin-top",-opacityT/2-13);
     })
 </script>
 </body>

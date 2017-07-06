@@ -45,12 +45,6 @@
                                 btn: ['正确','错误'] //按钮
                             }, function(){
                                 $('.valid-form').submit();
-                               /* $.post('${ctx}/tour/release', {tourTimeId: id,delFlage:1}, function (result) {
-                                    layer.msg(result.message);
-                                    grid.getDataTable().ajax.reload(null, false);
-                                    flage = false;
-                                });*/
-
                             }, function(){
                             });
                         }
