@@ -223,37 +223,6 @@
             messageAlert('请选择产品');
             return;
           }
-//        if (!$('#policyInfo').is(':hidden')) {
-//	        if(!$('#image1').val()) {
-//		        messageAlert('请上传身份证正面照');
-//		        return;
-//	        }
-//        }
-
-          <%--<c:if test="${userRank == 'V0' && empty parent}">--%>
-          <%--var parentPhone = $('#parentPhone').val();--%>
-          <%--if(!parentPhone) {--%>
-          <%--messageFlash('请填写上级手机号');--%>
-          <%--return;--%>
-          <%--}--%>
-          <%--$.ajax({--%>
-          <%--url: '${ctx}/u/checkPhone',--%>
-          <%--data: {--%>
-          <%--phone: parentPhone--%>
-          <%--},--%>
-          <%--type: 'POST',--%>
-          <%--dataType: 'JSON',--%>
-          <%--success: function(result){--%>
-          <%--if(result.code == 0) {--%>
-          <%--$('[name="parentId"]').val(result.message);--%>
-          <%--form.submit();--%>
-          <%--} else {--%>
-          <%--messageAlert(result.message);--%>
-          <%--}--%>
-          <%--}--%>
-          <%--});--%>
-          <%--return;--%>
-          <%--</c:if>--%>
           form.submit();
         }
       });
@@ -346,7 +315,6 @@
     <h1>上传检测报告</h1>
     <a href="${ctx}/u/report" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
-
   <article>
     <form action="${ctx}/u/report/create" class="valid-form" method="post">
       <div class="list-group mt-10">
@@ -423,15 +391,6 @@
             <input type="number" name="phone" id="phone" class="form-input" value="${report.phone}" placeholder="填写客户手机号">
           </div>
         </div>
-        <%--<c:if test="${userRank == 'V0' && empty parent}">--%>
-        <%--<div class="list-item">--%>
-        <%--<label class="list-label">上级手机号</label>--%>
-        <%--<div class="list-text">--%>
-        <%--<input id="parentPhone" name="parentPhone" class="form-input" type="tel" value="${inviter.phone}" placeholder="输入上级服务商手机号">--%>
-        <%--<input type="hidden" name="parentId" value="${inviter.id}">--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--</c:if>--%>
       </div>
 
       <div class="list-group">
@@ -469,9 +428,7 @@
             </div>
           </div>
         </div>
-
       </div>
-
       <div class="list-group">
         <div class="list-title">填写产品使用心得</div>
         <div class="list-item">
@@ -480,68 +437,16 @@
           </div>
         </div>
       </div>
-
-      <%--<div id="policy" class="list-group" style="display: none;">--%>
-        <%--<div class="list-title">保险</div>--%>
-        <%--<div class="list-item">--%>
-          <%--<div class="list-text">是否申请保险</div>--%>
-          <%--<div class="list-unit form-switch">--%>
-            <%--<input type="hidden" name="_hasPolicy" value="false">--%>
-            <%--<input type="checkbox" id="hasPolicy" name="hasPolicy">--%>
-            <%--<label class="i-switch" for="hasPolicy"></label>--%>
-          <%--</div>--%>
-        <%--</div>--%>
-        <%--<div id="policyInfo" class="hide">--%>
-          <%--<div class="list-item bd-t-0">--%>
-            <%--<label class="list-label" for="code">产品编码</label>--%>
-            <%--<div class="list-text">--%>
-              <%--<input type="text" name="code" id="code" class="form-input" value="" placeholder="填写产品编码">--%>
-            <%--</div>--%>
-          <%--</div>--%>
-          <%--<div class="list-item">--%>
-            <%--<label class="list-label" for="idCardNumber">身份证号</label>--%>
-            <%--<div class="list-text">--%>
-              <%--<input type="text" name="idCardNumber" id="idCardNumber" class="form-input" value="${policy.idCardNumber}" placeholder="填写身份证号">--%>
-            <%--</div>--%>
-          <%--</div>--%>
-          <%--<div class="list-item">--%>
-            <%--<label class="list-label">正面照</label>--%>
-            <%--<div class="list-text image-upload">--%>
-              <%--<div class="image-item image-single ">--%>
-                <%--<input type="hidden" name="image1" id="image1" value="">--%>
-                <%--<img src="${stccdn}/image/upload_240_150.png">--%>
-                <%--<input type="file">--%>
-              <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="list-unit">--%>
-              <%--<a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_1.jpg" data-title="身份证正面"><i class="fa fa-question-circle-o"></i> 示意图</a>--%>
-            <%--</div>--%>
-          <%--</div>--%>
-          <%--<label style="margin-left: 20px; color:red;">(非必填)上传身份证图片可方便核验您的身份证号码的准确性</label>--%>
-          <%--<div class="list-item">--%>
-            <%--<label class="list-label">生日</label>--%>
-            <%--<div class="list-text">--%>
-              <%--<input type="date" name="birthday" class="form-input" value="" placeholder="填写生日  1900-01-01">--%>
-            <%--</div>--%>
-          <%--</div>--%>
-        <%--</div>--%>
-      <%--</div>--%>
-
       <div class="form-btn" style="padding-bottom: 50px;">
         <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提 交">
       </div>
-
     </form>
   </article>
-
   <div class="footer" >
     <div onclick="insurance()">保险申请</div>
     <div onclick="travel()" style="border-right: none;">旅游申请</div>
   </div>
 </div>
-
-<%--<iframe src="${ctx}/Iframe/insurance" class="insurance" name="topfram" style="width: 100%;height: 100%;display:none;z-index:999;"></iframe>--%>
-<%--<iframe src="${ctx}/Iframe/travel" class="travel" name="topfram" style="width: 100%;height: 100%;z-index:999;display:none;"></iframe>--%>
 
 <script>
   $(function(){
@@ -570,19 +475,10 @@
 
     }
   }
+
   //保险申请
   var insuranceT,travelT,line,MyApply;
   function insurance(){
-
-    <%--layer.open({--%>
-      <%--type: 2,--%>
-      <%--title: false,--%>
-      <%--area: ['100%', '100%'],--%>
-      <%--shadeClose: true,--%>
-      <%--skin: 'yourclass',--%>
-      <%--maxmin: true,--%>
-      <%--content: "${ctx}/iframe/insurance"--%>
-    <%--});--%>
     insuranceT=layer.open({
       type: 1,
       title: false,
@@ -601,6 +497,7 @@
   }
   //提交保险申请
   function submitBtn(){
+
      layer.close(insuranceT);
      $(".main").show();
   }
@@ -641,16 +538,7 @@
       closeBtn: 0,
       shadeClose: true,
       skin: 'yourclass',
-      content: '<header class="header"><h1>选择旅游路线</h1><a href="#" onclick="hideLine()" class="button-left"><i class="fa fa-angle-left"></i></a></header>'
-                +'<div onclick="TravelDetil(1)" class="opacityAll" style="width:100%;position:relative;"><img class="opacityFirst" src="${ctx}/images/Travel1.png" style="display:block;width:100%;" /><img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" /><p class="font">北京</p></div>'
-                +'<div onclick="TravelDetil(2)" class="opacityAll" style="width:100%;position:relative;"><img class="opacityFirst" src="${ctx}/images/Travel2.png" style="display:block;width:100%;" /><img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" /><p class="font">南京</p></div>'
-                +'<div onclick="TravelDetil(3)" class="opacityAll" style="width:100%;position:relative;"><img class="opacityFirst" src="${ctx}/images/Travel3.png" style="display:block;width:100%;" /><img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" /><p class="font">西藏</p></div>'
-                +'<div onclick="TravelDetil(4)" class="opacityAll" style="width:100%;position:relative;"><img class="opacityFirst" src="${ctx}/images/Travel4.png" style="display:block;width:100%;" /><img src="${ctx}/images/opacity.png" class="opacity" style="display:block;width:100%;z-index:9;" /><p class="font">上海</p></div>'
-    });
-    $(".opacityFirst").load(function(){
-      var opacityT=$(".opacityFirst").height();
-      $(".opacity").css("margin-top",-opacityT);
-      $(".font").css("margin-top",-opacityT/2-13);
+      content:'${ctx}/tour/findTourUserVo'
     });
   }
 
