@@ -1,6 +1,6 @@
+<!DOCTYPE html>
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/view/include/taglib.jsp"%>
-<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -15,7 +15,7 @@
   <%@ include file="/WEB-INF/view/include/head.jsp"%>
   <%@ include file="/WEB-INF/view/include/validate.jsp"%>
   <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
-  <script src="${stc}/js/layer.js"></script>
+  <script src="${stc}/js/layer/layer.js"></script>
   <script src="${stccdn}/js/area.js"></script>
   <style>
     .footer {
@@ -38,11 +38,11 @@
       border-right: 1px solid #fff;
       box-sizing: border-box;
     }
-    .layer-anim {
+    /*.layer-anim {
       width:100% !important;
       left:0 !important;
       top:0 !important;
-    }
+    }*/
     .sumbitBtn {
       width:90%;
       margin-left: 5%;
@@ -611,7 +611,16 @@
   }
   //旅游申请
   function travel(){
-    travelT=layer.open({
+    travelT= layer.open({
+      type: 2,
+      area:['100%', '100%'],
+      title: false,
+      scrollbar: false,
+      closeBtn: 0,
+      content: '${ctx}/tour/findparentInfo'
+    });
+
+    /*travelT=layer.open({
       type: 1,
       title: false,
       closeBtn: 0,
@@ -621,7 +630,7 @@
                +'<div style="margin-left: 5%;margin-bottom: 20px;margin-top: 20px;"><span>填写推荐人手机号：</span><input type="number" style="height: 30px;width:50%;" /></div>'
                +'<div class="form-btn" style="padding-bottom: 50px;"><input class="btn orange btn-block round-2" type="submit" value="确 认" style="margin-bottom:10px;" onclick="submitTravel()"><div style="height:35px;background:#f2f3f5;text-align:center;line-height:35px;border:1px solid #c9c9c9;" onclick="hideTravel()">取 消</div></div>'
     });
-    $(".main").hide();
+    $(".main").hide();*/
   }
   //确认旅游申请
   function submitTravel(){
