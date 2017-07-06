@@ -118,10 +118,10 @@
                      <img src="${ctx}/images/tourImageT1.png" />
                      <p class="tourImageTFont"><b>【昆明】大理丽江健康之旅</b></p>
                      <p class="startTime">出发时间：2017-02-07</p>
-                     <%--<p class="startState">审核中</p>--%>
-                     <%--<p class="startState">待补充</p>--%>
-                     <%--<p class="startState">可生效</p>--%>
-                     <%--<p class="startState">已完成</p>--%>
+                     <%--&lt;%&ndash;&lt;%&ndash;<p class="startState">审核中</p>   //跳到旅游详情页面，并且把我要报名按钮改成审核中--%>
+                     <%--<p class="startState">待补充</p>   跳到<a href="${ctx}/tour/addInfo" class="tourArticleAll">--%>
+                     <%--<p class="startState">可生效</p>  //跳到旅游详情页面，并且把我要报名按钮改成可生效--%>
+                     <%--<p class="startState">已完成</p>   //跳到旅游详情页面，并且把我要报名按钮改成已完成--%>
                      <p class="startState startStateFile">审核失败</p>
                      <%--<div class="tourFont">青岛旅游，说白了就是海和崂山 如今的崂山分为七大风景区，但 是对于外来游客来讲，真正值如今的崂山分为七大风景区</div>--%>
                  </div>
