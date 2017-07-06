@@ -263,10 +263,10 @@
   var array=counts.split(",");
   var mbolSize = 20;
   var arrayNum=parseInt(array[0])+parseInt(array[1])+parseInt(array[2])+parseInt(array[3]);
+  $("#teamNewCount").text("("+arrayNum+"人)");
   if(arrayNum==0){
     arrayNum=1;
   }
-  $("#teamNewCount").text("("+arrayNum+"人)");
   // 基于准备好的dom，初始化echarts实例
   var myChart = echarts.init(document.getElementById('echartTeam'));
   // 指定图表的配置项和数据

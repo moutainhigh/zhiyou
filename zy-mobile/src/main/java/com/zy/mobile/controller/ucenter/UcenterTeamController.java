@@ -126,6 +126,7 @@ public class UcenterTeamController {
 			dataMap.put("flag", userComponent.findRole(user));//是否 能查看到 直属特级按钮
 		}
 		//直属团队 人数统计
+
 		long [] dirTotal = userService.countdirTotal(userId);
 		/*long [] dirTotal = userComponent.countdirTotal(userId);*/
 		dataMap.put("DTot", DateUtil.longarryToString(dirTotal,false));//直属团队成员
@@ -146,8 +147,10 @@ public class UcenterTeamController {
         //处理新进特级
         long ids[]=userComponent.tId(userComponent.conyteamTotalV4(userId));
         dataMap.put("myTids", DateUtil.longarryToString(dirTotal,false));//将直属特级 存下来
-        Map<String,Object> newSup = userService.findNewSup(ids);
-        dataMap.put("mynT",newSup.get("MY"));//直属特级*/
+		if (ids!=null) {
+			Map<String, Object> newSup = userService.findNewSup(ids);
+			dataMap.put("mynT", newSup.get("MY"));//直属特级*/
+		}
 		dataMap.put("actPer",userComponent.activeProportion(userId)); //活跃占比
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);

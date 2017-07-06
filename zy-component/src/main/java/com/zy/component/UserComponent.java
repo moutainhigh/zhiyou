@@ -224,19 +224,22 @@ public class UserComponent {
 					return teamModel;
 				}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
 		TeamModel teamModel = teamMap.get(userID);
-		List<User> filterV4User = teamModel.getDirectV4Children().stream().filter(user -> {
-			boolean result = true;
-			String nicknameLK = userQueryModel.getNicknameLK();
-			String phoneEQ = userQueryModel.getPhoneEQ();
+		List<User> filterV4User=null;
+		if(teamModel!=null) {
+			filterV4User= teamModel.getDirectV4Children().stream().filter(user -> {
+				boolean result = true;
+				String nicknameLK = userQueryModel.getNicknameLK();
+				String phoneEQ = userQueryModel.getPhoneEQ();
 
-			if (!StringUtils.isBlank(nicknameLK)) {
-				result = result && StringUtils.contains(user.getNickname(), nicknameLK);
-			}
-			if (!StringUtils.isBlank(phoneEQ)) {
-				result = result && phoneEQ.equals(user.getPhone());
-			}
-			return result;
-		}).collect(Collectors.toList());
+				if (!StringUtils.isBlank(nicknameLK)) {
+					result = result && StringUtils.contains(user.getNickname(), nicknameLK);
+				}
+				if (!StringUtils.isBlank(phoneEQ)) {
+					result = result && phoneEQ.equals(user.getPhone());
+				}
+				return result;
+			}).collect(Collectors.toList());
+		}
 		return filterV4User;
 	}
 

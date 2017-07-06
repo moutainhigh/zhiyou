@@ -1472,12 +1472,12 @@ public class OrderServiceImpl implements OrderService {
                 shipmentTeamData[i-1] = data;
             }
         }
-        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, false));
-        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, false));
-        returnMap.put("svData", DateUtil.arryToString(svData, false));
-        returnMap.put("sData", DateUtil.arryToString(sData, false));
-        returnMap.put("salesVolumeTeamData", DateUtil.longarryToString(salesVolumeTeamData, false));
-        returnMap.put("shipmentTeamData", DateUtil.longarryToString(shipmentTeamData, false));
+        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, true));
+        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, true));
+        returnMap.put("svData", DateUtil.arryToString(svData, true));
+        returnMap.put("sData", DateUtil.arryToString(sData, true));
+        returnMap.put("salesVolumeTeamData", DateUtil.longarryToString(salesVolumeTeamData, true));
+        returnMap.put("shipmentTeamData", DateUtil.longarryToString(shipmentTeamData, true));
 		return returnMap;
 	}
 
@@ -1524,10 +1524,10 @@ public class OrderServiceImpl implements OrderService {
 			data = s;
 			sData[i-1] = data;
 		}
-        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, false));
-        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, false));
-		returnMap.put("svData", DateUtil.arryToString(svData, false));
-		returnMap.put("sData", DateUtil.arryToString(sData, false));
+        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, true));
+        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, true));
+		returnMap.put("svData", DateUtil.arryToString(svData, true));
+		returnMap.put("sData", DateUtil.arryToString(sData, true));
         return returnMap;
     }
 
