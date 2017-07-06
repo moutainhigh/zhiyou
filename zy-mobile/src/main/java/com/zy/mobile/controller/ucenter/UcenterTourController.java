@@ -45,7 +45,7 @@ public class UcenterTourController {
         User user = userService.findOne(principal.getUserId());
         if (user!=null&&user.getParentId()!=null){
             User userp = userService.findOne(user.getParentId());
-            //model.addAttribute("parentPhone",userp.getPhone());
+            model.addAttribute("parentPhone",userp.getPhone());
         }
         return "ucenter/tour/parentInfo";
     }
@@ -71,9 +71,27 @@ public class UcenterTourController {
      * 封装 旅游客户信息
      * @return
      */
-    @RequestMapping(value = "/findTourUserVo",method = RequestMethod.POST)
-    public String findTourUserVo(){
-
+    @RequestMapping(value = "/findTourApple",method = RequestMethod.POST)
+    public String findTourApple(String phone,Model model){
+        model.addAttribute("parentPhone",phone);
         return "ucenter/tour/tourApply";
+    }
+
+    /**
+     * 跳转到 旅游报名申请表
+     * @return
+     */
+    @RequestMapping(value = "/tourAppleTable")
+    public String tourAppleTable(){
+    return "ucenter/tour/tourAppleTable";
+    }
+
+    /**
+     * 旅游客服 信息
+     * @return
+     */
+    @RequestMapping(value = "/findTourUserVo")
+    public String findTourUserVo(){
+        return "ucenter/tour/tourDetail";
     }
 }
