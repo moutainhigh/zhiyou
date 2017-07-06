@@ -62,8 +62,8 @@
         layer.close(travelT);
     }
     $(function(){
-        $(".opacity").css("margin-top",-$(".opacity").css("height"));
-        var opacityT=$(".opacityFirst").css("height");
+        $(".opacity").css("margin-top",-$(".opacity").height()+"px");
+        var opacityT=$(".opacityFirst").height();
         $(".font").css("margin-top",-opacityT/2-13);
     })
 </script>

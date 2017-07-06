@@ -62,7 +62,7 @@
     <div id="policy" class="list-group">
         <div id="policyInfo">
             <div class="list-item">
-                <label class="list-label" for="phone">手机号：</label>
+                <label class="list-label" for="phone">推荐人电话：</label>
                 <div class="list-text">
                     <input type="number" name="phone" id="phone" class="form-input" value="${parentPhone}" placeholder="填写推荐人手机号" ${parentPhone!=null?'readonly':''}>
                 </div>
