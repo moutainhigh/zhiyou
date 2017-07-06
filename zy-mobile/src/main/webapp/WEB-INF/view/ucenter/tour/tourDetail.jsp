@@ -175,7 +175,12 @@
 <div class="clearfloat" style="padding:10px 15px;background:#fff;">
     <label class="list-label" style="height:30px;line-height:25px;font-size:16px;width:50%;float:left;">请选择出游时间：</label>
     <div class="list-text form-select" style="width:50%;float:left;">
-        <select name="jobId" onchange="selectValue(this)"><option value="0">请选择</option><option value="1">一月</option><option value="2">二月</option></select>
+        <select name="jobId" onchange="selectValue(this)"><option value="0">请选择</option>
+            <c:forEach var="">
+
+            </c:forEach>
+            <option value="1">一月</option><option value="2">二月</option>
+        </select>
     </div>
 </div>
 <div class="TravelDis clearfloat">

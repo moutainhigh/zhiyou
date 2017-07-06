@@ -2,6 +2,7 @@ package com.zy.mobile.controller.ucenter;
 
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.util.DateUtil;
 import com.zy.entity.tour.Tour;
 import com.zy.entity.usr.User;
 import com.zy.model.Principal;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -118,6 +120,8 @@ public class UcenterTourController {
         Tour tour = tourService.findTourOne(tourId);
         model.addAttribute("tour",tour);
         model.addAttribute("parentPhone",parentPhone);
+        model.addAttribute("beginnmonth", DateUtil.getMothNum(new Date()));
+        model.addAttribute("endmonth", DateUtil.getMothNum(DateUtil.getMonthData(new Date(),3,-1)));
         return "ucenter/tour/tourDetail";
     }
 }
