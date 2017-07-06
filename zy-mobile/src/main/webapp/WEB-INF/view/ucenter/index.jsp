@@ -213,7 +213,7 @@
         <i class="icon icon-2x icon-policy"></i>
         <em>保险申请</em>
       </a>
-      <a class="flex-1"  href="${ctx}/tour" style="background: #f7f7f7;">
+      <a class="flex-1"  href="${ctx}/tour">
         <i class="icon icon-2x" style='background: url("${ctx}/images/lvyou.png")'></i>
         <em>旅游申请</em>
       </a>

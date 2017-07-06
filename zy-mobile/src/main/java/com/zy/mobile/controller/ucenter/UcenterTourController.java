@@ -15,4 +15,9 @@ public class UcenterTourController {
     public String tourList(){
         return "ucenter/tour/tourList";
     }
+
+    @RequestMapping(value = "/addInfo")
+    public String addInfo(){
+        return "ucenter/tour/addInfo";
+    }
 }
