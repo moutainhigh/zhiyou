@@ -204,7 +204,6 @@
 
     <shiro:hasPermission name="tourJoinUser:export">
     function tourJoinUserExport() {
-        alert(111);
         location.href = '${ctx}/tourJoinUser/tourJoinUserExport?' + $('#searchForm').serialize();
     }
     </shiro:hasPermission>
@@ -275,6 +274,23 @@
                                     <option value="5">审核失败</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <select name="isTransfers" class="form-control">
+                                    <option value="">-- 是否接车 --</option>
+                                    <option value="0">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                            </div>
+                            <%--<div class="form-group">--%>
+                                <%--<select name="auditStatus" class="form-control">--%>
+                                    <%--<option value="">-- 审核状态 --</option>--%>
+                                    <%--<option value="1">审核中</option>--%>
+                                    <%--<option value="2">待补充</option>--%>
+                                    <%--<option value="3">已生效</option>--%>
+                                    <%--<option value="4">已完成</option>--%>
+                                    <%--<option value="5">审核失败</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
                             <div class="form-group">
                                 <select name="isEffect" class="form-control">
                                     <option value="">-- 是否有效 --</option>
