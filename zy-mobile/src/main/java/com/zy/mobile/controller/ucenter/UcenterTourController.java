@@ -2,8 +2,11 @@ package com.zy.mobile.controller.ucenter;
 
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.entity.tour.Tour;
 import com.zy.entity.usr.User;
 import com.zy.model.Principal;
+import com.zy.model.query.TourQueryModel;
+import com.zy.service.TourService;
 import com.zy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.zy.util.GcUtils.getThumbnail;
 
 /**
  * Created by Administrator on 2017/7/5.
@@ -21,6 +30,9 @@ public class UcenterTourController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TourService tourService;
 
     @RequestMapping
     public String tourList(){
@@ -68,11 +80,20 @@ public class UcenterTourController {
     }
 
     /**
-     * 封装 旅游客户信息
+     * 查询所有的 路由线路信息
      * @return
      */
     @RequestMapping(value = "/findTourApple",method = RequestMethod.POST)
     public String findTourApple(String phone,Model model){
+        TourQueryModel tourQueryModel = new TourQueryModel();
+        tourQueryModel.setDelfage(0);
+        List<Tour> tourList = tourService.findAllByTour(tourQueryModel);
+        List<Tour> nowTourList = new ArrayList<Tour>();
+        for (Tour tour:tourList){
+            tour.setImage(getThumbnail(tour.getImage(), 640, 320));
+            nowTourList.add(tour);
+        }
+        model.addAttribute("tourList",nowTourList);
         model.addAttribute("parentPhone",phone);
         return "ucenter/tour/tourApply";
     }

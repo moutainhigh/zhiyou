@@ -251,5 +251,15 @@ public class TourServiceImpl implements TourService {
         tourUserMapper.reset(tourUser);
     }
 
+    /**
+     * 查询 所有的旅游信息
+     * @param tourQueryModel
+     * @return
+     */
+    @Override
+    public List<Tour> findAllByTour(TourQueryModel tourQueryModel) {
+         return tourMapper.findAll(tourQueryModel);
+    }
+
 
 }
