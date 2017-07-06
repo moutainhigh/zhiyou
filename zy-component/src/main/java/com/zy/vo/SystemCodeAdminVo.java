@@ -23,12 +23,12 @@ public class SystemCodeAdminVo implements Serializable {
 	private String systemDesc;
 	@Field(label = "是否删除")
 	private Integer systemFlag;
-	@Field(label = "创建时间")
-	private Date createDate;
+//	@Field(label = "创建时间")
+//	private Date createDate;
 	@Field(label = "创建人id")
 	private Long createBy;
-	@Field(label = "修改时间")
-	private Date updateDate;
+//	@Field(label = "修改时间")
+//	private Date updateDate;
 	@Field(label = "修改人id")
 	private Long updateBy;
 

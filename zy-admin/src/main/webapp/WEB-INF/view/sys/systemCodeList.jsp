@@ -46,7 +46,10 @@
 	        },
             {
                 data: 'createDate',
-                title: '创建时间'
+                title: '创建时间',
+                render: function(data, type, full) {
+                    return full.createTimeLabel;
+                }
             },
             {
                 data: '',
@@ -58,7 +61,10 @@
             },
             {
                 data: 'updateDate',
-                title: '修改时间'
+                title: '修改时间',
+                render: function(data, type, full) {
+                    return full.updateTimeLabel;
+                }
             },
             {
                 data: '',
