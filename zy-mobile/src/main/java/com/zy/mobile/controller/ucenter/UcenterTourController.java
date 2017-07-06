@@ -32,6 +32,7 @@ public class UcenterTourController {
         return "ucenter/tour/addInfo";
     }
 
+
     /**
      * 查询 推荐人信息
      * @param principal
@@ -70,8 +71,9 @@ public class UcenterTourController {
      * 封装 旅游客户信息
      * @return
      */
+    @RequestMapping(value = "/findTourUserVo",method = RequestMethod.POST)
     public String findTourUserVo(){
 
-        return null;
+        return "ucenter/tour/tourApply";
     }
 }
