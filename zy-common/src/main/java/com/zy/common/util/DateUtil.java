@@ -63,6 +63,20 @@ public class DateUtil {
     }
 
     /**
+     * 获取指定月份相差月份日期
+     * @param date
+     * @param month
+     * @return
+     */
+    public static Date getMonthData(Date date,int month,int dateI){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, month);
+        calendar.add(Calendar.DATE,dateI);
+        return calendar.getTime();
+    }
+
+    /**
      * 查询 当前 时间所属月份
      * @param date
      * @return
@@ -71,6 +85,41 @@ public class DateUtil {
         Calendar cal = Calendar.getInstance();
         return cal.get(Calendar.MONTH) + 1;
     }
+    /**
+     * 查询 指定时间 时间所属月份
+     * @param date
+     * @return
+     */
+    public static int getMothNum(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.MONTH);
+    }
+
+    /**
+     * 获取指定时间的周信息下标
+     * @param date
+     * @return
+     */
+    public static int getWeekNum(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.DAY_OF_WEEK);
+    }
+    /**
+     * 获取指定时间的周信息的名字
+     * @param date
+     * @return
+     */
+    public static String getWeek(Date date){
+        String[] weekDays = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+        int week = DateUtil.getWeekNum(date)-1;
+        if (week < 0) {
+            week = 0;
+        }
+        return weekDays[week];
+    }
+
 
     /**
      * 格式化数为2为
@@ -148,16 +197,23 @@ public class DateUtil {
         return DateUtil.formatDouble(((double)coun/(double)data)*100);
     }
     public static void  main(String []age){
-       System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
+      /* System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateUtil.getMoth(new Date()));
         System.out.println(DateUtil.formatDouble(10123456789.0));
         String ll="qwertyui";
-        System.out.println("1111"+ll.contains("ty"));
+        System.out.println("1111"+ll.contains("ty"));*/
+        System.out.println(DateFormatUtils.format(getMonthData(new Date(),3,-1),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(getMothNum(getMonthData(new Date(),3,-1)));
+        System.out.println(getMothNum(new Date()));
+        System.out.println(getWeekNum(new Date()));
+        System.out.println(getWeek(new Date()));
+
+
        /* dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),0,0));
         dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthEnd(new Date(),1,0));*/
 
-        System.out.print(((double)1l/(double)2l));
+      //  System.out.print(((double)1l/(double)2l));
     }
 
 
