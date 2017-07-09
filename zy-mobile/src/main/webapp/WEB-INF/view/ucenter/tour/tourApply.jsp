@@ -37,6 +37,7 @@
 </head>
 <header class="header"><h1>选择旅游路线</h1><a href="${ctx}/tour/findparentInfo"  class="button-left"><i class="fa fa-angle-left"></i></a></header>
 <input type="hidden" name="phone" id="parentPhone" value="${parentPhone}" />
+<input type="hidden" name="reporId" id="reporId" value="${reporId}" />
 <c:forEach items="${tourList}" var="tour">
     <div onclick="TravelDetil('${tour.id}')" class="opacityAll" style="width:100%;position:relative;">
         <img class="opacityFirst" src="${tour.image}" style="display:block;width:100%;" />
@@ -46,14 +47,19 @@
 </c:forEach>
 
 <script>
+
     function TravelDetil(num){
+        var reporId= $("#reporId").val();
+        if(reporId==null||reporId=="") {
+            reporId = parent.getReportId();
+        }
         travelT= layer.open({
             type: 2,
             area:['100%', '100%'],
             title: false,
             scrollbar: false,
             closeBtn: 0,
-            content: '${ctx}/tour/findTourDetail?tourId='+num+'&parentPhone='+$('#parentPhone').val()
+            content: '${ctx}/tour/findTourDetail?tourId='+num+'&parentPhone='+$('#parentPhone').val()+'&reporId='+reporId
         });
     }
    var  travelT;

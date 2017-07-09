@@ -182,8 +182,16 @@
         <label class="list-label" for="realname">推荐人手机号</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写推荐人手机号"></div></div>
     <div class="list-item">
         <label class="list-label" for="realname">出游日期</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写出游日期"></div></div>
-    <div class="list-item">
-        <label class="list-label" for="realname">房型需求</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写房型需求"></div></div>
+     </div>
+        <div class="list-item">
+        <label class="list-label">房型需求</label>
+         <div class="list-text form-select">
+            <select>
+             <option value="1">标准间 </option>
+             <option value="2">三人间 </option>
+         </select>
+         </div>
+      </div>
     <div class="list-item">
         <label class="list-label" for="realname">特殊需求</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写特殊需求"></div></div>
     </form>

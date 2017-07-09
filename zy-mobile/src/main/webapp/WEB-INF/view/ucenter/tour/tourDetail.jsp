@@ -17,6 +17,7 @@
     <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
     <script src="${stc}/js/layer/layer.js"></script>
     <script src="${stccdn}/js/area.js"></script>
+    <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
     <style>
         .footer {
             position: fixed;
@@ -160,9 +161,14 @@
 </head>
 <header class="header">
     <h1>旅游路线详情</h1>
-    <a href="#" onclick="hideDetil()" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <form id="_form" method="post" action="${ctx}/tour/findTourApple">
+        <input type="hidden" name ="phone" value="${parentPhone}"/>
+        <input type="hidden" name ="reporId" value="${reporId}" id="reporId"/>
+        <input type="hidden" name ="tourTimeid"  id="tourTimeid"/>
+        <input type="hidden" name ="tourId" id="tourId" value="${tour.id}"/>
+      <a href="#" onclick="document.getElementById('_form').submit();" class="button-left"><i class="fa fa-angle-left"></i></a>
+    </form>
 </header>
-<input type="hidden" name ="parentPhone" id="parentPhone" value="${parentPhone}"/>
 <img src="${ctx}/images/TravelTop.png" style="width:100%;" />
 <div class="TravelFont">
     ${tour.content}
@@ -176,32 +182,31 @@
     <label class="list-label" style="height:30px;line-height:25px;font-size:16px;width:50%;float:left;">请选择出游时间：</label>
     <div class="list-text form-select" style="width:50%;float:left;">
         <select name="jobId" onchange="selectValue(this)"><option value="0">请选择</option>
-            <c:forEach var="">
-
+            <c:forEach items="${list}" var="i">
+                <option value="${i}">${i}</option>
             </c:forEach>
-            <option value="1">一月</option><option value="2">二月</option>
         </select>
     </div>
 </div>
 <div class="TravelDis clearfloat">
-    <div class="TravelDisTime">
-        <p>07-06 周四</p>
-        <p class="TravelDisTimecolor">原价:<del>￥1000</del></p>
-    </div><div class="TravelDisTime"><p>07-06 周四</p>
-    <p class="TravelDisTimecolor">原价:<del>￥1000</del></p>
-</div>
+
+
+    <%--<div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div>
     <div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div>
-    <div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div>
-    <div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div>
+    <div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div>--%>
 </div>
 <div class="MyApply" onclick="MyApplyFun()">我要报名</div>
 <script>
-    //返回上一页
-    function hideDetil(){
-
-    }
+    var tourTimeid="";
     //我要报名
     function MyApplyFun(){
+        if(tourTimeid==""){
+            layer.alert("选择出游时间");
+            return ;
+        }
+        $("#tourTimeid").val(tourTimeid);
+        $("#_form").attr("action", "${ctx}/tour/findTourUserVo");
+        $("#_form").submit();
 
     }
     $(function(){
@@ -209,7 +214,7 @@
             $(this).css("background","#f15b00");
             $(this).find("p").css("color","#fff");
             $(this).find("p.TravelDisTimecolor").css("color","#fff");
-
+            tourTimeid= $(this).find("input[name='tourTimeid']").val();
             $(this).siblings(".TravelDisTime").css("background","#fff");
             $(this).siblings(".TravelDisTime").find("p").css("color","#333");
             $(this).siblings(".TravelDisTime").find("p.TravelDisTimecolor").css("color","#f15b00");
@@ -218,18 +223,42 @@
     //选择出游时间
     function selectValue(obj) {
         var num=$(obj).val();
-        if(num==0){
-            $(".TravelDis").hide();
-        }else {
-            $(".TravelDis").show();
-            if(num==1){
-
-            }else if(num==2){
-
+        $.ajax({
+            url : '${ctx}/tour/ajaxTourTime',
+            data : {
+                reporId:$("#reporId").val(),
+                tourId:$("#tourId").val(),
+                tourTime:num
+            },
+            dataType : 'json',
+            type : 'POST',
+            success : function(result) {
+                if(result.code != 0) {
+                    return;
+                }
+                var pageData= result.data;
+                if (pageData.length) {
+                    $('.TravelDis').html("");
+                    $(".TravelDis").show();
+                    for ( var i in pageData) {
+                        var row = pageData[i];
+                        if (row.userRank!="V0"){
+                            buildRow(row);
+                        }
+                    }
+                }
             }
-
-        }
+        });
     }
+    function buildRow(row){
+        var rowTpl = document.getElementById('rowTpl').innerHTML;
+        laytpl(rowTpl).render(row,function(html) {
+            $('.TravelDis').append(html);
+        });
+    }
+</script>
+<script id="rowTpl" type="text/html">
+    <div class="TravelDisTime"><input type="hidden" name="tourTimeid" value="{{d.id}}"> <p>{{d.beginTimeStr}} {{d.weekStr}}</p><p class="TravelDisTimecolor">原价:<del>￥{{d.fee}}</del></p></div>
 </script>
 </body>
 </html>

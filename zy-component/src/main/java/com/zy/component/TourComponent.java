@@ -1,7 +1,9 @@
 package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
+import com.zy.common.util.DateUtil;
 import com.zy.entity.act.Activity;
+import com.zy.entity.act.Report;
 import com.zy.entity.tour.BlackOrWhite;
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.cms.Article;
@@ -10,6 +12,8 @@ import com.zy.entity.tour.TourTime;
 import com.zy.entity.usr.User;
 import com.zy.entity.tour.Tour;
 import com.zy.model.dto.AreaDto;
+import com.zy.model.query.TourTimeQueryModel;
+import com.zy.service.ReportService;
 import com.zy.service.TourService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
@@ -19,8 +23,11 @@ import com.zy.util.GcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.zy.util.GcUtils.getThumbnail;
 import static java.util.Objects.isNull;
@@ -34,6 +41,9 @@ public class TourComponent {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ReportService reportService;
 
 
     private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
@@ -184,5 +194,55 @@ public class TourComponent {
         return tourTime;
     }
 
+    /**
+     * 查询线路的时间信息
+     * @return
+     */
+    public List<TourTimeVo> findTourTimeVo(Long reporId,Long tourId,String tourTime)  {
+        TourTimeQueryModel tourTimeQueryModel = new TourTimeQueryModel();
+        Report report = reportService.findOne(reporId);
+        Date create_date = report.getCreatedTime();
+        int begin = DateUtil.getMothNum(create_date);
+        int endinnum = DateUtil.getMothNum(DateUtil.getMonthData(create_date,3,-1));
+        int tournum = 0;
+        try {
+            tournum= DateUtil.getMothNum(new SimpleDateFormat("yyyy-MM").parse(tourTime));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if (begin==tournum){
+            tourTimeQueryModel.setBegintimegt(create_date);
+            tourTimeQueryModel.setBegintimelt(DateUtil.getBeforeMonthEnd(create_date,1,0));
+        }else if (endinnum==tournum){
+            tourTimeQueryModel.setBegintimegt(DateUtil.getBeforeMonthBegin(create_date,0,0));
+            tourTimeQueryModel.setBegintimelt(DateUtil.getDateEnd(create_date));
+        }else{
+            tourTimeQueryModel.setBegintimegt(DateUtil.getBeforeMonthBegin(create_date,0,0));
+            tourTimeQueryModel.setBegintimelt(DateUtil.getBeforeMonthEnd(create_date,1,0));
+        }
+        tourTimeQueryModel.setTourId(tourId);
+        tourTimeQueryModel.setDelfage(0);
+        tourTimeQueryModel.setIsreleased(1);
+        List<TourTime> timeList = tourService.findTourTime(tourTimeQueryModel);
+        return this.changeVo(timeList);
+    }
+
+    /**
+     * 将 tourtime 转成TourtimeVo
+     * @param timeList
+     * @return
+     */
+    public List<TourTimeVo>changeVo(List<TourTime> timeList){
+        List<TourTimeVo> tourTimeVoList = new ArrayList<TourTimeVo>();
+        for (TourTime tourTime:timeList){
+            TourTimeVo tourTimeVo = new TourTimeVo();
+            tourTimeVo.setId(tourTime.getId());
+            tourTimeVo.setBeginTimeStr(GcUtils.formatDate(tourTime.getBegintime(), "MM-dd"));
+            tourTimeVo.setFee(tourTime.getFee());
+            tourTimeVo.setWeekStr(DateUtil.getWeek(tourTime.getBegintime()));
+            tourTimeVoList.add(tourTimeVo);
+        }
+        return tourTimeVoList;
+    }
 
 }

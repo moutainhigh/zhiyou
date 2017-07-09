@@ -161,7 +161,7 @@
       transform:translate(-50%,-50%);
     }
   </style>
-  <script type="text/javascript">
+  <script type="text/javascript">、
     $(function() {
       var area = new areaInit('province', 'city', 'district', '${report.areaId}');
 
@@ -458,7 +458,7 @@
 </div>
 
 <script>
-
+  var reportId="22";//展示写死   提交 检查记录后再置值
   //保险申请
   var insuranceT,travelT,line,MyApply;
   function insurance(){
@@ -542,11 +542,20 @@
   //取消旅游申请
   function hideTravel(){
     layer.close(travelT);
-    $(".main").show();
+   /* $(".main").show();*/
   }
+
   function hideLine(){
     layer.close(line);
     travel();
+  }
+
+  /**
+   * 获取rteportId
+   * @returns {*}
+   */
+  function getReportId(){
+    return reportId;
   }
   <%--//点击线路弹出旅游详情--%>
   <%--var traveldetil="";--%>

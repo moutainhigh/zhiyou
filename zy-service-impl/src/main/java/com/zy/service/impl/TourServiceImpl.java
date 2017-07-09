@@ -261,5 +261,25 @@ public class TourServiceImpl implements TourService {
          return tourMapper.findAll(tourQueryModel);
     }
 
+    /**
+     * 查询 线路时间信息
+     * @param tourTimeQueryModel
+     * @return
+     */
+    @Override
+    public List<TourTime> findTourTime(TourTimeQueryModel tourTimeQueryModel) {
+        return tourTimeMapper.findAll(tourTimeQueryModel);
+    }
+
+    /**
+     * 查询 旅游时间信息
+     * @param tourTimeid
+     * @return
+     */
+    @Override
+    public TourTime findTourTimeOne(Long tourTimeid) {
+        return tourTimeMapper.findOne(tourTimeid);
+    }
+
 
 }

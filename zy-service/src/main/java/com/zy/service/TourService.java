@@ -41,4 +41,8 @@ public interface TourService {
      void reset(Long id, Long loginUserId);
 
      List<Tour> findAllByTour(TourQueryModel tourQueryModel);
+
+     List<TourTime> findTourTime(TourTimeQueryModel tourTimeQueryModel);
+
+     TourTime findTourTimeOne(Long tourTimeid);
 }
