@@ -27,6 +27,10 @@ public class TourUserQueryModel implements Serializable {
 
     private Integer isEffect;
 
+    private Integer isTransfers;
+
+    private Integer isJoin;
+
     private String userName;
 
     private String parentName;
@@ -38,6 +42,10 @@ public class TourUserQueryModel implements Serializable {
     private String tourTitle;
 
     private Date beginTime;
+
+    private Date planStartTime;
+
+    private Date planEndTime;
 
     private Date endTime;
 

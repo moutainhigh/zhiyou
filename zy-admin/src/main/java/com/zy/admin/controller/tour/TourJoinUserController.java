@@ -1,7 +1,9 @@
 package com.zy.admin.controller.tour;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.common.util.ExcelUtils;
 import com.zy.common.util.WebUtils;
@@ -11,21 +13,27 @@ import com.zy.model.query.TourUserQueryModel;
 import com.zy.service.TourService;
 import com.zy.vo.TourJoinUserExportVo;
 import com.zy.vo.TourUserAdminVo;
-import com.zy.vo.TourUserExportVo;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.zy.common.util.ValidateUtils.NOT_NULL;
+import static com.zy.common.util.ValidateUtils.validate;
 
 /**
  * Author: Xuwq
@@ -81,5 +89,45 @@ public class TourJoinUserController {
         ExcelUtils.exportExcel(tourJoinUserExportVo, TourJoinUserExportVo.class, os);
 
         return null;
+    }
+
+    @RequiresPermissions("tourJoinUser:edit")
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+    public String update(@PathVariable Long id, Model model) {
+        TourUser tourUser = tourService.findTourUser(id);
+        TourUserAdminVo tourUserAdminVo = tourUserComponent.buildAdminVo(tourUser);
+        model.addAttribute("tourUserAdminVo",tourUserAdminVo);
+        return "tour/tourJoinUserEdit";
+    }
+
+    /**
+     * 编辑
+     * @param tourUser
+     * @return
+     */
+    @RequiresPermissions("tourJoinUser:edit")
+    @RequestMapping(value = "/editTourJoinUser", method = RequestMethod.POST)
+    public String editTourJoinUser(TourUser tourUser,RedirectAttributes redirectAttributes) {
+        Long tourUserId = tourUser.getId();
+        validate(tourUser, NOT_NULL, "tourUser id is null");
+        Long loginUserId = getPrincipalUserId();
+        tourUser.setUpdateBy(loginUserId);
+        try {
+            tourService.modify(tourUser);
+            redirectAttributes.addFlashAttribute(ResultBuilder.ok("保存成功"));
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(ResultBuilder.error("资源保存失败, 原因" + e.getMessage()));
+            return "redirect:/tourJoinUser/update/" + tourUserId;
+        }
+        return "redirect:/tourJoinUser";
+    }
+
+    /**
+     * 获取登录人的id
+     * @return
+     */
+    private Long getPrincipalUserId() {
+        AdminPrincipal principal = (AdminPrincipal) SecurityUtils.getSubject().getPrincipal();
+        return principal.getUserId();
     }
 }

@@ -43,22 +43,6 @@
 <script>
     var grid = new Datatable();
 
-   function userDetail(obj){
-        var userId = $(obj).attr("data-id");
-        $.ajax({
-            url: '${ctx}/tourUser/detail?userId=' + userId ,
-            dataType: 'html',
-            success: function(data) {
-                layer.open({
-                    type: 1,
-                    skin: 'layui-layer-rim', //加上边框
-                    area: ['900px', '400px'], //宽高
-                    content: data
-                });
-            }
-        });
-    }
-
     var template = Handlebars.compile($('#confirmTmpl').html());
     $('#dataTable').on('click', '.report-confirm', function () {
         var id = $(this).data('id');
@@ -219,18 +203,6 @@
                             }
                         }
                     },
-//                    {
-//                        data: 'isTransfers',
-//                        title: '是否接车',
-//                        orderable: false,
-//                        render: function (data, type, full) {
-//                            if(data == 0){
-//                                return '否';
-//                            }else if(data == 1){
-//                                return '是';
-//                            }
-//                        }
-//                    },
                     {
                         data: 'userRemark',
                         title: '用户备注',
@@ -264,8 +236,8 @@
                         orderable: false,
                         render: function (data, type, full) {
                             var optionHtml = '';
-                            optionHtml += '<a class="btn btn-xs default blue-stripe user-detail" onclick="userDetail(this)" href="javascript:;" data-id="' + full.userId + '"><i class="fa fa-search"></i> 查看</a>';
                             <shiro:hasPermission name="tourUser:edit">
+                            optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tourUser/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
                             if (full.auditStatus == 1){
                                 optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
                             }
@@ -319,13 +291,6 @@
                 <div class="caption">
                     <i class="icon-book-open"></i> 旅客信息管理
                 </div>
-            <%--<shiro:hasPermission name="tour:edit">--%>
-                <%--<div class="actions">--%>
-                    <%--<a class="btn btn-circle green" data-href="${ctx}/tour/create">--%>
-                        <%--<i class="fa fa-plus"></i> 新增--%>
-                    <%--</a>--%>
-                <%--</div>--%>
-            <%--</shiro:hasPermission>--%>
             </div>
             <div class="portlet-body clearfix">
                 <div class="table-container">

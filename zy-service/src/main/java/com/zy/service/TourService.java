@@ -37,4 +37,8 @@ public interface TourService {
      void updateAuditStatus(Long id, boolean isSuccess, String revieweRemark, Long loginUserId);
 
      void reset(Long id, Long loginUserId);
+
+     TourUser findTourUser(Long id);
+
+     void modify(TourUser tourUser);
 }

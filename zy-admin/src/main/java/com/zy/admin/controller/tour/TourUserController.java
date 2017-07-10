@@ -25,10 +25,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -120,19 +118,35 @@ public class TourUserController {
         return null;
     }
 
+    @RequiresPermissions("tourUser:edit")
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+    public String update(@PathVariable Long id, Model model) {
+        TourUser tourUser = tourService.findTourUser(id);
+        TourUserAdminVo tourUserAdminVo = tourUserComponent.buildAdminVo(tourUser);
+        model.addAttribute("tourUserAdminVo",tourUserAdminVo);
+        return "tour/tourUserEdit";
+    }
+
     /**
-     * 查看旅客信息
-     * @param userId
-     * @param model
+     * 编辑
+     * @param tourUser
      * @return
      */
-    @RequiresPermissions("tourUser:view")
-    @RequestMapping("/detail")
-    public String detail(Long userId, Model model){
-        User user = userService.findOne(userId);
-        validate(user, NOT_NULL, "user is null");
-        model.addAttribute("user", userComponent.buildAdminFullVo(user));
-        return "tour/tourUserDetail";
+    @RequiresPermissions("tourUser:edit")
+    @RequestMapping(value = "/editTourUser", method = RequestMethod.POST)
+    public String editTourUser(TourUser tourUser,RedirectAttributes redirectAttributes) {
+        Long tourUserId = tourUser.getId();
+        validate(tourUser, NOT_NULL, "tourUser id is null");
+        Long loginUserId = getPrincipalUserId();
+        tourUser.setUpdateBy(loginUserId);
+        try {
+            tourService.modify(tourUser);
+            redirectAttributes.addFlashAttribute(ResultBuilder.ok("保存成功"));
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(ResultBuilder.error("资源保存失败, 原因" + e.getMessage()));
+            return "redirect:/tourJoinUser/update/" + tourUserId;
+        }
+        return "redirect:/tourJoinUser";
     }
 
     /**

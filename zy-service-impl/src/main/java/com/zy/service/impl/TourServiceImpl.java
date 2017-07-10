@@ -251,5 +251,17 @@ public class TourServiceImpl implements TourService {
         tourUserMapper.reset(tourUser);
     }
 
+    @Override
+    public TourUser findTourUser(Long id) {
+        return tourUserMapper.findOne(id);
+    }
+
+    @Override
+    public void modify(TourUser tourUser) {
+
+        tourUser.setUpdateDate(new Date());
+        tourUserMapper.modify(tourUser);
+    }
+
 
 }

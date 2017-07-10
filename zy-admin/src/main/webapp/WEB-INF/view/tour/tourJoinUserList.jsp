@@ -191,8 +191,9 @@
                         title: '操作',
                         orderable: false,
                         render: function (data, type, full) {
-                            var optionHtml = '';
-                            optionHtml += '<a class="btn btn-xs default blue-stripe user-detail" onclick="userDetail(this)" href="javascript:;" data-id="' + full.userId + '"><i class="fa fa-search"></i> 查看</a>';
+                        <shiro:hasPermission name="tourJoinUser:edit">
+                            var optionHtml = '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tourJoinUser/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
+                        </shiro:hasPermission>
                             return optionHtml;
                         }
                     }]
@@ -265,6 +266,28 @@
                                        name="endTime" value="" placeholder="出游结束时间"/>
                             </div>
                             <div class="form-group">
+                                <select name="isTransfers" class="form-control">
+                                    <option value="">-- 是否接车 --</option>
+                                    <option value="0">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                            </div>
+                            <div class="form-group input-inline">
+                                <input class="Wdate form-control" type="text" id="planStartTime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                                       name="planStartTime" value="" placeholder="计划到达起始时间"/>
+                            </div>
+                            <div class="form-group input-inline">
+                                <input class="Wdate form-control" type="text" id="planEndTime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                                       name="planEndTime" value="" placeholder="计划到达结束时间"/>
+                            </div>
+                            <div class="form-group">
+                                <select name="isJoin" class="form-control">
+                                    <option value="">-- 是否参游 --</option>
+                                    <option value="0">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <select name="auditStatus" class="form-control">
                                     <option value="">-- 审核状态 --</option>
                                     <option value="1">审核中</option>
@@ -274,23 +297,6 @@
                                     <option value="5">审核失败</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <select name="isTransfers" class="form-control">
-                                    <option value="">-- 是否接车 --</option>
-                                    <option value="0">否</option>
-                                    <option value="1">是</option>
-                                </select>
-                            </div>
-                            <%--<div class="form-group">--%>
-                                <%--<select name="auditStatus" class="form-control">--%>
-                                    <%--<option value="">-- 审核状态 --</option>--%>
-                                    <%--<option value="1">审核中</option>--%>
-                                    <%--<option value="2">待补充</option>--%>
-                                    <%--<option value="3">已生效</option>--%>
-                                    <%--<option value="4">已完成</option>--%>
-                                    <%--<option value="5">审核失败</option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
                             <div class="form-group">
                                 <select name="isEffect" class="form-control">
                                     <option value="">-- 是否有效 --</option>

@@ -77,6 +77,12 @@
 			<if test="isEffect !=null">
 				AND a.is_effect = #{isEffect}
 			</if>
+			<if test="isTransfers !=null">
+				AND a.is_transfers = #{isTransfers}
+			</if>
+			<if test="isJoin !=null">
+				AND a.is_join = #{isJoin}
+			</if>
 			<if test="userName !=null">
 				AND  b.realname= #{userName}
 			</if>
@@ -97,6 +103,12 @@
 			</if>
 			<if test="endTime !=null">
 				AND g.end_time &lt;= #{endTime}
+			</if>
+			<if test="planStartTime !=null">
+				AND  a.plan_time &gt;= #{planStartTime}
+			</if>
+			<if test="planEndTime !=null">
+				AND a.plan_time &lt;= #{planEndTime}
 			</if>
 		</where>
 		ORDER BY a.create_date DESC ,a.audit_status ASC
@@ -174,16 +186,6 @@
 		where id = #{id}
 	</update>
 
-
-	<insert id="insert" parameterType="com.zy.entity.usr.Tag" useGeneratedKeys="true" keyProperty="id">
-		insert into `ts_tour` (title,brief,days,is_released,images,content,create_date,create_by,del_fage)
-		values (#{title},#{brief},#{days},#{isReleased},#{image},#{content},#{createdTime},#{createby},#{delfage})
-	</insert>
-
-	<delete id="delete">
-		delete from `ts_tour` where id = #{id}
-	</delete>
-
 	<!-- 审核状态 -->
 	<update id="updateAuditStatus" parameterType="com.zy.entity.tour.TourUser">
 		update ts_tour_user
@@ -196,6 +198,41 @@
 			</if>
 			<if test="updateDate !=null">
 				update_date = #{updateDate},
+			</if>
+			<if test="updateBy !=null">
+				update_by = #{updateBy}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 编辑 -->
+	<update id="modify" parameterType="com.zy.entity.tour.TourUser">
+		update ts_tour_user
+		<set>
+			<if test="houseType !=null">
+				house_type = #{houseType},
+			</if>
+			<if test="isAddBed !=null">
+				is_add_bed = #{isAddBed},
+			</if>
+			<if test="isEffect !=null">
+				is_effect = #{isEffect},
+			</if>
+			<if test="isTransfers !=null">
+				is_transfers = #{isTransfers},
+			</if>
+			<if test="carNumber !=null">
+				car_number = #{carNumber},
+			</if>
+			<if test="updateDate !=null">
+				update_date = #{updateDate},
+			</if>
+			<if test="isJoin !=null">
+				is_join = #{isJoin},
+			</if>
+			<if test="amount !=null">
+				amount = #{amount},
 			</if>
 			<if test="updateBy !=null">
 				update_by = #{updateBy}

@@ -19,4 +19,6 @@ public interface TourUserMapper {
     void updateAuditStatus(TourUser tourUser);
 
     void reset(TourUser tourUser);
+
+    void modify(TourUser tourUser);
 }
