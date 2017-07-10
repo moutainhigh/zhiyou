@@ -962,77 +962,12 @@ public class OrderServiceImpl implements OrderService {
 				.sellerIdEQ(Constants.SETTING_SETTING_ID)
 				.build());
 
-		final Long toV4Quantity = 3600L;
 		final BigDecimal zero = new BigDecimal("0.00");
 		final Date now = new Date();
-
-		Map<Long, Boolean> toV4Map = orders.stream()
-				.filter(v -> v.getQuantity() >= toV4Quantity && v.getBuyerUserRank().ordinal() < UserRank.V4.ordinal())
-				.collect(Collectors.toMap(v -> v.getUserId(), v -> true, (existingValue, newValue) -> existingValue));
 
 		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
 		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
 		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
-		List<Order> copyOrders = orders.stream().map(v -> {
-			Long userId = v.getUserId();
-
-			Order copy = new Order();
-			BeanUtils.copyProperties(v, copy);
-
-			Boolean toV4 = toV4Map.get(userId);
-			User user = userMap.get(userId);
-			if (toV4 != null) {
-				User parent = userMap.get(user.getParentId());
-				logger.error(parent.getNickname()+ "是否直升特级：" + toV4Map.get(parent.getId()));
-				logger.error(parent.getNickname()+ "用户等级：" + parent.getUserRank());
-				while(parent.getUserRank() != UserRank.V4) {
-					parent = userMap.get(parent.getParentId());
-				}
-				copy.setUserId(parent.getId());
-				logger.error(user.getNickname() + "直升特级，订单给上级：" + parent.getNickname() + parent.getUserRank());
-			}
-			return copy;
-		}).collect(Collectors.toList());
-
-		Map<Long, TeamModel> teamMap = v4Users.stream()
-				.map(v -> {
-					TeamModel teamModel = new TeamModel();
-					teamModel.setUser(v);
-					teamModel.setV4Children(TreeHelper.sortBreadth2(v4Users, String.valueOf(v.getId()), u -> {
-						TreeNode treeNode = new TreeNode();
-						treeNode.setId(String.valueOf(u.getId()));
-						Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
-						treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(directV4ParentId));
-						return treeNode;
-
-					}));
-					teamModel.setDirectV4Children(users.stream().filter(u -> {
-						Long userId = u.getId();
-						if (userId.equals(v.getId())) {
-							return false;
-						}
-						Long directV4ParentId = null;
-						int times = 0;
-						Long parentId = u.getParentId();
-						while(parentId != null) {
-							if (times > 1000) {
-								throw new BizException(BizCode.ERROR, "循环引用");
-							}
-							User parent = userMap.get(parentId);
-							if (predicate.test(parent)) {
-								directV4ParentId = parentId;
-								break;
-							}
-							parentId = parent.getParentId();
-							times ++;
-						}
-						if (directV4ParentId != null && directV4ParentId.equals(v.getId())) {
-							return true;
-						}
-						return false;
-					}).collect(Collectors.toList()));
-					return teamModel;
-				}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
 
 		Map<Long, Long> userQuantityMap = orders.stream().collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x, y) -> x + y));
 		userQuantityMap.entrySet().stream().forEach(v -> {
