@@ -655,7 +655,7 @@
               </div>
               
               <div class="form-group">
-                <select name="userRankEQ" class="form-control">
+                <select name="isFrozenEQ" class="form-control">
                   <option value="">-- 是否冻结 --</option>
                   <option value="1">是</option>
                   <option value="0">否</option>
