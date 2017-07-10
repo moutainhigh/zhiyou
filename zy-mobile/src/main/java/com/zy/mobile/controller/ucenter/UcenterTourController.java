@@ -1,19 +1,23 @@
 package com.zy.mobile.controller.ucenter;
 
+import com.zy.common.model.query.Page;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.util.DateUtil;
 import com.zy.component.TourComponent;
+import com.zy.component.TourUserComponent;
 import com.zy.entity.act.Report;
 import com.zy.entity.tour.Tour;
-import com.zy.entity.tour.TourTime;
+import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.User;
 import com.zy.model.Principal;
 import com.zy.model.query.TourQueryModel;
+import com.zy.model.query.TourUserQueryModel;
 import com.zy.service.ReportService;
 import com.zy.service.TourService;
 import com.zy.service.UserService;
 import com.zy.vo.TourTimeVo;
+import com.zy.vo.TourUserAdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,13 +46,25 @@ public class UcenterTourController {
     private TourService tourService;
 
     @Autowired
+    private TourUserComponent tourUserComponent;
+
+
+    @Autowired
     private ReportService reportService;
 
     @Autowired
     private TourComponent tourComponent;
 
     @RequestMapping
-    public String tourList(){
+    public String tourList(Principal principal , Model model){
+        User user = userService.findOne(principal.getUserId());
+        TourUserQueryModel tourUserQueryModel = new TourUserQueryModel();
+        tourUserQueryModel.builder().userPhone(user.getPhone()).createdTime(DateUtil.getCurrYearFirst());
+        Page<TourUser> page = tourService.findAll(tourUserQueryModel);
+        List<TourUserAdminVo> list = page.getData().stream().map(v -> {
+            return tourUserComponent.buildAdminVo(v);
+        }).collect(Collectors.toList());
+        model.addAttribute("tourUsers" , list);
         return "ucenter/tour/tourList";
     }
 
@@ -67,7 +82,6 @@ public class UcenterTourController {
      */
     @RequestMapping(value = "/findparentInfo")
     public String findparentInfo(Principal principal, Model model){
-
         User user = userService.findOne(principal.getUserId());
         if (user!=null&&user.getParentId()!=null){
             User userp = userService.findOne(user.getParentId());
@@ -121,6 +135,15 @@ public class UcenterTourController {
         model.addAttribute("parentPhone",phone);
         model.addAttribute("reporId",reporId);
         return "ucenter/tour/tourApply";
+    }
+
+    /**
+     * 跳转到 旅游报名申请表
+     * @return
+     */
+    @RequestMapping(value = "/tourAppleTable")
+    public String tourAppleTable(Long tourId,String parentPhone,Model model){
+        return "ucenter/tour/tourAppleTable";
     }
 
     /**

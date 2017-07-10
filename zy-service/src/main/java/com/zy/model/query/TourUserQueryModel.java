@@ -37,6 +37,8 @@ public class TourUserQueryModel implements Serializable {
 
     private String tourTitle;
 
+    private Date createdTime;
+
     private Date beginTime;
 
     private Date endTime;
