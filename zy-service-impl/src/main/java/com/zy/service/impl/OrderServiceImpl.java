@@ -946,11 +946,6 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "未达到发放时间");
 		}
 
-		OrderMonthlySettlement orderMonthlySettlement = orderMonthlySettlementMapper.findByYearAndMonth(yearAndMonth);
-		if (orderMonthlySettlement != null) {
-			return; // 幂等操作
-		}
-
 		LocalDate beginDate = LocalDate.of(year, month, 1);
 		LocalDate endDate = beginDate.with(TemporalAdjusters.firstDayOfNextMonth());
 
