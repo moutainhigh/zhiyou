@@ -64,5 +64,11 @@ public class TourTimeVo implements Serializable {
     @Field(label = "路线信息id")
     private Long tourId;
 
+    @Field(label = "发团时间")
+    private String beginTimeStr;
+
+    @Field(label = "周几")
+    private String weekStr;
+
     
 }

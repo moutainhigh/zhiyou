@@ -9,6 +9,8 @@ import com.zy.model.query.TourQueryModel;
 import com.zy.model.query.TourTimeQueryModel;
 import com.zy.model.query.TourUserQueryModel;
 
+import java.util.List;
+
 public interface TourService {
      void create(Sequence sequence);
 
@@ -41,4 +43,10 @@ public interface TourService {
      TourUser findTourUser(Long id);
 
      void modify(TourUser tourUser);
+
+     List<Tour> findAllByTour(TourQueryModel tourQueryModel);
+
+     List<TourTime> findTourTime(TourTimeQueryModel tourTimeQueryModel);
+
+     TourTime findTourTimeOne(Long tourTimeid);
 }

@@ -4,9 +4,9 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by it001 on 2017/6/9.
@@ -43,6 +43,19 @@ public class DateUtil {
         calendar.add(Calendar.DATE, -1);    //再减一天即为上个
         calendar.add(Calendar.MONTH, moth);
         calendar.add(Calendar.YEAR, year);
+        return calendar.getTime();
+    }
+
+    /**
+     * 获取当前日期下的结束时间
+     * @param date
+     */
+    public static Date getDateEnd(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
         return calendar.getTime();
     }
 
@@ -93,7 +106,7 @@ public class DateUtil {
     public static int getMothNum(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        return cal.get(Calendar.MONTH);
+        return cal.get(Calendar.MONTH)+1;
     }
 
     /**
@@ -196,18 +209,53 @@ public class DateUtil {
         }
         return DateUtil.formatDouble(((double)coun/(double)data)*100);
     }
-    public static void  main(String []age){
-      /* System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
+
+    /**
+     * 获取两个时差之间的月份
+     * @param minDate
+     * @param maxDate
+     * @return
+     */
+    public static List<String> getMonthBetween(Date minDate, Date maxDate) {
+        List<String> result = new ArrayList<String>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");//格式化为年月
+
+        Calendar min = Calendar.getInstance();
+        Calendar max = Calendar.getInstance();
+
+        min.setTime(minDate);
+        min.set(min.get(Calendar.YEAR), min.get(Calendar.MONTH), 1);
+
+        max.setTime(maxDate);
+        max.set(max.get(Calendar.YEAR), max.get(Calendar.MONTH), 2);
+
+        Calendar curr = min;
+        while (curr.before(max)) {
+            result.add(sdf.format(curr.getTime()));
+            curr.add(Calendar.MONTH, 1);
+        }
+
+        return result;
+    }
+    public static void  main(String []age) throws ParseException {
+       System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));
-        System.out.println(DateUtil.getMoth(new Date()));
+        System.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
+       /*  System.out.println(DateUtil.getMoth(new Date()));
         System.out.println(DateUtil.formatDouble(10123456789.0));
         String ll="qwertyui";
         System.out.println("1111"+ll.contains("ty"));*/
-        System.out.println(DateFormatUtils.format(getMonthData(new Date(),3,-1),"yyyy-MM-dd HH:mm:ss"));
+      /*  System.out.println(DateFormatUtils.format(getMonthData(new Date(),3,-1),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(getMothNum(getMonthData(new Date(),3,-1)));
         System.out.println(getMothNum(new Date()));
-        System.out.println(getWeekNum(new Date()));
-        System.out.println(getWeek(new Date()));
+        Date date = new SimpleDateFormat("yyyy-MM").parse("2005-06");
+        System.out.println(DateFormatUtils.format(date,"yyyy-MM-dd HH:mm:ss"));
+        List<String> list= getMonthBetween(new Date(),getMonthData(new Date(),3,-1));
+        for(String s:list){
+            System.out.println(s);
+        }*/
+      /*  System.out.println(getWeekNum(new Date()));
+        System.out.println(getWeek(new Date()));*/
 
 
        /* dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),0,0));

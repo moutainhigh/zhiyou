@@ -40,7 +40,7 @@
 	$form = $('#createForm');
 
 	$('#addBlackWhiteSubmit').bind('click', function () {
-		var count = 8;
+		var count = ${number};
 		var result = $form.validate().form();
 		if (result) {
 			var number = $("#number").val();

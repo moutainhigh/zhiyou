@@ -120,7 +120,7 @@
                     var optionHtml = '';
                     if (null != full.usedUser && full.isUsed == 1) {
                         <shiro:hasPermission name="activityTicket:edit">
-                            optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/activityTeamApply/ticketReset/' + data + '" data-confirm="您确定要重置此二维码吗？"><i class="fa fa-smile-o"></i> 重置 </a>';
+                            optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="deleteAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 重置 </a>';
                         </shiro:hasPermission>
                     }
                     return optionHtml;
@@ -132,6 +132,19 @@
     });
 
   });
+
+  function deleteAjax(id) {
+      layer.confirm('您确定要重置此二维码吗?', {
+          btn: ['重置','取消'] //按钮
+      }, function(){
+          $.post('${ctx}/activityTeamApply/ticketReset', {id: id}, function (result) {
+              grid.getDataTable().ajax.reload(null, false);
+          });
+          layer.msg('重置成功！');
+      }, function(){
+
+      });
+  }
 
 </script>
 <!-- END JAVASCRIPTS -->

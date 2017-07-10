@@ -75,6 +75,12 @@
 		<include refid="baseColumn"/>
 		from `ts_tour_time`
 		<where>
+			<if test="begintimegt !=null">
+				and begin_time &gt;= #{begintimegt}
+			</if>
+			<if test="begintimelt !=null">
+				and begin_time &lt;= #{begintimelt}
+			</if>
 			<if test="begintime !=null">
 			  and begin_time &gt;= #{begintime}
 			</if>
@@ -112,6 +118,12 @@
 		count(*)
 		from `ts_tour_time`
 		<where>
+			<if test="begintimegt !=null">
+				and begin_time &gt;= #{begintimegt}
+			</if>
+			<if test="begintimelt !=null">
+				and begin_time &lt;= #{begintimelt}
+			</if>
 			<if test="begintime !=null">
 				and begin_time &gt;= #{begintime}
 			</if>

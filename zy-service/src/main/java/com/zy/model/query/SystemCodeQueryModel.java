@@ -20,6 +20,8 @@ public class SystemCodeQueryModel implements Serializable {
 
 	private Long[] idIN;
 
+	private Integer systemFlag;
+
 	private String systemTypeLK;
 
 	private String systemNameLK;

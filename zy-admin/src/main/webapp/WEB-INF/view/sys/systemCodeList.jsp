@@ -46,7 +46,10 @@
 	        },
             {
                 data: 'createDate',
-                title: '创建时间'
+                title: '创建时间',
+                render: function(data, type, full) {
+                    return full.createTimeLabel;
+                }
             },
             {
                 data: '',
@@ -58,7 +61,10 @@
             },
             {
                 data: 'updateDate',
-                title: '修改时间'
+                title: '修改时间',
+                render: function(data, type, full) {
+                    return full.updateTimeLabel;
+                }
             },
             {
                 data: '',
@@ -77,7 +83,7 @@
                     var optionHtml = '';
                     <shiro:hasPermission name="tourSetting:edit">
                     optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/systemCode/editSystemCode/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
-                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/systemCode/deleteSystemCode/' + data + '" data-confirm="您确定要删除该项默认值吗？"><i class="fa fa-trash-o"></i> 撤销 </a>';
+                    optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="deleteAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 删除 </a>';
                     </shiro:hasPermission>
                     return optionHtml;
                 }
@@ -85,8 +91,20 @@
         ]
       }
     });
-
   });
+
+  function deleteAjax(id) {
+      layer.confirm('删除不可恢复，您确认删除此系统默认值吗?', {
+          btn: ['删除','取消'] //按钮
+      }, function(){
+          $.post('${ctx}/systemCode/deleteSystemCode', {id: id}, function (result) {
+              grid.getDataTable().ajax.reload(null, false);
+          });
+          layer.msg('删除成功！');
+      }, function(){
+
+      });
+  }
 
 </script>
 <!-- END JAVASCRIPTS -->
@@ -121,6 +139,7 @@
           <div class="table-toolbar">
             <form class="filter-form form-inline">
               <input id="_orderBy" name="orderBy" type="hidden" value=""/>
+              <input id="systemFlag" name="systemFlag" type="hidden" value="0"/>
               <input id="_direction" name="direction" type="hidden" value=""/>
               <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
               <input id="_pageSize" name="pageSize" type="hidden" value="20"/>

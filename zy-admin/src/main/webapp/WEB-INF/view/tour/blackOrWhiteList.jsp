@@ -72,7 +72,7 @@
                     var optionHtml = '';
                     <shiro:hasPermission name="tourSetting:edit">
                         optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tour/editBlackWhite/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
-                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tour/deleteBlackWhite/' + data + '" data-confirm="您确定要撤销该用户的黑/白名单设置吗？"><i class="fa fa-trash-o"></i> 撤销 </a>';
+                        optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="deleteAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 删除 </a>';
                     </shiro:hasPermission>
                     return optionHtml;
                 }
@@ -83,6 +83,19 @@
     });
 
   });
+
+  function deleteAjax(id) {
+      layer.confirm('撤销不可恢复，您确认撤销此黑白名单吗?', {
+          btn: ['撤销','取消'] //按钮
+      }, function(){
+          $.post('${ctx}/tour/deleteBlackWhite/', {id: id}, function (result) {
+              grid.getDataTable().ajax.reload(null, false);
+          });
+          layer.msg('撤销成功！');
+      }, function(){
+
+      });
+  }
 
 </script>
 <!-- END JAVASCRIPTS -->

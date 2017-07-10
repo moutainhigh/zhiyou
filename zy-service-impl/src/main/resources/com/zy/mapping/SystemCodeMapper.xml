@@ -25,15 +25,15 @@
 	<update id="update" parameterType="com.zy.entity.sys.SystemCode">
 		update `ts_system_code`
 		<set>
-			system_type = #{systemType},
-			system_name = #{systemName},
-			system_value = #{systemValue},
-			system_desc = #{systemDesc},
-			system_flag = #{systemFlag},
-			create_date = #{createDate},
-			create_by = #{createBy},
-			update_date = #{updateDate},
-			update_by = #{updateBy},
+			<if test="systemType != null">system_type = #{systemType},</if>
+			<if test="systemName != null">system_name = #{systemName},</if>
+			<if test="systemValue != null">system_value = #{systemValue},</if>
+			<if test="systemDesc != null">system_desc = #{systemDesc},</if>
+			<if test="systemFlag != null">system_flag = #{systemFlag},</if>
+			<if test="createDate != null">create_date = #{createDate},</if>
+			<if test="createBy != null">create_by = #{createBy},</if>
+			<if test="updateDate != null">update_date = #{updateDate},</if>
+			<if test="updateBy != null">update_by = #{updateBy},</if>
 		</set>
 		where id = #{id}
 	</update>
@@ -49,7 +49,7 @@
 		select
 		*
 		from `ts_system_code`
-		where system_type = #{systemType} and system_name = #{systemName}
+		where system_type = #{systemType} and system_name = #{systemName} and system_flag = 0
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.SystemCodeQueryModel">
@@ -70,6 +70,10 @@
 				<if test="idIN.length == 0">
 					and 1 = 2
 				</if>
+			</if>
+
+			<if test="systemFlag != null">
+				and system_flag = #{systemFlag}
 			</if>
 
 			<if test="systemTypeLK != null">
@@ -152,6 +156,10 @@
 				<if test="idIN.length == 0">
 					and 1 = 2
 				</if>
+			</if>
+
+			<if test="systemFlag != null">
+				and system_flag = #{systemFlag}
 			</if>
 
 			<if test="systemTypeLK != null">

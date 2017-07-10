@@ -8,6 +8,7 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.TourComponent;
+import com.zy.entity.sys.SystemCode;
 import com.zy.entity.tour.BlackOrWhite;
 import com.zy.entity.tour.Tour;
 import com.zy.entity.tour.TourTime;
@@ -19,6 +20,7 @@ import com.zy.model.query.TourQueryModel;
 import com.zy.model.query.TourTimeQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.BlackOrWhiteService;
+import com.zy.service.SystemCodeService;
 import com.zy.service.TourService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
@@ -63,6 +65,9 @@ public class TourController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SystemCodeService systemCodeService;
 
 
     @RequestMapping(method = RequestMethod.GET)
@@ -279,7 +284,15 @@ public class TourController {
 
     @RequiresPermissions("tourSetting:edit")
     @RequestMapping(value = "/createBlackWhite", method = RequestMethod.GET)
-    public String createBlackWhite() {
+    public String createBlackWhite(Model model) {
+        SystemCode systemCode = systemCodeService.findByTypeAndName("BLACKORWHITENUMBER", "BLACKORWHITE");
+        int number;
+        if(null == systemCode){
+            number = 8;
+        }else{
+            number = Integer.parseInt(systemCode.getSystemValue());
+        }
+        model.addAttribute("number",number);
         return "tour/blackWhiteCreate";
     }
 
@@ -316,9 +329,17 @@ public class TourController {
     @RequiresPermissions("tourSetting:edit")
     @RequestMapping(value = "/editBlackWhite/{id}", method = RequestMethod.GET)
     public String updateBlackWhite(@PathVariable Long id, Model model) {
+        SystemCode systemCode = systemCodeService.findByTypeAndName("BLACKORWHITENUMBER", "BLACKORWHITE");
+        int number;
+        if(null == systemCode){
+            number = 8;
+        }else{
+            number = Integer.parseInt(systemCode.getSystemValue());
+        }
         BlackOrWhite blackOrWhite = blackOrWhiteService.findOne(id);
         BlackOrWhiteAdminVo blackOrWhiteAdminVo = tourComponent.buildBlackOrWhiteAdminVo(blackOrWhite);
         model.addAttribute("blackOrWhiteAdminVo",blackOrWhiteAdminVo);
+        model.addAttribute("number",number);
         return "tour/blackWhiteEdit";
     }
 
@@ -341,10 +362,9 @@ public class TourController {
         return "redirect:/tour/blackOrWhite";
     }
 
-
     @RequiresPermissions("tourSetting:edit")
-    @RequestMapping(value = "/deleteBlackWhite/{id}", method = RequestMethod.GET)
-    public String deleteBlackWhite(@PathVariable Long id ,RedirectAttributes redirectAttributes) {
+    @RequestMapping(value = "/deleteBlackWhite", method = RequestMethod.POST)
+    public String deleteBlackWhite(@RequestParam Long id ,RedirectAttributes redirectAttributes) {
         try {
             blackOrWhiteService.delete(id);
         } catch (Exception e) {

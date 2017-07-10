@@ -82,13 +82,22 @@
         .list-item .list-label2 {
             width:200px;
         }
+        #preview img{
+            max-width:100%;
+            max-height:100%;
+            position: absolute;
+            top: 50%;
+            left:50%;
+            -webkit-transform:translate(-50%,-50%);
+            transform:translate(-50%,-50%);
+        }
     </style>
 
 </head>
 <div class="main">
     <header class="header">
         <h1>待补充旅游路线</h1>
-        <a href="${ctx}/u/report" class="button-left"><i class="fa fa-angle-left"></i></a>
+        <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
 
     <article>
@@ -124,8 +133,8 @@
                 <div class="list-text image-upload image-multi">
                     <div class="image-add" data-limit="6" data-name="image">
                         <input type="file" class="file" accept="image/*" capture="camera" onchange="selectFileImage(this)">
-                        <em class="state state-add">
-                            <img src="${ctx}/" class="state-addImg" style="display:none;max-height: 100%;max-width: 100%;"/>
+                        <em class="state state-add" id="preview">
+                            <%--<img src="${ctx}/" class="state-addImg" style="display:none;max-height: 100%;max-width: 100%;"/>--%>
                         </em>
 
                     </div>
@@ -138,9 +147,20 @@
     </article>
 </div>
 <script>
-    function selectFileImage(obj){
-        $(".state-add img").show();
-        var image=new Image();
+    $(function() {
+        $('[type=file]').change(function(e) {
+            var file = e.target.files[0]
+            preview(file);
+        })
+    });
+    function preview(file) {
+        var img = new Image(), url = img.src = URL.createObjectURL(file)
+        var $img = $(img)
+        img.onload = function() {
+            URL.revokeObjectURL(url)
+            $('#preview').empty().append($img);
+            $('#preview').removeClass("state-add");
+        }
     }
 </script>
 </body>

@@ -20,6 +20,10 @@ public class TourTimeQueryModel implements Serializable {
 
     private Date begintime;
 
+    private Date begintimelt;
+
+    private Date begintimegt;
+
     private Date endtime;
 
     private Date createtime;
