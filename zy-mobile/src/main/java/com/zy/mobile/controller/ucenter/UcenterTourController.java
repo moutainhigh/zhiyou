@@ -169,7 +169,7 @@ public class UcenterTourController {
      * @return
      */
     @RequestMapping(value = "/findTourDetail")
-    public String findTourUserVo(Long tourId,String parentPhone,Long reporId,Model model){
+    public String findTourDetail(Long tourId,String parentPhone,Long reporId,Model model){
         Tour tour = tourService.findTourOne(tourId);
         model.addAttribute("tour",tour);
         model.addAttribute("parentPhone",parentPhone);
@@ -247,7 +247,11 @@ public class UcenterTourController {
     @ResponseBody
     public Result<?>ajaxCheckParam(TourUserInfoVo tourUserInfoVo,Principal principal){
        String result = tourComponent.checkParam(tourUserInfoVo);
-        return null;
+        if (result!=null){
+            return ResultBuilder.error(result);
+        }else{
+            return ResultBuilder.ok(null);
+        }
     }
     /**
      * 提交旅游信息
@@ -265,5 +269,20 @@ public class UcenterTourController {
         }
 
     }
+
+    /**
+     * 检测 是否还可以申请旅游  检测报告超过三个月  或者  一年内申请
+     * @return
+     */
+    @RequestMapping(value = "/ajaxCheckTour",method = RequestMethod.POST)
+    @ResponseBody
+   public Result<?> ajaxCheckTour(String reportId){
+       String result = tourComponent.checkTour(reportId);
+       if (result!=null){
+           return ResultBuilder.error(result);
+       }else{
+           return ResultBuilder.ok(null);
+       }
+   }
 
 }

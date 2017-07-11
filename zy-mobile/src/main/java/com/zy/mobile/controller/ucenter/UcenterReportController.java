@@ -211,7 +211,24 @@ public class UcenterReportController {
 		redirectAttributes.addFlashAttribute(ResultBuilder.ok("上传检测报告成功"));
 		return "redirect:/u/report";
 	}
-	
+
+
+
+	@RequestMapping(value = "/ajaxCreate", method = POST)
+	@ResponseBody
+	public  Result<?> ajaxCreate(boolean hasPolicy, Report report, Long parentId, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		Product product = productService.findOne(report.getProductId());
+		validate(product, NOT_NULL, "product id " + report.getProductId() + " not found");
+		User user = userService.findOne(principal.getUserId());
+		try {
+			report.setUserId(principal.getUserId());
+			Report persistentReport = reportService.create(report);
+			return ResultBuilder.ok(persistentReport.getId()+"");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultBuilder.error("数据异常");
+		}
+	}
 	@RequestMapping(value = "/{id}", method = GET)
 	public String detail(@PathVariable Long id, Principal principal, Model model) {
 		Report report = findAndValidate(id, principal.getUserId());

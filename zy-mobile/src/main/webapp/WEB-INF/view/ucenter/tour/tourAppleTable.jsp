@@ -161,7 +161,7 @@
             <input type="hidden" name="parentId" value="${userp.id}">
             <input type="hidden" name="reporId" value="${reporId}">
             <input type="hidden" name ="tourTimeId" value="${tourTime.id}">
-            <input type="hidden" name ="userId" value="${userinfoVo.id}">
+            <input type="hidden" name ="userId" value="${userinfoVo.userId}">
          <a href="#" onclick="hideApply()" class="button-left"><i class="fa fa-angle-left"></i></a>
         </form>
     </header>
@@ -171,7 +171,7 @@
         <input type="hidden" name="parentId" value="${userp.id}">
         <input type="hidden" name="reporId" value="${reporId}">
         <input type="hidden" name ="tourTimeId" value="${tourTime.id}">
-        <input type="hidden" name ="userId" value="${userinfoVo.id}">
+        <input type="hidden" name ="userId" value="${userinfoVo.userId}">
         <div class="list-title">旅游报名申请表单</div>
     <div class="list-item">
         <label class="list-label" >旅游路线</label>
