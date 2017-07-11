@@ -34,6 +34,42 @@
 
             },
         });
+
+
+        //图片上传
+        var uploader = new ss.SimpleUpload({
+            button: $.makeArray($('.product-image')),
+            url: '${ctx}/image/upload',
+            name: 'file',
+            maxSize: 4096,
+            responseType: 'json',
+            allowedExtensions: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+            onSubmit: function (filename, extension, uploadBtn, fileSize) {
+                $(uploadBtn).data('origin', $(uploadBtn).attr('src'));
+                $(uploadBtn).attr('src', 'http://static.thsuan.com/image/loading_image.gif');
+            },
+            onComplete: function (filename, response, uploadBtn, fileSize) {
+                if (response.code == 0) {
+                    $(uploadBtn).attr('src', response.data+ '@150h_240w_1e_1c.jpg' );
+                    $('#matterUrl').val(response.data);
+                } else {
+                    $(uploadBtn).attr('src', $(uploadBtn).data('origin'));
+                    layer.alert('上传失败' + response.message);
+                }
+            },
+            onError: function (filename, errorType, status, statusText, response, uploadBtn, fileSize) {
+                $(uploadBtn).attr('src', $(uploadBtn).data('origin'));
+                layer.alert('上传失败' + errorType);
+            },
+            onSizeError: function (filename, fileSize) {
+                layer.alert('图片大小超过4MB限制');
+            },
+            onExtError: function (filename, extension) {
+                layer.alert('图片文件格式错误, 仅限*.jpg, *.jpeg, *.png, *.gif, *.webp');
+            }
+        });
+
+
     });
     $("#auditStatus").attr("disabled",true);
     $("#houseType").attr("disabled",true);
@@ -156,6 +192,14 @@
                             </label>
                             <div class="col-md-5">
                                 <input type="text" style="display: block; width: 40%;"  class="form-control" id="carNumber" name="carNumber" value="${tourUserAdminVo.carNumber}"/>
+                            </div>
+                        </div>
+                        <div class="form-group  image">
+                            <label class="control-label col-md-3">票务照片<span class="required"> * </span></label>
+                            <div class="col-md-5">
+                                <img data-target="image" class="product-image bd"
+                                     src="<c:if test='${not empty tourUserAdminVo.imageThumbnail}'>${tourUserAdminVo.imageThumbnail}</c:if>
+                            <c:if test='${empty tourUserAdminVo.imageThumbnail}'>${ctx}/image/upload_240_150.jpg</c:if>">
                             </div>
                         </div>
                         <div class="form-group">
