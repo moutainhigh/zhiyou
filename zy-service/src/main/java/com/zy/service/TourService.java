@@ -5,6 +5,7 @@ import com.zy.entity.tour.Sequence;
 import com.zy.entity.tour.Tour;
 import com.zy.entity.tour.TourTime;
 import com.zy.entity.tour.TourUser;
+import com.zy.entity.usr.UserInfo;
 import com.zy.model.query.TourQueryModel;
 import com.zy.model.query.TourTimeQueryModel;
 import com.zy.model.query.TourUserQueryModel;
@@ -49,6 +50,8 @@ public interface TourService {
      List<TourTime> findTourTime(TourTimeQueryModel tourTimeQueryModel);
 
      TourTime findTourTimeOne(Long tourTimeid);
+
+     void updateOrInster(UserInfo userInfo, TourUser tourUser);
 
      void addCarInfo(TourUser tourUser);
 }

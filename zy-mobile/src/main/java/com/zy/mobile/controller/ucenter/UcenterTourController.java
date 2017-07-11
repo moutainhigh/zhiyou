@@ -8,6 +8,7 @@ import com.zy.component.TourComponent;
 import com.zy.component.TourUserComponent;
 import com.zy.entity.act.Policy;
 import com.zy.entity.act.Report;
+import com.zy.entity.sys.SystemCode;
 import com.zy.entity.tour.Tour;
 import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.User;
@@ -17,8 +18,10 @@ import com.zy.model.query.TourQueryModel;
 import com.zy.model.query.TourUserQueryModel;
 import com.zy.service.ReportService;
 import com.zy.service.TourService;
+import com.zy.service.UserInfoService;
 import com.zy.service.UserService;
 import com.zy.vo.TourTimeVo;
+import com.zy.vo.TourUserInfoVo;
 import com.zy.vo.TourUserAdminVo;
 import com.zy.vo.TourUserListVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +63,9 @@ public class UcenterTourController {
 
     @Autowired
     private TourComponent tourComponent;
+
+    @Autowired
+    private UserInfoService userInfoService;
 
     @RequestMapping
     public String tourList(Principal principal , Model model){
@@ -183,12 +189,28 @@ public class UcenterTourController {
        return ResultBuilder.result(listVo);
     }
 
+    /**
+     *封装user旅游信息
+     * @param phone
+     * @param reporId
+     * @param tourTimeid
+     * @param tourId
+     * @param principal
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/findTourUserVo",method = RequestMethod.POST)
     public String findTourUserVo(String phone,Long reporId,Long tourTimeid,Long tourId,Principal principal, Model model ){
-        Long userId = principal.getUserId();
+        Long userId = principal.getUserId(); //userInfoService
+        model.addAttribute("userinfoVo",tourComponent.findUserInfoVo(userId));
+       /* User user = userService.findOne(userId);
+        user.setNickname(userService.findRealName(user.getId()));*/
+        model.addAttribute("user", userService.findOne(userId));
         model.addAttribute("tour",tourService.findTourOne(tourId));
         model.addAttribute("tourTime",tourService.findTourTimeOne(tourTimeid));
-        model.addAttribute("userp",userService.findByPhone(phone));
+        User userP =userService.findByPhone(phone);
+        userP.setNickname(userService.findRealName(userP.getId()));
+        model.addAttribute("userp",userP);
         model.addAttribute("reporId",reporId);
         return "ucenter/tour/tourAppleTable";
     }
@@ -207,6 +229,36 @@ public class UcenterTourController {
         }
         redirectAttributes.addFlashAttribute(ResultBuilder.ok("补充旅游信息成功"));
         return "redirect:/tour";
+    }
+
+
+    /**
+     * 检测旅游信息参数
+     * @param tourUserInfoVo
+     * @param principal
+     * @return
+     */
+    @RequestMapping(value = "/ajaxCheckParam",method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?>ajaxCheckParam(TourUserInfoVo tourUserInfoVo,Principal principal){
+       String result = tourComponent.checkParam(tourUserInfoVo);
+        return null;
+    }
+    /**
+     * 提交旅游信息
+     * @return
+     */
+    @RequestMapping(value = "/addTourforUser",method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?>addTourforUser(TourUserInfoVo tourUserInfoVo,Principal principal){
+        try {
+            tourComponent.updateOrInster(tourUserInfoVo,principal.getUserId());
+            return ResultBuilder.ok(null);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultBuilder.error(null);
+        }
+
     }
 
 }

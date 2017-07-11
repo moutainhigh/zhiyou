@@ -7,10 +7,8 @@ import com.zy.entity.tour.Sequence;
 import com.zy.entity.tour.Tour;
 import com.zy.entity.tour.TourTime;
 import com.zy.entity.tour.TourUser;
-import com.zy.mapper.SequenceMapper;
-import com.zy.mapper.TourMapper;
-import com.zy.mapper.TourTimeMapper;
-import com.zy.mapper.TourUserMapper;
+import com.zy.entity.usr.UserInfo;
+import com.zy.mapper.*;
 import com.zy.model.query.TourQueryModel;
 import com.zy.model.query.TourTimeQueryModel;
 import com.zy.model.query.TourUserQueryModel;
@@ -45,6 +43,11 @@ public class TourServiceImpl implements TourService {
 
     @Autowired
     private TourUserMapper tourUserMapper;
+
+    @Autowired
+    private UserInfoMapper userInfoMapper;
+
+
     /**
      * 保存新的seq
      * @param sequence
@@ -296,6 +299,50 @@ public class TourServiceImpl implements TourService {
     @Override
     public void addCarInfo(TourUser tourUser) {
         tourUserMapper.addCarInfo(tourUser);
+    }
+
+
+    /**
+     * 添加 旅游信息 并将 用户信息  添加到 userIf
+     * @param userInfo
+     * @param tourUser
+     */
+    @Override
+    public void updateOrInster(UserInfo userInfo, TourUser tourUser) {
+         //先处理用户信息
+        UserInfo userInfoIn ;
+        if (userInfo.getId()!=null){
+            userInfoIn = userInfoMapper.findOne(userInfo.getId());
+        }else{
+            userInfoIn = new UserInfo();
+            userInfoIn.setUserId(userInfo.getUserId());
+            userInfoIn.setRealFlag(userInfo.getRealFlag());
+        }
+        if (userInfo.getAge()!=null){
+            userInfoIn.setAge(userInfo.getAge());
+        }
+        if (userInfo.getGender()!=null){
+            userInfoIn.setGender(userInfo.getGender());
+        }
+        if (userInfo.getAreaId()!=null){
+            userInfoIn.setAreaId(userInfo.getAreaId());
+        }
+        if (userInfo.getIdCardNumber()!=null){
+            userInfoIn.setIdCardNumber(userInfo.getIdCardNumber());
+        }
+        if (userInfo.getRealname()!=null){
+            userInfoIn.setRealname(userInfo.getRealname());
+        }
+
+        if (userInfoIn.getId()!=null){
+            userInfoMapper.update(userInfoIn);
+        }else{
+            userInfoMapper.insert(userInfoIn);
+        }
+        //处理旅游
+        tourUser.setCreateDate(new Date());
+        tourUserMapper.insert(tourUser);
+
     }
 
 

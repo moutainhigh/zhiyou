@@ -161,7 +161,7 @@
       transform:translate(-50%,-50%);
     }
   </style>
-  <script type="text/javascript">、
+  <script type="text/javascript">
     $(function() {
       var area = new areaInit('province', 'city', 'district', '${report.areaId}');
 

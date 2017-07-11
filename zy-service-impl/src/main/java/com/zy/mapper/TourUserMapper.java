@@ -22,5 +22,7 @@ public interface TourUserMapper {
 
     void modify(TourUser tourUser);
 
+    int insert(TourUser tourUser);
+
     void addCarInfo(TourUser tourUser);
 }

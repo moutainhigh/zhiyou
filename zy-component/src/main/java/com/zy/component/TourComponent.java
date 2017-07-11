@@ -1,33 +1,29 @@
 package com.zy.component;
 
+import com.sun.tools.corba.se.idl.IncludeGen;
 import com.zy.common.util.BeanUtils;
 import com.zy.common.util.DateUtil;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.Report;
-import com.zy.entity.tour.BlackOrWhite;
+import com.zy.entity.sys.SystemCode;
+import com.zy.entity.tour.*;
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.cms.Article;
-import com.zy.entity.tour.Sequence;
-import com.zy.entity.tour.TourTime;
 import com.zy.entity.usr.User;
-import com.zy.entity.tour.Tour;
+import com.zy.entity.usr.UserInfo;
 import com.zy.model.dto.AreaDto;
 import com.zy.model.query.TourTimeQueryModel;
-import com.zy.service.ReportService;
-import com.zy.service.TourService;
+import com.zy.service.*;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.*;
-import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.zy.util.GcUtils.getThumbnail;
 import static java.util.Objects.isNull;
@@ -44,6 +40,12 @@ public class TourComponent {
 
     @Autowired
     private ReportService reportService;
+
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
+    private SystemCodeService systemCodeService;
 
 
     private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
@@ -205,8 +207,10 @@ public class TourComponent {
         int begin = DateUtil.getMothNum(create_date);
         int endinnum = DateUtil.getMothNum(DateUtil.getMonthData(create_date,3,-1));
         int tournum = 0;
+        Date date =null;
         try {
-            tournum= DateUtil.getMothNum(new SimpleDateFormat("yyyy-MM").parse(tourTime));
+             date = new SimpleDateFormat("yyyy-MM").parse(tourTime);
+            tournum= DateUtil.getMothNum(date);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -217,8 +221,8 @@ public class TourComponent {
             tourTimeQueryModel.setBegintimegt(DateUtil.getBeforeMonthBegin(create_date,0,0));
             tourTimeQueryModel.setBegintimelt(DateUtil.getDateEnd(create_date));
         }else{
-            tourTimeQueryModel.setBegintimegt(DateUtil.getBeforeMonthBegin(create_date,0,0));
-            tourTimeQueryModel.setBegintimelt(DateUtil.getBeforeMonthEnd(create_date,1,0));
+            tourTimeQueryModel.setBegintimegt(DateUtil.getBeforeMonthBegin(date,0,0));
+            tourTimeQueryModel.setBegintimelt(DateUtil.getBeforeMonthEnd(date,1,0));
         }
         tourTimeQueryModel.setTourId(tourId);
         tourTimeQueryModel.setDelfage(0);
@@ -245,4 +249,197 @@ public class TourComponent {
         return tourTimeVoList;
     }
 
+    /**
+     * 查询 userinfo
+     * @param userId
+     * @return
+     */
+    public UserInfoVo findUserInfoVo(Long userId) {
+        UserInfo userInfo = userInfoService.findByUserId(userId);
+        UserInfoVo userInfoVo = new UserInfoVo();
+        if (userInfo!=null) {
+            Long areaId = userInfo.getAreaId();
+            if (areaId != null) {
+                AreaDto areaDto = cacheComponent.getAreaDto(areaId);
+                if (areaDto != null) {
+                    userInfoVo.setProvince(areaDto.getProvince());
+                    userInfoVo.setCity(areaDto.getCity());
+                    userInfoVo.setDistrict(areaDto.getDistrict());
+                }
+            }
+            userInfoVo.setAge(userInfo.getAge());
+            userInfoVo.setId(userInfo.getId());
+            userInfoVo.setIdCardNumber(userInfo.getIdCardNumber());
+            userInfoVo.setGender(userInfo.getGender());
+            userInfoVo.setRealname(userInfo.getRealname());
+        }
+     return userInfoVo;
+    }
+
+    /**
+     * 旅游信息  级检测报告参数封装
+     * @param tourUserInfoVo
+     */
+
+    public void updateOrInster(TourUserInfoVo tourUserInfoVo,Long userid) {
+       //封装用户信息
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(tourUserInfoVo.getUserId());
+        userInfo.setUserId(userid);
+        userInfo.setAge(tourUserInfoVo.getAge());
+        userInfo.setGender(tourUserInfoVo.getGender());
+        userInfo.setAreaId(tourUserInfoVo.getAreaId());
+        userInfo.setIdCardNumber(tourUserInfoVo.getIdCartNumber());
+        userInfo.setRealname(tourUserInfoVo.getRealname());
+        userInfo.setRealFlag(0);
+        //封装用户旅游信息
+        TourUser tourUser = new TourUser();
+        tourUser.setTourId(tourUserInfoVo.getTourId());
+        tourUser.setUserId(userid);
+        tourUser.setParentId(tourUserInfoVo.getParentId());
+        tourUser.setTourTimeId(tourUserInfoVo.getTourTimeId());
+        tourUser.setIsEffect(1);
+        tourUser.setHouseType(tourUserInfoVo.getHouseType());
+        tourUser.setUserRemark(tourUserInfoVo.getUserRemark());
+        tourUser.setIsTransfers(1);
+        tourUser.setAuditStatus(1);
+        tourUser.setReportId(tourUserInfoVo.getReporId());
+        tourUser.setSequenceId(this.getgetNextTourID());
+        tourService.updateOrInster(userInfo,tourUser);
+    }
+
+    private static final Map<String,Object>  provinceMap= new HashMap<String, Object>(){{
+        put("11","1");
+        put("12","20");
+        put("31","860");
+        put("51","2462");
+        put("15","375");
+        put("65","3393");
+        put("54","2983");
+        put("64","3360");
+        put("45","2292");
+        put("23","706");
+        put("22","628");
+        put("21","499");
+        put("13","39");
+        put("14","233");
+        put("63","3307");
+        put("37","1484");
+        put("41","1656");
+        put("32","880");
+        put("34","1119");
+        put("33","1006");
+        put("35","1257");
+        put("36","1361");
+        put("43","1981");
+        put("42","1851");
+        put("44","2131");
+        put("71","3510");
+        put("46","2431");
+        put("62","3194");
+        put("61","3066");
+        put("51","2503");
+        put("53","2829");
+        put("81","3511");
+        put("82","3512");
+      /*  put("11","北京市");
+        put("12","天津市");
+        put("31","上海市");
+        put("51","重庆");
+        put("15","内蒙");
+        put("65","新疆");
+        put("54","西藏");
+        put("64","宁夏");
+        put("45","广西");
+        put("23","黑龙江省");
+        put("22","吉林省");
+        put("21","辽宁省");
+        put("13","河北省");
+        put("14","山西省");
+        put("63","青海省");
+        put("37","山东省");
+        put("41","河南省");
+        put("32","江苏省");
+        put("34","安徽省");
+        put("33","浙江省");
+        put("35","福建省");
+        put("36","江西省");
+        put("43","湖南省");
+        put("42","湖北省");
+        put("44","广东省");
+        put("71","台湾省");
+        put("46","海南省");
+        put("62","甘肃省");
+        put("61","陕西省");
+        put("51","四川省");
+        put("53","云南省");
+        put("81","香港特别行政区");
+        put("82","澳门特别行政区");
+        */
+
+    }};
+
+    /**
+     * 检测参数
+     * @param tourUserInfoVo
+     * @return
+     */
+    public String checkParam(TourUserInfoVo tourUserInfoVo) {
+        int max =0;
+        int min =0;
+        //取到最大值
+        SystemCode systemCode = systemCodeService.findByTypeAndName("TOURLIMITAGE", "MAX");
+        if (systemCode==null||(systemCode.getSystemValue()==null||"".equals(systemCode.getSystemValue()))){
+          return "系统产数配置异常";
+        }else{
+            try{
+                max = Integer.valueOf(systemCode.getSystemValue());
+            }catch (Exception e){
+                e.printStackTrace();
+                return "系统产数配置异常";
+            }
+        }
+        //取到最小值
+        SystemCode systemCodeMin = systemCodeService.findByTypeAndName("TOURLIMITAGE", "MIN");
+        if (systemCodeMin==null||(systemCodeMin.getSystemValue()==null||"".equals(systemCodeMin.getSystemValue()))){
+            return "系统产数配置异常";
+        }else{
+            try{
+                min = Integer.valueOf(systemCodeMin.getSystemValue());
+            }catch (Exception e){
+                e.printStackTrace();
+                return "系统产数配置异常";
+            }
+        }
+        if(tourUserInfoVo.getAge()>max){
+            return "抱歉！您以超过最大年龄";
+        }
+        if(tourUserInfoVo.getAge()<min){
+            return "抱歉！您尚未满足最小年龄";
+        }
+
+        //检测地区  本省不能参加本省的
+        Long areaId =null;
+        if (tourUserInfoVo.getAreaId()!=null){
+            areaId=tourUserInfoVo.getAreaId();
+        }else{
+            if (tourUserInfoVo.getUserId()!=null){
+                UserInfo userInfo = userInfoService.findByUserId(tourUserInfoVo.getUserId());
+                if (userInfo!=null){
+                    areaId=  userInfo.getAreaId();
+                }
+            }
+        }
+
+       Long  provinceId =null;
+        if (areaId!=null){
+            AreaDto areaDto = cacheComponent.getAreaDto(areaId);
+            if (areaDto != null) {
+                areaDto.getProvinceId();
+            }
+        }
+
+
+        return null;
+    }
 }

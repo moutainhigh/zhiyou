@@ -41,7 +41,7 @@
 		a.is_effect,
 		a.audit_status,
 		a.report_id,
-		a.is_transfers,
+		a.report_id,
 		a.car_number,
 		a.plan_time,
 		a.car_images,
@@ -185,6 +185,16 @@
 		</set>
 		where id = #{id}
 	</update>
+
+
+	<insert id="insert" parameterType="com.zy.entity.tour.TourUser" useGeneratedKeys="true" keyProperty="id">
+		insert into `ts_tour_user` (tour_time_id,tour_id,user_id,parent_id,sequence_id,create_date,is_effect,audit_status,report_id,is_transfers,car_number,plan_time,car_images,user_remark,reviewe_remark,house_type,is_add_bed,is_join,amount)
+		values (#{tourTimeId},#{tourId},#{userId},#{parentId},#{sequenceId},#{createDate},#{isEffect},#{auditStatus},#{reportId},#{isTransfers},#{carNumber},#{planTime},#{carImages},#{userRemark},#{revieweRemark},#{houseType},#{isAddBed},#{isJoin},#{amount})
+	</insert>
+
+	<delete id="delete">
+		delete from `ts_tour` where id = #{id}
+	</delete>
 
 	<!-- 审核状态 -->
 	<update id="updateAuditStatus" parameterType="com.zy.entity.tour.TourUser">

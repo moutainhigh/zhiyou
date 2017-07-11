@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * Created by it001 on 2017/6/27.
@@ -15,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "act_activity")
 @Getter
 @Setter
-public class Sequence {
+public class Sequence implements Serializable{
     @Field(label = "序列名称")
     private String sequenceName;
     @Field(label = "序列当前值")

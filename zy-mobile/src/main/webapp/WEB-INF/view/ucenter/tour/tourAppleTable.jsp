@@ -155,57 +155,189 @@
     <body>
     <header class="header">
         <h1>旅游报名申请表单</h1>
-        <a href="#" onclick="hideApply()" class="button-left"><i class="fa fa-angle-left"></i></a>
+        <form id="forma" method="post">
+            <input type="hidden" name="tourId" value="${tour.id}">
+            <input type="hidden" name="parentPhone" value="${userp.phone}">
+            <input type="hidden" name="parentId" value="${userp.id}">
+            <input type="hidden" name="reporId" value="${reporId}">
+            <input type="hidden" name ="tourTimeId" value="${tourTime.id}">
+            <input type="hidden" name ="userId" value="${userinfoVo.id}">
+         <a href="#" onclick="hideApply()" class="button-left"><i class="fa fa-angle-left"></i></a>
+        </form>
     </header>
-    <form class="list-group mt-10">
+    <form class="list-group " id="_form"  method="post">
+        <input type="hidden" name="tourId" value="${tour.id}">
+        <input type="hidden" name="parentPhone" value="${userp.phone}">
+        <input type="hidden" name="parentId" value="${userp.id}">
+        <input type="hidden" name="reporId" value="${reporId}">
+        <input type="hidden" name ="tourTimeId" value="${tourTime.id}">
+        <input type="hidden" name ="userId" value="${userinfoVo.id}">
         <div class="list-title">旅游报名申请表单</div>
     <div class="list-item">
-        <label class="list-label" for="realname">旅游路线</label>
+        <label class="list-label" >旅游路线</label>
         <div class="list-text">
-            <input type="text" name="realname" id="realname1" class="form-input" value="${report.realname}" placeholder="填写旅游路线"></div></div>
-    <div class="list-item"><label class="list-label" for="realname">姓名</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写姓名">
+            <input type="text" class="form-input" value="${tour.title}" placeholder="填写旅游路线" readonly>
+        </div>
+    </div>
+    <div class="list-item">
+        <label class="list-label" >姓名</label>
+        <div class="list-text">
+            <input type="text" name="realname"  class="form-input" value="${userinfoVo.realname}" ${userinfoVo.realname==null?'':'readonly'} required placeholder="填写姓名">
+     </div>
+    </div>
+    <div class="list-item">
+        <label class="list-label" >身份证号</label>
+        <div class="list-text">
+            <input type="text" name="idCartNumber"  class="form-input" value="${userinfoVo.idCardNumber}" ${userinfoVo.idCardNumber==null?'':'readonly'} required  placeholder="填写身份证号">
+        </div>
+    </div>
+    <div class="list-item">
+        <label class="list-label" >性别</label><div class="list-text">
+        <div class="list-text form-select">
+            <select name="gender" ${userinfoVo.gender !=null?'disabled':''} >
+                <option value="男"<c:if test="${userinfoVo.gender eq '男'}"> selected="selected"</c:if>>男</option>
+                <option value="女"<c:if test="${userinfoVo.gender eq '女'}"> selected="selected"</c:if>>女</option>
+            </select>
+        </div>
     </div>
     </div>
     <div class="list-item">
-        <label class="list-label" for="realname">身份证号</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写身份证号"></div></div>
+        <label class="list-label" >年龄</label><div class="list-text">
+        <input type="text" name="age" id ="age" class="form-input" value="${userinfoVo.age}" ${userinfoVo.age==null?'':'readonly'} placeholder="填写年龄" required=true>
+    </div>
+    </div>
     <div class="list-item">
-        <label class="list-label" for="realname">性别</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写性别"></div></div>
+        <label class="list-label" >户籍城市</label>
+        <div class="list-text">
+           <c:choose>
+               <c:when test="${userinfoVo.province!=null}">
+                   <input type="text"  class="form-input" value="${userinfoVo.province}-${userinfoVo.city}-${userinfoVo.district}"  readonly  placeholder="填写户籍城市">
+               </c:when>
+               <c:otherwise>
+                   <div class="flex">
+                       <div class="form-select flex-1">
+                           <select name="province" id="province" required>
+                               <option value="">省</option>
+                           </select>
+                       </div>
+                       <div class="form-select flex-1">
+                           <select name="city" id="city" required>
+                               <option value="">市</option>
+                           </select>
+                       </div>
+                       <div class="form-select flex-1">
+                           <select name="areaId" id="district" required>
+                               <option value="">区</option>
+                           </select>
+                       </div>
+                   </div>
+               </c:otherwise>
+           </c:choose>
+        </div>
+    </div>
     <div class="list-item">
-        <label class="list-label" for="realname">年龄</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写年龄"></div></div>
+        <label class="list-label" >手机号码</label><div class="list-text">
+        <input type="text" name="phone"  class="form-input" value="${user.phone}" ${user.phone==null?'':'readonly'} required placeholder="填写手机号码">
+    </div>
+    </div>
     <div class="list-item">
-        <label class="list-label" for="realname">户籍城市</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写户籍城市"></div></div>
+        <label class="list-label">推荐人姓名</label><div class="list-text">
+        <input type="text"  class="form-input" value="${userp.nickname}" readonly placeholder="填写推荐人姓名">
+    </div>
+    </div>
     <div class="list-item">
-        <label class="list-label" for="realname">手机号码</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写手机号码"></div></div>
+        <label class="list-label">推荐人手机号</label><div class="list-text">
+        <input type="text" class="form-input" value="${userp.phone}" readonly  placeholder="填写推荐人手机号">
+    </div>
+    </div>
     <div class="list-item">
-        <label class="list-label" for="realname">推荐人姓名</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写推荐人姓名"></div></div>
-    <div class="list-item">
-        <label class="list-label" for="realname">推荐人手机号</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写推荐人手机号"></div></div>
-    <div class="list-item">
-        <label class="list-label" for="realname">出游日期</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写出游日期"></div></div>
+        <label class="list-label" >出游日期</label><div class="list-text">
+        <input type="text" readonly class="form-input" value="<fmt:formatDate value="${tourTime.begintime}"  pattern="yyyy-MM-dd"/>" placeholder="填写出游日期">
+    </div>
+    </div>
      </div>
         <div class="list-item">
         <label class="list-label">房型需求</label>
          <div class="list-text form-select">
-            <select>
+            <select name="houseType">
              <option value="1">标准间 </option>
              <option value="2">三人间 </option>
          </select>
          </div>
       </div>
     <div class="list-item">
-        <label class="list-label" for="realname">特殊需求</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写特殊需求"></div></div>
+        <label class="list-label" >特殊需求</label>
+        <div class="list-text">
+            <input type="text" name="userRemark"class="form-input" value="" placeholder="填写特殊需求" >
+        </div>
+    </div>
     </form>
     <div class="MyApply" onclick="applyClick()">申请</div></div>
     </body>
+
 <script>
+    $(function() {
+        var area = new areaInit('province', 'city', 'district', '${report.areaId}');
+
+    });
     //点击报名申请表单中的返回
     function hideApply(){
+        $("#forma").attr("action", "${ctx}/tour/findTourDetail");
+        $("#forma").submit();
 
     }
     //点击申请按钮
     function applyClick(){
+       var fromflage= $('#_form').validate({
+            ignore: ':hidden',
 
+            submitHandler : function() {
+                var productId = $('#province');
+                if(productId=='undefined') {
+                    messageAlert('请选择产品');
+                    return;
+                }else {
+                }
+
+            }
+        });
+        if(fromflage.form()){
+            $.ajax({
+                url : '${ctx}/tour/ajaxCheckParam',
+                data : $("#_form").serialize(),
+                dataType : 'json',
+                type : 'POST',
+                success : function(result){
+                    if(result.code == 0){
+                        $.ajax({
+                            url : '${ctx}/tour/addTourforUser',
+                            data : $("#_form").serialize(),
+                            dataType : 'json',
+                            type : 'POST',
+                            success : function(result){
+                                if(result.code == 0){
+                                    layer.msg('申请成功', {
+                                        icon: 1,
+                                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                    }, function(){
+                                        parent.layer.closeAll();
+                                        parent.parent.layer.closeAll();
+                                    });
+
+
+                                } else {
+                                    messageAlert("数据异常,请联系客服");
+                                }
+                            }
+                        });
+
+                    } else {
+                        messageAlert(result.message);
+                    }
+                }
+            });
+
+        }
     }
 </script>
-</body>
 </html>

@@ -28,6 +28,8 @@ public class UserInfoQueryModel implements Serializable {
 
 	private String idCardNumberLK;
 
+	private Integer realFlag;
+
 	private ConfirmStatus confirmStatusEQ;
 
 	private Long areaIdEQ;

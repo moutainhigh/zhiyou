@@ -96,7 +96,7 @@
         }
         p {
             color: #f13e00;
-            line-height: 30px;
+            line-height: 15px;
             padding:5px 20px 5px 20px;
         }
         .TravelFont {
@@ -201,7 +201,7 @@
     //我要报名
     function MyApplyFun(){
         if(tourTimeid==""){
-            layer.alert("选择出游时间");
+            messageAlert("请选择出游时间");
             return ;
         }
         $("#tourTimeid").val(tourTimeid);
@@ -222,6 +222,8 @@
     })
     //选择出游时间
     function selectValue(obj) {
+        $('.TravelDis').html("");
+        $(".TravelDis").show();
         var num=$(obj).val();
         $.ajax({
             url : '${ctx}/tour/ajaxTourTime',
@@ -238,8 +240,6 @@
                 }
                 var pageData= result.data;
                 if (pageData.length) {
-                    $('.TravelDis').html("");
-                    $(".TravelDis").show();
                     for ( var i in pageData) {
                         var row = pageData[i];
                         if (row.userRank!="V0"){

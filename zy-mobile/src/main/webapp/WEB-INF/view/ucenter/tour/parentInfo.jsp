@@ -17,7 +17,8 @@
     <script src="${stc}/js/layer/layer.js"></script>
     <script type="text/javascript">
         function hideTravel(){
-            parent.hideTravel();
+            parent.layer.closeAll();
+            parent.parent.layer.closeAll();
         }
         function submitTravel(){
             var formvalidate = $('.valid-form').validate({
