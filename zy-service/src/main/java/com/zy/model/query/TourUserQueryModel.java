@@ -45,6 +45,8 @@ public class TourUserQueryModel implements Serializable {
 
     private Date beginTime;
 
+    private Long userId;
+
     private Date planStartTime;
 
     private Date planEndTime;

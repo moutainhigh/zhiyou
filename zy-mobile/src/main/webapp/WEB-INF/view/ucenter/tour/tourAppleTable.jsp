@@ -320,8 +320,8 @@
                                         icon: 1,
                                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                                     }, function(){
-                                        parent.layer.closeAll();
-                                        parent.parent.layer.closeAll();
+                                        parent.parent.layer.closeAll('iframe');
+                                        parent.layer.closeAll('iframe');
                                     });
 
 

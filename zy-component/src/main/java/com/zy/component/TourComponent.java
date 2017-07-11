@@ -449,9 +449,10 @@ public class TourComponent {
      * @param reportId
      * @return
      */
-    public String checkTour(String reportId) {
+    public String checkTour(String reportId,Long userId) {
         TourUserQueryModel tourUserQueryModel = new TourUserQueryModel();
-       // tourUserQueryModel.setReportId(Long.valueOf(reportId));
+        tourUserQueryModel.setCreatedTime(DateUtil.getCurrYearFirst());
+        tourUserQueryModel.setUserId(userId);
         Page<TourUser> page = tourService.findAll(tourUserQueryModel);
         SystemCode systemCode = systemCodeService.findByTypeAndName("TOURAPPLYNUMBER", "TOUR");
         if (systemCode==null||(systemCode.getSystemValue()==null||"".equals(systemCode.getSystemValue()))){
@@ -460,15 +461,21 @@ public class TourComponent {
             try{
               int  min = Integer.valueOf(systemCode.getSystemValue());
                 if (page.getTotal()>=min){
-                    //return "申请旅游已经达到上限";
-                    return "已经申请过";
+                    return "申请旅游已经达到上限";
+
                 }
             }catch (Exception e){
                 e.printStackTrace();
                 return "系统产数配置异常";
             }
         }
-
+        tourUserQueryModel.setCreatedTime(null);
+        tourUserQueryModel.setUserId(null);
+        tourUserQueryModel.setReportId(Long.valueOf(reportId));
+        Page<TourUser> page1 = tourService.findAll(tourUserQueryModel);
+        if (page1!=null&&page1.getTotal()!=null&&page1.getTotal()>0){
+            return "已经申请过";
+        }
       if (!this.checkTourTime(reportId)){
           return "检测报告信息过期";
       }

@@ -166,7 +166,7 @@
         <input type="hidden" name ="reporId" value="${reporId}" id="reporId"/>
         <input type="hidden" name ="tourTimeid"  id="tourTimeid"/>
         <input type="hidden" name ="tourId" id="tourId" value="${tour.id}"/>
-      <a href="#" onclick="document.getElementById('_form').submit();" class="button-left"><i class="fa fa-angle-left"></i></a>
+      <a href="#" onclick="fromSumbit()" class="button-left"><i class="fa fa-angle-left"></i></a>
     </form>
 </header>
 <img src="${ctx}/images/TravelTop.png" style="width:100%;" />
@@ -197,6 +197,12 @@
 </div>
 <div class="MyApply" onclick="MyApplyFun()">我要报名</div>
 <script>
+
+    function fromSumbit() {
+        parent.layer.closeAll('iframe');
+        $('._form').submit();
+
+    }
     var tourTimeid="";
     //我要报名
     function MyApplyFun(){

@@ -276,8 +276,8 @@ public class UcenterTourController {
      */
     @RequestMapping(value = "/ajaxCheckTour",method = RequestMethod.POST)
     @ResponseBody
-   public Result<?> ajaxCheckTour(String reportId){
-       String result = tourComponent.checkTour(reportId);
+   public Result<?> ajaxCheckTour(String reportId,Principal principal){
+       String result = tourComponent.checkTour(reportId,principal.getUserId());
        if (result!=null){
            return ResultBuilder.error(result);
        }else{
