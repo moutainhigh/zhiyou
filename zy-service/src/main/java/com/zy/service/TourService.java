@@ -49,4 +49,6 @@ public interface TourService {
      List<TourTime> findTourTime(TourTimeQueryModel tourTimeQueryModel);
 
      TourTime findTourTimeOne(Long tourTimeid);
+
+     void addCarInfo(TourUser tourUser);
 }

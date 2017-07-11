@@ -6,10 +6,12 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.util.DateUtil;
 import com.zy.component.TourComponent;
 import com.zy.component.TourUserComponent;
+import com.zy.entity.act.Policy;
 import com.zy.entity.act.Report;
 import com.zy.entity.tour.Tour;
 import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.User;
+import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.TourQueryModel;
 import com.zy.model.query.TourUserQueryModel;
@@ -24,14 +26,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.zy.util.GcUtils.getThumbnail;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Created by Administrator on 2017/7/5.
@@ -74,7 +79,7 @@ public class UcenterTourController {
     }
 
     @RequestMapping(value = "/addInfo")
-    public String addInfo(){
+    public String addInfo(Model model){
         return "ucenter/tour/addInfo";
     }
 
@@ -186,6 +191,22 @@ public class UcenterTourController {
         model.addAttribute("userp",userService.findByPhone(phone));
         model.addAttribute("reporId",reporId);
         return "ucenter/tour/tourAppleTable";
+    }
+
+    @RequestMapping(value = "/create", method = POST)
+    public String create(@RequestParam Long tourUserId, TourUser tourUser, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+        tourUser.setId(tourUserId);
+        tourUser.setUpdateBy(principal.getUserId());
+        tourUser.setUpdateDate(new Date());
+        try {
+            tourService.addCarInfo(tourUser);
+        } catch (Exception e) {
+            model.addAttribute("tourUser", tourUser);
+            model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+            return "redirect:/tour";
+        }
+        redirectAttributes.addFlashAttribute(ResultBuilder.ok("补充旅游信息成功"));
+        return "redirect:/tour";
     }
 
 }
