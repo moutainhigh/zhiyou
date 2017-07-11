@@ -309,4 +309,19 @@
 		where task_item_id = #{taskItemId}
 	</select>
 
+	<select id="findReport" resultMap="baseResultMap" parameterType="com.zy.model.query.ReportQueryModel">
+		SELECT
+		<include refid="baseColumn"/>
+		FROM `act_report`
+		<where>
+			<if test="idEQ != null">
+				AND id = #{idEQ}
+			</if>
+			<if test="userIdEQ != null">
+				AND user_id = #{userIdEQ}
+			</if>
+		</where>
+	</select>
+
+
 </mapper>

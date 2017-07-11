@@ -33,4 +33,6 @@ public interface ReportService {
 	void checkReportResult(Long id, Report.ReportResult reportResult);
 
 	void visitUser(Long id, Long userId);
+
+	Report findReport(ReportQueryModel reportQueryModel);
 }

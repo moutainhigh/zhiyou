@@ -293,8 +293,9 @@ public class UcenterTourController {
      */
     @RequestMapping(value = "/ajaxCheckReport",method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> ajaxCheckReport(String reportId){
-        String result = tourComponent.checkReport(reportId);
+    public Result<?> ajaxCheckReport(Long reportId,Principal principal){
+        Long loginUserId = principal.getUserId();
+        String result = tourComponent.checkReport(reportId,loginUserId);
         if (result!=null){
             return ResultBuilder.error(result);
         }else{

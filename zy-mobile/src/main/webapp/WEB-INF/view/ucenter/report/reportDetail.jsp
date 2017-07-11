@@ -204,13 +204,41 @@
         <div class="list-text font-777">${report.text}</div>
       </div>
       <div class="footer" >
-        <div onclick="insurance()">保险申请</div>
+        <div onclick="insurance('${report.id}')" style="border-right: none;">保险申请</div>
         <div onclick="travel('${report.id}')" style="border-right: none;">旅游申请</div>
       </div>
     </div>
   </article>
 <script>
   var reportId="";
+
+  function insurance(id){
+    reportId=id;
+    $.ajax({
+      url : '${ctx}/tour/ajaxCheckReport',
+      data :{
+        'reportId':reportId
+      },
+      dataType : 'json',
+      type : 'POST',
+      success : function(result){
+        alert(11);
+        if(result.code == 0){
+          travelT= layer.open({
+            type: 2,
+            area:['100%', '100%'],
+            title: false,
+            scrollbar: false,
+            closeBtn: 0,
+            content: '${ctx}/u/report/insuranceInfo'
+          });
+        } else {
+          messageAlert(result.message);
+        }
+      }
+    });
+  }
+
   function travel(id) {
     reportId=id;
     $.ajax({

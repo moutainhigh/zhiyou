@@ -361,6 +361,11 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
+	public Report findReport(@NotNull ReportQueryModel reportQueryModel) {
+		return reportMapper.findReport(reportQueryModel);
+	}
+
+	@Override
 	public Report modify(@NotNull Report report) {
 		Long id = report.getId();
 		validate(id, NOT_NULL, "id is null");

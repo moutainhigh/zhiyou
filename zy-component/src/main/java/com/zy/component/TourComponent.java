@@ -13,6 +13,7 @@ import com.zy.entity.cms.Article;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.dto.AreaDto;
+import com.zy.model.query.ReportQueryModel;
 import com.zy.model.query.TourTimeQueryModel;
 import com.zy.model.query.TourUserQueryModel;
 import com.zy.service.*;
@@ -489,10 +490,13 @@ public class TourComponent {
         return true;
     }
 
-    public String checkReport(String reportId) {
-        Report report = reportService.findOne(Long.valueOf(reportId));
-        if (report != null){
-            return null;
+    public String checkReport(Long reportId, Long loginUserId) {
+        ReportQueryModel reportQueryModel = new ReportQueryModel();
+        reportQueryModel.setIdEQ(reportId);
+        reportQueryModel.setUserIdEQ(loginUserId);
+        Report report = reportService.findReport(reportQueryModel);
+        if (report == null){
+            return "还没有提交检测报告或者已经申请过保险";
         }
         return null;
     }
