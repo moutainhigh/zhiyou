@@ -484,4 +484,12 @@ public class TourComponent {
         }
         return true;
     }
+
+    public String checkReport(String reportId) {
+        Report report = reportService.findOne(Long.valueOf(reportId));
+        if (report != null){
+            return null;
+        }
+        return null;
+    }
 }

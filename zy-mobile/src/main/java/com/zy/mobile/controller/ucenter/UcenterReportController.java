@@ -313,4 +313,10 @@ public class UcenterReportController {
 		return report;
 	}
 
+
+	@RequestMapping(value = "/insuranceInfo", method = POST)
+	public String insuranceInfo(Model model, RedirectAttributes redirectAttributes) {
+		return "redirect:/u/report/insurance";
+	}
+
 }

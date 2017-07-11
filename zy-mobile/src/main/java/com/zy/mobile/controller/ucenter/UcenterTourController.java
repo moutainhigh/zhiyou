@@ -285,4 +285,21 @@ public class UcenterTourController {
        }
    }
 
+
+    /**
+     * 检测是否提交检测报告
+     * @param reportId
+     * @return
+     */
+    @RequestMapping(value = "/ajaxCheckReport",method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxCheckReport(String reportId){
+        String result = tourComponent.checkReport(reportId);
+        if (result!=null){
+            return ResultBuilder.error(result);
+        }else{
+            return ResultBuilder.ok(null);
+        }
+    }
+
 }
