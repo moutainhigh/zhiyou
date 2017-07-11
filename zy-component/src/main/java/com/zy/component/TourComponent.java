@@ -1,6 +1,7 @@
 package com.zy.component;
 
 import com.sun.tools.corba.se.idl.IncludeGen;
+import com.zy.common.model.query.Page;
 import com.zy.common.util.BeanUtils;
 import com.zy.common.util.DateUtil;
 import com.zy.entity.act.Activity;
@@ -13,6 +14,7 @@ import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.dto.AreaDto;
 import com.zy.model.query.TourTimeQueryModel;
+import com.zy.model.query.TourUserQueryModel;
 import com.zy.service.*;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
@@ -267,6 +269,7 @@ public class TourComponent {
                     userInfoVo.setDistrict(areaDto.getDistrict());
                 }
             }
+            userInfoVo.setUserId(userInfo.getUserId());
             userInfoVo.setAge(userInfo.getAge());
             userInfoVo.setId(userInfo.getId());
             userInfoVo.setIdCardNumber(userInfo.getIdCardNumber());
@@ -308,40 +311,40 @@ public class TourComponent {
         tourService.updateOrInster(userInfo,tourUser);
     }
 
-    private static final Map<String,Object>  provinceMap= new HashMap<String, Object>(){{
-        put("11","1");
-        put("12","20");
-        put("31","860");
-        put("51","2462");
-        put("15","375");
-        put("65","3393");
-        put("54","2983");
-        put("64","3360");
-        put("45","2292");
-        put("23","706");
-        put("22","628");
-        put("21","499");
-        put("13","39");
-        put("14","233");
-        put("63","3307");
-        put("37","1484");
-        put("41","1656");
-        put("32","880");
-        put("34","1119");
-        put("33","1006");
-        put("35","1257");
-        put("36","1361");
-        put("43","1981");
-        put("42","1851");
-        put("44","2131");
-        put("71","3510");
-        put("46","2431");
-        put("62","3194");
-        put("61","3066");
-        put("51","2503");
-        put("53","2829");
-        put("81","3511");
-        put("82","3512");
+    private static final Map<String,Long>  provinceMap= new HashMap<String, Long>(){{
+        put("11",1L);
+        put("12",20L);
+        put("31",860L);
+        put("51",2462L);
+        put("15",375L);
+        put("65",3393L);
+        put("54",2983L);
+        put("64",3360L);
+        put("45",2292L);
+        put("23",706L);
+        put("22",628L);
+        put("21",499L);
+        put("13",39L);
+        put("14",233L);
+        put("63",3307L);
+        put("37",1484L);
+        put("41",1656L);
+        put("32",880L);
+        put("34",1119L);
+        put("33",1006L);
+        put("35",1257L);
+        put("36",1361L);
+        put("43",1981L);
+        put("42",1851L);
+        put("44",2131L);
+        put("71",3510L);
+        put("46",2431L);
+        put("62",3194L);
+        put("61",3066L);
+        put("51",2503L);
+        put("53",2829L);
+        put("81",3511L);
+        put("82",3512L);
       /*  put("11","北京市");
         put("12","天津市");
         put("31","上海市");
@@ -420,26 +423,65 @@ public class TourComponent {
 
         //检测地区  本省不能参加本省的
         Long areaId =null;
-        if (tourUserInfoVo.getAreaId()!=null){
-            areaId=tourUserInfoVo.getAreaId();
-        }else{
-            if (tourUserInfoVo.getUserId()!=null){
-                UserInfo userInfo = userInfoService.findByUserId(tourUserInfoVo.getUserId());
-                if (userInfo!=null){
-                    areaId=  userInfo.getAreaId();
-                }
-            }
+        TourTime tourTime = tourService.findTourTimeOne(tourUserInfoVo.getTourTimeId());
+        if (tourTime!=null){
+            areaId  = tourTime.getAreaId();
         }
-
        Long  provinceId =null;
         if (areaId!=null){
             AreaDto areaDto = cacheComponent.getAreaDto(areaId);
             if (areaDto != null) {
-                areaDto.getProvinceId();
+                provinceId= areaDto.getProvinceId();
             }
         }
-
-
+         String  pid =tourUserInfoVo.getIdCartNumber().substring(0,2);
+         if (provinceId==provinceMap.get(pid)){
+             return "抱歉！不能参加户籍所在地旅游";
+         }
         return null;
+    }
+
+    /**
+     * 检测是否还可以申请 旅游
+     * @param reportId
+     * @return
+     */
+    public String checkTour(String reportId) {
+        TourUserQueryModel tourUserQueryModel = new TourUserQueryModel();
+        tourUserQueryModel.setReportId(Long.valueOf(reportId));
+        Page<TourUser> page = tourService.findAll(tourUserQueryModel);
+        SystemCode systemCode = systemCodeService.findByTypeAndName("TOURAPPLYNUMBER", "TOUR");
+        if (systemCode==null||(systemCode.getSystemValue()==null||"".equals(systemCode.getSystemValue()))){
+            return "系统产数配置异常";
+        }else{
+            try{
+              int  min = Integer.valueOf(systemCode.getSystemValue());
+                if (page.getTotal()>=min){
+                    return "申请旅游已经达到上限";
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return "系统产数配置异常";
+            }
+        }
+      if (!this.checkTourTime(reportId)){
+          return "检测报告信息过期";
+      }
+        return null;
+    }
+
+    /**
+     * 检测报告是否在3个月内
+     * @param reportId
+     * @return
+     */
+    public Boolean checkTourTime(String reportId){
+        Report report = reportService.findOne(Long.valueOf(reportId));
+        Date reportDate =DateUtil.getMonthData(report.getCreatedTime(),3,-1);
+        Date newDate = new Date();
+        if (newDate.getTime()>reportDate.getTime()) {
+           return false;
+        }
+        return true;
     }
 }
