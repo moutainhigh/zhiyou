@@ -31,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,6 +93,15 @@ public class TourUserController {
         Long loginUserId = getPrincipalUserId();
         tourService.updateAuditStatus(id, isSuccess, revieweRemark, loginUserId);
         return ResultBuilder.ok("审核成功");
+    }
+
+    @RequiresPermissions("tourUser:edit")
+    @RequestMapping(value = "/addInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> addInfo(@RequestParam Long id, @RequestParam Integer isJoin, BigDecimal amount) {
+        Long loginUserId = getPrincipalUserId();
+        tourService.addInfo(id, isJoin, amount, loginUserId);
+        return ResultBuilder.ok("补充信息成功");
     }
 
     /**

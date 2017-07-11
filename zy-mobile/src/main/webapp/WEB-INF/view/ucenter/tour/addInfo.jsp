@@ -125,7 +125,7 @@
     </header>
 
     <article>
-        <form action="${ctx}/tour/create" class="valid-form" method="post">
+        <form action="${ctx}/tour/create?tourUserId=${tourUserId}" class="valid-form" method="post">
             <div class="list-title">客户资料</div>
             <div class="list-item">
                 <label class="list-label">预计到达日期</label>

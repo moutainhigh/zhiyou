@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -298,7 +299,21 @@ public class TourServiceImpl implements TourService {
 
     @Override
     public void addCarInfo(TourUser tourUser) {
-        tourUserMapper.addCarInfo(tourUser);
+        tourUserMapper.modify(tourUser);
+    }
+
+    @Override
+    public void addInfo(Long id, Integer isJoin, BigDecimal amount, Long loginUserId) {
+        TourUser tourUser = tourUserMapper.findOne(id);
+
+        tourUser.setId(id);
+        tourUser.setIsJoin(isJoin);
+        tourUser.setAmount(amount);
+        tourUser.setAuditStatus(4);
+        tourUser.setUpdateBy(loginUserId);
+        tourUser.setUpdateDate(new Date());
+
+        tourUserMapper.modify(tourUser);
     }
 
 

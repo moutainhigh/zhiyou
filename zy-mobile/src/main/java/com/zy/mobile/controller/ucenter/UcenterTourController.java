@@ -20,6 +20,7 @@ import com.zy.service.ReportService;
 import com.zy.service.TourService;
 import com.zy.service.UserInfoService;
 import com.zy.service.UserService;
+import com.zy.util.GcUtils;
 import com.zy.vo.TourTimeVo;
 import com.zy.vo.TourUserInfoVo;
 import com.zy.vo.TourUserAdminVo;
@@ -85,7 +86,8 @@ public class UcenterTourController {
     }
 
     @RequestMapping(value = "/addInfo")
-    public String addInfo(Model model){
+    public String addInfo(Model model,@RequestParam Long tourUserId){
+        model.addAttribute("tourUserId",tourUserId);
         return "ucenter/tour/addInfo";
     }
 
@@ -216,10 +218,13 @@ public class UcenterTourController {
     }
 
     @RequestMapping(value = "/create", method = POST)
-    public String create(@RequestParam Long tourUserId, TourUser tourUser, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+    public String create(Long tourUserId, TourUser tourUser, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+
         tourUser.setId(tourUserId);
         tourUser.setUpdateBy(principal.getUserId());
         tourUser.setUpdateDate(new Date());
+        tourUser.setAuditStatus(3);
+        tourUser.setCarImages(GcUtils.getThumbnail(tourUser.getCarImages(), 750, 450));
         try {
             tourService.addCarInfo(tourUser);
         } catch (Exception e) {

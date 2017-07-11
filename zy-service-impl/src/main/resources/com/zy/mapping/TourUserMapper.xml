@@ -41,7 +41,7 @@
 		a.is_effect,
 		a.audit_status,
 		a.report_id,
-		a.report_id,
+		a.is_transfers,
 		a.car_number,
 		a.plan_time,
 		a.car_images,
@@ -231,6 +231,9 @@
 			</if>
 			<if test="isTransfers !=null">
 				is_transfers = #{isTransfers},
+			</if>
+			<if test="auditStatus !=null">
+				audit_status = #{auditStatus},
 			</if>
 			<if test="carNumber !=null">
 				car_number = #{carNumber},
