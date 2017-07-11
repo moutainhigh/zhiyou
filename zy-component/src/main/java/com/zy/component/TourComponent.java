@@ -220,8 +220,8 @@ public class TourComponent {
             tourTimeQueryModel.setBegintimegt(create_date);
             tourTimeQueryModel.setBegintimelt(DateUtil.getBeforeMonthEnd(create_date,1,0));
         }else if (endinnum==tournum){
-            tourTimeQueryModel.setBegintimegt(DateUtil.getBeforeMonthBegin(create_date,0,0));
-            tourTimeQueryModel.setBegintimelt(DateUtil.getDateEnd(create_date));
+            tourTimeQueryModel.setBegintimegt(DateUtil.getBeforeMonthBegin(date,0,0));
+            tourTimeQueryModel.setBegintimelt(DateUtil.getMonthData(create_date,3,-1));
         }else{
             tourTimeQueryModel.setBegintimegt(DateUtil.getBeforeMonthBegin(date,0,0));
             tourTimeQueryModel.setBegintimelt(DateUtil.getBeforeMonthEnd(date,1,0));
@@ -307,6 +307,8 @@ public class TourComponent {
         tourUser.setIsTransfers(1);
         tourUser.setAuditStatus(1);
         tourUser.setReportId(tourUserInfoVo.getReporId());
+        tourUser.setIsAddBed(0);
+        tourUser.setIsJoin(0);
         tourUser.setSequenceId(this.getgetNextTourID());
         tourService.updateOrInster(userInfo,tourUser);
     }
@@ -448,7 +450,7 @@ public class TourComponent {
      */
     public String checkTour(String reportId) {
         TourUserQueryModel tourUserQueryModel = new TourUserQueryModel();
-        tourUserQueryModel.setReportId(Long.valueOf(reportId));
+       // tourUserQueryModel.setReportId(Long.valueOf(reportId));
         Page<TourUser> page = tourService.findAll(tourUserQueryModel);
         SystemCode systemCode = systemCodeService.findByTypeAndName("TOURAPPLYNUMBER", "TOUR");
         if (systemCode==null||(systemCode.getSystemValue()==null||"".equals(systemCode.getSystemValue()))){
@@ -457,13 +459,15 @@ public class TourComponent {
             try{
               int  min = Integer.valueOf(systemCode.getSystemValue());
                 if (page.getTotal()>=min){
-                    return "申请旅游已经达到上限";
+                    //return "申请旅游已经达到上限";
+                    return "已经申请过";
                 }
             }catch (Exception e){
                 e.printStackTrace();
                 return "系统产数配置异常";
             }
         }
+
       if (!this.checkTourTime(reportId)){
           return "检测报告信息过期";
       }

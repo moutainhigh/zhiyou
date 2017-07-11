@@ -646,7 +646,7 @@
         return;
       }
       $.ajax({
-        url : '${ctx}/u/report/ajaxCreate',
+        url : '${ctx}u/report/ajaxCreate',
         data : $(".valid-form").serialize(),
         dataType : 'json',
         type : 'POST',
