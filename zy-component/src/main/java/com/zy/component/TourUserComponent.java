@@ -14,6 +14,7 @@ import com.zy.util.GcUtils;
 import com.zy.vo.TourJoinUserExportVo;
 import com.zy.vo.TourUserAdminVo;
 import com.zy.vo.TourUserExportVo;
+import com.zy.vo.TourUserListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -215,5 +216,25 @@ public class TourUserComponent {
             tourJoinUserExportVo.setTourTime(GcUtils.formatDate(tourTime.getBegintime(), S_TIME_PATTERN) + "  至  " + GcUtils.formatDate(tourTime.getEndtime(), S_TIME_PATTERN));
         }
         return tourJoinUserExportVo;
+    }
+
+    public TourUserListVo  buildListVo(TourUser tourUser) {
+        TourUserListVo tourUserListVo = new TourUserListVo();
+        BeanUtils.copyProperties(tourUser, tourUserListVo);
+        Long tourTimeId = tourUser.getTourTimeId();
+        Long parentId = tourUser.getParentId();
+        if(tourTimeId != null){
+            TourTime tourTime = tourTimeService.findOne(tourTimeId);
+            tourUserListVo.setTourTime(GcUtils.formatDate(tourTime.getBegintime() , S_TIME_PATTERN));
+        }
+        if(parentId != null){
+            User user = userService.findOne(parentId);
+            tourUserListVo.setParentPhone(user.getPhone());
+        }
+        if (tourUser.getTourId() != null){
+            Tour tour = tourService.findTourOne(tourUser.getTourId());
+            tourUserListVo.setTourTitle(tour.getTitle());
+        }
+        return tourUserListVo ;
     }
 }

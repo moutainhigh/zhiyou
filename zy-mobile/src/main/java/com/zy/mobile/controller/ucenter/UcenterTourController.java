@@ -18,6 +18,7 @@ import com.zy.service.TourService;
 import com.zy.service.UserService;
 import com.zy.vo.TourTimeVo;
 import com.zy.vo.TourUserAdminVo;
+import com.zy.vo.TourUserListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,13 +59,17 @@ public class UcenterTourController {
     @RequestMapping
     public String tourList(Principal principal , Model model){
         User user = userService.findOne(principal.getUserId());
-        TourUserQueryModel tourUserQueryModel = new TourUserQueryModel();
-        tourUserQueryModel.builder().userPhone(user.getPhone()).createdTime(DateUtil.getCurrYearFirst());
+        TourUserQueryModel tourUserQueryModel = TourUserQueryModel.builder().userPhone(user.getPhone()).createdTime(DateUtil.getCurrYearFirst()).isEffect(1).build();
         Page<TourUser> page = tourService.findAll(tourUserQueryModel);
-        List<TourUserAdminVo> list = page.getData().stream().map(v -> {
-            return tourUserComponent.buildAdminVo(v);
+        List<TourUserListVo> list = page.getData().stream().map(v -> {
+            return tourUserComponent.buildListVo(v);
         }).collect(Collectors.toList());
-        model.addAttribute("tourUsers" , list);
+        List<TourUserListVo> tourUsers1 = list.stream().filter(v -> v.getAuditStatus() == 2).collect(Collectors.toList());
+        List<TourUserListVo> tourUsers2 = list.stream().filter(v -> v.getAuditStatus() != 2).collect(Collectors.toList());
+        //Boolean isNothing = tourUsers1.size() == 0 && tourUsers2.size() == 0 ? true : false;
+        model.addAttribute("tourUsers1" , tourUsers1);
+        model.addAttribute("tourUsers2" , tourUsers2);
+       // model.addAttribute("isNothing" , isNothing);
         return "ucenter/tour/tourList";
     }
 
