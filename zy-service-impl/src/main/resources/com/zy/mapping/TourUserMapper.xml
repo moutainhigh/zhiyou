@@ -225,6 +225,12 @@
 			<if test="carNumber !=null">
 				car_number = #{carNumber},
 			</if>
+			<if test="planTime !=null">
+				plan_time = #{planTime},
+			</if>
+			<if test="carImages !=null">
+				car_images = #{carImages},
+			</if>
 			<if test="updateDate !=null">
 				update_date = #{updateDate},
 			</if>

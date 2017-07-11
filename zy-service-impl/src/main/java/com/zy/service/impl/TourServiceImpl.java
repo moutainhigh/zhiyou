@@ -293,5 +293,10 @@ public class TourServiceImpl implements TourService {
         return tourTimeMapper.findOne(tourTimeid);
     }
 
+    @Override
+    public void addCarInfo(TourUser tourUser) {
+        tourUserMapper.addCarInfo(tourUser);
+    }
+
 
 }

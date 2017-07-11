@@ -16,6 +16,30 @@
     <%@ include file="/WEB-INF/view/include/validate.jsp"%>
     <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
     <script src="${stccdn}/js/area.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            //验证
+            $('.valid-form').validate({
+                rules : {
+                    'planTime' : {
+                        required : true
+                    },
+                    'carNumber' : {
+                        required : true
+                    },
+                    'carImages' : {
+                        required : true
+                    }
+                },
+                submitHandler : function(form) {
+                    $(form).find(':submit').prop('disabled', true);
+                    form.submit();
+                }
+            });
+        });
+
+
+    </script>
     <style>
         .footer {
             position: fixed;
@@ -97,33 +121,22 @@
 <div class="main">
     <header class="header">
         <h1>待补充旅游路线</h1>
-        <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+        <a href="${ctx}/tour" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
 
     <article>
+        <form action="${ctx}/tour/create" class="valid-form" method="post">
             <div class="list-title">客户资料</div>
             <div class="list-item">
                 <label class="list-label">预计到达日期</label>
                 <div class="list-text">
-                    <input type="date" id="dateStart" name="reportedDate" class="form-input" value="" placeholder="填写预计到达日期">
+                    <input type="date" name ="planTime" class="form-input" value="" placeholder="填写预计到达日期">
                 </div>
             </div>
             <div class="list-item">
                 <label class="list-label">航班/班次号(去)</label>
                 <div class="list-text">
-                    <input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写去时航班班次">
-                </div>
-            </div>
-            <div class="list-item">
-                <label class="list-label">预计离开日期</label>
-                <div class="list-text">
-                    <input type="date" id="dateEnd" name="reportedDate" class="form-input" value="" placeholder="填写预计离开时间">
-                </div>
-            </div>
-            <div class="list-item">
-                <label class="list-label">航班/班次号(回)</label>
-                <div class="list-text">
-                    <input type="text" name="realname" id="realnameEnd" class="form-input" value="${report.realname}" placeholder="填写回去航班班次">
+                    <input type="text" name ="carNumber" class="form-input" value="${report.realname}" placeholder="填写航班班次">
                 </div>
             </div>
             <div class="list-item">
@@ -132,9 +145,8 @@
             <div class="list-item">
                 <div class="list-text image-upload image-multi">
                     <div class="image-add" data-limit="6" data-name="image">
-                        <input type="file" class="file" accept="image/*" capture="camera" onchange="selectFileImage(this)">
+                        <input type="file"  name ="carImages" class="file" accept="image/*" capture="camera" onchange="selectFileImage(this)">
                         <em class="state state-add" id="preview">
-                            <%--<img src="${ctx}/" class="state-addImg" style="display:none;max-height: 100%;max-width: 100%;"/>--%>
                         </em>
 
                     </div>
@@ -144,9 +156,11 @@
             <div class="form-btn" style="padding-bottom: 50px;">
                 <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提 交" style="margin-top: 30px">
             </div>
+        </form>
     </article>
 </div>
 <script>
+
     $(function() {
         $('[type=file]').change(function(e) {
             var file = e.target.files[0]
