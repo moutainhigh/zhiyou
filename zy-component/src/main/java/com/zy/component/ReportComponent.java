@@ -1,12 +1,15 @@
 package com.zy.component;
 
+import com.zy.common.model.query.Page;
 import com.zy.common.util.BeanUtils;
+import com.zy.entity.act.Policy;
 import com.zy.entity.act.Report;
+import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.User;
 import com.zy.model.dto.AreaDto;
-import com.zy.service.AreaService;
-import com.zy.service.JobService;
-import com.zy.service.ProductService;
+import com.zy.model.query.PolicyQueryModel;
+import com.zy.model.query.TourUserQueryModel;
+import com.zy.service.*;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.ReportAdminVo;
@@ -41,6 +44,12 @@ public class ReportComponent {
 	
 	@Autowired
 	private AreaService areaService;
+
+	@Autowired
+	private TourService tourService;
+
+	@Autowired
+	private PolicyService policyService;
 
 	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
 	
@@ -127,7 +136,20 @@ public class ReportComponent {
 		reportVo.setCreatedTimeLabel(formatDate(report.getCreatedTime(), TIME_PATTERN));
 		reportVo.setAppliedTimeLabel(formatDate(report.getAppliedTime(), TIME_PATTERN));
 		reportVo.setReportedDateLabel(formatDate(report.getReportedDate(), "yyyy-MM-dd"));
-		
+		//添加旅游  以及保单申请
+		TourUserQueryModel tourUserQueryModel = new TourUserQueryModel();
+		tourUserQueryModel.setReportId(Long.valueOf(report.getId()));
+		Page<TourUser> page = tourService.findAll(tourUserQueryModel);
+		if (page!=null&&page.getData()!=null&&page.getTotal()>0){
+			reportVo.setTourFlage("1");
+		}
+		PolicyQueryModel policyQueryModel = new PolicyQueryModel();
+		policyQueryModel.setReportIdEQ(report.getId());
+		List<Policy> policyList = policyService.findAll(policyQueryModel);
+		if (policyList!=null&&!policyList.isEmpty()){
+			reportVo.setInsureFlage("1");
+		}
+
 		return reportVo;
 	}
 	

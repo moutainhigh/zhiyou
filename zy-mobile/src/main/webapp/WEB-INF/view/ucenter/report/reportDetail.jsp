@@ -13,9 +13,40 @@
 
 <title>检测报告</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
+<script src="${stc}/js/layer/layer.js"></script>
+  <style>
+    .footer {
+      position: fixed;
+      bottom:0;
+      left:0;
+      width:100%;
+      height:50px;
+      background: #6cb92d;
+      z-index: 99;
+    }
+    .footer div {
+      float: left;
+      width:50%;
+      height:50px;
+      text-align: center;
+      line-height: 50px;
+      color: #fff;
+      font-size: 18px;
+      border-right: 1px solid #fff;
+      box-sizing: border-box;
+    }
+    .list-item {padding-bottom: 50px;}
+  </style>
 <script>
 
   $(function() {
+    function change() {
+      if ($(".list-unit").html() == "优检一生") {
+        $(".footer").hide();
+        $(".footer").css("padding-bottom", "50px");
+      }
+    }
+    change();
     $('.image-view').click(function() {
       var images = $(this).find('img');
       if (images.length == 0) {
@@ -172,7 +203,47 @@
       <div class="list-item">
         <div class="list-text font-777">${report.text}</div>
       </div>
+      <div class="footer" >
+        <div onclick="insurance()">保险申请</div>
+        <div onclick="travel('${report.id}')" style="border-right: none;">旅游申请</div>
+      </div>
     </div>
   </article>
+<script>
+  var reportId="";
+  function travel(id) {
+    reportId=id;
+    $.ajax({
+      url : '${ctx}/tour/ajaxCheckTour',
+      data :{
+        'reportId':reportId
+      },
+      dataType : 'json',
+      type : 'POST',
+      success : function(result){
+        if(result.code == 0){
+          travelT= layer.open({
+            type: 2,
+            area:['100%', '100%'],
+            title: false,
+            scrollbar: false,
+            closeBtn: 0,
+            content: '${ctx}/tour/findparentInfo'
+          });
+        } else {
+          messageAlert(result.message);
+        }
+      }
+    });
+  }
+  /**
+   * 获取rteportId
+   * @returns {*}
+   */
+  function getReportId(){
+    return reportId;
+  }
+
+</script>
 </body>
 </html>
