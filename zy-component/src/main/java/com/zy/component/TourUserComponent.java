@@ -178,6 +178,7 @@ public class TourUserComponent {
         if (tourUser.getTourId() != null){
             Tour tour = tourService.findTourOne(tourUser.getTourId());
             tourUserListVo.setTourTitle(tour.getTitle());
+            tourUserListVo.setImage(tour.getImage());
         }
         return tourUserListVo ;
     }

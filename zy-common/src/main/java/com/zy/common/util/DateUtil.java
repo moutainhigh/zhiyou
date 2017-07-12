@@ -104,13 +104,13 @@ public class DateUtil {
      */
     public static Date getBeforeMonthEnd(Date date,int moth,int year){
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        calendar.setTime(getMonthData(date,moth,year));
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 59);
         calendar.set(Calendar.DATE, 1);        //设置为该月第一天
         calendar.add(Calendar.DATE, -1);    //再减一天即为上个
-        calendar.add(Calendar.MONTH, moth);
+      /*  calendar.add(Calendar.MONTH, moth);*/
         calendar.add(Calendar.YEAR, year);
         return calendar.getTime();
     }
@@ -307,8 +307,8 @@ public class DateUtil {
         return result;
     }
     public static void  main(String []age) throws ParseException {
-       System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
-        System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));
+       System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),-2,0),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),-1,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
        /*  System.out.println(DateUtil.getMoth(new Date()));
         System.out.println(DateUtil.formatDouble(10123456789.0));

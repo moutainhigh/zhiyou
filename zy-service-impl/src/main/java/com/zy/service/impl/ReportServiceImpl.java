@@ -12,9 +12,11 @@ import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.entity.fnc.Transfer;
 import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.User;
 import com.zy.mapper.AdminMapper;
 import com.zy.mapper.ReportMapper;
+import com.zy.mapper.TourUserMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.query.ReportQueryModel;
@@ -52,6 +54,9 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	private Config config;
+
+	@Autowired
+	private TourUserMapper tourUserMapper;
 
 	@Override
 	public Report create(@NotNull Report report) {
@@ -407,8 +412,9 @@ public class ReportServiceImpl implements ReportService {
 		return persistence;
 	}
 
+	//添加 旅游信息 审核状态
 	@Override
-	public void preConfirm(@NotNull Long id, boolean isSuccess, String confirmRemark) {
+	public void preConfirm(@NotNull Long id, boolean isSuccess, String confirmRemark,Long userId) {
 		Report report = reportMapper.findOne(id);
 		validate(report, NOT_NULL, "report id" + id + " not found");
 		if(report.getPreConfirmStatus() != ConfirmStatus.待审核) {
@@ -417,7 +423,19 @@ public class ReportServiceImpl implements ReportService {
 		if(report.getConfirmStatus() != ConfirmStatus.待审核) {
 			throw new BizException(BizCode.ERROR, "状态不匹配");
 		}
-
+		//获取 用户旅游信息
+		List<TourUser> tourUserList = tourUserMapper.findByReportId(id);
+		if (tourUserList!=null&&!tourUserList.isEmpty()){
+			TourUser tourUser = tourUserList.get(0);//之取到第一条 （原则上只有一条）
+			tourUser.setUpdateDate(new Date());
+			tourUser.setUpdateBy(userId);
+			if (isSuccess){
+				tourUser.setAuditStatus(2);
+			}else{
+				tourUser.setAuditStatus(5);
+			}
+			tourUserMapper.updateAuditStatus(tourUser);
+		}
 		report.setPreConfirmedTime(new Date());
 		if(isSuccess) {
 			report.setPreConfirmStatus(ConfirmStatus.已通过);

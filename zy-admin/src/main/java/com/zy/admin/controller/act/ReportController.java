@@ -196,7 +196,8 @@ public class ReportController {
 	@RequestMapping(value = "/preConfirm", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<?> preConfirm(@RequestParam Long id, @RequestParam boolean isSuccess, String confirmRemark) {
-		reportService.preConfirm(id, isSuccess, confirmRemark);
+		AdminPrincipal principal = (AdminPrincipal) SecurityUtils.getSubject().getPrincipal();
+		reportService.preConfirm(id, isSuccess, confirmRemark,principal.getUserId());
 		return ResultBuilder.ok("操作成功");
 	}
 

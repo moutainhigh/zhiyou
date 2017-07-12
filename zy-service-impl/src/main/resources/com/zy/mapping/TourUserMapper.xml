@@ -266,6 +266,13 @@
 		where id = #{id}
 	</update>
 
+	<select id="findByReportId" resultMap="baseResultMap" parameterType="long">
+		SELECT
+		<include refid="baseColumn"/>
+		FROM ts_tour_user a
+		WHERE
+		a.report_id = #{id}
+	</select>
 
 
 </mapper>

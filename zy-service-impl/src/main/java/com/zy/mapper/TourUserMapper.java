@@ -23,4 +23,6 @@ public interface TourUserMapper {
     void modify(TourUser tourUser);
 
     int insert(TourUser tourUser);
+
+    List<TourUser> findByReportId(Long id);
 }
