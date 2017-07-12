@@ -47,7 +47,13 @@
 </c:forEach>
 
 <script>
-
+    $(".opacityFirst").load(function(){
+        var opacityT = $(".opacityFirst").height();
+        $(".font").css("margin-top", -opacityT / 2 - 13);
+    });
+    $(".opacity").load(function(){
+        $(".opacity").css("margin-top", -$(".opacity").height() + "px");
+    });
     function TravelDetil(num){
         var reporId= $("#reporId").val();
         if(reporId==null||reporId=="") {
@@ -67,11 +73,7 @@
     function cloethis(){
         layer.close(travelT);
     }
-    $(function(){
-        $(".opacity").css("margin-top",-$(".opacity").height()+"px");
-        var opacityT=$(".opacityFirst").height();
-        $(".font").css("margin-top",-opacityT/2-13);
-    })
+
 </script>
 </body>
 </html>
