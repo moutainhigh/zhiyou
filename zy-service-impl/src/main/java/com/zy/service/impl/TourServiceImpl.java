@@ -140,6 +140,7 @@ public class TourServiceImpl implements TourService {
         tourUp.setUpdateTime(new Date());
         tourUp.setIsReleased(tour.getIsReleased());
         tourUp.setDelfage(tour.getDelfage());
+        tourUp.setDays(tour.getDays());
         tourMapper.update(tourUp);
     }
 
