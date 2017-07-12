@@ -523,7 +523,7 @@
 		FROM mal_order a
 		<where>
 			1 = 1
-			AND a.order_status IN (3,4,5)
+			AND a.order_status IN (2,3,4)
 			<if test="userIdEQ != null">
 				AND a.user_id = #{userIdEQ}
 			</if>
@@ -550,7 +550,7 @@
 		FROM mal_order a
 		<where>
 			1 = 1
-			AND a.order_status IN (3,4,5)
+			AND a.order_status IN (2,3,4)
 			<if test="sellerIdEQ != null">
 				AND a.seller_id = #{sellerIdEQ}
 			</if>

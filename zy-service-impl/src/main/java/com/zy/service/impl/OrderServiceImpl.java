@@ -1290,22 +1290,30 @@ public class OrderServiceImpl implements OrderService {
 			double data = 0d;
 			//进货量环比
 			double sv = 0.00d;
-			if (i-2 >= 0 && salesVolumeData [i-2] != 0){
-				sv = new BigDecimal((salesVolumeData [i-1] - salesVolumeData [i-2]) / salesVolumeData [i-2] * 100).setScale(2 , RoundingMode.UP).doubleValue()  ;
-			}else if (i-2 >= 0 && salesVolumeData [i-2] == 0 && salesVolumeData [i-2] > 0){
+			if (i-2 >= 0 && salesVolumeData [i-1] != 0 && salesVolumeData [i-2] != 0){
+				sv = new BigDecimal((salesVolumeData [i-2] - salesVolumeData [i-1]) / salesVolumeData [i-1] * 100).setScale(2 , RoundingMode.UP).doubleValue()  ;
+			}else if (i-2 >= 0 && salesVolumeData [i-1] == 0 && salesVolumeData [i-2] > 0){
 				sv = 100;
+			}else if (i-2 >= 0 && salesVolumeData [i-1] > 0 && salesVolumeData [i-2] == 0){
+				sv = -100;
 			}
 			data = sv;
-			svData[i-1] = data;
+			if (i-2 >= 0){
+				svData[i-2] = data;
+			}
 			//出货量环比
 			double s = 0.00d;
-			if (i-2 >= 0 && shipmentData [i-2] != 0){
-				s = new BigDecimal((shipmentData [i-1] - shipmentData [i-2]) / shipmentData [i-2] * 100 ).setScale(2 , RoundingMode.UP).doubleValue() ;
-			}else if (i-2 >= 0 && shipmentData [i-2] == 0 && shipmentData [i-1] > 0){
+			if (i-2 >= 0 && shipmentData [i-1] != 0 && shipmentData [i-2] != 0){
+				s = new BigDecimal((shipmentData [i-2] - shipmentData [i-1]) / shipmentData [i-1] * 100 ).setScale(2 , RoundingMode.UP).doubleValue() ;
+			}else if (i-2 >= 0 && shipmentData [i-1] == 0 && shipmentData [i-2] > 0){
 				s = 100;
+			}else if (i-2 >= 0 && shipmentData [i-1] > 0 && shipmentData [i-2] == 0){
+				s = -100;
 			}
 			data = s;
-			sData[i-1] = data;
+			if (i-2 >= 0) {
+				sData[i - 2] = data;
+			}
 		}
 
 		//查询我的团队进、出货量
@@ -1342,12 +1350,12 @@ public class OrderServiceImpl implements OrderService {
                 shipmentTeamData[i-1] = data;
             }
         }
-        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, false));
-        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, false));
-        returnMap.put("svData", DateUtil.arryToString(svData, false));
-        returnMap.put("sData", DateUtil.arryToString(sData, false));
-        returnMap.put("salesVolumeTeamData", DateUtil.longarryToString(salesVolumeTeamData, false));
-        returnMap.put("shipmentTeamData", DateUtil.longarryToString(shipmentTeamData, false));
+        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, true));
+        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, true));
+        returnMap.put("svData", DateUtil.arryToString(svData, true));
+        returnMap.put("sData", DateUtil.arryToString(sData, true));
+        returnMap.put("salesVolumeTeamData", DateUtil.longarryToString(salesVolumeTeamData, true));
+        returnMap.put("shipmentTeamData", DateUtil.longarryToString(shipmentTeamData, true));
 		return returnMap;
 	}
 
@@ -1377,27 +1385,35 @@ public class OrderServiceImpl implements OrderService {
 			double data = 0d;
 			//进货量环比
 			double sv = 0.00d;
-			if (i-2 >= 0 && salesVolumeData [i-2] != 0){
-				sv = new BigDecimal((salesVolumeData [i-1] - salesVolumeData [i-2]) / salesVolumeData [i-2] * 100).setScale(2 , RoundingMode.UP).doubleValue()  ;
-			}else if (i-2 >= 0 && salesVolumeData [i-2] == 0 && salesVolumeData [i-2] > 0){
+			if (i-2 >= 0 && salesVolumeData [i-1] != 0 && salesVolumeData [i-2] != 0){
+				sv = new BigDecimal((salesVolumeData [i-2] - salesVolumeData [i-1]) / salesVolumeData [i-1] * 100).setScale(2 , RoundingMode.UP).doubleValue()  ;
+			}else if (i-2 >= 0 && salesVolumeData [i-1] == 0 && salesVolumeData [i-2] > 0){
 				sv = 100;
+			}else if (i-2 >= 0 && salesVolumeData [i-1] > 0 && salesVolumeData [i-2] == 0){
+				sv = -100;
 			}
 			data = sv;
-			svData[i-1] = data;
+			if (i-2 >= 0) {
+				svData[i - 2] = data;
+			}
 			//出货量环比
 			double s = 0.00d;
-			if (i-2 >= 0 && shipmentData [i-2] != 0){
-				s = new BigDecimal((shipmentData [i-1] - shipmentData [i-2]) / shipmentData [i-2] * 100 ).setScale(2 , RoundingMode.UP).doubleValue() ;
-			}else if (i-2 >= 0 && shipmentData [i-2] == 0 && shipmentData [i-1] > 0){
+			if (i-2 >= 0 && shipmentData [i-1] != 0 && shipmentData [i-2] != 0){
+				s = new BigDecimal((shipmentData [i-2] - shipmentData [i-1]) / shipmentData [i-1] * 100 ).setScale(2 , RoundingMode.UP).doubleValue() ;
+			}else if (i-2 >= 0 && shipmentData [i-1] == 0 && shipmentData [i-2] > 0){
 				s = 100;
+			}else if (i-2 >= 0 && shipmentData [i-1] > 0 && shipmentData [i-2] == 0){
+				s = -100;
 			}
 			data = s;
-			sData[i-1] = data;
+			if (i-2 >= 0) {
+				sData[i - 2] = data;
+			}
 		}
-        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, false));
-        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, false));
-		returnMap.put("svData", DateUtil.arryToString(svData, false));
-		returnMap.put("sData", DateUtil.arryToString(sData, false));
+        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, true));
+        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, true));
+		returnMap.put("svData", DateUtil.arryToString(svData, true));
+		returnMap.put("sData", DateUtil.arryToString(sData, true));
         return returnMap;
     }
 
