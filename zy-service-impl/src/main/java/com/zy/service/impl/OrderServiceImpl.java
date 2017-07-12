@@ -1010,6 +1010,178 @@ public class OrderServiceImpl implements OrderService {
 		}
 	}
 
+	@Override
+	public void settleUpRebate(@NotBlank String yearAndMonth) {
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM");
+		TemporalAccessor temporalAccessor = df.parse(yearAndMonth);
+		Predicate<User> predicate = v -> {
+			User.UserRank userRank = v.getUserRank();
+			if (userRank != null && userRank == UserRank.V4) {
+				return true;
+			}
+			return false;
+		};
+
+		int year = temporalAccessor.get(ChronoField.YEAR);
+		int month = temporalAccessor.get(ChronoField.MONTH_OF_YEAR);
+
+		YearMonth yearMonth = YearMonth.of(year, month);
+		YearMonth nowYearMonth = YearMonth.now();
+		if (!nowYearMonth.isAfter(yearMonth)) {
+			throw new BizException(BizCode.ERROR, "未达到发放时间");
+		}
+
+		LocalDate beginDate = LocalDate.of(year, month, 1);
+		LocalDate endDate = beginDate.with(TemporalAdjusters.firstDayOfNextMonth());
+
+		LocalDateTime beginDateTime = LocalDateTime.of(beginDate, LocalTime.MIN);
+		LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MIN);
+
+		Date begin = Date.from(beginDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		Date end = Date.from(endDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+		List<Order> orders = orderMapper.findAll(OrderQueryModel.builder()
+				.orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成})
+				.productIdEQ(2L)  //月结算只针对2.0的产品
+				.paidTimeGTE(begin).paidTimeLT(end)
+				.sellerIdEQ(Constants.SETTING_SETTING_ID)
+				.build());
+
+		final Long toV4Quantity = 3600L;
+		final BigDecimal zero = new BigDecimal("0.00");
+		final Date now = new Date();
+
+		Map<Long, Boolean> toV4Map = orders.stream()
+				.filter(v -> v.getQuantity() >= toV4Quantity && v.getBuyerUserRank().ordinal() < UserRank.V4.ordinal())
+				.collect(Collectors.toMap(v -> v.getUserId(), v -> true, (existingValue, newValue) -> existingValue));
+
+		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
+		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
+		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
+
+		logger.error("准备返利奖， copy order");
+		List<Order> copyOrders = orders.stream().map(v -> {
+			Long userId = v.getUserId();
+
+			Order copy = new Order();
+			BeanUtils.copyProperties(v, copy);
+
+			Boolean toV4 = toV4Map.get(userId);
+			logger.error("进入copy订单，判断用户" + userId + "是否直升特级：" + toV4);
+			User user = userMap.get(userId);
+			if (toV4 != null) {
+//				User parent = userMap.get(user.getParentId());
+//				logger.error(parent.getNickname()+ "是否直升特级：" + toV4Map.get(parent.getId()));
+//				logger.error(parent.getNickname()+ "用户等级：" + parent.getUserRank());
+//				while(parent.getUserRank() != UserRank.V4) {
+//					parent = userMap.get(parent.getParentId());
+//				}
+				User parent = userMap.get(v.getV4UserId());
+				copy.setUserId(v.getV4UserId());
+				logger.error(user.getNickname() + "直升特级，订单给上级(order.v4UserId)：" + parent.getNickname() + parent.getUserRank());
+			}
+			return copy;
+		}).collect(Collectors.toList());
+
+		Map<Long, TeamModel> teamMap = v4Users.stream()
+				.map(v -> {
+					TeamModel teamModel = new TeamModel();
+					teamModel.setUser(v);
+					teamModel.setV4Children(TreeHelper.sortBreadth2(v4Users, String.valueOf(v.getId()), u -> {
+						TreeNode treeNode = new TreeNode();
+						treeNode.setId(String.valueOf(u.getId()));
+						Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
+						treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(directV4ParentId));
+						return treeNode;
+
+					}));
+					teamModel.setDirectV4Children(users.stream().filter(u -> {
+						Long userId = u.getId();
+						if (userId.equals(v.getId())) {
+							return false;
+						}
+						Long directV4ParentId = null;
+						int times = 0;
+						Long parentId = u.getParentId();
+						while(parentId != null) {
+							if (times > 1000) {
+								throw new BizException(BizCode.ERROR, "循环引用");
+							}
+							User parent = userMap.get(parentId);
+							if (predicate.test(parent)) {
+								directV4ParentId = parentId;
+								break;
+							}
+							parentId = parent.getParentId();
+							times ++;
+						}
+						if (directV4ParentId != null && directV4ParentId.equals(v.getId())) {
+							return true;
+						}
+						return false;
+					}).collect(Collectors.toList()));
+					return teamModel;
+				}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
+
+		{
+			Map<Long, Long> userQuantityMap = copyOrders.stream().collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x, y) -> x + y));
+			userQuantityMap.entrySet().stream().forEach(v -> {
+				if (v.getValue() > 0) {
+					System.out.println(userMap.get(v.getKey()).getNickname() + "个人销量" + v.getValue() + "元");
+				}
+			});
+
+			Map<Long, Long> teamQuantityMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
+				Long userId = v.getId();
+				Long myQuantity = userQuantityMap.get(userId) == null ? 0L : userQuantityMap.get(userId);
+				Long teamQuantity = teamMap.get(userId).getV4Children().stream()
+						.map(u -> userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId()))
+						.reduce(0L, (x, y) -> x + y);
+				return teamQuantity + myQuantity;
+			}));
+
+			teamQuantityMap.entrySet().stream().forEach(v -> {
+				if (v.getValue() > 0) {
+					logger.error(userMap.get(v.getKey()).getNickname() + "团队业绩" + v.getValue() + "次");
+				}
+			});
+
+			BigDecimal rate = new BigDecimal("128");
+			Map<Long, BigDecimal> profitMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
+				Long userId = v.getId();
+				BigDecimal quantity = new BigDecimal(teamQuantityMap.get(userId));
+				BigDecimal rate1 = getMonthlyRate(quantity);
+				BigDecimal profit = quantity.multiply(rate1).multiply(rate);
+				for (User user : teamMap.get(userId).getDirectV4Children()) {
+					if (predicate.test(user)) {
+						Long childUserId = user.getId();
+						BigDecimal childQuantity = new BigDecimal(teamQuantityMap.get(childUserId));
+						BigDecimal childRate = getMonthlyRate(childQuantity);
+						BigDecimal childProfit = childQuantity.multiply(childRate).multiply(rate);
+						profit = profit.subtract(childProfit);
+					}
+				}
+
+				return profit;
+			}));
+
+			for (Map.Entry<Long, BigDecimal> entry : profitMap.entrySet()) {
+				BigDecimal amount = entry.getValue();
+				Long userId = entry.getKey();
+				if (amount.compareTo(zero) > 0) {
+					try {
+						TimeUnit.MILLISECONDS.sleep(200);
+					} catch (InterruptedException e1) {
+					}
+					BigDecimal fee = amount.multiply(FEE_RATE);
+					BigDecimal amountAfter = amount.subtract(fee);
+					fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+					logger.error(userMap.get(userId).getNickname() + "返利奖" + amount + "积分");
+				}
+			}
+		}
+	}
+
 	private BigDecimal getMonthlyRate(BigDecimal totalQuantity) {
 		BigDecimal lvl1 = new BigDecimal("1200.00");
 		BigDecimal lvl2 = new BigDecimal("2400.00");

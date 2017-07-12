@@ -387,4 +387,28 @@ public class IndexController {
 		}
 
 	}
+
+	@RequestMapping("/settleUpRebate")
+	@ResponseBody
+	public String settleUpRebate(String yeahAndMonth, HttpServletRequest request) {
+		try {
+			if (StringUtils.isNotBlank(yeahAndMonth)) {
+				Date beginDate = cacheSupport.get("settleUpOption", yeahAndMonth);
+				if (beginDate == null) {
+					cacheSupport.set("settleUpOption", yeahAndMonth, new Date(), 60);
+					orderService.settleUpRebate(yeahAndMonth);
+					cacheSupport.delete("settleUpOption", yeahAndMonth);
+					return yeahAndMonth + "的返利结算处理完成";
+				} else {
+					return yeahAndMonth + "的返利结算正在运行中 结算开始时间为：" + beginDate;
+				}
+			} else {
+				return "传入的日期不合法" + yeahAndMonth;
+			}
+		} catch (Exception e) {
+			cacheSupport.delete("settleUpOption", yeahAndMonth);
+			return e.getMessage();
+		}
+
+	}
 }
