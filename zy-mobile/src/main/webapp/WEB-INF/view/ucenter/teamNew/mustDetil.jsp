@@ -371,11 +371,11 @@
         $("#vip"+index).text(arry[3]+"人");
         if($(obj).attr("change")=="true"){
           $(obj).parents(".rankingAll").next(".rankingNum").show();
-          $(obj).find("img").attr("src","${ctx}/jian2.png");
+          $(obj).find("img").attr("src","${ctx}/images/jian2.png");
           $(obj).attr("change","false");
         }else {
           $(obj).parents(".rankingAll").next(".rankingNum").hide();
-          $(obj).find("img").attr("src","${ctx}/jian.png");
+          $(obj).find("img").attr("src","${ctx}/images/jian.png");
           $(obj).attr("change","true");
         }
 
