@@ -5,6 +5,7 @@ import com.zy.common.model.query.Page;
 import com.zy.common.util.BeanUtils;
 import com.zy.common.util.DateUtil;
 import com.zy.entity.act.Activity;
+import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
 import com.zy.entity.sys.SystemCode;
 import com.zy.entity.tour.*;
@@ -50,6 +51,11 @@ public class TourComponent {
     @Autowired
     private SystemCodeService systemCodeService;
 
+    @Autowired
+    private BlackOrWhiteService blackOrWhiteService;
+
+    @Autowired
+    private PolicyCodeService policyCodeService;
 
     private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
 
@@ -242,12 +248,15 @@ public class TourComponent {
     public List<TourTimeVo>changeVo(List<TourTime> timeList){
         List<TourTimeVo> tourTimeVoList = new ArrayList<TourTimeVo>();
         for (TourTime tourTime:timeList){
-            TourTimeVo tourTimeVo = new TourTimeVo();
-            tourTimeVo.setId(tourTime.getId());
-            tourTimeVo.setBeginTimeStr(GcUtils.formatDate(tourTime.getBegintime(), "MM-dd"));
-            tourTimeVo.setFee(tourTime.getFee());
-            tourTimeVo.setWeekStr(DateUtil.getWeek(tourTime.getBegintime()));
-            tourTimeVoList.add(tourTimeVo);
+            //开始时间必须大于今天
+            if(DateUtil.calculateDiffDays(new Date(),tourTime.getBegintime())>0) {
+                TourTimeVo tourTimeVo = new TourTimeVo();
+                tourTimeVo.setId(tourTime.getId());
+                tourTimeVo.setBeginTimeStr(GcUtils.formatDate(tourTime.getBegintime(), "MM-dd"));
+                tourTimeVo.setFee(tourTime.getFee());
+                tourTimeVo.setWeekStr(DateUtil.getWeek(tourTime.getBegintime()));
+                tourTimeVoList.add(tourTimeVo);
+           }
         }
         return tourTimeVoList;
     }
@@ -311,7 +320,7 @@ public class TourComponent {
         tourUser.setIsAddBed(0);
         tourUser.setIsJoin(0);
         tourUser.setSequenceId(this.getgetNextTourID());
-        tourService.updateOrInster(userInfo,tourUser);
+        tourService.updateOrInster(userInfo,tourUser,tourUserInfoVo.getProductNumber());
     }
 
     private static final Map<String,Long>  provinceMap= new HashMap<String, Long>(){{
@@ -425,7 +434,7 @@ public class TourComponent {
         }
 
         //检测地区  本省不能参加本省的
-        Long areaId =null;
+      /*  Long areaId =null;
         TourTime tourTime = tourService.findTourTimeOne(tourUserInfoVo.getTourTimeId());
         if (tourTime!=null){
             areaId  = tourTime.getAreaId();
@@ -440,7 +449,7 @@ public class TourComponent {
          String  pid =tourUserInfoVo.getIdCartNumber().substring(0,2);
          if (provinceId==provinceMap.get(pid)){
              return "抱歉！不能参加户籍所在地旅游";
-         }
+         }*/
         return null;
     }
 
@@ -453,6 +462,7 @@ public class TourComponent {
         TourUserQueryModel tourUserQueryModel = new TourUserQueryModel();
         tourUserQueryModel.setCreatedTime(DateUtil.getCurrYearFirst());
         tourUserQueryModel.setUserId(userId);
+        tourUserQueryModel.setIsEffect(1);
         Page<TourUser> page = tourService.findAll(tourUserQueryModel);
         SystemCode systemCode = systemCodeService.findByTypeAndName("TOURAPPLYNUMBER", "TOUR");
         if (systemCode==null||(systemCode.getSystemValue()==null||"".equals(systemCode.getSystemValue()))){
@@ -506,5 +516,82 @@ public class TourComponent {
             return "还没有提交检测报告或者已经申请过保险";
         }
         return null;
+    }
+
+    /**
+     * 查询 推荐人  可带人数量
+     * @param userId
+     * @return
+     */
+    public String  checkParetNumber(Long userId ,Long tourTimeId) {
+        String   result = null;
+        //推荐人检测
+        int num=0;
+        BlackOrWhite blackOrWhite=blackOrWhiteService.findByUserId(userId);
+        if (blackOrWhite!=null){
+            num= blackOrWhite.getNumber();
+        }else {
+            SystemCode systemCodewb = systemCodeService.findByTypeAndName("BLACKORWHITENUMBER", "BLACKORWHITE");
+            if (systemCodewb == null || (systemCodewb.getSystemValue() == null || "".equals(systemCodewb.getSystemValue()))) {
+                num = 8;
+            } else {
+              try{
+                  num = Integer.valueOf(systemCodewb.getSystemValue());
+
+               }catch (Exception e){
+                  e.printStackTrace();
+                  num =8;
+              }
+            }
+        }
+        TourUserQueryModel tourUserQueryModel = new TourUserQueryModel();
+        tourUserQueryModel.setCreatedTime(DateUtil.getCurrYearFirst());
+        tourUserQueryModel.setParentId(userId);
+        tourUserQueryModel.setTourTimeId(tourTimeId);
+        tourUserQueryModel.setIsEffect(1);
+        Page<TourUser> page = tourService.findAll(tourUserQueryModel);
+        if(page!=null&&page.getTotal()!=null&&page.getTotal()>num){
+            result ="申请旅游人数已经超过上线" ;
+        }
+        int min =15;
+        //判断所选路线是否相差15天
+        SystemCode systemCodewb = systemCodeService.findByTypeAndName("TOURTIMEBAD", "MIN");
+        if (systemCodewb == null || (systemCodewb.getSystemValue() == null || "".equals(systemCodewb.getSystemValue()))) {
+            min =15;
+        } else {
+            try{
+                min = Integer.valueOf(systemCodewb.getSystemValue());
+
+            }catch (Exception e){
+                e.printStackTrace();
+                min =15;
+            }
+        }
+
+        TourTime tourTime = tourService.findTourTimeOne(tourTimeId);
+        int das = DateUtil.calculateDiffDays(new Date(),tourTime.getBegintime());
+        if (das>num){
+            result ="申请旅游时间要提前"+min+"天" ;
+        }
+        return  result;
+    }
+
+    /**
+     * 查询产品编号
+     * @param reporId
+     * @return
+     */
+    public String findproductNumber(Long reporId) {
+        String result=null;
+        Report report = reportService.findOne(reporId);
+            if (report!=null&&report.getProductNumber()==null){
+                PolicyCode policyCode = policyCodeService.findByCode(report.getProductNumber());
+               if (policyCode!=null){
+                   result= policyCode.getCode();
+               }
+            }else if (report!=null){
+                result=  report.getProductNumber();
+            }
+      return result;
     }
 }

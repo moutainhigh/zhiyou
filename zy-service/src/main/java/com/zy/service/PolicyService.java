@@ -22,4 +22,6 @@ public interface PolicyService {
 	void checkAndModify(Long id);
 
 	void fail(Long id);
+
+	void updateProductNumber(String productNumber, boolean b);
 }

@@ -174,6 +174,12 @@
         <input type="hidden" name ="userId" value="${userinfoVo.userId}">
         <div class="list-title">旅游报名申请表单</div>
     <div class="list-item">
+        <label class="list-label" >产品编号</label>
+        <div class="list-text">
+            <input type="text" class="form-input" name="productNumber" value="${productNumber}" ${productNumber!=null?'readonly':''}  required placeholder="填写产品编号">
+        </div>
+    </div>
+    <div class="list-item">
         <label class="list-label" >旅游路线</label>
         <div class="list-text">
             <input type="text" class="form-input" value="${tour.title}" placeholder="填写旅游路线" readonly>
@@ -277,7 +283,7 @@
 
 <script>
     $(function() {
-        var area = new areaInit('province', 'city', 'district', '${report.areaId}');
+        var area = new areaInit('province', 'city', 'district');
 
     });
     //点击报名申请表单中的返回
@@ -326,7 +332,7 @@
 
 
                                 } else {
-                                    messageAlert("数据异常,请联系客服");
+                                    messageAlert(result.message);
                                 }
                             }
                         });

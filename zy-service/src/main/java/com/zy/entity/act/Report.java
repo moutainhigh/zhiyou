@@ -230,6 +230,10 @@ public class Report implements Serializable {
 	@Query(Predicate.EQ)
 	private Boolean isHot;
 
+	@Field(label = "产品编号")
+	@View(groups = {VO_DETAIL, VO_ADMIN})
+	private String productNumber;
+
 	@NotNull
 	@Version
 	@Field(label = "乐观锁")

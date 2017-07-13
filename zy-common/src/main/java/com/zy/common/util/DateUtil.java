@@ -306,6 +306,25 @@ public class DateUtil {
 
         return result;
     }
+
+
+    /**
+     * 获取时间 相差 天数
+     * @param beginDate
+     * @param endDate
+     * @return
+     */
+    public static int calculateDiffDays(java.util.Date beginDate, java.util.Date endDate) {
+        if (beginDate == null || endDate == null) {
+            return 0;
+        } else {
+            long bMillSeconds = beginDate.getTime();
+            long eMillSeconds = endDate.getTime();
+            long temp = eMillSeconds - bMillSeconds;
+            double t1 = temp / 1000 / 60 / 60 / 24;
+            return (new Double(t1)).intValue();
+        }
+    }
     public static void  main(String []age) throws ParseException {
        System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),-2,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),-1,0),"yyyy-MM-dd HH:mm:ss"));

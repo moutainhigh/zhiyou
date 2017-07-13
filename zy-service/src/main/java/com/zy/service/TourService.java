@@ -52,7 +52,7 @@ public interface TourService {
 
      TourTime findTourTimeOne(Long tourTimeid);
 
-     void updateOrInster(UserInfo userInfo, TourUser tourUser);
+     void updateOrInster(UserInfo userInfo, TourUser tourUser,String productNumber);
 
      void addCarInfo(TourUser tourUser);
 

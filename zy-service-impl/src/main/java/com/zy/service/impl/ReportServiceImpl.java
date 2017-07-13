@@ -430,11 +430,11 @@ public class ReportServiceImpl implements ReportService {
 			tourUser.setUpdateDate(new Date());
 			tourUser.setUpdateBy(userId);
 			if (isSuccess){
-				tourUser.setAuditStatus(2);
+				tourUser.setIsEffect(1);
 			}else{
-				tourUser.setAuditStatus(5);
+				tourUser.setIsEffect(0);
 			}
-			tourUserMapper.updateAuditStatus(tourUser);
+			tourUserMapper.modify(tourUser);
 		}
 		report.setPreConfirmedTime(new Date());
 		if(isSuccess) {

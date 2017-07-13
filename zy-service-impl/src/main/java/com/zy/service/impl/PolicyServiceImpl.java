@@ -190,4 +190,20 @@ public class PolicyServiceImpl implements PolicyService {
 		merge.setPolicyStatus(Policy.PolicyStatus.未通过);
 		policyMapper.merge(merge, "policyStatus");
 	}
+
+
+	/**
+	 * 更新检测编号
+	 * @param productNumber
+	 * @param b
+     */
+	@Override
+	public void updateProductNumber(String productNumber, boolean b) {
+		PolicyCode policyCode = policyCodeMapper.findByCode(productNumber);
+		if(policyCode!=null) {
+			policyCode.setIsUsed(b);
+			policyCode.setUsedTime(new Date());
+			policyCodeMapper.update(policyCode);
+		}
+	}
 }

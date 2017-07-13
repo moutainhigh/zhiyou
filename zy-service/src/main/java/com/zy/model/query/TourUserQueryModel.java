@@ -35,6 +35,11 @@ public class TourUserQueryModel implements Serializable {
 
     private String parentName;
 
+    private Long  parentId;
+
+    private Long  tourTimeId;
+
+
     private String userPhone;
 
     private String parentPhone;

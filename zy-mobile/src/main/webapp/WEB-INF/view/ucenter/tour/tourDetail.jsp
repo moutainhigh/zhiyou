@@ -165,9 +165,9 @@
 <header class="header">
     <h1>旅游路线详情</h1>
     <form id="_form" method="post" action="${ctx}/tour/findTourApple">
-        <input type="hidden" name ="phone" value="${parentPhone}"/>
+        <input type="hidden" name ="phone" value="${parentPhone}" id="phone"/>
         <input type="hidden" name ="reporId" value="${reporId}" id="reporId"/>
-        <input type="hidden" name ="tourTimeid"  id="tourTimeid"/>
+        <input type="hidden" name ="tourTimeid"  id="tourTimeid" value="${tourTimeid}"/>
         <input type="hidden" name ="tourId" id="tourId" value="${tour.id}"/>
       <a href="#" onclick="fromSumbit()" class="button-left"><i class="fa fa-angle-left"></i></a>
     </form>
@@ -215,9 +215,25 @@
             messageAlert("请选择出游时间");
             return ;
         }
-        $("#tourTimeid").val(tourTimeid);
-        $("#_form").attr("action", "${ctx}/tour/findTourUserVo");
-        $("#_form").submit();
+        $.ajax({
+            url : '${ctx}/tour/ajaxCheckPraentNumber',
+            data : {
+                phone:$("#phone").val(),
+                tourTimeId:tourTimeid
+            },
+            dataType : 'json',
+            type : 'POST',
+            success : function(result) {
+                if(result.code == 0) {
+                    $("#tourTimeid").val(tourTimeid);
+                    $("#_form").attr("action", "${ctx}/tour/findTourUserVo");
+                    $("#_form").submit();
+                }else {
+                    messageAlert(result.message);
+                }
+            }
+        });
+
 
     }
     $(function(){
