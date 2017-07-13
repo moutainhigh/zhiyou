@@ -523,18 +523,18 @@
       $('#preview').empty().append($img);
     }
   }
-  //提交保险申请
-  function submitBtn(){
-    layer.close(insuranceT);
-    line=layer.open({
-      type: 2,
-      area:['100%', '100%'],
-      title: false,
-      scrollbar: false,
-      closeBtn: 0,
-      content: '${ctx}/u/report/create'
-    });
-  }
+  <%--//提交保险申请--%>
+  <%--function submitBtn(){--%>
+    <%--layer.close(insuranceT);--%>
+    <%--line=layer.open({--%>
+      <%--type: 2,--%>
+      <%--area:['100%', '100%'],--%>
+      <%--title: false,--%>
+      <%--scrollbar: false,--%>
+      <%--closeBtn: 0,--%>
+      <%--content: '${ctx}/u/report/create'--%>
+    <%--});--%>
+  <%--}--%>
   //取消保险申请
   function hideBtn(){
     layer.close(insuranceT);

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.zy.component.TourComponent;
 import com.zy.util.GcUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,6 +102,9 @@ public class UcenterReportController {
 
 	@Autowired
 	private Config config;
+
+	@Autowired
+	private TourComponent tourComponent;
 	
 	@RequestMapping()
 	public String list(Principal principal, Model model) {
@@ -329,37 +333,38 @@ public class UcenterReportController {
 
 
 	@RequestMapping(value = "/insuranceInfo")
-	public String insuranceInfo(Long reportId, Model model, RedirectAttributes redirectAttributes) {
+	public String insuranceInfo(Long reportId, Model model, Principal principal) {
+		Long userId = principal.getUserId(); //userInfoService
+		String productNumber = tourComponent.findproductNumber(reportId);
+		model.addAttribute("userinfoVo",tourComponent.findUserInfoVo(userId));
 		model.addAttribute("reportId", reportId);
+		model.addAttribute("productNumber", productNumber);
 		return "ucenter/report/insurance";
 	}
 
 	@RequestMapping(value = "/addInsuranceInfo", method = POST)
-	public String addInsuranceInfo( Policy policy, Long reportId, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+	@ResponseBody
+	public Result<?> addInsuranceInfo( Policy policy, Long reportId, Principal principal) {
 		try {
 			//保单校验
 			if(policy != null) {
 				PolicyCode policyCode = policyCodeService.findByCode(policy.getCode());
 				if(policyCode == null) {
-					throw new BizException(BizCode.ERROR, "保险单号不存在[" + policy.getCode() + "]");
+					return ResultBuilder.error("产品编号不存在");
 				}
 				if(policyCode.getIsUsed()) {
-					throw new BizException(BizCode.ERROR, "保险单号已被使用[" + policy.getCode() + "]");
+					return ResultBuilder.error("产品编号已被使用");
 				}
 			}
-			if( policy != null) {
 				policy.setUserId(principal.getUserId());
 				policy.setReportId(reportId);
 				policy.setImage1(GcUtils.getThumbnail(policy.getImage1(), 750, 450));
 				policyService.create(policy);
-			}
+
+			return ResultBuilder.ok(null);
 		} catch (Exception e) {
-			model.addAttribute("policy", policy);
-			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return "redirect:/u/report";
+			return ResultBuilder.error(e.getMessage());
 		}
-		redirectAttributes.addFlashAttribute(ResultBuilder.ok("上传保单成功"));
-		return "redirect:/u/report";
 	}
 
 }

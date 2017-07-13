@@ -194,14 +194,16 @@
 <form action="${ctx}/u/report/addInsuranceInfo?reportId=${reportId}" class="valid-form" method="post">
     <div id="policy" class="list-group">
         <div id="policyInfo">
-            <div class="list-item bd-t-0"><label class="list-label" for="code">产品编码</label>
+            <input type="hidden" name="reportId" value="${reportId}">
+            <div class="list-item">
+                <label class="list-label" >产品编号</label>
                 <div class="list-text">
-                    <input type="text" name="code" id="code" class="form-input" value="" placeholder="填写产品编码">
+                    <input type="text" class="form-input" name="code" value="${productNumber}" ${productNumber!=null?'readonly':''}  required placeholder="填写产品编号">
                 </div>
             </div>
             <div class="list-item"><label class="list-label" for="idCardNumber">身份证号</label>
                 <div class="list-text">
-                    <input type="text" name="idCardNumber" id="idCardNumber" class="form-input" value="" placeholder="填写身份证号">
+                    <input type="text" name="idCardNumber" id="idCardNumber" class="form-input" value="${userinfoVo.idCardNumber}" placeholder="填写身份证号">
                 </div>
             </div>
             <div class="list-item">
@@ -209,7 +211,7 @@
                 <div class="list-item">
                     <div class="list-text image-upload image-multi">
                         <div class="image-add" data-limit="6" data-name="image">
-                            <input type="file"  name ="image1" class="file" accept="image/*" capture="camera">
+                            <input type="file"  name ="image1"  value="${userinfoVo.image1Thumbnail}"  class="file" accept="image/*" capture="camera">
                             <em class="state state-add" id="preview">
                             </em>
 
@@ -221,12 +223,12 @@
 
             <div class="list-item"><label class="list-label">生日</label>
                 <div class="list-text">
-                    <input type="date" name="birthday" class="form-input" value="" placeholder="填写生日  1900-01-01"></div>
+                    <input type="date" name="birthday" class="form-input" value="${userinfoVo.birthdayLabel}" placeholder="填写生日  1900-01-01"></div>
             </div>
         </div>
     </div>
     <div class="form-btn" style="padding-bottom: 50px;">
-        <input class="btn orange btn-block round-2" type="submit" value="申 请" style="margin-bottom:10px;" onclick="submitBtn()">
+        <input class="btn orange btn-block round-2" type="button" value="申 请" style="margin-bottom:10px;" onclick="submitBtn()">
         <div style="height:35px;background:#f2f3f5;text-align:center;line-height:35px;border:1px solid #c9c9c9;" onclick="hideBtn()">取 消
         </div>
     </div>
@@ -236,10 +238,28 @@
         parent.layer.closeAll();
         parent.parent.layer.closeAll();
     }
-//
-//    function submitbtn () {
-//        parent.submitbtn();
-//    }
+
+    function submitBtn () {
+                    $.ajax({
+                        url : '${ctx}/u/report/addInsuranceInfo',
+                        data : $(".valid-form").serialize(),
+                        dataType : 'json',
+                        type : 'POST',
+                        success : function(result){
+                            if(result.code == 0){
+                                layer.msg('申请成功', {
+                                    icon: 1,
+                                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                                }, function(){
+                                    parent.layer.closeAll('iframe');
+                                });
+                            } else {
+                                messageAlert(result.message);
+                            }
+                        }
+                    });
+
+    }
 
     $(function() {
         $('[type=file]').change(function(e) {

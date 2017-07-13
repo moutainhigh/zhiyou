@@ -58,6 +58,7 @@ public class TourComponent {
     private PolicyCodeService policyCodeService;
 
     private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
+    private static final String S_PATTERN = "yyyy-MM-dd";
 
     @Autowired
     private CacheComponent cacheComponent;
@@ -283,6 +284,8 @@ public class TourComponent {
             userInfoVo.setAge(userInfo.getAge());
             userInfoVo.setId(userInfo.getId());
             userInfoVo.setIdCardNumber(userInfo.getIdCardNumber());
+            userInfoVo.setImage1Thumbnail(getThumbnail(userInfo.getImage1(), 750, 450));
+            userInfoVo.setBirthdayLabel(GcUtils.formatDate(userInfo.getBirthday(), S_PATTERN));
             userInfoVo.setGender(userInfo.getGender());
             userInfoVo.setRealname(userInfo.getRealname());
         }
