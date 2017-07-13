@@ -82,6 +82,20 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="control-label col-md-3">身份证号<span class="required"> * </span>
+                            </label>
+                            <div class="col-md-5">
+                                <input type="text" style="display: block; width: 40%;" readonly="true" class="form-control" id="idCardNumber" name="idCardNumber" value="${tourUserAdminVo.idCardNumber}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">年龄<span class="required"> * </span>
+                            </label>
+                            <div class="col-md-5">
+                                <input type="text" style="display: block; width: 40%;" readonly="true" class="form-control" id="age" name="age" value="${tourUserAdminVo.age}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label col-md-3">线路<span class="required"> * </span>
                             </label>
                             <div class="col-md-5">

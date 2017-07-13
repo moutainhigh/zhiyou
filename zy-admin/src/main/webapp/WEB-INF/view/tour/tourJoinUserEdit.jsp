@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/form.jsp"%>
 <!-- BEGIN JAVASCRIPTS -->
+<%@ include file="/WEB-INF/view/include/editor.jsp"%>
 
 <script type="text/javascript">
     $(function() {
@@ -112,6 +113,20 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="control-label col-md-3">身份证号<span class="required"> * </span>
+                            </label>
+                            <div class="col-md-5">
+                                <input type="text" style="display: block; width: 40%;" readonly="true" class="form-control" id="idCardNumber" name="idCardNumber" value="${tourUserAdminVo.idCardNumber}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">年龄<span class="required"> * </span>
+                            </label>
+                            <div class="col-md-5">
+                                <input type="text" style="display: block; width: 40%;" readonly="true" class="form-control" id="age" name="age" value="${tourUserAdminVo.age}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label col-md-3">用户电话<span class="required"> * </span>
                             </label>
                             <div class="col-md-5">
@@ -197,7 +212,7 @@
                             <label class="control-label col-md-3">票务照片<span class="required"> * </span></label>
                             <div class="col-md-5">
                                 <img data-target="image" class="product-image bd" src="<c:if test='${not empty tourUserAdminVo.imageThumbnail}'>${tourUserAdminVo.imageThumbnail}</c:if><c:if test='${empty tourUserAdminVo.imageThumbnail}'>${ctx}/image/upload_240_150.jpg</c:if>">
-                                <input type="hidden" name="carImages" value="${tourUserAdminVo.imageThumbnail}"/>
+                                <input type="hidden" name="image" value="${tourUserAdminVo.imageThumbnail}"/>
                             </div>
                         </div>
 

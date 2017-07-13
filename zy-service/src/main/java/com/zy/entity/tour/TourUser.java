@@ -135,6 +135,11 @@ public class TourUser implements Serializable {
     private String carImages;
 
     @NotBlank
+    @Field(label = "票务照片")
+    @View(groups = { VO_ADMIN , VO_EXPORT, VO_JOINEXPORT ,VO_LIST})
+    private String image;
+
+    @NotBlank
     @Field(label = "用户备注")
     @View(groups = { VO_ADMIN , VO_EXPORT, VO_JOINEXPORT,VO_LIST })
     private String userRemark;

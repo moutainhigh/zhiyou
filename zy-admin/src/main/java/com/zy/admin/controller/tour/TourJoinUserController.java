@@ -13,6 +13,7 @@ import com.zy.model.query.TourUserQueryModel;
 import com.zy.service.TourService;
 import com.zy.vo.TourJoinUserExportVo;
 import com.zy.vo.TourUserAdminVo;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -112,6 +113,7 @@ public class TourJoinUserController {
         validate(tourUser, NOT_NULL, "tourUser id is null");
         Long loginUserId = getPrincipalUserId();
         tourUser.setUpdateBy(loginUserId);
+        tourUser.setCarImages(tourUser.getImage());
         try {
             tourService.modify(tourUser);
             redirectAttributes.addFlashAttribute(ResultBuilder.ok("保存成功"));

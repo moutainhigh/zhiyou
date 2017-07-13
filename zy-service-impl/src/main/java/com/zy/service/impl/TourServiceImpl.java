@@ -244,6 +244,7 @@ public class TourServiceImpl implements TourService {
             tourUser.setAuditStatus(2);
             tourUser.setRevieweRemark(revieweRemark);
         } else {
+            resetProductNumber(id);
             tourUser.setAuditStatus(5);
             tourUser.setRevieweRemark(revieweRemark);
         }

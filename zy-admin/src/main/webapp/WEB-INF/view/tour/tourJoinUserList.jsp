@@ -134,6 +134,16 @@
                         orderable: false,
                     },
                     {
+                        data: 'idCardNumber',
+                        title: '身份证',
+                        orderable: false,
+                    },
+                    {
+                        data: 'age',
+                        title: '年龄',
+                        orderable: false,
+                    },
+                    {
                         data: 'userPhone',
                         title: '用户电话',
                         orderable: false,
