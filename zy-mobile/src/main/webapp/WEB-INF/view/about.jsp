@@ -34,9 +34,9 @@
 
     <h2><i class="fa fa-phone font-blue"></i> 商务合作</h2>
     <div class="about-content">
-      <h3>联系方式：400-7282-999</h3>
+      <h3>联系方式：</h3>
       <ul>
-        <%--<li>联系邮箱：751477@qq.com</li>--%>
+        <li>咨询热线：400-7282-999</li>
         <li>公司地址：上海市普陀区云岭东路609号汇银铭尊一号楼10楼</li>
       </ul>
     </div>
