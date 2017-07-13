@@ -399,6 +399,7 @@ public class TourServiceImpl implements TourService {
      * 重置产品编号
      * @param tourUserId
      */
+    @Override
     public void resetProductNumber(Long tourUserId){
         TourUser tourUser = tourUserMapper.findOne(tourUserId);
         if(tourUser!=null&&tourUser.getReportId()!=null){

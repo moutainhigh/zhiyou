@@ -58,5 +58,7 @@ public interface TourService {
 
      void addInfo(Long id, Integer isJoin, BigDecimal amount, Long loginUserId);
 
+     void resetProductNumber(Long tourUserId);
+
      Page<TourUser> findJoinAll(TourUserQueryModel tourUserQueryModel);
 }
