@@ -20,7 +20,7 @@ public interface ReportService {
 
 	Page<Report> findPage(ReportQueryModel reportQueryModel);
 
-	void preConfirm(Long id, boolean isSuccess, String confirmRemark);
+	void preConfirm(Long id, boolean isSuccess, String confirmRemark,Long userId);
 
 	List<Report> findAll(ReportQueryModel reportQueryModel);
 

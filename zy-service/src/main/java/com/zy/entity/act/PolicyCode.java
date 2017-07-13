@@ -73,5 +73,12 @@ public class PolicyCode implements Serializable {
 	@Version
 	@Field(label = "乐观锁")
 	private Integer version;
-	
+
+
+	@Field(label = "旅游是否使用")
+	@View(groups = {VO_ADMIN})
+	@NotNull
+	@Query(Predicate.EQ)
+	@View(name = "tourUsedLabel", type = String.class, groups = VO_EXPORT, field = @Field(label = "旅游是否使用", order = 15))
+	private Boolean tourUsed;
 }

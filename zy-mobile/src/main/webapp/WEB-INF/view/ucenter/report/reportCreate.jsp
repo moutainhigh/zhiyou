@@ -354,6 +354,12 @@
       <div class="list-group mt-10">
         <div class="list-title">填写客户资料</div>
         <div class="list-item">
+          <label class="list-label" for="realname">产品编码</label>
+          <div class="list-text">
+            <input type="text" class="form-input" name ="productNumber" id="productNumber" value="" placeholder="填写产品编码">
+          </div>
+        </div>
+        <div class="list-item">
           <label class="list-label" for="realname">姓名</label>
           <div class="list-text">
             <input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写客户姓名">
@@ -674,7 +680,7 @@
             $("#btnSubmit").attr("disabled",true);
             $(".orange.btn").css("background","#ccc");
           } else{
-            messageAlert("数据异常,请联系客服");
+            messageAlert(result.message);
           }
         }
       });

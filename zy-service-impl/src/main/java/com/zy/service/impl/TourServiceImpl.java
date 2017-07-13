@@ -3,6 +3,8 @@ package com.zy.service.impl;
 import com.sun.istack.internal.NotNull;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
+import com.zy.entity.act.PolicyCode;
+import com.zy.entity.act.Report;
 import com.zy.entity.tour.Sequence;
 import com.zy.entity.tour.Tour;
 import com.zy.entity.tour.TourTime;
@@ -48,6 +50,11 @@ public class TourServiceImpl implements TourService {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+    @Autowired
+    private ReportMapper reportMapper;
+
+    @Autowired
+    private PolicyCodeMapper policyCodeMapper;
 
     /**
      * 保存新的seq
@@ -341,7 +348,7 @@ public class TourServiceImpl implements TourService {
      * @param tourUser
      */
     @Override
-    public void updateOrInster(UserInfo userInfo, TourUser tourUser) {
+    public void updateOrInster(UserInfo userInfo, TourUser tourUser,String  productNumber) {
          //先处理用户信息
         UserInfo userInfoIn ;
         if (userInfo.getId()!=null){
@@ -375,8 +382,36 @@ public class TourServiceImpl implements TourService {
         //处理旅游
         tourUser.setCreateDate(new Date());
         tourUserMapper.insert(tourUser);
-
+        //处理产品编号
+        Report report = reportMapper.findOne(tourUser.getReportId());
+        if(report!=null&&report.getProductNumber()==null){
+            report.setProductNumber(productNumber);
+            reportMapper.update(report);
+        }
+        PolicyCode policyCode = policyCodeMapper.findByCode(productNumber);
+        if (policyCode!=null){
+            policyCode.setTourUsed(true);
+            policyCodeMapper.update(policyCode);
+        }
     }
 
+    /**
+     * 重置产品编号
+     * @param tourUserId
+     */
+    public void resetProductNumber(Long tourUserId){
+        TourUser tourUser = tourUserMapper.findOne(tourUserId);
+        if(tourUser!=null&&tourUser.getReportId()!=null){
+            Report report = reportMapper.findOne(tourUser.getReportId());
+            if (report!=null&&report.getProductNumber()!=null){
+                PolicyCode policyCode = policyCodeMapper.findByCode(report.getProductNumber());
+                if (policyCode!=null){
+                    policyCode.setTourUsed(false);
+                    policyCodeMapper.update(policyCode);
+                }
+            }
+        }
+
+    }
 
 }

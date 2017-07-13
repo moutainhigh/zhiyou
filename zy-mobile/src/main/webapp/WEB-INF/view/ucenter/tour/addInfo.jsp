@@ -104,7 +104,7 @@
             width:150px;
         }
         .list-item .list-label2 {
-            width:200px;
+            width:230px;
         }
         #preview img{
             max-width:100%;
@@ -140,7 +140,7 @@
                 </div>
             </div>
             <div class="list-item">
-                <label class="list-label list-label2">添加票务照片（机票照片）</label>
+                <label class="list-label list-label2">添加票务照片（机/车票照片）</label>
             </div>
             <div class="list-item">
                 <div class="list-text image-upload image-multi">

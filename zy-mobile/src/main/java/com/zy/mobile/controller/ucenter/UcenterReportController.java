@@ -220,14 +220,27 @@ public class UcenterReportController {
 	public  Result<?> ajaxCreate(boolean hasPolicy, Report report, Long parentId, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		Product product = productService.findOne(report.getProductId());
 		validate(product, NOT_NULL, "product id " + report.getProductId() + " not found");
-		User user = userService.findOne(principal.getUserId());
 		try {
+			if (report.getProductNumber()!=null) {
+				PolicyCode policyCode = policyCodeService.findByCode(report.getProductNumber());
+				if (policyCode == null) {
+					return ResultBuilder.error("产品编号不存在");
+				}
+				if(policyCode.getIsUsed()) {
+					return ResultBuilder.error("产品编号已被使用");
+				}
+				if (policyCode.getTourUsed()!=null) {
+					if (policyCode.getTourUsed()) {
+						return ResultBuilder.error("产品编号已被使用");
+					}
+				}
+			}
 			report.setUserId(principal.getUserId());
 			Report persistentReport = reportService.create(report);
 			return ResultBuilder.ok(persistentReport.getId()+"");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResultBuilder.error("数据异常");
+			return ResultBuilder.error("数据异常,请联系客服");
 		}
 	}
 	@RequestMapping(value = "/{id}", method = GET)

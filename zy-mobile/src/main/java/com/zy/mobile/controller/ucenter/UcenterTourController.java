@@ -7,6 +7,7 @@ import com.zy.common.util.DateUtil;
 import com.zy.component.TourComponent;
 import com.zy.component.TourUserComponent;
 import com.zy.entity.act.Policy;
+import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
 import com.zy.entity.sys.SystemCode;
 import com.zy.entity.tour.Tour;
@@ -16,10 +17,7 @@ import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.TourQueryModel;
 import com.zy.model.query.TourUserQueryModel;
-import com.zy.service.ReportService;
-import com.zy.service.TourService;
-import com.zy.service.UserInfoService;
-import com.zy.service.UserService;
+import com.zy.service.*;
 import com.zy.util.GcUtils;
 import com.zy.vo.TourTimeVo;
 import com.zy.vo.TourUserInfoVo;
@@ -67,6 +65,10 @@ public class UcenterTourController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private PolicyCodeService policyCodeService;
+
 
     @RequestMapping
     public String tourList(Principal principal , Model model){
@@ -117,8 +119,8 @@ public class UcenterTourController {
     @ResponseBody
     public Result<?> findparentInfo(String phone){
         User user = userService.findByPhone(phone);
-        user.setNickname(userService.findRealName(user.getId()));//放真实姓名
         if (user!=null){
+            user.setNickname(userService.findRealName(user.getId()));//放真实姓名
             return ResultBuilder.result(user);
         }else{
             return ResultBuilder.error("推荐人不存在");
@@ -192,6 +194,24 @@ public class UcenterTourController {
     }
 
     /**
+     * 检测 旅游人数限制
+     * @param phone
+     * @param tourTimeId
+     * @return
+     */
+    @RequestMapping(value = "/ajaxCheckPraentNumber",method = RequestMethod.POST)
+    @ResponseBody
+    public  Result<?>ajaxCheckPraentNumber(String  phone,Long tourTimeId){
+        User userP =userService.findByPhone(phone);
+        String result =  tourComponent.checkParetNumber(userP.getId(),tourTimeId);
+        if (result!=null){
+            return ResultBuilder.error(result);
+        }else{
+            return ResultBuilder.ok(null);
+        }
+    }
+
+    /**
      *封装user旅游信息
      * @param phone
      * @param reporId
@@ -205,16 +225,16 @@ public class UcenterTourController {
     public String findTourUserVo(String phone,Long reporId,Long tourTimeid,Long tourId,Principal principal, Model model ){
         Long userId = principal.getUserId(); //userInfoService
         model.addAttribute("userinfoVo",tourComponent.findUserInfoVo(userId));
-       /* User user = userService.findOne(userId);
-        user.setNickname(userService.findRealName(user.getId()));*/
         model.addAttribute("user", userService.findOne(userId));
         model.addAttribute("tour",tourService.findTourOne(tourId));
         model.addAttribute("tourTime",tourService.findTourTimeOne(tourTimeid));
         User userP =userService.findByPhone(phone);
         userP.setNickname(userService.findRealName(userP.getId()));
         model.addAttribute("userp",userP);
+        String productNumber = tourComponent.findproductNumber(reporId);
         model.addAttribute("reporId",reporId);
-        return "ucenter/tour/tourAppleTable";
+        model.addAttribute("productNumber",productNumber);
+        return "ucenter/tour/tourApplyTable";
     }
 
     @RequestMapping(value = "/create", method = POST)
@@ -261,11 +281,20 @@ public class UcenterTourController {
     @ResponseBody
     public Result<?>addTourforUser(TourUserInfoVo tourUserInfoVo,Principal principal){
         try {
+            PolicyCode policyCode = policyCodeService.findByCode(tourUserInfoVo.getProductNumber());
+            if (policyCode == null) {
+                return ResultBuilder.error("产品编号不存在");
+            }
+            if (policyCode.getTourUsed()!=null) {
+                if (policyCode.getTourUsed()) {
+                    return ResultBuilder.error("产品编号已被使用");
+                }
+            }
             tourComponent.updateOrInster(tourUserInfoVo,principal.getUserId());
             return ResultBuilder.ok(null);
         }catch (Exception e){
             e.printStackTrace();
-            return ResultBuilder.error(null);
+            return ResultBuilder.error("数据异常,请联系客服");
         }
 
     }

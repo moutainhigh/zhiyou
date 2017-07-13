@@ -104,13 +104,13 @@ public class DateUtil {
      */
     public static Date getBeforeMonthEnd(Date date,int moth,int year){
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        calendar.setTime(getMonthData(date,moth,year));
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 59);
         calendar.set(Calendar.DATE, 1);        //设置为该月第一天
         calendar.add(Calendar.DATE, -1);    //再减一天即为上个
-        calendar.add(Calendar.MONTH, moth);
+      /*  calendar.add(Calendar.MONTH, moth);*/
         calendar.add(Calendar.YEAR, year);
         return calendar.getTime();
     }
@@ -341,6 +341,25 @@ public class DateUtil {
 
 
 
+
+
+    /**
+     * 获取时间 相差 天数
+     * @param beginDate
+     * @param endDate
+     * @return
+     */
+    public static int calculateDiffDays(java.util.Date beginDate, java.util.Date endDate) {
+        if (beginDate == null || endDate == null) {
+            return 0;
+        } else {
+            long bMillSeconds = beginDate.getTime();
+            long eMillSeconds = endDate.getTime();
+            long temp = eMillSeconds - bMillSeconds;
+            double t1 = temp / 1000 / 60 / 60 / 24;
+            return (new Double(t1)).intValue();
+        }
+    }
     public static void  main(String []age) throws ParseException {
        System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));

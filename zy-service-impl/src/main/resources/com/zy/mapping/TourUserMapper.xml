@@ -178,6 +178,12 @@
 			</if>
 			AND a.is_effect = 1
 			AND a.audit_status IN (3,4)
+			<if test="parentId !=null">
+				AND a.parent_id &lt;= #{parentId}
+			</if>
+			<if test="tourTimeId !=null">
+				AND a.tour_time_id &lt;= #{tourTimeId}
+			</if>
 		</where>
 		ORDER BY a.create_date DESC ,a.audit_status ASC
 		<if test="offset != null">
@@ -276,6 +282,12 @@
 			</if>
 			<if test="userId !=null">
 				AND a.user_id &lt;= #{userId}
+			</if>
+			<if test="parentId !=null">
+				AND a.parent_id &lt;= #{parentId}
+			</if>
+			<if test="tourTimeId !=null">
+				AND a.tour_time_id &lt;= #{tourTimeId}
 			</if>
 				AND a.is_effect = 1
 				AND a.audit_status IN (3,4)
@@ -379,6 +391,13 @@
 		where id = #{id}
 	</update>
 
+	<select id="findByReportId" resultMap="baseResultMap" parameterType="long">
+		SELECT
+		<include refid="baseColumn"/>
+		FROM ts_tour_user a
+		WHERE
+		a.report_id = #{id}
+	</select>
 
 
 </mapper>

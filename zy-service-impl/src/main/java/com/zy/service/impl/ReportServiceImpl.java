@@ -6,16 +6,16 @@ import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.ActComponent;
 import com.zy.component.FncComponent;
+import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
 import com.zy.entity.adm.Admin;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.entity.fnc.Transfer;
 import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.User;
-import com.zy.mapper.AdminMapper;
-import com.zy.mapper.ReportMapper;
-import com.zy.mapper.UserMapper;
+import com.zy.mapper.*;
 import com.zy.model.BizCode;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.service.ReportService;
@@ -52,6 +52,12 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	private Config config;
+
+	@Autowired
+	private TourUserMapper tourUserMapper;
+
+	@Autowired
+	private PolicyCodeMapper policyCodeMapper;
 
 	@Override
 	public Report create(@NotNull Report report) {
@@ -407,8 +413,9 @@ public class ReportServiceImpl implements ReportService {
 		return persistence;
 	}
 
+	//添加 旅游信息 审核状态
 	@Override
-	public void preConfirm(@NotNull Long id, boolean isSuccess, String confirmRemark) {
+	public void preConfirm(@NotNull Long id, boolean isSuccess, String confirmRemark,Long userId) {
 		Report report = reportMapper.findOne(id);
 		validate(report, NOT_NULL, "report id" + id + " not found");
 		if(report.getPreConfirmStatus() != ConfirmStatus.待审核) {
@@ -417,7 +424,25 @@ public class ReportServiceImpl implements ReportService {
 		if(report.getConfirmStatus() != ConfirmStatus.待审核) {
 			throw new BizException(BizCode.ERROR, "状态不匹配");
 		}
+		//获取 用户旅游信息
+		List<TourUser> tourUserList = tourUserMapper.findByReportId(id);
+		if (tourUserList!=null&&!tourUserList.isEmpty()){
+			TourUser tourUser = tourUserList.get(0);//之取到第一条 （原则上只有一条）
+			tourUser.setUpdateDate(new Date());
+			tourUser.setUpdateBy(userId);
+			if (isSuccess){
+				tourUser.setIsEffect(1);
+			}else{//若果不通过 则将产品编号设置成可用
+				if (report.getProductNumber()!=null){
+					PolicyCode policyCode = policyCodeMapper.findByCode(report.getProductNumber());
+					policyCode.setTourUsed(true);
+					policyCodeMapper.update(policyCode);
+				}
 
+				tourUser.setIsEffect(0);
+			}
+			tourUserMapper.modify(tourUser);
+		}
 		report.setPreConfirmedTime(new Date());
 		if(isSuccess) {
 			report.setPreConfirmStatus(ConfirmStatus.已通过);

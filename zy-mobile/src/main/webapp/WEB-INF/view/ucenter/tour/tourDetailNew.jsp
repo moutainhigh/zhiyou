@@ -165,21 +165,21 @@
 <header class="header">
     <h1>旅游路线详情</h1>
     <form id="_form" method="post" action="${ctx}/tour/findTourApple">
-        <input type="hidden" name ="phone" value="${parentPhone}" id="phone"/>
+        <input type="hidden" name ="phone" value="${parentPhone}"/>
         <input type="hidden" name ="reporId" value="${reporId}" id="reporId"/>
-        <input type="hidden" name ="tourTimeid"  id="tourTimeid" value="${tourTimeid}"/>
+        <input type="hidden" name ="tourTimeid"  id="tourTimeid"/>
         <input type="hidden" name ="tourId" id="tourId" value="${tour.id}"/>
-      <a href="#" onclick="fromSumbit()" class="button-left"><i class="fa fa-angle-left"></i></a>
+        <a href="#" onclick="history.go(-1)" class="button-left"><i class="fa fa-angle-left"></i></a>
     </form>
 </header>
 <img src="${ctx}/images/TravelTop.png" style="width:100%;" />
 <div class="TravelFont">
     ${tour.content}
-   <%-- <div class="TravelFOne">预定须知</div>
-    <div class="TravelFOneD">旅游信息有几个限制条件：1、户籍所在地的限制，目前对四川、重庆不参与四川境内游活动，云南籍不参与云南境内游活动；2、年龄限制，年龄在28-58岁旅游费用全免，27岁以下与59岁至65岁者另加960，儿童另加960元且门票住宿自理。66岁以上老人及残疾人也不享受本活动。</div>
-    <div class="TravelFOne" style="margin-top:10px;">产品特色</div>
-    <div class="TravelFOneD">旅游信息有几个限制条件：1、户籍所在地的限制，目前对四川、重庆不参与四川境内游活动，云南籍不参与云南境内游活动；2、年龄限制，年龄在28-58岁旅游费用全免。</div>
---%></div>
+    <%-- <div class="TravelFOne">预定须知</div>
+     <div class="TravelFOneD">旅游信息有几个限制条件：1、户籍所在地的限制，目前对四川、重庆不参与四川境内游活动，云南籍不参与云南境内游活动；2、年龄限制，年龄在28-58岁旅游费用全免，27岁以下与59岁至65岁者另加960，儿童另加960元且门票住宿自理。66岁以上老人及残疾人也不享受本活动。</div>
+     <div class="TravelFOne" style="margin-top:10px;">产品特色</div>
+     <div class="TravelFOneD">旅游信息有几个限制条件：1、户籍所在地的限制，目前对四川、重庆不参与四川境内游活动，云南籍不参与云南境内游活动；2、年龄限制，年龄在28-58岁旅游费用全免。</div>
+ --%></div>
 <%--<img src="${tour.image}" style="width:100%;"/>'--%>
 <div class="clearfloat" style="padding:10px 15px;background:#fff;">
     <label class="list-label" style="height:30px;line-height:25px;font-size:16px;width:50%;float:left;">请选择出游时间：</label>
@@ -192,8 +192,6 @@
     </div>
 </div>
 <div class="TravelDis clearfloat">
-
-
     <%--<div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div>
     <div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div>
     <div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div>--%>
@@ -203,11 +201,6 @@
     $(function(){
         $("img").parent("p").css("padding","0");
     })
-    function fromSumbit() {
-        parent.layer.closeAll('iframe');
-        $('._form').submit();
-
-    }
     var tourTimeid="";
     //我要报名
     function MyApplyFun(){
@@ -215,25 +208,9 @@
             messageAlert("请选择出游时间");
             return ;
         }
-        $.ajax({
-            url : '${ctx}/tour/ajaxCheckPraentNumber',
-            data : {
-                phone:$("#phone").val(),
-                tourTimeId:tourTimeid
-            },
-            dataType : 'json',
-            type : 'POST',
-            success : function(result) {
-                if(result.code == 0) {
-                    $("#tourTimeid").val(tourTimeid);
-                    $("#_form").attr("action", "${ctx}/tour/findTourUserVo");
-                    $("#_form").submit();
-                }else {
-                    messageAlert(result.message);
-                }
-            }
-        });
-
+        $("#tourTimeid").val(tourTimeid);
+        $("#_form").attr("action", "${ctx}/tour/findTourUserVo");
+        $("#_form").submit();
 
     }
     $(function(){
