@@ -222,7 +222,6 @@
       dataType : 'json',
       type : 'POST',
       success : function(result){
-        alert(11);
         if(result.code == 0){
           travelT= layer.open({
             type: 2,
@@ -230,7 +229,7 @@
             title: false,
             scrollbar: false,
             closeBtn: 0,
-            content: '${ctx}/u/report/insuranceInfo'
+            content: '${ctx}/u/report/insuranceInfo?reportId='+ reportId + ''
           });
         } else {
           messageAlert(result.message);

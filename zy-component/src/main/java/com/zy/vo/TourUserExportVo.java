@@ -21,6 +21,10 @@ public class TourUserExportVo implements Serializable {
     private Long reportId;
     @Field(label = "用户")
     private String userName;
+    @Field(label = "身份证号")
+    private String idCardNumber;
+    @Field(label = "年龄")
+    private Integer age;
     @Field(label = "用户电话")
     private String userPhone;
     @Field(label = "线路")

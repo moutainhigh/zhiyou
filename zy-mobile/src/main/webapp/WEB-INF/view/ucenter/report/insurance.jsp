@@ -17,36 +17,6 @@
     <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
     <script src="${stc}/js/layer/layer.js"></script>
     <script src="${stccdn}/js/area.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            //验证
-            $('.valid-form').validate({
-                ignore: ':hidden',
-                rules: {
-                    'code': {
-                        required: true
-                    },
-                    'image1': {
-                        required: true
-                    },
-                    'idCardNumber': {
-                        required: true,
-                        number: true
-                    },
-                    'birthday': {
-                        required: true
-                    }
-                },
-                submitHandler: function (form) {
-                    if ($('input[name="image"]').length == 0) {
-                        messageFlash('请上传一张图片');
-                        return;
-                    }
-                    form.submit();
-                }
-            });
-        }
-    </script>
     <style>
         .footer {
             position: fixed;
@@ -191,6 +161,29 @@
             transform:translate(-50%,-50%);
         }
     </style>
+    <script type="text/javascript">
+        $(function() {
+            //验证
+            $('.valid-form').validate({
+                ignore: ':hidden',
+                rules: {
+                    'code': {
+                        required: true
+                    },
+                    'idCardNumber': {
+                        required: true
+                    },
+                    'birthday': {
+                        required: true
+                    }
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+        });
+
+    </script>
 <body>
 <header class="header">
     <h1>填写保险申请</h1>
@@ -198,7 +191,7 @@
         <i class="fa fa-angle-left"></i>
     </a>
 </header>
-<form action="${ctx}/u/report/create" class="valid-form" method="post">
+<form action="${ctx}/u/report/addInsuranceInfo?reportId=${reportId}" class="valid-form" method="post">
     <div id="policy" class="list-group">
         <div id="policyInfo">
             <div class="list-item bd-t-0"><label class="list-label" for="code">产品编码</label>
@@ -211,24 +204,21 @@
                     <input type="text" name="idCardNumber" id="idCardNumber" class="form-input" value="" placeholder="填写身份证号">
                 </div>
             </div>
-            <div class="list-item"><label class="list-label">正面照</label>
-                <div class="list-text image-upload">
-                    <div class="image-item image-single "><input type="hidden" name="image1" id="image1" value="">
-                        <div id="preview">
-                            <img src="${stccdn}/image/upload_240_150.png" class="previewImage" style="width:100px;height:100px;">
-                        </div>
-                        <input type="file" onchange="fileChange(this)" style="z-index:999;"/>
-                    </div>
-                </div>
-                <div class="list-unit">
-                    <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_1.jpg" data-title="身份证正面">
-                        <i class="fa fa-question-circle-o">
+            <div class="list-item">
+                <label class="list-label">正面照</label>
+                <div class="list-item">
+                    <div class="list-text image-upload image-multi">
+                        <div class="image-add" data-limit="6" data-name="image">
+                            <input type="file"  name ="image1" class="file" accept="image/*" capture="camera">
+                            <em class="state state-add" id="preview">
+                            </em>
 
-                        </i> 示意图
-                    </a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <label style="margin-left: 20px; color:red;">(非必填)上传身份证图片可方便核验您的身份证号码的准确性</label>
+
             <div class="list-item"><label class="list-label">生日</label>
                 <div class="list-text">
                     <input type="date" name="birthday" class="form-input" value="" placeholder="填写生日  1900-01-01"></div>
@@ -243,10 +233,28 @@
 </form>
 <script>
     function hideBtn() {
-        parent.hideBtn();
+        parent.layer.closeAll();
+        parent.parent.layer.closeAll();
     }
-    function submitBtn(){
-        parent.submitBtn();
+//
+//    function submitbtn () {
+//        parent.submitbtn();
+//    }
+
+    $(function() {
+        $('[type=file]').change(function(e) {
+            var file = e.target.files[0]
+            preview(file);
+        })
+    });
+    function preview(file) {
+        var img = new Image(), url = img.src = URL.createObjectURL(file)
+        var $img = $(img)
+        img.onload = function() {
+            URL.revokeObjectURL(url)
+            $('#preview').empty().append($img);
+            $('#preview').removeClass("state-add");
+        }
     }
 </script>
 </body>

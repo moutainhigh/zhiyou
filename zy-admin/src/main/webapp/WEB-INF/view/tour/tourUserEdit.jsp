@@ -43,7 +43,7 @@
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-        <li><a href="javascript:;" data-href="${ctx}/tour/tourJoinUser">参游旅客信息管理</a></li>
+        <li><a href="javascript:;" data-href="${ctx}/tourUser">旅客信息管理</a></li>
     </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -54,7 +54,7 @@
         <div class="portlet light bordered">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="icon-speech"></i><span> 编辑参游旅客信息</span>
+                    <i class="icon-speech"></i><span> 编辑旅客信息</span>
                 </div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse"> </a> <a href="javascript:;" class="reload"> </a>
@@ -62,7 +62,7 @@
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <form id="form" action="" data-action="${ctx}/tourJoinUser/editTourJoinUser" class="form-horizontal" method="post">
+                <form id="form" action="" data-action="${ctx}/tourUser/editTourUser" class="form-horizontal" method="post">
                     <div class="form-body">
                         <input type="hidden" name="id" value="${tourUserAdminVo.id}"/>
                         <input type="hidden" name="sequenceId" value="${tourUserAdminVo.sequenceId}"/>
@@ -153,15 +153,15 @@
                                 <textarea type="text" readonly="true" style="display: block; width: 60%;" class="form-control">${tourUserAdminVo.revieweRemark}</textarea>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">是否有效<span class="required"> * </span></label>
-                            <div class="col-md-5">
-                                <select style="width: 40%;" class="form-control pull-left" id="isEffect" name="isJoin">
-                                    <option value="0" <c:if test="${tourUserAdminVo.isEffect == 0}"> selected="selected"</c:if>>否</option>
-                                    <option value="1" <c:if test="${tourUserAdminVo.isEffect == 1}"> selected="selected"</c:if>>是</option>
-                                </select>
-                            </div>
-                        </div>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="control-label col-md-3">是否有效<span class="required"> * </span></label>--%>
+                            <%--<div class="col-md-5">--%>
+                                <%--<select style="width: 40%;" class="form-control pull-left" id="isEffect" name="isJoin">--%>
+                                    <%--<option value="0" <c:if test="${tourUserAdminVo.isEffect == 0}"> selected="selected"</c:if>>否</option>--%>
+                                    <%--<option value="1" <c:if test="${tourUserAdminVo.isEffect == 1}"> selected="selected"</c:if>>是</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
                     <div class="form-actions fluid">
                         <div class="col-md-offset-3 col-md-9">

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.zy.util.GcUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -315,8 +316,37 @@ public class UcenterReportController {
 
 
 	@RequestMapping(value = "/insuranceInfo")
-	public String insuranceInfo(Model model, RedirectAttributes redirectAttributes) {
+	public String insuranceInfo(Long reportId, Model model, RedirectAttributes redirectAttributes) {
+		model.addAttribute("reportId", reportId);
 		return "ucenter/report/insurance";
+	}
+
+	@RequestMapping(value = "/addInsuranceInfo", method = POST)
+	public String addInsuranceInfo( Policy policy, Long reportId, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		try {
+			//保单校验
+			if(policy != null) {
+				PolicyCode policyCode = policyCodeService.findByCode(policy.getCode());
+				if(policyCode == null) {
+					throw new BizException(BizCode.ERROR, "保险单号不存在[" + policy.getCode() + "]");
+				}
+				if(policyCode.getIsUsed()) {
+					throw new BizException(BizCode.ERROR, "保险单号已被使用[" + policy.getCode() + "]");
+				}
+			}
+			if( policy != null) {
+				policy.setUserId(principal.getUserId());
+				policy.setReportId(reportId);
+				policy.setImage1(GcUtils.getThumbnail(policy.getImage1(), 750, 450));
+				policyService.create(policy);
+			}
+		} catch (Exception e) {
+			model.addAttribute("policy", policy);
+			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+			return "redirect:/u/report";
+		}
+		redirectAttributes.addFlashAttribute(ResultBuilder.ok("上传保单成功"));
+		return "redirect:/u/report";
 	}
 
 }

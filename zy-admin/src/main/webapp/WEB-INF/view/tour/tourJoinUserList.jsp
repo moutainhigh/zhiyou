@@ -278,7 +278,9 @@
                         render: function (data, type, full) {
                         <shiro:hasPermission name="tourJoinUser:edit">
                             var optionHtml = '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tourJoinUser/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
-                            optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 旅客信息补充 </a>';
+                            if (full.auditStatus == 3){
+                                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 旅客信息补充 </a>';
+                            }
                         </shiro:hasPermission>
                             return optionHtml;
                         }
@@ -376,20 +378,20 @@
                             <div class="form-group">
                                 <select name="auditStatus" class="form-control">
                                     <option value="">-- 审核状态 --</option>
-                                    <option value="1">审核中</option>
-                                    <option value="2">待补充</option>
+                                    <%--<option value="1">审核中</option>--%>
+                                    <%--<option value="2">待补充</option>--%>
                                     <option value="3">已生效</option>
                                     <option value="4">已完成</option>
-                                    <option value="5">审核失败</option>
+                                    <%--<option value="5">审核失败</option>--%>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <select name="isEffect" class="form-control">
-                                    <option value="">-- 是否有效 --</option>
-                                    <option value="1">是</option>
-                                    <option value="0">否</option>
-                                </select>
-                            </div>
+                            <%--<div class="form-group">--%>
+                                <%--<select name="isEffect" class="form-control">--%>
+                                    <%--<option value="">-- 是否有效 --</option>--%>
+                                    <%--<option value="1">是</option>--%>
+                                    <%--<option value="0">否</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
                             <div class="form-group">
                                 <button class="btn blue filter-submit">
                                     <i class="fa fa-search"></i> 查询

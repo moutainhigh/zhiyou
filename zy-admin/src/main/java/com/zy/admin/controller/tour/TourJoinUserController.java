@@ -60,7 +60,7 @@ public class TourJoinUserController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Grid<TourUserAdminVo> list(TourUserQueryModel tourUserQueryModel) {
-        Page<TourUser> page = tourService.findAll(tourUserQueryModel);
+        Page<TourUser> page = tourService.findJoinAll(tourUserQueryModel);
         List<TourUserAdminVo> list = page.getData().stream().map(v -> {
             return tourUserComponent.buildAdminVo(v);
         }).collect(Collectors.toList());
@@ -80,7 +80,7 @@ public class TourJoinUserController {
 
         tourUserQueryModel.setPageSize(null);
         tourUserQueryModel.setPageNumber(null);
-        Page<TourUser> page = tourService.findAll(tourUserQueryModel);
+        Page<TourUser> page = tourService.findJoinAll(tourUserQueryModel);
         String fileName = "参游旅客信息.xlsx";
         WebUtils.setFileDownloadHeader(response, fileName);
 

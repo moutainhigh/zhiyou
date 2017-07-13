@@ -145,7 +145,7 @@
             <div class="list-item">
                 <div class="list-text image-upload image-multi">
                     <div class="image-add" data-limit="6" data-name="image">
-                        <input type="file"  name ="carImages" class="file" accept="image/*" capture="camera" onchange="selectFileImage(this)">
+                        <input type="file"  name ="carImages" class="file" accept="image/*" capture="camera">
                         <em class="state state-add" id="preview">
                         </em>
 

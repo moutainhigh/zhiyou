@@ -57,4 +57,6 @@ public interface TourService {
      void addCarInfo(TourUser tourUser);
 
      void addInfo(Long id, Integer isJoin, BigDecimal amount, Long loginUserId);
+
+     Page<TourUser> findJoinAll(TourUserQueryModel tourUserQueryModel);
 }

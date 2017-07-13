@@ -493,7 +493,7 @@
                 title: false,
                 scrollbar: false,
                 closeBtn: 0,
-                content: '${ctx}/u/report/insuranceInfo'
+                content: '${ctx}/u/report/insuranceInfo?reportId='+ reportId + ''
               });
             } else {
               messageAlert(result.message);
@@ -532,7 +532,7 @@
   //取消保险申请
   function hideBtn(){
     layer.close(insuranceT);
-//    $(".main").show();
+    $(".main").show();
   }
   //旅游申请
   function travel(){

@@ -154,9 +154,9 @@ public class TourUserController {
             redirectAttributes.addFlashAttribute(ResultBuilder.ok("保存成功"));
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute(ResultBuilder.error("资源保存失败, 原因" + e.getMessage()));
-            return "redirect:/tourJoinUser/update/" + tourUserId;
+            return "redirect:/tourUser/update/" + tourUserId;
         }
-        return "redirect:/tourJoinUser";
+        return "redirect:/tourUser";
     }
 
     /**

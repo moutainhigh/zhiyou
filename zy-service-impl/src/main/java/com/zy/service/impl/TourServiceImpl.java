@@ -234,7 +234,7 @@ public class TourServiceImpl implements TourService {
         tourUser.setUpdateDate(new Date());
 
         if (isSuccess) {
-            tourUser.setAuditStatus(4);
+            tourUser.setAuditStatus(2);
             tourUser.setRevieweRemark(revieweRemark);
         } else {
             tourUser.setAuditStatus(5);
@@ -250,6 +250,7 @@ public class TourServiceImpl implements TourService {
 
         tourUser.setTourId(null);
         tourUser.setTourTimeId(null);
+        tourUser.setAuditStatus(0);
         tourUser.setUpdateBy(loginUserId);
         tourUser.setUpdateDate(new Date());
 
@@ -315,6 +316,22 @@ public class TourServiceImpl implements TourService {
         tourUser.setUpdateDate(new Date());
 
         tourUserMapper.modify(tourUser);
+    }
+
+    @Override
+    public Page<TourUser> findJoinAll(TourUserQueryModel tourUserQueryModel) {
+        if(tourUserQueryModel.getPageNumber() == null)
+            tourUserQueryModel.setPageNumber(0);
+        if(tourUserQueryModel.getPageSize() == null)
+            tourUserQueryModel.setPageSize(20);
+        long total = tourUserMapper.joinCount(tourUserQueryModel);
+        List<TourUser> data = tourUserMapper.findJoinAll(tourUserQueryModel);
+        Page<TourUser> page = new Page<>();
+        page.setPageNumber(tourUserQueryModel.getPageNumber());
+        page.setPageSize(tourUserQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
     }
 
 
