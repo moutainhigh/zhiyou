@@ -1,5 +1,6 @@
 package com.zy.component;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.sun.tools.corba.se.idl.IncludeGen;
 import com.zy.common.model.query.Page;
 import com.zy.common.util.BeanUtils;
@@ -238,7 +239,7 @@ public class TourComponent {
         tourTimeQueryModel.setDelfage(0);
         tourTimeQueryModel.setIsreleased(1);
         List<TourTime> timeList = tourService.findTourTime(tourTimeQueryModel);
-        return this.changeVo(timeList);
+        return this.changeVo(timeList,true);
     }
 
     /**
@@ -246,18 +247,27 @@ public class TourComponent {
      * @param timeList
      * @return
      */
-    public List<TourTimeVo>changeVo(List<TourTime> timeList){
+    public List<TourTimeVo>changeVo(List<TourTime> timeList , Boolean flage){
         List<TourTimeVo> tourTimeVoList = new ArrayList<TourTimeVo>();
         for (TourTime tourTime:timeList){
             //开始时间必须大于今天
-            if(DateUtil.calculateDiffDays(new Date(),tourTime.getBegintime())>0) {
+            if(flage) {
+                if (DateUtil.calculateDiffDays(new Date(), tourTime.getBegintime()) > 0) {
+                    TourTimeVo tourTimeVo = new TourTimeVo();
+                    tourTimeVo.setId(tourTime.getId());
+                    tourTimeVo.setBeginTimeStr(GcUtils.formatDate(tourTime.getBegintime(), "MM-dd"));
+                    tourTimeVo.setFee(tourTime.getFee());
+                    tourTimeVo.setWeekStr(DateUtil.getWeek(tourTime.getBegintime()));
+                    tourTimeVoList.add(tourTimeVo);
+                }
+            }else{
                 TourTimeVo tourTimeVo = new TourTimeVo();
                 tourTimeVo.setId(tourTime.getId());
                 tourTimeVo.setBeginTimeStr(GcUtils.formatDate(tourTime.getBegintime(), "MM-dd"));
                 tourTimeVo.setFee(tourTime.getFee());
                 tourTimeVo.setWeekStr(DateUtil.getWeek(tourTime.getBegintime()));
                 tourTimeVoList.add(tourTimeVo);
-           }
+            }
         }
         return tourTimeVoList;
     }

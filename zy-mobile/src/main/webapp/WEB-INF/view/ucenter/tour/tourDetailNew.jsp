@@ -96,8 +96,8 @@
         }
         p {
             color: #f13e00;
-            line-height: 25px;
-            padding:5px 20px 5px 20px;
+            line-height: 20px;
+            padding: 5px 15px 5px 15px;
         }
         .TravelFont {
             width:100%;
@@ -128,7 +128,6 @@
             width:100%;
             padding:0px 20px 10px 20px;
             background: #fff;
-            display: none;
         }
         .TravelDisTime {
             float: left;
@@ -139,6 +138,7 @@
             margin-left: 15px;
             padding:5px;
             margin-top: 10px;
+            background: #f15b00;
         }
         .changeAll {
             width:100%;height:50px;background:#fff;border-bottom: 1px solid #eee;
@@ -154,8 +154,8 @@
         .changeSelect {
             height:48px;
         }
-        .TravelDisTimecolor {
-            color: #f15b00;
+        .TravelDisTimecolor,.TravelDisTime p {
+            color: #fff;
         }
         img {
             width:100%;
@@ -164,105 +164,53 @@
 </head>
 <header class="header">
     <h1>旅游路线详情</h1>
-    <form id="_form" method="post" action="${ctx}/tour/findTourApple">
-        <input type="hidden" name ="phone" value="${parentPhone}"/>
-        <input type="hidden" name ="reporId" value="${reporId}" id="reporId"/>
-        <input type="hidden" name ="tourTimeid"  id="tourTimeid"/>
-        <input type="hidden" name ="tourId" id="tourId" value="${tour.id}"/>
         <a href="#" onclick="history.go(-1)" class="button-left"><i class="fa fa-angle-left"></i></a>
-    </form>
 </header>
 <img src="${ctx}/images/TravelTop.png" style="width:100%;" />
 <div class="TravelFont">
     ${tour.content}
-    <%-- <div class="TravelFOne">预定须知</div>
-     <div class="TravelFOneD">旅游信息有几个限制条件：1、户籍所在地的限制，目前对四川、重庆不参与四川境内游活动，云南籍不参与云南境内游活动；2、年龄限制，年龄在28-58岁旅游费用全免，27岁以下与59岁至65岁者另加960，儿童另加960元且门票住宿自理。66岁以上老人及残疾人也不享受本活动。</div>
-     <div class="TravelFOne" style="margin-top:10px;">产品特色</div>
-     <div class="TravelFOneD">旅游信息有几个限制条件：1、户籍所在地的限制，目前对四川、重庆不参与四川境内游活动，云南籍不参与云南境内游活动；2、年龄限制，年龄在28-58岁旅游费用全免。</div>
- --%></div>
-<%--<img src="${tour.image}" style="width:100%;"/>'--%>
+   </div>
 <div class="clearfloat" style="padding:10px 15px;background:#fff;">
-    <label class="list-label" style="height:30px;line-height:25px;font-size:16px;width:50%;float:left;">请选择出游时间：</label>
+    <label class="list-label" style="height:30px;line-height:25px;font-size:16px;width:50%;float:left;">出游时间：</label>
     <div class="list-text form-select" style="width:50%;float:left;">
-        <select name="jobId" onchange="selectValue(this)"><option value="0">请选择</option>
-            <c:forEach items="${list}" var="i">
-                <option value="${i}">${i}</option>
-            </c:forEach>
-        </select>
+        ${sel}
     </div>
 </div>
 <div class="TravelDis clearfloat">
-    <%--<div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div>
-    <div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div>
-    <div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div>--%>
+    <div class="TravelDisTime"><input type="hidden" name="tourTimeid" value="${tourTimeVo.id}"> <p>${tourTimeVo.beginTimeStr} ${tourTimeVo.weekStr}</p><p class="TravelDisTimecolor">原价:<del>￥${tourTimeVo.fee}</del></p></div>
 </div>
-<div class="MyApply" onclick="MyApplyFun()">我要报名</div>
+<c:choose>
+    <c:when test="${tourUser.auditStatus == 1}">
+        <div class="MyApply" >审核中</div>
+    </c:when>
+    <c:when test="${tourUser.auditStatus == 3}">
+        <div class="MyApply" >已生效</div>
+    </c:when>
+    <c:when test="${tourUser.auditStatus == 4}">
+        <div class="MyApply" >已完成</div>
+    </c:when>
+    <c:when test="${tourUser.auditStatus == 5}">
+        <div class="MyApply" >审核失败</div>
+    </c:when>
+</c:choose>
+
 <script>
     $(function(){
         $("img").parent("p").css("padding","0");
     })
-    var tourTimeid="";
-    //我要报名
-    function MyApplyFun(){
-        if(tourTimeid==""){
-            messageAlert("请选择出游时间");
-            return ;
-        }
-        $("#tourTimeid").val(tourTimeid);
-        $("#_form").attr("action", "${ctx}/tour/findTourUserVo");
-        $("#_form").submit();
-
-    }
-    $(function(){
-        $(document).on("click",".TravelDisTime",function(){
-            $(this).css("background","#f15b00");
-            $(this).find("p").css("color","#fff");
-            $(this).find("p.TravelDisTimecolor").css("color","#fff");
-            tourTimeid= $(this).find("input[name='tourTimeid']").val();
-            $(this).siblings(".TravelDisTime").css("background","#fff");
-            $(this).siblings(".TravelDisTime").find("p").css("color","#333");
-            $(this).siblings(".TravelDisTime").find("p.TravelDisTimecolor").css("color","#f15b00");
-        });
-    })
-    //选择出游时间
-    function selectValue(obj) {
-        $('.TravelDis').html("");
-        $(".TravelDis").show();
-        var num=$(obj).val();
-        $.ajax({
-            url : '${ctx}/tour/ajaxTourTime',
-            data : {
-                reporId:$("#reporId").val(),
-                tourId:$("#tourId").val(),
-                tourTime:num
-            },
-            dataType : 'json',
-            type : 'POST',
-            success : function(result) {
-                if(result.code != 0) {
-                    return;
-                }
-                var pageData= result.data;
-                if (pageData.length) {
-                    for ( var i in pageData) {
-                        var row = pageData[i];
-                        if (row.userRank!="V0"){
-                            buildRow(row);
-                        }
-                    }
-                }
-            }
-        });
-    }
-    function buildRow(row){
-        var rowTpl = document.getElementById('rowTpl').innerHTML;
-        laytpl(rowTpl).render(row,function(html) {
-            $('.TravelDis').append(html);
-        });
-    }
-</script>
-<script id="rowTpl" type="text/html">
-    <div class="TravelDisTime"><input type="hidden" name="tourTimeid" value="{{d.id}}"> <p>{{d.beginTimeStr}} {{d.weekStr}}</p><p class="TravelDisTimecolor">原价:<del>￥{{d.fee}}</del></p></div>
+//    $(function(){
+//        $(document).on("click",".TravelDisTime",function(){
+//            $(this).css("background","#f15b00");
+//
+//            $(this).find("p").css("color","#fff");
+//            $(this).find("p.TravelDisTimecolor").css("color","#fff");
+//            tourTimeid= $(this).find("input[name='tourTimeid']").val();
+//            $(this).siblings(".TravelDisTime").css("background","#fff");
+//            $(this).siblings(".TravelDisTime").find("p").css("color","#333");
+//
+//            $(this).siblings(".TravelDisTime").find("p.TravelDisTimecolor").css("color","#f15b00");
+//        });
+//    });
 </script>
 </body>
 </html>

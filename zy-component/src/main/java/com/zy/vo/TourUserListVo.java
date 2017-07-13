@@ -30,4 +30,6 @@ public class TourUserListVo implements Serializable {
     private String parentPhone;
     @Field(label = "主图")
     private String image;
+    @Field(label = "出游时间id")
+    private Long tourTimeId;
 }
