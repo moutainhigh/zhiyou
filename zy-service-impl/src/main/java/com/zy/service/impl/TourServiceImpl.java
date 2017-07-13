@@ -378,5 +378,23 @@ public class TourServiceImpl implements TourService {
         }
     }
 
+    /**
+     * 重置产品编号
+     * @param tourUserId
+     */
+    public void resetProductNumber(Long tourUserId){
+        TourUser tourUser = tourUserMapper.findOne(tourUserId);
+        if(tourUser!=null&&tourUser.getReportId()!=null){
+            Report report = reportMapper.findOne(tourUser.getReportId());
+            if (report!=null&&report.getProductNumber()!=null){
+                PolicyCode policyCode = policyCodeMapper.findByCode(report.getProductNumber());
+                if (policyCode!=null){
+                    policyCode.setTourUsed(false);
+                    policyCodeMapper.update(policyCode);
+                }
+            }
+        }
+
+    }
 
 }

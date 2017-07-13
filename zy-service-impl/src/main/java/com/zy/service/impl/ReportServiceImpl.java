@@ -6,6 +6,7 @@ import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.ActComponent;
 import com.zy.component.FncComponent;
+import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
 import com.zy.entity.adm.Admin;
 import com.zy.entity.fnc.CurrencyType;
@@ -14,10 +15,7 @@ import com.zy.entity.fnc.Transfer;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.User;
-import com.zy.mapper.AdminMapper;
-import com.zy.mapper.ReportMapper;
-import com.zy.mapper.TourUserMapper;
-import com.zy.mapper.UserMapper;
+import com.zy.mapper.*;
 import com.zy.model.BizCode;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.service.ReportService;
@@ -57,6 +55,9 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	private TourUserMapper tourUserMapper;
+
+	@Autowired
+	private PolicyCodeMapper policyCodeMapper;
 
 	@Override
 	public Report create(@NotNull Report report) {
@@ -431,7 +432,13 @@ public class ReportServiceImpl implements ReportService {
 			tourUser.setUpdateBy(userId);
 			if (isSuccess){
 				tourUser.setIsEffect(1);
-			}else{
+			}else{//若果不通过 则将产品编号设置成可用
+				if (report.getProductNumber()!=null){
+					PolicyCode policyCode = policyCodeMapper.findByCode(report.getProductNumber());
+					policyCode.setTourUsed(true);
+					policyCodeMapper.update(policyCode);
+				}
+
 				tourUser.setIsEffect(0);
 			}
 			tourUserMapper.modify(tourUser);
