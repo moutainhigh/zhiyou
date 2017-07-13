@@ -96,7 +96,7 @@
         }
         p {
             color: #f13e00;
-            line-height: 15px;
+            line-height: 25px;
             padding:5px 20px 5px 20px;
         }
         .TravelFont {
@@ -157,6 +157,9 @@
         .TravelDisTimecolor {
             color: #f15b00;
         }
+        img {
+            width:100%;
+        }
     </style>
 </head>
 <header class="header">
@@ -197,7 +200,9 @@
 </div>
 <div class="MyApply" onclick="MyApplyFun()">我要报名</div>
 <script>
-
+    $(function(){
+        $("img").parent("p").css("padding","0");
+    })
     function fromSumbit() {
         parent.layer.closeAll('iframe');
         $('._form').submit();

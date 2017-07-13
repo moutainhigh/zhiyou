@@ -104,7 +104,7 @@
             width:150px;
         }
         .list-item .list-label2 {
-            width:200px;
+            width:230px;
         }
         #preview img{
             max-width:100%;
