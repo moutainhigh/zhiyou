@@ -11,6 +11,7 @@ import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
 import com.zy.entity.sys.SystemCode;
 import com.zy.entity.tour.Tour;
+import com.zy.entity.tour.TourTime;
 import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.zy.util.GcUtils.getThumbnail;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -331,5 +333,24 @@ public class UcenterTourController {
             return ResultBuilder.ok(null);
         }
     }
+
+
+    /**
+     * 旅游入口进入
+     * @return
+     */
+    @RequestMapping(value = "/findTourDetailbyTour", method = GET)
+   public String  findTourDetailbyTour(Long tourId,String parentPhone,Long reporId,Long tourTimeId ,Long tourUserId, Model model){
+       Tour tour = tourService.findTourOne(tourId);
+       model.addAttribute("tour",tour);
+       TourTime tourTime = tourService.findTourTimeOne(tourTimeId);
+       model.addAttribute("sel",GcUtils.formatDate(tourTime.getBegintime(),"yyyy-MM"));
+       List tourTimeList = new ArrayList<TourTime>();
+       tourTimeList.add(tourTime);
+       model.addAttribute("tourTimeVo",tourComponent.changeVo(tourTimeList,false).get(0));
+        model.addAttribute("tourUser",tourService.findTourUser(tourUserId));
+       return "ucenter/tour/tourDetailNew";
+
+   }
 
 }

@@ -239,6 +239,7 @@ public class TourUserComponent {
         if(tourTimeId != null){
             TourTime tourTime = tourTimeService.findOne(tourTimeId);
             tourUserListVo.setTourTime(GcUtils.formatDate(tourTime.getBegintime() , S_TIME_PATTERN));
+            tourUserListVo.setTourTimeId(tourTimeId);
         }
         if(parentId != null){
             User user = userService.findOne(parentId);
