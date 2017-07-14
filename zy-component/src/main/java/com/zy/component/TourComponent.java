@@ -252,7 +252,7 @@ public class TourComponent {
         for (TourTime tourTime:timeList){
             //开始时间必须大于今天
             if(flage) {
-                if (DateUtil.calculateDiffDays(new Date(), tourTime.getBegintime()) > 0) {
+                if (tourTime.getBegintime().getTime()>new Date().getTime()) { //DateUtil.calculateDiffDays(new Date(), tourTime.getBegintime()) > 0
                     TourTimeVo tourTimeVo = new TourTimeVo();
                     tourTimeVo.setId(tourTime.getId());
                     tourTimeVo.setBeginTimeStr(GcUtils.formatDate(tourTime.getBegintime(), "MM-dd"));
@@ -583,7 +583,7 @@ public class TourComponent {
 
         TourTime tourTime = tourService.findTourTimeOne(tourTimeId);
         int das = DateUtil.calculateDiffDays(new Date(),tourTime.getBegintime());
-        if (das>num){
+        if (das<min){
             result ="申请旅游时间要提前"+min+"天" ;
         }
         return  result;

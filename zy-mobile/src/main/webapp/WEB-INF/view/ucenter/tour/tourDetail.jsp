@@ -105,10 +105,7 @@
             -webkit-border-radius:20px 20px 0 0;
             -moz-border-radius:20px 20px 0 0;
             border-radius:20px 20px 0 0;
-            margin-top: -60px;
-            position: relative;
-            z-index:9;
-            padding:20px 0 20px 0;
+            padding:0px 0 20px 0;
         }
         .TravelFOne {
             width:100%;
@@ -172,7 +169,7 @@
       <a href="#" onclick="fromSumbit()" class="button-left"><i class="fa fa-angle-left"></i></a>
     </form>
 </header>
-<img src="${ctx}/images/TravelTop.png" style="width:100%;" />
+<%--<img src="${tour.image}" style="width:100%;" />--%>
 <div class="TravelFont">
     ${tour.content}
    <%-- <div class="TravelFOne">预定须知</div>
@@ -201,7 +198,7 @@
 <div class="MyApply" onclick="MyApplyFun()">我要报名</div>
 <script>
     $(function(){
-        $("img").parent("p").css("padding","0");
+        $("img").parents("p").css("padding","0");
     })
     function fromSumbit() {
         parent.layer.closeAll('iframe');

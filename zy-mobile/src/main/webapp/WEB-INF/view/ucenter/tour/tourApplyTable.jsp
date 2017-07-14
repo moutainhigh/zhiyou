@@ -329,8 +329,6 @@
                                         parent.parent.layer.closeAll('iframe');
                                         parent.layer.closeAll('iframe');
                                     });
-
-
                                 } else {
                                     messageAlert(result.message);
                                 }

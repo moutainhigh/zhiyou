@@ -160,6 +160,10 @@
       -webkit-transform:translate(-50%,-50%);
       transform:translate(-50%,-50%);
     }
+    .layer-class {
+      -webkit-overflow-scrolling: touch;
+      overflow-y: scroll;
+    }
   </style>
   <script type="text/javascript">
     $(function() {
@@ -495,9 +499,9 @@
             if(result.code == 0){
               insuranceT= layer.open({
                 type: 2,
-                area:['100%', '100%'],
+                area:['90%', '90%'],
                 title: false,
-                scrollbar: false,
+                scrollbar: true,
                 closeBtn: 0,
                 content: '${ctx}/u/report/insuranceInfo?reportId='+ reportId + ''
               });
@@ -542,6 +546,7 @@
   }
   //旅游申请
   function travel(){
+    $(".main").hide();
     if(submitFalge){
       $.ajax({
         url : '${ctx}/tour/ajaxCheckTour',
@@ -554,11 +559,12 @@
           if(result.code == 0){
             travelT= layer.open({
               type: 2,
-              area:['100%', '100%'],
+              area:['90%', '90%'],
               title: false,
-              scrollbar: false,
+              scrollbar: true,
               closeBtn: 0,
-              content: '${ctx}/tour/findparentInfo'
+              content: '${ctx}/tour/findparentInfo',
+              skin: 'layer-class'
             });
           } else {
             messageAlert(result.message);
@@ -585,7 +591,7 @@
   //取消旅游申请
   function hideTravel(){
     layer.close(travelT);
-   /* $(".main").show();*/
+    $(".main").show();
   }
 
   function hideLine(){

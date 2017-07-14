@@ -105,10 +105,10 @@
             -webkit-border-radius:20px 20px 0 0;
             -moz-border-radius:20px 20px 0 0;
             border-radius:20px 20px 0 0;
-            margin-top: -60px;
-            position: relative;
-            z-index:9;
-            padding:20px 0 20px 0;
+            padding:0px 0 20px 0;
+        }
+        .TravelDisTime p {
+            padding: 0px 10px 0px 10px;
         }
         .TravelFOne {
             width:100%;
@@ -166,7 +166,7 @@
     <h1>旅游路线详情</h1>
         <a href="#" onclick="history.go(-1)" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
-<img src="${ctx}/images/TravelTop.png" style="width:100%;" />
+<%--<img src="${ctx}/images/TravelTop.png" style="width:100%;" />--%>
 <div class="TravelFont">
     ${tour.content}
    </div>
@@ -196,7 +196,7 @@
 
 <script>
     $(function(){
-        $("img").parent("p").css("padding","0");
+        $("img").parents("p").css("padding","0");
     })
 //    $(function(){
 //        $(document).on("click",".TravelDisTime",function(){

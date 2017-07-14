@@ -36,6 +36,14 @@
       box-sizing: border-box;
     }
     .list-item {padding-bottom: 50px;}
+    .layer-class {
+      -webkit-overflow-scrolling: touch;
+      overflow-y: scroll;
+    }
+    .scroll-wrapper {
+      -webkit-overflow-scrolling: touch;
+      overflow-y: scroll;
+    }
   </style>
 <script>
 
@@ -229,7 +237,8 @@
             title: false,
             scrollbar: false,
             closeBtn: 0,
-            content: '${ctx}/u/report/insuranceInfo?reportId='+ reportId + ''
+            content: '${ctx}/u/report/insuranceInfo?reportId='+ reportId + '',
+            skin: 'layer-class'
           });
         } else {
           messageAlert(result.message);
@@ -253,9 +262,14 @@
             type: 2,
             area:['100%', '100%'],
             title: false,
-            scrollbar: false,
+            scrollbar: true,
+            shadeClose:true,
             closeBtn: 0,
-            content: '${ctx}/tour/findparentInfo'
+            content: '${ctx}/tour/findparentInfo',
+            success: function(layero){
+              $(".layui-layer-content").addClass("scroll-wrapper");
+//              $(layero).addClass("scroll-wrapper");//苹果 iframe 滚动条失效解决方式
+            }
           });
         } else {
           messageAlert(result.message);
