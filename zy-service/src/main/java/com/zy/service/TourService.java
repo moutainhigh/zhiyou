@@ -10,6 +10,7 @@ import com.zy.model.query.TourQueryModel;
 import com.zy.model.query.TourTimeQueryModel;
 import com.zy.model.query.TourUserQueryModel;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface TourService {
@@ -51,7 +52,13 @@ public interface TourService {
 
      TourTime findTourTimeOne(Long tourTimeid);
 
-     void updateOrInster(UserInfo userInfo, TourUser tourUser);
+     void updateOrInster(UserInfo userInfo, TourUser tourUser,String productNumber);
 
      void addCarInfo(TourUser tourUser);
+
+     void addInfo(Long id, Integer isJoin, BigDecimal amount, Long loginUserId);
+
+     void resetProductNumber(Long tourUserId);
+
+     Page<TourUser> findJoinAll(TourUserQueryModel tourUserQueryModel);
 }

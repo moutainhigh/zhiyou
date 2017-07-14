@@ -32,46 +32,63 @@
         .list-item .list-label {
             width:150px;
         }
+        #wrapper{-webkit-overflow-scrolling: touch;overflow-y: scroll;}
     </style>
 
 </head>
+<body >
 <header class="header"><h1>选择旅游路线</h1><a href="${ctx}/tour/findparentInfo"  class="button-left"><i class="fa fa-angle-left"></i></a></header>
 <input type="hidden" name="phone" id="parentPhone" value="${parentPhone}" />
 <input type="hidden" name="reporId" id="reporId" value="${reporId}" />
 <c:forEach items="${tourList}" var="tour">
-    <div onclick="TravelDetil('${tour.id}')" class="opacityAll" style="width:100%;position:relative;">
+    <a href="#" onclick="TravelDetil('${tour.id}')" class="opacityAll" style="width:100%;position:relative;">
         <img class="opacityFirst" src="${tour.image}" style="display:block;width:100%;" />
         <img src="${ctx}/images/opacityTwo.png" class="opacity" style="display:block;width:100%;z-index:9;" />
         <p class="font">【${tour.title}】</p>
-    </div>
+    </a>
 </c:forEach>
 
 <script>
+    var forIOS = function(){
 
+        $('body').children().not('script').wrapAll('<div id="wrapper"></div>');
+    }();
+</script>
+<script>
+    $(function(){
+
+        $(".opacityFirst").load(function(){
+            var opacityT = $(".opacityFirst").height();
+            $(".font").css("margin-top", -opacityT / 2 - 13);
+        });
+        $(".opacity").load(function(){
+            $(".opacity").css("margin-top", -$(".opacity").height() + "px");
+        });
+    });
     function TravelDetil(num){
         var reporId= $("#reporId").val();
         if(reporId==null||reporId=="") {
             reporId = parent.getReportId();
         }
-        travelT= layer.open({
+        var url ='${ctx}/tour/findTourDetail?tourId='+num+'&parentPhone='+$('#parentPhone').val()+'&reporId='+reporId;
+       $(".opacityAll").attr("href",url);
+        $(".opacityAll").click();
+
+        /*travelT= layer.open({
             type: 2,
             area:['100%', '100%'],
             title: false,
-            scrollbar: false,
+            scrollbar: true,
             closeBtn: 0,
             content: '${ctx}/tour/findTourDetail?tourId='+num+'&parentPhone='+$('#parentPhone').val()+'&reporId='+reporId
-        });
+        });*/
     }
    var  travelT;
 
     function cloethis(){
         layer.close(travelT);
     }
-    $(function(){
-        $(".opacity").css("margin-top",-$(".opacity").height()+"px");
-        var opacityT=$(".opacityFirst").height();
-        $(".font").css("margin-top",-opacityT/2-13);
-    })
+
 </script>
 </body>
 </html>

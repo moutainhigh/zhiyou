@@ -104,7 +104,7 @@
             width:150px;
         }
         .list-item .list-label2 {
-            width:200px;
+            width:230px;
         }
         #preview img{
             max-width:100%;
@@ -125,7 +125,7 @@
     </header>
 
     <article>
-        <form action="${ctx}/tour/create" class="valid-form" method="post">
+        <form action="${ctx}/tour/create?tourUserId=${tourUserId}" class="valid-form" method="post">
             <div class="list-title">客户资料</div>
             <div class="list-item">
                 <label class="list-label">预计到达日期</label>
@@ -140,12 +140,12 @@
                 </div>
             </div>
             <div class="list-item">
-                <label class="list-label list-label2">添加票务照片（机票照片）</label>
+                <label class="list-label list-label2">添加票务照片（机/车票照片）</label>
             </div>
             <div class="list-item">
                 <div class="list-text image-upload image-multi">
                     <div class="image-add" data-limit="6" data-name="image">
-                        <input type="file"  name ="carImages" class="file" accept="image/*" capture="camera" onchange="selectFileImage(this)">
+                        <input type="file"  name ="carImages" class="file" accept="image/*" capture="camera">
                         <em class="state state-add" id="preview">
                         </em>
 

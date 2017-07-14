@@ -1,6 +1,7 @@
 package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
+import com.zy.common.util.DateUtil;
 import com.zy.entity.tour.Tour;
 import com.zy.entity.tour.TourTime;
 import com.zy.entity.tour.TourUser;
@@ -52,6 +53,8 @@ public class TourUserComponent {
         BeanUtils.copyProperties(tourUser, tourUserAdminVo);
         UserInfo userInfo = userInfoService.findByUserId(tourUser.getUserId());
         tourUserAdminVo.setUserName(userInfo.getRealname());
+        tourUserAdminVo.setIdCardNumber(userInfo.getIdCardNumber());
+        tourUserAdminVo.setAge(DateUtil.getAge(userInfo.getBirthday()));
         UserInfo userIf = userInfoService.findByUserId(tourUser.getParentId());
         tourUserAdminVo.setParentName(userIf.getRealname());
         User user = userService.findOne(tourUser.getUserId());
@@ -82,8 +85,13 @@ public class TourUserComponent {
     public TourUserExportVo buildExportVo(TourUser tourUser) {
         TourUserExportVo tourUserExportVo = new TourUserExportVo();
         BeanUtils.copyProperties(tourUser, tourUserExportVo);
+        if (tourUser.getCarImages() != null) {
+            tourUserExportVo.setImageThumbnail(getThumbnail(tourUser.getCarImages(), 750, 450));
+        }
         UserInfo userInfo = userInfoService.findByUserId(tourUser.getUserId());
         tourUserExportVo.setUserName(userInfo.getRealname());
+        tourUserExportVo.setIdCardNumber(userInfo.getIdCardNumber());
+        tourUserExportVo.setAge(DateUtil.getAge(userInfo.getBirthday()));
         UserInfo userIf = userInfoService.findByUserId(tourUser.getParentId());
         tourUserExportVo.setParentName(userIf.getRealname());
         User user = userService.findOne(tourUser.getUserId());
@@ -142,8 +150,13 @@ public class TourUserComponent {
     public TourJoinUserExportVo buildJoinExportVo(TourUser tourUser) {
         TourJoinUserExportVo tourJoinUserExportVo = new TourJoinUserExportVo();
         BeanUtils.copyProperties(tourUser, tourJoinUserExportVo);
+        if (tourUser.getCarImages() != null) {
+            tourJoinUserExportVo.setImageThumbnail(getThumbnail(tourUser.getCarImages(), 750, 450));
+        }
         UserInfo userInfo = userInfoService.findByUserId(tourUser.getUserId());
         tourJoinUserExportVo.setUserName(userInfo.getRealname());
+        tourJoinUserExportVo.setIdCardNumber(userInfo.getIdCardNumber());
+        tourJoinUserExportVo.setAge(DateUtil.getAge(userInfo.getBirthday()));
         UserInfo userIf = userInfoService.findByUserId(tourUser.getParentId());
         tourJoinUserExportVo.setParentName(userIf.getRealname());
         User user = userService.findOne(tourUser.getUserId());
@@ -226,6 +239,7 @@ public class TourUserComponent {
         if(tourTimeId != null){
             TourTime tourTime = tourTimeService.findOne(tourTimeId);
             tourUserListVo.setTourTime(GcUtils.formatDate(tourTime.getBegintime() , S_TIME_PATTERN));
+            tourUserListVo.setTourTimeId(tourTimeId);
         }
         if(parentId != null){
             User user = userService.findOne(parentId);
@@ -234,6 +248,7 @@ public class TourUserComponent {
         if (tourUser.getTourId() != null){
             Tour tour = tourService.findTourOne(tourUser.getTourId());
             tourUserListVo.setTourTitle(tour.getTitle());
+            tourUserListVo.setImage(tour.getImage());
         }
         return tourUserListVo ;
     }

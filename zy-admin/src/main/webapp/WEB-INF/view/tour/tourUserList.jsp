@@ -132,6 +132,16 @@
                         orderable: false,
                     },
                     {
+                        data: 'idCardNumber',
+                        title: '身份证',
+                        orderable: false,
+                    },
+                    {
+                        data: 'age',
+                        title: '年龄',
+                        orderable: false,
+                    },
+                    {
                         data: 'userPhone',
                         title: '用户电话',
                         orderable: false,
@@ -240,8 +250,8 @@
                             optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tourUser/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
                             if (full.auditStatus == 1){
                                 optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
+                                optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="resetAjax(' + full.id + ')"><i class="fa fa-edit"></i> 重置 </a>';
                             }
-                            optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="resetAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 重置 </a>';
                             </shiro:hasPermission>
                             return optionHtml;
                         }
@@ -340,13 +350,13 @@
                                     <option value="5">审核失败</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <select name="isEffect" class="form-control">
-                                    <option value="">-- 是否有效 --</option>
-                                    <option value="1">是</option>
-                                    <option value="0">否</option>
-                                </select>
-                            </div>
+                            <%--<div class="form-group">--%>
+                                <%--<select name="isEffect" class="form-control">--%>
+                                    <%--<option value="">-- 是否有效 --</option>--%>
+                                    <%--<option value="1">是</option>--%>
+                                    <%--<option value="0">否</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
                             <div class="form-group">
                                 <button class="btn blue filter-submit">
                                     <i class="fa fa-search"></i> 查询

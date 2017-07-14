@@ -7,19 +7,19 @@ import com.zy.common.util.DateUtil;
 import com.zy.component.TourComponent;
 import com.zy.component.TourUserComponent;
 import com.zy.entity.act.Policy;
+import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
 import com.zy.entity.sys.SystemCode;
 import com.zy.entity.tour.Tour;
+import com.zy.entity.tour.TourTime;
 import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.query.TourQueryModel;
 import com.zy.model.query.TourUserQueryModel;
-import com.zy.service.ReportService;
-import com.zy.service.TourService;
-import com.zy.service.UserInfoService;
-import com.zy.service.UserService;
+import com.zy.service.*;
+import com.zy.util.GcUtils;
 import com.zy.vo.TourTimeVo;
 import com.zy.vo.TourUserInfoVo;
 import com.zy.vo.TourUserAdminVo;
@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.zy.util.GcUtils.getThumbnail;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -67,6 +68,10 @@ public class UcenterTourController {
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private PolicyCodeService policyCodeService;
+
+
     @RequestMapping
     public String tourList(Principal principal , Model model){
         User user = userService.findOne(principal.getUserId());
@@ -85,7 +90,8 @@ public class UcenterTourController {
     }
 
     @RequestMapping(value = "/addInfo")
-    public String addInfo(Model model){
+    public String addInfo(Model model,@RequestParam Long tourUserId){
+        model.addAttribute("tourUserId",tourUserId);
         return "ucenter/tour/addInfo";
     }
 
@@ -115,8 +121,8 @@ public class UcenterTourController {
     @ResponseBody
     public Result<?> findparentInfo(String phone){
         User user = userService.findByPhone(phone);
-        user.setNickname(userService.findRealName(user.getId()));//放真实姓名
         if (user!=null){
+            user.setNickname(userService.findRealName(user.getId()));//放真实姓名
             return ResultBuilder.result(user);
         }else{
             return ResultBuilder.error("推荐人不存在");
@@ -179,7 +185,7 @@ public class UcenterTourController {
      * @return
      */
     @RequestMapping(value = "/findTourDetail")
-    public String findTourUserVo(Long tourId,String parentPhone,Long reporId,Model model){
+    public String findTourDetail(Long tourId,String parentPhone,Long reporId,Model model){
         Tour tour = tourService.findTourOne(tourId);
         model.addAttribute("tour",tour);
         model.addAttribute("parentPhone",parentPhone);
@@ -202,6 +208,24 @@ public class UcenterTourController {
     }
 
     /**
+     * 检测 旅游人数限制
+     * @param phone
+     * @param tourTimeId
+     * @return
+     */
+    @RequestMapping(value = "/ajaxCheckPraentNumber",method = RequestMethod.POST)
+    @ResponseBody
+    public  Result<?>ajaxCheckPraentNumber(String  phone,Long tourTimeId){
+        User userP =userService.findByPhone(phone);
+        String result =  tourComponent.checkParetNumber(userP.getId(),tourTimeId);
+        if (result!=null){
+            return ResultBuilder.error(result);
+        }else{
+            return ResultBuilder.ok(null);
+        }
+    }
+
+    /**
      *封装user旅游信息
      * @param phone
      * @param reporId
@@ -215,23 +239,26 @@ public class UcenterTourController {
     public String findTourUserVo(String phone,Long reporId,Long tourTimeid,Long tourId,Principal principal, Model model ){
         Long userId = principal.getUserId(); //userInfoService
         model.addAttribute("userinfoVo",tourComponent.findUserInfoVo(userId));
-       /* User user = userService.findOne(userId);
-        user.setNickname(userService.findRealName(user.getId()));*/
         model.addAttribute("user", userService.findOne(userId));
         model.addAttribute("tour",tourService.findTourOne(tourId));
         model.addAttribute("tourTime",tourService.findTourTimeOne(tourTimeid));
         User userP =userService.findByPhone(phone);
         userP.setNickname(userService.findRealName(userP.getId()));
         model.addAttribute("userp",userP);
+        String productNumber = tourComponent.findproductNumber(reporId);
         model.addAttribute("reporId",reporId);
-        return "ucenter/tour/tourAppleTable";
+        model.addAttribute("productNumber",productNumber);
+        return "ucenter/tour/tourApplyTable";
     }
 
     @RequestMapping(value = "/create", method = POST)
-    public String create(@RequestParam Long tourUserId, TourUser tourUser, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+    public String create(Long tourUserId, TourUser tourUser, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+
         tourUser.setId(tourUserId);
         tourUser.setUpdateBy(principal.getUserId());
         tourUser.setUpdateDate(new Date());
+        tourUser.setAuditStatus(3);
+        tourUser.setCarImages(GcUtils.getThumbnail(tourUser.getCarImages(), 750, 450));
         try {
             tourService.addCarInfo(tourUser);
         } catch (Exception e) {
@@ -254,7 +281,11 @@ public class UcenterTourController {
     @ResponseBody
     public Result<?>ajaxCheckParam(TourUserInfoVo tourUserInfoVo,Principal principal){
        String result = tourComponent.checkParam(tourUserInfoVo);
-        return null;
+        if (result!=null){
+            return ResultBuilder.error(result);
+        }else{
+            return ResultBuilder.ok(null);
+        }
     }
     /**
      * 提交旅游信息
@@ -264,13 +295,74 @@ public class UcenterTourController {
     @ResponseBody
     public Result<?>addTourforUser(TourUserInfoVo tourUserInfoVo,Principal principal){
         try {
+            PolicyCode policyCode = policyCodeService.findByCode(tourUserInfoVo.getProductNumber());
+            if (policyCode == null) {
+                return ResultBuilder.error("产品编号不存在");
+            }
+            if (policyCode.getTourUsed()!=null) {
+                if (policyCode.getTourUsed()) {
+                    return ResultBuilder.error("产品编号已被使用");
+                }
+            }
             tourComponent.updateOrInster(tourUserInfoVo,principal.getUserId());
             return ResultBuilder.ok(null);
         }catch (Exception e){
             e.printStackTrace();
-            return ResultBuilder.error(null);
+            return ResultBuilder.error("数据异常,请联系客服");
         }
 
     }
+
+    /**
+     * 检测 是否还可以申请旅游  检测报告超过三个月  或者  一年内申请
+     * @return
+     */
+    @RequestMapping(value = "/ajaxCheckTour",method = RequestMethod.POST)
+    @ResponseBody
+   public Result<?> ajaxCheckTour(String reportId,Principal principal){
+       String result = tourComponent.checkTour(reportId,principal.getUserId());
+       if (result!=null){
+           return ResultBuilder.error(result);
+       }else{
+           return ResultBuilder.ok(null);
+       }
+   }
+
+
+    /**
+     * 检测是否提交检测报告
+     * @param reportId
+     * @return
+     */
+    @RequestMapping(value = "/ajaxCheckReport",method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxCheckReport(Long reportId,Principal principal){
+        Long loginUserId = principal.getUserId();
+        String result = tourComponent.checkReport(reportId,loginUserId);
+        if (result!=null){
+            return ResultBuilder.error(result);
+        }else{
+            return ResultBuilder.ok(null);
+        }
+    }
+
+
+    /**
+     * 旅游入口进入
+     * @return
+     */
+    @RequestMapping(value = "/findTourDetailbyTour", method = GET)
+   public String  findTourDetailbyTour(Long tourId,String parentPhone,Long reporId,Long tourTimeId ,Long tourUserId, Model model){
+       Tour tour = tourService.findTourOne(tourId);
+       model.addAttribute("tour",tour);
+       TourTime tourTime = tourService.findTourTimeOne(tourTimeId);
+       model.addAttribute("sel",GcUtils.formatDate(tourTime.getBegintime(),"yyyy-MM"));
+       List tourTimeList = new ArrayList<TourTime>();
+       tourTimeList.add(tourTime);
+       model.addAttribute("tourTimeVo",tourComponent.changeVo(tourTimeList,false).get(0));
+        model.addAttribute("tourUser",tourService.findTourUser(tourUserId));
+       return "ucenter/tour/tourDetailNew";
+
+   }
 
 }

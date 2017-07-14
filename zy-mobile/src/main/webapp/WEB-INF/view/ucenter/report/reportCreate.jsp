@@ -160,14 +160,18 @@
       -webkit-transform:translate(-50%,-50%);
       transform:translate(-50%,-50%);
     }
+    .layer-class {
+      -webkit-overflow-scrolling: touch;
+      overflow-y: scroll;
+    }
   </style>
   <script type="text/javascript">
     $(function() {
+
       var area = new areaInit('province', 'city', 'district', '${report.areaId}');
 
       //选择产品
       showProductList();
-
       $('.image-multi .image-add').imageupload({
         isMultipart : true
       });
@@ -239,6 +243,14 @@
       //选择产品
       $('.product-info').click(function(){
         showProductList();
+
+//        if($(".list-unit span").html()=="优检一生"){
+//          alert($(".list-unit span").html());
+//          $(".footer").show();
+//        }else {
+//          alert($(".list-unit span").html());
+//          $(".footer").hide();
+//        }
       });
 
       $('body').on('click', '.product', function() {
@@ -249,8 +261,14 @@
         product.image = $this.attr('data-image');
         setProduct(product);
         if(product.id == 2) {
+          //当用户选择的产品是2.0时，显示旅游和保险
+          $(".footer").show();
+          $(".form-btn").css("padding-bottom","50px");
           $('#policy').show();
         } else {
+          //当用户选择的产品是1.0时，不显示旅游和保险
+          $(".footer").hide();
+          $(".form-btn").css("padding-bottom","0");
           $('#policy').hide();
           $('#hasPolicy').removeAttr('checked');
         }
@@ -339,6 +357,12 @@
 
       <div class="list-group mt-10">
         <div class="list-title">填写客户资料</div>
+        <div class="list-item">
+          <label class="list-label" for="realname">产品编码</label>
+          <div class="list-text">
+            <input type="text" class="form-input" name ="productNumber" id="productNumber" value="" placeholder="填写产品编码">
+          </div>
+        </div>
         <div class="list-item">
           <label class="list-label" for="realname">姓名</label>
           <div class="list-text">
@@ -447,7 +471,7 @@
         </div>
       </div>
       <div class="form-btn" style="padding-bottom: 50px;">
-        <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提 交">
+        <input id="btnSubmit"  class="btn orange btn-block round-2" type="button" onclick="fromSumbit()" value="提 交">
       </div>
     </form>
   </article>
@@ -458,26 +482,37 @@
 </div>
 
 <script>
-  var reportId="22";//展示写死   提交 检查记录后再置值
+  var  submitFalge = false;
+  var reportId="";//展示写死   提交 检查记录后再置值
   //保险申请
   var insuranceT,travelT,line,MyApply;
   function insurance(){
-    insuranceT=layer.open({
-      type: 1,
-      title: false,
-      closeBtn: 0,
-      scrollbar: false,
-      area:['100%', '100%'],
-      skin: 'yourclass',
-      content:'<header class="header"><h1>填写保险申请</h1><a href="#" onclick="hideBtn()" class="button-left"><i class="fa fa-angle-left"></i></a></header><div id="policy" class="list-group"><div id="policyInfo">'
-            +'<div class="list-item bd-t-0"><label class="list-label" for="code">产品编码</label><div class="list-text"><input type="text" name="code" id="code" class="form-input" value="" placeholder="填写产品编码">'
-            +'</div></div><div class="list-item"><label class="list-label" for="idCardNumber">身份证号</label><div class="list-text"><input type="text" name="idCardNumber" id="idCardNumber" class="form-input" value="${policy.idCardNumber}" placeholder="填写身份证号">'
-            +'</div></div><div class="list-item"><label class="list-label">正面照</label><div class="list-text image-upload"><div class="image-item image-single "><input type="hidden" name="image1" id="image1" value=""><div id="preview"><img src="${stccdn}/image/upload_240_150.png" class="previewImage" style="width:100px;height:100px;"></div>'
-            +'<input type="file" onchange="fileChange(this)" style="z-index:999;"/></div></div><div class="list-unit"><a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_1.jpg" data-title="身份证正面"><i class="fa fa-question-circle-o"></i> 示意图</a>'
-            +'</div></div><label style="margin-left: 20px; color:red;">(非必填)上传身份证图片可方便核验您的身份证号码的准确性</label><div class="list-item"><label class="list-label">生日</label><div class="list-text"><input type="date" name="birthday" class="form-input" value="" placeholder="填写生日  1900-01-01"></div></div></div></div>'
-            +'<div class="form-btn" style="padding-bottom: 50px;"><input class="btn orange btn-block round-2" type="submit" value="申 请" style="margin-bottom:10px;" onclick="submitBtn()"><div style="height:35px;background:#f2f3f5;text-align:center;line-height:35px;border:1px solid #c9c9c9;" onclick="hideBtn()">取 消</div></div>'
-  });
-    $(".main").hide();
+      if(submitFalge){
+        $.ajax({
+          url : '${ctx}/tour/ajaxCheckReport',
+          data :{
+            'reportId':reportId
+          },
+          dataType : 'json',
+          type : 'POST',
+          success : function(result){
+            if(result.code == 0){
+              insuranceT= layer.open({
+                type: 2,
+                area:['90%', '90%'],
+                title: false,
+                scrollbar: true,
+                closeBtn: 0,
+                content: '${ctx}/u/report/insuranceInfo?reportId='+ reportId + ''
+              });
+            } else {
+              messageAlert(result.message);
+            }
+          }
+        });
+      }else{
+        messageAlert("请先提交检测报告");
+      }
   }
   function fileChange(obj){
     var file = obj.files[0];
@@ -492,12 +527,18 @@
       $('#preview').empty().append($img);
     }
   }
-  //提交保险申请
-  function submitBtn(){
-
-     layer.close(insuranceT);
-     $(".main").show();
-  }
+  <%--//提交保险申请--%>
+  <%--function submitBtn(){--%>
+    <%--layer.close(insuranceT);--%>
+    <%--line=layer.open({--%>
+      <%--type: 2,--%>
+      <%--area:['100%', '100%'],--%>
+      <%--title: false,--%>
+      <%--scrollbar: false,--%>
+      <%--closeBtn: 0,--%>
+      <%--content: '${ctx}/u/report/create'--%>
+    <%--});--%>
+  <%--}--%>
   //取消保险申请
   function hideBtn(){
     layer.close(insuranceT);
@@ -505,26 +546,34 @@
   }
   //旅游申请
   function travel(){
-    travelT= layer.open({
-      type: 2,
-      area:['100%', '100%'],
-      title: false,
-      scrollbar: false,
-      closeBtn: 0,
-      content: '${ctx}/tour/findparentInfo'
-    });
-
-    /*travelT=layer.open({
-      type: 1,
-      title: false,
-      closeBtn: 0,
-      shadeClose: true,
-      skin: 'yourclass',
-      content: '<header class="header"><h1>填写旅游申请</h1><a href="#" onclick="hideTravel()" class="button-left"><i class="fa fa-angle-left"></i></a></header><div id="policy" class="list-group"><div id="policyInfo">'
-               +'<div style="margin-left: 5%;margin-bottom: 20px;margin-top: 20px;"><span>填写推荐人手机号：</span><input type="number" style="height: 30px;width:50%;" /></div>'
-               +'<div class="form-btn" style="padding-bottom: 50px;"><input class="btn orange btn-block round-2" type="submit" value="确 认" style="margin-bottom:10px;" onclick="submitTravel()"><div style="height:35px;background:#f2f3f5;text-align:center;line-height:35px;border:1px solid #c9c9c9;" onclick="hideTravel()">取 消</div></div>'
-    });
-    $(".main").hide();*/
+    $(".main").hide();
+    if(submitFalge){
+      $.ajax({
+        url : '${ctx}/tour/ajaxCheckTour',
+        data :{
+          'reportId':reportId
+        },
+        dataType : 'json',
+        type : 'POST',
+        success : function(result){
+          if(result.code == 0){
+            travelT= layer.open({
+              type: 2,
+              area:['90%', '90%'],
+              title: false,
+              scrollbar: true,
+              closeBtn: 0,
+              content: '${ctx}/tour/findparentInfo',
+              skin: 'layer-class'
+            });
+          } else {
+            messageAlert(result.message);
+          }
+        }
+      });
+    }else{
+      messageAlert("请先提交检测报告");
+    }
   }
   //确认旅游申请
   function submitTravel(){
@@ -535,14 +584,14 @@
       closeBtn: 0,
       shadeClose: true,
       skin: 'yourclass',
-      content:'${ctx}/tour/findTourUserVo'
+      content:'${ctx}/u/report/create'
     });
   }
 
   //取消旅游申请
   function hideTravel(){
     layer.close(travelT);
-   /* $(".main").show();*/
+    $(".main").show();
   }
 
   function hideLine(){
@@ -557,93 +606,93 @@
   function getReportId(){
     return reportId;
   }
-  <%--//点击线路弹出旅游详情--%>
-  <%--var traveldetil="";--%>
-  <%--var numBack=0;--%>
-  <%--function TravelDetil(num){--%>
-    <%--layer.close(line);--%>
-    <%--if(traveldetil!=""){--%>
-      <%--layer.close(traveldetil);--%>
-    <%--}--%>
-    <%--switch(num)--%>
-    <%--{--%>
-      <%--case 1:--%>
-        <%--numBack=1;--%>
-        <%--traveldetil=layer.open({--%>
-          <%--type: 1,--%>
-          <%--title: false,--%>
-          <%--closeBtn: 0,--%>
-          <%--shadeClose: true,--%>
-          <%--skin: 'yourclass',--%>
-          <%--content: '<header class="header"><h1>旅游路线详情</h1><a href="#" onclick="hideDetil()" class="button-left"><i class="fa fa-angle-left"></i></a></header>'--%>
-          <%--+'<img src="${ctx}/images/TravelTop.png" style="width:100%;" /><div class="TravelFont"><div class="TravelFOne">预定须知</div><div class="TravelFOneD">旅游信息有几个限制条件：1、户籍所在地的限制，目前对四川、重庆不参与四川境内游活动，云南籍不参与云南境内游活动；2、年龄限制，年龄在28-58岁旅游费用全免，27岁以下与59岁至65岁者另加960，儿童另加960元且门票住宿自理。66岁以上老人及残疾人也不享受本活动。</div>'--%>
-          <%--+'<div class="TravelFOne" style="margin-top:10px;">产品特色</div><div class="TravelFOneD">旅游信息有几个限制条件：1、户籍所在地的限制，目前对四川、重庆不参与四川境内游活动，云南籍不参与云南境内游活动；2、年龄限制，年龄在28-58岁旅游费用全免。</div></div>'--%>
-          <%--+'<img src="${ctx}/images/TravelDetilT.png" style="width:100%;"/>'--%>
-          <%--+'<div class="clearfloat" style="padding:10px 15px;background:#fff;"><label class="list-label" style="height:30px;line-height:25px;font-size:16px;width:50%;float:left;">请选择出游时间：</label><div class="list-text form-select" style="width:50%;float:left;"><select name="jobId" onchange="selectValue(this)"><option value="0">请选择</option><option value="1">一月</option><option value="2">二月</option></select></div></div>'--%>
-          <%--+'<div class="TravelDis clearfloat"><div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div><div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div><div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div><div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div><div class="TravelDisTime"><p>07-06 周四</p><p class="TravelDisTimecolor">原价:<del>￥1000</del></p></div></div>'--%>
-          <%--+'<div class="MyApply" onclick="MyApplyFun()">我要报名</div>'--%>
-        <%--});--%>
-        <%--break;--%>
-      <%--case 2:--%>
-        <%--numBack=2;--%>
-        <%--traveldetil=layer.open({--%>
-          <%--type: 1,--%>
-          <%--title: false,--%>
-          <%--closeBtn: 0,--%>
-          <%--shadeClose: true,--%>
-          <%--skin: 'yourclass',--%>
-          <%--content: ''--%>
-        <%--});--%>
-        <%--break;--%>
-      <%--case 3:--%>
-        <%--break;--%>
 
-      <%--case 4:--%>
-        <%--break;--%>
-    <%--}--%>
-  <%--}--%>
+  /**
+   * ajax 提交数
+   */
+  function fromSumbit() {
+    //验证
+   var flage= $('.valid-form').validate({
+      ignore: ':hidden',
+      rules : {
+        'realname' : {
+          required : true
+        },
+        'gender' : {
+          required : true
+        },
+        'age' : {
+          required : true
+        },
+        'phone' : {
+          required : true,
+          phone : true
+        },
+        'times' : {
+          required : true,
+          digits : true,
+          max: 999
+        },
+        'reportedDate' : {
+          required : true
+        },
+        'areaId' : {
+          required : true
+        },
+        'jobId' : {
+          required : true
+        },
+        'reportResult' : {
+          required : true
+        },
+        'text' : {
+          required : true
+        },
+        'code' : {
+          required : true
+        },
+        'image1' : {
+          required : true
+        },
+        'idCardNumber' : {
+          required : true
+        },
+        'birthday' : {
+          required : true
+        }
+      }
 
-  <%--//返回选择路线图页面，关闭路线图详情--%>
-  <%--function hideDetil(){--%>
-    <%--layer.close(traveldetil);--%>
-    <%--submitTravel();--%>
-  <%--}--%>
-  <%--//点击我要报名--%>
-  <%--function MyApplyFun(){--%>
-    <%--layer.close(traveldetil);--%>
-    <%--MyApply=layer.open({--%>
-      <%--type: 1,--%>
-      <%--title: false,--%>
-      <%--closeBtn: 0,--%>
-      <%--shadeClose: true,--%>
-      <%--skin: 'yourclass',--%>
-      <%--content: '<header class="header"><h1>旅游报名申请表单</h1><a href="#" onclick="hideApply()" class="button-left"><i class="fa fa-angle-left"></i></a></header>'--%>
-                <%--+'<div class="list-group mt-10"><div class="list-title">旅游报名申请表单</div>'--%>
-                <%--+'<div class="list-item"><label class="list-label" for="realname">旅游路线</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写旅游路线"></div></div>'--%>
-                <%--+'<div class="list-item"><label class="list-label" for="realname">姓名</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写姓名"></div></div>'--%>
-                <%--+'<div class="list-item"><label class="list-label" for="realname">身份证号</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写身份证号"></div></div>'--%>
-                <%--+'<div class="list-item"><label class="list-label" for="realname">性别</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写性别"></div></div>'--%>
-                <%--+'<div class="list-item"><label class="list-label" for="realname">年龄</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写年龄"></div></div>'--%>
-                <%--+'<div class="list-item"><label class="list-label" for="realname">户籍城市</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写户籍城市"></div></div>'--%>
-                <%--+'<div class="list-item"><label class="list-label" for="realname">手机号码</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写手机号码"></div></div>'--%>
-                <%--+'<div class="list-item"><label class="list-label" for="realname">推荐人姓名</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写推荐人姓名"></div></div>'--%>
-                <%--+'<div class="list-item"><label class="list-label" for="realname">推荐人手机号</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写推荐人手机号"></div></div>'--%>
-                <%--+'<div class="list-item"><label class="list-label" for="realname">出游日期</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写出游日期"></div></div>'--%>
-                <%--+'<div class="list-item"><label class="list-label" for="realname">房型需求</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写房型需求"></div></div>'--%>
-                <%--+'<div class="list-item"><label class="list-label" for="realname">特殊需求</label><div class="list-text"><input type="text" name="realname" id="realname" class="form-input" value="${report.realname}" placeholder="填写特殊需求"></div></div>'--%>
-                <%--+'<div class="MyApply" onclick="applyClick()">申请</div></div>'--%>
-    <%--});--%>
-  <%--}--%>
-  <%--//点击报名申请表单中的返回--%>
-  <%--function hideApply(){--%>
-    <%--layer.close(MyApply);--%>
-    <%--TravelDetil(numBack);--%>
-  <%--}--%>
-  <%--//点击申请按钮--%>
-  <%--function applyClick(){--%>
-    <%--layer.close(MyApply);--%>
-    <%--$(".main").show();--%>
-  <%--}--%>
+    });
+    if(flage.form()){
+      if($('input[name="image"]').length < 1) {
+        messageFlash('请至少上传一张图片');
+        return;
+      }
+      var productId = $('#productId').val();
+      if(!productId) {
+        messageAlert('请选择产品');
+        return;
+      }
+      $.ajax({
+        url : '${ctx}/u/report/ajaxCreate',
+        data : $(".valid-form").serialize(),
+        dataType : 'json',
+        type : 'POST',
+        success : function(result){
+          if(result.code == 0){
+            reportId=result.message;
+            submitFalge = true;
+            messageAlert("上传检测报告成功");
+            $("#btnSubmit").attr("disabled",true);
+            $(".orange.btn").css("background","#ccc");
+          } else{
+            messageAlert(result.message);
+          }
+        }
+      });
+    }
+
+  }
 </script>
 </body>
 </html>

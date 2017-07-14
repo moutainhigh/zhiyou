@@ -3,6 +3,8 @@ package com.zy.service.impl;
 import com.sun.istack.internal.NotNull;
 import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
+import com.zy.entity.act.PolicyCode;
+import com.zy.entity.act.Report;
 import com.zy.entity.tour.Sequence;
 import com.zy.entity.tour.Tour;
 import com.zy.entity.tour.TourTime;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +50,11 @@ public class TourServiceImpl implements TourService {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+    @Autowired
+    private ReportMapper reportMapper;
+
+    @Autowired
+    private PolicyCodeMapper policyCodeMapper;
 
     /**
      * 保存新的seq
@@ -139,6 +147,7 @@ public class TourServiceImpl implements TourService {
         tourUp.setUpdateTime(new Date());
         tourUp.setIsReleased(tour.getIsReleased());
         tourUp.setDelfage(tour.getDelfage());
+        tourUp.setDays(tour.getDays());
         tourMapper.update(tourUp);
     }
 
@@ -232,9 +241,10 @@ public class TourServiceImpl implements TourService {
         tourUser.setUpdateDate(new Date());
 
         if (isSuccess) {
-            tourUser.setAuditStatus(4);
+            tourUser.setAuditStatus(2);
             tourUser.setRevieweRemark(revieweRemark);
         } else {
+            resetProductNumber(id);
             tourUser.setAuditStatus(5);
             tourUser.setRevieweRemark(revieweRemark);
         }
@@ -248,6 +258,7 @@ public class TourServiceImpl implements TourService {
 
         tourUser.setTourId(null);
         tourUser.setTourTimeId(null);
+        tourUser.setAuditStatus(0);
         tourUser.setUpdateBy(loginUserId);
         tourUser.setUpdateDate(new Date());
 
@@ -298,7 +309,37 @@ public class TourServiceImpl implements TourService {
 
     @Override
     public void addCarInfo(TourUser tourUser) {
-        tourUserMapper.addCarInfo(tourUser);
+        tourUserMapper.modify(tourUser);
+    }
+
+    @Override
+    public void addInfo(Long id, Integer isJoin, BigDecimal amount, Long loginUserId) {
+        TourUser tourUser = tourUserMapper.findOne(id);
+
+        tourUser.setId(id);
+        tourUser.setIsJoin(isJoin);
+        tourUser.setAmount(amount);
+        tourUser.setAuditStatus(4);
+        tourUser.setUpdateBy(loginUserId);
+        tourUser.setUpdateDate(new Date());
+
+        tourUserMapper.modify(tourUser);
+    }
+
+    @Override
+    public Page<TourUser> findJoinAll(TourUserQueryModel tourUserQueryModel) {
+        if(tourUserQueryModel.getPageNumber() == null)
+            tourUserQueryModel.setPageNumber(0);
+        if(tourUserQueryModel.getPageSize() == null)
+            tourUserQueryModel.setPageSize(20);
+        long total = tourUserMapper.joinCount(tourUserQueryModel);
+        List<TourUser> data = tourUserMapper.findJoinAll(tourUserQueryModel);
+        Page<TourUser> page = new Page<>();
+        page.setPageNumber(tourUserQueryModel.getPageNumber());
+        page.setPageSize(tourUserQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
     }
 
 
@@ -308,7 +349,7 @@ public class TourServiceImpl implements TourService {
      * @param tourUser
      */
     @Override
-    public void updateOrInster(UserInfo userInfo, TourUser tourUser) {
+    public void updateOrInster(UserInfo userInfo, TourUser tourUser,String  productNumber) {
          //先处理用户信息
         UserInfo userInfoIn ;
         if (userInfo.getId()!=null){
@@ -342,8 +383,37 @@ public class TourServiceImpl implements TourService {
         //处理旅游
         tourUser.setCreateDate(new Date());
         tourUserMapper.insert(tourUser);
-
+        //处理产品编号
+        Report report = reportMapper.findOne(tourUser.getReportId());
+        if(report!=null&&report.getProductNumber()==null){
+            report.setProductNumber(productNumber);
+            reportMapper.update(report);
+        }
+        PolicyCode policyCode = policyCodeMapper.findByCode(productNumber);
+        if (policyCode!=null){
+            policyCode.setTourUsed(true);
+            policyCodeMapper.update(policyCode);
+        }
     }
 
+    /**
+     * 重置产品编号
+     * @param tourUserId
+     */
+    @Override
+    public void resetProductNumber(Long tourUserId){
+        TourUser tourUser = tourUserMapper.findOne(tourUserId);
+        if(tourUser!=null&&tourUser.getReportId()!=null){
+            Report report = reportMapper.findOne(tourUser.getReportId());
+            if (report!=null&&report.getProductNumber()!=null){
+                PolicyCode policyCode = policyCodeMapper.findByCode(report.getProductNumber());
+                if (policyCode!=null){
+                    policyCode.setTourUsed(false);
+                    policyCodeMapper.update(policyCode);
+                }
+            }
+        }
+
+    }
 
 }

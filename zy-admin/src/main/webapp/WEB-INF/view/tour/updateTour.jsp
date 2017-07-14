@@ -60,7 +60,7 @@
                     function(form){
                         var content = ue.getContent();
                         if(!content) {
-                            layer.alert('请填写新闻详情');
+                            layer.alert('请填写旅游详情');
                             return false;
                         }
                         $(form).find(':submit').prop('disabled', true);
@@ -120,7 +120,7 @@
         <div class="portlet light bordered">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="icon-book-open"></i><span> 创建旅游信息 </span>
+                    <i class="icon-book-open"></i><span> 更新旅游信息 </span>
                 </div>
             </div>
             <div class="portlet-body form">

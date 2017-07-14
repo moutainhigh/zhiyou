@@ -104,13 +104,13 @@ public class DateUtil {
      */
     public static Date getBeforeMonthEnd(Date date,int moth,int year){
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        calendar.setTime(getMonthData(date,moth,year));
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 59);
         calendar.set(Calendar.DATE, 1);        //设置为该月第一天
         calendar.add(Calendar.DATE, -1);    //再减一天即为上个
-        calendar.add(Calendar.MONTH, moth);
+      /*  calendar.add(Calendar.MONTH, moth);*/
         calendar.add(Calendar.YEAR, year);
         return calendar.getTime();
     }
@@ -305,6 +305,60 @@ public class DateUtil {
         }
 
         return result;
+    }
+
+
+    public static int getAge(Date birthDate) {
+
+        if (birthDate == null){
+            throw new RuntimeException("出生日期不能为null");
+        }
+        int age = 0;
+
+        Date now = new Date();
+
+        SimpleDateFormat format_y = new SimpleDateFormat("yyyy");
+        SimpleDateFormat format_M = new SimpleDateFormat("MM");
+
+        String birth_year = format_y.format(birthDate);
+        String this_year = format_y.format(now);
+
+        String birth_month = format_M.format(birthDate);
+        String this_month = format_M.format(now);
+
+        // 初步，估算
+        age = Integer.parseInt(this_year) - Integer.parseInt(birth_year);
+
+        // 如果未到出生月份，则age - 1
+        if(this_month.compareTo(birth_month) < 0){
+            age -= 1;
+        }
+        if (age <0){
+            age = 0;
+        }
+        return age;
+    }
+
+
+
+
+
+    /**
+     * 获取时间 相差 天数
+     * @param beginDate
+     * @param endDate
+     * @return
+     */
+    public static int calculateDiffDays(java.util.Date beginDate, java.util.Date endDate) {
+        if (beginDate == null || endDate == null) {
+            return 0;
+        } else {
+            long bMillSeconds = beginDate.getTime();
+            long eMillSeconds = endDate.getTime();
+            long temp = eMillSeconds - bMillSeconds;
+            double t1 = temp / 1000 / 60 / 60 / 24;
+            return (new Double(t1)).intValue();
+        }
     }
     public static void  main(String []age) throws ParseException {
        System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));

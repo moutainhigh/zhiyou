@@ -24,4 +24,6 @@ public interface ReportMapper {
 
 	long count(ReportQueryModel reportQueryModel);
 
+	Report findReport(ReportQueryModel reportQueryModel);
+
 }

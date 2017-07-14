@@ -2,8 +2,9 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ include file="/WEB-INF/view/include/form.jsp"%>
 <!-- BEGIN JAVASCRIPTS -->
+<%@ include file="/WEB-INF/view/include/editor.jsp"%>
 
-<script>
+<script type="text/javascript">
     $(function() {
 
         $('#form').validate({
@@ -16,15 +17,15 @@
                 },
                 planTime : {
                     required : true
-                },
-                isJoin : {
-                    required : true
-                },
-                amount : {
-                    required : true,
-                    number : true
-
                 }
+//                isJoin : {
+//                    required : true
+//                },
+//                amount : {
+//                    required : true,
+//                    number : true
+//
+//                }
             },
             messages: {
                 amount: {
@@ -33,6 +34,40 @@
                 },
 
             },
+        });
+
+
+        //图片上传
+        var uploader = new ss.SimpleUpload({
+            button: $.makeArray($('.product-image')),
+            url: '${ctx}/image/upload',
+            name: 'file',
+            maxSize: 4096,
+            responseType: 'json',
+            allowedExtensions: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+            onSubmit: function (filename, extension, uploadBtn, fileSize) {
+                $(uploadBtn).data('origin', $(uploadBtn).attr('src'));
+                $(uploadBtn).attr('src', 'http://static.thsuan.com/image/loading_image.gif');
+            },
+            onComplete: function (filename, response, uploadBtn, fileSize) {
+                if (response.code == 0) {
+                    $(uploadBtn).attr('src', response.data + '@150h_240w_1e_1c.jpg');
+                    $('input[name="' + $(uploadBtn).data('target') + '"]').val(response.data);
+                } else {
+                    $(uploadBtn).attr('src', $(uploadBtn).data('origin'));
+                    layer.alert('上传失败' + response.message);
+                }
+            },
+            onError: function (filename, errorType, status, statusText, response, uploadBtn, fileSize) {
+                $(uploadBtn).attr('src', $(uploadBtn).data('origin'));
+                layer.alert('上传失败' + errorType);
+            },
+            onSizeError: function (filename, fileSize) {
+                layer.alert('图片大小超过4MB限制');
+            },
+            onExtError: function (filename, extension) {
+                layer.alert('图片文件格式错误, 仅限*.jpg, *.jpeg, *.png, *.gif, *.webp');
+            }
         });
     });
     $("#auditStatus").attr("disabled",true);
@@ -46,7 +81,7 @@
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-        <li><a href="javascript:;" data-href="${ctx}/tour/tourJoinUser">参游旅客信息管理</a></li>
+        <li><a href="javascript:;" data-href="${ctx}/tourJoinUser">参游旅客信息管理</a></li>
     </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -75,6 +110,20 @@
                             </label>
                             <div class="col-md-5">
                                 <input type="text" style="display: block; width: 40%;" readonly="true" class="form-control" id="userName" name="userName" value="${tourUserAdminVo.userName}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">身份证号<span class="required"> * </span>
+                            </label>
+                            <div class="col-md-5">
+                                <input type="text" style="display: block; width: 40%;" readonly="true" class="form-control" id="idCardNumber" name="idCardNumber" value="${tourUserAdminVo.idCardNumber}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">年龄<span class="required"> * </span>
+                            </label>
+                            <div class="col-md-5">
+                                <input type="text" style="display: block; width: 40%;" readonly="true" class="form-control" id="age" name="age" value="${tourUserAdminVo.age}"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -158,6 +207,15 @@
                                 <input type="text" style="display: block; width: 40%;"  class="form-control" id="carNumber" name="carNumber" value="${tourUserAdminVo.carNumber}"/>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">票务照片<span class="required"> * </span></label>
+                            <div class="col-md-5">
+                                <img data-target="image" class="product-image bd" src="<c:if test='${not empty tourUserAdminVo.imageThumbnail}'>${tourUserAdminVo.imageThumbnail}</c:if><c:if test='${empty tourUserAdminVo.imageThumbnail}'>${ctx}/image/upload_240_150.jpg</c:if>">
+                                <input type="hidden" name="image" value="${tourUserAdminVo.imageThumbnail}"/>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label class="control-label col-md-3">预计到达时间<span class="required"> * </span>
                             </label>
@@ -181,7 +239,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">是否参游<span class="required"> * </span></label>
+                            <label class="control-label col-md-3">是否参游</label>
                             <div class="col-md-5">
                                 <select style="display: block; width: 40%;" class="form-control pull-left" id="isJoin" name="isJoin">
                                     <option value="0" <c:if test="${tourUserAdminVo.isJoin == 0}"> selected="selected"</c:if>>否</option>
@@ -190,21 +248,21 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">消费金额(元)<span class="required"> * </span>
+                            <label class="control-label col-md-3">消费金额(元)
                             </label>
                             <div class="col-md-5">
                                 <input type="text" style="display: block; width: 40%;" class="form-control" id="amount" name="amount" value="${tourUserAdminVo.amount}"/>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">是否有效<span class="required"> * </span></label>
-                            <div class="col-md-5">
-                                <select style="display: block; width: 40%;" readonly="true" class="form-control pull-left" id="isEffect" name="isJoin">
-                                    <option value="0" <c:if test="${tourUserAdminVo.isEffect == 0}"> selected="selected"</c:if>>否</option>
-                                    <option value="1" <c:if test="${tourUserAdminVo.isEffect == 1}"> selected="selected"</c:if>>是</option>
-                                </select>
-                            </div>
-                        </div>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="control-label col-md-3">是否有效<span class="required"> * </span></label>--%>
+                            <%--<div class="col-md-5">--%>
+                                <%--<select style="display: block; width: 40%;" readonly="true" class="form-control pull-left" id="isEffect" name="isJoin">--%>
+                                    <%--<option value="0" <c:if test="${tourUserAdminVo.isEffect == 0}"> selected="selected"</c:if>>否</option>--%>
+                                    <%--<option value="1" <c:if test="${tourUserAdminVo.isEffect == 1}"> selected="selected"</c:if>>是</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
                     <div class="form-actions fluid">
                         <div class="col-md-offset-3 col-md-9">

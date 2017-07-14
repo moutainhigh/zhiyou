@@ -96,7 +96,7 @@
         }
         p {
             color: #f13e00;
-            line-height: 15px;
+            line-height: 25px;
             padding:5px 20px 5px 20px;
         }
         .TravelFont {
@@ -105,10 +105,7 @@
             -webkit-border-radius:20px 20px 0 0;
             -moz-border-radius:20px 20px 0 0;
             border-radius:20px 20px 0 0;
-            margin-top: -60px;
-            position: relative;
-            z-index:9;
-            padding:20px 0 20px 0;
+            padding:0px 0 20px 0;
         }
         .TravelFOne {
             width:100%;
@@ -157,19 +154,22 @@
         .TravelDisTimecolor {
             color: #f15b00;
         }
+        img {
+            width:100%;
+        }
     </style>
 </head>
 <header class="header">
     <h1>旅游路线详情</h1>
     <form id="_form" method="post" action="${ctx}/tour/findTourApple">
-        <input type="hidden" name ="phone" value="${parentPhone}"/>
+        <input type="hidden" name ="phone" value="${parentPhone}" id="phone"/>
         <input type="hidden" name ="reporId" value="${reporId}" id="reporId"/>
-        <input type="hidden" name ="tourTimeid"  id="tourTimeid"/>
+        <input type="hidden" name ="tourTimeid"  id="tourTimeid" value="${tourTimeid}"/>
         <input type="hidden" name ="tourId" id="tourId" value="${tour.id}"/>
-      <a href="#" onclick="document.getElementById('_form').submit();" class="button-left"><i class="fa fa-angle-left"></i></a>
+      <a href="#" onclick="fromSumbit()" class="button-left"><i class="fa fa-angle-left"></i></a>
     </form>
 </header>
-<img src="${ctx}/images/TravelTop.png" style="width:100%;" />
+<%--<img src="${tour.image}" style="width:100%;" />--%>
 <div class="TravelFont">
     ${tour.content}
    <%-- <div class="TravelFOne">预定须知</div>
@@ -197,6 +197,14 @@
 </div>
 <div class="MyApply" onclick="MyApplyFun()">我要报名</div>
 <script>
+    $(function(){
+        $("img").parents("p").css("padding","0");
+    })
+    function fromSumbit() {
+        parent.layer.closeAll('iframe');
+        $('._form').submit();
+
+    }
     var tourTimeid="";
     //我要报名
     function MyApplyFun(){
@@ -204,9 +212,25 @@
             messageAlert("请选择出游时间");
             return ;
         }
-        $("#tourTimeid").val(tourTimeid);
-        $("#_form").attr("action", "${ctx}/tour/findTourUserVo");
-        $("#_form").submit();
+        $.ajax({
+            url : '${ctx}/tour/ajaxCheckPraentNumber',
+            data : {
+                phone:$("#phone").val(),
+                tourTimeId:tourTimeid
+            },
+            dataType : 'json',
+            type : 'POST',
+            success : function(result) {
+                if(result.code == 0) {
+                    $("#tourTimeid").val(tourTimeid);
+                    $("#_form").attr("action", "${ctx}/tour/findTourUserVo");
+                    $("#_form").submit();
+                }else {
+                    messageAlert(result.message);
+                }
+            }
+        });
+
 
     }
     $(function(){

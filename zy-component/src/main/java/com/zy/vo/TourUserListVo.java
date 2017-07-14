@@ -28,4 +28,8 @@ public class TourUserListVo implements Serializable {
     private Long reportId;
     @Field(label = "上级电话")
     private String parentPhone;
+    @Field(label = "主图")
+    private String image;
+    @Field(label = "出游时间id")
+    private Long tourTimeId;
 }

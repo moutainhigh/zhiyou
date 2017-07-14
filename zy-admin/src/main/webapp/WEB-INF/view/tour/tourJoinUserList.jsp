@@ -2,9 +2,94 @@
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 
 <!-- BEGIN JAVASCRIPTS -->
+<script id="confirmTmpl" type="text/x-handlebars-template">
+    <form id="confirmForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 100%; margin: 20px;">
+        <input type="hidden" name="id" value="{{id}}"/>
+        <div class="form-body">
+            <div class="alert alert-danger display-hide">
+                <i class="fa fa-exclamation-circle"></i>
+                <button class="close" data-close="alert"></button>
+                <span class="form-errors">您填写的信息有误，请检查。</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">是否参游<span class="required"> * </span></label>
+                <div class="col-md-5">
+                    <select name="isJoin" class="form-control">
+                        <option value="1">是</option>
+                        <option value="0">否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">消费金额(元)
+                </label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="amount"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions fluid">
+            <div class="col-md-offset-3 col-md-9">
+                <button id="reportConfirmSubmit{{id}}" type="button" class="btn green">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+                <button id="reportConfirmCancel{{id}}" class="btn default" data-href="">
+                    <i class="fa fa-chevron-left"></i> 返回
+                </button>
+            </div>
+        </div>
+    </form>
 </script>
 <script>
     var grid = new Datatable();
+
+    var template = Handlebars.compile($('#confirmTmpl').html());
+    $('#dataTable').on('click', '.report-confirm', function () {
+        var id = $(this).data('id');
+        var data = {
+            id: id
+        };
+        var html = template(data);
+        var index = layer.open({
+            type: 1,
+            //skin: 'layui-layer-rim', //加上边框
+            area: ['500px', '300px'], //宽高
+            content: html
+        });
+
+        $form = $('#confirmForm' + id);
+        $form.validate({
+            rules: {
+                isJoin: {
+                    required: true
+                },
+                amount: {
+                    number: true
+                }
+            },
+            messages: {}
+        });
+
+        $('#reportConfirmSubmit' + id).bind('click', function () {
+            var result = $form.validate().form();
+            if (result) {
+                var url = '${ctx}/tourUser/addInfo';
+                $.post(url, $form.serialize(), function (data) {
+                    if (data.code === 0) {
+                        layer.close(index);
+                        grid.getDataTable().ajax.reload(null, false);
+                    } else {
+                        layer.alert('补充信息失败,原因' + data.message);
+                    }
+                });
+            }
+        })
+
+        $('#reportConfirmCancel' + id).bind('click', function () {
+            layer.close(index);
+        })
+
+    });
 
     $(function () {
         grid.init({
@@ -46,6 +131,16 @@
                     {
                         data: 'userName',
                         title: '用户',
+                        orderable: false,
+                    },
+                    {
+                        data: 'idCardNumber',
+                        title: '身份证',
+                        orderable: false,
+                    },
+                    {
+                        data: 'age',
+                        title: '年龄',
                         orderable: false,
                     },
                     {
@@ -193,6 +288,9 @@
                         render: function (data, type, full) {
                         <shiro:hasPermission name="tourJoinUser:edit">
                             var optionHtml = '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tourJoinUser/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
+                            if (full.auditStatus == 3){
+                                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 旅客信息补充 </a>';
+                            }
                         </shiro:hasPermission>
                             return optionHtml;
                         }
@@ -290,20 +388,20 @@
                             <div class="form-group">
                                 <select name="auditStatus" class="form-control">
                                     <option value="">-- 审核状态 --</option>
-                                    <option value="1">审核中</option>
-                                    <option value="2">待补充</option>
+                                    <%--<option value="1">审核中</option>--%>
+                                    <%--<option value="2">待补充</option>--%>
                                     <option value="3">已生效</option>
                                     <option value="4">已完成</option>
-                                    <option value="5">审核失败</option>
+                                    <%--<option value="5">审核失败</option>--%>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <select name="isEffect" class="form-control">
-                                    <option value="">-- 是否有效 --</option>
-                                    <option value="1">是</option>
-                                    <option value="0">否</option>
-                                </select>
-                            </div>
+                            <%--<div class="form-group">--%>
+                                <%--<select name="isEffect" class="form-control">--%>
+                                    <%--<option value="">-- 是否有效 --</option>--%>
+                                    <%--<option value="1">是</option>--%>
+                                    <%--<option value="0">否</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
                             <div class="form-group">
                                 <button class="btn blue filter-submit">
                                     <i class="fa fa-search"></i> 查询

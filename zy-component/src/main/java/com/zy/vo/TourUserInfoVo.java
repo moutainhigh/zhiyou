@@ -74,5 +74,8 @@ public class TourUserInfoVo implements Serializable {
     @View(name = "district", type = String.class)
     private Long areaId;
 
+    @Field(label = "产品编号")
+    private String productNumber;
+
 
 }

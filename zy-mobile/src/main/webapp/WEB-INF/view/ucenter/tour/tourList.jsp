@@ -54,7 +54,9 @@
             background: #fff;
         }
         .tourImageT img {
-            float:left;width: 160px;
+            float:left;
+            width: 160px;
+            height: 100px;
         }
         .startTime {
             float:left;
@@ -63,6 +65,7 @@
             color: #333;
             margin-left: 10px;
             margin-top: 15px;
+            min-width: 150px;
         }
         a {display: block;}
 
@@ -96,6 +99,7 @@
         @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
             .tourImageT img {
                 width:130px;
+                height: 95px;
             }
             .startState {
                 height:30px;
@@ -138,7 +142,8 @@
             <a href="${ctx}/tour/addInfo?tourUserId=${tourUser.id}" class="tourArticleAll">
                 <p class="tourArticle"></p>
                 <div class="tourImageT clearfloat">
-                    <img src="${ctx}/images/tourImageT1.png" />
+                   <%-- <img src="${ctx}/images/tourImageT1.png" />--%>
+                    <img src="${tourUser.image}"/>
                     <p class="tourImageTFont"><b>${tourUser.tourTitle}</b></p>
                     <p class="startTime">出发时间：${tourUser.tourTime}</p>
                         <%--&lt;%&ndash;&lt;%&ndash;<p class="startState">审核中</p>   //跳到旅游详情页面，并且把我要报名按钮改成审核中--%>
@@ -155,10 +160,11 @@
             </a>
         </c:forEach>
         <c:forEach items="${tourUsers2}" var="tourUser">
-            <a href="${ctx}/tour/findTourDetail?tourId=${tourUser.tourId}&parentPhone=${tourUser.parentPhone}&reporId=${tourUser.reportId}" class="tourArticleAll">
+            <a href="${ctx}/tour/findTourDetailbyTour?tourId=${tourUser.tourId}&parentPhone=${tourUser.parentPhone}&reporId=${tourUser.reportId}&tourTimeId=${tourUser.tourTimeId}&tourUserId=${tourUser.id}" class="tourArticleAll">
                 <p class="tourArticle"></p>
                 <div class="tourImageT clearfloat">
-                    <img src="${ctx}/images/tourImageT1.png" />
+                    <img src="${tourUser.image}"/>
+                    <%--<img src="${ctx}/images/tourImageT1.png" />--%>
                     <p class="tourImageTFont"><b>${tourUser.tourTitle}</b></p>
                     <p class="startTime">出发时间：${tourUser.tourTime}</p>
                         <%--&lt;%&ndash;&lt;%&ndash;<p class="startState">审核中</p>   //跳到旅游详情页面，并且把我要报名按钮改成审核中--%>

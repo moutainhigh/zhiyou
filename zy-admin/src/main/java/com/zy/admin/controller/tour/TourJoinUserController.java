@@ -13,6 +13,7 @@ import com.zy.model.query.TourUserQueryModel;
 import com.zy.service.TourService;
 import com.zy.vo.TourJoinUserExportVo;
 import com.zy.vo.TourUserAdminVo;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -60,7 +61,7 @@ public class TourJoinUserController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Grid<TourUserAdminVo> list(TourUserQueryModel tourUserQueryModel) {
-        Page<TourUser> page = tourService.findAll(tourUserQueryModel);
+        Page<TourUser> page = tourService.findJoinAll(tourUserQueryModel);
         List<TourUserAdminVo> list = page.getData().stream().map(v -> {
             return tourUserComponent.buildAdminVo(v);
         }).collect(Collectors.toList());
@@ -80,7 +81,7 @@ public class TourJoinUserController {
 
         tourUserQueryModel.setPageSize(null);
         tourUserQueryModel.setPageNumber(null);
-        Page<TourUser> page = tourService.findAll(tourUserQueryModel);
+        Page<TourUser> page = tourService.findJoinAll(tourUserQueryModel);
         String fileName = "参游旅客信息.xlsx";
         WebUtils.setFileDownloadHeader(response, fileName);
 
@@ -112,6 +113,7 @@ public class TourJoinUserController {
         validate(tourUser, NOT_NULL, "tourUser id is null");
         Long loginUserId = getPrincipalUserId();
         tourUser.setUpdateBy(loginUserId);
+        tourUser.setCarImages(tourUser.getImage());
         try {
             tourService.modify(tourUser);
             redirectAttributes.addFlashAttribute(ResultBuilder.ok("保存成功"));
