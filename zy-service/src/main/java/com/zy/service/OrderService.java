@@ -38,6 +38,7 @@ public interface OrderService {
 
 	void settleUpProfit(String yearAndMonth); // 在订单支付成功后结算
 	void settleUpOption(String yearAndMonth); // 重新结算期权奖励
+	void settleUpRebate(String yearAndMonth); // 返利奖
 
 	void settleUpMonthly(String yearAndMonth); // 月结算
 

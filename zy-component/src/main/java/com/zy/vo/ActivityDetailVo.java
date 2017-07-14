@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -34,6 +35,8 @@ public class ActivityDetailVo implements Serializable {
 	private Integer ticketType;
 	@Field(label = "自购权限")
 	private Integer level;
+	@Field(label = "活动报名费")
+	private BigDecimal amount;
 
 	/* 扩展 */
 	@Field(label = "活动状态")

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -36,6 +37,8 @@ public class ActivityAdminVo implements Serializable {
 	private Long viewedCount;
 	@Field(label = "是否发布")
 	private Boolean isReleased;
+	@Field(label = "活动报名费")
+	private BigDecimal amount;
 
 	/* 扩展 */
 	@Field(label = "活动状态")

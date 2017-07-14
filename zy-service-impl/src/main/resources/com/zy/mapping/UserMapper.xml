@@ -28,13 +28,14 @@
 		<result column="boss_id" property="bossId" />
 		<result column="code" property="code" />
 		<result column="is_director" property="isDirector" />
+		<result column="is_honor_director" property="isHonorDirector" />
 		<result column="is_shareholder" property="isShareholder" />
-		<result column="viewflag" property="viewflag"></result>
+		<result column="viewflag" property="viewflag" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_shareholder)
-	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossName},#{bossId},#{code},#{isDirector},#{isShareholder})
+	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,viewflag)
+	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossName},#{bossId},#{code},#{isDirector},#{isHonorDirector},#{isShareholder},#{viewflag})
 	</insert>
 
 	<delete id="delete">
@@ -68,7 +69,9 @@
 			boss_id = #{bossId},
 			code = #{code},
 			is_director = #{isDirector},
+			is_honor_director = #{isHonorDirector},
 			is_shareholder = #{isShareholder},
+			viewflag = #{viewflag},
 		</set>
 		where id = #{id}
 	</update>
@@ -102,7 +105,9 @@
 					<when test="field == 'bossId'">boss_id = #{user.bossId},</when>
 					<when test="field == 'code'">code = #{user.code},</when>
 					<when test="field == 'isDirector'">is_director = #{user.isDirector},</when>
+					<when test="field == 'isHonorDirector'">is_honor_director = #{user.isHonorDirector},</when>
 					<when test="field == 'isShareholder'">is_shareholder = #{user.isShareholder},</when>
+					<when test="field == 'viewflag'">viewflag = #{user.viewflag},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -111,14 +116,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_shareholder,viewflag
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,viewflag
 		from `usr_user`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_shareholder
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,viewflag
 		from `usr_user`
 		<where>
 			<if test="userRankEQ != null">
@@ -195,9 +200,6 @@
 				<if test="inviterIdIN.length == 0">
 				and 1 = 2
 				</if>
-			</if>
-			<if test="nameorPhone != null">
-				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
 			</if>
 		</where>
 		<choose>
@@ -291,9 +293,6 @@
 				and 1 = 2
 				</if>
 			</if>
-			<if test="nameorPhone != null">
-				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
-			</if>
 		</where>
 	</select>
 
@@ -312,14 +311,15 @@
 	</select>
 
 	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
-		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
 		<result column="totalnumber" property="totalnumber"/>
 	</resultMap>
+
 	<select id="countByUserId" resultMap="countResultMap" parameterType="long">
 		select user_rank userRankEQ,COUNT(*) totalnumber FROM `usr_user` where parent_id = #{parentId} GROUP BY user_rank
 	</select>
 
-	<select id="countByActive" resultType="_long"  parameterType="com.zy.model.query.UserQueryModel">
+	<select id="countByActive" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
 		select count(m.id) from usr_user u,mal_order m where m.user_id=u.id
 		<if test="parentIdNL !=null">
 			AND u.parent_id =#{parentIdNL}
@@ -360,7 +360,6 @@
 
 	</select>
 
-
 	<select id="countByNotActive" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
 		SELECT count(*) from usr_user
 		<where>
@@ -388,6 +387,7 @@
 			)
 		</where>
 	</select>
+
 	<select id="findSupAll" resultMap="baseResultMap">
 		 select * from `usr_user` u where
 	    u.id in(
@@ -416,6 +416,7 @@
       )
 
 	</select>
+
 	<select id="findAddpeople" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
 		SELECT u.* from usr_user_log l,usr_user u WHERE
 		l.user_id = u.id
@@ -439,13 +440,14 @@
 
 	<resultMap id="userdtoResultMap" type="com.zy.model.dto.UserDto">
 		<result column="id" property="id"/>
-		<result column="userRank" property="userRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="userRank" property="userRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
 		<result column="nickname" property="nickname"/>
 		<result column="pnickname" property="pnickname"/>
 		<result column="avatar" property="avatar"/>
 		<result column="phone" property="phone"/>
 		<result column="pphone" property="pphone"/>
 	</resultMap>
+
 	<select id="findUserAll" resultMap="userdtoResultMap" parameterType="com.zy.model.query.UserQueryModel">
 		select a.id id,a.user_rank userRank,a.nickname nickname,b.nickname pnickname,a.avatar avatar, a.phone phone ,b.phone pphone from usr_user a LEFT JOIN usr_user b ON a.parent_id=b.id where a.user_type!=0
 		<if test="nameorPhone !=null">
@@ -455,6 +457,7 @@
 			limit #{offset}, #{pageSize}
 		</if>
 	</select>
+
 	<select id="countUserAll" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
 		select count(*) from usr_user where user_type!=0
 		<if test="nameorPhone !=null">
