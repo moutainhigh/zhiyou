@@ -189,7 +189,7 @@ public class UcenterTeamController {
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdEQ(userId);
-		Page<User> page= userService.findPage(userQueryModel);
+		Page<User> page= userService.findPage1(userQueryModel);
 		/*model.addAttribute("page",page);*/
 		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
 		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
