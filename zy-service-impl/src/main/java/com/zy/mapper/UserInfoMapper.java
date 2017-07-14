@@ -20,6 +20,8 @@ public interface UserInfoMapper {
 
 	UserInfo findOne(Long id);
 
+	UserInfo findByIdCardNumber(String idCardNumber);
+
 	List<UserInfo> findAll(UserInfoQueryModel userInfoQueryModel);
 
 	long count(UserInfoQueryModel userInfoQueryModel);

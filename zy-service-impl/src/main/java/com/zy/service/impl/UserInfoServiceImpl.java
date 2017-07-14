@@ -16,6 +16,7 @@ import com.zy.model.Constants;
 import com.zy.model.query.UserInfoQueryModel;
 import com.zy.service.UserInfoService;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -52,6 +53,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfo findOne(@NotNull Long id) {
         return userInfoMapper.findOne(id);
+    }
+
+    @Override
+    public UserInfo findByIdCardNumber(@NotBlank String idCardNumber) {
+        return userInfoMapper.findByIdCardNumber(idCardNumber);
     }
 
     @Override

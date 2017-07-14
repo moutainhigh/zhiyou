@@ -7,9 +7,11 @@ import com.zy.entity.usr.Tag;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
+import com.zy.model.query.UserInfoQueryModel;
 import com.zy.service.JobService;
 import com.zy.service.TagService;
 import com.zy.service.UserInfoService;
+import com.zy.vo.UserInfoVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +60,14 @@ public class UcenterInfoController {
 		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
 		if(userInfo != null) {
 			return "redirect:/u/userInfo";
+		}else{
+			UserInfoQueryModel userInfoQueryModel = new UserInfoQueryModel();
+			userInfoQueryModel.setUserIdEQ(principal.getUserId());
+			userInfoQueryModel.setRealFlag(0);
+			List<UserInfo> userInfos = userInfoService.findAll(userInfoQueryModel);
+			if(userInfos.size() == 1){
+				model.addAttribute("userInfo",userInfoComponent.buildVo(userInfos.get(0)));
+			}
 		}
 		model.addAttribute("jobs", jobService.findAll());
 		model.addAttribute("tags", getTags());
@@ -68,6 +78,15 @@ public class UcenterInfoController {
 	public String create(UserInfo userInfo, Principal principal, Model model, RedirectAttributes redirectAttributes) {
 		userInfo.setUserId(principal.getUserId());
 		try {
+			UserInfo info = userInfoService.findByIdCardNumber(userInfo.getIdCardNumber());
+			if(null != info){
+				model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("身份证已经被认证过，请核对信息"));
+				model.addAttribute("userInfo", userInfoComponent.buildVo(info));
+				model.addAttribute("jobs", jobService.findAll());
+				model.addAttribute("tags", getTags());
+				return "ucenter/user/userInfoCreate";
+			}
+			userInfo.setRealFlag(1);
 			userInfoService.create(userInfo);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));
 		} catch (Exception e) {

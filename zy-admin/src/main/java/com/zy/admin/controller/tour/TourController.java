@@ -296,6 +296,17 @@ public class TourController {
         return "tour/blackWhiteCreate";
     }
 
+    @RequestMapping(value = "/findName",method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> findName(String phone){
+        User user = userService.findByPhone(phone);
+        if (user!=null){
+            user.setNickname(userService.findRealName(user.getId()));//放真实姓名
+            return ResultBuilder.ok(user.getNickname());
+        }else{
+            return ResultBuilder.error("人不存在");
+        }
+    }
     /**
      * 新增黑白名单
      * @param blackOrWhite

@@ -35,6 +35,11 @@
 			 },
 		 },
 		});
+
+		/*$("#phone").onblur(function () {
+			var phone = $("#phone").val();
+			alert(phone);
+		});*/
 	});
 
 	$form = $('#createForm');
@@ -56,7 +61,7 @@
 			}
 			var url = '${ctx}/tour/createBlackWhite';
 			$.post(url, $form.serialize(), function (data) {
-				console.log(data);
+
 				if (data.code === 0) {
 					layer.alert('操作成功');
 				} else {
@@ -66,11 +71,32 @@
 		}
 		return false;
 	});
-
 	$("#selectType").change(function () {
 		$("#number").val("");
 	});
 
+	 function findName() {
+		 var phone = $("#phone").val();
+		 $.ajax({
+			 url: '${ctx}/tour/findName',
+			 data: { 'phone':phone,
+			 },
+			 type: "POST",
+			 dataType: 'json',
+			 success: function(data) {
+				 console.log(data);
+				 console.log(data.message);
+				 if(data.code == 0 ){
+					 $("#username").css("display","block");
+					 $("#realname").val(data.message);
+				 }else{
+					 $("#username").css("display","none");
+					 layer.msg("电话号码输入有误，请核实")
+				 }
+			 }
+		 })
+
+	 }
 
  </script>
 <!-- END JAVASCRIPTS -->
@@ -104,7 +130,14 @@
 							<label class="control-label col-md-3">手机号<span class="required"> * </span>
 							</label>
 							<div class="col-md-5">
-								<input type="text" class="form-control" id="phone" name="phone" value="${phone}" placeholder="请输入手机号" />
+								<input type="text" class="form-control" id="phone" name="phone" value="${phone}" onblur="findName()" placeholder="请输入手机号" />
+							</div>
+						</div>
+						<div class="form-group" style="display:none" id="username">
+							<label class="control-label col-md-3">姓名<span class="required"> * </span>
+							</label>
+							<div class="col-md-5">
+								<input type="text" class="form-control" id="realname" name="realname" value="" />
 							</div>
 						</div>
 						<div class="form-group">

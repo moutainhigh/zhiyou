@@ -284,7 +284,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyNickname(@NotNull Long userId, @NotBlank String nickname) {
         findAndValidate(userId);
-
         User userForMerge = new User();
         userForMerge.setId(userId);
         userForMerge.setNickname(nickname);

@@ -96,6 +96,13 @@
 		where id = #{id}
 	</select>
 
+	<select id="findByIdCardNumber" resultMap="baseResultMap" parameterType="String">
+		select
+		<include refid="baseColumn"/>
+		from `usr_user_info`
+		where id_card_number = #{idCardNumber} and real_flag = 1
+	</select>
+
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserInfoQueryModel">
 		select
 		<include refid="baseColumn"/>
@@ -204,7 +211,7 @@
 	<select id="findByUserId" resultMap="baseResultMap" parameterType="long">
 		select *
 		from `usr_user_info`
-		where user_id = #{userId}
+		where user_id = #{userId} and real_flag = 1
 	</select>
 
 </mapper>
