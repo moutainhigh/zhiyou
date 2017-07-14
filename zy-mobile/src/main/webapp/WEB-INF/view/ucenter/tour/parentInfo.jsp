@@ -58,27 +58,29 @@
     </script>
 </head>
 <body>
-<header class="header"><h1>填写旅游申请</h1><a href="#" onclick="hideTravel()" class="button-left"><i class="fa fa-angle-left"></i></a></header>
-<article>
-    <form class="valid-form" method="post" action="${ctx}/tour/findTourApple">
-    <div id="policy" class="list-group">
-        <div id="policyInfo">
-            <div class="list-item">
-                <label class="list-label" for="phone">推荐人电话：</label>
-                <div class="list-text">
-                    <input type="number" name="phone" id="phone" class="form-input" value="${parentPhone}" placeholder="填写推荐人手机号" ${parentPhone!=null?'readonly':''}>
+<div class="policyInfoMain">
+    <header class="header"><h1>填写旅游申请</h1><a href="#" onclick="hideTravel()" class="button-left"><i class="fa fa-angle-left"></i></a></header>
+    <article>
+        <form class="valid-form" method="post" action="${ctx}/tour/findTourApple">
+        <div id="policy" class="list-group">
+            <div id="policyInfo">
+                <div class="list-item">
+                    <label class="list-label" for="phone">推荐人电话：</label>
+                    <div class="list-text">
+                        <input type="number" name="phone" id="phone" class="form-input" value="${parentPhone}" placeholder="填写推荐人手机号" ${parentPhone!=null?'readonly':''}>
+                    </div>
                 </div>
+             <%--<div class="list-text" style="margin-left: 5%;margin-bottom: 20px;margin-top: 20px;">
+                 <span>填写推荐人手机号：</span><input type="number" style="height: 30px;width:50%;" class="form-input" value="${parentPhone}" ${parentPhone!=null?'readonly':''} id="phone" name="phone" placeholder="填写客户手机号"/>
+             </div>--%>
+            <div class="form-btn" style="padding-bottom: 50px;">
+                <input class="btn orange btn-block round-2" type="button" value="确 认" style="margin-bottom:10px;" onclick="submitTravel()">
+                <div style="height:35px;background:#f2f3f5;text-align:center;line-height:35px;border:1px solid #c9c9c9;" onclick="hideTravel()">取 消</div>
             </div>
-         <%--<div class="list-text" style="margin-left: 5%;margin-bottom: 20px;margin-top: 20px;">
-             <span>填写推荐人手机号：</span><input type="number" style="height: 30px;width:50%;" class="form-input" value="${parentPhone}" ${parentPhone!=null?'readonly':''} id="phone" name="phone" placeholder="填写客户手机号"/>
-         </div>--%>
-        <div class="form-btn" style="padding-bottom: 50px;">
-            <input class="btn orange btn-block round-2" type="button" value="确 认" style="margin-bottom:10px;" onclick="submitTravel()">
-            <div style="height:35px;background:#f2f3f5;text-align:center;line-height:35px;border:1px solid #c9c9c9;" onclick="hideTravel()">取 消</div>
+         </div>
         </div>
-     </div>
+        </form>
+        </article>
     </div>
-    </form>
-    </article>
 </body>
 </html>

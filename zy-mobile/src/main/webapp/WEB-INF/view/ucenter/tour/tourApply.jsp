@@ -37,17 +37,18 @@
 
 </head>
 <body >
-<header class="header"><h1>选择旅游路线</h1><a href="${ctx}/tour/findparentInfo"  class="button-left"><i class="fa fa-angle-left"></i></a></header>
-<input type="hidden" name="phone" id="parentPhone" value="${parentPhone}" />
-<input type="hidden" name="reporId" id="reporId" value="${reporId}" />
-<c:forEach items="${tourList}" var="tour">
-    <a href="#" onclick="TravelDetil('${tour.id}')" class="opacityAll" style="width:100%;position:relative;">
-        <img class="opacityFirst" src="${tour.image}" style="display:block;width:100%;" />
-        <img src="${ctx}/images/opacityTwo.png" class="opacity" style="display:block;width:100%;z-index:9;" />
-        <p class="font">【${tour.title}】</p>
-    </a>
-</c:forEach>
-
+<div class="tourApply">
+    <header class="header"><h1>选择旅游路线</h1><a href="${ctx}/tour/findparentInfo"  class="button-left"><i class="fa fa-angle-left"></i></a></header>
+    <input type="hidden" name="phone" id="parentPhone" value="${parentPhone}" />
+    <input type="hidden" name="reporId" id="reporId" value="${reporId}" />
+    <c:forEach items="${tourList}" var="tour">
+        <a href="#" onclick="TravelDetil('${tour.id}')" class="opacityAll" style="width:100%;position:relative;">
+            <img class="opacityFirst" src="${tour.image}" style="display:block;width:100%;" />
+            <img src="${ctx}/images/opacityTwo.png" class="opacity" style="display:block;width:100%;z-index:9;" />
+            <p class="font">【${tour.title}】</p>
+        </a>
+    </c:forEach>
+</div>
 <script>
     var forIOS = function(){
 

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/view/include/taglib.jsp"%>
-<html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Cache-Control" content="no-store" />
@@ -164,6 +163,10 @@
       -webkit-overflow-scrolling: touch;
       overflow-y: scroll;
     }
+    .TravelDisTimecolor {
+      color: #f15b00;
+    }
+
   </style>
   <script type="text/javascript">
     $(function() {
@@ -471,7 +474,7 @@
         </div>
       </div>
       <div class="form-btn" style="padding-bottom: 50px;">
-        <input id="btnSubmit"  class="btn orange btn-block round-2" type="button" onclick="fromSumbit()" value="提 交">
+        <input id="btnSubmit"  class="btn orange btn-block round-2 round-btnSubmit" type="button" onclick="fromSumbit()" value="提 交">
       </div>
     </form>
   </article>
@@ -481,6 +484,46 @@
   </div>
 </div>
 
+<!--填写旅游申请代码如下!-->
+<div class="policyInfoMain" style="display: none;">
+  <header class="header"><h1>填写旅游申请</h1><a href="#" onclick="hideTravel()" class="button-left"><i class="fa fa-angle-left"></i></a></header>
+  <article>
+    <form class="valid-form" method="post" action="${ctx}/tour/findTourApple">
+      <div id="policy" class="list-group">
+        <div id="policyInfo">
+          <div class="list-item">
+            <label class="list-label" for="phone">推荐人电话：</label>
+            <div class="list-text">
+              <input type="number" name="phone1" id="phone1" class="form-input" value="${parentPhone}" placeholder="填写推荐人手机号" ${parentPhone!=null?'readonly':''}>
+            </div>
+          </div>
+          <%--<div class="list-text" style="margin-left: 5%;margin-bottom: 20px;margin-top: 20px;">
+              <span>填写推荐人手机号：</span><input type="number" style="height: 30px;width:50%;" class="form-input" value="${parentPhone}" ${parentPhone!=null?'readonly':''} id="phone" name="phone" placeholder="填写客户手机号"/>
+          </div>--%>
+          <div class="form-btn" style="padding-bottom: 50px;">
+            <input class="btn orange btn-block round-2" type="button" value="确 认" style="margin-bottom:10px;" onclick="submitTravel()">
+            <div style="height:35px;background:#f2f3f5;text-align:center;line-height:35px;border:1px solid #c9c9c9;" onclick="hideTravel()">取 消</div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </article>
+</div>
+
+<!--选择旅游路线代码如下!-->
+<from class="tourApply" style="display: none;">
+  <header class="header"><h1>选择旅游路线</h1><a href="${ctx}/tour/findparentInfo"  class="button-left"><i class="fa fa-angle-left"></i></a></header>
+  <input type="hidden" name="phone" id="parentPhone" value="${parentPhone}" />
+  <input type="hidden" name="reporId" id="reporId" value="${reporId}" />
+  <%--<c:forEach items="${tourList}" var="tour">--%>
+    <%--<a href="#" onclick="TravelDetil('${tour.id}')" class="opacityAll" style="width:100%;position:relative;">--%>
+    <a href="#" onclick="TravelDetil('1')" class="opacityAll" style="width:100%;position:relative;">
+      <img class="opacityFirst" src="${tour.image}" style="display:block;width:100%;" />
+      <img src="${ctx}/images/opacityTwo.png" class="opacity" style="display:block;width:100%;z-index:9;" />
+      <p class="font">【${tour.title}】</p>
+    </a>
+  <%--</c:forEach>--%>
+</from>
 <script>
   var  submitFalge = false;
   var reportId="";//展示写死   提交 检查记录后再置值
@@ -546,7 +589,6 @@
   }
   //旅游申请
   function travel(){
-    $(".main").hide();
     if(submitFalge){
       $.ajax({
         url : '${ctx}/tour/ajaxCheckTour',
@@ -557,15 +599,17 @@
         type : 'POST',
         success : function(result){
           if(result.code == 0){
-            travelT= layer.open({
-              type: 2,
-              area:['90%', '90%'],
-              title: false,
-              scrollbar: true,
-              closeBtn: 0,
-              content: '${ctx}/tour/findparentInfo',
-              skin: 'layer-class'
-            });
+            $(".main").hide();
+            $(".policyInfoMain").show();
+            <%--travelT= layer.open({--%>
+              <%--type: 2,--%>
+              <%--area:['90%', '90%'],--%>
+              <%--title: false,--%>
+              <%--scrollbar: true,--%>
+              <%--closeBtn: 0,--%>
+              <%--content: '${ctx}/tour/findparentInfo',--%>
+              <%--skin: 'layer-class'--%>
+            <%--});--%>
           } else {
             messageAlert(result.message);
           }
@@ -577,22 +621,54 @@
   }
   //确认旅游申请
   function submitTravel(){
-    layer.close(travelT);
-    line=layer.open({
-      type: 1,
-      title: false,
-      closeBtn: 0,
-      shadeClose: true,
-      skin: 'yourclass',
-      content:'${ctx}/u/report/create'
-    });
+    <%--layer.close(travelT);--%>
+    <%--line=layer.open({--%>
+      <%--type: 1,--%>
+      <%--title: false,--%>
+      <%--closeBtn: 0,--%>
+      <%--shadeClose: true,--%>
+      <%--skin: 'yourclass',--%>
+      <%--content:'${ctx}/u/report/create'--%>
+    <%--});--%>
+    $(".policyInfoMain").hide();
+    $(".tourApply").show();
   }
 
   //取消旅游申请
   function hideTravel(){
-    layer.close(travelT);
+//    layer.close(travelT);
+    $(".policyInfoMain").hide();
     $(".main").show();
   }
+
+ //选择旅游路线
+  function TravelDetil(num){
+    var reporId= $("#reporId").val();
+    if(reporId==null||reporId=="") {
+      reporId = parent.getReportId();
+    }
+    var url ='${ctx}/tour/findTourDetail?tourId='+num+'&parentPhone='+$('#parentPhone').val()+'&reporId='+reporId;
+    $(".opacityAll").attr("href",url);
+    $(".opacityAll").click();
+
+    /*travelT= layer.open({
+     type: 2,
+     area:['100%', '100%'],
+     title: false,
+     scrollbar: true,
+     closeBtn: 0,
+     content: '${ctx}/tour/findTourDetail?tourId='+num+'&parentPhone='+$('#parentPhone').val()+'&reporId='+reporId
+     });*/
+  }
+  $(function(){
+    $(".opacityFirst").load(function(){
+      var opacityT = $(".opacityFirst").height();
+      $(".font").css("margin-top", -opacityT / 2 - 13);
+    });
+    $(".opacity").load(function(){
+      $(".opacity").css("margin-top", -$(".opacity").height() + "px");
+    });
+  });
 
   function hideLine(){
     layer.close(line);
@@ -684,7 +760,7 @@
             submitFalge = true;
             messageAlert("上传检测报告成功");
             $("#btnSubmit").attr("disabled",true);
-            $(".orange.btn").css("background","#ccc");
+            $(".orange.round-btnSubmit").css("background","#ccc");
           } else{
             messageAlert(result.message);
           }
