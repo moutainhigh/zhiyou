@@ -17,160 +17,7 @@
   <script src="${stc}/js/layer/layer.js"></script>
   <script src="${stccdn}/js/area.js"></script>
   <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
-  <style>
-    .footer {
-      position: fixed;
-      bottom:0;
-      left:0;
-      width:100%;
-      height:50px;
-      background: #6cb92d;
-      z-index: 99;
-    }
-    .footer div {
-      float: left;
-      width:50%;
-      height:50px;
-      text-align: center;
-      line-height: 50px;
-      color: #fff;
-      font-size: 18px;
-      border-right: 1px solid #fff;
-      box-sizing: border-box;
-    }
-    /*.layer-anim {
-      width:100% !important;
-      left:0 !important;
-      top:0 !important;
-    }*/
-    .sumbitBtn {
-      width:90%;
-      margin-left: 5%;
-      margin-right: 5%;
-    }
-    .list-group {
-      margin-bottom: 0;
-    }
-    .font {
-      font-size: 20px;
-      color: #fff;
-      width: 100%;
-      text-align: center;
-    }
-    .MyApply {
-      width:90%;
-      margin-left: 5%;
-      margin-right: 5%;
-      height:40px;
-      background:#f18200;
-      color: #fff;
-      margin-top: 30px;
-      margin-bottom: 10px;
-      text-align: center;
-      line-height: 40px;
-      font-size: 18px;
-      -webkit-border-radius:10px;
-      -moz-border-radius:10px;
-      border-radius:10px;
-      box-sizing: border-box;
-    }
-    .list-item .list-label {
-      width:150px;
-    }
-    /*清除浮动代码*/
-    .clearfloat:before, .clearfloat:after {
-      content:"";
-      display:table;
-    }
-    .clearfloat:after{
-      clear:both;
-      overflow:hidden;
-    }
-    .clearfloat{
-      zoom:1;
-    }
-    .TravelFont {
-      width:100%;
-      background: #f0f0f0;
-      -webkit-border-radius:20px 20px 0 0;
-      -moz-border-radius:20px 20px 0 0;
-      border-radius:20px 20px 0 0;
-      position: relative;
-      z-index:9;
-      padding:0px 0 20px 0;
-    }
-    .TravelFOne {
-      width:100%;
-      height:30px;
-      font-size: 18px;
-      color: #f13e00;
-      text-align: center;
-      line-height: 30px;
-    }
-    .TravelFOneD {
-      padding-left:30px;
-      padding-right: 30px;
-      color: #f13e00;
-      line-height: 30px;
-    }
-    .TravelDis {
-      width:100%;
-      padding:0px 20px 10px 20px;
-      background: #fff;
-      display: none;
-    }
-    .TravelDisTime {
-      float: left;
-      border: 1px solid #eee;
-      -webkit-border-radius:5px;
-      -moz-border-radius:5px;
-      border-radius:5px;
-      margin-left: 15px;
-      padding:5px;
-      margin-top: 10px;
-    }
-    .changeAll {
-      width:100%;height:50px;background:#fff;border-bottom: 1px solid #eee;
-    }
-   .changeSelect,.changeFont {
-     float: left;
-     width:50%;
-     height:50px;
-     border:none;
-     text-align: center;
-     line-height: 50px;
-   }
-    .changeSelect {
-      height:48px;
-    }
-    .TravelDisTimecolor {
-      color: #f15b00;
-    }
-    #preview img{
-      max-width:100%;
-      max-height:100%;
-      position: absolute;
-      top: 50%;
-      left:50%;
-      -webkit-transform:translate(-50%,-50%);
-      transform:translate(-50%,-50%);
-    }
-    .layer-class {
-      -webkit-overflow-scrolling: touch;
-      overflow-y: scroll;
-    }
-    .TravelDisTimecolor {
-      color: #f15b00;
-    }
-    .TravelFont p img {
-      width:100%;
-    }
-    .TravelFont p {
-      line-height: 25px;
-      padding:5px 15px 5px 15px;
-    }
-
-  </style>
+  <link rel="stylesheet" href="${ctx}/css/styleCSS.css" />
   <script type="text/javascript">
     $(function() {
       $(".TravelFont p img").parents("p").css("padding","0 !important");
@@ -662,34 +509,34 @@
           layer.msg(result.message);
           return;
         }else{
-          var layerTexdt=layer.confirm('请确认信息是否正确 <br/>姓名：'+result.data.nickname+'<br/>电话：'+result.data.phone, {
-            btn: ['正确','错误'] //按钮
-          }, function(){
-            layer.close(layerTexdt);
-            $(".policyInfoMain").hide();
-            $(".tourApply").show();
-            $.ajax({
-              url : '${ctx}/tour/findTourApple',
-              dataType : 'json',
-              type : 'POST',
-              success : function(result1) {
-                if(result1.code != 0) {
-                  return;
-                }
-                var pageData= result1.data;
-                if (pageData.length) {
-                  for ( var i in pageData) {
-                    var row = pageData[i];
-                    if (row.userRank!="V0"){
-                      buildRow(row);
+          $.dialog({
+            content : '请确认信息是否正确 <br/>姓名：'+result.data.nickname+'<br/>电话：'+result.data.phone,
+            callback : function(index) {
+              if (index == 1) {
+                $(".miui-dialog").remove();
+                $(".policyInfoMain").hide();
+                $(".tourApply").show();
+                $.ajax({
+                  url : '${ctx}/tour/findTourApple',
+                  dataType : 'json',
+                  type : 'POST',
+                  success : function(result1) {
+                    if(result1.code != 0) {
+                      return;
+                    }
+                    var pageData= result1.data;
+                    if (pageData.length) {
+                      for ( var i in pageData) {
+                        var row = pageData[i];
+                        if (row.userRank!="V0"){
+                          buildRow(row);
+                        }
+                      }
                     }
                   }
-                }
+                });
               }
-            });
-
-
-          }, function(){
+            }
           });
         }
       }
@@ -948,30 +795,33 @@
         success : function(result){
           if(result.code == 0) {
             if (result.message != null) {
-              layer.confirm(result.message, {
-                btn: ['确定', '取消'] //按钮
-              }, function () {
-                $.ajax({
-                  url : '${ctx}/tour/addTourforUser',
-                  data : $("#tourApplyTable").serialize(),
-                  dataType : 'json',
-                  type : 'POST',
-                  success : function(result){
-                    if(result.code == 0){
-                      layer.msg('您的旅游申请已成功，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。', {
-                        icon: 1,
-                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                      }, function(){
-                        parent.parent.layer.closeAll('iframe');
-                        parent.layer.closeAll('iframe');
-                      });
-                    } else {
-                      messageAlert(result.message);
-                    }
+              $.dialog({
+                content : result.message,
+                callback : function(index) {
+                  if (index == 1) {
+                    $(".miui-dialog").remove();
+                    $.ajax({
+                      url : '${ctx}/tour/addTourforUser',
+                      data : $("#tourApplyTable").serialize(),
+                      dataType : 'json',
+                      type : 'POST',
+                      success : function(result){
+                        if(result.code == 0){
+                          $.dialog({
+                            content : '您的旅游申请已成功，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。',
+                            callback : function(index) {
+                              $(".miui-dialog").remove();
+                              $(".tourApplyTableNew").hide();
+                              $(".reportDetail").show();
+                            }
+                          });
+                        } else {
+                          messageAlert(result.message);
+                        }
+                      }
+                    });
                   }
-                });
-
-              }, function () {
+                }
               });
             }else{
               $.ajax({
@@ -981,12 +831,13 @@
                 type : 'POST',
                 success : function(result){
                   if(result.code == 0){
-                    layer.msg('您的旅游申请已成功，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。', {
-                      icon: 1,
-                      time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                    }, function(){
-                      parent.parent.layer.closeAll('iframe');
-                      parent.layer.closeAll('iframe');
+                    $.dialog({
+                      content : '您的旅游申请已成功，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。',
+                      callback : function(index) {
+                        $(".miui-dialog").remove();
+                        $(".tourApplyTableNew").hide();
+                        $(".reportDetail").show();
+                      }
                     });
                   } else {
                     messageAlert(result.message);
@@ -997,9 +848,6 @@
           }else {
           messageAlert(result.message);
           }
-
-
-
         }
       });
     }
@@ -1027,7 +875,7 @@ $('#tourchange').append(html);
 }
 </script>
 <script id="rowTpl" type="text/html">
-  <a href="#" onclick="TravelDetil('{{d.id}}')" class="opacityAll" style="width:100%;position:relative;">
+  <a href="#" onclick="TravelDetil('{{d.id}}')" class="opacityAll">
     <p class="font">【{{d.title}}】</p>
     <img class="opacityFirst" src="{{d.image}}" style="display:block;width:100%;" />
     <%--<img src="${ctx}/images/opacityTwo.png" class="opacity" style="display:block;width:100%;z-index:9;" />--%>
