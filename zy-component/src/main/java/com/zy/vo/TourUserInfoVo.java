@@ -45,10 +45,10 @@ public class TourUserInfoVo implements Serializable {
     private String idCartNumber;
 
     @Field(label = "性别")
-    private UserInfo.Gender gender;
+    private UserInfo.Gender genders;
 
     @Field(label = "年龄")
-    private Integer age;
+    private Integer ages;
 
     @Field(label = "省份")
     private String province;
@@ -76,6 +76,9 @@ public class TourUserInfoVo implements Serializable {
 
     @Field(label = "产品编号")
     private String productNumber;
+
+    @Field(label = "实名认证id")
+    private String id;
 
 
 }

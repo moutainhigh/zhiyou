@@ -141,7 +141,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">出发城市<span class="required"> * </span></label>
+                            <label class="control-label col-md-3">集合城市<span class="required"> * </span></label>
                             <div class="col-md-5">
                                 <select style="display: block; width: 32%;" class="form-control pull-left" id="province" name="province">
                                     <option value="">-- 请选择省 --</option>
@@ -154,10 +154,10 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="display: none">
                             <label class="control-label col-md-3">详细地址<span class="required"> * </span></label>
                             <div class="col-md-5">
-                                <input type="text" class="form-control pull-left" name="address" value=""/>
+                                <input type="text" class="form-control pull-left" name="address" value=" "/>
                             </div>
                         </div>
                     </div>

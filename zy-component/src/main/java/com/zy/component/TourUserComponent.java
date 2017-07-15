@@ -52,18 +52,24 @@ public class TourUserComponent {
         TourUserAdminVo tourUserAdminVo = new TourUserAdminVo();
         BeanUtils.copyProperties(tourUser, tourUserAdminVo);
         UserInfo userInfo = userInfoService.findByUserId(tourUser.getUserId());
-        tourUserAdminVo.setUserName(userInfo.getRealname());
-        tourUserAdminVo.setIdCardNumber(userInfo.getIdCardNumber());
-        tourUserAdminVo.setAge(DateUtil.getAge(userInfo.getBirthday()));
+        if (userInfo!=null) {
+            tourUserAdminVo.setUserName(userInfo.getRealname());
+            tourUserAdminVo.setIdCardNumber(userInfo.getIdCardNumber());
+            tourUserAdminVo.setAge(DateUtil.getAge(userInfo.getBirthday()));
+        }
         UserInfo userIf = userInfoService.findByUserId(tourUser.getParentId());
-        tourUserAdminVo.setParentName(userIf.getRealname());
+        if (userIf!=null) {
+            tourUserAdminVo.setParentName(userIf.getRealname());
+        }
         User user = userService.findOne(tourUser.getUserId());
         tourUserAdminVo.setUserPhone(user.getPhone());
         User use = userService.findOne(tourUser.getParentId());
         tourUserAdminVo.setParentPhone(use.getPhone());
         if (tourUser.getUpdateBy() != null){
             UserInfo userI = userInfoService.findByUserId(tourUser.getUpdateBy());
-            tourUserAdminVo.setUpdateName(userI.getRealname());
+            if(userI!=null) {
+                tourUserAdminVo.setUpdateName(userI.getRealname());
+            }
         }
         if (tourUser.getTourId() != null){
             Tour tour = tourService.findTourOne(tourUser.getTourId());

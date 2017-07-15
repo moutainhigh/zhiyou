@@ -28,4 +28,6 @@ public interface UserInfoMapper {
 
 	UserInfo findByUserId(Long userId);
 
+	UserInfo findByUserIdandFlage(Long userId);
+
 }

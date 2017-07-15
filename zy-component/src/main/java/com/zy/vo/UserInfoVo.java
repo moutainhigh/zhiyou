@@ -74,6 +74,8 @@ public class UserInfoVo implements Serializable {
 	private int userlevel;
 	@Field(label = "年龄")
 	private Integer age;
+	@Field(label = "年龄字符")
+	private String agestr;
 
 
 }

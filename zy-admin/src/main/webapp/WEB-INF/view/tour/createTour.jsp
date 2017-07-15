@@ -144,19 +144,19 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-md-3">标题<span class="required"> * </span>
+                            <label class="control-label col-md-3">主路线<span class="required"> * </span>
                             </label>
                             <div class="col-md-4">
                                 <input type="text" name="title" id="title" class="form-control"
                                        value="${tour.title}" placeholder="请输入标题" />
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="display: none">
                             <label class="control-label col-md-3">旅游活动天数<span class="required"> * </span>
                             </label>
                             <div class="col-md-4">
                                 <input type="text" name="days" id="days" class="form-control"
-                                       value="${tour.days}"  placeholder="请输天数" />
+                                       value="366"  placeholder="请输天数" />
                             </div>
                         </div>
 
@@ -169,10 +169,10 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="display: none">
                             <label class="control-label col-md-3">旅游信息摘要<span class="required"> * </span></label>
                             <div class="col-md-4">
-                                <textarea name="brief" id="brief" cols="30" rows="5" class="form-control">${tour.brief}</textarea>
+                                <textarea name="brief" id="brief" cols="30" rows="5" class="form-control">无<%--${tour.brief}--%></textarea>
                             </div>
                         </div>
 

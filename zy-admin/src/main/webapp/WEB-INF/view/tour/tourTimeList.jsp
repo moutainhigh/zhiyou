@@ -61,8 +61,7 @@
                         title: '集合地点',
                         orderable: false,
                         render: function (data, type, full) {
-                            return '<p>' + full.province + '-' + full.city + '-' + full.district + '</p>'
-                                    + '<p class="small">' + data + '</p>';
+                            return '<p>' + full.province + '-' + full.city + '-' + full.district + '</p>';
                         }
                     },
                     {
@@ -213,7 +212,7 @@
                         &nbsp;  &nbsp;
                  </c:if>
                     <a class="btn btn-circle green" href="javascript:;"  onclick="addTourTime('${tour.id}')">
-                        <i class="fa fa-plus"></i> 新增线路
+                        <i class="fa fa-plus"></i> 新增行程
                     </a>
 
                 </div>

@@ -33,9 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.zy.util.GcUtils.getThumbnail;
@@ -102,14 +100,17 @@ public class UcenterTourController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/findparentInfo")
-    public String findparentInfo(Principal principal, Model model){
+    @RequestMapping(value = "/findparentInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?>  findparentInfo(Principal principal, Model model){
         User user = userService.findOne(principal.getUserId());
         if (user!=null&&user.getParentId()!=null){
             User userp = userService.findOne(user.getParentId());
-            model.addAttribute("parentPhone",userp.getPhone());
+            String  phone=userp.getPhone();
+            return ResultBuilder.result(phone);
         }
-        return "ucenter/tour/parentInfo";
+        /*return "ucenter/tour/parentInfo";*/
+        return ResultBuilder.error("数据异常");
     }
 
     /**
@@ -155,7 +156,8 @@ public class UcenterTourController {
      * @return
      */
     @RequestMapping(value = "/findTourApple",method = RequestMethod.POST)
-    public String findTourApple(String phone,Long reporId,Model model){
+    @ResponseBody
+    public Result<?> findTourApple(Model model){
         TourQueryModel tourQueryModel = new TourQueryModel();
         tourQueryModel.setDelfage(0);
         tourQueryModel.setIsReleased(true);
@@ -165,10 +167,11 @@ public class UcenterTourController {
             tour.setImage(getThumbnail(tour.getImage(), 640, 320));
             nowTourList.add(tour);
         }
-        model.addAttribute("tourList",nowTourList);
-        model.addAttribute("parentPhone",phone);
-        model.addAttribute("reporId",reporId);
-        return "ucenter/tour/tourApply";
+        //model.addAttribute("tourList",nowTourList);
+      /*  model.addAttribute("parentPhone",phone);
+        model.addAttribute("reporId",reporId);*/
+        /*return "ucenter/tour/tourApply";*/
+        return ResultBuilder.result(nowTourList);
     }
 
     /**
@@ -184,16 +187,21 @@ public class UcenterTourController {
      * 旅游客服 信息
      * @return
      */
-    @RequestMapping(value = "/findTourDetail")
-    public String findTourDetail(Long tourId,String parentPhone,Long reporId,Model model){
+    @RequestMapping(value = "/findTourDetail" ,method = POST)
+    @ResponseBody
+    public Result<?> findTourDetail(Long tourId,Long reporId,Model model){
         Tour tour = tourService.findTourOne(tourId);
-        model.addAttribute("tour",tour);
+      /*  model.addAttribute("tour",tour);
         model.addAttribute("parentPhone",parentPhone);
-        model.addAttribute("reporId",reporId);
+        model.addAttribute("reporId",reporId);*/
         Report report = reportService.findOne(reporId);
         List<String> list= DateUtil.getMonthBetween(report.getCreatedTime(),DateUtil.getMonthData(report.getCreatedTime(),3,-1));
-        model.addAttribute("list",list);
-        return "ucenter/tour/tourDetail";
+     //   model.addAttribute("list",list);
+        //return "ucenter/tour/tourDetail";
+        Map<String ,Object>map = new HashMap<>();
+        map.put("tour",tour);
+        map.put("str",list);
+        return ResultBuilder.result(map);
     }
 
     /**
@@ -236,19 +244,24 @@ public class UcenterTourController {
      * @return
      */
     @RequestMapping(value = "/findTourUserVo",method = RequestMethod.POST)
-    public String findTourUserVo(String phone,Long reporId,Long tourTimeid,Long tourId,Principal principal, Model model ){
+    @ResponseBody
+    public Result<?> findTourUserVo(String phone,Long reporId,Long tourTimeid,Long tourId,Principal principal, Model model ){
         Long userId = principal.getUserId(); //userInfoService
-        model.addAttribute("userinfoVo",tourComponent.findUserInfoVo(userId));
-        model.addAttribute("user", userService.findOne(userId));
-        model.addAttribute("tour",tourService.findTourOne(tourId));
-        model.addAttribute("tourTime",tourService.findTourTimeOne(tourTimeid));
+        Map<String,Object> map = new HashMap<>();
+        map.put("userinfoVo",tourComponent.findUserInfoVo(userId,reporId));
+        map.put("user", userService.findOne(userId));
+        map.put("tour",tourService.findTourOne(tourId));
+        TourTime tourTime =tourService.findTourTimeOne(tourTimeid);
+        map.put("tourTime",tourTime);
+        map.put("timedate",GcUtils.formatDate(tourTime.getCreatedTime(), "yyyy-MM-dd"));
         User userP =userService.findByPhone(phone);
         userP.setNickname(userService.findRealName(userP.getId()));
-        model.addAttribute("userp",userP);
+        map.put("userp",userP);
+        map.put("reporId",reporId);
         String productNumber = tourComponent.findproductNumber(reporId);
-        model.addAttribute("reporId",reporId);
-        model.addAttribute("productNumber",productNumber);
-        return "ucenter/tour/tourApplyTable";
+        map.put("productNumber",productNumber==null?"":productNumber);
+        return ResultBuilder.result(map);
+      /*  return "ucenter/tour/tourApplyTable";*/
     }
 
     @RequestMapping(value = "/create", method = POST)
@@ -280,9 +293,13 @@ public class UcenterTourController {
     @RequestMapping(value = "/ajaxCheckParam",method = RequestMethod.POST)
     @ResponseBody
     public Result<?>ajaxCheckParam(TourUserInfoVo tourUserInfoVo,Principal principal){
-       String result = tourComponent.checkParam(tourUserInfoVo);
+       String result[] = tourComponent.checkParam(tourUserInfoVo);
         if (result!=null){
-            return ResultBuilder.error(result);
+            if ("1".equals(result[1])){
+                return ResultBuilder.ok(result[0]);
+            }else{
+                return ResultBuilder.error(result[0]);
+            }
         }else{
             return ResultBuilder.ok(null);
         }

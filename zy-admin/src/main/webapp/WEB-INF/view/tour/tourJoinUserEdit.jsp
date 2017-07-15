@@ -192,7 +192,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">是否接车<span class="required"> * </span></label>
+                            <label class="control-label col-md-3">是否接机/车<span class="required"> * </span></label>
                             <div class="col-md-5">
                                 <select style="display: block; width: 40%;" class="form-control pull-left" id="isTransfers" name="isTransfers">
                                     <option value="0" <c:if test="${tourUserAdminVo.isTransfers == 0}"> selected="selected"</c:if>>否</option>

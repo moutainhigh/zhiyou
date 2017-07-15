@@ -35,19 +35,19 @@
                     },
                     {
                         data: 'title',
-                        title: '标题',
+                        title: '主路线',
                         orderable: false
                     },
-                    {
+                    /*{
                         data: 'days',
                         title: '旅游天数',
                         orderable: true
-                    },
-                    {
+                    },*/
+                 /*   {
                         data: 'createName',
                         title: '创建人',
                         orderable: false
-                    },
+                    },*/
                     {
                         data: 'isReleased',
                         title: '是否发布',
@@ -87,7 +87,7 @@
                                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/tour/findTourTime?tourId=' + data + '&flage=1"><i class="fa fa-check"></i> 发布 </a>';
                             }
                             optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="deleteAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 删除 </a>';
-                            optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/tour/findTourTime?tourId=' + data + '"><i class="fa fa-search"></i> 路线 </a>';
+                            optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/tour/findTourTime?tourId=' + data + '"><i class="fa fa-search"></i> 查看 </a>';
                             </shiro:hasPermission>
                             return optionHtml;
                         }

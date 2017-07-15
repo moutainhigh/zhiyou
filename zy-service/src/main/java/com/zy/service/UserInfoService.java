@@ -28,4 +28,5 @@ public interface UserInfoService {
 
 	void confirm(Long id, boolean isSuccess, String confirmRemark);
 
+	UserInfo findByUserIdandFlage(Long userId);
 }

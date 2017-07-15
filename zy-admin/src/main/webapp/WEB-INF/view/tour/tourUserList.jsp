@@ -288,7 +288,7 @@
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-        <li><a href="javascript:;" data-href="${ctx}/tourUser">旅客信息管理</a></li>
+        <li><a href="javascript:;" data-href="${ctx}/tourUser">游客信息管理</a></li>
     </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -299,7 +299,7 @@
         <div class="portlet light bordered">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="icon-book-open"></i> 旅客信息管理
+                    <i class="icon-book-open"></i> 游客信息管理
                 </div>
             </div>
             <div class="portlet-body clearfix">

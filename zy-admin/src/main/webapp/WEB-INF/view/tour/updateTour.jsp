@@ -142,7 +142,7 @@
                                        value="${tour.title}" placeholder="请输入标题" />
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="display: none">
                             <label class="control-label col-md-3">旅游活动天数
                             </label>
                             <div class="col-md-4">
@@ -160,7 +160,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="display: none">
                             <label class="control-label col-md-3">旅游信息摘要</label>
                             <div class="col-md-4">
                                 <textarea name="brief" id="brief" cols="30" rows="5" class="form-control">${tour.brief}</textarea>

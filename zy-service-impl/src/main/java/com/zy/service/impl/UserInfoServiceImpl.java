@@ -209,6 +209,16 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfoMapper.update(userInfo);
     }
 
+    /**
+     * 查询  客服信息
+     * @param userId
+     * @return
+     */
+    @Override
+    public UserInfo findByUserIdandFlage(Long userId) {
+        return userInfoMapper.findByUserIdandFlage(userId);
+    }
+
     private void checkUser(@NotNull Long userId) {
         User user = userMapper.findOne(userId);
         validate(user, NOT_NULL, "user id " + userId + "not found");

@@ -214,4 +214,9 @@
 		where user_id = #{userId} and real_flag = 1
 	</select>
 
+	<select id="findByUserIdandFlage" resultMap="baseResultMap" parameterType="long">
+		select *
+		from `usr_user_info`
+		where user_id = #{userId}
+	</select>
 </mapper>

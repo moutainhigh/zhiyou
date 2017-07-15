@@ -278,7 +278,7 @@ public class TourComponent {
      * @return
      */
     public UserInfoVo findUserInfoVo(Long userId) {
-        UserInfo userInfo = userInfoService.findByUserId(userId);
+        UserInfo userInfo = userInfoService.findByUserIdandFlage(userId);
         UserInfoVo userInfoVo = new UserInfoVo();
         if (userInfo!=null) {
             Long areaId = userInfo.getAreaId();
@@ -290,6 +290,7 @@ public class TourComponent {
                     userInfoVo.setDistrict(areaDto.getDistrict());
                 }
             }
+
             userInfoVo.setUserId(userInfo.getUserId());
             userInfoVo.setAge(userInfo.getAge());
             userInfoVo.setId(userInfo.getId());
@@ -302,6 +303,48 @@ public class TourComponent {
      return userInfoVo;
     }
 
+
+    /**
+     * 查询 userinfo
+     * @param userId
+     * @return
+     */
+    public UserInfoVo findUserInfoVo(Long userId,Long reporId) {
+        UserInfo userInfo = userInfoService.findByUserIdandFlage(userId);
+        UserInfoVo userInfoVo = new UserInfoVo();
+        Long areaId=null;
+        if (userInfo!=null) {
+            areaId = userInfo.getAreaId();
+            userInfoVo.setUserId(userInfo.getUserId());
+            userInfoVo.setAgestr(userInfo.getAge()==null?"":userInfo.getAge()+"");
+            userInfoVo.setId(userInfo.getId());
+            userInfoVo.setIdCardNumber(userInfo.getIdCardNumber()==null?"":userInfo.getIdCardNumber());
+            userInfoVo.setImage1Thumbnail(getThumbnail(userInfo.getImage1(), 750, 450));
+            userInfoVo.setBirthdayLabel(GcUtils.formatDate(userInfo.getBirthday(), S_PATTERN));
+            userInfoVo.setGender(userInfo.getGender());
+            userInfoVo.setRealname(userService.findRealName(userId));
+        }else{
+            userInfoVo.setAgestr("");
+            userInfoVo.setIdCardNumber("");
+            userInfoVo.setRealname("");
+        }
+        Report report = reportService.findOne(reporId);
+        if (areaId == null) {
+            areaId= report.getAreaId();
+        }
+        userInfoVo.setAreaId(areaId);
+        if (userInfoVo.getRealname()!=null){
+            userInfoVo.setRealname(report.getRealname());
+        }
+        AreaDto areaDto = cacheComponent.getAreaDto(areaId);
+        if (areaDto != null) {
+            userInfoVo.setProvince(areaDto.getProvince());
+            userInfoVo.setCity(areaDto.getCity());
+            userInfoVo.setDistrict(areaDto.getDistrict());
+        }
+        return userInfoVo;
+    }
+
     /**
      * 旅游信息  级检测报告参数封装
      * @param tourUserInfoVo
@@ -310,10 +353,12 @@ public class TourComponent {
     public void updateOrInster(TourUserInfoVo tourUserInfoVo,Long userid) {
        //封装用户信息
         UserInfo userInfo = new UserInfo();
-        userInfo.setId(tourUserInfoVo.getUserId());
+        if (tourUserInfoVo.getId()!=null&&!"null".equals(tourUserInfoVo.getId())){
+         userInfo.setId(Long.valueOf(tourUserInfoVo.getId()));
+        }
         userInfo.setUserId(userid);
-        userInfo.setAge(tourUserInfoVo.getAge());
-        userInfo.setGender(tourUserInfoVo.getGender());
+        userInfo.setAge(tourUserInfoVo.getAges());
+        userInfo.setGender(tourUserInfoVo.getGenders());
         userInfo.setAreaId(tourUserInfoVo.getAreaId());
         userInfo.setIdCardNumber(tourUserInfoVo.getIdCartNumber());
         userInfo.setRealname(tourUserInfoVo.getRealname());
@@ -412,38 +457,41 @@ public class TourComponent {
      * @param tourUserInfoVo
      * @return
      */
-    public String checkParam(TourUserInfoVo tourUserInfoVo) {
+    public String[] checkParam(TourUserInfoVo tourUserInfoVo) {
         int max =0;
         int min =0;
         //取到最大值
         SystemCode systemCode = systemCodeService.findByTypeAndName("TOURLIMITAGE", "MAX");
         if (systemCode==null||(systemCode.getSystemValue()==null||"".equals(systemCode.getSystemValue()))){
-          return "系统产数配置异常";
+          return new String[]{"系统产数配置异常","0"};
         }else{
             try{
                 max = Integer.valueOf(systemCode.getSystemValue());
             }catch (Exception e){
                 e.printStackTrace();
-                return "系统产数配置异常";
+                return new String[]{"系统产数配置异常","0"};
             }
         }
         //取到最小值
         SystemCode systemCodeMin = systemCodeService.findByTypeAndName("TOURLIMITAGE", "MIN");
         if (systemCodeMin==null||(systemCodeMin.getSystemValue()==null||"".equals(systemCodeMin.getSystemValue()))){
-            return "系统产数配置异常";
+            return new String[]{"系统产数配置异常","0"};
         }else{
             try{
                 min = Integer.valueOf(systemCodeMin.getSystemValue());
             }catch (Exception e){
                 e.printStackTrace();
-                return "系统产数配置异常";
+                return new String[]{"系统产数配置异常","0"};
             }
         }
-        if(tourUserInfoVo.getAge()>max){
-            return "抱歉！您以超过最大年龄";
+        if(tourUserInfoVo.getAges()>max&&tourUserInfoVo.getAges()<65){
+            return  new String[]{"27岁以下与59岁至65岁者另加960元/人；儿童另加960元且门票住宿自理；如有疑问可与推荐人联系。","1"};
         }
-        if(tourUserInfoVo.getAge()<min){
-            return "抱歉！您尚未满足最小年龄";
+        if(tourUserInfoVo.getAges()>=66){
+            return new String[]{"66岁以上：因旅游公司不具备接待服务条件，暂不接受66岁以上客户，敬请谅解。","0"};
+        }
+        if(tourUserInfoVo.getAges()<min){
+            return  new String[]{"27岁以下与59岁至65岁者另加960元/人；儿童另加960元且门票住宿自理；如有疑问可与推荐人联系。","1"};
         }
 
         //检测地区  本省不能参加本省的

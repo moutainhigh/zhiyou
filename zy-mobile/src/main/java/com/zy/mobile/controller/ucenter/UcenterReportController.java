@@ -244,7 +244,7 @@ public class UcenterReportController {
 			return ResultBuilder.ok(persistentReport.getId()+"");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResultBuilder.error("数据异常,请联系客服");
+			return ResultBuilder.error(e.getMessage());
 		}
 	}
 	@RequestMapping(value = "/{id}", method = GET)

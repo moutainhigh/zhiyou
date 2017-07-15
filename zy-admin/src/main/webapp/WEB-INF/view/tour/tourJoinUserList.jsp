@@ -217,7 +217,7 @@
                     },
                     {
                         data: 'isTransfers',
-                        title: '是否接车',
+                        title: '是否接机/车',
                         orderable: false,
                         render: function (data, type, full) {
                             if(data == 0){
@@ -365,7 +365,7 @@
                             </div>
                             <div class="form-group">
                                 <select name="isTransfers" class="form-control">
-                                    <option value="">-- 是否接车 --</option>
+                                    <option value="">-- 是否接机/车 --</option>
                                     <option value="0">否</option>
                                     <option value="1">是</option>
                                 </select>
