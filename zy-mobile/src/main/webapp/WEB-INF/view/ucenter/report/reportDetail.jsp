@@ -509,81 +509,86 @@
     var IDCode=$("#IDCode").val();
     var ID=IDCode.substring(0,2);
     if(flage.form()){
-      if(ID==41){
+      if(ID==51||ID==53){
         $.dialog({
           content : '户籍要求：川渝藉不享受四川境内游活动；云南藉不享受云南境内游活动；以身份证登记的年龄和户藉地为准，工作地、居住地、暂住地信息无效。',
           callback : function(index) {
             if (index == 1) {
               $(".miui-dialog").remove();
-              $.ajax({
-                url : '${ctx}/tour/ajaxCheckParam',
-                data : $("#tourApplyTable").serialize(),
-                dataType : 'json',
-                type : 'POST',
-                success : function(result){
-                  if(result.code == 0) {
-                    if (result.message != null) {
-                      $.dialog({
-                        content : result.message,
-                        callback : function(index) {
-                          if (index == 1) {
-                            $(".miui-animation-scale,.miui-dialog-shade").hide();
-                            $.ajax({
-                              url : '${ctx}/tour/addTourforUser',
-                              data : $("#tourApplyTable").serialize(),
-                              dataType : 'json',
-                              type : 'POST',
-                              success : function(result){
-                                if(result.code == 0){
-                                  $.dialog({
-                                    content : '您的旅游申请已成功，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。',
-                                    callback : function(index) {
-                                      $(".miui-dialog").remove();
-                                      $(".tourApplyTableNew").hide();
-                                      $(".reportDetail").show();
-                                    }
-                                  });
-                                } else {
-                                  messageAlert(result.message);
-                                }
-                              }
-                            });
-                          }
-                        }
-                      });
-
-                    }else{
-                      $.ajax({
-                        url : '${ctx}/tour/addTourforUser',
-                        data : $("#tourApplyTable").serialize(),
-                        dataType : 'json',
-                        type : 'POST',
-                        success : function(result){
-                          if(result.code == 0){
-                            $.dialog({
-                              content : '您的旅游申请已成功，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。',
-                              callback : function(index) {
-                                $(".miui-dialog").remove();
-                                $(".tourApplyTableNew").hide();
-                                $(".reportDetail").show();
-                              }
-                            });
-                          } else {
-                            messageAlert(result.message);
-                          }
-                        }
-                      });
-                    }
-                  }else {
-                    messageAlert(result.message);
-                  }
-                }
-              });
+              ajaxChange();
             }
           }
         });
+      }else {
+        ajaxChange();
       }
     }
+  }
+  function ajaxChange(){
+    $.ajax({
+      url : '${ctx}/tour/ajaxCheckParam',
+      data : $("#tourApplyTable").serialize(),
+      dataType : 'json',
+      type : 'POST',
+      success : function(result){
+        if(result.code == 0) {
+          if (result.message != null) {
+            $.dialog({
+              content : result.message,
+              callback : function(index) {
+                if (index == 1) {
+                  $(".miui-animation-scale,.miui-dialog-shade").hide();
+                  $.ajax({
+                    url : '${ctx}/tour/addTourforUser',
+                    data : $("#tourApplyTable").serialize(),
+                    dataType : 'json',
+                    type : 'POST',
+                    success : function(result){
+                      if(result.code == 0){
+                        $.dialog({
+                          content : '您的旅游申请已成功，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。',
+                          callback : function(index) {
+                            $(".miui-dialog").remove();
+                            $(".tourApplyTableNew").hide();
+                            $(".reportDetail").show();
+                          }
+                        });
+                      } else {
+                        messageAlert(result.message);
+                      }
+                    }
+                  });
+                }
+              }
+            });
+
+          }else{
+            $.ajax({
+              url : '${ctx}/tour/addTourforUser',
+              data : $("#tourApplyTable").serialize(),
+              dataType : 'json',
+              type : 'POST',
+              success : function(result){
+                if(result.code == 0){
+                  $.dialog({
+                    content : '您的旅游申请已成功，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。',
+                    callback : function(index) {
+                      $(".miui-dialog").remove();
+                      $(".tourApplyTableNew").hide();
+                      $(".reportDetail").show();
+                    }
+                  });
+                } else {
+                  messageAlert(result.message);
+                }
+              }
+            });
+          }
+        }else {
+          messageAlert(result.message);
+        }
+      }
+    });
   }
   function buildRow(row){
     var rowTpl = document.getElementById('rowTpl').innerHTML;
