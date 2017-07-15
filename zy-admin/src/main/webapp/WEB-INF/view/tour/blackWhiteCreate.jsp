@@ -35,11 +35,6 @@
 			 },
 		 },
 		});
-
-		/*$("#phone").onblur(function () {
-			var phone = $("#phone").val();
-			alert(phone);
-		});*/
 	});
 
 	$form = $('#createForm');
@@ -84,8 +79,6 @@
 			 type: "POST",
 			 dataType: 'json',
 			 success: function(data) {
-				 console.log(data);
-				 console.log(data.message);
 				 if(data.code == 0 ){
 					 $("#username").css("display","block");
 					 $("#realname").val(data.message);

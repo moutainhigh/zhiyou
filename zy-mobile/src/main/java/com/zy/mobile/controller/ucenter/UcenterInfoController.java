@@ -58,16 +58,10 @@ public class UcenterInfoController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create(Principal principal, Model model) {
 		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
-		if(userInfo != null) {
+		if(userInfo != null && userInfo.getRealFlag() == 1) {
 			return "redirect:/u/userInfo";
-		}else{
-			UserInfoQueryModel userInfoQueryModel = new UserInfoQueryModel();
-			userInfoQueryModel.setUserIdEQ(principal.getUserId());
-			userInfoQueryModel.setRealFlag(0);
-			List<UserInfo> userInfos = userInfoService.findAll(userInfoQueryModel);
-			if(userInfos.size() == 1){
-				model.addAttribute("userInfo",userInfoComponent.buildVo(userInfos.get(0)));
-			}
+		}else if(userInfo != null && userInfo.getRealFlag() == 0){
+				model.addAttribute("userInfo",userInfoComponent.buildVo(userInfo));
 		}
 		model.addAttribute("jobs", jobService.findAll());
 		model.addAttribute("tags", getTags());

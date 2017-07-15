@@ -24,6 +24,10 @@
 
     $('.valid-form').validate({
       rules : {
+        'age' : {
+          required : true,
+          number : true
+        },
         'areaId' : {
           required : true
         },
@@ -187,6 +191,10 @@
               <option value="1" <c:if test="${userInfo.gender == '女'}"> selected="selected"</c:if>>女</option>
             </select>
           </div>
+        </div>
+        <div class="list-item">
+          <label class="list-label">年龄</label>
+          <input type="text" id="age" name="age" class="form-input" value="${userInfo.age}" placeholder="填写年龄">
         </div>
         <div class="list-item">
           <label class="list-label">生日</label>
