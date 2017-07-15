@@ -13,7 +13,9 @@
 
 <title>检测报告</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
+<%@ include file="/WEB-INF/view/include/validate.jsp"%>
 <script src="${stc}/js/layer/layer.js"></script>
+  <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
   <style>
     .footer {
       position: fixed;
@@ -52,11 +54,7 @@
       font-size: 20px;
       color: #fff;
       width: 100%;
-      float: left;
-      position: relative;
-      z-index: 99;
-      left: 50%;
-      margin-left: -20px;
+      text-align: center;
     }
     .MyApply {
       width:90%;
@@ -96,10 +94,9 @@
       -webkit-border-radius:20px 20px 0 0;
       -moz-border-radius:20px 20px 0 0;
       border-radius:20px 20px 0 0;
-      margin-top: -60px;
       position: relative;
       z-index:9;
-      padding:20px 0 20px 0;
+      padding:0px 0 20px 0;
     }
     .TravelFOne {
       width:100%;
@@ -163,6 +160,13 @@
     }
     .TravelDisTimecolor {
       color: #f15b00;
+    }
+    .TravelFont p img {
+      width:100%;
+    }
+    .TravelFont p {
+      line-height: 25px;
+      padding:5px 15px 5px 15px;
     }
 
   </style>
@@ -271,10 +275,10 @@
         <div class="list-text">性别</div>
         <div class="list-unit">${report.gender}</div>
       </div>
-      <div class="list-item">
+     <%-- <div class="list-item">
         <div class="list-text">年龄</div>
         <div class="list-unit">${report.age}岁</div>
-      </div>
+      </div>--%>
       <div class="list-item">
         <div class="list-text">手机号</div>
         <div class="list-unit">${report.phone}</div>
@@ -353,9 +357,6 @@
                 <input type="number" name="phone1" id="phone1" class="form-input" value="${parentPhone}" placeholder="填写推荐人手机号" ${parentPhone!=null?'readonly':''}>
               </div>
             </div>
-            <%--<div class="list-text" style="margin-left: 5%;margin-bottom: 20px;margin-top: 20px;">
-                <span>填写推荐人手机号：</span><input type="number" style="height: 30px;width:50%;" class="form-input" value="${parentPhone}" ${parentPhone!=null?'readonly':''} id="phone" name="phone" placeholder="填写客户手机号"/>
-            </div>--%>
             <div class="form-btn" style="padding-bottom: 50px;">
               <input class="btn orange btn-block round-2" type="button" value="确 认" style="margin-bottom:10px;" onclick="submitTravel()">
               <div style="height:35px;background:#f2f3f5;text-align:center;line-height:35px;border:1px solid #c9c9c9;" onclick="hideTravel()">取 消</div>
@@ -370,17 +371,35 @@
   <!--选择旅游路线代码如下!-->
   <from class="tourApply" style="display: none;">
     <header class="header"><h1>选择旅游路线</h1><a href="#" onclick="tourApply()"  class="button-left"><i class="fa fa-angle-left"></i></a></header>
-    <input type="hidden" name="phone" id="parentPhone" value="${parentPhone}" />
-    <input type="hidden" name="reporId" id="reporId" value="${reporId}" />
-    <%--<c:forEach items="${tourList}" var="tour">--%>
-    <%--<a href="#" onclick="TravelDetil('${tour.id}')" class="opacityAll" style="width:100%;position:relative;">--%>
-    <a href="#" onclick="TravelDetil('1')" class="opacityAll" style="width:100%;position:relative;">
-      <img class="opacityFirst" src="${tour.image}" style="display:block;width:100%;" />
-      <img src="${ctx}/images/opacityTwo.png" class="opacity" style="display:block;width:100%;z-index:9;" />
-      <p class="font">【${tour.title}】</p>
-    </a>
-    <%--</c:forEach>--%>
+    <div id="tourchange">
+
+    </div>
   </from>
+
+
+<!--旅游路线详情代码如下!-->
+<div class="tourDetil" style="display: none;">
+  <header class="header">
+    <h1>旅游路线详情</h1>
+    <a href="#" onclick="fromSumbitTour()" class="button-left"><i class="fa fa-angle-left"></i></a>
+  </header>
+  <div class="TravelFont">
+    ${tour.content}
+  </div>
+  <div class="clearfloat" style="padding:10px 15px;background:#fff;">
+    <label class="list-label" style="height:30px;line-height:25px;font-size:16px;width:50%;float:left;">请选择出游时间：</label>
+    <div class="list-text form-select" style="width:50%;float:left;">
+      <select name="jobId" onchange="selectValue(this)" id="selectTourTime">
+      </select>
+    </div>
+  </div>
+  <div class="TravelDis clearfloat">
+  </div>
+  <div class="MyApply" onclick="MyApplyFun()">我要报名</div>
+</div>
+<div class="tourApplyTableNew" style="display: none">
+
+</div>
 <script>
   var reportId="";
   //保险申请
@@ -424,19 +443,21 @@
         if(result.code == 0){
           $(".reportDetail").hide();
           $(".policyInfoMain").show();
-          <%--travelT= layer.open({--%>
-            <%--type: 2,--%>
-            <%--area:['100%', '100%'],--%>
-            <%--title: false,--%>
-            <%--scrollbar: true,--%>
-            <%--shadeClose:true,--%>
-            <%--closeBtn: 0,--%>
-            <%--content: '${ctx}/tour/findparentInfo',--%>
-            <%--success: function(layero){--%>
-              <%--$(".layui-layer-content").addClass("scroll-wrapper");--%>
-<%--//              $(layero).addClass("scroll-wrapper");//苹果 iframe 滚动条失效解决方式--%>
-            <%--}--%>
-          <%--});--%>
+          $.ajax({
+            url : '${ctx}/tour/findparentInfo',
+            dataType : 'json',
+            type : 'POST',
+            success : function(result1){
+              if(result1.code == 0){
+                $("#phone1").val(result1.data);
+                if(result1.data!=null){
+                  $("#phone1").attr("readonly",true);
+                }
+              } else{
+                messageAlert(result1.message);
+              }
+            }
+          });
         } else {
           messageAlert(result.message);
         }
@@ -450,8 +471,48 @@
   }
   //旅游申请确定
   function submitTravel(){
-    $(".policyInfoMain").hide();
-    $(".tourApply").show();
+     $.ajax({
+      url : '${ctx}/tour/findparentInfobyPhone',
+      data : {
+        phone:$('#phone1').val()
+      },
+      dataType : 'json',
+      type : 'POST',
+      success : function(result) {
+        if(result.code != 0) {
+          layer.msg(result.message);
+          return;
+        }else{
+          var layerTexdt=layer.confirm('请确认信息是否正确 <br/>姓名：'+result.data.nickname+'<br/>电话：'+result.data.phone, {
+            btn: ['正确','错误'] //按钮
+          }, function(){
+            layer.close(layerTexdt);
+            $(".policyInfoMain").hide();
+            $(".tourApply").show();
+            $.ajax({
+              url : '${ctx}/tour/findTourApple',
+              dataType : 'json',
+              type : 'POST',
+              success : function(result1) {
+                if(result1.code != 0) {
+                  return;
+                }
+                var pageData= result1.data;
+                if (pageData.length) {
+                  for ( var i in pageData) {
+                    var row = pageData[i];
+                    if (row.userRank!="V0"){
+                      buildRow(row);
+                    }
+                  }
+                }
+              }
+            });
+          }, function(){
+          });
+        }
+      }
+    });
   }
   //选择旅游路返回
   function tourApply(){
@@ -460,16 +521,332 @@
   }
   //选择旅游路
   function TravelDetil(num){
-
+    $(".tourDetil").show();
+    $(".tourApply").hide();
+    $.ajax({
+      url : '${ctx}/tour/findTourDetail',
+      data :{
+        'tourId':num,
+        'reporId':reportId
+      },
+      dataType : 'json',
+      type : 'POST',
+      success : function(result1) {
+        if(result1.code != 0) {
+          return;
+        }
+        var pageData= result1.data.str;
+        if (pageData.length) {
+          $('#selectTourTime').html("");
+          $("#selectTourTime").append('<option value="0">请选择</option>');
+          for ( var i in pageData) {
+            var row = pageData[i];
+            $("#selectTourTime").append("<option value='"+row+"'>"+row+"</option>");
+          }
+        }
+        var content =  result1.data.tour.content;
+        $(".TravelFont").html(content);
+        tourId= result1.data.tour.id;
+      }
+    });
   }
-  /**
-   * 获取rteportId
-   * @returns {*}
+  //选择出游时间
+  function selectValue(obj) {
+    $('.TravelDis').html("");
+    $(".TravelDis").show();
+    var num=$(obj).val();
+    $.ajax({
+      url : '${ctx}/tour/ajaxTourTime',
+      data : {
+        reporId:reportId,
+        tourId:tourId,
+        tourTime:num
+      },
+      dataType : 'json',
+      type : 'POST',
+      success : function(result) {
+        if(result.code != 0) {
+          return;
+        }
+        var pageData= result.data;
+        if (pageData.length) {
+          for ( var i in pageData) {
+            var row = pageData[i];
+            buildRow2(row);
+          }
+        }
+      }
+    });
+  }
+  function  fromSumbitTour() {
+    $(".TravelDis").html("");
+    $(".tourDetil").hide();
+    $(".tourApply").show();
+  }
+  var tourTimeid="";
+  //点击出游时间
+  $(function(){
+    $(document).on("click",".TravelDisTime",function(){
+      $(this).css("background","#f15b00");
+      $(this).find("p").css("color","#fff");
+      $(this).find("p.TravelDisTimecolor").css("color","#fff");
+      tourTimeid= $(this).find("input[name='tourTimeid']").val();
+      $(this).siblings(".TravelDisTime").css("background","#fff");
+      $(this).siblings(".TravelDisTime").find("p").css("color","#333");
+      $(this).siblings(".TravelDisTime").find("p.TravelDisTimecolor").css("color","#f15b00");
+    });
+  })
+  //旅游详情页面点击报名
+  function MyApplyFun(){
+    //装载数据
+    if(tourTimeid==""){
+      messageAlert("请选择出游时间");
+      return ;
+    }
+    $.ajax({
+      url : '${ctx}/tour/ajaxCheckPraentNumber',
+      data : {
+        phone:$("#phone1").val(),
+        tourTimeId:tourTimeid
+      },
+      dataType : 'json',
+      type : 'POST',
+      success : function(result) {
+        if(result.code == 0) {
+          $(".TravelDis").html("");
+          $(".tourDetil").hide();
+          $(".tourApplyTableNew").show();
+          $.ajax({
+            url : '${ctx}/tour/findTourUserVo',
+            data : {
+              phone:$("#phone1").val(),
+              reporId:reportId,
+              tourTimeid:tourTimeid,
+              tourId:tourId
+            },
+            dataType : 'json',
+            type : 'POST',
+            success : function(result) {
+              if(result.code != 0) {
+                return;
+              }
+              var pageData= result.data;
+              var rowTpl3 = document.getElementById('rowTpl3').innerHTML;
+              laytpl(rowTpl3).render(pageData,function(html) {
+                $('.tourApplyTableNew').append(html);
+              });
+            }
+          });
+        }else {
+          messageAlert(result.message);
+        }
+      }
+    });
+  }
+    //点击报名申请表单中的返回
+    function hideApply(){
+      $(".tourDetil").show();
+      $(".tourApplyTableNew").html("");
+      $(".tourApplyTableNew").hide();
+    }
+
+  /***
+   * 提交旅游申请
    */
-  function getReportId(){
-    return reportId;
-  }
+  function applyClick(){
+    var flage= $('#tourApplyTable').validate({
+      ignore: ':hidden'
+    });
+    if(flage.form()){
+      $.ajax({
+        url : '${ctx}/tour/ajaxCheckParam',
+        data : $("#tourApplyTable").serialize(),
+        dataType : 'json',
+        type : 'POST',
+        success : function(result){
+          if(result.code == 0) {
+            if (result.message != null) {
+              layer.confirm(result.message, {
+                btn: ['确定', '取消'] //按钮
+              }, function () {
+                $.ajax({
+                  url : '${ctx}/tour/addTourforUser',
+                  data : $("#tourApplyTable").serialize(),
+                  dataType : 'json',
+                  type : 'POST',
+                  success : function(result){
+                    if(result.code == 0){
+                      layer.msg('您的旅游申请已成功，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。', {
+                        icon: 1,
+                        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                      }, function(){
+                        parent.parent.layer.closeAll('iframe');
+                        parent.layer.closeAll('iframe');
+                      });
+                    } else {
+                      messageAlert(result.message);
+                    }
+                  }
+                });
 
+              }, function () {
+              });
+            }else{
+              $.ajax({
+                url : '${ctx}/tour/addTourforUser',
+                data : $("#tourApplyTable").serialize(),
+                dataType : 'json',
+                type : 'POST',
+                success : function(result){
+                  if(result.code == 0){
+                    layer.msg('您的旅游申请已成功，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。', {
+                      icon: 1,
+                      time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                    }, function(){
+                      parent.parent.layer.closeAll('iframe');
+                      parent.layer.closeAll('iframe');
+                    });
+                  } else {
+                    messageAlert(result.message);
+                  }
+                }
+              });
+            }
+          }else {
+            messageAlert(result.message);
+          }
+
+
+
+        }
+      });
+    }
+  }
+  function buildRow(row){
+    var rowTpl = document.getElementById('rowTpl').innerHTML;
+    laytpl(rowTpl).render(row,function(html) {
+      $('#tourchange').append(html);
+    });
+  }
+  function buildRow2(row){
+    var rowTpl2 = document.getElementById('rowTpl2').innerHTML;
+    laytpl(rowTpl2).render(row,function(html) {
+      $('.TravelDis').append(html);
+    });
+  }
+</script>
+<script id="rowTpl" type="text/html">
+  <a href="#" onclick="TravelDetil('{{d.id}}')" class="opacityAll" style="width:100%;position:relative;">
+    <p class="font">【{{d.title}}】</p>
+    <img class="opacityFirst" src="{{d.image}}" style="display:block;width:100%;" />
+  </a>
+</script>
+<script id="rowTpl2" type="text/html">
+  <div class="TravelDisTime"><input type="hidden" name="tourTimeid" value="{{d.id}}"> <p>{{d.beginTimeStr}} {{d.weekStr}}</p><p class="TravelDisTimecolor">原价:<del>￥{{d.fee}}</del></p></div>
+</script>
+<script id="rowTpl3" type="text/html">
+  <header class="header">
+    <h1>旅游报名申请表单</h1>
+    <a href="#" onclick="hideApply()" class="button-left"><i class="fa fa-angle-left"></i></a>
+  </header>
+  <form class="tourApplyTable" id="tourApplyTable" action="${ctx}/tour/addTourforUser" method="post">
+    <input type="hidden" name="tourId" value="{{d.tour.id}}">
+    <input type="hidden" name="parentPhone" value="{{d.userp.phone}}">
+    <input type="hidden" name="parentId" value="{{d.userp.id}}">
+    <input type="hidden" name="reporId" value="{{d.reporId}}">
+    <input type="hidden" name ="tourTimeId" value="{{d.tourTime.id}}">
+    <input type="hidden" name ="id" value="{{d.userinfoVo.id}}">
+    <div class="list-title">旅游报名申请表单</div>
+    <div class="list-item">
+      <label class="list-label" >产品编号</label>
+      <div class="list-text">
+        <input type="text" class="form-input" name="productNumber" value="{{d.productNumber}}" {{#if(d.productNumber!='') { }} readonly="readonly" {{# } }}  required placeholder="填写产品编号">
+      </div>
+    </div>
+    <div class="list-item">
+      <label class="list-label" >旅游路线</label>
+      <div class="list-text">
+        <input type="text" class="form-input" value="{{d.tour.title}}" placeholder="填写旅游路线" readonly>
+      </div>
+    </div>
+    <div class="list-item">
+      <label class="list-label" >姓名</label>
+      <div class="list-text">
+        <input type="text" name="realname"  class="form-input" value="{{d.userinfoVo.realname}}" readonly placeholder="填写姓名">
+      </div>
+    </div>
+    <div class="list-item">
+      <label class="list-label" >身份证号</label>
+      <div class="list-text">
+        <input type="text" name="idCartNumber"  class="form-input" value="{{d.userinfoVo.idCardNumber}}" {{#if(d.userinfoVo.idCardNumber!='') { }} readonly="readonly" {{# } }}  required  placeholder="填写身份证号">
+      </div>
+    </div>
+    <div class="list-item">
+      <label class="list-label" >性别</label><div class="list-text">
+      <div class="list-text form-select">
+        {{#if(d.userinfoVo.gender !=null) { }}
+        <input type="text" name="genders"  class="form-input" value="{{d.userinfoVo.gender}}" readonly="readonly">
+        {{# }else{ }}
+        <select name="genders"  >
+          <option value="男"  {{#if(d.userinfoVo.gender=='男') { }} selected="selected" {{# } }}>男</option>
+          <option value="女" {{#if(d.userinfoVo.gender=='女') { }} selected="selected" {{# } }}>女</option>
+        </select>
+
+        {{# } }}
+      </div>
+    </div>
+    </div>
+    <div class="list-item">
+      <label class="list-label" >年龄</label><div class="list-text">
+      <input type="text" name="ages"  class="form-input" value="{{d.userinfoVo.agestr}}" {{#if(d.userinfoVo.agestr !='') { }} readonly {{# } }}  placeholder="填写年龄" required>
+    </div>
+    </div>
+    <div class="list-item">
+      <label class="list-label" >户籍城市</label>
+      <div class="list-text">
+        {{#if(d.userinfoVo.province!=null) { }}
+        <input type="text"  class="form-input" value="{{d.userinfoVo.province}}-{{d.userinfoVo.city}}-{{d.userinfoVo.district}}"  readonly  placeholder="填写户籍城市">
+        <input type="hidden"  class="form-input" value="{{d.userinfoVo.areaId}}" name="areaId">
+        {{# } }}
+      </div>
+    </div>
+    <div class="list-item">
+      <label class="list-label" >手机号码</label><div class="list-text">
+      <input type="text" name="phone"  class="form-input" value="{{d.user.phone}}" readonly required placeholder="填写手机号码">
+    </div>
+    </div>
+    <div class="list-item">
+      <label class="list-label">推荐人姓名</label><div class="list-text">
+      <input type="text"  class="form-input" value="{{d.userp.nickname}}" readonly placeholder="填写推荐人姓名">
+    </div>
+    </div>
+    <div class="list-item">
+      <label class="list-label">推荐人手机号</label><div class="list-text">
+      <input type="text" class="form-input" value="{{d.userp.phone}}" readonly  placeholder="填写推荐人手机号">
+    </div>
+    </div>
+    <div class="list-item">
+      <label class="list-label" >出游日期</label><div class="list-text">
+      <input type="text" readonly class="form-input time-input"  value="{{d.timedate}}"  placeholder="填写出游日期">
+    </div>
+    </div>
+    <div class="list-item">
+      <label class="list-label">房型需求</label>
+      <div class="list-text form-select">
+        <select name="houseType">
+          <option value="1">标准间 </option>
+          <option value="2">三人间 </option>
+        </select>
+      </div>
+    </div>
+    <div class="list-item">
+      <label class="list-label" >特殊需求</label>
+      <div class="list-text">
+        <input type="text" name="userRemark"class="form-input" value="" placeholder="填写特殊需求" >
+      </div>
+    </div>
+    <input type="button" class="MyApply" onclick="applyClick()" value="申请">
+  </form>
 </script>
 </body>
 </html>
