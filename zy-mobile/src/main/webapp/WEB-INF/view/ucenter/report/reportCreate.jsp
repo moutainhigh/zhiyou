@@ -830,7 +830,7 @@
                           callback : function(index) {
                             $(".miui-dialog").remove();
                             $(".tourApplyTableNew").hide();
-                            $(".reportDetail").show();
+                            $(".main").show();
                           }
                         });
                       } else {
@@ -854,7 +854,7 @@
                     callback : function(index) {
                       $(".miui-dialog").remove();
                       $(".tourApplyTableNew").hide();
-                      $(".reportDetail").show();
+                      $(".main").show();
                     }
                   });
                 } else {
