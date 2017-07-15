@@ -484,14 +484,14 @@ public class TourComponent {
                 return new String[]{"系统产数配置异常","0"};
             }
         }
-        if(tourUserInfoVo.getAges()>max&&tourUserInfoVo.getAges()<65){
+        if(tourUserInfoVo.getAges()>= max&&tourUserInfoVo.getAges()<65){
             return  new String[]{"27岁以下与59岁至65岁者另加960元/人；儿童另加960元且门票住宿自理；如有疑问可与推荐人联系。","1"};
         }
         if(tourUserInfoVo.getAges()>=66){
             return new String[]{"66岁以上：因旅游公司不具备接待服务条件，暂不接受66岁以上客户，敬请谅解。","0"};
         }
-        if(tourUserInfoVo.getAges()<min){
-            return  new String[]{"27岁以下与59岁至65岁者另加960元/人；儿童另加960元且门票住宿自理；如有疑问可与推荐人联系。","1"};
+        if(tourUserInfoVo.getAges()<=min){
+            return  new String[]{"27岁以及下与59岁至65岁者另加960元/人；儿童另加960元且门票住宿自理；如有疑问可与推荐人联系。","1"};
         }
 
         //检测地区  本省不能参加本省的
