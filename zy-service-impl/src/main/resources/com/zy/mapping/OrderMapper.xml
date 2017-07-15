@@ -541,6 +541,7 @@
 			<if test="paidTimeLT != null">
 				AND a.paid_time &lt; #{paidTimeLT}
 			</if>
+			AND a.buyer_user_rank = 4
 		</where>
 	</select>
 
@@ -568,6 +569,7 @@
 			<if test="paidTimeLT != null">
 				AND a.paid_time &lt; #{paidTimeLT}
 			</if>
+			AND a.seller_user_rank = 4
 		</where>
 	</select>
 

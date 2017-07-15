@@ -1264,6 +1264,7 @@ public class OrderServiceImpl implements OrderService {
      */
 	@Override
 	public Map<String, Object> querySalesVolume(OrderQueryModel orderQueryModel) {
+		Long userId = orderQueryModel.getUserIdEQ();
 		Map<String ,Object> returnMap = new HashMap<>();
 		int moth = DateUtil.getMoth(new Date());
 		long salesVolumeData [] = new long[moth-1];
@@ -1315,7 +1316,6 @@ public class OrderServiceImpl implements OrderService {
 				sData[i - 2] = data;
 			}
 		}
-
 		//查询我的团队进、出货量
 		List<Long> userIdList = new ArrayList<>();
 		List<User> userList = new ArrayList<>();
@@ -1326,6 +1326,7 @@ public class OrderServiceImpl implements OrderService {
 			treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
 			return treeNode;
 		});
+		children.add(0,userService.findOne(userId));
 		userList = children.stream().filter(v -> v.getUserRank() == User.UserRank.V4).collect(Collectors.toList());
         if (userList.size() > 0 && userList != null){
             for (User user: userList) {
