@@ -105,6 +105,7 @@ public class UserInfoQueryModel implements Serializable {
 		fieldNames.add("idCardNumber");
 		fieldNames.add("confirmStatus");
 		fieldNames.add("id");
+		fieldNames.add("age");
 	}
 
 }

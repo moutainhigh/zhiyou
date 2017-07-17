@@ -128,6 +128,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         persistence.setAreaId(areaId);
         persistence.setJobId(jobId);
         persistence.setTagIds(tagIds);
+        persistence.setAge(userInfo.getAge());
         
         persistence.setGender(userInfo.getGender());
         persistence.setBirthday(userInfo.getBirthday());

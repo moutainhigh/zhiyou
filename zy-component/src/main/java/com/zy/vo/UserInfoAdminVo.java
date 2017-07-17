@@ -43,6 +43,8 @@ public class UserInfoAdminVo implements Serializable {
 	private Long areaId;
 	@Field(label = "标签")
 	private String tagIds;
+	@Field(label = "年龄")
+	private Integer age;
 
 	/* 扩展 */
 	@Field(label = "用户id")
