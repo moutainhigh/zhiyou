@@ -412,7 +412,7 @@
             if(result.code == 0){
               insuranceT= layer.open({
                 type: 2,
-                area:['90%', '90%'],
+                area:['100%', '100%'],
                 title: false,
                 scrollbar: true,
                 closeBtn: 0,
