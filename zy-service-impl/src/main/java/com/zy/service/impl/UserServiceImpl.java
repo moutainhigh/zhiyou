@@ -500,7 +500,17 @@ public class UserServiceImpl implements UserService {
         User userForMerge = new User();
         userForMerge.setId(id);
         userForMerge.setIsDirector(isDirector);
-        userMapper.merge(userForMerge, "isDirector");
+        userForMerge.setIsHonorDirector(!isDirector);
+        userMapper.merge(userForMerge, "isDirector", "isHonorDirector");
+    }
+
+    @Override
+    public void modifyIsHonorDirector(@NotNull Long id, boolean isHonorDirector) {
+        User userForMerge = new User();
+        userForMerge.setId(id);
+        userForMerge.setIsHonorDirector(isHonorDirector);
+        userForMerge.setIsDirector(!isHonorDirector);
+        userMapper.merge(userForMerge, "isDirector", "isHonorDirector");
     }
 
     @Override

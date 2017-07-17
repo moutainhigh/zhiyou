@@ -66,6 +66,8 @@ public interface UserService {
 
 	void modifyIsDirector(Long id, boolean isDirector);
 
+	void modifyIsHonorDirector(Long id, boolean isHonorDirector);
+
 	void modifyIsShareholder(Long id, boolean isShareholder);
 
 	long[] conyteamTotal(Long userId);

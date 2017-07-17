@@ -403,6 +403,9 @@
               if (full.isDirector) {
                 html += '<p>董事</p>';
               }
+              if (full.isHonorDirector) {
+                html += '<p>荣誉董事</p>';
+              }
               if (full.isShareholder) {
                 html += '<p>股东</p>';
               }
@@ -485,7 +488,10 @@
 	              if(full.userRank == 'V4') {
                 <shiro:hasPermission name="user:setDirector">
                   if(!full.isDirector) {
-	                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setDirector?id=' + full.id + '" data-confirm="您确定要升级[' + full.nickname + ']为董事？"><i class="fa fa-smile-o"></i> 升级董事 </a>';
+	                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setDirector?id=' + full.id + '" data-confirm="您确定要升级[' + full.nickname + ']为董事？"><i class="fa fa-smile-o"></i> 成为董事 </a>';
+                  }
+                  if (!full.isHonorDirector) {
+                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/isHonorDirector?id=' + full.id + '" data-confirm="您确定升级[' + full.nickname + ']为荣誉董事？"><i class="fa fa-smile-o"></i> 成为荣誉董事 </a>';
                   }
                 </shiro:hasPermission>
                 <shiro:hasPermission name="user:setShareholder">

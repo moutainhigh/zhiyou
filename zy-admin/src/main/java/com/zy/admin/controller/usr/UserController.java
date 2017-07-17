@@ -343,6 +343,14 @@ public class UserController {
 		return "redirect:/user";
 	}
 
+	@RequiresPermissions("user:setDirector")
+	@RequestMapping(value = "/isHonorDirector", method = RequestMethod.GET)
+	public String isHonorDirector(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+		userService.modifyIsHonorDirector(id, true);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
+		return "redirect:/user";
+	}
+
 	@RequiresPermissions("user:setShareholder")
 	@RequestMapping(value = "/setShareholder", method = RequestMethod.GET)
 	public String setShareholder(@RequestParam Long id, RedirectAttributes redirectAttributes) {
