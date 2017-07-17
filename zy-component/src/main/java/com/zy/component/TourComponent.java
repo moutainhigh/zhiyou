@@ -6,6 +6,7 @@ import com.zy.common.model.query.Page;
 import com.zy.common.util.BeanUtils;
 import com.zy.common.util.DateUtil;
 import com.zy.entity.act.Activity;
+import com.zy.entity.act.Policy;
 import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
 import com.zy.entity.sys.SystemCode;
@@ -15,9 +16,7 @@ import com.zy.entity.cms.Article;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.dto.AreaDto;
-import com.zy.model.query.ReportQueryModel;
-import com.zy.model.query.TourTimeQueryModel;
-import com.zy.model.query.TourUserQueryModel;
+import com.zy.model.query.*;
 import com.zy.service.*;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
@@ -57,6 +56,9 @@ public class TourComponent {
 
     @Autowired
     private PolicyCodeService policyCodeService;
+
+    @Autowired
+    private PolicyService policyService;
 
     private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
     private static final String S_PATTERN = "yyyy-MM-dd";
@@ -646,9 +648,12 @@ public class TourComponent {
         String result=null;
         Report report = reportService.findOne(reporId);
             if (report!=null&&report.getProductNumber()==null){
-                PolicyCode policyCode = policyCodeService.findByCode(report.getProductNumber());
-               if (policyCode!=null){
-                   result= policyCode.getCode();
+                PolicyQueryModel policyQueryModel = new PolicyQueryModel();
+                policyQueryModel.setReportIdEQ(reporId);
+               List<Policy> policyList = policyService.findAll(policyQueryModel);
+               if (policyList!=null&&!policyList.isEmpty()){
+                   Policy policy = policyList.get(0);
+                   result= policy.getCode();
                }
             }else if (report!=null){
                 result=  report.getProductNumber();
