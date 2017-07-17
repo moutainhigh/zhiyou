@@ -5,6 +5,7 @@ import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.tour.Sequence;
 import com.zy.entity.tour.Tour;
 import com.zy.entity.tour.TourTime;
@@ -385,7 +386,12 @@ public class TourServiceImpl implements TourService {
         tourUserMapper.insert(tourUser);
         //处理产品编号
         Report report = reportMapper.findOne(tourUser.getReportId());
-        if(report!=null&&report.getProductNumber()==null){
+        if(report!=null&&report.getProductNumber()==null){ //检测报告已通过初审或者 终审的  将旅游信息置成可用
+            if(report.getPreConfirmStatus()== ConfirmStatus.已通过||report.getConfirmStatus()==ConfirmStatus.已通过){
+                tourUser.setIsEffect(1);
+            }else{
+                tourUser.setIsEffect(0);
+            }
             report.setProductNumber(productNumber);
             reportMapper.update(report);
         }
