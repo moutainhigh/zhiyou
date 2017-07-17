@@ -135,7 +135,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         persistence.setHometownAreaId(userInfo.getHometownAreaId());
         persistence.setConsumptionLevel(userInfo.getConsumptionLevel());
 
-
+        persistence.setRealFlag(userInfo.getRealFlag());
         persistence.setRealname(userInfo.getRealname());
         persistence.setIdCardNumber(userInfo.getIdCardNumber());
         persistence.setImage1(userInfo.getImage1());

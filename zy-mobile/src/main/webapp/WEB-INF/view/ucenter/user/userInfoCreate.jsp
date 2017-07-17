@@ -264,7 +264,7 @@
             <label class="list-label">身份证正面照</label>
             <div class="list-text image-upload">
               <div class="image-item image-single ">
-                <input type="hidden" name="image1" id="image1" value="${userInfo.image1Thumbnail}">
+                <input type="hidden" name="image1" id="image1" value="${userInfo.image1}">
             <c:if test="${userInfo.image1Thumbnail == null}">
                 <img src="${stccdn}/image/upload_240_150.png">
             </c:if>
@@ -282,7 +282,7 @@
             <label class="list-label">反面照</label>
             <div class="list-text image-upload">
               <div class="image-item image-single">
-                <input type="hidden" name="image2" id="image2" value="${userInfo.image2Thumbnail}">
+                <input type="hidden" name="image2" id="image2" value="${userInfo.image2}">
                 <c:if test="${userInfo.image2Thumbnail == null}">
                   <img src="${stccdn}/image/upload_240_150.png">
                 </c:if>
