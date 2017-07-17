@@ -108,7 +108,16 @@
 				AND a.plan_time &lt;= #{planEndTime}
 			</if>
 			<if test="userId !=null">
-				AND a.user_id &lt;= #{userId}
+				AND a.user_id = #{userId}
+			</if>
+			<if test="parentId !=null">
+				AND a.parent_id = #{parentId}
+			</if>
+			<if test="tourTimeId !=null">
+				AND a.tour_time_id &lt;= #{tourTimeId}
+			</if>
+			<if test="createdTime !=null">
+				AND  a.create_date &gt;= #{createdTime}
 			</if>
 			AND a.is_effect = 1
 		</where>
@@ -174,12 +183,12 @@
 				AND a.plan_time &lt;= #{planEndTime}
 			</if>
 			<if test="userId !=null">
-				AND a.user_id &lt;= #{userId}
+				AND a.user_id = #{userId}
 			</if>
 			AND a.is_effect = 1
 			AND a.audit_status IN (3,4)
 			<if test="parentId !=null">
-				AND a.parent_id &lt;= #{parentId}
+				AND a.parent_id = #{parentId}
 			</if>
 			<if test="tourTimeId !=null">
 				AND a.tour_time_id &lt;= #{tourTimeId}
@@ -211,17 +220,23 @@
 			<if test="auditStatus !=null">
 				AND a.audit_status = #{auditStatus}
 			</if>
+			<if test="isTransfers !=null">
+				AND a.is_transfers = #{isTransfers}
+			</if>
+			<if test="isJoin !=null">
+				AND a.is_join = #{isJoin}
+			</if>
 			<if test="userName !=null">
-				AND  b.realname = #{userName}
+				AND  b.realname= #{userName}
 			</if>
 			<if test="parentName !=null">
-				AND  e.realname = #{parentName}
+				AND  e.realname= #{parentName}
 			</if>
 			<if test="userPhone !=null">
-				AND  c.phone = #{userPhone}
+				AND  c.phone= #{userPhone}
 			</if>
 			<if test="parentPhone !=null">
-				AND  d.phone = #{parentPhone}
+				AND  d.phone= #{parentPhone}
 			</if>
 			<if test="tourTitle !=null">
 				<bind name="tourTitle" value="'%' + tourTitle + '%'"/> AND title LIKE #{tourTitle}
@@ -232,10 +247,24 @@
 			<if test="endTime !=null">
 				AND g.end_time &lt;= #{endTime}
 			</if>
-			<if test="userId !=null">
-				AND a.user_id &lt;= #{userId}
+			<if test="planStartTime !=null">
+				AND  a.plan_time &gt;= #{planStartTime}
 			</if>
-				AND a.is_effect = 1
+			<if test="planEndTime !=null">
+				AND a.plan_time &lt;= #{planEndTime}
+			</if>
+			<if test="userId !=null">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="parentId !=null">
+				AND a.parent_id = #{parentId}
+			</if>
+			<if test="tourTimeId !=null">
+				AND a.tour_time_id &lt;= #{tourTimeId}
+			</if>
+			<if test="createdTime !=null">
+				AND  a.create_date &gt;= #{createdTime}
+			</if>
 		</where>
 	</select>
 
@@ -281,13 +310,13 @@
 				AND g.end_time &lt;= #{endTime}
 			</if>
 			<if test="userId !=null">
-				AND a.user_id &lt;= #{userId}
+				AND a.user_id = #{userId}
 			</if>
 			<if test="parentId !=null">
-				AND a.parent_id &lt;= #{parentId}
+				AND a.parent_id = #{parentId}
 			</if>
 			<if test="tourTimeId !=null">
-				AND a.tour_time_id &lt;= #{tourTimeId}
+				AND a.tour_time_id = #{tourTimeId}
 			</if>
 				AND a.is_effect = 1
 				AND a.audit_status IN (3,4)
