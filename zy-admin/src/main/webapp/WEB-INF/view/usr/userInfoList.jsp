@@ -113,7 +113,7 @@
           {
             data: 'appliedTime',
             title: '申请时间',
-            orderable: false,
+            //orderable: false,
             width: '130px'
           },
           {
