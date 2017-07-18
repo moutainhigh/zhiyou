@@ -17,6 +17,8 @@
     <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
     <script src="${stc}/js/layer/layer.js"></script>
     <script src="${stccdn}/js/area.js"></script>
+    <link href="${ctx}/css/mobiscroll.custom-2.6.2.min.css" rel="stylesheet" type="text/css" />
+    <script src="${ctx}/js/mobiscroll.custom-2.6.2.min.js" type="text/javascript"></script>
     <style>
         .footer {
             position: fixed;
@@ -160,6 +162,31 @@
             -webkit-transform:translate(-50%,-50%);
             transform:translate(-50%,-50%);
         }
+        .content {
+            padding: 15px;
+            background: #fff;
+        }
+        .car {
+            position: relative;
+            height: 100%;
+        }
+        .car img {
+            height: 28px;
+            display: block;
+            margin: 0 auto;
+        }
+        .car .img-cont {
+            width: 80px;
+            height: 28px;
+            text-align: center;
+            float: left;
+            position: relative;
+            top: 50%;
+            margin-top: -14px;
+        }
+        .car span {
+            float: left;
+        }
     </style>
     <script type="text/javascript">
         $(function() {
@@ -223,7 +250,17 @@
 
             <div class="list-item"><label class="list-label">生日</label>
                 <div class="list-text">
-                    <input type="date" name="birthday" class="form-input" value="${userinfoVo.birthdayLabel}" placeholder="填写生日  1900-01-01"></div>
+                    <%--<input type="date" name="birthday" class="form-input" value="${userinfoVo.birthdayLabel}" placeholder="填写生日  1900-01-01">--%>
+                        <div style="display: none;">
+                            <label for="demo"></label>
+                            <select name="demo" id="demo" class="changes">
+                            </select>
+                        </div>
+                        <div id="demo_default" class="demos">
+                            <input type="text" name="birthday" class="form-input" value="${userinfoVo.birthdayLabel}" placeholder="填写生日  1900-01-01" id="test_default" onBlur="getToAge()"/>
+                            <!--<input id="ageVal" type="text"/>!-->
+                        </div>
+                </div>
             </div>
         </div>
     </div>
@@ -232,7 +269,66 @@
         <div style="height:35px;background:#f2f3f5;text-align:center;line-height:35px;border:1px solid #c9c9c9;" onclick="hideBtn()">取 消
         </div>
     </div>
+
+    <%--<div style="display: none;">--%>
+        <%--<label for="demo"></label>--%>
+        <%--<select name="demo" id="demo" class="changes">--%>
+        <%--</select>--%>
+    <%--</div>--%>
+    <%--<div id="demo_default" class="demos">--%>
+        <%--<input type="text" name="test_default" id="test_default" onBlur="getToAge()"/>--%>
+        <%--<!--<input id="ageVal" type="text"/>!-->--%>
+    <%--</div>--%>
 </form>
+<script type="text/javascript">
+    $(function () {
+        var curr = new Date().getFullYear();
+        var opt = {
+
+        }
+
+        opt.date = {preset : 'date'};
+        opt.datetime = { preset : 'datetime', minDate: new Date(2012,3,10,9,22), maxDate: new Date(2014,7,30,15,44), stepMinute: 5  };
+        opt.time = {preset : 'time'};
+        opt.tree_list = {preset : 'list', labels: ['Region', 'Country', 'City']};
+        opt.image_text = {preset : 'list', labels: ['Cars']};
+        opt.select = {preset : 'select'};
+        <!--Script-->
+
+        $('select.changes').bind('change', function() {
+            var demo = "date";
+            $(".demos").hide();
+            if (!($("#demo_"+demo).length))
+                demo = 'default';
+
+            $("#demo_" + demo).show();
+            $('#test_'+demo).val('').scroller('destroy').scroller($.extend(opt["date"], { theme: "default", mode: "mixed", display: "modal", lang: "zh" }));
+        });
+
+        $('#demo').trigger('change');
+    });
+
+
+    function getToAge(){
+        var dateVal = $("#test_default").val();
+        var dateVals = ages(dateVal);
+        $("#ageVal").val(dateVals);
+    }
+
+    function ages(str)
+    {
+        var r = str.match(/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
+        if(r==null)return   0;
+        var d = new Date(r[1], r[3]-1, r[4]);
+        if(d.getFullYear()==r[1]&&(d.getMonth()+1)==r[3]&&d.getDate()==r[4])
+        {
+            var Y = new Date().getFullYear();
+            return((Y-r[1]));
+        }
+        return 0;
+    }
+
+</script>
 <script>
     function hideBtn() {
         parent.layer.closeAll();
