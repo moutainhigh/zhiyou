@@ -366,7 +366,7 @@ public class DateUtil {
      * @param IDCardNum
      * @return
      */
-    static int getAge(String IDCardNum){
+  public  static int getAge(String IDCardNum){
         int year, month, day, idLength = IDCardNum.length();
         Calendar cal1 = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
@@ -374,13 +374,11 @@ public class DateUtil {
             year = Integer.parseInt(IDCardNum.substring(6,10));
             month = Integer.parseInt(IDCardNum.substring(10,12));
             day = Integer.parseInt(IDCardNum.substring(12,14));
-        }
-        else if(idLength == 15){
+        }else if(idLength == 15){
             year = Integer.parseInt(IDCardNum.substring(6,8)) + 1900;
             month = Integer.parseInt(IDCardNum.substring(8,10));
             day = Integer.parseInt(IDCardNum.substring(10,12));
-        }
-        else {
+        }else {
             System.out.println("This ID card number is invalid!");
             return -1;
         }
@@ -388,7 +386,7 @@ public class DateUtil {
         return getYearDiff(today, cal1);
     }
 
-    static int getYearDiff(Calendar cal, Calendar cal1){
+    public static int getYearDiff(Calendar cal, Calendar cal1){
         int m = (cal.get(cal.MONTH)+1) - (cal1.get(cal1.MONTH));
         int y = (cal.get(cal.YEAR)) - (cal1.get(cal1.YEAR));
         int date = (cal1.get(cal1.DATE))-(cal.get(cal.DATE));
