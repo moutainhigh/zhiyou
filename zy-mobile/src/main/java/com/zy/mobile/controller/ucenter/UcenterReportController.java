@@ -163,6 +163,7 @@ public class UcenterReportController {
 		model.addAttribute("products", products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
 		
 		model.addAttribute("userRank", user.getUserRank());
+		model.addAttribute("myPhone", user.getPhone());
 		model.addAttribute("jobs", this.jobService.findAll());
 		//model.addAttribute("tags", getTags());
 		return "ucenter/report/reportCreate";
@@ -268,6 +269,7 @@ public class UcenterReportController {
 					.build());
 			model.addAttribute("transfers", transfers);
 		}
+		model.addAttribute("myPhone",userService.findOne(principal.getUserId()).getPhone());
 		return "ucenter/report/reportDetail";
 	}
 

@@ -462,6 +462,7 @@ public class TourComponent {
     public String[] checkParam(TourUserInfoVo tourUserInfoVo) {
         int max =0;
         int min =0;
+        int age=0;
         //取到最大值
         SystemCode systemCode = systemCodeService.findByTypeAndName("TOURLIMITAGE", "MAX");
         if (systemCode==null||(systemCode.getSystemValue()==null||"".equals(systemCode.getSystemValue()))){
@@ -486,13 +487,18 @@ public class TourComponent {
                 return new String[]{"系统产数配置异常","0"};
             }
         }
-        if(tourUserInfoVo.getAges()>= max&&tourUserInfoVo.getAges()<65){
+        try{
+             age=DateUtil.getAge(tourUserInfoVo.getIdCartNumber());
+            }catch (Exception e){
+             return new String[]{"身份证号信息异常 请确认","0"};
+            }
+        if(age>= max&&age<=65){
             return  new String[]{"27岁以下与59岁至65岁者另加960元/人；儿童另加960元且门票住宿自理；如有疑问可与推荐人联系。","1"};
         }
-        if(tourUserInfoVo.getAges()>=66){
+        if(age>=66){
             return new String[]{"66岁以上：因旅游公司不具备接待服务条件，暂不接受66岁以上客户，敬请谅解。","0"};
         }
-        if(tourUserInfoVo.getAges()<=min){
+        if(age<=min){
             return  new String[]{"27岁以及下与59岁至65岁者另加960元/人；儿童另加960元且门票住宿自理；如有疑问可与推荐人联系。","1"};
         }
 
@@ -659,5 +665,25 @@ public class TourComponent {
                 result=  report.getProductNumber();
             }
       return result;
+    }
+
+    /**
+     * 时间检测
+     * @param tourUserId
+     * @param planTime
+     * @return
+     */
+    public String checkPlantTime(Long tourUserId, String planTime) {
+      String result =null;
+         TourUser tourUser = tourService.findTourUser(tourUserId);
+         if (tourUser!=null){
+           TourTime tourTime = tourService.findTourTimeOne(tourUser.getTourTimeId());
+             if (DateUtil.getIntervalDays(GcUtils.formatDate(tourTime.getBegintime(), S_PATTERN),planTime)>=0){
+                 result="预计到达时间不能晚于旅游发团时间！";
+             }
+
+         }
+
+        return result;
     }
 }

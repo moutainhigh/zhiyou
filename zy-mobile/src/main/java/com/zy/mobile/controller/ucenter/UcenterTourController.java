@@ -382,4 +382,21 @@ public class UcenterTourController {
 
    }
 
+    /**
+     * 计划到达时间检测
+     * @param tourUserId
+     * @param planTime
+     * @return
+     */
+    @RequestMapping(value = "/ajaxCheckPlantTime",method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxCheckPlantTime(Long tourUserId ,String planTime){
+        String  result =  tourComponent.checkPlantTime(tourUserId,planTime);
+        if (result!=null){
+            return ResultBuilder.error(result);
+        }else {
+            return ResultBuilder.ok(null);
+        }
+    }
+
 }

@@ -183,10 +183,12 @@
       <div class="list-item">
         <div class="list-text font-777">${report.text}</div>
       </div>
-      <div class="footer" >
-        <div onclick="insurance('${report.id}')" style="border-right: none;border-right: 1px solid #fff;box-sizing: border-box;">保险申请</div>
-        <div onclick="travel('${report.id}')" style="border-right: none;">旅游申请</div>
-      </div>
+      <c:if test="${!(myPhone eq report.phone)}">
+        <div class="footer" >
+          <div onclick="insurance('${report.id}')" style="border-right: none;border-right: 1px solid #fff;box-sizing: border-box;">保险申请</div>
+          <div onclick="travel('${report.id}')" style="border-right: none;">旅游申请</div>
+        </div>
+      </c:if>
     </div>
   </article>
 </div>

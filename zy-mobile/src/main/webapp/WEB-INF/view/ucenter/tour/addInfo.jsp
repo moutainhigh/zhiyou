@@ -130,7 +130,7 @@
             <div class="list-item">
                 <label class="list-label">预计到达日期</label>
                 <div class="list-text">
-                    <input type="date" name ="planTime" class="form-input" value="" placeholder="填写预计到达日期">
+                    <input type="date" name ="planTime" class="form-input" value="" placeholder="填写预计到达日期" id = "planTime">
                 </div>
             </div>
             <div class="list-item">
@@ -148,13 +148,12 @@
                         <input type="file"  name ="carImages" class="file" accept="image/*" capture="camera">
                         <em class="state state-add" id="preview">
                         </em>
-
                     </div>
                 </div>
             </div>
 
             <div class="form-btn" style="padding-bottom: 50px;">
-                <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提 交" style="margin-top: 30px">
+                <input id="btnSubmit" class="btn orange btn-block round-2" type="button" value="提 交" style="margin-top: 30px" onclick="btnsubmit()">
             </div>
         </form>
     </article>
@@ -174,6 +173,41 @@
             URL.revokeObjectURL(url)
             $('#preview').empty().append($img);
             $('#preview').removeClass("state-add");
+        }
+    }
+    function btnsubmit(){
+     var flage = $('.valid-form').validate({
+            rules : {
+                'planTime' : {
+                    required : true
+                },
+                'carNumber' : {
+                    required : true
+                },
+                'carImages' : {
+                    required : true
+                }
+            }
+
+        });
+        if(flage.form()){
+            $.ajax({
+                url : '${ctx}/tour/ajaxCheckPlantTime',
+                data : {
+                    tourUserId:"${tourUserId}",
+                    planTime:$("#planTime").val()
+                },
+                dataType : 'json',
+                type : 'POST',
+                success : function(result){
+                    if(result.code == 0){
+                        $('.valid-form').find(':submit').prop('disabled', true);
+                        $('.valid-form').submit();
+                    } else {
+                        messageAlert(result.message);
+                    }
+                }
+            });
         }
     }
 </script>
