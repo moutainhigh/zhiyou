@@ -7,6 +7,7 @@ import com.zy.entity.tour.TourTime;
 import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
+import com.zy.model.dto.AreaDto;
 import com.zy.service.TourService;
 import com.zy.service.TourTimeService;
 import com.zy.service.UserInfoService;
@@ -44,6 +45,8 @@ public class TourUserComponent {
     @Autowired
     private TourTimeService tourTimeService;
 
+    @Autowired
+    private CacheComponent cacheComponent;
 
 //    @Autowired
 //    private TourService tourService;
@@ -56,6 +59,19 @@ public class TourUserComponent {
             tourUserAdminVo.setUserName(userInfo.getRealname());
             tourUserAdminVo.setIdCardNumber(userInfo.getIdCardNumber());
             tourUserAdminVo.setAge(DateUtil.getAge(userInfo.getBirthday()));
+            if (userInfo.getGender() != null && userInfo != null){
+                tourUserAdminVo.setGender(userInfo.getGender().toString());
+            }
+            Long areaId = userInfo.getAreaId();
+            tourUserAdminVo.setAreaId(areaId);
+            if (areaId != null) {
+                AreaDto areaDto = cacheComponent.getAreaDto(areaId);
+                if (areaDto != null) {
+                    tourUserAdminVo.setProvince(areaDto.getProvince());
+                    tourUserAdminVo.setCity(areaDto.getCity());
+                    tourUserAdminVo.setDistrict(areaDto.getDistrict());
+                }
+            }
         }
         UserInfo userIf = userInfoService.findByUserId(tourUser.getParentId());
         if (userIf!=null) {
@@ -98,12 +114,21 @@ public class TourUserComponent {
         tourUserExportVo.setUserName(userInfo.getRealname());
         tourUserExportVo.setIdCardNumber(userInfo.getIdCardNumber());
         tourUserExportVo.setAge(DateUtil.getAge(userInfo.getBirthday()));
+        if (userInfo != null && userInfo.getGender() != null){
+            tourUserExportVo.setGender(userInfo.getGender().toString());
+        }
         UserInfo userIf = userInfoService.findByUserId(tourUser.getParentId());
-        tourUserExportVo.setParentName(userIf.getRealname());
+        if (userIf != null){
+            tourUserExportVo.setParentName(userIf.getRealname());
+        }
         User user = userService.findOne(tourUser.getUserId());
-        tourUserExportVo.setUserPhone(user.getPhone());
+        if (user != null){
+            tourUserExportVo.setUserPhone(user.getPhone());
+        }
         User use = userService.findOne(tourUser.getParentId());
-        tourUserExportVo.setParentPhone(use.getPhone());
+        if (use != null){
+            tourUserExportVo.setParentPhone(use.getPhone());
+        }
         if (tourUser.getAuditStatus() == 1){
             tourUserExportVo.setAuditStatus("审核中");
         }else if (tourUser.getAuditStatus() == 2){
@@ -160,15 +185,24 @@ public class TourUserComponent {
             tourJoinUserExportVo.setImageThumbnail(getThumbnail(tourUser.getCarImages(), 750, 450));
         }
         UserInfo userInfo = userInfoService.findByUserId(tourUser.getUserId());
-        tourJoinUserExportVo.setUserName(userInfo.getRealname());
-        tourJoinUserExportVo.setIdCardNumber(userInfo.getIdCardNumber());
-        tourJoinUserExportVo.setAge(DateUtil.getAge(userInfo.getBirthday()));
+        if (userInfo != null && userInfo.getGender() != null){
+            tourJoinUserExportVo.setGender(userInfo.getGender().toString());
+            tourJoinUserExportVo.setUserName(userInfo.getRealname());
+            tourJoinUserExportVo.setIdCardNumber(userInfo.getIdCardNumber());
+            tourJoinUserExportVo.setAge(DateUtil.getAge(userInfo.getBirthday()));
+        }
         UserInfo userIf = userInfoService.findByUserId(tourUser.getParentId());
-        tourJoinUserExportVo.setParentName(userIf.getRealname());
+        if (userIf != null){
+            tourJoinUserExportVo.setParentName(userIf.getRealname());
+        }
         User user = userService.findOne(tourUser.getUserId());
-        tourJoinUserExportVo.setUserPhone(user.getPhone());
+        if (user != null){
+            tourJoinUserExportVo.setUserPhone(user.getPhone());
+        }
         User use = userService.findOne(tourUser.getParentId());
-        tourJoinUserExportVo.setParentPhone(use.getPhone());
+        if (use != null){
+            tourJoinUserExportVo.setParentPhone(use.getPhone());
+        }
         if (tourUser.getAuditStatus() == 1){
             tourJoinUserExportVo.setAuditStatus("审核中");
         }else if (tourUser.getAuditStatus() == 2){

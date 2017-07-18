@@ -218,4 +218,8 @@ public class User implements Serializable {
 	@Column(length = 1, unique = true)
 	@Field(label = "是否有权限")
 	private int viewflag;
+
+	@Field(label = "最后一次登录时间")
+	@View(groups = {VO_ADMIN})
+	private Date lastloginTime;
 }

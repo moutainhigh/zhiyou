@@ -29,6 +29,8 @@ public class TourUserAdminVo implements Serializable {
     private String idCardNumber;
     @Field(label = "年龄")
     private Integer age;
+    @Field(label = "性别")
+    private String gender;
     @Field(label = "用户电话")
     private String userPhone;
     @Field(label = "上级名称")
@@ -58,6 +60,7 @@ public class TourUserAdminVo implements Serializable {
     @Field(label = "是否加床")
     private Integer isAddBed;
 
+
     /* 扩展 */
     @Field(label = "票务照片")
     private String imageThumbnail;
@@ -73,5 +76,12 @@ public class TourUserAdminVo implements Serializable {
     private Integer isJoin;
     @Field(label = "消费金额")
     private BigDecimal amount;
-
+    @Field(label = "所在地")
+    private String province;
+    @Field(label = "所在地")
+    private String city;
+    @Field(label = "所在地")
+    private String district;
+    @Field(label = "所在地")
+    private Long areaId;
 }

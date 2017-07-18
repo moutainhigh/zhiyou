@@ -36,7 +36,9 @@ public interface UserService {
 	void modifyPassword(Long id, String password);
 	
 	void modifyNickname(Long id, String nickname);
-	
+
+	void modifyLastLoginTime(Long id);
+
 	void modifyAvatar(Long id, String avatar);
 
 	void generateCode(Long id);

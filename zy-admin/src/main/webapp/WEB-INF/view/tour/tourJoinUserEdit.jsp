@@ -127,6 +127,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="control-label col-md-3">性别<span class="required"> * </span>
+                            </label>
+                            <div class="col-md-5">
+                                <input type="text" style="display: block; width: 40%;" readonly="true" class="form-control" id="gender" name="gender" value="${tourUserAdminVo.gender}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label col-md-3">用户电话<span class="required"> * </span>
                             </label>
                             <div class="col-md-5">
