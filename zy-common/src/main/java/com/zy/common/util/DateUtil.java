@@ -362,11 +362,30 @@ public class DateUtil {
     }
 
     /**
+     * 计算两个日期天数
+     * @param time1
+     * @param time2
+     * @return
+     */
+    public static long getIntervalDays(String time1, String time2) {
+        long quot = 0;
+        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date1 = ft.parse(time1);
+            Date date2 = ft.parse(time2);
+            quot = date2.getTime() - date1.getTime();
+            quot = quot / 1000 / 60 / 60 / 24;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return quot;
+    }
+    /**
      *根据身份证  获取年龄
      * @param IDCardNum
      * @return
      */
-  public  static int getAge(String IDCardNum){
+    public  static int getAge(String IDCardNum){
         int year, month, day, idLength = IDCardNum.length();
         Calendar cal1 = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
@@ -389,7 +408,7 @@ public class DateUtil {
     public static int getYearDiff(Calendar cal, Calendar cal1){
         int m = (cal.get(cal.MONTH)+1) - (cal1.get(cal1.MONTH));
         int y = (cal.get(cal.YEAR)) - (cal1.get(cal1.YEAR));
-        int date = (cal1.get(cal1.DATE))-(cal.get(cal.DATE));
+        int date = (cal.get(cal.DATE))-(cal1.get(cal1.DATE));
         if(date>=0){
             return (y * 12 + m)/12;
         }
@@ -400,8 +419,9 @@ public class DateUtil {
 
 
 
+
     public static void  main(String []age) throws ParseException {
-       System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("年龄:"+getAge("411528201607172688"));
@@ -425,7 +445,7 @@ public class DateUtil {
        /* dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),0,0));
         dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthEnd(new Date(),1,0));*/
 
-      //  System.out.print(((double)1l/(double)2l));
+        //  System.out.print(((double)1l/(double)2l));
     }
 
 
