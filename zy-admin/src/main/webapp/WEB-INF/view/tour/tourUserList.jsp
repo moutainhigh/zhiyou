@@ -142,6 +142,11 @@
                         orderable: false,
                     },
                     {
+                        data: 'gender',
+                        title: '性别',
+                        orderable: false
+                    },
+                    {
                         data: 'userPhone',
                         title: '用户电话',
                         orderable: false,
