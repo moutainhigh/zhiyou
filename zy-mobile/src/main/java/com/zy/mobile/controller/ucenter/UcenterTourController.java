@@ -253,7 +253,7 @@ public class UcenterTourController {
         map.put("tour",tourService.findTourOne(tourId));
         TourTime tourTime =tourService.findTourTimeOne(tourTimeid);
         map.put("tourTime",tourTime);
-        map.put("timedate",GcUtils.formatDate(tourTime.getCreatedTime(), "yyyy-MM-dd"));
+        map.put("timedate",GcUtils.formatDate(tourTime.getBegintime(), "yyyy-MM-dd"));
         User userP =userService.findByPhone(phone);
         userP.setNickname(userService.findRealName(userP.getId()));
         map.put("userp",userP);

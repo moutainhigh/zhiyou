@@ -386,7 +386,7 @@ public class TourServiceImpl implements TourService {
         tourUserMapper.insert(tourUser);
         //处理产品编号
         Report report = reportMapper.findOne(tourUser.getReportId());
-        if(report!=null&&report.getProductNumber()==null){ //检测报告已通过初审或者 终审的  将旅游信息置成可用
+        if(report!=null){ //检测报告已通过初审或者 终审的  将旅游信息置成可用
             if(report.getPreConfirmStatus()== ConfirmStatus.已通过||report.getConfirmStatus()==ConfirmStatus.已通过){
                 tourUser.setIsEffect(1);
             }else{
