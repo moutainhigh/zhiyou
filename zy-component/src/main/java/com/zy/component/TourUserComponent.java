@@ -58,7 +58,7 @@ public class TourUserComponent {
         if (userInfo!=null) {
             tourUserAdminVo.setUserName(userInfo.getRealname());
             tourUserAdminVo.setIdCardNumber(userInfo.getIdCardNumber());
-            tourUserAdminVo.setAge(DateUtil.getAge(userInfo.getBirthday()));
+            tourUserAdminVo.setAge(DateUtil.getAge(userInfo.getIdCardNumber()));
             if (userInfo.getGender() != null && userInfo != null){
                 tourUserAdminVo.setGender(userInfo.getGender().toString());
             }
@@ -113,7 +113,7 @@ public class TourUserComponent {
         UserInfo userInfo = userInfoService.findByUserId(tourUser.getUserId());
         tourUserExportVo.setUserName(userInfo.getRealname());
         tourUserExportVo.setIdCardNumber(userInfo.getIdCardNumber());
-        tourUserExportVo.setAge(DateUtil.getAge(userInfo.getBirthday()));
+        tourUserExportVo.setAge(DateUtil.getAge(userInfo.getIdCardNumber()));
         if (userInfo != null && userInfo.getGender() != null){
             tourUserExportVo.setGender(userInfo.getGender().toString());
         }
@@ -189,7 +189,7 @@ public class TourUserComponent {
             tourJoinUserExportVo.setGender(userInfo.getGender().toString());
             tourJoinUserExportVo.setUserName(userInfo.getRealname());
             tourJoinUserExportVo.setIdCardNumber(userInfo.getIdCardNumber());
-            tourJoinUserExportVo.setAge(DateUtil.getAge(userInfo.getBirthday()));
+            tourJoinUserExportVo.setAge(DateUtil.getAge(userInfo.getIdCardNumber()));
         }
         UserInfo userIf = userInfoService.findByUserId(tourUser.getParentId());
         if (userIf != null){
