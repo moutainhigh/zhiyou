@@ -153,6 +153,7 @@
                             <label class="control-label col-md-3">审核状态<span class="required"> * </span></label>
                             <div class="col-md-5">
                                 <select style="display: block; width: 40%;" readonly="true" id="auditStatus" class="form-control pull-left">
+                                    <option value="0" <c:if test="${tourUserAdminVo.auditStatus == 1}"> selected="selected"</c:if>>我要报名</option>
                                     <option value="1" <c:if test="${tourUserAdminVo.auditStatus == 1}"> selected="selected"</c:if>>审核中</option>
                                     <option value="2" <c:if test="${tourUserAdminVo.auditStatus == 2}"> selected="selected"</c:if>>待补充</option>
                                     <option value="3" <c:if test="${tourUserAdminVo.auditStatus == 3}"> selected="selected"</c:if>>已生效</option>
