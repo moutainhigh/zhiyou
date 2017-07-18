@@ -26,6 +26,8 @@ public class TourJoinUserExportVo implements Serializable {
     private String idCardNumber;
     @Field(label = "年龄")
     private Integer age;
+    @Field(label = "性别")
+    private String gender;
     @Field(label = "用户电话")
     private String userPhone;
     @Field(label = "线路")

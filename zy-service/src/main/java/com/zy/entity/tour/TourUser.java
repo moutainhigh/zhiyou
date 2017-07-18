@@ -41,7 +41,7 @@ public class TourUser implements Serializable {
     public static final String VO_ADMIN = "TourUserAdminVo";
     public static final String VO_LIST = "TourUserListVo";
     public static final String VO_EXPORT = "TourUserExportVo";
-    public static final String VO_JOINEXPORT = "TourUserExportVo";
+    public static final String VO_JOINEXPORT = "TourJoinUserExportVo";
 
     @Id
     @Field(label = "id")

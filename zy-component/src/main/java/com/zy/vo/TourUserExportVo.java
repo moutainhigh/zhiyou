@@ -51,5 +51,6 @@ public class TourUserExportVo implements Serializable {
     private String revieweRemark;
     @Field(label = "是否有效")
     private String isEffect;
-
+    @Field(label = "性别")
+    private String gender;
 }
