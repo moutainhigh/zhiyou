@@ -827,7 +827,7 @@
                     success : function(result){
                       if(result.code == 0){
                         $.dialog({
-                          content : '您的旅游申请已成功，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。',
+                          content : '您的旅游申请已提交，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。',
                           callback : function(index) {
                             $(".miui-dialog").remove();
                             $(".tourApplyTableNew").hide();
@@ -851,7 +851,7 @@
               success : function(result){
                 if(result.code == 0){
                   $.dialog({
-                    content : '您的旅游申请已成功，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。',
+                    content : '您的旅游申请已提交，我们工作人员近期会与您联系，在此之前请勿购买参游机/车票，由此造成的财产损失，公司概不负责。',
                     callback : function(index) {
                       $(".miui-dialog").remove();
                       $(".tourApplyTableNew").hide();
