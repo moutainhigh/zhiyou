@@ -108,6 +108,7 @@ public class LoginController {
 		}
 
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("登录成功"));
+		userService.modifyLastLoginTime(user.getId());
 		onLoginSuccess(request, response, user.getId());
 		return "redirect:" + redirectUrl;
 	}
@@ -183,6 +184,7 @@ public class LoginController {
 		}
 		logger.info("redirect url = " + redirectUrl);
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("恭喜您, 注册成功"));
+		userService.modifyLastLoginTime(user.getId());
 		onLoginSuccess(request, response, user.getId());
 		return "redirect:" + redirectUrl;
 	}

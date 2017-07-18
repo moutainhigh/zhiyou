@@ -423,6 +423,11 @@
             orderable: false
           },
           {
+            data: 'lastloginTime',
+            title: '最后一次登录时间',
+           // orderable: false
+          },
+          {
             data: '',
             title: '上级',
             orderable: false,
