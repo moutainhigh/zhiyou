@@ -59,9 +59,9 @@
 			<include refid="baseColumn"/>
 		FROM ts_tour_user a
 		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
-		LEFT JOIN usr_user_info e ON a.user_id = e.user_id
+		LEFT JOIN usr_user_info e ON a.parent_id = e.user_id
 		LEFT JOIN usr_user c ON a.user_id = c.id
-		LEFT JOIN usr_user d ON a.user_id = d.id
+		LEFT JOIN usr_user d ON a.parent_id = d.id
 		LEFT JOIN ts_tour f ON a.tour_id = f.id
 		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
 		<where>
@@ -134,9 +134,9 @@
 		<include refid="baseColumn"/>
 		FROM ts_tour_user a
 		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
-		LEFT JOIN usr_user_info e ON a.user_id = e.user_id
+		LEFT JOIN usr_user_info e ON a.parent_id = e.user_id
 		LEFT JOIN usr_user c ON a.user_id = c.id
-		LEFT JOIN usr_user d ON a.user_id = d.id
+		LEFT JOIN usr_user d ON a.parent_id = d.id
 		LEFT JOIN ts_tour f ON a.tour_id = f.id
 		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
 		<where>
@@ -205,9 +205,9 @@
 			count(*)
 		FROM ts_tour_user a
 		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
-		LEFT JOIN usr_user_info e ON a.user_id = e.user_id
+		LEFT JOIN usr_user_info e ON a.parent_id = e.user_id
 		LEFT JOIN usr_user c ON a.user_id = c.id
-		LEFT JOIN usr_user d ON a.user_id = d.id
+		LEFT JOIN usr_user d ON a.parent_id = d.id
 		LEFT JOIN ts_tour f ON a.tour_id = f.id
 		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
 		<where>
@@ -273,9 +273,9 @@
 			count(*)
 		FROM ts_tour_user a
 		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
-		LEFT JOIN usr_user_info e ON a.user_id = e.user_id
+		LEFT JOIN usr_user_info e ON a.parent_id = e.user_id
 		LEFT JOIN usr_user c ON a.user_id = c.id
-		LEFT JOIN usr_user d ON a.user_id = d.id
+		LEFT JOIN usr_user d ON a.parent_id = d.id
 		LEFT JOIN ts_tour f ON a.tour_id = f.id
 		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
 		<where>

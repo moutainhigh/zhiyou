@@ -176,7 +176,9 @@
                         title: '审核状态',
                         orderable: false,
                         render: function (data, type, full) {
-                            if(data == 1){
+                            if (data == 0){
+                                return '<label class="label label-primary">我要报名</label>';
+                            }else if(data == 1){
                                 return '<label class="label label-danger">审核中</label>';
                             }else if(data == 2){
                                 return '<label class="label label-warning">待补充</label>';

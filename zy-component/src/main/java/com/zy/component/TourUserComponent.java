@@ -139,8 +139,9 @@ public class TourUserComponent {
             tourUserExportVo.setAuditStatus("已完成");
         }else if (tourUser.getAuditStatus() == 5){
             tourUserExportVo.setAuditStatus("审核失败");
+        }else if (tourUser.getAuditStatus() == 0) {
+            tourUserExportVo.setAuditStatus("我要报名");
         }
-
         if (tourUser.getIsEffect() == 1){
             tourUserExportVo.setIsEffect("是");
         }else if (tourUser.getIsEffect() == 0){
@@ -213,6 +214,8 @@ public class TourUserComponent {
             tourJoinUserExportVo.setAuditStatus("已完成");
         }else if (tourUser.getAuditStatus() == 5){
             tourJoinUserExportVo.setAuditStatus("审核失败");
+        }else if (tourUser.getAuditStatus() == 0) {
+            tourJoinUserExportVo.setAuditStatus("我要报名");
         }
 
         if (tourUser.getIsEffect() == 1){
