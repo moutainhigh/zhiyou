@@ -360,10 +360,53 @@ public class DateUtil {
             return (new Double(t1)).intValue();
         }
     }
+
+    /**
+     *根据身份证  获取年龄
+     * @param IDCardNum
+     * @return
+     */
+    static int getAge(String IDCardNum){
+        int year, month, day, idLength = IDCardNum.length();
+        Calendar cal1 = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+        if(idLength == 18){
+            year = Integer.parseInt(IDCardNum.substring(6,10));
+            month = Integer.parseInt(IDCardNum.substring(10,12));
+            day = Integer.parseInt(IDCardNum.substring(12,14));
+        }
+        else if(idLength == 15){
+            year = Integer.parseInt(IDCardNum.substring(6,8)) + 1900;
+            month = Integer.parseInt(IDCardNum.substring(8,10));
+            day = Integer.parseInt(IDCardNum.substring(10,12));
+        }
+        else {
+            System.out.println("This ID card number is invalid!");
+            return -1;
+        }
+        cal1.set(year, month, day);
+        return getYearDiff(today, cal1);
+    }
+
+    static int getYearDiff(Calendar cal, Calendar cal1){
+        int m = (cal.get(cal.MONTH)+1) - (cal1.get(cal1.MONTH));
+        int y = (cal.get(cal.YEAR)) - (cal1.get(cal1.YEAR));
+        int date = (cal1.get(cal1.DATE))-(cal.get(cal.DATE));
+        if(date>=0){
+            return (y * 12 + m)/12;
+        }
+        return (y * 12 + m-1)/12;
+    }
+
+
+
+
+
     public static void  main(String []age) throws ParseException {
        System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println("年龄:"+getAge("411528201607172688"));
        /*  System.out.println(DateUtil.getMoth(new Date()));
         System.out.println(DateUtil.formatDouble(10123456789.0));
         String ll="qwertyui";

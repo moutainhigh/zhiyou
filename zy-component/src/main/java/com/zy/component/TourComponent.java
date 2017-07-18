@@ -613,7 +613,7 @@ public class TourComponent {
         tourUserQueryModel.setTourTimeId(tourTimeId);
         tourUserQueryModel.setIsEffect(1);
         Page<TourUser> page = tourService.findAll(tourUserQueryModel);
-        if(page!=null&&page.getTotal()!=null&&page.getTotal()>num){
+        if(page!=null&&page.getTotal()!=null&&page.getTotal()>=num){
             result ="申请旅游人数已经超过上线" ;
         }
         int min =15;

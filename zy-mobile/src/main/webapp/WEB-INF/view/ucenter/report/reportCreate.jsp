@@ -956,10 +956,10 @@ $('#tourchange').append(html);
         </div>
       </div>
       </div>
-      <div class="list-item">
+     <%-- <div class="list-item">
         <label class="list-label" >年龄</label><div class="list-text">
         <input type="number" name="ages"  class="form-input" value="{{d.userinfoVo.agestr}}" {{#if(d.userinfoVo.agestr !='') { }} readonly {{# } }}  placeholder="填写年龄" required>
-      </div>
+      </div>--%>
       </div>
       <div class="list-item">
         <label class="list-label" >户籍城市</label>
