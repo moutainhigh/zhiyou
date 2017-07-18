@@ -192,7 +192,7 @@
 </head>
 <div class="main">
   <header class="header">
-    <h1>上传检测报告 ${myPhone}</h1>
+    <h1>上传检测报告</h1>
     <a href="${ctx}/u/report" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
   <article>
@@ -652,7 +652,6 @@
           required : true
         }
       }
-
     });
     if(flage.form()){
       if($('input[name="image"]').length < 1) {
@@ -664,23 +663,55 @@
         messageAlert('请选择产品');
         return;
       }
-      $.ajax({
-        url : '${ctx}/u/report/ajaxCreate',
-        data : $(".valid-form").serialize(),
-        dataType : 'json',
-        type : 'POST',
-        success : function(result){
-          if(result.code == 0){
-            reportId=result.message;
-            submitFalge = true;
-            messageAlert("上传检测报告成功");
-            $("#btnSubmit").attr("disabled",true);
-            $(".orange.round-btnSubmit").css("background","#ccc");
-          } else{
-            messageAlert(result.message);
+      var phone=parseInt(${myPhone});
+      var phoneHtml=$("#phone").val();
+      if(phone!=phoneHtml){
+        $.dialog({
+          content : '您的手机号码不匹配，无法申请旅游以及保险。',
+          callback : function(index) {
+            if (index == 1) {
+              $(".footer").hide();
+              $(".miui-dialog").remove();
+              $.ajax({
+                url : '${ctx}/u/report/ajaxCreate',
+                data : $(".valid-form").serialize(),
+                dataType : 'json',
+                type : 'POST',
+                success : function(result){
+                  if(result.code == 0){
+                    reportId=result.message;
+                    submitFalge = true;
+                    messageAlert("上传检测报告成功");
+                    $("#btnSubmit").attr("disabled",true);
+                    $(".orange.round-btnSubmit").css("background","#ccc");
+                  } else{
+                    messageAlert(result.message);
+                  }
+                }
+              });
+            }
           }
-        }
-      });
+        });
+      }else {
+        $(".footer").show();
+        $.ajax({
+          url : '${ctx}/u/report/ajaxCreate',
+          data : $(".valid-form").serialize(),
+          dataType : 'json',
+          type : 'POST',
+          success : function(result){
+            if(result.code == 0){
+              reportId=result.message;
+              submitFalge = true;
+              messageAlert("上传检测报告成功");
+              $("#btnSubmit").attr("disabled",true);
+              $(".orange.round-btnSubmit").css("background","#ccc");
+            } else{
+              messageAlert(result.message);
+            }
+          }
+        });
+      }
     }
   }
   //选择出游时间
