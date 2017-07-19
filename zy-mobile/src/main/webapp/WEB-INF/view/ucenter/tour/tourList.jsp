@@ -151,8 +151,20 @@
                         <%--<p class="startState">可生效</p>  //跳到旅游详情页面，并且把我要报名按钮改成可生效--%>
                         <%--<p class="startState">已完成</p>   //跳到旅游详情页面，并且把我要报名按钮改成已完成--%>
                     <c:choose>
+                        <c:when test="${tourUser.auditStatus == 1}">
+                            <p class="startState startStateFile">审核中</p>
+                        </c:when>
                         <c:when test="${tourUser.auditStatus == 2}">
                             <p class="startState startStateFile">待补充</p>
+                        </c:when>
+                        <c:when test="${tourUser.auditStatus == 3}">
+                            <p class="startState startStateFile">已生效</p>
+                        </c:when>
+                        <c:when test="${tourUser.auditStatus == 4}">
+                            <p class="startState startStateFile">已完成</p>
+                        </c:when>
+                        <c:when test="${tourUser.auditStatus == 5}">
+                            <p class="startState startStateFile">审核失败</p>
                         </c:when>
                     </c:choose>
                         <%--<div class="tourFont">青岛旅游，说白了就是海和崂山 如今的崂山分为七大风景区，但 是对于外来游客来讲，真正值如今的崂山分为七大风景区</div>--%>
@@ -174,6 +186,9 @@
                     <c:choose>
                         <c:when test="${tourUser.auditStatus == 1}">
                             <p class="startState startStateFile">审核中</p>
+                        </c:when>
+                        <c:when test="${tourUser.auditStatus == 2}">
+                            <p class="startState startStateFile">待补充</p>
                         </c:when>
                         <c:when test="${tourUser.auditStatus == 3}">
                             <p class="startState startStateFile">已生效</p>

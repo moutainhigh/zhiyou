@@ -255,15 +255,13 @@ public class TourServiceImpl implements TourService {
     //重置
     @Override
     public void reset(@NotNull Long id, Long loginUserId) {
-        TourUser tourUser = tourUserMapper.findOne(id);
-
-        tourUser.setTourId(null);
-        tourUser.setTourTimeId(null);
-        tourUser.setAuditStatus(0);
-        tourUser.setUpdateBy(loginUserId);
-        tourUser.setUpdateDate(new Date());
-
-        tourUserMapper.reset(tourUser);
+        this.resetProductNumber(id);
+//        tourUser.setTourId(null);
+//        tourUser.setTourTimeId(null);
+//        tourUser.setAuditStatus(0);
+//        tourUser.setUpdateBy(loginUserId);
+//        tourUser.setUpdateDate(new Date());
+        tourUserMapper.delete(id);
     }
 
     @Override

@@ -108,11 +108,12 @@ public class UcenterReportController {
 	
 	@RequestMapping()
 	public String list(Principal principal, Model model) {
-		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(0).pageSize(6).build());
-		model.addAttribute("page", PageBuilder.copyAndConvert(page, reportComponent::buildListVo));
+
 		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		
 		User user = userService.findOne(principal.getUserId());
+		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(0).pageSize(6).phoneEQ(user.getPhone()).build());
+		model.addAttribute("page", PageBuilder.copyAndConvert(page, reportComponent::buildListVo));
 		model.addAttribute("userRank", user.getUserRank());
 		return "ucenter/report/reportList";
 	}
@@ -123,9 +124,9 @@ public class UcenterReportController {
 		if (timeLT == null) {
 			timeLT = new Date();
 		}
-
+		User user = userService.findOne(principal.getUserId());
 		Map<String, Object> map = new HashMap<>();
-		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(pageNumber).pageSize(6).build());
+		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(pageNumber).pageSize(6).phoneEQ(user.getPhone()).build());
 		map.put("page", PageBuilder.copyAndConvert(page, reportComponent::buildListVo));
 		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
 
@@ -329,7 +330,7 @@ public class UcenterReportController {
 	private Report findAndValidate(Long id, Long userId) {
 		Report report = reportService.findOne(id);
 		validate(report, NOT_NULL, "report id" + id + " not found");
-		validate(report.getUserId(), v -> userId.equals(v), "权限不足");
+		/*validate(report.getUserId(), v -> userId.equals(v), "权限不足");*/
 		return report;
 	}
 

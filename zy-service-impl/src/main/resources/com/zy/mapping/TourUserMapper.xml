@@ -388,9 +388,9 @@
 		values (#{tourTimeId},#{tourId},#{userId},#{parentId},#{sequenceId},#{createDate},#{isEffect},#{auditStatus},#{reportId},#{isTransfers},#{carNumber},#{planTime},#{carImages},#{userRemark},#{revieweRemark},#{houseType},#{isAddBed},#{isJoin},#{amount})
 	</insert>
 
-	<!--<delete id="delete">-->
-		<!--delete from `ts_tour` where id = #{id}-->
-	<!--</delete>-->
+	<delete id="delete" parameterType="long">
+		delete from `ts_tour_user` where id = #{id}
+	</delete>
 
 	<!-- 审核状态 -->
 	<update id="updateAuditStatus" parameterType="com.zy.entity.tour.TourUser">

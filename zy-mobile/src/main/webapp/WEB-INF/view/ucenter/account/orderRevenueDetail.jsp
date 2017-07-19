@@ -81,7 +81,7 @@
             }
         }
     </style>
-    <title>我的团队</title>
+    <title>订单收益明细</title>
     <%@ include file="/WEB-INF/view/include/head.jsp"%>
     <script type="text/javascript">
         $(function() {
