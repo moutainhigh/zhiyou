@@ -350,12 +350,31 @@ public class TourServiceImpl implements TourService {
         tourUser.setUpdateBy(loginUserId);
         if (firstVisitStatus != null){
             tourUser.setFirstVisitStatus(firstVisitStatus);
+            if (firstVisitStatus == 2){
+                tourUser.setSecondVisitStatus(2);
+                tourUser.setThirdVisitStatus(2);
+                tourUser.setAuditStatus(2);
+            }
         }
         if (secondVisitStatus != null){
             tourUser.setSecondVisitStatus(secondVisitStatus);
+            if (secondVisitStatus == 2){
+                tourUser.setThirdVisitStatus(2);
+                tourUser.setAuditStatus(2);
+            }
         }
         if (thirdVisitStatus != null){
             tourUser.setThirdVisitStatus(thirdVisitStatus);
+            if (thirdVisitStatus == 2){
+                tourUser.setAuditStatus(2);
+            }else {
+                tourUser.setAuditStatus(5);
+            }
+        }
+        if (visitRemark != null){
+            tourUser.setVisitRemark(visitRemark);
+        }else{
+            tourUser.setVisitRemark("  ");
         }
         tourUserMapper.updateVisitStatus(tourUser);
     }

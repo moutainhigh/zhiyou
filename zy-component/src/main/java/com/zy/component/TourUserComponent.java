@@ -112,9 +112,11 @@ public class TourUserComponent {
             tourUserExportVo.setImageThumbnail(getThumbnail(tourUser.getCarImages(), 750, 450));
         }
         UserInfo userInfo = userInfoService.findByUserId(tourUser.getUserId());
-        tourUserExportVo.setUserName(userInfo.getRealname());
-        tourUserExportVo.setIdCardNumber(userInfo.getIdCardNumber());
-        tourUserExportVo.setAge(DateUtil.getAge(userInfo.getIdCardNumber()));
+        if (userInfo != null){
+            tourUserExportVo.setUserName(userInfo.getRealname());
+            tourUserExportVo.setIdCardNumber(userInfo.getIdCardNumber());
+            tourUserExportVo.setAge(DateUtil.getAge(userInfo.getIdCardNumber()));
+        }
         if (userInfo != null && userInfo.getGender() != null){
             tourUserExportVo.setGender(userInfo.getGender().toString());
         }
@@ -145,25 +147,25 @@ public class TourUserComponent {
         }
 
         if (tourUser.getFirstVisitStatus() == 1){
-            tourUserExportVo.setFirstVisitStatus("审核中");
+            tourUserExportVo.setFirstVisitStatus("回访中");
         }else if (tourUser.getFirstVisitStatus() == 2){
-            tourUserExportVo.setFirstVisitStatus("审核成功");
+            tourUserExportVo.setFirstVisitStatus("回访成功");
         }else if (tourUser.getFirstVisitStatus() == 0){
-            tourUserExportVo.setFirstVisitStatus("审核失败");
+            tourUserExportVo.setFirstVisitStatus("回访失败");
         }
         if (tourUser.getSecondVisitStatus() == 1){
-            tourUserExportVo.setSecondVisitStatus("审核中");
+            tourUserExportVo.setSecondVisitStatus("回访中");
         }else if (tourUser.getSecondVisitStatus() == 2){
-            tourUserExportVo.setSecondVisitStatus("审核成功");
+            tourUserExportVo.setSecondVisitStatus("回访成功");
         }else if (tourUser.getSecondVisitStatus() == 0){
-            tourUserExportVo.setSecondVisitStatus("审核失败");
+            tourUserExportVo.setSecondVisitStatus("回访失败");
         }
         if (tourUser.getThirdVisitStatus() == 1){
-            tourUserExportVo.setThirdVisitStatus("审核中");
+            tourUserExportVo.setThirdVisitStatus("回访中");
         }else if (tourUser.getThirdVisitStatus() == 2){
-            tourUserExportVo.setThirdVisitStatus("审核成功");
+            tourUserExportVo.setThirdVisitStatus("回访成功");
         }else if (tourUser.getThirdVisitStatus() == 0){
-            tourUserExportVo.setThirdVisitStatus("审核失败");
+            tourUserExportVo.setThirdVisitStatus("回访失败");
         }
         tourUserExportVo.setVisitTime(GcUtils.formatDate(tourUser.getVisitTime(), TIME_PATTERN));
 

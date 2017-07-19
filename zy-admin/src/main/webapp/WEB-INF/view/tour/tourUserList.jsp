@@ -458,11 +458,11 @@
                         orderable: false,
                         render: function (data, type, full) {
                             if (data == 0){
-                                return '<label class="label label-default">审核失败</label>';
+                                return '<label class="label label-default">回访失败</label>';
                             }else if(data == 1){
-                                return '<label class="label label-danger">审核中</label>';
+                                return '<label class="label label-danger">回访中</label>';
                             }else if(data == 2){
-                                return '<label class="label label-success">审核成功</label>';
+                                return '<label class="label label-success">回访成功</label>';
                             }
                         }
                     },             {
@@ -471,11 +471,11 @@
                         orderable: false,
                         render: function (data, type, full) {
                             if (data == 0){
-                                return '<label class="label label-default">审核失败</label>';
+                                return '<label class="label label-default">回访失败</label>';
                             }else if(data == 1){
-                                return '<label class="label label-danger">审核中</label>';
+                                return '<label class="label label-danger">回访中</label>';
                             }else if(data == 2){
-                                return '<label class="label label-success">审核成功</label>';
+                                return '<label class="label label-success">回访成功</label>';
                             }
                         }
                     },             {
@@ -484,11 +484,11 @@
                         orderable: false,
                         render: function (data, type, full) {
                             if (data == 0){
-                                return '<label class="label label-default">审核失败</label>';
+                                return '<label class="label label-default">回访失败</label>';
                             }else if(data == 1){
-                                return '<label class="label label-danger">审核中</label>';
+                                return '<label class="label label-danger">回访中</label>';
                             }else if(data == 2){
-                                return '<label class="label label-success">审核成功</label>';
+                                return '<label class="label label-success">回访成功</label>';
                             }
                         }
                     },
@@ -523,6 +523,8 @@
                                 return '否';
                             }else if(data == 1){
                                 return '是';
+                            }else {
+                                return ' ';
                             }
                         }
                     },
@@ -562,14 +564,15 @@
                             <shiro:hasPermission name="tourUser:edit">
                             optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tourUser/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
                             if (full.auditStatus == 1){
-                                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
+                                optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="resetAjax(' + full.id + ')"><i class="fa fa-edit"></i> 重置 </a>';
+//                                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
                                 if (full.firstVisitStatus == 1){
                                     optionHtml += '<a class="btn btn-xs default yellow-stripe firstVisitStatus" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 初访 </a>';
                                 }
-                                if (full.firstVisitStatus == 2 && full.secondVisitStatus == 1){
+                                if (full.firstVisitStatus == 0 && full.secondVisitStatus == 1){
                                     optionHtml += '<a class="btn btn-xs default green-stripe secondVisitStatus" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 二访 </a>';
                                 }
-                                if (full.secondVisitStatus == 2 && full.thirdVisitStatus == 1){
+                                if (full.secondVisitStatus == 0 && full.thirdVisitStatus == 1){
                                     optionHtml += '<a class="btn btn-xs default green-stripe thirdVisitStatus" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 三访 </a>';
                                 }
                             }
@@ -669,6 +672,30 @@
                                     <option value="3">已生效</option>
                                     <option value="4">已完成</option>
                                     <option value="5">审核失败</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="firstVisitStatus" class="form-control">
+                                    <option value="">-- 初访状态 --</option>
+                                    <option value="0">回访失败</option>
+                                    <option value="1">回访中</option>
+                                    <option value="2">回访成功</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="secondVisitStatus" class="form-control">
+                                    <option value="">-- 二访状态 --</option>
+                                    <option value="0">回访失败</option>
+                                    <option value="1">回访中</option>
+                                    <option value="2">回访成功</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="thirdVisitStatus" class="form-control">
+                                    <option value="">-- 三访状态 --</option>
+                                    <option value="0">回访失败</option>
+                                    <option value="1">回访中</option>
+                                    <option value="2">回访成功</option>
                                 </select>
                             </div>
                             <%--<div class="form-group">--%>

@@ -84,6 +84,15 @@
 			<if test="auditStatus !=null">
 				AND a.audit_status = #{auditStatus}
 			</if>
+			<if test="firstVisitStatus !=null">
+				AND a.first_visit_status = #{firstVisitStatus}
+			</if>
+			<if test="secondVisitStatus !=null">
+				AND a.second_visit_status = #{secondVisitStatus}
+			</if>
+			<if test="thirdVisitStatus !=null">
+				AND a.third_visit_status = #{thirdVisitStatus}
+			</if>
 			<if test="isTransfers !=null">
 				AND a.is_transfers = #{isTransfers}
 			</if>
@@ -230,6 +239,15 @@
 			<if test="auditStatus !=null">
 				AND a.audit_status = #{auditStatus}
 			</if>
+			<if test="firstVisitStatus !=null">
+				AND a.first_visit_status = #{firstVisitStatus}
+			</if>
+			<if test="secondVisitStatus !=null">
+				AND a.second_visit_status = #{secondVisitStatus}
+			</if>
+			<if test="thirdVisitStatus !=null">
+				AND a.third_visit_status = #{thirdVisitStatus}
+			</if>
 			<if test="isTransfers !=null">
 				AND a.is_transfers = #{isTransfers}
 			</if>
@@ -371,6 +389,9 @@
 				</if>
 				<if test="visitRemark !=null">
 					visit_remark = #{visitRemark},
+				</if>
+				<if test="auditStatus !=null">
+					audit_status = #{auditStatus},
 				</if>
 				<if test="visitTime !=null">
 					visit_time = #{visitTime},
