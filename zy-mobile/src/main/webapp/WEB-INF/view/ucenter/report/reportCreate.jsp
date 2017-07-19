@@ -331,7 +331,7 @@
   </article>
   <div class="footer" >
     <div onclick="insurance()">保险申请</div>
-    <div onclick="travel()" style="border-right: none;">旅游申请</div>
+    <div onclick="travel()" id="travelAppleClick" style="border-right: none;">旅游申请</div>
   </div>
 </div>
 
@@ -672,10 +672,9 @@
       var phoneHtml=$("#phone").val();
       if(phone!=phoneHtml){
         $.dialog({
-          content : '您的手机号码不匹配，无法申请旅游以及保险。',
+          content : '您填写的手机号码与系统预留号码不匹配，如继续操作则无法申请旅游。',
           callback : function(index) {
             if (index == 1) {
-              $(".footer").hide();
               $(".miui-dialog").remove();
               $.ajax({
                 url : '${ctx}/u/report/ajaxCreate',
@@ -684,6 +683,8 @@
                 type : 'POST',
                 success : function(result){
                   if(result.code == 0){
+                    $("#travelAppleClick").removeAttr("onclick");
+                    $("#travelAppleClick").css("background","#ccc");
                     reportId=result.message;
                     submitFalge = true;
                     messageAlert("上传检测报告成功");
@@ -698,7 +699,6 @@
           }
         });
       }else {
-        $(".footer").show();
         $.ajax({
           url : '${ctx}/u/report/ajaxCreate',
           data : $(".valid-form").serialize(),
