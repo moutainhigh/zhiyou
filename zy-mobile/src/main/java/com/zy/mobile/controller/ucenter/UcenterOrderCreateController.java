@@ -7,8 +7,10 @@ import com.zy.component.UserComponent;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.OrderFillUser;
 import com.zy.entity.mal.Product;
+import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.UserInfo;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.dto.OrderCreateDto;
@@ -44,6 +46,9 @@ public class UcenterOrderCreateController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private UserInfoService userInfoService;
 
 	@Autowired
 	private ProductService productService;
@@ -103,6 +108,12 @@ public class UcenterOrderCreateController {
 			} else {
 				orderFill = true;
 			}
+		}
+		UserInfo userInfo = userInfoService.findByUserId(userId);
+		if (userInfo!=null&&userInfo.getConfirmStatus() == ConfirmStatus.已通过){
+			model.addAttribute("realFlage", true);
+		}else{
+			model.addAttribute("realFlage", false);
 		}
 		model.addAttribute("orderFill", orderFill);
 		return "ucenter/order/orderCreate";
