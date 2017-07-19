@@ -110,7 +110,7 @@ public class UcenterTourController {
             return ResultBuilder.result(phone);
         }
         /*return "ucenter/tour/parentInfo";*/
-        return ResultBuilder.error("数据异常");
+        return ResultBuilder.result(null);
     }
 
     /**
