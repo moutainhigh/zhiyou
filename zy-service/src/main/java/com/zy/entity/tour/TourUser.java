@@ -82,6 +82,11 @@ public class TourUser implements Serializable {
     @Field(label = "更新时间")
     private Date updateDate;
 
+    @NotNull
+    @View(groups = { VO_ADMIN, VO_EXPORT, VO_JOINEXPORT ,VO_LIST})
+    @Field(label = "更新时间")
+    private Date visitTime;
+
     @Id
     @Field(label = "updateBy")
     @View
@@ -98,6 +103,24 @@ public class TourUser implements Serializable {
     @Field(label = "审核状态")
     @View(groups = { VO_ADMIN , VO_EXPORT, VO_JOINEXPORT,VO_LIST })
     private Integer auditStatus;
+
+    @NotNull
+    @Query(Predicate.EQ)
+    @View(groups = { VO_ADMIN , VO_EXPORT, VO_JOINEXPORT,VO_LIST })
+    @Field(label = "初访状态")
+    private Integer firstVisitStatus;
+
+    @NotNull
+    @Query(Predicate.EQ)
+    @View(groups = { VO_ADMIN , VO_EXPORT, VO_JOINEXPORT,VO_LIST })
+    @Field(label = "二访状态")
+    private Integer secondVisitStatus;
+
+    @NotNull
+    @Query(Predicate.EQ)
+    @View(groups = { VO_ADMIN , VO_EXPORT, VO_JOINEXPORT,VO_LIST })
+    @Field(label = "三访状态")
+    private Integer thirdVisitStatus;
 
     @Id
     @Field(label = "reportId")
@@ -143,6 +166,11 @@ public class TourUser implements Serializable {
     @Field(label = "用户备注")
     @View(groups = { VO_ADMIN , VO_EXPORT, VO_JOINEXPORT,VO_LIST })
     private String userRemark;
+
+    @NotBlank
+    @Field(label = "回访备注")
+    @View(groups = { VO_ADMIN , VO_EXPORT, VO_JOINEXPORT,VO_LIST })
+    private String visitRemark;
 
     @NotBlank
     @Field(label = "房型")

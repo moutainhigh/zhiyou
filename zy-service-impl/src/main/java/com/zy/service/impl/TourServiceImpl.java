@@ -343,6 +343,25 @@ public class TourServiceImpl implements TourService {
         return page;
     }
 
+    @Override
+    public void updateVisitStatus(Long id, Integer firstVisitStatus, Integer secondVisitStatus, Integer thirdVisitStatus, String visitRemark, Long loginUserId) {
+        TourUser tourUser = new TourUser();
+        tourUser.setId(id);
+        tourUser.setVisitRemark(visitRemark);
+        tourUser.setVisitTime(new Date());
+        tourUser.setUpdateBy(loginUserId);
+        if (firstVisitStatus != null){
+            tourUser.setFirstVisitStatus(firstVisitStatus);
+        }
+        if (secondVisitStatus != null){
+            tourUser.setSecondVisitStatus(secondVisitStatus);
+        }
+        if (thirdVisitStatus != null){
+            tourUser.setThirdVisitStatus(thirdVisitStatus);
+        }
+        tourUserMapper.updateVisitStatus(tourUser);
+    }
+
 
     /**
      * 添加 旅游信息 并将 用户信息  添加到 userIf

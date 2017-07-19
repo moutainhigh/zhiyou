@@ -38,6 +38,9 @@
         });
     });
     $("#auditStatus").attr("disabled",true);
+    $("#firstVisitStatus").attr("disabled",true);
+    $("#secondVisitStatus").attr("disabled",true);
+    $("#thirdVisitStatus").attr("disabled",true);
     $("#province").attr("disabled",true);
     $("#city").attr("disabled",true);
     $("#district").attr("disabled",true);
@@ -159,6 +162,36 @@
                                     <option value="3" <c:if test="${tourUserAdminVo.auditStatus == 3}"> selected="selected"</c:if>>已生效</option>
                                     <option value="4" <c:if test="${tourUserAdminVo.auditStatus == 4}"> selected="selected"</c:if>>已完成</option>
                                     <option value="5" <c:if test="${tourUserAdminVo.auditStatus == 5}"> selected="selected"</c:if>>审核失败</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">初访状态<span class="required"> * </span></label>
+                            <div class="col-md-5">
+                                <select style="display: block; width: 40%;" readonly="true" id="firstVisitStatus" class="form-control pull-left">
+                                    <option value="0" <c:if test="${tourUserAdminVo.firstVisitStatus == 0}"> selected="selected"</c:if>>审核失败</option>
+                                    <option value="1" <c:if test="${tourUserAdminVo.firstVisitStatus == 1}"> selected="selected"</c:if>>审核中</option>
+                                    <option value="2" <c:if test="${tourUserAdminVo.firstVisitStatus == 2}"> selected="selected"</c:if>>审核成功</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">二访状态<span class="required"> * </span></label>
+                            <div class="col-md-5">
+                                <select style="display: block; width: 40%;" readonly="true" id="secondVisitStatus" class="form-control pull-left">
+                                    <option value="0" <c:if test="${tourUserAdminVo.secondVisitStatus == 0}"> selected="selected"</c:if>>审核失败</option>
+                                    <option value="1" <c:if test="${tourUserAdminVo.secondVisitStatus == 1}"> selected="selected"</c:if>>审核中</option>
+                                    <option value="2" <c:if test="${tourUserAdminVo.secondVisitStatus == 2}"> selected="selected"</c:if>>审核成功</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">三访状态<span class="required"> * </span></label>
+                            <div class="col-md-5">
+                                <select style="display: block; width: 40%;" readonly="true" id="thirdVisitStatus" class="form-control pull-left">
+                                    <option value="0" <c:if test="${tourUserAdminVo.thirdVisitStatus == 0}"> selected="selected"</c:if>>审核失败</option>
+                                    <option value="1" <c:if test="${tourUserAdminVo.thirdVisitStatus == 1}"> selected="selected"</c:if>>审核中</option>
+                                    <option value="2" <c:if test="${tourUserAdminVo.thirdVisitStatus == 2}"> selected="selected"</c:if>>审核成功</option>
                                 </select>
                             </div>
                         </div>

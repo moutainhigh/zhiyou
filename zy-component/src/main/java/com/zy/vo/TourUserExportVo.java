@@ -39,6 +39,17 @@ public class TourUserExportVo implements Serializable {
     private String auditStatus;
     @Field(label = "状态时间")
     private String updateDateLabel;
+    @Field(label = "初访状态")
+    private String firstVisitStatus;
+    @Field(label = "二访状态")
+    private String secondVisitStatus;
+    @Field(label = "三访状态")
+    private String thirdVisitStatus;
+    @Field(label = "回访时间")
+    private String visitTime;
+    @Field(label = "回访备注")
+    private String visitRemark;
+
     @Field(label = "房型需求")
     private String houseType;
     @Field(label = "是否加床")
@@ -53,4 +64,5 @@ public class TourUserExportVo implements Serializable {
     private String isEffect;
     @Field(label = "性别")
     private String gender;
+
 }

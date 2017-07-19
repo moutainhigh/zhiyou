@@ -29,4 +29,6 @@ public interface TourUserMapper {
     long joinCount(TourUserQueryModel tourUserQueryModel);
 
     List<TourUser> findByReportId(Long id);
+
+    void updateVisitStatus(TourUser tourUser);
 }

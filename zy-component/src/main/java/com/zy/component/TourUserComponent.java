@@ -94,6 +94,7 @@ public class TourUserComponent {
         tourUserAdminVo.setCreatedDateLabel( GcUtils.formatDate(tourUser.getCreateDate(), TIME_PATTERN));
         tourUserAdminVo.setUpdateDateLabel( GcUtils.formatDate(tourUser.getUpdateDate(), TIME_PATTERN));
         tourUserAdminVo.setPlanTimeLabel( GcUtils.formatDate(tourUser.getPlanTime(), TIME_PATTERN));
+        tourUserAdminVo.setVisitTime( GcUtils.formatDate(tourUser.getVisitTime(), TIME_PATTERN));
         if (tourUser.getCarImages() != null) {
             tourUserAdminVo.setImageThumbnail(getThumbnail(tourUser.getCarImages(), 750, 450));
         }
@@ -142,6 +143,30 @@ public class TourUserComponent {
         }else if (tourUser.getAuditStatus() == 0) {
             tourUserExportVo.setAuditStatus("我要报名");
         }
+
+        if (tourUser.getFirstVisitStatus() == 1){
+            tourUserExportVo.setFirstVisitStatus("审核中");
+        }else if (tourUser.getFirstVisitStatus() == 2){
+            tourUserExportVo.setFirstVisitStatus("审核成功");
+        }else if (tourUser.getFirstVisitStatus() == 0){
+            tourUserExportVo.setFirstVisitStatus("审核失败");
+        }
+        if (tourUser.getSecondVisitStatus() == 1){
+            tourUserExportVo.setSecondVisitStatus("审核中");
+        }else if (tourUser.getSecondVisitStatus() == 2){
+            tourUserExportVo.setSecondVisitStatus("审核成功");
+        }else if (tourUser.getSecondVisitStatus() == 0){
+            tourUserExportVo.setSecondVisitStatus("审核失败");
+        }
+        if (tourUser.getThirdVisitStatus() == 1){
+            tourUserExportVo.setThirdVisitStatus("审核中");
+        }else if (tourUser.getThirdVisitStatus() == 2){
+            tourUserExportVo.setThirdVisitStatus("审核成功");
+        }else if (tourUser.getThirdVisitStatus() == 0){
+            tourUserExportVo.setThirdVisitStatus("审核失败");
+        }
+        tourUserExportVo.setVisitTime(GcUtils.formatDate(tourUser.getVisitTime(), TIME_PATTERN));
+
         if (tourUser.getIsEffect() == 1){
             tourUserExportVo.setIsEffect("是");
         }else if (tourUser.getIsEffect() == 0){

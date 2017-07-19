@@ -40,6 +40,124 @@
         </div>
     </form>
 </script>
+
+<script id="firstVisitStatusTmpl" type="text/x-handlebars-template">
+    <form id="firstVisitStatusForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 100%; margin: 20px;">
+        <input type="hidden" name="id" value="{{id}}"/>
+        <div class="form-body">
+            <div class="alert alert-danger display-hide">
+                <i class="fa fa-exclamation-circle"></i>
+                <button class="close" data-close="alert"></button>
+                <span class="form-errors">您填写的信息有误，请检查。</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">回访结果<span class="required"> * </span></label>
+                <div class="col-md-5">
+                    <select name="firstVisitStatus" class="form-control">
+                        <option value="2">通过</option>
+                        <option value="0">拒绝</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">回访备注
+                </label>
+                <div class="col-md-5" style="width: 300px">
+                    <textarea type="text" class="form-control" name="visitRemark"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions fluid">
+            <div class="col-md-offset-3 col-md-9">
+                <button id="firstVisitStatusSubmit{{id}}" type="button" class="btn green">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+                <button id="firstVisitStatusCancel{{id}}" class="btn default" data-href="">
+                    <i class="fa fa-chevron-left"></i> 返回
+                </button>
+            </div>
+        </div>
+    </form>
+</script>
+
+<script id="thirdVisitStatusTmpl" type="text/x-handlebars-template">
+    <form id="thirdVisitStatusForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 100%; margin: 20px;">
+        <input type="hidden" name="id" value="{{id}}"/>
+        <div class="form-body">
+            <div class="alert alert-danger display-hide">
+                <i class="fa fa-exclamation-circle"></i>
+                <button class="close" data-close="alert"></button>
+                <span class="form-errors">您填写的信息有误，请检查。</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">回访结果<span class="required"> * </span></label>
+                <div class="col-md-5">
+                    <select name="thirdVisitStatus" class="form-control">
+                        <option value="2">通过</option>
+                        <option value="0">拒绝</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">回访备注
+                </label>
+                <div class="col-md-5" style="width: 300px">
+                    <textarea type="text" class="form-control" name="visitRemark"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions fluid">
+            <div class="col-md-offset-3 col-md-9">
+                <button id="thirdVisitStatusSubmit{{id}}" type="button" class="btn green">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+                <button id="thirdVisitStatusCancel{{id}}" class="btn default" data-href="">
+                    <i class="fa fa-chevron-left"></i> 返回
+                </button>
+            </div>
+        </div>
+    </form>
+</script>
+
+<script id="secondVisitStatusTmpl" type="text/x-handlebars-template">
+    <form id="secondVisitStatusForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 100%; margin: 20px;">
+        <input type="hidden" name="id" value="{{id}}"/>
+        <div class="form-body">
+            <div class="alert alert-danger display-hide">
+                <i class="fa fa-exclamation-circle"></i>
+                <button class="close" data-close="alert"></button>
+                <span class="form-errors">您填写的信息有误，请检查。</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">回访结果<span class="required"> * </span></label>
+                <div class="col-md-5">
+                    <select name="secondVisitStatus" class="form-control">
+                        <option value="2">通过</option>
+                        <option value="0">拒绝</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">回访备注
+                </label>
+                <div class="col-md-5" style="width: 300px">
+                    <textarea type="text" class="form-control" name="visitRemark"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions fluid">
+            <div class="col-md-offset-3 col-md-9">
+                <button id="secondVisitStatusSubmit{{id}}" type="button" class="btn green">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+                <button id="secondVisitStatusCancel{{id}}" class="btn default" data-href="">
+                    <i class="fa fa-chevron-left"></i> 返回
+                </button>
+            </div>
+        </div>
+    </form>
+</script>
+
 <script>
     var grid = new Datatable();
 
@@ -84,6 +202,144 @@
         })
 
         $('#reportConfirmCancel' + id).bind('click', function () {
+            layer.close(index);
+        })
+
+    });
+
+    var firstVisitStatusTemplate = Handlebars.compile($('#firstVisitStatusTmpl').html());
+    $('#dataTable').on('click', '.firstVisitStatus', function () {
+        var id = $(this).data('id');
+        var data = {
+            id: id
+        };
+        var html = firstVisitStatusTemplate(data);
+        var fIndex = layer.open({
+            type: 1,
+            //skin: 'layui-layer-rim', //加上边框
+            area: ['500px', '300px'], //宽高
+            content: html
+        });
+
+        $form = $('#firstVisitStatusForm' + id);
+        $form.validate({
+            rules: {
+                firstVisitStatus: {
+                    required: true
+                },
+                revieweRemark: {}
+            },
+            messages: {}
+        });
+
+        $('#firstVisitStatusSubmit' + id).bind('click', function () {
+            var result = $form.validate().form();
+            if (result) {
+                var url = '${ctx}/tourUser/updateVisitStatus';
+                $.post(url, $form.serialize(), function (data) {
+                    if (data.code === 0) {
+                        layer.close(fIndex);
+                        grid.getDataTable().ajax.reload(null, false);
+                    } else {
+                        layer.alert('审核失败,原因' + data.message);
+                    }
+                });
+            }
+        })
+
+        $('#firstVisitStatusCancel' + id).bind('click', function () {
+            layer.close(fIndex);
+        })
+
+    });
+
+    var secondVisitStatusTemplate = Handlebars.compile($('#secondVisitStatusTmpl').html());
+    $('#dataTable').on('click', '.secondVisitStatus', function () {
+        var id = $(this).data('id');
+        var data = {
+            id: id
+        };
+        var html = secondVisitStatusTemplate(data);
+        var sIndex = layer.open({
+            type: 1,
+            //skin: 'layui-layer-rim', //加上边框
+            area: ['500px', '300px'], //宽高
+            content: html
+        });
+
+        $form = $('#secondVisitStatusForm' + id);
+        $form.validate({
+            rules: {
+                secondVisitStatus: {
+                    required: true
+                },
+                revieweRemark: {}
+            },
+            messages: {}
+        });
+
+        $('#secondVisitStatusSubmit' + id).bind('click', function () {
+            var result = $form.validate().form();
+            if (result) {
+                var url = '${ctx}/tourUser/updateVisitStatus';
+                $.post(url, $form.serialize(), function (data) {
+                    if (data.code === 0) {
+                        layer.close(sIndex);
+                        grid.getDataTable().ajax.reload(null, false);
+                    } else {
+                        layer.alert('审核失败,原因' + data.message);
+                    }
+                });
+            }
+        })
+
+        $('#secondVisitStatusCancel' + id).bind('click', function () {
+            layer.close(sIndex);
+        })
+
+    });
+
+    var thirdVisitStatusTemplate = Handlebars.compile($('#thirdVisitStatusTmpl').html());
+    $('#dataTable').on('click', '.thirdVisitStatus', function () {
+        var id = $(this).data('id');
+        var data = {
+            id: id
+        };
+        var html = thirdVisitStatusTemplate(data);
+        var index = layer.open({
+            type: 1,
+            //skin: 'layui-layer-rim', //加上边框
+            area: ['500px', '300px'], //宽高
+            content: html
+        });
+
+        $form = $('#thirdVisitStatusForm' + id);
+        $form.validate({
+            rules: {
+                thirdVisitStatus: {
+                    required: true
+                },
+                revieweRemark: {}
+            },
+            messages: {}
+        });
+
+        $('#thirdVisitStatusSubmit' + id).bind('click', function () {
+            var result = $form.validate().form();
+            if (result) {
+                var url = '${ctx}/tourUser/updateVisitStatus';
+                $.post(url, $form.serialize(), function (data) {
+                    if (data.code === 0) {
+                        layer.close(index);
+                        grid.getDataTable().ajax.reload(null, false);
+                    } else {
+                        layer.alert('审核失败,原因' + data.message);
+                    }
+                });
+            }
+        })
+
+        $('#thirdVisitStatusCancel' + id).bind('click', function () {
             layer.close(index);
         })
 
@@ -197,6 +453,56 @@
                         orderable: false
                     },
                     {
+                        data: 'firstVisitStatus',
+                        title: '初访状态',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if (data == 0){
+                                return '<label class="label label-default">审核失败</label>';
+                            }else if(data == 1){
+                                return '<label class="label label-danger">审核中</label>';
+                            }else if(data == 2){
+                                return '<label class="label label-success">审核成功</label>';
+                            }
+                        }
+                    },             {
+                        data: 'secondVisitStatus',
+                        title: '二访状态',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if (data == 0){
+                                return '<label class="label label-default">审核失败</label>';
+                            }else if(data == 1){
+                                return '<label class="label label-danger">审核中</label>';
+                            }else if(data == 2){
+                                return '<label class="label label-success">审核成功</label>';
+                            }
+                        }
+                    },             {
+                        data: 'thirdVisitStatus',
+                        title: '三访状态',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if (data == 0){
+                                return '<label class="label label-default">审核失败</label>';
+                            }else if(data == 1){
+                                return '<label class="label label-danger">审核中</label>';
+                            }else if(data == 2){
+                                return '<label class="label label-success">审核成功</label>';
+                            }
+                        }
+                    },
+                    {
+                        data: 'visitRemark',
+                        title: '回访备注',
+                        orderable: false
+                    },
+                    {
+                        data: 'visitTime',
+                        title: '状态时间',
+                        orderable: false
+                    },
+                    {
                         data: 'houseType',
                         title: '房型需求',
                         orderable: false,
@@ -257,7 +563,15 @@
                             optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tourUser/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
                             if (full.auditStatus == 1){
                                 optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
-                                optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="resetAjax(' + full.id + ')"><i class="fa fa-edit"></i> 重置 </a>';
+                                if (full.firstVisitStatus == 1){
+                                    optionHtml += '<a class="btn btn-xs default yellow-stripe firstVisitStatus" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 初访 </a>';
+                                }
+                                if (full.firstVisitStatus == 2 && full.secondVisitStatus == 1){
+                                    optionHtml += '<a class="btn btn-xs default green-stripe secondVisitStatus" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 二访 </a>';
+                                }
+                                if (full.secondVisitStatus == 2 && full.thirdVisitStatus == 1){
+                                    optionHtml += '<a class="btn btn-xs default green-stripe thirdVisitStatus" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 三访 </a>';
+                                }
                             }
                             </shiro:hasPermission>
                             return optionHtml;

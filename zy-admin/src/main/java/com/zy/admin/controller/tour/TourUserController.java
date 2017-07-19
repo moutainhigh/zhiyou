@@ -95,6 +95,24 @@ public class TourUserController {
         return ResultBuilder.ok("审核成功");
     }
 
+    /**
+     * 回访
+     * @param id
+     * @param firstVisitStatus
+     * @param secondVisitStatus
+     * @param thirdVisitStatus
+     * @param visitRemark
+     * @return
+     */
+    @RequiresPermissions("tourUser:edit")
+    @RequestMapping(value = "/updateVisitStatus", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> updateVisitStatus(@RequestParam Long id, Integer firstVisitStatus, Integer secondVisitStatus, Integer thirdVisitStatus, String visitRemark) {
+        Long loginUserId = getPrincipalUserId();
+        tourService.updateVisitStatus(id, firstVisitStatus,secondVisitStatus,thirdVisitStatus, visitRemark, loginUserId);
+        return ResultBuilder.ok("审核成功");
+    }
+
     @RequiresPermissions("tourUser:edit")
     @RequestMapping(value = "/addInfo", method = RequestMethod.POST)
     @ResponseBody

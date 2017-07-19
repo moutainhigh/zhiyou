@@ -61,4 +61,6 @@ public interface TourService {
      void resetProductNumber(Long tourUserId);
 
      Page<TourUser> findJoinAll(TourUserQueryModel tourUserQueryModel);
+
+     void updateVisitStatus(Long id, Integer firstVisitStatus, Integer secondVisitStatus, Integer thirdVisitStatus, String visitRemark, Long loginUserId);
 }

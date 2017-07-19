@@ -60,6 +60,16 @@ public class TourUserAdminVo implements Serializable {
     @Field(label = "是否加床")
     private Integer isAddBed;
 
+    @Field(label = "初访状态")
+    private Integer firstVisitStatus;
+    @Field(label = "二访状态")
+    private Integer secondVisitStatus;
+    @Field(label = "三访状态")
+    private Integer thirdVisitStatus;
+    @Field(label = "回访备注")
+    private String visitRemark;
+    @Field(label = "回访时间")
+    private String visitTime;
 
     /* 扩展 */
     @Field(label = "票务照片")

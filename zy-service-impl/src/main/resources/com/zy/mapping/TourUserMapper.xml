@@ -26,6 +26,11 @@
 		<!--<result column="departure_time" property="departureTime" />-->
 		<result column="is_join" property="isJoin" />
 		<result column="amount" property="amount" />
+		<result column="first_visit_status" property="firstVisitStatus" />
+		<result column="second_visit_status" property="secondVisitStatus" />
+		<result column="third_visit_status" property="thirdVisitStatus" />
+		<result column="visit_remark" property="visitRemark" />
+		<result column="visit_time" property="visitTime" />
 	</resultMap>
 
 	<sql id="baseColumn">
@@ -50,7 +55,12 @@
 		a.house_type,
 		a.is_add_bed,
 		a.is_join,
-		a.amount
+		a.amount,
+		a.first_visit_status,
+		a.second_visit_status,
+		a.third_visit_status,
+		a.visit_remark,
+		a.visit_time
 	</sql>
 
 	<!-- 查询所有旅客信息 -->
@@ -343,6 +353,32 @@
 				update_date = #{updateDate},
 				update_by = #{updateBy}
 		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 回访-->
+	<update id="updateVisitStatus" parameterType="com.zy.entity.tour.TourUser">
+		update ts_tour_user
+			<set>
+				<if test="firstVisitStatus !=null">
+					first_visit_status = #{firstVisitStatus},
+				</if>
+				<if test="secondVisitStatus !=null">
+					second_visit_status = #{secondVisitStatus},
+				</if>
+				<if test="thirdVisitStatus !=null">
+					third_visit_status = #{thirdVisitStatus},
+				</if>
+				<if test="visitRemark !=null">
+					visit_remark = #{visitRemark},
+				</if>
+				<if test="visitTime !=null">
+					visit_time = #{visitTime},
+				</if>
+				<if test="updateBy !=null">
+					update_by = #{updateBy}
+				</if>
+			</set>
 		where id = #{id}
 	</update>
 
