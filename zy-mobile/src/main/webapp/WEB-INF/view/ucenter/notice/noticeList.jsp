@@ -3,118 +3,99 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text; charset=utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="Cache-Control" content="no-store" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="${stccdn}/css/ucenter/account.css">
-    <style>
-        html, body, div, p, ul, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, select, button, textarea, iframe, table, th, td { margin: 0; padding: 0; }
-        body { font-family:"Microsoft YaHei";background: #fff; font-size: 26px; color: #151515; margin: 0; padding: 0; }
-        img { border: 0 none; vertical-align: top; display:inline-block; -ms-interpolation-mode: bicubic; image-rendering:optimizeQuality; }
-        button { cursor: pointer; border:0 none; }
-        input{ border:0 none; background:transparent; }
-        textarea{ resize: none; border:0 none; }
-        ul, li { list-style-type: none; }
-        table{ border-collapse:collapse; border-spacing:0; }
-        i, em, cite { font-style: normal; }
-        p{word-wrap:break-word; }
-        body, input, select, button,textarea{ outline: none; }
-        a { display:block; }
-        a,input,textarea,p,span,h2,em,li,div{text-decoration: none; }
-        input,textarea{font-family:"Microsoft YaHei"}
-        .echartdetil {
-            width:100%;
-            height:80px;
-            background: #fff;
-            border-bottom: 1px solid #ccc;
-        }
-        .triangle {
-            float: left;
-            width:10%;
-            height:100%;
-            position:relative;
-        }
-        .font-triangle {
-            float: left;
-            width:40%;
-            height:100%;
-            text-align: left;
-            font-size: 20px;
-            position: relative;
-        }
-        .font-triangle p {
-            width:100%;
-            overflow:hidden;
-            white-space:nowrap;
-            text-overflow:ellipsis;
-            position: absolute;
-            top:50%;
-            margin-top: -24px;
-            line-height: 25px;
-        }
-        .font-triangle .firSpan,.font-triangle .lastSpan {
-            font-size: 16px;
-        }
-
-        .font-triangleT {
-            float: right;
-            width:45%;
-            margin-right: 5%;
-            text-align: right;
-            font-size: 16px;
-            line-height: 80px;
-        }
-        .font-triangleD {
-            width:90%;
-            margin-left: 5%;
-            font-size: 16px;
-        }
-        .font-triangleTD {
-            position: absolute;
-            right:0;
-        }
-        @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
-            .font-triangleTD {width:20%;position: absolute;
-                right:0;}
-            .font-triangleT {
-                line-height:100px;
-            }
-        }
-    </style>
-    <title>订单收益明细</title>
+    <title>通知公告列表</title>
     <%@ include file="/WEB-INF/view/include/head.jsp"%>
+    <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
+
     <script type="text/javascript">
         $(function() {
-
+            if (!$('.page-more').hasClass('disabled')) {
+                $('.page-more').click(loadMore);
+            }
         });
+
+        var timeLT = '${timeLT}';
+        var pageNumber = 0;
+
+        function loadMore() {
+            $.ajax({
+                url : '${ctx}/u/notice',
+                data : {
+                    pageNumber : pageNumber + 1,
+                    timeLT : timeLT
+                },
+                dataType : 'json',
+                type : 'POST',
+                success : function(result) {
+                    if(result.code != 0) {
+                        return;
+                    }
+                    var page = result.data.page;
+                    if (page.data.length) {
+                        timeLT = result.data.timeLT;
+                        pageNumber = page.pageNumber;
+                        var pageData = page.data;
+                        for ( var i in pageData) {
+                            var row = pageData[i];
+                            buildRow(row);
+                        }
+                    }
+                    if (!page.data.length || page.data.length < page.pageSize) {
+                        $('.page-more').addClass('disabled').html('<span>没有更多数据了</span>').unbind('click', loadMore);
+                    }
+                }
+            });
+        }
+
+        function buildRow(row){
+            var rowTpl = document.getElementById('rowTpl').innerHTML;
+            laytpl(rowTpl).render(row, function(html) {
+                $('.list-group').append(html);
+            });
+        }
     </script>
+    <script id="rowTpl" type="text/html">
+        <a class="list-item article" href="${ctx}/u/notice/{{ d.id }}">
+            <div class="list-text">
+                <h2 class="fs-15 lh-24 o-hidden">{{ d.title }}</h2>
+                <div class="font-777 fs-12">{{ d.createdTimeLabel }}</div>
+                <i class="list-arrow" style="float: right;margin-right: 0;margin-top: -25px;"></i>
+            </div>
+        </a>
+    </script>
+
 </head>
 <body>
 <header class="header">
-    <h1>订单收益明细</h1>
-    <a href="${ctx}/u/profit/orderRevenue?type=${type}" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <h1>通知公告列表</h1>
 </header>
-
 <article>
-    <div class="detilAll" onclick="changeTriangle(this)">
-        <c:forEach items="${orderRevenueDetails}" var="orderRevenueDetail" >
-            <div class="changeDetil">
-                <div class="echartdetil echartdetilD">
-                    <div class="font-triangle font-triangleD">
-                        <p>
-                            订单号：<span class="firSpan">${orderRevenueDetail.sn}</span><br>
-                            <span class="lastSpan">${orderRevenueDetail.createdTimeLabel}</span>
-                        </p>
+        <div class="list-group mb-0">
+            <c:forEach items="${page.data}" var="notice">
+                <a class="list-item article" href="${ctx}/u/notice/${notice.id}">
+                    <div class="list-text">
+                        <h2 class="fs-15 lh-24 o-hidden">${notice.title}</h2>
+                        <div class="font-777 fs-12">${notice.createdTimeLabel}</div>
+                        <i class="list-arrow" style="float: right;margin-right: 0;margin-top: -25px;"></i>
                     </div>
-                </div>
-            </div>
-        </c:forEach>
-    </div>
+                </a>
+            </c:forEach>
+        </div>
+
+    <c:if test="${page.total > page.pageSize}">
+        <div class="page-more"><span>点击加载更多</span></div>
+    </c:if>
+    <c:if test="${page.total <= page.pageSize}">
+        <div class="page-more disabled"><span>没有更多数据了</span></div>
+    </c:if>
 </article>
-<%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
 </html>

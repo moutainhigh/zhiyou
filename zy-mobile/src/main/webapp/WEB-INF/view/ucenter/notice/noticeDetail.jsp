@@ -13,7 +13,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>通知公告</title>
+    <title>通知公告详情</title>
     <%@ include file="/WEB-INF/view/include/head.jsp"%>
     <style>
         * {margin:0;padding:0;border:none;}
@@ -21,12 +21,17 @@
 </head>
 <body>
 <header class="header">
-    <h1>通知公告</h1>
-    <a href="${ctx}" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/notice" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <h1>通知公告详情</h1>
 </header>
-<div class="main">
-    <img src="${ctx}/images/notification23.png" style="width:100%;" />
-</div>
+
+<article>
+    <div class="detail-wrap dcss">
+        <h2 class="font-333 fs-20 lh-30">${notice.title}</h2>
+        <div class="mt-10 font-999 fs-14 lh-20">${notice.createdTimeLabel}</div>
+        ${notice.content}
+    </div>
+</article>
 
 </body>
 </html>
