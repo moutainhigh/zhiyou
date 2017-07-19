@@ -57,6 +57,7 @@ public class TourUserController {
     @Autowired
     private UserService userService;
 
+
     @Autowired
     private UserInfoService userInfoService;
 

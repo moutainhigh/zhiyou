@@ -24,6 +24,8 @@ public interface TourUserMapper {
 
     int insert(TourUser tourUser);
 
+    void delete(Long id);
+
     List<TourUser> findJoinAll(TourUserQueryModel tourUserQueryModel);
 
     long joinCount(TourUserQueryModel tourUserQueryModel);
