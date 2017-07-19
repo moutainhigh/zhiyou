@@ -497,6 +497,9 @@
   }
   //确认旅游申请
   function submitTravel(){
+    if($('#phone1').val()!=null){
+      layer.msg("请填入推荐人手机号！");
+    }else{
     $.ajax({
       url : '${ctx}/tour/findparentInfobyPhone',
       data : {
@@ -541,6 +544,8 @@
         }
       }
     });
+
+    }
   }
   //取消旅游申请
   function hideTravel(){
