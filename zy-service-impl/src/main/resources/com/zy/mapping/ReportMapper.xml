@@ -132,8 +132,14 @@
 			<if test="reportedDateLT != null">
 				and reported_date &lt; #{reportedDateLT}
 			</if>
-			<if test="userIdEQ != null">
+			<if test="userIdEQ != null and phoneEQ !=null">
+				and (user_id = #{userIdEQ} or  phone = #{phoneEQ})
+			</if>
+			<if test="userIdEQ != null and phoneEQ ==null">
 				and user_id = #{userIdEQ}
+			</if>
+			<if  test="userIdEQ == null and phoneEQ !=null">
+				and phone = #{phoneEQ}
 			</if>
 			<if test="confirmStatusEQ != null">
 				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
@@ -192,9 +198,6 @@
 			</if>
 			<if test="isHotEQ != null">
 				and is_hot = #{isHotEQ}
-			</if>
-			<if test="phoneEQ != null">
-				and phone = #{phoneEQ}
 			</if>
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
@@ -228,8 +231,14 @@
 			<if test="reportedDateLT != null">
 				and reported_date &lt; #{reportedDateLT}
 			</if>
-			<if test="userIdEQ != null">
+			<if test="userIdEQ != null and phoneEQ !=null">
+				and (user_id = #{userIdEQ} or  phone = #{phoneEQ})
+			</if>
+			<if test="userIdEQ != null and phoneEQ ==null">
 				and user_id = #{userIdEQ}
+			</if>
+			<if  test="userIdEQ == null and phoneEQ !=null">
+				and phone = #{phoneEQ}
 			</if>
 			<if test="confirmStatusEQ != null">
 				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
@@ -288,9 +297,6 @@
 			</if>
 			<if test="isHotEQ != null">
 				and is_hot = #{isHotEQ}
-			</if>
-			<if test="phoneEQ != null">
-				and phone = #{phoneEQ}
 			</if>
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
