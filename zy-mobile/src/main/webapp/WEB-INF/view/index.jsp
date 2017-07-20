@@ -78,7 +78,7 @@
         <div class="swiper-pagination"></div>
     </div>
     <article class="clearfloat">
-        <a href="${ctx}/notification" class="notice">
+        <a href="${ctx}/u/notice" class="notice">
             <img src="${ctx}/images/notice.png" />
             <span>通知公告</span>
         </a>

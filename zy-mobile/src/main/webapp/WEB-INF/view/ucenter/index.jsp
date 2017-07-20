@@ -230,19 +230,17 @@
       <%--</a>--%>
     <%--</div>--%>
     <div class="user-account flex list-group">
-
+      <a class="flex-1 bd-r"  href="${ctx}/u/notice">
+        <i class="icon icon-2x" style='background: url("${ctx}/images/ucenterNotice.png")'></i>
+        <em>通知公告</em>
+      </a>
       <a class="flex-1 bd-r" href="${ctx}/u/userSetting">
         <i class="icon icon-2x" style='background: url("${ctx}/images/shezhi.png")'></i>
         <em>设置</em>
       </a>
-
-      <a class="flex-1 bd-r" href="#">
+      <a class="flex-1" href="#">
         <i class="icon icon-2x" style='background: url("${ctx}/images/banben.png")'></i>
         <em>版本通知</em>
-      </a>
-      <a class="flex-1"  href="#" style="background: #f2f3f5;">
-        <i class="icon icon-2x" ></i>
-        <em></em>
       </a>
     </div>
     <%----%>
