@@ -35,13 +35,13 @@ public class DateUtil {
      */
     public static Date getBeforeMonthEnd(Date date,int moth,int year){
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        calendar.setTime(getMonthData(date,moth,year));
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 59);
         calendar.set(Calendar.DATE, 1);        //设置为该月第一天
         calendar.add(Calendar.DATE, -1);    //再减一天即为上个
-        calendar.add(Calendar.MONTH, moth);
+      /*  calendar.add(Calendar.MONTH, moth);*/
         calendar.add(Calendar.YEAR, year);
         return calendar.getTime();
     }
@@ -131,6 +131,21 @@ public class DateUtil {
         return str.toString();
     }
 
+
+    /**
+     * 获取指定月份相差月份日期
+     * @param date
+     * @param month
+     * @return
+     */
+    public static Date getMonthData(Date date,int month,int dateI){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, month);
+        calendar.add(Calendar.DATE,dateI);
+        return calendar.getTime();
+    }
+
     /**
      * 计算百分比 并格式化成2位小数
      * @param arrydata
@@ -148,8 +163,8 @@ public class DateUtil {
         return DateUtil.formatDouble(((double)coun/(double)data)*100);
     }
     public static void  main(String []age){
-       System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
-        System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));
+       System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),-6,0),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),-5,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateUtil.getMoth(new Date()));
         System.out.println(DateUtil.formatDouble(10123456789.0));
         String ll="qwertyui";
