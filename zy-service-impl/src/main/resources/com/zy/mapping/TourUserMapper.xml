@@ -31,6 +31,7 @@
 		<result column="third_visit_status" property="thirdVisitStatus" />
 		<result column="visit_remark" property="visitRemark" />
 		<result column="visit_time" property="visitTime" />
+		<result column="visit_user_id" property="visitUserId" />
 	</resultMap>
 
 	<sql id="baseColumn">
@@ -60,7 +61,8 @@
 		a.second_visit_status,
 		a.third_visit_status,
 		a.visit_remark,
-		a.visit_time
+		a.visit_time,
+		a.visit_user_id
 	</sql>
 
 	<!-- 查询所有旅客信息 -->
@@ -128,6 +130,9 @@
 			</if>
 			<if test="userId !=null">
 				AND a.user_id = #{userId}
+			</if>
+			<if test="visitUserId !=null">
+				AND a.visit_user_id = #{visitUserId}
 			</if>
 			<if test="parentId !=null">
 				AND a.parent_id = #{parentId}
@@ -284,6 +289,9 @@
 			<if test="userId !=null">
 				AND a.user_id = #{userId}
 			</if>
+			<if test="visitUserId !=null">
+				AND a.visit_user_id = #{visitUserId}
+			</if>
 			<if test="parentId !=null">
 				AND a.parent_id = #{parentId}
 			</if>
@@ -428,6 +436,17 @@
 			</if>
 			<if test="updateBy !=null">
 				update_by = #{updateBy}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 分配 -->
+	<update id="visitUser" parameterType="com.zy.entity.tour.TourUser">
+		update ts_tour_user
+		<set>
+			<if test="visitUserId !=null">
+				visit_user_id = #{visitUserId}
 			</if>
 		</set>
 		where id = #{id}

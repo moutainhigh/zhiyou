@@ -39,6 +39,8 @@ public class TourUserQueryModel implements Serializable {
 
     private Long  tourTimeId;
 
+    private Long visitUserId;
+
     private Integer firstVisitStatus;
 
     private Integer secondVisitStatus;

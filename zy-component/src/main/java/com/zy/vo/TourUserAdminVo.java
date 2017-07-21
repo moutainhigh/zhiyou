@@ -70,6 +70,9 @@ public class TourUserAdminVo implements Serializable {
     private String visitRemark;
     @Field(label = "回访时间")
     private String visitTime;
+    @Field(label = "visitUserId")
+    private Long visitUserId;
+
 
     /* 扩展 */
     @Field(label = "票务照片")
