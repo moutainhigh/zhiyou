@@ -19,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class TourUserQueryModel implements Serializable {
 
-    private Long sequenceId;
+    private String sequenceId;
 
     private Long reportId;
 
