@@ -327,7 +327,6 @@
   }
   //旅游申请确定
   function submitTravel(){
-    alert($('#phone1').val());
     if($('#phone1').val()==null||$('#phone1').val()==""){
       layer.msg("请填入推荐人手机号！");
     } else{
@@ -349,6 +348,7 @@
               if (index == 1) {
                 $(".miui-dialog").remove();
                 $(".policyInfoMain").hide();
+                $("#tourchange").html("");
                 $(".tourApply").show();
                 $.ajax({
                   url : '${ctx}/tour/findTourApple',
