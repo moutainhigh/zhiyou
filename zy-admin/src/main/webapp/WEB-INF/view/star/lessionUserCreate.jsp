@@ -111,9 +111,7 @@
                                 <input type="text" class="form-control"  id="lessonameLable"  readonly placeholder="请选择课程"/>
                                 <input type="hidden" name="lseeonId" id="lseeonId" >
                             </div>
-                            <label class="control-label col-md-3">
-                                <a class="btn btn-xs default green-stripe" href="javascript:;" onclick="selectLesson()"><i class="fa fa-edit"></i> 请选择</a>
-                            </label>
+                            <div class="btn" style="width:100px;height: 34px;border:1px solid #e5e5e5;background: #35aa47;color: #fff;" onclick="selectLesson()">请选择 </div>
                         </div>
 
                     </div>
