@@ -21,6 +21,10 @@
     .user-account {
       margin-bottom: 20px;
     }
+
+    .icon-heartNew {
+	    background-image: url(${ctx}/images/icon_heartNew.png);
+    }
   </style>
   <script>
     $(function() {
@@ -34,23 +38,23 @@
   <h1>活动</h1>
 </header>
 
-<article>
-  <div class="list-group mb-15">
-    <div class="user-account flex">
-      <a class="flex-1 bd-r" href="${ctx}/u/activity/applyList">
-        <i class="list-icon icon icon-join"></i>
-        <em>报名的活动</em>
-      </a>
-      <a class="flex-1 bd-r" href="${ctx}/u/activity/collectList">
-        <i class="list-icon icon icon-heart"></i>
-        <em>关注的活动</em>
-      </a>
-      <a class="flex-1" href="${ctx}/u/activity/teamApplyList">
-        <i class="list-icon icon icon-heart"></i>
-        <em>团队报名的活动</em>
-      </a>
-    </div>
-    <c:forEach items="${activities}" var="activity">
+  <article>
+    <div class="list-group mb-15">
+      <div class="user-account flex">
+        <a class="flex-1 bd-r" href="${ctx}/u/activity/applyList">
+          <i class="list-icon icon icon-join"></i>
+          <em>报名的活动</em>
+        </a>
+        <a class="flex-1 bd-r" href="${ctx}/u/activity/collectList">
+          <i class="list-icon icon icon-heart icon-heartNew"></i>
+          <em>关注的活动</em>
+        </a>
+        <a class="flex-1" href="${ctx}/u/activity/teamApplyList">
+          <i class="list-icon icon icon-heart"></i>
+          <em>团队报名的活动</em>
+        </a>
+      </div>
+      <c:forEach items="${activities}" var="activity">
       <a class="list-item" href="${ctx}/activity/${activity.id}">
         <div class="activity">
           <figure class="abs-lt image-wrap">

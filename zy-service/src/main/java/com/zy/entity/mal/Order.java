@@ -131,6 +131,7 @@ public class Order implements Serializable {
 
 	@Field(label = "过期时间")
 	@View(name = "expiredTimeLabel", type = String.class)
+	@Query({Predicate.LT, Predicate.GTE})
 	private Date expiredTime;
 
 	@View(name = "paidTimeLabel", type = String.class, groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
@@ -351,4 +352,5 @@ public class Order implements Serializable {
 	@Field(label = "是否结算")
 	@Query(Predicate.EQ)
 	private Boolean isSettlement;
+
 }

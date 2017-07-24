@@ -181,7 +181,7 @@
             <div class="form-group">
               <label class="control-label col-md-3">报名费<span class="required"> * </span></label>
               <div class="col-md-5">
-                <input type="text" class="form-control" name="amount" value="${activity.amountLabel}"/>
+                <input type="text" class="form-control" name="amount" value="${activity.amount}"/>
               </div>
             </div>
             <div class="form-group">

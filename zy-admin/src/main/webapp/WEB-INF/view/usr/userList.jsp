@@ -394,18 +394,27 @@
             data: 'userType',
             title: '用户类型'
           },
-	        {
-		        data: '',
-		        title: '管理层职位',
-		        orderable: false,
+          {
+            data: '',
+            title: '管理层职位',
+            orderable: false,
             render: function(data, type, full) {
-		          var html = '';
-              html += full.isDirector? '<p>懂事</p>' : '';
-              html += full.isShareholder? '<p>股东</p>' : '';
-              html += full.isBoss? '<p>总经理</p>' : '';
-		        	return html;
+              var html = '';
+              if (full.isDirector) {
+                html += '<p>董事</p>';
+              }
+              if (full.isHonorDirector) {
+                html += '<p>荣誉董事</p>';
+              }
+              if (full.isShareholder) {
+                html += '<p>股东</p>';
+              }
+              if (full.isBoss) {
+                html += '<p>总经理</p>'
+              }
+              return html;
             }
-	        },
+          },
           {
             data: '',
             title: '总经理信息',
@@ -479,7 +488,10 @@
 	              if(full.userRank == 'V4') {
                 <shiro:hasPermission name="user:setDirector">
                   if(!full.isDirector) {
-	                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setDirector?id=' + full.id + '" data-confirm="您确定要升级[' + full.nickname + ']为董事？"><i class="fa fa-smile-o"></i> 升级董事 </a>';
+	                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setDirector?id=' + full.id + '" data-confirm="您确定要升级[' + full.nickname + ']为董事？"><i class="fa fa-smile-o"></i> 成为董事 </a>';
+                  }
+                  if (!full.isHonorDirector) {
+                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/isHonorDirector?id=' + full.id + '" data-confirm="您确定升级[' + full.nickname + ']为荣誉董事？"><i class="fa fa-smile-o"></i> 成为荣誉董事 </a>';
                   }
                 </shiro:hasPermission>
                 <shiro:hasPermission name="user:setShareholder">
@@ -649,7 +661,7 @@
               </div>
               
               <div class="form-group">
-                <select name="userRankEQ" class="form-control">
+                <select name="isFrozenEQ" class="form-control">
                   <option value="">-- 是否冻结 --</option>
                   <option value="1">是</option>
                   <option value="0">否</option>

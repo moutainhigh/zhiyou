@@ -23,7 +23,7 @@
         </div>
 		<div class="col-md-4">
           <div class="note note-danger">
-            <h4 class="block">数据奖合计</h4>
+            <h4 class="block">历史收益合计</h4>
             <p>{{sjj}}</p>
           </div>
         </div>

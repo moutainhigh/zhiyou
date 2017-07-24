@@ -35,6 +35,8 @@ public class OrderListVo implements Serializable {
 	private BigDecimal amount;
 	@Field(label = "商品id")
 	private Long productId;
+	@Field(label = "是否结算")
+	private Boolean isSettlement;
 
 	/* 扩展 */
 	@Field(label = "isPlatformDeliver")

@@ -1,11 +1,13 @@
 package com.zy.mapper;
 
 
-import java.util.List;
+import com.zy.entity.fnc.Profit;
+import com.zy.model.dto.DepositSumDto;
+import com.zy.model.dto.ProfitSumDto;
+import com.zy.model.query.ProfitQueryModel;
 import org.apache.ibatis.annotations.Param;
 
-import com.zy.entity.fnc.Profit;
-import com.zy.model.query.ProfitQueryModel;
+import java.util.List;
 
 
 public interface ProfitMapper {
@@ -24,4 +26,11 @@ public interface ProfitMapper {
 
 	long count(ProfitQueryModel profitQueryModel);
 
+	DepositSumDto sum(ProfitQueryModel profitQueryModel);
+
+	List<ProfitSumDto> sumGroupBy(ProfitQueryModel profitQueryModel);
+
+	List<Profit> orderRevenueDetail(ProfitQueryModel profitQueryModel);
+
+	DepositSumDto queryRevenue(ProfitQueryModel profitQueryModel);
 }

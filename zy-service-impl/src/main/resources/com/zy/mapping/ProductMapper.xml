@@ -23,8 +23,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.Product" useGeneratedKeys="true" keyProperty="id">
-		insert into `mal_product` (title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time,is_settlement)
-		values (#{title},#{detail},#{productPriceType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{price},#{priceScript},#{marketPrice},#{skuCode},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime},#{isSettlement})
+	  insert into `mal_product` (title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time,is_settlement)
+	  values (#{title},#{detail},#{productPriceType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{price},#{priceScript},#{marketPrice},#{skuCode},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime},#{isSettlement})
 	</insert>
 
 	<delete id="delete">
@@ -56,8 +56,8 @@
 
 	<update id="merge">
 		update `mal_product`
-		<set>
-			<foreach collection="fields" item="field">
+			<set>
+				<foreach collection="fields" item="field">
 				<choose>
 					<when test="field == 'title'">title = #{product.title},</when>
 					<when test="field == 'detail'">detail = #{product.detail},</when>
@@ -76,8 +76,8 @@
 					<when test="field == 'createdTime'">created_time = #{product.createdTime},</when>
 					<when test="field == 'isSettlement'">is_settlement = #{product.isSettlement},</when>
 				</choose>
-			</foreach>
-		</set>
+				</foreach>
+			</set>
 		where id = #{product.id}
 	</update>
 
@@ -95,13 +95,13 @@
 		<where>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
-					and id in
-					<foreach collection="idIN" item="item" open="(" separator="," close=")">
-						#{item}
-					</foreach>
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-					and 1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="createdTimeLT != null">
@@ -138,13 +138,13 @@
 		<where>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
-					and id in
-					<foreach collection="idIN" item="item" open="(" separator="," close=")">
-						#{item}
-					</foreach>
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
 				</if>
 				<if test="idIN.length == 0">
-					and 1 = 2
+				and 1 = 2
 				</if>
 			</if>
 			<if test="createdTimeLT != null">

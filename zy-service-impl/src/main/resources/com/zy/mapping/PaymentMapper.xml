@@ -154,6 +154,9 @@
 			<if test="paidTimeGTE != null">
 				and paid_time &gt;= #{paidTimeGTE}
 			</if>
+			<if test="titleEQ != null">
+				and title = #{titleEQ}
+			</if>
 			<if test="snEQ != null">
 				and sn = #{snEQ}
 			</if>
@@ -214,6 +217,9 @@
 			</if>
 			<if test="paidTimeGTE != null">
 				and paid_time &gt;= #{paidTimeGTE}
+			</if>
+			<if test="titleEQ != null">
+				and title = #{titleEQ}
 			</if>
 			<if test="snEQ != null">
 				and sn = #{snEQ}

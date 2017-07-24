@@ -9,6 +9,8 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
 import com.zy.common.model.tree.TreeNodeResolver;
+import com.zy.common.util.DateUtil;
+import com.zy.common.util.BeanUtils;
 import com.zy.component.FncComponent;
 import com.zy.component.MalComponent;
 import com.zy.entity.fnc.*;
@@ -34,6 +36,7 @@ import com.zy.model.query.OrderFillUserQueryModel;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.OrderService;
+import com.zy.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.validator.constraints.NotBlank;
@@ -45,6 +48,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
@@ -98,6 +102,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private Producer producer;
+
+	@Autowired
+	private UserService userService;
 
 	public static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -632,196 +639,544 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public void settleUpProfit(@NotNull Long orderId) {
-		Order order = orderMapper.findOne(orderId);
-		validate(order, NOT_NULL, "order id" + orderId + " is not found");
-		if (order.getIsProfitSettledUp()) {
-			return; // 幂等操作
-		}
-		if (order.getOrderStatus() != OrderStatus.已支付 && order.getOrderStatus() != OrderStatus.已发货 && order.getOrderStatus() != OrderStatus.已完成) {
-			throw new BizException(BizCode.ERROR, "只有已支付订单才能结算奖励");
+	public void settleUpProfit(@NotBlank String yearAndMonth) {
+
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM");
+		TemporalAccessor temporalAccessor = df.parse(yearAndMonth);
+
+		int year = temporalAccessor.get(ChronoField.YEAR);
+		int month = temporalAccessor.get(ChronoField.MONTH_OF_YEAR);
+
+		YearMonth yearMonth = YearMonth.of(year, month);
+		YearMonth nowYearMonth = YearMonth.now();
+		if (!nowYearMonth.isAfter(yearMonth)) {
+			throw new BizException(BizCode.ERROR, "未达到发放时间");
 		}
 
-		OrderItem orderItem = orderItemMapper.findByOrderId(orderId).get(0);
+		LocalDate beginDate = LocalDate.of(year, month, 1);
+		LocalDate endDate = beginDate.with(TemporalAdjusters.firstDayOfNextMonth());
 
-		Long quantity = orderItem.getQuantity();
-		@SuppressWarnings("unused")
-		Long productId = orderItem.getProductId();
-		Long buyerId = order.getUserId();
-		Long sellerId = order.getSellerId();
-		User buyer = userMapper.findOne(buyerId);
-		@SuppressWarnings("unused")
-		User seller = userMapper.findOne(sellerId);
-		UserRank buyerUserRank = order.getBuyerUserRank();
-		@SuppressWarnings("unused")
-		UserRank sellerUserRank = order.getSellerUserRank();
+		LocalDateTime beginDateTime = LocalDateTime.of(beginDate, LocalTime.MIN);
+		LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MIN);
+
+		Date begin = Date.from(beginDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		Date end = Date.from(endDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+		List<Order> orders = orderMapper.findAll(OrderQueryModel.builder()
+				.orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成})
+				.productIdEQ(2L)  //月结算只针对2.0的产品
+				.paidTimeGTE(begin).paidTimeLT(end)
+				.isProfitSettledUpEQ(false)
+				.build());
+
 		@SuppressWarnings("unused")
 		Long sysUserId = config.getSysUserId();
+		for (Order order : orders) {
 
-		Date paidTime = order.getPaidTime();
+			Long orderId = order.getId();
 
-		if (config.isOld(productId)) {
-
-			/* 销量奖 */
-			if (buyerUserRank == UserRank.V4) {
-				final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
-				fncComponent.createProfit(buyerId, Profit.ProfitType.销量奖, orderId, "销量奖", CurrencyType.积分, saleBonus, paidTime, null);
+			if (order.getIsProfitSettledUp()) {
+				return; // 幂等操作
+			}
+			if (order.getOrderStatus() != OrderStatus.已支付 && order.getOrderStatus() != OrderStatus.已发货 && order.getOrderStatus() != OrderStatus.已完成) {
+				throw new BizException(BizCode.ERROR, "只有已支付订单才能结算奖励");
 			}
 
-			/* 一级平级奖 */
-			if (buyerUserRank == UserRank.V3) {
-				Long buyerParentId = buyer.getParentId();
-				if (buyerParentId != null) {
-					User buyerParent = userMapper.findOne(buyerParentId);
-					if (buyerParent.getUserRank() == UserRank.V3) {
-						final BigDecimal v3FlatBonus = new BigDecimal("7.00").multiply(BigDecimal.valueOf(quantity));
-						fncComponent.createTransfer(sellerId, buyerParentId, Transfer.TransferType.一级平级奖, orderId, "一级平级奖", CurrencyType.积分, v3FlatBonus, paidTime);
+			OrderItem orderItem = orderItemMapper.findByOrderId(orderId).get(0);
+
+			Long quantity = orderItem.getQuantity();
+			@SuppressWarnings("unused")
+			Long productId = orderItem.getProductId();
+			Long buyerId = order.getUserId();
+			Long sellerId = order.getSellerId();
+			User buyer = userMapper.findOne(buyerId);
+			@SuppressWarnings("unused")
+			User seller = userMapper.findOne(sellerId);
+			UserRank buyerUserRank = order.getBuyerUserRank();
+			@SuppressWarnings("unused")
+			UserRank sellerUserRank = order.getSellerUserRank();
+
+			Date paidTime = order.getPaidTime();
+
+			if (config.isOld(productId)) {
+
+				/* 销量奖 */
+				if (buyerUserRank == UserRank.V4) {
+					final BigDecimal saleBonus = new BigDecimal("8.00").multiply(BigDecimal.valueOf(quantity));
+					fncComponent.createProfit(buyerId, Profit.ProfitType.销量奖, orderId, "销量奖", CurrencyType.积分, saleBonus, paidTime, null);
+				}
+
+				/* 一级平级奖 */
+				if (buyerUserRank == UserRank.V3) {
+					Long buyerParentId = buyer.getParentId();
+					if (buyerParentId != null) {
+						User buyerParent = userMapper.findOne(buyerParentId);
+						if (buyerParent.getUserRank() == UserRank.V3) {
+							final BigDecimal v3FlatBonus = new BigDecimal("7.00").multiply(BigDecimal.valueOf(quantity));
+							fncComponent.createTransfer(sellerId, buyerParentId, Transfer.TransferType.一级平级奖, orderId, "一级平级奖", CurrencyType.积分, v3FlatBonus, paidTime);
+						}
 					}
 				}
-			}
 
-			/* 特级平级奖 + 一级越级奖 */
-			if (buyerUserRank == UserRank.V4) {
+				/* 特级平级奖 + 一级越级奖 */
+				if (buyerUserRank == UserRank.V4) {
 
-				int index = 0;
-				final BigDecimal v4FlatBonus1 = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
-				final BigDecimal v4FlatBonus2 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
-				final BigDecimal v4FlatBonus3 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
+					int index = 0;
+					final BigDecimal v4FlatBonus1 = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
+					final BigDecimal v4FlatBonus2 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
+					final BigDecimal v4FlatBonus3 = new BigDecimal("4.00").multiply(BigDecimal.valueOf(quantity));
 
-				final BigDecimal v3SkipBonus = new BigDecimal("3.00").multiply(BigDecimal.valueOf(quantity));
+					final BigDecimal v3SkipBonus = new BigDecimal("3.00").multiply(BigDecimal.valueOf(quantity));
 
-				Long parentId = buyer.getParentId();
+					Long parentId = buyer.getParentId();
 
 
-				Long skipBonusUserId = null;
-				boolean firstParent = true;
+					Long skipBonusUserId = null;
+					boolean firstParent = true;
 
-				int whileTimes = 0;
-				while (parentId != null) {
-					if (whileTimes > 1000) {
-						throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
-					}
-					User parent = userMapper.findOne(parentId);
-					if (firstParent) {
-						if (parent.getUserRank() == UserRank.V3) {
-							Date lastUpgradedTime = parent.getLastUpgradedTime();
-							if (lastUpgradedTime != null && DateUtils.addMonths(lastUpgradedTime, 3).after(new Date())) {
-								skipBonusUserId = parentId;
-							}
+					int whileTimes = 0;
+					while (parentId != null) {
+						if (whileTimes > 1000) {
+							throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
 						}
-						firstParent = false;
-					}
-
-					if (parent.getUserRank() == UserRank.V4) {
-						index++;
-						if (index == 0) {
-							continue;
-						} else if (index == 1) {
-							fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.积分, v4FlatBonus1, paidTime, null);
-							if (skipBonusUserId != null) {
-								/* 一级越级奖 */
-								fncComponent.createTransfer(parentId, skipBonusUserId, Transfer.TransferType.一级越级奖, orderId, "一级越级奖", CurrencyType.积分, v3SkipBonus, paidTime);
+						User parent = userMapper.findOne(parentId);
+						if (firstParent) {
+							if (parent.getUserRank() == UserRank.V3) {
+								Date lastUpgradedTime = parent.getLastUpgradedTime();
+								if (lastUpgradedTime != null && DateUtils.addMonths(lastUpgradedTime, 3).after(new Date())) {
+									skipBonusUserId = parentId;
+								}
 							}
-
-						} else if (index == 2) {
-							fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.积分, v4FlatBonus2, paidTime, null);
-						} else if (index == 3) {
-							fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.积分, v4FlatBonus3, paidTime, null);
-						} else {
-							break;
+							firstParent = false;
 						}
 
-					}
-					parentId = parent.getParentId();
-					whileTimes++;
-				}
-			}
+						if (parent.getUserRank() == UserRank.V4) {
+							index++;
+							if (index == 0) {
+								continue;
+							} else if (index == 1) {
+								fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.积分, v4FlatBonus1, paidTime, null);
+								if (skipBonusUserId != null) {
+									/* 一级越级奖 */
+									fncComponent.createTransfer(parentId, skipBonusUserId, Transfer.TransferType.一级越级奖, orderId, "一级越级奖", CurrencyType.积分, v3SkipBonus, paidTime);
+								}
 
-			order.setIsProfitSettledUp(true);
-			if (orderMapper.update(order) == 0) {
-				throw new ConcurrentException();
-			}
-		} else {
-			/* 平级推荐奖 */
-			if(buyerUserRank == UserRank.V3) {
-				Long parentId = buyer.getParentId();
-				if(parentId != null) {
-					User buyerParent = userMapper.findOne(parentId);
-					if(buyerParent.getUserRank() != UserRank.V4) {
-
-						int whileTimes = 0;
-						while (parentId != null) {
-							if (whileTimes > 1000) {
-								throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
-							}
-
-							buyerParent = userMapper.findOne(parentId);
-							if(buyerParent.getUserRank() == UserRank.V4) {
-								final BigDecimal saleBonus = new BigDecimal("10.00").multiply(BigDecimal.valueOf(quantity));
-								BigDecimal fee = saleBonus.multiply(FEE_RATE);
-								BigDecimal saleBonusAfter = saleBonus.subtract(fee);
-								fncComponent.createProfit(parentId, Profit.ProfitType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
-
-								final BigDecimal flatBonus = new BigDecimal("9.00").multiply(BigDecimal.valueOf(quantity));
-								BigDecimal flatBonusAfter = flatBonus.subtract(flatBonus.multiply(FEE_RATE));
-								fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, flatBonusAfter, paidTime);
+							} else if (index == 2) {
+								fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.积分, v4FlatBonus2, paidTime, null);
+							} else if (index == 3) {
+								fncComponent.createProfit(parentId, Profit.ProfitType.特级平级奖, orderId, "特级平级奖", CurrencyType.积分, v4FlatBonus3, paidTime, null);
+							} else {
 								break;
 							}
 
-							parentId = buyerParent.getParentId();
-							whileTimes++;
 						}
-
+						parentId = parent.getParentId();
+						whileTimes++;
 					}
 				}
 
-			}
-
-			/* 特级推荐奖 */
-			if(buyerUserRank == UserRank.V4) {
-
-				Long parentId = buyer.getParentId();
-				User buyerParent = null;
-				boolean foundV4Parent = false;
-				int whileTimes = 0;
-				while (parentId != null && !foundV4Parent) {
-					if (whileTimes > 1000) {
-						throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
-					}
-
-					buyerParent = userMapper.findOne(parentId);
-					if(buyerParent.getUserRank() == UserRank.V4) {
-						foundV4Parent = true;
-					}
-
-					if(foundV4Parent) {
-						final BigDecimal saleBonus = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
+				order.setIsProfitSettledUp(true);
+				if (orderMapper.update(order) == 0) {
+					throw new ConcurrentException();
+				}
+			} else {
+				/* 业绩奖 */
+				final Long toV4Quantity = 3600L;
+				if (buyerUserRank != UserRank.V4 && order.getQuantity() >= toV4Quantity) {  //直升特级
+					if (sellerId.equals(sysUserId)) {
+						final BigDecimal saleBonus = new BigDecimal("9.00").multiply(BigDecimal.valueOf(quantity));
 						BigDecimal fee = saleBonus.multiply(FEE_RATE);
 						BigDecimal saleBonusAfter = saleBonus.subtract(fee);
-						fncComponent.createProfit(parentId, Profit.ProfitType.特级推荐奖, orderId, "特级推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
-						break;
-					}
+						try {
+							TimeUnit.MILLISECONDS.sleep(50);
+						} catch (InterruptedException e1) {
+						}
+						fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, "业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+						logger.error(buyer.getNickname() + "直升特级, 业绩奖：" + saleBonusAfter + "已扣除手续费：" + fee);
 
-					parentId = buyerParent.getParentId();
-					whileTimes++;
-				}
+						Long parentId = buyer.getParentId();
+						User parent = userMapper.findOne(parentId);
+						int whileTimes = 0;
+						while (parent.getUserRank() != UserRank.V4) {
+							if (whileTimes > 1000) {
+								throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+							}
+							parent = userMapper.findOne(parent.getParentId());
+						}
 
-				if(foundV4Parent) {
-					if(!parentId.equals(buyer.getParentId())) {
-						Date lastUpgradedTime = seller.getLastUpgradedTime();
-						if (lastUpgradedTime != null && DateUtils.addMonths(lastUpgradedTime, 3).after(new Date())) {
-							final BigDecimal saleBonus = new BigDecimal("3.00").multiply(BigDecimal.valueOf(quantity));
-							fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.特级推荐奖, orderId, "特级推荐奖", CurrencyType.积分, saleBonus, paidTime);
+						if (parent.getUserRank() == UserRank.V4) {
+							final BigDecimal saleBonusToV4Parent = new BigDecimal("1.00").multiply(BigDecimal.valueOf(quantity));
+							BigDecimal feeToV4Parent = saleBonusToV4Parent.multiply(FEE_RATE);
+							BigDecimal saleBonusAfterToV4Parent = saleBonusToV4Parent.subtract(feeToV4Parent);
+							try {
+								TimeUnit.MILLISECONDS.sleep(50);
+							} catch (InterruptedException e1) {
+							}
+							fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, "业绩奖", CurrencyType.积分, saleBonusAfterToV4Parent, paidTime, "已扣除手续费:" + feeToV4Parent + ";费率: " + FEE_RATE);
+
+							logger.error(buyer.getNickname() + "直升特级, 给上级" + parent.getNickname() + "的业绩奖：" + saleBonusAfterToV4Parent + "已扣除手续费：" + feeToV4Parent);
 						}
 					}
 				}
-			}
-			order.setIsProfitSettledUp(true);
-			if (orderMapper.update(order) == 0) {
-				throw new ConcurrentException();
+				if (buyerUserRank == UserRank.V4) {
+					final BigDecimal saleBonus = new BigDecimal("10.00").multiply(BigDecimal.valueOf(quantity));
+					BigDecimal fee = saleBonus.multiply(FEE_RATE);
+					BigDecimal saleBonusAfter = saleBonus.subtract(fee);
+					try {
+						TimeUnit.MILLISECONDS.sleep(50);
+					} catch (InterruptedException e1) {
+					}
+					fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, "业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+					logger.error(buyer.getNickname() + "特级业绩奖：" + saleBonusAfter + "已扣除手续费：" + fee);
+
+				}
+				/*平级推荐奖*/
+//				if(buyerUserRank == UserRank.V3 && order.getQuantity() < toV4Quantity) {
+//					Long parentId = buyer.getParentId();
+//					if(parentId != null) {
+//						User buyerParent = userMapper.findOne(parentId);
+//						if(buyerParent.getUserRank() != UserRank.V4) {
+//
+//							int whileTimes = 0;
+//							while (parentId != null) {
+//								if (whileTimes > 1000) {
+//									throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+//								}
+//
+//								buyerParent = userMapper.findOne(parentId);
+//								if(buyerParent.getUserRank() == UserRank.V4) {
+//									final BigDecimal saleBonus = new BigDecimal("10.00").multiply(BigDecimal.valueOf(quantity));
+//									BigDecimal fee = saleBonus.multiply(FEE_RATE);
+//									BigDecimal saleBonusAfter = saleBonus.subtract(fee);
+//									fncComponent.createProfit(parentId, Profit.ProfitType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+//									logger.error(buyer.getNickname() + "给V4上级" + buyerParent.getNickname() + "的平级推荐奖：" + saleBonusAfter + "已扣除手续费：" + fee);
+//
+//									final BigDecimal flatBonus = new BigDecimal("9.00").multiply(BigDecimal.valueOf(quantity));
+//									BigDecimal flatBonusAfter = flatBonus.subtract(flatBonus.multiply(FEE_RATE));
+//									fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.平级推荐奖, orderId, "平级推荐奖", CurrencyType.积分, flatBonusAfter, paidTime);
+//									logger.error(buyer.getNickname() + "的V4上级" + buyerParent.getNickname() + "给上级：" + flatBonusAfter);
+//									break;
+//								}
+//
+//								parentId = buyerParent.getParentId();
+//								whileTimes++;
+//							}
+//
+//						}
+//					}
+//
+//				}
+
+				/* 特级推荐奖 */
+				if(buyer.getUserRank() == UserRank.V4) {
+
+					Long parentId = buyer.getParentId();
+					User buyerParent = null;
+					boolean foundV4Parent = false;
+					int whileTimes = 0;
+					while (parentId != null && !foundV4Parent) {
+						if (whileTimes > 1000) {
+							throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+						}
+
+						buyerParent = userMapper.findOne(parentId);
+						if(buyerParent.getUserRank() == UserRank.V4) {
+							foundV4Parent = true;
+						}
+
+						if(foundV4Parent) {
+							final BigDecimal saleBonus = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
+							BigDecimal fee = saleBonus.multiply(FEE_RATE);
+							BigDecimal saleBonusAfter = saleBonus.subtract(fee);
+							try {
+								TimeUnit.MILLISECONDS.sleep(50);
+							} catch (InterruptedException e1) {
+							}
+							fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, "推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+							logger.error(buyerParent.getNickname() + "推荐奖：" + saleBonusAfter + "已扣除手续费:" + fee);
+							break;
+						}
+
+						parentId = buyerParent.getParentId();
+						whileTimes++;
+					}
+
+//					if(foundV4Parent) {
+//						if(!parentId.equals(buyer.getParentId())) {
+//							User parent = userMapper.findOne(buyer.getParentId());
+//							if (parent.getUserRank() == UserRank.V3) {
+//								Date lastUpgradedTime = seller.getLastUpgradedTime();
+//								if (lastUpgradedTime != null && DateUtils.addMonths(lastUpgradedTime, 3).after(new Date())) {
+//									final BigDecimal saleBonus = new BigDecimal("3.00").multiply(BigDecimal.valueOf(quantity));
+//									fncComponent.createTransfer(parentId, buyer.getParentId(), Transfer.TransferType.推荐奖, orderId, "推荐奖", CurrencyType.积分, saleBonus, paidTime);
+//									logger.error(parent.getNickname() + "给到" + buyerParent.getNickname() + "推荐奖：" + saleBonus);
+//								}
+//							}
+//						}
+//					}
+				}
+				order.setIsProfitSettledUp(true);
+				if (orderMapper.update(order) == 0) {
+					throw new ConcurrentException();
+				}
 			}
 		}
 
+	}
+
+	@Override
+	public void settleUpOption(@NotBlank String yearAndMonth) {
+
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM");
+		TemporalAccessor temporalAccessor = df.parse(yearAndMonth);
+		Predicate<User> predicate = v -> {
+			User.UserRank userRank = v.getUserRank();
+			if (userRank != null && userRank == UserRank.V4) {
+				return true;
+			}
+			return false;
+		};
+
+		int year = temporalAccessor.get(ChronoField.YEAR);
+		int month = temporalAccessor.get(ChronoField.MONTH_OF_YEAR);
+
+		YearMonth yearMonth = YearMonth.of(year, month);
+		YearMonth nowYearMonth = YearMonth.now();
+		if (!nowYearMonth.isAfter(yearMonth)) {
+			throw new BizException(BizCode.ERROR, "未达到发放时间");
+		}
+
+		LocalDate beginDate = LocalDate.of(year, month, 1);
+		LocalDate endDate = beginDate.with(TemporalAdjusters.firstDayOfNextMonth());
+
+		LocalDateTime beginDateTime = LocalDateTime.of(beginDate, LocalTime.MIN);
+		LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MIN);
+
+		Date begin = Date.from(beginDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		Date end = Date.from(endDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+		List<Order> orders = orderMapper.findAll(OrderQueryModel.builder()
+				.orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成})
+				.productIdEQ(2L)  //月结算只针对2.0的产品
+				.paidTimeGTE(begin).paidTimeLT(end)
+				.sellerIdEQ(Constants.SETTING_SETTING_ID)
+				.build());
+
+		final BigDecimal zero = new BigDecimal("0.00");
+		final Date now = new Date();
+
+		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
+		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
+		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
+
+		Map<Long, Long> userQuantityMap = orders.stream().collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x, y) -> x + y));
+		userQuantityMap.entrySet().stream().forEach(v -> {
+			if (v.getValue() > 0) {
+				System.out.println(userMap.get(v.getKey()).getNickname() + "个人销量" + v.getValue() + "元");
+			}
+		});
+
+			/* 期权奖励 */
+		LongSummaryStatistics summaryStatistics = orders.stream().mapToLong((x) -> x.getQuantity()).summaryStatistics();
+		long companySales = summaryStatistics.getSum();
+		logger.error("公司总销量:" + companySales);
+		Map<Long, BigDecimal> profitShareMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
+			Long userId = v.getId();
+			Long userQuantity = userQuantityMap.get(userId);
+			if(userQuantity != null) {
+				BigDecimal quantity = new BigDecimal(userQuantity);
+				BigDecimal profit = quantity.multiply(new BigDecimal("0.4"));  //特级服务商：每人新增服务量*0.4股计算；
+				if(v.getIsDirector() != null && v.getIsDirector()) {  //联席董事: 每人新增服务量*0.4股+公司月总服务量*0.6股；
+					BigDecimal company = new BigDecimal(companySales).multiply(new BigDecimal("0.6"));
+					profit = profit.add(company);
+				}
+				return profit;
+			} else {
+				return new BigDecimal("0.00");
+			}
+
+		}));
+		logger.error("profitShareMap end........");
+		for (Map.Entry<Long, BigDecimal> entry : profitShareMap.entrySet()) {
+			BigDecimal amount = entry.getValue();
+			Long userId = entry.getKey();
+			if (amount.compareTo(zero) > 0) {
+				try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
+				//				BigDecimal fee = amount.multiply(FEE_RATE);
+				//				BigDecimal amountAfter = amount.subtract(fee);
+				fncComponent.createProfit(userId, Profit.ProfitType.期权奖励, null, year + "年" + month + "期权奖励", CurrencyType.货币期权, amount, now, null);
+				logger.error(userMap.get(userId).getNickname() + "期权奖励" + amount + "货币期权");
+			}
+		}
+	}
+
+	@Override
+	public void settleUpRebate(@NotBlank String yearAndMonth) {
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM");
+		TemporalAccessor temporalAccessor = df.parse(yearAndMonth);
+		Predicate<User> predicate = v -> {
+			User.UserRank userRank = v.getUserRank();
+			if (userRank != null && userRank == UserRank.V4) {
+				return true;
+			}
+			return false;
+		};
+
+		int year = temporalAccessor.get(ChronoField.YEAR);
+		int month = temporalAccessor.get(ChronoField.MONTH_OF_YEAR);
+
+		YearMonth yearMonth = YearMonth.of(year, month);
+		YearMonth nowYearMonth = YearMonth.now();
+		if (!nowYearMonth.isAfter(yearMonth)) {
+			throw new BizException(BizCode.ERROR, "未达到发放时间");
+		}
+
+		LocalDate beginDate = LocalDate.of(year, month, 1);
+		LocalDate endDate = beginDate.with(TemporalAdjusters.firstDayOfNextMonth());
+
+		LocalDateTime beginDateTime = LocalDateTime.of(beginDate, LocalTime.MIN);
+		LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.MIN);
+
+		Date begin = Date.from(beginDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		Date end = Date.from(endDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+		List<Order> orders = orderMapper.findAll(OrderQueryModel.builder()
+				.orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成})
+				.productIdEQ(2L)  //月结算只针对2.0的产品
+				.paidTimeGTE(begin).paidTimeLT(end)
+				.sellerIdEQ(Constants.SETTING_SETTING_ID)
+				.build());
+
+		final Long toV4Quantity = 3600L;
+		final BigDecimal zero = new BigDecimal("0.00");
+		final Date now = new Date();
+
+		Map<Long, Boolean> toV4Map = orders.stream()
+				.filter(v -> v.getQuantity() >= toV4Quantity && v.getBuyerUserRank().ordinal() < UserRank.V4.ordinal())
+				.collect(Collectors.toMap(v -> v.getUserId(), v -> true, (existingValue, newValue) -> existingValue));
+
+		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
+		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
+		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
+
+		logger.error("准备返利奖， copy order");
+		List<Order> copyOrders = orders.stream().map(v -> {
+			Long userId = v.getUserId();
+
+			Order copy = new Order();
+			BeanUtils.copyProperties(v, copy);
+
+			Boolean toV4 = toV4Map.get(userId);
+			logger.error("进入copy订单，判断用户" + userId + "是否直升特级：" + toV4);
+			User user = userMap.get(userId);
+			if (toV4 != null) {
+				User parent = userMap.get(user.getParentId());
+				while(parent.getUserRank() != UserRank.V4) {
+					parent = userMap.get(parent.getParentId());
+				}
+				copy.setUserId(parent.getId());
+				logger.error(user.getNickname() + "直升特级，订单给上级(user.parentId)：" + parent.getNickname() + parent.getUserRank());
+			}
+			return copy;
+		}).collect(Collectors.toList());
+
+		Map<Long, TeamModel> teamMap = v4Users.stream()
+				.map(v -> {
+					TeamModel teamModel = new TeamModel();
+					teamModel.setUser(v);
+					teamModel.setV4Children(TreeHelper.sortBreadth2(v4Users, String.valueOf(v.getId()), u -> {
+						TreeNode treeNode = new TreeNode();
+						treeNode.setId(String.valueOf(u.getId()));
+						Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
+						treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(directV4ParentId));
+						return treeNode;
+
+					}));
+					teamModel.setDirectV4Children(users.stream().filter(u -> {
+						Long userId = u.getId();
+						if (userId.equals(v.getId())) {
+							return false;
+						}
+						Long directV4ParentId = null;
+						int times = 0;
+						Long parentId = u.getParentId();
+						while(parentId != null) {
+							if (times > 1000) {
+								throw new BizException(BizCode.ERROR, "循环引用");
+							}
+							User parent = userMap.get(parentId);
+							if (predicate.test(parent)) {
+								directV4ParentId = parentId;
+								break;
+							}
+							parentId = parent.getParentId();
+							times ++;
+						}
+						if (directV4ParentId != null && directV4ParentId.equals(v.getId())) {
+							return true;
+						}
+						return false;
+					}).collect(Collectors.toList()));
+					return teamModel;
+				}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
+
+		{
+			Map<Long, Long> userQuantityMap = copyOrders.stream().collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x, y) -> x + y));
+			userQuantityMap.entrySet().stream().forEach(v -> {
+				if (v.getValue() > 0) {
+					System.out.println(userMap.get(v.getKey()).getNickname() + "个人销量" + v.getValue() + "元");
+				}
+			});
+
+			Map<Long, Long> teamQuantityMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
+				Long userId = v.getId();
+				Long myQuantity = userQuantityMap.get(userId) == null ? 0L : userQuantityMap.get(userId);
+				Long teamQuantity = teamMap.get(userId).getV4Children().stream()
+						.map(u -> userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId()))
+						.reduce(0L, (x, y) -> x + y);
+				return teamQuantity + myQuantity;
+			}));
+
+			teamQuantityMap.entrySet().stream().forEach(v -> {
+				if (v.getValue() > 0) {
+					logger.error(userMap.get(v.getKey()).getNickname() + "团队业绩" + v.getValue() + "次");
+				}
+			});
+
+			BigDecimal rate = new BigDecimal("128");
+			Map<Long, BigDecimal> profitMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
+				Long userId = v.getId();
+				BigDecimal quantity = new BigDecimal(teamQuantityMap.get(userId));
+				BigDecimal rate1 = getMonthlyRate(quantity);
+				BigDecimal profit = quantity.multiply(rate1).multiply(rate);
+				for (User user : teamMap.get(userId).getDirectV4Children()) {
+					if (predicate.test(user)) {
+						Long childUserId = user.getId();
+						BigDecimal childQuantity = new BigDecimal(teamQuantityMap.get(childUserId));
+						BigDecimal childRate = getMonthlyRate(childQuantity);
+						BigDecimal childProfit = childQuantity.multiply(childRate).multiply(rate);
+						profit = profit.subtract(childProfit);
+					}
+				}
+
+				return profit;
+			}));
+
+			for (Map.Entry<Long, BigDecimal> entry : profitMap.entrySet()) {
+				BigDecimal amount = entry.getValue();
+				Long userId = entry.getKey();
+				if (amount.compareTo(zero) > 0) {
+					try {
+						TimeUnit.MILLISECONDS.sleep(200);
+					} catch (InterruptedException e1) {
+					}
+					BigDecimal fee = amount.multiply(FEE_RATE);
+					BigDecimal amountAfter = amount.subtract(fee);
+					fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+					logger.error(userMap.get(userId).getNickname() + "返利奖" + amountAfter + "积分");
+				}
+			}
+		}
 	}
 
 	private BigDecimal getMonthlyRate(BigDecimal totalQuantity) {
@@ -919,17 +1274,42 @@ public class OrderServiceImpl implements OrderService {
 		List<Order> orders = orderMapper.findAll(OrderQueryModel.builder()
 				.orderStatusIN(new OrderStatus[] {OrderStatus.已支付, OrderStatus.已发货, OrderStatus.已完成})
 				.productIdEQ(2L)  //月结算只针对2.0的产品
-				.paidTimeGTE(begin).paidTimeLT(end).build());
-		orders = orders.stream().filter(v -> {
-			OrderStatus orderStatus = v.getOrderStatus();
-			if(orderStatus == OrderStatus.已发货 || orderStatus == OrderStatus.已完成) {
-				return Constants.SETTING_SUPER_ADMIN_ID.equals(v.getSellerId());
-			}
-			return true;
-		}).collect(Collectors.toList());
+				.paidTimeGTE(begin).paidTimeLT(end)
+				.sellerIdEQ(Constants.SETTING_SETTING_ID)
+				.build());
+
+		final Long toV4Quantity = 3600L;
+		final BigDecimal zero = new BigDecimal("0.00");
+		final Date now = new Date();
+
+		Map<Long, Boolean> toV4Map = orders.stream()
+				.filter(v -> v.getQuantity() >= toV4Quantity && v.getBuyerUserRank().ordinal() < UserRank.V4.ordinal())
+				.collect(Collectors.toMap(v -> v.getUserId(), v -> true, (existingValue, newValue) -> existingValue));
+
 		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
 		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
 		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
+
+		logger.error("准备返利奖， copy order");
+		List<Order> copyOrders = orders.stream().map(v -> {
+			Long userId = v.getUserId();
+
+			Order copy = new Order();
+			BeanUtils.copyProperties(v, copy);
+
+			Boolean toV4 = toV4Map.get(userId);
+			logger.error("进入copy订单，判断用户" + userId + "是否直升特级：" + toV4);
+			User user = userMap.get(userId);
+			if (toV4 != null) {
+				User parent = userMap.get(user.getParentId());
+				while(parent.getUserRank() != UserRank.V4) {
+					parent = userMap.get(parent.getParentId());
+				}
+				copy.setUserId(parent.getId());
+				logger.error(user.getNickname() + "直升特级，订单给上级(user.parentId)：" + parent.getNickname() + parent.getUserRank());
+			}
+			return copy;
+		}).collect(Collectors.toList());
 
 		Map<Long, TeamModel> teamMap = v4Users.stream()
 				.map(v -> {
@@ -971,140 +1351,169 @@ public class OrderServiceImpl implements OrderService {
 					return teamModel;
 				}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
 
-		Map<Long, Long> userQuantityMap = orders.stream().collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x , y) -> x + y));
-		userQuantityMap.entrySet().stream().forEach(v -> {
-			if (v.getValue() > 0) {
-				System.out.println(userMap.get(v.getKey()).getNickname() + "个人销量" + v.getValue() + "元");
-			}
-		});
-
-		Map<Long, Long> teamQuantityMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
-			Long userId = v.getId();
-			Long myQuantity = userQuantityMap.get(userId) == null ? 0L : userQuantityMap.get(userId);
-			Long teamQuantity = teamMap.get(userId).getV4Children().stream()
-					.map(u -> userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId()))
-					.reduce(0L, (x, y) -> x + y);
-			return teamQuantity + myQuantity;
-		}));
-
-		teamQuantityMap.entrySet().stream().forEach(v -> {
-			if (v.getValue() > 0) {
-				logger.error(userMap.get(v.getKey()).getNickname() + "团队业绩" + v.getValue() + "次");
-			}
-		});
-
-		BigDecimal rate = new BigDecimal("128");
-		Map<Long, BigDecimal> profitMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
-			Long userId = v.getId();
-			BigDecimal quantity = new BigDecimal(teamQuantityMap.get(userId));
-			BigDecimal rate1 = getMonthlyRate(quantity);
-			BigDecimal profit = quantity.multiply(rate1).multiply(rate);
-			for (User user : teamMap.get(userId).getDirectV4Children()) {
-				if (predicate.test(user)) {
-					Long childUserId = user.getId();
-					BigDecimal childQuantity = new BigDecimal(teamQuantityMap.get(childUserId));
-					BigDecimal childRate = getMonthlyRate(childQuantity);
-					BigDecimal childProfit = childQuantity.multiply(childRate).multiply(rate);
-					profit = profit.subtract(childProfit);
+		{
+			Map<Long, Long> userQuantityMap = copyOrders.stream().collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x, y) -> x + y));
+			userQuantityMap.entrySet().stream().forEach(v -> {
+				if (v.getValue() > 0) {
+					System.out.println(userMap.get(v.getKey()).getNickname() + "个人销量" + v.getValue() + "元");
 				}
-			}
+			});
 
-			return profit;
-		}));
+			Map<Long, Long> teamQuantityMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
+				Long userId = v.getId();
+				Long myQuantity = userQuantityMap.get(userId) == null ? 0L : userQuantityMap.get(userId);
+				Long teamQuantity = teamMap.get(userId).getV4Children().stream()
+						.map(u -> userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId()))
+						.reduce(0L, (x, y) -> x + y);
+				return teamQuantity + myQuantity;
+			}));
 
-		BigDecimal zero = new BigDecimal("0.00");
-		Date now = new Date();
-		for (Map.Entry<Long, BigDecimal> entry : profitMap.entrySet()) {
-			BigDecimal amount = entry.getValue();
-			Long userId = entry.getKey();
-			if (amount.compareTo(zero) > 0) {
-				try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
-				BigDecimal fee = amount.multiply(FEE_RATE);
-				BigDecimal amountAfter = amount.subtract(fee);
-				fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
-				logger.error(userMap.get(userId).getNickname() + "返利奖" + amount + "积分");
-			}
-		}
-
-		/* 期权奖励 */
-		LongSummaryStatistics summaryStatistics = orders.stream().mapToLong((x) -> x.getQuantity()).summaryStatistics();
-		long companySales = summaryStatistics.getSum();
-		logger.error("公司总销量:" + companySales);
-		Map<Long, BigDecimal> profitShareMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
-			Long userId = v.getId();
-			Long userQuantity = userQuantityMap.get(userId);
-			if(userQuantity != null) {
-				BigDecimal quantity = new BigDecimal(userQuantity);
-				BigDecimal profit = quantity.multiply(new BigDecimal("0.4"));  //特级服务商：每人新增服务量*0.4股计算；
-				if(v.getIsDirector() != null && v.getIsDirector()) {  //联席董事: 每人新增服务量*0.4股+公司月总服务量*0.6股；
-					BigDecimal company = new BigDecimal(companySales).multiply(new BigDecimal("0.6"));
-					profit = profit.add(company);
+			teamQuantityMap.entrySet().stream().forEach(v -> {
+				if (v.getValue() > 0) {
+					logger.error(userMap.get(v.getKey()).getNickname() + "团队业绩" + v.getValue() + "次");
 				}
+			});
+
+			BigDecimal rate = new BigDecimal("128");
+			Map<Long, BigDecimal> profitMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
+				Long userId = v.getId();
+				BigDecimal quantity = new BigDecimal(teamQuantityMap.get(userId));
+				BigDecimal rate1 = getMonthlyRate(quantity);
+				BigDecimal profit = quantity.multiply(rate1).multiply(rate);
+				for (User user : teamMap.get(userId).getDirectV4Children()) {
+					if (predicate.test(user)) {
+						Long childUserId = user.getId();
+						BigDecimal childQuantity = new BigDecimal(teamQuantityMap.get(childUserId));
+						BigDecimal childRate = getMonthlyRate(childQuantity);
+						BigDecimal childProfit = childQuantity.multiply(childRate).multiply(rate);
+						profit = profit.subtract(childProfit);
+					}
+				}
+
 				return profit;
-			} else {
-				return new BigDecimal("0.00");
-			}
+			}));
 
-		}));
-		logger.error("profitShareMap end........");
-		for (Map.Entry<Long, BigDecimal> entry : profitShareMap.entrySet()) {
-			BigDecimal amount = entry.getValue();
-			Long userId = entry.getKey();
-			if (amount.compareTo(zero) > 0) {
-				try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
-				BigDecimal fee = amount.multiply(FEE_RATE);
-				BigDecimal amountAfter = amount.subtract(fee);
-				fncComponent.createProfit(userId, Profit.ProfitType.期权奖励, null, year + "年" + month + "期权奖励", CurrencyType.货币期权, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
-				logger.error(userMap.get(userId).getNickname() + "期权奖励" + amount + "货币期权");
+			for (Map.Entry<Long, BigDecimal> entry : profitMap.entrySet()) {
+				BigDecimal amount = entry.getValue();
+				Long userId = entry.getKey();
+				if (amount.compareTo(zero) > 0) {
+					try {
+						TimeUnit.MILLISECONDS.sleep(200);
+					} catch (InterruptedException e1) {
+					}
+					BigDecimal fee = amount.multiply(FEE_RATE);
+					BigDecimal amountAfter = amount.subtract(fee);
+					fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+					logger.error(userMap.get(userId).getNickname() + "返利奖" + amount + "积分");
+				}
 			}
 		}
+		{
 
-		/* 董事贡献奖 */
-		List<User> v4Directors = v4Users.stream().filter(v -> v.getIsDirector() != null && v.getIsDirector()).collect(Collectors.toList());
-		Map<Long, TeamModel> teamV4Map = v4Directors.stream()
-				.map(v -> {
-					TeamModel teamModel = new TeamModel();
-					teamModel.setUser(v);
-					teamModel.setV4Children(sortBreadth2(v4Users, String.valueOf(v.getId()), u -> {
-						TreeNode treeNode = new TreeNode();
-						treeNode.setId(String.valueOf(u.getId()));
-						Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
-						treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(directV4ParentId));
-						return treeNode;
+			Map<Long, Long> userQuantityMap = orders.stream().collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x, y) -> x + y));
+			userQuantityMap.entrySet().stream().forEach(v -> {
+				if (v.getValue() > 0) {
+					System.out.println(userMap.get(v.getKey()).getNickname() + "个人销量" + v.getValue() + "元");
+				}
+			});
 
-					}));
-					return teamModel;
-				}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
+			/* 期权奖励 */
+			LongSummaryStatistics summaryStatistics = orders.stream().mapToLong((x) -> x.getQuantity()).summaryStatistics();
+			long companySales = summaryStatistics.getSum();
+			logger.error("公司总销量:" + companySales);
+			Map<Long, BigDecimal> profitShareMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
+				Long userId = v.getId();
+				Long userQuantity = userQuantityMap.get(userId);
+				if(userQuantity != null) {
+					BigDecimal quantity = new BigDecimal(userQuantity);
+					BigDecimal profit = quantity.multiply(new BigDecimal("0.4"));  //特级服务商：每人新增服务量*0.4股计算；
+					if (v.getIsDirector() != null && v.getIsDirector()) {  //联席董事: 每人新增服务量*0.4股+公司月总服务量*0.6股；
+						BigDecimal company = new BigDecimal(companySales).multiply(new BigDecimal("0.6"));
+						profit = profit.add(company);
+					}
+					return profit;
+				} else {
+					return new BigDecimal("0.00");
+				}
 
-		Map<Long, BigDecimal> profitDirectorMap = v4Directors.stream().collect(Collectors.toMap(User::getId, v -> {
-			Long userId = v.getId();
-			Long myQuantity = userQuantityMap.get(userId) == null ? 0L : userQuantityMap.get(userId);
-			BigDecimal profit = new BigDecimal(myQuantity).multiply(new BigDecimal("2.00"));
-			BigDecimal teamProfit = teamV4Map.get(userId).getV4Children().stream()
-					.map(u -> {
-						Long quantity = userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId());
-						BigDecimal innerProfit = new BigDecimal("0.00");
-						if(v.getIsDirector() != null && u.getIsDirector()) {
-							innerProfit = new BigDecimal(quantity);
-						} else {
-							innerProfit = new BigDecimal(quantity).multiply(new BigDecimal("2.00"));
-						}
-						return innerProfit;
-					})
-					.reduce(new BigDecimal("0.00"), BigDecimal::add);
-					return profit.add(teamProfit);
-		}));
-
-		for (Map.Entry<Long, BigDecimal> entry : profitDirectorMap.entrySet()) {
-			BigDecimal amount = entry.getValue();
-			Long userId = entry.getKey();
-			if (amount.compareTo(zero) > 0) {
-				try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
-				BigDecimal fee = amount.multiply(FEE_RATE);
-				BigDecimal amountAfter = amount.subtract(fee);
-				fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "董事贡献奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
-				logger.error(userMap.get(userId).getNickname() + "董事贡献奖" + amount + "积分");
+			}));
+			logger.error("profitShareMap end........");
+			for (Map.Entry<Long, BigDecimal> entry : profitShareMap.entrySet()) {
+				BigDecimal amount = entry.getValue();
+				Long userId = entry.getKey();
+				if (amount.compareTo(zero) > 0) {
+					try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
+	//				BigDecimal fee = amount.multiply(FEE_RATE);
+	//				BigDecimal amountAfter = amount.subtract(fee);
+					fncComponent.createProfit(userId, Profit.ProfitType.期权奖励, null, year + "年" + month + "期权奖励", CurrencyType.货币期权, amount, now, null);
+					logger.error(userMap.get(userId).getNickname() + "期权奖励" + amount + "货币期权");
+				}
 			}
+
+			/* 董事贡献奖 */
+//			List<User> v4Directors = v4Users.stream().filter(v -> v.getIsDirector() != null && v.getIsDirector()).collect(Collectors.toList());
+//			Map<Long, TeamModel> teamV4Map = v4Directors.stream()
+//					.map(v -> {
+//						TeamModel teamModel = new TeamModel();
+//						teamModel.setUser(v);
+//						teamModel.setV4Children(TreeHelper.sortBreadth2(v4Users, String.valueOf(v.getId()), u -> {
+//							TreeNode treeNode = new TreeNode();
+//							treeNode.setId(String.valueOf(u.getId()));
+//							Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
+//							treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(directV4ParentId));
+//							return treeNode;
+//
+//						}));
+//						return teamModel;
+//					}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
+//
+//			Map<Long, BigDecimal> profitDirectorMap = v4Directors.stream().collect(Collectors.toMap(User::getId, v -> {
+//				Long userId = v.getId();
+//				Long myQuantity = userQuantityMap.get(userId) == null ? 0L : userQuantityMap.get(userId);
+//				BigDecimal profit = new BigDecimal(myQuantity).multiply(new BigDecimal("2.00"));
+//				BigDecimal teamProfit = teamV4Map.get(userId).getV4Children().stream()
+//					.map(u -> {
+//						Long parentId = u.getParentId();
+//						boolean isChildrenOfDirector = false;
+//						while(!parentId.equals(userId)) {
+//							Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
+//							User user = userMap.get(directV4ParentId);
+//							if (user.getIsDirector() != null && user.getIsDirector()) {
+//								isChildrenOfDirector = true;
+//								break;
+//							}
+//
+//							parentId = directV4ParentId;
+//						}
+//
+//						Long quantity = userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId());
+//						BigDecimal innerProfit = zero;
+//						if(u.getIsDirector() != null && u.getIsDirector()) {
+//							innerProfit = new BigDecimal(quantity);
+//						} else {
+//							if (isChildrenOfDirector) {
+//								innerProfit = new BigDecimal(quantity);
+//							} else {
+//								innerProfit = new BigDecimal(quantity).multiply(new BigDecimal("2.00"));
+//							}
+//						}
+//						return innerProfit;
+//					})
+//					.reduce(new BigDecimal("0.00"), BigDecimal::add);
+//					return profit.add(teamProfit);
+//			}));
+//
+//			for (Map.Entry<Long, BigDecimal> entry : profitDirectorMap.entrySet()) {
+//				BigDecimal amount = entry.getValue();
+//				Long userId = entry.getKey();
+//				if (amount.compareTo(zero) > 0) {
+//					try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
+//					BigDecimal fee = amount.multiply(FEE_RATE);
+//					BigDecimal amountAfter = amount.subtract(fee);
+//					fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "董事贡献奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+//					logger.error(userMap.get(userId).getNickname() + "董事贡献奖" + amount + "积分");
+//				}
+//			}
 		}
 
 		orderMonthlySettlement = new OrderMonthlySettlement();
@@ -1251,6 +1660,166 @@ public class OrderServiceImpl implements OrderService {
 			throw new ConcurrentException();
 		}
 	}
+
+	/**
+	 * 查询销量
+	 * @return
+     */
+	@Override
+	public Map<String, Object> querySalesVolume(OrderQueryModel orderQueryModel) {
+		Long userId = orderQueryModel.getUserIdEQ();
+		Map<String ,Object> returnMap = new HashMap<>();
+		int moth = DateUtil.getMoth(new Date());
+		long salesVolumeData [] = new long[moth-1];
+        long shipmentData [] = new long[moth-1];
+        double svData [] = new double[moth-1];
+        double sData [] = new double[moth-1];
+        long salesVolumeTeamData [] = new long[moth-1];
+        long shipmentTeamData [] = new long[moth-1];
+		for (int i = moth - 1; i >= 1;i--){
+			orderQueryModel.setPaidTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
+			orderQueryModel.setPaidTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
+			Long data = 0l;
+			//进货量
+			Long salesVolume  = orderMapper.queryRetailPurchases(orderQueryModel);
+			data = salesVolume;
+			salesVolumeData[i-1] = data;
+			//出货量
+			Long shipment  = orderMapper.queryShipment(orderQueryModel);
+			data = shipment;
+			shipmentData[i-1] = data;
+		}
+		//计算环比
+		for (int i = moth - 1; i >= 1;i--){
+			double data = 0d;
+			//进货量环比
+			double sv = 0.00d;
+			if (i-2 >= 0 && salesVolumeData [i-1] != 0 && salesVolumeData [i-2] != 0){
+				sv = new BigDecimal((salesVolumeData [i-2] - salesVolumeData [i-1]) / salesVolumeData [i-1] * 100).setScale(2 , RoundingMode.UP).doubleValue()  ;
+			}else if (i-2 >= 0 && salesVolumeData [i-1] == 0 && salesVolumeData [i-2] > 0){
+				sv = 100;
+			}else if (i-2 >= 0 && salesVolumeData [i-1] > 0 && salesVolumeData [i-2] == 0){
+				sv = -100;
+			}
+			data = sv;
+			if (i-2 >= 0){
+				svData[i-2] = data;
+			}
+			//出货量环比
+			double s = 0.00d;
+			if (i-2 >= 0 && shipmentData [i-1] != 0 && shipmentData [i-2] != 0){
+				s = new BigDecimal((shipmentData [i-2] - shipmentData [i-1]) / shipmentData [i-1] * 100 ).setScale(2 , RoundingMode.UP).doubleValue() ;
+			}else if (i-2 >= 0 && shipmentData [i-1] == 0 && shipmentData [i-2] > 0){
+				s = 100;
+			}else if (i-2 >= 0 && shipmentData [i-1] > 0 && shipmentData [i-2] == 0){
+				s = -100;
+			}
+			data = s;
+			if (i-2 >= 0) {
+				sData[i - 2] = data;
+			}
+		}
+		//查询我的团队进、出货量
+		List<Long> userIdList = new ArrayList<>();
+		List<User> userList = new ArrayList<>();
+		List<User> users = userService.findAll(new UserQueryModel());
+		List<User> children = TreeHelper.sortBreadth2(users, orderQueryModel.getUserIdEQ().toString(), v -> {
+			TreeNode treeNode = new TreeNode();
+			treeNode.setId(v.getId().toString());
+			treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
+			return treeNode;
+		});
+		children.add(0,userService.findOne(userId));
+		userList = children.stream().filter(v -> v.getUserRank() == User.UserRank.V4).collect(Collectors.toList());
+        if (userList.size() > 0 && userList != null){
+            for (User user: userList) {
+                userIdList.add(user.getId());
+            }
+			orderQueryModel.setUserIdEQ(null);
+			orderQueryModel.setSellerIdEQ(null);
+            orderQueryModel.setUserIdList(userIdList);
+            orderQueryModel.setSellerIdList(userIdList);
+            for (int i = moth - 1; i >= 1;i--){
+                orderQueryModel.setPaidTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
+                orderQueryModel.setPaidTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
+                Long data = 0l;
+                //进货量
+
+                Long salesVolumeTeam  = orderMapper.queryRetailPurchases(orderQueryModel);
+                data = salesVolumeTeam;
+                salesVolumeTeamData[i-1] = data;
+                //出货量
+                Long shipmentTeam  = orderMapper.queryShipment(orderQueryModel);
+                data = shipmentTeam;
+                shipmentTeamData[i-1] = data;
+            }
+        }
+        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, true));
+        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, true));
+        returnMap.put("svData", DateUtil.arryToString(svData, true));
+        returnMap.put("sData", DateUtil.arryToString(sData, true));
+        returnMap.put("salesVolumeTeamData", DateUtil.longarryToString(salesVolumeTeamData, true));
+        returnMap.put("shipmentTeamData", DateUtil.longarryToString(shipmentTeamData, true));
+		return returnMap;
+	}
+
+    @Override
+    public Map<String, Object> querySalesVolumeDetail(OrderQueryModel orderQueryModel) {
+        Map<String ,Object> returnMap = new HashMap<>();
+        int moth = DateUtil.getMoth(new Date());
+        long salesVolumeData [] = new long[moth-1];
+        long shipmentData [] = new long[moth-1];
+		double svData [] = new double[moth-1];
+		double sData [] = new double[moth-1];
+        for (int i = moth - 1; i >= 1;i--){
+            orderQueryModel.setPaidTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0-i,0));
+            orderQueryModel.setPaidTimeLT(DateUtil.getBeforeMonthEnd(new Date(),0-(i-1),0));
+            Long data = 0l;
+            //进货量
+            Long salesVolume  = orderMapper.queryRetailPurchases(orderQueryModel);
+            data = salesVolume;
+            salesVolumeData[i-1] = data;
+            //出货量
+            Long shipment  = orderMapper.queryShipment(orderQueryModel);
+            data = shipment;
+            shipmentData[i-1] = data;
+        }
+		//计算环比
+		for (int i = moth - 1; i >= 1;i--){
+			double data = 0d;
+			//进货量环比
+			double sv = 0.00d;
+			if (i-2 >= 0 && salesVolumeData [i-1] != 0 && salesVolumeData [i-2] != 0){
+				sv = new BigDecimal((salesVolumeData [i-2] - salesVolumeData [i-1]) / salesVolumeData [i-1] * 100).setScale(2 , RoundingMode.UP).doubleValue()  ;
+			}else if (i-2 >= 0 && salesVolumeData [i-1] == 0 && salesVolumeData [i-2] > 0){
+				sv = 100;
+			}else if (i-2 >= 0 && salesVolumeData [i-1] > 0 && salesVolumeData [i-2] == 0){
+				sv = -100;
+			}
+			data = sv;
+			if (i-2 >= 0) {
+				svData[i - 2] = data;
+			}
+			//出货量环比
+			double s = 0.00d;
+			if (i-2 >= 0 && shipmentData [i-1] != 0 && shipmentData [i-2] != 0){
+				s = new BigDecimal((shipmentData [i-2] - shipmentData [i-1]) / shipmentData [i-1] * 100 ).setScale(2 , RoundingMode.UP).doubleValue() ;
+			}else if (i-2 >= 0 && shipmentData [i-1] == 0 && shipmentData [i-2] > 0){
+				s = 100;
+			}else if (i-2 >= 0 && shipmentData [i-1] > 0 && shipmentData [i-2] == 0){
+				s = -100;
+			}
+			data = s;
+			if (i-2 >= 0) {
+				sData[i - 2] = data;
+			}
+		}
+        returnMap.put("salesVolumeData", DateUtil.longarryToString(salesVolumeData, true));
+        returnMap.put("shipmentData", DateUtil.longarryToString(shipmentData, true));
+		returnMap.put("svData", DateUtil.arryToString(svData, true));
+		returnMap.put("sData", DateUtil.arryToString(sData, true));
+        return returnMap;
+    }
 
 	private static List<User> sortBreadth2(Collection<User> entities, String parentId, TreeNodeResolver<User> treeNodeResolver) {
 		List<User> result = new ArrayList<>();

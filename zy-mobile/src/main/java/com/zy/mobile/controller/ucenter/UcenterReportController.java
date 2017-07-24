@@ -219,7 +219,7 @@ public class UcenterReportController {
 		if(report.getIsSettledUp()){
 			List<Profit> profits = profitService.findAll(
 					ProfitQueryModel.builder()
-					.profitTypeEQ(Profit.ProfitType.数据奖)
+					.profitTypeEQ(Profit.ProfitType.历史收益)
 					.refIdEQ(id)
 					.userIdEQ(principal.getUserId())
 					.build());
@@ -227,7 +227,7 @@ public class UcenterReportController {
 			
 			List<Transfer> transfers = transferService.findAll(
 					TransferQueryModel.builder()
-					.transferTypeEQ(Transfer.TransferType.数据奖)
+					.transferTypeEQ(Transfer.TransferType.历史收益)
 					.refIdEQ(id)
 					.toUserIdEQ(principal.getUserId())
 					.build());

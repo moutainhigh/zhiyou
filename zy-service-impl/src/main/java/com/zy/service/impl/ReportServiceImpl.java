@@ -227,7 +227,7 @@ public class ReportServiceImpl implements ReportService {
 
 		if (config.isOld(productId)) { // 旧产品, 按原有规则结算
 
-//			String title = "数据奖,检测报告编号" + id;
+//			String title = "历史收益,检测报告编号" + id;
 //			Long topId = null; // 找到第一个特级代理
 //			Long transferUserId = null; // transfer 给到的代理
 //
@@ -288,10 +288,10 @@ public class ReportServiceImpl implements ReportService {
 //
 //
 //			/* 全额给一个人 */
-//			fncComponent.createProfit(topId, ProfitType.数据奖, id, title, CurrencyType.现金, new BigDecimal("18.00"), new Date(), null); // TODO	 写死
+//			fncComponent.createProfit(topId, ProfitType.历史收益, id, title, CurrencyType.现金, new BigDecimal("18.00"), new Date(), null); // TODO	 写死
 //
 //			if (hasTransfer) {
-//				fncComponent.createTransfer(topId, transferUserId, Transfer.TransferType.数据奖, id, title, CurrencyType.现金, new BigDecimal("15.00"), new Date());
+//				fncComponent.createTransfer(topId, transferUserId, Transfer.TransferType.历史收益, id, title, CurrencyType.现金, new BigDecimal("15.00"), new Date());
 //			}
 
 			report.setIsSettledUp(true);

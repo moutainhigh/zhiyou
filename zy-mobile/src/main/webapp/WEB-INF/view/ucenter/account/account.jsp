@@ -92,7 +92,7 @@
         </a>
         <a class="bd-r bd-b" href="${ctx}/u/account/profit?type=2">
           <div><i class="icon icon-account-data"></i></div>
-          <div class="fs-14 font-333">数据奖</div>
+          <div class="fs-14 font-333">历史收益</div>
         </a>
         <a class="bd-b" href="${ctx}/u/account/profit?type=3">
           <div><i class="icon icon-account-sale"></i></div>

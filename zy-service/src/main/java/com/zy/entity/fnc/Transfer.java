@@ -37,13 +37,14 @@ public class Transfer implements Serializable {
 	public static final String VO_ADMIN = "TransferAdminVo";
 
 	public enum TransferType {
-		数据奖,
+		历史收益,
 		一级平级奖,
 		一级越级奖,
 		邮费,
 		平级推荐奖,  //2.0
-		特级推荐奖,  //2.0
+		推荐奖,  //2.0  特级推荐奖 -> 推荐奖
 		U币转账,
+		业绩奖,  //2.0
 	}
 
 	public enum TransferStatus {

@@ -11,6 +11,7 @@ import com.zy.common.model.ui.Grid;
 import com.zy.component.WithdrawComponent;
 import com.zy.entity.fnc.Withdraw;
 import com.zy.entity.usr.User;
+import com.zy.model.Constants;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.WithdrawQueryModel;
 import com.zy.service.UserService;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -88,6 +90,19 @@ public class WithdrawController {
 			return new ResultBuilder<>().message(e.getMessage()).build();
 		}
 		return new ResultBuilder<>().message("操作成功").build();
+	}
+
+	@RequiresPermissions("withdraw:confirm")
+	@RequestMapping(value = "/cancel")
+	public String cancel(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+		try {
+			AdminPrincipal principal = (AdminPrincipal)SecurityUtils.getSubject().getPrincipal();
+			withdrawService.cancel(id, principal.getUserId(), "提现处理失败，管理员手动取消提现");
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
+		} catch (BizException e) {
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+		}
+		return "redirect:/withdraw";
 	}
 
 	@RequiresPermissions("withdraw:push")

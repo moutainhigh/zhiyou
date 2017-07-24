@@ -88,6 +88,8 @@ public class OrderDetailVo implements Serializable {
 	private Long productId;
 	@Field(label = "数量")
 	private Long quantity;
+	@Field(label = "是否结算")
+	private Boolean isSettlement;
 
 	/* 扩展 */
 	@Field(label = "isPlatformDeliver")

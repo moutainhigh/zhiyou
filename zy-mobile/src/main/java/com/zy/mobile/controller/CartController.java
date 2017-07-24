@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -47,29 +48,26 @@ public class CartController {
 
 	@RequestMapping(value = "/add")
 	@ResponseBody
-	public Result<CartVo> add(Long skuId, long quantity, Principal principal) {
-		validate(skuId, NOT_NULL, "sku id is null!");
+	public Result<CartVo> add(@RequestParam Long productId, @RequestParam long quantity, Principal principal) {
 		validate(quantity, v -> v > 0, "quantity must be greater than 0");
-		cartItemService.add(principal.getUserId(), skuId, quantity);
+		cartItemService.add(principal.getUserId(), productId, quantity);
 		List<CartItem> cartItems = cartItemService.findByUserId(principal.getUserId());
 		return ResultBuilder.result(cartComponent.buildCartVo(cartItems));
 	}
 
 	@RequestMapping(value = "/modify")
 	@ResponseBody
-	public Result<CartVo> modify(Long skuId, Long quantity, Principal principal) {
-		validate(skuId, NOT_NULL, "skuId id is null!");
+	public Result<CartVo> modify(@RequestParam Long productId, @RequestParam Long quantity, Principal principal) {
 		validate(quantity, v -> v > 0, "quantity must be greater than 0");
-		cartItemService.modify(principal.getUserId(), skuId, quantity);
+		cartItemService.modify(principal.getUserId(), productId, quantity);
 		List<CartItem> cartItems = cartItemService.findByUserId(principal.getUserId());
 		return ResultBuilder.result(cartComponent.buildCartVo(cartItems));
 	}
 
 	@RequestMapping(value = "/remove")
 	@ResponseBody
-	public Result<CartVo> remove(Long skuId, Principal principal) {
-		validate(skuId, NOT_NULL, "skuId id is null!");
-		cartItemService.remove(principal.getUserId(), skuId);
+	public Result<CartVo> remove(@RequestParam Long productId, Principal principal) {
+		cartItemService.remove(principal.getUserId(), productId);
 		List<CartItem> cartItems = cartItemService.findByUserId(principal.getUserId());
 		return ResultBuilder.result(cartComponent.buildCartVo(cartItems));
 	}

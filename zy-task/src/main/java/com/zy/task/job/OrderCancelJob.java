@@ -12,6 +12,7 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -35,7 +36,8 @@ public class OrderCancelJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("begin..");
-        this.orderService.findAll(builder().createdTimeLT(addMinutes(new Date(), -SETTING_ORDER_EXPIRE_IN_MINUTES)).orderStatusEQ(待支付).build())
+        //this.orderService.findAll(builder().createdTimeLT(addMinutes(new Date(), -SETTING_ORDER_EXPIRE_IN_MINUTES)).orderStatusEQ(待支付).build())
+        this.orderService.findAll(builder().expiredTimeLT(new Date()).orderStatusEQ(待支付).build())
                 .stream()
                 .map(order -> order.getId())
                 .forEach(this::cancel);
@@ -53,4 +55,5 @@ public class OrderCancelJob implements Job {
             logger.error(e.getMessage(), e);
         }
     }
+
 }

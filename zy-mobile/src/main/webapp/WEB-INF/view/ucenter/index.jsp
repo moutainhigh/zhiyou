@@ -16,6 +16,34 @@
 <title>${sys} - 我的</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/ucenter/index.css" />
+  <style>
+    .icon-heartNew {
+      background-image: url(${ctx}/images/icon_heartNew.png);
+    }
+    .user-account {
+       padding-top: 0;
+       padding-bottom: 0;
+    }
+    .user-account > a {
+      padding-top: 10px;
+      padding-bottom: 15px;
+    }
+    .quitBack {
+      width:70%;
+      margin-left: 15%;
+      height:45px;
+      line-height: 45px;
+      text-align: center;
+      color: #fff;
+      font-size: 18px;
+      margin-bottom: 15px;
+      background: #6cb92f;
+      -webkit-border-radius:25px;
+      -moz-border-radius:25px;
+      margin-top: 20px;
+      border-radius:25px;
+    }
+  </style>
 </head>
 <body class="footer-fixed">
 
@@ -49,8 +77,8 @@
     <div class="water-2"></div>
   </aside>
   
-  <div class="user-account flex">
-    <a class="flex-1 bd-r" href="${ctx}/u/account">
+  <div class="user-account flex list-group">
+    <a class="flex-1 bd-r" href="${ctx}/u/account/countIncomeDataByUser">
       <i class="icon icon-money icon-2x"></i>
       <em>积分钱包</em>
       <span>¥${money}</span>
@@ -68,81 +96,180 @@
   </div>
   
   <article>
-    <div class="list-group">
-      <c:if test="${user.userRank == 'V0'}">
-      <a class="list-item" href="${ctx}/u/agent">
-        <i class="list-icon icon icon-agent"></i>
-        <div class="list-text">成为服务商</div>
-        <i class="list-arrow"></i>
-      </a>
-      </c:if>
-      <c:if test="${user.userRank == 'V1' || user.userRank == 'V2'}">
-      <a class="list-item" href="${ctx}/u/agent">
-        <i class="list-icon icon icon-upgrade"></i>
-        <div class="list-text">升级服务商</div>
-        <i class="list-arrow"></i>
-      </a>
-      </c:if>
-      <c:if test="${user.userRank != 'V0'}">
-      <a class="list-item list-item-icon" href="${ctx}/u/team">
-        <i class="list-icon icon icon-users"></i>
-        <div class="list-text">我的团队</div>
-        <i class="list-arrow"></i>
-      </a>
-      </c:if>
-    </div>
-    
-    <div class="list-group">
-      <a class="list-item list-item-icon" href="${ctx}/u/activity/applyList">
-        <i class="list-icon icon icon-join"></i>
-        <div class="list-text">报名的活动</div>
-        <i class="list-arrow"></i>
-      </a>
-      <%--<a class="list-item list-item-icon" href="${ctx}/u/activity/payer">--%>
-        <%--<i class="list-icon icon icon-money"></i>--%>
-        <%--<div class="list-text">代付款活动</div>--%>
+
+
+
+      <div class="user-account flex list-group">
+        <c:if test="${user.userRank == 'V0'}">
+          <%--<a class="list-item" href="${ctx}/u/agent">--%>
+            <%--<i class="list-icon icon icon-agent"></i>--%>
+            <%--<div class="list-text">成为服务商</div>--%>
+            <%--<i class="list-arrow"></i>--%>
+          <%--</a>--%>
+          <a class="flex-1 bd-r" href="${ctx}/u/agent">
+            <i class="icon icon-agent icon-2x"></i>
+            <em>成为服务商</em>
+          </a>
+        </c:if>
+
+
+        <c:if test="${user.userRank != 'V0'}">
+        <a class="flex-1 bd-r" href="${ctx}/u/team/newTeam">
+          <i class="icon icon-users icon-2x"></i>
+          <em>我的团队</em>
+        </a>
+        </c:if>
+        <a class="flex-1 bd-r" href="${ctx}/u/salesVolume/salesVolume?userRank=${user.userRank}">
+          <i class="icon icon-2x" style='background: url("${ctx}/images/xiaoliang.png")'></i>
+          <em>我的销量</em>
+        </a>
+      <%--  <c:if test="${user.userRank == 'V1' || user.userRank == 'V2'}">
+          &lt;%&ndash;<a class="list-item" href="${ctx}/u/agent">&ndash;%&gt;
+          &lt;%&ndash;<i class="list-icon icon icon-agent"></i>&ndash;%&gt;
+          &lt;%&ndash;<div class="list-text">升级服务商</div>&ndash;%&gt;
+          &lt;%&ndash;<i class="list-arrow"></i>&ndash;%&gt;
+          &lt;%&ndash;</a>&ndash;%&gt;
+          <a class="flex-1 bd-r" href="${ctx}/u/agent">
+            <i class="icon icon-agent icon-2x"></i>
+            <em>升级服务商</em>
+          </a>
+        </c:if>--%>
+        <c:choose><c:when test="${user.userRank == 'V1' || user.userRank == 'V2'}">
+          <a class="flex-1 bd-r" href="${ctx}/u/agent">
+            <i class="icon icon-agent icon-2x"></i>
+            <em>升级服务商</em>
+          </a>
+        </c:when>
+         <c:otherwise>
+           <a class="flex-1" href="#">
+             <i class="icon icon-out icon-2x" style="background: none;"></i>
+             <em></em>
+           </a>
+         </c:otherwise>
+        </c:choose>
+
+      </div>
+
+      <div class="user-account flex list-group">
+        <a class="flex-1 bd-r" href="${ctx}/u/activity/collectList">
+          <i class="icon icon-2x icon-heartNew"></i>
+          <em>关注的活动</em>
+        </a>
+        <a class="flex-1 bd-r" href="${ctx}/u/activity/applyList">
+          <i class="icon icon-2x icon-join"></i>
+          <em>报名的活动</em>
+        </a>
+        <a class="flex-1"  href="${ctx}/u/activity/teamApplyList">
+          <i class="icon icon-2x icon-heart"></i>
+          <em>团队报名的活动</em>
+        </a>
+      </div>
+
+      <%--<c:if test="${user.userRank != 'V0'}">--%>
+      <%--<a class="list-item list-item-icon" href="${ctx}/u/team/newTeam">--%>
+        <%--<i class="list-icon icon icon-users"></i>--%>
+        <%--<div class="list-text">我的团队</div>--%>
         <%--<i class="list-arrow"></i>--%>
       <%--</a>--%>
-      <a class="list-item list-item-icon" href="${ctx}/u/activity/collectList">
-        <i class="list-icon icon icon-heart"></i>
-        <div class="list-text">关注的活动</div>
-        <i class="list-arrow"></i>
-      </a>
-      <a class="list-item list-item-icon" href="${ctx}/u/activity/teamApplyList">
-        <i class="list-icon icon icon-heart"></i>
-        <div class="list-text">团队报名的活动</div>
-        <i class="list-arrow"></i>
-      </a>
-    </div>
-    
-    <div class="list-group">
-      <a class="list-item list-item-icon" href="${ctx}/u/report">
-        <i class="list-icon icon icon-report"></i>
-        <div class="list-text">检测报告</div>
-        <i class="list-arrow"></i>
-      </a>
-      <a class="list-item list-item-icon" href="${ctx}/u/policy">
-        <i class="list-icon icon icon-policy"></i>
-        <div class="list-text">保险</div>
-        <i class="list-arrow"></i>
-      </a>
-    </div>
-    
-    <div class="list-group">
-      <a class="list-item list-item-icon" href="${ctx}/help">
-        <i class="list-icon icon icon-service"></i>
-        <div class="list-text">服务中心</div>
-        <i class="list-arrow"></i>
-      </a>
-      <a class="list-item list-item-icon" href="${ctx}/about">
-        <i class="list-icon icon icon-about"></i>
-        <div class="list-text">关于${sys}</div>
-        <i class="list-arrow"></i>
-      </a>
-    </div>
-    
-  </article>
+      <%--</c:if>--%>
+      <%--<a class="list-item list-item-icon" href="${ctx}/u/salesVolume/salesVolume?userRank=${user.userRank}">--%>
+        <%--<i class="list-icon icon icon-users"></i>--%>
+        <%--<div class="list-text">我的销量</div>--%>
+        <%--<i class="list-arrow"></i>--%>
+      <%--</a>--%>
 
+    <%--<div class="list-group">--%>
+      <%--<a class="list-item list-item-icon" href="${ctx}/u/activity/applyList">--%>
+        <%--<i class="list-icon icon icon-join"></i>--%>
+        <%--<div class="list-text">报名的活动</div>--%>
+        <%--<i class="list-arrow"></i>--%>
+      <%--</a>--%>
+      <%--&lt;%&ndash;<a class="list-item list-item-icon" href="${ctx}/u/activity/payer">&ndash;%&gt;--%>
+        <%--&lt;%&ndash;<i class="list-icon icon icon-money"></i>&ndash;%&gt;--%>
+        <%--&lt;%&ndash;<div class="list-text">代付款活动</div>&ndash;%&gt;--%>
+        <%--&lt;%&ndash;<i class="list-arrow"></i>&ndash;%&gt;--%>
+      <%--&lt;%&ndash;</a>&ndash;%&gt;--%>
+      <%--<a class="list-item list-item-icon" href="${ctx}/u/activity/collectList">--%>
+        <%--<i class="list-icon icon icon-heart icon-heartNew"></i>--%>
+        <%--<div class="list-text">关注的活动</div>--%>
+        <%--<i class="list-arrow"></i>--%>
+      <%--</a>--%>
+      <%--<a class="list-item list-item-icon" href="${ctx}/u/activity/teamApplyList">--%>
+        <%--<i class="list-icon icon icon-heart"></i>--%>
+        <%--<div class="list-text">团队报名的活动</div>--%>
+        <%--<i class="list-arrow"></i>--%>
+      <%--</a>--%>
+    <%--</div>--%>
+    <div class="user-account flex list-group">
+
+      <a class="flex-1 bd-r" href="${ctx}/u/report">
+        <i class="icon icon-2x icon-report"></i>
+        <em>检测记录</em>
+      </a>
+
+      <a class="flex-1 bd-r" href="${ctx}/u/policy">
+        <i class="icon icon-2x icon-policy"></i>
+        <em>保险申请</em>
+      </a>
+      <a class="flex-1"  href="#" style="background: #f7f7f7;">
+        <i class="icon icon-2x" style='background: url("${ctx}/images/lvyou.png")'></i>
+        <em>旅游申请</em>
+      </a>
+    </div>
+
+    <%--<div class="list-group">--%>
+      <%--<a class="list-item list-item-icon" href="${ctx}/u/report">--%>
+        <%--<i class="list-icon icon icon-report"></i>--%>
+        <%--<div class="list-text">检测报告</div>--%>
+        <%--<i class="list-arrow"></i>--%>
+      <%--</a>--%>
+      <%--<a class="list-item list-item-icon" href="${ctx}/u/policy">--%>
+        <%--<i class="list-icon icon icon-policy"></i>--%>
+        <%--<div class="list-text">保险</div>--%>
+        <%--<i class="list-arrow"></i>--%>
+      <%--</a>--%>
+    <%--</div>--%>
+    <div class="user-account flex list-group">
+      <a class="flex-1 bd-r"  href="${ctx}/u/notice">
+        <i class="icon icon-2x" style='background: url("${ctx}/images/ucenterNotice.png")'></i>
+        <em>通知公告</em>
+      </a>
+      <a class="flex-1 bd-r" href="${ctx}/u/userSetting">
+        <i class="icon icon-2x" style='background: url("${ctx}/images/shezhi.png")'></i>
+        <em>设置</em>
+      </a>
+      <a class="flex-1" href="#">
+        <i class="icon icon-2x" style='background: url("${ctx}/images/banben.png")'></i>
+        <em>版本通知</em>
+      </a>
+    </div>
+    <%----%>
+    <%--<div class="list-group">--%>
+      <%--<a class="list-item list-item-icon" href="${ctx}/help">--%>
+        <%--<i class="list-icon icon icon-service"></i>--%>
+        <%--<div class="list-text">服务中心</div>--%>
+        <%--<i class="list-arrow"></i>--%>
+      <%--</a>--%>
+      <%--<a class="list-item list-item-icon" href="${ctx}/about">--%>
+        <%--<i class="list-icon icon icon-about"></i>--%>
+        <%--<div class="list-text">关于${sys}</div>--%>
+        <%--<i class="list-arrow"></i>--%>
+      <%--</a>--%>
+    <%--</div>--%>
+    <a href="#"><div class="quitBack">安全退出</div></a>
+  </article>
+  <script>
+    $('.quitBack').click(function(){
+      $.dialog({
+        content : '您确定要退出吗？',
+        callback : function(index) {
+          if (index == 1) {
+              window.location.href="${ctx}/logout";
+          }
+        }
+      });
+    });
+  </script>
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
 </html>

@@ -151,7 +151,7 @@
   </style>
   <script>
     var count = 1;
-    var number=${activity.amountLabel};
+    var number=${activity.amount};
     var amount=count*number;
     var hrefNew= "${ctx}/u/activity/applyTeam?activityId=${activity.id}&count=";
     $(function() {
@@ -231,7 +231,7 @@
     window.onload = loadScript;
 
     $(function() {
-      var number=${activity.amountLabel};
+      var number=${activity.amount};
       $(".team_price").text("￥"+number*parseInt($(".inputPeople").val()));
       $('#location').click(function() {
         $('article').hide();

@@ -29,8 +29,11 @@
     };
 
     $.fn.zTree.init($("#tree"), setting);
-
+    var treeObj = $.fn.zTree.getZTreeObj("tree");
+    var nodes = treeObj.getNodesByParamFuzzy("name", "亮", null);
+    console.log(nodes)
   });
+
 </script>
 <!-- END JAVASCRIPTS -->
 

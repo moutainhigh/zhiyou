@@ -339,4 +339,76 @@ public class IndexController {
 		}
 
 	}
+
+	@RequestMapping("/settleUpProfit")
+	@ResponseBody
+	public String settleUpProfit(String yeahAndMonth, HttpServletRequest request) {
+		try {
+			if (StringUtils.isNotBlank(yeahAndMonth)) {
+				Date beginDate = cacheSupport.get("settleUpProfitKey", yeahAndMonth);
+				if (beginDate == null) {
+					cacheSupport.set("settleUpProfitKey", yeahAndMonth, new Date(), 60);
+					orderService.settleUpProfit(yeahAndMonth);
+					cacheSupport.delete("settleUpProfitKey", yeahAndMonth);
+					return yeahAndMonth + "的结算处理完成";
+				} else {
+					return yeahAndMonth + "的结算正在运行中 结算开始时间为：" + beginDate;
+				}
+			} else {
+				return "传入的日期不合法" + yeahAndMonth;
+			}
+		} catch (Exception e) {
+			cacheSupport.delete("settleUpProfitKey", yeahAndMonth);
+			return e.getMessage();
+		}
+
+	}
+
+	@RequestMapping("/settleUpOption")
+	@ResponseBody
+	public String settleUpOption(String yeahAndMonth, HttpServletRequest request) {
+		try {
+			if (StringUtils.isNotBlank(yeahAndMonth)) {
+				Date beginDate = cacheSupport.get("settleUpOption", yeahAndMonth);
+				if (beginDate == null) {
+					cacheSupport.set("settleUpOption", yeahAndMonth, new Date(), 60);
+					orderService.settleUpOption(yeahAndMonth);
+					cacheSupport.delete("settleUpOption", yeahAndMonth);
+					return yeahAndMonth + "的期权结算处理完成";
+				} else {
+					return yeahAndMonth + "的结算正在运行中 结算开始时间为：" + beginDate;
+				}
+			} else {
+				return "传入的日期不合法" + yeahAndMonth;
+			}
+		} catch (Exception e) {
+			cacheSupport.delete("settleUpOption", yeahAndMonth);
+			return e.getMessage();
+		}
+
+	}
+
+	@RequestMapping("/settleUpRebate")
+	@ResponseBody
+	public String settleUpRebate(String yeahAndMonth, HttpServletRequest request) {
+		try {
+			if (StringUtils.isNotBlank(yeahAndMonth)) {
+				Date beginDate = cacheSupport.get("settleUpOption", yeahAndMonth);
+				if (beginDate == null) {
+					cacheSupport.set("settleUpOption", yeahAndMonth, new Date(), 60);
+					orderService.settleUpRebate(yeahAndMonth);
+					cacheSupport.delete("settleUpOption", yeahAndMonth);
+					return yeahAndMonth + "的返利结算处理完成";
+				} else {
+					return yeahAndMonth + "的返利结算正在运行中 结算开始时间为：" + beginDate;
+				}
+			} else {
+				return "传入的日期不合法" + yeahAndMonth;
+			}
+		} catch (Exception e) {
+			cacheSupport.delete("settleUpOption", yeahAndMonth);
+			return e.getMessage();
+		}
+
+	}
 }

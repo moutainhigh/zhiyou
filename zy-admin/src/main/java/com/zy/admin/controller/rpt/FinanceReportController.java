@@ -834,7 +834,7 @@ public class FinanceReportController {
 			case 销量奖:
 				xlj = xlj.add(profit.getAmount());
 				break;
-			case 数据奖:
+			case 历史收益:
 				sjj = sjj.add(profit.getAmount());
 				break;
 			case 订单收款:

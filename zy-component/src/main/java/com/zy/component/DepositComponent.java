@@ -28,7 +28,7 @@ public class DepositComponent {
 	
 	@Autowired
 	private CacheComponent cacheComponent;
-	
+
 	public DepositAdminVo buildAdminVo(Deposit deposit) {
 		DepositAdminVo depositAdminVo = new DepositAdminVo();
 		BeanUtils.copyProperties(deposit, depositAdminVo);

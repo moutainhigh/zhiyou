@@ -20,7 +20,7 @@
         pageLength: 100,
         order: [], // set first column as a default sort by desc
         ajax: {
-          url: '${ctx}/report/teamOrderMonth', // ajax source
+          url: '${ctx}/report/teamOrderMonth?monthLabel=${monthLabel}', // ajax source
         },
         columns: [
           {
@@ -72,7 +72,21 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-bar-chart"></i><span>团队月销量及环比-总经理</span>
+          <i class="icon-bar-chart"></i><span>团队月销量及环比-总经理（${monthLabel}）</span>
+        </div>
+        <div class="actions">
+          <div class="btn-group">
+            <a href="" class="btn dark btn-outline btn-circle btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">查询月份
+              <span class="fa fa-angle-down"> </span>
+            </a>
+            <ul class="dropdown-menu pull-right">
+              <c:forEach items="${queryDateLabels}" var="queryDateLabel">
+                <li>
+                  <a data-href="${ctx}/report/teamOrderMonth?monthLabel=${queryDateLabel}"> ${queryDateLabel}</a>
+                </li>
+              </c:forEach>
+            </ul>
+          </div>
         </div>
       </div>
 

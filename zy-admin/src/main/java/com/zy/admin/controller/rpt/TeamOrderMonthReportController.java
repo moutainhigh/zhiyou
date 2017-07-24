@@ -10,16 +10,20 @@ import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserUpgrade;
 import com.zy.model.TeamModel;
 import com.zy.model.TeamMonthReportVo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.DecimalFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,16 +37,44 @@ public class TeamOrderMonthReportController {
 	@Autowired
 	private LocalCacheComponent localCacheComponent;
 
+	private static final String SPLIT_PATTERN = "-";
+
 	@RequiresPermissions("teamOrderMonth:view")
 	@RequestMapping(method = RequestMethod.GET)
-	public String list() {
+	public String list(Model model, String monthLabel) {
+		model.addAttribute("queryDateLabels", getDateLabels());
+
+		List<String> monthForHeaders = new ArrayList<>();
+		if (StringUtils.isEmpty(monthLabel)) {
+			LocalDate now = LocalDate.now();
+			monthForHeaders.add(buildDateLabel(now.minusMonths(1)));
+			monthForHeaders.add(buildDateLabel(now.minusMonths(2)));
+
+			monthLabel = buildDateLabel(now.minusMonths(1));
+		} else {
+			String[] split = monthLabel.split(SPLIT_PATTERN);
+			Integer year = Integer.valueOf(split[0]);
+			Integer month = Integer.valueOf(split[1]);
+
+			monthForHeaders.add(year + SPLIT_PATTERN + month);
+			if (month == 1) {
+				year = year - 1;
+				month = 12;
+			} else {
+				month = month - 1;
+			}
+			monthForHeaders.add(year + SPLIT_PATTERN + month);
+		}
+		model.addAttribute("monthLabel", monthLabel);
+		model.addAttribute("monthForHeaders", monthForHeaders);
+
 		return "rpt/teamOrderMonthReport";
 	}
 
 	@RequiresPermissions("teamOrderMonth:view")
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Grid<TeamMonthReportVo> ajax() {
+	public Grid<TeamMonthReportVo> ajax(TeamMonthReportVo.TeamMonthReportVoQueryModel queryModel) {
 
 		List<User> users = localCacheComponent.getUsers();
 		List<Order> orders = localCacheComponent.getOrders();
@@ -65,26 +97,63 @@ public class TeamOrderMonthReportController {
 			return teamModel;
 		}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
 
-		LocalDate localDate = LocalDate.now();
-		Date now = new Date();
-		LocalDate lastLocalDate = localDate.minusMonths(1);
-		Date currentMonthBegin = getBeginDateTime(localDate.getYear(), localDate.getMonthValue());
-		Date lastMonthBegin = getBeginDateTime(lastLocalDate.getYear(), lastLocalDate.getMonthValue());
-		Date lastMonthEnd = getEndDateTime(lastLocalDate.getYear(), lastLocalDate.getMonthValue());
+		Date currentMonthBeginDateTime = null;
+		Date currentMonthEndDateTime = null;
+		Date lastMonthBeginDateTime = null;
+		Date lastMonthEndDateTime = null;
+		String currentMonthLabel = null;
+		String lastMonthLabel = null;
+		String monthLabel = queryModel.getMonthLabel();
+		if (StringUtils.isEmpty(monthLabel)) {
+			LocalDate now = LocalDate.now();
+			LocalDate localDate = now.minusMonths(1);
+			currentMonthBeginDateTime = getBeginDateTime(localDate.getYear(), localDate.getMonthValue());
+			currentMonthEndDateTime = getEndDateTime(localDate.getYear(), localDate.getMonthValue());
+			localDate = now.minusMonths(2);
+			lastMonthBeginDateTime = getBeginDateTime(localDate.getYear(), localDate.getMonthValue());
+			lastMonthEndDateTime = getEndDateTime(localDate.getYear(), localDate.getMonthValue());
+
+			lastMonthLabel = buildDateLabel(now.minusMonths(-1));
+			currentMonthLabel = buildDateLabel(now.minusMonths(-2));
+		} else {
+			String[] split = monthLabel.split(SPLIT_PATTERN);
+			Integer year = Integer.valueOf(split[0]);
+			Integer month = Integer.valueOf(split[1]);
+			lastMonthBeginDateTime = getBeginDateTime(year, month);
+			lastMonthEndDateTime = getEndDateTime(year, month);
+
+			lastMonthLabel = year + SPLIT_PATTERN + month;
+			if (month == 1) {
+				year = year - 1;
+				month = 12;
+			} else {
+				month = month - 1;
+			}
+			currentMonthBeginDateTime = getBeginDateTime(year, month);
+			currentMonthEndDateTime = getEndDateTime(year, month);
+			currentMonthLabel = year + SPLIT_PATTERN + month;
+		}
+		final Date currentMonthBeginDateTimeFinal = currentMonthBeginDateTime;
+		final Date currentMonthEndDateTimeFinal = currentMonthEndDateTime;
+		final Date lastMonthBeginDateTimeFinal = lastMonthBeginDateTime;
+		final Date lastMonthEndDateTimeFinal = lastMonthEndDateTime;
+		final String currentMonthLabelFinal = currentMonthLabel;
+		final String lastMonthLabelFinal = lastMonthLabel;
+		final Date now = new Date();
 
 		List<Order> filterOrders = orders.stream()
 				.filter(order -> order.getOrderStatus() == Order.OrderStatus.已支付
 						|| order.getOrderStatus() == Order.OrderStatus.已发货
 						|| order.getOrderStatus() == Order.OrderStatus.已完成)
-				.filter(v -> v.getPaidTime().before(now) && v.getPaidTime().after(lastMonthBegin))
+				.filter(v -> v.getPaidTime().before(now) && v.getPaidTime().after(lastMonthBeginDateTimeFinal))
 				.filter(v -> childrenIds.contains(v.getUserId()) || bossUserIds.contains(v.getUserId()))
 				.collect(Collectors.toList());
 
 		Map<Long, Long> currentMonthMap = filterOrders.stream()
-				.filter(v -> v.getPaidTime().after(currentMonthBegin))
+				.filter(v -> v.getPaidTime().after(currentMonthBeginDateTimeFinal))
 				.collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x , y) -> x + y));
 		Map<Long, Long> lastMonthMap = filterOrders.stream()
-				.filter(v -> v.getPaidTime().before(lastMonthEnd))
+				.filter(v -> v.getPaidTime().before(lastMonthEndDateTimeFinal))
 				.collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x , y) -> x + y));
 
 		Map<Long, Long> currentMonthTeamMap = bossUsers.stream().collect(Collectors.toMap(v -> v.getId(), v -> {
@@ -181,6 +250,22 @@ public class TeamOrderMonthReportController {
 		LocalDateTime localDateTime = LocalDateTime.of(localDate, LocalTime.parse("23:59:59"));
 		Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 		return Date.from(instant);
+	}
+
+	private List<String> getDateLabels() {
+		LocalDate now = LocalDate.now().minusMonths(1);
+		LocalDate begin = now.withMonth(1);
+		LocalDate today = now;
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy" + SPLIT_PATTERN + "MM");
+		List<String> dateLabels = new ArrayList<>();
+		for (LocalDate itDate = begin; itDate.isEqual(today) || itDate.isBefore(today); itDate = itDate.plusMonths(1)) {
+			dateLabels.add(dateTimeFormatter.format(itDate));
+		}
+		return dateLabels;
+	}
+
+	private String buildDateLabel(LocalDate localDate) {
+		return localDate.getYear() + SPLIT_PATTERN + localDate.getMonthValue();
 	}
 
 }

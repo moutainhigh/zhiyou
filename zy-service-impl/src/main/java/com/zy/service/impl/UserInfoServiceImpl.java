@@ -71,6 +71,22 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public Page<UserInfo> findPageAdmin(@NotNull UserInfoQueryModel userInfoQueryModel) {
+        if (userInfoQueryModel.getPageNumber() == null)
+            userInfoQueryModel.setPageNumber(0);
+        if (userInfoQueryModel.getPageSize() == null)
+            userInfoQueryModel.setPageSize(20);
+        long total = userInfoMapper.countAdmin(userInfoQueryModel);
+        List<UserInfo> data = userInfoMapper.findAllAdmin(userInfoQueryModel);
+        Page<UserInfo> page = new Page<>();
+        page.setPageNumber(userInfoQueryModel.getPageNumber());
+        page.setPageSize(userInfoQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
+    }
+
+    @Override
     public List<UserInfo> findAll(@NotNull UserInfoQueryModel userInfoQueryModel) {
         return userInfoMapper.findAll(userInfoQueryModel);
     }

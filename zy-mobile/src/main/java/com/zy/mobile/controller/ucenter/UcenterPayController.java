@@ -144,7 +144,10 @@ public class UcenterPayController {
 			String sn = payment.getSn();
 			Date expiredTime = DateUtils.addMinutes(new Date(), Constants.WEIXIN_PAY_EXPIRE_IN_MINUTES);
 			int weixinAmount = (payment.getAmount1().multiply(new BigDecimal("100"))).intValue();
-			String remark = Identities.uuid2();
+			String remark = payment.getRemark();
+			if (StringUtils.isBlank(remark)) {
+				remark = Identities.uuid2();
+			}
 			FuiouWeixinPayReq fuiouWeixinPayReq = buildFuiouWeixinPayReq(user.getPhone(), user.getOpenId(), sn, weixinAmount + "", remark);
 			FuiouWeixinPayRes fuiouWeixinPayRes = fuiouClient.getWeixinPayInfo(fuiouWeixinPayReq);
 			model.addAttribute("fuiouWeixinPayRes", fuiouWeixinPayRes);

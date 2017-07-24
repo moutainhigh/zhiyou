@@ -28,31 +28,45 @@
         messageFlash('请先选择收款对象.');
         return false;  
       }
-      
-      <c:if test="${userRank == 'V0' && empty parent}">
-      var parentPhone = $('#parentPhone').val();
-      if(!parentPhone) {
-        messageFlash('请填写推荐人手机号');
+      // 检测是否  实名认证realFlage
+      if(!${realFlage}){
+        $.dialog({
+          content : '实名认证后才能提交订单,去认证？',
+          callback : function(index) {
+            if (index == 1) {
+              $(".miui-dialog").remove();
+              $('#orderForm').attr("action",'${ctx}/u/userInfo');
+              $('#orderForm').submit();
+              return false;
+            }
+          }
+        });
         return false;
       }
-      $.ajax({
-        url: '${ctx}/checkParentPhone',
-        data: {
-          phone: parentPhone
-        },
-        type: 'POST',
-        dataType: 'JSON',
-        success: function(result){
-          if(result.code == 0) {
-            $('[name="parentId"]').val(result.message);
-            $('#orderForm').submit();
-          } else {
-            messageAlert(result.message);
-          }
+        <c:if test="${userRank == 'V0' && empty parent}">
+        var parentPhone = $('#parentPhone').val();
+        if(!parentPhone) {
+          messageFlash('请填写推荐人手机号');
+          return false;
         }
-      });
-      return false;
-      </c:if>
+        $.ajax({
+          url: '${ctx}/checkParentPhone',
+          data: {
+            phone: parentPhone
+          },
+          type: 'POST',
+          dataType: 'JSON',
+          success: function(result){
+            if(result.code == 0) {
+              $('[name="parentId"]').val(result.message);
+              $('#orderForm').submit();
+            } else {
+              messageAlert(result.message);
+            }
+          }
+        });
+        return false;
+        </c:if>
     });
     
   	//选择收货地址
@@ -397,7 +411,7 @@
           </div>
         </div>
         <div style="color: #8a6d3b; padding: 15px 30px 15px 15px;">
-          <p>此手机号码为直属推荐人的手机号码，填写错误，则上下级关系不予以更改</p>
+          <p>此手机号码为直属推荐人的手机号码，填写错误，则推荐关系不予以更改</p>
         </div>
       </div>
     </c:if>

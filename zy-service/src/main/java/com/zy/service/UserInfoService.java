@@ -12,6 +12,8 @@ public interface UserInfoService {
 
 	Page<UserInfo> findPage(UserInfoQueryModel userInfoQueryModel);
 
+	Page<UserInfo> findPageAdmin(UserInfoQueryModel userInfoQueryModel);
+
 	List<UserInfo> findAll(UserInfoQueryModel userInfoQueryModel);
 
 	UserInfo findByUserId(Long userId);

@@ -1,5 +1,6 @@
 package com.zy.model.query;
 
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
@@ -20,7 +21,7 @@ import com.zy.entity.mal.Order.OrderType;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class  OrderQueryModel implements Serializable {
+public class OrderQueryModel implements Serializable {
 
 	private String snLK;
 
@@ -31,6 +32,10 @@ public class  OrderQueryModel implements Serializable {
 	private Long sellerIdEQ;
 
 	private Long[] sellerIdIN;
+
+	private List<Long> sellerIdList;
+
+	private List<Long> userIdList;
 
 	private Long rootIdEQ;
 
@@ -43,6 +48,10 @@ public class  OrderQueryModel implements Serializable {
 	private Date createdTimeLT;
 
 	private Date createdTimeGTE;
+
+	private Date expiredTimeLT;
+
+	private Date expiredTimeGTE;
 
 	private Date paidTimeLT;
 
@@ -141,6 +150,7 @@ public class  OrderQueryModel implements Serializable {
 		fieldNames.add("sellerUserRank");
 		fieldNames.add("receiverAreaId");
 		fieldNames.add("image");
+		fieldNames.add("isSettlement");
 		fieldNames.add("isBuyerPayLogisticsFee");
 		fieldNames.add("productId");
 		fieldNames.add("isProfitSettledUp");

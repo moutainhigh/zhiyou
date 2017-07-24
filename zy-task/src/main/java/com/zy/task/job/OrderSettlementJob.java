@@ -35,10 +35,10 @@ public class OrderSettlementJob implements Job {
                 .map(order -> order.getId())
                 .forEach(this::settleUp);
 
-        orderService.findAll(builder().orderStatusIN(new Order.OrderStatus[]{已支付, 已发货, 已完成}).isProfitSettledUpEQ(false).build())
-                .stream()
-                .map(order -> order.getId())
-                .forEach(this::settleUpProfit);
+//        orderService.findAll(builder().orderStatusIN(new Order.OrderStatus[]{已支付, 已发货, 已完成}).isProfitSettledUpEQ(false).build())
+//                .stream()
+//                .map(order -> order.getId())
+//                .forEach(this::settleUpProfit);
 
         logger.info("end...");
     }
@@ -56,16 +56,16 @@ public class OrderSettlementJob implements Job {
         }
     }
 
-    private void settleUpProfit(Long id) {
-        try {
-
-            this.orderService.settleUpProfit(id);
-            logger.info("结算 settleUpProfit {} 成功", id);
-        } catch (ConcurrentException e) {
-            try {TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
-            settleUpProfit(id);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-    }
+//    private void settleUpProfit(Long id) {
+//        try {
+//
+//            this.orderService.settleUpProfit(id);
+//            logger.info("结算 settleUpProfit {} 成功", id);
+//        } catch (ConcurrentException e) {
+//            try {TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
+//            settleUpProfit(id);
+//        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+//        }
+//    }
 }

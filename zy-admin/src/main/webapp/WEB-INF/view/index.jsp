@@ -191,7 +191,7 @@
           <!-- END RESPONSIVE QUICK SEARCH FORM -->
         </li>
 
-        <shiro:hasAnyPermissions name="product:view,order:view,order:deliver">
+        <shiro:hasAnyPermissions name="product:view,order:view,order:deliver,orderFillUser:view,productReplacement:view">
           <li>
             <a href="javascript:;">
               <i class="icon-basket"></i>
@@ -232,7 +232,7 @@
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="activity:view,report:view">
+        <shiro:hasAnyPermissions name="activity:view,report:view,activityReport:view,activityTicket:view,activityApply:view,policy:view,policyCode:view,reportVisitedLog:view">
           <li>
             <a href="javascript:;">
               <i class="icon-globe"></i>
@@ -414,8 +414,8 @@
           </li>
         </shiro:hasAnyPermissions>
         
-        <shiro:hasAnyPermissions name="userTreeReport:view,teamReport:view,userUpgradeReport:view,orderReport:view,financeReport:view,orderQuantity:view
-                                      ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view">
+        <shiro:hasAnyPermissions name="userTreeReport:view,v4TreeReport:view,orderReport:view,teamReport:view,userUpgradeReport:view,financeReport:view,orderQuantity:view
+                                      ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view,activitySummaryReport:view">
           <li>
             <a href="javascript:;">
               <i class="icon-grid"></i>
@@ -469,12 +469,12 @@
               </shiro:hasPermission>
               <shiro:hasPermission name="cityAgent:view">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/report/cityAgent"><i class="icon-bar-chart"></i> 服务商活跃数排行<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/report/cityAgent"><i class="icon-bar-chart"></i> 服务商活跃度排行—省份<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="profitMOM:view">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/report/profitMOM"><i class="icon-bar-chart"></i> 收入环比<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/report/profitMOM"><i class="icon-bar-chart"></i> 总经理个人收入环比<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="activitySummaryReport:view">
@@ -494,7 +494,7 @@
               </shiro:hasPermission>
               <shiro:hasPermission name="teamOrderDaily:view">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/report/teamOrderDaily"><i class="icon-bar-chart"></i> 团队月销量及环比-总经理<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/report/teamOrderDaily"><i class="icon-bar-chart"></i> 团队日销量及环比-总经理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>
