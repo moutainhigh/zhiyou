@@ -54,4 +54,5 @@
     <dubbo:reference id="productReplacementService" interface="com.zy.service.ProductReplacementService" protocol="dubbo"/>
     <dubbo:reference id="matterService" interface="com.zy.service.MatterService" protocol="dubbo"/>
     <dubbo:reference id="cartItemService" interface="com.zy.service.CartItemService" protocol="dubbo"/>
+    <dubbo:reference id="lessonService" interface="com.zy.service.LessonService" protocol="dubbo"/>
 </beans>
