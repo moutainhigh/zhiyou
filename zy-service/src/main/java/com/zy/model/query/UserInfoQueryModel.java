@@ -28,6 +28,8 @@ public class UserInfoQueryModel implements Serializable {
 
 	private String idCardNumberLK;
 
+	private Integer realFlag;
+
 	private ConfirmStatus confirmStatusEQ;
 
 	private Long areaIdEQ;
@@ -103,6 +105,7 @@ public class UserInfoQueryModel implements Serializable {
 		fieldNames.add("idCardNumber");
 		fieldNames.add("confirmStatus");
 		fieldNames.add("id");
+		fieldNames.add("age");
 	}
 
 }

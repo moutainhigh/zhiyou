@@ -13,6 +13,18 @@
 
 <title>检测报告列表</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
+  <style>
+    .tour,.insure {
+      width:20px;
+      height:23px;
+      position: relative;
+      left: 30px;
+      top: 5px;
+    }
+    .insure {
+      left: 40px;
+    }
+    </style>
 <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
 <script type="text/javascript">
   $(function() {
@@ -64,7 +76,10 @@
 <script id="rowTpl" type="text/html">
   <a class="list-item" href="${ctx}/u/report/{{ d.id }}">
     <div class="list-text report">
-      <div class="lh-30">{{ d.realname }}<span class="ml-10 fs-12 font-999">&lt;{{ d.gender }}  {{ d.age }}岁&gt;</span><span class="right fs-12 font-999">{{ d.phone }}</span></div>
+      <div class="lh-30">{{ d.realname }}<span class="ml-10 fs-12 font-999">&lt;{{ d.gender }}  <%--{{ d.age }}岁--%>&gt;</span>
+        {{# if(d.tourFlage == '1'){ }} <img class="tour" src="${ctx}/images/tour.png" />{{# } }}
+        {{# if(d.insureFlage == '1'){ }} <img class="insure" src="${ctx}/images/insure.png" />{{# } }}
+        <span class="right fs-12 font-999">{{ d.phone }}</span></div>
       <div class="fs-13 font-777">产品名称：{{ d.productTitle }}</div>
       <div class="fs-13 font-777">
       <span>检测结果：
@@ -115,7 +130,11 @@
         <c:forEach items="${page.data}" var="report">
         <a class="list-item" href="${ctx}/u/report/${report.id}">
           <div class="list-text report">
-            <div class="lh-30">${report.realname}<span class="ml-10 fs-12 font-999">&lt;${report.gender}  ${report.age}岁&gt;</span><span class="right fs-12 font-999">${report.phone}</span></div>
+            <div class="lh-30">${report.realname}<span class="ml-10 fs-12 font-999">&lt;${report.gender}  <%--${report.age}岁--%>&gt;</span>
+            <c:if test="${report.tourFlage eq '1'}"> <img class="tour" src="${ctx}/images/tour.png" /></c:if>
+              <c:if test="${report.insureFlage eq '1'}">  <img class="insure" src="${ctx}/images/insure.png" /></c:if>
+              <span class="right fs-12 font-999">${report.phone}</span>
+            </div>
             <div class="fs-13 font-777">产品名称：${report.productTitle}</div>
             <div class="fs-13 font-777"><span>检测结果：
             <c:choose>

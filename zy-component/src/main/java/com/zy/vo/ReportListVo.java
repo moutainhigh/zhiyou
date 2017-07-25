@@ -51,5 +51,9 @@ public class ReportListVo implements Serializable {
 	private String appliedTimeLabel;
 	@Field(label = "创建时间")
 	private String createdTimeLabel;
+	@Field(label = "旅游申请")
+	private String tourFlage;
+	@Field(label = "保险申请")
+	private String insureFlage;
 
 }

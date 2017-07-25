@@ -168,7 +168,6 @@ public class UserServiceImpl implements UserService {
                 userMapper.update(user);
             }
         } else {
-
 			/* 注册 */
             user = new User();
             user.setPhone(phone);
@@ -182,6 +181,7 @@ public class UserServiceImpl implements UserService {
             user.setUserRank(UserRank.V0);
             user.setOpenId(openId);
             user.setUnionId(unionId);
+            user.setLastloginTime(new Date());
             validate(user);
             userMapper.insert(user);
             insertAccount(user); // 初始化
@@ -308,12 +308,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyNickname(@NotNull Long userId, @NotBlank String nickname) {
         findAndValidate(userId);
-
         User userForMerge = new User();
         userForMerge.setId(userId);
         userForMerge.setNickname(nickname);
         userMapper.merge(userForMerge, "nickname");
 
+    }
+
+    @Override
+    public void modifyLastLoginTime(@NotNull Long userId) {
+        findAndValidate(userId);
+        User user = new User();
+        user.setId(userId);
+        user.setLastloginTime(new Date());
+        userMapper.merge(user, "lastloginTime");
     }
 
     @Override
@@ -324,7 +332,6 @@ public class UserServiceImpl implements UserService {
         userForMerge.setId(userId);
         userForMerge.setAvatar(avatar);
         userMapper.merge(userForMerge, "avatar");
-
     }
 
     static char[] codeSeq = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '2', '3', '4', '5', '6',

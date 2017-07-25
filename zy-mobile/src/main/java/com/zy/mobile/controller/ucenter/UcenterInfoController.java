@@ -7,6 +7,7 @@ import com.zy.entity.usr.Tag;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
+import com.zy.model.query.UserInfoQueryModel;
 import com.zy.service.JobService;
 import com.zy.service.TagService;
 import com.zy.service.UserInfoService;
@@ -28,12 +29,12 @@ import java.util.Map;
 @RequestMapping("/u/userInfo")
 @Controller
 public class UcenterInfoController {
-	
+
 	Logger logger = LoggerFactory.getLogger(UcenterInfoController.class);
 
 	@Autowired
-	private UserInfoService userInfoService;    
-	
+	private UserInfoService userInfoService;
+
 	@Autowired
 	private UserInfoComponent userInfoComponent;
 
@@ -52,32 +53,55 @@ public class UcenterInfoController {
 		model.addAttribute("userInfo", userInfoComponent.buildVo(userInfo));
 		return "ucenter/user/userInfo";
 	}
-	
+
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create(Principal principal, Model model) {
 		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
 		if(userInfo != null) {
 			return "redirect:/u/userInfo";
+		}else{
+			UserInfoQueryModel userInfoQueryModel = new UserInfoQueryModel();
+			userInfoQueryModel.setUserIdEQ(principal.getUserId());
+			userInfoQueryModel.setRealFlag(0);
+			List<UserInfo> userInfos = userInfoService.findAll(userInfoQueryModel);
+			if(userInfos.size() == 1){
+				model.addAttribute("userInfo",userInfoComponent.buildVo(userInfos.get(0)));
+			}
 		}
 		model.addAttribute("jobs", jobService.findAll());
 		model.addAttribute("tags", getTags());
 		return "ucenter/user/userInfoCreate";
 	}
-	
+
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(UserInfo userInfo, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		userInfo.setUserId(principal.getUserId());
+		UserInfo info = userInfoService.findByIdCardNumber(userInfo.getIdCardNumber());
+		UserInfo exit = userInfoService.findByUserIdandFlage(principal.getUserId());
 		try {
-			userInfoService.create(userInfo);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));
+			if(null != info && (exit != null && !info.getUserId().equals(exit.getUserId()))){
+				model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("身份证已经被认证过，请核对身份证信息"));
+				model.addAttribute("userInfo", userInfoComponent.buildVo(userInfo));
+				model.addAttribute("jobs", jobService.findAll());
+				model.addAttribute("tags", getTags());
+				return "ucenter/user/userInfoCreate";
+			}
+			userInfo.setUserId(principal.getUserId());
+			userInfo.setRealFlag(1);
+			if(exit != null){
+				userInfo.setId(exit.getId());
+				userInfoService.modify(userInfo);
+			}else {
+				userInfoService.create(userInfo);
+			}
 		} catch (Exception e) {
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			model.addAttribute("userInfo", userInfo);
 			return "ucenter/user/userInfoCreate";
 		}
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));
 		return "redirect:/u/userInfo";
 	}
-	
+
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String edit(Principal principal, Model model) {
 		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
@@ -89,17 +113,23 @@ public class UcenterInfoController {
 		model.addAttribute("userInfo", userInfoComponent.buildVo(userInfo));
 		return "ucenter/user/userInfoEdit";
 	}
-	
+
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public String edit(UserInfo userInfo, Principal principal, RedirectAttributes redirectAttributes) {
-		UserInfo persistence = userInfoService.findByUserId(principal.getUserId());
+		UserInfo persistence = userInfoService.findByUserIdandFlage(principal.getUserId());
+		UserInfo info = userInfoService.findByIdCardNumber(userInfo.getIdCardNumber());
 		if(persistence == null) {
 			return "ucenter/user/userInfoCreate";
 		}
 		if(persistence.getConfirmStatus() == ConfirmStatus.已通过) {
 			return "redirect:/u/userInfo";
 		}
+		if(null != info && !info.getUserId().equals(persistence.getUserId())){
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("身份证已经被认证过，请核对身份证信息"));
+			return "redirect:/u/userInfo/edit";
+		}
 		userInfo.setId(persistence.getId());
+		userInfo.setRealFlag(1);
 		try {
 			userInfoService.modify(userInfo);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("修改成功"));
@@ -109,7 +139,7 @@ public class UcenterInfoController {
 		}
 		return "redirect:/u/userInfo";
 	}
-	
+
 	private Map<String, List<Tag>> getTags() {
 		Map<String, List<Tag>> tags = new HashMap<>();
 		this.tagService.findAll().parallelStream().forEach(tag -> {

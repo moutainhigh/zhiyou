@@ -501,7 +501,7 @@
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="admin:*,role:*,message:view,setting:*,area:*,tag:view,job:view,bank:view">
+        <shiro:hasAnyPermissions name="admin:*,role:*,message:view,setting:*,area:*,tag:view,job:view,bank:view,systemCode:view">
           <li>
             <a href="javascript:;">
               <i class="icon-settings"></i>
@@ -550,6 +550,11 @@
                   <a href="javascript:;" data-href="${ctx}/bank"><i class="icon-home"></i> 银行信息<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="systemCode:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/systemCode"><i class="icon-home"></i> 系统默认值管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
               <li>
                 <a href="javascript:;" data-href="${ctx}/dev"><i class="icon-briefcase"></i> 开发者工具<span class="badge badge-danger"></span></a>
               </li>
@@ -557,6 +562,39 @@
           </li>
         </shiro:hasAnyPermissions>
 
+        <shiro:hasAnyPermissions name="tour:view,tourUser:view,tourSetting:view,tourJoinUser:view">
+          <li>
+            <a href="javascript:;">
+              <i class="icon-globe"></i>
+              <span class="title">旅游管理</span>
+              <span class="selected"></span>
+              <span class="arrow "></span>
+            </a>
+            <ul class="sub-menu">
+
+              <shiro:hasPermission name="tour:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/tour"><i class="icon-docs"></i> 旅游信息管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="tourSetting:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/tour/blackOrWhite"><i class="icon-docs"></i> 黑白名单管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="tourUser:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/tourUser"><i class="icon-docs"></i> 游客信息管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="tourJoinUser:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/tourJoinUser"><i class="icon-docs"></i> 参游旅客信息管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
       </ul>
       <!-- END SIDEBAR MENU -->
     </div>

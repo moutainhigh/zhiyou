@@ -1,6 +1,41 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 <!-- BEGIN JAVASCRIPTS -->
+<%--<script id="modifyLastloginTimeTmpl" type="text/x-handlebars-template">--%>
+    <%--<form id="modifylastloginTimeForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">--%>
+        <%--<input type="hidden" name="userId" value="{{id}}"/>--%>
+        <%--<div class="form-body">--%>
+            <%--<div class="alert alert-danger display-hide">--%>
+                <%--<i class="fa fa-exclamation-circle"></i>--%>
+                <%--<button class="close" data-close="alert"></button>--%>
+                <%--<span class="form-errors">您填写的信息有误，请检查。</span>--%>
+            <%--</div>--%>
+            <%--<div class="form-group">--%>
+                <%--<label class="control-label col-md-2">昵称<span class="required"> * </span></label>--%>
+                <%--<div class="col-md-5">--%>
+                    <%--<input type="text" name="nickname" readonly="true" value="{{nickname}}" class="form-control" placeholder="请输入昵称"/>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="form-group">--%>
+                <%--<label class="control-label col-md-2">最后一次登录时间<span class="required"> * </span></label>--%>
+                <%--<div class="col-md-5">--%>
+                    <%--<input class="form-control" type="text" id="lastloginTime"--%>
+                        <%--&lt;%&ndash;<input type="text" name="lastloginTime" readonly="true" value="{{lastloginTime}}" class="form-control" placeholder="请输入昵称"/>&ndash;%&gt;--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+        <%--<div class="form-actions fluid">--%>
+            <%--<div class="col-md-offset-3 col-md-9">--%>
+                <%--<button id="modifyLastloginTimeSubmit{{id}}" type="button" class="btn green">--%>
+                    <%--<i class="fa fa-save"></i> 保存--%>
+                <%--</button>--%>
+                <%--<button id="modifyLastloginTimeCancel{{id}}" class="btn default" data-href="">--%>
+                    <%--<i class="fa fa-chevron-left"></i> 返回--%>
+                <%--</button>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</form>--%>
+<%--</script>--%>
 <script id="modifyImpl" type="text/x-handlebars-template">
   <form id="modifyForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
     <input type="hidden" name="userId" value="{{id}}"/>
@@ -108,6 +143,7 @@
 
   $(function () {
 
+
 	  $('#dataTable').on('click', '.user-detail', function() {
 		  var id = $(this).data('id');
 		  $.ajax({
@@ -176,6 +212,57 @@
 		  })
 
 	  });
+
+      <%--var modifyLastloginTimeTemplate = Handlebars.compile($('#modifyLastloginTimeTmpl').html());--%>
+      <%--$('#dataTable').on('click', '.modifyLastloginTime-info', function () {--%>
+          <%--var id = $(this).data('id');--%>
+          <%--var nickname = $(this).data('nickname');--%>
+          <%--var lastloginTime = $(this).data('lastloginTime');--%>
+          <%--alert(lastloginTime);--%>
+          <%--var data = {--%>
+              <%--id: id,--%>
+              <%--nickname: nickname,--%>
+              <%--lastloginTime: lastloginTime--%>
+          <%--};--%>
+          <%--var html = modifyLastloginTimeTemplate(data);--%>
+          <%--var index = layer.open({--%>
+              <%--type: 1,--%>
+              <%--//skin: 'layui-layer-rim', //加上边框--%>
+              <%--area: ['600px', '360px'], //宽高--%>
+              <%--content: html--%>
+          <%--});--%>
+
+          <%--var $form = $('#modifylastloginTimeForm' + id);--%>
+          <%--$form.validate({--%>
+              <%--rules: {--%>
+                  <%--'lastloginTime': {--%>
+                      <%--required: true--%>
+                  <%--}--%>
+              <%--},--%>
+              <%--messages: {}--%>
+          <%--});--%>
+
+          <%--$('#modifyLastloginTimeSubmit' + id).bind('click', function () {--%>
+              <%--var result = $form.validate().form();--%>
+              <%--if (result) {--%>
+                  <%--var url = '${ctx}/user/editLastloginTime';--%>
+                  <%--$.post(url, $form.serialize(), function (data) {--%>
+                      <%--if (data.code === 0) {--%>
+                          <%--layer.alert('操作成功');--%>
+                          <%--layer.close(index);--%>
+                          <%--grid.getDataTable().ajax.reload(null, false);--%>
+                      <%--} else {--%>
+                          <%--layer.alert('操作失败,原因' + data.message);--%>
+                      <%--}--%>
+                  <%--});--%>
+              <%--}--%>
+          <%--})--%>
+
+          <%--$('#modifyLastloginTimeCancel' + id).bind('click', function () {--%>
+              <%--layer.close(index);--%>
+          <%--})--%>
+
+      <%--});--%>
 
 	  var modifyPasswordTemplate = Handlebars.compile($('#modifyPasswordImpl').html());
 	  $('#dataTable').on('click', '.user-modify-password', function () {
@@ -432,6 +519,11 @@
             orderable: false
           },
           {
+            data: 'lastloginTime',
+            title: '最后一次登录时间',
+           // orderable: false
+          },
+          {
             data: '',
             title: '推荐人',
             orderable: false,
@@ -503,6 +595,9 @@
 	              <shiro:hasPermission name="user:setShareholder">
 
 	              </shiro:hasPermission>
+                  <shiro:hasPermission name="user:edit">
+                  optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="editLastLoginTimeAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 重置登录时间 </a>';
+                  </shiro:hasPermission>
               }
               return optionHtml;
             }
@@ -548,6 +643,19 @@
   }
   function closeBtn() {
     $addVipDialog.close();
+  }
+
+  function editLastLoginTimeAjax(id) {
+      layer.confirm('您确认要重置该用户的登录时间吗?', {
+          btn: ['重置','取消'] //按钮
+      }, function(){
+          $.post('${ctx}/user/editLastLoginTime/', {id: id}, function (result) {
+              grid.getDataTable().ajax.reload(null, false);
+          });
+          layer.msg('重置成功！');
+      }, function(){
+
+      });
   }
 </script>
 <script type="text/javascript">

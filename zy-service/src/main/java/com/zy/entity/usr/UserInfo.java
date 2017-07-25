@@ -192,4 +192,12 @@ public class UserInfo implements Serializable {
 	@View(groups = {VO_ADMIN, VO})
 	private String tagIds;
 
+	@View(name = "age")
+	@View(groups = {VO_ADMIN, VO})
+	private Integer age;
+
+	@View(name = "realflag")
+	@View(groups = {VO_ADMIN, VO})
+	private Integer realFlag;
+
 }

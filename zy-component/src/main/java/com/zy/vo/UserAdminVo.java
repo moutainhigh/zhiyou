@@ -29,6 +29,8 @@ public class UserAdminVo implements Serializable {
 	private Boolean isFrozen;
 	@Field(label = "注册时间")
 	private Date registerTime;
+	@Field(label = "最后一次登录时间")
+	private Date lastloginTime;
 	@Field(label = "注册ip")
 	private String registerIp;
 	@Field(label = "remark")

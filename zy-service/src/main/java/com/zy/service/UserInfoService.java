@@ -10,6 +10,8 @@ public interface UserInfoService {
 
 	UserInfo findOne(Long id);
 
+	UserInfo findByIdCardNumber(String idCardNumber);
+
 	Page<UserInfo> findPage(UserInfoQueryModel userInfoQueryModel);
 
 	Page<UserInfo> findPageAdmin(UserInfoQueryModel userInfoQueryModel);
@@ -28,4 +30,5 @@ public interface UserInfoService {
 
 	void confirm(Long id, boolean isSuccess, String confirmRemark);
 
+	UserInfo findByUserIdandFlage(Long userId);
 }

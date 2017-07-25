@@ -20,6 +20,8 @@ public interface UserInfoMapper {
 
 	UserInfo findOne(Long id);
 
+	UserInfo findByIdCardNumber(String idCardNumber);
+
 	List<UserInfo> findAll(UserInfoQueryModel userInfoQueryModel);
 
 	List<UserInfo> findAllAdmin(UserInfoQueryModel userInfoQueryModel);
@@ -29,5 +31,7 @@ public interface UserInfoMapper {
 	long countAdmin(UserInfoQueryModel userInfoQueryModel);
 
 	UserInfo findByUserId(Long userId);
+
+	UserInfo findByUserIdandFlage(Long userId);
 
 }

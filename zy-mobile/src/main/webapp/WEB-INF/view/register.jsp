@@ -11,19 +11,19 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <title>${sys} - 注册</title>
-  <%@ include file="/WEB-INF/view/include/head.jsp"%>
-  <%@ include file="/WEB-INF/view/include/validate.jsp"%>
-  <script type="text/javascript">
-    $(function() {
-      // 验证码刷新
-      if ($('#captchaImage').length > 0) {
-        var refreshCaptcha = function() {
-          $("#captchaImage:visible").attr("src", Config.ctx + '/captcha?r=' + new Date().getTime());
-        }
-        //$(".captcha-refresh").click(refreshCaptcha);
-        $("#captchaImage").click(refreshCaptcha);
+<title>${sys} - 注册</title>
+<%@ include file="/WEB-INF/view/include/head.jsp"%>
+<%@ include file="/WEB-INF/view/include/validate.jsp"%>
+<script type="text/javascript">
+  $(function() {
+    // 验证码刷新
+    if ($('#captchaImage').length > 0) {
+      var refreshCaptcha = function() {
+        $("#captchaImage:visible").attr("src", Config.ctx + '/captcha?r=' + new Date().getTime());
       }
+      //$(".captcha-refresh").click(refreshCaptcha);
+      $("#captchaImage").click(refreshCaptcha);
+    }
 
       // 发送短信校验码
       $('#btnSend').click(function() {

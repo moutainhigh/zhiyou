@@ -20,10 +20,14 @@
 <script type="text/javascript">
   $(function() {
     
-    var area = new areaInit('province', 'city', 'district');
+    var area = new areaInit('province', 'city', 'district', '${userInfo.areaId}');
 
     $('.valid-form').validate({
       rules : {
+        'age' : {
+          required : true,
+          number : true
+        },
         'areaId' : {
           required : true
         },
@@ -49,7 +53,12 @@
           required : true
         }
       },
-      messages : {}
+      messages : {
+        'age': {
+          required: '请输入年龄',
+          number : '只能输入数字'
+        },
+      }
     });
 
     $('.image-single').imageupload({
@@ -175,7 +184,7 @@
         <div class="list-item">
           <label class="list-label">姓名</label>
           <div class="list-text">
-            <input type="text" id="realname" name="realname" class="form-input" value="" placeholder="填写真实姓名">
+            <input type="text" id="realname" name="realname" class="form-input" value="${userInfo.realname}" placeholder="填写真实姓名">
           </div>
         </div>
         <div class="list-item">
@@ -183,15 +192,21 @@
           <div class="list-text form-select">
             <select name="gender">
               <option value="">请选择</option>
-              <option value="0">男</option>
-              <option value="1">女</option>
+              <option value="0" <c:if test="${userInfo.gender == '男'}"> selected="selected"</c:if>>男</option>
+              <option value="1" <c:if test="${userInfo.gender == '女'}"> selected="selected"</c:if>>女</option>
             </select>
+          </div>
+        </div>
+        <div class="list-item">
+          <label class="list-label">年龄</label>
+          <div class="list-text">
+            <input type="number" id="age" name="age" class="form-input" value="${userInfo.age}" required placeholder="填写年龄">
           </div>
         </div>
         <div class="list-item">
           <label class="list-label">生日</label>
           <div class="list-text">
-            <input type="date" name="birthday" class="form-input" value="" placeholder="填写生日  1900-01-01">
+            <input type="date" name="birthday" class="form-input" value="${userInfo.birthdayLabel}" placeholder="填写生日  1900-01-01">
           </div>
         </div>
         <div class="list-item">
@@ -220,7 +235,7 @@
             <select name="jobId">
               <option value="">请选择</option>
               <c:forEach items="${jobs}" var="job">
-                <option value="${job.id}">${job.jobName}</option>
+                <option value="${job.id}" <c:if test="${userInfo.jobId == job.id}"> selected="selected"</c:if>>${job.jobName}</option>
               </c:forEach>
             </select>
           </div>
@@ -242,37 +257,47 @@
         <div class="list-item">
           <label class="list-label">身份证号</label>
           <div class="list-text">
-            <input type="text" id="idCardNumber" name="idCardNumber" class="form-input" value="" placeholder="填写身份证号">
+            <input type="text" id="idCardNumber" name="idCardNumber" class="form-input" value="${userInfo.idCardNumber}" placeholder="填写身份证号">
           </div>
         </div>
         <div class="list-item">
-          <label class="list-label">正面照</label>
-          <div class="list-text image-upload">
-            <div class="image-item image-single ">
-              <input type="hidden" name="image1" id="image1" value="">
-              <img src="${stccdn}/image/upload_240_150.png">
-              <input type="file">
+            <label class="list-label">身份证正面照</label>
+            <div class="list-text image-upload">
+              <div class="image-item image-single ">
+                <input type="hidden" name="image1" id="image1" value="${userInfo.image1}">
+            <c:if test="${userInfo.image1Thumbnail == null}">
+                <img src="${stccdn}/image/upload_240_150.png">
+            </c:if>
+            <c:if test="${userInfo.image1Thumbnail != null}">
+              <img  src="${userInfo.image1Thumbnail}" data-src="${userInfo.image1}">
+            </c:if>
+                <input type="file">
+              </div>
             </div>
-          </div>
-          <div class="list-unit">
-            <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_1.jpg" data-title="身份证正面"><i class="fa fa-question-circle-o"></i> 示意图</a>
-          </div>
+            <div class="list-unit">
+              <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_1.jpg" data-title="身份证正面"><i class="fa fa-question-circle-o"></i> 示意图</a>
+            </div>
         </div>
         <div class="list-item">
-          <label class="list-label">反面照</label>
-          <div class="list-text image-upload">
-            <div class="image-item image-single">
-              <input type="hidden" name="image2" id="image2" value="">
-              <img src="${stccdn}/image/upload_240_150.png">
-              <input type="file">
+            <label class="list-label">反面照</label>
+            <div class="list-text image-upload">
+              <div class="image-item image-single">
+                <input type="hidden" name="image2" id="image2" value="${userInfo.image2}">
+                <c:if test="${userInfo.image2Thumbnail == null}">
+                  <img src="${stccdn}/image/upload_240_150.png">
+                </c:if>
+                <c:if test="${userInfo.image2Thumbnail != null}">
+                  <img src="${userInfo.image2Thumbnail}" data-src="${userInfo.image2}">
+                </c:if>
+                <img src="${stccdn}/image/upload_240_150.png">
+                <input type="file">
+              </div>
             </div>
-          </div>
-          <div class="list-unit">
-            <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_2.jpg" data-title="身份证反面"><i class="fa fa-question-circle-o"></i> 示意图</a>
-          </div>
+            <div class="list-unit">
+              <a href="javascript:;" class="image-view font-blue fs-14" data-src="${stccdn}/image/example/id_card_2.jpg" data-title="身份证反面"><i class="fa fa-question-circle-o"></i> 示意图</a>
+            </div>
         </div>
       </div>
-    
       <div class="form-btn">
         <input id="btnSubmit" class="btn orange btn-block round-2" type="submit" value="提 交">
       </div>

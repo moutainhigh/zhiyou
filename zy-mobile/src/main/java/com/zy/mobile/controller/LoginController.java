@@ -5,6 +5,7 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.cache.CacheSupport;
 import com.zy.common.support.sms.SmsSupport;
 import com.zy.common.util.CookieUtils;
+import com.zy.common.util.DateUtil;
 import com.zy.common.util.Identities;
 import com.zy.common.util.ValidateUtils;
 import com.zy.entity.sys.ShortMessage;
@@ -101,15 +102,44 @@ public class LoginController {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("登录失败, 密码错误"));
 			return "redirect:/login";
 		}
-
 		String redirectUrl = (String) session.getAttribute(SESSION_ATTRIBUTE_REDIRECT_URL);
 		if (StringUtils.isBlank(redirectUrl)) {
 			redirectUrl = "/";
 		}
 
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("登录成功"));
+		userService.modifyLastLoginTime(user.getId());
 		onLoginSuccess(request, response, user.getId());
 		return "redirect:" + redirectUrl;
+	}
+
+	@RequestMapping(value = "/ajaxTime", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> ajaxTime(String phone, String password) {
+
+		if (GcUtils.getPrincipal() != null) {
+			return ResultBuilder.ok("");
+		}
+
+		if (StringUtils.isBlank(phone)) {
+			return ResultBuilder.error("登录失败, 手机号不能为空");
+		}
+		if (StringUtils.isBlank(password)) {
+			return ResultBuilder.error("登录失败, 密码不能为空");
+		}
+
+		User user = userService.findByPhone(phone);
+		if (user == null) {
+			return ResultBuilder.error("登录失败, 手机号不存在");
+		} else if (!userService.hashPassword(password).equals(user.getPassword())){
+			return ResultBuilder.error("登录失败, 密码错误");
+		}
+		if(user.getLastloginTime() != null){
+			if(user.getLastloginTime().before(DateUtil.getMonthData(new Date(),-3,0))){
+				return ResultBuilder.error("登录失败, 由于您的账号三个月内没有登录,账号已被锁定,请联系小优解锁");
+			}
+		}
+		return ResultBuilder.ok("");
 	}
 
 	
@@ -184,6 +214,7 @@ public class LoginController {
 		}
 		logger.info("redirect url = " + redirectUrl);
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("恭喜您, 注册成功"));
+		userService.modifyLastLoginTime(user.getId());
 		onLoginSuccess(request, response, user.getId());
 		return "redirect:" + redirectUrl;
 	}

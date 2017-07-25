@@ -9,14 +9,15 @@
 		<result column="used_time" property="usedTime" />
 		<result column="is_used" property="isUsed" />
 		<result column="batch_code" property="batchCode" />
+		<result column="tour_used" property="tourUsed" />
 		<result column="version" property="version" />
 	</resultMap>
 
-	<sql id="baseColumn">id,code,created_time,used_time,is_used,batch_code,version</sql>
+	<sql id="baseColumn">id,code,created_time,used_time,is_used,batch_code,tour_used,version</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.act.PolicyCode" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_policy_code` (code,created_time,used_time,is_used,batch_code,version)
-	  values (#{code},#{createdTime},#{usedTime},#{isUsed},#{batchCode},#{version})
+	  insert into `act_policy_code` (code,created_time,used_time,is_used,batch_code,tour_used,version)
+	  values (#{code},#{createdTime},#{usedTime},#{isUsed},#{batchCode},${tourUsed},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -31,6 +32,7 @@
 			used_time = #{usedTime},
 			is_used = #{isUsed},
 			batch_code = #{batchCode},
+			tour_used = #{tourUsed},
 			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
@@ -140,7 +142,7 @@
 
 	<select id="findByCode" resultMap="baseResultMap" parameterType="String">
 		select
-		id,code,created_time,used_time,is_used,batch_code,version
+		id,code,created_time,used_time,is_used,batch_code,tour_used,version
 		from `act_policy_code`
 		where code = #{code}
 	</select>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.TourTimeMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.tour.TourTime">
+		<id column="id" property="id" />
+		<result column="trou_id" property="trouId" />
+		<result column="begin_time" property="begintime" />
+		<result column="end_time" property="endtime" />
+		<result column="fee" property="fee" />
+		<result column="is_released" property="isreleased" />
+		<result column="del_flag" property="delflag" />
+		<result column="starAddress" property="starAddress" />
+		<result column="created_date" property="createdTime" />
+		<result column="create_by" property="createby" />
+		<result column="update_date" property="updateTime" />
+		<result column="update_by" property="updateby" />
+		<result column="area_id" property="areaId" />
+	</resultMap>
+
+	<sql id="baseColumn">id,trou_id,begin_time,end_time,fee,is_released,del_flag,starAddress,created_date,create_by,update_date,update_by,area_id</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.tour.TourTime" useGeneratedKeys="true" keyProperty="id">
+	  insert into `ts_tour_time` (trou_id,begin_time,end_time,fee,is_released,del_flag,starAddress,created_date,create_by,area_id)
+	  values (#{trouId},#{begintime},#{endtime},#{fee},#{isreleased},#{delflag},#{starAddress},#{createdTime},#{createby},#{areaId})
+	</insert>
+    <!-- 删除方法-->
+	<delete id="delete">
+		delete from `ts_tour_time` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.tour.TourTime">
+		update `ts_tour_time`
+		<set>
+			<if test="begintime !=null">
+				begin_time = #{begintime},
+			</if>
+			<if test="endtime !=null">
+				end_time = #{endtime},
+			</if>
+			<if test="fee !=null">
+				fee = #{fee},
+			</if>
+			<if test="isreleased !=null">
+				is_released = #{isreleased},
+			</if>
+			<if test="starAddress !=null">
+				starAddress = #{starAddress},
+			</if>
+			<if test="updateTime !=null">
+				update_date = #{updateTime},
+			</if>
+			<if test="updateby !=null">
+				update_by = #{updateby},
+			</if>
+			<if test="delflag !=null">
+				 del_flag = #{delflag},
+			</if>
+			<if test="areaId !=null">
+				area_id = #{areaId},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		<include refid="baseColumn"/>
+		from `ts_tour_time`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TourTimeQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `ts_tour_time`
+		<where>
+			<if test="begintimegt !=null">
+				and begin_time &gt;= #{begintimegt}
+			</if>
+			<if test="begintimelt !=null">
+				and begin_time &lt;= #{begintimelt}
+			</if>
+			<if test="begintime !=null">
+			  and begin_time &gt;= #{begintime}
+			</if>
+			<if test="endtime !=null">
+				and end_time &lt;= #{endtime}
+			</if>
+			<if test="isreleased !=null">
+				and is_released = #{isreleased}
+			</if>
+			<if test="starAddress !=null">
+				and starAddress LIKE #{starAddress}
+			</if>
+			<if test="delfage !=null">
+			  and del_flag = #{delfage}
+			</if>
+			<if test="tourId !=null">
+				and trou_id = #{tourId}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+			order by ${orderByAndDirection}
+		</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.TourTimeQueryModel">
+		select
+		count(*)
+		from `ts_tour_time`
+		<where>
+			<if test="begintimegt !=null">
+				and begin_time &gt;= #{begintimegt}
+			</if>
+			<if test="begintimelt !=null">
+				and begin_time &lt;= #{begintimelt}
+			</if>
+			<if test="begintime !=null">
+				and begin_time &gt;= #{begintime}
+			</if>
+			<if test="endtime !=null">
+				and end_time &lt;= #{endtime}
+			</if>
+			<if test="isreleased !=null">
+				and is_released = #{isreleased}
+			</if>
+			<if test="starAddress !=null">
+				and starAddress = #{starAddress}
+			</if>
+			<if test="delfage !=null">
+				and del_flag = #{delfage}
+			</if>
+			<if test="tourId !=null">
+				and trou_id = #{tourId}
+			</if>
+		</where>
+	</select>
+	<update id="delupdate" parameterType="com.zy.model.query.TourTimeQueryModel">
+		update `ts_tour_time`
+		<set>
+			del_flag = #{delfage},
+		</set>
+		where trou_id =#{tourId}
+	</update>
+
+</mapper>

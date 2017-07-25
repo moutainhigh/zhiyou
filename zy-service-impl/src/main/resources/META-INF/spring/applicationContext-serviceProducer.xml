@@ -65,4 +65,8 @@
 	<dubbo:service ref="productReplacementServiceImpl" interface="com.zy.service.ProductReplacementService"/>
 	<dubbo:service ref="matterServiceImpl" interface="com.zy.service.MatterService"/>
 	<dubbo:service ref="cartItemServiceImpl" interface="com.zy.service.CartItemService"/>
+	<dubbo:service ref="tourServiceImpl" interface="com.zy.service.TourService"/>
+	<dubbo:service ref="blackOrWhiteServiceImpl" interface="com.zy.service.BlackOrWhiteService"/>
+	<dubbo:service ref="tourTimeServiceImpl" interface="com.zy.service.TourTimeService"/>
+	<dubbo:service ref="systemCodeServiceImpl" interface="com.zy.service.SystemCodeService"/>
 </beans>

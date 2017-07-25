@@ -140,6 +140,7 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("inviterId");
 		fieldNames.add("isDirector");
 		fieldNames.add("userType");
+		fieldNames.add("lastloginTime");
 	}
 
 }

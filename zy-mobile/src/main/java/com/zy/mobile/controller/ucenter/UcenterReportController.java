@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.zy.component.TourComponent;
+import com.zy.util.GcUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -100,14 +102,18 @@ public class UcenterReportController {
 
 	@Autowired
 	private Config config;
+
+	@Autowired
+	private TourComponent tourComponent;
 	
 	@RequestMapping()
 	public String list(Principal principal, Model model) {
-		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(0).pageSize(6).build());
-		model.addAttribute("page", PageBuilder.copyAndConvert(page, reportComponent::buildListVo));
+
 		model.addAttribute("timeLT", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		
 		User user = userService.findOne(principal.getUserId());
+		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(0).pageSize(6).phoneEQ(user.getPhone()).build());
+		model.addAttribute("page", PageBuilder.copyAndConvert(page, reportComponent::buildListVo));
 		model.addAttribute("userRank", user.getUserRank());
 		return "ucenter/report/reportList";
 	}
@@ -118,9 +124,9 @@ public class UcenterReportController {
 		if (timeLT == null) {
 			timeLT = new Date();
 		}
-
+		User user = userService.findOne(principal.getUserId());
 		Map<String, Object> map = new HashMap<>();
-		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(pageNumber).pageSize(6).build());
+		Page<Report> page = reportService.findPage(ReportQueryModel.builder().userIdEQ(principal.getUserId()).pageNumber(pageNumber).pageSize(6).phoneEQ(user.getPhone()).build());
 		map.put("page", PageBuilder.copyAndConvert(page, reportComponent::buildListVo));
 		map.put("timeLT", DateFormatUtils.format(timeLT, "yyyy-MM-dd HH:mm:ss"));
 
@@ -158,6 +164,7 @@ public class UcenterReportController {
 		model.addAttribute("products", products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
 		
 		model.addAttribute("userRank", user.getUserRank());
+		model.addAttribute("myPhone", user.getPhone());
 		model.addAttribute("jobs", this.jobService.findAll());
 		//model.addAttribute("tags", getTags());
 		return "ucenter/report/reportCreate";
@@ -211,7 +218,37 @@ public class UcenterReportController {
 		redirectAttributes.addFlashAttribute(ResultBuilder.ok("上传检测报告成功"));
 		return "redirect:/u/report";
 	}
-	
+
+
+
+	@RequestMapping(value = "/ajaxCreate", method = POST)
+	@ResponseBody
+	public  Result<?> ajaxCreate(boolean hasPolicy, Report report, Long parentId, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+		Product product = productService.findOne(report.getProductId());
+		validate(product, NOT_NULL, "product id " + report.getProductId() + " not found");
+		try {
+			if (report.getProductNumber()!=null) {
+				PolicyCode policyCode = policyCodeService.findByCode(report.getProductNumber());
+				if (policyCode == null) {
+					return ResultBuilder.error("产品编号不存在");
+				}
+				if(policyCode.getIsUsed()) {
+					return ResultBuilder.error("产品编号已被使用");
+				}
+				if (policyCode.getTourUsed()!=null) {
+					if (policyCode.getTourUsed()) {
+						return ResultBuilder.error("产品编号已被使用");
+					}
+				}
+			}
+			report.setUserId(principal.getUserId());
+			Report persistentReport = reportService.create(report);
+			return ResultBuilder.ok(persistentReport.getId()+"");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResultBuilder.error(e.getMessage());
+		}
+	}
 	@RequestMapping(value = "/{id}", method = GET)
 	public String detail(@PathVariable Long id, Principal principal, Model model) {
 		Report report = findAndValidate(id, principal.getUserId());
@@ -233,6 +270,7 @@ public class UcenterReportController {
 					.build());
 			model.addAttribute("transfers", transfers);
 		}
+		model.addAttribute("myPhone",userService.findOne(principal.getUserId()).getPhone());
 		return "ucenter/report/reportDetail";
 	}
 
@@ -292,8 +330,44 @@ public class UcenterReportController {
 	private Report findAndValidate(Long id, Long userId) {
 		Report report = reportService.findOne(id);
 		validate(report, NOT_NULL, "report id" + id + " not found");
-		validate(report.getUserId(), v -> userId.equals(v), "权限不足");
+		/*validate(report.getUserId(), v -> userId.equals(v), "权限不足");*/
 		return report;
+	}
+
+
+	@RequestMapping(value = "/insuranceInfo")
+	public String insuranceInfo(Long reportId, Model model, Principal principal) {
+		Long userId = principal.getUserId(); //userInfoService
+		String productNumber = tourComponent.findproductNumber(reportId);
+		model.addAttribute("userinfoVo",tourComponent.findUserInfoVo(userId));
+		model.addAttribute("reportId", reportId);
+		model.addAttribute("productNumber", productNumber);
+		return "ucenter/report/insurance";
+	}
+
+	@RequestMapping(value = "/addInsuranceInfo", method = POST)
+	@ResponseBody
+	public Result<?> addInsuranceInfo( Policy policy, Long reportId, Principal principal) {
+		try {
+			//保单校验
+			if(policy != null) {
+				PolicyCode policyCode = policyCodeService.findByCode(policy.getCode());
+				if(policyCode == null) {
+					return ResultBuilder.error("产品编号不存在");
+				}
+				if(policyCode.getIsUsed()) {
+					return ResultBuilder.error("产品编号已被使用");
+				}
+			}
+				policy.setUserId(principal.getUserId());
+				policy.setReportId(reportId);
+				policy.setImage1(GcUtils.getThumbnail(policy.getImage1(), 750, 450));
+				policyService.create(policy);
+
+			return ResultBuilder.ok(null);
+		} catch (Exception e) {
+			return ResultBuilder.error(e.getMessage());
+		}
 	}
 
 }
