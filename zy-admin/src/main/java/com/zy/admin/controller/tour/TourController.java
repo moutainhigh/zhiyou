@@ -375,13 +375,12 @@ public class TourController {
 
     @RequiresPermissions("tourSetting:edit")
     @RequestMapping(value = "/deleteBlackWhite", method = RequestMethod.POST)
-    public String deleteBlackWhite(@RequestParam Long id ,RedirectAttributes redirectAttributes) {
-        try {
-            blackOrWhiteService.delete(id);
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
-        }
-        return "redirect:/tour/blackOrWhite";
+    @ResponseBody
+    public Boolean deleteBlackWhite(@RequestParam Long id ) {
+        BlackOrWhite blackOrWhite = blackOrWhiteService.findOne(id);
+        validate(blackOrWhite, NOT_NULL, "blackOrWhite not found, id is " + id);
+        blackOrWhiteService.delete(id);
+        return true;
     }
 
 

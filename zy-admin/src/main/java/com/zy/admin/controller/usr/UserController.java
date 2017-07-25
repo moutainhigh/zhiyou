@@ -13,6 +13,7 @@ import com.zy.common.util.JsonUtils;
 import com.zy.component.CacheComponent;
 import com.zy.component.LocalCacheComponent;
 import com.zy.component.UserComponent;
+import com.zy.entity.cms.Article;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
@@ -368,6 +369,17 @@ public class UserController {
 	private Long getPrincipalUserId() {
 		AdminPrincipal principal = (AdminPrincipal)SecurityUtils.getSubject().getPrincipal();
 		return principal.getUserId();
+	}
+
+
+	@RequiresPermissions("user:edit")
+	@RequestMapping(value = "/editLastLoginTime", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean editLastLoginTime(@RequestParam Long id) {
+		User user = userService.findOne(id);
+		validate(user, NOT_NULL, "user not found, id is " + id);
+		userService.modifyLastLoginTime(id);
+		return true;
 	}
 	
 	
