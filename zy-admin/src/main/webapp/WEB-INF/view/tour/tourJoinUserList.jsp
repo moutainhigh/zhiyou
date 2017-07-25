@@ -538,8 +538,8 @@
                             if (full.auditStatus == 3){
                                 optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 旅客信息补充 </a>';
                             }
-                            optionHtml += '<a class="btn btn-xs default yellow-stripe guaranteeAmount" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 保障金额 </a>';
-                            optionHtml += '<a class="btn btn-xs default yellow-stripe refundAmount" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 退回保障金额 </a>';
+                            optionHtml += '<a class="btn btn-xs default yellow-stripe guaranteeAmount" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 收保障金 </a>';
+                            optionHtml += '<a class="btn btn-xs default yellow-stripe refundAmount" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 退保障金 </a>';
                             optionHtml += '<a class="btn btn-xs default yellow-stripe surcharge" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 附加费 </a>';
                         </shiro:hasPermission>
                             return optionHtml;
