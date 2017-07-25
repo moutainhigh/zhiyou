@@ -73,6 +73,12 @@ public class TourUserQueryModel implements Serializable {
 
     private Direction direction;
 
+    private Long surcharge;
+
+    private Long refundAmount;
+
+    private Long guaranteeAmount;
+
     public void setOrderBy(String orderBy) {
         if (orderBy != null && !fieldNames.contains(orderBy)) {
             throw new IllegalArgumentException("order by is invalid");

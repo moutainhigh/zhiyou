@@ -32,6 +32,11 @@
 		<result column="visit_remark" property="visitRemark" />
 		<result column="visit_time" property="visitTime" />
 		<result column="visit_user_id" property="visitUserId" />
+
+		<result column="guarantee_amount" property="guaranteeAmount" />
+		<result column="refund_amount" property="refundAmount" />
+		<result column="surcharge" property="surcharge" />
+
 	</resultMap>
 
 	<sql id="baseColumn">
@@ -62,7 +67,10 @@
 		a.third_visit_status,
 		a.visit_remark,
 		a.visit_time,
-		a.visit_user_id
+		a.visit_user_id,
+		a.guarantee_amount,
+		a.refund_amount,
+		a.surcharge
 	</sql>
 
 	<!-- 查询所有旅客信息 -->
@@ -175,6 +183,15 @@
 			</if>
 			<if test="isTransfers !=null">
 				AND a.is_transfers = #{isTransfers}
+			</if>
+			<if test="guaranteeAmount !=null">
+				AND a.guarantee_amount = #{guaranteeAmount}
+			</if>
+			<if test="refundAmount !=null">
+				AND a.refund_amount = #{refundAmount}
+			</if>
+			<if test="surcharge !=null">
+				AND a.surcharge = #{surcharge}
 			</if>
 			<if test="isJoin !=null">
 				AND a.is_join = #{isJoin}
@@ -320,6 +337,15 @@
 			</if>
 			<if test="reportId !=null">
 				AND  a.report_id = #{reportId}
+			</if>
+			<if test="guaranteeAmount !=null">
+				AND a.guarantee_amount = #{guaranteeAmount}
+			</if>
+			<if test="refundAmount !=null">
+				AND a.refund_amount = #{refundAmount}
+			</if>
+			<if test="surcharge !=null">
+				AND a.surcharge = #{surcharge}
 			</if>
 			<if test="auditStatus !=null">
 				AND a.audit_status = #{auditStatus}
@@ -471,6 +497,15 @@
 			<if test="auditStatus !=null">
 				audit_status = #{auditStatus},
 			</if>
+			<if test="guaranteeAmount !=null">
+				guarantee_amount = #{guaranteeAmount},
+			</if>
+			<if test="refundAmount !=null">
+				refund_amount = #{refundAmount},
+			</if>
+			<if test="surcharge !=null">
+				surcharge = #{surcharge},
+			</if>
 			<if test="carNumber !=null">
 				car_number = #{carNumber},
 			</if>
@@ -488,6 +523,9 @@
 			</if>
 			<if test="amount !=null">
 				amount = #{amount},
+			</if>
+			<if test="userRemark !=null">
+				user_remark = #{userRemark},
 			</if>
 			<if test="updateBy !=null">
 				update_by = #{updateBy}

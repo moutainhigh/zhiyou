@@ -207,5 +207,20 @@ public class TourUser implements Serializable {
     @Field(label = "消费金额")
     @View(groups = { VO_ADMIN , VO_EXPORT, VO_JOINEXPORT,VO_LIST })
     private BigDecimal amount;
+
+    @NotBlank
+    @Field(label = "保障金额")
+    @View(groups = { VO_ADMIN , VO_EXPORT, VO_JOINEXPORT,VO_LIST })
+    private Long guaranteeAmount;
+
+    @NotBlank
+    @Field(label = "退回保障金额")
+    @View(groups = { VO_ADMIN , VO_EXPORT, VO_JOINEXPORT,VO_LIST })
+    private Long refundAmount;
+
+    @NotBlank
+    @Field(label = "附加费")
+    @View(groups = { VO_ADMIN , VO_EXPORT, VO_JOINEXPORT,VO_LIST })
+    private Long surcharge;
 }
 

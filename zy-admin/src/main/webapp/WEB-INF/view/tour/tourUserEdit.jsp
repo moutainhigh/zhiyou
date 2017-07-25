@@ -217,7 +217,7 @@
                             <label class="control-label col-md-3">用户备注<span class="required"> * </span>
                             </label>
                             <div class="col-md-5">
-                                <textarea type="text" readonly="true" style="display: block; width: 60%;" class="form-control">${tourUserAdminVo.userRemark}</textarea>
+                                <textarea type="text" name="userRemark" style="display: block; width: 60%;" class="form-control">${tourUserAdminVo.userRemark}</textarea>
                             </div>
                         </div>
                         <div class="form-group">

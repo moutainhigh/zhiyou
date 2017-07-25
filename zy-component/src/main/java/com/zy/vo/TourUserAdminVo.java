@@ -97,4 +97,10 @@ public class TourUserAdminVo implements Serializable {
     private String district;
     @Field(label = "所在地")
     private Long areaId;
+    @Field(label = "附加费")
+    private Long surcharge;
+    @Field(label = "退回保障金额")
+    private Long refundAmount;
+    @Field(label = "保障金额")
+    private Long guaranteeAmount;
 }

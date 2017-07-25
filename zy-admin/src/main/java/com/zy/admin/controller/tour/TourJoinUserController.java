@@ -3,6 +3,7 @@ package com.zy.admin.controller.tour;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.common.util.ExcelUtils;
@@ -21,15 +22,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -123,6 +122,17 @@ public class TourJoinUserController {
         }
         return "redirect:/tourJoinUser";
     }
+
+
+    @RequiresPermissions("tourJoinUser:edit")
+    @RequestMapping(value = "/amount", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> amount(@RequestParam Long id, Long guaranteeAmount, Long refundAmount, Long surcharge) {
+        Long loginUserId = getPrincipalUserId();
+        tourService.amount(id, guaranteeAmount, refundAmount, surcharge, loginUserId);
+        return ResultBuilder.ok("操作成功");
+    }
+
 
     /**
      * 获取登录人的id

@@ -60,6 +60,12 @@ public class TourJoinUserExportVo implements Serializable {
     private String revieweRemark;
     @Field(label = "是否参游")
     private String isJoin;
+    @Field(label = "保障金额(元)")
+    private Long guaranteeAmount;
+    @Field(label = "退回保障金额(元)")
+    private Long refundAmount;
+    @Field(label = "附加费(元)")
+    private Long surcharge;
     @Field(label = "消费金额(元)")
     private BigDecimal amount;
     @Field(label = "是否有效")
