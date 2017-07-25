@@ -13,6 +13,7 @@
 
 <title>${sys}- 登陆</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
+<script src="${stc}/js/layer/layer.js"></script>
 <script type="text/javascript">
   $(function() {
     $('.valid-form').submit(function() {
@@ -28,6 +29,28 @@
       }
     });
   });
+
+  //选择出游时间
+  function ajaXTime() {
+    var phone = $('#phone').val();
+    var password = $('#password').val();
+    $.ajax({
+      url : '${ctx}/ajaxTime',
+      data : {
+        phone:phone,
+        password:password,
+      },
+      dataType : 'json',
+      type : 'POST',
+      success : function(result) {
+        if(result.code == 0) {
+          $('#form').submit();
+        }else {
+          layer.msg(result.message,{time:3000});
+        }
+      }
+    });
+  }
 </script>
 </head>
 <body>
@@ -36,7 +59,7 @@
     <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
-  <form class="valid-form" action="${ctx}/login" method="post">
+  <form class="valid-form" action="${ctx}/login" id="form" method="post">
     <div class="list-group mt-15">
       <div class="list-item">
         <i class="list-icon fa fa-mobile fs-20"></i>
@@ -53,7 +76,7 @@
     </div>
 
     <div class="form-btn">
-      <input class="btn green btn-block round-2" type="submit" value="登 陆">
+      <input class="btn green btn-block round-2" type="button" onclick="ajaXTime()" value="登 陆">
     </div>
     
   </form>

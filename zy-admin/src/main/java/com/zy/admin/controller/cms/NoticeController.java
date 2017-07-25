@@ -61,8 +61,8 @@ public class NoticeController {
 	}
 
 	@RequiresPermissions("notice:edit")
-	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public String update(@RequestParam Long id, Model model) {
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+	public String update(@PathVariable Long id, Model model) {
 		Notice notice = noticeService.findOne(id);
 		model.addAttribute("notice", notice);
 		model.addAttribute("noticeTypes", NoticeType.values());
