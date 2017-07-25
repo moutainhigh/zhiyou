@@ -63,7 +63,7 @@ public class LessonComponent {
         LessonUserAdminVo lessonUserAdminVo = new LessonUserAdminVo();
         BeanUtils.copyProperties(lessonUser, lessonUserAdminVo);
         lessonUserAdminVo.setUserName(userService.findRealName(lessonUser.getUserId()));
-        Lesson lesson = lessonService.findOne(lessonUser.getId());
+        Lesson lesson = lessonService.findOne(lessonUser.getLessonId());
        lessonUserAdminVo.setLessonName(lesson.getTitle());
        lessonUserAdminVo.setCreateDateLable(dateFormat.format(lessonUser.getCreateDate()));
         return lessonUserAdminVo;

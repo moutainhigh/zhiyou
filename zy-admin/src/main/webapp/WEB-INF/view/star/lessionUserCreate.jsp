@@ -5,11 +5,10 @@
 
 <script>
 
-
     /**
      * 选择课程
      */
-    var selLesson;
+    var selLesson=null;
     function  selectLesson() {
         $.ajax({
             url: '${ctx}/lesson/selectLesson',
@@ -75,6 +74,13 @@
          }
 
     }
+    function returnParent() {
+        if($("#phone").val()==null||$("#phone").val()==""){
+            parent.closeaddLessonUser();
+        }else{
+            parent.closeupdateLesson();
+        }
+    }
     
 </script>
 
@@ -85,12 +91,12 @@
         <div class="portlet light bordered">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="icon-wallet"></i> 课程管理
+                    <i class="icon-wallet"></i> 用户课程管理
                 </div>
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <form id="form" action="" data-action="${ctx}/lesson/user/create" class="form-horizontal" method="post">
+                <form id="form" action="" data-action="${ctx}/lesson/user/create" class="form-horizontal" method="post" >
                     <div class="form-body">
                         <div class="alert alert-danger display-hide">
                             <i class="fa fa-exclamation-circle"></i>
@@ -120,7 +126,7 @@
                             <button type="button" class="btn green" onclick="submitclick()">
                                 <i class="fa fa-save"></i> 保存
                             </button>
-                            <button class="btn default" data-href="${ctx}/policyCode">
+                            <button class="btn default"  onclick="returnParent()">
                                 <i class="fa fa-chevron-left"></i> 返回
                             </button>
                         </div>
