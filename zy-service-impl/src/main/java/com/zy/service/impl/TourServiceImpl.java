@@ -379,6 +379,14 @@ public class TourServiceImpl implements TourService {
         tourUserMapper.updateVisitStatus(tourUser);
     }
 
+    @Override
+    public void visitUser(@NotNull Long id,@NotNull Long visitUserId) {
+        TourUser tourUser = new TourUser();
+        tourUser.setId(id);
+        tourUser.setVisitUserId(visitUserId);
+        tourUserMapper.visitUser(tourUser);
+    }
+
 
     /**
      * 添加 旅游信息 并将 用户信息  添加到 userIf

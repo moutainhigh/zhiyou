@@ -63,4 +63,6 @@ public interface TourService {
      Page<TourUser> findJoinAll(TourUserQueryModel tourUserQueryModel);
 
      void updateVisitStatus(Long id, Integer firstVisitStatus, Integer secondVisitStatus, Integer thirdVisitStatus, String visitRemark, Long loginUserId);
+
+     void visitUser(Long id, Long visitUserId);
 }

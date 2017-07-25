@@ -158,6 +158,66 @@
     </form>
 </script>
 
+
+<script id="visitUserTmpl" type="text/x-handlebars-template">
+    <form id="visitUserForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+        <input type="hidden" name="id" value="{{id}}"/>
+        <div class="form-body">
+            <div class="alert alert-danger display-hide">
+                <i class="fa fa-exclamation-circle"></i>
+                <button class="close" data-close="alert"></button>
+                <span class="form-errors">您填写的信息有误，请检查。</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">客服手机<span class="required"> * </span></label>
+                <div class="col-md-5">
+                    <input type="text" name="phone" value="{{phone}}" class="form-control" placeholder="请输入客服手机"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions fluid">
+            <div class="col-md-offset-3 col-md-9">
+                <button id="visitUserSubmit{{id}}" type="button" class="btn green">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+                <button id="visitUserCancel{{id}}" class="btn default" >
+                    <i class="fa fa-chevron-left"></i> 返回
+                </button>
+            </div>
+        </div>
+    </form>
+</script>
+
+
+<script id="visitUserListTmpl" type="text/x-handlebars-template">
+    <form id="visitUserListForm" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+        <input type="hidden" name="ids" value="{{ids}}"/>
+        <div class="form-body">
+            <div class="alert alert-danger display-hide">
+                <i class="fa fa-exclamation-circle"></i>
+                <button class="close" data-close="alert"></button>
+                <span class="form-errors">您填写的信息有误，请检查。</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">客服手机<span class="required"> * </span></label>
+                <div class="col-md-5">
+                    <input type="text" name="phone" value="{{phone}}" class="form-control" placeholder="请输入客服手机"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions fluid">
+            <div class="col-md-offset-3 col-md-9">
+                <button id="visitUserListSubmit" type="button" class="btn green">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+                <button id="visitUserListCancel" class="btn default" data-href="">
+                    <i class="fa fa-chevron-left"></i> 返回
+                </button>
+            </div>
+        </div>
+    </form>
+</script>
+
 <script>
     var grid = new Datatable();
 
@@ -345,6 +405,143 @@
 
     });
 
+
+
+    var visitUserTemplate = Handlebars.compile($('#visitUserTmpl').html());
+    $('#dataTable').on('click', '.visit-user', function () {
+        var id = $(this).data('id');
+        var phone = $(this).data('phone');
+        var data = {
+            id: id,
+            phone: phone
+        };
+        var html = visitUserTemplate(data);
+        var index = layer.open({
+            type: 1,
+            //skin: 'layui-layer-rim', //加上边框
+            area: ['450px', '300px'], //宽高
+            content: html
+        });
+
+        $form = $('#visitUserForm' + id);
+        $form.validate({
+            rules: {
+                'phone': {
+                    required: true
+                }
+            },
+            messages: {}
+        });
+
+        $('#visitUserSubmit' + id).bind('click', function () {
+            var result = $form.validate().form();
+            if (result) {
+                var url = '${ctx}/tourUser/visitUser';
+                $.post(url, $form.serialize(), function (data) {
+                    if (data.code === 0) {
+                        layer.alert('操作成功');
+                        layer.close(index);
+                        grid.getDataTable().ajax.reload(null, false);
+                    } else {
+                        layer.alert(data.message);
+                    }
+                });
+            }
+        })
+
+        $('#visitUserCancel' + id).bind('click', function () {
+            layer.close(index);
+        })
+
+    });
+
+    $('#dataTable').on('click', '#checkAll', function(){
+                var isChecked = $(this).attr("checked");
+                if(isChecked == 'checked'){
+                    $("input[name='id']").each(function() {
+                        var disableAttr = $(this).attr("disabled");
+                        if(disableAttr == undefined){
+                            $(this).parent().addClass("checked");
+                            $(this).attr("checked",'true');
+                        }
+                    });
+                } else {
+                    $("input[name='id']").each(function() {
+                        var disableAttr = $(this).attr("disabled");
+                        if(disableAttr == undefined){
+                            $(this).parent().removeClass("checked");
+                            $(this).removeAttr("checked");
+                        }
+                    });
+                }
+            }
+    );
+
+    <shiro:hasPermission name="tourUser:visitUser">
+        var modifyTemplate = Handlebars.compile($('#visitUserListTmpl').html());
+        $('.table-toolbar').on('click', '#visitUserListBtn',function(){
+                var ids = '';
+                var phone = $(this).data('phone');
+                $("input[name='id']").each(function() {
+                    var isChecked = $(this).attr("checked");
+                    if(isChecked == 'checked'){
+                        ids += $(this).val() + ',';
+                    }
+                })
+                if(ids.length > 0){
+                    var data = {
+                    ids: ids,
+                    phone: phone
+                };
+                    var html = modifyTemplate(data);
+                    var index = layer.open({
+                        type: 1,
+                        //skin: 'layui-layer-rim', //加上边框
+                        area: ['450px', '300px'], //宽高
+                        content: html
+                });
+
+                $form = $('#visitUserListForm');
+                $form.validate({
+                    rules: {
+                        'phone': {
+                            required: true
+                        }
+                    },
+                    messages: {}
+                });
+
+                $('#visitUserListSubmit').bind('click', function () {
+                        var result = $form.validate().form();
+                        if (result) {
+                            var url = '${ctx}/tourUser/visitUserList';
+                        $.post(url, $form.serialize(), function (data) {
+                            if (data.code === 0) {
+                                layer.alert('操作成功');
+                                layer.close(index);
+                                grid.getDataTable().ajax.reload(null, false);
+                        } else {
+                                layer.alert('操作失败:' + data.message);
+                            }
+                        });
+                    }
+                                layer.close(index);
+                })
+
+                $('#visitUserListCancel').bind('click', function () {
+                        layer.close(index);
+                })
+
+                } else {
+                        layer.alert("请至少选择一条记录！", {icon: 2});
+                    }
+                });
+        </shiro:hasPermission>
+
+
+
+
+
     $(function () {
         grid.init({
             src: $('#dataTable'),
@@ -358,12 +555,24 @@
                 //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
                 lengthMenu : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here
                 pageLength: 20, // default record count per page
+
                 order: [
                 ], // set first column as a default sort by desc
                 ajax: {
                     url: '${ctx}/tourUser', // ajax source
                 },
                 columns: [
+                    {
+                        data: 'id',
+                        title: '<input type="checkbox" name="checkAll" id="checkAll" value=""/>',
+                        render: function (data, type, full) {
+                            if(full.auditStatus == 1 && full.visitUserId == null){
+                                return '<input type="checkbox" name="id" id="id" value="' + data + '"/>';
+                            } else {
+                                return '<input type="checkbox" name="id" disabled="disabled" id="id" value="' + data + '"/>';
+                            }
+                        }
+                    },
                     {
                         data: 'imageThumbnail',
                         title: '票务照片',
@@ -564,6 +773,11 @@
                             <shiro:hasPermission name="tourUser:edit">
                             optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tourUser/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
                             if (full.auditStatus == 1){
+                                <shiro:hasPermission name="tourUser:visitUser">
+                                if(full.visitUserId == null) {
+                                    optionHtml += '<a class="btn btn-xs default blue-stripe visit-user" data-id="' + full.id + '" href="javascript:;" ><i class="fa fa-edit"></i> 分配客服</a>';
+                                }
+                                </shiro:hasPermission>
                                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="resetAjax(' + full.id + ')"><i class="fa fa-edit"></i> 重置 </a>';
 //                                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
                                 if (full.firstVisitStatus == 1){
@@ -714,6 +928,13 @@
                                 <div class="form-group">
                                     <button type="button" class="btn yellow" onClick="tourUserExport()">
                                         <i class="fa fa-file-excel-o"></i> 导出Excel
+                                    </button>
+                                </div>
+                            </shiro:hasPermission>
+                            <shiro:hasPermission name="tourUser:visitUser">
+                                <div class="form-group">
+                                    <button type="button" class="btn green" id="visitUserListBtn">
+                                        <i class="fa fa-send-o"></i> 批量分配
                                     </button>
                                 </div>
                             </shiro:hasPermission>

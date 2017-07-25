@@ -66,6 +66,11 @@ public class TourUser implements Serializable {
     private Long userId;
 
     @Id
+    @Field(label = "visitUserId")
+    @View
+    private Long visitUserId;
+
+    @Id
     @Field(label = "parentId")
     @View
     private Long parentId;
