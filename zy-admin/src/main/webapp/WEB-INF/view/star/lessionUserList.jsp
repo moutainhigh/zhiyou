@@ -116,7 +116,7 @@ function deleteAjax(id) {
            url: '${ctx}/lesson/user/tocreate?lessonUserId='+id,
            dataType: 'html',
            success: function(data) {
-               addLesson= layer.open({
+               updateLesson= layer.open({
                    type: 1,
                    skin: 'layui-layer-rim', //加上边框
                    area: ['760px', '440px'], //宽高

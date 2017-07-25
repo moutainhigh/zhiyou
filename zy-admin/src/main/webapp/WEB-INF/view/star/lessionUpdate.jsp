@@ -50,7 +50,10 @@
          }
 
     }
-    
+    function returnParent() {
+        parent.closeupdateLesson();
+    }
+
 </script>
 
 
@@ -96,7 +99,7 @@
                             <button type="button" class="btn green" onclick="submitclick()">
                                 <i class="fa fa-save"></i> 保存
                             </button>
-                            <button class="btn default" data-href="${ctx}/policyCode">
+                            <button class="btn default" onclick="returnParent()">
                                 <i class="fa fa-chevron-left"></i> 返回
                             </button>
                         </div>
