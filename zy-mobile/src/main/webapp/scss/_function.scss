@@ -1,0 +1,9 @@
+@charset "UTF-8";
+$colors:(normal:#333,bg:#fff);
+
+@function color($key){
+     @if not map-has_key($colors,$key){
+       @warn "警告:你传入的参数没有定义！";
+     }
+     @return map_get($colors,$key);
+}

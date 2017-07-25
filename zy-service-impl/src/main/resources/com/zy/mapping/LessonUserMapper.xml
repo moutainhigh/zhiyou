@@ -60,6 +60,15 @@
 		where id = #{id}
 	</select>
 
+	<!-- 我的荣誉 -->
+	<select id="findHonor" resultMap="baseResultMap" parameterType="long">
+		SELECT
+			<include refid="baseColumn"/>
+		FROM
+			td_lesson_user a
+		WHERE a.user_id = #{loginUserId}
+	</select>
+
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.LessonUserQueryModel">
 		select
 		<include refid="baseColumn"/>

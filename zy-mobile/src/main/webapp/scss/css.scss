@@ -1,0 +1,114 @@
+@charset "UTF-8";
+@import "style";
+@import "minxin";
+@import "function";
+$width:640;
+//点星星代码
+.clickXing {
+  width:#{$width}px;
+  height:100%;
+  .fuhua {
+    @include positionIndex();
+    top: 985px;
+    left: 470px;
+    img {
+      width:104px;
+      height: 89px;
+    }
+  }
+  .tuanxun {
+    @include positionIndex();
+    left:283px;
+    top:721px;
+    img {
+      width:80px;
+      height: 80px;
+    }
+  }
+  .yanshuo {
+    @extend .tuanxun;
+    left:200px;
+    top:608px;
+  }
+   .yanshuo2 {
+     @extend .tuanxun;
+     left: 95px;
+     top: 488px;
+     img {
+       height: 96px;
+     }
+   }
+  .yanshuo3 {
+    @include positionIndex();
+    left: 35px;
+    top: 358px;
+    img {
+      width:68px;
+      height: 78px;
+    }
+  }
+  .lingxiu {
+   @extend .yanshuo3;
+    left: 20px;
+    top: 238px;
+  }
+  .jiaolian {
+    @include positionIndex();
+    left: 55px;
+    top: 128px;
+    img {
+      width:68px;
+      height: 68px;
+    }
+  }
+  .jiaolian2 {
+    @include positionIndex();
+    left: 170px;
+    top: 48px;
+    img {
+      width:70px;
+      height: 68px;
+    }
+  }
+  .jiaolian3 {
+    @include positionIndex();
+    left: 345px;
+    top:33px;
+    img {
+      width:61px;
+      height: 61px;
+    }
+  }
+  .zongshi {
+    @include positionIndex();
+    left: 490px;
+    top: 58px;
+    img {
+      width:48px;
+      height: 50px;
+    }
+  }
+  .dashi {
+    @include positionIndex();
+    left: 550px;
+    top: 203px;
+    img {
+      width:52px;
+      height: 51px;
+    }
+  }
+  .son {
+    @include positionIndex();
+    left: 415px;
+    top: 313px;
+    img {
+      width:150px;
+      height: 150px;
+    }
+  }
+}
+
+
+
+
+

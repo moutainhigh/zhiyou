@@ -17,6 +17,7 @@ import java.util.Date;
 
 import static com.zy.entity.star.LessonUser.VO;
 import static com.zy.entity.star.LessonUser.VO_ADMIN;
+import static com.zy.entity.star.LessonUser.VO_DETAIL;
 
 /**
  * Created by it001 on 2017/7/21.
@@ -27,12 +28,13 @@ import static com.zy.entity.star.LessonUser.VO_ADMIN;
 @Getter
 @Setter
 @QueryModel
-@ViewObject(groups = {VO, VO_ADMIN})
+@ViewObject(groups = {VO, VO_ADMIN, VO_DETAIL})
 @Type(label = "用户课程表")
 public class LessonUser implements Serializable {
 
     public static final String VO = "LessonUserVo";
     public static final String VO_ADMIN = "LessonUserAdminVo";
+    public static final String VO_DETAIL = "LessonUserDetailVo";
 
     @Id
     @Field(label = "id")
@@ -42,40 +44,40 @@ public class LessonUser implements Serializable {
     @NotBlank
     @Column(length = 100)
     @Field(label = "课程id")
-    @View(groups = { VO, VO_ADMIN })
+    @View(groups = { VO, VO_ADMIN, VO_DETAIL })
     @Query(Predicate.EQ)
     private Long  lessonId;
 
     @NotBlank
     @Column(length = 100)
     @Field(label = "用户id")
-    @View(groups = { VO, VO_ADMIN })
+    @View(groups = { VO, VO_ADMIN, VO_DETAIL })
     @Query(Predicate.EQ)
     private Long   userId;
 
     @NotBlank
     @Column(length = 100)
     @Field(label = "状态")
-    @View(groups = { VO, VO_ADMIN })
+    @View(groups = { VO, VO_ADMIN, VO_DETAIL })
     @Query(Predicate.EQ)
     private  Integer lessonStatus;
 
     @NotBlank
     @Column(length = 100)
     @Field(label = "备注")
-    @View(groups = { VO, VO_ADMIN })
+    @View(groups = { VO, VO_ADMIN, VO_DETAIL })
     @Query(Predicate.LK)
     private String remark;
 
     @NotBlank
     @Column(length = 100)
     @Field(label = "备注")
-    @View(groups = { VO, VO_ADMIN })
+    @View(groups = { VO, VO_ADMIN, VO_DETAIL })
     @Query(Predicate.EQ)
     private  Long createById;
 
     @Field(label = "创建时间")
-    @View(groups = { VO, VO_ADMIN })
+    @View(groups = { VO, VO_ADMIN, VO_DETAIL })
     @Query({Predicate.GTE, Predicate.LT})
     private Date createDate;
 

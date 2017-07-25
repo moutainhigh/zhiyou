@@ -24,6 +24,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -141,5 +142,12 @@ public class LessonServiceImpl implements LessonService {
 	@Override
 	public void deleteLessonUser(Long lessonUserId) {
 		lessonUserMapper.delete(lessonUserId);
+	}
+
+	@Override
+	public List<LessonUser> findHonor(Long loginUserId) {
+		List<LessonUser> lessonUsers = new ArrayList<>();
+		lessonUsers = lessonUserMapper.findHonor(loginUserId);
+		return lessonUsers;
 	}
 }

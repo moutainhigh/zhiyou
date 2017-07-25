@@ -2,10 +2,8 @@ package com.zy.service;
 
 
 import com.zy.common.model.query.Page;
-import com.zy.entity.fnc.AccountLog;
 import com.zy.entity.star.Lesson;
 import com.zy.entity.star.LessonUser;
-import com.zy.model.query.AccountLogQueryModel;
 import com.zy.model.query.LessonQueryModel;
 import com.zy.model.query.LessonUserQueryModel;
 
@@ -31,4 +29,7 @@ public interface LessonService {
 	void createByLessonUser(LessonUser lessonUser);
 
 	void deleteLessonUser(Long lessonUserId);
+
+	List<LessonUser> findHonor(Long loginUserId);
+
 }
