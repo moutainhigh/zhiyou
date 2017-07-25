@@ -70,7 +70,7 @@
         </div>
       <!-- END Portlet PORTLET-->
       </div>
-  
+
 	  <div class="col-md-6">
 		<div class="portlet light bordered">
           <div class="portlet-title">
@@ -95,7 +95,7 @@
           </div>
         </div>
       </div>
-    
+
       <div class="col-md-6">
         <div class="portlet light bordered">
           <div class="portlet-title">
@@ -127,9 +127,9 @@
             </div>
           </div>
       </div>
-      
+
 	</div>
-	
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="portlet light bordered">
@@ -141,7 +141,7 @@
 	          </div>
 	          <div class="portlet-body">
 	              <div id="registerChart" style="height:400px;">
-	                  
+
 	              </div>
 	          </div>
 			</div>
@@ -185,7 +185,7 @@
 	   });
 	})
 	</script>
-	
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="portlet light bordered">
@@ -197,12 +197,12 @@
 	          </div>
 	          <div class="portlet-body">
 	              <div id="orderChart" style="height:400px;">
-	                  
+
 	              </div>
 	          </div>
 	      </div>
 		</div>
-	</div> 
+	</div>
 	<script>
 	$(function(){
 		var myChart = echarts.init(document.getElementById('orderChart'));
@@ -241,5 +241,5 @@
 	   });
 	})
 	</script>
-	
+
 	</script>

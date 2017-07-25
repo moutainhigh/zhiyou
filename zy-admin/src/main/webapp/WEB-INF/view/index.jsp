@@ -126,7 +126,7 @@
   <div class="page-header-inner">
     <!-- BEGIN LOGO -->
     <div class="page-logo">
-      <a class="start" href="javascript:;" data-href="${ctx}/main">
+      <a class="start" href="javascript:;" data-href="${ctx}/default">
         <img src="${stc}/image/logo_zy_small.png" width="120" height="40" class="logo-default"/>
       </a>
       <div class="menu-toggler sidebar-toggler">
@@ -413,7 +413,7 @@
             </ul>
           </li>
         </shiro:hasAnyPermissions>
-        
+
         <shiro:hasAnyPermissions name="userTreeReport:view,v4TreeReport:view,orderReport:view,teamReport:view,userUpgradeReport:view,financeReport:view,orderQuantity:view
                                       ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view,activitySummaryReport:view">
           <li>
@@ -433,9 +433,9 @@
                 <li>
                   <a href="javascript:;" data-href="${ctx}/report/v4Tree"><i class="icon-bar-chart"></i> 特级树<span class="badge badge-danger"></span></a>
                 </li>
-<%--                <li>
-                  <a href="javascript:;" data-href="${ctx}/report/v4Order"><i class="icon-bar-chart"></i> 特级报表<span class="badge badge-danger"></span></a>
-                </li>--%>
+                <%--                <li>
+                                  <a href="javascript:;" data-href="${ctx}/report/v4Order"><i class="icon-bar-chart"></i> 特级报表<span class="badge badge-danger"></span></a>
+                                </li>--%>
               </shiro:hasPermission>
               <shiro:hasPermission name="teamReport:view">
                 <li>
@@ -501,7 +501,7 @@
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="admin:*,role:*,message:view,setting:*,area:*,tag:view,job:view,bank:view,systemCode:view">
+        <shiro:hasAnyPermissions name="admin:*,role:*,message:view,setting:*,area:*,tag:view,job:view,bank:view,systemCode:view,system:view">
           <li>
             <a href="javascript:;">
               <i class="icon-settings"></i>
@@ -520,14 +520,19 @@
                   <a href="javascript:;" data-href="${ctx}/role"><i class="icon-key"></i> 角色管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
-              <%--<shiro:hasPermission name="message:view">--%>
+                <%--<shiro:hasPermission name="message:view">--%>
                 <%--<li>--%>
-                  <%--<a href="javascript:;" data-href="${ctx}/message"><i class="icon-bulb"></i> 消息管理<span class="badge badge-danger"></span></a>--%>
+                <%--<a href="javascript:;" data-href="${ctx}/message"><i class="icon-bulb"></i> 消息管理<span class="badge badge-danger"></span></a>--%>
                 <%--</li>--%>
-              <%--</shiro:hasPermission>--%>
+                <%--</shiro:hasPermission>--%>
               <shiro:hasPermission name="setting:*">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/setting/edit"><i class="icon-speedometer"></i> 系统设置<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="system:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/main"><i class="icon-speedometer"></i> 系统默认报表查看 <span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="area:*">
@@ -595,6 +600,7 @@
             </ul>
           </li>
         </shiro:hasAnyPermissions>
+
       </ul>
       <!-- END SIDEBAR MENU -->
     </div>

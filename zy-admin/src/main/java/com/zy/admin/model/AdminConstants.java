@@ -154,6 +154,7 @@ public class AdminConstants {
 			sub.put("job:view", "职位管理(查看)");
 			sub.put("job:edit", "职位管理(编辑)");
 			sub.put("systemCode:view", "系统默认值管理(查看)");
+			sub.put("system:view", "系统默认报表(查看)");
 			sub.put("systemCode:edit", "系统默认值管理(编辑)");
 			SETTING_PERMISSION_MAP.put("系统管理", sub);
 		}
