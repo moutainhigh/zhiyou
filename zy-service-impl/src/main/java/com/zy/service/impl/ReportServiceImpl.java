@@ -84,7 +84,7 @@ public class ReportServiceImpl implements ReportService {
 		report.setCreatedTime(now);
 		report.setIsSettledUp(false);
 		report.setIsHot(false);
-		validate(report);
+		//validate(report);
 		
 		String realname = report.getRealname();
 		Integer times = report.getTimes();
