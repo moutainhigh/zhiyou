@@ -36,7 +36,7 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,viewflag)
+	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,viewflag,lastlogin_time)
 	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossName},#{bossId},#{code},#{isDirector},#{isHonorDirector},#{isShareholder},#{viewflag},#{lastloginTime})
 	</insert>
 
