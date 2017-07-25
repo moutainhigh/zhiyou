@@ -673,7 +673,7 @@
       var phoneHtml=$("#phone").val();
       if(phone!=phoneHtml){
         $.dialog({
-          content : '您填写的手机号码与系统预留号码不匹配，如继续操作则无法申请旅游。',
+          content : '您填写的手机号码与系统预留号码不匹配，请确认是否继续操作',//您填写的手机号码与系统预留号码不匹配，如继续操作则无法申请旅游。
           callback : function(index) {
             if (index == 1) {
               $(".miui-dialog").remove();
