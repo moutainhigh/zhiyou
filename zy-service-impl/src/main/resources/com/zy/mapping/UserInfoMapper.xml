@@ -251,6 +251,9 @@
 			<if test="areaIdEQ != null">
 				and area_id = #{areaIdEQ}
 			</if>
+			<if test="realFlag != null">
+				and real_flag = #{realFlag}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -305,6 +308,9 @@
 			</if>
 			<if test="areaIdEQ != null">
 				and area_id = #{areaIdEQ}
+			</if>
+			<if test="realFlag != null">
+				and real_flag = #{realFlag}
 			</if>
 		</where>
 	</select>

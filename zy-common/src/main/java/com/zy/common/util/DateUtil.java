@@ -264,20 +264,6 @@ public class DateUtil {
 
 
     /**
-     * 获取指定月份相差月份日期
-     * @param date
-     * @param month
-     * @return
-     */
-    public static Date getMonthData(Date date,int month,int dateI){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.MONTH, month);
-        calendar.add(Calendar.DATE,dateI);
-        return calendar.getTime();
-    }
-
-    /**
      * 计算百分比 并格式化成2位小数
      * @param arrydata
      * @param data
