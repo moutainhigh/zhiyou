@@ -28,7 +28,7 @@
 
 	<insert id="insert" parameterType="com.zy.entity.usr.UserInfo" useGeneratedKeys="true" keyProperty="id">
 	  insert into `usr_user_info` (user_id,realname,id_card_number,image1,image2,confirm_status,confirm_remark,applied_time,confirmed_time,gender,birthday,job_id,area_id,hometown_area_id,consumption_level,tag_ids,age,real_flag)
-	  values (#{userId},#{realname},#{idCardNumber},#{image1},#{image2},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{appliedTime},#{confirmedTime},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{birthday},#{jobId},#{areaId},#{hometownAreaId},#{consumptionLevel,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{tagIds},${age},${realFlag})
+	  values (#{userId},#{realname},#{idCardNumber},#{image1},#{image2},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{appliedTime},#{confirmedTime},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{birthday},#{jobId},#{areaId},#{hometownAreaId},#{consumptionLevel,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{tagIds},#{age},#{realFlag})
 	</insert>
 
 	<delete id="delete">
