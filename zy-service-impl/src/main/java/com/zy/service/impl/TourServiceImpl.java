@@ -1,7 +1,5 @@
 package com.zy.service.impl;
 
-import com.sun.istack.internal.NotNull;
-import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
@@ -19,6 +17,7 @@ import com.zy.service.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+import javax.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.Date;
