@@ -166,28 +166,31 @@ public class LoginController {
 	public String register(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, @RequestParam String smsCode,
 	                       @RequestParam String phone, Long parentId, @RequestParam String realname) {
 
+		logger.info("register begin...........");
 		if (GcUtils.getPrincipal() != null) {
 			return "redirect:/u";
 		}
-		
+		logger.info("register begin  GcUtils:"+GcUtils.getPrincipal());
+
 		AgentRegisterDto agentRegisterDto = (AgentRegisterDto) session.getAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO);
 		if (agentRegisterDto == null) {
 			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("注册已超时, 请刷新重试"));
 			return register(model, request);
 		}
+		logger.info("register begin 2");
 		model.addAttribute("phone", phone);
 		User user = userService.findByPhone(phone);
 		if (user != null && StringUtils.isNotBlank(user.getOpenId())) {
 			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("该手机已经被其他微信绑定, 请先解绑"));
 			return register(model, request);
 		}
-
+		logger.info("register begin 3");
 		PhoneAndSmsCode phoneAndSmsCode = (PhoneAndSmsCode) session.getAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS);
 		if (phoneAndSmsCode == null || !smsCode.equalsIgnoreCase(phoneAndSmsCode.getSmsCode()) || !phone.equalsIgnoreCase(phoneAndSmsCode.getPhone())) {
 			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("短信校验码错误"));
 			return register(model, request);
 		}
-
+		logger.info("register begin 4");
 		Long inviterId = (Long) request.getAttribute(REQUEST_ATTRIBUTE_INVITER_ID);
 		if (inviterId != null) {
 			User inviter = userService.findOne(inviterId);
@@ -203,11 +206,13 @@ public class LoginController {
 		try{
 			user = userService.registerAgent(agentRegisterDto);
 		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info(e.getMessage());
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			return "redirect:/u";
 		}
 		session.removeAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS);
-
+		logger.info("register begin 5");
 		String redirectUrl = (String) session.getAttribute(SESSION_ATTRIBUTE_REDIRECT_URL);
 		if (StringUtils.isBlank(redirectUrl)) {
 			redirectUrl = "/";
