@@ -49,7 +49,8 @@
                  $.ajax({
                      url: '${ctx}/lesson/user/findUserInfo',
                      data: {
-                         phone: $("#phone").val()
+                         phone: $("#phone").val(),
+                         lseeonId:lseeonId
                      },
                      dataType: 'JSON',
                      type: 'post',
