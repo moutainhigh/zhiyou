@@ -24,4 +24,5 @@ public interface LessonUserMapper {
 
 	long count(LessonUserQueryModel lessonUserQueryModel);
 
+	List<LessonUser> findHonor(Long loginUserId);
 }

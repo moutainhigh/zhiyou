@@ -1,0 +1,27 @@
+@charset "UTF-8";
+/*x,y轴都移动50%*/
+@mixin transform($x,$y) {
+  -webkit-transform:translate($x,$y);
+  -moz-transform:translate($x,$y);
+  -ms-transform:translate($x,$y);
+  transform:translate($x,$y);
+}
+/*圆角*/
+@mixin radius($px){
+  -webkit-border-radius:#{$px}px;
+  -moz-border-radius:#{$px}px;
+  -ms-border-radius:#{$px}px;
+  border-radius:#{$px}px;
+}
+/*透明度*/
+@mixin opacity($opacity){
+   -ms-opacity:$opacity;
+   -webkit-opacity:$opacity;
+   -moz-opacity:$opacity;
+   opacity:$opacity;
+}
+/*定位*/
+@mixin positionIndex(){
+  position: absolute;
+  z-index: 9;
+}
