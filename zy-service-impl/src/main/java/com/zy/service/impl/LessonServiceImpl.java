@@ -120,7 +120,6 @@ public class LessonServiceImpl implements LessonService {
 	public Page<LessonUser> findPageByLessonUser(LessonUserQueryModel lessonUserQueryModel) {
 		long total = lessonUserMapper.count(lessonUserQueryModel);
 		List<LessonUser> data = lessonUserMapper.findAll(lessonUserQueryModel);
-
 		Page<LessonUser> page = new Page<>();
 		page.setPageNumber(lessonUserQueryModel.getPageNumber());
 		page.setPageSize(lessonUserQueryModel.getPageSize());

@@ -103,6 +103,12 @@
           layer.alert('请地图选址')
           return false;
         }
+        /*if($('#lessonType').val()==1){
+          if($('#sleLesson').val()) {
+            layer.alert('请选择课程名称')
+            return false;
+          }
+        }*/
         $(form).find(':submit').prop('disabled', true);
         Layout.postForm(form);
       }
@@ -141,6 +147,43 @@
     });
 
   });
+  //添加课程
+function selectValue(obj) {
+  $("#sleLesson").html("");
+  $("#ticketType").html("");
+  var selval= $(obj).val();
+  if (selval==1){
+   var op = '<option value="1">自购</option>';
+    $("#ticketType").html(op);
+    $.ajax({
+      url: '${ctx}/activity/selectLesson',
+      type : 'POST',
+      dataType : 'json',
+      success : function(result) {
+        if(result.code != 0) {
+          return;
+        }
+        var pageData= result.data;
+        if (pageData.length) {
+          var op="";
+          for ( var i in pageData) {
+            var row = pageData[i];
+              op =op+'<option value='+row.id+'>'+row.title+'</option>';
+          }
+          $("#sleLesson").html(op);
+        }
+      }
+    })
+
+    $("#lesson").show();
+  }else{
+    var op = '<option value="1">自购</option> <option value="2">团购</option>';
+    $("#ticketType").html(op);
+    $("#lesson").hide();
+  }
+
+}
+
 </script>
 <!-- END JAVASCRIPTS -->
 
@@ -171,12 +214,33 @@
               <button class="close" data-close="alert"></button>
               <span class="form-errors">您填写的信息有误，请检查。</span>
             </div>
+
             <div class="form-group">
+              <label class="control-label col-md-3">类型<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <select style="display: block; width: 40%;" class="form-control pull-left" onchange="selectValue(this)" id="lessonType">
+                  <option value="0">新经济财富风暴</option>
+                  <option value="1">商学院课程</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" style="display: none" id ="lesson">
+              <label class="control-label col-md-3">课程名称<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <select style="display: block; width: 40%;" class="form-control pull-left"  id="sleLesson" name="lessonId">
+
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" >
               <label class="control-label col-md-3">标题<span class="required"> * </span></label>
               <div class="col-md-5">
                 <input type="text" class="form-control" name="title" value=""/>
               </div>
             </div>
+
             <div class="form-group">
               <label class="control-label col-md-3">报名费<span class="required"> * </span></label>
               <div class="col-md-5">

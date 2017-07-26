@@ -7,6 +7,7 @@ import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
 import com.zy.entity.act.ActivityCollect;
 import com.zy.entity.act.ActivitySignIn;
+import com.zy.entity.star.LessonUser;
 import com.zy.entity.sys.Area;
 import com.zy.entity.usr.User;
 import com.zy.mapper.*;
@@ -46,6 +47,9 @@ public class ActivityServiceImpl implements ActivityService {
 	@Autowired
 	private AreaMapper areaMapper;
 
+	@Autowired
+	private LessonUserMapper lessonUserMapper;
+
 	@Override
 	public Activity create(@NotNull Activity activity) {
 		activity.setVersion(0);
@@ -68,7 +72,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public void modify(@NotNull Activity activity) {
-		String[] fields = new String[] { "areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime", "title", "amount" , "level" , "ticketType" , "maxCount" };
+		String[] fields = new String[] { "areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime", "title", "amount" , "level" , "ticketType" , "maxCount" ,"lessonId"};
 		validate(activity, fields);
 		checkAndFindActivity(activity.getId());
 		checkArea(activity.getAreaId());
@@ -228,6 +232,16 @@ public class ActivityServiceImpl implements ActivityService {
 			activitySignIn.setSignedInTime(new Date());
 			validate(activitySignIn);
 			activitySignInMapper.insert(activitySignIn);
+			if (activity.getLessonId()!=null){
+			LessonUser lessonUser = new LessonUser();
+			lessonUser.setUserId(userId);
+			lessonUser.setLessonId(activity.getLessonId());
+			lessonUser.setCreateById(userId);
+			lessonUser.setLessonStatus(1);
+			lessonUser.setRemark("客户参加");
+			lessonUser.setCreateDate(new Date());
+			lessonUserMapper.insert(lessonUser);
+			}
 		}
 	}
 

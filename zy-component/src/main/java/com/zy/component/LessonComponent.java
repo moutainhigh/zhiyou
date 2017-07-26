@@ -5,6 +5,7 @@ import com.zy.common.util.BeanUtils;
 import com.zy.entity.star.Lesson;
 import com.zy.entity.star.LessonUser;
 import com.zy.model.query.LessonQueryModel;
+import com.zy.model.query.LessonUserQueryModel;
 import com.zy.service.LessonService;
 import com.zy.service.UserService;
 import com.zy.vo.LessonAdminVo;
@@ -71,6 +72,46 @@ public class LessonComponent {
        lessonUserAdminVo.setCreateDateLable(dateFormat.format(lessonUser.getCreateDate()));
         return lessonUserAdminVo;
     }
+
+    /**
+     * 查询是否有 效
+     * @param lessonId
+     * @return
+     */
+    public String  detectionLesson(Long lessonId,Long userId){
+        String  result= null;
+        if (lessonId==null){
+            return result;
+        }
+        Lesson lesson = lessonService.findOne(lessonId);
+        if (lesson!=null){
+            if (lesson.getParentAllId()==null){
+                return result;
+            }else{
+                String [] lessonids= lesson.getParentAllId().split(",");
+                for (String lessonid :lessonids){
+                    Long lessonidL = Long.valueOf(lessonid);
+                    LessonUserQueryModel lessonUserQueryModel = new LessonUserQueryModel();
+                    lessonUserQueryModel.setLessonIdEQ(lessonidL);
+                    lessonUserQueryModel.setUserIdEQ(userId);
+                    Page<LessonUser> page = lessonService.findPageByLessonUser(lessonUserQueryModel);
+                    if (page.getTotal()==null||page.getTotal()==0){
+                        //取到课程
+                       Lesson lseeonp = lessonService.findOne(lessonidL);
+                        if (lseeonp!=null) {
+                            result =result+lseeonp.getTitle()+",";
+                        }
+                    }
+                }
+                if (result!=null){
+                    result = result.substring(0,result.length() - 1).replace("null","");
+                }
+                return result;
+            }
+        }
+        return result;
+    }
+
 
 
     /**

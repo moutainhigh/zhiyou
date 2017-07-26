@@ -78,6 +78,8 @@ public class UcenterActivityController {
 	@Autowired
 	private ActivityTicketComponent activityTicketComponent;
 
+	@Autowired
+	private LessonComponent lessonComponent;
 	/**
 	 * 报名后跳转到选择支付方式页面
 	 *
@@ -98,18 +100,24 @@ public class UcenterActivityController {
 			validate(id, NOT_NULL, "activity id is null");
 			Activity activity = activityService.findOne(id);
 			validate(activity, NOT_NULL, "activity id " + id + " is not found");
-			if (activity.getLevel() <= user.getUserRank().getLevel()) {
-				Long a = querySurplus(id);
-				if (a > 0) {
-					activityService.apply(id, userId, null);
-					redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功,请点击付费完成报名"));
-					return "redirect:/u/activity/" + id + "/activityApply";
+			String  result = lessonComponent.detectionLesson(activity.getLessonId(),userId);
+			if (result==null) {
+				if (activity.getLevel() <= user.getUserRank().getLevel()) {
+					Long a = querySurplus(id);
+					if (a > 0) {
+						activityService.apply(id, userId, null);
+						redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("报名成功,请点击付费完成报名"));
+						return "redirect:/u/activity/" + id + "/activityApply";
+					} else {
+						redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败,活动报名人数已达上限"));
+						return "redirect:/activity/" + id;
+					}
 				} else {
-					redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败,活动报名人数已达上限"));
+					redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败,您的权限不足"));
 					return "redirect:/activity/" + id;
 				}
-			} else {
-				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("报名失败,您的权限不足"));
+			}else{
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("请先报名以下前期课程:<br/>"+result));
 				return "redirect:/activity/" + id;
 			}
 
@@ -457,6 +465,7 @@ public class UcenterActivityController {
 		ActivityTicket activityTicket = activityTicketService.findOne(ticketId);
 		Activity activity = activityService.findOne(activityId);
 		Long userId = principal.getUserId();
+
 		ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityId, userId);
 		Date now = new Date();
 		if (activity.getEndTime().before(now)) {
