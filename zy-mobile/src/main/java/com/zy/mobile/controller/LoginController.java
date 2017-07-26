@@ -204,7 +204,7 @@ public class LoginController {
 		agentRegisterDto.setParentId(parentId);
 		agentRegisterDto.setRealname(realname);
 		if (agentRegisterDto.getAvatar()==null||"".equals(agentRegisterDto.getAvatar())){
-			agentRegisterDto.setAvatar("http://image.zhi-you.net/avatar_default.jpg@160h_160w_1e_1c.jpg");
+			agentRegisterDto.setAvatar("http://image.zhi-you.net/avatar_default.jpg");
 		}
 		try{
 			user = userService.registerAgent(agentRegisterDto);
