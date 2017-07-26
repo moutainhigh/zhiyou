@@ -151,6 +151,7 @@
       var op = '<option value="1">自购</option>';
       $("#ticketType").html(op);
       $('#lesson').show();
+      $('#sleLesson').val('${lessonId}');
     }else{
       var op = '<option value="1">自购</option> <option value="2">团购</option>';
       $("#ticketType").html(op);

@@ -94,6 +94,7 @@
   <script src="${ctx}/plugin/ztree/js/jquery.ztree.core.min.js"></script>
   <script src="${ctx}/js/area.js"></script>
   <script src="${ctx}/js/common.js"></script>
+  <script src="${stc}/assets/scripts/datatable1.js"></script>
   <%@ include file="/WEB-INF/view/include/form.jsp" %>
 
   <!-- END PAGE LEVEL SCRIPTS -->
