@@ -78,9 +78,11 @@ public class WeixinMpNotifyController {
 				AgentRegisterDto agentRegisterDto = new AgentRegisterDto();
 
 				String avatar = wxMpUser.getHeadImgUrl();
-				logger.info("微信头像："+avatar);
 				if (StringUtils.isBlank(avatar)) {
 					avatar = Constants.SETTING_DEFAULT_AVATAR;
+				}else if(avatar.indexOf("http")==-1){
+					avatar = Constants.SETTING_DEFAULT_AVATAR;
+
 				}
 				agentRegisterDto.setAvatar(avatar);
 				agentRegisterDto.setOpenId(wxMpUser.getOpenId());
