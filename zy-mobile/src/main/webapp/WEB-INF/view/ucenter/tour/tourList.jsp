@@ -17,6 +17,7 @@
     <%@ include file="/WEB-INF/view/include/imageupload.jsp"%>
     <script src="${stccdn}/js/area.js"></script>
     <style>
+
         .tourNum {
             float: left;
             width:25%;
