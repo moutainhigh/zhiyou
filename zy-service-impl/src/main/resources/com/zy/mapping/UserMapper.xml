@@ -31,8 +31,7 @@
 		<result column="is_honor_director" property="isHonorDirector" />
 		<result column="is_shareholder" property="isShareholder" />
 		<result column="viewflag" property="viewflag" />
-		<result column="lastlogin_time" property="lastloginTime"/>
-
+		<result column="lastlogin_time" property="lastloginTime" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
@@ -133,6 +132,9 @@
 			<if test="userRankEQ != null">
 				and user_rank = #{userRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
+			<if test="isShareholderEQ != null">
+				and is_shareholder = #{isShareholderEQ}
+			</if>
 			<if test="nicknameLK != null">
 				<bind name="nicknameLK" value="'%' + nicknameLK + '%'"/> and nickname like #{nicknameLK}
 			</if>
@@ -141,6 +143,12 @@
 			</if>
 			<if test="inviterIdEQ != null">
 				and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="isHonorDirectorEQ != null">
+				and is_honor_director = #{isHonorDirectorEQ}
+			</if>
+			<if test="isDirectorEQ != null">
+				and is_director = #{isDirectorEQ}
 			</if>
 			<if test="parentIdIN != null">
 				<if test="parentIdIN.length != 0">
@@ -225,6 +233,9 @@
 			<if test="userRankEQ != null">
 				and user_rank = #{userRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
+			<if test="isShareholderEQ != null">
+				and is_shareholder = #{isShareholderEQ}
+			</if>
 			<if test="nicknameLK != null">
 				<bind name="nicknameLK" value="'%' + nicknameLK + '%'"/> and nickname like #{nicknameLK}
 			</if>
@@ -233,6 +244,12 @@
 			</if>
 			<if test="inviterIdEQ != null">
 				and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="isHonorDirectorEQ != null">
+				and is_honor_director = #{isHonorDirectorEQ}
+			</if>
+			<if test="isDirectorEQ != null">
+				and is_director = #{isDirectorEQ}
 			</if>
 			<if test="parentIdIN != null">
 				<if test="parentIdIN.length != 0">
