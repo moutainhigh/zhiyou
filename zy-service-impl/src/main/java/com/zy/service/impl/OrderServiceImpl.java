@@ -103,9 +103,6 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private Producer producer;
 
-	@Autowired
-	private UserService userService;
-
 	public static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
 	@Override
@@ -1235,6 +1232,9 @@ public class OrderServiceImpl implements OrderService {
 		return rate;
 	}
 
+	/*
+	 *月结
+	 */
 	@Override
 	public void settleUpMonthly(@NotBlank String yearAndMonth) {
 
@@ -1427,7 +1427,7 @@ public class OrderServiceImpl implements OrderService {
 				if(userQuantity != null) {
 					BigDecimal quantity = new BigDecimal(userQuantity);
 					BigDecimal profit = quantity.multiply(new BigDecimal("0.4"));  //特级服务商：每人新增服务量*0.4股计算；
-					if (v.getIsDirector() != null && v.getIsDirector()) {  //联席董事: 每人新增服务量*0.4股+公司月总服务量*0.6股；
+					if (v.getIsDirector() != null && v.getIsDirector()) {  //联席董事: 每人新增服务量*0.4股+公司月总服务量*0.6股/联席董事人数；
 						BigDecimal company = new BigDecimal(companySales).multiply(new BigDecimal("0.6"));
 						profit = profit.add(company);
 					}
@@ -1722,14 +1722,14 @@ public class OrderServiceImpl implements OrderService {
 		//查询我的团队进、出货量
 		List<Long> userIdList = new ArrayList<>();
 		List<User> userList = new ArrayList<>();
-		List<User> users = userService.findAll(new UserQueryModel());
+		List<User> users = userMapper.findAll(new UserQueryModel());
 		List<User> children = TreeHelper.sortBreadth2(users, orderQueryModel.getUserIdEQ().toString(), v -> {
 			TreeNode treeNode = new TreeNode();
 			treeNode.setId(v.getId().toString());
 			treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
 			return treeNode;
 		});
-		children.add(0,userService.findOne(userId));
+		children.add(0,userMapper.findOne(userId));
 		userList = children.stream().filter(v -> v.getUserRank() == User.UserRank.V4).collect(Collectors.toList());
         if (userList.size() > 0 && userList != null){
             for (User user: userList) {
