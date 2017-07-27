@@ -921,6 +921,9 @@ public class OrderServiceImpl implements OrderService {
 
 	}
 
+	/*
+		期权
+	 */
 	@Override
 	public void settleUpOption(@NotBlank String yearAndMonth) {
 
@@ -975,6 +978,7 @@ public class OrderServiceImpl implements OrderService {
 
 			/* 期权奖励 */
 		LongSummaryStatistics summaryStatistics = orders.stream().mapToLong((x) -> x.getQuantity()).summaryStatistics();
+		long directorCount = userMapper.count(UserQueryModel.builder().isDirectorEQ(true).build());
 		long companySales = summaryStatistics.getSum();
 		logger.error("公司总销量:" + companySales);
 		Map<Long, BigDecimal> profitShareMap = v4Users.stream().collect(Collectors.toMap(User::getId, v -> {
@@ -985,6 +989,10 @@ public class OrderServiceImpl implements OrderService {
 				BigDecimal profit = quantity.multiply(new BigDecimal("0.4"));  //特级服务商：每人新增服务量*0.4股计算；
 				if(v.getIsDirector() != null && v.getIsDirector()) {  //联席董事: 每人新增服务量*0.4股+公司月总服务量*0.6股；
 					BigDecimal company = new BigDecimal(companySales).multiply(new BigDecimal("0.6"));
+					logger.error("directorCount:" + directorCount);
+					if (directorCount > 0) {
+						company = company.divide(new BigDecimal(directorCount), 0, BigDecimal.ROUND_DOWN);
+					}
 					profit = profit.add(company);
 				}
 				return profit;
@@ -1429,7 +1437,10 @@ public class OrderServiceImpl implements OrderService {
 					BigDecimal quantity = new BigDecimal(userQuantity);
 					BigDecimal profit = quantity.multiply(new BigDecimal("0.4"));  //特级服务商：每人新增服务量*0.4股计算；
 					if (v.getIsDirector() != null && v.getIsDirector()) {  //联席董事: 每人新增服务量*0.4股+公司月总服务量*0.6股/联席董事人数；
-						BigDecimal company = new BigDecimal(companySales).multiply(new BigDecimal("0.6")).divide(new BigDecimal(directorCount));
+						BigDecimal company = new BigDecimal(companySales).multiply(new BigDecimal("0.6"));
+						if (directorCount > 0) {
+							company = company.divide(new BigDecimal(directorCount), 0, BigDecimal.ROUND_DOWN);
+						}
 						profit = profit.add(company);
 					}
 					return profit;
@@ -1452,69 +1463,69 @@ public class OrderServiceImpl implements OrderService {
 			}
 
 			/* 董事贡献奖 */
-//			List<User> v4Directors = v4Users.stream().filter(v -> v.getIsDirector() != null && v.getIsDirector()).collect(Collectors.toList());
-//			Map<Long, TeamModel> teamV4Map = v4Directors.stream()
-//					.map(v -> {
-//						TeamModel teamModel = new TeamModel();
-//						teamModel.setUser(v);
-//						teamModel.setV4Children(TreeHelper.sortBreadth2(v4Users, String.valueOf(v.getId()), u -> {
-//							TreeNode treeNode = new TreeNode();
-//							treeNode.setId(String.valueOf(u.getId()));
-//							Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
-//							treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(directV4ParentId));
-//							return treeNode;
-//
-//						}));
-//						return teamModel;
-//					}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
-//
-//			Map<Long, BigDecimal> profitDirectorMap = v4Directors.stream().collect(Collectors.toMap(User::getId, v -> {
-//				Long userId = v.getId();
-//				Long myQuantity = userQuantityMap.get(userId) == null ? 0L : userQuantityMap.get(userId);
-//				BigDecimal profit = new BigDecimal(myQuantity).multiply(new BigDecimal("2.00"));
-//				BigDecimal teamProfit = teamV4Map.get(userId).getV4Children().stream()
-//					.map(u -> {
-//						Long parentId = u.getParentId();
-//						boolean isChildrenOfDirector = false;
-//						while(!parentId.equals(userId)) {
-//							Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
-//							User user = userMap.get(directV4ParentId);
-//							if (user.getIsDirector() != null && user.getIsDirector()) {
-//								isChildrenOfDirector = true;
-//								break;
-//							}
-//
-//							parentId = directV4ParentId;
-//						}
-//
-//						Long quantity = userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId());
-//						BigDecimal innerProfit = zero;
-//						if(u.getIsDirector() != null && u.getIsDirector()) {
-//							innerProfit = new BigDecimal(quantity);
-//						} else {
-//							if (isChildrenOfDirector) {
-//								innerProfit = new BigDecimal(quantity);
-//							} else {
-//								innerProfit = new BigDecimal(quantity).multiply(new BigDecimal("2.00"));
-//							}
-//						}
-//						return innerProfit;
-//					})
-//					.reduce(new BigDecimal("0.00"), BigDecimal::add);
-//					return profit.add(teamProfit);
-//			}));
-//
-//			for (Map.Entry<Long, BigDecimal> entry : profitDirectorMap.entrySet()) {
-//				BigDecimal amount = entry.getValue();
-//				Long userId = entry.getKey();
-//				if (amount.compareTo(zero) > 0) {
-//					try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
-//					BigDecimal fee = amount.multiply(FEE_RATE);
-//					BigDecimal amountAfter = amount.subtract(fee);
-//					fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "董事贡献奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
-//					logger.error(userMap.get(userId).getNickname() + "董事贡献奖" + amount + "积分");
-//				}
-//			}
+			List<User> v4Directors = v4Users.stream().filter(v -> v.getIsDirector() != null && v.getIsDirector()).collect(Collectors.toList());
+			Map<Long, TeamModel> teamV4Map = v4Directors.stream()
+					.map(v -> {
+						TeamModel teamModel = new TeamModel();
+						teamModel.setUser(v);
+						teamModel.setV4Children(TreeHelper.sortBreadth2(v4Users, String.valueOf(v.getId()), u -> {
+							TreeNode treeNode = new TreeNode();
+							treeNode.setId(String.valueOf(u.getId()));
+							Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
+							treeNode.setParentId(u.getParentId() == null ? null : String.valueOf(directV4ParentId));
+							return treeNode;
+
+						}));
+						return teamModel;
+					}).collect(Collectors.toMap(v -> v.getUser().getId(), Function.identity()));
+
+			Map<Long, BigDecimal> profitDirectorMap = v4Directors.stream().collect(Collectors.toMap(User::getId, v -> {
+				Long userId = v.getId();
+				Long myQuantity = userQuantityMap.get(userId) == null ? 0L : userQuantityMap.get(userId);
+				BigDecimal profit = new BigDecimal(myQuantity).multiply(new BigDecimal("2.00"));
+				BigDecimal teamProfit = teamV4Map.get(userId).getV4Children().stream()
+					.map(u -> {
+						Long parentId = u.getParentId();
+						boolean isChildrenOfDirector = false;
+						while(!parentId.equals(userId)) {
+							Long directV4ParentId = getDirectV4ParentId(predicate, userMap, u);
+							User user = userMap.get(directV4ParentId);
+							if (user.getIsDirector() != null && user.getIsDirector()) {
+								isChildrenOfDirector = true;
+								break;
+							}
+
+							parentId = directV4ParentId;
+						}
+
+						Long quantity = userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId());
+						BigDecimal innerProfit = zero;
+						if(u.getIsDirector() != null && u.getIsDirector()) {
+							innerProfit = new BigDecimal(quantity);
+						} else {
+							if (isChildrenOfDirector) {
+								innerProfit = new BigDecimal(quantity);
+							} else {
+								innerProfit = new BigDecimal(quantity).multiply(new BigDecimal("2.00"));
+							}
+						}
+						return innerProfit;
+					})
+					.reduce(new BigDecimal("0.00"), BigDecimal::add);
+					return profit.add(teamProfit);
+			}));
+
+			for (Map.Entry<Long, BigDecimal> entry : profitDirectorMap.entrySet()) {
+				BigDecimal amount = entry.getValue();
+				Long userId = entry.getKey();
+				if (amount.compareTo(zero) > 0) {
+					try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
+					BigDecimal fee = amount.multiply(FEE_RATE);
+					BigDecimal amountAfter = amount.subtract(fee);
+					fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "董事贡献奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+					logger.error(userMap.get(userId).getNickname() + "董事贡献奖" + amount + "积分");
+				}
+			}
 		}
 
 		orderMonthlySettlement = new OrderMonthlySettlement();

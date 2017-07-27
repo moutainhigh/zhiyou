@@ -62,6 +62,10 @@ public class UserQueryModel implements Serializable {
 
 	private Boolean isShareholderEQ;
 
+	private String nameorPhone;
+
+	private String remark;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
@@ -143,6 +147,7 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("inviterId");
 		fieldNames.add("isDirector");
 		fieldNames.add("userType");
+		fieldNames.add("lastloginTime");
 	}
 
 }
