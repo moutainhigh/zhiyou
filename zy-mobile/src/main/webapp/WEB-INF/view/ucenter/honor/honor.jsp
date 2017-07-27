@@ -81,7 +81,7 @@
                     <img src="${ctx}/images/jiaolian3.png" />
                 </div>
             </c:if>
-            <c:if test="${lesson.title eq '宗师营'}">
+            <c:if test="${lesson.title eq '一代宗师'}">
                 <div class="zongshi">
                     <img src="${ctx}/images/zongshi.png" />
                 </div>
