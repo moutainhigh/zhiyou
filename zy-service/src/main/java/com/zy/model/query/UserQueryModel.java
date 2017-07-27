@@ -56,9 +56,11 @@ public class UserQueryModel implements Serializable {
 
 	private Long bossIdEQ;
 
-	private String nameorPhone;
+	private Boolean isDirectorEQ;
 
-	private String remark;
+	private Boolean isHonorDirectorEQ;
+
+	private Boolean isShareholderEQ;
 
 	private Integer pageNumber;
 
@@ -127,6 +129,7 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("id");
 		fieldNames.add("isFrozen");
 		fieldNames.add("viewflag");
+		fieldNames.add("lastloginTime");
 		fieldNames.add("qq");
 		fieldNames.add("registerIp");
 		fieldNames.add("unionId");
@@ -140,7 +143,6 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("inviterId");
 		fieldNames.add("isDirector");
 		fieldNames.add("userType");
-		fieldNames.add("lastloginTime");
 	}
 
 }
