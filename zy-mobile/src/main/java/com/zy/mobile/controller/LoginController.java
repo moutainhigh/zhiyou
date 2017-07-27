@@ -203,9 +203,6 @@ public class LoginController {
 		agentRegisterDto.setRegisterIp(GcUtils.getHost());
 		agentRegisterDto.setParentId(parentId);
 		agentRegisterDto.setRealname(realname);
-		if (agentRegisterDto.getAvatar()==null||"".equals(agentRegisterDto.getAvatar())){
-			agentRegisterDto.setAvatar("http://image.zhi-you.net/avatar_default.jpg");
-		}
 		try{
 			user = userService.registerAgent(agentRegisterDto);
 		} catch (Exception e) {

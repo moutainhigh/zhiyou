@@ -115,6 +115,7 @@ public class Report implements Serializable {
 	private String tagIds;
 	
 	@Field(label = "产品")
+	@Query(Predicate.EQ)
 	@View(groups = {VO_LIST, VO_DETAIL, VO_ADMIN})
 	@View(name = "productTitle", type = String.class, groups = {VO_LIST })
 	@AssociationView(name = "product", groups = {VO_DETAIL, VO_ADMIN}, associationGroup = Product.VO_LIST)

@@ -208,6 +208,9 @@
 			<if test="preConfirmedTimeLT != null">
 				and pre_confirmed_time &lt; #{preConfirmedTimeLT}
 			</if>
+			<if test="productIdEQ != null">
+				and product_id = #{productIdEQ}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">

@@ -213,7 +213,7 @@
         <div class="list-item">
           <label class="list-label" for="realname">产品编码</label>
           <div class="list-text">
-            <input type="text" class="form-input" name ="productNumber" id="productNumber" value="" placeholder="填写产品编码">
+            <input type="text" class="form-input" name ="productNumber" id="productNumber" value="" placeholder="填写产品编码（选填）">
           </div>
         </div>
         <div class="list-item">
@@ -265,10 +265,10 @@
             </select>
           </div>
         </div>
-        <div class="list-item" style="display: none">
+        <div class="list-item">
           <label class="list-label" for="age">年龄</label>
           <div class="list-text">
-            <input type="number" name="age" id="age" class="form-input" value="150" placeholder="填写客户年龄">
+            <input type="number" name="age" id="age" class="form-input" value="${report.age}" placeholder="填写客户年龄">
           </div>
         </div>
         <div class="list-item">
