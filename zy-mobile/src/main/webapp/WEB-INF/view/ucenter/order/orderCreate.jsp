@@ -28,8 +28,23 @@
         messageFlash('请先选择收款对象.');
         return false;  
       }
+
       // 检测是否  实名认证realFlage
-      if(!${realFlage}){
+      <c:if test="${!realFlage}">
+         $.dialog({
+            content : '实名认证后才能提交订单,去认证？',
+          callback : function(index) {
+            if (index == 1) {
+              $(".miui-dialog").remove();
+              $('#orderForm').attr("action",'${ctx}/u/userInfo');
+              $('#orderForm').submit();
+             return false;
+          }
+        }
+      });
+       return false;
+      </c:if>
+      /*if(!${realFlage}){
         $.dialog({
           content : '实名认证后才能提交订单,去认证？',
           callback : function(index) {
@@ -42,7 +57,7 @@
           }
         });
         return false;
-      }
+      }*/
         <c:if test="${userRank == 'V0' && empty parent}">
         var parentPhone = $('#parentPhone').val();
         if(!parentPhone) {
