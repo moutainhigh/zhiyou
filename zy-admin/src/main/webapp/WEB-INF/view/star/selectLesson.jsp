@@ -4,7 +4,7 @@
 
     $(function () {
 
-        var grid = new Datatable();
+        var grid = new Datatable1();
 
         grid.init({
             src: $('#dataTable1'),
@@ -16,7 +16,7 @@
             },
             dataTable: {
                 //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
-                lengthMenu: [[10, 20, 50, 100], [10, 20, 50, 100]],// change per page values here
+                lengthMenu:[[10, 20, 50, 100], [10, 20, 50, 100]],// change per page values here
                 pageLength: 10, // default record count per page
                 order: [], // set first column as a default sort by desc
                 ajax: {
@@ -116,8 +116,8 @@
                 <div class="table-container">
                     <div class="table-toolbar">
                         <form id="searchForm" class="filter-form form-inline">
-                            <input id="_orderBy" name="orderBy" type="hidden" value=""/> <input id="_direction" name="direction" type="hidden" value=""/>
-                            <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/> <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
+                            <input id="_orderBy1" name="orderBy" type="hidden" value=""/> <input id="_direction1" name="direction" type="hidden" value=""/>
+                            <input id="_pageNumber1" name="pageNumber" type="hidden" value="0"/> <input id="_pageSize1" name="pageSize" type="hidden" value="20"/>
 
                             <div class="form-group">
                                 <input type="text" name="titleLK" class="form-control" placeholder="课程名称"/>
