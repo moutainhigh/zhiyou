@@ -196,7 +196,7 @@ public class TourController {
             return ResultBuilder.ok("添加成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultBuilder.error("系统错:"+e.getMessage());
+            return ResultBuilder.error("系统错误:"+e.getMessage());
         }
 
     }
