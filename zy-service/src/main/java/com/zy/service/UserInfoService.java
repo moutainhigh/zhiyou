@@ -10,7 +10,7 @@ public interface UserInfoService {
 
 	UserInfo findOne(Long id);
 
-	UserInfo findByIdCardNumber(String idCardNumber);
+	List<UserInfo> findByIdCardNumber(String idCardNumber);
 
 	Page<UserInfo> findPage(UserInfoQueryModel userInfoQueryModel);
 

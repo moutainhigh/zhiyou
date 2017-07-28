@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RequestMapping("/u/userInfo")
@@ -75,23 +76,24 @@ public class UcenterInfoController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(UserInfo userInfo, Principal principal, Model model, RedirectAttributes redirectAttributes) {
-		UserInfo info = userInfoService.findByIdCardNumber(userInfo.getIdCardNumber());
-		UserInfo exit = userInfoService.findByUserIdandFlage(principal.getUserId());
+		List<UserInfo> infos = userInfoService.findAll(UserInfoQueryModel.builder().confirmStatusEQ(ConfirmStatus.已通过).realFlag(1).idCardNumberLK(userInfo.getIdCardNumber()).build());
+		UserInfo persistence = userInfoService.findByUserIdandFlage(principal.getUserId());
 		try {
-			if(null != info && (exit != null && !info.getUserId().equals(exit.getUserId()))){
+			if(infos == null || infos.isEmpty()){
+				userInfo.setRealFlag(1);
+				if(persistence != null){
+					userInfo.setId(persistence.getId());
+					userInfoService.modify(userInfo);
+				}else {
+					userInfo.setUserId(principal.getUserId());
+					userInfoService.create(userInfo);
+				}
+			}else {
 				model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("身份证已经被认证过，请核对身份证信息"));
 				model.addAttribute("userInfo", userInfoComponent.buildVo(userInfo));
 				model.addAttribute("jobs", jobService.findAll());
 				model.addAttribute("tags", getTags());
 				return "ucenter/user/userInfoCreate";
-			}
-			userInfo.setUserId(principal.getUserId());
-			userInfo.setRealFlag(1);
-			if(exit != null){
-				userInfo.setId(exit.getId());
-				userInfoService.modify(userInfo);
-			}else {
-				userInfoService.create(userInfo);
 			}
 		} catch (Exception e) {
 			model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
@@ -117,27 +119,28 @@ public class UcenterInfoController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public String edit(UserInfo userInfo, Principal principal, RedirectAttributes redirectAttributes) {
 		UserInfo persistence = userInfoService.findByUserIdandFlage(principal.getUserId());
-		UserInfo info = userInfoService.findByIdCardNumber(userInfo.getIdCardNumber());
+		List<UserInfo> infos = userInfoService.findAll(UserInfoQueryModel.builder().confirmStatusEQ(ConfirmStatus.已通过).realFlag(1).idCardNumberLK(userInfo.getIdCardNumber()).build());
 		if(persistence == null) {
 			return "ucenter/user/userInfoCreate";
 		}
 		if(persistence.getConfirmStatus() == ConfirmStatus.已通过) {
 			return "redirect:/u/userInfo";
 		}
-		if(null != info && !info.getUserId().equals(persistence.getUserId())){
+		userInfo.setId(persistence.getId());
+		userInfo.setRealFlag(1);
+		if(infos == null || infos.isEmpty()){
+			try {
+			userInfoService.modify(userInfo);
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("修改成功"));
+			return "redirect:/u/userInfo";
+			} catch (Exception e) {
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
+				return "redirect:/u/userInfo/edit";
+			}
+		}else{
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("身份证已经被认证过，请核对身份证信息"));
 			return "redirect:/u/userInfo/edit";
 		}
-		userInfo.setId(persistence.getId());
-		userInfo.setRealFlag(1);
-		try {
-			userInfoService.modify(userInfo);
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("修改成功"));
-		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
-			return "redirect:/u/userInfo/edit";
-		}
-		return "redirect:/u/userInfo";
 	}
 
 	private Map<String, List<Tag>> getTags() {

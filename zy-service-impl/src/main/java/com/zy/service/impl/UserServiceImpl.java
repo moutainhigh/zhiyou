@@ -302,6 +302,7 @@ public class UserServiceImpl implements UserService {
         userInfo.setRealname(realname);
         userInfo.setConfirmStatus(ConfirmStatus.待审核);
         userInfo.setAppliedTime(new Date());
+        userInfo.setRealFlag(0);
         userInfoMapper.insert(userInfo);
     }
 
