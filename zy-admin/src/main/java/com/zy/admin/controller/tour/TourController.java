@@ -52,7 +52,7 @@ import static com.zy.common.util.ValidateUtils.validate;
 @RequestMapping("/tour")
 @Controller
 public class TourController {
-    Logger logger = LoggerFactory.getLogger(CaptchaController.class);
+    Logger logger = LoggerFactory.getLogger(TourController.class);
 
     @Autowired
     private TourService tourService;
