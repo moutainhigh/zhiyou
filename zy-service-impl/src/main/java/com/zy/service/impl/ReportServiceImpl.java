@@ -440,6 +440,8 @@ public class ReportServiceImpl implements ReportService {
 				}
 
 				tourUser.setIsEffect(0);
+				validate(confirmRemark, NOT_BLANK, "confirm remark is null");
+				tourUser.setRevieweRemark(confirmRemark);
 			}
 			tourUserMapper.modify(tourUser);
 		}
