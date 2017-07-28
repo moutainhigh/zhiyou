@@ -56,7 +56,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public UserInfo findByIdCardNumber(@NotBlank String idCardNumber) {
+    public List<UserInfo> findByIdCardNumber(@NotBlank String idCardNumber) {
         return userInfoMapper.findByIdCardNumber(idCardNumber);
     }
 

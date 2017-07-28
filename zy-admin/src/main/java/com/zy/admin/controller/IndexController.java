@@ -87,14 +87,6 @@ public class IndexController {
 		return "index";
 	}
 
-	@RequestMapping("/default")
-	public String defaultJsp(Model model, AdminPrincipal principal) {
-		Long userId = principal.getUserId();
-		User user = userService.findOne(userId);
-		model.addAttribute("user", userComponent.buildAdminVo(user));
-		return "default";
-	}
-
 	@RequestMapping("/main")
 	public String main(Model model) {
 
