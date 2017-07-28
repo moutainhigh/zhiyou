@@ -157,7 +157,7 @@ public class TourController {
             return ResultBuilder.ok("操作成功");
         } catch (Exception e) {
           e.printStackTrace();
-          return ResultBuilder.error("系统错诶");
+          return ResultBuilder.error("系统错误:"+e.getMessage());
         }
 
     }
@@ -196,7 +196,7 @@ public class TourController {
             return ResultBuilder.ok("添加成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResultBuilder.error("系统错诶");
+            return ResultBuilder.error("系统错:"+e.getMessage());
         }
 
     }
@@ -213,8 +213,9 @@ public class TourController {
           tourService.updateTourTime(tourTime);
           return ResultBuilder.ok("操作成功");
          }catch(Exception e){
+           logger.error(e.getMessage());
           e.printStackTrace();
-          return ResultBuilder.error("系统错诶");
+          return ResultBuilder.error("系统错误" + e.getMessage());
       }
     }
 
@@ -230,7 +231,7 @@ public class TourController {
             return ResultBuilder.ok("操作成功");
         }catch (Exception e){
             e.printStackTrace();
-            return ResultBuilder.error("系统错诶");
+            return ResultBuilder.error("系统错误："+e.getMessage());
         }
 
     }
@@ -247,7 +248,7 @@ public class TourController {
             return ResultBuilder.ok("操作成功");
         }catch (Exception e){
             e.printStackTrace();
-            return ResultBuilder.error("系统错诶");
+            return ResultBuilder.error("系统错误:"+e.getMessage());
         }
     }
 
