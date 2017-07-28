@@ -25,7 +25,7 @@
   </div> -->
 </div>
 <!-- END PAGE HEADER-->
-
+<shiro:hasPermission name="system:view">
 	<div class="row">
       <div class="col-md-6">
       <!-- BEGIN Portlet PORTLET-->
@@ -243,3 +243,4 @@
 	</script>
 
 	</script>
+</shiro:hasPermission>

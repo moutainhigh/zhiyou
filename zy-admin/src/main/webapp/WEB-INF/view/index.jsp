@@ -126,7 +126,7 @@
   <div class="page-header-inner">
     <!-- BEGIN LOGO -->
     <div class="page-logo">
-      <a class="start" href="javascript:;" data-href="${ctx}/default">
+      <a class="start" href="javascript:;" data-href="${ctx}/main">
         <img src="${stc}/image/logo_zy_small.png" width="120" height="40" class="logo-default"/>
       </a>
       <div class="menu-toggler sidebar-toggler">
@@ -528,11 +528,6 @@
               <shiro:hasPermission name="setting:*">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/setting/edit"><i class="icon-speedometer"></i> 系统设置<span class="badge badge-danger"></span></a>
-                </li>
-              </shiro:hasPermission>
-              <shiro:hasPermission name="system:view">
-                <li>
-                  <a href="javascript:;" data-href="${ctx}/main"><i class="icon-speedometer"></i> 系统默认报表查看 <span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="area:*">
