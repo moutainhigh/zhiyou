@@ -47,7 +47,7 @@ public class OrderCancelJob implements Job {
     private void cancel(Long orderId) {
         try {
             this.orderService.cancel(orderId);
-            logger.info("取消 {} 成功", orderId);
+            logger.info("取消订单 {} 成功", orderId);
         } catch (ConcurrentException e) {
             try {TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
             cancel(orderId);

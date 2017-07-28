@@ -1041,7 +1041,7 @@ public class OrderServiceImpl implements OrderService {
 				try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
 				//				BigDecimal fee = amount.multiply(FEE_RATE);
 				//				BigDecimal amountAfter = amount.subtract(fee);
-				fncComponent.createProfit(userId, Profit.ProfitType.期权奖励, null, year + "年" + month + "期权奖励", CurrencyType.货币期权, amount, now, null);
+				fncComponent.createProfit(userId, Profit.ProfitType.期权奖励, null, year + "年" + month + "月期权奖励", CurrencyType.货币期权, amount, now, null);
 				logger.error(userMap.get(userId).getNickname() + "期权奖励" + amount + "货币期权");
 			}
 		}
@@ -1209,7 +1209,7 @@ public class OrderServiceImpl implements OrderService {
 					}
 					BigDecimal fee = amount.multiply(FEE_RATE);
 					BigDecimal amountAfter = amount.subtract(fee);
-					fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+					fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "月返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
 					logger.error(userMap.get(userId).getNickname() + "返利奖" + amountAfter + "积分");
 				}
 			}
@@ -1339,7 +1339,7 @@ public class OrderServiceImpl implements OrderService {
 				try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
 				BigDecimal fee = amount.multiply(FEE_RATE);
 				BigDecimal amountAfter = amount.subtract(fee);
-				fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "董事贡献奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+				fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "月董事贡献奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
 				logger.error(userMap.get(userId).getNickname() + "董事贡献奖" + amount + "积分");
 			}
 		}
@@ -1573,7 +1573,7 @@ public class OrderServiceImpl implements OrderService {
 					}
 					BigDecimal fee = amount.multiply(FEE_RATE);
 					BigDecimal amountAfter = amount.subtract(fee);
-					fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+					fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "月返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
 					logger.error(userMap.get(userId).getNickname() + "返利奖" + amount + "积分");
 				}
 			}
@@ -1629,7 +1629,7 @@ public class OrderServiceImpl implements OrderService {
 					}
 					//				BigDecimal fee = amount.multiply(FEE_RATE);
 					//				BigDecimal amountAfter = amount.subtract(fee);
-					fncComponent.createProfit(userId, Profit.ProfitType.期权奖励, null, year + "年" + month + "期权奖励", CurrencyType.货币期权, amount, now, null);
+					fncComponent.createProfit(userId, Profit.ProfitType.期权奖励, null, year + "年" + month + "月期权奖励", CurrencyType.货币期权, amount, now, null);
 					logger.error(userMap.get(userId).getNickname() + "期权奖励" + amount + "货币期权");
 				}
 			}
@@ -1708,7 +1708,7 @@ public class OrderServiceImpl implements OrderService {
 					try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
 					BigDecimal fee = amount.multiply(FEE_RATE);
 					BigDecimal amountAfter = amount.subtract(fee);
-					fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "董事贡献奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+					fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "月董事贡献奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
 					logger.error(userMap.get(userId).getNickname() + "董事贡献奖" + amount + "积分");
 				}
 			}
