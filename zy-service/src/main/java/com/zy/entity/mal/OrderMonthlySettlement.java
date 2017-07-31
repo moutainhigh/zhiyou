@@ -51,7 +51,7 @@ public class OrderMonthlySettlement implements Serializable {
 	@NotNull
 	@Field(label = "月结类型")
 	@Query({Predicate.EQ})
-	private String type;
+	private String settlementType;
 
 
 }

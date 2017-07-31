@@ -26,6 +26,8 @@ public class OrderMonthlySettlementQueryModel implements Serializable {
 
 	private Date settledUpTimeGTE;
 
+	private String settlementTypeEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
@@ -78,6 +80,7 @@ public class OrderMonthlySettlementQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
+		fieldNames.add("settlementType");
 		fieldNames.add("yearAndMonth");
 		fieldNames.add("id");
 		fieldNames.add("settledUpTime");
