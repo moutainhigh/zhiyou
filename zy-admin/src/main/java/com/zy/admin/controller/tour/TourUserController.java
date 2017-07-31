@@ -75,7 +75,8 @@ public class TourUserController {
     @ResponseBody
     public Grid<TourUserAdminVo> list(TourUserQueryModel tourUserQueryModel) {
         Long visitUserId = getPrincipalUserId();
-        if(!SecurityUtils.getSubject().isPermitted("tourUser:visitUser")) {
+        if(!SecurityUtils.getSubject().isPermitted("tourUser:visitUser") &&
+                !SecurityUtils.getSubject().isPermitted("tourUser:visit")) {
             tourUserQueryModel.setVisitUserId(visitUserId);
         }
         Page<TourUser> page = tourService.findAll(tourUserQueryModel);
