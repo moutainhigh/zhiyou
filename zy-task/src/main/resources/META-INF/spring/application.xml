@@ -96,7 +96,7 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>2 0 0 1 * ?</value>
+						<value>1 0 0 1 * ?</value>
 					</property>
 				</bean>
 
