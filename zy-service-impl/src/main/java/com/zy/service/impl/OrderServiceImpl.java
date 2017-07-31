@@ -788,7 +788,7 @@ public class OrderServiceImpl implements OrderService {
 							TimeUnit.MILLISECONDS.sleep(50);
 						} catch (InterruptedException e1) {
 						}
-						fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, "业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+						fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
 						logger.error(buyer.getNickname() + "直升特级, 业绩奖：" + saleBonusAfter + "已扣除手续费：" + fee);
 
 						Long parentId = buyer.getParentId();
@@ -809,7 +809,7 @@ public class OrderServiceImpl implements OrderService {
 								TimeUnit.MILLISECONDS.sleep(50);
 							} catch (InterruptedException e1) {
 							}
-							fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, "业绩奖", CurrencyType.积分, saleBonusAfterToV4Parent, paidTime, "已扣除手续费:" + feeToV4Parent + ";费率: " + FEE_RATE);
+							fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfterToV4Parent, paidTime, "已扣除手续费:" + feeToV4Parent + ";费率: " + FEE_RATE);
 
 							logger.error(buyer.getNickname() + "直升特级, 给上级" + parent.getNickname() + "的业绩奖：" + saleBonusAfterToV4Parent + "已扣除手续费：" + feeToV4Parent);
 						}
@@ -823,7 +823,7 @@ public class OrderServiceImpl implements OrderService {
 						TimeUnit.MILLISECONDS.sleep(50);
 					} catch (InterruptedException e1) {
 					}
-					fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, "业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+					fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
 					logger.error(buyer.getNickname() + "特级业绩奖：" + saleBonusAfter + "已扣除手续费：" + fee);
 
 				}
@@ -889,7 +889,7 @@ public class OrderServiceImpl implements OrderService {
 								TimeUnit.MILLISECONDS.sleep(50);
 							} catch (InterruptedException e1) {
 							}
-							fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, "推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+							fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, year + "年" + month + "月推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
 							logger.error(buyerParent.getNickname() + "推荐奖：" + saleBonusAfter + "已扣除手续费:" + fee);
 							break;
 						}

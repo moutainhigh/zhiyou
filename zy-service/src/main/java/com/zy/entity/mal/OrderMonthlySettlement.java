@@ -48,5 +48,10 @@ public class OrderMonthlySettlement implements Serializable {
 	@Query({Predicate.LT, Predicate.GTE})
 	private Date settledUpTime;
 
+	@NotNull
+	@Field(label = "月结类型")
+	@Query({Predicate.EQ})
+	private String settlementType;
+
 
 }
