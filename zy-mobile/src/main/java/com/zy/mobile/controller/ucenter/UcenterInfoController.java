@@ -1,6 +1,7 @@
 package com.zy.mobile.controller.ucenter;
 
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.util.DateUtil;
 import com.zy.component.UserInfoComponent;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Tag;
@@ -79,6 +80,15 @@ public class UcenterInfoController {
 		List<UserInfo> infos = userInfoService.findAll(UserInfoQueryModel.builder().confirmStatusEQ(ConfirmStatus.已通过).realFlag(1).idCardNumberLK(userInfo.getIdCardNumber()).build());
 		UserInfo persistence = userInfoService.findByUserIdandFlage(principal.getUserId());
 		try {
+			int age = DateUtil.getAge(userInfo.getIdCardNumber());
+			if(age < 18){
+				model.addAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("未满18周岁，不能成为服务商！"));
+				model.addAttribute("userInfo", userInfoComponent.buildVo(userInfo));
+				model.addAttribute("jobs", jobService.findAll());
+				model.addAttribute("tags", getTags());
+				return "ucenter/user/userInfoCreate";
+			}
+			userInfo.setAge(age);
 			if(infos == null || infos.isEmpty()){
 				userInfo.setRealFlag(1);
 				if(persistence != null){
@@ -126,6 +136,12 @@ public class UcenterInfoController {
 		if(persistence.getConfirmStatus() == ConfirmStatus.已通过) {
 			return "redirect:/u/userInfo";
 		}
+		int age = DateUtil.getAge(userInfo.getIdCardNumber());
+		if(age < 18){
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("未满18周岁，不能成为服务商！"));
+			return "redirect:/u/userInfo/edit";
+		}
+		userInfo.setAge(age);
 		userInfo.setId(persistence.getId());
 		userInfo.setRealFlag(1);
 		if(infos == null || infos.isEmpty()){

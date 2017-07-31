@@ -12,7 +12,11 @@ import java.util.List;
 public interface TourUserMapper {
     long count(TourUserQueryModel tourUserQueryModel);
 
+    long listCount(TourUserQueryModel tourUserQueryModel);
+
     List<TourUser> findAll(TourUserQueryModel tourUserQueryModel);
+
+    List<TourUser> findListAll(TourUserQueryModel tourUserQueryModel);
 
     TourUser findOne(Long id);
 

@@ -493,15 +493,14 @@ public class TourComponent {
              return new String[]{"身份证号信息异常 请确认","0"};
             }
         if(age>= max&&age<=65){
-            return  new String[]{"28岁以下与60至65岁者另加960元/人；儿童另加960元且门票住宿自理；如有疑问可与推荐人联系。","1"};
+            return  new String[]{"13岁以下儿童另加700元/人（门票住宿自理）；13-28岁与60-65岁者另加960元/人；如有疑问可与推荐人联系。","1"};
         }
         if(age>=66){
             return new String[]{"66岁以上：因旅游公司不具备接待服务条件，暂不接受66岁以上客户，敬请谅解。","0"};
         }
         if(age<=min){
-            return  new String[]{"28岁以及下与60至65岁者另加960元/人；儿童另加960元且门票住宿自理；如有疑问可与推荐人联系。","1"};
+            return  new String[]{"13岁以下儿童另加700元/人（门票住宿自理）；13-28岁与60-65岁者另加960元/人；如有疑问可与推荐人联系。","1"};
         }
-
         //检测地区  本省不能参加本省的
       /*  Long areaId =null;
         TourTime tourTime = tourService.findTourTimeOne(tourUserInfoVo.getTourTimeId());
@@ -558,8 +557,27 @@ public class TourComponent {
       if (!this.checkTourTime(reportId)){
           return "检测报告信息过期";
       }
+      //判断   检测报告大于2017-8-1
+        Report report = reportService.findOne(Long.valueOf(reportId));
+        if(report!=null&&report.getCreatedTime()!=null) {
+            Date createdTime = report.getCreatedTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, 2017);
+            calendar.set(Calendar.MONTH, 7);
+            calendar.set(Calendar.DATE, 1);
+            calendar.set(Calendar.HOUR, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            Date date = calendar.getTime();
+            if (createdTime.getTime()<=date.getTime()) {
+                return "检测报告不具备申请旅游资格";
+            }
+        }
+
         return null;
     }
+
+
 
     /**
      * 检测报告是否在3个月内

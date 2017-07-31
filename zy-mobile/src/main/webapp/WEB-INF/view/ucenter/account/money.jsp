@@ -29,9 +29,18 @@
     <h2 class="font-777 fs-16 lh-30 text-center mt-20">我的${currencyType.alias}余额(元)</h2>
     <div class="font-333 fs-36 lh-60 text-center">${amount}</div>
     <c:if test="${currencyType == '现金'}">
-    <div class="form-btn mt-20">
-      <a href="${ctx}/u/pay/deposit" class="btn green btn-block round-2">充值</a>
-    </div>
+      <c:if test="${!hasUserInfo}">
+        <div class="form-btn">
+          <nav class="footer footer-nav flex">
+            <a class="flex-2 btn-order" href="${ctx}/u/userInfo">充值(请先完成实名认证再充值)</a>
+          </nav>
+        </div>
+      </c:if>
+      <c:if test="${hasUserInfo}">
+      <div class="form-btn mt-20">
+        <a href="${ctx}/u/pay/deposit" class="btn green btn-block round-2">充值</a>
+      </div>
+      </c:if>
     <c:if test="${userRank == 'V4'}">
     <div class="form-btn mt-20">
       <a href="${ctx}/u/account/transfer/create" class="btn orange btn-block round-2">转账</a>

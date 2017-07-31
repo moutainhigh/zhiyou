@@ -32,4 +32,8 @@ public class TourUserListVo implements Serializable {
     private String image;
     @Field(label = "出游时间id")
     private Long tourTimeId;
+    @Field(label = "是否有效")
+    private Integer isEffect;
+    @Field(label = "审核备注")
+    private String revieweRemark;
 }

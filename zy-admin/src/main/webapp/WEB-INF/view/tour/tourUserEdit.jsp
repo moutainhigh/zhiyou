@@ -242,7 +242,7 @@
                             <button type="submit" class="btn green">
                                 <i class="fa fa-save"></i> 保存
                             </button>
-                            <button class="btn default" data-href="${ctx}/tourJoinUser">
+                            <button class="btn default" data-href="${ctx}/tourUser">
                                 <i class="fa fa-chevron-left"></i> 返回
                             </button>
                         </div>

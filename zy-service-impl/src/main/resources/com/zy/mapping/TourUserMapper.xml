@@ -159,6 +159,94 @@
 		</if>
 	</select>
 
+	<!-- 查询所有旅客信息 -->
+	<select id="findListAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TourUserQueryModel">
+		SELECT
+			<include refid="baseColumn"/>
+		FROM ts_tour_user a
+		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
+		LEFT JOIN usr_user_info e ON a.parent_id = e.user_id
+		LEFT JOIN usr_user c ON a.user_id = c.id
+		LEFT JOIN usr_user d ON a.parent_id = d.id
+		LEFT JOIN ts_tour f ON a.tour_id = f.id
+		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
+		<where>
+			<if test="sequenceId !=null">
+				AND  a.sequence_id = #{sequenceId}
+			</if>
+			<if test="reportId !=null">
+				AND  a.report_id = #{reportId}
+			</if>
+			<if test="auditStatus !=null">
+				AND a.audit_status = #{auditStatus}
+			</if>
+			<if test="firstVisitStatus !=null">
+				AND a.first_visit_status = #{firstVisitStatus}
+			</if>
+			<if test="secondVisitStatus !=null">
+				AND a.second_visit_status = #{secondVisitStatus}
+			</if>
+			<if test="thirdVisitStatus !=null">
+				AND a.third_visit_status = #{thirdVisitStatus}
+			</if>
+			<if test="isTransfers !=null">
+				AND a.is_transfers = #{isTransfers}
+			</if>
+			<if test="isJoin !=null">
+				AND a.is_join = #{isJoin}
+			</if>
+			<if test="userName !=null">
+				AND  b.realname= #{userName}
+			</if>
+			<if test="parentName !=null">
+				AND  e.realname= #{parentName}
+			</if>
+			<if test="userPhone !=null">
+				AND  c.phone= #{userPhone}
+			</if>
+			<if test="parentPhone !=null">
+				AND  d.phone= #{parentPhone}
+			</if>
+			<if test="tourTitle !=null">
+				<bind name="tourTitle" value="'%' + tourTitle + '%'"/> AND title LIKE #{tourTitle}
+			</if>
+			<if test="beginTime !=null">
+				AND  g.begin_time &gt;= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				AND g.end_time &lt;= #{endTime}
+			</if>
+			<if test="planStartTime !=null">
+				AND  a.plan_time &gt;= #{planStartTime}
+			</if>
+			<if test="planEndTime !=null">
+				AND a.plan_time &lt;= #{planEndTime}
+			</if>
+			<if test="userId !=null">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="visitUserId !=null">
+				AND a.visit_user_id = #{visitUserId}
+			</if>
+			<if test="parentId !=null">
+				AND a.parent_id = #{parentId}
+			</if>
+			<if test="tourTimeId !=null">
+				AND a.tour_time_id &lt;= #{tourTimeId}
+			</if>
+			<if test="createdTime !=null">
+				AND  a.create_date &gt;= #{createdTime}
+			</if>
+			<if test="isEffect !=null">
+				AND a.is_effect = #{isEffect}
+			</if>
+		</where>
+		ORDER BY a.create_date DESC ,a.audit_status ASC
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
 
 	<!-- 查询所有旅客信息 -->
 	<select id="findJoinAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TourUserQueryModel">
@@ -317,6 +405,90 @@
 			</if>
 			<if test="createdTime !=null">
 				AND  a.create_date &gt;= #{createdTime}
+			</if>
+			AND a.is_effect = 1
+		</where>
+	</select>
+
+	<select id="listCount" resultType="_long" parameterType="com.zy.model.query.TourUserQueryModel">
+		SELECT
+			count(*)
+		FROM ts_tour_user a
+		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
+		LEFT JOIN usr_user_info e ON a.parent_id = e.user_id
+		LEFT JOIN usr_user c ON a.user_id = c.id
+		LEFT JOIN usr_user d ON a.parent_id = d.id
+		LEFT JOIN ts_tour f ON a.tour_id = f.id
+		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
+		<where>
+			<if test="sequenceId !=null">
+				AND  a.sequence_id = #{sequenceId}
+			</if>
+			<if test="reportId !=null">
+				AND  a.report_id = #{reportId}
+			</if>
+			<if test="auditStatus !=null">
+				AND a.audit_status = #{auditStatus}
+			</if>
+			<if test="firstVisitStatus !=null">
+				AND a.first_visit_status = #{firstVisitStatus}
+			</if>
+			<if test="secondVisitStatus !=null">
+				AND a.second_visit_status = #{secondVisitStatus}
+			</if>
+			<if test="thirdVisitStatus !=null">
+				AND a.third_visit_status = #{thirdVisitStatus}
+			</if>
+			<if test="isTransfers !=null">
+				AND a.is_transfers = #{isTransfers}
+			</if>
+			<if test="isJoin !=null">
+				AND a.is_join = #{isJoin}
+			</if>
+			<if test="userName !=null">
+				AND  b.realname= #{userName}
+			</if>
+			<if test="parentName !=null">
+				AND  e.realname= #{parentName}
+			</if>
+			<if test="userPhone !=null">
+				AND  c.phone= #{userPhone}
+			</if>
+			<if test="parentPhone !=null">
+				AND  d.phone= #{parentPhone}
+			</if>
+			<if test="tourTitle !=null">
+				<bind name="tourTitle" value="'%' + tourTitle + '%'"/> AND title LIKE #{tourTitle}
+			</if>
+			<if test="beginTime !=null">
+				AND  g.begin_time &gt;= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				AND g.end_time &lt;= #{endTime}
+			</if>
+			<if test="planStartTime !=null">
+				AND  a.plan_time &gt;= #{planStartTime}
+			</if>
+			<if test="planEndTime !=null">
+				AND a.plan_time &lt;= #{planEndTime}
+			</if>
+			<if test="userId !=null">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="visitUserId !=null">
+				AND a.visit_user_id = #{visitUserId}
+			</if>
+			<if test="parentId !=null">
+				AND a.parent_id = #{parentId}
+			</if>
+			<if test="tourTimeId !=null">
+				AND a.tour_time_id &lt;= #{tourTimeId}
+			</if>
+			<if test="createdTime !=null">
+				AND  a.create_date &gt;= #{createdTime}
+			</if>
+			<if test="isEffect !=null">
+				AND a.is_effect = #{isEffect}
 			</if>
 		</where>
 	</select>

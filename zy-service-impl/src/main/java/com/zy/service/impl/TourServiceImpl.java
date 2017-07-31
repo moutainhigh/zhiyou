@@ -214,6 +214,27 @@ public class TourServiceImpl implements TourService {
     }
 
     /**
+     * 查询所有旅客信息
+     * @param tourUserQueryModel
+     * @return
+     */
+    @Override
+    public Page<TourUser> findListAll(TourUserQueryModel tourUserQueryModel) {
+        if(tourUserQueryModel.getPageNumber() == null)
+            tourUserQueryModel.setPageNumber(0);
+        if(tourUserQueryModel.getPageSize() == null)
+            tourUserQueryModel.setPageSize(20);
+        long total = tourUserMapper.listCount(tourUserQueryModel);
+        List<TourUser> data = tourUserMapper.findListAll(tourUserQueryModel);
+        Page<TourUser> page = new Page<>();
+        page.setPageNumber(tourUserQueryModel.getPageNumber());
+        page.setPageSize(tourUserQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
+    }
+
+    /**
      * 删除 旅游信息 以及 相关 时间信息
      * @param tour
      */

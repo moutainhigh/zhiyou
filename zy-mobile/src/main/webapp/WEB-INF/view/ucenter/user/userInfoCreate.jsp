@@ -24,10 +24,10 @@
 
     $('.valid-form').validate({
       rules : {
-        'age' : {
-          required : true,
-          number : true
-        },
+//        'age' : {
+//          required : true,
+//          number : true
+//        },
         'areaId' : {
           required : true
         },
@@ -54,10 +54,10 @@
         }
       },
       messages : {
-        'age': {
-          required: '请输入年龄',
-          number : '只能输入数字'
-        },
+//        'age': {
+//          required: '请输入年龄',
+//          number : '只能输入数字'
+//        },
       }
     });
 
@@ -197,12 +197,12 @@
             </select>
           </div>
         </div>
-        <div class="list-item">
-          <label class="list-label">年龄</label>
-          <div class="list-text">
-            <input type="number" id="age" name="age" class="form-input" value="${userInfo.age}" required placeholder="填写年龄">
-          </div>
-        </div>
+        <%--<div class="list-item">--%>
+          <%--<label class="list-label">年龄</label>--%>
+          <%--<div class="list-text">--%>
+            <%--<input type="number" id="age" name="age" class="form-input" value="${userInfo.age}" required placeholder="填写年龄">--%>
+          <%--</div>--%>
+        <%--</div>--%>
         <div class="list-item">
           <label class="list-label">生日</label>
           <div class="list-text">
