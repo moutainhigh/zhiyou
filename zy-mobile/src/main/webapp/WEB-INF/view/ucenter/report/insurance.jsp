@@ -244,7 +244,7 @@
                 <label class="list-label list-label2">正面照 </label>
                 <div class="list-text image-upload">
                     <div class="image-item image-single ">
-                        <input type="hidden" name="carImages" id="carImages" value="${userinfoVo.image1Thumbnail}" >
+                        <input type="hidden" name="image1" id="image1" value="${userinfoVo.image1Thumbnail}" >
                         <img src="${stccdn}/image/upload_240_150.png">
                         <input type="file">
                     </div>
