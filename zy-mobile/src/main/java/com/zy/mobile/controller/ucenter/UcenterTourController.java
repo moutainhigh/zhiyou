@@ -78,7 +78,7 @@ public class UcenterTourController {
         List<TourUserListVo> list = page.getData().stream().map(v -> {
             return tourUserComponent.buildListVo(v);
         }).collect(Collectors.toList());
-        List<TourUserListVo> tourUsers1 = list.stream().filter(v -> v.getIsEffect() == 0).collect(Collectors.toList());
+        List<TourUserListVo> tourUsers1 = list.stream().filter(v -> v.getIsEffect() == 0 || v.getAuditStatus() == 5).collect(Collectors.toList());
         List<TourUserListVo> tourUsers2 = list.stream().filter(v -> v.getIsEffect() == 1).collect(Collectors.toList());
         //Boolean isNothing = tourUsers1.size() == 0 && tourUsers2.size() == 0 ? true : false;
         model.addAttribute("tourUsers1" , tourUsers1);

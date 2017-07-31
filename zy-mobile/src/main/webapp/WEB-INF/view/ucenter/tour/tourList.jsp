@@ -153,6 +153,7 @@
             </a>
         </c:forEach>
         <c:forEach items="${tourUsers2}" var="tourUser">
+            <c:if test="${tourUser.auditStatus == 2}">
             <a href="${ctx}/tour/addInfo?tourUserId=${tourUser.id}" class="tourArticleAll">
                 <p class="tourArticle"></p>
                 <div class="tourImageT clearfloat">
@@ -185,6 +186,7 @@
                         <%--<div class="tourFont">青岛旅游，说白了就是海和崂山 如今的崂山分为七大风景区，但 是对于外来游客来讲，真正值如今的崂山分为七大风景区</div>--%>
                 </div>
             </a>
+            </c:if>
         </c:forEach>
     </article>
 

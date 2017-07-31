@@ -331,7 +331,7 @@
   </article>
   <div class="footer" >
     <div onclick="insurance()">保险申请</div>
-    <div onclick="travel()" id="travelAppleClick" style="border-right: none;">旅游申请</div>
+    <%--<div onclick="travel()" id="travelAppleClick" style="border-right: none;">旅游申请</div>--%>
   </div>
 </div>
 
