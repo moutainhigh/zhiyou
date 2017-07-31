@@ -208,6 +208,12 @@
                     form.submit();
                 }
             });
+
+            $('.image-single').imageupload({
+                width : 120,
+                height : 75,
+            });
+
         });
 
     </script>
@@ -233,16 +239,14 @@
                     <input type="text" name="idCardNumber" id="idCardNumber" class="form-input" value="${userinfoVo.idCardNumber}" placeholder="填写身份证号">
                 </div>
             </div>
-            <div class="list-item">
-                <label class="list-label">正面照</label>
-                <div class="list-item">
-                    <div class="list-text image-upload image-multi">
-                        <div class="image-add" data-limit="6" data-name="image">
-                            <input type="file"  name ="image1"  value="${userinfoVo.image1Thumbnail}"  class="file" accept="image/*" capture="camera">
-                            <em class="state state-add" id="preview">
-                            </em>
 
-                        </div>
+            <div class="list-item">
+                <label class="list-label list-label2">正面照 </label>
+                <div class="list-text image-upload">
+                    <div class="image-item image-single ">
+                        <input type="hidden" name="carImages" id="carImages" value="${userinfoVo.image1Thumbnail}" >
+                        <img src="${stccdn}/image/upload_240_150.png">
+                        <input type="file">
                     </div>
                 </div>
             </div>

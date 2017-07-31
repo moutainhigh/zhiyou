@@ -361,7 +361,6 @@ public class UcenterReportController {
 			}
 				policy.setUserId(principal.getUserId());
 				policy.setReportId(reportId);
-				policy.setImage1(GcUtils.getThumbnail(policy.getImage1(), 750, 450));
 				policyService.create(policy);
 
 			return ResultBuilder.ok(null);
