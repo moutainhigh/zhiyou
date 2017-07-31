@@ -156,8 +156,7 @@ public class ActivityController {
 	public BufferedImage signInQrCode(@RequestParam Long id) throws WriterException {
 		Activity activity = activityService.findOne(id);
 		validate(activity, NOT_NULL, "activity id " + id + " is not found");
-		/*String qrCodeUrl = Constants.URL_MOBILE + "/u/activity/signIn?id=" + id;*/
-		String qrCodeUrl = "http://192.168.1.222:8088/" + "/u/activity/signIn?id=" + id;
+		String qrCodeUrl = Constants.URL_MOBILE + "/u/activity/signIn?id=" + id;
 		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 		Map<EncodeHintType, String> hints = new HashMap<>();
 		hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
