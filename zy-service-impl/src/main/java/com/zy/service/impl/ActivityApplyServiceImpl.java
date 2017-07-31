@@ -120,11 +120,12 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 	@Override
 	public void useTicket(@NotNull Long activityId, @NotNull Long userId, @NotNull Long inviterId ,@NotNull ActivityTicket activityTicket) {
 		Activity activity = activityMapper.findOne(activityId);
+
 		validate(activity, NOT_NULL, "activity id " + userId + " not found");
 
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + " not found");
-
+		//TODO
 		Long appliedCount = activity.getAppliedCount();
 		ActivityApply activityApply = activityApplyMapper.findByActivityIdAndUserId(activityId, userId);
 		if (activityApply != null) {

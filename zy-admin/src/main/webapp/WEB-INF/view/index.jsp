@@ -94,6 +94,7 @@
   <script src="${ctx}/plugin/ztree/js/jquery.ztree.core.min.js"></script>
   <script src="${ctx}/js/area.js"></script>
   <script src="${ctx}/js/common.js"></script>
+  <script src="${stc}/assets/scripts/datatable1.js"></script>
   <%@ include file="/WEB-INF/view/include/form.jsp" %>
 
   <!-- END PAGE LEVEL SCRIPTS -->
@@ -232,7 +233,7 @@
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="activity:view,report:view,activityReport:view,activityTicket:view,activityApply:view,policy:view,policyCode:view,reportVisitedLog:view">
+        <shiro:hasAnyPermissions name="activity:view,report:view,activityReport:view,activityTicket:view,activityApply:view,policy:view,policyCode:view,reportVisitedLog:view,lesson:view,lessonUser:view">
           <li>
             <a href="javascript:;">
               <i class="icon-globe"></i>
@@ -289,6 +290,16 @@
               <shiro:hasPermission name="productReplacement:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/productReplacement"><i class="icon-vector"></i> 换货管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="lesson:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/lesson"><i class="icon-wallet"></i> 课程管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="lessonUser:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/lesson/user"><i class="icon-doc"></i> 用户课程管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>

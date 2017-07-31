@@ -103,6 +103,10 @@
           layer.alert('请地图选址')
           return false;
         }
+        if ($('#lessonType').val()==0){
+          $('#sleLesson').val("");
+
+        }
         $(form).find(':submit').prop('disabled', true);
         Layout.postForm(form);
       }
@@ -141,6 +145,21 @@
     });
 
   });
+  function selectValue(obj) {
+    $("#ticketType").html("");
+    if($(obj).val()==1){
+      var op = '<option value="1">自购</option>';
+      $("#ticketType").html(op);
+      $('#lesson').show();
+      $('#sleLesson').val('${lessonId}');
+    }else{
+      var op = '<option value="1">自购</option> <option value="2">团购</option>';
+      $("#ticketType").html(op);
+      $('#lesson').hide();
+      $("#sleLesson").val("");
+    }
+
+  }
 </script>
 <!-- END JAVASCRIPTS -->
 
@@ -172,6 +191,26 @@
               <button class="close" data-close="alert"></button>
               <span class="form-errors">您填写的信息有误，请检查。</span>
             </div>
+
+            <div class="form-group">
+              <label class="control-label col-md-3">类型<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <select style="display: block; width: 40%;" class="form-control pull-left" onchange="selectValue(this)" id="lessonType">
+                  <option value="0">新经济财富风暴</option>
+                  <option value="1" ${lessonId!=null?'selected':''} >商学院课程</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" id ="lesson" style="display: ${lessonId!=null?'block':'none'}" >
+              <label class="control-label col-md-3">课程名称<span class="required"> * </span></label>
+              <div class="col-md-5">
+                <select style="display: block; width: 40%;" class="form-control pull-left"  id="sleLesson" name="lessonId" >
+                 <c:forEach items="${lessonList}" var="less">
+                    <option value="${less.id}" ${less.id==lessonId?'selected':''}>${less.title}</option>
+                 </c:forEach>
+                </select>
+              </div>
+            </div>
             <div class="form-group">
               <label class="control-label col-md-3">标题<span class="required"> * </span></label>
               <div class="col-md-5">
@@ -196,7 +235,9 @@
               <div class="col-md-5">
                 <select style="display: block; width: 40%;" class="form-control pull-left" id="ticketType" name="ticketType">
                   <option value="1"<c:if test="${activity.ticketType == 1}"> selected="selected"</c:if>>自购</option>
-                  <option value="2"<c:if test="${activity.ticketType == 2}"> selected="selected"</c:if>>团购</option>
+                  <c:if test="${lessonId==null}">
+                    <option value="2"<c:if test="${activity.ticketType == 2}"> selected="selected"</c:if>>团购</option>
+                  </c:if>
                 </select>
               </div>
             </div>

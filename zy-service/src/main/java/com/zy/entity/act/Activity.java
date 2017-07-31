@@ -173,4 +173,9 @@ public class Activity implements Serializable {
 	@Field(label = "乐观锁")
 	private Integer version;
 
+	@Field(label = "课程ID")
+	@Query(Predicate.EQ)
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private Long lessonId;
+
 }

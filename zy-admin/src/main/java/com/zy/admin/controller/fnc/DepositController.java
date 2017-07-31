@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.zy.common.util.weiXinUtils.SendPaySuccessMsg;
+import com.zy.common.util.weiXinUtils.Token;
+import com.zy.component.TokenComponent;
 import com.zy.vo.DepositExportVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -58,6 +61,9 @@ public class DepositController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private TokenComponent tokenComponent;
+
 	@RequiresPermissions("deposit:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
@@ -87,6 +93,19 @@ public class DepositController {
 		validate(deposit, NOT_NULL, "deposit id not found,id = " + id);
 		if(isSuccess){
 			depositService.offlineSuccess(id, principal.getUserId(), remark);
+			//在这里推送消息  推送不成功则 吞掉异常
+			try{
+				User user = userService.findOne(deposit.getUserId());
+				if (user!=null&&user.getOpenId()!=null){
+					Token token = tokenComponent.getToken();
+					if (token!=null){//获取到token才推送消息
+						SendPaySuccessMsg.send_template_message(deposit.getSn(),"U币充值",deposit.getTotalAmount(),user.getOpenId(),token);
+					}
+				}
+			  }catch (Exception e){
+				e.printStackTrace();
+			}
+
 		} else {
 			depositService.offlineFailure(id, principal.getUserId(), remark);
 		}

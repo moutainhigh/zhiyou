@@ -75,6 +75,10 @@ public class AdminConstants {
 			sub.put("report:visitUser", "检测报告(回访客服分配)");
 			sub.put("reportVisitedLog:view", "回访日志(查看)");
 			sub.put("reportVisitedLog:edit", "回访日志(编辑)");
+			sub.put("lesson:view", "课程管理");
+			sub.put("lesson:edit", "课程编辑");
+			sub.put("lessonUser:view", "用户课程管理");
+			sub.put("lessonUser:edit", "用户课程编辑");
 			SETTING_PERMISSION_MAP.put("活动管理", sub);
 		}
 		{

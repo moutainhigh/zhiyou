@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.LessonMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.star.Lesson">
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="lesson_level" property="lessonLevel" />
+		<result column="parent_all_id" property="parentAllId" />
+		<result column="create_by_id" property="createById" />
+		<result column="create_date" property="createDate" />
+		<result column="view_flage" property="viewFlage" />
+	</resultMap>
+
+	<sql id="baseColumn">id,title,lesson_level,parent_all_id,create_by_id,create_date,view_flage</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.star.Lesson" useGeneratedKeys="true" keyProperty="id">
+	  insert into `ts_lesson` (title,lesson_level,parent_all_id,create_by_id,create_date,view_flage)
+	  values (#{title},#{lessonLevel},#{parentAllId},#{createById},#{createDate},#{viewFlage})
+	</insert>
+
+	<delete id="delete">
+		delete from `ts_lesson` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.star.Lesson">
+		update `ts_lesson`
+		<set>
+			title = #{title},
+			lesson_level = #{lessonLevel},
+			parent_all_id = #{parentAllId},
+			create_by_id = #{createById},
+			create_date = #{createDate},
+			view_flage = #{viewFlage},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `ts_lesson`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'title'">title = #{lesson.title},</when>
+					<when test="field == 'lessonLevel'">lesson_level = #{lesson.lessonLevel},</when>
+					<when test="field == 'parentAllId'">parent_all_id = #{lesson.parentAllId},</when>
+					<when test="field == 'createById'">create_by_id = #{lesson.createById},</when>
+					<when test="field == 'createDate'">create_date = #{lesson.createDate},</when>
+					<when test="field == 'viewFlage'">view_flage = #{lesson.viewFlage},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{lesson.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `ts_lesson`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.LessonQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `ts_lesson`
+		<where>
+			<if test="createDateGTE != null">
+				and create_date &gt;= #{createDateGTE}
+			</if>
+			<if test="createByIdEQ != null">
+				and create_by_id = #{createByIdEQ}
+			</if>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
+			<if test="createDateLT != null">
+				and create_date &lt; #{createDateLT}
+			</if>
+			<if test="viewFlageEQ != null">
+				and view_flage = #{viewFlageEQ}
+			</if>
+			<if test="lessonLevelEQ != null">
+				and lesson_level = #{lessonLevelEQ}
+			</if>
+			<if test="parentAllIdIN != null">
+				<if test="parentAllIdIN.length != 0">
+				and id in
+				<foreach collection="parentAllIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="parentAllIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.LessonQueryModel">
+		select count(*) from `ts_lesson`
+		<where>
+			<if test="createDateGTE != null">
+				and create_date &gt;= #{createDateGTE}
+			</if>
+			<if test="createByIdEQ != null">
+				and create_by_id = #{createByIdEQ}
+			</if>
+			<if test="titleLK != null">
+				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
+			</if>
+			<if test="createDateLT != null">
+				and create_date &lt; #{createDateLT}
+			</if>
+			<if test="viewFlageEQ != null">
+				and view_flage = #{viewFlageEQ}
+			</if>
+			<if test="lessonLevelEQ != null">
+				and lesson_level = #{lessonLevelEQ}
+			</if>
+			<if test="parentAllIdIN != null">
+				<if test="parentAllIdIN.length != 0">
+				and id in
+				<foreach collection="parentAllIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="parentAllIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+		</where>
+	</select>
+
+</mapper>
