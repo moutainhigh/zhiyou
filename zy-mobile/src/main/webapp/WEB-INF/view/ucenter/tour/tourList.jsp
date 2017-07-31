@@ -132,18 +132,11 @@
                 <span>空空如也!</span>
             </div>
         </c:if>
-        <%--<c:if test="${boolean}">--%>
-            <%--<div class="page-empty">--%>
-                <%--<i class="fa fa-map-marker"></i>--%>
-                <%--<span>空空如也!</span>--%>
-            <%--</div>--%>
-        <%--</c:if>--%>
 
         <c:forEach items="${tourUsers1}" var="tourUser">
-            <a href="${ctx}/tour/findTourDetailbyTour?tourId=${tourUser.tourId}&parentPhone=${tourUser.parentPhone}&reporId=${tourUser.reportId}&tourTimeId=${tourUser.tourTimeId}&tourUserId=${tourUser.id}" class="tourArticleAll">
+            <a href="#" class="tourArticleAll">
                 <p class="tourArticle"></p>
                 <div class="tourImageT clearfloat">
-                   <%-- <img src="${ctx}/images/tourImageT1.png" />--%>
                     <img src="${tourUser.image}"/>
                     <p class="tourImageTFont"><b>${tourUser.tourTitle}</b></p>
                     <p class="startTime">出发时间：${tourUser.tourTime}</p>
@@ -154,42 +147,40 @@
         </c:forEach>
         <c:forEach items="${tourUsers2}" var="tourUser">
             <c:if test="${tourUser.auditStatus == 2}">
-            <a href="${ctx}/tour/addInfo?tourUserId=${tourUser.id}" class="tourArticleAll">
-                <p class="tourArticle"></p>
-                <div class="tourImageT clearfloat">
-                    <img src="${tourUser.image}"/>
-                    <%--<img src="${ctx}/images/tourImageT1.png" />--%>
-                    <p class="tourImageTFont"><b>${tourUser.tourTitle}</b></p>
-                    <p class="startTime">出发时间：${tourUser.tourTime}</p>
-                        <%--&lt;%&ndash;&lt;%&ndash;<p class="startState">审核中</p>   //跳到旅游详情页面，并且把我要报名按钮改成审核中--%>
-                        <%--<p class="startState">待补充</p>   跳到<a href="${ctx}/tour/addInfo" class="tourArticleAll">--%>
-                        <%--<p class="startState">可生效</p>  //跳到旅游详情页面，并且把我要报名按钮改成可生效--%>
-                        <%--<p class="startState">已完成</p>   //跳到旅游详情页面，并且把我要报名按钮改成已完成--%>
-                    <c:choose>
-                        <c:when test="${tourUser.auditStatus == 1}">
-                            <p class="startState startStateFile">审核中</p>
-                        </c:when>
-                        <c:when test="${tourUser.auditStatus == 2}">
-                            <p class="startState startStateFile">待补充</p>
-                        </c:when>
-                        <c:when test="${tourUser.auditStatus == 3}">
-                            <p class="startState startStateFile">已生效</p>
-                        </c:when>
-                        <c:when test="${tourUser.auditStatus == 4}">
-                            <p class="startState startStateFile">已完成</p>
-                        </c:when>
-                        <c:when test="${tourUser.auditStatus == 5}">
-                            <p class="startState startStateFile">审核失败</p>
-                            <div style="float: left;width: 100%;margin-top: 20px;">备注：${tourUser.revieweRemark}</div>
-                        </c:when>
-                    </c:choose>
-                        <%--<div class="tourFont">青岛旅游，说白了就是海和崂山 如今的崂山分为七大风景区，但 是对于外来游客来讲，真正值如今的崂山分为七大风景区</div>--%>
-                </div>
-            </a>
+                <a href="${ctx}/tour/addInfo?tourUserId=${tourUser.id}" class="tourArticleAll">
+                    <p class="tourArticle"></p>
+                    <div class="tourImageT clearfloat">
+                        <img src="${tourUser.image}"/>
+                        <p class="tourImageTFont"><b>${tourUser.tourTitle}</b></p>
+                        <p class="startTime">出发时间：${tourUser.tourTime}</p>
+                                <p class="startState startStateFile">待补充</p>
+                    </div>
+                </a>
+            </c:if>
+
+            <c:if test="${tourUser.auditStatus != 2}">
+                <a href="#" class="tourArticleAll">
+                    <p class="tourArticle"></p>
+                    <div class="tourImageT clearfloat">
+                        <img src="${tourUser.image}"/>
+                        <p class="tourImageTFont"><b>${tourUser.tourTitle}</b></p>
+                        <p class="startTime">出发时间：${tourUser.tourTime}</p>
+                        <c:choose>
+                            <c:when test="${tourUser.auditStatus == 1}">
+                                <p class="startState startStateFile">审核中</p>
+                            </c:when>
+                            <c:when test="${tourUser.auditStatus == 3}">
+                                <p class="startState startStateFile">已生效</p>
+                            </c:when>
+                            <c:when test="${tourUser.auditStatus == 4}">
+                                <p class="startState startStateFile">已完成</p>
+                            </c:when>
+                        </c:choose>
+                    </div>
+                </a>
             </c:if>
         </c:forEach>
     </article>
-
 </div>
 <script>
 $(function(){
