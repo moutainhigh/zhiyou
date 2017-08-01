@@ -779,7 +779,6 @@
                                 }
                                 </shiro:hasPermission>
                                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="resetAjax(' + full.id + ')"><i class="fa fa-edit"></i> 重置 </a>';
-                                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
                                 if (full.firstVisitStatus == 1){
                                     optionHtml += '<a class="btn btn-xs default yellow-stripe firstVisitStatus" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 初访 </a>';
                                 }
@@ -790,6 +789,9 @@
                                     optionHtml += '<a class="btn btn-xs default green-stripe thirdVisitStatus" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 三访 </a>';
                                 }
                             }
+                            </shiro:hasPermission>
+                            <shiro:hasPermission name="tourUser:visitEdit">
+                                optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
                             </shiro:hasPermission>
                             return optionHtml;
                         }
