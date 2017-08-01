@@ -212,7 +212,7 @@
         <em>保险申请</em>
       </a>
       <a class="flex-1"  href="${ctx}/tour">
-        <i class="icon icon-2x" style='background: url("${ctx}/images/lvyou.png")'></i>
+        <i class="icon icon-2x" style='background: url("${ctx}/images/lvyou.png");background-size:32px 32px;'></i>
         <em>旅游申请</em>
       </a>
     </div>
