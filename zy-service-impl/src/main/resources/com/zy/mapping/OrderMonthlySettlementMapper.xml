@@ -100,11 +100,11 @@
 
 	<sql id="baseColumn">id,year_and_month,settled_up_time</sql>
 
-	<select id="findByYearAndMonth" resultMap="baseResultMap" parameterType="string">
+	<select id="findByYearAndMonth" resultMap="baseResultMap">
 		select
 		id,year_and_month,settled_up_time
 		from `mal_order_monthly_settlement`
-		where year_and_month = #{yearAndMonth}
+		where year_and_month = #{yearAndMonth} and settlement_type = #{settlementType}
 	</select>
 
 </mapper>
