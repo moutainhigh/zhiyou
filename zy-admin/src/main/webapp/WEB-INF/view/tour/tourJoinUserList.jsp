@@ -40,17 +40,104 @@
         </div>
     </form>
 </script>
+
+<script id="refundAmountTmpl" type="text/x-handlebars-template">
+    <form id="refundAmountForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 100%; margin: 20px;">
+        <input type="hidden" name="id" value="{{id}}"/>
+        <div class="form-body">
+            <div class="alert alert-danger display-hide">
+                <i class="fa fa-exclamation-circle"></i>
+                <button class="close" data-close="alert"></button>
+                <span class="form-errors">您填写的信息有误，请检查。</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">金额(元)<span class="required"> * </span></label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="refundAmount"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions fluid">
+            <div class="col-md-offset-3 col-md-9">
+                <button id="refundAmountSubmit{{id}}" type="button" class="btn green">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+                <button id="refundAmountCancel{{id}}" class="btn default" data-href="">
+                    <i class="fa fa-chevron-left"></i> 返回
+                </button>
+            </div>
+        </div>
+    </form>
+</script>
+
+<script id="guaranteeAmountTmpl" type="text/x-handlebars-template">
+    <form id="guaranteeAmountForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 100%; margin: 20px;">
+        <input type="hidden" name="id" value="{{id}}"/>
+        <div class="form-body">
+            <div class="alert alert-danger display-hide">
+                <i class="fa fa-exclamation-circle"></i>
+                <button class="close" data-close="alert"></button>
+                <span class="form-errors">您填写的信息有误，请检查。</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">金额(元)<span class="required"> * </span></label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="guaranteeAmount"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions fluid">
+            <div class="col-md-offset-3 col-md-9">
+                <button id="guaranteeAmountSubmit{{id}}" type="button" class="btn green">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+                <button id="guaranteeAmountCancel{{id}}" class="btn default" data-href="">
+                    <i class="fa fa-chevron-left"></i> 返回
+                </button>
+            </div>
+        </div>
+    </form>
+</script>
+
+<script id="surchargeTmpl" type="text/x-handlebars-template">
+    <form id="surchargeForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 100%; margin: 20px;">
+        <input type="hidden" name="id" value="{{id}}"/>
+        <div class="form-body">
+            <div class="alert alert-danger display-hide">
+                <i class="fa fa-exclamation-circle"></i>
+                <button class="close" data-close="alert"></button>
+                <span class="form-errors">您填写的信息有误，请检查。</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">金额(元)<span class="required"> * </span></label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="surcharge"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions fluid">
+            <div class="col-md-offset-3 col-md-9">
+                <button id="surchargeSubmit{{id}}" type="button" class="btn green">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+                <button id="surchargeCancel{{id}}" class="btn default" data-href="">
+                    <i class="fa fa-chevron-left"></i> 返回
+                </button>
+            </div>
+        </div>
+    </form>
+</script>
 <script>
     var grid = new Datatable();
 
-    var template = Handlebars.compile($('#confirmTmpl').html());
+    var tourUserTemplate = Handlebars.compile($('#confirmTmpl').html());
     $('#dataTable').on('click', '.report-confirm', function () {
         var id = $(this).data('id');
         var data = {
             id: id
         };
-        var html = template(data);
-        var index = layer.open({
+        var html = tourUserTemplate(data);
+        var tourUserIndex = layer.open({
             type: 1,
             //skin: 'layui-layer-rim', //加上边框
             area: ['500px', '300px'], //宽高
@@ -86,10 +173,150 @@
         })
 
         $('#reportConfirmCancel' + id).bind('click', function () {
+            layer.close(tourUserIndex);
+        })
+
+    });
+
+    var guaranteeAmountTemplate = Handlebars.compile($('#guaranteeAmountTmpl').html());
+    $('#dataTable').on('click', '.guaranteeAmount', function () {
+        var id = $(this).data('id');
+        var data = {
+            id: id
+        };
+        var html = guaranteeAmountTemplate(data);
+        var index = layer.open({
+            type: 1,
+            //skin: 'layui-layer-rim', //加上边框
+            area: ['550px', '300px'], //宽高
+            content: html
+        });
+
+        $form = $('#guaranteeAmountForm' + id);
+        $form.validate({
+            rules: {
+                guaranteeAmount: {
+                    number: true
+                }
+            },
+            messages: {}
+        });
+
+        $('#guaranteeAmountSubmit' + id).bind('click', function () {
+            var result = $form.validate().form();
+            if (result) {
+                var url = '${ctx}/tourJoinUser/amount';
+                $.post(url, $form.serialize(), function (data) {
+                    if (data.code === 0) {
+                        layer.close(index);
+                        grid.getDataTable().ajax.reload(null, false);
+                    } else {
+                        layer.alert('补充信息失败,原因' + data.message);
+                    }
+                });
+            }
+        })
+
+        $('#guaranteeAmountCancel' + id).bind('click', function () {
             layer.close(index);
         })
 
     });
+
+
+    var surchargeTemplate = Handlebars.compile($('#surchargeTmpl').html());
+    $('#dataTable').on('click', '.surcharge', function () {
+        var id = $(this).data('id');
+        var data = {
+            id: id
+        };
+        var html = surchargeTemplate(data);
+        var index = layer.open({
+            type: 1,
+            //skin: 'layui-layer-rim', //加上边框
+            area: ['550px', '300px'], //宽高
+            content: html
+        });
+
+        $form = $('#surchargeForm' + id);
+        $form.validate({
+            rules: {
+                surcharge: {
+                    number: true
+                }
+            },
+            messages: {}
+        });
+
+        $('#surchargeSubmit' + id).bind('click', function () {
+            var result = $form.validate().form();
+            if (result) {
+                var url = '${ctx}/tourJoinUser/amount';
+                $.post(url, $form.serialize(), function (data) {
+                    if (data.code === 0) {
+                        layer.close(index);
+                        grid.getDataTable().ajax.reload(null, false);
+                    } else {
+                        layer.alert('补充信息失败,原因' + data.message);
+                    }
+                });
+            }
+        })
+
+        $('#surchargeCancel' + id).bind('click', function () {
+            layer.close(index);
+        })
+
+    });
+
+
+    var template = Handlebars.compile($('#refundAmountTmpl').html());
+    $('#dataTable').on('click', '.refundAmount', function () {
+        var id = $(this).data('id');
+        var data = {
+            id: id
+        };
+        var html = template(data);
+        var index = layer.open({
+            type: 1,
+            //skin: 'layui-layer-rim', //加上边框
+            area: ['550px', '300px'], //宽高
+            content: html
+        });
+
+        $form = $('#refundAmountForm' + id);
+        $form.validate({
+            rules: {
+                refundAmount: {
+                    number: true
+                }
+            },
+            messages: {}
+        });
+
+        $('#refundAmountSubmit' + id).bind('click', function () {
+            var result = $form.validate().form();
+            if (result) {
+                var url = '${ctx}/tourJoinUser/amount';
+                $.post(url, $form.serialize(), function (data) {
+                    if (data.code === 0) {
+                        layer.close(index);
+                        grid.getDataTable().ajax.reload(null, false);
+                    } else {
+                        layer.alert('补充信息失败,原因' + data.message);
+                    }
+                });
+            }
+        })
+
+        $('#refundAmountCancel' + id).bind('click', function () {
+            layer.close(index);
+        })
+
+    });
+
+
+
 
     $(function () {
         grid.init({
@@ -270,6 +497,21 @@
                         }
                     },
                     {
+                        data: 'guaranteeAmount',
+                        title: '保障金额(元)',
+                        orderable: false
+                    },
+                    {
+                        data: 'refundAmount',
+                        title: '退回保障金额(元)',
+                        orderable: false
+                    },
+                    {
+                        data: 'surcharge',
+                        title: '附加费(元)',
+                        orderable: false
+                    },
+                    {
                         data: 'amount',
                         title: '消费金额(元)',
                         orderable: false
@@ -295,6 +537,15 @@
                             var optionHtml = '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/tourJoinUser/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
                             if (full.auditStatus == 3){
                                 optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 旅客信息补充 </a>';
+                            }
+                            if(full.guaranteeAmount == 0){
+                                optionHtml += '<a class="btn btn-xs default yellow-stripe guaranteeAmount" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 收保障金 </a>';
+                            }
+                            if(full.guaranteeAmount > 0 && full.refundAmount == 0){
+                                optionHtml += '<a class="btn btn-xs default yellow-stripe refundAmount" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 退保障金 </a>';
+                            }
+                            if (full.age < 28 || full.age > 60 && full.surcharge == 0){
+                                optionHtml += '<a class="btn btn-xs default yellow-stripe surcharge" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 附加费 </a>';
                             }
                         </shiro:hasPermission>
                             return optionHtml;
@@ -382,6 +633,15 @@
                             <div class="form-group input-inline">
                                 <input class="Wdate form-control" type="text" id="planEndTime" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
                                        name="planEndTime" value="" placeholder="计划到达结束时间"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="guaranteeAmount" class="form-control" placeholder="保障金额"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="refundAmount" class="form-control" placeholder="退回保障金额"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="surcharge" class="form-control" placeholder="附加费"/>
                             </div>
                             <div class="form-group">
                                 <select name="isJoin" class="form-control">

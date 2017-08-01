@@ -18,6 +18,7 @@ import com.zy.service.UserInfoService;
 import com.zy.service.UserService;
 import com.zy.vo.TourUserAdminVo;
 import com.zy.vo.TourUserExportVo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -73,6 +74,11 @@ public class TourUserController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Grid<TourUserAdminVo> list(TourUserQueryModel tourUserQueryModel) {
+        Long visitUserId = getPrincipalUserId();
+        if(!SecurityUtils.getSubject().isPermitted("tourUser:visitUser") &&
+                !SecurityUtils.getSubject().isPermitted("tourUser:visit")) {
+            tourUserQueryModel.setVisitUserId(visitUserId);
+        }
         Page<TourUser> page = tourService.findAll(tourUserQueryModel);
         List<TourUserAdminVo> list = page.getData().stream().map(v -> {
             return tourUserComponent.buildAdminVo(v);
@@ -190,6 +196,53 @@ public class TourUserController {
         Long loginUserId = getPrincipalUserId();
         tourService.reset(id, loginUserId);
         return ResultBuilder.ok("重置成功");
+    }
+
+
+    /**
+     * 客服分配
+     * @param id
+     * @param phone
+     * @return
+     */
+    @RequiresPermissions("tourUser:visitUser")
+    @RequestMapping(value = "/visitUser", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> visitUser(@RequestParam Long id, @RequestParam String phone) {
+        User user = userService.findByPhone(phone);
+        if(user == null ) {
+            return ResultBuilder.error("客服不存在");
+        }
+        try{
+            tourService.visitUser(id, user.getId());
+            return ResultBuilder.ok("操作成功");
+        } catch (Exception e) {
+            return ResultBuilder.error(e.getMessage());
+        }
+    }
+
+    @RequiresPermissions("tourUser:visitUser")
+    @RequestMapping(value = "/visitUserList", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> visitUserList(@RequestParam String ids, @RequestParam String phone) {
+        User user = userService.findByPhone(phone);
+        if(user == null ) {
+            return ResultBuilder.error("客服不存在");
+        }
+        if(StringUtils.isBlank(ids)){
+            return ResultBuilder.error("请至少选择一条记录！");
+        } else {
+            String[] idStringArray = ids.split(",");
+            for (String idString : idStringArray) {
+                Long id = new Long(idString);
+                try{
+                    tourService.visitUser(id, user.getId());
+                } catch (Exception e) {
+                    return ResultBuilder.error(e.getMessage());
+                }
+            }
+        }
+        return ResultBuilder.ok("操作成功");
     }
 
     /**

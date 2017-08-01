@@ -160,10 +160,13 @@ public class AdminConstants {
 			sub.put("tour:edit", "旅游管理(编辑)");
 			sub.put("tourUser:export", "游客信息管理(导出)");
 			sub.put("tourUser:view", "游客信息管理(查看)");
+			sub.put("tourUser:visitUser", "游客信息管理(回访客服分配)");
 			sub.put("tourUser:edit", "游客信息管理(编辑)");
 			sub.put("tourJoinUser:view", "参与游客信息管理(查看)");
 			sub.put("tourJoinUser:edit", "参与游客信息管理(编辑)");
 			sub.put("tourJoinUser:export", "参游游客信息管理(导出)");
+			sub.put("tourUser:visit", "参游游客信息(查看)");
+			sub.put("tourUser:visitEdit", "参游游客信息(审核)");
 
 
 			sub.put("tourSetting:view", "黑/白名单管理(查看)");

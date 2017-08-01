@@ -379,6 +379,30 @@ public class TourServiceImpl implements TourService {
         tourUserMapper.updateVisitStatus(tourUser);
     }
 
+    @Override
+    public void visitUser(@NotNull Long id,@NotNull Long visitUserId) {
+        TourUser tourUser = new TourUser();
+        tourUser.setId(id);
+        tourUser.setVisitUserId(visitUserId);
+        tourUserMapper.visitUser(tourUser);
+    }
+
+    @Override
+    public void amount(Long id, Long guaranteeAmount, Long refundAmount, Long surcharge, Long loginUserId) {
+        TourUser tourUser = new TourUser();
+        tourUser.setId(id);
+        if (guaranteeAmount != null){
+            tourUser.setGuaranteeAmount(guaranteeAmount);
+        }else if (refundAmount != null){
+            tourUser.setRefundAmount(refundAmount);
+        }else if (surcharge != null){
+            tourUser.setSurcharge(surcharge);
+        }
+        tourUser.setUpdateBy(loginUserId);
+        tourUser.setUpdateDate(new Date());
+        tourUserMapper.modify(tourUser);
+    }
+
 
     /**
      * 添加 旅游信息 并将 用户信息  添加到 userIf

@@ -19,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class TourUserQueryModel implements Serializable {
 
-    private Long sequenceId;
+    private String sequenceId;
 
     private Long reportId;
 
@@ -38,6 +38,8 @@ public class TourUserQueryModel implements Serializable {
     private Long  parentId;
 
     private Long  tourTimeId;
+
+    private Long visitUserId;
 
     private Integer firstVisitStatus;
 
@@ -70,6 +72,12 @@ public class TourUserQueryModel implements Serializable {
     private String orderBy;
 
     private Direction direction;
+
+    private Long surcharge;
+
+    private Long refundAmount;
+
+    private Long guaranteeAmount;
 
     public void setOrderBy(String orderBy) {
         if (orderBy != null && !fieldNames.contains(orderBy)) {

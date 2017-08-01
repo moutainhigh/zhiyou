@@ -85,13 +85,13 @@
   });
 
   function deleteAjax(id) {
-      layer.confirm('撤销不可恢复，您确认撤销此黑白名单吗?', {
-          btn: ['撤销','取消'] //按钮
+      layer.confirm('删除不可恢复，您确认删除此黑白名单吗?', {
+          btn: ['删除','取消'] //按钮
       }, function(){
           $.post('${ctx}/tour/deleteBlackWhite/', {id: id}, function (result) {
               grid.getDataTable().ajax.reload(null, false);
           });
-          layer.msg('撤销成功！');
+          layer.msg('删除成功！');
       }, function(){
 
       });

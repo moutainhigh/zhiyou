@@ -217,7 +217,7 @@
                             <label class="control-label col-md-3">用户备注<span class="required"> * </span>
                             </label>
                             <div class="col-md-5">
-                                <textarea type="text" readonly="true" style="display: block; width: 60%;" class="form-control">${tourUserAdminVo.userRemark}</textarea>
+                                <textarea type="text" name="userRemark" style="display: block; width: 60%;" class="form-control">${tourUserAdminVo.userRemark}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -242,7 +242,7 @@
                             <button type="submit" class="btn green">
                                 <i class="fa fa-save"></i> 保存
                             </button>
-                            <button class="btn default" data-href="${ctx}/tourJoinUser">
+                            <button class="btn default" data-href="${ctx}/tourUser">
                                 <i class="fa fa-chevron-left"></i> 返回
                             </button>
                         </div>

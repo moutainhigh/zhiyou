@@ -33,4 +33,6 @@ public interface TourUserMapper {
     List<TourUser> findByReportId(Long id);
 
     void updateVisitStatus(TourUser tourUser);
+
+    void visitUser(TourUser tourUser);
 }
