@@ -578,7 +578,11 @@
                         title: '票务照片',
                         orderable: false,
                         render: function (data, type, full) {
-                            return '<a target="_blank" href="' + data + '"><img style="width:160px;height:80px;"  src="' +data+ '"/></a>';
+                            if (data != null){
+                                return '<a target="_blank" href="' + data + '"><img style="width:160px;height:80px;"  src="' +data+ '"/></a>';
+                            }else {
+                                return "  ";
+                            }
                         }
                     },
                     {

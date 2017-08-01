@@ -271,7 +271,6 @@ public class UcenterTourController {
         tourUser.setUpdateBy(principal.getUserId());
         tourUser.setUpdateDate(new Date());
         tourUser.setAuditStatus(3);
-        tourUser.setCarImages(GcUtils.getThumbnail(tourUser.getCarImages(), 750, 450));
         try {
             tourService.addCarInfo(tourUser);
         } catch (Exception e) {
