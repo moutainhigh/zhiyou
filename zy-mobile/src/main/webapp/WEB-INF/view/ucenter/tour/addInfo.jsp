@@ -36,8 +36,24 @@
                     form.submit();
                 }
             });
+
+            $('.image-single').imageupload({
+                width : 120,
+                height : 75,
+            });
+
         });
 
+
+
+//        $('.image-view').click(function() {
+//            var url = $(this).attr('data-src');
+//            var title = $(this).attr('data-title');
+//            $.imageview({
+//                url : url,
+//                title : title
+//            });
+//        });
 
     </script>
     <style>
@@ -141,13 +157,10 @@
             </div>
             <div class="list-item">
                 <label class="list-label list-label2">添加票务照片（机/车票照片）</label>
-            </div>
-            <div class="list-item">
-                <div class="list-text image-upload image-multi">
-                    <div class="image-add" data-limit="6" data-name="image">
-                        <input type="file"  name ="carImages" class="file" accept="image/*" capture="camera">
-                        <em class="state state-add" id="preview">
-                        </em>
+                <div class="list-text image-upload">
+                    <div class="image-item image-single ">
+                        <input type="hidden" name="carImages" id="carImages">  <img src="${stccdn}/image/upload_240_150.png">
+                        <input type="file">
                     </div>
                 </div>
             </div>
@@ -160,21 +173,22 @@
 </div>
 <script>
 
-    $(function() {
-        $('[type=file]').change(function(e) {
-            var file = e.target.files[0]
-            preview(file);
-        })
-    });
-    function preview(file) {
-        var img = new Image(), url = img.src = URL.createObjectURL(file)
-        var $img = $(img)
-        img.onload = function() {
-            URL.revokeObjectURL(url)
-            $('#preview').empty().append($img);
-            $('#preview').removeClass("state-add");
-        }
-    }
+//    $(function() {
+//        $('[type=file]').change(function(e) {
+//            var file = e.target.files[0]
+//            preview(file);
+//        })
+//    });
+//    function preview(file) {
+//        var img = new Image(), carImages = img.src = URL.createObjectURL(file)
+//        var $img = $(img)
+//        img.onload = function() {
+//            URL.revokeObjectURL(carImages)
+//            $('#preview').empty().append($img);
+//            $('#preview').removeClass("state-add");
+//            alert(carImages);
+//        }
+//    }
     function btnsubmit(){
      var flage = $('.valid-form').validate({
             rules : {
