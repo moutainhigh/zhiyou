@@ -117,12 +117,12 @@
           //当用户选择的产品是2.0时，显示旅游和保险
           $(".footer").show();
           $(".form-btn").css("padding-bottom","50px");
-          $('#policy').show();
+          $('#policy,.productNumber').show();
         } else {
           //当用户选择的产品是1.0时，不显示旅游和保险
           $(".footer").hide();
           $(".form-btn").css("padding-bottom","0");
-          $('#policy').hide();
+          $('#policy,.productNumber').hide();
           $('#hasPolicy').removeAttr('checked');
         }
       });
@@ -210,7 +210,7 @@
 
       <div class="list-group mt-10">
         <div class="list-title">填写客户资料</div>
-        <div class="list-item">
+        <div class="list-item productNumber">
           <label class="list-label" for="realname">产品编码</label>
           <div class="list-text">
             <input type="text" class="form-input" name ="productNumber" id="productNumber" value="" placeholder="填写产品编码（选填）">
