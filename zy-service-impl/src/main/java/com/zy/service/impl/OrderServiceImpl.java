@@ -650,6 +650,11 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "未达到发放时间");
 		}
 
+		OrderMonthlySettlement orderMonthlySettlement = orderMonthlySettlementMapper.findByYearAndMonth(yearAndMonth, Constants.SETTLEMENT_TYPE_1);
+		if (orderMonthlySettlement != null) {
+			return; // 幂等操作
+		}
+
 		LocalDate beginDate = LocalDate.of(year, month, 1);
 		LocalDate endDate = beginDate.with(TemporalAdjusters.firstDayOfNextMonth());
 
@@ -918,6 +923,12 @@ public class OrderServiceImpl implements OrderService {
 				}
 			}
 		}
+
+		orderMonthlySettlement = new OrderMonthlySettlement();
+		orderMonthlySettlement.setYearAndMonth(yearAndMonth);
+		orderMonthlySettlement.setSettledUpTime(new Date());
+		orderMonthlySettlement.setSettlementType(Constants.SETTLEMENT_TYPE_1);
+		orderMonthlySettlementMapper.insert(orderMonthlySettlement);
 
 	}
 
@@ -1429,7 +1440,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "未达到发放时间");
 		}
 
-		OrderMonthlySettlement orderMonthlySettlement = orderMonthlySettlementMapper.findByYearAndMonth(yearAndMonth);
+		OrderMonthlySettlement orderMonthlySettlement = orderMonthlySettlementMapper.findByYearAndMonth(yearAndMonth, Constants.SETTLEMENT_TYPE_2);
 		if (orderMonthlySettlement != null) {
 			return; // 幂等操作
 		}
@@ -1719,6 +1730,7 @@ public class OrderServiceImpl implements OrderService {
 		orderMonthlySettlement = new OrderMonthlySettlement();
 		orderMonthlySettlement.setYearAndMonth(yearAndMonth);
 		orderMonthlySettlement.setSettledUpTime(now);
+		orderMonthlySettlement.setSettlementType(Constants.SETTLEMENT_TYPE_2);
 		orderMonthlySettlementMapper.insert(orderMonthlySettlement);
 	}
 

@@ -24,6 +24,6 @@ public interface OrderMonthlySettlementMapper {
 
 	long count(OrderMonthlySettlementQueryModel orderMonthlySettlementQueryModel);
 
-	OrderMonthlySettlement findByYearAndMonth(String yearAndMonth);
+	OrderMonthlySettlement findByYearAndMonth(@Param("yearAndMonth") String yearAndMonth, @Param("settlementType") String settlementType);
 
 }

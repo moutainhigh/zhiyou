@@ -191,4 +191,6 @@ public  interface Constants {
     List<String> visitContinueCheckList = asList(new String[]{"忙音", "无人接听", "需二访", "需三访", "关机", "挂断"});
     List<String> visitedSuccessList = asList(new String[]{"回访成功", "语言不通", "由其他方式回访", "本人检测无需回访", "国际号码"});
 
+    String SETTLEMENT_TYPE_1 = "settleUpProfit";
+    String SETTLEMENT_TYPE_2 = "settleUpMonthly";
 }
