@@ -33,7 +33,7 @@ public class SendPaySuccessMsg {
         String access_token =token.getAccessToken();
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token;
         WxTemplate temp = new WxTemplate();
-        temp.setUrl("http://192.168.1.222:8088/u/money?currencyType=0");
+        temp.setUrl("http://agentsystem.zhi-you.net/u/money?currencyType=0");
         temp.setTouser(openId);
         temp.setTopcolor("#000000");
         temp.setTemplate_id("7vodPLEmJFnI3SNmbItVTxVtkHutdXBBAHCKfzH4mwE");
