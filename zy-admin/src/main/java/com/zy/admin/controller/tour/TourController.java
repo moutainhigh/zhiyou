@@ -1,6 +1,5 @@
 package com.zy.admin.controller.tour;
 
-import com.zy.admin.controller.CaptchaController;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
@@ -143,7 +142,7 @@ public class TourController {
 
     }
 
-    @RequiresPermissions("tourSetting:view")
+    @RequiresPermissions("tour:edit")
     @RequestMapping(value = "/ajaxupdate", method = RequestMethod.POST)
     @ResponseBody
     public Result<?> ajaxupdate(Long id,AdminPrincipal principal) {
