@@ -30,7 +30,7 @@
 	<bean id="tokenComponent" class="com.zy.component.TokenComponent"/>
 
 	<task:scheduled-tasks>
-		<task:scheduled ref="tokenComponent" method="refresh" cron="0 0/10 * * * ?"/>
+		<task:scheduled ref="tokenComponent" method="refresh" cron="0 0 0/1 * * ?"/>
 	</task:scheduled-tasks>
 
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>

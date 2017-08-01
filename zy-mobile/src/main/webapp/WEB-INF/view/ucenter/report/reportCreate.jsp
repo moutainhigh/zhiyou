@@ -281,12 +281,12 @@
 
       <div class="list-group">
         <div class="list-title">检测信息，至少需要上传1张检测图片</div>
-        <div class="list-item">
+        <%--<div class="list-item">
           <label class="list-label" for="times">检测次数</label>
           <div class="list-text">
             <input type="number" name="times" id="times" class="form-input" value="${report.times}" placeholder="第几次检测">
           </div>
-        </div>
+        </div>--%>
         <div class="list-item">
           <label class="list-label" for="date">检测日期</label>
           <div class="list-text">

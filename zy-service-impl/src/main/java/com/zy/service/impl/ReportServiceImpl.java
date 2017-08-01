@@ -93,8 +93,12 @@ public class ReportServiceImpl implements ReportService {
 		reportQueryModel.setPhoneEQ(report.getPhone());
 		reportQueryModel.setTimesEQ(times);
 		List<Report> reports = reportMapper.findAll(reportQueryModel);
-		validate(reports, v -> v.isEmpty(), realname + "，第" + times + "次检测结果已经提交，请勿重复提交，谢谢！");
-		
+		/*validate(reports, v -> v.isEmpty(), realname + "，第" + times + "次检测结果已经提交，请勿重复提交，谢谢！");*/
+		//置入 检测次数
+		ReportQueryModel reportQueryModel1 = new ReportQueryModel();
+		reportQueryModel1.setPhoneEQ(report.getPhone());
+		long count = reportMapper.count(reportQueryModel1);
+		report.setTimes(new Long(count).intValue()+1);
 		reportMapper.insert(report);
 		return report;
 	}
