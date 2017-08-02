@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.SystemCodeMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.sys.SystemCode">
+		<id column="id" property="id" />
+		<result column="system_type" property="systemType" />
+		<result column="system_name" property="systemName" />
+		<result column="system_value" property="systemValue" />
+		<result column="system_desc" property="systemDesc" />
+		<result column="system_flag" property="systemFlag" />
+		<result column="create_date" property="createDate" />
+		<result column="create_by" property="createBy" />
+		<result column="update_date" property="updateDate" />
+		<result column="update_by" property="updateBy" />
+	</resultMap>
+
+	<sql id="baseColumn">id,system_type,system_name,system_value,system_desc,system_flag,create_date,create_by,update_date,update_by</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.sys.SystemCode" useGeneratedKeys="true" keyProperty="id">
+	  insert into `ts_system_code` (system_type,system_name,system_value,system_desc,system_flag,create_date,create_by,update_date,update_by)
+	  values (#{systemType},#{systemName},#{systemValue},#{systemDesc},#{systemFlag},#{createDate},#{createBy},#{updateDate},#{updateBy})
+	</insert>
+
+	<update id="update" parameterType="com.zy.entity.sys.SystemCode">
+		update `ts_system_code`
+		<set>
+			<if test="systemType != null">system_type = #{systemType},</if>
+			<if test="systemName != null">system_name = #{systemName},</if>
+			<if test="systemValue != null">system_value = #{systemValue},</if>
+			<if test="systemDesc != null">system_desc = #{systemDesc},</if>
+			<if test="systemFlag != null">system_flag = #{systemFlag},</if>
+			<if test="createDate != null">create_date = #{createDate},</if>
+			<if test="createBy != null">create_by = #{createBy},</if>
+			<if test="updateDate != null">update_date = #{updateDate},</if>
+			<if test="updateBy != null">update_by = #{updateBy},</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		<include refid="baseColumn"/>
+		from `ts_system_code`
+		where id = #{id}
+	</select>
+
+	<select id="findByTypeAndName" resultMap="baseResultMap">
+		select
+		*
+		from `ts_system_code`
+		where system_type = #{systemType} and system_name = #{systemName} and system_flag = 0
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.SystemCodeQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `ts_system_code`
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+					and id in
+					<foreach collection="idIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="idIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+
+			<if test="systemFlag != null">
+				and system_flag = #{systemFlag}
+			</if>
+
+			<if test="systemTypeLK != null">
+				<bind name="systemTypeLK" value="'%' + systemTypeLK + '%'"/> and system_type like #{systemTypeLK}
+			</if>
+
+			<if test="systemNameLK != null">
+				<bind name="systemNameLK" value="'%' + systemNameLK + '%'"/> and system_name like #{systemNameLK}
+			</if>
+
+			<if test="createBy != null">
+				and create_by = #{createBy}
+			</if>
+			<if test="createByIN != null">
+				<if test="createByIN.length != 0">
+					and create_by in
+					<foreach collection="createByIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="createByIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+
+			<if test="updateBy != null">
+				and update_by = #{updateBy}
+			</if>
+			<if test="updateByIN != null">
+				<if test="updateByIN.length != 0">
+					and update_by in
+					<foreach collection="updateByIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="updateByIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+
+			<if test="createTimeGTE != null">
+				and create_date &gt;= #{createTimeGTE}
+			</if>
+			<if test="createTimeLT != null">
+				and create_date &lt; #{createTimeLT}
+			</if>
+			<if test="updateTimeGTE != null">
+				and update_date &gt;= #{updateTimeGTE}
+			</if>
+			<if test="updateTimeLT != null">
+				and update_date &lt; #{updateTimeLT}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.SystemCodeQueryModel">
+		select count(*) from `ts_system_code`
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+					and id in
+					<foreach collection="idIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="idIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+
+			<if test="systemFlag != null">
+				and system_flag = #{systemFlag}
+			</if>
+
+			<if test="systemTypeLK != null">
+				<bind name="systemTypeLK" value="'%' + systemTypeLK + '%'"/> and system_type like #{systemTypeLK}
+			</if>
+
+			<if test="systemNameLK != null">
+				<bind name="systemNameLK" value="'%' + systemNameLK + '%'"/> and system_name like #{systemNameLK}
+			</if>
+
+			<if test="createBy != null">
+				and create_by = #{createBy}
+			</if>
+			<if test="createByIN != null">
+				<if test="createByIN.length != 0">
+					and create_by in
+					<foreach collection="createByIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="createByIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+
+			<if test="updateBy != null">
+				and update_by = #{updateBy}
+			</if>
+			<if test="updateByIN != null">
+				<if test="updateByIN.length != 0">
+					and update_by in
+					<foreach collection="updateByIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="updateByIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+
+			<if test="createTimeGTE != null">
+				and create_date &gt;= #{createTimeGTE}
+			</if>
+			<if test="createTimeLT != null">
+				and create_date &lt; #{createTimeLT}
+			</if>
+			<if test="updateTimeGTE != null">
+				and update_date &gt;= #{updateTimeGTE}
+			</if>
+			<if test="updateTimeLT != null">
+				and update_date &lt; #{updateTimeLT}
+			</if>
+		</where>
+	</select>
+
+</mapper>

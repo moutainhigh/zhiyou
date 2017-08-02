@@ -24,14 +24,19 @@
         },
         columns: [
           {
+            data: 'bossNickname',
+            title: '总经理昵称',
+            orderable: false
+          },
+          {
             data: 'bossName',
-            title: '总经理团第',
+            title: '总经理团队',
             orderable: false
           }
           <c:forEach items='${monthForHeaders}' var='month' varStatus='varStatus'>
           ,{
             data: '',
-            title: '${month}',
+            title: '${month} 个人收入',
             orderable: false,
             render: function (data, type, full) {
               if (full.profitMOMReportVoItems.length > 0) {
@@ -39,6 +44,57 @@
                   return full.profitMOMReportVoItems[0].profit;
                 }
                 return full.profitMOMReportVoItems[1].profit
+              } else {
+                return '0.00';
+              }
+            }
+          }
+          </c:forEach>
+          <c:forEach items='${monthForHeaders}' var='month' varStatus='varStatus'>
+          ,{
+            data: '',
+            title: '${month} 团队收入',
+            orderable: false,
+            render: function (data, type, full) {
+              if (full.profitMOMReportVoItems.length > 0) {
+                if ('${month}' == full.profitMOMReportVoItems[0].dateLabel) {
+                  return full.profitMOMReportVoItems[0].teamProfit;
+                }
+                return full.profitMOMReportVoItems[1].teamProfit
+              } else {
+                return '0.00';
+              }
+            }
+          }
+          </c:forEach>
+          <c:forEach items='${monthForHeaders}' var='month' varStatus='varStatus'>
+          ,{
+            data: '',
+            title: '${month} 人均收入',
+            orderable: false,
+            render: function (data, type, full) {
+              if (full.profitMOMReportVoItems.length > 0) {
+                if ('${month}' == full.profitMOMReportVoItems[0].dateLabel) {
+                  return full.profitMOMReportVoItems[0].avgProfit;
+                }
+                return full.profitMOMReportVoItems[1].avgProfit
+              } else {
+                return '0.00';
+              }
+            }
+          }
+          </c:forEach>
+          <c:forEach items='${monthForHeaders}' var='month' varStatus='varStatus'>
+          ,{
+            data: '',
+            title: '${month} 个人收入团队占比',
+            orderable: false,
+            render: function (data, type, full) {
+              if (full.profitMOMReportVoItems.length > 0) {
+                if ('${month}' == full.profitMOMReportVoItems[0].dateLabel) {
+                  return full.profitMOMReportVoItems[0].inTeamProfitRate;
+                }
+                return full.profitMOMReportVoItems[1].inTeamProfitRate
               } else {
                 return '0.00';
               }
@@ -63,7 +119,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/report/profitMOM">收入环比</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/report/profitMOM">总经理个人收入环比</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -74,7 +130,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-bar-chart"></i><span>收入环比</span>
+          <i class="icon-bar-chart"></i><span>总经理个人收入环比</span>
         </div>
         <div class="actions">
           <div class="btn-group">

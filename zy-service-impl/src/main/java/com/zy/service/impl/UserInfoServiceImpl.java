@@ -16,6 +16,7 @@ import com.zy.model.Constants;
 import com.zy.model.query.UserInfoQueryModel;
 import com.zy.service.UserInfoService;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -55,6 +56,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public List<UserInfo> findByIdCardNumber(@NotBlank String idCardNumber) {
+        return userInfoMapper.findByIdCardNumber(idCardNumber);
+    }
+
+    @Override
     public Page<UserInfo> findPage(@NotNull UserInfoQueryModel userInfoQueryModel) {
         if (userInfoQueryModel.getPageNumber() == null)
             userInfoQueryModel.setPageNumber(0);
@@ -62,6 +68,22 @@ public class UserInfoServiceImpl implements UserInfoService {
             userInfoQueryModel.setPageSize(20);
         long total = userInfoMapper.count(userInfoQueryModel);
         List<UserInfo> data = userInfoMapper.findAll(userInfoQueryModel);
+        Page<UserInfo> page = new Page<>();
+        page.setPageNumber(userInfoQueryModel.getPageNumber());
+        page.setPageSize(userInfoQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
+    }
+
+    @Override
+    public Page<UserInfo> findPageAdmin(@NotNull UserInfoQueryModel userInfoQueryModel) {
+        if (userInfoQueryModel.getPageNumber() == null)
+            userInfoQueryModel.setPageNumber(0);
+        if (userInfoQueryModel.getPageSize() == null)
+            userInfoQueryModel.setPageSize(20);
+        long total = userInfoMapper.countAdmin(userInfoQueryModel);
+        List<UserInfo> data = userInfoMapper.findAllAdmin(userInfoQueryModel);
         Page<UserInfo> page = new Page<>();
         page.setPageNumber(userInfoQueryModel.getPageNumber());
         page.setPageSize(userInfoQueryModel.getPageSize());
@@ -122,13 +144,14 @@ public class UserInfoServiceImpl implements UserInfoService {
         persistence.setAreaId(areaId);
         persistence.setJobId(jobId);
         persistence.setTagIds(tagIds);
+        persistence.setAge(userInfo.getAge());
         
         persistence.setGender(userInfo.getGender());
         persistence.setBirthday(userInfo.getBirthday());
         persistence.setHometownAreaId(userInfo.getHometownAreaId());
         persistence.setConsumptionLevel(userInfo.getConsumptionLevel());
 
-
+        persistence.setRealFlag(userInfo.getRealFlag());
         persistence.setRealname(userInfo.getRealname());
         persistence.setIdCardNumber(userInfo.getIdCardNumber());
         persistence.setImage1(userInfo.getImage1());
@@ -201,6 +224,16 @@ public class UserInfoServiceImpl implements UserInfoService {
             producer.send(Constants.TOPIC_USER_INFO_REJECTED, userInfo.getId());
         }
         userInfoMapper.update(userInfo);
+    }
+
+    /**
+     * 查询  客服信息
+     * @param userId
+     * @return
+     */
+    @Override
+    public UserInfo findByUserIdandFlage(Long userId) {
+        return userInfoMapper.findByUserIdandFlage(userId);
     }
 
     private void checkUser(@NotNull Long userId) {

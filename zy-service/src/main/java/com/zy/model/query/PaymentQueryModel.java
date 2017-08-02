@@ -27,6 +27,8 @@ public class PaymentQueryModel implements Serializable {
 
 	private Long userIdEQ;
 
+	private String titleEQ;
+
 	private PayType payTypeEQ;
 
 	private PayType[] payTypeIN;

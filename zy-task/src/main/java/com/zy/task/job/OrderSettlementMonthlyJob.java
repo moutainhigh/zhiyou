@@ -26,20 +26,38 @@ public class OrderSettlementMonthlyJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("begin...");
-        settleUp(StringUtils.left(LocalDate.now().toString(), 7));
+        settleUp(StringUtils.left(LocalDate.now().minusMonths(1).toString(), 7));
+        try {TimeUnit.MINUTES.sleep(5);} catch (InterruptedException e1) {}
+        settleUpProfit(StringUtils.left(LocalDate.now().minusMonths(1).toString(), 7));
         logger.info("end...");
     }
 
     private void settleUp(String yearAndMonth) {
         try {
             this.orderService.settleUpMonthly(yearAndMonth);
-            logger.info("月结算 {} 成功", yearAndMonth);
+            logger.info("月结算期权等 {} 成功", yearAndMonth);
         } catch (ConcurrentException e) {
             try {TimeUnit.MINUTES.sleep(1);} catch (InterruptedException e1) {}
             settleUp(yearAndMonth);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
+    }
+
+    private void settleUpProfit(String yearAndMonth) {
+        try {
+            this.orderService.settleUpProfit(yearAndMonth);
+            logger.info("月结算推荐奖业绩奖等 {} 成功", yearAndMonth);
+        } catch (ConcurrentException e) {
+            try {TimeUnit.MINUTES.sleep(1);} catch (InterruptedException e1) {}
+            settleUp(yearAndMonth);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(LocalDate.now().minusMonths(1));
     }
 
 }

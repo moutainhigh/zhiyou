@@ -94,6 +94,7 @@
   <script src="${ctx}/plugin/ztree/js/jquery.ztree.core.min.js"></script>
   <script src="${ctx}/js/area.js"></script>
   <script src="${ctx}/js/common.js"></script>
+  <script src="${stc}/assets/scripts/datatable1.js"></script>
   <%@ include file="/WEB-INF/view/include/form.jsp" %>
 
   <!-- END PAGE LEVEL SCRIPTS -->
@@ -191,7 +192,7 @@
           <!-- END RESPONSIVE QUICK SEARCH FORM -->
         </li>
 
-        <shiro:hasAnyPermissions name="product:view,order:view,order:deliver">
+        <shiro:hasAnyPermissions name="product:view,order:view,order:deliver,orderFillUser:view,productReplacement:view">
           <li>
             <a href="javascript:;">
               <i class="icon-basket"></i>
@@ -232,7 +233,7 @@
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="activity:view,report:view">
+        <shiro:hasAnyPermissions name="activity:view,report:view,activityReport:view,activityTicket:view,activityApply:view,policy:view,policyCode:view,reportVisitedLog:view,lesson:view,lessonUser:view">
           <li>
             <a href="javascript:;">
               <i class="icon-globe"></i>
@@ -289,6 +290,16 @@
               <shiro:hasPermission name="productReplacement:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/productReplacement"><i class="icon-vector"></i> 换货管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="lesson:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/lesson"><i class="icon-wallet"></i> 课程管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="lessonUser:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/lesson/user"><i class="icon-doc"></i> 用户课程管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>
@@ -413,8 +424,9 @@
             </ul>
           </li>
         </shiro:hasAnyPermissions>
-        
-        <shiro:hasAnyPermissions name="userTreeReport:view,teamReport:view,userUpgradeReport:view,orderReport:view,financeReport:view,orderQuantity:view">
+
+        <shiro:hasAnyPermissions name="userTreeReport:view,v4TreeReport:view,orderReport:view,teamReport:view,userUpgradeReport:view,financeReport:view,orderQuantity:view
+                                      ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view,activitySummaryReport:view">
           <li>
             <a href="javascript:;">
               <i class="icon-grid"></i>
@@ -432,9 +444,9 @@
                 <li>
                   <a href="javascript:;" data-href="${ctx}/report/v4Tree"><i class="icon-bar-chart"></i> 特级树<span class="badge badge-danger"></span></a>
                 </li>
-<%--                <li>
-                  <a href="javascript:;" data-href="${ctx}/report/v4Order"><i class="icon-bar-chart"></i> 特级报表<span class="badge badge-danger"></span></a>
-                </li>--%>
+                <%--                <li>
+                                  <a href="javascript:;" data-href="${ctx}/report/v4Order"><i class="icon-bar-chart"></i> 特级报表<span class="badge badge-danger"></span></a>
+                                </li>--%>
               </shiro:hasPermission>
               <shiro:hasPermission name="teamReport:view">
                 <li>
@@ -468,12 +480,12 @@
               </shiro:hasPermission>
               <shiro:hasPermission name="cityAgent:view">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/report/cityAgent"><i class="icon-bar-chart"></i> 服务商活跃数排行<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/report/cityAgent"><i class="icon-bar-chart"></i> 服务商活跃度排行—省份<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="profitMOM:view">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/report/profitMOM"><i class="icon-bar-chart"></i> 收入环比<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/report/profitMOM"><i class="icon-bar-chart"></i> 总经理个人收入环比<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
               <shiro:hasPermission name="activitySummaryReport:view">
@@ -481,11 +493,26 @@
                   <a href="javascript:;" data-href="${ctx}/report/activitySummary"><i class="icon-bar-chart"></i> 活动汇总报表<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="v4Activity:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/v4Activity"><i class="icon-bar-chart"></i> 特级服务商团队活跃度报表-总经理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="teamOrderMonth:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/teamOrderMonth"><i class="icon-bar-chart"></i> 团队月销量及环比-总经理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="teamOrderDaily:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/teamOrderDaily"><i class="icon-bar-chart"></i> 团队日销量及环比-总经理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
             </ul>
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="admin:*,role:*,message:view,setting:*,area:*,tag:view,job:view,bank:view">
+        <shiro:hasAnyPermissions name="admin:*,role:*,message:view,setting:*,area:*,tag:view,job:view,bank:view,systemCode:view,system:view">
           <li>
             <a href="javascript:;">
               <i class="icon-settings"></i>
@@ -504,11 +531,11 @@
                   <a href="javascript:;" data-href="${ctx}/role"><i class="icon-key"></i> 角色管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
-              <%--<shiro:hasPermission name="message:view">--%>
+                <%--<shiro:hasPermission name="message:view">--%>
                 <%--<li>--%>
-                  <%--<a href="javascript:;" data-href="${ctx}/message"><i class="icon-bulb"></i> 消息管理<span class="badge badge-danger"></span></a>--%>
+                <%--<a href="javascript:;" data-href="${ctx}/message"><i class="icon-bulb"></i> 消息管理<span class="badge badge-danger"></span></a>--%>
                 <%--</li>--%>
-              <%--</shiro:hasPermission>--%>
+                <%--</shiro:hasPermission>--%>
               <shiro:hasPermission name="setting:*">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/setting/edit"><i class="icon-speedometer"></i> 系统设置<span class="badge badge-danger"></span></a>
@@ -534,9 +561,48 @@
                   <a href="javascript:;" data-href="${ctx}/bank"><i class="icon-home"></i> 银行信息<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="systemCode:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/systemCode"><i class="icon-home"></i> 系统默认值管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
               <li>
                 <a href="javascript:;" data-href="${ctx}/dev"><i class="icon-briefcase"></i> 开发者工具<span class="badge badge-danger"></span></a>
               </li>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
+
+        <shiro:hasAnyPermissions name="tour:view,tourUser:view,tourSetting:view,tourJoinUser:view">
+          <li>
+            <a href="javascript:;">
+              <i class="icon-globe"></i>
+              <span class="title">旅游管理</span>
+              <span class="selected"></span>
+              <span class="arrow "></span>
+            </a>
+            <ul class="sub-menu">
+
+              <shiro:hasPermission name="tour:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/tour"><i class="icon-docs"></i> 旅游信息管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="tourSetting:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/tour/blackOrWhite"><i class="icon-docs"></i> 黑白名单管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="tourUser:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/tourUser"><i class="icon-docs"></i> 游客信息管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="tourJoinUser:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/tourJoinUser"><i class="icon-docs"></i> 参游旅客信息管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
             </ul>
           </li>
         </shiro:hasAnyPermissions>

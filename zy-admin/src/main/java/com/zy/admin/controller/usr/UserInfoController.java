@@ -66,7 +66,7 @@ public class UserInfoController {
 	@ResponseBody
 	public Grid<UserInfoAdminVo> list(UserInfoQueryModel userInfoQueryModel, String userPhoneEQ, String userNicknameLK
 			, Long provinceIdEQ, Long cityIdEQ) {
-		
+		userInfoQueryModel.setRealFlag(1);
 		if (StringUtils.isNotBlank(userPhoneEQ) || StringUtils.isNotBlank(userNicknameLK)) {
         	UserQueryModel userQueryModel = new UserQueryModel();
         	userQueryModel.setPhoneEQ(userPhoneEQ);
@@ -102,7 +102,7 @@ public class UserInfoController {
 			}
         }
 		
-		Page<UserInfo> page = userInfoService.findPage(userInfoQueryModel);
+		Page<UserInfo> page = userInfoService.findPageAdmin(userInfoQueryModel);
 		Page<UserInfoAdminVo> voPage = PageBuilder.copyAndConvert(page, userInfoComponent::buildAdminVo);
 		return new Grid<>(voPage);
 	}

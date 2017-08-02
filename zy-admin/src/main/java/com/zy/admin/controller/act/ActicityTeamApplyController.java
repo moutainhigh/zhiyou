@@ -6,10 +6,7 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.ActivityTeamApplyComponent;
 import com.zy.component.ActivityTicketComponent;
-import com.zy.entity.act.Activity;
-import com.zy.entity.act.ActivityApply;
-import com.zy.entity.act.ActivityTeamApply;
-import com.zy.entity.act.ActivityTicket;
+import com.zy.entity.act.*;
 import com.zy.entity.usr.User;
 import com.zy.model.query.ActivityQueryModel;
 import com.zy.model.query.ActivityTeamApplyQueryModel;
@@ -23,10 +20,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -58,6 +52,9 @@ public class ActicityTeamApplyController {
 
 	@Autowired
 	private ActivityApplyService activityApplyService;
+
+	@Autowired
+	private ActivitySignInService activitySignInService;
 
 
 	@RequiresPermissions("activityApply:view")
@@ -163,8 +160,8 @@ public class ActicityTeamApplyController {
      * @return
      */
 	@RequiresPermissions("activityTicket:edit")
-	@RequestMapping("/ticketReset/{id}")
-	public String freeze(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "/ticketReset" , method = RequestMethod.POST)
+	public String freeze(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 		validate(id, NOT_NULL, "activityTicket id is null");
 		ActivityTicket activityTicket = activityTicketService.findOne(id);
 		validate(activityTicket, NOT_NULL, "activityTicket id " + id + " not found");
@@ -176,6 +173,11 @@ public class ActicityTeamApplyController {
 
 		Long userId = activityTicket.getUserId();
 		validate(userId, NOT_NULL, "user id is null");
+		ActivitySignIn signIn = activitySignInService.findByActivityIdAndUserId(activityTeamApply.getActivityId(), userId);
+		if (signIn != null){
+			redirectAttributes.addFlashAttribute(ResultBuilder.error("用票人已签到，二维码重置失败"));
+			return "redirect:/activityTeamApply/ticket";
+		}else {
 			try {
 				ActivityApply activityApply = activityApplyService.findByActivityIdAndUserId(activityTeamApply.getActivityId(), userId);
 				Long activityApplyId = activityApply.getId();
@@ -191,6 +193,7 @@ public class ActicityTeamApplyController {
 				redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
 			}
 			return "redirect:/activityTeamApply/ticket";
+		}
 	}
 
 }

@@ -6,13 +6,12 @@
 		<id column="id" property="id" />
 		<result column="year_and_month" property="yearAndMonth" />
 		<result column="settled_up_time" property="settledUpTime" />
+		<result column="settlement_type" property="settlementType" />
 	</resultMap>
 
-	<sql id="baseColumn">id,year_and_month,settled_up_time</sql>
-
 	<insert id="insert" parameterType="com.zy.entity.mal.OrderMonthlySettlement" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_order_monthly_settlement` (year_and_month,settled_up_time)
-	  values (#{yearAndMonth},#{settledUpTime})
+	  insert into `mal_order_monthly_settlement` (year_and_month,settled_up_time,settlement_type)
+	  values (#{yearAndMonth},#{settledUpTime},#{settlementType})
 	</insert>
 
 	<delete id="delete">
@@ -24,6 +23,7 @@
 		<set>
 			year_and_month = #{yearAndMonth},
 			settled_up_time = #{settledUpTime},
+			settlement_type = #{settlementType},
 		</set>
 		where id = #{id}
 	</update>
@@ -35,6 +35,7 @@
 				<choose>
 					<when test="field == 'yearAndMonth'">year_and_month = #{orderMonthlySettlement.yearAndMonth},</when>
 					<when test="field == 'settledUpTime'">settled_up_time = #{orderMonthlySettlement.settledUpTime},</when>
+					<when test="field == 'settlementType'">settlement_type = #{orderMonthlySettlement.settlementType},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -43,16 +44,19 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		<include refid="baseColumn"/>
+		id,year_and_month,settled_up_time,settlement_type
 		from `mal_order_monthly_settlement`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderMonthlySettlementQueryModel">
 		select
-		<include refid="baseColumn"/>
+		id,year_and_month,settled_up_time,settlement_type
 		from `mal_order_monthly_settlement`
 		<where>
+			<if test="settlementTypeEQ != null">
+				and settlement_type = #{settlementTypeEQ}
+			</if>
 			<if test="settledUpTimeGTE != null">
 				and settled_up_time &gt;= #{settledUpTimeGTE}
 			</if>
@@ -79,6 +83,9 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.OrderMonthlySettlementQueryModel">
 		select count(*) from `mal_order_monthly_settlement`
 		<where>
+			<if test="settlementTypeEQ != null">
+				and settlement_type = #{settlementTypeEQ}
+			</if>
 			<if test="settledUpTimeGTE != null">
 				and settled_up_time &gt;= #{settledUpTimeGTE}
 			</if>
@@ -91,11 +98,13 @@
 		</where>
 	</select>
 
-	<select id="findByYearAndMonth" resultMap="baseResultMap" parameterType="string">
+	<sql id="baseColumn">id,year_and_month,settled_up_time</sql>
+
+	<select id="findByYearAndMonth" resultMap="baseResultMap">
 		select
 		id,year_and_month,settled_up_time
 		from `mal_order_monthly_settlement`
-		where year_and_month = #{yearAndMonth}
+		where year_and_month = #{yearAndMonth} and settlement_type = #{settlementType}
 	</select>
 
 </mapper>

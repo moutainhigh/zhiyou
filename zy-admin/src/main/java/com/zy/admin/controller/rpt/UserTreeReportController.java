@@ -73,7 +73,7 @@ public class UserTreeReportController {
 		Map<Long, OrderItem> orderItemMap = localCacheComponent.getOrderItemMap();
 
 
-		List<User> children = TreeHelper.sortBreadth(users, userId.toString(), v -> {
+		List<User> children = TreeHelper.sortBreadth2(users, userId.toString(), v -> {
 			TreeNode treeNode = new TreeNode();
 			treeNode.setId(v.getId().toString());
 			treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());

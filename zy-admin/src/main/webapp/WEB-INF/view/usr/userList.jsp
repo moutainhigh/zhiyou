@@ -1,6 +1,41 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 <!-- BEGIN JAVASCRIPTS -->
+<%--<script id="modifyLastloginTimeTmpl" type="text/x-handlebars-template">--%>
+    <%--<form id="modifylastloginTimeForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">--%>
+        <%--<input type="hidden" name="userId" value="{{id}}"/>--%>
+        <%--<div class="form-body">--%>
+            <%--<div class="alert alert-danger display-hide">--%>
+                <%--<i class="fa fa-exclamation-circle"></i>--%>
+                <%--<button class="close" data-close="alert"></button>--%>
+                <%--<span class="form-errors">您填写的信息有误，请检查。</span>--%>
+            <%--</div>--%>
+            <%--<div class="form-group">--%>
+                <%--<label class="control-label col-md-2">昵称<span class="required"> * </span></label>--%>
+                <%--<div class="col-md-5">--%>
+                    <%--<input type="text" name="nickname" readonly="true" value="{{nickname}}" class="form-control" placeholder="请输入昵称"/>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+            <%--<div class="form-group">--%>
+                <%--<label class="control-label col-md-2">最后一次登录时间<span class="required"> * </span></label>--%>
+                <%--<div class="col-md-5">--%>
+                    <%--<input class="form-control" type="text" id="lastloginTime"--%>
+                        <%--&lt;%&ndash;<input type="text" name="lastloginTime" readonly="true" value="{{lastloginTime}}" class="form-control" placeholder="请输入昵称"/>&ndash;%&gt;--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+        <%--<div class="form-actions fluid">--%>
+            <%--<div class="col-md-offset-3 col-md-9">--%>
+                <%--<button id="modifyLastloginTimeSubmit{{id}}" type="button" class="btn green">--%>
+                    <%--<i class="fa fa-save"></i> 保存--%>
+                <%--</button>--%>
+                <%--<button id="modifyLastloginTimeCancel{{id}}" class="btn default" data-href="">--%>
+                    <%--<i class="fa fa-chevron-left"></i> 返回--%>
+                <%--</button>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</form>--%>
+<%--</script>--%>
 <script id="modifyImpl" type="text/x-handlebars-template">
   <form id="modifyForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
     <input type="hidden" name="userId" value="{{id}}"/>
@@ -108,6 +143,7 @@
 
   $(function () {
 
+
 	  $('#dataTable').on('click', '.user-detail', function() {
 		  var id = $(this).data('id');
 		  $.ajax({
@@ -176,6 +212,57 @@
 		  })
 
 	  });
+
+      <%--var modifyLastloginTimeTemplate = Handlebars.compile($('#modifyLastloginTimeTmpl').html());--%>
+      <%--$('#dataTable').on('click', '.modifyLastloginTime-info', function () {--%>
+          <%--var id = $(this).data('id');--%>
+          <%--var nickname = $(this).data('nickname');--%>
+          <%--var lastloginTime = $(this).data('lastloginTime');--%>
+          <%--alert(lastloginTime);--%>
+          <%--var data = {--%>
+              <%--id: id,--%>
+              <%--nickname: nickname,--%>
+              <%--lastloginTime: lastloginTime--%>
+          <%--};--%>
+          <%--var html = modifyLastloginTimeTemplate(data);--%>
+          <%--var index = layer.open({--%>
+              <%--type: 1,--%>
+              <%--//skin: 'layui-layer-rim', //加上边框--%>
+              <%--area: ['600px', '360px'], //宽高--%>
+              <%--content: html--%>
+          <%--});--%>
+
+          <%--var $form = $('#modifylastloginTimeForm' + id);--%>
+          <%--$form.validate({--%>
+              <%--rules: {--%>
+                  <%--'lastloginTime': {--%>
+                      <%--required: true--%>
+                  <%--}--%>
+              <%--},--%>
+              <%--messages: {}--%>
+          <%--});--%>
+
+          <%--$('#modifyLastloginTimeSubmit' + id).bind('click', function () {--%>
+              <%--var result = $form.validate().form();--%>
+              <%--if (result) {--%>
+                  <%--var url = '${ctx}/user/editLastloginTime';--%>
+                  <%--$.post(url, $form.serialize(), function (data) {--%>
+                      <%--if (data.code === 0) {--%>
+                          <%--layer.alert('操作成功');--%>
+                          <%--layer.close(index);--%>
+                          <%--grid.getDataTable().ajax.reload(null, false);--%>
+                      <%--} else {--%>
+                          <%--layer.alert('操作失败,原因' + data.message);--%>
+                      <%--}--%>
+                  <%--});--%>
+              <%--}--%>
+          <%--})--%>
+
+          <%--$('#modifyLastloginTimeCancel' + id).bind('click', function () {--%>
+              <%--layer.close(index);--%>
+          <%--})--%>
+
+      <%--});--%>
 
 	  var modifyPasswordTemplate = Handlebars.compile($('#modifyPasswordImpl').html());
 	  $('#dataTable').on('click', '.user-modify-password', function () {
@@ -394,18 +481,27 @@
             data: 'userType',
             title: '用户类型'
           },
-	        {
-		        data: '',
-		        title: '管理层职位',
-		        orderable: false,
+          {
+            data: '',
+            title: '管理层职位',
+            orderable: false,
             render: function(data, type, full) {
-		          var html = '';
-              html += full.isDirector? '<p>懂事</p>' : '';
-              html += full.isShareholder? '<p>股东</p>' : '';
-              html += full.isBoss? '<p>总经理</p>' : '';
-		        	return html;
+              var html = '';
+              if (full.isDirector) {
+                html += '<p>董事</p>';
+              }
+              if (full.isHonorDirector) {
+                html += '<p>荣誉董事</p>';
+              }
+              if (full.isShareholder) {
+                html += '<p>股东</p>';
+              }
+              if (full.isBoss) {
+                html += '<p>总经理</p>'
+              }
+              return html;
             }
-	        },
+          },
           {
             data: '',
             title: '总经理信息',
@@ -423,8 +519,13 @@
             orderable: false
           },
           {
+            data: 'lastloginTime',
+            title: '最后一次登录时间',
+           // orderable: false
+          },
+          {
             data: '',
-            title: '上级',
+            title: '推荐人',
             orderable: false,
             render: function (data, type, full) {
               return formatUser(full.parent);
@@ -479,7 +580,10 @@
 	              if(full.userRank == 'V4') {
                 <shiro:hasPermission name="user:setDirector">
                   if(!full.isDirector) {
-	                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setDirector?id=' + full.id + '" data-confirm="您确定要升级[' + full.nickname + ']为董事？"><i class="fa fa-smile-o"></i> 升级董事 </a>';
+	                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setDirector?id=' + full.id + '" data-confirm="您确定要升级[' + full.nickname + ']为董事？"><i class="fa fa-smile-o"></i> 成为董事 </a>';
+                  }
+                  if (!full.isHonorDirector) {
+                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/isHonorDirector?id=' + full.id + '" data-confirm="您确定升级[' + full.nickname + ']为荣誉董事？"><i class="fa fa-smile-o"></i> 成为荣誉董事 </a>';
                   }
                 </shiro:hasPermission>
                 <shiro:hasPermission name="user:setShareholder">
@@ -491,6 +595,9 @@
 	              <shiro:hasPermission name="user:setShareholder">
 
 	              </shiro:hasPermission>
+                  <shiro:hasPermission name="user:edit">
+                  optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="editLastLoginTimeAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 重置登录时间 </a>';
+                  </shiro:hasPermission>
               }
               return optionHtml;
             }
@@ -536,6 +643,19 @@
   }
   function closeBtn() {
     $addVipDialog.close();
+  }
+
+  function editLastLoginTimeAjax(id) {
+      layer.confirm('您确认要重置该用户的登录时间吗?', {
+          btn: ['重置','取消'] //按钮
+      }, function(){
+          $.post('${ctx}/user/editLastLoginTime/', {id: id}, function (result) {
+              grid.getDataTable().ajax.reload(null, false);
+          });
+          layer.msg('重置成功！');
+      }, function(){
+
+      });
   }
 </script>
 <script type="text/javascript">
@@ -649,7 +769,7 @@
               </div>
               
               <div class="form-group">
-                <select name="userRankEQ" class="form-control">
+                <select name="isFrozenEQ" class="form-control">
                   <option value="">-- 是否冻结 --</option>
                   <option value="1">是</option>
                   <option value="0">否</option>

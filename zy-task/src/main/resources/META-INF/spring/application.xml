@@ -87,7 +87,7 @@
 				</bean>
 
 				<!--订单月结算job-->
-				<bean id="orderSettlementMonthlyJob"
+				<bean id="orderSettlementMonthlyJobTrigger"
 				      class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
 						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
@@ -96,7 +96,7 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0 4 4 * ?</value>
+						<value>1 0 0 1 * ?</value>
 					</property>
 				</bean>
 

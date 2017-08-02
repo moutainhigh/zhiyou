@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import com.zy.entity.usr.User;
 import com.zy.model.query.UserQueryModel;
 
+import java.util.Map;
+import com.zy.model.dto.UserDto;
+import com.zy.model.dto.UserTeamCountDto;
 
 public interface UserMapper {
 
@@ -29,5 +32,21 @@ public interface UserMapper {
 	User findByOpenId(String openId);
 
 	User findByCode(String code);
+
+	List<UserTeamCountDto> countByUserId(long userId);
+
+	long countByActive(UserQueryModel userQueryModel);
+
+	List<User> findByNotActive(UserQueryModel userQueryModel);
+
+	long countByNotActive(UserQueryModel userQueryModel);
+
+	List<User> findSupAll(Map<String, Object> dataMap);
+
+	List<User> findAddpeople(UserQueryModel userQueryModel);
+
+	List<UserDto> findUserAll(UserQueryModel userQueryModel);
+
+	long countUserAll(UserQueryModel userQueryModel);
 
 }

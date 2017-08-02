@@ -26,6 +26,13 @@
 		<task:scheduled ref="localCacheComponent" method="refresh" cron="0 0/5 * * * ?"/>
 	</task:scheduled-tasks>
 
+	<!--获取微信凭证-->
+	<bean id="tokenComponent" class="com.zy.component.TokenComponent"/>
+
+	<task:scheduled-tasks>
+		<task:scheduled ref="tokenComponent" method="refresh" cron="0 0 0/1 * * ?"/>
+	</task:scheduled-tasks>
+
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 
 	<bean id="collectionToStringConverter" class="com.zy.common.extend.CollectionToStringConverter"/>

@@ -29,7 +29,7 @@ public class UserReportVo implements Serializable {
 	private Date registerTime;
 	@Field(label = "注册ip")
 	private String registerIp;
-	@Field(label = "上级id")
+	@Field(label = "推荐人id")
 	private Long parentId;
 	@Field(label = "是否子系统")
 	private Boolean isRoot;

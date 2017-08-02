@@ -32,7 +32,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="fa fa-user"></i><span> 修改上级 </span>
+          <i class="fa fa-user"></i><span> 修改推荐人 </span>
         </div>
       </div>
       <div class="portlet-body form">
@@ -48,7 +48,7 @@
             </div>
             
             <div class="form-group">
-              <label class="control-label col-md-3">原上级昵称:
+              <label class="control-label col-md-3">原推荐人昵称:
               </label>
               <div class="col-md-4">
                   <div class="form-control-static">${user.parent.nickname}</div>
@@ -56,7 +56,7 @@
             </div>
             
             <div class="form-group">
-              <label class="control-label col-md-3">原上级手机号:
+              <label class="control-label col-md-3">原推荐人手机号:
               </label>
               <div class="col-md-4">
                 <div class="input-icon right">
@@ -66,7 +66,7 @@
             </div>
             
             <div class="form-group">
-              <label class="control-label col-md-3">新上级手机号:
+              <label class="control-label col-md-3">新推荐人手机号:
               </label>
               <div class="col-md-4">
                 <input type="text" class="form-control" name="parentPhone" value="" />

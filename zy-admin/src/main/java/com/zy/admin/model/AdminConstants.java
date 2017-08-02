@@ -23,7 +23,7 @@ public class AdminConstants {
 			sub.put("user:edit", "用户信息(编辑)");
 			sub.put("user:addVip", "用户信息(加VIP)");
 			sub.put("user:freeze", "用户信息(冻结账号)");
-			sub.put("user:modifyParent", "用户信息(修改上级)");
+			sub.put("user:modifyParent", "用户信息(修改推荐人)");
 			sub.put("user:setDirector", "用户信息(升级董事)");
 			sub.put("user:setShareholder", "用户信息(升级股东)");
 			sub.put("user:setBoss", "用户信息(设置总经理)");
@@ -75,6 +75,10 @@ public class AdminConstants {
 			sub.put("report:visitUser", "检测报告(回访客服分配)");
 			sub.put("reportVisitedLog:view", "回访日志(查看)");
 			sub.put("reportVisitedLog:edit", "回访日志(编辑)");
+			sub.put("lesson:view", "课程管理");
+			sub.put("lesson:edit", "课程编辑");
+			sub.put("lessonUser:view", "用户课程管理");
+			sub.put("lessonUser:edit", "用户课程编辑");
 			SETTING_PERMISSION_MAP.put("活动管理", sub);
 		}
 		{
@@ -129,6 +133,9 @@ public class AdminConstants {
 			sub.put("orderQuantity:export", "订单核算报表(导出)");
 			sub.put("cityAgent:view", "服务商活跃数量排行");
 			sub.put("profitMOM:view", "收入环比");
+			sub.put("v4Activity:view", "特级服务商团队活跃度报表-总经理");
+			sub.put("teamOrderMonth:view", "团队月销量及环比-总经理");
+			sub.put("teamOrderDaily:view", "团队日销量及环比-总经理");
 			sub.put("activitySummaryReport:view", "活动汇总报表");
 			sub.put("activitySummaryReport:export", "活动汇总报表导出");
 			/*sub.put("financeReport:export", "财务导出");*/
@@ -150,7 +157,29 @@ public class AdminConstants {
 			sub.put("tag:delete", "标签管理(删除)");
 			sub.put("job:view", "职位管理(查看)");
 			sub.put("job:edit", "职位管理(编辑)");
+			sub.put("systemCode:view", "系统默认值管理(查看)");
+			sub.put("system:view", "系统首页默认报表(查看)");
+			sub.put("systemCode:edit", "系统默认值管理(编辑)");
 			SETTING_PERMISSION_MAP.put("系统管理", sub);
+		}
+		{
+			sub = new LinkedHashMap<>();
+			sub.put("tour:view", "旅游管理(查看)");
+			sub.put("tour:edit", "旅游管理(编辑)");
+			sub.put("tourUser:export", "游客信息管理(导出)");
+			sub.put("tourUser:view", "游客信息管理(查看)");
+			sub.put("tourUser:visitUser", "游客信息管理(回访客服分配)");
+			sub.put("tourUser:edit", "游客信息管理(编辑)");
+			sub.put("tourJoinUser:view", "参与游客信息管理(查看)");
+			sub.put("tourJoinUser:edit", "参与游客信息管理(编辑)");
+			sub.put("tourJoinUser:export", "参游游客信息管理(导出)");
+			sub.put("tourUser:visit", "参游游客信息(查看)");
+			sub.put("tourUser:visitEdit", "参游游客信息(审核)");
+
+
+			sub.put("tourSetting:view", "黑/白名单管理(查看)");
+			sub.put("tourSetting:edit", "黑/白名单管理(编辑)");
+			SETTING_PERMISSION_MAP.put("旅游管理", sub);
 		}
 	}
 }

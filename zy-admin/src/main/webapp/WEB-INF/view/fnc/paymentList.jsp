@@ -61,7 +61,25 @@
   </form>
 </script>
 <script>
+
+  function sum() {
+    $.post("${ctx}/payment/sum", $('#searchForm').serialize(), function(result) {
+      if(result.code == 0) {
+        var data = result.data;
+        $('#sumAmount').text(data + '元');
+      }
+    });
+  }
+
   $(function () {
+
+    sum();
+
+    $('.filter-submit').click(function(){
+      sum();
+    })
+
+
     var grid = new Datatable();
     var template = Handlebars.compile($('#confirmTmpl').html());
 
@@ -280,6 +298,14 @@
           <i class="icon-doc"></i><span>支付单管理 </span>
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="note note-danger">
+            <h4 class="block">支付总额</h4>
+            <p id="sumAmount">0.00 元</p>
+          </div>
+        </div>
+      </div>
       <div class="portlet-body clearfix">
         <div class="table-container">
           <div class="table-toolbar">
@@ -292,9 +318,13 @@
               <div class="form-group">
                 <input type="text" name="snEQ"class="form-control" placeholder="支付单号" />
               </div>
+
+              <div class="form-group">
+                <input type="text" name="titleEQ"class="form-control" placeholder="标题" />
+              </div>
               
               <div class="form-group">
-                <select name="paymentStatusEQ" class="form-control">
+                <select name="paymentStatusEQ" id="paymentStatus" class="form-control">
                   <option value="">-- 支付单状态 --</option>
                   <c:forEach items="${paymentStatuses}" var="paymentStatus">
                     <option value="${paymentStatus}">${paymentStatus}</option>

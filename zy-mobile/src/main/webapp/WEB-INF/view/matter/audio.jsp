@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 	<%@ include file="/WEB-INF/view/include/head.jsp"%>
 	<script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
-<link rel="stylesheet" type="text/css" href="${ctx}/main.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/main.css">
 <style>
 		#btn-next span:before, #btn-next span:after {
 		  border-left: 15px solid #ccc;
@@ -63,15 +63,15 @@
 	 <div class="spanAll clearfloat">
 		 <span>阅读 ${matter.clickedCount}</span>
 		 <div class="spanlove clearfloat" onClick="changeLove(this)" change="love">
-			 <img src="../../../love.png">
+			 <img src="../../../images/love.png">
 			 <span class="loveSpan">${matter.collectedCount}</span>
 		 </div>
 	 </div>
 	</div>
 </article>
  
-<script type="text/javascript" src="${ctx}/jquery-1.10.2.min.js"></script>
-<script src='${ctx}/jaudio.js'></script>
+<script type="text/javascript" src="${ctx}/js/jquery-1.10.2.min.js"></script>
+<script src='${ctx}/js/jaudio.js'></script>
 <script>
 
 var t = {

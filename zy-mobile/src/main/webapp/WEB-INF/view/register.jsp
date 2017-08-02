@@ -3,13 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="Cache-Control" content="no-store" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <meta http-equiv="Cache-Control" content="no-store" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>${sys} - 注册</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
@@ -25,134 +25,139 @@
       $("#captchaImage").click(refreshCaptcha);
     }
 
-    // 发送短信校验码
-    $('#btnSend').click(function() {
-      var $this = $(this);
+      // 发送短信校验码
+      $('#btnSend').click(function() {
+        var $this = $(this);
 
-      var phone = $('[name="phone"]:visible').val();
-      var phoneRegex = /^1\d{10}$/;
-      if (!phone || !phone.match(phoneRegex)) {
-        messageFlash('请填写正确的手机号', 'error');
-        return;
-      }
-      var captcha = $('[name="captcha"]:visible').val();
-      if (!captcha) {
-        messageFlash('请填写图形验证码');
-        return;
-      }
+        var phone = $('[name="phone"]:visible').val();
+        var phoneRegex = /^1\d{10}$/;
+        if (!phone || !phone.match(phoneRegex)) {
+          messageFlash('请填写正确的手机号', 'error');
+          return;
+        }
 
-      var leftTime = 120;
+//      var captcha = $('[name="captcha"]:visible').val();
+//      if (!captcha) {
+//        messageFlash('请填写图形验证码');
+//        return;
+//      }
 
-      $.ajax({
-        url : '${ctx}/register/sendSmsCode',
-        type : 'POST',
-        data : {
-          phone : phone,
-          captcha : captcha
-        },
-        success : function(result) {
-          if (result.code != 0) {
-            $.message(result.message, 'error');
-          } else {
-            $.message(result.message, 'success');
-            leftTime = 120;
+        var leftTime = 120;
+
+        $.ajax({
+          url : '${ctx}/register/sendSmsCode',
+          type : 'POST',
+          data : {
+            phone : phone,
+            //captcha : captcha
+          },
+          success : function(result) {
+            if (result.code != 0) {
+              $.message(result.message, 'error');
+            } else {
+              $.message(result.message, 'success');
+              leftTime = 120;
+              setTimeout(refreshSendButton, 1000);
+            }
+          }
+        });
+
+        function refreshSendButton() {
+          if (leftTime > 0) {
+            $this.attr('disabled', 'disabled').addClass('disabled').text('' + leftTime + ' 秒后重新发送');
             setTimeout(refreshSendButton, 1000);
+            leftTime--;
+          } else {
+            $this.removeAttr('disabled').removeClass('disabled').text('发送验证码');
           }
         }
+
       });
 
-      function refreshSendButton() {
-        if (leftTime > 0) {
-          $this.attr('disabled', 'disabled').addClass('disabled').text('' + leftTime + ' 秒后重新发送');
-          setTimeout(refreshSendButton, 1000);
-          leftTime--;
-        } else {
-          $this.removeAttr('disabled').removeClass('disabled').text('发送验证码');
-        }
-      }
-
-    });
-
-    //注册验证
-    $('.valid-form').validate({
-      rules : {
-        'phone' : {
-          required : true,
-          mobile : true
-        },
-        'captcha' : {
-          required : true
-        },
-        'smsCode' : {
-          required : true
-        },
-        'isAgree' : {
+      //注册验证
+      $('.valid-form').validate({
+        rules : {
+          'phone' : {
+            required : true,
+            mobile : true
+          },
+          'captcha' : {
             required : true
+          },
+          'smsCode' : {
+            required : true
+          },
+          'isAgree' : {
+            required : true
+        },
+        'realname' : {
+          required : true
         }
       },
 	    messages : {},
       submitHandler : function(form) {
-		    var parentPhone = $('#parentPhone').val();
-		    if(parentPhone != null && parentPhone != '') {
-			    $.ajax({
-				    url: '${ctx}/checkParentPhone',
-				    data: {
-					    phone: parentPhone
-				    },
-				    type: 'POST',
-				    dataType: 'JSON',
-				    success: function(result){
-					    if(result.code == 0) {
-						    $('#parentId').val(result.message);
-						    form.submit();
-					    } else {
-						    messageFlash(result.message);
-						    return ;
-					    }
-				    }
-			    });
-		    } else {
+		    <%--var parentPhone = $('#parentPhone').val();--%>
+		    <%--if(parentPhone != null && parentPhone != '') {--%>
+			    <%--$.ajax({--%>
+				    <%--url: '${ctx}/checkParentPhone',--%>
+				    <%--data: {--%>
+					    <%--phone: parentPhone--%>
+				    <%--},--%>
+				    <%--type: 'POST',--%>
+				    <%--dataType: 'JSON',--%>
+				    <%--success: function(result){--%>
+					    <%--if(result.code == 0) {--%>
+						    <%--$('#parentId').val(result.message);--%>
+						    <%--form.submit();--%>
+					    <%--} else {--%>
+						    <%--messageFlash(result.message);--%>
+						    <%--return ;--%>
+					    <%--}--%>
+				    <%--}--%>
+			    <%--});--%>
+		    <%--} else {--%>
 			    form.submit();
-		    }
+//		    }
 	    }
     });
 
-    //注册协议
-  	$('#protocol').click(function(){
-  	  showProtocol();
-  	});
-    
-  });
-  
-  function showProtocol() {
-    if ($('#protocolList').length == 0) {
-      var bankList = document.getElementById('protocolTpl').innerHTML;
-      $(bankList).appendTo('body');
+      //注册协议
+      $('#protocol').click(function(){
+        showProtocol();
+      });
+
+    });
+
+    function showProtocol() {
+      if ($('#protocolList').length == 0) {
+        var bankList = document.getElementById('protocolTpl').innerHTML;
+        $(bankList).appendTo('body');
+      }
+      $('body').addClass('o-hidden');
+      $('#protocolList').show().animate({
+        'left' : 0
+      }, 300, function() {
+      });
     }
-    $('body').addClass('o-hidden');
-    $('#protocolList').show().animate({
-      'left' : 0
-    }, 300, function() {
-    });
-  }
-	
-  function hideProtocol() {
-    $('#protocolList').animate({
-      'left' : '100%'
-    }, 300, function() {
-      $('body').removeClass('o-hidden');
-      $('#protocolList').hide();
-    });
-  }
-</script>
+
+    function hideProtocol() {
+      $('#protocolList').animate({
+        'left' : '100%'
+      }, 300, function() {
+        $('body').removeClass('o-hidden');
+        $('#protocolList').hide();
+      });
+
+    }
+  </script>
 </head>
 <body>
-  <header class="header">
-    <h1>注册</h1>
-    <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a>
-  </header>
+<header class="header">
+  <h1>注册</h1>
+  <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a>
+</header>
 
-  <c:if test="${!isNew}">
+<c:if test="${!isNew}">
   <article>
     <form action="${ctx}/register" class="valid-form" method="post">
       <img class="image-120 block round center mt-30" src="${avatar}">
@@ -165,15 +170,15 @@
             <input type="text" id="phone" name="phone" class="form-input" placeholder="输入手机号" value="${phone}">
           </div>
         </div>
-        <div class="list-item img-captcha">
-          <label class="list-label" for="captcha">图形码</label>
-          <div class="list-text">
-            <input type="text" id="captcha" name="captcha" class="form-input" placeholder="图形验证码">
-          </div>
-          <div class="list-unit">
-            <img id="captchaImage" src="${ctx}/captcha">
-          </div>
-        </div>
+          <%--<div class="list-item img-captcha">--%>
+          <%--<label class="list-label" for="captcha">图形码</label>--%>
+          <%--<div class="list-text">--%>
+          <%--<input type="text" id="captcha" name="captcha" class="form-input" placeholder="图形验证码">--%>
+          <%--</div>--%>
+          <%--<div class="list-unit">--%>
+          <%--<img id="captchaImage" src="${ctx}/captcha">--%>
+          <%--</div>--%>
+          <%--</div>--%>
         <div class="list-item phone-captcha">
           <label class="list-label" for="smsCode">手机验证码</label>
           <div class="list-text">
@@ -183,11 +188,17 @@
             <a id="btnSend" class="btn blue btn-sm">发送验证码</a>
           </div>
         </div>
+        <%--<div class="list-item">--%>
+          <%--<label class="list-label" for="phone">推荐人手机号</label>--%>
+          <%--<div class="list-text">--%>
+            <%--<input type="text" id="parentPhone" name="parentPhone" class="form-input" placeholder="输入推荐人手机号" value="">--%>
+            <%--<input type="hidden" id="parentId" name="parentId" value="">--%>
+          <%--</div>--%>
+        <%--</div>--%>
         <div class="list-item">
-          <label class="list-label" for="phone">上级手机号</label>
+          <label class="list-label" for="phone">真实姓名</label>
           <div class="list-text">
-            <input type="text" id="parentPhone" name="parentPhone" class="form-input" placeholder="输入上级手机号" value="">
-            <input type="hidden" id="parentId" name="parentId" value="">
+            <input type="text" id="realname" name="realname" class="form-input" placeholder="输入真实姓名" value="">
           </div>
         </div>
         <div class="list-item form-checkbox">
@@ -198,23 +209,23 @@
           <label for="isAgree" class="fs-14">阅读并接受</label>
           <span id="protocol" class="font-blue fs-14">《${sys}注册协议》</span>
         </div>
-        
+
       </div>
-      
+
       <div class="form-btn">
         <input id="btnSubmit" class="btn green btn-block round-2" type="submit" value="提交">
       </div>
     </form>
   </article>
-  </c:if>
-  
-  <c:if test="${isNew}">
-    <div class="abs-mm">
-      <p class="fs-16 lh-30 text-center">请先完成微信授权</p>
-      <a class="btn green round-2 width-200 mt-30" href="${oauthUrl}"><i class="fa fa-weixin font-white"></i> 微信一键授权</a>
-    </div>
-  </c:if>
-  
+</c:if>
+
+<c:if test="${isNew}">
+  <div class="abs-mm">
+    <p class="fs-16 lh-30 text-center">请先完成微信授权</p>
+    <a class="btn green round-2 width-200 mt-30" href="${oauthUrl}"><i class="fa fa-weixin font-white"></i> 微信一键授权</a>
+  </div>
+</c:if>
+
 </body>
 </html>
 
@@ -292,7 +303,7 @@
         <span style=";font-family:微软雅黑;font-size:16px"><span style="font-family:微软雅黑">（</span>4）严格遵守公司制度，严格遵守公司产品价格体系，终端零售价按智优产品统一价格执行。若违反相关规定，智优有权采取警告、停货或取消服务商资格等措施。</span>
       </p>
       <p style="margin-top: 5px;margin-bottom: 5px;text-indent: 32px">
-        <span style=";font-family:微软雅黑;font-size:16px"><span style="font-family:微软雅黑">（</span>5）服务商出单后，应及时通知上级服务商，并按公司要求及时下单。</span>
+        <span style=";font-family:微软雅黑;font-size:16px"><span style="font-family:微软雅黑">（</span>5）服务商出单后，应及时通知推荐人，并按公司要求及时下单。</span>
       </p>
       <p style="margin-top: 5px;margin-bottom: 5px;text-indent: 32px">
         <span style=";font-family:微软雅黑;font-size:16px"><span style="font-family:微软雅黑">（</span>6）您购买智优产品为自用或销售终端用户自用。您承诺批发智优品时只批发给具备国家相应要求正规资质的单位或个人。</span>
@@ -360,6 +371,6 @@
       <p style="margin-top: 5px;margin-bottom: 5px;text-indent: 32px">
         <span style=";font-family:微软雅黑;font-size:16px">4. 本协议解释权及修订权归智优生物科技（上海）有限公司所有，本协议的执行及争议的解决均提交智优生物科技（上海）有限公司所在地人民法院裁决，应适用中华人民共和国法律。</span>
       </p>
-  </div>  
+    </div>
   </aside>
 </script>

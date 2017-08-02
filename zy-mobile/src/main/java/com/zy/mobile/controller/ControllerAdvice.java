@@ -62,7 +62,7 @@ public class ControllerAdvice {
 			if (queryStr != null){
 				pureUrl += "?" + queryStr;
 			}
-			
+
 			/* 处理转发Url  加__u参数 */
 			if (principal != null) {
 				Long userId = principal.getUserId();
@@ -80,7 +80,7 @@ public class ControllerAdvice {
 					url += "?" + queryStr;
 				}
 			}
-			
+
 			model.addAttribute("url", url);
 			//model.addAttribute("weixinJsModel", getWeixinJsModel(pureUrl));
 		}
@@ -100,7 +100,7 @@ public class ControllerAdvice {
 		}
 		return params;
 	}
-	
+
 	@ExceptionHandler(UnauthenticatedException.class)
 	public String handleUnauthenticatedException(UnauthenticatedException e, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		logger.info("UnauthenticatedException");

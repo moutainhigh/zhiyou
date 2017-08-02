@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.TourUserMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.tour.TourUser">
+		<id column="id" property="id" />
+		<result column="tour_time_id" property="tourTimeId" />
+		<result column="tour_id" property="tourId" />
+		<result column="user_id" property="userId" />
+		<result column="parent_id" property="parentId" />
+		<result column="sequence_id" property="sequenceId" />
+		<result column="create_date" property="createDate" />
+		<result column="update_date" property="updateDate" />
+		<result column="update_by" property="updateBy" />
+		<result column="is_effect" property="isEffect" />
+		<result column="audit_status" property="auditStatus" />
+		<result column="report_id" property="reportId" />
+		<result column="is_transfers" property="isTransfers" />
+		<result column="car_number" property="carNumber" />
+		<result column="plan_time" property="planTime" />
+		<result column="car_images" property="carImages" />
+		<result column="user_remark" property="userRemark" />
+		<result column="reviewe_remark" property="revieweRemark" />
+		<result column="house_type" property="houseType" />
+		<result column="is_add_bed" property="isAddBed" />
+		<!--<result column="departure_time" property="departureTime" />-->
+		<result column="is_join" property="isJoin" />
+		<result column="amount" property="amount" />
+		<result column="first_visit_status" property="firstVisitStatus" />
+		<result column="second_visit_status" property="secondVisitStatus" />
+		<result column="third_visit_status" property="thirdVisitStatus" />
+		<result column="visit_remark" property="visitRemark" />
+		<result column="visit_time" property="visitTime" />
+		<result column="visit_user_id" property="visitUserId" />
+
+		<result column="guarantee_amount" property="guaranteeAmount" />
+		<result column="refund_amount" property="refundAmount" />
+		<result column="surcharge" property="surcharge" />
+
+	</resultMap>
+
+	<sql id="baseColumn">
+		a.id,
+		a.tour_time_id,
+		a.tour_id,
+		a.user_id,
+		a.parent_id,
+		a.sequence_id,
+		a.create_date,
+		a.update_date,
+		a.update_by,
+		a.is_effect,
+		a.audit_status,
+		a.report_id,
+		a.is_transfers,
+		a.car_number,
+		a.plan_time,
+		a.car_images,
+		a.user_remark,
+		a.reviewe_remark,
+		a.house_type,
+		a.is_add_bed,
+		a.is_join,
+		a.amount,
+		a.first_visit_status,
+		a.second_visit_status,
+		a.third_visit_status,
+		a.visit_remark,
+		a.visit_time,
+		a.visit_user_id,
+		a.guarantee_amount,
+		a.refund_amount,
+		a.surcharge
+	</sql>
+
+	<!-- 查询所有旅客信息 -->
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TourUserQueryModel">
+		SELECT
+			<include refid="baseColumn"/>
+		FROM ts_tour_user a
+		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
+		LEFT JOIN usr_user_info e ON a.parent_id = e.user_id
+		LEFT JOIN usr_user c ON a.user_id = c.id
+		LEFT JOIN usr_user d ON a.parent_id = d.id
+		LEFT JOIN ts_tour f ON a.tour_id = f.id
+		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
+		<where>
+			<if test="sequenceId !=null">
+				AND  a.sequence_id = #{sequenceId}
+			</if>
+			<if test="reportId !=null">
+				AND  a.report_id = #{reportId}
+			</if>
+			<if test="auditStatus !=null">
+				AND a.audit_status = #{auditStatus}
+			</if>
+			<if test="firstVisitStatus !=null">
+				AND a.first_visit_status = #{firstVisitStatus}
+			</if>
+			<if test="secondVisitStatus !=null">
+				AND a.second_visit_status = #{secondVisitStatus}
+			</if>
+			<if test="thirdVisitStatus !=null">
+				AND a.third_visit_status = #{thirdVisitStatus}
+			</if>
+			<if test="isTransfers !=null">
+				AND a.is_transfers = #{isTransfers}
+			</if>
+			<if test="isJoin !=null">
+				AND a.is_join = #{isJoin}
+			</if>
+			<if test="userName !=null">
+				AND  b.realname= #{userName}
+			</if>
+			<if test="parentName !=null">
+				AND  e.realname= #{parentName}
+			</if>
+			<if test="userPhone !=null">
+				AND  c.phone= #{userPhone}
+			</if>
+			<if test="parentPhone !=null">
+				AND  d.phone= #{parentPhone}
+			</if>
+			<if test="tourTitle !=null">
+				<bind name="tourTitle" value="'%' + tourTitle + '%'"/> AND title LIKE #{tourTitle}
+			</if>
+			<if test="beginTime !=null">
+				AND  g.begin_time &gt;= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				AND g.end_time &lt;= #{endTime}
+			</if>
+			<if test="planStartTime !=null">
+				AND  a.plan_time &gt;= #{planStartTime}
+			</if>
+			<if test="planEndTime !=null">
+				AND a.plan_time &lt;= #{planEndTime}
+			</if>
+			<if test="userId !=null">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="visitUserId !=null">
+				AND a.visit_user_id = #{visitUserId}
+			</if>
+			<if test="parentId !=null">
+				AND a.parent_id = #{parentId}
+			</if>
+			<if test="tourTimeId !=null">
+				AND a.tour_time_id &lt;= #{tourTimeId}
+			</if>
+			<if test="createdTime !=null">
+				AND  a.create_date &gt;= #{createdTime}
+			</if>
+			AND a.is_effect = 1
+		</where>
+		ORDER BY a.create_date DESC ,a.audit_status ASC
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<!-- 查询所有旅客信息 -->
+	<select id="findListAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TourUserQueryModel">
+		SELECT
+			<include refid="baseColumn"/>
+		FROM ts_tour_user a
+		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
+		LEFT JOIN usr_user_info e ON a.parent_id = e.user_id
+		LEFT JOIN usr_user c ON a.user_id = c.id
+		LEFT JOIN usr_user d ON a.parent_id = d.id
+		LEFT JOIN ts_tour f ON a.tour_id = f.id
+		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
+		<where>
+			<if test="sequenceId !=null">
+				AND  a.sequence_id = #{sequenceId}
+			</if>
+			<if test="reportId !=null">
+				AND  a.report_id = #{reportId}
+			</if>
+			<if test="auditStatus !=null">
+				AND a.audit_status = #{auditStatus}
+			</if>
+			<if test="firstVisitStatus !=null">
+				AND a.first_visit_status = #{firstVisitStatus}
+			</if>
+			<if test="secondVisitStatus !=null">
+				AND a.second_visit_status = #{secondVisitStatus}
+			</if>
+			<if test="thirdVisitStatus !=null">
+				AND a.third_visit_status = #{thirdVisitStatus}
+			</if>
+			<if test="isTransfers !=null">
+				AND a.is_transfers = #{isTransfers}
+			</if>
+			<if test="isJoin !=null">
+				AND a.is_join = #{isJoin}
+			</if>
+			<if test="userName !=null">
+				AND  b.realname= #{userName}
+			</if>
+			<if test="parentName !=null">
+				AND  e.realname= #{parentName}
+			</if>
+			<if test="userPhone !=null">
+				AND  c.phone= #{userPhone}
+			</if>
+			<if test="parentPhone !=null">
+				AND  d.phone= #{parentPhone}
+			</if>
+			<if test="tourTitle !=null">
+				<bind name="tourTitle" value="'%' + tourTitle + '%'"/> AND title LIKE #{tourTitle}
+			</if>
+			<if test="beginTime !=null">
+				AND  g.begin_time &gt;= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				AND g.end_time &lt;= #{endTime}
+			</if>
+			<if test="planStartTime !=null">
+				AND  a.plan_time &gt;= #{planStartTime}
+			</if>
+			<if test="planEndTime !=null">
+				AND a.plan_time &lt;= #{planEndTime}
+			</if>
+			<if test="userId !=null">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="visitUserId !=null">
+				AND a.visit_user_id = #{visitUserId}
+			</if>
+			<if test="parentId !=null">
+				AND a.parent_id = #{parentId}
+			</if>
+			<if test="tourTimeId !=null">
+				AND a.tour_time_id &lt;= #{tourTimeId}
+			</if>
+			<if test="createdTime !=null">
+				AND  a.create_date &gt;= #{createdTime}
+			</if>
+			<if test="isEffect !=null">
+				AND a.is_effect = #{isEffect}
+			</if>
+		</where>
+		ORDER BY a.create_date DESC ,a.audit_status ASC
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+
+	<!-- 查询所有旅客信息 -->
+	<select id="findJoinAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TourUserQueryModel">
+		SELECT
+		<include refid="baseColumn"/>
+		FROM ts_tour_user a
+		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
+		LEFT JOIN usr_user_info e ON a.parent_id = e.user_id
+		LEFT JOIN usr_user c ON a.user_id = c.id
+		LEFT JOIN usr_user d ON a.parent_id = d.id
+		LEFT JOIN ts_tour f ON a.tour_id = f.id
+		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
+		<where>
+			<if test="sequenceId !=null">
+				AND  a.sequence_id = #{sequenceId}
+			</if>
+			<if test="reportId !=null">
+				AND  a.report_id = #{reportId}
+			</if>
+			<if test="auditStatus !=null">
+				AND a.audit_status = #{auditStatus}
+			</if>
+			<if test="isTransfers !=null">
+				AND a.is_transfers = #{isTransfers}
+			</if>
+			<if test="guaranteeAmount !=null">
+				AND a.guarantee_amount = #{guaranteeAmount}
+			</if>
+			<if test="refundAmount !=null">
+				AND a.refund_amount = #{refundAmount}
+			</if>
+			<if test="surcharge !=null">
+				AND a.surcharge = #{surcharge}
+			</if>
+			<if test="isJoin !=null">
+				AND a.is_join = #{isJoin}
+			</if>
+			<if test="userName !=null">
+				AND  b.realname= #{userName}
+			</if>
+			<if test="parentName !=null">
+				AND  e.realname= #{parentName}
+			</if>
+			<if test="userPhone !=null">
+				AND  c.phone= #{userPhone}
+			</if>
+			<if test="parentPhone !=null">
+				AND  d.phone= #{parentPhone}
+			</if>
+			<if test="tourTitle !=null">
+				<bind name="tourTitle" value="'%' + tourTitle + '%'"/> AND title LIKE #{tourTitle}
+			</if>
+			<if test="beginTime !=null">
+				AND  g.begin_time &gt;= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				AND g.end_time &lt;= #{endTime}
+			</if>
+			<if test="planStartTime !=null">
+				AND  a.plan_time &gt;= #{planStartTime}
+			</if>
+			<if test="planEndTime !=null">
+				AND a.plan_time &lt;= #{planEndTime}
+			</if>
+			<if test="userId !=null">
+				AND a.user_id = #{userId}
+			</if>
+			AND a.is_effect = 1
+			AND a.audit_status IN (3,4)
+			<if test="parentId !=null">
+				AND a.parent_id = #{parentId}
+			</if>
+			<if test="tourTimeId !=null">
+				AND a.tour_time_id &lt;= #{tourTimeId}
+			</if>
+		</where>
+		ORDER BY a.create_date DESC ,a.audit_status ASC
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.TourUserQueryModel">
+		SELECT
+			count(*)
+		FROM ts_tour_user a
+		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
+		LEFT JOIN usr_user_info e ON a.parent_id = e.user_id
+		LEFT JOIN usr_user c ON a.user_id = c.id
+		LEFT JOIN usr_user d ON a.parent_id = d.id
+		LEFT JOIN ts_tour f ON a.tour_id = f.id
+		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
+		<where>
+			<if test="sequenceId !=null">
+				AND  a.sequence_id = #{sequenceId}
+			</if>
+			<if test="reportId !=null">
+				AND  a.report_id = #{reportId}
+			</if>
+			<if test="auditStatus !=null">
+				AND a.audit_status = #{auditStatus}
+			</if>
+			<if test="firstVisitStatus !=null">
+				AND a.first_visit_status = #{firstVisitStatus}
+			</if>
+			<if test="secondVisitStatus !=null">
+				AND a.second_visit_status = #{secondVisitStatus}
+			</if>
+			<if test="thirdVisitStatus !=null">
+				AND a.third_visit_status = #{thirdVisitStatus}
+			</if>
+			<if test="isTransfers !=null">
+				AND a.is_transfers = #{isTransfers}
+			</if>
+			<if test="isJoin !=null">
+				AND a.is_join = #{isJoin}
+			</if>
+			<if test="userName !=null">
+				AND  b.realname= #{userName}
+			</if>
+			<if test="parentName !=null">
+				AND  e.realname= #{parentName}
+			</if>
+			<if test="userPhone !=null">
+				AND  c.phone= #{userPhone}
+			</if>
+			<if test="parentPhone !=null">
+				AND  d.phone= #{parentPhone}
+			</if>
+			<if test="tourTitle !=null">
+				<bind name="tourTitle" value="'%' + tourTitle + '%'"/> AND title LIKE #{tourTitle}
+			</if>
+			<if test="beginTime !=null">
+				AND  g.begin_time &gt;= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				AND g.end_time &lt;= #{endTime}
+			</if>
+			<if test="planStartTime !=null">
+				AND  a.plan_time &gt;= #{planStartTime}
+			</if>
+			<if test="planEndTime !=null">
+				AND a.plan_time &lt;= #{planEndTime}
+			</if>
+			<if test="userId !=null">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="visitUserId !=null">
+				AND a.visit_user_id = #{visitUserId}
+			</if>
+			<if test="parentId !=null">
+				AND a.parent_id = #{parentId}
+			</if>
+			<if test="tourTimeId !=null">
+				AND a.tour_time_id &lt;= #{tourTimeId}
+			</if>
+			<if test="createdTime !=null">
+				AND  a.create_date &gt;= #{createdTime}
+			</if>
+			AND a.is_effect = 1
+		</where>
+	</select>
+
+	<select id="listCount" resultType="_long" parameterType="com.zy.model.query.TourUserQueryModel">
+		SELECT
+			count(*)
+		FROM ts_tour_user a
+		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
+		LEFT JOIN usr_user_info e ON a.parent_id = e.user_id
+		LEFT JOIN usr_user c ON a.user_id = c.id
+		LEFT JOIN usr_user d ON a.parent_id = d.id
+		LEFT JOIN ts_tour f ON a.tour_id = f.id
+		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
+		<where>
+			<if test="sequenceId !=null">
+				AND  a.sequence_id = #{sequenceId}
+			</if>
+			<if test="reportId !=null">
+				AND  a.report_id = #{reportId}
+			</if>
+			<if test="auditStatus !=null">
+				AND a.audit_status = #{auditStatus}
+			</if>
+			<if test="firstVisitStatus !=null">
+				AND a.first_visit_status = #{firstVisitStatus}
+			</if>
+			<if test="secondVisitStatus !=null">
+				AND a.second_visit_status = #{secondVisitStatus}
+			</if>
+			<if test="thirdVisitStatus !=null">
+				AND a.third_visit_status = #{thirdVisitStatus}
+			</if>
+			<if test="isTransfers !=null">
+				AND a.is_transfers = #{isTransfers}
+			</if>
+			<if test="isJoin !=null">
+				AND a.is_join = #{isJoin}
+			</if>
+			<if test="userName !=null">
+				AND  b.realname= #{userName}
+			</if>
+			<if test="parentName !=null">
+				AND  e.realname= #{parentName}
+			</if>
+			<if test="userPhone !=null">
+				AND  c.phone= #{userPhone}
+			</if>
+			<if test="parentPhone !=null">
+				AND  d.phone= #{parentPhone}
+			</if>
+			<if test="tourTitle !=null">
+				<bind name="tourTitle" value="'%' + tourTitle + '%'"/> AND title LIKE #{tourTitle}
+			</if>
+			<if test="beginTime !=null">
+				AND  g.begin_time &gt;= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				AND g.end_time &lt;= #{endTime}
+			</if>
+			<if test="planStartTime !=null">
+				AND  a.plan_time &gt;= #{planStartTime}
+			</if>
+			<if test="planEndTime !=null">
+				AND a.plan_time &lt;= #{planEndTime}
+			</if>
+			<if test="userId !=null">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="visitUserId !=null">
+				AND a.visit_user_id = #{visitUserId}
+			</if>
+			<if test="parentId !=null">
+				AND a.parent_id = #{parentId}
+			</if>
+			<if test="tourTimeId !=null">
+				AND a.tour_time_id &lt;= #{tourTimeId}
+			</if>
+			<if test="createdTime !=null">
+				AND  a.create_date &gt;= #{createdTime}
+			</if>
+			<if test="isEffect !=null">
+				AND a.is_effect = #{isEffect}
+			</if>
+		</where>
+	</select>
+
+	<select id="joinCount" resultType="_long" parameterType="com.zy.model.query.TourUserQueryModel">
+		SELECT
+			count(*)
+		FROM ts_tour_user a
+		LEFT JOIN usr_user_info b ON a.user_id = b.user_id
+		LEFT JOIN usr_user_info e ON a.parent_id = e.user_id
+		LEFT JOIN usr_user c ON a.user_id = c.id
+		LEFT JOIN usr_user d ON a.parent_id = d.id
+		LEFT JOIN ts_tour f ON a.tour_id = f.id
+		LEFT JOIN ts_tour_time g ON a.tour_time_id = g.id
+		<where>
+			<if test="sequenceId !=null">
+				AND  a.sequence_id = #{sequenceId}
+			</if>
+			<if test="reportId !=null">
+				AND  a.report_id = #{reportId}
+			</if>
+			<if test="guaranteeAmount !=null">
+				AND a.guarantee_amount = #{guaranteeAmount}
+			</if>
+			<if test="refundAmount !=null">
+				AND a.refund_amount = #{refundAmount}
+			</if>
+			<if test="surcharge !=null">
+				AND a.surcharge = #{surcharge}
+			</if>
+			<if test="auditStatus !=null">
+				AND a.audit_status = #{auditStatus}
+			</if>
+			<if test="userName !=null">
+				AND  b.realname = #{userName}
+			</if>
+			<if test="parentName !=null">
+				AND  e.realname = #{parentName}
+			</if>
+			<if test="userPhone !=null">
+				AND  c.phone = #{userPhone}
+			</if>
+			<if test="parentPhone !=null">
+				AND  d.phone = #{parentPhone}
+			</if>
+			<if test="tourTitle !=null">
+				<bind name="tourTitle" value="'%' + tourTitle + '%'"/> AND title LIKE #{tourTitle}
+			</if>
+			<if test="beginTime !=null">
+				AND  g.begin_time &gt;= #{beginTime}
+			</if>
+			<if test="endTime !=null">
+				AND g.end_time &lt;= #{endTime}
+			</if>
+			<if test="userId !=null">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="parentId !=null">
+				AND a.parent_id = #{parentId}
+			</if>
+			<if test="tourTimeId !=null">
+				AND a.tour_time_id = #{tourTimeId}
+			</if>
+				AND a.is_effect = 1
+				AND a.audit_status IN (3,4)
+		</where>
+	</select>
+
+
+	<!-- 查询旅客信息 -->
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		SELECT
+			<include refid="baseColumn"/>
+		FROM ts_tour_user a
+		WHERE
+			a.id = #{id}
+	</select>
+
+	<!-- 重置-->
+	<update id="reset" parameterType="com.zy.entity.tour.TourUser">
+		update ts_tour_user
+		<set>
+				tour_id = #{tourId},
+				tour_time_id = #{tourTimeId},
+				audit_status = #{auditStatus},
+				update_date = #{updateDate},
+				update_by = #{updateBy}
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 回访-->
+	<update id="updateVisitStatus" parameterType="com.zy.entity.tour.TourUser">
+		update ts_tour_user
+			<set>
+				<if test="firstVisitStatus !=null">
+					first_visit_status = #{firstVisitStatus},
+				</if>
+				<if test="secondVisitStatus !=null">
+					second_visit_status = #{secondVisitStatus},
+				</if>
+				<if test="thirdVisitStatus !=null">
+					third_visit_status = #{thirdVisitStatus},
+				</if>
+				<if test="visitRemark !=null">
+					visit_remark = #{visitRemark},
+				</if>
+				<if test="auditStatus !=null">
+					audit_status = #{auditStatus},
+				</if>
+				<if test="visitTime !=null">
+					visit_time = #{visitTime},
+				</if>
+				<if test="updateBy !=null">
+					update_by = #{updateBy}
+				</if>
+			</set>
+		where id = #{id}
+	</update>
+
+
+	<insert id="insert" parameterType="com.zy.entity.tour.TourUser" useGeneratedKeys="true" keyProperty="id">
+		insert into `ts_tour_user` (tour_time_id,tour_id,user_id,parent_id,sequence_id,create_date,is_effect,audit_status,report_id,is_transfers,car_number,plan_time,car_images,user_remark,reviewe_remark,house_type,is_add_bed,is_join,amount)
+		values (#{tourTimeId},#{tourId},#{userId},#{parentId},#{sequenceId},#{createDate},#{isEffect},#{auditStatus},#{reportId},#{isTransfers},#{carNumber},#{planTime},#{carImages},#{userRemark},#{revieweRemark},#{houseType},#{isAddBed},#{isJoin},#{amount})
+	</insert>
+
+	<delete id="delete" parameterType="long">
+		delete from `ts_tour_user` where id = #{id}
+	</delete>
+
+	<!-- 审核状态 -->
+	<update id="updateAuditStatus" parameterType="com.zy.entity.tour.TourUser">
+		update ts_tour_user
+		<set>
+			<if test="auditStatus !=null">
+				audit_status = #{auditStatus},
+			</if>
+			<if test="revieweRemark !=null">
+				reviewe_remark = #{revieweRemark},
+			</if>
+			<if test="updateDate !=null">
+				update_date = #{updateDate},
+			</if>
+			<if test="updateBy !=null">
+				update_by = #{updateBy}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 分配 -->
+	<update id="visitUser" parameterType="com.zy.entity.tour.TourUser">
+		update ts_tour_user
+		<set>
+			<if test="visitUserId !=null">
+				visit_user_id = #{visitUserId}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 编辑 -->
+	<update id="modify" parameterType="com.zy.entity.tour.TourUser">
+		update ts_tour_user
+		<set>
+			<if test="houseType !=null">
+				house_type = #{houseType},
+			</if>
+			<if test="isAddBed !=null">
+				is_add_bed = #{isAddBed},
+			</if>
+			<if test="isEffect !=null">
+				is_effect = #{isEffect},
+			</if>
+			<if test="isTransfers !=null">
+				is_transfers = #{isTransfers},
+			</if>
+			<if test="auditStatus !=null">
+				audit_status = #{auditStatus},
+			</if>
+			<if test="guaranteeAmount !=null">
+				guarantee_amount = #{guaranteeAmount},
+			</if>
+			<if test="refundAmount !=null">
+				refund_amount = #{refundAmount},
+			</if>
+			<if test="surcharge !=null">
+				surcharge = #{surcharge},
+			</if>
+			<if test="carNumber !=null">
+				car_number = #{carNumber},
+			</if>
+			<if test="planTime !=null">
+				plan_time = #{planTime},
+			</if>
+			<if test="carImages !=null">
+				car_images = #{carImages},
+			</if>
+			<if test="updateDate !=null">
+				update_date = #{updateDate},
+			</if>
+			<if test="isJoin !=null">
+				is_join = #{isJoin},
+			</if>
+			<if test="amount !=null">
+				amount = #{amount},
+			</if>
+			<if test="userRemark !=null">
+				user_remark = #{userRemark},
+			</if>
+			<if test="updateBy !=null">
+				update_by = #{updateBy}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findByReportId" resultMap="baseResultMap" parameterType="long">
+		SELECT
+		<include refid="baseColumn"/>
+		FROM ts_tour_user a
+		WHERE
+		a.report_id = #{id}
+	</select>
+
+
+</mapper>
+
+
+
+
+

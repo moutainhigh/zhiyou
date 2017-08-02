@@ -15,6 +15,8 @@ public class ProfitMOMReportVo {
 
 	private Long bossId;  //总经理id
 
+	private String bossNickname;  //总经理昵称
+
 	private String bossName;  //总经理团队名称
 
 	private List<ProfitMOMReportVo.ProfitMOMReportVoItem> profitMOMReportVoItems = new ArrayList<ProfitMOMReportVo.ProfitMOMReportVoItem>();
@@ -25,7 +27,13 @@ public class ProfitMOMReportVo {
 
 		private String dateLabel;  //时间 yyyy-MM or yyyy-MM-dd
 
-		private BigDecimal profit;  //收益
+		private BigDecimal profit;  //总经理个人收益
+
+		private BigDecimal teamProfit;  //团队收益
+
+		private BigDecimal avgProfit;  //人均收入
+
+		private double inTeamProfitRate;  //个人收入在团队的占比
 
 	}
 

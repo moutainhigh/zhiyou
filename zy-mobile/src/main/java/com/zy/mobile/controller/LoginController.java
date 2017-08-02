@@ -5,6 +5,7 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.cache.CacheSupport;
 import com.zy.common.support.sms.SmsSupport;
 import com.zy.common.util.CookieUtils;
+import com.zy.common.util.DateUtil;
 import com.zy.common.util.Identities;
 import com.zy.common.util.ValidateUtils;
 import com.zy.entity.sys.ShortMessage;
@@ -101,15 +102,44 @@ public class LoginController {
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("登录失败, 密码错误"));
 			return "redirect:/login";
 		}
-
 		String redirectUrl = (String) session.getAttribute(SESSION_ATTRIBUTE_REDIRECT_URL);
 		if (StringUtils.isBlank(redirectUrl)) {
 			redirectUrl = "/";
 		}
 
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("登录成功"));
+		userService.modifyLastLoginTime(user.getId());
 		onLoginSuccess(request, response, user.getId());
 		return "redirect:" + redirectUrl;
+	}
+
+	@RequestMapping(value = "/ajaxTime", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> ajaxTime(String phone, String password) {
+
+		if (GcUtils.getPrincipal() != null) {
+			return ResultBuilder.ok("");
+		}
+
+		if (StringUtils.isBlank(phone)) {
+			return ResultBuilder.error("登录失败, 手机号不能为空");
+		}
+		if (StringUtils.isBlank(password)) {
+			return ResultBuilder.error("登录失败, 密码不能为空");
+		}
+
+		User user = userService.findByPhone(phone);
+		if (user == null) {
+			return ResultBuilder.error("登录失败, 手机号不存在");
+		} else if (!userService.hashPassword(password).equals(user.getPassword())){
+			return ResultBuilder.error("登录失败, 密码错误");
+		}
+		if(user.getLastloginTime() != null){
+			if(user.getLastloginTime().before(DateUtil.getMonthData(new Date(),-3,0))){
+				return ResultBuilder.error("登录失败, 由于您的账号三个月内没有登录,账号已被锁定,请联系小优解锁");
+			}
+		}
+		return ResultBuilder.ok("");
 	}
 
 	
@@ -134,30 +164,33 @@ public class LoginController {
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, @RequestParam String smsCode,
-	                       @RequestParam String phone, Long parentId) {
+	                       @RequestParam String phone, Long parentId, @RequestParam String realname) {
 
+		logger.info("register begin...........");
 		if (GcUtils.getPrincipal() != null) {
 			return "redirect:/u";
 		}
-		
+		logger.info("register begin  GcUtils:"+GcUtils.getPrincipal());
+
 		AgentRegisterDto agentRegisterDto = (AgentRegisterDto) session.getAttribute(SESSION_ATTRIBUTE_AGENT_REGISTER_DTO);
 		if (agentRegisterDto == null) {
 			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("注册已超时, 请刷新重试"));
 			return register(model, request);
 		}
+		logger.info("register begin 2");
 		model.addAttribute("phone", phone);
 		User user = userService.findByPhone(phone);
 		if (user != null && StringUtils.isNotBlank(user.getOpenId())) {
 			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("该手机已经被其他微信绑定, 请先解绑"));
 			return register(model, request);
 		}
-
+		logger.info("register begin 3");
 		PhoneAndSmsCode phoneAndSmsCode = (PhoneAndSmsCode) session.getAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS);
 		if (phoneAndSmsCode == null || !smsCode.equalsIgnoreCase(phoneAndSmsCode.getSmsCode()) || !phone.equalsIgnoreCase(phoneAndSmsCode.getPhone())) {
 			model.addAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("短信校验码错误"));
 			return register(model, request);
 		}
-
+		logger.info("register begin 4");
 		Long inviterId = (Long) request.getAttribute(REQUEST_ATTRIBUTE_INVITER_ID);
 		if (inviterId != null) {
 			User inviter = userService.findOne(inviterId);
@@ -169,20 +202,24 @@ public class LoginController {
 		agentRegisterDto.setPhone(phone);
 		agentRegisterDto.setRegisterIp(GcUtils.getHost());
 		agentRegisterDto.setParentId(parentId);
+		agentRegisterDto.setRealname(realname);
 		try{
 			user = userService.registerAgent(agentRegisterDto);
 		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info(e.getMessage());
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 			return "redirect:/u";
 		}
 		session.removeAttribute(SESSION_ATTRIBUTE_BIND_PHONE_SMS);
-
+		logger.info("register begin 5");
 		String redirectUrl = (String) session.getAttribute(SESSION_ATTRIBUTE_REDIRECT_URL);
 		if (StringUtils.isBlank(redirectUrl)) {
 			redirectUrl = "/";
 		}
 		logger.info("redirect url = " + redirectUrl);
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("恭喜您, 注册成功"));
+		userService.modifyLastLoginTime(user.getId());
 		onLoginSuccess(request, response, user.getId());
 		return "redirect:" + redirectUrl;
 	}
@@ -201,14 +238,14 @@ public class LoginController {
 			return ResultBuilder.error("两次发送间隔为120秒");
 		}
 
-		String cachedCaptcha = (String) session.getAttribute(SESSION_ATTRIBUTE_CAPTCHA);
-		if (captcha == null || !captcha.equalsIgnoreCase(cachedCaptcha)) {
-			try {
-				session.removeAttribute(SESSION_ATTRIBUTE_CAPTCHA);
-			} catch (Exception e) {
-			}
-			return ResultBuilder.error("图形验证码错误");
-		}
+//		String cachedCaptcha = (String) session.getAttribute(SESSION_ATTRIBUTE_CAPTCHA);
+//		if (captcha == null || !captcha.equalsIgnoreCase(cachedCaptcha)) {
+//			try {
+//				session.removeAttribute(SESSION_ATTRIBUTE_CAPTCHA);
+//			} catch (Exception e) {
+//			}
+//			return ResultBuilder.error("图形验证码错误");
+//		}
 
 		String smsCode = RandomStringUtils.randomNumeric(6);
 		String message = "您的短信验证码为" + smsCode;
@@ -235,13 +272,13 @@ public class LoginController {
 	public Result<?> checkParentPhone(@RequestParam String phone) {
 		User user = userService.findByPhone(phone);
 		if (user == null) {
-			return ResultBuilder.error("上级手机号不存在");
+			return ResultBuilder.error("推荐人手机号不存在");
 		}
 		if (user.getUserType() != User.UserType.代理) {
-			return ResultBuilder.error("上级用户类型必须是代理");
+			return ResultBuilder.error("推荐人用户类型必须是代理");
 		}
 		if (user.getUserRank() == User.UserRank.V0) {
-			return ResultBuilder.error("上级必须成为代理");
+			return ResultBuilder.error("推荐人必须成为代理");
 		}
 		return ResultBuilder.ok(String.valueOf(user.getId()));
 	}

@@ -123,7 +123,7 @@ public class UcenterIndexController {
         if (isNull(userInfo)) {
         	isUserInfoCompleted = false;
         } else {
-        	isUserInfoCompleted = userInfo.getConfirmStatus() == ConfirmStatus.已通过;
+        	isUserInfoCompleted = userInfo.getConfirmStatus() == ConfirmStatus.已通过 && (userInfo.getRealFlag() != null &&  userInfo.getRealFlag() == 1);
         }
 		model.addAttribute("hasPassword", StringUtils.isNotEmpty(user.getPassword()));
         model.addAttribute("hasAddress", !addressService.findByUserId(userId).isEmpty());

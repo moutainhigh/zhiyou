@@ -1,0 +1,64 @@
+@charset "UTF-8";
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,li,ol,ul,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td {
+  padding: 0px; margin: 0px; border: 0px; outline: 0px;
+}
+html,body {
+  height:100%;
+}
+html,body,a,p,td,th,div,span,form,li,select,input,textarea {
+  font-family: 'Tahoma', 'Arial', '微软雅黑'; font-size: 24px; color: #4f4f4f;
+}
+body {
+  _width: 100%; _height: 100%;
+  font: 24px tahoma, Arial, Verdana, sans-serif; color: #4f4f4f; background-color: #ffffff;
+  _background-attachment: fixed;
+}
+a {
+  text-decoration: none; color: #4f4f4f;
+  &:link {
+    @extend a;
+  }
+  &:visited {
+    @extend a;
+  }
+  &:active {
+    @extend a;
+  }
+  &:hover {
+    cursor: pointer; text-decoration: underline;
+  }
+}
+img {
+  vertical-align: middle; image-rendering: optimizeQuality; -ms-interpolation-mode: bicubic;
+}
+ul,li {
+  list-style: none;
+}
+pre {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -o-pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+input,select {
+  vertical-align: middle; outline: none;
+}
+textarea {
+  padding: 2px; outline: 0px; resize: none; overflow-x: hidden;
+}
+table {
+  border-collapse: collapse; border-spacing: 0;
+}
+/*清除代码浮动*/
+.clearfloat:before, .clearfloat:after {
+  content:"";
+  display:table;
+}
+.clearfloat:after{
+  clear:both;
+  overflow:hidden;
+}
+.clearfloat{
+  zoom:1;
+}

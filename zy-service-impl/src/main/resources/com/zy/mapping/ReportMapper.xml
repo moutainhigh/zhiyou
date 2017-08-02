@@ -29,14 +29,15 @@
 		<result column="confirmed_time" property="confirmedTime" />
 		<result column="is_settled_up" property="isSettledUp" />
 		<result column="is_hot" property="isHot" />
+		<result column="product_number" property="productNumber" />
 		<result column="version" property="version" />
 	</resultMap>
 
-	<sql id="baseColumn">id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,product_id,report_result,check_report_result,visit_user_id,text,image,times,reported_date,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version</sql>
+	<sql id="baseColumn">id,user_id,realname,age,gender,phone,job_id,area_id,tag_ids,product_id,report_result,check_report_result,visit_user_id,text,image,times,reported_date,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,product_number,version</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.act.Report" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_report` (user_id,realname,age,gender,phone,job_id,area_id,tag_ids,product_id,report_result,check_report_result,visit_user_id,text,image,times,reported_date,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,version)
-	  values (#{userId},#{realname},#{age},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{jobId},#{areaId},#{tagIds},#{productId},#{reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{checkReportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{visitUserId},#{text},#{image},#{times},#{reportedDate},#{appliedTime},#{createdTime},#{preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{preConfirmedTime},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{confirmedTime},#{isSettledUp},#{isHot},#{version})
+	  insert into `act_report` (user_id,realname,age,gender,phone,job_id,area_id,tag_ids,product_id,report_result,check_report_result,visit_user_id,text,image,times,reported_date,applied_time,created_time,pre_confirm_status,pre_confirmed_time,confirm_status,confirm_remark,confirmed_time,is_settled_up,is_hot,product_number,version)
+	  values (#{userId},#{realname},#{age},#{gender,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{phone},#{jobId},#{areaId},#{tagIds},#{productId},#{reportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{checkReportResult,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{visitUserId},#{text},#{image},#{times},#{reportedDate},#{appliedTime},#{createdTime},#{preConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{preConfirmedTime},#{confirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{confirmRemark},#{confirmedTime},#{isSettledUp},#{isHot},#{productNumber},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -71,6 +72,7 @@
 			confirmed_time = #{confirmedTime},
 			is_settled_up = #{isSettledUp},
 			is_hot = #{isHot},
+			product_number = #{productNumber},
 			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
@@ -130,8 +132,14 @@
 			<if test="reportedDateLT != null">
 				and reported_date &lt; #{reportedDateLT}
 			</if>
-			<if test="userIdEQ != null">
+			<if test="userIdEQ != null and phoneEQ !=null">
+				and (user_id = #{userIdEQ} or  phone = #{phoneEQ})
+			</if>
+			<if test="userIdEQ != null and phoneEQ ==null">
 				and user_id = #{userIdEQ}
+			</if>
+			<if  test="userIdEQ == null and phoneEQ !=null">
+				and phone = #{phoneEQ}
 			</if>
 			<if test="confirmStatusEQ != null">
 				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
@@ -191,9 +199,6 @@
 			<if test="isHotEQ != null">
 				and is_hot = #{isHotEQ}
 			</if>
-			<if test="phoneEQ != null">
-				and phone = #{phoneEQ}
-			</if>
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
 			</if>
@@ -202,6 +207,9 @@
 			</if>
 			<if test="preConfirmedTimeLT != null">
 				and pre_confirmed_time &lt; #{preConfirmedTimeLT}
+			</if>
+			<if test="productIdEQ != null">
+				and product_id = #{productIdEQ}
 			</if>
 		</where>
 		<choose>
@@ -226,8 +234,14 @@
 			<if test="reportedDateLT != null">
 				and reported_date &lt; #{reportedDateLT}
 			</if>
-			<if test="userIdEQ != null">
+			<if test="userIdEQ != null and phoneEQ !=null">
+				and (user_id = #{userIdEQ} or  phone = #{phoneEQ})
+			</if>
+			<if test="userIdEQ != null and phoneEQ ==null">
 				and user_id = #{userIdEQ}
+			</if>
+			<if  test="userIdEQ == null and phoneEQ !=null">
+				and phone = #{phoneEQ}
 			</if>
 			<if test="confirmStatusEQ != null">
 				and confirm_status = #{confirmStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
@@ -287,9 +301,6 @@
 			<if test="isHotEQ != null">
 				and is_hot = #{isHotEQ}
 			</if>
-			<if test="phoneEQ != null">
-				and phone = #{phoneEQ}
-			</if>
 			<if test="createdTimeGTE != null">
 				and created_time &gt;= #{createdTimeGTE}
 			</if>
@@ -308,5 +319,20 @@
 		from `tsk_report`
 		where task_item_id = #{taskItemId}
 	</select>
+
+	<select id="findReport" resultMap="baseResultMap" parameterType="com.zy.model.query.ReportQueryModel">
+		SELECT
+		<include refid="baseColumn"/>
+		FROM `act_report`
+		<where>
+			<if test="idEQ != null">
+				AND id = #{idEQ}
+			</if>
+			<if test="userIdEQ != null">
+				AND user_id = #{userIdEQ}
+			</if>
+		</where>
+	</select>
+
 
 </mapper>

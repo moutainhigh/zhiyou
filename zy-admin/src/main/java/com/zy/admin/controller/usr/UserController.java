@@ -13,6 +13,7 @@ import com.zy.common.util.JsonUtils;
 import com.zy.component.CacheComponent;
 import com.zy.component.LocalCacheComponent;
 import com.zy.component.UserComponent;
+import com.zy.entity.cms.Article;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
@@ -289,7 +290,7 @@ public class UserController {
 		}
 		try {
 			userService.modifyParentIdAdmin(userId, parentUser.getId(), getPrincipalUserId(), remark);
-			return ResultBuilder.ok("修改上级成功");
+			return ResultBuilder.ok("修改推荐人成功");
 		} catch (Exception e) {
 			return ResultBuilder.error(e.getMessage());
 		}
@@ -337,15 +338,25 @@ public class UserController {
 
 	@RequiresPermissions("user:setDirector")
 	@RequestMapping(value = "/setDirector", method = RequestMethod.GET)
-	public String setDirector(@RequestParam Long id) {
+	public String setDirector(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 		userService.modifyIsDirector(id, true);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
+		return "redirect:/user";
+	}
+
+	@RequiresPermissions("user:setDirector")
+	@RequestMapping(value = "/isHonorDirector", method = RequestMethod.GET)
+	public String isHonorDirector(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+		userService.modifyIsHonorDirector(id, true);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		return "redirect:/user";
 	}
 
 	@RequiresPermissions("user:setShareholder")
 	@RequestMapping(value = "/setShareholder", method = RequestMethod.GET)
-	public String setShareholder(@RequestParam Long id) {
+	public String setShareholder(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 		userService.modifyIsShareholder(id, true);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		return "redirect:/user";
 	}
 	
@@ -368,6 +379,17 @@ public class UserController {
 	private Long getPrincipalUserId() {
 		AdminPrincipal principal = (AdminPrincipal)SecurityUtils.getSubject().getPrincipal();
 		return principal.getUserId();
+	}
+
+
+	@RequiresPermissions("user:edit")
+	@RequestMapping(value = "/editLastLoginTime", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean editLastLoginTime(@RequestParam Long id) {
+		User user = userService.findOne(id);
+		validate(user, NOT_NULL, "user not found, id is " + id);
+		userService.modifyLastLoginTime(id);
+		return true;
 	}
 	
 	

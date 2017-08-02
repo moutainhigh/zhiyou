@@ -154,7 +154,7 @@ public class User implements Serializable {
 	private Long inviterId;
 
 	@Query({Predicate.EQ, Predicate.IN, Predicate.NL})
-	@Field(label = "上级id")
+	@Field(label = "推荐人id")
 	@AssociationView(name = "parent", associationGroup = VO_ADMIN_SIMPLE, groups = {VO_ADMIN, VO_ADMIN_FULL})
 	@View(groups = {VO_REPORT})
 	private Long parentId;
@@ -208,10 +208,25 @@ public class User implements Serializable {
 	private String code;
 
 	@Field(label = "是否董事")
+	@Query(Predicate.EQ)
 	@View(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT})
 	private Boolean isDirector;
 
+	@Field(label = "是否荣誉董事")
+	@Query(Predicate.EQ)
+	@View(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT})
+	private Boolean isHonorDirector;
+
 	@Field(label = "是否股东")
+	@Query(Predicate.EQ)
 	@View(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT})
 	private Boolean isShareholder;
+
+	@Column(length = 1, unique = true)
+	@Field(label = "是否有权限")
+	private int viewflag;
+
+	@Field(label = "最后一次登录时间")
+	@View(groups = {VO_ADMIN})
+	private Date lastloginTime;
 }

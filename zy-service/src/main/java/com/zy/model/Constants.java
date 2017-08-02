@@ -71,6 +71,7 @@ public  interface Constants {
 	String CACHE_NAME_WITHDRAW_COUNT = "withdrawCount";
 	String CACHE_NAME_PAYMENT_COUNT = "paymentCount";
 	String CACHE_NAME_DEPOSIT_COUNT = "depositCount";
+	String CACHE_NAME_REPORT_V4ACTIVITY = "v4Activity";
 	
     /* order */
     int SETTING_ORDER_EXPIRE_IN_MINUTES = 60 * 24 * 30; // 订单过期 30天
@@ -190,4 +191,6 @@ public  interface Constants {
     List<String> visitContinueCheckList = asList(new String[]{"忙音", "无人接听", "需二访", "需三访", "关机", "挂断"});
     List<String> visitedSuccessList = asList(new String[]{"回访成功", "语言不通", "由其他方式回访", "本人检测无需回访", "国际号码"});
 
+    String SETTLEMENT_TYPE_1 = "settleUpProfit";
+    String SETTLEMENT_TYPE_2 = "settleUpMonthly";
 }

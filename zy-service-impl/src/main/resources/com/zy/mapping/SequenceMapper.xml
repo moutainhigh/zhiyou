@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.SequenceMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.tour.Sequence">
+		<id column="seq_name" property="sequenceName" />
+		<result column="current_val" property="currentVal" />
+		<result column="increment_val" property="incrementval" />
+		<result column="seq_type" property="sequenceType" />
+	</resultMap>
+
+	<sql id="baseColumn">seq_name,current_val,increment_val,seq_type</sql>
+
+
+	<update id="update" parameterType="com.zy.entity.tour.Sequence">
+		update `ts_sequence`
+		<set>
+			<if test="currentVal !=null">
+			current_val = #{currentVal},
+			</if>
+			<if test="incrementval !=null">
+				increment_val = #{incrementval},
+			</if>
+		</set>
+		where seq_name = #{sequenceName} and seq_type=#{sequenceType}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `ts_sequence`
+		where seq_name = #{seqName} and seq_type=#{seqType}
+	</select>
+
+	<insert id="insert" parameterType="com.zy.entity.tour.Sequence">
+		insert into `ts_sequence` (seq_name,current_val,increment_val,seq_type)
+		values (#{sequenceName},#{currentVal},#{incrementval},#{sequenceType})
+	</insert>
+</mapper>

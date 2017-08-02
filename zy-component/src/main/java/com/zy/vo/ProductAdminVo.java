@@ -35,6 +35,8 @@ public class ProductAdminVo implements Serializable {
 	private String image1;
 	@Field(label = "创建时间")
 	private Date createdTime;
+	@Field(label = "是否结算")
+	private Boolean isSettlement;
 
 	/* 扩展 */
 	@Field(label = "主图")

@@ -1,0 +1,64 @@
+/* 购物车 */
+.cart-item .options {
+  height: 30px;
+}
+.cart-item .product-quantity {
+  float: left;
+}
+.cart-item .option-btns {
+  float: right;
+}
+.cart-item .option-btns a {
+  float: right; padding: 5px 10px;
+  display: block;
+  color: #232326; font-size: 12px; line-height: 14px;
+}
+.cart-item .option-btns a.btn-remove {
+  color: #81838e;
+  border-right: solid 1px #e3e5e9;
+}
+.cart-item .quantity-num {
+  line-height: 24px;
+}
+.cart-item .quantity-num::before {
+  content: "×";
+}
+.cart-item .edit-off .quantity-num,
+.cart-item .edit-off .btn-edit {
+  display: block;
+}
+.cart-item .edit-on .quantity-num,
+.cart-item .edit-on .btn-edit {
+  display: none !important;
+}
+.cart-item .edit-off .quantity-wrap,
+.cart-item .edit-off .btn-ok,
+.cart-item .edit-off .btn-remove {
+  display: none !important;
+}
+.cart-item .edit-on .quantity-wrap,
+.cart-item .edit-off .btn-ok,
+.cart-item .edit-off .btn-remove {
+  display: block;
+}
+.cart-total {
+  color: #232326; font-size: 14px; line-height: 48px;
+}
+
+.quantity-wrap {
+  float: right; height: 30px;
+  border: 1px solid #999;
+}
+.quantity-wrap i {
+  float: left; width: 28px;
+  color: #333; line-height: 30px; text-align: center; font-weight: 300;
+  cursor: pointer;
+}
+.quantity-wrap i.disabled {
+  color: #bbb; cursor: default;
+}
+.quantity-wrap input {
+  float: left; width: 36px; height: 28px;
+  color: #333; line-height: 28px;
+  border: none; border-left: 1px solid #999; border-right: 1px solid #777;
+}

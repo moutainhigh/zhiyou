@@ -6,6 +6,7 @@ import com.zy.common.model.query.Page;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
 import com.zy.entity.act.ActivitySignIn;
+import com.zy.entity.act.ActivityTicket;
 import com.zy.entity.fnc.Payment;
 import com.zy.entity.usr.User;
 import com.zy.mapper.*;
@@ -43,6 +44,9 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 
 	@Autowired
 	private ActivitySignInMapper activitySignInMapper;
+
+	@Autowired
+	private ActivityTicketMapper activityTicketMapper;
 
 	@Override
 	public Page<ActivityApply> findPage(
@@ -114,13 +118,14 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 	 * @param inviterId
      */
 	@Override
-	public void useTicket(@NotNull Long activityId, @NotNull Long userId, @NotNull Long inviterId) {
+	public void useTicket(@NotNull Long activityId, @NotNull Long userId, @NotNull Long inviterId ,@NotNull ActivityTicket activityTicket) {
 		Activity activity = activityMapper.findOne(activityId);
+
 		validate(activity, NOT_NULL, "activity id " + userId + " not found");
 
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + " not found");
-
+		//TODO
 		Long appliedCount = activity.getAppliedCount();
 		ActivityApply activityApply = activityApplyMapper.findByActivityIdAndUserId(activityId, userId);
 		if (activityApply != null) {
@@ -143,9 +148,9 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 				throw new BizException(BizCode.ERROR, "活动暂未开放不能报名");
 			}
 
-			if (activity.getApplyDeadline().before(new Date())) {
-				throw new BizException(BizCode.ERROR, "活动已经停止报名");
-			}
+//			if (activity.getApplyDeadline().before(new Date())) {
+//				throw new BizException(BizCode.ERROR, "活动已经停止报名");
+//			}
 
 			activity.setAppliedCount(appliedCount + 1);
 			if (activityMapper.update(activity) == 0) {
@@ -162,6 +167,9 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 			newActivityApply.setInviterId(inviterId);
 			validate(newActivityApply);
 			activityApplyMapper.insert(newActivityApply);
+			activityTicket.setIsUsed(1);
+			activityTicket.setUserId(userId);
+			activityTicketMapper.update(activityTicket);
 		}
 	}
 
@@ -209,6 +217,13 @@ public class ActivityApplyServiceImpl implements ActivityApplyService {
 	@Override
 	public int update(ActivityApply activityApply) {
 		return activityApplyMapper.update(activityApply);
+	}
+
+	@Override
+	public void editApplyAndTicket(ActivityApply activityApply, ActivityTicket activityTicket) {
+
+		activityApplyMapper.update(activityApply);
+		activityTicketMapper.update(activityTicket);
 	}
 
 	@Override

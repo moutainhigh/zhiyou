@@ -63,16 +63,16 @@
         <div class="list-unit">${user.phone}</div>
         </c:if>
       </a>
-      <a class="list-item" href="${ctx}/help/userRank">
-        <div class="list-text">服务商等级</div>
-        <div class="list-unit">
-          <c:if test="${user.userRank == 'V1'}"><label class="label purple">VIP服务商</label></c:if>
-          <c:if test="${user.userRank == 'V2'}"><label class="label blue">市级服务商</label></c:if>
-          <c:if test="${user.userRank == 'V3'}"><label class="label orange">省级服务商</label></c:if>
-          <c:if test="${user.userRank == 'V4'}"><label class="label red">特级服务商</label></c:if>
-        </div>
-        <i class="list-arrow"></i>
-      </a>
+      <%--<a class="list-item" href="${ctx}/help/userRank">--%>
+        <%--<div class="list-text">服务商等级</div>--%>
+        <%--<div class="list-unit">--%>
+          <%--<c:if test="${user.userRank == 'V1'}"><label class="label purple">VIP服务商</label></c:if>--%>
+          <%--<c:if test="${user.userRank == 'V2'}"><label class="label blue">市级服务商</label></c:if>--%>
+          <%--<c:if test="${user.userRank == 'V3'}"><label class="label orange">省级服务商</label></c:if>--%>
+          <%--<c:if test="${user.userRank == 'V4'}"><label class="label red">特级服务商</label></c:if>--%>
+        <%--</div>--%>
+        <%--<i class="list-arrow"></i>--%>
+      <%--</a>--%>
       <c:if test="${user.userRank != 'V0'}">
       <a class="list-item" href="${ctx}/code/image?userId=${user.id}">
         <div class="list-text">我的授权码</div>

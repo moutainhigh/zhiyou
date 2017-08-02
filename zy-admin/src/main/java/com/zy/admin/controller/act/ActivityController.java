@@ -17,12 +17,15 @@ import com.zy.component.ActivityComponent;
 import com.zy.component.ActivityReportComponent;
 import com.zy.entity.act.Activity;
 import com.zy.entity.act.ActivityApply;
+import com.zy.entity.star.Lesson;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.query.ActivityQueryModel;
 import com.zy.model.query.ActivityReportQueryModel;
+import com.zy.model.query.LessonQueryModel;
 import com.zy.service.ActivityApplyService;
 import com.zy.service.ActivityService;
+import com.zy.service.LessonService;
 import com.zy.util.GcUtils;
 import com.zy.vo.ActionReportExportVo;
 import com.zy.vo.ActivityAdminVo;
@@ -66,6 +69,9 @@ public class ActivityController {
 
 	@Autowired
 	private ActivityReportComponent activityReportComponent;
+
+	@Autowired
+	private LessonService lessonService;
 
 	@RequiresPermissions("activity:view")
 	@RequestMapping(method = RequestMethod.GET)
@@ -112,6 +118,11 @@ public class ActivityController {
 	public String update(Long id, Model model) {
 		Activity activity = activityService.findOne(id);
 		model.addAttribute("activity", activityComponent.buildAdminVo(activity, true));
+		LessonQueryModel lessonQueryModel = new LessonQueryModel();
+		lessonQueryModel.setViewFlageEQ(1);
+		Page<Lesson>page = lessonService.findPage(lessonQueryModel);
+		model.addAttribute("lessonId",activity.getLessonId());
+		model.addAttribute("lessonList",page.getData());
 		return "act/activityUpdate";
 	}
 
@@ -238,5 +249,19 @@ public class ActivityController {
 		OutputStream os = response.getOutputStream();
 		ExcelUtils.exportExcel(actionReportExportVoList, ActionReportExportVo.class, os);
 		return null;
+	}
+
+	/**
+	 * 查询  所有的课程
+	 * @return
+     */
+	@RequestMapping(value = "selectLesson" ,method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> selectLesson(){
+		LessonQueryModel lessonQueryModel = new LessonQueryModel();
+		lessonQueryModel.setViewFlageEQ(1);
+		Page<Lesson>page = lessonService.findPage(lessonQueryModel);
+	   /* Map<String,Long>map=page.getData().stream().collect(Collectors.toMap(Lesson::getTitle, lesson -> lesson.getId()));*/
+		return ResultBuilder.result(page.getData());
 	}
 }

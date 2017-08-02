@@ -70,6 +70,7 @@ public class Payment implements Serializable {
 	@Field(label = "标题")
 	@View
 	@Length(max = 255)
+	@Query(Predicate.EQ)
 	private String title;
 
 	@NotNull

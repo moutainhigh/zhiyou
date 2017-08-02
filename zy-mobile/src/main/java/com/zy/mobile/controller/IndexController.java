@@ -75,6 +75,11 @@ public class IndexController {
 		return "task";
 	}
 
+	@RequestMapping("/notification")
+	public String notification(Model model) {
+		return "notification";
+	}
+
 	@RequestMapping("/html")
 	public String html(String path) {
 		return path;

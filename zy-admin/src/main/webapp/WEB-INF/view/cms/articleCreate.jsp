@@ -134,7 +134,7 @@
       </div>
       <div class="portlet-body form">
         <!-- BEGIN FORM-->
-        <form id="createForm" action="" data-action="${ctx}/article/create" class="form-horizontal" method="post">
+        <form id="createForm" action="" data-action="${ctx}/tour/create" class="form-horizontal" method="post">
           <div class="form-body">
             <div class="alert alert-danger display-hide">
               <i class="fa fa-exclamation-circle"></i>

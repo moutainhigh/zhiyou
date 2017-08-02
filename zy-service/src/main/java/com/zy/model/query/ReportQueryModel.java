@@ -42,6 +42,8 @@ public class ReportQueryModel implements Serializable {
 
 	private Long visitUserIdEQ;
 
+	private Long productIdEQ;
+
 	private Integer timesEQ;
 
 	private Date reportedDateGTE;

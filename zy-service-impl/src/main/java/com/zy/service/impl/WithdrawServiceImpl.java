@@ -168,13 +168,14 @@ public class WithdrawServiceImpl implements WithdrawService {
 		User operator = userMapper.findOne(operatorId);
 		validate(operator, NOT_NULL, "operator id" + operatorId + " is not found null");
 
-		if (withdraw.getWithdrawStatus() == Withdraw.WithdrawStatus.已取消) {
+		Withdraw.WithdrawStatus withdrawStatus = withdraw.getWithdrawStatus();
+		if (withdrawStatus == Withdraw.WithdrawStatus.已取消) {
 			return; // 幂等处理
-		} else if (withdraw.getWithdrawStatus() != Withdraw.WithdrawStatus.已申请) {
+		} else if (withdrawStatus != Withdraw.WithdrawStatus.已申请 && withdrawStatus != Withdraw.WithdrawStatus.处理失败) {
 			throw new BizException(BizCode.ERROR, "只有已申请状态的提现单可以取消");
 		}
 
-		withdraw.setRemark(remark);
+		withdraw.setRemark(withdraw.getRemark() + ";" + remark);
 		withdraw.setOperatorId(operatorId);
 		withdraw.setWithdrawStatus(Withdraw.WithdrawStatus.已取消);
 		if (withdrawMapper.update(withdraw) == 0) {

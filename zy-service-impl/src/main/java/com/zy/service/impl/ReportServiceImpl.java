@@ -6,16 +6,16 @@ import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
 import com.zy.component.ActComponent;
 import com.zy.component.FncComponent;
+import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
 import com.zy.entity.adm.Admin;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.entity.fnc.Transfer;
 import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.User;
-import com.zy.mapper.AdminMapper;
-import com.zy.mapper.ReportMapper;
-import com.zy.mapper.UserMapper;
+import com.zy.mapper.*;
 import com.zy.model.BizCode;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.service.ReportService;
@@ -53,6 +53,12 @@ public class ReportServiceImpl implements ReportService {
 	@Autowired
 	private Config config;
 
+	@Autowired
+	private TourUserMapper tourUserMapper;
+
+	@Autowired
+	private PolicyCodeMapper policyCodeMapper;
+
 	@Override
 	public Report create(@NotNull Report report) {
 		Long userId = report.getUserId();
@@ -78,7 +84,7 @@ public class ReportServiceImpl implements ReportService {
 		report.setCreatedTime(now);
 		report.setIsSettledUp(false);
 		report.setIsHot(false);
-		validate(report);
+		//validate(report);
 		
 		String realname = report.getRealname();
 		Integer times = report.getTimes();
@@ -87,8 +93,12 @@ public class ReportServiceImpl implements ReportService {
 		reportQueryModel.setPhoneEQ(report.getPhone());
 		reportQueryModel.setTimesEQ(times);
 		List<Report> reports = reportMapper.findAll(reportQueryModel);
-		validate(reports, v -> v.isEmpty(), realname + "，第" + times + "次检测结果已经提交，请勿重复提交，谢谢！");
-		
+		/*validate(reports, v -> v.isEmpty(), realname + "，第" + times + "次检测结果已经提交，请勿重复提交，谢谢！");*/
+		//置入 检测次数
+		ReportQueryModel reportQueryModel1 = new ReportQueryModel();
+		reportQueryModel1.setPhoneEQ(report.getPhone());
+		long count = reportMapper.count(reportQueryModel1);
+		report.setTimes(new Long(count).intValue()+1);
 		reportMapper.insert(report);
 		return report;
 	}
@@ -227,7 +237,7 @@ public class ReportServiceImpl implements ReportService {
 
 		if (config.isOld(productId)) { // 旧产品, 按原有规则结算
 
-//			String title = "数据奖,检测报告编号" + id;
+//			String title = "历史收益,检测报告编号" + id;
 //			Long topId = null; // 找到第一个特级代理
 //			Long transferUserId = null; // transfer 给到的代理
 //
@@ -288,10 +298,10 @@ public class ReportServiceImpl implements ReportService {
 //
 //
 //			/* 全额给一个人 */
-//			fncComponent.createProfit(topId, ProfitType.数据奖, id, title, CurrencyType.现金, new BigDecimal("18.00"), new Date(), null); // TODO	 写死
+//			fncComponent.createProfit(topId, ProfitType.历史收益, id, title, CurrencyType.现金, new BigDecimal("18.00"), new Date(), null); // TODO	 写死
 //
 //			if (hasTransfer) {
-//				fncComponent.createTransfer(topId, transferUserId, Transfer.TransferType.数据奖, id, title, CurrencyType.现金, new BigDecimal("15.00"), new Date());
+//				fncComponent.createTransfer(topId, transferUserId, Transfer.TransferType.历史收益, id, title, CurrencyType.现金, new BigDecimal("15.00"), new Date());
 //			}
 
 			report.setIsSettledUp(true);
@@ -361,6 +371,11 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
+	public Report findReport(@NotNull ReportQueryModel reportQueryModel) {
+		return reportMapper.findReport(reportQueryModel);
+	}
+
+	@Override
 	public Report modify(@NotNull Report report) {
 		Long id = report.getId();
 		validate(id, NOT_NULL, "id is null");
@@ -402,8 +417,9 @@ public class ReportServiceImpl implements ReportService {
 		return persistence;
 	}
 
+	//添加 旅游信息 审核状态
 	@Override
-	public void preConfirm(@NotNull Long id, boolean isSuccess, String confirmRemark) {
+	public void preConfirm(@NotNull Long id, boolean isSuccess, String confirmRemark,Long userId) {
 		Report report = reportMapper.findOne(id);
 		validate(report, NOT_NULL, "report id" + id + " not found");
 		if(report.getPreConfirmStatus() != ConfirmStatus.待审核) {
@@ -412,7 +428,27 @@ public class ReportServiceImpl implements ReportService {
 		if(report.getConfirmStatus() != ConfirmStatus.待审核) {
 			throw new BizException(BizCode.ERROR, "状态不匹配");
 		}
+		//获取 用户旅游信息
+		List<TourUser> tourUserList = tourUserMapper.findByReportId(id);
+		if (tourUserList!=null&&!tourUserList.isEmpty()){
+			TourUser tourUser = tourUserList.get(0);//之取到第一条 （原则上只有一条）
+			tourUser.setUpdateDate(new Date());
+			tourUser.setUpdateBy(userId);
+			if (isSuccess){
+				tourUser.setIsEffect(1);
+			}else{//若果不通过 则将产品编号设置成可用
+				if (report.getProductNumber()!=null){
+					PolicyCode policyCode = policyCodeMapper.findByCode(report.getProductNumber());
+					policyCode.setTourUsed(true);
+					policyCodeMapper.update(policyCode);
+				}
 
+				tourUser.setIsEffect(0);
+				validate(confirmRemark, NOT_BLANK, "confirm remark is null");
+				tourUser.setRevieweRemark(confirmRemark);
+			}
+			tourUserMapper.modify(tourUser);
+		}
 		report.setPreConfirmedTime(new Date());
 		if(isSuccess) {
 			report.setPreConfirmStatus(ConfirmStatus.已通过);

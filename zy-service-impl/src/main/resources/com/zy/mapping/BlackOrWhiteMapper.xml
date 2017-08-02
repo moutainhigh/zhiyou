@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.BlackOrWhiteMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.tour.BlackOrWhite">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="number" property="number" />
+		<result column="type" property="type" />
+	</resultMap>
+
+	<sql id="baseColumn">id,user_id,number,type</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.tour.BlackOrWhite" useGeneratedKeys="true" keyProperty="id">
+	  insert into `ts_black_white` (user_id,number,type)
+	  values (#{userId},#{number},#{type})
+	</insert>
+
+	<update id="update" parameterType="com.zy.entity.tour.BlackOrWhite">
+		update `ts_black_white`
+		<set>
+			user_id = #{userId},
+			number = #{number},
+			type = #{type},
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+		select
+		<include refid="baseColumn"/>
+		from `ts_black_white`
+		where id = #{id}
+	</select>
+
+	<select id="findByUserId" resultMap="baseResultMap" parameterType="long">
+		select
+		<include refid="baseColumn"/>
+		from `ts_black_white`
+		where user_id = #{userId}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.BlackOrWhiteQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `ts_black_white`
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+					and id in
+					<foreach collection="idIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="idIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+			<if test="numberGTE != null">
+				and number &gt;= #{numberGTE}
+			</if>
+			<if test="numberLT != null">
+				and number &lt;= #{numberLT}
+			</if>
+			<if test="userId != null">
+				and user_id = #{userId}
+			</if>
+			<if test="type != null">
+				and type = #{type}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and user_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.BlackOrWhiteQueryModel">
+		select count(*) from `ts_black_white`
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+					and id in
+					<foreach collection="idIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="idIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+			<if test="numberGTE != null">
+				and number &gt;= #{numberGTE}
+			</if>
+			<if test="numberLT != null">
+				and number &lt;= #{numberLT}
+			</if>
+			<if test="userId != null">
+				and user_id = #{userId}
+			</if>
+			<if test="type != null">
+				and type = #{type}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and user_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<delete id="delete" parameterType="long">
+		delete from `ts_black_white` where id = #{id}
+	</delete>
+
+</mapper>

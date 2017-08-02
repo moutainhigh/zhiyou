@@ -8,6 +8,7 @@ import com.zy.model.dto.OrderSumDto;
 import com.zy.model.query.OrderQueryModel;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService {
 
@@ -35,7 +36,10 @@ public interface OrderService {
 
 	void settleUp(Long orderId); // 在订单完成时结算
 
-	void settleUpProfit(Long orderId); // 在订单支付成功后结算
+	void settleUpProfit(String yearAndMonth); // 在订单支付成功后结算
+	void settleUpOption(String yearAndMonth); // 重新结算期权奖励
+	void settleUpRebate(String yearAndMonth); // 返利奖
+	void settleUpDirector(String yearAndMonth); // 董事贡献奖
 
 	void settleUpMonthly(String yearAndMonth); // 月结算
 
@@ -50,4 +54,8 @@ public interface OrderService {
 	void delete(Long orderId);
 	
 	void undelete(Long orderId);
+
+	Map<String,Object> querySalesVolume(OrderQueryModel orderQueryModel);
+
+	Map<String,Object> querySalesVolumeDetail(OrderQueryModel orderQueryModel);
 }

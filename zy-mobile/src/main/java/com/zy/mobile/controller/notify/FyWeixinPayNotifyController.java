@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -37,7 +38,7 @@ public class FyWeixinPayNotifyController {
 
 	@RequestMapping
 	@ResponseBody
-	public FuiouWeixinPayNotifyRes payNotify(FuiouWeixinPayNotifyReq fuiouWeixinPayNotifyReq) {
+	public FuiouWeixinPayNotifyRes payNotify(FuiouWeixinPayNotifyReq fuiouWeixinPayNotifyReq, HttpServletResponse response) {
 		logger.info("enter fy weixin pay notify controller");
 		logger.info("fuiouWeixinPayNotifyReq: " + JsonUtils.toJson(fuiouWeixinPayNotifyReq));
 		FuiouWeixinPayNotifyRes fuiouWeixinPayNotifyRes = new FuiouWeixinPayNotifyRes();
@@ -60,10 +61,10 @@ public class FyWeixinPayNotifyController {
 				logger.info("OutOrderNum sn :" + sn);
 				if (sn != null && sn.startsWith("ZF")){
 					Payment payment = paymentService.findBySn(sn);
-					String remark = fuiouWeixinPayNotifyReq.getRemark();
+					/*String remark = fuiouWeixinPayNotifyReq.getRemark();
 					if (StringUtils.isBlank(remark) || !remark.equalsIgnoreCase(payment.getRemark())) {
 						throw new BizException(BizCode.ERROR, "备注信息验证失败：备注信息不一致");
-					}
+					}*/
 					paymentService.success(payment.getId(), payment.getOuterSn());
 				}
 			} else {
@@ -72,7 +73,9 @@ public class FyWeixinPayNotifyController {
 			fuiouWeixinPayNotifyRes.setResult("SUCCESS");
 		} catch (Throwable throwable) {
 			fuiouWeixinPayNotifyRes.setResult("FAIL");
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
+		logger.info("fuiouWeixinPayNotifyRes: " + JsonUtils.toJson(fuiouWeixinPayNotifyRes));
 		return fuiouWeixinPayNotifyRes;
 	}
 

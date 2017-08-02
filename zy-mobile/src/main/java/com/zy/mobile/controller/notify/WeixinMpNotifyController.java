@@ -80,6 +80,9 @@ public class WeixinMpNotifyController {
 				String avatar = wxMpUser.getHeadImgUrl();
 				if (StringUtils.isBlank(avatar)) {
 					avatar = Constants.SETTING_DEFAULT_AVATAR;
+				}else if(avatar.indexOf("http")==-1){
+					avatar = Constants.SETTING_DEFAULT_AVATAR;
+
 				}
 				agentRegisterDto.setAvatar(avatar);
 				agentRegisterDto.setOpenId(wxMpUser.getOpenId());
@@ -97,6 +100,7 @@ public class WeixinMpNotifyController {
 				cacheSupport.set(Constants.CACHE_NAME_TGT, tgt, userId, expire);
 				session.setAttribute(SESSION_ATTRIBUTE_PRINCIPAL, PrincipalBuilder.build(userId, tgt));
 				logger.info("login success, tgt:" + tgt);
+				userService.modifyLastLoginTime(userId);
 
 				String redirectUrl = (String) session.getAttribute(SESSION_ATTRIBUTE_REDIRECT_URL);
 				if (StringUtils.isBlank(redirectUrl)) {

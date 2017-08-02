@@ -19,6 +19,8 @@ public class ProductListVo implements Serializable {
 	private BigDecimal price;
 	@Field(label = "市场价")
 	private BigDecimal marketPrice;
+	@Field(label = "是否结算")
+	private Boolean isSettlement;
 
 	/* 扩展 */
 	@Field(label = "主图")

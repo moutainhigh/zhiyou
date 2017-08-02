@@ -51,7 +51,7 @@
     .ziyuan {
       width:4.2rem;
       height:6.4rem;
-      background:url(${ctx}/ziyuan.png) no-repeat;
+      background:url(${ctx}/images/ziyuan.png) no-repeat;
       background-size: 4.2rem 6.4rem;
       position:absolute;
       left:0;
@@ -64,7 +64,7 @@
       height:1.11rem;
     }
     article a.image {
-      background:url(${ctx}/image.png) no-repeat;
+      background:url(${ctx}/images/image.png) no-repeat;
       background-size: 2.2rem 1.11rem;
       position:absolute;
       left:2.9rem;
@@ -72,7 +72,7 @@
       margin-top:-3.2rem;
     }
     article a.word {
-      background:url(${ctx}/word.png) no-repeat;
+      background:url(${ctx}/images/word.png) no-repeat;
       background-size: 2.2rem 1.11rem;
       position:absolute;
       left:3.9rem;
@@ -80,7 +80,7 @@
       margin-top:-1.5rem;
     }
     article a.audio {
-      background:url(${ctx}/audio.png) no-repeat;
+      background:url(${ctx}/images/audio.png) no-repeat;
       background-size: 2.2rem 1.11rem;
       position:absolute;
       left:3.9rem;
@@ -88,7 +88,7 @@
       margin-top:0.5rem;
     }
     article a.video {
-      background:url(${ctx}/video.png) no-repeat;
+      background:url(${ctx}/images/video.png) no-repeat;
       background-size: 2.2rem 1.11rem;
       position:absolute;
       left:2.9rem;

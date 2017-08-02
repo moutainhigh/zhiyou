@@ -24,13 +24,14 @@
 		<result column="ticket_type" property="ticketType" />
 		<result column="version" property="version" />
 		<result column="level" property="level" />
+		<result column="lesson_id" property="lessonId" />
 	</resultMap>
 
-	<sql id="baseColumn">id,title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,max_count,ticket_type,version,level</sql>
+	<sql id="baseColumn">id,title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,max_count,ticket_type,version,level,lesson_id</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.act.Activity" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_activity` (title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version,max_count,ticket_type,level)
-	  values (#{title},#{areaId},#{amount},#{address},#{latitude},#{longitude},#{image},#{detail},#{applyDeadline},#{startTime},#{endTime},#{signedInCount},#{collectedCount},#{appliedCount},#{viewedCount},#{isReleased},#{version},#{maxCount},#{ticketType},#{level})
+	  insert into `act_activity` (title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version,max_count,ticket_type,level,lesson_id)
+	  values (#{title},#{areaId},#{amount},#{address},#{latitude},#{longitude},#{image},#{detail},#{applyDeadline},#{startTime},#{endTime},#{signedInCount},#{collectedCount},#{appliedCount},#{viewedCount},#{isReleased},#{version},#{maxCount},#{ticketType},#{level},#{lessonId})
 	</insert>
 
 	<delete id="delete">
@@ -59,7 +60,8 @@
 			max_count = #{maxCount},
 			ticket_type = #{ticketType},
 			version = version + 1,
-			level = #{level}
+			level = #{level},
+			lesson_id =#{lessonId}
 		</set>
 		where id = #{id} and version=#{version}
 	</update>
@@ -88,6 +90,7 @@
 					<when test="field == 'maxCount'">max_count = #{activity.maxCount},</when>
 					<when test="field == 'ticketType'">ticket_type = #{activity.ticketType},</when>
 					<when test="field == 'level'">level = #{activity.level},</when>
+					<when test="field == 'lessonId'">lesson_id = #{activity.lessonId},</when>
 				</choose>
 				</foreach>
 			</set>
