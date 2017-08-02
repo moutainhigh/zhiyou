@@ -54,7 +54,7 @@ public class TourUserComponent {
     public TourUserAdminVo buildAdminVo(TourUser tourUser) {
         TourUserAdminVo tourUserAdminVo = new TourUserAdminVo();
         BeanUtils.copyProperties(tourUser, tourUserAdminVo);
-        UserInfo userInfo = userInfoService.findByUserId(tourUser.getUserId());
+        UserInfo userInfo = userInfoService.findByUserIdandFlage(tourUser.getUserId());
         if (userInfo!=null) {
             tourUserAdminVo.setUserName(userInfo.getRealname());
             tourUserAdminVo.setIdCardNumber(userInfo.getIdCardNumber());
@@ -73,7 +73,7 @@ public class TourUserComponent {
                 }
             }
         }
-        UserInfo userIf = userInfoService.findByUserId(tourUser.getParentId());
+        UserInfo userIf = userInfoService.findByUserIdandFlage(tourUser.getParentId());
         if (userIf!=null) {
             tourUserAdminVo.setParentName(userIf.getRealname());
         }
@@ -82,7 +82,7 @@ public class TourUserComponent {
         User use = userService.findOne(tourUser.getParentId());
         tourUserAdminVo.setParentPhone(use.getPhone());
         if (tourUser.getUpdateBy() != null){
-            UserInfo userI = userInfoService.findByUserId(tourUser.getUpdateBy());
+            UserInfo userI = userInfoService.findByUserIdandFlage(tourUser.getUpdateBy());
             if(userI!=null) {
                 tourUserAdminVo.setUpdateName(userI.getRealname());
             }
@@ -111,7 +111,7 @@ public class TourUserComponent {
         if (tourUser.getCarImages() != null) {
             tourUserExportVo.setImageThumbnail(getThumbnail(tourUser.getCarImages(), 750, 450));
         }
-        UserInfo userInfo = userInfoService.findByUserId(tourUser.getUserId());
+        UserInfo userInfo = userInfoService.findByUserIdandFlage(tourUser.getUserId());
         if (userInfo != null){
             tourUserExportVo.setUserName(userInfo.getRealname());
             tourUserExportVo.setIdCardNumber(userInfo.getIdCardNumber());
@@ -120,7 +120,7 @@ public class TourUserComponent {
         if (userInfo != null && userInfo.getGender() != null){
             tourUserExportVo.setGender(userInfo.getGender().toString());
         }
-        UserInfo userIf = userInfoService.findByUserId(tourUser.getParentId());
+        UserInfo userIf = userInfoService.findByUserIdandFlage(tourUser.getParentId());
         if (userIf != null){
             tourUserExportVo.setParentName(userIf.getRealname());
         }
@@ -188,7 +188,7 @@ public class TourUserComponent {
         }
 
         if (tourUser.getUpdateBy() != null){
-            UserInfo userI = userInfoService.findByUserId(tourUser.getUpdateBy());
+            UserInfo userI = userInfoService.findByUserIdandFlage(tourUser.getUpdateBy());
             tourUserExportVo.setUpdateName(userI.getRealname());
         }
         if (tourUser.getTourId() != null){
@@ -212,14 +212,14 @@ public class TourUserComponent {
         if (tourUser.getCarImages() != null) {
             tourJoinUserExportVo.setImageThumbnail(getThumbnail(tourUser.getCarImages(), 750, 450));
         }
-        UserInfo userInfo = userInfoService.findByUserId(tourUser.getUserId());
+        UserInfo userInfo = userInfoService.findByUserIdandFlage(tourUser.getUserId());
         if (userInfo != null && userInfo.getGender() != null){
             tourJoinUserExportVo.setGender(userInfo.getGender().toString());
             tourJoinUserExportVo.setUserName(userInfo.getRealname());
             tourJoinUserExportVo.setIdCardNumber(userInfo.getIdCardNumber());
             tourJoinUserExportVo.setAge(DateUtil.getAge(userInfo.getIdCardNumber()));
         }
-        UserInfo userIf = userInfoService.findByUserId(tourUser.getParentId());
+        UserInfo userIf = userInfoService.findByUserIdandFlage(tourUser.getParentId());
         if (userIf != null){
             tourJoinUserExportVo.setParentName(userIf.getRealname());
         }
@@ -264,7 +264,7 @@ public class TourUserComponent {
         }
 
         if (tourUser.getUpdateBy() != null){
-            UserInfo userI = userInfoService.findByUserId(tourUser.getUpdateBy());
+            UserInfo userI = userInfoService.findByUserIdandFlage(tourUser.getUpdateBy());
             tourJoinUserExportVo.setUpdateName(userI.getRealname());
         }
         if (tourUser.getTourId() != null){
