@@ -436,6 +436,7 @@ public class ReportServiceImpl implements ReportService {
 			tourUser.setUpdateBy(userId);
 			if (isSuccess){
 				tourUser.setIsEffect(1);
+				tourUser.setAuditStatus(1);
 			}else{//若果不通过 则将产品编号设置成可用
 				if (report.getProductNumber()!=null){
 					PolicyCode policyCode = policyCodeMapper.findByCode(report.getProductNumber());
@@ -446,6 +447,7 @@ public class ReportServiceImpl implements ReportService {
 				tourUser.setIsEffect(0);
 				validate(confirmRemark, NOT_BLANK, "confirm remark is null");
 				tourUser.setRevieweRemark(confirmRemark);
+				tourUser.setAuditStatus(5);
 			}
 			tourUserMapper.modify(tourUser);
 		}
