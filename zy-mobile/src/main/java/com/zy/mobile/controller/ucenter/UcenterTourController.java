@@ -79,7 +79,7 @@ public class UcenterTourController {
             return tourUserComponent.buildListVo(v);
         }).collect(Collectors.toList());
         List<TourUserListVo> tourUsers1 = list.stream().filter(v -> v.getAuditStatus() == 5).collect(Collectors.toList());
-        List<TourUserListVo> tourUsers2 = list.stream().filter(v -> v.getIsEffect() == 1 && v.getAuditStatus() != 5).collect(Collectors.toList());
+        List<TourUserListVo> tourUsers2 = list.stream().filter(v -> v.getAuditStatus() != 5).collect(Collectors.toList());
         //Boolean isNothing = tourUsers1.size() == 0 && tourUsers2.size() == 0 ? true : false;
         model.addAttribute("tourUsers1" , tourUsers1);
         model.addAttribute("tourUsers2" , tourUsers2);
