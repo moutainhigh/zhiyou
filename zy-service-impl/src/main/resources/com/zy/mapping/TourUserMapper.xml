@@ -700,7 +700,10 @@
 				user_remark = #{userRemark},
 			</if>
 			<if test="updateBy !=null">
-				update_by = #{updateBy}
+				update_by = #{updateBy},
+			</if>
+			<if test="revieweRemark !=null">
+				reviewe_remark = #{revieweRemark}
 			</if>
 		</set>
 		where id = #{id}
