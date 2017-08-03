@@ -243,19 +243,19 @@
         <em>版本通知</em>
       </a>
     </div>
-    <div class="user-account flex list-group" style="width: 33.33%;">
+    <div class="user-account flex list-group" >
       <a class="flex-1 bd-r"  href="${ctx}/u/honor" >
         <i class="icon icon-2x" style='background: url("${ctx}/images/honor.png")'></i>
         <em>我的荣誉</em>
       </a>
-      <%--<a class="flex-1 bd-r" href="${ctx}/u/userSetting">--%>
-        <%--<i class="icon icon-2x" style='background: url("${ctx}/images/shezhi.png")'></i>--%>
-        <%--<em></em>--%>
-      <%--</a>--%>
-      <%--<a class="flex-1" href="#">--%>
+      <a class="flex-1 bd-r" href="#">
+        <i class="icon icon-2x" style='background: url("${ctx}/images/shezhi.png")'></i>
+        <em>我的库存</em>
+      </a>
+      <a class="flex-1" href="#">
         <%--<i class="icon icon-2x" style='background: url("${ctx}/images/banben.png")'></i>--%>
-        <%--<em></em>--%>
-      <%--</a>--%>
+        <em></em>
+      </a>
     </div>
     <%----%>
     <%--<div class="list-group">--%>
