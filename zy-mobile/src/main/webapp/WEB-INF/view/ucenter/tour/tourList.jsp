@@ -166,6 +166,9 @@
                         <p class="tourImageTFont"><b>${tourUser.tourTitle}</b></p>
                         <p class="startTime">出发时间：${tourUser.tourTime}</p>
                         <c:choose>
+                            <%--<c:when test="${tourUser.auditStatus == 0}">--%>
+                                <%--<p class="startState startStateFile">待审核</p>--%>
+                            <%--</c:when>--%>
                             <c:when test="${tourUser.auditStatus == 1}">
                                 <p class="startState startStateFile">审核中</p>
                             </c:when>
