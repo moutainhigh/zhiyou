@@ -209,6 +209,15 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="control-label col-md-3">发货数量:</label>
+                      <div class="col-md-9">
+                        <p class="form-control-static">${order.sendQuantity}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
 

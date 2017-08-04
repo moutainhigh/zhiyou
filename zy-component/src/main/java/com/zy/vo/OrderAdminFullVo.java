@@ -98,6 +98,8 @@ public class OrderAdminFullVo implements Serializable {
 	private Boolean isSettlement;
 	@Field(label = "出货途径")
 	private Integer isUku;
+	@Field(label = "发货数量")
+	private Integer sendQuantity;
 
 	/* 扩展 */
 	@Field(label = "isPlatformDeliver")
