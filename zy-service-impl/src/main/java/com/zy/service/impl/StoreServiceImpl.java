@@ -3,6 +3,8 @@ package com.zy.service.impl;
 import com.zy.common.model.query.Page;
 import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
+import com.zy.entity.mal.Order;
+import com.zy.entity.mal.OrderStore;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.tour.Sequence;
 import com.zy.entity.tour.Tour;
@@ -10,6 +12,7 @@ import com.zy.entity.tour.TourTime;
 import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.UserInfo;
 import com.zy.mapper.*;
+import com.zy.model.query.OrderStoreQueryModel;
 import com.zy.model.query.TourQueryModel;
 import com.zy.model.query.TourTimeQueryModel;
 import com.zy.model.query.TourUserQueryModel;
@@ -36,5 +39,22 @@ import static com.zy.common.util.ValidateUtils.validate;
 @Validated
 public class StoreServiceImpl implements StoreService {
 
+    @Autowired
+    private OrderStoreMapper orderStoreMapper;
 
+    @Override
+    public Page<OrderStore> findPage(OrderStoreQueryModel orderStoreQueryModel) {
+        if (orderStoreQueryModel.getPageNumber() == null)
+            orderStoreQueryModel.setPageNumber(0);
+        if (orderStoreQueryModel.getPageSize() == null)
+            orderStoreQueryModel.setPageSize(20);
+        long total = orderStoreMapper.count(orderStoreQueryModel);
+        List<OrderStore> data = orderStoreMapper.findAll(orderStoreQueryModel);
+        Page<OrderStore> page = new Page<>();
+        page.setPageNumber(orderStoreQueryModel.getPageNumber());
+        page.setPageSize(orderStoreQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
+    }
 }

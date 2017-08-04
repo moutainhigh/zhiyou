@@ -125,6 +125,22 @@
             orderable: false
           },
           {
+            data: 'isUku',
+            title: '出货方式',
+            orderable: false,
+            render: function (data, type, full) {
+              if(data == 1){
+                return 'U库发货';
+              }else if (data == 0){
+                return '自己发货';
+              }else if (data == 2){
+                return '一键转订单发货';
+              }else {
+                return ''
+              }
+            }
+          },
+          {
             data: 'isPlatformDeliver',
             title: '平台发货',
             orderable: false,
@@ -278,7 +294,15 @@
               <div class="form-group input-inline">
                 <input type="text" name="snLK" class="form-control" placeholder="订单号"/>
               </div>
-              
+
+              <div class="form-group">
+                <select name="isUku" class="form-control">
+                  <option value="">-- 出货方式 --</option>
+                  <option value="2"> 一键转订单发货 </option>
+                  <option value="1"> U库发货 </option>
+                  <option value="0"> 自己发货 </option>
+                </select>
+              </div>
               <div class="form-group input-inline">
                 <input type="text" name="logisticsSnLK" class="form-control" placeholder="物流单号"/>
               </div>               

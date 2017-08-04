@@ -192,6 +192,26 @@
                 </div>
             </c:if>
 
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="control-label col-md-3">出货方式:</label>
+                      <div class="col-md-9">
+                        <c:if test="${order.isUku == 0}">
+                          <p class="form-control-static">自己发货</p>
+                        </c:if>
+                        <c:if test="${order.isUku == 1}">
+                          <p class="form-control-static">U库发货</p>
+                        </c:if>
+                        <c:if test="${order.isUku == 2}">
+                          <p class="form-control-static">一键转订单发货</p>
+                        </c:if>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
             <h4 class="form-section">买家卖家:</h4>
 
             <div class="row">

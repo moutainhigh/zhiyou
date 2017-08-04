@@ -81,6 +81,8 @@ public class OrderQueryModel implements Serializable {
 
 	private Long productIdEQ;
 
+	private Integer isUku;
+
 	private Boolean isSettlementEQ;
 
 	private Integer pageNumber;

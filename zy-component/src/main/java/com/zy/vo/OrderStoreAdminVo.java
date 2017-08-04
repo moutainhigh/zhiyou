@@ -32,5 +32,7 @@ public class OrderStoreAdminVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "创建时间")
 	private String createDate;
+	@Field(label = "用户名")
+	private String userName;
 
 }

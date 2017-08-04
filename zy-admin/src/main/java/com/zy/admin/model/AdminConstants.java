@@ -48,7 +48,8 @@ public class AdminConstants {
 			sub.put("productReplacement:view", "换货管理(查看)");
 			sub.put("productReplacement:deliver", "换货管理(发货)");
 			sub.put("productReplacement:reject", "换货管理(驳回)");
-	 		SETTING_PERMISSION_MAP.put("下单中心", sub);
+			sub.put("orderStore:view", "U库管理");
+			SETTING_PERMISSION_MAP.put("下单中心", sub);
 		}
 		{
 			sub = new LinkedHashMap<>();

@@ -353,4 +353,9 @@ public class Order implements Serializable {
 	@Query(Predicate.EQ)
 	private Boolean isSettlement;
 
+	@View
+	@Field(label = "是否结算")
+	@Query(Predicate.EQ)
+	private Boolean isUku;
+
 }

@@ -192,7 +192,7 @@
           <!-- END RESPONSIVE QUICK SEARCH FORM -->
         </li>
 
-        <shiro:hasAnyPermissions name="product:view,order:view,order:deliver,orderFillUser:view,productReplacement:view">
+        <shiro:hasAnyPermissions name="product:view,order:view,order:deliver,orderFillUser:view,productReplacement:view,orderStore:view">
           <li>
             <a href="javascript:;">
               <i class="icon-basket"></i>
@@ -227,6 +227,11 @@
               <shiro:hasPermission name="orderFillUser:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/orderFillUser"><i class="icon-users"></i> 用户补单管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="orderStore:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/orderStore"><i class="icon-home"></i> U库管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>

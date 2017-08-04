@@ -54,6 +54,7 @@
 		<result column="price" property="price" />
 		<result column="quantity" property="quantity" />
 		<result column="is_settlement" property="isSettlement" />
+		<result column="is_Uku" property="isUku" />
 		<result column="version" property="version" />
 	</resultMap>
 
@@ -187,14 +188,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,version
+		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,is_Uku,version
 		from `mal_order`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderQueryModel">
 		select
-		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,version
+		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,is_Uku,version
 		from `mal_order`
 		<where>
 			<if test="rootIdEQ != null">
@@ -214,6 +215,9 @@
 			</if>
 			<if test="isSettledUpEQ != null">
 				and is_settled_up = #{isSettledUpEQ}
+			</if>
+			<if test="isUku != null">
+				and is_Uku = #{isUku}
 			</if>
 			<if test="isCopiedEQ != null">
 				and is_copied = #{isCopiedEQ}
@@ -339,6 +343,9 @@
 			</if>
 			<if test="isSettledUpEQ != null">
 				and is_settled_up = #{isSettledUpEQ}
+			</if>
+			<if test="isUku != null">
+				and is_Uku = #{isUku}
 			</if>
 			<if test="isCopiedEQ != null">
 				and is_copied = #{isCopiedEQ}
