@@ -151,9 +151,30 @@
 			<if test="createdTime !=null">
 				AND  a.create_date &gt;= #{createdTime}
 			</if>
-			AND a.is_effect = 1
+			<if test="guaranteeAmountGT !=null">
+				AND  a.guarantee_amount &gt;= #{guaranteeAmountGT}
+			</if>
+			<if test="isVisit !=null">
+				<if test="isVisit ==1">
+					AND a.visit_user_id is not NULL
+				</if>
+				<if test="isVisit !=1">
+					AND  a.visit_user_id is NULL
+				</if>
+			</if>
+			<!--之前是默认值  -->
+			<if test="isEffect ==null">
+			   AND a.is_effect = 1
+			</if>
 		</where>
-		ORDER BY a.create_date DESC ,a.audit_status ASC
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC ,a.audit_status ASC
+			</otherwise>
+		</choose>
 		<if test="offset != null">
 			limit #{offset}, #{pageSize}
 		</if>
@@ -406,7 +427,21 @@
 			<if test="createdTime !=null">
 				AND  a.create_date &gt;= #{createdTime}
 			</if>
-			AND a.is_effect = 1
+			<if test="guaranteeAmountGT !=null">
+				AND  a.guarantee_amount &gt;= #{guaranteeAmountGT}
+			</if>
+			<if test="isVisit !=null">
+			    <if test="isVisit ==1">
+				  AND  a.visit_user_id is not NULL
+				</if>
+				<if test="isVisit !=1">
+					AND  a.visit_user_id is NULL
+				</if>
+			</if>
+			<!--之前是默认值  -->
+			<if test="isEffect ==null">
+				AND a.is_effect = 1
+			</if>
 		</where>
 	</select>
 

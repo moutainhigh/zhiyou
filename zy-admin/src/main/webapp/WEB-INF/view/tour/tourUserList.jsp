@@ -895,6 +895,13 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <select name="isVisit" class="form-control">
+                                    <option value="">-- 分配状态 --</option>
+                                    <option value="1">已分配</option>
+                                    <option value="0">未分配</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <select name="firstVisitStatus" class="form-control">
                                     <option value="">-- 初访状态 --</option>
                                     <option value="0">回访失败</option>
