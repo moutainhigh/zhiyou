@@ -45,9 +45,9 @@
 </header>
 
 <article class="order-list">
-  <p>优库存量：999件</p>
-  <a href="#" class="orderStock">我要出货</a>
-  <a href="#" class="orderStockTwo">我要发货</a>
+  <p>优库存量：${num}件</p>
+  <a href="${ctx}/product" class="orderStock">我要进货</a>
+  <a href="${ctx}/u/store/toOutOrder?orderStatus=2" class="orderStockTwo">我要发货</a>
 </article>
 
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>

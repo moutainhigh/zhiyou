@@ -418,14 +418,14 @@
       <div class="list-item form-radio">
         <label class="list-text" for="deliverType0">全部发货</label>
         <div class="list-unit">
-          <input id="deliverType0" type="radio" name="isUseLogistics" value="false">
+          <input id="deliverType0" type="radio" name="sendType" value="false">
           <label class="i-checked" for="deliverType0"></label>
         </div>
       </div>
       <div class="list-item form-radio">
         <label class="list-text" for="deliverType1">存入优库</label>
         <div class="list-unit">
-          <input id="deliverType1" type="radio" name="isUseLogistics" value="true" checked>
+          <input id="deliverType1" type="radio" name="sendType" value="true" checked>
           <label class="i-checked" for="deliverType1"></label>
         </div>
       </div>
@@ -433,7 +433,7 @@
       <div class="list-item form-radio">
         <label class="list-text" for="deliverType2">部分发货</label>
         <div class="list-unit">
-          <input id="deliverType2" type="radio" name="isUseLogistics" value="true">
+          <input id="deliverType2" type="radio" name="sendType" value="true">
           <label class="i-checked" for="deliverType2"></label>
         </div>
       </div>
@@ -441,6 +441,7 @@
 
     <div id="logistics" class="list-group hide">
       <div class="list-title">选择的发货数量为：800件</div>
+      <input type="hidden" name="sendNumber" value="80">
       <div class="list-item">
         <label class="list-label" for="logisticsName">发货数量</label>
         <div class="list-text">

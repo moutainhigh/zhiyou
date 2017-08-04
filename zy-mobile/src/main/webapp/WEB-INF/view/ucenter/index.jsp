@@ -248,7 +248,7 @@
         <i class="icon icon-2x" style='background: url("${ctx}/images/honor.png")'></i>
         <em>我的荣誉</em>
       </a>
-      <a class="flex-1 bd-r" href="#">
+      <a class="flex-1 bd-r" href="${ctx}/u/store">
         <i class="icon icon-2x" style='background: url("${ctx}/images/shezhi.png")'></i>
         <em>我的库存</em>
       </a>

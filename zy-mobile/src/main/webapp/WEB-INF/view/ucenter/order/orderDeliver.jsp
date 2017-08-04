@@ -42,15 +42,9 @@
           }
         },
         submitHandler : function(form) {
-          var deliverType = $('input[name="isUseLogistics"]:checked');
+          var deliverType = $('input[name="isUku"]:checked');
           if(deliverType.length == 0) {
             messageFlash('请选择发货方式');
-            return;
-          }
-          var reg = /^\d*\.\d{2}$/
-          var logisticsFee = $('#logisticsFee').val();
-          if(reg.test(logisticsFee)) {
-            messageAlert('物流费用必须为数字');
             return;
           }
           $(form).find(':submit').prop('disabled', true);
@@ -59,10 +53,20 @@
       });
 
       $('#deliverType1').click(function() {
+        $("#btnSubmit").attr("disabled",false);
         $('#logistics').slideDown(300);
+        var num ='${num}';
+        var ordernum ='${ordernum}';
+        if (ordernum>num){
+          messageAlert("发货数量不能大于库存数量！");
+          $(".orange.btn").css("background-color","#ccc");
+          $("#btnSubmit").attr("disabled",true);
+        }
       });
 
       $('#deliverType0').click(function() {
+        $("#btnSubmit").attr("disabled",false);
+        $(".orange.btn").css("background-color","#e87e04");
         $('#logistics').slideUp(300);
       });
 
@@ -76,7 +80,7 @@
 </header>
 
 <article>
-  <form action="${ctx}/u/order/deliver" class="valid-form" method="post">
+  <form action="${ctx}/u/order/deliverStore" class="valid-form" method="post">
     <input type="hidden" name="id" value="${orderId}">
 
     <div class="list-group">
@@ -84,14 +88,14 @@
       <div class="list-item form-radio">
         <label class="list-text" for="deliverType0">自己发货</label>
         <div class="list-unit">
-          <input id="deliverType0" type="radio" name="isUseLogistics" value="false" checked>
+          <input id="deliverType0" type="radio" name="isUku" value="0" checked>
           <label class="i-checked" for="deliverType0"></label>
         </div>
       </div>
       <div class="list-item form-radio">
         <label class="list-text" for="deliverType1">优库发货</label>
         <div class="list-unit">
-          <input id="deliverType1" type="radio" name="isUseLogistics" value="true">
+          <input id="deliverType1" type="radio" name="isUku" value="1">
           <label class="i-checked" for="deliverType1"></label>
         </div>
       </div>
@@ -112,7 +116,7 @@
       <%--</div>--%>
       <%--</div>--%>
       <div class="list-item">
-        <label class="list-label" for="logisticsFee">当前优库剩余量：999件</label>
+        <label class="list-label" >当前优库剩余量：${num}件</label>
       </div>
     </div>
 

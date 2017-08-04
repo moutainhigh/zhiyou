@@ -356,6 +356,11 @@ public class Order implements Serializable {
 	@View
 	@Field(label = "是否结算")
 	@Query(Predicate.EQ)
-	private Boolean isUku;
+	private Integer isUku;
+
+	@View
+	@Field(label = "发货数量")
+	@Query(Predicate.EQ)
+	private Integer sendQuantity;
 
 }

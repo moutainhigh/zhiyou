@@ -38,4 +38,8 @@ public class OrderCreateDto implements Serializable {
 
 	private Order.OrderType orderType;
 
+	private String sendType;
+
+	private Integer sendNumber;
+
 }

@@ -5,6 +5,7 @@ import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
+import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
@@ -16,11 +17,8 @@ import com.zy.component.MalComponent;
 import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
-import com.zy.entity.mal.Order;
+import com.zy.entity.mal.*;
 import com.zy.entity.mal.Order.OrderStatus;
-import com.zy.entity.mal.OrderItem;
-import com.zy.entity.mal.OrderMonthlySettlement;
-import com.zy.entity.mal.Product;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
@@ -34,6 +32,7 @@ import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.dto.OrderSumDto;
 import com.zy.model.query.OrderFillUserQueryModel;
 import com.zy.model.query.OrderQueryModel;
+import com.zy.model.query.OrderStoreQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.OrderService;
 import com.zy.service.UserService;
@@ -102,6 +101,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private Producer producer;
+
+	@Autowired
+	private OrderStoreMapper orderStoreMapper;
 
 	public static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -236,6 +238,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setImage(product.getImage1());
 		order.setV4UserId(v4UserId);
 		order.setRootId(rootId);
+		order.setSendQuantity(orderCreateDto.getSendNumber());
 
 		if (StringUtils.isNotBlank(title)) {
 			order.setTitle(title);
@@ -376,11 +379,11 @@ public class OrderServiceImpl implements OrderService {
 
 		order.setDeliveredTime(new Date());
 		order.setOrderStatus(OrderStatus.已发货);
-
+		order.setIsUku(orderDeliverDto.getIsUku());
 		if (orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
 		}
-
+		this.editOrderStore(order.getId());
 		producer.send(Constants.TOPIC_ORDER_DELIVERED, order.getId());
 	}
 
@@ -556,6 +559,7 @@ public class OrderServiceImpl implements OrderService {
 			order.setImage(product.getImage1());
 			order.setV4UserId(v4UserId);
 			order.setRootId(rootId);
+			order.setIsUku(2);//转订单
 
 			if (persistentOrder.getIsPayToPlatform()) {
 				order.setIsPayToPlatform(false);
@@ -2033,6 +2037,8 @@ public class OrderServiceImpl implements OrderService {
         return returnMap;
     }
 
+
+
 	private static List<User> sortBreadth2(Collection<User> entities, String parentId, TreeNodeResolver<User> treeNodeResolver) {
 		List<User> result = new ArrayList<>();
 		Map<String, List<User>> childrenMap = entities.stream().collect(Collectors.groupingBy(v -> treeNodeResolver.apply(v).getParentId() == null ? "DEFAULT_NULL_KEY" : treeNodeResolver.apply(v).getParentId()));
@@ -2073,5 +2079,100 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return directV4ParentId;
 	}
+   //U 库 发货
+	@Override
+	public void deliverStore(OrderDeliverDto orderDeliverDto) {
+		Long id = orderDeliverDto.getId();
+		Order order = orderMapper.findOne(id);
+		validate(order, NOT_NULL, "order id" + id + " is not found");
+
+		if (order.getSellerId().equals(config.getSysUserId())) {
+			throw new BizException(BizCode.ERROR, "平台发货订单不能自己发货");
+		}
+
+		OrderStatus orderStatus = order.getOrderStatus();
+		if (orderStatus == OrderStatus.已发货) {
+			return; // 幂等处理
+		} else if (orderStatus != OrderStatus.已支付) {
+			throw new BizException(BizCode.ERROR, "只有已支付的订单才能发货");
+		}
+
+		if (order.getIsCopied()) {
+			throw new BizException(BizCode.ERROR, "已转订单不能发货");
+		}
+
+
+		order.setLogisticsFee(null);
+		order.setLogisticsName(null);
+		order.setLogisticsSn(null);
+
+		order.setDeliveredTime(new Date());
+		order.setOrderStatus(OrderStatus.已发货);
+		order.setIsUku(orderDeliverDto.getIsUku());
+		this.editOrderStore(order.getId());
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
+		producer.send(Constants.TOPIC_ORDER_DELIVERED, order.getId());
+	}
+
+
+	//处理进货逻辑
+	@Override
+	public void editOderStoreIn(Long orderId,Long userId) {
+		Order order = orderMapper.findOne(orderId);
+		OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
+		orderStoreQueryModel.setIsEndEQ(1);
+		orderStoreQueryModel.setUserIdEQ(userId);
+		List<OrderStore> orderList = orderStoreMapper.findAll(orderStoreQueryModel);
+		if (orderList!=null&&!orderList.isEmpty()){//处理  业务逻辑
+			OrderStore orderStoreOld = orderList.get(0);
+			orderStoreOld.setIsEnd(0);
+			orderStoreMapper.update(orderStoreOld);
+			OrderStore orderStore = new  OrderStore();
+			orderStore.setIsEnd(1);
+			orderStore.setOrderId(orderId);
+			orderStore.setUserId(orderStoreOld.getUserId());
+			orderStore.setCreateDate(new Date());
+			orderStore.setNumber(order.getSendQuantity());
+			orderStore.setType(2);
+			orderStore.setBeforeNumber(orderStoreOld.getAfterNumber());
+			orderStore.setAfterNumber(orderStoreOld.getAfterNumber()+(order.getQuantity().intValue()-order.getSendQuantity()));
+			orderStore.setCreateBy(orderStoreOld.getUserId());
+			orderStoreMapper.insert(orderStore);
+		}else{
+			throw new UnauthorizedException("库存异常");
+		}
+	}
+
+
+	//处理发货逻辑
+ private void editOrderStore(Long orderId){
+	 Order order = orderMapper.findOne(orderId);
+	 OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
+	 orderStoreQueryModel.setIsEndEQ(1);
+	 orderStoreQueryModel.setUserIdEQ(order.getSellerId());
+	 List<OrderStore> orderList = orderStoreMapper.findAll(orderStoreQueryModel);
+	 if (orderList!=null&&!orderList.isEmpty()){//处理  业务逻辑
+		 OrderStore orderStoreOld = orderList.get(0);
+		 orderStoreOld.setIsEnd(0);
+		 orderStoreMapper.update(orderStoreOld);
+		 OrderStore orderStore = new  OrderStore();
+		 orderStore.setIsEnd(1);
+		 orderStore.setOrderId(orderId);
+		 orderStore.setUserId(orderStoreOld.getUserId());
+		 orderStore.setCreateDate(new Date());
+		 orderStore.setNumber(order.getQuantity().intValue());
+		 orderStore.setType(1);
+		 orderStore.setBeforeNumber(orderStoreOld.getAfterNumber());
+		 orderStore.setAfterNumber(orderStoreOld.getAfterNumber()-order.getQuantity().intValue());
+		 orderStore.setCreateBy(orderStoreOld.getUserId());
+		 orderStoreMapper.insert(orderStore);
+	 }else{
+		 throw new UnauthorizedException("库存异常");
+	 }
+
+ }
+
 
 }

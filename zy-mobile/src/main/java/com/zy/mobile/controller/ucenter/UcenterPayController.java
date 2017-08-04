@@ -87,6 +87,7 @@ public class UcenterPayController {
 	@Autowired
 	private ActivityTeamApplyService activityTeamApplyService;
 
+
 	public static final String URL_SHENGPAY = "https://api.shengpay.com/html5-gateway/express.htm?page=mobile";
 
 	@RequestMapping
@@ -250,7 +251,7 @@ public class UcenterPayController {
 		Payment payment =createPayment(order, amount2);
 
 		paymentService.balancePay(payment.getId(), true);
-
+		orderService.editOderStoreIn(order.getId(),principal.getUserId());
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分余额支付成功"));
 		return "redirect:/u/order/" + orderId;
 	}

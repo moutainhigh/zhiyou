@@ -31,4 +31,6 @@ public class OrderDeliverDto implements Serializable {
 	@DecimalMin("0.00")
 	private BigDecimal logisticsFee;
 
+
+	private Integer isUku;
 }

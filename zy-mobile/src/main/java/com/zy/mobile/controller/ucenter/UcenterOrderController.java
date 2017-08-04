@@ -13,17 +13,16 @@ import com.zy.entity.fnc.Profit;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.mal.OrderItem;
+import com.zy.entity.mal.OrderStore;
 import com.zy.entity.usr.User;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
+import com.zy.model.query.OrderStoreQueryModel;
 import com.zy.model.query.ProfitQueryModel;
-import com.zy.service.OrderItemService;
-import com.zy.service.OrderService;
-import com.zy.service.ProfitService;
-import com.zy.service.UserService;
+import com.zy.service.*;
 import io.gd.generator.api.query.Direction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -64,6 +63,9 @@ public class UcenterOrderController {
 
 	@Autowired
 	private UserComponent userComponent;
+
+	@Autowired
+	private StoreService storeService;
 	
 	@RequestMapping("/in")
 	public String in(Principal principal, Model model, OrderStatus orderStatus) {
@@ -243,8 +245,35 @@ public class UcenterOrderController {
 		if (!principal.getUserId().equals(persistence.getSellerId())) {
 			throw new UnauthorizedException("权限不足");
 		}
+		OrderStoreQueryModel storeQueryModel = new OrderStoreQueryModel();
+		storeQueryModel.setUserIdEQ(principal.getUserId());
+		storeQueryModel.setIsEndEQ(1);
+		Page<OrderStore> page = storeService.findPage(storeQueryModel);
+		if (page.getTotal()!=null&&page.getTotal()>0){//取到第一条的数量
+			model.addAttribute("num",page.getData().get(0).getAfterNumber());
+		}else{
+			model.addAttribute("num",0);
+		}
+		model.addAttribute("ordernum",persistence.getQuantity());
 		model.addAttribute("orderId", id);
 		return "ucenter/order/orderDeliver";
+	}
+
+	//处理  发货方式
+	@RequestMapping(path = "/deliverStore", method = RequestMethod.POST)
+	public String store(OrderDeliverDto orderDeliverDto,Model model,Principal principal){
+		Long id = orderDeliverDto.getId();
+		Order persistence = orderService.findOne(id);
+		validate(persistence, NOT_NULL, "order id" + id + " not found");
+       if (orderDeliverDto.getIsUku()==1){//直接发货
+		   orderService.deliverStore(orderDeliverDto);
+		   return "redirect:/u/order/" + persistence.getId();
+	   }else{
+		   model.addAttribute("orderId",orderDeliverDto.getId());
+		   model.addAttribute("isUku",orderDeliverDto.getIsUku());
+		   return "ucenter/store/storeDeliver";
+	   }
+
 	}
 
 	@RequestMapping(path = "/deliver", method = RequestMethod.POST)

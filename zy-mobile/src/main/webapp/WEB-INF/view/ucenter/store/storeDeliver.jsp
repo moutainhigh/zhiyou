@@ -73,6 +73,7 @@
   <article>
     <form action="${ctx}/u/order/deliver" class="valid-form" method="post">
       <input type="hidden" name="id" value="${orderId}">
+      <input type="hidden" name="isUku" value="${isUku}">
 
       <div class="list-group">
         <div class="list-title">请选择发货方式</div>

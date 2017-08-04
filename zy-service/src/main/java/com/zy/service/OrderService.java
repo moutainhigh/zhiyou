@@ -58,4 +58,8 @@ public interface OrderService {
 	Map<String,Object> querySalesVolume(OrderQueryModel orderQueryModel);
 
 	Map<String,Object> querySalesVolumeDetail(OrderQueryModel orderQueryModel);
+
+	void deliverStore(OrderDeliverDto orderDeliverDto);//U库发货
+
+	void editOderStoreIn(Long id,Long userId);
 }
