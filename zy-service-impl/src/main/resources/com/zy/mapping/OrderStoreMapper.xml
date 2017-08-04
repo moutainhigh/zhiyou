@@ -15,7 +15,7 @@
 		<result column="is_end" property="isEnd" />
 	</resultMap>
 
-	<sql id="baseColumn">id,user_id,order_id,type,number,before_number,after_number,create_date,create_by,is_end</sql>
+	<sql id="baseColumn">a.id,a.user_id,a.order_id,a.type,a.number,a.before_number,a.after_number,a.create_date,a.create_by,a.is_end</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.OrderStore" useGeneratedKeys="true" keyProperty="id">
 	  insert into `td_order_store` (user_id,order_id,type,number,before_number,after_number,create_date,create_by,is_end)
@@ -70,48 +70,55 @@
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderStoreQueryModel">
-		select
-		<include refid="baseColumn"/>
-		from `td_order_store`
+		SELECT
+			<include refid="baseColumn"/>
+		FROM td_order_store a LEFT JOIN usr_user b ON a.user_id = b.id
+			LEFT JOIN usr_user_info c ON a.user_id = c.user_id
 		<where>
+			<if test="realName != null">
+				AND c.realname = #{realName}
+			</if>
+			<if test="phone != null">
+				AND b.phone = #{phone}
+			</if>
 			<if test="createDateGTE != null">
-				and create_date &gt;= #{createDateGTE}
+				and a.create_date &gt;= #{createDateGTE}
 			</if>
 			<if test="beforeNumberGTE != null">
-				and before_number &gt;= #{beforeNumberGTE}
+				and a.before_number &gt;= #{beforeNumberGTE}
 			</if>
 			<if test="afterNumberGTE != null">
-				and after_number &gt;= #{afterNumberGTE}
+				and a.after_number &gt;= #{afterNumberGTE}
 			</if>
 			<if test="afterNumberLT != null">
-				and after_number &lt; #{afterNumberLT}
+				and a.after_number &lt; #{afterNumberLT}
 			</if>
 			<if test="typeEQ != null">
-				and type = #{typeEQ}
+				and a.type = #{typeEQ}
 			</if>
 			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+				and a.user_id = #{userIdEQ}
 			</if>
 			<if test="createByEQ != null">
-				and create_by = #{createByEQ}
+				and a.create_by = #{createByEQ}
 			</if>
 			<if test="createDateLT != null">
-				and create_date &lt; #{createDateLT}
+				and a.create_date &lt;= #{createDateLT}
 			</if>
 			<if test="orderIdEQ != null">
-				and order_id = #{orderIdEQ}
+				and a.order_id = #{orderIdEQ}
 			</if>
 			<if test="isEndEQ != null">
-				and is_end = #{isEndEQ}
+				and a.is_end = #{isEndEQ}
 			</if>
 			<if test="beforeNumberLT != null">
-				and before_number &lt; #{beforeNumberLT}
+				and a.before_number &lt; #{beforeNumberLT}
 			</if>
 			<if test="numberGTE != null">
-				and number &gt;= #{numberGTE}
+				and a.number &gt;= #{numberGTE}
 			</if>
 			<if test="numberLT != null">
-				and number &lt; #{numberLT}
+				and a.number &lt; #{numberLT}
 			</if>
 		</where>
 		<choose>
@@ -128,46 +135,54 @@
 	</select>
 
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.OrderStoreQueryModel">
-		select count(*) from `td_order_store`
+		SELECT count(*)
+			FROM td_order_store a LEFT JOIN usr_user b ON a.user_id = b.id
+		LEFT JOIN usr_user_info c ON a.user_id = c.user_id
 		<where>
+			<if test="realName != null">
+				AND c.realname = #{realName}
+			</if>
+			<if test="phone != null">
+				AND b.phone = #{phone}
+			</if>
 			<if test="createDateGTE != null">
-				and create_date &gt;= #{createDateGTE}
+				and a.create_date &gt;= #{createDateGTE}
 			</if>
 			<if test="beforeNumberGTE != null">
-				and before_number &gt;= #{beforeNumberGTE}
+				and a.before_number &gt;= #{beforeNumberGTE}
 			</if>
 			<if test="afterNumberGTE != null">
-				and after_number &gt;= #{afterNumberGTE}
+				and a.after_number &gt;= #{afterNumberGTE}
 			</if>
 			<if test="afterNumberLT != null">
-				and after_number &lt; #{afterNumberLT}
+				and a.after_number &lt; #{afterNumberLT}
 			</if>
 			<if test="typeEQ != null">
-				and type = #{typeEQ}
+				and a.type = #{typeEQ}
 			</if>
 			<if test="userIdEQ != null">
-				and user_id = #{userIdEQ}
+				and a.user_id = #{userIdEQ}
 			</if>
 			<if test="createByEQ != null">
-				and create_by = #{createByEQ}
+				and a.create_by = #{createByEQ}
 			</if>
 			<if test="createDateLT != null">
-				and create_date &lt; #{createDateLT}
+				and a.create_date &lt;= #{createDateLT}
 			</if>
 			<if test="orderIdEQ != null">
-				and order_id = #{orderIdEQ}
+				and a.order_id = #{orderIdEQ}
 			</if>
 			<if test="isEndEQ != null">
-				and is_end = #{isEndEQ}
+				and a.is_end = #{isEndEQ}
 			</if>
 			<if test="beforeNumberLT != null">
-				and before_number &lt; #{beforeNumberLT}
+				and a.before_number &lt; #{beforeNumberLT}
 			</if>
 			<if test="numberGTE != null">
-				and number &gt;= #{numberGTE}
+				and a.number &gt;= #{numberGTE}
 			</if>
 			<if test="numberLT != null">
-				and number &lt; #{numberLT}
+				and a.number &lt; #{numberLT}
 			</if>
 		</where>
 	</select>

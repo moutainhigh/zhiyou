@@ -22,6 +22,10 @@ public class OrderStoreQueryModel implements Serializable {
 
 	private Long userIdEQ;
 
+	private String realName;
+
+	private String phone;
+
 	private Long orderIdEQ;
 
 	private Integer typeEQ;

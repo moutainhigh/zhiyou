@@ -34,5 +34,7 @@ public class OrderStoreAdminVo implements Serializable {
 	private String createDate;
 	@Field(label = "用户名")
 	private String userName;
+	@Field(label = "用户手机号")
+	private String phone;
 
 }

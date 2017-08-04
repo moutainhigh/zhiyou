@@ -2,6 +2,7 @@ package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.mal.OrderStore;
+import com.zy.entity.usr.User;
 import com.zy.service.UserService;
 import com.zy.vo.OrderStoreAdminVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,10 @@ public class OrderStoreComponent {
         BeanUtils.copyProperties(orderStore, orderStoreAdminVo);
         orderStoreAdminVo.setCreateDate(formatDate(orderStore.getCreateDate(), TIME_PATTERN));
         String userName = userService.findRealName(orderStore.getUserId());
+        User user = userService.findOne(orderStore.getUserId());
+        if (user != null){
+            orderStoreAdminVo.setPhone(user.getPhone());
+        }
         orderStoreAdminVo.setUserName(userName);
         return orderStoreAdminVo;
     }

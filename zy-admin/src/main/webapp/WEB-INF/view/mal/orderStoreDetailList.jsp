@@ -21,14 +21,14 @@
         pageLength: 20, // default record count per page
         order: [], // set first column as a default sort by desc
         ajax: {
-          url: '${ctx}/orderStore', // ajax source
+          url: '${ctx}/orderStore/detailList', // ajax source
         },
         columns: [
-//          {
-//            data: 'orderId',
-//            title: '订单编号',
-//            orderable: false
-//          },
+          {
+            data: 'orderId',
+            title: '订单编号',
+            orderable: false
+          },
           {
             data: 'userName',
             title: '用户名',
@@ -39,46 +39,37 @@
             title: '手机号',
             orderable: false
           },
-//          {
-//            data: 'type',
-//            title: '出入库类型',
-//            orderable: false,
-//            render: function (data, type, full) {
-//              if(data == 1){
-//                return '出库';
-//              }else if(data == 2){
-//                return '入库';
-//              }
-//            }
-//          },
-//          {
-//            data: 'number',
-//            title: '订单数量',
-//            orderable: false
-//          },
-//          {
-//            data: 'beforeNumber',
-//            title: '下单前数量',
-//            orderable: false
-//          },
           {
-            data: 'afterNumber',
-            title: '当前数量',
-            orderable: false
-          },
-//          {
-//            data: 'createDate',
-//            title: '创建时间',
-//            orderable: false
-//          },
-          {
-            data: 'id',
-            title: '操作',
+            data: 'type',
+            title: '出入库类型',
             orderable: false,
             render: function (data, type, full) {
-              var optionHtml = '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/orderStore/detailList?userId=' + full.userId + '"><i class="fa fa-search"></i> 查看 </a>';
-              return optionHtml;
+              if(data == 1){
+                return '出库';
+              }else if(data == 2){
+                return '入库';
+              }
             }
+          },
+          {
+            data: 'number',
+            title: '订单数量',
+            orderable: false
+          },
+          {
+            data: 'beforeNumber',
+            title: '下单前数量',
+            orderable: false
+          },
+          {
+            data: 'afterNumber',
+            title: '下单后数量',
+            orderable: false
+          },
+          {
+            data: 'createDate',
+            title: '创建时间',
+            orderable: false
           }]
       }
     });
@@ -101,7 +92,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-docs"></i><span>U库管理 </span>
+          <i class="icon-docs"></i><span>U库明细管理 </span>
         </div>
         <div class="tools"></div>
       </div>
@@ -115,14 +106,26 @@
               <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
               <input type="hidden" name="orderStatusEQ" value=""/>
               <input type="hidden" name="isPlatformDeliver" value="true"/>
-
+              <input type="hidden" name="userIdEQ" value="${userId}"/>
 
               <div class="form-group">
-                <input type="text" name="phone" class="form-control" placeholder="用户手机号"/>
+                <input type="text" name="orderIdEQ" class="form-control" placeholder="订单编号"/>
               </div>
 
-              <div class="form-group input-inline">
-                <input type="text" name="realName" class="form-control" placeholder="用户名"/>
+              <div class="form-group">
+                <select name="typeEQ" class="form-control">
+                  <option value="">-- 出入库类型 --</option>
+                  <option value="1">出库</option>
+                  <option value="2">入库</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})" name="createDateGTE" value="" placeholder="创建时间起" />
+              </div>
+              <div class="form-group">
+                <input class="Wdate form-control" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
+                       name="createDateLT" value="" placeholder="创建时间止" />
               </div>
 
               <div class="form-group input-inline">
