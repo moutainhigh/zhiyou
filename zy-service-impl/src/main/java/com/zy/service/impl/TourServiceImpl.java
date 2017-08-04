@@ -461,9 +461,6 @@ public class TourServiceImpl implements TourService {
         }else{
             userInfoMapper.insert(userInfoIn);
         }
-        //处理旅游
-        tourUser.setCreateDate(new Date());
-        tourUserMapper.insert(tourUser);
         //处理产品编号
         Report report = reportMapper.findOne(tourUser.getReportId());
         if(report!=null){ //检测报告已通过初审或者 终审的  将旅游信息置成可用
@@ -475,6 +472,9 @@ public class TourServiceImpl implements TourService {
             report.setProductNumber(productNumber);
             reportMapper.update(report);
         }
+        //处理旅游
+        tourUser.setCreateDate(new Date());
+        tourUserMapper.insert(tourUser);
         PolicyCode policyCode = policyCodeMapper.findByCode(productNumber);
         if (policyCode!=null){
             policyCode.setTourUsed(true);
