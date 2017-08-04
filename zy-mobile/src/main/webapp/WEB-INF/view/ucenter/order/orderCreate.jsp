@@ -19,14 +19,23 @@
 
 <script>
   $(function() {
+    $('#deliverType2').click(function() {
+      $('#logistics').slideDown(300);
+    });
+    $('#deliverType0').click(function() {
+      $('#logistics').slideUp(300);
+    });
+    $('#deliverType1').click(function() {
+      $('#logistics').slideUp(300);
+    });
     $('#btnSubmit').click(function(){
       if(!$('#addressId').val()) {
         messageFlash('请先选择收货地址.');
-        return false;  
+        return false;
       }
       if($('input[name=isPayToPlatform]:checked').length == 0) {
         messageFlash('请先选择收款对象.');
-        return false;  
+        return false;
       }
 
       // 检测是否  实名认证realFlage
@@ -83,7 +92,7 @@
         return false;
         </c:if>
     });
-    
+
   	//选择收货地址
   	$('.receiver-info').click(function(){
   		if($(this).find('.btn-add-address').length){
@@ -91,7 +100,7 @@
   		}
   		showAddressList();
   	});
-  
+
     $('body').on('click', '.btn-add-address', function() {
       showAddressCreate();
     });
@@ -103,7 +112,7 @@
       address.realname = $this.find('.address-name').text();
       address.phone = $this.find('.address-phone').text();
       address.addressText = $this.find('.address-text').text();
-      
+
       $.dialog({
         content : '您确定要设置收货地址吗？<br>' + '收件人：' + address.realname + '<br>' + '手机号：' + address.phone + '<br>' + '地址：' + address.addressText,
         callback : function(index){
@@ -164,7 +173,7 @@
 	  });
 
   });
-  
+
   function showAddressCreate() {
     var addressCreateHtml = document.getElementById('addressCreateTpl').innerHTML;
     $('article > .list-item').hide();
@@ -176,7 +185,7 @@
     });
     var area = new areaInit('province', 'city', 'district');
   }
-  
+
   function hideAddressCreate(){
     $('#addressCreate').animate({
       'left' : '100%'
@@ -200,12 +209,12 @@
             'left' : 0
           }, 300, function() {
           });
-          
+
         });
       }
     });
   }
-  
+
   function hideAddressList(){
     $('#addressList').animate({
       'left' : '100%'
@@ -214,15 +223,25 @@
       $('body').removeClass('o-hidden');
     });
   }
-  
+
   function setAddress(address) {
     $('#addressId').val(address.id);
-    var addressText = address.addressText ? address.addressText 
+    var addressText = address.addressText ? address.addressText
         : address.province + ' ' + address.city + ' ' + address.district + ' ' + address.address
-    $('.receiver-info').html('<div>' + address.realname + '<span class="right">' + address.phone + '</span></div>' 
+    $('.receiver-info').html('<div>' + address.realname + '<span class="right">' + address.phone + '</span></div>'
         + '<div class="fs-14 font-777">' + addressText+ '</div>')
   }
-  
+
+  function changeStore(obj) {
+
+    alert($(obj).find(".list-text").html());
+
+    $(obj).find("input").attr("checked", true);
+    $(obj).siblings(".radioStore").find("input").attr("checked", false);
+
+    $(obj).find(".list-unit .i-checked").css("background-color","#43ac43 !important");
+//    $(obj).siblings(".radioStore").find(".list-unit .i-checked").css("background-color","#eee !important");
+  }
 </script>
 
 <script id="addressCreateTpl" type="text/html">
@@ -394,6 +413,42 @@
       </c:if>
     </div>
 
+    <div class="list-group">
+      <div class="list-title">请选择发货方式</div>
+      <div class="list-item form-radio">
+        <label class="list-text" for="deliverType0">全部发货</label>
+        <div class="list-unit">
+          <input id="deliverType0" type="radio" name="isUseLogistics" value="false">
+          <label class="i-checked" for="deliverType0"></label>
+        </div>
+      </div>
+      <div class="list-item form-radio">
+        <label class="list-text" for="deliverType1">存入优库</label>
+        <div class="list-unit">
+          <input id="deliverType1" type="radio" name="isUseLogistics" value="true" checked>
+          <label class="i-checked" for="deliverType1"></label>
+        </div>
+      </div>
+
+      <div class="list-item form-radio">
+        <label class="list-text" for="deliverType2">部分发货</label>
+        <div class="list-unit">
+          <input id="deliverType2" type="radio" name="isUseLogistics" value="true">
+          <label class="i-checked" for="deliverType2"></label>
+        </div>
+      </div>
+    </div>
+
+    <div id="logistics" class="list-group hide">
+      <div class="list-title">选择的发货数量为：800件</div>
+      <div class="list-item">
+        <label class="list-label" for="logisticsName">发货数量</label>
+        <div class="list-text">
+          <input type="number" name="logisticsName" class="form-input" value="" placeholder="填写发货数量">
+        </div>
+      </div>
+    </div>
+
     <c:if test="${orderFill}">
     <div class="list-group">
       <div class="list-item">
@@ -434,9 +489,8 @@
     <div class="form-btn">
       <input id="btnSubmit" type="submit" value="确认订单" class="btn btn-block orange round-2">
     </div>
-    
+
   </article>
   </form>
-  
 </body>
 </html>

@@ -22,6 +22,7 @@ import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.*;
 import com.zy.util.GcUtils;
+import io.gd.generator.api.query.Direction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -528,11 +529,42 @@ public class TourComponent {
      */
     public String checkTour(String reportId,Long userId) {
         TourUserQueryModel tourUserQueryModel = new TourUserQueryModel();
-        tourUserQueryModel.setCreatedTime(DateUtil.getCurrYearFirst());
+//        tourUserQueryModel.setIsEffect(1);
+        tourUserQueryModel.setOrderBy("createDate");
+        tourUserQueryModel.setDirection(Direction.DESC);
+        tourUserQueryModel.setReportId(Long.valueOf(reportId));
+        tourUserQueryModel.setIsEffect(-1);
+        Page<TourUser> page1 = tourService.findAll(tourUserQueryModel);
+        if (page1!=null&&page1.getTotal()!=null&&page1.getTotal()>0){
+            return "本条检测报告已经申请过";
+        }
+        if (!this.checkTourTime(reportId)){
+            return "检测报告信息过期";
+        }
+       // tourUserQueryModel.setGuaranteeAmountGT(0L);
+        tourUserQueryModel.setReportId(null);
         tourUserQueryModel.setUserId(userId);
-        tourUserQueryModel.setIsEffect(1);
         Page<TourUser> page = tourService.findAll(tourUserQueryModel);
-        SystemCode systemCode = systemCodeService.findByTypeAndName("TOURAPPLYNUMBER", "TOUR");
+        if(page!=null&&page.getData()!=null&&!page.getData().isEmpty()){//取到排序后的第一条
+            TourUser tourUser  =  page.getData().get(0);
+            if(tourUser.getGuaranteeAmount()>0) {
+                Date endDate = DateUtil.getMonthData(tourUser.getCreateDate(), 12, 0);
+                if (endDate.getTime() > new Date().getTime()) {
+                    return "一年之内不能重复提交";
+                }
+            }else{//审核逻辑
+                if (tourUser.getAuditStatus()!=5){//有正在审核的旅游信息  三个月内  不能申请
+                    Date endDate = DateUtil.getMonthData(tourUser.getCreateDate(), 3, 0);
+                    if (endDate.getTime() > new Date().getTime()) {
+                        return "旅游信息审核中，三个月之内不能再次申请";
+                    }
+
+                }
+
+
+            }
+        }
+        /*SystemCode systemCode = systemCodeService.findByTypeAndName("TOURAPPLYNUMBER", "TOUR");
         if (systemCode==null||(systemCode.getSystemValue()==null||"".equals(systemCode.getSystemValue()))){
             return "系统产数配置异常";
         }else{
@@ -546,17 +578,8 @@ public class TourComponent {
                 e.printStackTrace();
                 return "系统产数配置异常";
             }
-        }
-        tourUserQueryModel.setCreatedTime(null);
-        tourUserQueryModel.setUserId(null);
-        tourUserQueryModel.setReportId(Long.valueOf(reportId));
-        Page<TourUser> page1 = tourService.findAll(tourUserQueryModel);
-        if (page1!=null&&page1.getTotal()!=null&&page1.getTotal()>0){
-            return "已经申请过";
-        }
-      if (!this.checkTourTime(reportId)){
-          return "检测报告信息过期";
-      }
+        }*/
+
       //判断   检测报告大于2017-8-1
         Report report = reportService.findOne(Long.valueOf(reportId));
         if(report!=null&&report.getCreatedTime()!=null) {

@@ -79,6 +79,11 @@ public class TourUserQueryModel implements Serializable {
 
     private Long guaranteeAmount;
 
+    private Long guaranteeAmountGT;
+
+    private Integer isVisit;
+
+
     public void setOrderBy(String orderBy) {
         if (orderBy != null && !fieldNames.contains(orderBy)) {
             throw new IllegalArgumentException("order by is invalid");
@@ -128,5 +133,6 @@ public class TourUserQueryModel implements Serializable {
         fieldNames.add("updateTime");
         fieldNames.add("auditStatus");
         fieldNames.add("revieweRemark");
+        fieldNames.add("createDate");
     }
 }

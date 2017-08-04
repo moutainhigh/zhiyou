@@ -27,7 +27,7 @@
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
     <%--<a href="${ctx}/u/productReplacement/create" class="button-right"><i class="fa fa-edit"></i>换货</a>--%>
   </header>
-  
+
   <nav class="miui-scroll-nav">
     <ul>
       <li<c:if test="${empty orderStatus}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}">全部订单 (${orderCount})</a></li>
@@ -40,7 +40,7 @@
       <li<c:if test="${orderStatus == '已取消'}"> class="current"</c:if>><a href="${ctx}/u/order/${inOut}?orderStatus=6">已取消 (${orderCount6})</a></li>
     </ul>
   </nav>
-  
+
   <article class="order-list">
     <c:if test="${empty page.data}">
     <div class="page-empty">
@@ -48,7 +48,7 @@
       <span>空空如也!</span>
     </div>
     </c:if>
-    
+
     <c:forEach items="${page.data}" var="order">
     <a class="order mt-15 bd-t bd-b" href="${ctx}/u/order/${order.id}">
       <div class="order-sn pl-15 pr-15 font-777 fs-12">订单编号：${order.sn}</div>
@@ -77,7 +77,7 @@
       </div>
     </a>
     </c:forEach>
-    
+
   </article>
 
   <%@ include file="/WEB-INF/view/include/footer.jsp"%>
