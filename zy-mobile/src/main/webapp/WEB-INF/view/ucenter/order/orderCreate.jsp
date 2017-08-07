@@ -31,6 +31,11 @@
 </style>
 <script>
   $(function() {
+    var userRank=${userRank.level};
+
+    if(userRank!=4){
+        $("#list-groupNew").hide();
+    }
     $('#deliverType2').click(function() {
       $('#logistics').slideDown(300);
       $(".sendNumberHidden").val("80");
@@ -429,7 +434,7 @@
       </c:if>
     </div>
 
-    <div class="list-group">
+    <div class="list-group" id="list-groupNew">
       <div class="list-title">请选择发货方式</div>
       <div class="list-item form-radio">
         <label class="list-text" for="deliverType0">全部发货</label>
@@ -528,6 +533,7 @@
     }
 
   }
+  //点击确定
   function gradlMount(obj) {
     if(parseInt($(obj).siblings(".number").val())<=0){
       messageAlert("发货数量不能小于等于0");
