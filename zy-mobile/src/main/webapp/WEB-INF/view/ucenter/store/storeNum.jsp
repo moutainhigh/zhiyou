@@ -15,21 +15,50 @@
   <%@ include file="/WEB-INF/view/include/head.jsp"%>
   <link rel="stylesheet" href="${stccdn}/css/ucenter/order.css" />
   <style>
-    .orderStock,.orderStockTwo {
-      display:block;
-      width: 80%;
-      height: 40px;
-      line-height: 40px;
+    .order-list p {
+      height:40px;
+      color: #838584;
+      font-size: 18px;
       text-align: center;
-      border-radius:5px;
-      -webkit-border-radius:5px;
-      border: 1px solid #6cb92d;
+      line-height: 40px;
+    }
+    .Ushop {
+       width: 100%;
+    }
+    .UshopDetil {
+      display: block;
       color: #6cb92d;
       font-size: 18px;
-      position: absolute;left: 50%;margin-left: -40%;
-      top:200px;
+      text-align: center;
     }
-    .orderStockTwo {top:300px;}
+    .orderStock,.orderStockTwo {
+      display: block;
+      float: left;
+      height:40px;
+      line-height: 40px;
+      text-align: center;
+      width:40%;
+      -webkit-border-radius:5px;
+      -moz-border-radius:5px;
+      border-radius:5px;
+      color: #fff;
+      position: absolute;
+      left:6%;
+      font-size: 18px;
+      bottom: 50px;
+      background: #6cb92d;
+      <%--background: url("${ctx}/images/car2.png") #6cb92d center center no-repeat;--%>
+      <%--background-size: 26px;--%>
+      <%--background-position: 5%;--%>
+    }
+    .orderStockTwo {
+      position: absolute;
+      left:54%;
+      bottom: 50px;
+      <%--background: url("${ctx}/images/car.png") #6cb92d center center no-repeat;--%>
+      <%--background-size: 26px;--%>
+      <%--background-position: 5%;--%>
+    }
   </style>
   <script>
     $(function() {
@@ -45,9 +74,15 @@
 </header>
 
 <article class="order-list">
+  <img src="${ctx}/images/Ushop.png" class="Ushop"/>
   <p>优库存量：${num}件</p>
+  <a href="#" class="UshopDetil">详情 >>></a>
   <a href="${ctx}/product" class="orderStock">我要进货</a>
   <a href="${ctx}/u/store/toOutOrder?orderStatus=2" class="orderStockTwo">我要发货</a>
+
+  <div class="page-more">
+    <span>点击加载更多</span>
+  </div>
 </article>
 
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
