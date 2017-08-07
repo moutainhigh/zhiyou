@@ -33,12 +33,16 @@
   $(function() {
     $('#deliverType2').click(function() {
       $('#logistics').slideDown(300);
+      $(".sendNumberHidden").val("80");
     });
     $('#deliverType0').click(function() {
       $('#logistics').slideUp(300);
+      $(".sendNumberHidden").val(count);
+
     });
     $('#deliverType1').click(function() {
       $('#logistics').slideUp(300);
+      $(".sendNumberHidden").val("0");
     });
     $('#btnSubmit').click(function(){
       if(!$('#addressId').val()) {
@@ -453,7 +457,7 @@
 
     <div id="logistics" class="list-group hide">
       <div class="list-title">合计发货数量：<span class="mount" style="color: #f86b3d;">80</span>件</div>
-      <input type="hidden" class="sendNumberHidden" name="sendNumber" value="80">
+      <input type="hidden" class="sendNumberHidden" name="sendNumber" value="0">
       <div class="list-item" style="padding: 10px 5px;">
           <div style="float:left;width: 20%;height:35px;font-size: 36px;text-align: center;line-height: 30px;border-right: 1px solid #ccc;" onclick="removeMount(this)">-</div>
           <span style="float:left;margin-left: 20px;">80*</span>
