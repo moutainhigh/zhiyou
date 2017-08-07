@@ -70,7 +70,7 @@
 <header class="header">
   <h1>全部服务</h1>
   <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
-  <a href="${ctx}/u/productReplacement/create" class="button-right"><i class="fa fa-edit"></i>换货</a>
+  <%--<a href="${ctx}/u/productReplacement/create" class="button-right"><i class="fa fa-edit"></i>换货</a>--%>
 </header>
 
 <article class="order-list">
@@ -79,10 +79,6 @@
   <a href="/u/store/details" class="UshopDetil">详情 >>></a>
   <a href="${ctx}/product" class="orderStock">我要进货</a>
   <a href="${ctx}/u/store/toOutOrder?orderStatus=2" class="orderStockTwo">我要发货</a>
-
-  <div class="page-more">
-    <span>点击加载更多</span>
-  </div>
 </article>
 
 <%@ include file="/WEB-INF/view/include/footer.jsp"%>
