@@ -16,7 +16,19 @@
 <title>确认订单信息</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script src="${stccdn}/js/area.js"></script>
-
+<style>
+  .gradl {
+    float: left;
+    width:25%;
+    height:35px;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    line-height: 35px;
+    background: -webkit-linear-gradient(left, #f28635 , #f65724); /* Safari 5.1 - 6.0 */
+    background: linear-gradient(to right, #f28635 , #f65724); /* 标准的语法（必须放在最后） */
+  }
+</style>
 <script>
   $(function() {
     $('#deliverType2').click(function() {
@@ -440,13 +452,14 @@
     </div>
 
     <div id="logistics" class="list-group hide">
-      <div class="list-title">选择的发货数量为：800件</div>
-      <input type="hidden" name="sendNumber" value="80">
-      <div class="list-item">
-        <label class="list-label" for="logisticsName">发货数量</label>
-        <div class="list-text">
-          <input type="number" name="logisticsName" class="form-input" value="" placeholder="填写发货数量">
-        </div>
+      <div class="list-title">合计发货数量：<span class="mount" style="color: #f86b3d;">80</span>件</div>
+      <input type="hidden" class="sendNumberHidden" name="sendNumber" value="80">
+      <div class="list-item" style="padding: 10px 5px;">
+          <div style="float:left;width: 20%;height:35px;font-size: 36px;text-align: center;line-height: 30px;border-right: 1px solid #ccc;" onclick="removeMount(this)">-</div>
+          <span style="float:left;margin-left: 20px;">80*</span>
+          <input type="number" class="number" value="1" style="float:left;border: none;margin-left: 20px;width: 10%;height: 35px;border-right: 1px solid #ccc;"/>
+          <div style="float:left;width: 20%;height:35px;font-size: 36px;text-align: center;line-height: 30px;border-right: 1px solid #ccc;" onclick="addMOunt(this)">+</div>
+          <div class="gradl" onclick="gradlMount(this)">确认</div>
       </div>
     </div>
 
@@ -493,5 +506,32 @@
 
   </article>
   </form>
+<script>
+  var count=parseInt(${quantity});
+  function addMOunt(obj) {
+    var countNum=count/80;
+    if(countNum-$(obj).siblings(".number").val()>0){
+      $(obj).siblings(".number").val(parseInt($(obj).siblings(".number").val())+1);
+    }else {
+      messageAlert("发货数量不能大于购买数量！");
+    }
+  }
+  function removeMount(obj) {
+    if($(obj).siblings(".number").val()<=1){
+      messageAlert("发货数量不能小于等于0");
+    }else {
+      $(obj).siblings(".number").val(parseInt($(obj).siblings(".number").val())-1);
+    }
+
+  }
+  function gradlMount(obj) {
+    if(parseInt($(obj).siblings(".number").val())<=0){
+      messageAlert("发货数量不能小于等于0");
+    }else {
+      $(obj).parent(".list-item").siblings(".list-title").find("span").html(parseInt($(obj).siblings(".number").val())*80);
+      $(".sendNumberHidden").val($(".list-title span").html());
+    }
+  }
+</script>
 </body>
 </html>
