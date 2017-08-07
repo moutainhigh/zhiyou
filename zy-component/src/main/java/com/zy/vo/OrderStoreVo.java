@@ -32,5 +32,6 @@ public class OrderStoreVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "创建时间")
 	private String createDate;
-
+	@Field(label = "订单编号")
+	private String sn;
 }

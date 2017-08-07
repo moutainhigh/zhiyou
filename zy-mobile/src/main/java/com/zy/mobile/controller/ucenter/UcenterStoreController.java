@@ -6,10 +6,12 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.util.DateUtil;
 import com.zy.component.OrderComponent;
+import com.zy.component.OrderStoreComponent;
 import com.zy.component.TourComponent;
 import com.zy.component.TourUserComponent;
 import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
+import com.zy.entity.cms.Article;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.OrderStore;
 import com.zy.entity.tour.Tour;
@@ -60,6 +62,9 @@ public class UcenterStoreController {
 
     @Autowired
     private OrderComponent orderComponent;
+
+    @Autowired
+    private OrderStoreComponent orderStoreComponent;
     /**
      * 跳转到  我的库存页面
      * @param principal
@@ -80,6 +85,14 @@ public class UcenterStoreController {
        return "ucenter/store/storeNum";
     }
 
+
+    /**
+     * 获取 订单信息
+     * @param principal
+     * @param model
+     * @param orderStatus
+     * @return
+     */
     @RequestMapping(value = "toOutOrder",method = GET)
     public String toOutOrder(Principal principal, Model model,Order.OrderStatus orderStatus){
         OrderQueryModel orderQueryModel = OrderQueryModel.builder().sellerIdEQ(principal.getUserId())
@@ -92,5 +105,38 @@ public class UcenterStoreController {
         model.addAttribute("orderStatus", orderStatus);
         return "ucenter/store/storeList";
     }
+
+    /**
+     * 获取 库存信息
+     * @param principal
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "details",method = GET)
+   public String details(Principal principal, Model model){
+       OrderStoreQueryModel storeQueryModel = new OrderStoreQueryModel();
+       storeQueryModel.setUserIdEQ(principal.getUserId());
+       storeQueryModel.setPageNumber(0);
+       storeQueryModel.setPageSize(10);
+       storeQueryModel.setOrderBy("createDate");
+       Page<OrderStore> page = storeService.findPage(storeQueryModel);
+       model.addAttribute("page", PageBuilder.copyAndConvert(page, orderStoreComponent::buildListVo));
+       return "ucenter/store/storeDetails";
+   }
+
+    @RequestMapping(value = "ajaxDetails",method = POST)
+    @ResponseBody
+    public Result<?>  details(Principal principal, Model model,@RequestParam(required = true)Integer pageNumber){
+        OrderStoreQueryModel storeQueryModel = new OrderStoreQueryModel();
+        storeQueryModel.setUserIdEQ(principal.getUserId());
+        storeQueryModel.setPageNumber(pageNumber);
+        storeQueryModel.setPageSize(10);
+        storeQueryModel.setOrderBy("createDate");
+        Page<OrderStore> page = storeService.findPage(storeQueryModel);
+        Map<String, Object> map = new HashMap<>();
+        map.put("page", PageBuilder.copyAndConvert(page, orderStoreComponent::buildListVo));
+        return ResultBuilder.result(map);
+    }
+
 
 }

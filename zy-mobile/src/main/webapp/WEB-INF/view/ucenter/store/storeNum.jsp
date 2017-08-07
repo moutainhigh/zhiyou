@@ -70,13 +70,13 @@
 <header class="header">
   <h1>全部服务</h1>
   <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
-  <%--<a href="${ctx}/u/productReplacement/create" class="button-right"><i class="fa fa-edit"></i>换货</a>--%>
+  <a href="${ctx}/u/productReplacement/create" class="button-right"><i class="fa fa-edit"></i>换货</a>
 </header>
 
 <article class="order-list">
   <img src="${ctx}/images/Ushop.png" class="Ushop"/>
   <p>优库存量：${num}件</p>
-  <a href="#" class="UshopDetil">详情 >>></a>
+  <a href="/u/store/details" class="UshopDetil">详情 >>></a>
   <a href="${ctx}/product" class="orderStock">我要进货</a>
   <a href="${ctx}/u/store/toOutOrder?orderStatus=2" class="orderStockTwo">我要发货</a>
 

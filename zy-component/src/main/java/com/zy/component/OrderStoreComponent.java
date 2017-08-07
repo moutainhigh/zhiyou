@@ -1,10 +1,14 @@
 package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
+import com.zy.entity.mal.Order;
 import com.zy.entity.mal.OrderStore;
 import com.zy.entity.usr.User;
+import com.zy.service.OrderService;
 import com.zy.service.UserService;
+import com.zy.vo.OrderListVo;
 import com.zy.vo.OrderStoreAdminVo;
+import com.zy.vo.OrderStoreVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +28,9 @@ public class OrderStoreComponent {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private OrderService orderService;
+
     public OrderStoreAdminVo buildOrderStoreAdminVo(OrderStore orderStore) {
 
         OrderStoreAdminVo orderStoreAdminVo = new OrderStoreAdminVo();
@@ -36,5 +43,16 @@ public class OrderStoreComponent {
         }
         orderStoreAdminVo.setUserName(userName);
         return orderStoreAdminVo;
+    }
+
+    public OrderStoreVo buildListVo(OrderStore orderStore) {
+        OrderStoreVo orderStoreVo = new OrderStoreVo();
+        BeanUtils.copyProperties(orderStore, orderStoreVo);
+        orderStoreVo.setCreateDate(formatDate(orderStore.getCreateDate(), TIME_PATTERN));
+        Order order = orderService.findOne(orderStore.getOrderId());
+        if(order!=null){
+            orderStoreVo.setSn(order.getSn());
+        }
+      return orderStoreVo;
     }
 }
