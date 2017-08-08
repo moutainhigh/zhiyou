@@ -607,119 +607,124 @@
   /**
    * ajax 提交数
    */
-  function fromSumbit() {
-    //验证
-   var flage= $('.valid-form').validate({
-      ignore: ':hidden',
-      rules : {
-        'realname' : {
-          required : true
-        },
-        'gender' : {
-          required : true
-        },
-        'age' : {
-          required : true
-        },
-        'phone' : {
-          required : true,
-          phone : true
-        },
-        'times' : {
-          required : true,
-          digits : true,
-          max: 999
-        },
-        'reportedDate' : {
-          required : true
-        },
-        'areaId' : {
-          required : true
-        },
-        'jobId' : {
-          required : true
-        },
-        'reportResult' : {
-          required : true
-        },
-        'text' : {
-          required : true
-        },
-        'code' : {
-          required : true
-        },
-        'image1' : {
-          required : true
-        },
-        'idCardNumber' : {
-          required : true
-        },
-        'birthday' : {
-          required : true
-        }
-      }
-    });
-    if(flage.form()){
-      if($('input[name="image"]').length < 1) {
-        messageFlash('请至少上传一张图片');
-        return;
-      }
-      var productId = $('#productId').val();
-      if(!productId) {
-        messageAlert('请选择产品');
-        return;
-      }
-      var phone=parseInt(${myPhone});
-      var phoneHtml=$("#phone").val();
-      if(phone!=phoneHtml){
-        $.dialog({
-          content : '您填写的手机号码与系统预留号码不匹配，请确认是否继续操作',//您填写的手机号码与系统预留号码不匹配，如继续操作则无法申请旅游。
-          callback : function(index) {
-            if (index == 1) {
-              $(".miui-dialog").remove();
-              $.ajax({
-                url : '${ctx}/u/report/ajaxCreate',
-                data : $(".valid-form").serialize(),
-                dataType : 'json',
-                type : 'POST',
-                success : function(result){
-                  if(result.code == 0){
-                    $("#travelAppleClick").removeAttr("onclick");
-                    $("#travelAppleClick").css("background","#ccc");
-                    reportId=result.message;
-                    submitFalge = true;
-                    messageAlert("上传检测报告成功");
-                    $("#btnSubmit").attr("disabled",true);
-                    $(".orange.round-btnSubmit").css("background","#ccc");
-                  } else{
-                    messageAlert(result.message);
-                  }
-                }
-              });
-            }
-          }
-        });
-      }else {
-        $.ajax({
-          url : '${ctx}/u/report/ajaxCreate',
-          data : $(".valid-form").serialize(),
-          dataType : 'json',
-          type : 'POST',
-          success : function(result){
-            if(result.code == 0){
-              reportId=result.message;
-              submitFalge = true;
-              messageAlert("上传检测报告成功");
-              $("#btnSubmit").attr("disabled",true);
-              $(".orange.round-btnSubmit").css("background","#ccc");
-            } else{
-              messageAlert(result.message);
-            }
-          }
-        });
-      }
-    }
-  }
+   $(function () {
+     $("#btnSubmit").tap(function(){
+     //验证
+       var flage= $('.valid-form').validate({
+         ignore: ':hidden',
+         rules : {
+           'realname' : {
+             required : true
+           },
+           'gender' : {
+             required : true
+           },
+           'age' : {
+             required : true
+           },
+           'phone' : {
+             required : true,
+             phone : true
+           },
+           'times' : {
+             required : true,
+             digits : true,
+             max: 999
+           },
+           'reportedDate' : {
+             required : true
+           },
+           'areaId' : {
+             required : true
+           },
+           'jobId' : {
+             required : true
+           },
+           'reportResult' : {
+             required : true
+           },
+           'text' : {
+             required : true
+           },
+           'code' : {
+             required : true
+           },
+           'image1' : {
+             required : true
+           },
+           'idCardNumber' : {
+             required : true
+           },
+           'birthday' : {
+             required : true
+           }
+         }
+       });
+       if(flage.form()){
+         if($('input[name="image"]').length < 1) {
+           messageFlash('请至少上传一张图片');
+           return;
+         }
+         var productId = $('#productId').val();
+         if(!productId) {
+           messageAlert('请选择产品');
+           return;
+         }
+         var phone=parseInt(${myPhone});
+         var phoneHtml=$("#phone").val();
+         if(phone!=phoneHtml){
+           $.dialog({
+             content : '您填写的手机号码与系统预留号码不匹配，请确认是否继续操作',//您填写的手机号码与系统预留号码不匹配，如继续操作则无法申请旅游。
+             callback : function(index) {
+               if (index == 1) {
+                 $(".miui-dialog").remove();
+                 $.ajax({
+                   url : '${ctx}/u/report/ajaxCreate',
+                   data : $(".valid-form").serialize(),
+                   dataType : 'json',
+                   type : 'POST',
+                   success : function(result){
+                     if(result.code == 0){
+                       $("#travelAppleClick").removeAttr("onclick");
+                       $("#travelAppleClick").css("background","#ccc");
+                       reportId=result.message;
+                       submitFalge = true;
+                       messageAlert("上传检测报告成功");
+                       $("#btnSubmit").attr("disabled",true);
+                       $(".orange.round-btnSubmit").css("background","#ccc");
+                     } else{
+                       messageAlert(result.message);
+                     }
+                   }
+                 });
+               }
+             }
+           });
+         }else {
+           $.ajax({
+             url : '${ctx}/u/report/ajaxCreate',
+             data : $(".valid-form").serialize(),
+             dataType : 'json',
+             type : 'POST',
+             success : function(result){
+               if(result.code == 0){
+                 reportId=result.message;
+                 submitFalge = true;
+                 messageAlert("上传检测报告成功");
+                 $("#btnSubmit").attr("disabled",true);
+                 $(".orange.round-btnSubmit").css("background","#ccc");
+               } else{
+                 messageAlert(result.message);
+               }
+             }
+           });
+         }
+       }
+     });
+   })
+//  function fromSumbit() {
+//
+//  }
   //选择出游时间
   function selectValue(obj) {
     tourTimeid="";
