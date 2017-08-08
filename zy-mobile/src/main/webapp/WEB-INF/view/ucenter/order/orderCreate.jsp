@@ -35,6 +35,7 @@
 
     if(userRank!=4){
         $("#list-groupNew").hide();
+        $(".sendNumberHidden").val(count);
     }
     $('#deliverType2').click(function() {
       $('#logistics').slideDown(300);
@@ -540,6 +541,7 @@
     }else {
       $(obj).parent(".list-item").siblings(".list-title").find("span").html(parseInt($(obj).siblings(".number").val())*80);
       $(".sendNumberHidden").val($(".list-title span").html());
+      $('#logistics').slideUp(300);
     }
   }
 </script>
