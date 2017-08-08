@@ -243,20 +243,34 @@
         <em>版本通知</em>
       </a>
     </div>
-    <div class="user-account flex list-group" >
-      <a class="flex-1 bd-r"  href="${ctx}/u/honor" >
-        <i class="icon icon-2x" style='background: url("${ctx}/images/honor.png")'></i>
-        <em>我的荣誉</em>
-      </a>
-      <a class="flex-1 bd-r" href="${ctx}/u/store">
-        <i class="icon icon-2x" style='background: url("${ctx}/images/Uku.png");background-size: 32px;'></i>
-        <em>我的优库</em>
-      </a>
-      <a class="flex-1" href="#">
-        <%--<i class="icon icon-2x" style='background: url("${ctx}/images/banben.png")'></i>--%>
-        <em></em>
-      </a>
-    </div>
+    <c:choose>
+      <c:when test="${user.userRank.level==4}">
+        <div class="user-account flex list-group" >
+          <a class="flex-1 bd-r"  href="${ctx}/u/honor" >
+            <i class="icon icon-2x" style='background: url("${ctx}/images/honor.png")'></i>
+            <em>我的荣誉</em>
+          </a>
+          <a class="flex-1 bd-r" href="${ctx}/u/store">
+            <i class="icon icon-2x" style='background: url("${ctx}/images/Uku.png");background-size: 32px;'></i>
+            <em>我的优库</em>
+          </a>
+          <a class="flex-1" href="#">
+              <%--<i class="icon icon-2x" style='background: url("${ctx}/images/banben.png")'></i>--%>
+            <em></em>
+          </a>
+        </div>
+      </c:when>
+      <c:otherwise>
+        <div class="user-account flex list-group" style="width: 33.3%;">
+          <a class="flex-1 bd-r"  href="${ctx}/u/honor">
+            <i class="icon icon-2x" style='background: url("${ctx}/images/honor.png")'></i>
+            <em>我的荣誉</em>
+          </a>
+        </div>
+      </c:otherwise>
+    </c:choose>
+
+
     <%----%>
     <%--<div class="list-group">--%>
       <%--<a class="list-item list-item-icon" href="${ctx}/help">--%>

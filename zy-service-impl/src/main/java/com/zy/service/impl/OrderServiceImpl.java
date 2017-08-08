@@ -2134,7 +2134,7 @@ public class OrderServiceImpl implements OrderService {
 			orderStore.setOrderId(orderId);
 			orderStore.setUserId(orderStoreOld.getUserId());
 			orderStore.setCreateDate(new Date());
-			orderStore.setNumber(order.getSendQuantity());
+			orderStore.setNumber(order.getQuantity().intValue()-order.getSendQuantity());
 			orderStore.setType(2);
 			orderStore.setBeforeNumber(orderStoreOld.getAfterNumber());
 			orderStore.setAfterNumber(orderStoreOld.getAfterNumber()+(order.getQuantity().intValue()-order.getSendQuantity()));
