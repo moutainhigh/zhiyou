@@ -794,9 +794,11 @@
                                 }
                             }
                             </shiro:hasPermission>
-                            <shiro:hasPermission name="tourUser:visitEdit">
+                            if (full.auditStatus == 1) {
+                                <shiro:hasPermission name="tourUser:visitEdit">
                                 optionHtml += '<a class="btn btn-xs default yellow-stripe report-confirm" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-edit"></i> 审核 </a>';
-                            </shiro:hasPermission>
+                                </shiro:hasPermission>
+                            }
                             return optionHtml;
                         }
                     }]
