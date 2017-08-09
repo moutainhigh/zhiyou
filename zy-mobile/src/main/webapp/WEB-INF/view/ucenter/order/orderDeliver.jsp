@@ -55,8 +55,8 @@
       $('#deliverType1').click(function() {
         $("#btnSubmit").attr("disabled",false);
         $('#logistics').slideDown(300);
-        var num ='${num}';
-        var ordernum ='${ordernum}';
+        var num =${num};
+        var ordernum =${ordernum};
         if (ordernum>num){
           messageAlert("发货数量不能大于库存数量！");
           $(".orange.btn").css("background-color","#ccc");

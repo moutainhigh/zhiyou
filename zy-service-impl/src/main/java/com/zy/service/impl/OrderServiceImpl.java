@@ -383,7 +383,6 @@ public class OrderServiceImpl implements OrderService {
 		if (orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
 		}
-		this.editOrderStore(order.getId());
 		producer.send(Constants.TOPIC_ORDER_DELIVERED, order.getId());
 	}
 
@@ -2121,27 +2120,39 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void editOderStoreIn(Long orderId,Long userId) {
 		Order order = orderMapper.findOne(orderId);
-		OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
-		orderStoreQueryModel.setIsEndEQ(1);
-		orderStoreQueryModel.setUserIdEQ(userId);
-		List<OrderStore> orderList = orderStoreMapper.findAll(orderStoreQueryModel);
-		if (orderList!=null&&!orderList.isEmpty()){//处理  业务逻辑
-			OrderStore orderStoreOld = orderList.get(0);
-			orderStoreOld.setIsEnd(0);
-			orderStoreMapper.update(orderStoreOld);
-			OrderStore orderStore = new  OrderStore();
-			orderStore.setIsEnd(1);
-			orderStore.setOrderId(orderId);
-			orderStore.setUserId(orderStoreOld.getUserId());
-			orderStore.setCreateDate(new Date());
-			orderStore.setNumber(order.getQuantity().intValue()-order.getSendQuantity());
-			orderStore.setType(2);
-			orderStore.setBeforeNumber(orderStoreOld.getAfterNumber());
-			orderStore.setAfterNumber(orderStoreOld.getAfterNumber()+(order.getQuantity().intValue()-order.getSendQuantity()));
-			orderStore.setCreateBy(orderStoreOld.getUserId());
-			orderStoreMapper.insert(orderStore);
-		}else{
-			throw new UnauthorizedException("库存异常");
+		if(order.getQuantity().intValue()>(order.getSendQuantity()==null?0:order.getSendQuantity())) {//订货量和发货量一致  不用进库存
+			OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
+			orderStoreQueryModel.setIsEndEQ(1);
+			orderStoreQueryModel.setUserIdEQ(userId);
+			List<OrderStore> orderList = orderStoreMapper.findAll(orderStoreQueryModel);
+			if (orderList != null && !orderList.isEmpty()) {//处理  业务逻辑
+				OrderStore orderStoreOld = orderList.get(0);
+				orderStoreOld.setIsEnd(0);
+				orderStoreMapper.update(orderStoreOld);
+				OrderStore orderStore = new OrderStore();
+				orderStore.setIsEnd(1);
+				orderStore.setOrderId(orderId);
+				orderStore.setUserId(orderStoreOld.getUserId());
+				orderStore.setCreateDate(new Date());
+				orderStore.setNumber(order.getQuantity().intValue() - order.getSendQuantity());
+				orderStore.setType(2);
+				orderStore.setBeforeNumber(orderStoreOld.getAfterNumber());
+				orderStore.setAfterNumber(orderStoreOld.getAfterNumber() + (order.getQuantity().intValue() - order.getSendQuantity()));
+				orderStore.setCreateBy(orderStoreOld.getUserId());
+				orderStoreMapper.insert(orderStore);
+			} else {//没有数据  则插入一条
+				OrderStore orderStore = new OrderStore();
+				orderStore.setIsEnd(1);
+				orderStore.setOrderId(orderId);
+				orderStore.setUserId(userId);
+				orderStore.setCreateDate(new Date());
+				orderStore.setNumber(order.getQuantity().intValue() - order.getSendQuantity());
+				orderStore.setType(2);
+				orderStore.setBeforeNumber(0);
+				orderStore.setAfterNumber((order.getQuantity().intValue() - order.getSendQuantity()));
+				orderStore.setCreateBy(userId);
+				orderStoreMapper.insert(orderStore);
+			}
 		}
 	}
 
