@@ -80,7 +80,7 @@ public class TourJoinUserController {
 
         tourUserQueryModel.setPageSize(null);
         tourUserQueryModel.setPageNumber(null);
-        Page<TourUser> page = tourService.findJoinAll(tourUserQueryModel);
+        Page<TourUser> page = tourService.findJoinExAll(tourUserQueryModel);
         String fileName = "参游旅客信息.xlsx";
         WebUtils.setFileDownloadHeader(response, fileName);
 

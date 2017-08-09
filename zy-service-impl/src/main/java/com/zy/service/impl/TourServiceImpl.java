@@ -423,6 +423,22 @@ public class TourServiceImpl implements TourService {
         tourUserMapper.modify(tourUser);
     }
 
+    @Override
+    public Page<TourUser> findExAll(TourUserQueryModel tourUserQueryModel) {
+        List<TourUser> data = tourUserMapper.findAll(tourUserQueryModel);
+        Page<TourUser> page = new Page<>();
+        page.setData(data);
+        return page;
+    }
+
+    @Override
+    public Page<TourUser> findJoinExAll(TourUserQueryModel tourUserQueryModel) {
+        List<TourUser> data = tourUserMapper.findJoinAll(tourUserQueryModel);
+        Page<TourUser> page = new Page<>();
+        page.setData(data);
+        return page;
+    }
+
 
     /**
      * 添加 旅游信息 并将 用户信息  添加到 userIf

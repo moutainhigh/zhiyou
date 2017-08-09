@@ -142,7 +142,7 @@ public class TourUserController {
 
         tourUserQueryModel.setPageSize(null);
         tourUserQueryModel.setPageNumber(null);
-        Page<TourUser> page = tourService.findAll(tourUserQueryModel);
+        Page<TourUser> page = tourService.findExAll(tourUserQueryModel);
         String fileName = "旅客信息.xlsx";
         WebUtils.setFileDownloadHeader(response, fileName);
 

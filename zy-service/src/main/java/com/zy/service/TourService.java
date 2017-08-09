@@ -69,4 +69,8 @@ public interface TourService {
      void visitUser(Long id, Long visitUserId);
 
      void amount(Long id, Long guaranteeAmount, Long refundAmount, Long surcharge, Long loginUserId);
+
+     Page<TourUser> findExAll(TourUserQueryModel tourUserQueryModel);
+
+     Page<TourUser> findJoinExAll(TourUserQueryModel tourUserQueryModel);
 }
