@@ -159,6 +159,7 @@
 
       <div class="list-group">
         <div class="list-title">检测信息，至少需要上传1张检测图片</div>
+        <input type="hidden" name="times" value="${report.times}"/>
      <%--   <div class="list-item">
           <label class="list-label" for="times">检测次数</label>
           <div class="list-text">
