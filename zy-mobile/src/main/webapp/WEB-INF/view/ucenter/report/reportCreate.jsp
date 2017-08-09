@@ -325,7 +325,7 @@
         </div>
       </div>
       <div class="form-btn" style="padding-bottom: 50px;">
-        <input id="btnSubmit"  class="btn orange btn-block round-2 round-btnSubmit" type="button" onclick="fromSumbit()" value="提 交">
+        <input id="btnSubmit"  class="btn orange btn-block round-2 round-btnSubmit" type="button" onclick="fromSumbit(this)" value="提 交">
       </div>
     </form>
   </article>
@@ -607,8 +607,7 @@
   /**
    * ajax 提交数
    */
-   $(function () {
-     $("#btnSubmit").tap(function(){
+   function fromSumbit(obj){
      //验证
        var flage= $('.valid-form').validate({
          ignore: ':hidden',
@@ -695,6 +694,7 @@
                      } else{
                        messageAlert(result.message);
                      }
+                     $(obj).removeAttr("onclick");
                    }
                  });
                }
@@ -716,15 +716,12 @@
                } else{
                  messageAlert(result.message);
                }
+               $(obj).removeAttr("onclick");
              }
            });
          }
        }
-     });
-   })
-//  function fromSumbit() {
-//
-//  }
+  }
   //选择出游时间
   function selectValue(obj) {
     tourTimeid="";
