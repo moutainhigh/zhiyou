@@ -608,6 +608,7 @@
    * ajax 提交数
    */
    function fromSumbit(obj){
+     $("#btnSubmit").attr("disabled",true);
      //验证
        var flage= $('.valid-form').validate({
          ignore: ':hidden',
@@ -692,9 +693,9 @@
                        $("#btnSubmit").attr("disabled",true);
                        $(".orange.round-btnSubmit").css("background","#ccc");
                      } else{
+                       $("#btnSubmit").attr("disabled",false);
                        messageAlert(result.message);
                      }
-                     $(obj).removeAttr("onclick");
                    }
                  });
                }
@@ -705,18 +706,18 @@
              url : '${ctx}/u/report/ajaxCreate',
              data : $(".valid-form").serialize(),
              dataType : 'json',
-             type : 'POST',
-             success : function(result){
-               if(result.code == 0){
-                 reportId=result.message;
+                 type : 'POST',
+                         success : function(result){
+                   if(result.code == 0){
+                     reportId=result.message;
                  submitFalge = true;
                  messageAlert("上传检测报告成功");
                  $("#btnSubmit").attr("disabled",true);
                  $(".orange.round-btnSubmit").css("background","#ccc");
                } else{
-                 messageAlert(result.message);
+                     $("#btnSubmit").attr("disabled",false);
+                     messageAlert(result.message);
                }
-               $(obj).removeAttr("onclick");
              }
            });
          }
