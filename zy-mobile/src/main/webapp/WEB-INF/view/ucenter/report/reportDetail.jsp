@@ -186,14 +186,20 @@
 
         <div class="footer" >
           <div onclick="insurance('${report.id}')" style="border-right: none;border-right: 1px solid #fff;box-sizing: border-box;">保险申请</div>
-          <c:choose>
-            <c:when test="${myPhone eq report.phone}">
-              <div onclick="travel('${report.id}')" style="border-right: none;">旅游申请</div>
-            </c:when>
-            <c:otherwise>
-              <div  style="border-right: none;background: #ccc">旅游申请</div>
-            </c:otherwise>
-          </c:choose>
+          <c:if test="${!(report.confirmStatus == '未通过')}">
+            <c:choose>
+              <c:when test="${myPhone eq report.phone}">
+                <div onclick="travel('${report.id}')" style="border-right: none;">旅游申请</div>
+              </c:when>
+              <c:otherwise>
+                <div  style="border-right: none;background: #ccc">旅游申请</div>
+              </c:otherwise>
+            </c:choose>
+          </c:if>
+          <c:if test="${report.confirmStatus == '未通过'}">
+            <div  style="border-right: none;background: #ccc">旅游申请</div>
+          </c:if>
+
         </div>
 
     </div>
