@@ -671,6 +671,8 @@ public class OrderServiceImpl implements OrderService {
 				.isProfitSettledUpEQ(false)
 				.build());
 
+		final Long toV4Quantity = 3600L;
+
 		@SuppressWarnings("unused")
 		Long sysUserId = config.getSysUserId();
 		for (Order order : orders) {
@@ -783,7 +785,6 @@ public class OrderServiceImpl implements OrderService {
 				}
 			} else {
 				/* 业绩奖 */
-				final Long toV4Quantity = 3600L;
 				if (buyerUserRank != UserRank.V4 && order.getQuantity() >= toV4Quantity) {  //直升特级
 					if (sellerId.equals(sysUserId)) {
 						final BigDecimal saleBonus = new BigDecimal("9.00").multiply(BigDecimal.valueOf(quantity));
@@ -814,7 +815,7 @@ public class OrderServiceImpl implements OrderService {
 								TimeUnit.MILLISECONDS.sleep(50);
 							} catch (InterruptedException e1) {
 							}
-							fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfterToV4Parent, paidTime, "已扣除手续费:" + feeToV4Parent + ";费率: " + FEE_RATE);
+							fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月" + buyer.getNickname() + "业绩奖", CurrencyType.积分, saleBonusAfterToV4Parent, paidTime, "已扣除手续费:" + feeToV4Parent + ";费率: " + FEE_RATE);
 
 							logger.error(buyer.getNickname() + "直升特级, 给上级" + parent.getNickname() + "的业绩奖：" + saleBonusAfterToV4Parent + "已扣除手续费：" + feeToV4Parent);
 						}
@@ -870,7 +871,38 @@ public class OrderServiceImpl implements OrderService {
 //				}
 
 				/* 特级推荐奖 */
-				if(buyer.getUserRank() == UserRank.V4) {
+				if (buyerUserRank != UserRank.V4 && order.getQuantity() >= toV4Quantity) {
+					//直升特级 推荐奖还给上级V4的上级V4
+					Long parentId = buyer.getParentId();
+					User buyerParent = null;
+					boolean foundV4Parent = false;
+					int whileTimes = 0;
+					while (parentId != null) {
+						if (whileTimes > 1000) {
+							throw new BizException(BizCode.ERROR, "循环引用"); // 防御性校验
+						}
+						buyerParent = userMapper.findOne(parentId);
+						if(buyerParent.getUserRank() == UserRank.V4) {
+							if (!foundV4Parent) {
+								foundV4Parent = true;
+							} else {
+								final BigDecimal saleBonus = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
+								BigDecimal fee = saleBonus.multiply(FEE_RATE);
+								BigDecimal saleBonusAfter = saleBonus.subtract(fee);
+								try {
+									TimeUnit.MILLISECONDS.sleep(50);
+								} catch (InterruptedException e1) {
+								}
+								fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, year + "年" + month + "月推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
+								logger.error(buyer.getNickname() + "直升特级，订单给上级V4的上级V4：" + buyerParent.getNickname() + "推荐奖：" + saleBonusAfter + "已扣除手续费:" + fee);
+								break;
+							}
+						}
+						parentId = buyerParent.getParentId();
+						whileTimes++;
+					}
+				}
+				if(buyerUserRank == UserRank.V4) {
 
 					Long parentId = buyer.getParentId();
 					User buyerParent = null;
@@ -895,7 +927,7 @@ public class OrderServiceImpl implements OrderService {
 							} catch (InterruptedException e1) {
 							}
 							fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, year + "年" + month + "月推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE);
-							logger.error(buyerParent.getNickname() + "推荐奖：" + saleBonusAfter + "已扣除手续费:" + fee);
+							logger.error(buyer.getNickname() + "buyerUserRank==V4, quantity: " + quantity + " order id= " + order.getId() + ";" + buyerParent.getNickname() + "推荐奖：" + saleBonusAfter + "已扣除手续费:" + fee);
 							break;
 						}
 
