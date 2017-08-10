@@ -544,6 +544,30 @@
             }
           },
           {
+            data: 'isDeleted',
+            title: '是否删除',
+            orderable: false,
+            render: function (data, type, full) {
+              if (full.isDeleted) {
+                return '<label class="badge badge-danger">已删除</label>';
+              } else {
+                return '';
+              }
+            }
+          },
+          {
+            data: 'isToV4',
+            title: '直升特级',
+            orderable: false,
+            render: function (data, type, full) {
+              if (full.isToV4) {
+                return '<label class="badge badge-info">直升特级</label>';
+              } else {
+                return '';
+              }
+            }
+          },
+          {
             data: 'id',
             title: '操作',
             width: '20%',
@@ -577,6 +601,16 @@
                   optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setBoss?id=' + full.id + '" data-confirm="您确定要取消总经理团队？"><i class="fa fa-edit"></i> 取消总经理 </a>';
                 }
                 </shiro:hasPermission>
+                <shiro:hasPermission name="user:setIsDeleted">
+                if (full.isDeleted == null || full.isDeleted == false) {
+                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setIsDeleted?id=' + full.id + '" data-confirm="您确定要删除[' + full.nickname + ']吗？"><i class="fa fa-times"></i> 删除（开除） </a>';
+                }
+                </shiro:hasPermission>
+                <shiro:hasPermission name="user:setIsToV4">
+                if (full.isToV4 == null || full.isToV4 == false) {
+                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setIsToV4?id=' + full.id + '" data-confirm="您确定要设置直升特级[' + full.nickname + ']吗？"><i class="fa fa-male"></i>直升特级</a>';
+                }
+                </shiro:hasPermission>
 	              if(full.userRank == 'V4') {
                 <shiro:hasPermission name="user:setDirector">
                   if(!full.isDirector) {
@@ -595,9 +629,9 @@
 	              <shiro:hasPermission name="user:setShareholder">
 
 	              </shiro:hasPermission>
-                  <shiro:hasPermission name="user:edit">
-                  optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="editLastLoginTimeAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 重置登录时间 </a>';
-                  </shiro:hasPermission>
+                <shiro:hasPermission name="user:edit">
+                optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="editLastLoginTimeAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 重置登录时间 </a>';
+                </shiro:hasPermission>
               }
               return optionHtml;
             }

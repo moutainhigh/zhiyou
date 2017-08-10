@@ -123,7 +123,7 @@ public class Payment implements Serializable {
 	private CurrencyType currencyType1;
 
 	@NotNull
-	@DecimalMin("0.00")
+	@DecimalMin("0.01")
 	@Field(label = "货币1支付金额")
 	@View
 	@View(name = "amount1Label", type = String.class, groups = VO_ADMIN)
