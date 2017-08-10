@@ -57,7 +57,6 @@ public class OrdeStoreController {
     @RequestMapping(value = "/detailList", method = RequestMethod.GET)
     public String detailList(@RequestParam Long userId, Model model) {
         OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
-        orderStoreQueryModel.setIsEndEQ(0);
         orderStoreQueryModel.setOrderBy("createDate");
         orderStoreQueryModel.setDirection(Direction.DESC);
         orderStoreQueryModel.setUserIdEQ(userId);
@@ -73,7 +72,6 @@ public class OrdeStoreController {
     @RequestMapping(value = "/detailList",method = RequestMethod.POST)
     @ResponseBody
     public Grid<OrderStoreAdminVo> detailList( OrderStoreQueryModel orderStoreQueryModel) {
-        orderStoreQueryModel.setIsEndEQ(0);
         orderStoreQueryModel.setOrderBy("createDate");
         orderStoreQueryModel.setDirection(Direction.DESC);
         Page<OrderStore> page = storeService.findPage(orderStoreQueryModel);
