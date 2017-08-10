@@ -30,13 +30,15 @@
 		<result column="is_director" property="isDirector" />
 		<result column="is_honor_director" property="isHonorDirector" />
 		<result column="is_shareholder" property="isShareholder" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="is_to_v4" property="isToV4" />
 		<result column="viewflag" property="viewflag" />
 		<result column="lastlogin_time" property="lastloginTime" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,viewflag,lastlogin_time)
-	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossName},#{bossId},#{code},#{isDirector},#{isHonorDirector},#{isShareholder},#{viewflag},#{lastloginTime})
+	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time)
+	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossName},#{bossId},#{code},#{isDirector},#{isHonorDirector},#{isShareholder},#{isDeleted},#{isToV4},#{viewflag},#{lastloginTime})
 	</insert>
 
 	<delete id="delete">
@@ -72,6 +74,8 @@
 			is_director = #{isDirector},
 			is_honor_director = #{isHonorDirector},
 			is_shareholder = #{isShareholder},
+			is_deleted = #{isDeleted},
+			is_to_v4 = #{isToV4},
 			viewflag = #{viewflag},
 			lastlogin_time = #{lastloginTime},
 		</set>
@@ -109,6 +113,8 @@
 					<when test="field == 'isDirector'">is_director = #{user.isDirector},</when>
 					<when test="field == 'isHonorDirector'">is_honor_director = #{user.isHonorDirector},</when>
 					<when test="field == 'isShareholder'">is_shareholder = #{user.isShareholder},</when>
+					<when test="field == 'isDeleted'">is_deleted = #{user.isDeleted},</when>
+					<when test="field == 'isToV4'">is_to_v4 = #{user.isToV4},</when>
 					<when test="field == 'viewflag'">viewflag = #{user.viewflag},</when>
 					<when test="field == 'lastloginTime'">lastlogin_time = #{user.lastloginTime},</when>
 				</choose>
@@ -119,18 +125,21 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,viewflag,lastlogin_time
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time
 		from `usr_user`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,viewflag,lastlogin_time
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time
 		from `usr_user`
 		<where>
 			<if test="userRankEQ != null">
 				and user_rank = #{userRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="isDeletedEQ != null">
+				and is_deleted = #{isDeletedEQ}
 			</if>
 			<if test="isShareholderEQ != null">
 				and is_shareholder = #{isShareholderEQ}
@@ -149,6 +158,9 @@
 			</if>
 			<if test="isDirectorEQ != null">
 				and is_director = #{isDirectorEQ}
+			</if>
+			<if test="isToV4EQ != null">
+				and is_to_v4 = #{isToV4EQ}
 			</if>
 			<if test="parentIdIN != null">
 				<if test="parentIdIN.length != 0">
@@ -233,6 +245,9 @@
 			<if test="userRankEQ != null">
 				and user_rank = #{userRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
+			<if test="isDeletedEQ != null">
+				and is_deleted = #{isDeletedEQ}
+			</if>
 			<if test="isShareholderEQ != null">
 				and is_shareholder = #{isShareholderEQ}
 			</if>
@@ -250,6 +265,9 @@
 			</if>
 			<if test="isDirectorEQ != null">
 				and is_director = #{isDirectorEQ}
+			</if>
+			<if test="isToV4EQ != null">
+				and is_to_v4 = #{isToV4EQ}
 			</if>
 			<if test="parentIdIN != null">
 				<if test="parentIdIN.length != 0">

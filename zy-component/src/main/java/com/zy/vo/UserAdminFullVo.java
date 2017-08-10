@@ -47,8 +47,14 @@ public class UserAdminFullVo implements Serializable {
 	private Long bossId;
 	@Field(label = "是否董事")
 	private Boolean isDirector;
+	@Field(label = "是否荣誉董事")
+	private Boolean isHonorDirector;
 	@Field(label = "是否股东")
 	private Boolean isShareholder;
+	@Field(label = "是否删除")
+	private Boolean isDeleted;
+	@Field(label = "是否直升特级")
+	private Boolean isToV4;
 
 	/* 扩展 */
 	@Field(label = "userInfo")

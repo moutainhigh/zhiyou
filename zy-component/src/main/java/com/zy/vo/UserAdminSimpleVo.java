@@ -22,12 +22,14 @@ public class UserAdminSimpleVo implements Serializable {
 	private UserType userType;
 	@Field(label = "用户等级")
 	private UserRank userRank;
-	@Field(label = "是否董事")
-	private Boolean isDirector;
-	@Field(label = "是否股东")
-	private Boolean isShareholder;
 	@Field(label = "总经理团队名称")
 	private String bossName;
+	@Field(label = "是否董事")
+	private Boolean isDirector;
+	@Field(label = "是否荣誉董事")
+	private Boolean isHonorDirector;
+	@Field(label = "是否股东")
+	private Boolean isShareholder;
 
 	/* 扩展 */
 	@Field(label = "用户等级")

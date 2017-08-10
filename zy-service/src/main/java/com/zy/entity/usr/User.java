@@ -222,6 +222,16 @@ public class User implements Serializable {
 	@View(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT})
 	private Boolean isShareholder;
 
+	@Query(Predicate.EQ)
+	@Field(label = "是否删除")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private Boolean isDeleted;
+
+	@Query(Predicate.EQ)
+	@Field(label = "是否直升特级")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private Boolean isToV4;
+
 	@Column(length = 1, unique = true)
 	@Field(label = "是否有权限")
 	private int viewflag;

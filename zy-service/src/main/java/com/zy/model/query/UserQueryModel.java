@@ -62,9 +62,9 @@ public class UserQueryModel implements Serializable {
 
 	private Boolean isShareholderEQ;
 
-	private String nameorPhone;
+	private Boolean isDeletedEQ;
 
-	private String remark;
+	private Boolean isToV4EQ;
 
 	private Integer pageNumber;
 
@@ -123,8 +123,10 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("openId");
 		fieldNames.add("rootName");
 		fieldNames.add("remark");
+		fieldNames.add("isToV4");
 		fieldNames.add("userRank");
 		fieldNames.add("password");
+		fieldNames.add("isDeleted");
 		fieldNames.add("isBoss");
 		fieldNames.add("isShareholder");
 		fieldNames.add("isHonorDirector");
@@ -147,7 +149,6 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("inviterId");
 		fieldNames.add("isDirector");
 		fieldNames.add("userType");
-		fieldNames.add("lastloginTime");
 	}
 
 }

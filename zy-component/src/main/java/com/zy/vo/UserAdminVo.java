@@ -29,8 +29,6 @@ public class UserAdminVo implements Serializable {
 	private Boolean isFrozen;
 	@Field(label = "注册时间")
 	private Date registerTime;
-	@Field(label = "最后一次登录时间")
-	private Date lastloginTime;
 	@Field(label = "注册ip")
 	private String registerIp;
 	@Field(label = "remark")
@@ -47,10 +45,16 @@ public class UserAdminVo implements Serializable {
 	private Long bossId;
 	@Field(label = "是否董事")
 	private Boolean isDirector;
-	@Field(label = "是否股东")
-	private Boolean isShareholder;
 	@Field(label = "是否荣誉董事")
 	private Boolean isHonorDirector;
+	@Field(label = "是否股东")
+	private Boolean isShareholder;
+	@Field(label = "是否删除")
+	private Boolean isDeleted;
+	@Field(label = "是否直升特级")
+	private Boolean isToV4;
+	@Field(label = "最后一次登录时间")
+	private Date lastloginTime;
 
 	/* 扩展 */
 	@Field(label = "用户等级")
