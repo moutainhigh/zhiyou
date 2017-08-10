@@ -260,7 +260,12 @@ public class UcenterPayController {
 		BigDecimal orderAmount = order.getAmount();
 		BigDecimal amount1 = orderAmount;
 		if(amount2 != null) {
-			amount1 =  orderAmount.subtract(amount2);
+			if (orderAmount.compareTo(amount2) < 0) {
+				amount1 = new BigDecimal("0.00");
+				amount2 = orderAmount;
+			} else {
+				amount1 =  orderAmount.subtract(amount2);
+			}
 		}
 //		List<Payment> payments = paymentService.findAll(PaymentQueryModel.builder().refIdEQ(order.getId()).paymentTypeEQ(PaymentType.订单支付).build());
 //		Payment payment = payments.stream().filter(v -> v.getPayType() == payType)

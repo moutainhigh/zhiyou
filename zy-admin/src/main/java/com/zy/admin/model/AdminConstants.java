@@ -27,6 +27,8 @@ public class AdminConstants {
 			sub.put("user:setDirector", "用户信息(升级董事)");
 			sub.put("user:setShareholder", "用户信息(升级股东)");
 			sub.put("user:setBoss", "用户信息(设置总经理)");
+			sub.put("user:setBoss", "用户信息(开除用户)");
+			sub.put("user:setBoss", "用户信息(直升特级)");
 			sub.put("user:export", "用户信息(导出)");
 			sub.put("userInfo:view", "用户认证(查看)");
 			sub.put("userInfo:edit", "用户认证(编辑)");

@@ -13,7 +13,6 @@ import com.zy.common.util.JsonUtils;
 import com.zy.component.CacheComponent;
 import com.zy.component.LocalCacheComponent;
 import com.zy.component.UserComponent;
-import com.zy.entity.cms.Article;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
@@ -49,7 +48,7 @@ public class UserController {
 	private UserService userService;
 	
 	@Autowired
-	private CacheComponent caheComponent;
+	private CacheComponent cahceComponent;
 	
 	@Autowired
 	private UserComponent userComponent;
@@ -104,7 +103,7 @@ public class UserController {
 		List<User> parents = new ArrayList<User>();
 		Long parentId = current.getParentId();
 		while (parentId != null) {
-			User parentUser = caheComponent.getUser(parentId);
+			User parentUser = cahceComponent.getUser(parentId);
 			parentId = parentUser.getParentId();
 			parents.add(parentUser);
 		}
@@ -367,7 +366,23 @@ public class UserController {
 //		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 //		return "redirect:/user";
 //	}
-	
+
+	@RequiresPermissions("user:setIsDeleted")
+	@RequestMapping(value = "/setIsDeleted", method = RequestMethod.GET)
+	public String setIsDeleted(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+		userService.modifyIsDeleted(id, true);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
+		return "redirect:/user";
+	}
+
+	@RequiresPermissions("user:setIsToV4")
+	@RequestMapping(value = "/setIsToV4", method = RequestMethod.GET)
+	public String setIsToV4(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+		userService.modifyIsToV4(id, true);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
+		return "redirect:/user";
+	}
+
 	private void checkAndValidateIsPlatform(Long userId) {
 		User user = userService.findOne(userId);
 		validate(user, NOT_NULL, "user is null, id = " + userId);

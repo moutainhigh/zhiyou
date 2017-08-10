@@ -539,6 +539,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void modifyIsDeleted(@NotNull Long id, boolean isDeleted) {
+        findAndValidate(id);
+
+        User merge = new User();
+        merge.setId(id);
+        merge.setIsDeleted(isDeleted);
+
+        userMapper.merge(merge, "isDeleted");
+    }
+
+    @Override
+    public void modifyIsToV4(@NotNull Long id, boolean isToV4) {
+        findAndValidate(id);
+
+        User merge = new User();
+        merge.setId(id);
+        merge.setIsToV4(isToV4);
+
+        userMapper.merge(merge, "isToV4");
+    }
+
+    @Override
 	public void setParentId(Long id, Long parentId) {
 		User user = findAndValidate(id);
         User parent = findAndValidate(parentId);

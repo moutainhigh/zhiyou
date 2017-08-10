@@ -72,6 +72,10 @@ public interface UserService {
 
 	void modifyIsShareholder(Long id, boolean isShareholder);
 
+	void modifyIsDeleted(Long id, boolean isDeleted);
+
+	void modifyIsToV4(Long id, boolean isToV4);
+
 	long[] conyteamTotal(Long userId);
 
 	long[] countdirTotal(Long userId);
