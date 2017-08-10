@@ -279,6 +279,33 @@ public class UserServiceImpl implements UserService {
 			validate(account);
 			accountMapper.insert(account);
 		}
+        {
+            Account account = new Account();
+            account.setAmount(zero);
+            account.setCurrencyType(CurrencyType.人民币);
+            account.setUserId(userId);
+            account.setVersion(0);
+            validate(account);
+            accountMapper.insert(account);
+        }
+        {
+            Account account = new Account();
+            account.setAmount(zero);
+            account.setCurrencyType(CurrencyType.货币期权);
+            account.setUserId(userId);
+            account.setVersion(0);
+            validate(account);
+            accountMapper.insert(account);
+        }
+        {
+            Account account = new Account();
+            account.setAmount(zero);
+            account.setCurrencyType(CurrencyType.货币股份);
+            account.setUserId(userId);
+            account.setVersion(0);
+            validate(account);
+            accountMapper.insert(account);
+        }
 		/*{
 			Account account = new Account();
 			account.setAmount(zero);
