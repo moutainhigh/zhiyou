@@ -153,7 +153,7 @@
 			</if>
 			AND a.is_effect = 1
 		</where>
-		ORDER BY a.create_date DESC ,a.audit_status ASC
+		ORDER BY a.audit_status ASC,a.create_date DESC
 		<if test="offset != null">
 			limit #{offset}, #{pageSize}
 		</if>
