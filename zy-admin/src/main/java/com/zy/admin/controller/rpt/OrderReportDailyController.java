@@ -139,7 +139,7 @@ public class OrderReportDailyController {
 					|| order.getOrderStatus() == OrderStatus.已支付 || order.getOrderStatus() == OrderStatus.已发货)).collect(Collectors.toList());
 			UserRank userRankEQ = orderReportVoQueryModel.getUserRankEQ();
 			if(userRankEQ == null) {
-				os = os.stream().filter(order -> order.getBuyerUserRank() == UserRank.V4).collect(Collectors.toList());
+				os = os.stream().filter(order ->order.getBuyerUserRank() == UserRank.V4||(order.getQuantity()==3600&&order.getSellerId()==1)).collect(Collectors.toList());
 			} else {
 				os = os.stream().filter(order -> order.getBuyerUserRank() == userRankEQ).collect(Collectors.toList());
 			}
