@@ -146,7 +146,8 @@
         <div class="list-item">
           <label class="list-label" for="age">年龄</label>
           <div class="list-text">
-            <input type="number" name="age" class="form-input" value="${report.age}" placeholder="填写客户年龄">
+            <input onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else if(this.value.length<=3){this.value=this.value.replace(/\D/g,'')}else{var vue=this.value;this.value=vue.substr(0,3);}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else if(this.value.length<=3){this.value=this.value.replace(/\D/g,'')}else{this.value=this.value.splice(2,1)}" name="age" id="age" class="form-input" value="${report.age}" placeholder="填写客户年龄">
+            <%--<input type="number" name="age" class="form-input" value="${report.age}" placeholder="填写客户年龄">--%>
           </div>
         </div>
         <div class="list-item">
