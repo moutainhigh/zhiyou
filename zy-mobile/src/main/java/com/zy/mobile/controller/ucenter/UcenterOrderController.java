@@ -126,7 +126,7 @@ public class UcenterOrderController {
 	}
 
 	@RequestMapping("/{id}")
-	public String detail(@PathVariable Long id, Principal principal, Model model) {
+	public String detail(@PathVariable Long id, Principal principal, Model model,String to) {
 		Order order = orderService.findOne(id);
 		validate(order, NOT_NULL, "order id" + id + " not found");
 		if (!principal.getUserId().equals(order.getSellerId()) && !principal.getUserId().equals(order.getUserId())) {
@@ -161,7 +161,7 @@ public class UcenterOrderController {
 			canCopy = true;
 		}
 		model.addAttribute("canCopy", canCopy);
-
+        model.addAttribute("to",to);
 		return "ucenter/order/orderDetail";
 	}
 
