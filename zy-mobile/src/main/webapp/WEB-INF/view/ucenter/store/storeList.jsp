@@ -109,7 +109,7 @@
 <body class="header-fixed footer-fixed">
 <header class="header">
   <h1>${inOut == 'out' ? '出货' : '进货'}订单</h1>
-  <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
+  <a href="${ctx}/u/store" class="button-left"><i class="fa fa-angle-left"></i></a>
   <%--<a href="${ctx}/u/productReplacement/create" class="button-right"><i class="fa fa-edit"></i>换货</a>--%>
 </header>
 
