@@ -166,7 +166,7 @@ public  interface Constants {
     String TOPIC_DEPOSIT_SUCCESS = "deposit-success";
     String TOPIC_DEPOSIT_OFFLINE_REJECTED = "deposit-offline-rejected";
 
-    String TOPIC_POLICY_EXPIRE_SOON = "policy-expire-soon"; // 保险单即将过期提醒
+    String TOPIC_POLICY_EXPIRE_SOON = "policy-expire-soon"; // 保险申请即将过期提醒
 
     List<String> relationshipList = asList(new String[]{"本人", "亲属", "朋友", "其他"});
     List<String> restTimeLabelList = asList(new String[]{"良好(11:00点前)", "一般(11:00-12:00)", "紊乱(12:00以后)", "其他"});

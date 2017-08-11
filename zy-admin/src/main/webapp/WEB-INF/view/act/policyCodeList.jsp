@@ -30,7 +30,7 @@
           },
           {
             data: 'code',
-            title: '保险单号',
+            title: '产品编号',
             orderable: false
           },
           {
@@ -69,7 +69,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/policyCode">保险单号</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/policyCode">产品编号</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -80,7 +80,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-umbrella"></i> 保险单号管理
+          <i class="icon-umbrella"></i> 产品编号管理
         </div>
         <shiro:hasPermission name="policyCode:edit">
           <div class="actions">
@@ -102,7 +102,7 @@
               </div>
 
               <div class="form-group">
-                <input type="text" name="codeEQ" class="form-control" placeholder="保险单号"/>
+                <input type="text" name="codeEQ" class="form-control" placeholder="产品编号"/>
               </div>
 
               <div class="form-group">

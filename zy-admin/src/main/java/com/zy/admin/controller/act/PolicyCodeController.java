@@ -85,7 +85,7 @@ public class PolicyCodeController {
 		policyCodeQueryModel.setPageSize(null);
 		policyCodeQueryModel.setPageNumber(null);
 		List<PolicyCode> polisyCodes = policyCodeService.findAll(policyCodeQueryModel);
-		String fileName = "保险单号.xlsx";
+		String fileName = "产品编号.xlsx";
 		WebUtils.setFileDownloadHeader(response, fileName);
 
 		List<PolicyCodeExportVo> policyExportVos = polisyCodes.stream().map(policyCodeComponent::buildExportVo).collect(Collectors.toList());

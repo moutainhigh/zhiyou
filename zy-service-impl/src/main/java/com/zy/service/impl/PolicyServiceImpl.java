@@ -65,10 +65,10 @@ public class PolicyServiceImpl implements PolicyService {
 		validate(code, NOT_BLANK, "code is null");
 		PolicyCode policyCode = policyCodeMapper.findByCode(policy.getCode());
 		if(policyCode == null) {
-			throw new BizException(BizCode.ERROR, "保险单号不存在[" + policy.getCode() + "]");
+			throw new BizException(BizCode.ERROR, "产品编号不存在[" + policy.getCode() + "]");
 		}
 		if(policyCode.getIsUsed()) {
-			throw new BizException(BizCode.ERROR, "保险单号已被使用[" + policy.getCode() + "]");
+			throw new BizException(BizCode.ERROR, "产品编号已被使用[" + policy.getCode() + "]");
 		}
 		
 		long count = policyMapper.count(PolicyQueryModel.builder().reportIdEQ(reportId).build());

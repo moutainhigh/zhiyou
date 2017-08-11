@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>保险单列表</title>
+<title>保险申请列表</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <script src="${stccdn}/plugin/laytpl-1.1/laytpl.js"></script>
 <script type="text/javascript">
@@ -72,7 +72,7 @@
 </head>
 <body class="header-fixed">
   <header class="header">
-    <h1>保险单列表</h1>
+    <h1>保险申请列表</h1>
     <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
     <a href="${ctx}/u/policy/create" class="button-right">新增</a>
   </header>

@@ -113,7 +113,7 @@
           },
           {
             data: 'code',
-            title: '保险单号',
+            title: '产品编号',
             orderable: false
           },
 	        {
@@ -285,7 +285,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/policy">保险单</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/policy">保险申请</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -296,7 +296,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-umbrella"></i> 保险单管理
+          <i class="icon-umbrella"></i> 保险申请管理
         </div>
       </div>
       <div class="portlet-body clearfix">
@@ -315,7 +315,7 @@
               </div>
 
               <div class="form-group">
-                <input type="text" name="codeEQ" class="form-control" placeholder="保险单号"/>
+                <input type="text" name="codeEQ" class="form-control" placeholder="产品编号"/>
               </div>
 
               <div class="form-group input-inline">

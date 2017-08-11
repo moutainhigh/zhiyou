@@ -25,7 +25,7 @@
 <div class="page-bar">
   <ul class="page-breadcrumb">
     <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-    <li><a href="javascript:;" data-href="${ctx}/policyCode">保险单号</a></li>
+    <li><a href="javascript:;" data-href="${ctx}/policyCode">产品编号</a></li>
   </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -36,7 +36,7 @@
     <div class="portlet light bordered">
       <div class="portlet-title">
         <div class="caption">
-          <i class="icon-umbrella"></i> 保险单号生成
+          <i class="icon-umbrella"></i> 产品编号生成
         </div>
       </div>
       <div class="portlet-body form">
@@ -59,7 +59,7 @@
             <div class="form-group">
               <label class="control-label col-md-3">数量<span class="required"> * </span></label>
               <div class="col-md-5">
-                <input type="number" class="form-control" name="time" id="time" value="" placeholder="生成的保险单号数量"/>
+                <input type="number" class="form-control" name="time" id="time" value="" placeholder="生成的产品编号数量"/>
               </div>
             </div>
             

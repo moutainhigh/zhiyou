@@ -29,7 +29,7 @@ import static io.gd.generator.api.query.Predicate.LT;
 @Table(name = "act_policy")
 @Getter
 @Setter
-@Type(label = "保险单")
+@Type(label = "保险申请")
 @QueryModel
 @ViewObject(groups = {Policy.VO_LIST, Policy.VO_DETAIL, Policy.VO_ADMIN, Policy.VO_EXPORT})
 public class Policy implements Serializable {

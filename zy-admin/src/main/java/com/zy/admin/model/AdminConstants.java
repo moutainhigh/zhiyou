@@ -61,12 +61,12 @@ public class AdminConstants {
 			sub.put("activityTicket:edit", "活动票务管理(编辑)");
 			sub.put("activityApply:view", "活动报名管理(查看)");
 			sub.put("activityApply:edit", "活动报名管理(新增)");
-			sub.put("policy:view", "保险单管理(查看)");
-			sub.put("policy:export", "保险单管理(导出)");
-			sub.put("policy:modify", "保险单管理(编辑)");
-			sub.put("policyCode:view", "保险单号管理(查看)");
-			sub.put("policyCode:edit", "保险单号管理(编辑)");
-			sub.put("policyCode:export", "保险单号管理(导出)");
+			sub.put("policy:view", "保险申请管理(查看)");
+			sub.put("policy:export", "保险申请管理(导出)");
+			sub.put("policy:modify", "保险申请管理(编辑)");
+			sub.put("policyCode:view", "产品编号管理(查看)");
+			sub.put("policyCode:edit", "产品编号管理(编辑)");
+			sub.put("policyCode:export", "产品编号管理(导出)");
 			sub.put("report:view", "检测报告查看");
 			sub.put("report:edit", "检测报告编辑");
 			sub.put("report:preConfirm", "检测报告预审");

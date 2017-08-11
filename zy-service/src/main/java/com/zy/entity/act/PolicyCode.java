@@ -20,7 +20,7 @@ import java.util.Date;
 @Table(name = "act_policy_code")
 @Getter
 @Setter
-@Type(label = "保险单号")
+@Type(label = "产品编号")
 @QueryModel
 @ViewObject(groups = {PolicyCode.VO_ADMIN, PolicyCode.VO_EXPORT})
 public class PolicyCode implements Serializable {

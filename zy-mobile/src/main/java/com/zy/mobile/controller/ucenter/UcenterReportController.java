@@ -192,14 +192,14 @@ public class UcenterReportController {
 			//保单校验
 			if(hasPolicy && policy != null) {
 				if(policy.getCode() == null) {
-					throw new BizException(BizCode.ERROR, "请填写保险单号");
+					throw new BizException(BizCode.ERROR, "请填写产品编号");
 				}
 				PolicyCode policyCode = policyCodeService.findByCode(policy.getCode());
 				if(policyCode == null) {
-					throw new BizException(BizCode.ERROR, "保险单号不存在[" + policy.getCode() + "]");
+					throw new BizException(BizCode.ERROR, "产品编号不存在[" + policy.getCode() + "]");
 				}
 				if(policyCode.getIsUsed()) {
-					throw new BizException(BizCode.ERROR, "保险单号已被使用[" + policy.getCode() + "]");
+					throw new BizException(BizCode.ERROR, "产品编号已被使用[" + policy.getCode() + "]");
 				}
 			}
 			report.setUserId(principal.getUserId());
