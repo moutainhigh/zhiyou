@@ -74,8 +74,9 @@
             right:0;
         }
         @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
-            .font-triangleTD {width:20%;position: absolute;
+            .font-triangleTD {width:10%;position: absolute;
                 right:0;}
+            .font-triangleD,.font-triangleTD {font-size: 15px;}
             .font-triangleT {
                 line-height:100px;
             }
