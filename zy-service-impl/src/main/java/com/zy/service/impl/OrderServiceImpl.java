@@ -1742,7 +1742,9 @@ public class OrderServiceImpl implements OrderService {
 						.map(u -> {
 							logger.error("董事贡献奖励：计算teamV4Map...");
 							Long parentId = u.getParentId();
+							Long tempParentId = null;
 							boolean isChildrenOfDirector = false;
+							boolean isMoreLevelDirector = false;
 							while(!isChildrenOfDirector) {
 								if (parentId.equals(userId)) {
 									break;
@@ -1756,8 +1758,29 @@ public class OrderServiceImpl implements OrderService {
 
 								parentId = directV4ParentId;
 							}
+
+							if (isChildrenOfDirector) {
+								tempParentId = userMap.get(parentId).getParentId();
+								while(!isMoreLevelDirector) {
+									if (tempParentId.equals(userId)) {
+										break;
+									}
+									User user = userMap.get(tempParentId);
+									Long directV4ParentId = getDirectV4ParentId(predicate, userMap, user);
+									if (user.getIsDirector() != null && user.getIsDirector()) {
+										isMoreLevelDirector = true;
+										break;
+									}
+
+									tempParentId = directV4ParentId;
+								}
+							}
+
 							Long quantity = userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId());
 							BigDecimal innerProfit = zero;
+							if (isMoreLevelDirector) {
+								return innerProfit;
+							}
 							if(u.getIsDirector() != null && u.getIsDirector()) {
 								innerProfit = new BigDecimal(quantity);
 							} else {

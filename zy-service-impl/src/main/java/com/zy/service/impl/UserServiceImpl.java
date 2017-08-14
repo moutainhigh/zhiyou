@@ -551,9 +551,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyIsShareholder(@NotNull Long id, boolean isShareholder) {
         User user = findAndValidate(id);
-        if(user.getIsShareholder() != null) {
-            return ;
-        }
+
         User userForMerge = new User();
         userForMerge.setId(id);
         userForMerge.setIsShareholder(isShareholder);

@@ -238,11 +238,13 @@ public class UcenterPayController {
 
 		if(useCurrency2) {
 			if(amount2 == null) {
-				throw new BizException(BizCode.INSUFFICIENT_BALANCE, "使用积分余额支付, 积分余额为空");
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("使用积分余额支付, 积分余额为空"));
+				return "redirect:/u/order/" + orderId;
 			}
 			Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.积分);
 			if(account.getAmount().compareTo(amount2) < 0) {
-				throw new BizException(BizCode.INSUFFICIENT_BALANCE, "支付失败, " + CurrencyType.积分.getAlias() + "余额不足");
+				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error( CurrencyType.积分 + "余额为空"));
+				return "redirect:/u/order/" + orderId;
 			}
 		} else {
 			amount2 = null;
@@ -259,10 +261,11 @@ public class UcenterPayController {
 		PayType payType = PayType.余额;
 		BigDecimal orderAmount = order.getAmount();
 		BigDecimal amount1 = orderAmount;
+		boolean useAllCoin = false;
 		if(amount2 != null) {
 			if (orderAmount.compareTo(amount2) < 0) {
-				amount1 = new BigDecimal("0.00");
-				amount2 = orderAmount;
+				useAllCoin = true;
+				amount1 = orderAmount;
 			} else {
 				amount1 =  orderAmount.subtract(amount2);
 			}
@@ -278,11 +281,15 @@ public class UcenterPayController {
 
 		Payment payment = new Payment();
 		payment.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_PAYMENT_EXPIRE_IN_MINUTES));
-		payment.setCurrencyType1(CurrencyType.现金);
 		payment.setAmount1(amount1);
-		if(amount2 != null) {
-			payment.setCurrencyType2(CurrencyType.积分);
-			payment.setAmount2(amount2);
+		if (useAllCoin) {
+			payment.setCurrencyType1(CurrencyType.积分);
+		} else {
+			payment.setCurrencyType1(CurrencyType.现金);
+			if(amount2 != null) {
+				payment.setCurrencyType2(CurrencyType.积分);
+				payment.setAmount2(amount2);
+			}
 		}
 		payment.setPaymentType(PaymentType.订单支付);
 		payment.setRefId(order.getId());
