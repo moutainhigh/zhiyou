@@ -21,7 +21,7 @@
 <body class="product-list footer-fixed">
 
   <header class="header">
-    <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/${to eq 'u'?'u/store':''}" class="button-left"><i class="fa fa-angle-left"></i></a>
     <h1>全部服务</h1>
   </header>
 

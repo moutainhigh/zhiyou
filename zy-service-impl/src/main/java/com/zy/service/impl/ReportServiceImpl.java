@@ -376,6 +376,17 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
+	public void visitUserBack(Long id, Integer times) {
+		Report report = reportMapper.findOne(id);
+		validate(report, NOT_NULL, "report id " + id + " not fount");
+		validate(report, v -> v.getCheckReportResult() != null, "客服检测结果为空");
+
+		report.setTimes(times);
+		report.setVisitUserId(null);
+		reportMapper.update(report);
+	}
+
+	@Override
 	public Report modify(@NotNull Report report) {
 		Long id = report.getId();
 		validate(id, NOT_NULL, "id is null");

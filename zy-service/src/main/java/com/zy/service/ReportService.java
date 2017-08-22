@@ -35,4 +35,6 @@ public interface ReportService {
 	void visitUser(Long id, Long userId);
 
 	Report findReport(ReportQueryModel reportQueryModel);
+
+	void visitUserBack(Long id, Integer times);
 }

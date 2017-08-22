@@ -42,12 +42,13 @@ public class ProductController {
 	private Config config;
 	
 	@RequestMapping
-	public String list(Model model, String orderFill) {
+	public String list(Model model, String orderFill,String to) {
 		ProductQueryModel productQueryModel = new ProductQueryModel();
 		productQueryModel.setIsOnEQ(true);
 		List<Product> products = productService.findAll(productQueryModel);
 		model.addAttribute("products", products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
 		model.addAttribute("orderFill", orderFill);
+		model.addAttribute("to",to);
 		return "product/productList";
 	}
 
