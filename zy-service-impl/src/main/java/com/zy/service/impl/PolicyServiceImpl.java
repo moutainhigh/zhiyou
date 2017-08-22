@@ -206,4 +206,9 @@ public class PolicyServiceImpl implements PolicyService {
 			policyCodeMapper.update(policyCode);
 		}
 	}
+
+	@Override
+	public void updateUserInfo(@NotNull Policy policy) {
+		policyMapper.update(policy);
+	}
 }

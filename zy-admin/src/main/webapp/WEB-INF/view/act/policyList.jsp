@@ -91,7 +91,7 @@
             }
           },
           {
-            data: 'birthday',
+            data: 'birthdayLabel',
             title: '出生年月',
             orderable: false
           },
@@ -139,7 +139,21 @@
 		        data: 'createdTimeLabel',
 		        title: '创建时间',
 		        orderable: false
-	        }
+	      },
+            {
+                data: 'id',
+                title: '操作',
+                width: '100px',
+                orderable: false,
+                render: function (data, type, full) {
+                    var optionHtml = '';
+                    <shiro:hasPermission name="policy:edit">
+                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/policy/editPolicy/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
+                    </shiro:hasPermission>
+                    return optionHtml;
+                }
+            }
+
         ]
       }
     });
@@ -312,6 +326,10 @@
 
               <div class="form-group">
                 <input type="text" name="phoneEQ" class="form-control" placeholder="客户手机"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="idCardNumberLK" class="form-control" placeholder="客户身份证号码"/>
               </div>
 
               <div class="form-group">

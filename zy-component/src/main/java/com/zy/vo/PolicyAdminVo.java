@@ -49,5 +49,7 @@ public class PolicyAdminVo implements Serializable {
 	private String validTimeBeginLabel;
 	@Field(label = "有效时间止")
 	private String validTimeEndLabel;
+	@Field(label = "出生年月日")
+	private String birthdayLabel;
 
 }

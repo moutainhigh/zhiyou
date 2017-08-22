@@ -11,7 +11,9 @@ import com.zy.component.PolicyComponent;
 import com.zy.entity.act.Policy;
 import com.zy.model.query.PolicyQueryModel;
 import com.zy.service.PolicyService;
+import com.zy.vo.BlackOrWhiteAdminVo;
 import com.zy.vo.PolicyAdminVo;
+import com.zy.vo.PolicyDetailVo;
 import com.zy.vo.PolicyExportVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -19,9 +21,11 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -121,5 +125,36 @@ public class PolicyController {
 			return ResultBuilder.ok("ok");
 		}
 	}
+
+
+	@RequiresPermissions("policy:edit")
+	@RequestMapping(value = "/editPolicy/{id}", method = RequestMethod.GET)
+	public String updateBlackWhite(@PathVariable Long id, Model model) {
+		Policy policy = policyService.findOne(id);
+		PolicyDetailVo policyDetailVo = policyComponent.buildDetailVo(policy);
+		model.addAttribute("policyDetailVo",policyDetailVo);
+		return "act/policyEdit";
+	}
+
+
+	@RequiresPermissions("policy:edit")
+	@RequestMapping(value = "/editPolicy", method = RequestMethod.POST)
+	public String updateBlackWhite(Policy policy,RedirectAttributes redirectAttributes) {
+		Long policyId = policy.getId();
+		Policy policy1 = policyService.findOne(policyId);
+		validate(policy1, NOT_NULL, "policy id is null");
+		try {
+			policy1.setBirthday(policy.getBirthday());
+			policy1.setRealname(policy.getRealname());
+			policy1.setIdCardNumber(policy.getIdCardNumber());
+			policyService.updateUserInfo(policy1);
+			redirectAttributes.addFlashAttribute(ResultBuilder.ok("保险申请单编辑成功！"));
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
+			return "redirect:/policy/policyEdit/" + policyId;
+		}
+		return "redirect:/policy";
+	}
+
 
 }

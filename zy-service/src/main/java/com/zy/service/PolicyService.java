@@ -24,4 +24,6 @@ public interface PolicyService {
 	void fail(Long id);
 
 	void updateProductNumber(String productNumber, boolean b);
+
+	void updateUserInfo(Policy policy);
 }

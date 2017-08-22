@@ -25,8 +25,14 @@ public class ReportVisitedLogComponent {
 		reportVisitedLogListVo.setVisitedTime3Label(GcUtils.formatDate(reportVisitedLog.getVisitedTime3(), "yyyy-MM-dd HH:mm"));
 		Long reportId = reportVisitedLogListVo.getReportId();
 		Report report = reportService.findOne(reportId);
-		reportVisitedLogListVo.setReportPhone(report.getPhone());
-		reportVisitedLogListVo.setReportRealname(report.getRealname());
+		if(null != report){
+			if(null != report.getPhone()){
+				reportVisitedLogListVo.setReportPhone(report.getPhone());
+			}
+			if(null != report.getRealname()){
+				reportVisitedLogListVo.setReportRealname(report.getRealname());
+			}
+		}
 		return reportVisitedLogListVo;
 	}
 

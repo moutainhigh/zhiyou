@@ -39,5 +39,7 @@ public class PolicyDetailVo implements Serializable {
 	/* 扩展 */
 	@Field(label = "图片1")
 	private String image1Thumbnail;
+	@Field(label = "出生年月日")
+	private String birthdayLable;
 
 }

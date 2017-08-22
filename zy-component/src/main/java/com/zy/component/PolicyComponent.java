@@ -21,6 +21,9 @@ public class PolicyComponent {
 
 	@Autowired
 	private CacheComponent cacheComponent;
+
+	private static final String TIME_PATTERN = "yyyy-MM-dd HH:mm";
+	private static final String S_PATTERN = "yyyy-MM-dd";
 	
 	public PolicyAdminVo buildAdminVo(Policy policy) {
 		PolicyAdminVo policyAdminVo = new PolicyAdminVo();
@@ -48,6 +51,10 @@ public class PolicyComponent {
 		if (policyStatus != null) {
 			policyAdminVo.setPolicyStatusStyle(GcUtils.getPolicyStatusStyle(policyStatus));
 		}
+		Date birthday = policy.getBirthday();
+		if (birthday != null) {
+			policyAdminVo.setBirthdayLabel(GcUtils.formatDate(birthday, S_PATTERN));
+		}
 		return policyAdminVo;
 	}
 	
@@ -65,6 +72,7 @@ public class PolicyComponent {
 	public PolicyDetailVo buildDetailVo(Policy policy) {
 		PolicyDetailVo policyDetailVo = new PolicyDetailVo();
 		BeanUtils.copyProperties(policy, policyDetailVo);
+		policyDetailVo.setBirthdayLable(GcUtils.formatDate(policy.getBirthday(), S_PATTERN));
 
 		String image1 = policy.getImage1();
 		if (image1 != null) {
