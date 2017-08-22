@@ -77,7 +77,7 @@
   <img src="${ctx}/images/Ushop.png" class="Ushop"/>
   <p>优库存量：${num}件</p>
   <a href="/u/store/details" class="UshopDetil">详情 >>></a>
-  <a href="${ctx}/product" class="orderStock">我要进货</a>
+  <a href="${ctx}/product?to=u" class="orderStock">我要进货</a>
   <a href="${ctx}/u/store/toOutOrder?orderStatus=2" class="orderStockTwo">我要发货</a>
 </article>
 

@@ -147,8 +147,15 @@
 </head>
 <body class="order-detail">
   <header class="header">
-    <h1>订单详情</h1>
-    <a href="${ctx}/u/order/${inOut}" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <h1>订单详情${to}</h1>
+    <c:choose>
+      <c:when test="${to eq 'u'}">
+        <a href="${ctx}/u/store/toOutOrder?orderStatus=2" class="button-left"><i class="fa fa-angle-left"></i></a>
+      </c:when>
+      <c:otherwise>
+        <a href="${ctx}/u/order/${inOut}" class="button-left"><i class="fa fa-angle-left"></i></a>
+      </c:otherwise>
+    </c:choose>
     <c:if test="${ inOut == 'in' && (order.orderStatus == '已取消' || order.orderStatus == '已完成' || order.orderStatus == '待支付')}">
     <a href="javascript:;" class="button-right button-popmenu"><i class="fa fa-ellipsis-h"></i></a>
     <nav class="header-popmenu hide">
