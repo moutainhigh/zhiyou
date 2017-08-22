@@ -85,6 +85,35 @@
   </form>
 </script>
 
+<script id="visitUserBackTmpl" type="text/x-handlebars-template">
+  <form id="visitUserBackForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+    <input type="hidden" name="id" value="{{id}}"/>
+    <div class="form-body">
+      <div class="alert alert-danger display-hide">
+        <i class="fa fa-exclamation-circle"></i>
+        <button class="close" data-close="alert"></button>
+        <span class="form-errors">您填写的信息有误，请检查。</span>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2">回访次数<span class="required"> * </span></label>
+        <div class="col-md-5">
+          <input type="text" name="times" value="{{times}}" class="form-control" placeholder="请输入回访次数"/>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions fluid">
+      <div class="col-md-offset-3 col-md-9">
+        <button id="visitUserBackSubmit{{id}}" type="button" class="btn green">
+          <i class="fa fa-save"></i> 保存
+        </button>
+        <button id="visitUserBackCancel{{id}}" class="btn default" >
+          <i class="fa fa-chevron-left"></i> 返回
+        </button>
+      </div>
+    </div>
+  </form>
+</script>
+
 <script id="confirmTmpl" type="text/x-handlebars-template">
   <form id="confirmForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
     <input type="hidden" name="id" value="{{id}}"/>
@@ -291,6 +320,54 @@
 
 	  });
 
+      var visitUserBackTemplate = Handlebars.compile($('#visitUserBackTmpl').html());
+      $('#dataTable').on('click', '.visit-back', function () {
+          var id = $(this).data('id');
+          var times = $(this).data('times');
+          var data = {
+              id: id,
+              times: times
+          };
+          var html = visitUserBackTemplate(data);
+          var index = layer.open({
+              type: 1,
+              //skin: 'layui-layer-rim', //加上边框
+              area: ['600px', '360px'], //宽高
+              content: html
+          });
+
+          $form = $('#visitUserBackForm' + id);
+          $form.validate({
+              rules: {
+                  'times': {
+                      required: true
+                  }
+              },
+              messages: {}
+          });
+
+          $('#visitUserBackSubmit' + id).bind('click', function () {
+              var result = $form.validate().form();
+              if (result) {
+                  var url = '${ctx}/report/visitUserBack';
+                  $.post(url, $form.serialize(), function (data) {
+                      if (data.code === 0) {
+                          layer.alert('操作成功');
+                          layer.close(index);
+                          grid.getDataTable().ajax.reload(null, false);
+                      } else {
+                          layer.alert(data.message);
+                      }
+                  });
+              }
+          })
+
+          $('#visitUserBackCancel' + id).bind('click', function () {
+              layer.close(index);
+          })
+
+      });
+
     grid.init({
       src: $('#dataTable'),
       onSuccess: function (grid) {
@@ -460,11 +537,13 @@
 			            <shiro:hasPermission name="report:visitUser">
 			            if(full.visitUser == null) {
 				            optionHtml += '<a class="btn btn-xs default blue-stripe visit-user" data-id="' + full.id + '" href="javascript:;" ><i class="fa fa-edit"></i> 分配客服</a>';
-			            }
-			            </shiro:hasPermission>
-			            <shiro:hasPermission name="reportVisitedLog:edit">
-                  if(full.visitUser != null) {
-	                  optionHtml += '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/reportVisitedLog/create?reportId=' + full.id + '"><i class="fa fa-edit"></i> 填写回访记录</a>';
+                        }else if(full.visitUser != null) {
+                            optionHtml += '<a class="btn btn-xs default blue-stripe visit-back" data-id="' + full.id + '" href="javascript:;" ><i class="fa fa-edit"></i> 回收</a>';
+                        }
+                        </shiro:hasPermission>
+                        <shiro:hasPermission name="reportVisitedLog:edit">
+                    if(full.visitUser != null) {
+                      optionHtml += '<a class="btn btn-xs default blue-stripe" href="javascript:;" data-href="${ctx}/reportVisitedLog/create?reportId=' + full.id + '"><i class="fa fa-edit"></i> 填写回访记录</a>';
                   }
 			            </shiro:hasPermission>
 		            } else {

@@ -184,6 +184,20 @@ public class ReportController {
 
 	}
 
+	@RequiresPermissions("report:visitUser")
+	@RequestMapping(value = "/visitUserBack", method = RequestMethod.POST)
+	@ResponseBody
+	public Result<?> visitUserBack(@RequestParam Long id, @RequestParam Integer times) {
+		try{
+			reportService.visitUserBack(id, times);
+			return ResultBuilder.ok("操作成功");
+		} catch (Exception e) {
+			return ResultBuilder.error(e.getMessage());
+		}
+
+
+	}
+
 	@RequiresPermissions("report:confirm")
 	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
 	@ResponseBody
