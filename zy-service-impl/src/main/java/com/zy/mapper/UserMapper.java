@@ -31,6 +31,8 @@ public interface UserMapper {
 
 	User findByOpenId(String openId);
 
+	User findByUnionId(String unionId);
+
 	User findByCode(String code);
 
 	List<UserTeamCountDto> countByUserId(long userId);

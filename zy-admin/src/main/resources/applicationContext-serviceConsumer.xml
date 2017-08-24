@@ -9,7 +9,7 @@
 
 	<dubbo:application name="zy-admin" />
 	<dubbo:registry protocol="${dubbo.registry.protocol}" address="${dubbo.registry.address}" file="false"  />
-	
+	 
 	<import resource="classpath:/com/zy/applicationContext-serviceConsumer.xml"/>
 	
 </beans>

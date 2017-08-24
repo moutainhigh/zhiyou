@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Date;
 
 import static com.zy.common.util.ValidateUtils.NOT_BLANK;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -71,8 +72,11 @@ public class WeixinMpNotifyController {
 			WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
 			String openId = wxMpOAuth2AccessToken.getOpenId();
 			validate(openId, NOT_BLANK, "open id is blank");
+			String  unionId = wxMpOAuth2AccessToken.getUnionId();
+			validate(unionId, NOT_BLANK, "open id is blank");
 
-			User user = userService.findByOpenId(openId);
+			/*User user = userService.findByOpenId(openId);*/
+			User user = userService.findByUnionId(unionId);
 			if (user == null) {
 				WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
 				AgentRegisterDto agentRegisterDto = new AgentRegisterDto();
@@ -100,7 +104,12 @@ public class WeixinMpNotifyController {
 				cacheSupport.set(Constants.CACHE_NAME_TGT, tgt, userId, expire);
 				session.setAttribute(SESSION_ATTRIBUTE_PRINCIPAL, PrincipalBuilder.build(userId, tgt));
 				logger.info("login success, tgt:" + tgt);
-				userService.modifyLastLoginTime(userId);
+				/*userService.modifyLastLoginTime(userId);*/
+				user.setLastloginTime(new Date());
+				if(!openId.equals(user.getOpenId())){
+					user.setOpenId(openId);
+				}
+				userService.update(user);
 
 				String redirectUrl = (String) session.getAttribute(SESSION_ATTRIBUTE_REDIRECT_URL);
 				if (StringUtils.isBlank(redirectUrl)) {
