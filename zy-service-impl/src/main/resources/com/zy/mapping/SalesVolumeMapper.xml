@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.SalesVolumeMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.report.SalesVolume">
+		<id column="id" property="id" />
+		<result column="user_rank" property="userRank" />
+		<result column="user_name" property="userName" />
+		<result column="user_phone" property="userPhone" />
+		<result column="amount_reached" property="amountReached" />
+		<result column="amount_target" property="amountTarget" />
+		<result column="achievement" property="achievement" />
+		<result column="ranking" property="ranking" />
+		<result column="number" property="number" />
+		<result column="type" property="type" />
+		<result column="area_type" property="areaType" />
+		<result column="create_time" property="create_time" />
+	</resultMap>
+
+	<sql id="baseColumn">id,user_rank,user_name,user_phone,amount_reached,amount_target,achievement,ranking,number,type,area_type,create_time</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.report.SalesVolume" useGeneratedKeys="true" keyProperty="id">
+	  insert into `rpt_salesvolume` (user_rank,user_name,user_phone,amount_reached,amount_target,achievement,ranking,number,type,area_type,create_time)
+	  values (#{userRank},#{userName},#{userPhone},#{amountReached},#{amountTarget},#{achievement},#{ranking},#{number},#{type},#{areaType},#{create_time})
+	</insert>
+
+	<delete id="delete">
+		delete from `rpt_salesvolume` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.report.SalesVolume">
+		update `rpt_salesvolume`
+		<set>
+			user_rank = #{userRank},
+			user_name = #{userName},
+			user_phone = #{userPhone},
+			amount_reached = #{amountReached},
+			amount_target = #{amountTarget},
+			achievement = #{achievement},
+			ranking = #{ranking},
+			number = #{number},
+			type = #{type},
+			area_type = #{areaType},
+			create_time = #{create_time},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `rpt_salesvolume`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userRank'">user_rank = #{salesVolume.userRank},</when>
+					<when test="field == 'userName'">user_name = #{salesVolume.userName},</when>
+					<when test="field == 'userPhone'">user_phone = #{salesVolume.userPhone},</when>
+					<when test="field == 'amountReached'">amount_reached = #{salesVolume.amountReached},</when>
+					<when test="field == 'amountTarget'">amount_target = #{salesVolume.amountTarget},</when>
+					<when test="field == 'achievement'">achievement = #{salesVolume.achievement},</when>
+					<when test="field == 'ranking'">ranking = #{salesVolume.ranking},</when>
+					<when test="field == 'number'">number = #{salesVolume.number},</when>
+					<when test="field == 'type'">type = #{salesVolume.type},</when>
+					<when test="field == 'areaType'">area_type = #{salesVolume.areaType},</when>
+					<when test="field == 'create_time'">create_time = #{salesVolume.create_time},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{salesVolume.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `rpt_salesvolume`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.SalesVolumeQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `rpt_salesvolume`
+		<where>
+			<if test="userRankEQ != null">
+				and user_rank = #{userRankEQ}
+			</if>
+			<if test="userPhoneLK != null">
+				<bind name="userPhoneLK" value="'%' + userPhoneLK + '%'"/> and user_phone like #{userPhoneLK}
+			</if>
+			<if test="create_timeLT != null">
+				and create_time &lt; #{create_timeLT}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="areaTypeEQ != null">
+				and area_type = #{areaTypeEQ}
+			</if>
+			<if test="create_timeGTE != null">
+				and create_time &gt;= #{create_timeGTE}
+			</if>
+			<if test="userNameLK != null">
+				<bind name="userNameLK" value="'%' + userNameLK + '%'"/> and user_name like #{userNameLK}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.SalesVolumeQueryModel">
+		select count(*) from `rpt_salesvolume`
+		<where>
+			<if test="userRankEQ != null">
+				and user_rank = #{userRankEQ}
+			</if>
+			<if test="userPhoneLK != null">
+				<bind name="userPhoneLK" value="'%' + userPhoneLK + '%'"/> and user_phone like #{userPhoneLK}
+			</if>
+			<if test="create_timeLT != null">
+				and create_time &lt; #{create_timeLT}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="areaTypeEQ != null">
+				and area_type = #{areaTypeEQ}
+			</if>
+			<if test="create_timeGTE != null">
+				and create_time &gt;= #{create_timeGTE}
+			</if>
+			<if test="userNameLK != null">
+				<bind name="userNameLK" value="'%' + userNameLK + '%'"/> and user_name like #{userNameLK}
+			</if>
+		</where>
+	</select>
+
+</mapper>

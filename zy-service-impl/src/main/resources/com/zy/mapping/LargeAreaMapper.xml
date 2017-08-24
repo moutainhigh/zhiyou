@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.LargeAreaMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.report.LargeArea">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="type" property="type" />
+	</resultMap>
+
+	<sql id="baseColumn">id,user_id,type</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.report.LargeArea" useGeneratedKeys="true" keyProperty="id">
+	  insert into `sys_large_area` (user_id,type)
+	  values (#{userId},#{type})
+	</insert>
+
+	<delete id="delete">
+		delete from `sys_large_area` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.report.LargeArea">
+		update `sys_large_area`
+		<set>
+			user_id = #{userId},
+			type = #{type},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `sys_large_area`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{largeArea.userId},</when>
+					<when test="field == 'type'">type = #{largeArea.type},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{largeArea.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `sys_large_area`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.LargeAreaQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `sys_large_area`
+		<where>
+			<if test="typeEQ != null">
+				and type = #{typeEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.LargeAreaQueryModel">
+		select count(*) from `sys_large_area`
+		<where>
+			<if test="typeEQ != null">
+				and type = #{typeEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+		</where>
+	</select>
+
+</mapper>
