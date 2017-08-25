@@ -632,6 +632,9 @@
                 <shiro:hasPermission name="user:edit">
                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="editLastLoginTimeAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 重置登录时间 </a>';
                 </shiro:hasPermission>
+                  <shiro:hasPermission name="user:setLargeArea">
+                  optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="addLargeArea(' + full.id + ')"><i class="fa fa-user"></i> 设置大区 </a>';
+                  </shiro:hasPermission>
               }
               return optionHtml;
             }
@@ -677,6 +680,40 @@
   }
   function closeBtn() {
     $addVipDialog.close();
+  }
+  var $addLargeAreaDialog;
+  function addLargeArea(id) {
+      $addLargeAreaDialog = $.window({
+      content: "<form action='' class='form-horizontal' style='margin-top: 20px;'>" + "<div class='form-body'>" + "<div class='form-group'>"
+      + "<label class='control-label col-md-3'>设置大区:</label>" + "<div class='col-md-5'>"
+      + "<select class='form-control' id='largeArea'><option value=''>-- 大区类型 --</option>" +
+      "<c:forEach items='${largeAreas}' var='largeArea'><option value='${largeArea.systemValue}'>${largeArea.systemName}</option></c:forEach>"
+      + "<div class='form-group'>" + "<label class='control-label col-md-3'>备注信息:</label>"
+      + "<div class='col-md-5'><textarea class='form-control' style='width: 220px;height: 120px;' id='remark2'></textarea></div>" + "</div>" + "</div>"
+      + "<div class='form-actions fluid'>" + "<div class='col-md-offset-3 col-md-9'>" + "<button type='button' class='btn green' onclick='submitLargeAreaBtn(" + id + ")'>"
+      + "保存</button>" + "<button type='button' class='btn default' onclick='closeLargeAreaBtn()' style='margin-left: 20px;'>" + "取消</button>" + "</div>" + "</div>" + "</form>",
+      title: '设置大区',
+      width: 420,
+      height: 320,
+      button: false
+    });
+  }
+  function submitLargeAreaBtn(id) {
+    var remark2 = $('#remark2').val();
+    var largeArea = $('#largeArea').find("option:selected").val();
+    $.post('${ctx}/user/setLargeArea', {
+      id: id,
+      largeArea: largeArea,
+      remark2: remark2
+    }, function (result) {
+      toastr.success(result.message, '提示信息');
+      $addLargeAreaDialog.close();
+      grid.getDataTable().ajax.reload(null, false);
+    })
+
+  }
+  function closeLargeAreaBtn() {
+      $addLargeAreaDialog.close();
   }
 
   function editLastLoginTimeAjax(id) {

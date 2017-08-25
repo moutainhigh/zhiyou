@@ -13,12 +13,14 @@ import com.zy.common.util.JsonUtils;
 import com.zy.component.CacheComponent;
 import com.zy.component.LocalCacheComponent;
 import com.zy.component.UserComponent;
+import com.zy.entity.sys.SystemCode;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.query.UserQueryModel;
+import com.zy.service.SystemCodeService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import com.zy.vo.UserAdminVo;
@@ -55,11 +57,16 @@ public class UserController {
 	
 	@Autowired
 	private LocalCacheComponent localCacheComponent;
+
+	@Autowired
+	private SystemCodeService systemCodeService;
 	
 	@RequiresPermissions("user:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
 		model.addAttribute("userRankMap", Arrays.asList(UserRank.values()).stream().collect(Collectors.toMap(v->v, v->GcUtils.getUserRankLabel(v),(u,v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); }, LinkedHashMap::new)) );
+		List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");
+		model.addAttribute("largeAreas",largeAreaTypes);
 		return "usr/userList";
 	}
 	
@@ -225,7 +232,20 @@ public class UserController {
 		}
 		return new ResultBuilder<>().message("加VIP成功").build();
 	}
-	
+
+	@RequiresPermissions("user:setLargeArea")
+	@RequestMapping("/setLargeArea")
+	@ResponseBody
+	public Result<?> setLargeArea(Long id, String largeArea, String remark2) {
+		checkAndValidateIsPlatform(id);
+		try {
+			userService.modifyLargeAreaAdmin(id, largeArea, getPrincipalUserId(), remark2);
+		} catch (Exception e) {
+			return new ResultBuilder<>().message(e.getMessage()).build();
+		}
+		return new ResultBuilder<>().message("设置大区成功").build();
+	}
+
 	@RequiresPermissions("user:freeze")
 	@RequestMapping("/freeze/{id}")
 	public String freeze(@PathVariable Long id, RedirectAttributes redirectAttributes) {

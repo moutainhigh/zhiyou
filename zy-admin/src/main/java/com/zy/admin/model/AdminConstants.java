@@ -21,6 +21,7 @@ public class AdminConstants {
 			sub = new LinkedHashMap<>();
 			sub.put("user:view", "用户信息(查看)");
 			sub.put("user:edit", "用户信息(编辑)");
+			sub.put("user:setLargeArea", "用户设置大区");
 			sub.put("user:addVip", "用户信息(加VIP)");
 			sub.put("user:freeze", "用户信息(冻结账号)");
 			sub.put("user:modifyParent", "用户信息(修改推荐人)");

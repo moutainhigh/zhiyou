@@ -239,4 +239,12 @@ public class User implements Serializable {
 	@Field(label = "最后一次登录时间")
 	@View(groups = {VO_ADMIN})
 	private Date lastloginTime;
+
+	@Field(label = "所属大区")
+	@View(groups = {VO_ADMIN})
+	private String largearea;
+
+	@Field(label = "设置大区备注")
+	@View(groups = {VO_ADMIN})
+	private String setlargearearemark;
 }

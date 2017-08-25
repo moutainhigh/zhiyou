@@ -12,16 +12,14 @@ import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.sys.SystemCode;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
 import com.zy.entity.usr.UserInfo;
 import com.zy.extend.Producer;
-import com.zy.mapper.AccountMapper;
+import com.zy.mapper.*;
 import com.zy.mapper.UserInfoMapper;
-import com.zy.mapper.UserLogMapper;
-import com.zy.mapper.UserInfoMapper;
-import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.dto.AgentRegisterDto;
 import com.zy.model.dto.DepositSumDto;
@@ -29,6 +27,7 @@ import com.zy.model.dto.UserTeamCountDto;
 import com.zy.model.dto.UserTeamDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserlongQueryModel;
+import com.zy.service.SystemCodeService;
 import com.zy.service.UserService;
 import com.zy.model.dto.UserDto;
 import me.chanjar.weixin.common.util.StringUtils;
@@ -75,6 +74,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Autowired
+    private SystemCodeService systemCodeService;
 
 
     @Override
@@ -249,6 +251,21 @@ public class UserServiceImpl implements UserService {
 
         usrComponent.upgrade(id, plainUserRank, userRank);
         usrComponent.recordUserLog(id, operatorId, "设置用户等级", "从" + plainUserRank + "改为" + userRank + ", 备注" + remark);
+    }
+
+    @Override
+    public void modifyLargeAreaAdmin(@NotNull Long id,@NotNull String largeArea,@NotNull Long operatorId, String remark2) {
+        User user = findAndValidate(id);
+        SystemCode oldlargeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea());
+        SystemCode newlargeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", largeArea);
+        user.setLargearea(largeArea);
+        user.setSetlargearearemark(remark2);
+        userMapper.update(user);
+        if(oldlargeAreaType == null){
+            usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + null + "改为" + newlargeAreaType.getSystemName() + ", 备注" + remark2);
+        }else{
+            usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + oldlargeAreaType.getSystemName() + "改为" + newlargeAreaType.getSystemName() + ", 备注" + remark2);
+        }
     }
 
     @Override

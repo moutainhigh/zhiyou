@@ -58,6 +58,8 @@ public interface UserService {
 
 	void modifyUserRankAdmin(Long id, UserRank userRank, Long operatorId, String remark);
 
+	void modifyLargeAreaAdmin(Long id, String largeArea, Long operatorId, String remark2);
+
 	void unbindAdmin(Long id, Long operatorId, String remark);
 
 	void modifyIsRootAdmin(Long id, boolean isRoot, String rootName, Long operatorId, String remark);

@@ -52,6 +52,20 @@
 		where system_type = #{systemType} and system_name = #{systemName} and system_flag = 0
 	</select>
 
+	<select id="findByTypeAndValue" resultMap="baseResultMap">
+		select
+		*
+		from `ts_system_code`
+		where system_type = #{systemType} and system_value = #{systemValue} and system_flag = 0
+	</select>
+
+	<select id="findByType" resultMap="baseResultMap" parameterType="String">
+		select
+		*
+		from `ts_system_code`
+		where system_type = #{systemType} and system_flag = 0
+	</select>
+
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.SystemCodeQueryModel">
 		select
 		<include refid="baseColumn"/>

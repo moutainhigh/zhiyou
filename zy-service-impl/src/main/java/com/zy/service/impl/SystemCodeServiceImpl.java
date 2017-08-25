@@ -60,6 +60,14 @@ public class SystemCodeServiceImpl implements SystemCodeService {
 	}
 
 	@Override
+	public SystemCode findByTypeAndValue(String systemType, String systemValue) {
+		Map<String , Object> map = new HashMap<>();
+		map.put("systemType" , systemType);
+		map.put("systemValue" , systemValue);
+		return systemCodeMapper.findByTypeAndValue(map);
+	}
+
+	@Override
 	public Page<SystemCode> findPage(SystemCodeQueryModel systemCodeQueryModel) {
 		if (systemCodeQueryModel.getPageNumber() == null)
 			systemCodeQueryModel.setPageNumber(0);
@@ -73,6 +81,11 @@ public class SystemCodeServiceImpl implements SystemCodeService {
 		page.setData(data);
 		page.setTotal(total);
 		return page;
+	}
+
+	@Override
+	public List<SystemCode> findByType(String type) {
+		return systemCodeMapper.findByType(type);
 	}
 
 	private SystemCode checkAndFindSystemCode(Long systemCodeId) {

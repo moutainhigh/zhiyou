@@ -18,6 +18,10 @@ public interface SystemCodeMapper {
 
 	SystemCode findByTypeAndName(Map<String,Object> map);
 
+	SystemCode findByTypeAndValue(Map<String,Object> map);
+
+	List<SystemCode> findByType(String type);
+
 	List<SystemCode> findAll(SystemCodeQueryModel systemCodeQueryModel);
 
 	long count(SystemCodeQueryModel systemCodeQueryModel);
