@@ -513,6 +513,11 @@
                   <a href="javascript:;" data-href="${ctx}/report/salesVolumeReport"><i class="icon-bar-chart"></i> 销量报表<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="teamReportNew:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/teamReportNew"><i class="icon-bar-chart"></i> 团队报表<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
             </ul>
           </li>
         </shiro:hasAnyPermissions>

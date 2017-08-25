@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.TeamReportNewMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.report.TeamReportNew">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="district_name" property="districtName" />
+		<result column="district_id" property="districtId" />
+		<result column="extra_number" property="extraNumber" />
+		<result column="newextra_number" property="newextraNumber" />
+		<result column="newextra_rate" property="newextraRate" />
+		<result column="province_number" property="provinceNumber" />
+		<result column="newprovince_number" property="newprovinceNumber" />
+		<result column="newprovince_rate" property="newprovinceRate" />
+		<result column="ranking" property="ranking" />
+		<result column="year" property="year" />
+		<result column="month" property="month" />
+		<result column="phone" property="phone" />
+		<result column="create_date" property="createDate" />
+	</resultMap>
+
+	<sql id="baseColumn">id,user_id,user_name,district_name,district_id,extra_number,newextra_number,newextra_rate,province_number,newprovince_number,newprovince_rate,ranking,year,month,phone,create_date</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.report.TeamReportNew" useGeneratedKeys="true" keyProperty="id">
+	  insert into `ts_team_report` (user_id,user_name,district_name,district_id,extra_number,newextra_number,newextra_rate,province_number,newprovince_number,newprovince_rate,ranking,year,month,phone,create_date)
+	  values (#{userId},#{userName},#{districtName},#{districtId},#{extraNumber},#{newextraNumber},#{newextraRate},#{provinceNumber},#{newprovinceNumber},#{newprovinceRate},#{ranking},#{year},#{month},#{phone},#{createDate})
+	</insert>
+
+	<delete id="delete">
+		delete from `ts_team_report` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.report.TeamReportNew">
+		update `ts_team_report`
+		<set>
+			user_id = #{userId},
+			user_name = #{userName},
+			district_name = #{districtName},
+			district_id = #{districtId},
+			extra_number = #{extraNumber},
+			newextra_number = #{newextraNumber},
+			newextra_rate = #{newextraRate},
+			province_number = #{provinceNumber},
+			newprovince_number = #{newprovinceNumber},
+			newprovince_rate = #{newprovinceRate},
+			ranking = #{ranking},
+			year = #{year},
+			month = #{month},
+			phone = #{phone},
+			create_date = #{createDate},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `ts_team_report`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{teamReportNew.userId},</when>
+					<when test="field == 'userName'">user_name = #{teamReportNew.userName},</when>
+					<when test="field == 'districtName'">district_name = #{teamReportNew.districtName},</when>
+					<when test="field == 'districtId'">district_id = #{teamReportNew.districtId},</when>
+					<when test="field == 'extraNumber'">extra_number = #{teamReportNew.extraNumber},</when>
+					<when test="field == 'newextraNumber'">newextra_number = #{teamReportNew.newextraNumber},</when>
+					<when test="field == 'newextraRate'">newextra_rate = #{teamReportNew.newextraRate},</when>
+					<when test="field == 'provinceNumber'">province_number = #{teamReportNew.provinceNumber},</when>
+					<when test="field == 'newprovinceNumber'">newprovince_number = #{teamReportNew.newprovinceNumber},</when>
+					<when test="field == 'newprovince_rate'">newprovinceRate = #{teamReportNew.newprovinceRate},</when>
+					<when test="field == 'ranking'">ranking = #{teamReportNew.ranking},</when>
+					<when test="field == 'year'">year = #{teamReportNew.year},</when>
+					<when test="field == 'month'">month = #{teamReportNew.month},</when>
+					<when test="field == 'phone'">phone = #{teamReportNew.phone},</when>
+					<when test="field == 'createDate'">create_date = #{teamReportNew.createDate},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{teamReportNew.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `ts_team_report`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TeamReportNewQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `ts_team_report`
+		<where>
+			<if test="extraNumberEQ != null">
+				and extra_number = #{extraNumberEQ}
+			</if>
+			<if test="provinceNumberEQ != null">
+				and province_number = #{provinceNumberEQ}
+			</if>
+			<if test="newextraRateEQ != null">
+				and newextra_rate = #{newextraRateEQ}
+			</if>
+			<if test="newprovinceNumberEQ != null">
+				and newprovince_number = #{newprovinceNumberEQ}
+			</if>
+			<if test="districtNameLK != null">
+				<bind name="districtNameLK" value="'%' + districtNameLK + '%'"/> and district_name like #{districtNameLK}
+			</if>
+			<if test="rankingEQ != null">
+				and ranking = #{rankingEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="districtIdEQ != null">
+				and district_id = #{districtIdEQ}
+			</if>
+			<if test="createDateEQ != null">
+				and create_date = #{createDateEQ}
+			</if>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="userNameLK != null">
+				<bind name="userNameLK" value="'%' + userNameLK + '%'"/> and user_name like #{userNameLK}
+			</if>
+			<if test="phoneEQ != null">
+				and phone = #{phoneEQ}
+			</if>
+			<if test="newextraNumberEQ != null">
+				and newextra_number = #{newextraNumberEQ}
+			</if>
+			<if test="newprovinceRateEQ != null">
+				and newprovince_rate = #{newprovinceRateEQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.TeamReportNewQueryModel">
+		select count(*) from `ts_team_report`
+		<where>
+			<if test="extraNumberEQ != null">
+				and extra_number = #{extraNumberEQ}
+			</if>
+			<if test="provinceNumberEQ != null">
+				and province_number = #{provinceNumberEQ}
+			</if>
+			<if test="newextraRateEQ != null">
+				and newextra_rate = #{newextraRateEQ}
+			</if>
+			<if test="newprovinceNumberEQ != null">
+				and newprovince_number = #{newprovinceNumberEQ}
+			</if>
+			<if test="districtNameLK != null">
+				<bind name="districtNameLK" value="'%' + districtNameLK + '%'"/> and district_name like #{districtNameLK}
+			</if>
+			<if test="rankingEQ != null">
+				and ranking = #{rankingEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="districtIdEQ != null">
+				and district_id = #{districtIdEQ}
+			</if>
+			<if test="createDateEQ != null">
+				and create_date = #{createDateEQ}
+			</if>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="userNameLK != null">
+				<bind name="userNameLK" value="'%' + userNameLK + '%'"/> and user_name like #{userNameLK}
+			</if>
+			<if test="phoneEQ != null">
+				and phone = #{phoneEQ}
+			</if>
+			<if test="newextraNumberEQ != null">
+				and newextra_number = #{newextraNumberEQ}
+			</if>
+			<if test="newprovinceRateEQ != null">
+				and newprovince_rate = #{newprovinceRateEQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+		</where>
+	</select>
+
+</mapper>

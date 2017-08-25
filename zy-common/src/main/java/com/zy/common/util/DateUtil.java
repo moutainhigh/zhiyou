@@ -179,6 +179,15 @@ public class DateUtil {
     }
 
     /**
+     * 查询 当前 时间所属月份
+     * @param date
+     * @return
+     */
+    public static int getYear(Date date){
+        Calendar cal = Calendar.getInstance();
+        return cal.get(Calendar.YEAR);
+    }
+    /**
      * 获取指定时间的周信息下标
      * @param date
      * @return
@@ -426,6 +435,8 @@ public class DateUtil {
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("年龄:"+getAge("411528201607192688"));
+        System.out.println(DateUtil.getMoth(new Date()));
+        System.out.println(DateUtil.getYear(new Date()));
        /*  System.out.println(DateUtil.getMoth(new Date()));
     public static void  main(String []age){
        System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),-6,0),"yyyy-MM-dd HH:mm:ss"));

@@ -71,4 +71,5 @@
 	<dubbo:service ref="tourTimeServiceImpl" interface="com.zy.service.TourTimeService"/>
 	<dubbo:service ref="systemCodeServiceImpl" interface="com.zy.service.SystemCodeService"/>
 	<dubbo:service ref="salesVolumeServiceImpl" interface="com.zy.service.SalesVolumeService"/>
+	<dubbo:service ref="teamReportNewServiceImpl" interface="com.zy.service.TeamReportNewService"/>
 </beans>
