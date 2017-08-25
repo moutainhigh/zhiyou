@@ -63,4 +63,9 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 	public long sumAmount(SalesVolumeQueryModel salesVolumeQueryModel) {
 		return salesVolumeMapper.sumAmount(salesVolumeQueryModel);
 	}
+
+	@Override
+	public List<SalesVolume> findExReport(SalesVolumeQueryModel salesVolumeQueryModel) {
+		return salesVolumeMapper.findAll(salesVolumeQueryModel);
+	}
 }

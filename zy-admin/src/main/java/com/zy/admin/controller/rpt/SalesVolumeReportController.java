@@ -3,11 +3,14 @@ package com.zy.admin.controller.rpt;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.ui.Grid;
+import com.zy.common.util.ExcelUtils;
+import com.zy.common.util.WebUtils;
 import com.zy.component.SalesVolumeComponent;
 import com.zy.entity.report.SalesVolume;
 import com.zy.model.query.SalesVolumeQueryModel;
 import com.zy.service.SalesVolumeService;
 import com.zy.util.GcUtils;
+import com.zy.vo.SalesVolumeExportVo;
 import com.zy.vo.SalesVolumeListVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -19,12 +22,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Author: Xuwq
@@ -88,6 +95,26 @@ public class SalesVolumeReportController {
 		Page<SalesVolume> page = salesVolumeService.findPage(salesVolumeQueryModel);
 		Page<SalesVolumeListVo> voPage = PageBuilder.copyAndConvert(page, v -> salesVolumeComponent.buildSalesVolumeListVo(v));
 		return new Grid<>(voPage);
+	}
+
+	@RequiresPermissions("salesVolumeReport:export")
+	@RequestMapping("/export")
+	public String export(SalesVolumeQueryModel salesVolumeQueryModel, HttpServletResponse response, @RequestParam String queryDate) throws IOException, ParseException{
+		salesVolumeQueryModel.setPageSize(null);
+		salesVolumeQueryModel.setPageNumber(null);
+		DateFormat format = new SimpleDateFormat("yyyy-MM");
+		Date date = null;
+		date = format.parse(queryDate);
+		salesVolumeQueryModel.setCreateTime(date);
+		List<SalesVolume> salesVolume =  salesVolumeService.findExReport(salesVolumeQueryModel);
+		String fileName = "销量报表.xlsx";
+		WebUtils.setFileDownloadHeader(response, fileName);
+
+		List<SalesVolumeExportVo> salesVolumeExportVo = salesVolume.stream().map(salesVolumeComponent::buildSalesVolumeExportVo).collect(Collectors.toList());
+		OutputStream os = response.getOutputStream();
+		ExcelUtils.exportExcel(salesVolumeExportVo, SalesVolumeExportVo.class, os);
+
+		return null;
 	}
 
 }
