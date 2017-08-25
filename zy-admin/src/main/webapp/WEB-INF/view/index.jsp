@@ -426,7 +426,7 @@
         </shiro:hasAnyPermissions>
 
         <shiro:hasAnyPermissions name="userTreeReport:view,v4TreeReport:view,orderReport:view,teamReport:view,userUpgradeReport:view,financeReport:view,orderQuantity:view
-                                      ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view,activitySummaryReport:view">
+                                      ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view,activitySummaryReport:view,salesVolumeReport:view">
           <li>
             <a href="javascript:;">
               <i class="icon-grid"></i>
@@ -506,6 +506,11 @@
               <shiro:hasPermission name="teamOrderDaily:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/report/teamOrderDaily"><i class="icon-bar-chart"></i> 团队日销量及环比-总经理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="salesVolumeReport:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/salesVolumeReport"><i class="icon-bar-chart"></i> 销量报表<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>

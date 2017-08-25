@@ -14,7 +14,7 @@
 		<result column="number" property="number" />
 		<result column="type" property="type" />
 		<result column="area_type" property="areaType" />
-		<result column="create_time" property="create_time" />
+		<result column="create_time" property="createTime" />
 	</resultMap>
 
 	<sql id="baseColumn">id,user_rank,user_name,user_phone,amount_reached,amount_target,achievement,ranking,number,type,area_type,create_time</sql>
@@ -84,10 +84,7 @@
 				and user_rank = #{userRankEQ}
 			</if>
 			<if test="userPhoneLK != null">
-				<bind name="userPhoneLK" value="'%' + userPhoneLK + '%'"/> and user_phone like #{userPhoneLK}
-			</if>
-			<if test="create_timeLT != null">
-				and create_time &lt; #{create_timeLT}
+				and user_phone = #{userPhoneLK}
 			</if>
 			<if test="idEQ != null">
 				and id = #{idEQ}
@@ -95,11 +92,11 @@
 			<if test="areaTypeEQ != null">
 				and area_type = #{areaTypeEQ}
 			</if>
-			<if test="create_timeGTE != null">
-				and create_time &gt;= #{create_timeGTE}
+			<if test="createTime != null">
+				and DATE_FORMAT(create_time, '%Y-%m') = DATE_FORMAT(#{createTime}, '%Y-%m')
 			</if>
 			<if test="userNameLK != null">
-				<bind name="userNameLK" value="'%' + userNameLK + '%'"/> and user_name like #{userNameLK}
+				and user_name = #{userNameLK}
 			</if>
 		</where>
 		<choose>
@@ -107,7 +104,7 @@
 				order by ${orderByAndDirection}
 			</when>
 			<otherwise>
-				order by id desc
+				order by user_rank desc
 			</otherwise>
 		</choose>
 		<if test="offset != null">
@@ -122,10 +119,7 @@
 				and user_rank = #{userRankEQ}
 			</if>
 			<if test="userPhoneLK != null">
-				<bind name="userPhoneLK" value="'%' + userPhoneLK + '%'"/> and user_phone like #{userPhoneLK}
-			</if>
-			<if test="create_timeLT != null">
-				and create_time &lt; #{create_timeLT}
+				and user_phone = #{userPhoneLK}
 			</if>
 			<if test="idEQ != null">
 				and id = #{idEQ}
@@ -133,11 +127,38 @@
 			<if test="areaTypeEQ != null">
 				and area_type = #{areaTypeEQ}
 			</if>
-			<if test="create_timeGTE != null">
-				and create_time &gt;= #{create_timeGTE}
+			<if test="createTime != null">
+				and DATE_FORMAT(create_time, '%Y-%m') = DATE_FORMAT(#{createTime}, '%Y-%m')
 			</if>
 			<if test="userNameLK != null">
-				<bind name="userNameLK" value="'%' + userNameLK + '%'"/> and user_name like #{userNameLK}
+				and user_name = #{userNameLK}
+			</if>
+		</where>
+	</select>
+
+	<select id="countNumber" resultType="_long" parameterType="com.zy.model.query.SalesVolumeQueryModel">
+		select IFNULL(sum(amount_reached),0) from `rpt_salesvolume`
+		<where>
+			<if test="createTime != null">
+				and DATE_FORMAT(create_time, '%Y-%m') = DATE_FORMAT(#{createTime}, '%Y-%m')
+			</if>
+		</where>
+	</select>
+
+	<select id="sumQuantity" resultType="_long" parameterType="com.zy.model.query.SalesVolumeQueryModel">
+		select IFNULL(AVG(amount_target),0) from `rpt_salesvolume`
+		<where>
+			<if test="createTime != null">
+				and DATE_FORMAT(create_time, '%Y-%m') = DATE_FORMAT(#{createTime}, '%Y-%m')
+			</if>
+		</where>
+	</select>
+
+	<select id="sumAmount" resultType="_long" parameterType="com.zy.model.query.SalesVolumeQueryModel">
+		select IFNULL(sum(amount_target),0) from `rpt_salesvolume`
+		<where>
+			<if test="createTime != null">
+				and DATE_FORMAT(create_time, '%Y-%m') = DATE_FORMAT(#{createTime}, '%Y-%m')
 			</if>
 		</where>
 	</select>

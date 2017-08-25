@@ -24,4 +24,9 @@ public interface SalesVolumeMapper {
 
 	long count(SalesVolumeQueryModel salesVolumeQueryModel);
 
+	long countNumber(SalesVolumeQueryModel salesVolumeQueryModel);
+
+	long sumQuantity(SalesVolumeQueryModel salesVolumeQueryModel);
+
+	long sumAmount(SalesVolumeQueryModel salesVolumeQueryModel);
 }

@@ -1,17 +1,12 @@
 package com.zy.model.query;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.io.Serializable;
-
 import io.gd.generator.api.query.Direction;
+import lombok.*;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,9 +25,7 @@ public class SalesVolumeQueryModel implements Serializable {
 
 	private Integer areaTypeEQ;
 
-	private Date create_timeGTE;
-
-	private Date create_timeLT;
+	private Date createTime;
 
 	private Integer pageNumber;
 
@@ -53,7 +46,7 @@ public class SalesVolumeQueryModel implements Serializable {
 		if (pageNumber == null || pageSize == null) {
 			return null;
 		}
-		return ((long) pageNumber - 1) * pageSize;
+		return ((long) pageNumber) * pageSize;
 	}
 
 	public String getOrderByAndDirection() {
@@ -87,7 +80,7 @@ public class SalesVolumeQueryModel implements Serializable {
 
 	static {
 		fieldNames.add("number");
-		fieldNames.add("create_time");
+		fieldNames.add("createTime");
 		fieldNames.add("achievement");
 		fieldNames.add("userPhone");
 		fieldNames.add("areaType");

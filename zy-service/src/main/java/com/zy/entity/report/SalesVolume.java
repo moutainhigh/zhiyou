@@ -94,7 +94,6 @@ public class SalesVolume implements Serializable {
 
 	@NotNull
 	@Field(label = "插入时间")
-	@Query({Predicate.GTE, Predicate.LT})
 	@View(name = "createTimeLabel", type = String.class,groups = VO_LIST)
-	private Date create_time;
+	private Date createTime;
 }

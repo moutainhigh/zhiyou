@@ -140,6 +140,9 @@ public class AdminConstants {
 			sub.put("teamOrderDaily:view", "团队日销量及环比-总经理");
 			sub.put("activitySummaryReport:view", "活动汇总报表");
 			sub.put("activitySummaryReport:export", "活动汇总报表导出");
+
+			sub.put("salesVolumeReport:view", "销量报表");
+			sub.put("salesVolumeReport:export", "销量报表导出");
 			/*sub.put("financeReport:export", "财务导出");*/
 	 		SETTING_PERMISSION_MAP.put("报表管理", sub);
 		}

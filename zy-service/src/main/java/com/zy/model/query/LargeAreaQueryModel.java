@@ -44,7 +44,7 @@ public class LargeAreaQueryModel implements Serializable {
 		if (pageNumber == null || pageSize == null) {
 			return null;
 		}
-		return ((long) pageNumber - 1) * pageSize;
+		return ((long) pageNumber) * pageSize;
 	}
 
 	public String getOrderByAndDirection() {
