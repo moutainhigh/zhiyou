@@ -84,7 +84,7 @@
   <div class="form-btn">
     <a class="btn btn-block default round-2" href="${oauthUrl}"><i class="icon icon-weixin"></i> 微信授权登陆</a>
   </div>
-    
+
   <a href="${ctx}/findPassword" class="abs-mb block p-10 mb-10 font-999 fs-13 text-center"><i class="fa fa-question-circle"></i> 忘记密码</a>
   
 </body>
