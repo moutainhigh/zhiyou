@@ -327,10 +327,6 @@
 		select * from `usr_user` where open_id = #{openId}
 	</select>
 
-	<select id="findByUnionId" resultMap="baseResultMap">
-		select * from `usr_user` where union_id = #{unionId}
-	</select>
-
 	<select id="findByCode" resultMap="baseResultMap">
 		select * from `usr_user` where code = #{code}
 	</select>

@@ -256,15 +256,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.findByOpenId(openId);
     }
 
-    @Override
-    public User findByUnionId(String unionId) {
-        return userMapper.findByUnionId(unionId);
-    }
-
-    @Override
-    public void update(User user) {
-        userMapper.update(user);
-    }
 
     /* 注册自动生成账号 */
     private void insertAccount(User user) {

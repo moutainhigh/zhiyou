@@ -21,10 +21,6 @@ public interface UserService {
 
 	User findByOpenId(String openId);
 
-	User findByUnionId(String unionId);
-
-	void update(User user);
-
 	Page<User> findPage(UserQueryModel userQueryModel);
 
 	List<User> findAll(UserQueryModel userQueryModel);

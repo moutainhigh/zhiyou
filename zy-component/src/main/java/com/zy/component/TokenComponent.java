@@ -33,7 +33,7 @@ public class TokenComponent {
 
     public final static  String appid ="wx8d8b06aa56074960";
 
-    public final static  String appsecret ="a5d03c22ba4ef2c9ceea6d7a572d5545";
+    public final static  String appsecret ="e2a29086a0bd4c4083038bf61d6a6614";
 
     private CloseableHttpClient httpClient = HttpClients.createDefault();
     //刷新 Token
