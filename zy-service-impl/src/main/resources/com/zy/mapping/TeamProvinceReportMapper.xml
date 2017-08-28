@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.TeamProvinceReportMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.report.TeamProvinceReport">
+		<id column="id" property="id" />
+		<result column="province" property="province" />
+		<result column="v4_number" property="v4Number" />
+		<result column="v3_number" property="v3Number" />
+		<result column="v4_active_number" property="v4ActiveNumber" />
+		<result column="v4_active_rate" property="v4ActiveRate" />
+		<result column="v4_active_rank" property="v4ActiveRank" />
+		<result column="year" property="year" />
+		<result column="month" property="month" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+	<sql id="baseColumn">id,province,v4_number,v3_number,v4_active_number,v4_active_rate,v4_active_rank,year,month,create_time</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.report.TeamProvinceReport" useGeneratedKeys="true" keyProperty="id">
+	  insert into `ts_team_province_report` (province,v4_number,v3_number,v4_active_number,v4_active_rate,v4_active_rank,year,month,create_time)
+	  values (#{province},#{v4Number},#{v3Number},#{v4ActiveNumber},#{v4ActiveRate},#{v4ActiveRank},#{year},#{month},#{createTime})
+	</insert>
+
+	<delete id="delete">
+		delete from `ts_team_province_report` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.report.TeamProvinceReport">
+		update `ts_team_province_report`
+		<set>
+			province = #{province},
+			v4_number = #{v4Number},
+			v3_number = #{v3Number},
+			v4_active_number = #{v4ActiveNumber},
+			v4_active_rate = #{v4ActiveRate},
+			v4_active_rank = #{v4ActiveRank},
+			year = #{year},
+			month = #{month},
+			create_time = #{createTime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `ts_team_province_report`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'province'">province = #{teamProvinceReport.province},</when>
+					<when test="field == 'v4Number'">v4_number = #{teamProvinceReport.v4Number},</when>
+					<when test="field == 'v3Number'">v3_number = #{teamProvinceReport.v3Number},</when>
+					<when test="field == 'v4ActiveNumber'">v4_active_number = #{teamProvinceReport.v4ActiveNumber},</when>
+					<when test="field == 'v4ActiveRate'">v4_active_rate = #{teamProvinceReport.v4ActiveRate},</when>
+					<when test="field == 'v4ActiveRank'">v4_active_rank = #{teamProvinceReport.v4ActiveRank},</when>
+					<when test="field == 'year'">year = #{teamProvinceReport.year},</when>
+					<when test="field == 'month'">month = #{teamProvinceReport.month},</when>
+					<when test="field == 'createTime'">create_time = #{teamProvinceReport.createTime},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{teamProvinceReport.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `ts_team_province_report`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.TeamProvinceReportQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `ts_team_province_report`
+		<where>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="provinceEQ != null">
+				and province = #{provinceEQ}
+			</if>
+			<if test="createTimeEQ != null">
+				and create_time = #{createTimeEQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.TeamProvinceReportQueryModel">
+		select count(*) from `ts_team_province_report`
+		<where>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="provinceEQ != null">
+				and province = #{provinceEQ}
+			</if>
+			<if test="createTimeEQ != null">
+				and create_time = #{createTimeEQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+		</where>
+	</select>
+
+</mapper>
