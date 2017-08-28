@@ -49,9 +49,27 @@
                         orderable: true,
                     },
                     {
+                        data: 'sleepextraNumber',
+                        title: '沉睡特级人数',
+                        orderable: true,
+                    },
+                    {
                         data: 'newextraRate',
                         title: '新晋特级占比',
                         orderable: true,
+                        render: function (data, type, full) {
+                            var f = Math.round(data*100)/100;
+                            var s = f.toString();
+                            var rs = s.indexOf('.');
+                            if (rs < 0) {
+                                rs = s.length;
+                                s += '.';
+                            }
+                            while (s.length <= rs + 2) {
+                                s += '0';
+                            }
+                            return s +"%";
+                        }
                     },
                     {
                         data: 'provinceNumber',
@@ -67,11 +85,36 @@
                         data: 'newprovinceRate',
                         title: '新晋省级占比',
                         orderable: true,
+                        render: function (data, type, full) {
+                            var f = Math.round(data*100)/100;
+                            var s = f.toString();
+                            var rs = s.indexOf('.');
+                            if (rs < 0) {
+                                rs = s.length;
+                                s += '.';
+                            }
+                            while (s.length <= rs + 2) {
+                                s += '0';
+                            }
+                            return s +"%";
+                        }
                     },
                     {
                         data: 'ranking',
                         title: '排名',
                         orderable: true,
+                    },
+                    {
+                        data: 'id',
+                        title: '操作',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            var optionHtml = '';
+                            <shiro:hasPermission name="tour:edit">
+                            optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/tour/findTourTime?tourId=' + full.userId + '"><i class="fa fa-search"></i> 查看详情 </a>';
+                            </shiro:hasPermission>
+                            return optionHtml;
+                        }
                     }
                 ]
             }
@@ -94,6 +137,8 @@
          }else {
              $('#team').text("团队报表("+year+"/"+month+")");
          }
+     }else{
+         return false;
      }
 
  }
@@ -131,7 +176,6 @@
 
                             <div class="form-group">
                                 <select name="yearEQ" class="form-control" id="yearEQ">
-                                    <option value="">-- 选择年份--</option>
                                     <c:forEach var="i" begin="2015" end="${year}">
                                         <option value="${i}" ${i == year?'selected':''} >${i}年</option>
                                     </c:forEach>
@@ -140,7 +184,6 @@
                             </div>
                             <div class="form-group">
                                 <select name="monthEQ" class="form-control" id="monthEQ">
-                                    <option value="">-- 选择月份--</option>
                                     <c:forEach var="i" begin="1" end="${month}">
                                         <option value="${i}" ${i == month?'selected':''} >${i}月</option>
                                     </c:forEach>

@@ -43,7 +43,8 @@ public class TeamReportNewAdminVo implements Serializable {
 	private String phone;
 	@Field(label = "createDate")
 	private Date createDate;
-
+	@Field(label = "sleepextraNumber")
+	private Integer sleepextraNumber;
 	/* 扩展 */
 
 }

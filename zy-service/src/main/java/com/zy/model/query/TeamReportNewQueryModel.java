@@ -32,6 +32,8 @@ public class TeamReportNewQueryModel implements Serializable {
 
 	private Integer newextraNumberEQ;
 
+	private Integer sleepextraNumberEQ;
+
 	private Double newextraRateEQ;
 
 	private Integer provinceNumberEQ;
@@ -118,6 +120,7 @@ public class TeamReportNewQueryModel implements Serializable {
 		fieldNames.add("ranking");
 		fieldNames.add("id");
 		fieldNames.add("createDate");
+		fieldNames.add("sleepextraNumberEQ");
 	}
 
 }

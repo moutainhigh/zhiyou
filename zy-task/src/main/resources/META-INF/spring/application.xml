@@ -27,6 +27,7 @@
 	<dubbo:reference interface="com.zy.service.PolicyService" id="policyService"/>
 	<dubbo:reference interface="com.zy.service.UserUpgradeService" id="userUpgradeService" />
 	<dubbo:reference  interface="com.zy.service.SystemCodeService" id="systemCodeService"/>
+	<dubbo:reference  interface="com.zy.service.TeamReportNewService" id="teamReportNewService"/>
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
 
@@ -129,7 +130,7 @@
 					</property>
 				</bean>
                <!-- 团队报表 -->
-				<bean id="policyCheckJob"
+				<bean id="teamReportNewJob"
 					  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
 						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
@@ -138,7 +139,7 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0 0 1 * ? *</value>
+						<value>0 0/5 * * * ?</value>
 					</property>
 				</bean>
 				<!--收益单结算job-->
