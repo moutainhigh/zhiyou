@@ -12,4 +12,7 @@ public interface TeamReportNewService {
      Page<TeamReportNew> findPage(TeamReportNewQueryModel teamReportNewQueryModel);
 
      List<TeamReportNew> findExReport(TeamReportNewQueryModel teamReportNewQueryModel);
+
+     void insert(TeamReportNew teamReportNew);
+
 }

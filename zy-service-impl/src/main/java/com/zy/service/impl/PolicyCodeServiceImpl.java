@@ -50,6 +50,7 @@ public class PolicyCodeServiceImpl implements PolicyCodeService {
 		policyCode.setCreatedTime(new Date());
 		policyCode.setIsUsed(false);
 		policyCode.setVersion(0);
+		policyCode.setTourUsed(false);
 		for(int i=0; i < time; i++) {
 			StringBuffer code = new StringBuffer("YJ");
 			long count2 = 0;

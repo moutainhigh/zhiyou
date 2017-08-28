@@ -18,39 +18,15 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamReportNewQueryModel implements Serializable {
+public class TeamProvinceReportQueryModel implements Serializable {
 
-	private Long userIdEQ;
-
-	private String userNameLK;
-
-	private String districtNameLK;
-
-	private Long districtIdEQ;
-
-	private Integer extraNumberEQ;
-
-	private Integer newextraNumberEQ;
-
-	private Integer sleepextraNumberEQ;
-
-	private Double newextraRateEQ;
-
-	private Integer provinceNumberEQ;
-
-	private Integer newprovinceNumberEQ;
-
-	private Double newprovinceRateEQ;
-
-	private Integer rankingEQ;
+	private String provinceEQ;
 
 	private Integer yearEQ;
 
 	private Integer monthEQ;
 
-	private String phoneEQ;
-
-	private Date createDateEQ;
+	private Date createTimeEQ;
 
 	private Integer pageNumber;
 
@@ -104,23 +80,16 @@ public class TeamReportNewQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
-		fieldNames.add("newprovinceRate");
-		fieldNames.add("districtName");
-		fieldNames.add("newextraNumber");
-		fieldNames.add("year");
-		fieldNames.add("newextraRate");
-		fieldNames.add("userName");
-		fieldNames.add("userId");
-		fieldNames.add("newprovinceNumber");
-		fieldNames.add("districtId");
-		fieldNames.add("extraNumber");
+		fieldNames.add("v3Number");
+		fieldNames.add("province");
 		fieldNames.add("month");
-		fieldNames.add("phone");
-		fieldNames.add("provinceNumber");
-		fieldNames.add("ranking");
+		fieldNames.add("year");
+		fieldNames.add("createTime");
+		fieldNames.add("v4ActiveNumber");
 		fieldNames.add("id");
-		fieldNames.add("createDate");
-		fieldNames.add("sleepextraNumberEQ");
+		fieldNames.add("v4Number");
+		fieldNames.add("v4ActiveRank");
+		fieldNames.add("v4ActiveRate");
 	}
 
 }

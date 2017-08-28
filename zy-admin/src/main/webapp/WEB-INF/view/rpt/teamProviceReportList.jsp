@@ -20,101 +20,38 @@
 
                 order: [], // set first column as a default sort by desc
                 ajax: {
-                    url: "${ctx}/report/teamReportNew",
+                    url: "${ctx}/report/teamProvinceReport",
                 },
                 columns: [
                     {
-                        data: 'userName',
-                        title: '姓名',
+                        data: 'province',
+                        title: '省份',
                         orderable: false,
                     },
                     {
-                        data: 'phone',
-                        title: '手机号',
-                        orderable: false,
-                    },
-                    {
-                        data: 'districtName',
-                        title: '所属大区',
-                        orderable: false,
-                    },
-                    {
-                        data: 'extraNumber',
-                        title: '特级人数',
+                        data: 'v4Number',
+                        title: '特级服务商人数',
                         orderable: true,
                     },
                     {
-                        data: 'newextraNumber',
-                        title: '新晋特级人数',
+                        data: 'v3Number',
+                        title: '省级服务商人数',
                         orderable: true,
                     },
                     {
-                        data: 'sleepextraNumber',
-                        title: '沉睡特级人数',
+                        data: 'v4ActiveNumber',
+                        title: '特级服务商活跃人数',
                         orderable: true,
                     },
                     {
-                        data: 'newextraRate',
-                        title: '新晋特级占比',
-                        orderable: true,
-                        render: function (data, type, full) {
-                            var f = Math.round(data*100)/100;
-                            var s = f.toString();
-                            var rs = s.indexOf('.');
-                            if (rs < 0) {
-                                rs = s.length;
-                                s += '.';
-                            }
-                            while (s.length <= rs + 2) {
-                                s += '0';
-                            }
-                            return s +"%";
-                        }
-                    },
-                    {
-                        data: 'provinceNumber',
-                        title: '省级人数',
+                        data: 'v4ActiveRanking',
+                        title: '特级服务商活跃度排名',
                         orderable: true,
                     },
                     {
-                        data: 'newprovinceNumber',
-                        title: '新晋省级人数',
+                        data: 'v4ActiveNumberRate',
+                        title: '特级服务商活跃度',
                         orderable: true,
-                    },
-                    {
-                        data: 'newprovinceRate',
-                        title: '新晋省级占比',
-                        orderable: true,
-                        render: function (data, type, full) {
-                            var f = Math.round(data*100)/100;
-                            var s = f.toString();
-                            var rs = s.indexOf('.');
-                            if (rs < 0) {
-                                rs = s.length;
-                                s += '.';
-                            }
-                            while (s.length <= rs + 2) {
-                                s += '0';
-                            }
-                            return s +"%";
-                        }
-                    },
-                    {
-                        data: 'ranking',
-                        title: '排名',
-                        orderable: true,
-                    },
-                    {
-                        data: 'id',
-                        title: '操作',
-                        orderable: false,
-                        render: function (data, type, full) {
-                            var optionHtml = '';
-                            <shiro:hasPermission name="tour:edit">
-                            optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/tour/findTourTime?tourId=' + full.userId + '"><i class="fa fa-search"></i> 查看详情 </a>';
-                            </shiro:hasPermission>
-                            return optionHtml;
-                        }
                     }
                 ]
             }
@@ -137,15 +74,13 @@
          }else {
              $('#team').text("团队报表("+year+"/"+month+")");
          }
-     }else{
-         return false;
      }
 
  }
 
-    <shiro:hasPermission name="teamReportNew:export">
+    <shiro:hasPermission name="teamProvinceReport:export">
     function reportExport() {
-        location.href = '${ctx}/report/teamReportNew/export?' + $('#searchForm').serialize();
+        location.href = '${ctx}/report/teamProvinceReport/export?' + $('#searchForm').serialize();
     }
     </shiro:hasPermission>
 
@@ -156,7 +91,7 @@
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-        <li><a href="javascript:;" data-href="${ctx}/report/teamReportNew" id="team">团队报表(${year}/${month})</a></li>
+        <li><a href="javascript:;" data-href="${ctx}/report/teamReportNew" id="team">服务商活跃度排名--省份(${year}/${month})</a></li>
     </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -176,6 +111,7 @@
 
                             <div class="form-group">
                                 <select name="yearEQ" class="form-control" id="yearEQ">
+                                    <option value="">-- 选择年份--</option>
                                     <c:forEach var="i" begin="2015" end="${year}">
                                         <option value="${i}" ${i == year?'selected':''} >${i}年</option>
                                     </c:forEach>
@@ -184,6 +120,7 @@
                             </div>
                             <div class="form-group">
                                 <select name="monthEQ" class="form-control" id="monthEQ">
+                                    <option value="">-- 选择月份--</option>
                                     <c:forEach var="i" begin="1" end="${month}">
                                         <option value="${i}" ${i == month?'selected':''} >${i}月</option>
                                     </c:forEach>
@@ -192,26 +129,20 @@
                             </div>
                             <div class="form-group">
                                 <select name="districtIdEQ" class="form-control">
-                                    <option value="">-- 选择大区--</option>
+                                    <option value="">-- 选择省份--</option>
                                     <c:forEach items="${type}" var="code" >
                                       <option value="${code.systemValue}"> ${code.systemName} </option>
                                     </c:forEach>
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <input type="text" name="userNameLK" class="form-control" placeholder="姓名"/>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="phoneEQ" class="form-control" placeholder="手机号"/>
-                            </div>
 
                             <div class="form-group input-inline">
                                 <button class="btn blue filter-submit" onclick="filtersubmit()">
                                     <i class="fa fa-search"></i> 查询
                                 </button>
                             </div>
-                            <shiro:hasPermission name="salesVolumeReport:export">
+                            <shiro:hasPermission name="teamProvinceReport:export">
                                 <div class="form-group">
                                     <button type="button" class="btn yellow" onClick="reportExport()">
                                         <i class="fa fa-file-excel-o"></i> 导出Excel

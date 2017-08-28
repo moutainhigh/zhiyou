@@ -41,4 +41,9 @@ public class TeamReportNewServiceImpl implements TeamReportNewService {
     public List<TeamReportNew> findExReport(TeamReportNewQueryModel teamReportNewQueryModel) {
        return teamReportNewMapper.findAll(teamReportNewQueryModel);
     }
+
+    @Override
+    public void insert(TeamReportNew teamReportNew) {
+        teamReportNewMapper.insert(teamReportNew);
+    }
 }
