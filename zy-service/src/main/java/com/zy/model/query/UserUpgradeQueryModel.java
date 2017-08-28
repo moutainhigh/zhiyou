@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.Serializable;
 
+import com.zy.entity.usr.User;
 import io.gd.generator.api.query.Direction;
 
 import lombok.Getter;
@@ -25,6 +26,8 @@ public class UserUpgradeQueryModel implements Serializable {
 	private Date upgradedTimeGTE;
 
 	private Date upgradedTimeLT;
+
+	private User.UserRank toUserRankEQ;
 
 	private Integer pageNumber;
 

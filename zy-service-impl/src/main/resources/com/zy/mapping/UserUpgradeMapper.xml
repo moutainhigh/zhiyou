@@ -68,6 +68,9 @@
 			<if test="upgradedTimeGTE != null">
 				and upgraded_time &gt;= #{upgradedTimeGTE}
 			</if>
+			<if test="toUserRankEQ != null">
+				and to_user_rank = #{toUserRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -93,6 +96,9 @@
 			</if>
 			<if test="upgradedTimeGTE != null">
 				and upgraded_time &gt;= #{upgradedTimeGTE}
+			</if>
+			<if test="toUserRankEQ != null">
+				and to_user_rank = #{toUserRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
 		</where>
 	</select>

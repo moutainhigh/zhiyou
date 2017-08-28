@@ -56,7 +56,7 @@ public class TeamReportNew implements Serializable {
     @Field(label = "districtId")
     @View
     @Query(Predicate.EQ)
-    private Long  districtId;
+    private String  districtId;
 
     @Field(label = "extraNumber")
     @View

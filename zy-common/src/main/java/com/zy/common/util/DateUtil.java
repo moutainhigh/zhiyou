@@ -179,7 +179,7 @@ public class DateUtil {
     }
 
     /**
-     * 查询 当前 时间所属月份
+     * 查询 当前 时间所属年份
      * @param date
      * @return
      */
@@ -431,12 +431,14 @@ public class DateUtil {
 
 
     public static void  main(String []age) throws ParseException {
-        System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
-        System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));
-        System.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),-1,0),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(getMothNum(new Date()));
+        System.out.println(DateUtil.getYear(new Date()));
+      /*  ystem.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("年龄:"+getAge("411528201607192688"));
         System.out.println(DateUtil.getMoth(new Date()));
-        System.out.println(DateUtil.getYear(new Date()));
+      ;*/
        /*  System.out.println(DateUtil.getMoth(new Date()));
     public static void  main(String []age){
        System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),-6,0),"yyyy-MM-dd HH:mm:ss"));
@@ -447,7 +449,7 @@ public class DateUtil {
         System.out.println("1111"+ll.contains("ty"));*/
       /*  System.out.println(DateFormatUtils.format(getMonthData(new Date(),3,-1),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(getMothNum(getMonthData(new Date(),3,-1)));
-        System.out.println(getMothNum(new Date()));
+
         Date date = new SimpleDateFormat("yyyy-MM").parse("2005-06");
         System.out.println(DateFormatUtils.format(date,"yyyy-MM-dd HH:mm:ss"));
         List<String> list= getMonthBetween(new Date(),getMonthData(new Date(),3,-1));

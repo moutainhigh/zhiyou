@@ -10,6 +10,7 @@ import com.zy.component.TeamReportNewComponent;
 import com.zy.entity.report.TeamReportNew;
 import com.zy.model.TeamReportVo;
 import com.zy.model.query.TeamReportNewQueryModel;
+import com.zy.service.SystemCodeService;
 import com.zy.service.TeamReportNewService;
 import com.zy.vo.TeamReportNewAdminVo;
 import com.zy.vo.TeamReportNewExportVo;
@@ -42,6 +43,8 @@ public class TeamReportNewController {
     @Autowired
     private TeamReportNewComponent teamReportNewComponent;
 
+    @Autowired
+    private SystemCodeService systemCodeService;
     /**
      * get 查询 所有数据
      * @param model
@@ -54,6 +57,7 @@ public class TeamReportNewController {
     public String list(Model model, String queryDate) throws ParseException {
         model.addAttribute("month", DateUtil.getMoth(new Date())-1);
         model.addAttribute("year",DateUtil.getYear(new Date()));
+        model.addAttribute("type",systemCodeService.findByType("LargeAreaType"));
         return "rpt/teamReportNewList";
     }
 

@@ -150,11 +150,9 @@
                             <div class="form-group">
                                 <select name="districtIdEQ" class="form-control">
                                     <option value="">-- 选择大区--</option>
-                                    <option value="1"> 东 </option>
-                                    <option value="2"> 南 </option>
-                                    <option value="3"> 西 </option>
-                                    <option value="4"> 北 </option>
-                                    <option value="5"> 中 </option>
+                                    <c:forEach items="${type}" var="code" >
+                                      <option value="${code.systemValue}"> ${code.systemName} </option>
+                                    </c:forEach>
                                 </select>
                             </div>
 
