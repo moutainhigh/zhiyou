@@ -6,6 +6,7 @@ import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
 import com.zy.common.util.BeanUtils;
 import com.zy.common.util.DateUtil;
+import com.zy.entity.sys.SystemCode;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
 import com.zy.entity.usr.UserUpgrade;
@@ -17,6 +18,7 @@ import com.zy.model.dto.UserDto;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserUpgradeQueryModel;
 import com.zy.model.query.UserlongQueryModel;
+import com.zy.service.SystemCodeService;
 import com.zy.service.UserInfoService;
 import com.zy.service.UserService;
 import com.zy.service.UserUpgradeService;
@@ -54,6 +56,9 @@ public class UserComponent {
 	@Autowired
 	private UserInfoComponent userInfoComponent;
 
+	@Autowired
+	private SystemCodeService systemCodeService;
+
 
 	public UserSimpleVo buildSimpleVo(User user) {
 		UserSimpleVo userSimpleVo = new UserSimpleVo();
@@ -88,6 +93,11 @@ public class UserComponent {
 		Long bossId = user.getBossId();
 		if (bossId != null) {
 			userAdminVo.setBoss(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(bossId)));
+		}
+		String largeArea = user.getLargearea();
+		if(largeArea != null){
+			SystemCode largeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", largeArea);
+			userAdminVo.setLargeareaLabel(largeAreaType.getSystemName());
 		}
 		return userAdminVo;
 	}

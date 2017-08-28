@@ -55,6 +55,8 @@ public class UserAdminVo implements Serializable {
 	private Boolean isToV4;
 	@Field(label = "最后一次登录时间")
 	private Date lastloginTime;
+	@Field(label = "所属大区")
+	private String largearea;
 
 	/* 扩展 */
 	@Field(label = "用户等级")
@@ -67,5 +69,7 @@ public class UserAdminVo implements Serializable {
 	private UserAdminSimpleVo parent;
 	@Field(label = "上级总经理id")
 	private UserAdminSimpleVo boss;
+	@Field(label = "所属大区")
+	private String largeareaLabel;
 
 }

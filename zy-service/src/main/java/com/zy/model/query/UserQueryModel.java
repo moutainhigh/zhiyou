@@ -154,6 +154,7 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("isDirector");
 		fieldNames.add("userType");
 		fieldNames.add("lastloginTime");
+		fieldNames.add("largearea");
 	}
 
 }
