@@ -68,6 +68,11 @@ public class TeamReportNew implements Serializable {
     @Query(Predicate.EQ)
     private Integer newextraNumber;
 
+    @Field(label = "sleepextraNumber")
+    @View
+    @Query(Predicate.EQ)
+    private  Integer sleepextraNumber;
+
     @Field(label = "newextraRate")
     @View
     @Query(Predicate.EQ)
@@ -112,5 +117,7 @@ public class TeamReportNew implements Serializable {
     @View
     @Query(Predicate.EQ)
     private Date createDate;
+
+
 
 }
