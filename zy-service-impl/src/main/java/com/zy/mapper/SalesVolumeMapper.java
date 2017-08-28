@@ -29,4 +29,6 @@ public interface SalesVolumeMapper {
 	long sumQuantity(SalesVolumeQueryModel salesVolumeQueryModel);
 
 	long sumAmount(SalesVolumeQueryModel salesVolumeQueryModel);
+
+	SalesVolume findOneByPhone(String phone);
 }
