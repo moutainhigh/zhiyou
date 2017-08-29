@@ -30,5 +30,5 @@ public interface SalesVolumeMapper {
 
 	long sumAmount(SalesVolumeQueryModel salesVolumeQueryModel);
 
-	SalesVolume findOneByPhone(String phone);
+	SalesVolume findOneByPhone(SalesVolumeQueryModel salesVolumeQueryModel);
 }

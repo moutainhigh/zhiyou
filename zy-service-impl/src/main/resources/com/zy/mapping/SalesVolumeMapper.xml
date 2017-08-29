@@ -62,7 +62,7 @@
 					<when test="field == 'number'">number = #{salesVolume.number},</when>
 					<when test="field == 'type'">type = #{salesVolume.type},</when>
 					<when test="field == 'areaType'">area_type = #{salesVolume.areaType},</when>
-					<when test="field == 'create_time'">create_time = #{salesVolume.create_time},</when>
+					<when test="field == 'create_time'">create_time = #{salesVolume.createTime},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -77,11 +77,18 @@
 	</select>
 
 
-	<select id="findOneByPhone" resultMap="baseResultMap">
+	<select id="findOneByPhone" resultMap="com.zy.model.query.SalesVolumeQueryModel">
 		select
 		<include refid="baseColumn"/>
 		from `rpt_salesvolume`
-		where user_phone = #{phone}
+		<where>
+			<if test="userPhoneLK != null">
+				and user_phone = #{userPhoneLK}
+			</if>
+			<if test="createTime != null">
+				and DATE_FORMAT(create_time, '%Y-%m') = DATE_FORMAT(#{createTime}, '%Y-%m')
+			</if>
+		</where>
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.SalesVolumeQueryModel">
