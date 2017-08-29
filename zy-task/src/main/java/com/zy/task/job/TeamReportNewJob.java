@@ -135,8 +135,8 @@ public class TeamReportNewJob implements Job {
                 }else {
                     teamReportNew.setNewprovinceRate(DateUtil.formatDouble(newV3List.size() / V3 * 100));
                 }
-                teamReportNew.setYear(DateUtil.getYear(new Date()));
-                teamReportNew.setMonth(DateUtil.getMothNum(new Date()) - 1);
+                teamReportNew.setYear(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
+                teamReportNew.setMonth(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
                 teamReportNewList.add(teamReportNew);
             }
             //对list 进行排序
@@ -170,55 +170,4 @@ public class TeamReportNewJob implements Job {
             logger.error(e.getMessage(), e);
         }
     }
-
-
-   /* private void teamSpreade(List<User> userList, TeamReportNew teamReportNew ,List<Area> areaList) {
-        try {
-        List<User> newList = new ArrayList<>();
-        //循环处理用户地区
-        for (User user : userList){
-           Long areaId = teamReportNewService.findAreaId(user.getId());
-            if (areaId!=null) {
-                user.setBossId(teamReportNewService.findAreaId(user.getId())); //暂时借用这个字段 修改时 注意
-                newList.add(user);
-            }
-          }
-            System.out.println( newList.size()+"-----------------------------------------");
-        Map<Long,Map<User.UserRank,List<User>>>counting = newList.stream().collect(
-                Collectors.groupingBy(User::getBossId,Collectors.groupingBy(User::getUserRank)));
-
-            System.out.println(counting+"*******************************************");
-        for (Area area : areaList){
-            UserSpread userSpread = new UserSpread();
-            userSpread.setUserId(teamReportNew.getUserId());
-            userSpread.setProvinceId(area.getId());
-            userSpread.setProvinceName(area.getName());
-            Map<User.UserRank,List<User>> userRankListMap = counting.get(area.getId());
-            if(userRankListMap!=null){
-                userSpread.setV0(userRankListMap.get(User.UserRank.V0)==null?0:userRankListMap.get(User.UserRank.V0).size());
-                userSpread.setV1(userRankListMap.get(User.UserRank.V1)==null?0:userRankListMap.get(User.UserRank.V1).size());
-                userSpread.setV2(userRankListMap.get(User.UserRank.V2)==null?0:userRankListMap.get(User.UserRank.V2).size());
-                userSpread.setV3(userRankListMap.get(User.UserRank.V3)==null?0:userRankListMap.get(User.UserRank.V3).size());
-                userSpread.setV4(userRankListMap.get(User.UserRank.V4)==null?0:userRankListMap.get(User.UserRank.V3).size());
-            }else{
-                userSpread.setV0(0);
-                userSpread.setV1(0);
-                userSpread.setV2(0);
-                userSpread.setV3(0);
-                userSpread.setV4(0);
-
-            }
-            userSpread.setYear(teamReportNew.getYear());
-            userSpread.setYear(teamReportNew.getMonth());
-            teamReportNewService.insertUserSpread(userSpread);
-        }
-        } catch (ConcurrentException e) {
-            try {
-                TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
-            this.disposeTeamReport();
-        }catch (Exception e){
-            e.printStackTrace();
-            logger.error(e.getMessage(), e);
-        }
-    }*/
 }

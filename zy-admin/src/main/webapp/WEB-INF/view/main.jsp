@@ -332,7 +332,7 @@
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="icon-graph"></i>
-						<span class="caption-subject bold uppercase"> 销量月度报表</span>
+						<span class="caption-subject bold uppercase"> 总经理团队月度报表</span>
 					</div>
 				</div>
 				<div class="portlet-body">
@@ -372,12 +372,12 @@
 				]
 			});
 // 异步加载数据
-			$.post('${ctx}/main/ajaxChart/order',{},function(result) {
+			$.post('${ctx}/report/teamReportNew/ajaxTeamReportNew',{},function(result) {
 				myChartTeam.setOption({
 					xAxis: [
 						{
 							type: 'category',
-							data: ['张三','李四','王五','大仙','大仙','大仙','大仙','大仙','大仙','大仙','大仙','大仙'],
+							data: result.data.namearry,
 							axisPointer: {
 								type: 'shadow'
 							}
@@ -396,12 +396,12 @@
 						{
 							name:'新晋特级',
 							type:'bar',
-							data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+							data: result.data.newextraNumberarry,
 						},
 						{
 							name:'特级',
 							type:'bar',
-							data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+							data: result.data.extraNumberarry,
 						}
 					]
 				});

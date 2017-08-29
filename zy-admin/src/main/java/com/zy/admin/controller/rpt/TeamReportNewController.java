@@ -2,6 +2,8 @@ package com.zy.admin.controller.rpt;
 
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
+import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.common.util.DateUtil;
 import com.zy.common.util.ExcelUtils;
@@ -30,7 +32,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -58,8 +62,8 @@ public class TeamReportNewController {
     @RequiresPermissions("teamReportNew:view")
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model, String queryDate) throws ParseException {
-        model.addAttribute("month", DateUtil.getMoth(new Date())-1);
-        model.addAttribute("year",DateUtil.getYear(new Date()));
+        model.addAttribute("month", DateUtil.getMoth(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
+        model.addAttribute("year",DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         model.addAttribute("type",systemCodeService.findByType("LargeAreaType"));
         return "rpt/teamReportNewList";
     }
@@ -118,6 +122,32 @@ public class TeamReportNewController {
       return null;
   }
 
+
+    @RequestMapping(value = "ajaxTeamReportNew",method = RequestMethod.POST)
+    @ResponseBody
+    public Result<Object>  ajaxTeamReportNew(){
+        TeamReportNewQueryModel teamReportNewQueryModel = new TeamReportNewQueryModel();
+        teamReportNewQueryModel.setYearEQ(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
+        teamReportNewQueryModel.setMonthEQ(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
+        teamReportNewQueryModel.setIsBossEQ(1);
+        teamReportNewQueryModel.setPageSize(null);
+        teamReportNewQueryModel.setPageNumber(null);
+        List<TeamReportNew> teamReportNewList =  teamReportNewService.findExReport(teamReportNewQueryModel);
+        String []name = new String[teamReportNewList.size()];
+        int [] extraNumber = new int[teamReportNewList.size()];
+        int []newextraNumber = new int[teamReportNewList.size()];
+        for (int i=0;i<teamReportNewList.size();i++){
+            TeamReportNew teamReportNew = teamReportNewList.get(i);
+            name[i]=teamReportNew.getUserName();
+            extraNumber[i] = teamReportNew.getExtraNumber();
+            newextraNumber[i] = teamReportNew.getNewextraNumber();
+        }
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("namearry",name);
+        map.put("extraNumberarry",extraNumber);
+        map.put("newextraNumberarry",newextraNumber);
+        return ResultBuilder.result(map);
+    }
 
 
 

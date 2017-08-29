@@ -107,8 +107,8 @@ public class TeamReportNewDetailJob implements Job {
                             userSpread.setV4(0);
 
                         }
-                        userSpread.setYear(DateUtil.getYear(new Date()));
-                        userSpread.setMonth(DateUtil.getMothNum(new Date()) - 1);
+                        userSpread.setYear(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
+                        userSpread.setMonth(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
                         userSpread.setCreateDate(new Date());
                         teamReportNewService.insertUserSpread(userSpread);
                     }
