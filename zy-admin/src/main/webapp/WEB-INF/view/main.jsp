@@ -341,6 +341,7 @@
 			});
 		})
 	</script>
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="portlet light bordered">
@@ -417,7 +418,6 @@
 							name:'特级',
 							type:'bar',
 							data: result.data.extraNumberarry,
-							data:result.achievementList
 						}
 					]
 				});
