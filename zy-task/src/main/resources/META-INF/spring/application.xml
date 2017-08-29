@@ -29,10 +29,11 @@
 	<dubbo:reference  interface="com.zy.service.SystemCodeService" id="systemCodeService"/>
 	<dubbo:reference  interface="com.zy.service.SalesVolumeService" id="salesVolumeService"/>
 	<dubbo:reference  interface="com.zy.service.TeamReportNewService" id="teamReportNewService"/>
+	<dubbo:reference interface="com.zy.service.UserInfoService" id="userInfoService"/>
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
 
-	<dubbo:consumer cluster="failfast" timeout="10000"/>
+	<dubbo:consumer cluster="failfast" timeout="1000000"/>
 
 
 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -140,7 +141,20 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0 0 1 * ? *</value>
+						<value>0 0/5 * * * ? *</value>
+					</property>
+				</bean>
+				<!-- 团队人员分布报表 -->
+				<bean id="teamReportNewDetailJob"
+					  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.TeamReportNewDetailJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/5 * * * ? *</value>
 					</property>
 				</bean>
 				<!-- 销量报表 -->

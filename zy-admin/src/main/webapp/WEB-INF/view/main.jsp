@@ -260,9 +260,9 @@
 	</div>
 	<script>
 		$(function(){
-			var myChartxiao = echarts.init(document.getElementById('orderChartXiao'));
+			var myChart = echarts.init(document.getElementById('orderChartXiao'));
 			// 指定图表的配置项和数据
-			myChartxiao.setOption({
+			myChart.setOption({
 				tooltip: {
 					trigger: 'axis',
 					axisPointer: {
@@ -326,5 +326,86 @@
 			});
 		})
 	</script>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="portlet light bordered">
+				<div class="portlet-title">
+					<div class="caption">
+						<i class="icon-graph"></i>
+						<span class="caption-subject bold uppercase"> 销量月度报表</span>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div id="orderChartTeam" style="height:350px;">
 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		$(function(){
+			var myChartTeam = echarts.init(document.getElementById('orderChartTeam'));
+			// 指定图表的配置项和数据
+			myChartTeam.setOption({
+				tooltip : {
+					trigger: 'axis'
+				},
+				legend: {
+					data:['新晋特级','特级']
+				},
+				toolbox: {
+					show : true,
+					feature : {
+						dataView : {show: true, readOnly: false},
+						magicType : {show: true, type: ['line', 'bar']},
+						restore : {show: true},
+						saveAsImage : {show: true}
+					}
+				},
+				xAxis: [
+				],
+				yAxis: [
+				],
+				series: [
+
+				]
+			});
+// 异步加载数据
+			$.post('${ctx}/main/ajaxChart/order',{},function(result) {
+				myChartTeam.setOption({
+					xAxis: [
+						{
+							type: 'category',
+							data: ['张三','李四','王五','大仙','大仙','大仙','大仙','大仙','大仙','大仙','大仙','大仙'],
+							axisPointer: {
+								type: 'shadow'
+							}
+						}
+					],
+					yAxis: [
+						{
+							type: 'value',
+							name: '人数',
+							axisLabel: {
+								formatter: '{value} '
+							}
+						}
+					],
+					series: [
+						{
+							name:'新晋特级',
+							type:'bar',
+							data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+						},
+						{
+							name:'特级',
+							type:'bar',
+							data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+						}
+					]
+				});
+			});
+		})
+	</script>
 </shiro:hasPermission>

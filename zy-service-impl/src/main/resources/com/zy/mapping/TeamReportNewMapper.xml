@@ -20,13 +20,14 @@
 		<result column="phone" property="phone" />
 		<result column="create_date" property="createDate" />
 		<result column="sleepextra_number" property="sleepextraNumber" />
+		<result column="is_boss" property="isBoss" />
 	</resultMap>
 
-	<sql id="baseColumn">id,user_id,user_name,district_name,district_id,extra_number,newextra_number,newextra_rate,province_number,newprovince_number,newprovince_rate,ranking,year,month,phone,create_date,sleepextra_number</sql>
+	<sql id="baseColumn">id,user_id,user_name,district_name,district_id,extra_number,newextra_number,newextra_rate,province_number,newprovince_number,newprovince_rate,ranking,year,month,phone,create_date,sleepextra_number,is_boss</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.report.TeamReportNew" useGeneratedKeys="true" keyProperty="id">
-	  insert into `ts_team_report` (user_id,user_name,district_name,district_id,extra_number,newextra_number,newextra_rate,province_number,newprovince_number,newprovince_rate,ranking,year,month,phone,create_date,sleepextra_number)
-	  values (#{userId},#{userName},#{districtName},#{districtId},#{extraNumber},#{newextraNumber},#{newextraRate},#{provinceNumber},#{newprovinceNumber},#{newprovinceRate},#{ranking},#{year},#{month},#{phone},#{createDate},#{sleepextraNumber})
+	  insert into `ts_team_report` (user_id,user_name,district_name,district_id,extra_number,newextra_number,newextra_rate,province_number,newprovince_number,newprovince_rate,ranking,year,month,phone,create_date,sleepextra_number,is_boss)
+	  values (#{userId},#{userName},#{districtName},#{districtId},#{extraNumber},#{newextraNumber},#{newextraRate},#{provinceNumber},#{newprovinceNumber},#{newprovinceRate},#{ranking},#{year},#{month},#{phone},#{createDate},#{sleepextraNumber},#{isBoss})
 	</insert>
 
 	<delete id="delete">
@@ -52,6 +53,7 @@
 			phone = #{phone},
 			create_date = #{createDate},
 			sleepextra_number =#{sleepextraNumber},
+			is_boss =#{isBoss},
 		</set>
 		where id = #{id}
 	</update>
@@ -77,6 +79,7 @@
 					<when test="field == 'phone'">phone = #{teamReportNew.phone},</when>
 					<when test="field == 'createDate'">create_date = #{teamReportNew.createDate},</when>
 					<when test="field == 'sleepextraNumber'">sleepextra_number = #{teamReportNew.sleepextraNumber},</when>
+					<when test="field == 'isBoss'">is_boss = #{teamReportNew.isBoss},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -143,13 +146,16 @@
 			<if test="sleepextraNumberEQ != null">
 				and sleepextra_number = #{sleepextraNumberEQ}
 			</if>
+			<if test="isBossEQ != null">
+				and is_boss = #{isBossEQ}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
 				order by ${orderByAndDirection}
 			</when>
 			<otherwise>
-				order by id desc
+				order by user_id desc
 			</otherwise>
 		</choose>
 		<if test="offset != null">
@@ -207,6 +213,9 @@
 			</if>
 			<if test="sleepextraNumberEQ != null">
 				and sleepextra_number = #{sleepextraNumberEQ}
+			</if>
+			<if test="isBossEQ != null">
+				and is_boss = #{isBossEQ}
 			</if>
 		</where>
 	</select>

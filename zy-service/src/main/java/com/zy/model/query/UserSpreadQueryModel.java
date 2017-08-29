@@ -11,48 +11,33 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import java.util.Date;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamReportNewQueryModel implements Serializable {
+public class UserSpreadQueryModel implements Serializable {
 
 	private Long userIdEQ;
 
-	private String userNameLK;
+	private Long provinceIdEQ;
 
-	private String districtNameLK;
+	private String provinceNameEQ;
 
-	private Long districtIdEQ;
+	private Integer v4EQ;
 
-	private Integer extraNumberEQ;
+	private Integer v3EQ;
 
-	private Integer newextraNumberEQ;
+	private Integer v2EQ;
 
-	private Integer sleepextraNumberEQ;
+	private Integer v1EQ;
 
-	private Double newextraRateEQ;
-
-	private Integer provinceNumberEQ;
-
-	private Integer newprovinceNumberEQ;
-
-	private Double newprovinceRateEQ;
-
-	private Integer rankingEQ;
+	private Integer v0EQ;
 
 	private Integer yearEQ;
 
 	private Integer monthEQ;
-
-	private String phoneEQ;
-
-	private Integer isBossEQ;
-
-	private Date createDateEQ;
 
 	private Integer pageNumber;
 
@@ -106,23 +91,18 @@ public class TeamReportNewQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
-		fieldNames.add("newprovinceRate");
-		fieldNames.add("districtName");
-		fieldNames.add("newextraNumber");
-		fieldNames.add("year");
-		fieldNames.add("newextraRate");
-		fieldNames.add("userName");
-		fieldNames.add("userId");
-		fieldNames.add("newprovinceNumber");
-		fieldNames.add("districtId");
-		fieldNames.add("extraNumber");
 		fieldNames.add("month");
-		fieldNames.add("phone");
-		fieldNames.add("provinceNumber");
-		fieldNames.add("ranking");
-		fieldNames.add("id");
+		fieldNames.add("year");
+		fieldNames.add("v0");
+		fieldNames.add("Id");
+		fieldNames.add("provinceName");
+		fieldNames.add("v1");
+		fieldNames.add("v2");
+		fieldNames.add("userId");
+		fieldNames.add("provinceId");
+		fieldNames.add("v3");
+		fieldNames.add("v4");
 		fieldNames.add("createDate");
-		fieldNames.add("sleepextraNumberEQ");
 	}
 
 }

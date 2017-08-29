@@ -111,7 +111,7 @@
                         render: function (data, type, full) {
                             var optionHtml = '';
                             <shiro:hasPermission name="tour:edit">
-                            optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/tour/findTourTime?tourId=' + full.userId + '"><i class="fa fa-search"></i> 查看详情 </a>';
+                            optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/report/teamReportNew/reportEdit?teamReportNewId=' + id + '"><i class="fa fa-search"></i> 查看详情 </a>';
                             </shiro:hasPermission>
                             return optionHtml;
                         }
@@ -148,6 +148,33 @@
         location.href = '${ctx}/report/teamReportNew/export?' + $('#searchForm').serialize();
     }
     </shiro:hasPermission>
+function  changemonth(obj) {
+    var thisYear = ${year};
+    var thisMonth = ${month};
+    var sel = $('#monthEQ');
+    var opt="";
+    if(obj!=thisYear){
+        for(var i =1;i<=12;i++){
+            if(i==thisMonth){
+                opt = opt + "<option value='" + i + "' selected >" + i + "月</option>";
+            }else {
+                opt = opt + "<option value='" + i + "' >" + i + "月</option>";
+            }
+
+        }
+    }else{
+        for(var i =1;i<=thisMonth;i++){
+            if(i==thisMonth){
+                opt = opt + "<option value='" + i + "' selected >" + i + "月</option>";
+            }else {
+                opt = opt + "<option value='" + i + "' >" + i + "月</option>";
+            }
+
+        }
+    }
+    sel.html("");
+    sel.html(opt)
+}
 
 </script>
 <!-- END JAVASCRIPTS -->
@@ -175,8 +202,8 @@
                             <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
                             <div class="form-group">
-                                <select name="yearEQ" class="form-control" id="yearEQ">
-                                    <c:forEach var="i" begin="2015" end="${year}">
+                                <select name="yearEQ" class="form-control" id="yearEQ"  onchange="changemonth(this.value)">
+                                    <c:forEach var="i" begin="2015" end="${year}" >
                                         <option value="${i}" ${i == year?'selected':''} >${i}年</option>
                                     </c:forEach>
 
@@ -200,6 +227,13 @@
                             </div>
 
                             <div class="form-group">
+                                <select name="isBossEQ" class="form-control">
+                                    <option value="">-- 是否是大区总裁--</option>
+                                        <option value="0"> 否 </option>
+                                        <option value="1"> 是 </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <input type="text" name="userNameLK" class="form-control" placeholder="姓名"/>
                             </div>
                             <div class="form-group">
@@ -211,7 +245,7 @@
                                     <i class="fa fa-search"></i> 查询
                                 </button>
                             </div>
-                            <shiro:hasPermission name="salesVolumeReport:export">
+                            <shiro:hasPermission name="teamReportNew:export">
                                 <div class="form-group">
                                     <button type="button" class="btn yellow" onClick="reportExport()">
                                         <i class="fa fa-file-excel-o"></i> 导出Excel

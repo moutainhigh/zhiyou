@@ -15,6 +15,8 @@ public class TeamReportNewExportVo implements Serializable {
 	private String date;
 	@Field(label = "姓名")
 	private String userName;
+	@Field(label = "是否是大区总裁")
+	private String isBoss;
 	@Field(label = "区名")
 	private String districtName;
 	@Field(label = "手机号")

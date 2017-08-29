@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.UserSpreadMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.report.UserSpread">
+		<result column="id" property="Id" />
+		<result column="user_id" property="userId" />
+		<result column="province_id" property="provinceId" />
+		<result column="province_name" property="provinceName" />
+		<result column="v4" property="v4" />
+		<result column="v3" property="v3" />
+		<result column="v2" property="v2" />
+		<result column="v1" property="v1" />
+		<result column="v0" property="v0" />
+		<result column="year" property="year" />
+		<result column="month" property="month" />
+		<result column="create_date" property="createDate" />
+	</resultMap>
+
+	<sql id="baseColumn">id,user_id,province_id,province_name,v4,v3,v2,v1,v0,year,month,create_date</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.report.UserSpread" useGeneratedKeys="true" keyProperty="id">
+	  insert into `ts_user_spread` (id,user_id,province_id,province_name,v4,v3,v2,v1,v0,year,month,create_date)
+	  values (#{Id},#{userId},#{provinceId},#{provinceName},#{v4},#{v3},#{v2},#{v1},#{v0},#{year},#{month},#{createDate})
+	</insert>
+
+	<delete id="delete">
+		delete from `ts_user_spread` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.report.UserSpread">
+		update `ts_user_spread`
+		<set>
+			id = #{Id},
+			user_id = #{userId},
+			province_id = #{provinceId},
+			province_name = #{provinceName},
+			v4 = #{v4},
+			v3 = #{v3},
+			v2 = #{v2},
+			v1 = #{v1},
+			v0 = #{v0},
+			year = #{year},
+			month = #{month},
+			create_date = #{createDate},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `ts_user_spread`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'Id'">id = #{userSpread.Id},</when>
+					<when test="field == 'userId'">user_id = #{userSpread.userId},</when>
+					<when test="field == 'provinceId'">province_id = #{userSpread.provinceId},</when>
+					<when test="field == 'provinceName'">province_name = #{userSpread.provinceName},</when>
+					<when test="field == 'v4'">v4 = #{userSpread.v4},</when>
+					<when test="field == 'v3'">v3 = #{userSpread.v3},</when>
+					<when test="field == 'v2'">v2 = #{userSpread.v2},</when>
+					<when test="field == 'v1'">v1 = #{userSpread.v1},</when>
+					<when test="field == 'v0'">v0 = #{userSpread.v0},</when>
+					<when test="field == 'year'">year = #{userSpread.year},</when>
+					<when test="field == 'month'">month = #{userSpread.month},</when>
+					<when test="field == 'createDate'">create_date = #{userSpread.createDate},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{userSpread.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `ts_user_spread`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserSpreadQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `ts_user_spread`
+		<where>
+			<if test="v0EQ != null">
+				and v0 = #{v0EQ}
+			</if>
+			<if test="provinceNameEQ != null">
+				and province_name = #{provinceNameEQ}
+			</if>
+			<if test="v1EQ != null">
+				and v1 = #{v1EQ}
+			</if>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="provinceIdEQ != null">
+				and province_id = #{provinceIdEQ}
+			</if>
+			<if test="v4EQ != null">
+				and v4 = #{v4EQ}
+			</if>
+			<if test="v2EQ != null">
+				and v2 = #{v2EQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+			<if test="v3EQ != null">
+				and v3 = #{v3EQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.UserSpreadQueryModel">
+		select count(*) from `ts_user_spread`
+		<where>
+			<if test="v0EQ != null">
+				and v0 = #{v0EQ}
+			</if>
+			<if test="provinceNameEQ != null">
+				and province_name = #{provinceNameEQ}
+			</if>
+			<if test="v1EQ != null">
+				and v1 = #{v1EQ}
+			</if>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="provinceIdEQ != null">
+				and province_id = #{provinceIdEQ}
+			</if>
+			<if test="v4EQ != null">
+				and v4 = #{v4EQ}
+			</if>
+			<if test="v2EQ != null">
+				and v2 = #{v2EQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+			<if test="v3EQ != null">
+				and v3 = #{v3EQ}
+			</if>
+		</where>
+	</select>
+
+</mapper>
