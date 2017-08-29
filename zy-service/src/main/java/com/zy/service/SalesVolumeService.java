@@ -2,6 +2,7 @@ package com.zy.service;
 
 import com.zy.common.model.query.Page;
 import com.zy.entity.report.SalesVolume;
+import com.zy.entity.usr.User;
 import com.zy.model.query.SalesVolumeQueryModel;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface SalesVolumeService {
 	long sumAmount(SalesVolumeQueryModel salesVolumeQueryModel);
 
 	List<SalesVolume> findExReport(SalesVolumeQueryModel salesVolumeQueryModel);
+
+	void salesvolume(List<User> userList);
 }

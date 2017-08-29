@@ -27,6 +27,7 @@
 	<dubbo:reference interface="com.zy.service.PolicyService" id="policyService"/>
 	<dubbo:reference interface="com.zy.service.UserUpgradeService" id="userUpgradeService" />
 	<dubbo:reference  interface="com.zy.service.SystemCodeService" id="systemCodeService"/>
+	<dubbo:reference  interface="com.zy.service.SalesVolumeService" id="salesVolumeService"/>
 	<dubbo:reference  interface="com.zy.service.TeamReportNewService" id="teamReportNewService"/>
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
@@ -139,7 +140,20 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0/5 * * * ?</value>
+						<value>0 0 0 1 * ? *</value>
+					</property>
+				</bean>
+				<!-- 销量报表 -->
+				<bean id="salesvolumeJobTrigger"
+					  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id="salesvolumeJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.SalesvolumeJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/2 * * * ? </value>
 					</property>
 				</bean>
 				<!--收益单结算job-->

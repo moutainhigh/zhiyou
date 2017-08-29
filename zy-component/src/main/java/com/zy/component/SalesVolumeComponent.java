@@ -2,8 +2,11 @@ package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
 import com.zy.entity.report.SalesVolume;
+import com.zy.entity.sys.SystemCode;
+import com.zy.service.SystemCodeService;
 import com.zy.vo.SalesVolumeExportVo;
 import com.zy.vo.SalesVolumeListVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,9 +15,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SalesVolumeComponent {
+
+    @Autowired
+    private SystemCodeService systemCodeService;
+
+
     public SalesVolumeListVo buildSalesVolumeListVo(SalesVolume salesVolume) {
         SalesVolumeListVo salesVolumeListVo = new SalesVolumeListVo();
         BeanUtils.copyProperties(salesVolume, salesVolumeListVo);
+        String largeArea = salesVolume.getAreaType();
+        if(largeArea != null){
+            SystemCode largeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", largeArea);
+            salesVolumeListVo.setAreaType(largeAreaType.getSystemName());
+        }
         return salesVolumeListVo;
     }
 
@@ -28,16 +41,10 @@ public class SalesVolumeComponent {
         }else if (salesVolume.getType() == 3){
             salesVolumeExportVo.setRankDetail("-   " + salesVolume.getNumber());
         }
-        if (salesVolume.getAreaType() == 1){
-            salesVolumeExportVo.setAreaType("东");
-        }else if (salesVolume.getAreaType() == 2){
-            salesVolumeExportVo.setAreaType("南");
-        }else if (salesVolume.getAreaType() == 3){
-            salesVolumeExportVo.setAreaType("西");
-        }else if (salesVolume.getAreaType() == 4){
-            salesVolumeExportVo.setAreaType("北");
-        }else if (salesVolume.getAreaType() == 5){
-            salesVolumeExportVo.setAreaType("中");
+        String largeArea = salesVolume.getAreaType();
+        if(largeArea != null){
+            SystemCode largeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", largeArea);
+            salesVolumeExportVo.setAreaType(largeAreaType.getSystemName());
         }
         return salesVolumeExportVo;
     }

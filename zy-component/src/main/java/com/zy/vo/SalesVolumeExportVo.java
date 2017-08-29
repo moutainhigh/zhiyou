@@ -17,9 +17,9 @@ public class SalesVolumeExportVo implements Serializable {
 	@Field(label = "所属大区")
 	private String areaType;
 	@Field(label = "达成量")
-	private Integer amountReached;
+	private Long amountReached;
 	@Field(label = "目标量")
-	private Integer amountTarget;
+	private Long amountTarget;
 	@Field(label = "达成率 （%）")
 	private Double achievement;
 	@Field(label = "排名")
