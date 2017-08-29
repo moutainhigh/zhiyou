@@ -23,6 +23,8 @@ public class SalesVolumeQueryModel implements Serializable {
 
 	private String userPhoneLK;
 
+	private Integer isBoss;
+
 	private Integer areaTypeEQ;
 
 	private Date createTime;

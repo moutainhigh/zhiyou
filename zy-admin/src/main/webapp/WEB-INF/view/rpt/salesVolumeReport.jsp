@@ -42,6 +42,18 @@
             orderable: false
           },
           {
+            data: 'isBoss',
+            title: '是否大区总裁',
+            orderable: false,
+            render: function (data, type, full) {
+              if (data == 0){
+                return '否' ;
+              }else if (data == 1){
+                return '是';
+              }
+            }
+          },
+          {
             data: 'amountReached',
             title: '达成量',
             orderable: true
@@ -66,12 +78,16 @@
             title: '排名升降情况',
             orderable: false,
             render: function (data, type, full) {
-              if (full.type == 1){
-                return '<span style="color: red;">↑</span>' + full.number;
-              }else if (full.type == 2){
-                return '—';
-              }else if (full.type == 3){
-                return '<span style="color: blue">↓</span>'  + full.number;
+              if (full.type != null && full.number != null){
+                if (full.type == 1 ){
+                  return '<span style="color: red;">↑</span>' + full.number;
+                }else if (full.type == 2){
+                  return '—';
+                }else if (full.type == 3){
+                  return '<span style="color: blue">↓</span>'  + full.number;
+                }
+              }else {
+                return '';
               }
             }
           }
@@ -164,7 +180,15 @@
                   </c:forEach>
                 </select>
               </div>
-              
+
+              <div class="form-group">
+                <select name="isBoss" class="form-control">
+                  <option value="">-- 大区总裁--</option>
+                    <option value="0"> 否 </option>
+                    <option value="1"> 是 </option>
+                </select>
+              </div>
+
               <div class="form-group">
                 <input type="text" name="userNameLK" class="form-control" placeholder="姓名"/>
               </div>

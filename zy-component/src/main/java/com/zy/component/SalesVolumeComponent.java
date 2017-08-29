@@ -34,12 +34,19 @@ public class SalesVolumeComponent {
     public SalesVolumeExportVo buildSalesVolumeExportVo(SalesVolume salesVolume) {
         SalesVolumeExportVo salesVolumeExportVo = new SalesVolumeExportVo();
         BeanUtils.copyProperties(salesVolume, salesVolumeExportVo);
-        if (salesVolume.getType() == 1){
-            salesVolumeExportVo.setRankDetail("+   " + salesVolume.getNumber());
-        }else if (salesVolume.getType() == 2){
-            salesVolumeExportVo.setRankDetail("=");
-        }else if (salesVolume.getType() == 3){
-            salesVolumeExportVo.setRankDetail("-   " + salesVolume.getNumber());
+        if (salesVolume.getType() != null && salesVolume.getNumber() != null){
+            if (salesVolume.getType() == 1){
+                salesVolumeExportVo.setRankDetail("+   " + salesVolume.getNumber());
+            }else if (salesVolume.getType() == 2){
+                salesVolumeExportVo.setRankDetail("=");
+            }else if (salesVolume.getType() == 3){
+                salesVolumeExportVo.setRankDetail("-   " + salesVolume.getNumber());
+            }
+        }
+        if (salesVolume.getIsBoss() == 1){
+            salesVolumeExportVo.setIsBoss("是");
+        }else if (salesVolume.getIsBoss() == 0){
+            salesVolumeExportVo.setIsBoss("否");
         }
         String largeArea = salesVolume.getAreaType();
         if(largeArea != null){

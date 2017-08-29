@@ -16,6 +16,8 @@ public class SalesVolumeExportVo implements Serializable {
 	private String userPhone;
 	@Field(label = "所属大区")
 	private String areaType;
+	@Field(label = "是否大区总裁")
+	private String isBoss;
 	@Field(label = "达成量")
 	private Long amountReached;
 	@Field(label = "目标量")

@@ -93,7 +93,7 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 		sQueryModel.setCreateTime(new Date());
 		List<SalesVolume> data = salesVolumeMapper.findAll(sQueryModel);
 		SalesVolume salesVolume = null;
-		Long avgNum ;
+		Long avgNum = 0l;
 		if (data != null && data.size() > 0){
 			for (SalesVolume sa: data) {
 				if (sa.getAmountTarget() != null){
@@ -107,11 +107,6 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 			}
 			double avg = new BigDecimal((sum / amountTargetList.size())).setScale(0 , RoundingMode.UP).doubleValue();
 			avgNum = (long)avg;
-			for (SalesVolume sa: data) {
-				if (sa.getAmountTarget() == null){
-					salesVolume.setAmountTarget(avgNum);
-				}
-			}
 		}
 
 		for (User user : userList) {
@@ -121,11 +116,22 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 				salesVolume.setUserPhone(user.getPhone());
 				salesVolume.setUserRank(user.getUserRank().getLevel());
 				salesVolume.setAreaType(user.getLargearea());
+				if (user.getIsBoss() != null){
+					if (user.getIsBoss() == true){
+						salesVolume.setIsBoss(1);
+					}else {
+						salesVolume.setIsBoss(0);
+					}
+				}else {
+					salesVolume.setIsBoss(0);
+				}
+
 				UserInfo userInfo = userInfoService.findByUserIdandFlage(user.getId());
 				if (userInfo != null){
 					salesVolume.setUserName(userInfo.getRealname());
 				}
 				salesVolume.setCreateTime(new Date());
+				salesVolume.setAmountTarget(avgNum);
 			}
 			OrderQueryModel orderQueryModel = new OrderQueryModel();
 			orderQueryModel.setUserIdEQ(user.getId());
@@ -143,9 +149,9 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 		salesVolumeQueryModel.setCreateTime(new Date());
 		List<SalesVolume> list = salesVolumeMapper.findAll(salesVolumeQueryModel);
 		if (list != null && list.size() > 0){
-			int i = 1 ;
+			int i = 0 ;
 			for (SalesVolume sa: list) {
-				i = i++;
+				i = i + 1;
 				sa.setRanking(i);
 
 				Date date = new Date();
@@ -163,6 +169,7 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 						sa.setNumber(sa.getRanking() - s.getRanking());
 					}else if (sa.getRanking() == s.getRanking()){
 						sa.setType(2);
+						sa.setNumber(0);
 					}else if (sa.getRanking() < s.getRanking()){
 						sa.setType(3);
 						sa.setNumber(s.getRanking() - sa.getRanking());

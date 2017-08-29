@@ -76,6 +76,12 @@ public class SalesVolume implements Serializable {
 	@View
 	private Integer ranking;
 
+
+	@NotNull
+	@View
+	@Field(label = "是否大区总裁")
+	private Integer isBoss;
+
 	@Field(label = "上升或下降名次")
 	@NotNull
 	@View

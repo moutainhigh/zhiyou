@@ -26,6 +26,8 @@ public class SalesVolumeListVo implements Serializable {
 	private Double achievement;
 	@Field(label = "排名")
 	private Integer ranking;
+	@Field(label = "是否大区总裁")
+	private Integer isBoss;
 	@Field(label = "上升或下降名次")
 	private Integer number;
 	@Field(label = "1 上升 2 持平 3 下降")
