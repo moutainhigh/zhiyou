@@ -21,8 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
@@ -34,6 +33,7 @@ import java.util.stream.Collectors;
  * Created by liang on 2017/8/29.  处理 省份服务商报表
  */
 public class TeamProvinceReportJob implements Job {
+    private Logger logger = LoggerFactory.getLogger(TeamProvinceReportJob.class);
 
     @Autowired
     private AreaService areaService;
@@ -50,7 +50,7 @@ public class TeamProvinceReportJob implements Job {
     @Autowired
     private TeamProvinceReportService teamProvinceReportService;
 
-    private Logger logger = LoggerFactory.getLogger(TeamProvinceReportJob.class);
+
 
     private List<UserReportVo> userReportVos = new ArrayList<>();
 
