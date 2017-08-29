@@ -341,14 +341,14 @@
 			});
 		})
 	</script>
-
+	<shiro:hasPermission name="teamReportNew:view">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="portlet light bordered">
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="icon-graph"></i>
-						<span class="caption-subject bold uppercase"> 总经理团队月度报表</span>
+						<span class="caption-subject bold uppercase"> 总经理团队上月度报表</span>
 					</div>
 				</div>
 				<div class="portlet-body">
@@ -359,6 +359,8 @@
 			</div>
 		</div>
 	</div>
+	</shiro:hasPermission>
+
 	<script>
 		$(function(){
 			var myChartTeam = echarts.init(document.getElementById('orderChartTeam'));
@@ -423,5 +425,63 @@
 				});
 			});
 		})
+	</script>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="portlet light bordered">
+				<div class="portlet-title">
+					<div class="caption">
+						<i class="icon-graph"></i>
+						<span class="caption-subject bold uppercase"> 地图月度报表</span>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div id="orderChartMap" style="height:800px;">
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		var array="1111111";
+		var array2="1111111";
+		$.get('${ctx}/map/json/china.json', function (chinaJson) {
+			echarts.registerMap('china', chinaJson);
+			var chart = echarts.init(document.getElementById('orderChartMap'));
+			chart.setOption({
+				tooltip : {
+					trigger: 'item',
+					formatter: function(param){
+						var str = param.name+"：<br>特级："+array+"<br>"+"省级："+array2+"<br>市级："+array+"<br>"+"VIP："+array2;
+						return str;
+					}
+				},
+				series: [
+					  {
+						name: '中国',
+						type: 'map',
+						mapType: 'china',
+						selectedMode : 'multiple',
+						label: {
+							normal: {
+								show: true
+							},
+							emphasis: {
+								show: true
+							}
+						},
+						data:[
+							{name:"安徽",value: "222"},
+						]
+					}
+				]
+			});
+			chart.on('click',  function (param) {
+//				console.log(param);
+//				console.log(param.tooltip);
+			});
+		});
+
 	</script>
 </shiro:hasPermission>
