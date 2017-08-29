@@ -271,6 +271,29 @@ public class DateUtil {
         return str.toString();
     }
 
+    /**
+     * 将数组转成字符串
+     * @return
+     */
+    public static String stringarryToString(String[] arryString,boolean flag){
+        StringBuffer str = new StringBuffer("");
+        if (arryString==null&&arryString.length==0){
+            return str.toString();
+        }
+        if (!flag) {
+            for (int i = 0; i < arryString.length; i++) {
+                str.append(arryString[i]).append(",");
+            }
+        }else{
+            for (int i = arryString.length-1; i >=0; i--) {
+                str.append(arryString[i]).append(",");
+            }
+        }
+        if (str.length() > 0) {
+            str.delete(str.length() - 1, str.length());
+        }
+        return str.toString();
+    }
 
     /**
      * 计算百分比 并格式化成2位小数

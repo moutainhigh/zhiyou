@@ -99,7 +99,7 @@ public class TeamReportNewController {
         teamReportNewQueryModel.setPageSize(null);
         teamReportNewQueryModel.setPageNumber(null);
         List<TeamReportNew> salesVolume =  teamReportNewService.findExReport(teamReportNewQueryModel);
-        String fileName = "销量报表.xlsx";
+        String fileName = "销量报表"+DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0))+"/"+DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0))+".xlsx";
         WebUtils.setFileDownloadHeader(response, fileName);
 
         List<TeamReportNewExportVo> teamReportNewAdminVos = salesVolume.stream().map(teamReportNewComponent::buildTeamReportNewExportVo).collect(Collectors.toList());
@@ -117,9 +117,27 @@ public class TeamReportNewController {
       userSpreadQueryModel.setUserIdEQ(teamReportNew.getUserId());
       userSpreadQueryModel.setYearEQ(teamReportNew.getYear());
       userSpreadQueryModel.setMonthEQ(teamReportNew.getMonth());
-      List<UserSpread> UserSpreadList = teamReportNewService.findUserSpread(userSpreadQueryModel);
+      List<UserSpread> userSpreadList = teamReportNewService.findUserSpread(userSpreadQueryModel);
+      String [] name = new String [userSpreadList.size()];
+      String [] v4 = new String [userSpreadList.size()];
+      String [] v3 = new String [userSpreadList.size()];
+      String [] v2 = new String [userSpreadList.size()];
+      String [] v1 = new String [userSpreadList.size()];
 
-      return null;
+      for(int i =0;i<userSpreadList.size();i++){
+          UserSpread userSpread = userSpreadList.get(i);
+          name[i]=userSpread.getProvinceName();
+          v4[i]= userSpread.getV4()+"";
+          v3[i]= userSpread.getV3()+"";
+          v2[i]= userSpread.getV2()+"";
+          v1[i]= userSpread.getV1()+"";
+      }
+      model.addAttribute("name",DateUtil.stringarryToString(name,false));
+      model.addAttribute("v4",DateUtil.stringarryToString(v4,false));
+      model.addAttribute("v3",DateUtil.stringarryToString(v3,false));
+      model.addAttribute("v2",DateUtil.stringarryToString(v2,false));
+      model.addAttribute("v1",DateUtil.stringarryToString(v1,false));
+      return "rpt/teamReportNewEdit";
   }
 
 
