@@ -111,7 +111,7 @@
                         render: function (data, type, full) {
                             var optionHtml = '';
                             <shiro:hasPermission name="tour:edit">
-                            optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/report/teamReportNew/reportEdit?teamReportNewId=' + full.Id + '"><i class="fa fa-search"></i> 查看详情 </a>';
+                            optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" data-href="${ctx}/report/teamReportNew/reportEdit?teamReportNewId=' + id + '"><i class="fa fa-search"></i> 查看详情 </a>';
                             </shiro:hasPermission>
                             return optionHtml;
                         }

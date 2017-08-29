@@ -109,6 +109,7 @@ public class TeamReportNewDetailJob implements Job {
                         }
                         userSpread.setYear(DateUtil.getYear(new Date()));
                         userSpread.setMonth(DateUtil.getMothNum(new Date()) - 1);
+                        userSpread.setCreateDate(new Date());
                         teamReportNewService.insertUserSpread(userSpread);
                     }
                 }

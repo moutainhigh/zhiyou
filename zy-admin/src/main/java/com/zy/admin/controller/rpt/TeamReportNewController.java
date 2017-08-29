@@ -106,7 +106,7 @@ public class TeamReportNewController {
     }
 
 
-  @RequestMapping("/reportEdit")
+  @RequestMapping(value = "/reportEdit", method = RequestMethod.GET)
   public String reportEdit(Long teamReportNewId ,Model model){
       TeamReportNew teamReportNew = teamReportNewService.findOne(teamReportNewId);
       UserSpreadQueryModel userSpreadQueryModel = new UserSpreadQueryModel();
