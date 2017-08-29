@@ -309,7 +309,7 @@ public class IndexController {
 
 		salesVolumeQueryModel.setPageSize(null);
 		salesVolumeQueryModel.setPageNumber(null);
-
+		salesVolumeQueryModel.setIsBoss(1);
 		List<SalesVolume> salesVolume =  salesVolumeService.findExReport(salesVolumeQueryModel);
 		List<String> userNameList = new ArrayList<String>();
 		List<Long> amountReachedList = new ArrayList<Long>();

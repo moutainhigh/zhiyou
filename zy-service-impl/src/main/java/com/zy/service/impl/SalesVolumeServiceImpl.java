@@ -105,7 +105,7 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 				long number = amountTargetList.get(i);
 				sum += number;
 			}
-			double avg = new BigDecimal((sum / amountTargetList.size())).setScale(0 , RoundingMode.UP).doubleValue();
+			double avg = new BigDecimal((sum / amountTargetList.size())).setScale(0 , RoundingMode.HALF_UP).doubleValue();
 			avgNum = (long)avg;
 		}
 
@@ -137,8 +137,14 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 			orderQueryModel.setUserIdEQ(user.getId());
 			Long salesVolumes  = orderMapper.queryRetailPurchases(orderQueryModel);
 			salesVolume.setAmountReached(salesVolumes);
-			if (salesVolume.getAmountTarget() != null){
-				salesVolume.setAchievement(new BigDecimal((salesVolumes / salesVolume.getAmountTarget()) * 100).setScale(2 , RoundingMode.UP).doubleValue());
+			if (salesVolume.getAmountTarget() == 0l && salesVolumes > 0l){
+				salesVolume.setAchievement(100d);
+			}
+			if (salesVolume.getAmountTarget() == 0l){
+				salesVolume.setAchievement(0.00);
+			}
+			if (salesVolume.getAmountTarget() != null && salesVolume.getAmountTarget() != 0){
+				salesVolume.setAchievement(new BigDecimal((salesVolumes.doubleValue() / salesVolume.getAmountTarget().doubleValue()) * 100).setScale(2 , RoundingMode.HALF_UP).doubleValue());
 			}
 			salesVolumeMapper.insert(salesVolume);
 		}
