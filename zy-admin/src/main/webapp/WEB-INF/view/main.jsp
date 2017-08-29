@@ -241,6 +241,111 @@
 	   });
 	})
 	</script>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="portlet light bordered">
+				<div class="portlet-title">
+					<div class="caption">
+						<i class="icon-graph"></i>
+						<span class="caption-subject bold uppercase"> 销量月度报表</span>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div id="orderChartXiao" style="height:350px;">
 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		$(function(){
+			var myChartxiao = echarts.init(document.getElementById('orderChartXiao'));
+			// 指定图表的配置项和数据
+			myChartxiao.setOption({
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'cross',
+						crossStyle: {
+							color: '#999'
+						}
+					}
+				},
+				toolbox: {
+					feature: {
+						dataView: {show: true, readOnly: false},
+						magicType: {show: true, type: ['line', 'bar']},
+						restore: {show: true},
+						saveAsImage: {show: true}
+					}
+				},
+				legend: {
+					data:['用户名','达成量','目标量','达成率']
+				},
+				xAxis: [
+				],
+				yAxis: [
+				],
+				series: [
+
+				]
+			});
+			// 异步加载数据
+			$.post('${ctx}/main/ajaxChart/order',{},function(result) {
+				myChartxiao.setOption({
+					xAxis: [
+						{
+							type: 'category',
+							data: ['张三','李四','王五','大仙','大仙','大仙','大仙','大仙','大仙','大仙','大仙','大仙'],
+							axisPointer: {
+								type: 'shadow'
+							}
+						}
+					],
+					yAxis: [
+						{
+							type: 'value',
+							name: '销量',
+							min: 0,
+							max: 250,
+							interval: 50,
+							axisLabel: {
+								formatter: '{value} '
+							}
+						},
+						{
+							type: 'value',
+							name: '比率',
+							min: 0,
+							max: 25,
+							interval: 5,
+							axisLabel: {
+								formatter: '{value} '
+							}
+						}
+					],
+					series: [
+						{
+							name:'达成量',
+							type:'bar',
+							data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+						},
+						{
+							name:'目标量',
+							type:'bar',
+							data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+						},
+						{
+							name:'达成率',
+							type:'line',
+							yAxisIndex: 1,
+							data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+						}
+					]
+				});
+			});
+		})
 	</script>
+
 </shiro:hasPermission>
