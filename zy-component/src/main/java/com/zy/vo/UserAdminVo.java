@@ -56,7 +56,7 @@ public class UserAdminVo implements Serializable {
 	@Field(label = "最后一次登录时间")
 	private Date lastloginTime;
 	@Field(label = "所属大区")
-	private String largearea;
+	private Integer largearea;
 
 	/* 扩展 */
 	@Field(label = "用户等级")

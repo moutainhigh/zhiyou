@@ -256,9 +256,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyLargeAreaAdmin(@NotNull Long id,@NotNull String largeArea,@NotNull Long operatorId, String remark2) {
         User user = findAndValidate(id);
-        SystemCode oldlargeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea());
+        SystemCode oldlargeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea()+"");
         SystemCode newlargeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", largeArea);
-        user.setLargearea(largeArea);
+        user.setLargearea(Integer.parseInt(largeArea));
         user.setSetlargearearemark(remark2);
         userMapper.update(user);
         if(oldlargeAreaType == null){

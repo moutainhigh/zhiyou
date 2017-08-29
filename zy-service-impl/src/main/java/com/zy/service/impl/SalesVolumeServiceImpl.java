@@ -115,7 +115,7 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 				salesVolume = new SalesVolume();
 				salesVolume.setUserPhone(user.getPhone());
 				salesVolume.setUserRank(user.getUserRank().getLevel());
-				salesVolume.setAreaType(user.getLargearea());
+				salesVolume.setAreaType(user.getLargearea() + "");
 				if (user.getIsBoss() != null){
 					if (user.getIsBoss() == true){
 						salesVolume.setIsBoss(1);

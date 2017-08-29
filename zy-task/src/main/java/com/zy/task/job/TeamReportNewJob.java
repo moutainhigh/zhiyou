@@ -90,10 +90,10 @@ public class TeamReportNewJob implements Job {
                 teamReportNew.setCreateDate(new Date());
                 teamReportNew.setPhone(user.getPhone());
                 teamReportNew.setUserName(userService.findRealName(user.getId()));
-                teamReportNew.setDistrictId(user.getLargearea());
+                teamReportNew.setDistrictId(user.getLargearea() + "");
                 teamReportNew.setIsBoss((user.getIsBoss()==null||user.getIsBoss()==false)?0:1);
                 if (user.getLargearea() != null) {
-                    teamReportNew.setDistrictName(systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea()).getSystemName());
+                    teamReportNew.setDistrictName(systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea() + "").getSystemName());
                 }
                 List<User> V4List = children.stream().filter(v -> v.getUserRank() == User.UserRank.V4).collect(Collectors.toList());
                 teamReportNew.setExtraNumber(V4List.size());
@@ -154,7 +154,6 @@ public class TeamReportNewJob implements Job {
                 if (v4number==-1){
                     v4number = teamReportNew.getExtraNumber();
                 }
-
 
                 teamReportNewService.insert(teamReportNew);
 
