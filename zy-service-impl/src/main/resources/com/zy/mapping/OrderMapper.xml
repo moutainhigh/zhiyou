@@ -564,6 +564,9 @@
 			<if test="paidTimeGTE != null">
 				AND a.paid_time &gt;= #{paidTimeGTE}
 			</if>
+			<if test="paidTime != null">
+				AND DATE_FORMAT(a.paid_time, '%Y-%m') = DATE_FORMAT(#{paidTime}, '%Y-%m')
+			</if>
 			<if test="paidTimeLT != null">
 				AND a.paid_time &lt; #{paidTimeLT}
 			</if>

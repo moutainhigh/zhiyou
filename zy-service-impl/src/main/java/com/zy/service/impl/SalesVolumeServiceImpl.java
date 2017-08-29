@@ -89,10 +89,12 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 	@Override
 	public void salesvolume(List<User> userList) {
 		List<Long> amountTargetList = new ArrayList();
+		SalesVolume salesVolume = null;
+
+		//没有设置目标的统计平均值
 		SalesVolumeQueryModel sQueryModel = new SalesVolumeQueryModel();
 		sQueryModel.setCreateTime(new Date());
 		List<SalesVolume> data = salesVolumeMapper.findAll(sQueryModel);
-		SalesVolume salesVolume = null;
 		Long avgNum = 0l;
 		if (data != null && data.size() > 0){
 			for (SalesVolume sa: data) {
@@ -109,8 +111,29 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 			avgNum = (long)avg;
 		}
 
+		//没有设置目标量的新插入
 		for (User user : userList) {
-			salesVolume = salesVolumeMapper.findOneByPhone(user.getPhone());
+
+			//查询当月进货量
+			OrderQueryModel orderQueryModel = new OrderQueryModel();
+			orderQueryModel.setUserIdEQ(user.getId());
+			orderQueryModel.setPaidTime(new Date());
+			Long salesVolumes  = orderMapper.queryRetailPurchases(orderQueryModel);
+			salesVolume.setAmountReached(salesVolumes);
+			if (salesVolume.getAmountTarget() == 0l && salesVolumes > 0l){
+				salesVolume.setAchievement(100d);
+			}
+			if (salesVolume.getAmountTarget() == 0l){
+				salesVolume.setAchievement(0.00);
+			}
+			if (salesVolume.getAmountTarget() != null && salesVolume.getAmountTarget() != 0){
+				salesVolume.setAchievement(new BigDecimal((salesVolumes.doubleValue() / salesVolume.getAmountTarget().doubleValue()) * 100).setScale(2 , RoundingMode.HALF_UP).doubleValue());
+			}
+
+			SalesVolumeQueryModel s = new SalesVolumeQueryModel();
+			s.setUserPhoneLK(user.getPhone());
+			s.setCreateTime(new Date());
+			salesVolume = salesVolumeMapper.findOneByPhone(s);
 			if (salesVolume == null){
 				salesVolume = new SalesVolume();
 				salesVolume.setUserPhone(user.getPhone());
@@ -125,30 +148,19 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 				}else {
 					salesVolume.setIsBoss(0);
 				}
-
 				UserInfo userInfo = userInfoService.findByUserIdandFlage(user.getId());
 				if (userInfo != null){
 					salesVolume.setUserName(userInfo.getRealname());
 				}
 				salesVolume.setCreateTime(new Date());
 				salesVolume.setAmountTarget(avgNum);
+				salesVolumeMapper.insert(salesVolume);
+			}else {
+				salesVolumeMapper.merge(salesVolume);
 			}
-			OrderQueryModel orderQueryModel = new OrderQueryModel();
-			orderQueryModel.setUserIdEQ(user.getId());
-			Long salesVolumes  = orderMapper.queryRetailPurchases(orderQueryModel);
-			salesVolume.setAmountReached(salesVolumes);
-			if (salesVolume.getAmountTarget() == 0l && salesVolumes > 0l){
-				salesVolume.setAchievement(100d);
-			}
-			if (salesVolume.getAmountTarget() == 0l){
-				salesVolume.setAchievement(0.00);
-			}
-			if (salesVolume.getAmountTarget() != null && salesVolume.getAmountTarget() != 0){
-				salesVolume.setAchievement(new BigDecimal((salesVolumes.doubleValue() / salesVolume.getAmountTarget().doubleValue()) * 100).setScale(2 , RoundingMode.HALF_UP).doubleValue());
-			}
-			salesVolumeMapper.insert(salesVolume);
 		}
 
+		//重新查询排序进行排名和排序升降
 		SalesVolumeQueryModel salesVolumeQueryModel = new SalesVolumeQueryModel();
 		salesVolumeQueryModel.setOrderBy("amountReached");
 		salesVolumeQueryModel.setDirection(Direction.DESC);
@@ -184,7 +196,7 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 					sa.setType(1);
 					sa.setNumber(sa.getRanking());
 				}
-				salesVolumeMapper.insert(sa);
+				salesVolumeMapper.merge(sa);
 			}
 		}
 

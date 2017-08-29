@@ -55,6 +55,8 @@ public class OrderQueryModel implements Serializable {
 
 	private Date paidTimeLT;
 
+	private Date paidTime;
+
 	private Date paidTimeGTE;
 
 	private OrderStatus orderStatusEQ;
