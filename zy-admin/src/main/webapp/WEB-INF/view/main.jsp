@@ -260,9 +260,9 @@
 	</div>
 	<script>
 		$(function(){
-			var myChart = echarts.init(document.getElementById('orderChartXiao'));
+			var myChartxiao = echarts.init(document.getElementById('orderChartXiao'));
 			// 指定图表的配置项和数据
-			myChart.setOption({
+			myChartxiao.setOption({
 				tooltip: {
 					trigger: 'axis',
 					axisPointer: {
@@ -304,6 +304,22 @@
 							}
 						}
 					],
+					yAxis: [
+						{
+							type: 'value',
+							name: '销量',
+							axisLabel: {
+								formatter: '{value} '
+							}
+						},
+						{
+							type: 'value',
+							name: '比率',
+							axisLabel: {
+								formatter: '{value} '
+							}
+						}
+					],
 					series: [
 						{
 							name:'达成量',
@@ -318,8 +334,7 @@
 						{
 							name:'达成率',
 							type:'line',
-							yAxisIndex: 1,
-							data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+							data:result.achievementList
 						}
 					]
 				});
@@ -402,6 +417,7 @@
 							name:'特级',
 							type:'bar',
 							data: result.data.extraNumberarry,
+							data:result.achievementList
 						}
 					]
 				});

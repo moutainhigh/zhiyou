@@ -297,7 +297,7 @@ public class IndexController {
 	@RequestMapping("/main/ajaxChart/salesvolume")
 	@ResponseBody
 	public Map<String, Object> getSalesvolume() {
-		Map<String, Object> dataMap = null;
+		Map<String, Object> dataMap = new HashMap<>();
 
 		SalesVolumeQueryModel salesVolumeQueryModel = new SalesVolumeQueryModel();
 
