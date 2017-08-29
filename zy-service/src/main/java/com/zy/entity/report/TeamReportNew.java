@@ -118,6 +118,11 @@ public class TeamReportNew implements Serializable {
     @Query(Predicate.EQ)
     private Date createDate;
 
+    @Field(label = "isBoss")
+    @View
+    @Query(Predicate.EQ)
+    private Integer isBoss;
+
 
 
 }

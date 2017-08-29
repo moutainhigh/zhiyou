@@ -5,6 +5,8 @@ import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
 import com.zy.common.util.DateUtil;
 import com.zy.entity.report.TeamReportNew;
+import com.zy.entity.report.UserSpread;
+import com.zy.entity.sys.Area;
 import com.zy.entity.usr.User;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserUpgradeQueryModel;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -58,7 +61,7 @@ public class TeamReportNewJob implements Job {
         logger.info("TeamReportNewJob end.......");
     }
 
-    //开始处理逻辑
+    //开始处理团队逻辑
     private void disposeTeamReport(){
         try {
             //统计所有的新晋特
@@ -74,6 +77,7 @@ public class TeamReportNewJob implements Job {
             userQueryModel.setUserRankEQ(User.UserRank.V4);
             List<User> userV4List = userService.findAll(userQueryModel);//统计 v4成员
             List<TeamReportNew> teamReportNewList = new ArrayList<>();
+            List<Area> areaList = teamReportNewService.findParentAll();
             for (User user : userV4List) {//当前特级下所成员
                 List<User> children = TreeHelper.sortBreadth2(userList, user.getId().toString(), v -> {
                     TreeNode treeNode = new TreeNode();
@@ -87,6 +91,7 @@ public class TeamReportNewJob implements Job {
                 teamReportNew.setPhone(user.getPhone());
                 teamReportNew.setUserName(userService.findRealName(user.getId()));
                 teamReportNew.setDistrictId(user.getLargearea());
+                teamReportNew.setIsBoss((user.getIsBoss()==null||user.getIsBoss()==false)?0:1);
                 if (user.getLargearea() != null) {
                     teamReportNew.setDistrictName(systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea()).getSystemName());
                 }
@@ -155,6 +160,7 @@ public class TeamReportNewJob implements Job {
 
             }
 
+
         } catch (ConcurrentException e) {
                 try {
                     TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
@@ -164,4 +170,55 @@ public class TeamReportNewJob implements Job {
             logger.error(e.getMessage(), e);
         }
     }
+
+
+   /* private void teamSpreade(List<User> userList, TeamReportNew teamReportNew ,List<Area> areaList) {
+        try {
+        List<User> newList = new ArrayList<>();
+        //循环处理用户地区
+        for (User user : userList){
+           Long areaId = teamReportNewService.findAreaId(user.getId());
+            if (areaId!=null) {
+                user.setBossId(teamReportNewService.findAreaId(user.getId())); //暂时借用这个字段 修改时 注意
+                newList.add(user);
+            }
+          }
+            System.out.println( newList.size()+"-----------------------------------------");
+        Map<Long,Map<User.UserRank,List<User>>>counting = newList.stream().collect(
+                Collectors.groupingBy(User::getBossId,Collectors.groupingBy(User::getUserRank)));
+
+            System.out.println(counting+"*******************************************");
+        for (Area area : areaList){
+            UserSpread userSpread = new UserSpread();
+            userSpread.setUserId(teamReportNew.getUserId());
+            userSpread.setProvinceId(area.getId());
+            userSpread.setProvinceName(area.getName());
+            Map<User.UserRank,List<User>> userRankListMap = counting.get(area.getId());
+            if(userRankListMap!=null){
+                userSpread.setV0(userRankListMap.get(User.UserRank.V0)==null?0:userRankListMap.get(User.UserRank.V0).size());
+                userSpread.setV1(userRankListMap.get(User.UserRank.V1)==null?0:userRankListMap.get(User.UserRank.V1).size());
+                userSpread.setV2(userRankListMap.get(User.UserRank.V2)==null?0:userRankListMap.get(User.UserRank.V2).size());
+                userSpread.setV3(userRankListMap.get(User.UserRank.V3)==null?0:userRankListMap.get(User.UserRank.V3).size());
+                userSpread.setV4(userRankListMap.get(User.UserRank.V4)==null?0:userRankListMap.get(User.UserRank.V3).size());
+            }else{
+                userSpread.setV0(0);
+                userSpread.setV1(0);
+                userSpread.setV2(0);
+                userSpread.setV3(0);
+                userSpread.setV4(0);
+
+            }
+            userSpread.setYear(teamReportNew.getYear());
+            userSpread.setYear(teamReportNew.getMonth());
+            teamReportNewService.insertUserSpread(userSpread);
+        }
+        } catch (ConcurrentException e) {
+            try {
+                TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
+            this.disposeTeamReport();
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage(), e);
+        }
+    }*/
 }

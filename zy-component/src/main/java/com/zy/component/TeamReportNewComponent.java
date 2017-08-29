@@ -24,6 +24,7 @@ public class TeamReportNewComponent {
         TeamReportNewExportVo teamReportNewExportVo = new TeamReportNewExportVo();
         BeanUtils.copyProperties(teamReportNew, teamReportNewExportVo);
         teamReportNewExportVo.setDate(teamReportNew.getYear()+"/"+teamReportNew.getMonth());
+        teamReportNewExportVo.setIsBoss(teamReportNew.getIsBoss()==0?"否":"是");
         return teamReportNewExportVo;
     }
 }

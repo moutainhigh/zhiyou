@@ -8,8 +8,11 @@ import com.zy.common.util.ExcelUtils;
 import com.zy.common.util.WebUtils;
 import com.zy.component.TeamReportNewComponent;
 import com.zy.entity.report.TeamReportNew;
+import com.zy.entity.report.UserSpread;
+import com.zy.entity.usr.UserUpgrade;
 import com.zy.model.TeamReportVo;
 import com.zy.model.query.TeamReportNewQueryModel;
+import com.zy.model.query.UserSpreadQueryModel;
 import com.zy.service.SystemCodeService;
 import com.zy.service.TeamReportNewService;
 import com.zy.vo.TeamReportNewAdminVo;
@@ -103,7 +106,17 @@ public class TeamReportNewController {
     }
 
 
+  @RequestMapping("/reportEdit")
+  public String reportEdit(Long teamReportNewId ,Model model){
+      TeamReportNew teamReportNew = teamReportNewService.findOne(teamReportNewId);
+      UserSpreadQueryModel userSpreadQueryModel = new UserSpreadQueryModel();
+      userSpreadQueryModel.setUserIdEQ(teamReportNew.getUserId());
+      userSpreadQueryModel.setYearEQ(teamReportNew.getYear());
+      userSpreadQueryModel.setMonthEQ(teamReportNew.getMonth());
+      List<UserSpread> UserSpreadList = teamReportNewService.findUserSpread(userSpreadQueryModel);
 
+      return null;
+  }
 
 
 
