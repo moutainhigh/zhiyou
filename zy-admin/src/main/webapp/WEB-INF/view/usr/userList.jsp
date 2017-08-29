@@ -514,7 +514,7 @@
             }
           },
             {
-                data: 'registerTime',
+                data: 'largearea',
                 title: '所属大区',
                 render: function (data, type, full) {
                     return full.largeareaLabel;

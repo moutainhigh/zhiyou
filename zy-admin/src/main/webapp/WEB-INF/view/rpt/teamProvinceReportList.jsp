@@ -52,6 +52,19 @@
                         data: 'v4ActiveNumberRate',
                         title: '特级服务商活跃度',
                         orderable: true,
+                        render: function (data, type, full) {
+                            var f = Math.round(data*100)/100;
+                            var s = f.toString();
+                            var rs = s.indexOf('.');
+                            if (rs < 0) {
+                                rs = s.length;
+                                s += '.';
+                            }
+                            while (s.length <= rs + 2) {
+                                s += '0';
+                            }
+                            return s +"%";
+                        }
                     }
                 ]
             }
@@ -72,7 +85,7 @@
                  return false;
              }
          }else {
-             $('#team').text("团队报表("+year+"/"+month+")");
+             $('#team').text("省份服务商活跃度("+year+"/"+month+")");
          }
      }
 
@@ -84,6 +97,34 @@
     }
     </shiro:hasPermission>
 
+    function  changemonth(obj) {
+        var thisYear = ${year};
+        var thisMonth = ${month};
+        var sel = $('#monthEQ');
+        var opt="";
+        if(obj!=thisYear){
+            for(var i =1;i<=12;i++){
+                if(i==thisMonth){
+                    opt = opt + "<option value='" + i + "' selected >" + i + "月</option>";
+                }else {
+                    opt = opt + "<option value='" + i + "' >" + i + "月</option>";
+                }
+
+            }
+        }else{
+            for(var i =1;i<=thisMonth;i++){
+                if(i==thisMonth){
+                    opt = opt + "<option value='" + i + "' selected >" + i + "月</option>";
+                }else {
+                    opt = opt + "<option value='" + i + "' >" + i + "月</option>";
+                }
+
+            }
+        }
+        sel.html("");
+        sel.html(opt)
+    }
+
 </script>
 <!-- END JAVASCRIPTS -->
 
@@ -91,7 +132,7 @@
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-        <li><a href="javascript:;" data-href="${ctx}/report/teamReportNew" id="team">服务商活跃度排名--省份(${year}/${month})</a></li>
+        <li><a href="javascript:;" data-href="${ctx}/report/teamProvinceReport" id="team">省份服务商活跃度(${year}/${month})</a></li>
     </ul>
 </div>
 <!-- END PAGE HEADER-->
@@ -110,32 +151,31 @@
                             <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
                             <div class="form-group">
-                                <select name="yearEQ" class="form-control" id="yearEQ">
+                                <select name="yearEQ" class="form-control" id="yearEQ" onchange="changemonth(this.value)">
                                     <option value="">-- 选择年份--</option>
                                     <c:forEach var="i" begin="2015" end="${year}">
                                         <option value="${i}" ${i == year?'selected':''} >${i}年</option>
                                     </c:forEach>
-
                                 </select>
                             </div>
+
                             <div class="form-group">
                                 <select name="monthEQ" class="form-control" id="monthEQ">
                                     <option value="">-- 选择月份--</option>
                                     <c:forEach var="i" begin="1" end="${month}">
                                         <option value="${i}" ${i == month?'selected':''} >${i}月</option>
                                     </c:forEach>
-
                                 </select>
                             </div>
+
                             <div class="form-group">
                                 <select name="districtIdEQ" class="form-control">
                                     <option value="">-- 选择省份--</option>
-                                    <c:forEach items="${type}" var="code" >
-                                      <option value="${code.systemValue}"> ${code.systemName} </option>
+                                    <c:forEach items="${areas}" var="area" >
+                                      <option value="${area.name}"> ${area.name} </option>
                                     </c:forEach>
                                 </select>
                             </div>
-
 
                             <div class="form-group input-inline">
                                 <button class="btn blue filter-submit" onclick="filtersubmit()">

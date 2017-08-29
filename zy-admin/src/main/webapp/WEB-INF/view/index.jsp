@@ -426,7 +426,7 @@
         </shiro:hasAnyPermissions>
 
         <shiro:hasAnyPermissions name="userTreeReport:view,v4TreeReport:view,orderReport:view,teamReport:view,userUpgradeReport:view,financeReport:view,orderQuantity:view
-                                      ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view,activitySummaryReport:view,salesVolumeReport:view">
+                                      ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view,activitySummaryReport:view,salesVolumeReport:view,teamProvinceReport:view">
           <li>
             <a href="javascript:;">
               <i class="icon-grid"></i>
@@ -516,6 +516,11 @@
               <shiro:hasPermission name="teamReportNew:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/report/teamReportNew"><i class="icon-bar-chart"></i> 团队报表<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="teamProvinceReport:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/report/teamProvinceReport"><i class="icon-bar-chart"></i> 省份服务商活跃度<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>

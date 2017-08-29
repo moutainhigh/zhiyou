@@ -72,4 +72,5 @@
 	<dubbo:service ref="systemCodeServiceImpl" interface="com.zy.service.SystemCodeService"/>
 	<dubbo:service ref="salesVolumeServiceImpl" interface="com.zy.service.SalesVolumeService"/>
 	<dubbo:service ref="teamReportNewServiceImpl" interface="com.zy.service.TeamReportNewService"/>
+	<dubbo:service ref="teamProvinceReportServiceImpl" interface="com.zy.service.TeamProvinceReportService"/>
 </beans>

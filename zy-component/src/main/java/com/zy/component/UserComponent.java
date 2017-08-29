@@ -94,9 +94,9 @@ public class UserComponent {
 		if (bossId != null) {
 			userAdminVo.setBoss(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(bossId)));
 		}
-		String largeArea = user.getLargearea();
+		Integer largeArea = user.getLargearea();
 		if(largeArea != null){
-			SystemCode largeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", largeArea);
+			SystemCode largeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", largeArea+"");
 			userAdminVo.setLargeareaLabel(largeAreaType.getSystemName());
 		}
 		return userAdminVo;

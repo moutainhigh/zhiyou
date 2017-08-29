@@ -147,6 +147,8 @@ public class AdminConstants {
 			/*sub.put("financeReport:export", "财务导出");*/
 			sub.put("teamReportNew:view", "团队报表");
 			sub.put("teamReportNew:export", "团队报表导出");
+			sub.put("teamProvinceReport:view", "省份服务商活跃度(查看)");
+			sub.put("teamProvinceReport:export", "省份服务商活跃度(导出)");
 	 		SETTING_PERMISSION_MAP.put("报表管理", sub);
 		}
 		{

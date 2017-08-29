@@ -242,7 +242,7 @@ public class User implements Serializable {
 
 	@Field(label = "所属大区")
 	@View(groups = {VO_ADMIN})
-	private String largearea;
+	private Integer largearea;
 
 	@Field(label = "设置大区备注")
 	@View(groups = {VO_ADMIN})

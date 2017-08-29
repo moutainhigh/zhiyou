@@ -61,4 +61,5 @@
     <dubbo:reference id="systemCodeService" interface="com.zy.service.SystemCodeService" protocol="dubbo"/>
     <dubbo:reference id="salesVolumeService" interface="com.zy.service.SalesVolumeService" protocol="dubbo"/>
     <dubbo:reference id="teamReportNewService" interface="com.zy.service.TeamReportNewService" protocol="dubbo"/>
+    <dubbo:reference id="teamProvinceReportService" interface="com.zy.service.TeamProvinceReportService" protocol="dubbo"/>
 </beans>
