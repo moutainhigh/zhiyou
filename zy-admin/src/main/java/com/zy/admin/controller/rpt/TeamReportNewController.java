@@ -62,7 +62,7 @@ public class TeamReportNewController {
     @RequiresPermissions("teamReportNew:view")
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model, String queryDate) throws ParseException {
-        model.addAttribute("month", DateUtil.getMoth(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
+        model.addAttribute("month", DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         model.addAttribute("year",DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         model.addAttribute("type",systemCodeService.findByType("LargeAreaType"));
         return "rpt/teamReportNewList";

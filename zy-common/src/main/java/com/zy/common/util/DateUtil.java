@@ -433,7 +433,8 @@ public class DateUtil {
     public static void  main(String []age) throws ParseException {
         System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),-1,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
-        System.out.println(getMothNum(new Date()));
+        System.out.println(getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
+        System.out.println(DateUtil.getMoth(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         System.out.println(DateFormatUtils.format(DateUtil.getMonthData(new Date(),-3,0),"yyyy-MM-dd HH:mm:ss"));
       /*  ystem.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("年龄:"+getAge("411528201607192688"));
