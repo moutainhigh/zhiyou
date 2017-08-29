@@ -39,18 +39,17 @@
           {
             data: 'areaType',
             title: '所属大区',
+            orderable: false
+          },
+          {
+            data: 'isBoss',
+            title: '是否大区总裁',
             orderable: false,
             render: function (data, type, full) {
-              if (data == 1){
-                return '东';
-              }else if (data == 2){
-                return '南';
-              }else if (data == 3){
-                return '西';
-              }else if (data == 4){
-                return '北';
-              }else if (data == 5){
-                return '中';
+              if (data == 0){
+                return '否' ;
+              }else if (data == 1){
+                return '是';
               }
             }
           },
@@ -66,7 +65,7 @@
           },
           {
             data: 'achievement',
-            title: '达成率',
+            title: '达成率(%)',
             orderable: true
           },
           {
@@ -79,12 +78,16 @@
             title: '排名升降情况',
             orderable: false,
             render: function (data, type, full) {
-              if (full.type == 1){
-                return '东' + '  ' + full.number;
-              }else if (data == 2){
-                return '南';
-              }else if (data == 3){
-                return '西' + '  ' + full.number;
+              if (full.type != null && full.number != null){
+                if (full.type == 1 ){
+                  return '<span style="color: red;">↑</span>' + full.number;
+                }else if (full.type == 2){
+                  return '—';
+                }else if (full.type == 3){
+                  return '<span style="color: blue">↓</span>'  + full.number;
+                }
+              }else {
+                return '';
               }
             }
           }
@@ -172,14 +175,20 @@
               <div class="form-group">
                 <select name="areaTypeEQ" class="form-control">
                   <option value="">-- 选择大区--</option>
-                  <option value="1"> 东 </option>
-                  <option value="2"> 南 </option>
-                  <option value="3"> 西 </option>
-                  <option value="4"> 北 </option>
-                  <option value="5"> 中 </option>
+                  <c:forEach items="${largeAreas}" var="code" >
+                    <option value="${code.systemValue}"> ${code.systemName} </option>
+                  </c:forEach>
                 </select>
               </div>
-              
+
+              <div class="form-group">
+                <select name="isBoss" class="form-control">
+                  <option value="">-- 大区总裁--</option>
+                    <option value="0"> 否 </option>
+                    <option value="1"> 是 </option>
+                </select>
+              </div>
+
               <div class="form-group">
                 <input type="text" name="userNameLK" class="form-control" placeholder="姓名"/>
               </div>

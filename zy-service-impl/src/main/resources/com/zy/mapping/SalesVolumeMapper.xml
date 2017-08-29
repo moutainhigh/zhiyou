@@ -15,13 +15,14 @@
 		<result column="type" property="type" />
 		<result column="area_type" property="areaType" />
 		<result column="create_time" property="createTime" />
+		<result column="is_boss" property="isBoss" />
 	</resultMap>
 
-	<sql id="baseColumn">id,user_rank,user_name,user_phone,amount_reached,amount_target,achievement,ranking,number,type,area_type,create_time</sql>
+	<sql id="baseColumn">id,user_rank,user_name,user_phone,amount_reached,amount_target,achievement,ranking,number,type,area_type,create_time,is_boss</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.report.SalesVolume" useGeneratedKeys="true" keyProperty="id">
-	  insert into `rpt_salesvolume` (user_rank,user_name,user_phone,amount_reached,amount_target,achievement,ranking,number,type,area_type,create_time)
-	  values (#{userRank},#{userName},#{userPhone},#{amountReached},#{amountTarget},#{achievement},#{ranking},#{number},#{type},#{areaType},#{create_time})
+	  insert into `rpt_salesvolume` (user_rank,user_name,user_phone,amount_reached,amount_target,achievement,ranking,number,type,area_type,create_time,is_boss)
+	  values (#{userRank},#{userName},#{userPhone},#{amountReached},#{amountTarget},#{achievement},#{ranking},#{number},#{type},#{areaType},#{createTime},#{isBoss})
 	</insert>
 
 	<delete id="delete">
@@ -75,6 +76,14 @@
 		where id = #{id}
 	</select>
 
+
+	<select id="findOneByPhone" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `rpt_salesvolume`
+		where user_phone = #{phone}
+	</select>
+
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.SalesVolumeQueryModel">
 		select
 		<include refid="baseColumn"/>
@@ -88,6 +97,9 @@
 			</if>
 			<if test="idEQ != null">
 				and id = #{idEQ}
+			</if>
+			<if test="isBoss != null">
+				and is_boss = #{isBoss}
 			</if>
 			<if test="areaTypeEQ != null">
 				and area_type = #{areaTypeEQ}
@@ -123,6 +135,9 @@
 			</if>
 			<if test="idEQ != null">
 				and id = #{idEQ}
+			</if>
+			<if test="isBoss != null">
+				and is_boss = #{isBoss}
 			</if>
 			<if test="areaTypeEQ != null">
 				and area_type = #{areaTypeEQ}

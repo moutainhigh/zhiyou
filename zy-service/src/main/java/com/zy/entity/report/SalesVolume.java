@@ -59,12 +59,12 @@ public class SalesVolume implements Serializable {
 	@Field(label = "达成量")
 	@NotNull
 	@View
-	private Integer amountReached;
+	private Long amountReached;
 
 	@Field(label = "目标量")
 	@NotNull
 	@View
-	private Integer amountTarget;
+	private Long amountTarget;
 
 	@Field(label = "达成率")
 	@NotNull
@@ -75,6 +75,12 @@ public class SalesVolume implements Serializable {
 	@NotNull
 	@View
 	private Integer ranking;
+
+
+	@NotNull
+	@View
+	@Field(label = "是否大区总裁")
+	private Integer isBoss;
 
 	@Field(label = "上升或下降名次")
 	@NotNull
@@ -90,7 +96,7 @@ public class SalesVolume implements Serializable {
 	@NotNull
 	@View
 	@Query(Predicate.EQ)
-	private Integer areaType;
+	private String areaType;
 
 	@NotNull
 	@Field(label = "插入时间")

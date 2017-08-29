@@ -7,8 +7,10 @@ import com.zy.common.util.ExcelUtils;
 import com.zy.common.util.WebUtils;
 import com.zy.component.SalesVolumeComponent;
 import com.zy.entity.report.SalesVolume;
+import com.zy.entity.sys.SystemCode;
 import com.zy.model.query.SalesVolumeQueryModel;
 import com.zy.service.SalesVolumeService;
+import com.zy.service.SystemCodeService;
 import com.zy.util.GcUtils;
 import com.zy.vo.SalesVolumeExportVo;
 import com.zy.vo.SalesVolumeListVo;
@@ -47,6 +49,9 @@ public class SalesVolumeReportController {
 	@Autowired
 	private SalesVolumeComponent salesVolumeComponent;
 
+	@Autowired
+	private SystemCodeService systemCodeService;
+
 	@RequiresPermissions("salesVolumeReport:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model, String queryDate) throws ParseException {
@@ -69,6 +74,10 @@ public class SalesVolumeReportController {
 		model.addAttribute("countNumber", countNumber);
 		model.addAttribute("sumQuantity", sumQuantity);
 		model.addAttribute("sumAmount", sumAmount);
+
+		List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");
+		model.addAttribute("largeAreas",largeAreaTypes);
+
 		return "rpt/salesVolumeReport";
 	}
 
