@@ -12,6 +12,7 @@ import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Withdraw.WithdrawStatus;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.report.SalesVolume;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
@@ -64,6 +65,8 @@ public class IndexController {
 	@Autowired
 	private UserInfoService userInfoService;
 
+	@Autowired
+	private SalesVolumeService salesVolumeService;
 
 	@Autowired
 	private Config config;
@@ -287,6 +290,43 @@ public class IndexController {
 
 			cacheSupport.set(CACHE_NAME_STATISTICS, Constants.CACHE_NAME_ORDER_CHART, dataMap, DEFAULT_EXPIRE);
 		}
+
+		return dataMap;
+	}
+
+	@RequestMapping("/main/ajaxChart/salesvolume")
+	@ResponseBody
+	public Map<String, Object> getSalesvolume() {
+		Map<String, Object> dataMap = null;
+
+		SalesVolumeQueryModel salesVolumeQueryModel = new SalesVolumeQueryModel();
+
+		Date date = new Date();
+		Calendar ca = Calendar.getInstance();// 得到一个Calendar的实例
+		ca.setTime(date); // 设置时间为当前时间
+		ca.add(Calendar.MONTH, -1);// 月份减1
+		Date resultDate = ca.getTime(); // 结果
+
+		salesVolumeQueryModel.setPageSize(null);
+		salesVolumeQueryModel.setPageNumber(null);
+
+		List<SalesVolume> salesVolume =  salesVolumeService.findExReport(salesVolumeQueryModel);
+		List<String> userNameList = new ArrayList<String>();
+		List<Long> amountReachedList = new ArrayList<Long>();
+		List<Long> amountTargetList = new ArrayList<Long>();
+		List<Double> achievementList = new ArrayList<Double>();
+		for (SalesVolume sv: salesVolume) {
+			userNameList.add(sv.getUserName());
+			amountReachedList.add(sv.getAmountReached());
+			amountTargetList.add(sv.getAmountTarget());
+			achievementList.add(sv.getAchievement());
+
+		}
+
+		dataMap.put("userNameList", userNameList);
+		dataMap.put("amountReachedList", amountReachedList);
+		dataMap.put("amountTargetList", amountTargetList);
+		dataMap.put("achievementList", achievementList);
 
 		return dataMap;
 	}

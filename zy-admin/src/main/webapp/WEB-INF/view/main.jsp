@@ -292,36 +292,15 @@
 				]
 			});
 			// 异步加载数据
-			$.post('${ctx}/main/ajaxChart/order',{},function(result) {
+			$.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
+
 				myChartxiao.setOption({
 					xAxis: [
 						{
 							type: 'category',
-							data: ['张三','李四','王五','大仙','大仙','大仙','大仙','大仙','大仙','大仙','大仙','大仙'],
+							data: result.userNameList,
 							axisPointer: {
 								type: 'shadow'
-							}
-						}
-					],
-					yAxis: [
-						{
-							type: 'value',
-							name: '销量',
-							min: 0,
-							max: 250,
-							interval: 50,
-							axisLabel: {
-								formatter: '{value} '
-							}
-						},
-						{
-							type: 'value',
-							name: '比率',
-							min: 0,
-							max: 25,
-							interval: 5,
-							axisLabel: {
-								formatter: '{value} '
 							}
 						}
 					],
@@ -329,12 +308,12 @@
 						{
 							name:'达成量',
 							type:'bar',
-							data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+							data:result.amountReachedList
 						},
 						{
 							name:'目标量',
 							type:'bar',
-							data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+							data:result.amountTargetList
 						},
 						{
 							name:'达成率',
