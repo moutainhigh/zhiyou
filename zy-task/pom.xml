@@ -173,10 +173,6 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.zy</groupId>
-			<artifactId>zy-component</artifactId>
-		</dependency>
 
 		<!-- LOGGING end -->
 	</dependencies>
