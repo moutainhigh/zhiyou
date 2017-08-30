@@ -98,7 +98,7 @@ public class TeamReportNewDetailJob implements Job {
                             userSpread.setV1(userRankListMap.get(User.UserRank.V1) == null ? 0 : userRankListMap.get(User.UserRank.V1).size());
                             userSpread.setV2(userRankListMap.get(User.UserRank.V2) == null ? 0 : userRankListMap.get(User.UserRank.V2).size());
                             userSpread.setV3(userRankListMap.get(User.UserRank.V3) == null ? 0 : userRankListMap.get(User.UserRank.V3).size());
-                            userSpread.setV4(userRankListMap.get(User.UserRank.V4) == null ? 0 : userRankListMap.get(User.UserRank.V3).size());
+                            userSpread.setV4(userRankListMap.get(User.UserRank.V4) == null ? 0 : userRankListMap.get(User.UserRank.V4).size());
                         } else {
                             userSpread.setV0(0);
                             userSpread.setV1(0);

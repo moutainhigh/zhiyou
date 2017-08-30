@@ -90,7 +90,7 @@ public class TeamReportNewJob implements Job {
                 teamReportNew.setCreateDate(new Date());
                 teamReportNew.setPhone(user.getPhone());
                 teamReportNew.setUserName(userService.findRealName(user.getId()));
-                teamReportNew.setDistrictId(user.getLargearea() + "");
+                teamReportNew.setDistrictId(user.getLargearea() == null?null:new  Long(user.getLargearea()));
                 teamReportNew.setIsBoss((user.getIsBoss()==null||user.getIsBoss()==false)?0:1);
                 if (user.getLargearea() != null) {
                     teamReportNew.setDistrictName(systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea() + "").getSystemName());
