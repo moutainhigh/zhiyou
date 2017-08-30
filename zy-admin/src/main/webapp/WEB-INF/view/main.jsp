@@ -262,39 +262,63 @@
 		$(function(){
 			var myChartxiao = echarts.init(document.getElementById('orderChartXiao'));
 			// 指定图表的配置项和数据
-			myChartxiao.setOption({
-				tooltip: {
-					trigger: 'axis',
-					axisPointer: {
-						type: 'cross',
-						crossStyle: {
-							color: '#999'
-						}
-					}
-				},
-				toolbox: {
-					feature: {
-						dataView: {show: true, readOnly: false},
-						magicType: {show: true, type: ['line', 'bar']},
-						restore: {show: true},
-						saveAsImage: {show: true}
-					}
-				},
-				legend: {
-					data:['用户名','达成量','目标量','达成率']
-				},
-				xAxis: [
-				],
-				yAxis: [
-				],
-				series: [
-
-				]
-			});
+//			myChartxiao.setOption({
+//				tooltip: {
+//					trigger: 'axis',
+//					axisPointer: {
+//						type: 'cross',
+//						crossStyle: {
+//							color: '#999'
+//						}
+//					}
+//				},
+//				toolbox: {
+//					feature: {
+//						dataView: {show: true, readOnly: false},
+//						magicType: {show: true, type: ['line', 'bar']},
+//						restore: {show: true},
+//						saveAsImage: {show: true}
+//					}
+//				},
+//				legend: {
+//					data:['用户名','达成量','目标量','达成率']
+//				},
+//				xAxis: [
+//				],
+//				yAxis: [
+//				],
+//				series: [
+//
+//				]
+//			});
 			// 异步加载数据
 			$.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-				//console.log(result.achievementList);
+//				console.log(result.achievementList);
+                for(var j in result.achievementList){
+					result.achievementList[j]=result.achievementList[j]/100;
+				}
+				console.log(result.achievementList);
 				myChartxiao.setOption({
+					tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							type: 'cross',
+							crossStyle: {
+								color: '#999'
+							}
+						}
+					},
+					toolbox: {
+						feature: {
+							dataView: {show: true, readOnly: false},
+							magicType: {show: true, type: ['line', 'bar']},
+							restore: {show: true},
+							saveAsImage: {show: true}
+						}
+					},
+					legend: {
+					    data:['用户名','达成量','目标量','达成率']
+				    },
 					xAxis: [
 						{
 							type: 'category',
@@ -316,7 +340,7 @@
 							type: 'value',
 							name: '比率',
 							axisLabel: {
-								formatter: '{value} '
+								formatter: '{value}'
 							}
 						}
 					],
@@ -334,6 +358,7 @@
 						{
 							name:'达成率',
 							type:'line',
+							yAxisIndex: 1,
 							data:result.achievementList
 						}
 					]
@@ -367,7 +392,7 @@
 			// 指定图表的配置项和数据
 			myChartTeam.setOption({
 				tooltip : {
-					trigger: 'axis'
+					trigger: 'item',
 				},
 				legend: {
 					data:['新晋特级','特级']
@@ -484,10 +509,14 @@
 				tooltip : {
 					trigger: 'item',
 					formatter: function(param){
-						for(var i=0;i<arrayname.length;i++){
-							var name = arrayname[i].substring(0,param.name.length);
-							if(param.name==name){
-								str = param.name+"：<br>特级人数："+arrayV4[i]+"<br>"+"省级人数："+arrayV3[i]+"<br>特级活跃人数："+arrayV4Active[i]+"<br>"+"特级活跃度："+arrayv4AvticeRate[i];
+						if(arrayname.length==1){
+							str = param.name + "：<br>特级人数：" + 0 + "<br>" + "省级人数：" + 0 + "<br>特级活跃人数：" + 0 + "<br>" + "特级活跃度：" + 0;
+						}else {
+							for (var i = 0; i < arrayname.length; i++) {
+								var name = arrayname[i].substring(0, param.name.length);
+								if (param.name == name) {
+									str = param.name + "：<br>特级人数：" + arrayV4[i] + "<br>" + "省级人数：" + arrayV3[i] + "<br>特级活跃人数：" + arrayV4Active[i] + "<br>" + "特级活跃度：" + arrayv4AvticeRate[i];
+								}
 							}
 						}
 						return str;

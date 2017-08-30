@@ -87,11 +87,15 @@
                 tooltip : {
                     trigger: 'item',
                     formatter: function(param){
-                        for(var i=0;i<arrayname.length;i++){
-                            var name = arrayname[i].substring(0,param.name.length);
-                              if(param.name==name){
-                                  str = param.name+"：<br>特级："+arrayV4[i]+"<br>"+"省级："+arrayV3[i]+"<br>市级："+arrayV2[i]+"<br>"+"VIP："+arrayV1[i];
-                              }
+                        if(arrayname.length==1){
+                            str = param.name + "：<br>特级人数：" + 0 + "<br>" + "省级人数：" + 0 + "<br>特级活跃人数：" + 0 + "<br>" + "特级活跃度：" + 0;
+                        }else {
+                            for (var i = 0; i < arrayname.length; i++) {
+                                var name = arrayname[i].substring(0, param.name.length);
+                                if (param.name == name) {
+                                    str = param.name + "：<br>特级：" + arrayV4[i] + "<br>" + "省级：" + arrayV3[i] + "<br>市级：" + arrayV2[i] + "<br>" + "VIP：" + arrayV1[i];
+                                }
+                            }
                         }
                         return str;
                     }
