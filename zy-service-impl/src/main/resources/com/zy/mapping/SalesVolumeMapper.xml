@@ -32,17 +32,39 @@
 	<update id="update" parameterType="com.zy.entity.report.SalesVolume">
 		update `rpt_salesvolume`
 		<set>
-			user_rank = #{userRank},
-			user_name = #{userName},
-			user_phone = #{userPhone},
-			amount_reached = #{amountReached},
-			amount_target = #{amountTarget},
-			achievement = #{achievement},
-			ranking = #{ranking},
-			number = #{number},
-			type = #{type},
-			area_type = #{areaType},
-			create_time = #{create_time},
+			<if test="userRank !=null">
+				user_rank = #{userRank},
+			</if>
+			<if test="userName !=null">
+				user_name = #{userName},
+			</if>
+			<if test="userPhone !=null">
+				user_phone = #{userPhone},
+			</if>
+			<if test="amountReached !=null">
+				amount_reached = #{amountReached},
+			</if>
+			<if test="amountTarget !=null">
+				amount_target = #{amountTarget},
+			</if>
+			<if test="achievement !=null">
+				achievement = #{achievement},
+			</if>
+			<if test="ranking !=null">
+				ranking = #{ranking},
+			</if>
+			<if test="number !=null">
+				number = #{number},
+			</if>
+			<if test="type !=null">
+				type = #{type},
+			</if>
+			<if test="areaType !=null">
+				area_type = #{areaType},
+			</if>
+			<if test="isBoss !=null">
+				is_boss = #{isBoss}
+			</if>
 		</set>
 		where id = #{id}
 	</update>
