@@ -30,6 +30,7 @@
 	<dubbo:reference  interface="com.zy.service.SalesVolumeService" id="salesVolumeService"/>
 	<dubbo:reference  interface="com.zy.service.TeamReportNewService" id="teamReportNewService"/>
 	<dubbo:reference interface="com.zy.service.UserInfoService" id="userInfoService"/>
+	<dubbo:reference  interface="com.zy.service.TeamProvinceReportService" id="teamProvinceReportService"/>
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
 
@@ -171,20 +172,7 @@
 					<!--</property>-->
 				<!--</bean>-->
                <!-- 省份服务商报表 -->
-				<bean id="teamProvinceReport1Job"
-				class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-				<property name="jobDetail">
-				<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-				<property name="durability" value="true"></property>
-				<property name="jobClass" value="com.zy.task.job.TeamProvinceReportJob"></property>
-				</bean>
-				</property>
-				<property name="cronExpression">
-				<value>0 0/2 * * * ? *</value>
-				</property>
-				</bean>
-				<!--<bean id="teamProvinceReportJob"
-					  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+				<bean id="teamProvinceReportJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
 						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
@@ -194,7 +182,7 @@
 					<property name="cronExpression">
 						<value>0 0/5 * * * ? *</value>
 					</property>
-				</bean>-->
+				</bean>
 				<!--收益单结算job-->
 				<!--<bean id="profitGrantJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
 					<!--<property name="jobDetail">-->

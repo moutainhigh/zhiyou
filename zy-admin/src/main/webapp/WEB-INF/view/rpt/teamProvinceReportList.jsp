@@ -44,12 +44,12 @@
                         orderable: true,
                     },
                     {
-                        data: 'v4ActiveRanking',
+                        data: 'v4ActiveRank',
                         title: '特级服务商活跃度排名',
                         orderable: true,
                     },
                     {
-                        data: 'v4ActiveNumberRate',
+                        data: 'v4ActiveRate',
                         title: '特级服务商活跃度',
                         orderable: true,
                         render: function (data, type, full) {

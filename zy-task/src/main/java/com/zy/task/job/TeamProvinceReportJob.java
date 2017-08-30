@@ -38,7 +38,7 @@ public class TeamProvinceReportJob implements Job {
     //开始处理逻辑
     private void disposeTeamProvinceReport(){
         try {
-            teamProvinceReportService.provinceActive();
+            this.teamProvinceReportService.provinceActive();
             logger.info("省份服务商活跃报表");
         } catch (ConcurrentException e) {
                 try {
