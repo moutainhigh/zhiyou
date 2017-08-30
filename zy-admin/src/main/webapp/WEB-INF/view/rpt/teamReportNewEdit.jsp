@@ -1,5 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
+        <li><a href="javascript:;" data-href="${ctx}/report/teamReportNew" id="team">团队报表</a>  <i class="fa fa-angle-right"></i></li>
+        <li>成员分布</li>
+    </ul>
+</div>
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light bordered">
@@ -28,7 +35,8 @@
    var arrayV3=V3.split(",");
    var arrayV4=V4.split(",");
    var arrayname=name.split(",");
-    console.log(V1+"V1"+V2+"V2"+V3+"V3"+V4+"V4");
+    console.log(V1+"V1"+arrayname+V2+"V2"+arrayname+V3+"V3"+arrayname+V4+"V4"+arrayname);
+    var str="";
     $.get('${ctx}/map/json/china.json', function (chinaJson) {
         echarts.registerMap('china', chinaJson);
         var chart = echarts.init(document.getElementById('orderChartMap'));
@@ -36,7 +44,12 @@
             tooltip : {
                 trigger: 'item',
                 formatter: function(param){
-                    var str = param.name+"：<br>特级："+arrayV4[0]+"<br>"+"省级："+arrayV4[0]+"<br>市级："+arrayV1[0]+"<br>"+"VIP："+arrayV1[0];
+                    for(var i=0;i<arrayname.length;i++){
+                        var name = arrayname[i].substring(0,param.name.length);
+                          if(param.name==name){
+                              str = param.name+"：<br>特级："+arrayV4[i]+"<br>"+"省级："+arrayV3[i]+"<br>市级："+arrayV2[i]+"<br>"+"VIP："+arrayV1[i];
+                          }
+                    }
                     return str;
                 }
             },

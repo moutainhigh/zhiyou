@@ -132,31 +132,31 @@
 					</property>
 				</bean>
                <!-- 团队报表 -->
-				<!--<bean id="teamReportNewJob"-->
-					  <!--class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
-					<!--<property name="jobDetail">-->
-						<!--<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">-->
-							<!--<property name="durability" value="true"></property>-->
-							<!--<property name="jobClass" value="com.zy.task.job.TeamReportNewJob"></property>-->
-						<!--</bean>-->
-					<!--</property>-->
-					<!--<property name="cronExpression">-->
-						<!--<value>0 0/5 * * * ? *</value>-->
-					<!--</property>-->
-				<!--</bean>-->
+				<bean id="teamReportNewJob"
+					  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.TeamReportNewJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/5 * * * ? *</value>
+					</property>
+				</bean>
 				<!-- 团队人员分布报表 -->
-				<!--<bean id="teamReportNewDetailJob"-->
-					  <!--class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
-					<!--<property name="jobDetail">-->
-						<!--<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">-->
-							<!--<property name="durability" value="true"></property>-->
-							<!--<property name="jobClass" value="com.zy.task.job.TeamReportNewDetailJob"></property>-->
-						<!--</bean>-->
-					<!--</property>-->
-					<!--<property name="cronExpression">-->
-						<!--<value>0 0/5 * * * ? *</value>-->
-					<!--</property>-->
-				<!--</bean>-->
+				<bean id="teamReportNewDetailJob"
+					  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.TeamReportNewDetailJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/5 * * * ? *</value>
+					</property>
+				</bean>
 				<!-- 销量报表 -->
 				<!--<bean id="salesvolumeJobTrigger"-->
 					  <!--class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
