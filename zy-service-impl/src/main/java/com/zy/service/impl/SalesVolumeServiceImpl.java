@@ -91,9 +91,15 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 		List<Long> amountTargetList = new ArrayList();
 		SalesVolume salesVolume = null;
 
+		//上月日期
+		Date date = new Date();
+		Calendar ca = Calendar.getInstance();// 得到一个Calendar的实例
+		ca.setTime(date); // 设置时间为当前时间
+		ca.add(Calendar.MONTH, -1);// 月份减1
+
 		//没有设置目标的统计平均值
 		SalesVolumeQueryModel sQueryModel = new SalesVolumeQueryModel();
-		sQueryModel.setCreateTime(new Date());
+		sQueryModel.setCreateTime(ca.getTime());
 		List<SalesVolume> data = salesVolumeMapper.findAll(sQueryModel);
 		Long avgNum = 0l;
 		if (data != null && data.size() > 0){
@@ -114,25 +120,15 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 		//没有设置目标量的新插入
 		for (User user : userList) {
 
-			//查询当月进货量
+			//查询上月月进货量
 			OrderQueryModel orderQueryModel = new OrderQueryModel();
 			orderQueryModel.setUserIdEQ(user.getId());
-			orderQueryModel.setPaidTime(new Date());
+			orderQueryModel.setPaidTime(ca.getTime());
 			Long salesVolumes  = orderMapper.queryRetailPurchases(orderQueryModel);
-			salesVolume.setAmountReached(salesVolumes);
-			if (salesVolume.getAmountTarget() == 0l && salesVolumes > 0l){
-				salesVolume.setAchievement(100d);
-			}
-			if (salesVolume.getAmountTarget() == 0l){
-				salesVolume.setAchievement(0.00);
-			}
-			if (salesVolume.getAmountTarget() != null && salesVolume.getAmountTarget() != 0){
-				salesVolume.setAchievement(new BigDecimal((salesVolumes.doubleValue() / salesVolume.getAmountTarget().doubleValue()) * 100).setScale(2 , RoundingMode.HALF_UP).doubleValue());
-			}
 
 			SalesVolumeQueryModel s = new SalesVolumeQueryModel();
 			s.setUserPhoneLK(user.getPhone());
-			s.setCreateTime(new Date());
+			s.setCreateTime(ca.getTime());
 			salesVolume = salesVolumeMapper.findOneByPhone(s);
 			if (salesVolume == null){
 				salesVolume = new SalesVolume();
@@ -152,11 +148,34 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 				if (userInfo != null){
 					salesVolume.setUserName(userInfo.getRealname());
 				}
-				salesVolume.setCreateTime(new Date());
+
 				salesVolume.setAmountTarget(avgNum);
+
+				salesVolume.setAmountReached(salesVolumes);
+				if (salesVolume.getAmountTarget() != null && salesVolume.getAmountTarget() == 0 && salesVolumes > 0){
+					salesVolume.setAchievement(100d);
+				}
+				if (salesVolume.getAmountTarget() != null && salesVolume.getAmountTarget() == 0){
+					salesVolume.setAchievement(0.00);
+				}
+				if (salesVolume.getAmountTarget() != null && salesVolume.getAmountTarget() != 0){
+					salesVolume.setAchievement(new BigDecimal((salesVolumes.doubleValue() / salesVolume.getAmountTarget().doubleValue()) * 100).setScale(2 , RoundingMode.HALF_UP).doubleValue());
+				}
+
+				salesVolume.setCreateTime(ca.getTime());
 				salesVolumeMapper.insert(salesVolume);
 			}else {
-				salesVolumeMapper.merge(salesVolume);
+				salesVolume.setAmountReached(salesVolumes);
+				if (salesVolume.getAmountTarget() != null && salesVolume.getAmountTarget() == 0 && salesVolumes > 0){
+					salesVolume.setAchievement(100d);
+				}
+				if (salesVolume.getAmountTarget() != null && salesVolume.getAmountTarget() == 0l){
+					salesVolume.setAchievement(0.00);
+				}
+				if (salesVolume.getAmountTarget() != null && salesVolume.getAmountTarget() != 0){
+					salesVolume.setAchievement(new BigDecimal((salesVolumes.doubleValue() / salesVolume.getAmountTarget().doubleValue()) * 100).setScale(2 , RoundingMode.HALF_UP).doubleValue());
+				}
+				salesVolumeMapper.update(salesVolume);
 			}
 		}
 
@@ -164,21 +183,19 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 		SalesVolumeQueryModel salesVolumeQueryModel = new SalesVolumeQueryModel();
 		salesVolumeQueryModel.setOrderBy("amountReached");
 		salesVolumeQueryModel.setDirection(Direction.DESC);
-		salesVolumeQueryModel.setCreateTime(new Date());
+		salesVolumeQueryModel.setCreateTime(ca.getTime());
 		List<SalesVolume> list = salesVolumeMapper.findAll(salesVolumeQueryModel);
 		if (list != null && list.size() > 0){
 			int i = 0 ;
 			for (SalesVolume sa: list) {
 				i = i + 1;
 				sa.setRanking(i);
-
-				Date date = new Date();
-				Calendar ca = Calendar.getInstance();// 得到一个Calendar的实例
-				ca.setTime(date); // 设置时间为当前时间
-				ca.add(Calendar.MONTH, -1);// 月份减1
+				Calendar da = Calendar.getInstance();// 得到一个Calendar的实例
+				da.setTime(date); // 设置时间为当前时间
+				da.add(Calendar.MONTH, -2);// 月份减2
 				SalesVolumeQueryModel sQueryM = new SalesVolumeQueryModel();
 				sQueryM.setUserPhoneLK(sa.getUserPhone());
-				sQueryM.setCreateTime(ca.getTime());
+				sQueryM.setCreateTime(da.getTime());
 				List<SalesVolume> saList = salesVolumeMapper.findAll(sQueryM);
 				if (saList != null && saList.size() > 0){
 					SalesVolume s = saList.get(0);
@@ -196,7 +213,7 @@ public class SalesVolumeServiceImpl implements SalesVolumeService {
 					sa.setType(1);
 					sa.setNumber(sa.getRanking());
 				}
-				salesVolumeMapper.merge(sa);
+				salesVolumeMapper.update(sa);
 			}
 		}
 
