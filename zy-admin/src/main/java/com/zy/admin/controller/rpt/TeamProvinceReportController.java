@@ -15,6 +15,7 @@ import com.zy.service.AreaService;
 import com.zy.service.TeamProvinceReportService;
 import com.zy.vo.TeamProvinceReportAdminVo;
 import com.zy.vo.TeamProvinceReportExportVo;
+import io.gd.generator.api.query.Direction;
 import org.apache.http.ParseException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,10 @@ public class TeamProvinceReportController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Grid<TeamProvinceReportAdminVo> list(TeamProvinceReportQueryModel teamProvinceReportQueryModel) throws ParseException {
+        if(teamProvinceReportQueryModel.getOrderBy() == null){
+            teamProvinceReportQueryModel.setOrderBy("v4ActiveRank");
+            teamProvinceReportQueryModel.setDirection(Direction.ASC);
+        }
         Page<TeamProvinceReport> page = teamProvinceReportService.findPage(teamProvinceReportQueryModel);
         Page<TeamProvinceReportAdminVo> voPage = PageBuilder.copyAndConvert(page, v -> teamProvinceReportComponent.buildTeamProvinceReportAdminVo(v));
         return new Grid<>(voPage);
