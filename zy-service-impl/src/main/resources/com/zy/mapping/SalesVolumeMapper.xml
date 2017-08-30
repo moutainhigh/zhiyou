@@ -77,7 +77,7 @@
 	</select>
 
 
-	<select id="findOneByPhone" resultMap="com.zy.model.query.SalesVolumeQueryModel">
+	<select id="findOneByPhone" resultMap="baseResultMap" parameterType="com.zy.model.query.SalesVolumeQueryModel">
 		select
 		<include refid="baseColumn"/>
 		from `rpt_salesvolume`
