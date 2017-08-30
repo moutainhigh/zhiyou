@@ -7,7 +7,7 @@
         <li>成员分布</li>
     </ul>
 </div>
-<div class="row">
+<div class="row orderChartMap">
     <div class="col-md-12">
         <div class="portlet light bordered">
             <div class="portlet-title">
@@ -24,7 +24,27 @@
         </div>
     </div>
 </div>
+<div class="row orderChartMapTwo">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-graph"></i>
+                    <span class="caption-subject bold uppercase"> 地图月度报表</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div id="orderChartMapTwo" style="height:800px;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    $(function(){
+        chinaMap();
+    })
     var V1='${v1}';
     var V2='${v2}';
     var V3='${v3}';
@@ -38,7 +58,6 @@
     var dataArray=[];
     console.log(V1+"V1"+arrayname+V2+"V2"+arrayname+V3+"V3"+arrayname+V4+"V4"+arrayname);
     var str="";
-
     function makeMapData(rawData) {
         var mapData = [];
         for(var j=0;j<arrayname.length;j++){
@@ -57,44 +76,118 @@
         }
         return mapData;
     }
-    $.get('${ctx}/map/json/china.json', function (chinaJson) {
-        echarts.registerMap('china', chinaJson);
-        var chart = echarts.init(document.getElementById('orderChartMap'));
-        chart.setOption({
-            tooltip : {
-                trigger: 'item',
-                formatter: function(param){
-                    for(var i=0;i<arrayname.length;i++){
-                        var name = arrayname[i].substring(0,param.name.length);
-                          if(param.name==name){
-                              str = param.name+"：<br>特级："+arrayV4[i]+"<br>"+"省级："+arrayV3[i]+"<br>市级："+arrayV2[i]+"<br>"+"VIP："+arrayV1[i];
-                          }
-                    }
-                    return str;
-                }
-            },
-            series: [
-                {
-                    name: '中国',
-                    type: 'map',
-                    mapType: 'china',
-                    selectedMode : 'multiple',
-                    label: {
-                        normal: {
-                            show: true
-                        },
-                        emphasis: {
-                            show: true
+    var chart = echarts.init(document.getElementById('orderChartMap'));
+    var chartTwo = echarts.init(document.getElementById('orderChartMapTwo'));
+
+    function chinaMap(){
+        $.get('${ctx}/map/json/china.json', function (chinaJson) {
+            $(".orderChartMap").show();
+            $(".orderChartMapTwo").hide();
+            echarts.registerMap('china', chinaJson);
+            chart.setOption({
+                tooltip : {
+                    trigger: 'item',
+                    formatter: function(param){
+                        for(var i=0;i<arrayname.length;i++){
+                            var name = arrayname[i].substring(0,param.name.length);
+                              if(param.name==name){
+                                  str = param.name+"：<br>特级："+arrayV4[i]+"<br>"+"省级："+arrayV3[i]+"<br>市级："+arrayV2[i]+"<br>"+"VIP："+arrayV1[i];
+                              }
                         }
-                    },
-                    data:makeMapData(dataArray)
-                }
-            ]
+                        return str;
+                    }
+                },
+                series: [
+                    {
+                        name: '中国',
+                        type: 'map',
+                        mapType: 'china',
+                        selectedMode : 'multiple',
+                        label: {
+                            normal: {
+                                show: true
+                            },
+                            emphasis: {
+                                show: true
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                borderColor: '#389BB7',
+                                areaColor: '#fff',
+                            },
+                            emphasis: {
+                                areaColor: '#389BB7',
+                                borderWidth: 0
+                            }
+                        },
+                        data:makeMapData(dataArray)
+                    }
+                ]
+            });
+            chart.on('click',  function (param) {
+                    console.log(param.name);
+                    var paramCity="";
+                    if(param.name=="上海"){
+                        paramCity="shanghai";
+                    }else if(param.name=="安徽"){
+                        paramCity="anhui";
+                    }else{
+
+                    }
+                    showProvince(paramCity,param.name);
+            });
         });
-        chart.on('click',  function (param) {
-//				console.log(param);
-//				console.log(param.tooltip);
+    }
+    function showProvince(provinces,nameCity) {
+        $.get('${ctx}/map/json/' + provinces + '.json', function (geoJson) {
+            $(".orderChartMap").hide();
+            $(".orderChartMapTwo").show();
+            echarts.registerMap(name, geoJson);
+            chartTwo.setOption({
+                title: {
+                    text: nameCity,
+                    left: 'center',
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: function(param){
+                        for(var i=0;i<arrayname.length;i++){
+                            var name = arrayname[i].substring(0,param.name.length);
+                            if(param.name==name){
+                                str = param.name+"：<br>特级："+0+"<br>"+"省级："+0+"<br>市级："+0+"<br>"+"VIP："+0;
+                            }
+                        }
+                        return str;
+                    }
+                },
+                series: [
+                    {
+                        type: 'map',
+                        mapType: name,
+                        itemStyle: {
+                            normal: {
+                                borderColor: '#389BB7',
+                                areaColor: '#fff',
+                            },
+                            emphasis: {
+                                areaColor: '#389BB7',
+                                borderWidth: 0
+                            }
+                        },
+                        label: {
+                            normal: {
+                                show: true
+                            },
+                            emphasis: {
+                                show: true
+                            }
+                        },
+                    }
+                ]
+            });
         });
-    });
+    }
+
 
 </script>
