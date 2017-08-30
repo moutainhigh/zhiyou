@@ -115,7 +115,7 @@ public class TeamReportNewJob implements Job {
                 if(V4==0){
                     teamReportNew.setNewextraRate(0D);
                 }else {
-                    teamReportNew.setNewextraRate(DateUtil.formatDouble(newV4List.size() / V4 * 100));
+                    teamReportNew.setNewextraRate(DateUtil.formatDouble(new Double(newV4List.size()) / new Double(V4) * 100));
                 }
                 //计算省级
                 List<User> V3List = children.stream().filter(v -> v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
@@ -133,7 +133,7 @@ public class TeamReportNewJob implements Job {
                 if ( V3==0){
                     teamReportNew.setNewprovinceRate(0D);
                 }else {
-                    teamReportNew.setNewprovinceRate(DateUtil.formatDouble(newV3List.size() / V3 * 100));
+                    teamReportNew.setNewprovinceRate(DateUtil.formatDouble(new Double(newV3List.size()) /new Double(V3) * 100));
                 }
                 teamReportNew.setYear(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
                 teamReportNew.setMonth(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
