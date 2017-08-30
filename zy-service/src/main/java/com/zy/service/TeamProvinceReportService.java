@@ -15,4 +15,6 @@ public interface TeamProvinceReportService {
 
      void insert(TeamProvinceReport teamProvinceReport);
 
+     void provinceActive();
+
 }
