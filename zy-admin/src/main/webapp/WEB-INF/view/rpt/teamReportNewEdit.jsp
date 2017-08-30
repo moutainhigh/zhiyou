@@ -35,8 +35,28 @@
    var arrayV3=V3.split(",");
    var arrayV4=V4.split(",");
    var arrayname=name.split(",");
+    var dataArray=[];
     console.log(V1+"V1"+arrayname+V2+"V2"+arrayname+V3+"V3"+arrayname+V4+"V4"+arrayname);
     var str="";
+
+    function makeMapData(rawData) {
+        var mapData = [];
+        for(var j=0;j<arrayname.length;j++){
+            if(arrayV1[j]!=0||arrayV2[j]!=0||arrayV3[j]!=0||arrayV4[j]!=0){
+                if(arrayname[j].length<4){
+                    var arrayname2=arrayname[j].substring(0,2);
+                }
+                if(arrayname[j]=="内蒙古自治区"||arrayname[j]=="黑龙江省"){
+                    var arrayname2=arrayname[j].substring(0,3);
+                }
+                mapData.push({
+                    name: arrayname2,
+                    selected:true
+                });
+            }
+        }
+        return mapData;
+    }
     $.get('${ctx}/map/json/china.json', function (chinaJson) {
         echarts.registerMap('china', chinaJson);
         var chart = echarts.init(document.getElementById('orderChartMap'));
@@ -67,9 +87,7 @@
                             show: true
                         }
                     },
-                    data:[
-                        {name:"安徽",value: "222"},
-                    ]
+                    data:makeMapData(dataArray)
                 }
             ]
         });
