@@ -1,7 +1,6 @@
 package com.zy.service.impl;
 
 import com.zy.common.model.query.Page;
-import com.zy.common.util.BeanUtils;
 import com.zy.common.util.DateUtil;
 import com.zy.entity.mal.Order;
 import com.zy.entity.report.TeamProvinceReport;
@@ -17,7 +16,10 @@ import org.springframework.validation.annotation.Validated;
 
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -83,6 +85,7 @@ public class TeamProvinceReportServiceImpl implements TeamProvinceReportService 
         userInfoMap.putAll(userInfoService.findAll(UserInfoQueryModel.builder().build()).stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v)));
         //循环处理用户地区
         for (User user : users) {
+            user.setBossId(null);
             Long areaId =  userInfoMap.get(user.getId())==null?null:userInfoMap.get(user.getId()).getAreaId();
             Area area = null;
             if (areaId != null) {
@@ -143,7 +146,7 @@ public class TeamProvinceReportServiceImpl implements TeamProvinceReportService 
         List<TeamProvinceReport> teamProvinceReports = new ArrayList<>(map.values());
         for (TeamProvinceReport t:teamProvinceReports) {
             if(t.getV4Number() != null && t.getV4Number() != 0){
-                t.setV4ActiveRate(DateUtil.formatDouble(t.getV4ActiveNumber() / t.getV4Number() * 100));
+                t.setV4ActiveRate(DateUtil.formatDouble( Double.valueOf(t.getV4ActiveNumber()) / Double.valueOf(t.getV4Number()) * 100));
             }else {
                 t.setV4ActiveRate(0.00);
             }
@@ -153,7 +156,6 @@ public class TeamProvinceReportServiceImpl implements TeamProvinceReportService 
         int i =1;
         Double rate = 0.00;
         for(TeamProvinceReport tp :teamProvinceReports) {
-
             if (tp.getV4ActiveRate()<rate){
                 rate = tp.getV4ActiveRate();
                 i++;

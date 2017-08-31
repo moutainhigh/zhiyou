@@ -13,10 +13,11 @@
             onError: function (grid) {
             },
             dataTable: {
-                lengthMenu: [
-                    [10, 20, 50, 100, -1],
-                    [10, 20, 50, 100, '全部']
-                ],
+                //"sDom" : "<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'<'table-group-actions pull-right'>>r>t<'row'<'col-md-8 col-sm-12'pli><'col-md-4 col-sm-12'>r>>",
+//                lengthMenu: [
+//                    [10, 20, 50, 100, -1],
+//                    [10, 20, 50, 100, '全部']
+//                ],
 
                 order: [], // set first column as a default sort by desc
                 ajax: {
@@ -44,12 +45,12 @@
                         orderable: true,
                     },
                     {
-                        data: 'v4ActiveRanking',
+                        data: 'v4ActiveRank',
                         title: '特级服务商活跃度排名',
                         orderable: true,
                     },
                     {
-                        data: 'v4ActiveNumberRate',
+                        data: 'v4ActiveRate',
                         title: '特级服务商活跃度',
                         orderable: true,
                         render: function (data, type, full) {
@@ -169,7 +170,7 @@
                             </div>
 
                             <div class="form-group">
-                                <select name="districtIdEQ" class="form-control">
+                                <select name="provinceEQ" class="form-control">
                                     <option value="">-- 选择省份--</option>
                                     <c:forEach items="${areas}" var="area" >
                                       <option value="${area.name}"> ${area.name} </option>

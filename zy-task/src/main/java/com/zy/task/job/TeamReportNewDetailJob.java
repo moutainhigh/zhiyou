@@ -72,7 +72,7 @@ public class TeamReportNewDetailJob implements Job {
                     List<User> newList = new ArrayList<>();
                     //循环处理用户地区
                     for (User userchildren : children) {
-                        Long areaId =  userInfoMap.get(user.getId())==null?null:userInfoMap.get(user.getId()).getAreaId();
+                        Long areaId =  userInfoMap.get(userchildren.getId())==null?null:userInfoMap.get(userchildren.getId()).getAreaId();
                         Area area =null;
                         if (areaId != null) {
                             do {

@@ -4,6 +4,7 @@ import com.alibaba.dubbo.remoting.TimeoutException;
 import com.zy.Config;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.support.cache.CacheSupport;
+import com.zy.common.util.DateUtil;
 import com.zy.component.LocalCacheComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.fnc.Deposit.DepositStatus;
@@ -13,6 +14,7 @@ import com.zy.entity.fnc.Withdraw.WithdrawStatus;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.report.SalesVolume;
+import com.zy.entity.report.TeamProvinceReport;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserType;
@@ -67,6 +69,9 @@ public class IndexController {
 
 	@Autowired
 	private SalesVolumeService salesVolumeService;
+
+	@Autowired
+	private TeamProvinceReportService teamProvinceReportService;
 
 	@Autowired
 	private Config config;
@@ -175,6 +180,32 @@ public class IndexController {
 				cacheSupport.set(CACHE_NAME_STATISTICS, CACHE_NAME_DEPOSIT_COUNT, depositCount, DEFAULT_EXPIRE);
 			}
 			model.addAttribute("depositCount", depositCount);
+
+			/* 省份服务商活跃相关 */
+			int mothNum = DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(), -1, 0));
+			int year = DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(), -1, 0));
+			List<TeamProvinceReport> teamProvinceReportList = teamProvinceReportService.findExReport(TeamProvinceReportQueryModel.builder().monthEQ(mothNum).yearEQ(year).build());
+			int size = teamProvinceReportList.size();
+			String [] name = new String [size];
+			String [] v4 = new String [size];
+			String [] v3 = new String [size];
+			String [] v4Active = new String [size];
+			String [] v4AvticeRate = new String [size];
+
+			for(int i =0;i<teamProvinceReportList.size();i++){
+				TeamProvinceReport teamProvinceReport = teamProvinceReportList.get(i);
+				name[i]=teamProvinceReport.getProvince();
+				v4[i]= teamProvinceReport.getV4Number()+"";
+				v3[i]= teamProvinceReport.getV3Number()+"";
+				v4Active[i]= teamProvinceReport.getV4ActiveNumber()+"";
+				v4AvticeRate[i]= teamProvinceReport.getV4ActiveRate()+"%";
+			}
+			model.addAttribute("name", DateUtil.stringarryToString(name,false));
+			model.addAttribute("v4", DateUtil.stringarryToString(v4,false));
+			model.addAttribute("v3", DateUtil.stringarryToString(v3,false));
+			model.addAttribute("v4Active", DateUtil.stringarryToString(v4Active,false));
+			model.addAttribute("v4AvticeRate", DateUtil.stringarryToString(v4AvticeRate,false));
+			model.addAttribute("date", year+"/"+mothNum);
 		}
 		return "main";
 	}
@@ -330,6 +361,7 @@ public class IndexController {
 
 		return dataMap;
 	}
+
 
 	@RequestMapping("/dev")
 	public String dev() {

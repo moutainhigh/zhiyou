@@ -14,8 +14,8 @@
             },
             dataTable: {
                 lengthMenu: [
-                    [10, 20, 50, 100, -1],
-                    [10, 20, 50, 100, '全部']
+                    [10, 20, 50, 100],
+                    [10, 20, 50, 100]
                 ],
 
                 order: [], // set first column as a default sort by desc
