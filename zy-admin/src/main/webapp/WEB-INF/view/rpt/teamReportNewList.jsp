@@ -51,7 +51,17 @@
                     {
                         data: 'changNewextraNumber',
                         title: '新晋特级人数变化',
-                        orderable: true,
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if (data >0){
+                                return '<span style="color: red;">↑</span>' + data;
+                            }else if (data == 0){
+                                return '—';
+                            }else if (data<0){
+                                return '<span style="color: blue">↓</span>'  +data;
+                            }
+
+                        }
                     },
 
                     {
@@ -119,8 +129,8 @@
                                     return '<span style="color: red;">↑</span>' + data;
                                 }else if (data == 0){
                                     return '—';
-                                }else if (datae<0){
-                                    return '<span style="color: blue">↓</span>'  +datae;
+                                }else if (data<0){
+                                    return '<span style="color: blue">↓</span>'  +data;
                                 }
 
                         }
