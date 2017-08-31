@@ -481,6 +481,9 @@
 		var arrayV4=V4.split(",");
 		var arrayname=name.split(",");
 		var str="";
+		function randomData() {
+			return Math.round(Math.random()*1000);
+		}
 		function makeMapData() {
 			var mapData = [];
 
@@ -497,7 +500,8 @@
 					}
 					mapData.push({
 						name: arrayname2,
-						selected:true
+//						selected:true,
+						value: randomData()
 					});
 				}
 			}
@@ -522,6 +526,14 @@
 						}
 						return str;
 					}
+				},
+				visualMap: {
+					min: 0,
+					max: 2500,
+					left: 'left',
+					top: 'bottom',
+					text: ['高','低'],           // 文本，默认为数值文本
+					calculable: true
 				},
 				series: [
 					{
