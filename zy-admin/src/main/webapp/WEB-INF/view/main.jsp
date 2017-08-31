@@ -294,9 +294,9 @@
 			// 异步加载数据
 			$.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
 //				console.log(result.achievementList);
-                for(var j in result.achievementList){
-					result.achievementList[j]=result.achievementList[j]/100;
-				}
+//                for(var j in result.achievementList){
+//					result.achievementList[j]=result.achievementList[j]/100;
+//				}
 				console.log(result.achievementList);
 				myChartxiao.setOption({
 					tooltip: {
@@ -340,20 +340,21 @@
 							type: 'value',
 							name: '比率',
 							axisLabel: {
-								formatter: '{value}'
+								formatter: '{value}%'
 							}
 						}
 					],
+					color:['#cf3834','#31c7b2',"#589198"],
 					series: [
-						{
-							name:'达成量',
-							type:'bar',
-							data:result.amountReachedList
-						},
 						{
 							name:'目标量',
 							type:'bar',
 							data:result.amountTargetList
+						},
+						{
+							name:'达成量',
+							type:'bar',
+							data:result.amountReachedList
 						},
 						{
 							name:'达成率',
@@ -374,7 +375,7 @@
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="icon-graph"></i>
-						<span class="caption-subject bold uppercase"> 总经理团队上月度报表</span>
+						<span class="caption-subject bold uppercase"> 大区总裁团队上月度报表</span>
 					</div>
 				</div>
 				<div class="portlet-body">
