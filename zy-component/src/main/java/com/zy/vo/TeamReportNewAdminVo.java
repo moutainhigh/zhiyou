@@ -47,6 +47,8 @@ public class TeamReportNewAdminVo implements Serializable {
 	private Integer sleepextraNumber;
 	@Field(label = "changRanking")
 	private Integer changRanking;
+	@Field(label = "changNewextraNumber")
+	private Integer changNewextraNumber;
 	/* 扩展 */
 
 }

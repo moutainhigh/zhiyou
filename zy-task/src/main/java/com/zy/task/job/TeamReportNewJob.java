@@ -159,8 +159,10 @@ public class TeamReportNewJob implements Job {
                 TeamReportNew teamReportNewOld = teamReportNewMapOld.get(teamReportNew.getUserId());
                 if(teamReportNewOld!=null){
                   teamReportNew.setChangRanking(i-teamReportNewOld.getRanking());
+                    teamReportNew.setChangNewextraNumber(teamReportNew.getNewextraNumber()-teamReportNewOld.getNewextraNumber());
                 }else{
                     teamReportNew.setChangRanking(i);
+                    teamReportNew.setChangNewextraNumber(teamReportNew.getNewextraNumber());
                 }
                 if (v4number==-1){
                     v4number = teamReportNew.getExtraNumber();

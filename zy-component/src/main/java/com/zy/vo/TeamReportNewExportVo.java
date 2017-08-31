@@ -27,6 +27,8 @@ public class TeamReportNewExportVo implements Serializable {
 	private  Integer sleepextraNumber;
 	@Field(label = "新晋特级人数")
 	private Integer newextraNumber;
+	@Field(label = "新晋特级人数变化")
+	private Integer changNewextraNumber;
 	@Field(label = "新晋特级占比")
 	private Double newextraRate;
 	@Field(label = "省级人数")

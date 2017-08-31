@@ -22,13 +22,14 @@
 		<result column="sleepextra_number" property="sleepextraNumber" />
 		<result column="is_boss" property="isBoss" />
 		<result column="chang_ranking" property="changRanking" />
+		<result column="chang_newextra_number" property="changNewextraNumber" />
 	</resultMap>
 
-	<sql id="baseColumn">id,user_id,user_name,district_name,district_id,extra_number,newextra_number,newextra_rate,province_number,newprovince_number,newprovince_rate,ranking,year,month,phone,create_date,sleepextra_number,is_boss,chang_ranking</sql>
+	<sql id="baseColumn">id,user_id,user_name,district_name,district_id,extra_number,newextra_number,newextra_rate,province_number,newprovince_number,newprovince_rate,ranking,year,month,phone,create_date,sleepextra_number,is_boss,chang_ranking,chang_newextra_number</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.report.TeamReportNew" useGeneratedKeys="true" keyProperty="id">
-	  insert into `ts_team_report` (user_id,user_name,district_name,district_id,extra_number,newextra_number,newextra_rate,province_number,newprovince_number,newprovince_rate,ranking,year,month,phone,create_date,sleepextra_number,is_boss,chang_ranking)
-	  values (#{userId},#{userName},#{districtName},#{districtId},#{extraNumber},#{newextraNumber},#{newextraRate},#{provinceNumber},#{newprovinceNumber},#{newprovinceRate},#{ranking},#{year},#{month},#{phone},#{createDate},#{sleepextraNumber},#{isBoss},#{changRanking})
+	  insert into `ts_team_report` (user_id,user_name,district_name,district_id,extra_number,newextra_number,newextra_rate,province_number,newprovince_number,newprovince_rate,ranking,year,month,phone,create_date,sleepextra_number,is_boss,chang_ranking,chang_newextra_number)
+	  values (#{userId},#{userName},#{districtName},#{districtId},#{extraNumber},#{newextraNumber},#{newextraRate},#{provinceNumber},#{newprovinceNumber},#{newprovinceRate},#{ranking},#{year},#{month},#{phone},#{createDate},#{sleepextraNumber},#{isBoss},#{changRanking},${changNewextraNumber})
 	</insert>
 
 	<delete id="delete">
@@ -56,6 +57,7 @@
 			sleepextra_number =#{sleepextraNumber},
 			is_boss =#{isBoss},
 			chang_ranking =#{changRanking},
+			chang_newextra_number =#{changNewextraNumber},
 		</set>
 		where id = #{id}
 	</update>
@@ -83,6 +85,7 @@
 					<when test="field == 'sleepextraNumber'">sleepextra_number = #{teamReportNew.sleepextraNumber},</when>
 					<when test="field == 'isBoss'">is_boss = #{teamReportNew.isBoss},</when>
 					<when test="field == 'changRanking'">chang_ranking = #{teamReportNew.changRanking},</when>
+					<when test="field == 'changNewextraNumber'">chang_newextra_number = #{teamReportNew.changNewextraNumber},</when>
 				</choose>
 				</foreach>
 			</set>

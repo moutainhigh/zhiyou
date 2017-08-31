@@ -128,5 +128,10 @@ public class TeamReportNew implements Serializable {
     @Query(Predicate.EQ)
     private Integer changRanking;
 
+    @Field(label = "changNewextraNumber")
+    @View
+    @Query(Predicate.EQ)
+    private Integer changNewextraNumber;
+
 
 }

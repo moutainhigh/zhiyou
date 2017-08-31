@@ -49,10 +49,11 @@
                         orderable: true,
                     },
                     {
-                        data: 'sleepextraNumber',
-                        title: '沉睡特级人数',
+                        data: 'changNewextraNumber',
+                        title: '新晋特级人数变化',
                         orderable: true,
                     },
+
                     {
                         data: 'newextraRate',
                         title: '新晋特级占比',
@@ -70,6 +71,11 @@
                             }
                             return s +"%";
                         }
+                    },
+                    {
+                        data: 'sleepextraNumber',
+                        title: '沉睡特级人数',
+                        orderable: true,
                     },
                     {
                         data: 'provinceNumber',
