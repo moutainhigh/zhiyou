@@ -70,7 +70,7 @@ public class TeamReportNewController {
 
 
     /**
-     *  get 查询 数据
+     *  post 查询 数据
      * @param model
      * @param teamReportNewQueryModel
      * @return

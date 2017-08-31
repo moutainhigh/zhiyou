@@ -37,6 +37,8 @@ public class TeamReportNewExportVo implements Serializable {
 	private Double newprovinceRate;
 	@Field(label = "排名")
 	private Integer ranking;
+	@Field(label = "排名变化")
+	private Integer changRanking;
 
 
 

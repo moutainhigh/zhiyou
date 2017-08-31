@@ -8,6 +8,7 @@ import com.zy.entity.report.TeamReportNew;
 import com.zy.entity.report.UserSpread;
 import com.zy.entity.sys.Area;
 import com.zy.entity.usr.User;
+import com.zy.model.query.TeamReportNewQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserUpgradeQueryModel;
 import com.zy.service.SystemCodeService;
@@ -78,6 +79,10 @@ public class TeamReportNewJob implements Job {
             List<User> userV4List = userService.findAll(userQueryModel);//统计 v4成员
             List<TeamReportNew> teamReportNewList = new ArrayList<>();
             List<Area> areaList = teamReportNewService.findParentAll();
+            TeamReportNewQueryModel teamReportNewQueryModel =  new TeamReportNewQueryModel();
+            teamReportNewQueryModel.setYearEQ(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
+            teamReportNewQueryModel.setMonthEQ(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
+            Map<Long,TeamReportNew> teamReportNewMapOld = teamReportNewService.findExReport(teamReportNewQueryModel).stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v));
             for (User user : userV4List) {//当前特级下所成员
                 List<User> children = TreeHelper.sortBreadth2(userList, user.getId().toString(), v -> {
                     TreeNode treeNode = new TreeNode();
@@ -151,15 +156,17 @@ public class TeamReportNewJob implements Job {
                     i++;
                 }
                 teamReportNew.setRanking(i);
+                TeamReportNew teamReportNewOld = teamReportNewMapOld.get(teamReportNew.getUserId());
+                if(teamReportNewOld!=null){
+                  teamReportNew.setChangRanking(i-teamReportNewOld.getRanking());
+                }else{
+                    teamReportNew.setChangRanking(i);
+                }
                 if (v4number==-1){
                     v4number = teamReportNew.getExtraNumber();
                 }
-
                 teamReportNewService.insert(teamReportNew);
-
             }
-
-
         } catch (ConcurrentException e) {
                 try {
                     TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}

@@ -105,6 +105,21 @@
                         orderable: true,
                     },
                     {
+                        data: 'changRanking',
+                        title: '排名升降情况',
+                        orderable: false,
+                        render: function (data, type, full) {
+                                if (data >0){
+                                    return '<span style="color: red;">↑</span>' + data;
+                                }else if (data == 0){
+                                    return '—';
+                                }else if (datae<0){
+                                    return '<span style="color: blue">↓</span>'  +datae;
+                                }
+
+                        }
+                    },
+                    {
                         data: 'id',
                         title: '操作',
                         orderable: false,
