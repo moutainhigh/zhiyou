@@ -247,7 +247,7 @@
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="icon-graph"></i>
-						<span class="caption-subject bold uppercase"> 销量月度报表</span>
+						<span class="caption-subject bold uppercase"> 销量月度报表(${date})</span>
 					</div>
 				</div>
 				<div class="portlet-body">
@@ -375,7 +375,7 @@
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="icon-graph"></i>
-						<span class="caption-subject bold uppercase"> 大区总裁团队上月度报表</span>
+						<span class="caption-subject bold uppercase"> 大区总裁团队月度报表(${date})</span>
 					</div>
 				</div>
 				<div class="portlet-body">
