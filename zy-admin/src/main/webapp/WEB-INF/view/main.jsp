@@ -366,6 +366,7 @@
 			});
 		})
 	</script>
+</shiro:hasPermission>
 	<shiro:hasPermission name="teamReportNew:view">
 	<div class="row">
 		<div class="col-md-12">
@@ -385,7 +386,7 @@
 		</div>
 	</div>
 	</shiro:hasPermission>
-
+<shiro:hasPermission name="teamProvinceReport:view">
 	<script>
 		$(function(){
 			var myChartTeam = echarts.init(document.getElementById('orderChartTeam'));
