@@ -4,7 +4,7 @@
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
         <li><a href="javascript:;" data-href="${ctx}/report/teamReportNew" id="team">团队报表</a>  <i class="fa fa-angle-right"></i></li>
-        <li>成员分布</li>
+        <li><a href="javascript:;">成员分布</a></li>
     </ul>
 </div>
 <div class="row orderChartMap">
