@@ -85,6 +85,7 @@ public class TeamProvinceReportServiceImpl implements TeamProvinceReportService 
         userInfoMap.putAll(userInfoService.findAll(UserInfoQueryModel.builder().build()).stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v)));
         //循环处理用户地区
         for (User user : users) {
+            user.setBossId(null);
             Long areaId =  userInfoMap.get(user.getId())==null?null:userInfoMap.get(user.getId()).getAreaId();
             Area area = null;
             if (areaId != null) {
