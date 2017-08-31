@@ -533,8 +533,8 @@
 					max: 2500,
 					left: 'left',
 					top: 'bottom',
-					text: ['高','低'],           // 文本，默认为数值文本
-					calculable: true
+					text: ['颜色值',''],           // 文本，默认为数值文本
+					calculable: false
 				},
 				series: [
 					{
