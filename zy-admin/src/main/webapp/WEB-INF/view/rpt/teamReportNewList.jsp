@@ -20,7 +20,7 @@
 
                 order: [], // set first column as a default sort by desc
                 ajax: {
-                    url: "${ctx}/report/teamReportNew",
+                    url: '${ctx}/report/teamReportNew?queryDate=${queryDate}',
                 },
                 columns: [
                     {
@@ -179,33 +179,6 @@
         location.href = '${ctx}/report/teamReportNew/export?' + $('#searchForm').serialize();
     }
     </shiro:hasPermission>
-function  changemonth(obj) {
-    var thisYear = ${year};
-    var thisMonth = ${month};
-    var sel = $('#monthEQ');
-    var opt="";
-    if(obj!=thisYear){
-        for(var i =1;i<=12;i++){
-            if(i==thisMonth){
-                opt = opt + "<option value='" + i + "' selected >" + i + "月</option>";
-            }else {
-                opt = opt + "<option value='" + i + "' >" + i + "月</option>";
-            }
-
-        }
-    }else{
-        for(var i =1;i<=thisMonth;i++){
-            if(i==thisMonth){
-                opt = opt + "<option value='" + i + "' selected >" + i + "月</option>";
-            }else {
-                opt = opt + "<option value='" + i + "' >" + i + "月</option>";
-            }
-
-        }
-    }
-    sel.html("");
-    sel.html(opt)
-}
 
 </script>
 <!-- END JAVASCRIPTS -->
@@ -214,13 +187,33 @@ function  changemonth(obj) {
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><i class="fa fa-home"></i> <a href="javascript:;" data-href="${ctx}/main">首页</a> <i class="fa fa-angle-right"></i></li>
-        <li><a href="javascript:;" data-href="${ctx}/report/teamReportNew" id="team">团队报表(${year}/${month})</a></li>
+        <li><a href="javascript:;" data-href="${ctx}/report/teamReportNew" id="team">团队报表</a></li>
     </ul>
 </div>
 <!-- END PAGE HEADER-->
 
 <div class="row">
     <div class="col-md-12">
+        <div class="portlet light bordered">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="icon-bar-chart"></i><span>团队报表</span>
+            </div>
+            <div class="actions">
+                <div class="btn-group">
+                    <a href="" class="btn dark btn-outline btn-circle btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">查询月份
+                        <span class="fa fa-angle-down"> </span>
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <c:forEach items="${queryDateLabels}" var="queryDateLabel">
+                            <li>
+                                <a data-href="${ctx}/report/teamReportNew?queryDate=${queryDateLabel}"> ${queryDateLabel}</a>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <!-- BEGIN ALERTS PORTLET-->
         <div class="portlet light bordered">
             <div class="portlet-body clearfix">
@@ -232,22 +225,7 @@ function  changemonth(obj) {
                             <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
                             <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
-                            <div class="form-group">
-                                <select name="yearEQ" class="form-control" id="yearEQ"  onchange="changemonth(this.value)">
-                                    <c:forEach var="i" begin="2015" end="${year}" >
-                                        <option value="${i}" ${i == year?'selected':''} >${i}年</option>
-                                    </c:forEach>
 
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <select name="monthEQ" class="form-control" id="monthEQ">
-                                    <c:forEach var="i" begin="1" end="${month}">
-                                        <option value="${i}" ${i == month?'selected':''} >${i}月</option>
-                                    </c:forEach>
-
-                                </select>
-                            </div>
                             <div class="form-group">
                                 <select name="districtIdEQ" class="form-control">
                                     <option value="">-- 选择大区--</option>
@@ -272,7 +250,7 @@ function  changemonth(obj) {
                             </div>
 
                             <div class="form-group input-inline">
-                                <button class="btn blue filter-submit" onclick="filtersubmit()">
+                                <button class="btn blue filter-submit">
                                     <i class="fa fa-search"></i> 查询
                                 </button>
                             </div>
@@ -290,6 +268,7 @@ function  changemonth(obj) {
                 </div>
             </div>
             <!-- END ALERTS PORTLET-->
+         </div>
         </div>
     </div>
 </div>

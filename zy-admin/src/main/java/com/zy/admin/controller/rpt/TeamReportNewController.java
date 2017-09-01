@@ -17,9 +17,12 @@ import com.zy.model.query.TeamReportNewQueryModel;
 import com.zy.model.query.UserSpreadQueryModel;
 import com.zy.service.SystemCodeService;
 import com.zy.service.TeamReportNewService;
+import com.zy.util.GcUtils;
 import com.zy.vo.TeamReportNewAdminVo;
 import com.zy.vo.TeamReportNewExportVo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.ParseException;
+import org.apache.poi.util.StringUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,10 +34,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +45,8 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/report/teamReportNew")
 public class TeamReportNewController {
+
+    private static final String SPLIT_PATTERN = "-";
 
     @Autowired
     private TeamReportNewService teamReportNewService;
@@ -62,9 +66,13 @@ public class TeamReportNewController {
     @RequiresPermissions("teamReportNew:view")
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model, String queryDate) throws ParseException {
-        model.addAttribute("month", DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
-        model.addAttribute("year",DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
-        model.addAttribute("type",systemCodeService.findByType("LargeAreaType"));
+        TeamReportNewQueryModel teamReportNewQueryModel = new TeamReportNewQueryModel();
+        if (StringUtils.isNotBlank(queryDate)){
+            model.addAttribute("queryDate",queryDate);
+        }else{
+            model.addAttribute("queryDate",DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0))+SPLIT_PATTERN+DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
+        }
+        model.addAttribute("queryDateLabels", getQueryTimeLabels());
         return "rpt/teamReportNewList";
     }
 
@@ -77,9 +85,14 @@ public class TeamReportNewController {
      * @throws ParseException
      */
     @RequiresPermissions("teamReportNew:view")
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST )
     @ResponseBody
-    public Grid<TeamReportNewAdminVo> list(Model model, TeamReportNewQueryModel teamReportNewQueryModel) throws ParseException {
+    public Grid<TeamReportNewAdminVo> list(Model model, TeamReportNewQueryModel teamReportNewQueryModel,String queryDate) throws ParseException {
+        if (StringUtils.isNotBlank(queryDate)){
+            String [] ym = queryDate.split(SPLIT_PATTERN);
+            teamReportNewQueryModel.setYearEQ(Integer.valueOf(ym[0]));
+            teamReportNewQueryModel.setMonthEQ(Integer.valueOf(ym[1]));
+        }
         Page<TeamReportNew> page = teamReportNewService.findPage(teamReportNewQueryModel);
         Page<TeamReportNewAdminVo> voPage = PageBuilder.copyAndConvert(page, v -> teamReportNewComponent.buildTeamReportNewVolumeListVo(v));
         return new Grid<>(voPage);
@@ -167,7 +180,17 @@ public class TeamReportNewController {
         return ResultBuilder.result(map);
     }
 
-
+    private List<String> getQueryTimeLabels() {
+        LocalDate begin = LocalDate.of(2016, 2, 1);
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        List<String> timeLabels = new ArrayList<>();
+        for (LocalDate itDate = begin; itDate.isEqual(today) || itDate.isBefore(today); itDate = itDate.plusMonths(1)) {
+            timeLabels.add(dateTimeFormatter.format(itDate));
+        }
+        Collections.reverse(timeLabels);
+        return timeLabels;
+    }
 
 
 
