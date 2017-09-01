@@ -197,7 +197,7 @@
         <div class="portlet light bordered">
         <div class="portlet-title">
             <div class="caption">
-                <i class="icon-bar-chart"></i><span>团队报表</span>
+                <i class="icon-bar-chart"></i><span>团队报表(${queryDate})</span>
             </div>
             <div class="actions">
                 <div class="btn-group">
