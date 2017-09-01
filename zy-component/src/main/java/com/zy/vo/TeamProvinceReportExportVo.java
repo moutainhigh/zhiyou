@@ -27,4 +27,8 @@ public class TeamProvinceReportExportVo implements Serializable {
 	private Integer v4ActiveRank;
 	@Field(label = "时间")
 	private String date;
+	@Field(label = "新增特级人数")
+	private Integer newv4;
+	@Field(label = "新增省级人数")
+	private Integer newv3;
 }

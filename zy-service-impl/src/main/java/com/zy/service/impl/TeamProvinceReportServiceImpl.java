@@ -126,6 +126,8 @@ public class TeamProvinceReportServiceImpl implements TeamProvinceReportService 
             teamProvinceReport.setV4ActiveNumber(0);
             teamProvinceReport.setProvince(v.getName());
             teamProvinceReport.setV4ActiveRank(0);
+            teamProvinceReport.setNewv3(0);
+            teamProvinceReport.setNewv4(0);
             teamProvinceReport.setV4ActiveRate(0.00);
             return teamProvinceReport;
         }));
@@ -144,11 +146,19 @@ public class TeamProvinceReportServiceImpl implements TeamProvinceReportService 
             }
         }
         List<TeamProvinceReport> teamProvinceReports = new ArrayList<>(map.values());
+
+        List<TeamProvinceReport> reports = teamProvinceReportMapper.findAll(TeamProvinceReportQueryModel.builder().yearEQ(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(), -2, 0))).monthEQ(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(), -1, 0))).build());
+        Map<String, TeamProvinceReport> oldreportsmap= reports.stream().collect(Collectors.toMap(v -> v.getProvince(), v -> v));
         for (TeamProvinceReport t:teamProvinceReports) {
             if(t.getV4Number() != null && t.getV4Number() != 0){
                 t.setV4ActiveRate(DateUtil.formatDouble( Double.valueOf(t.getV4ActiveNumber()) / Double.valueOf(t.getV4Number()) * 100));
             }else {
                 t.setV4ActiveRate(0.00);
+            }
+            TeamProvinceReport pr = oldreportsmap.get(t.getProvince());
+            if(pr != null){
+                t.setNewv3(t.getV3Number() - pr.getV3Number());
+                t.setNewv4(t.getV4Number() - pr.getV4Number());
             }
         }
         //对list 进行排序

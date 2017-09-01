@@ -35,9 +35,19 @@
                         orderable: true,
                     },
                     {
+                        data: 'newv4',
+                        title: '新增特级人数',
+                        orderable: false,
+                    },
+                    {
                         data: 'v3Number',
                         title: '省级服务商人数',
                         orderable: true,
+                    },
+                    {
+                        data: 'newv3',
+                        title: '新增省级人数',
+                        orderable: false,
                     },
                     {
                         data: 'v4ActiveNumber',

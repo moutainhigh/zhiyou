@@ -188,8 +188,9 @@ public class IndexController {
 			int size = teamProvinceReportList.size();
 			String [] name = new String [size];
 			String [] v4 = new String [size];
+			String [] newv4 = new String [size];
 			String [] v3 = new String [size];
-			String [] v4Active = new String [size];
+			String [] newv3 = new String [size];
 			String [] v4AvticeRate = new String [size];
 
 			for(int i =0;i<teamProvinceReportList.size();i++){
@@ -197,13 +198,15 @@ public class IndexController {
 				name[i]=teamProvinceReport.getProvince();
 				v4[i]= teamProvinceReport.getV4Number()+"";
 				v3[i]= teamProvinceReport.getV3Number()+"";
-				v4Active[i]= teamProvinceReport.getV4ActiveNumber()+"";
+				newv4[i]= teamProvinceReport.getNewv4()+"";
+				newv3[i]= teamProvinceReport.getNewv3()+"";
 				v4AvticeRate[i]= teamProvinceReport.getV4ActiveRate()+"%";
 			}
 			model.addAttribute("name", DateUtil.stringarryToString(name,false));
 			model.addAttribute("v4", DateUtil.stringarryToString(v4,false));
+			model.addAttribute("newv4", DateUtil.stringarryToString(newv4,false));
 			model.addAttribute("v3", DateUtil.stringarryToString(v3,false));
-			model.addAttribute("v4Active", DateUtil.stringarryToString(v4Active,false));
+			model.addAttribute("newv3", DateUtil.stringarryToString(newv3,false));
 			model.addAttribute("v4AvticeRate", DateUtil.stringarryToString(v4AvticeRate,false));
 			model.addAttribute("date", year+"/"+mothNum);
 		}

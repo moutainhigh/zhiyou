@@ -13,13 +13,15 @@
 		<result column="year" property="year" />
 		<result column="month" property="month" />
 		<result column="create_time" property="createTime" />
+		<result column="newv4" property="newv4" />
+		<result column="newv3" property="newv3" />
 	</resultMap>
 
-	<sql id="baseColumn">id,province,v4_number,v3_number,v4_active_number,v4_active_rate,v4_active_rank,year,month,create_time</sql>
+	<sql id="baseColumn">id,province,v4_number,v3_number,v4_active_number,v4_active_rate,v4_active_rank,year,month,create_time,newv3,newv4</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.report.TeamProvinceReport" useGeneratedKeys="true" keyProperty="id">
-	  insert into `ts_team_province_report` (province,v4_number,v3_number,v4_active_number,v4_active_rate,v4_active_rank,year,month,create_time)
-	  values (#{province},#{v4Number},#{v3Number},#{v4ActiveNumber},#{v4ActiveRate},#{v4ActiveRank},#{year},#{month},#{createTime})
+	  insert into `ts_team_province_report` (province,v4_number,v3_number,v4_active_number,v4_active_rate,v4_active_rank,year,month,create_time,newv3,newv4)
+	  values (#{province},#{v4Number},#{v3Number},#{v4ActiveNumber},#{v4ActiveRate},#{v4ActiveRank},#{year},#{month},#{createTime},#{newv3},#{newv4})
 	</insert>
 
 	<delete id="delete">
@@ -38,6 +40,8 @@
 			year = #{year},
 			month = #{month},
 			create_time = #{createTime},
+			newv4 = #{newv4},
+			newv3 = #{newv3},
 		</set>
 		where id = #{id}
 	</update>
@@ -56,6 +60,8 @@
 					<when test="field == 'year'">year = #{teamProvinceReport.year},</when>
 					<when test="field == 'month'">month = #{teamProvinceReport.month},</when>
 					<when test="field == 'createTime'">create_time = #{teamProvinceReport.createTime},</when>
+					<when test="field == 'newv4'">newv4 = #{teamProvinceReport.newv4},</when>
+					<when test="field == 'newv3'">newv3 = #{teamProvinceReport.newv3},</when>
 				</choose>
 				</foreach>
 			</set>

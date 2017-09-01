@@ -31,6 +31,10 @@ public class TeamProvinceReportAdminVo implements Serializable {
 	private Integer month;
 	@Field(label = "创建时间")
 	private Date createTime;
+	@Field(label = "新增特级人数")
+	private Integer newv4;
+	@Field(label = "新增省级人数")
+	private Integer newv3;
 
 	/* 扩展 */
 

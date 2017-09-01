@@ -80,4 +80,12 @@ public class TeamProvinceReport implements Serializable {
     @Query(Predicate.EQ)
     private Date createTime;
 
+    @Field(label = "新增特级人数")
+    @View
+    private Integer newv4;
+
+    @Field(label = "新增省级人数")
+    @View
+    private Integer newv3;
+
 }

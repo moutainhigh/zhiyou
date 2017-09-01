@@ -471,13 +471,15 @@
 		</div>
 	</div>
 	<script>
-		var V4Active='${v4Active}';
 		var v4AvticeRate='${v4AvticeRate}';
 		var V3='${v3}';
 		var V4='${v4}';
+		var newV3='${newv3}';
+		var newV4='${newv4}';
 		var name='${name}';
-		var arrayV4Active=V4Active.split(",");
 		var arrayv4AvticeRate=v4AvticeRate.split(",");
+		var arraynewV3=newV3.split(",");
+		var arraynewV4=newV4.split(",");
 		var arrayV3=V3.split(",");
 		var arrayV4=V4.split(",");
 		var arrayname=name.split(",");
@@ -516,12 +518,12 @@
 					trigger: 'item',
 					formatter: function(param){
 						if(arrayname.length==1){
-							str = param.name + "：<br>特级人数：" + 0 + "<br>" + "省级人数：" + 0 + "<br>特级活跃人数：" + 0 + "<br>" + "特级活跃度：" + 0;
+							str = param.name + "：<br>特级人数：" + 0 + "<br>" + "新增特级人数：" + 0 +"<br>" + "省级人数：" + 0 +"<br>" + "新增省级人数：" + 0 +  "<br>" + "特级活跃度：" + 0;
 						}else {
 							for (var i = 0; i < arrayname.length; i++) {
 								var name = arrayname[i].substring(0, param.name.length);
 								if (param.name == name) {
-									str = param.name + "：<br>特级人数：" + arrayV4[i] + "<br>" + "省级人数：" + arrayV3[i] + "<br>特级活跃人数：" + arrayV4Active[i] + "<br>" + "特级活跃度：" + arrayv4AvticeRate[i];
+									str = param.name + "：<br>特级人数：" + arrayV4[i] + "<br>" + "新增特级人数：" + arraynewV4[i] + "<br>" + "省级人数：" + arrayV3[i] + "<br>" + "新增省级人数：" + arraynewV3[i] +  "<br>" + "特级活跃度：" + arrayv4AvticeRate[i];
 								}
 							}
 						}
