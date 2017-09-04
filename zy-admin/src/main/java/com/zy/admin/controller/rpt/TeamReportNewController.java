@@ -108,11 +108,16 @@ public class TeamReportNewController {
      */
     @RequiresPermissions("teamReportNew:export")
     @RequestMapping("/export")
-    public String export(TeamReportNewQueryModel teamReportNewQueryModel, HttpServletResponse response) throws IOException, ParseException{
+    public String export(TeamReportNewQueryModel teamReportNewQueryModel, HttpServletResponse response,String queryDate) throws IOException, ParseException{
         teamReportNewQueryModel.setPageSize(null);
         teamReportNewQueryModel.setPageNumber(null);
+        if (StringUtils.isNotBlank(queryDate)){
+            String [] ym = queryDate.split(SPLIT_PATTERN);
+            teamReportNewQueryModel.setYearEQ(Integer.valueOf(ym[0]));
+            teamReportNewQueryModel.setMonthEQ(Integer.valueOf(ym[1]));
+        }
         List<TeamReportNew> salesVolume =  teamReportNewService.findExReport(teamReportNewQueryModel);
-        String fileName = "销量报表"+DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0))+"/"+DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0))+".xlsx";
+        String fileName = "销量报表"+teamReportNewQueryModel.getYearEQ()+"/"+teamReportNewQueryModel.getMonthEQ()+".xlsx";
         WebUtils.setFileDownloadHeader(response, fileName);
 
         List<TeamReportNewExportVo> teamReportNewAdminVos = salesVolume.stream().map(teamReportNewComponent::buildTeamReportNewExportVo).collect(Collectors.toList());

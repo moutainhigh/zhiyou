@@ -173,10 +173,9 @@
      }
 
  }
-
     <shiro:hasPermission name="teamReportNew:export">
-    function reportExport() {
-        location.href = '${ctx}/report/teamReportNew/export?' + $('#searchForm').serialize();
+    function reportExport(data) {
+        location.href = '${ctx}/report/teamReportNew/export?' + $('#searchForm').serialize()+'&queryDate='+data;
     }
     </shiro:hasPermission>
 
@@ -256,7 +255,7 @@
                             </div>
                             <shiro:hasPermission name="teamReportNew:export">
                                 <div class="form-group">
-                                    <button type="button" class="btn yellow" onClick="reportExport()">
+                                    <button type="button" class="btn yellow" onClick="reportExport('${queryDate}')">
                                         <i class="fa fa-file-excel-o"></i> 导出Excel
                                     </button>
                                 </div>
