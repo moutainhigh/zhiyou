@@ -16,6 +16,7 @@ import com.zy.service.TeamProvinceReportService;
 import com.zy.vo.TeamProvinceReportAdminVo;
 import com.zy.vo.TeamProvinceReportExportVo;
 import io.gd.generator.api.query.Direction;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.ParseException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +44,8 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/report/teamProvinceReport")
 public class TeamProvinceReportController {
+
+    private static final String SPLIT_PATTERN = "-";
 
     @Autowired
     private TeamProvinceReportService teamProvinceReportService;
@@ -56,10 +64,14 @@ public class TeamProvinceReportController {
      */
     @RequiresPermissions("teamProvinceReport:view")
     @RequestMapping(method = RequestMethod.GET)
-    public String list(Model model) throws ParseException {
-        model.addAttribute("month", DateUtil.getMoth(new Date())-1);
-        model.addAttribute("year",DateUtil.getYear(new Date()));
+    public String list(Model model, String queryDate) throws ParseException {
         model.addAttribute("areas",areaService.findAll(AreaQueryModel.builder().areaTypeEQ(Area.AreaType.省).build()));
+        if (StringUtils.isNotBlank(queryDate)){
+            model.addAttribute("queryDate",queryDate);
+        }else{
+            model.addAttribute("queryDate",DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0))+SPLIT_PATTERN+DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
+        }
+        model.addAttribute("queryDateLabels", getQueryTimeLabels());
         return "rpt/teamProvinceReportList";
     }
 
@@ -73,10 +85,15 @@ public class TeamProvinceReportController {
     @RequiresPermissions("teamProvinceReport:view")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public Grid<TeamProvinceReportAdminVo> list(TeamProvinceReportQueryModel teamProvinceReportQueryModel) throws ParseException {
+    public Grid<TeamProvinceReportAdminVo> list(TeamProvinceReportQueryModel teamProvinceReportQueryModel,String queryDate) throws ParseException {
         if(teamProvinceReportQueryModel.getOrderBy() == null){
             teamProvinceReportQueryModel.setOrderBy("v4ActiveRank");
             teamProvinceReportQueryModel.setDirection(Direction.ASC);
+        }
+        if (StringUtils.isNotBlank(queryDate)){
+            String [] ym = queryDate.split(SPLIT_PATTERN);
+            teamProvinceReportQueryModel.setYearEQ(Integer.valueOf(ym[0]));
+            teamProvinceReportQueryModel.setMonthEQ(Integer.valueOf(ym[1]));
         }
         Page<TeamProvinceReport> page = teamProvinceReportService.findPage(teamProvinceReportQueryModel);
         Page<TeamProvinceReportAdminVo> voPage = PageBuilder.copyAndConvert(page, v -> teamProvinceReportComponent.buildTeamProvinceReportAdminVo(v));
@@ -93,16 +110,37 @@ public class TeamProvinceReportController {
      */
     @RequiresPermissions("teamProvinceReport:export")
     @RequestMapping("/export")
-    public String export(TeamProvinceReportQueryModel teamProvinceReportQueryModel, HttpServletResponse response) throws IOException, ParseException{
+    public String export(TeamProvinceReportQueryModel teamProvinceReportQueryModel, HttpServletResponse response,@RequestParam String queryDate) throws IOException, ParseException{
         teamProvinceReportQueryModel.setPageSize(null);
         teamProvinceReportQueryModel.setPageNumber(null);
+        if(teamProvinceReportQueryModel.getOrderBy() == null){
+            teamProvinceReportQueryModel.setOrderBy("v4ActiveRank");
+            teamProvinceReportQueryModel.setDirection(Direction.ASC);
+        }
+        if (StringUtils.isNotBlank(queryDate)){
+            String [] ym = queryDate.split(SPLIT_PATTERN);
+            teamProvinceReportQueryModel.setYearEQ(Integer.valueOf(ym[0]));
+            teamProvinceReportQueryModel.setMonthEQ(Integer.valueOf(ym[1]));
+        }
         List<TeamProvinceReport> teamProvinceReports =  teamProvinceReportService.findExReport(teamProvinceReportQueryModel);
-        String fileName = "省份服务商活跃报表.xlsx";
+        String fileName = "省份服务商活跃报表"+queryDate+".xlsx";
         WebUtils.setFileDownloadHeader(response, fileName);
         List<TeamProvinceReportExportVo> teamProvinceReportExportVos = teamProvinceReports.stream().map(teamProvinceReportComponent::buildTeamProvinceReportExportVo).collect(Collectors.toList());
         OutputStream os = response.getOutputStream();
         ExcelUtils.exportExcel(teamProvinceReportExportVos, TeamProvinceReportExportVo.class, os);
         return null;
+    }
+
+    private List<String> getQueryTimeLabels() {
+        LocalDate begin = LocalDate.of(2016, 2, 1);
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        List<String> timeLabels = new ArrayList<>();
+        for (LocalDate itDate = begin; itDate.isEqual(today) || itDate.isBefore(today); itDate = itDate.plusMonths(1)) {
+            timeLabels.add(dateTimeFormatter.format(itDate));
+        }
+        Collections.reverse(timeLabels);
+        return timeLabels;
     }
 
 }
