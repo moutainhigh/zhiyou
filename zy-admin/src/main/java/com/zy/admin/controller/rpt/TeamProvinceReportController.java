@@ -57,7 +57,7 @@ public class TeamProvinceReportController {
     private TeamProvinceReportComponent teamProvinceReportComponent;
 
     /**
-     * get 查询 所有数据
+     * get 查询数据
      * @param model
      * @return
      * @throws ParseException

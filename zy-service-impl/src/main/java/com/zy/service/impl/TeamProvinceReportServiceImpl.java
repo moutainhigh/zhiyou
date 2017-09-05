@@ -73,17 +73,13 @@ public class TeamProvinceReportServiceImpl implements TeamProvinceReportService 
 
     @Override
     public void provinceActive() {
-        List<Area> areas = areaService.findAll(new AreaQueryModel());
-        areas = areas.stream().filter(v -> v.getAreaType() == Area.AreaType.省).collect(Collectors.toList());
+        List<Area> areas = areaService.findAll(new AreaQueryModel()).stream().filter(v -> v.getAreaType() == Area.AreaType.省).collect(Collectors.toList());
         Map<Long, Area> areaMap= areaService.findAll(new  AreaQueryModel()).stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
         Map<Long,UserInfo>userInfoMap = userInfoService.findAll(new UserInfoQueryModel()).stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v));
-        UserQueryModel userQueryModel = new UserQueryModel();
-        OrderQueryModel orderQueryModel = new OrderQueryModel();
-        List<User> users = userService.findAll(userQueryModel);
-        List<Order> orders = orderService.findAll(orderQueryModel);
-        users = users.stream().filter(v -> v.getUserRank() == User.UserRank.V4 || v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
+        List<Order> orders = orderService.findAll(new OrderQueryModel());
+        List<User> users = userService.findAll(new UserQueryModel()).stream().filter(v -> v.getUserRank() == User.UserRank.V4 || v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
         userInfoMap.putAll(userInfoService.findAll(UserInfoQueryModel.builder().build()).stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v)));
-        //循环处理用户地区
+        //循环处理所有用户省份地区信息
         for (User user : users) {
             user.setBossId(null);
             Long areaId =  userInfoMap.get(user.getId())==null?null:userInfoMap.get(user.getId()).getAreaId();
@@ -94,7 +90,7 @@ public class TeamProvinceReportServiceImpl implements TeamProvinceReportService 
                     areaId=area!=null?area.getParentId():null;
                 }while (areaId!=null);
                 if (area!=null) {
-                    user.setBossId(area.getId()); //暂时借用这个字段 修改时 注意
+                    user.setBossId(area.getId()); //暂时借用这个字段
                 }
             }
         }
@@ -109,6 +105,7 @@ public class TeamProvinceReportServiceImpl implements TeamProvinceReportService 
         instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
         Date begin = Date.from(instant);
 
+        //统计系统所有活跃用户
         List<Order> filterOrders = orders.stream()
                 .filter(order -> order.getOrderStatus() == Order.OrderStatus.已完成
                         || order.getOrderStatus() == Order.OrderStatus.已支付 || order.getOrderStatus() == Order.OrderStatus.已发货)
@@ -131,6 +128,8 @@ public class TeamProvinceReportServiceImpl implements TeamProvinceReportService 
             teamProvinceReport.setV4ActiveRate(0.00);
             return teamProvinceReport;
         }));
+
+        //统计各省人数及活跃人数
         for (User user : users) {
             TeamProvinceReport teamProvinceReport = map.get(user.getBossId());
             if(teamProvinceReport != null){
@@ -147,6 +146,7 @@ public class TeamProvinceReportServiceImpl implements TeamProvinceReportService 
         }
         List<TeamProvinceReport> teamProvinceReports = new ArrayList<>(map.values());
 
+        //计算活跃度和新增人数
         List<TeamProvinceReport> reports = teamProvinceReportMapper.findAll(TeamProvinceReportQueryModel.builder().yearEQ(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(), -2, 0))).monthEQ(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(), -1, 0))).build());
         Map<String, TeamProvinceReport> oldreportsmap= reports.stream().collect(Collectors.toMap(v -> v.getProvince(), v -> v));
         for (TeamProvinceReport t:teamProvinceReports) {
@@ -161,7 +161,8 @@ public class TeamProvinceReportServiceImpl implements TeamProvinceReportService 
                 t.setNewv4(t.getV4Number() - pr.getV4Number());
             }
         }
-        //对list 进行排序
+
+        //对list 进行排序，处理排名
         teamProvinceReports.sort((TeamProvinceReport h1, TeamProvinceReport h2) -> h2.getV4ActiveRate().compareTo(h1.getV4ActiveRate()));
         int i =1;
         Double rate = 0.00;

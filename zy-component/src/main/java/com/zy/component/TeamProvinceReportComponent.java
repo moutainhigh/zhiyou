@@ -12,6 +12,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class TeamProvinceReportComponent {
 
+    /**
+     * 封装vo
+     * @param teamProvinceReport
+     * @return
+     */
     public TeamProvinceReportAdminVo buildTeamProvinceReportAdminVo(TeamProvinceReport teamProvinceReport){
         TeamProvinceReportAdminVo teamProvinceReportAdminVo = new TeamProvinceReportAdminVo();
         BeanUtils.copyProperties(teamProvinceReport, teamProvinceReportAdminVo);
@@ -19,7 +24,11 @@ public class TeamProvinceReportComponent {
 
     }
 
-
+    /**
+     * 封装VO
+     * @param teamProvinceReport
+     * @return
+     */
     public TeamProvinceReportExportVo buildTeamProvinceReportExportVo(TeamProvinceReport teamProvinceReport){
         TeamProvinceReportExportVo teamProvinceReportExportVo = new TeamProvinceReportExportVo();
         BeanUtils.copyProperties(teamProvinceReport, teamProvinceReportExportVo);
