@@ -426,7 +426,7 @@
         </shiro:hasAnyPermissions>
 
         <shiro:hasAnyPermissions name="userTreeReport:view,v4TreeReport:view,orderReport:view,teamReport:view,userUpgradeReport:view,financeReport:view,orderQuantity:view
-                                      ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view,activitySummaryReport:view,salesVolumeReport:view,teamProvinceReport:view">
+                                      ,cityAgent:view,profitMOM:view,v4Activity:view,teamOrderMonth:view,teamOrderMonth:view,activitySummaryReport:view,salesVolumeReport:view,teamProvinceReport:view,teamReportNew:view">
           <li>
             <a href="javascript:;">
               <i class="icon-grid"></i>
