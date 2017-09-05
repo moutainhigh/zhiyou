@@ -142,7 +142,7 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0/5 * * * ? *</value>
+						<value>0 0 0 6 1/1 ?</value>
 					</property>
 				</bean>
 				<!-- 团队人员分布报表 -->
@@ -155,7 +155,7 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0/5 * * * ? *</value>
+						<value>0 0 0 6 1/1 ?</value>
 					</property>
 				</bean>
 				<!-- 销量报表 -->
@@ -180,7 +180,7 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0/5 * * * ? *</value>
+						<value>0 0 0 6 1/1 ?</value>
 					</property>
 				</bean>
 				<!--收益单结算job-->
