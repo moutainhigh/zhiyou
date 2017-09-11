@@ -14,20 +14,43 @@
 <title>${sys}- 授权查询</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <link rel="stylesheet" href="${stccdn}/css/error.css" />
+  <style>
+    .souquan {
+      width: 100%;
+      text-align: center;
+      position: absolute;
+      z-index: 99;
+      color: #2f71b5;
+      top: 39%;
+      left:0;
+      display: none;
+    }
+    #imgWrap {
+      position: relative;
+    }
+    @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
+      .souquan {
+       font-size: 12px;
+      }
+    }
+  </style>
 <script type="text/javascript">
   $(function() {
       $('.fa-search').click(function(){
         var codeText = $.trim($('#searchInput').val());  //获取授权编码
 
         if(codeText != ''){
-          $.ajax({  
+          $.ajax({
             url: "${ctx}/code/check",
             type: "post",
             dataType: "json",
             data: {'code': codeText},
             success: function(data){
               if(data.code == 0){
-                $('#authorImage').attr('src',"${ctx}/code/image?userId="+data.data);
+                console.log(data);
+                $('#authorImage').attr('src',"${ctx}/images/333.jpg");
+                $(".souquan").show();
+                $(".souquan span").html("授权码:"+$("#searchInput").val());
                 $('.error').hide();
                 $('#imgWrap').show();
               }else{
@@ -39,8 +62,8 @@
                 $('.error').show();
                 $('#imgWrap').hide();
               }
-            }  
-          }); 
+            }
+          });
         }else{
           $.dialog({
             content : '授权码不能为空！',
@@ -48,7 +71,7 @@
             timeout : 2
           });
         }
- 
+
       });
   });
 </script>
@@ -62,7 +85,7 @@
   <div class="list-group">
     <div class="list-item ">
         <div class="list-text">
-          <input id="searchInput" name="searchInput" class="form-input" placeholder="请输入授权码" value="" type="text">
+          <input id="searchInput" name="searchInput" class="form-input" placeholder="请输入授权码1111" value="" type="text">
         </div>
         <div class="list-unit">
           <i class="fa fa-search btn blue"></i>
@@ -72,6 +95,10 @@
   
   <section id="imgWrap" class="p-15">
     <img id="authorImage" class="block-100" src="">
+    <div class="souquan">
+      <div style="width:100%;text-align: center">张三</div>
+      <span></span>
+    </div>
   </section>
   
   <section class="error hide">
