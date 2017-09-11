@@ -1530,7 +1530,7 @@ public class OrderServiceImpl implements OrderService {
 
 			Boolean toV4 = toV4Map.get(userId);
 			User user = userMap.get(userId);
-			if (toV4 != null) {
+			if (toV4 != null  && v.getBuyerUserRank() != UserRank.V4) {
 				User parent = userMap.get(user.getParentId());
 				while(parent.getUserRank() != UserRank.V4) {
 					parent = userMap.get(parent.getParentId());
