@@ -20,9 +20,21 @@
       text-align: center;
       position: absolute;
       z-index: 99;
-      color: #2f71b5;
-      top: 39%;
+      color: #333;
+      font-weight: bold;
+      top: 38%;
       left:0;
+      display: none;
+    }
+    .userRank {
+      width: 100%;
+      position: absolute;
+      top: 53%;
+      left:0;
+      text-align: center;
+      font-size: 22px;
+      color: #2f71b5;
+      z-index: 99;
       display: none;
     }
     #imgWrap {
@@ -30,8 +42,11 @@
     }
     @media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){/* 兼容iphone5 */
       .souquan {
-       font-size: 12px;
-      }
+        font-size: 12px;
+      }.userRank {
+        font-size: 18px;
+       }
+
     }
   </style>
 <script type="text/javascript">
@@ -47,10 +62,25 @@
             data: {'code': codeText},
             success: function(data){
               if(data.code == 0){
-                console.log(data);
+//                console.log(data);
+//                console.log(data.data.nickname);
+//                console.log(data.data.userRank);
                 $('#authorImage').attr('src',"${ctx}/images/333.jpg");
-                $(".souquan").show();
+                $(".souquan,.userRank").show();
                 $(".souquan span").html("授权码:"+$("#searchInput").val());
+                $(".souquan .name").html(data.data.nickname);
+                var userRank;
+                if(data.data.userRank==="V4"){
+                  userRank="特级服务商";
+                }else if(data.data.userRank==="V3"){
+                  userRank="省级服务商";
+                }else if(data.data.userRank==="V2"){
+                  userRank="市级服务商";
+                }else if(data.data.userRank==="V1"){
+                  userRank="VIP服务商";
+                }
+                $(".userRank b").html(userRank);
+
                 $('.error').hide();
                 $('#imgWrap').show();
               }else{
@@ -96,10 +126,10 @@
   <section id="imgWrap" class="p-15">
     <img id="authorImage" class="block-100" src="">
     <div class="souquan">
-      <div style="width:100%;text-align: center">张三</div>
+      <div style="width:100%;text-align: center;font-size: 18px;" class="name"></div>
       <span></span>
-
     </div>
+    <div class="userRank"><b></b></div>
   </section>
   
   <section class="error hide">
