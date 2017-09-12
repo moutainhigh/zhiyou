@@ -567,7 +567,7 @@
 			<if test="paidTimeLT != null">
 				AND a.paid_time &lt; #{paidTimeLT}
 			</if>
-			AND a.buyer_user_rank = 4
+			AND (a.buyer_user_rank = 4 or (a.quantity = 3600 and a.seller_id = 1))
 		</where>
 	</select>
 
