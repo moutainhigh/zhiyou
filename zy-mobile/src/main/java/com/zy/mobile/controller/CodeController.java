@@ -52,7 +52,7 @@ public class CodeController {
     public Result<?> check(@RequestParam String code) {
         User user = userService.findByCode(code);
         if (user != null) {
-            return ResultBuilder.result(user.getId());
+            return ResultBuilder.result(user);
         } else {
             return ResultBuilder.error("授权码不存在");
         }
