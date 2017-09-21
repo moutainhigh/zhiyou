@@ -495,57 +495,61 @@
       messageAlert("请先提交检测报告");
     }
   }
+  var flag=false;
   //确认旅游申请
   function submitTravel(){
+    if(flag == true){
+      return false;
+    }
+    flag=true;
     if($('#phone1').val()==null||$('#phone1').val()==""){
       layer.msg("请填入推荐人手机号！");
     }else{
-    $.ajax({
-      url : '${ctx}/tour/findparentInfobyPhone',
-      data : {
-        phone:$('#phone1').val()
-      },
-      dataType : 'json',
-      type : 'POST',
-      success : function(result) {
-        if(result.code != 0) {
-          layer.msg(result.message);
-          return;
-        }else{
-          $.dialog({
-            content : '请确认信息是否正确 <br/>姓名：'+result.data.nickname+'<br/>电话：'+result.data.phone,
-            callback : function(index) {
-              if (index == 1) {
-                $(".miui-dialog").remove();
-                $(".policyInfoMain").hide();
-                $("#tourchange").html("");
-                $(".tourApply").show();
-                $.ajax({
-                  url : '${ctx}/tour/findTourApple',
-                  dataType : 'json',
-                  type : 'POST',
-                  success : function(result1) {
-                    if(result1.code != 0) {
-                      return;
-                    }
-                    var pageData= result1.data;
-                    if (pageData.length) {
-                      for ( var i in pageData) {
-                        var row = pageData[i];
-                        if (row.userRank!="V0"){
-                          buildRow(row);
+      $.ajax({
+        url : '${ctx}/tour/findparentInfobyPhone',
+        data : {
+          phone:$('#phone1').val()
+        },
+        dataType : 'json',
+        type : 'POST',
+        success : function(result) {
+          if(result.code != 0) {
+            layer.msg(result.message);
+            return;
+          }else{
+            $.dialog({
+              content : '请确认信息是否正确 <br/>姓名：'+result.data.nickname+'<br/>电话：'+result.data.phone,
+              callback : function(index) {
+                if (index == 1) {
+                  $(".miui-dialog").remove();
+                  $(".policyInfoMain").hide();
+                  $("#tourchange").html("");
+                  $(".tourApply").show();
+                  $.ajax({
+                    url : '${ctx}/tour/findTourApple',
+                    dataType : 'json',
+                    type : 'POST',
+                    success : function(result1) {
+                      if(result1.code != 0) {
+                        return;
+                      }
+                      var pageData= result1.data;
+                      if (pageData.length) {
+                        for ( var i in pageData) {
+                          var row = pageData[i];
+                          if (row.userRank!="V0"){
+                            buildRow(row);
+                          }
                         }
                       }
                     }
-                  }
-                });
+                  });
+                }
               }
-            }
-          });
+            });
+          }
         }
-      }
-    });
-
+      });
     }
   }
   //取消旅游申请
@@ -766,9 +770,14 @@
       $(this).siblings(".TravelDisTime").find("p").css("color","#333");
       $(this).siblings(".TravelDisTime").find("p.TravelDisTimecolor").css("color","#f15b00");
     });
-  })
+  });
+  var flagApply=false;
   //旅游详情页面点击报名
   function MyApplyFun(){
+    if(flagApply == true){
+      return false;
+    }
+    flagApply=true;
      //装载数据
     if(tourTimeid==""){
       messageAlert("请选择出游时间");
