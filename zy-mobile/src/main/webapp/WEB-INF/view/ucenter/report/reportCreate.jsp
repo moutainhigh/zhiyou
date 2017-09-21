@@ -352,7 +352,7 @@
               <span>填写推荐人手机号：</span><input type="number" style="height: 30px;width:50%;" class="form-input" value="${parentPhone}" ${parentPhone!=null?'readonly':''} id="phone" name="phone" placeholder="填写客户手机号"/>
           </div>--%>
           <div class="form-btn" style="padding-bottom: 50px;">
-            <input class="btn orange btn-block round-2" type="button" value="确 认" style="margin-bottom:10px;" onclick="submitTravel()">
+            <input class="btn orange btn-block round-2" id="tourRound" type="button" value="确 认" style="margin-bottom:10px;" onclick="submitTravel()">
             <div style="height:35px;background:#f2f3f5;text-align:center;line-height:35px;border:1px solid #c9c9c9;" onclick="hideTravel()">取 消</div>
           </div>
         </div>
@@ -480,6 +480,7 @@
                   if(result1.data!=null){
                     $("#phone1").attr("readonly",true);
                   }
+
                 } else{
                   messageAlert(result1.message);
                 }
@@ -537,6 +538,7 @@
                         }
                       }
                     }
+                    $("#tourRound").attr("disabled",true);
                   }
                 });
               }
@@ -806,6 +808,7 @@
               laytpl(rowTpl3).render(pageData,function(html) {
                 $('.tourApplyTableNew').append(html);
               });
+              $(".MyApply").attr("disabled",true);
             }
           });
         }else {
