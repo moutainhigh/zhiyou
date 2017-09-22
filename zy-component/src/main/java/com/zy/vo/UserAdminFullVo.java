@@ -55,6 +55,8 @@ public class UserAdminFullVo implements Serializable {
 	private Boolean isDeleted;
 	@Field(label = "是否直升特级")
 	private Boolean isToV4;
+	@Field(label = "是否大区总裁")
+	private Boolean isPresident;
 
 	/* 扩展 */
 	@Field(label = "userInfo")

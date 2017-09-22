@@ -51,6 +51,8 @@ public class UserAdminVo implements Serializable {
 	private Boolean isShareholder;
 	@Field(label = "是否删除")
 	private Boolean isDeleted;
+	@Field(label = "是否大区总裁")
+	private Boolean isPresident;
 	@Field(label = "是否直升特级")
 	private Boolean isToV4;
 	@Field(label = "最后一次登录时间")

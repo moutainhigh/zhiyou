@@ -1,31 +1,26 @@
 package com.zy.component;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import com.sun.tools.corba.se.idl.IncludeGen;
 import com.zy.common.model.query.Page;
 import com.zy.common.util.BeanUtils;
 import com.zy.common.util.DateUtil;
-import com.zy.entity.act.Activity;
 import com.zy.entity.act.Policy;
-import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
 import com.zy.entity.sys.SystemCode;
 import com.zy.entity.tour.*;
-import com.zy.common.util.BeanUtils;
-import com.zy.entity.cms.Article;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.dto.AreaDto;
-import com.zy.model.query.*;
+import com.zy.model.query.PolicyQueryModel;
+import com.zy.model.query.ReportQueryModel;
+import com.zy.model.query.TourTimeQueryModel;
+import com.zy.model.query.TourUserQueryModel;
 import com.zy.service.*;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.*;
-import com.zy.util.GcUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 

@@ -26,15 +26,15 @@ public interface UserService {
 	List<User> findAll(UserQueryModel userQueryModel);
 
 	void setParentId(Long id, Long parentId);
-	
+
 	User registerAgent(AgentRegisterDto agentRegisterDto);
 
 	long count(UserQueryModel userQueryModel);
-	
+
 	String hashPassword(String plainPassword);
 
 	void modifyPassword(Long id, String password);
-	
+
 	void modifyNickname(Long id, String nickname);
 
 	void modifyLastLoginTime(Long id);
@@ -75,6 +75,8 @@ public interface UserService {
 	void modifyIsShareholder(Long id, boolean isShareholder);
 
 	void modifyIsDeleted(Long id, boolean isDeleted);
+
+	void modifyIsPresident(Long id, boolean isPresident);
 
 	void modifyIsToV4(Long id, boolean isToV4);
 

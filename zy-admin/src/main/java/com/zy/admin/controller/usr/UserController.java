@@ -44,23 +44,23 @@ import static com.zy.model.Constants.MODEL_ATTRIBUTE_RESULT;
 @RequestMapping("/user")
 @Controller
 public class UserController {
-	
+
 	@Autowired
 	@Lazy
 	private UserService userService;
-	
+
 	@Autowired
 	private CacheComponent cahceComponent;
-	
+
 	@Autowired
 	private UserComponent userComponent;
-	
+
 	@Autowired
 	private LocalCacheComponent localCacheComponent;
 
 	@Autowired
 	private SystemCodeService systemCodeService;
-	
+
 	@RequiresPermissions("user:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
@@ -69,7 +69,7 @@ public class UserController {
 		model.addAttribute("largeAreas",largeAreaTypes);
 		return "usr/userList";
 	}
-	
+
 	@RequiresPermissions("user:view")
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
@@ -90,20 +90,20 @@ public class UserController {
 		Page<UserAdminVo> voPage = PageBuilder.copyAndConvert(page, userComponent::buildAdminVo);
 		return new Grid<>(voPage);
 	}
-	
+
 	@RequiresPermissions("user:view")
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public String detail(Long id, Model model, Boolean isPure) {
-		
+
 		model.addAttribute("isPure", isPure == null ? false : isPure);
 		model.addAttribute("levelUuid", Identities.uuid2());
 		model.addAttribute("treeUuid", Identities.uuid2());
 		model.addAttribute("upgradeUuid", Identities.uuid2());
-		
+
 		User persistence = userService.findOne(id);
 		validate(persistence, NOT_NULL, "user is null");
 		model.addAttribute("user", userComponent.buildAdminFullVo(persistence));
-		
+
 		List<User> allUsers = localCacheComponent.getUsers();
 		Map<Long, User> userMap = localCacheComponent.getUserMap();
 		User current = userMap.get(id);
@@ -114,9 +114,9 @@ public class UserController {
 			parentId = parentUser.getParentId();
 			parents.add(parentUser);
 		}
-		
+
 		Collections.reverse(parents);
-		
+
 		List<Map<String, Object>> list = parents.stream().map(user -> {
 			Map<String, Object> map = new HashMap<>();
 
@@ -132,7 +132,7 @@ public class UserController {
 			map.put("isParent", true);
 			return map;
 		}).collect(Collectors.toList());
-		
+
 		{
 			Map<String, Object> map = new HashMap<>();
 			UserRank userRank = persistence.getUserRank();
@@ -146,8 +146,8 @@ public class UserController {
 			map.put("isParent", allUsers.stream().filter(v -> persistence.getId().equals(v.getParentId())).findFirst().isPresent());
 			list.add(map);
 		}
-		
-		
+
+
 		List<User> children = allUsers.stream().filter(v -> id.equals(v.getParentId())).collect(Collectors.toList());
 		while (!children.isEmpty()) {
 			List<Map<String, Object>> childrenList = children.stream().map(user -> {
@@ -165,17 +165,17 @@ public class UserController {
 				map.put("isParent", allUsers.stream().filter(v -> user.getId().equals(v.getParentId())).findFirst().isPresent());
 				return map;
 			}).collect(Collectors.toList());
-			
+
 			Map<Long, Boolean> childrenIdMap = children.stream().collect(Collectors.toMap(v -> v.getId(), v -> true));
 			List<User> childrenOfChildren = allUsers.stream().filter(v -> childrenIdMap.get(v.getParentId()) != null).collect(Collectors.toList());
 			children.clear();
 			children.addAll(childrenOfChildren);
 			list.addAll(childrenList);
 		}
-		model.addAttribute("json", JsonUtils.toJson(list)); 
+		model.addAttribute("json", JsonUtils.toJson(list));
 		return "usr/userDetail";
 	}
-	
+
 	@RequiresPermissions("user:edit")
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
 	public String update(@PathVariable Long id, Model model) {
@@ -183,7 +183,7 @@ public class UserController {
 		model.addAttribute("user", userService.findOne(id));
 		return "usr/userUpdate";
 	}
-	
+
 	@RequiresPermissions("user:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
@@ -258,7 +258,7 @@ public class UserController {
 		}
 		return "redirect:/user";
 	}
-	
+
 	@RequiresPermissions("user:freeze")
 	@RequestMapping("/unFreeze/{id}")
 	public String unFreeze(@PathVariable Long id, RedirectAttributes redirectAttributes) {
@@ -271,19 +271,19 @@ public class UserController {
 		}
 		return "redirect:/user";
 	}
-	
+
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create() {
 		return "usr/userCreate";
 	}
-	
+
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(Model model, RedirectAttributes redirectAttributes, String passwordSure) {
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("注册失败"));
 		// TODO
 		return "redirect:/user";
 	}
-	
+
 	@RequestMapping(value = "/checkPhone")
 	@ResponseBody
 	public boolean checkPhone(@RequestParam String phone, Long id) {
@@ -295,14 +295,14 @@ public class UserController {
 		}
 		return true;
 	}
-	
+
 	@RequiresPermissions("user:modifyParent")
 	@RequestMapping(value = "/modifyParent", method = RequestMethod.POST)
 	@ResponseBody
 	public Result<?> modifyParent(Long userId, String parentPhone, String remark) {
 		User user = userService.findOne(userId);
 		validate(user, NOT_NULL, "user id" + userId + " not fount");
-		
+
 		User parentUser = userService.findByPhone(parentPhone);
 		if(parentUser == null) {
 			return ResultBuilder.error("邀请人手机号不存在");
@@ -378,7 +378,7 @@ public class UserController {
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		return "redirect:/user";
 	}
-	
+
 //	@RequiresPermissions("user:setRoot")
 //	@RequestMapping(value = "/setRoot", method = RequestMethod.GET)
 //	public String setRoot(@RequestParam Long id, RedirectAttributes redirectAttributes) {
@@ -410,7 +410,7 @@ public class UserController {
 			throw new UnauthorizedException();
 		}
 	}
-	
+
 	private Long getPrincipalUserId() {
 		AdminPrincipal principal = (AdminPrincipal)SecurityUtils.getSubject().getPrincipal();
 		return principal.getUserId();
@@ -426,6 +426,14 @@ public class UserController {
 		userService.modifyLastLoginTime(id);
 		return true;
 	}
-	
-	
+
+	@RequiresPermissions("user:setIsPresident")
+	@RequestMapping(value = "/setIsPresident", method = RequestMethod.GET)
+	public String setIsPresident(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+		userService.modifyIsPresident(id, true);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
+		return "redirect:/user";
+	}
+
+
 }

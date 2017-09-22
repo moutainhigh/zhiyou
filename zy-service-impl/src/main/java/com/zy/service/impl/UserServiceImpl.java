@@ -4,8 +4,6 @@ import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
 import com.zy.common.util.DateUtil;
-import com.zy.common.model.tree.TreeHelper;
-import com.zy.common.model.tree.TreeNode;
 import com.zy.component.FncComponent;
 import com.zy.component.UsrComponent;
 import com.zy.entity.fnc.Account;
@@ -18,18 +16,16 @@ import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
 import com.zy.entity.usr.UserInfo;
 import com.zy.extend.Producer;
-import com.zy.mapper.*;
+import com.zy.mapper.AccountMapper;
 import com.zy.mapper.UserInfoMapper;
+import com.zy.mapper.UserLogMapper;
+import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
-import com.zy.model.dto.AgentRegisterDto;
-import com.zy.model.dto.DepositSumDto;
-import com.zy.model.dto.UserTeamCountDto;
-import com.zy.model.dto.UserTeamDto;
+import com.zy.model.dto.*;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserlongQueryModel;
 import com.zy.service.SystemCodeService;
 import com.zy.service.UserService;
-import com.zy.model.dto.UserDto;
 import me.chanjar.weixin.common.util.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
@@ -40,12 +36,8 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.*;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.common.util.ValidateUtils.*;
 import static com.zy.entity.fnc.CurrencyType.现金;
 import static com.zy.entity.fnc.CurrencyType.积分;
 import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
@@ -287,15 +279,15 @@ public class UserServiceImpl implements UserService {
             validate(account);
             accountMapper.insert(account);
         }
-		{
-			Account account = new Account();
-			account.setAmount(zero);
-			account.setCurrencyType(积分);
-			account.setUserId(userId);
-			account.setVersion(0);
-			validate(account);
-			accountMapper.insert(account);
-		}
+        {
+            Account account = new Account();
+            account.setAmount(zero);
+            account.setCurrencyType(积分);
+            account.setUserId(userId);
+            account.setVersion(0);
+            validate(account);
+            accountMapper.insert(account);
+        }
         {
             Account account = new Account();
             account.setAmount(zero);
@@ -592,6 +584,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void modifyIsPresident(Long id, boolean isPresident) {
+        findAndValidate(id);
+
+        User merge = new User();
+        merge.setId(id);
+        merge.setIsPresident(isPresident);
+
+        userMapper.merge(merge, "isPresident");
+    }
+
+    @Override
     public void modifyIsToV4(@NotNull Long id, boolean isToV4) {
         findAndValidate(id);
 
@@ -603,8 +606,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-	public void setParentId(Long id, Long parentId) {
-		User user = findAndValidate(id);
+    public void setParentId(Long id, Long parentId) {
+        User user = findAndValidate(id);
         User parent = findAndValidate(parentId);
         if (parent.getUserType() != UserType.代理) {
             throw new BizException(BizCode.ERROR, "推荐人用户类型必须是代理");
@@ -615,7 +618,7 @@ public class UserServiceImpl implements UserService {
         Long originParentId = parentId;
         Long plainParentId = user.getParentId();
         if (plainParentId != null && !originParentId.equals(plainParentId)) {
-        	throw new BizException(BizCode.ERROR, "用户[id=" + id + "]已经存在推荐人, 不能设置推荐人");
+            throw new BizException(BizCode.ERROR, "用户[id=" + id + "]已经存在推荐人, 不能设置推荐人");
         }
         if (parentId.equals(plainParentId)) {
             return; // 幂等操作
@@ -634,8 +637,8 @@ public class UserServiceImpl implements UserService {
         }
         user.setParentId(originParentId);
         userMapper.update(user);
-	}
-	
+    }
+
     @Override
     public void modifyParentIdAdmin(@NotNull Long id, @NotNull Long parentId, @NotNull Long operatorId, String remark) {
         User user = findAndValidate(id);
@@ -692,12 +695,12 @@ public class UserServiceImpl implements UserService {
         long []data = new long[]{0,0,0,0};
         if(user.getUserRank()==UserRank.V4){//特级的做   递归处理
             Map<String,Long> returnMap = new HashMap<String,Long>();
-         Map<String,Long> dataMap = conyteamTotalV4(userId,returnMap);
+            Map<String,Long> dataMap = conyteamTotalV4(userId,returnMap);
             data[0] = dataMap.get("V4");
             data[1] = dataMap.get("V3");
             data[2] = dataMap.get("V2");
             data[3] = dataMap.get("V1");
-         }else{ //直属查询
+        }else{ //直属查询
             List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
             for (UserTeamCountDto userTeamDto :dataList){
                 if (UserRank.V4==userTeamDto.getUserRankEQ()){
@@ -710,7 +713,7 @@ public class UserServiceImpl implements UserService {
                     data[4] = userTeamDto.getTotalnumber()==null?0L:userTeamDto.getTotalnumber();
                 }
             }
-         }
+        }
         return data;
     }
 
@@ -718,48 +721,48 @@ public class UserServiceImpl implements UserService {
      * 递归统计数据
      * @return
      */
-   private Map<String,Long> conyteamTotalV4(Long userId, Map<String,Long> returnMap){
-       List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
-       if (dataList==null||dataList.isEmpty()){
-           return returnMap;
-       }
-       for (UserTeamCountDto userTeamDto :dataList){
-           if (UserRank.V4==userTeamDto.getUserRankEQ()){
-               Long countV4 = returnMap.get("V4")==null?0L:returnMap.get("V4");
-                  if (userTeamDto.getTotalnumber()!=null){
-                      countV4=countV4+userTeamDto.getTotalnumber();
-                  }
-               returnMap.put("V4",countV4);
-           }else if (UserRank.V3==userTeamDto.getUserRankEQ()){
-               Long countV3 = returnMap.get("V3")==null?0L:returnMap.get("V3");
-                   if (userTeamDto.getTotalnumber()!=null){
-                       countV3=countV3+userTeamDto.getTotalnumber();
-                   }
-               returnMap.put("V3",countV3);
+    private Map<String,Long> conyteamTotalV4(Long userId, Map<String,Long> returnMap){
+        List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
+        if (dataList==null||dataList.isEmpty()){
+            return returnMap;
+        }
+        for (UserTeamCountDto userTeamDto :dataList){
+            if (UserRank.V4==userTeamDto.getUserRankEQ()){
+                Long countV4 = returnMap.get("V4")==null?0L:returnMap.get("V4");
+                if (userTeamDto.getTotalnumber()!=null){
+                    countV4=countV4+userTeamDto.getTotalnumber();
+                }
+                returnMap.put("V4",countV4);
+            }else if (UserRank.V3==userTeamDto.getUserRankEQ()){
+                Long countV3 = returnMap.get("V3")==null?0L:returnMap.get("V3");
+                if (userTeamDto.getTotalnumber()!=null){
+                    countV3=countV3+userTeamDto.getTotalnumber();
+                }
+                returnMap.put("V3",countV3);
 
-           }else if(UserRank.V2==userTeamDto.getUserRankEQ()){
-               Long countV2 = returnMap.get("V2")==null?0L:returnMap.get("V2");
-                   if (userTeamDto.getTotalnumber()!=null){
-                       countV2=countV2+userTeamDto.getTotalnumber();
-                   }
-               returnMap.put("V2",countV2);
+            }else if(UserRank.V2==userTeamDto.getUserRankEQ()){
+                Long countV2 = returnMap.get("V2")==null?0L:returnMap.get("V2");
+                if (userTeamDto.getTotalnumber()!=null){
+                    countV2=countV2+userTeamDto.getTotalnumber();
+                }
+                returnMap.put("V2",countV2);
 
-           }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
-               Long countV1 = returnMap.get("V1")==null?0L:returnMap.get("V1");
-               if (userTeamDto.getTotalnumber()!=null){
-                   countV1=countV1+userTeamDto.getTotalnumber();
-               }
-               returnMap.put("V1",countV1);
-           }
-       }
-       UserQueryModel userQueryModel = new UserQueryModel();
-       userQueryModel.setParentIdNL(userId);
-       List<User> userList = userMapper.findAll(userQueryModel);
-       for (User user :userList){
-           conyteamTotalV4(user.getId(),returnMap);
-       }
-       return returnMap;
-   }
+            }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
+                Long countV1 = returnMap.get("V1")==null?0L:returnMap.get("V1");
+                if (userTeamDto.getTotalnumber()!=null){
+                    countV1=countV1+userTeamDto.getTotalnumber();
+                }
+                returnMap.put("V1",countV1);
+            }
+        }
+        UserQueryModel userQueryModel = new UserQueryModel();
+        userQueryModel.setParentIdNL(userId);
+        List<User> userList = userMapper.findAll(userQueryModel);
+        for (User user :userList){
+            conyteamTotalV4(user.getId(),returnMap);
+        }
+        return returnMap;
+    }
 
     /**
      * 统计 直属团队
@@ -800,10 +803,10 @@ public class UserServiceImpl implements UserService {
         dataMap.put("remark","从V0%");
         dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),0,0));
         dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthEnd(new Date(),1,0));
-          if(flag){
-              long total=userLogMapper.count(dataMap);
-              returnMap.put("total",total);
-          }
+        if(flag){
+            long total=userLogMapper.count(dataMap);
+            returnMap.put("total",total);
+        }
         dataMap.put("parentid",userId);
         List<UserTeamCountDto>userTeamDtoList=userLogMapper.findGByRank(dataMap);
         for (UserTeamCountDto userTeamDto :userTeamDtoList){
@@ -857,7 +860,7 @@ public class UserServiceImpl implements UserService {
         List<UserTeamDto> userRankList= userLogMapper.findByRank(userlongQueryModel);
         Page<UserTeamDto> page = new Page<>();
         if (flag){//详情页
-           long total =userLogMapper.countByRank(userlongQueryModel);
+            long total =userLogMapper.countByRank(userlongQueryModel);
             page.setTotal(total);
         }
         page.setPageNumber(userlongQueryModel.getPageNumber());

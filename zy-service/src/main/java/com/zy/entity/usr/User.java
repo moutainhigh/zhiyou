@@ -30,22 +30,22 @@ import static com.zy.entity.usr.User.*;
 @QueryModel
 @Type(label = "用户")
 @ViewObject(groups = {VO_LIST, VO_SIMPLE, VO_ADMIN, VO_ADMIN_SIMPLE, VO_ADMIN_FULL, VO_REPORT},
-	collectionViews = {
-		@CollectionView(name = "userUpgrades", elementGroup = UserUpgrade.VO_ADMIN, groups = VO_ADMIN_FULL),
-		@CollectionView(name = "teammates", elementGroup = VO_ADMIN_SIMPLE, groups = VO_ADMIN_FULL)
-	},
-	associationViews = {
-		@AssociationView(name = "userInfo", associationGroup = UserInfo.VO_ADMIN, groups = VO_ADMIN_FULL)
-	},
-	views = {
-		@View(name = "provinceId", type = Long.class, groups = VO_REPORT),
-		@View(name = "cityId", type = Long.class, groups = VO_REPORT),
-		@View(name = "districtId", type = Long.class, groups = VO_REPORT),
-		@View(name = "v4UserId", type = Long.class, groups = VO_REPORT),
-		@View(name = "v4UserNickname", type = String.class, groups = VO_REPORT),
-		@View(name = "rootId", type = Long.class, groups = VO_REPORT),
-		@View(name = "rootRootName", type = String.class, groups = VO_REPORT)
-	}
+		collectionViews = {
+				@CollectionView(name = "userUpgrades", elementGroup = UserUpgrade.VO_ADMIN, groups = VO_ADMIN_FULL),
+				@CollectionView(name = "teammates", elementGroup = VO_ADMIN_SIMPLE, groups = VO_ADMIN_FULL)
+		},
+		associationViews = {
+				@AssociationView(name = "userInfo", associationGroup = UserInfo.VO_ADMIN, groups = VO_ADMIN_FULL)
+		},
+		views = {
+				@View(name = "provinceId", type = Long.class, groups = VO_REPORT),
+				@View(name = "cityId", type = Long.class, groups = VO_REPORT),
+				@View(name = "districtId", type = Long.class, groups = VO_REPORT),
+				@View(name = "v4UserId", type = Long.class, groups = VO_REPORT),
+				@View(name = "v4UserNickname", type = String.class, groups = VO_REPORT),
+				@View(name = "rootId", type = Long.class, groups = VO_REPORT),
+				@View(name = "rootRootName", type = String.class, groups = VO_REPORT)
+		}
 
 )
 public class User implements Serializable {
@@ -72,10 +72,10 @@ public class User implements Serializable {
 
 		private final int level;
 
-		public int getLevel() {
-			return level;
-		}
+	public int getLevel() {
+		return level;
 	}
+}
 
 	@Id
 	@Query(Predicate.IN)
@@ -247,4 +247,9 @@ public class User implements Serializable {
 	@Field(label = "设置大区备注")
 	@View(groups = {VO_ADMIN})
 	private String setlargearearemark;
+
+	@Query(Predicate.EQ)
+	@Field(label = "是否大区总裁")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private Boolean isPresident;
 }
