@@ -36,6 +36,41 @@
 <%--</div>--%>
 <%--</form>--%>
 <%--</script>--%>
+<script id="modifyValidTimeTmpl" type="text/x-handlebars-template">
+    <form id="modifyForm2" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+        <input type="hidden" name="ids" value="{{ids}}"/>
+        <div class="form-body">
+            <div class="alert alert-danger display-hide">
+                <i class="fa fa-exclamation-circle"></i>
+                <button class="close" data-close="alert"></button>
+                <span class="form-errors">您填写的信息有误，请检查。</span>
+            </div>
+            <div class="form-group">
+                <label class='control-label col-md-3'>设置大区:</label>
+                <div class='col-md-5'>
+                    <select class='form-control' id='largeArea2' name="largeArea2">
+                        <option value=''>-- 大区类型 --</option>
+                        <c:forEach items='${largeAreas}' var='largeArea'><option value='${largeArea.systemValue}'>${largeArea.systemName}</option></c:forEach>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class='control-label col-md-3'>备注信息:</label>
+                <div class='col-md-5'><textarea class='form-control' style='width: 220px;height: 120px;' id='remark3' name="remark3"></textarea></div>
+            </div>
+        </div>
+        <div class="form-actions fluid">
+            <div class="col-md-offset-3 col-md-9">
+                <button id="modifySubmit2" type="button" class="btn green">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+                <button id="modifyCancel2" class="btn default" data-href="">
+                    <i class="fa fa-chevron-left"></i> 返回
+                </button>
+            </div>
+        </div>
+    </form>
+</script>
 <script id="modifyImpl" type="text/x-handlebars-template">
     <form id="modifyForm{{id}}" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
         <input type="hidden" name="userId" value="{{id}}"/>
@@ -213,56 +248,6 @@
 
         });
 
-        <%--var modifyLastloginTimeTemplate = Handlebars.compile($('#modifyLastloginTimeTmpl').html());--%>
-        <%--$('#dataTable').on('click', '.modifyLastloginTime-info', function () {--%>
-        <%--var id = $(this).data('id');--%>
-        <%--var nickname = $(this).data('nickname');--%>
-        <%--var lastloginTime = $(this).data('lastloginTime');--%>
-        <%--alert(lastloginTime);--%>
-        <%--var data = {--%>
-        <%--id: id,--%>
-        <%--nickname: nickname,--%>
-        <%--lastloginTime: lastloginTime--%>
-        <%--};--%>
-        <%--var html = modifyLastloginTimeTemplate(data);--%>
-        <%--var index = layer.open({--%>
-        <%--type: 1,--%>
-        <%--//skin: 'layui-layer-rim', //加上边框--%>
-        <%--area: ['600px', '360px'], //宽高--%>
-        <%--content: html--%>
-        <%--});--%>
-
-        <%--var $form = $('#modifylastloginTimeForm' + id);--%>
-        <%--$form.validate({--%>
-        <%--rules: {--%>
-        <%--'lastloginTime': {--%>
-        <%--required: true--%>
-        <%--}--%>
-        <%--},--%>
-        <%--messages: {}--%>
-        <%--});--%>
-
-        <%--$('#modifyLastloginTimeSubmit' + id).bind('click', function () {--%>
-        <%--var result = $form.validate().form();--%>
-        <%--if (result) {--%>
-        <%--var url = '${ctx}/user/editLastloginTime';--%>
-        <%--$.post(url, $form.serialize(), function (data) {--%>
-        <%--if (data.code === 0) {--%>
-        <%--layer.alert('操作成功');--%>
-        <%--layer.close(index);--%>
-        <%--grid.getDataTable().ajax.reload(null, false);--%>
-        <%--} else {--%>
-        <%--layer.alert('操作失败,原因' + data.message);--%>
-        <%--}--%>
-        <%--});--%>
-        <%--}--%>
-        <%--})--%>
-
-        <%--$('#modifyLastloginTimeCancel' + id).bind('click', function () {--%>
-        <%--layer.close(index);--%>
-        <%--})--%>
-
-        <%--});--%>
 
         var modifyPasswordTemplate = Handlebars.compile($('#modifyPasswordImpl').html());
         $('#dataTable').on('click', '.user-modify-password', function () {
@@ -470,6 +455,13 @@
                 },
                 columns: [
                     {
+                        data: 'id',
+                        title: '<input type="checkbox" name="checkAll" id="checkAll" value=""/>',
+                        render: function (data, type, full) {
+                                return '<input type="checkbox" name="id" id="id" value="' + data + '"/>';
+                        }
+                    },
+                    {
                         data: '',
                         title: '用户信息',
                         render: function (data, type, full) {
@@ -614,8 +606,11 @@
                                 }
                                 </shiro:hasPermission>
                                 <shiro:hasPermission name="user:setIsPresident">
+                                if (full.isPresident) {
+                                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setIsPresident?id=' + full.id + '" data-confirm="您确定要取消[' + full.nickname + ']的大区总裁吗？"><i class="fa fa-smile-o"></i> 取消大区总裁 </a>';
+                                }
                                 if (!full.isPresident) {
-                                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setIsPresident?id=' + full.id + '" data-confirm="您确定要设置[' + full.nickname + ']为大区总裁吗？"><i class="fa fa-smile-o"></i> 成为大区总裁 </a>';
+                                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setIsPresident?id=' + full.id + '&flag=0" data-confirm="您确定要设置[' + full.nickname + ']为大区总裁吗？"><i class="fa fa-smile-o"></i> 成为大区总裁 </a>';
                                 }
                                 </shiro:hasPermission>
                                 <shiro:hasPermission name="user:setIsToV4">
@@ -654,7 +649,158 @@
             }
         });
 
+        <shiro:hasPermission name="user:setLargeArea">
+        var modifyTemplate = Handlebars.compile($('#modifyValidTimeTmpl').html());
+        $('.table-toolbar').on('click', '#modifyValidTimeBtn',function(){
+            var ids = '';
+            $("input[name='id']").each(function() {
+                var isChecked = $(this).attr("checked");
+                if(isChecked == 'checked'){
+                    ids += $(this).val() + ',';
+                }
+            })
+            if(ids.length > 0){
+                var data = {
+                    ids: ids
+                };
+                var html = modifyTemplate(data);
+                var index = layer.open({
+                    type: 1,
+                    //skin: 'layui-layer-rim', //加上边框
+                    area: ['600px', '360px'], //宽高
+                    content: html
+                });
+
+                $form = $('#modifyForm2');
+                $form.validate({
+                    rules: {
+                        'largeArea2': {
+                            required: true
+                        }
+                    },
+                    messages: {}
+                });
+
+                $('#modifySubmit2').bind('click', function () {
+                    var result = $form.validate().form();
+                    if (result) {
+                        var url = '${ctx}/user/batchSetLargeArea';
+                        $.post(url, $('#modifyForm2').serialize(), function (data) {
+                            if (data.code === 0) {
+                                layer.alert('操作成功');
+                                layer.close(index);
+                                grid.getDataTable().ajax.reload(null, false);
+                            } else {
+                                layer.alert('操作失败:' + data.message);
+                            }
+                        });
+                    }
+                    layer.close(index);
+                })
+
+                $('#modifyCancel2').bind('click', function () {
+                    layer.close(index);
+                })
+
+            } else {
+                layer.alert("请至少选择一条记录！", {icon: 2});
+            }
+        });
+        </shiro:hasPermission>
+
     });
+
+    $('#dataTable').on('click', '#checkAll', function(){
+                var isChecked = $(this).attr("checked");
+                if(isChecked == 'checked'){
+                    $("input[name='id']").each(function() {
+                        var disableAttr = $(this).attr("disabled");
+                        if(disableAttr == undefined){
+                            $(this).parent().addClass("checked");
+                            $(this).attr("checked",'true');
+                        }
+                    });
+                } else {
+                    $("input[name='id']").each(function() {
+                        var disableAttr = $(this).attr("disabled");
+                        if(disableAttr == undefined){
+                            $(this).parent().removeClass("checked");
+                            $(this).removeAttr("checked");
+                        }
+                    });
+                }
+            }
+    );
+
+    <shiro:hasPermission name="user:setIsPresident">
+    $('.table-toolbar').on('click', '#grantBtn',function(){
+        layer.confirm('您确认要批量设置大区总裁吗？', {
+            btn: ['设置','取消']
+        }, function(){
+            var ids = '';
+            $("input[name='id']").each(function() {
+                var isChecked = $(this).attr("checked");
+                if(isChecked == 'checked'){
+                    ids += $(this).val() + ',';
+                }
+            })
+            if(ids.length > 0){
+                $.ajax({
+                    url : '${ctx}/user/batchSetPresident',
+                    dataType:"json",
+                    type: "post",
+                    data : {
+                        ids : ids
+                    },
+                    success: function( result ) {
+                        layer.alert(result.message, {icon: 1});
+                        grid.getDataTable().ajax.reload(null, false);
+                    }
+                });
+
+            } else {
+                layer.alert("请至少选择一条记录！", {icon: 2});
+            }
+
+        }, function(){
+
+        });
+    });
+
+    $('.table-toolbar').on('click', '#cancelBtn',function(){
+        layer.confirm('您确认要批量取消大区总裁吗？', {
+            btn: ['确认','取消']
+        }, function(){
+            var ids = '';
+            $("input[name='id']").each(function() {
+                var isChecked = $(this).attr("checked");
+                if(isChecked == 'checked'){
+                    ids += $(this).val() + ',';
+                }
+            })
+            if(ids.length > 0){
+                $.ajax({
+                    url : '${ctx}/user/batchCancelPresident',
+                    dataType:"json",
+                    type: "post",
+                    data : {
+                        ids : ids
+                    },
+                    success: function( result ) {
+                        layer.alert(result.message, {icon: 1});
+                        grid.getDataTable().ajax.reload(null, false);
+                    }
+                });
+
+            } else {
+                layer.alert("请至少选择一条记录！", {icon: 2});
+            }
+
+        }, function(){
+
+        });
+    });
+    </shiro:hasPermission>
 
     var $addVipDialog;
     function addVip(id) {
@@ -699,7 +845,7 @@
             content: "<form action='' class='form-horizontal' style='margin-top: 20px;'>" + "<div class='form-body'>" + "<div class='form-group'>"
             + "<label class='control-label col-md-3'>设置大区:</label>" + "<div class='col-md-5'>"
             + "<select class='form-control' id='largeArea'><option value=''>-- 大区类型 --</option>" +
-            "<c:forEach items='${largeAreas}' var='largeArea'><option value='${largeArea.systemValue}'>${largeArea.systemName}</option></c:forEach>"
+            "<c:forEach items='${largeAreas}' var='largeArea'><option value='${largeArea.systemValue}'>${largeArea.systemName}</option></c:forEach></select>"
             + "<div class='form-group'>" + "<label class='control-label col-md-3'>备注信息:</label>"
             + "<div class='col-md-5'><textarea class='form-control' style='width: 220px;height: 120px;' id='remark2'></textarea></div>" + "</div>" + "</div>"
             + "<div class='form-actions fluid'>" + "<div class='col-md-offset-3 col-md-9'>" + "<button type='button' class='btn green' onclick='submitLargeAreaBtn(" + id + ")'>"
@@ -881,6 +1027,27 @@
                                     <i class="fa fa-search"></i> 查询
                                 </button>
                             </div>
+
+                            <shiro:hasPermission name="user:setIsPresident">
+                                <div class="form-group">
+                                    <button type="button" class="btn green" id="grantBtn">
+                                        <i class="fa fa-send-o"></i> 批量设置大区总裁
+                                    </button>
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn cancel" id="cancelBtn">
+                                        <i class="fa fa-times"></i> 批量取消大区总裁
+                                    </button>
+                                </div>
+                            </shiro:hasPermission>
+
+                            <shiro:hasPermission name="user:setLargeArea">
+                                <div class="form-group">
+                                    <button type="button" class="btn green" id="modifyValidTimeBtn">
+                                        <i class="fa fa-send-o"></i> 批量设置大区
+                                    </button>
+                                </div>
+                            </shiro:hasPermission>
                         </form>
                     </div>
                     <table class="table table-striped table-bordered table-hover" id="dataTable">

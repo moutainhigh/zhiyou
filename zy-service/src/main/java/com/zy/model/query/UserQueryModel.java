@@ -66,7 +66,7 @@ public class UserQueryModel implements Serializable {
 
 	private Boolean isToV4EQ;
 
-	private Boolean isPresidentEQ;
+	private Boolean isPresident;
 
 	private String nameorPhone;
 
