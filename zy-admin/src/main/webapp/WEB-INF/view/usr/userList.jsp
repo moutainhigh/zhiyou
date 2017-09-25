@@ -567,6 +567,18 @@
                         }
                     },
                     {
+                        data: 'isPresident',
+                        title: '是否大区总裁',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if (full.isPresident) {
+                                return '<label class="badge badge-info">大区总裁</label>';
+                            } else {
+                                return '';
+                            }
+                        }
+                    },
+                    {
                         data: 'id',
                         title: '操作',
                         width: '20%',
