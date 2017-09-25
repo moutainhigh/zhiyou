@@ -873,7 +873,7 @@
         var largeArea = $('#largeArea3').find("option:selected").val();
         $.post('${ctx}/user/setLargeArea', {
             id: id,
-            largeArea: largeArea,
+            largeArea3: largeArea,
             remark2: remark2
         }, function (result) {
             toastr.success(result.message, '提示信息');
