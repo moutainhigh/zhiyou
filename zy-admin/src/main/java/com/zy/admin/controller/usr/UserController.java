@@ -239,17 +239,17 @@ public class UserController {
 	/**
 	 * 设置大区
 	 * @param id
-	 * @param largeArea
+	 * @param largeArea3
 	 * @param remark2
      * @return
      */
 	@RequiresPermissions("user:setLargeArea")
 	@RequestMapping("/setLargeArea")
 	@ResponseBody
-	public Result<?> setLargeArea(Long id, String largeArea, String remark2) {
+	public Result<?> setLargeArea(Long id, String largeArea3, String remark2) {
 		checkAndValidateIsPlatform(id);
 		try {
-			userService.modifyLargeAreaAdmin(id, largeArea, getPrincipalUserId(), remark2);
+			userService.modifyLargeAreaAdmin(id, largeArea3, getPrincipalUserId(), remark2);
 		} catch (Exception e) {
 			return new ResultBuilder<>().message(e.getMessage()).build();
 		}

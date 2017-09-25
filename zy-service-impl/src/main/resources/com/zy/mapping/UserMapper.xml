@@ -160,6 +160,9 @@
 			<if test="inviterIdEQ != null">
 				and inviter_id = #{inviterIdEQ}
 			</if>
+			<if test="largeArea != null">
+				and largeArea = #{largeArea}
+			</if>
 			<if test="isHonorDirectorEQ != null">
 				and is_honor_director = #{isHonorDirectorEQ}
 			</if>
@@ -269,6 +272,9 @@
 			</if>
 			<if test="inviterIdEQ != null">
 				and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="largeArea != null">
+				and largeArea = #{largeArea}
 			</if>
 			<if test="isHonorDirectorEQ != null">
 				and is_honor_director = #{isHonorDirectorEQ}

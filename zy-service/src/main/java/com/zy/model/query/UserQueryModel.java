@@ -72,6 +72,8 @@ public class UserQueryModel implements Serializable {
 
 	private String remark;
 
+	private Integer largeArea;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;

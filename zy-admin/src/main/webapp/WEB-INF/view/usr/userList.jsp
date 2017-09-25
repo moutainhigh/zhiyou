@@ -652,7 +652,7 @@
                                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="editLastLoginTimeAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 重置登录时间 </a>';
                                 </shiro:hasPermission>
                                 <shiro:hasPermission name="user:setLargeArea">
-                                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="addLargeArea(' + full.id + ')"><i class="fa fa-user"></i> 设置大区 </a>';
+                                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="addLargeArea(' + full.id + ')"><i class="fa fa-user"></i>  </a>';
                                 </shiro:hasPermission>
                             }
                             return optionHtml;
@@ -856,7 +856,7 @@
         $addLargeAreaDialog = $.window({
             content: "<form action='' class='form-horizontal' style='margin-top: 20px;'>" + "<div class='form-body'>" + "<div class='form-group'>"
             + "<label class='control-label col-md-3'>设置大区:</label>" + "<div class='col-md-5'>"
-            + "<select class='form-control' id='largeArea'><option value=''>-- 大区类型 --</option>" +
+            + "<select class='form-control' id='largeArea3'><option value=''>-- 大区类型 --</option>" +
             "<c:forEach items='${largeAreas}' var='largeArea'><option value='${largeArea.systemValue}'>${largeArea.systemName}</option></c:forEach></select>"
             + "<div class='form-group'>" + "<label class='control-label col-md-3'>备注信息:</label>"
             + "<div class='col-md-5'><textarea class='form-control' style='width: 220px;height: 120px;' id='remark2'></textarea></div>" + "</div>" + "</div>"
@@ -870,7 +870,7 @@
     }
     function submitLargeAreaBtn(id) {
         var remark2 = $('#remark2').val();
-        var largeArea = $('#largeArea').find("option:selected").val();
+        var largeArea = $('#largeArea3').find("option:selected").val();
         $.post('${ctx}/user/setLargeArea', {
             id: id,
             largeArea: largeArea,
@@ -1023,6 +1023,21 @@
                                     <option value="1">是</option>
                                     <option value="0">否</option>
                                 </select>
+                            </div>
+
+                            <div class="form-group">
+                                <select name="isPresident" class="form-control">
+                                    <option value="">-- 是否大区总裁 --</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                    <select class='form-control'  name="largeArea">
+                                        <option value=''>-- 大区类型 --</option>
+                                        <c:forEach items='${largeAreas}' var='largeArea'><option value='${largeArea.systemValue}'>${largeArea.systemName}</option></c:forEach>
+                                    </select>
                             </div>
 
                             <div class="form-group">
