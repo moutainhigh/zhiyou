@@ -652,7 +652,7 @@
                                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="editLastLoginTimeAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 重置登录时间 </a>';
                                 </shiro:hasPermission>
                                 <shiro:hasPermission name="user:setLargeArea">
-                                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="addLargeArea(' + full.id + ')"><i class="fa fa-user"></i>  </a>';
+                                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="addLargeArea(' + full.id + ')"><i class="fa fa-user"></i> 设置大区 </a>';
                                 </shiro:hasPermission>
                             }
                             return optionHtml;
