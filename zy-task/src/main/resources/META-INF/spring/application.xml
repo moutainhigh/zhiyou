@@ -31,6 +31,8 @@
 	<dubbo:reference  interface="com.zy.service.TeamReportNewService" id="teamReportNewService"/>
 	<dubbo:reference interface="com.zy.service.UserInfoService" id="userInfoService"/>
 	<dubbo:reference  interface="com.zy.service.TeamProvinceReportService" id="teamProvinceReportService"/>
+	<dubbo:reference  interface="com.zy.service.LargeareaDaySalesService" id="largeareaDaySalesService"/>
+	<dubbo:reference  interface="com.zy.service.LargeareaMonthSalesService" id="largeareaMonthSalesService"/>
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
 
@@ -177,6 +179,30 @@
 						<bean id ="teamProvinceReportJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.task.job.TeamProvinceReportJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0 0 1 1/1 ?</value>
+					</property>
+				</bean>
+               <!-- 大区销量日报表 -->
+				<bean id="largeareaDaySalesJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id ="largeareaDaySalesJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.LargeareaDaySalesJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0 0 1 1/1 ?</value>
+					</property>
+				</bean>
+               <!-- 大区销量月报表 -->
+				<bean id="largeareaMonthSalesJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id ="largeareaMonthSalesJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.LargeareaMonthSalesJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
