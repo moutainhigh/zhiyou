@@ -245,6 +245,13 @@ public class UserServiceImpl implements UserService {
         usrComponent.recordUserLog(id, operatorId, "设置用户等级", "从" + plainUserRank + "改为" + userRank + ", 备注" + remark);
     }
 
+    /**
+     * 修改大区
+     * @param id
+     * @param largeArea
+     * @param operatorId
+     * @param remark2
+     */
     @Override
     public void modifyLargeAreaAdmin(@NotNull Long id,@NotNull String largeArea,@NotNull Long operatorId, String remark2) {
         User user = findAndValidate(id);
@@ -583,6 +590,11 @@ public class UserServiceImpl implements UserService {
         userMapper.merge(merge, "isDeleted");
     }
 
+    /**
+     * 设置大区总裁
+     * @param id
+     * @param isPresident
+     */
     @Override
     public void modifyIsPresident(Long id, boolean isPresident) {
         findAndValidate(id);
