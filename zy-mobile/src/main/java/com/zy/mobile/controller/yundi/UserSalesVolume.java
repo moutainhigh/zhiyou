@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +56,10 @@ public class UserSalesVolume {
      */
     @RequestMapping(value = "/index", method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> index(String userId) {
+    public Result<?> index(HttpServletRequest request, HttpServletResponse response, String userId) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Map<String, Object> map = new HashMap<>();
         Long id =  Long.parseLong(userId);
         List<Account> accounts = accountService.findByUserId(id);
@@ -87,7 +92,10 @@ public class UserSalesVolume {
      */
     @RequestMapping(value = "/salesVolume", method = RequestMethod.POST)
     @ResponseBody
-    public Result<?>  salesVolume(String userId,String userRank) {
+    public Result<?>  salesVolume(HttpServletRequest request, HttpServletResponse response,String userId,String userRank) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Long id =  Long.parseLong(userId);
         OrderQueryModel orderQueryModel = new OrderQueryModel();
         orderQueryModel.setUserIdEQ(id);
@@ -117,7 +125,10 @@ public class UserSalesVolume {
      */
     @RequestMapping(value = "/salesVolumeDetail", method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> salesVolumeDetail(String userId) {
+    public Result<?> salesVolumeDetail(HttpServletRequest request, HttpServletResponse response,String userId) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Long id =  Long.parseLong(userId);
         OrderQueryModel orderQueryModel = new OrderQueryModel();
         orderQueryModel.setUserIdEQ(id);
@@ -132,7 +143,10 @@ public class UserSalesVolume {
      */
     @RequestMapping(value = "teamDetail",method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> ajaxTeamDetail(String userId, String nameorPhone) {
+    public Result<?> ajaxTeamDetail(HttpServletRequest request, HttpServletResponse response,String userId, String nameorPhone) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Long id =  Long.parseLong(userId);
         UserQueryModel userQueryModel = new UserQueryModel();
         userQueryModel.setParentIdEQ(id);
@@ -151,7 +165,10 @@ public class UserSalesVolume {
      */
     @RequestMapping(value = "directlyUnderGradeDetail",method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> directlyUnderGradeDetail(String userId) {
+    public Result<?> directlyUnderGradeDetail(HttpServletRequest request, HttpServletResponse response,String userId) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Long id =  Long.parseLong(userId);
         //我的直属特级
         List<User> v4List = userComponent.conyteamTotalV4(id);
@@ -167,7 +184,10 @@ public class UserSalesVolume {
      */
     @RequestMapping(value = "/subordinateSubordinateDetail", method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> subordinateSubordinateDetail(String userId) {
+    public Result<?> subordinateSubordinateDetail(HttpServletRequest request, HttpServletResponse response,String userId) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Map<String, Object> map = new HashMap<>();
         Long id =  Long.parseLong(userId);
         //我的直属下级

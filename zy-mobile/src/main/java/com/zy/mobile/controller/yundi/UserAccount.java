@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,8 +49,11 @@ public class UserAccount  {
 
     @RequestMapping(value="/countIncomeDataByUser", method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> countIncomeDataByUser(String userIdstr) {
+    public Result<?> countIncomeDataByUser(HttpServletRequest request, HttpServletResponse response,String userIdstr) {
         try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Methods", "POST");
+            response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
             if (userIdstr == null || "".equals(userIdstr)) {
                 return ResultBuilder.error("参数有错");
             }
@@ -86,8 +91,11 @@ public class UserAccount  {
 
     @RequestMapping(value = "/orderRevenue", method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> profit(String type, String userIdstr){
+    public Result<?> profit(HttpServletRequest request, HttpServletResponse response,String type, String userIdstr){
         try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Methods", "POST");
+            response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
             if (type == null || "".equals(type) || userIdstr == null || "".equals(userIdstr)) {
                 return ResultBuilder.error("参数有错");
             }
@@ -134,8 +142,11 @@ public class UserAccount  {
 
     @RequestMapping(value = "/revenueDetail", method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> revenueDetailAjax(String type, String monthstr, String userIdstr) {
+    public Result<?> revenueDetailAjax(HttpServletRequest request, HttpServletResponse response,String type, String monthstr, String userIdstr) {
         try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Methods", "POST");
+            response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
             if (type == null || "".equals(type) || userIdstr == null || "".equals(userIdstr)||monthstr==null||"".equals(monthstr)) {
                 return ResultBuilder.error("参数有错");
             }
