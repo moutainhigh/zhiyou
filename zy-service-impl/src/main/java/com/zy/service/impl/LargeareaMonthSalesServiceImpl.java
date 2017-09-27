@@ -1,27 +1,14 @@
 package com.zy.service.impl;
 
-import com.zy.common.model.query.Page;
-import com.zy.common.util.DateUtil;
-import com.zy.entity.mal.Order;
 import com.zy.entity.report.LargeareaMonthSales;
-import com.zy.entity.report.TeamProvinceReport;
-import com.zy.entity.sys.Area;
-import com.zy.entity.usr.User;
-import com.zy.entity.usr.UserInfo;
-import com.zy.mapper.TeamProvinceReportMapper;
-import com.zy.model.query.*;
-import com.zy.service.*;
+import com.zy.mapper.LargeareaMonthSalesMapper;
+import com.zy.model.query.LargeareaMonthSalesQueryModel;
+import com.zy.service.LargeareaMonthSalesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.time.*;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by liang on 2017/9/26.
@@ -31,14 +18,16 @@ import java.util.stream.Collectors;
 public class LargeareaMonthSalesServiceImpl implements LargeareaMonthSalesService {
 
 
+    @Autowired
+    private LargeareaMonthSalesMapper largeareaMonthSalesMapper;
 
     @Override
     public List<LargeareaMonthSales> findAll(LargeareaMonthSalesQueryModel largeareaMonthSalesQueryModel) {
-        return null;
+        return largeareaMonthSalesMapper.findAll(largeareaMonthSalesQueryModel);
     }
 
     @Override
-    public void insert(LargeareaMonthSales LargeareaMonthSales) {
-
+    public void insert(LargeareaMonthSales largeareaMonthSales) {
+        largeareaMonthSalesMapper.insert(largeareaMonthSales);
     }
 }

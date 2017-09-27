@@ -177,6 +177,16 @@ public class DateUtil {
         cal.setTime(date);
         return cal.get(Calendar.MONTH)+1;
     }
+    /**
+     * 查询 指定时间 时间所属月份
+     * @param date
+     * @return
+     */
+    public static int getDay(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.DATE);
+    }
 
     /**
      * 查询 当前 时间所属年份
@@ -459,6 +469,11 @@ public class DateUtil {
         System.out.println(getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         System.out.println(DateUtil.getMoth(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         System.out.println(DateFormatUtils.format(DateUtil.getMonthData(new Date(),-3,0),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println("-------------------");
+        System.out.println(DateUtil.getDay(DateUtil.getMonthData(new Date(),0,-1)));
+        System.out.println("-------------------");
+        System.out.println(DateFormatUtils.format(DateUtil.getMonthData(new Date(),-12,0),"yyyy-MM-dd HH:mm:ss"));
+
       /*  ystem.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("年龄:"+getAge("411528201607192688"));
         System.out.println(DateUtil.getMoth(new Date()));

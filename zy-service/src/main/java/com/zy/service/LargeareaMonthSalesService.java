@@ -10,6 +10,6 @@ public interface LargeareaMonthSalesService {
 
      List<LargeareaMonthSales> findAll(LargeareaMonthSalesQueryModel largeareaMonthSalesQueryModel);
 
-     void insert(LargeareaMonthSales LargeareaMonthSales);
+     void insert(LargeareaMonthSales largeareaMonthSales);
 
 }
