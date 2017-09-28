@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/newReport")
-public class NewReport {
+public class NewReportController {
 
     @Autowired
     private NewReportComponent newReportComponent;
