@@ -473,6 +473,9 @@ public class DateUtil {
         System.out.println(DateUtil.getDay(DateUtil.getMonthData(new Date(),0,-1)));
         System.out.println("-------------------");
         System.out.println(DateFormatUtils.format(DateUtil.getMonthData(new Date(),-12,0),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println("-------------------");
+        System.out.println(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
+        System.out.println(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
 
       /*  ystem.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("年龄:"+getAge("411528201607192688"));
