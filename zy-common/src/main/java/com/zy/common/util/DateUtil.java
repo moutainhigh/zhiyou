@@ -468,6 +468,8 @@ public class DateUtil {
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         System.out.println(DateUtil.getMoth(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
+        System.out.println("-------------------");
+        System.out.println(DateUtil.getMonthData(new Date(),-3,0).getTime()<new Date().getTime());
         System.out.println(DateFormatUtils.format(DateUtil.getMonthData(new Date(),-3,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("-------------------");
         System.out.println(DateUtil.getDay(DateUtil.getMonthData(new Date(),0,-1)));
