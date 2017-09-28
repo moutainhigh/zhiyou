@@ -71,7 +71,7 @@ public class LargeareaDaySalesJob implements Job {
             //过滤大区非空特级
             List<User> v4Users = userService.findAll(UserQueryModel.builder().userRankEQ(User.UserRank.V4).build()).stream().filter(v -> v.getLargearea() != null).collect(Collectors.toList());
             List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");
-            Map<String, LargeareaDaySales> map = largeAreaTypes.stream().collect(Collectors.toMap(v -> v.getSystemName(), v -> {
+            Map<String, LargeareaDaySales> map = largeAreaTypes.stream().collect(Collectors.toMap(v -> v.getSystemValue(), v -> {
                 LargeareaDaySales largeareaDaySales = new LargeareaDaySales();
                 largeareaDaySales.setCreateTime(new Date());
                 largeareaDaySales.setMonth(DateUtil.getMothNum(DateUtil.getMonthData(new Date(),0,-1)));
@@ -84,7 +84,7 @@ public class LargeareaDaySalesJob implements Job {
             }));
             //处理逻辑，计算各区销量
             for (User user : v4Users){
-                LargeareaDaySales largeareaDaySales = map.get(user.getLargearea());
+                LargeareaDaySales largeareaDaySales = map.get(user.getLargearea()     );
                 if(largeareaDaySales != null){
                     List<Order> orderList = orderMap.get(user.getId());
                     if(orderList != null ){

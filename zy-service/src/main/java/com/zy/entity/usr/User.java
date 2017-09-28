@@ -252,4 +252,10 @@ public class User implements Serializable {
 	@Field(label = "是否大区总裁")
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
 	private Boolean isPresident;
+
+
+	@Query(Predicate.EQ)
+	@Field(label = "所属大区总裁id")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private Long presidentId;
 }

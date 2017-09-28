@@ -57,6 +57,8 @@ public class UserAdminFullVo implements Serializable {
 	private Boolean isToV4;
 	@Field(label = "是否大区总裁")
 	private Boolean isPresident;
+	@Field(label = "所属大区总裁id")
+	private Long presidentId;
 
 	/* 扩展 */
 	@Field(label = "userInfo")
@@ -71,6 +73,8 @@ public class UserAdminFullVo implements Serializable {
 	private UserAdminSimpleVo parent;
 	@Field(label = "上级总经理id")
 	private UserAdminSimpleVo boss;
+	@Field(label = "所属大区总裁")
+	private UserAdminSimpleVo president;
 	@Field(label = "userUpgrades")
 	private List<UserUpgradeAdminVo> userUpgrades = new ArrayList<>();
 	@Field(label = "teammates")

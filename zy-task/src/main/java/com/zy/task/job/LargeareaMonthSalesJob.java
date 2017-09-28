@@ -73,7 +73,7 @@ public class LargeareaMonthSalesJob implements Job {
             //过滤大区非空特级
             List<User> v4Users = userService.findAll(UserQueryModel.builder().userRankEQ(User.UserRank.V4).build()).stream().filter(v -> v.getLargearea() != null).collect(Collectors.toList());
             List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");
-            Map<String, LargeareaMonthSales> map = largeAreaTypes.stream().collect(Collectors.toMap(v -> v.getSystemName(), v -> {
+            Map<String, LargeareaMonthSales> map = largeAreaTypes.stream().collect(Collectors.toMap(v -> v.getSystemValue(), v -> {
                 LargeareaMonthSales largeareaMonthSales = new LargeareaMonthSales();
                 largeareaMonthSales.setCreateTime(new Date());
                 largeareaMonthSales.setMonth(DateUtil.getMothNum(DateUtil.getMonthData(now,-1,0)));

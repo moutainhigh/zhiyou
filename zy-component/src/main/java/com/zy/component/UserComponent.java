@@ -94,6 +94,10 @@ public class UserComponent {
 		if (bossId != null) {
 			userAdminVo.setBoss(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(bossId)));
 		}
+		Long presidentId = user.getPresidentId();
+		if(presidentId != null){
+			userAdminVo.setPresident(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(presidentId)));
+		}
 		Integer largeArea = user.getLargearea();
 		if(largeArea != null){
 			SystemCode largeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", largeArea+"");
@@ -127,6 +131,10 @@ public class UserComponent {
 			if(userInfo != null) {
 				userAdminFullVo.setUserInfo(userInfoComponent.buildAdminVo(userInfo));
 			}
+		}
+		Long presidentId = user.getPresidentId();
+		if(presidentId != null){
+			userAdminFullVo.setPresident(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(presidentId)));
 		}
 		
 		return userAdminFullVo;

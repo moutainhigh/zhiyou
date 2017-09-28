@@ -33,6 +33,7 @@
 		<result column="is_deleted" property="isDeleted" />
 		<result column="is_to_v4" property="isToV4" />
 		<result column="is_president" property="isPresident" />
+		<result column="president_id" property="presidentId" />
 		<result column="viewflag" property="viewflag" />
 		<result column="lastlogin_time" property="lastloginTime" />
 		<result column="largearea" property="largearea" />
@@ -40,8 +41,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
-		insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark,is_president)
-		values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossName},#{bossId},#{code},#{isDirector},#{isHonorDirector},#{isShareholder},#{isDeleted},#{isToV4},#{viewflag},#{lastloginTime},#{largearea},#{setlargearearemark},#{isPresident})
+		insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark,is_president,president_id)
+		values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossName},#{bossId},#{code},#{isDirector},#{isHonorDirector},#{isShareholder},#{isDeleted},#{isToV4},#{viewflag},#{lastloginTime},#{largearea},#{setlargearearemark},#{isPresident},#{presidentId})
 	</insert>
 
 	<delete id="delete">
@@ -84,6 +85,7 @@
 			largearea = #{largearea},
 			setlargearearemark = #{setlargearearemark},
 			is_president = #{isPresident},
+			president_id = #{presidentId},
 		</set>
 		where id = #{id}
 	</update>
@@ -124,6 +126,7 @@
 					<when test="field == 'viewflag'">viewflag = #{user.viewflag},</when>
 					<when test="field == 'lastloginTime'">lastlogin_time = #{user.lastloginTime},</when>
 					<when test="field == 'isPresident'">is_president = #{user.isPresident},</when>
+					<when test="field == 'presidentId'">president_id = #{user.presidentId},</when>
 				</choose>
 			</foreach>
 		</set>
@@ -132,14 +135,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark,is_president
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark,is_president,president_id
 		from `usr_user`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark,is_president
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark,is_president,president_id
 		from `usr_user`
 		<where>
 			<if test="userRankEQ != null">
@@ -174,6 +177,9 @@
 			</if>
 			<if test="isPresident != null">
 				and is_president = #{isPresident}
+			</if>
+			<if test="presidentId != null">
+				and president_id = #{presidentId}
 			</if>
 			<if test="parentIdIN != null">
 				<if test="parentIdIN.length != 0">
@@ -288,6 +294,9 @@
 			<if test="isPresident != null">
 				and is_president = #{isPresident}
 			</if>
+			<if test="presidentId != null">
+				and president_id = #{presidentId}
+			</if>
 			<if test="parentIdIN != null">
 				<if test="parentIdIN.length != 0">
 					and parent_id in
@@ -354,7 +363,7 @@
 		</where>
 	</select>
 
-	<sql id="baseColumn">id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,code,is_director,is_shareholder,lastlogin_time,largearea,setlargearearemark,is_president</sql>
+	<sql id="baseColumn">id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,code,is_director,is_shareholder,lastlogin_time,largearea,setlargearearemark,is_president,president_id</sql>
 
 	<select id="findByPhone" resultMap="baseResultMap">
 		select * from `usr_user` where phone = #{phone}
