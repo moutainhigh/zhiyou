@@ -181,11 +181,10 @@ public class V4OrderReportController {
 			}
 		}
 
-		Map<Long, Long> userInQuantityMap = filterOrders.stream().filter(v -> v.getBuyerUserRank() == User.UserRank.V4).collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x, y) -> x + y));
+		Map<Long, Long> userInQuantityMap = filterOrders.stream().filter(v -> v.getBuyerUserRank() == User.UserRank.V4||(v.getQuantity()==3600&&v.getSellerId()==1)).collect(Collectors.toMap(Order::getUserId, Order::getQuantity, (x, y) -> x + y));
 		Map<Long, Long> userOutQuantityMap = filterOrders.stream().filter(v -> v.getSellerUserRank() == User.UserRank.V4).collect(Collectors.toMap(Order::getSellerId, Order::getQuantity, (x, y) -> x + y));
 		Map<Long, Long> teamInQuantityMap = pageV4Users.stream().collect(Collectors.toMap(User::getId, v -> {
 			Long userId = v.getId();
-			Long myInQuantity = userInQuantityMap.get(userId) == null ? 0L : userInQuantityMap.get(userId);
 			List<User> v4Childres = teamMap.get(userId).getV4Children();
 			Long teamInQuantity = 0l;
 			if(!v4Childres.isEmpty()) {
@@ -193,6 +192,7 @@ public class V4OrderReportController {
 						.map(u -> userInQuantityMap.get(u.getId()) == null ? 0L : userInQuantityMap.get(u.getId()))
 						.reduce(0L, (x, y) -> x + y);
 			}
+			Long myInQuantity = userInQuantityMap.get(userId) == null ? 0L : userInQuantityMap.get(userId);
 			return myInQuantity + teamInQuantity;
 		}));
 		Map<Long, Long> teamOutQuantityMap = pageV4Users.stream().collect(Collectors.toMap(User::getId, v -> {
