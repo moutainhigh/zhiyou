@@ -56,6 +56,8 @@ public class UserQueryModel implements Serializable {
 
 	private Long bossIdEQ;
 
+	private Long presidentId;
+
 	private Boolean isDirectorEQ;
 
 	private Boolean isHonorDirectorEQ;
