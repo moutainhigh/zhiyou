@@ -62,6 +62,7 @@
     <dubbo:reference id="salesVolumeService" interface="com.zy.service.SalesVolumeService" protocol="dubbo"/>
     <dubbo:reference id="teamReportNewService" interface="com.zy.service.TeamReportNewService" protocol="dubbo"/>
     <dubbo:reference id="teamProvinceReportService" interface="com.zy.service.TeamProvinceReportService" protocol="dubbo"/>
+    <dubbo:reference id="newReportTeamService" interface="com.zy.service.NewReportTeamService" protocol="dubbo"/>
     <dubbo:reference id="largeareaMonthSalesService" interface="com.zy.service.LargeareaMonthSalesService" protocol="dubbo"/>
     <dubbo:reference id="largeareaDaySalesService" interface="com.zy.service.LargeareaDaySalesService" protocol="dubbo"/>
 </beans>

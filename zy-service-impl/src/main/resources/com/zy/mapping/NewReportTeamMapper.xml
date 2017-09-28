@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.NewReportTeamMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.report.NewReportTeam">
+		<id column="id" property="id" />
+		<result column="province_name" property="provinceName" />
+		<result column="province_id" property="provinceId" />
+		<result column="year" property="year" />
+		<result column="month" property="month" />
+		<result column="number" property="number" />
+		<result column="rank" property="rank" />
+		<result column="rank_change" property="rankChange" />
+		<result column="create_date" property="createDate" />
+		<result column="region" property="region" />
+	</resultMap>
+
+	<sql id="baseColumn">id,province_name,province_id,year,month,number,rank,rank_change,create_date,region</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.report.NewReportTeam" useGeneratedKeys="true" keyProperty="id">
+	  insert into `ts_new_report_team` (province_name,province_id,year,month,number,rank,rank_change,create_date,region)
+	  values (#{provinceName},#{provinceId},#{year},#{month},#{number},#{rank},#{rankChange},#{createDate},#{region})
+	</insert>
+
+	<delete id="delete">
+		delete from `ts_new_report_team` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.report.NewReportTeam">
+		update `ts_new_report_team`
+		<set>
+			province_name = #{provinceName},
+			province_id = #{provinceId},
+			year = #{year},
+			month = #{month},
+			number = #{number},
+			rank = #{rank},
+			rank_change = #{rankChange},
+			create_date = #{createDate},
+			region = #{region},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `ts_new_report_team`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'provinceName'">province_name = #{newReportTeam.provinceName},</when>
+					<when test="field == 'provinceId'">province_id = #{newReportTeam.provinceId},</when>
+					<when test="field == 'year'">year = #{newReportTeam.year},</when>
+					<when test="field == 'month'">month = #{newReportTeam.month},</when>
+					<when test="field == 'number'">number = #{newReportTeam.number},</when>
+					<when test="field == 'rank'">rank = #{newReportTeam.rank},</when>
+					<when test="field == 'rankChange'">rank_change = #{newReportTeam.rankChange},</when>
+					<when test="field == 'createDate'">create_date = #{newReportTeam.createDate},</when>
+					<when test="field == 'region'">region = #{newReportTeam.region},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{newReportTeam.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `ts_new_report_team`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.NewReportTeamQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `ts_new_report_team`
+		<where>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="provinceIdEQ != null">
+				and province_id = #{provinceIdEQ}
+			</if>
+			<if test="numberEQ != null">
+				and number = #{numberEQ}
+			</if>
+			<if test="rankEQ != null">
+				and rank = #{rankEQ}
+			</if>
+			<if test="regionEQ != null">
+				and region = #{regionEQ}
+			</if>
+			<if test="provinceNameLK != null">
+				<bind name="provinceNameLK" value="'%' + provinceNameLK + '%'"/> and province_name like #{provinceNameLK}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+			<if test="rankChangeEQ != null">
+				and rank_change = #{rankChangeEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.NewReportTeamQueryModel">
+		select count(*) from `ts_new_report_team`
+		<where>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="provinceIdEQ != null">
+				and province_id = #{provinceIdEQ}
+			</if>
+			<if test="numberEQ != null">
+				and number = #{numberEQ}
+			</if>
+			<if test="rankEQ != null">
+				and rank = #{rankEQ}
+			</if>
+			<if test="regionEQ != null">
+				and region = #{regionEQ}
+			</if>
+			<if test="provinceNameLK != null">
+				<bind name="provinceNameLK" value="'%' + provinceNameLK + '%'"/> and province_name like #{provinceNameLK}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+			<if test="rankChangeEQ != null">
+				and rank_change = #{rankChangeEQ}
+			</if>
+		</where>
+	</select>
+
+</mapper>

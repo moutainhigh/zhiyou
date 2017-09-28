@@ -75,4 +75,5 @@
 	<dubbo:service ref="teamProvinceReportServiceImpl" interface="com.zy.service.TeamProvinceReportService"/>
 	<dubbo:service ref="largeareaDaySalesServiceImpl" interface="com.zy.service.LargeareaDaySalesService"/>
 	<dubbo:service ref="largeareaMonthSalesServiceImpl" interface="com.zy.service.LargeareaMonthSalesService"/>
+	<dubbo:service ref="newReportTeamServiceImpl" interface="com.zy.service.NewReportTeamService"/>
 </beans>
