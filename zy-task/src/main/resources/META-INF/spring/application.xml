@@ -31,6 +31,7 @@
 	<dubbo:reference  interface="com.zy.service.TeamReportNewService" id="teamReportNewService"/>
 	<dubbo:reference interface="com.zy.service.UserInfoService" id="userInfoService"/>
 	<dubbo:reference  interface="com.zy.service.TeamProvinceReportService" id="teamProvinceReportService"/>
+	<dubbo:reference  interface="com.zy.service.NewReportTeamService" id="newReportTeamService"/>
 	<dubbo:reference  interface="com.zy.service.LargeareaDaySalesService" id="largeareaDaySalesService"/>
 	<dubbo:reference  interface="com.zy.service.LargeareaMonthSalesService" id="largeareaMonthSalesService"/>
 
@@ -203,6 +204,19 @@
 						<bean id ="largeareaMonthSalesJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
 							<property name="jobClass" value="com.zy.task.job.LargeareaMonthSalesJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/5 * * * ?</value>
+					</property>
+				</bean>
+
+				<!-- 新团队报表 -->
+				<bean id="newReportTeamJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id ="newReportTeamJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.NewReportTeamJob"></property>
 						</bean>
 					</property>
 					<property name="cronExpression">
