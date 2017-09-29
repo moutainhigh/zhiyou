@@ -234,6 +234,16 @@ public class DateUtil {
     }
 
     /**
+     * 格式化数为2位字符串
+     * @param d
+     * @return
+     */
+    public static String formatString(Object d) {
+        DecimalFormat df = new DecimalFormat("###0.00");
+        df.setGroupingUsed(false);
+        return df.format(d);
+    }
+    /**
      * 将数组转成字符串
      * @return
      */
@@ -459,18 +469,35 @@ public class DateUtil {
     }
 
 
-
-
+    /**
+     *格式化对象数据为指定长度的字符串
+     * @param sum 数据
+     * @param i 转化长度
+     * @return
+     */
+    public static String toStringLength(Object sum, int i) {
+      String sumStr = sum.toString();
+        if (sumStr.length()>i){//大于长度 要截取
+            return sumStr.substring(0,i);
+        } else if (sumStr.length()<i){
+            int leng =i-sumStr.length();
+          for (int j=0;j<leng;j++){
+              sumStr ="0"+sumStr;
+          }
+        }
+       return sumStr;
+    }
 
 
     public static void  main(String []age) throws ParseException {
-        System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),-1,0),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         System.out.println(DateUtil.getMoth(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         System.out.println("-------------------");
-        System.out.println(DateUtil.getMonthData(new Date(),-3,0).getTime()<new Date().getTime());
-        System.out.println(DateFormatUtils.format(DateUtil.getMonthData(new Date(),-3,0),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(new Date().after(DateUtil.getDateEnd(DateUtil.getMonthData(new Date(),0,-1))));
+        System.out.println("----------##########--");
+        System.out.println(DateFormatUtils.format(getDateEnd(DateUtil.getMonthData(new Date(),-1,0)),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("-------------------");
         System.out.println(DateUtil.getDay(DateUtil.getMonthData(new Date(),0,-1)));
         System.out.println("-------------------");
@@ -478,6 +505,9 @@ public class DateUtil {
         System.out.println("-------------------");
         System.out.println(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
         System.out.println(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
+        System.out.println("----------##########--");
+        System.out.println(DateUtil.toStringLength(123343342232L,6));
+        System.out.println(DateUtil.formatString(123));
 
       /*  ystem.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("年龄:"+getAge("411528201607192688"));
@@ -509,6 +539,7 @@ public class DateUtil {
 
         //  System.out.print(((double)1l/(double)2l));
     }
+
 
 
 }

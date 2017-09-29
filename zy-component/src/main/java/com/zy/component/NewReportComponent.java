@@ -1,21 +1,26 @@
 package com.zy.component;
 
+import com.sun.tools.javac.util.*;
 import com.zy.common.util.DateUtil;
+import com.zy.entity.fnc.CurrencyType;
+import com.zy.entity.fnc.Deposit;
+import com.zy.entity.fnc.Profit;
+import com.zy.entity.mal.Order;
 import com.zy.entity.report.NewReportTeam;
 import com.zy.entity.sys.Area;
 import com.zy.entity.sys.SystemCode;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
+import com.zy.entity.usr.UserTargetSales;
 import com.zy.entity.usr.UserUpgrade;
-import com.zy.model.query.AreaQueryModel;
-import com.zy.model.query.NewReportTeamQueryModel;
-import com.zy.model.query.UserInfoQueryModel;
-import com.zy.model.query.UserUpgradeQueryModel;
+import com.zy.model.query.*;
 import com.zy.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +45,9 @@ public class NewReportComponent {
 
     @Autowired
     private NewReportTeamService newReportTeamService;
+
+    @Autowired
+    private  UserTargetSalesService userTargetSalesService;
 
     /**
      * 处理查询大区数据
@@ -114,7 +122,7 @@ public class NewReportComponent {
                     naemap.put(systemCode.getSystemName()+":0.00%",0);
                 }else{
                     Double duty  = DateUtil.formatDouble( new Double(count) / new Double(V4) * 100);
-                    naemap.put(systemCode.getSystemName()+":" +duty+"%",count);
+                    naemap.put(systemCode.getSystemName()+":" +DateUtil.formatString(duty)+"%",count);
                 }
                 resultList.add(naemap);
             }
@@ -141,7 +149,7 @@ public class NewReportComponent {
                     naemap.put(user.getNickname()+":0.00%",count);
                 }else{
                     Double duty  = DateUtil.formatDouble( new Double(count) / new Double(sum) * 100);
-                    naemap.put(user.getNickname()+":"+duty+"%",count);
+                    naemap.put(user.getNickname()+":"+DateUtil.formatString(duty)+"%",count);
                 }
                 naemap.put(user.getNickname(),count);
                 resultList.add(naemap);
@@ -176,7 +184,7 @@ public class NewReportComponent {
                   naemap.put(systemCode.getSystemName()+":0.00%",0);
               }else{
                   Double duty  = DateUtil.formatDouble( new Double(userList.size()) / new Double(count) * 100);
-                  naemap.put(systemCode.getSystemName()+":"+duty+"%",0);
+                  naemap.put(systemCode.getSystemName()+":"+DateUtil.formatString(duty)+"%",userList.size());
               }
               resultList.add(naemap);
           }
@@ -196,7 +204,7 @@ public class NewReportComponent {
                     naemap.put(user1.getNickname()+":0.00%",0);
                 }else{
                     Double duty  = DateUtil.formatDouble( new Double(areatUserList.size()) / new Double(count) * 100);
-                    naemap.put(user1.getNickname()+":"+duty+"%",0);
+                    naemap.put(user1.getNickname()+":"+DateUtil.formatString(duty)+"%",areatUserList.size());
                 }
                 resultList.add(naemap);
             }
@@ -309,5 +317,217 @@ public class NewReportComponent {
         Map<String ,Object> map = new HashMap<>();
         map.put("areat",this.disposeTeamAreat(type,users));
         return map;
+    }
+
+
+    /**
+     * 统计服务次数
+     * @param type
+     * @param yorm y:年 m：月 d：日
+     * @return
+     */
+    public String statOrderNumber(String type,String yorm) {
+        String number = "000000";
+         //处理订单
+        List<Order> orders = localCacheComponent.getOrders().stream()
+                .filter(v -> {
+                    Order.OrderStatus orderStatus = v.getOrderStatus();
+                    if (orderStatus == Order.OrderStatus.已支付 || orderStatus == Order.OrderStatus.已发货 || orderStatus == Order.OrderStatus.已完成) {
+                        return true;
+                    }
+                    return false;
+                })
+                .filter(v -> {
+                    Date paidTime = v.getPaidTime();
+                    Date endDate = new Date();
+                    if("d".equals(yorm)){
+                         endDate = DateUtil.getDateEnd(DateUtil.getMonthData(new Date(),0,-1));
+                    }else{//暂不处理年  需要在加（按月处理）
+                        endDate = DateUtil.getBeforeMonthBegin(new Date(),0,0);
+                    }
+                    if (paidTime.after(endDate)) {
+                        return true;
+                    }
+                    return false;
+                }).filter(v->v.getSellerId()==1).collect(Collectors.toList());
+
+        if("0".equals(type)){ //处理公司
+            Long sum = orders.parallelStream().mapToLong(Order::getQuantity).sum();
+            number = DateUtil.toStringLength(sum,6);
+        }else{//处理大区
+          //将订单按用户进行分组
+            Map<Long ,List<Order>> orderMap = orders.stream().collect(Collectors.groupingBy(Order::getUserId));
+            List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
+            Map<Integer,List<User>> usertMap = userList.stream().collect(Collectors.groupingBy(User::getLargearea));
+            List <User> areatUserList = usertMap.get(type);
+             List<Order> newOrderList = new ArrayList<>();
+            for (User user : areatUserList){
+                List<Order> orderOldList = orderMap.get(user.getId());
+                if (orderOldList!=null&&!orderOldList.isEmpty()){
+                    newOrderList.addAll(orderOldList);
+                }
+
+            }
+            Long sum = newOrderList.parallelStream().mapToLong(Order::getQuantity).sum();
+            number = DateUtil.toStringLength(sum,6);
+        }
+
+        return  number;
+
+    }
+
+    /**
+     * 统计 团队 特级
+     * @param type
+     * @return
+     */
+    public Map<String,String> disposeTeamV4(String type) {
+        Map<String,String>V4Map = new HashMap<>();
+        List <User>userNewList = new  ArrayList<>();
+        List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).collect(Collectors.toList());
+        if ("0".equals(type)){
+            userNewList=userList;
+        }else{
+          userList = localCacheComponent.getUsers().stream().filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
+           Map<Integer,List<User>> areatUserMap =  userList.stream().collect(Collectors.groupingBy(User::getLargearea));
+            userNewList = areatUserMap.get(type);
+        }
+        if (userNewList!=null&&!userNewList.isEmpty()){//处理逻辑
+            V4Map.put("V4Number",userNewList.size()+"");//将总人数放进去
+            //处理新晋特级
+              List<UserUpgrade> upgradeList =localCacheComponent.getUserUpgrades().stream().filter(userUpgrade ->userUpgrade.getToUserRank()== User.UserRank.V4 ).filter(userUpgrade -> {
+                  Date upgradedTime = userUpgrade.getUpgradedTime();
+                  if (upgradedTime.after(DateUtil.getBeforeMonthBegin(new Date(),0,0))) {
+                      return true;
+                  }
+                  return false;
+              }).collect(Collectors.toList());
+            Map<Long,List<UserUpgrade>> upgradeMap = upgradeList.stream().collect(Collectors.groupingBy(UserUpgrade::getUserId));
+            List<User> newV4UserList = userNewList.stream().filter(user -> {
+                if (upgradeMap.get(user.getId())!=null){
+                    return true;
+                }
+                return false;
+            }).collect(Collectors.toList());
+            V4Map.put("V4NewNumber",newV4UserList.size()+"");//将总人数放进去
+            //处理 沉睡特级
+            userNewList=userNewList.stream().filter(user -> user.getLastloginTime().getTime()<DateUtil.getMonthData(new Date(),-3,0).getTime()).collect(Collectors.toList());
+            V4Map.put("V4SleepNumber",userNewList.size()+"");//将总人数放进去
+        }
+        return V4Map;
+    }
+
+    /**
+     * 处理  U币级奖金及发放情况
+     * @param type
+     * @return
+     */
+
+    public Map<String,String> disposeTeamUb(String type) {
+        //处理U币逻辑
+        Map<String,String>UMap = new HashMap<>();
+        List<Deposit> depositList=localCacheComponent.getDeposits().stream().filter(deposit -> deposit.getPaidTime().after(DateUtil.getDateEnd(DateUtil.getMonthData(new Date(),0,-1)))).
+                filter(deposit -> deposit.getDepositStatus()== Deposit.DepositStatus.充值成功).collect(Collectors.toList());
+        List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
+        Map<Integer,List<User>> userMap = userList.stream().collect(Collectors.groupingBy(User::getLargearea));
+        Map<Long ,User> userV4list= userList.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
+        if (!"0".equals(type)){
+            List<User> ateatUaerList = userMap.get(type);
+            if(ateatUaerList!=null) {//大区有人才有充值
+                Map<Long,User> areatUserMap = ateatUaerList.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
+                depositList = depositList.stream().filter(deposit -> {
+                    if (areatUserMap.get(deposit.getUserId())!=null){
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+            }
+        }
+        double sum = depositList.stream().mapToDouble(((Deposit o)->o.getAmount1().doubleValue())).sum();
+        UMap.put("Ub",DateUtil.formatString(sum));
+        //处理奖励发放
+        List<Profit> profitList=localCacheComponent.getProfits().stream().filter(profit -> (profit.getCurrencyType()== CurrencyType.积分||profit.getCurrencyType()== CurrencyType.现金)).
+                filter(profit -> profit.getProfitStatus()== Profit.ProfitStatus.已发放).filter(profit -> { //是V4的
+            if(userV4list.get(profit.getUserId())!=null){
+                return true;
+            }
+            return false;
+        }).filter(profit -> (profit.getProfitType()!=Profit.ProfitType.补偿||profit.getProfitType()!=Profit.ProfitType.订单收款)).collect(Collectors.toList()); //取到  所有奖励
+        List<Profit> profitListYear = profitList;
+        //处理月
+        this.disposeProfit(profitList,type,"m",UMap,userMap);
+        //处理年
+        this.disposeProfit(profitListYear,type,"y",UMap,userMap);
+        return UMap;
+    }
+
+
+    /**
+     * 处理 奖励
+     * @param profitList
+     * @param type
+     * @param mory 年或者月 m 月 Y是年
+     */
+    private  void disposeProfit(List<Profit> profitList,String type ,String mory,Map<String,String>UMap,Map<Integer,List<User>> userMap){
+        if ("y".equals(mory)){ //年
+            profitList = profitList.stream().filter(profit -> profit.getGrantedTime().after(DateUtil.getBeforeMonthBegin(new Date(),0,0))).collect(Collectors.toList());
+        }else{//月
+            profitList = profitList.stream().filter(profit -> profit.getGrantedTime().after(DateUtil.getCurrYearFirst())).collect(Collectors.toList());
+        }
+        if(!"0".equals(type)){//公司的不需要处理
+            List<User> ateatUaerList = userMap.get(type);
+            if (ateatUaerList!=null){//处理大区的奖励
+                Map<Long,User> areatUserMap = ateatUaerList.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
+                profitList = profitList.stream().filter(deposit -> {
+                    if (areatUserMap.get(deposit.getUserId())!=null){
+                        return true;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+            }
+        }
+        double sum = profitList.stream().mapToDouble(((Profit o)->o.getAmount().doubleValue())).sum();
+        UMap.put(mory+"Munber",DateUtil.formatString(sum));
+    }
+
+
+    /**
+     * 处理目标量
+     * @param type
+     * @return
+     */
+    public Map<String,String> disposeTeamTage(String type) {
+        Map<String,String>tageMap = new HashMap<>();
+        //处理目标量
+         List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
+        List<UserTargetSales> userTargetSalesList =  userTargetSalesService.findAll(
+                UserTargetSalesQueryModel.builder().
+                        yearEQ(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0))).
+                        monthEQ(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0))).build());
+        if (!"0".equals(type)){//处理大区  公司
+          Map<Integer,List<User>> userMap =  userList.stream().collect(Collectors.groupingBy(User::getLargearea));
+          List<User> areatUserList =  userMap.get(type);
+            if (areatUserList!=null) {
+                Map<Long,User> areatUserMap = areatUserList.stream().collect(Collectors.toMap(v->v.getId(),v->v));
+                userTargetSalesList = userTargetSalesList.stream().filter(userTargetSales -> {
+                    if (areatUserMap.get(userTargetSales.getUserId())!=null){
+                        return true;
+                    }
+                    return  false;
+                }).collect(Collectors.toList());
+            }
+        }
+        int targetCount = userTargetSalesList.stream().mapToInt(UserTargetSales::getTargetCount).sum();
+        tageMap.put("tageNumber",DateUtil.formatString(targetCount));
+        //处理完成量
+        String number = this.statOrderNumber(type,"m");
+        tageMap.put("finishNumber",DateUtil.formatString(Double.valueOf(number)));
+        if(targetCount==0){
+            tageMap.put("rate","0.00");
+        }else {
+            String rate = DateUtil.formatString(Double.valueOf(number)/Double.valueOf(targetCount)*100);
+            tageMap.put("rate",rate);
+        }
+        return tageMap;
     }
 }
