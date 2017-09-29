@@ -81,7 +81,7 @@ public class TeamReportNewJob implements Job {
             List<Area> areaList = teamReportNewService.findParentAll();
             TeamReportNewQueryModel teamReportNewQueryModel =  new TeamReportNewQueryModel();
             teamReportNewQueryModel.setYearEQ(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
-            teamReportNewQueryModel.setMonthEQ(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
+            teamReportNewQueryModel.setMonthEQ(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
             Map<Long,TeamReportNew> teamReportNewMapOld = teamReportNewService.findExReport(teamReportNewQueryModel).stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v));
             for (User user : userV4List) {//当前特级下所成员
                 List<User> children = TreeHelper.sortBreadth2(userList, user.getId().toString(), v -> {
