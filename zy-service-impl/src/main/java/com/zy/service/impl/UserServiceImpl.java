@@ -3,6 +3,8 @@ package com.zy.service.impl;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
+import com.zy.common.model.tree.TreeHelper;
+import com.zy.common.model.tree.TreeNode;
 import com.zy.common.util.DateUtil;
 import com.zy.component.FncComponent;
 import com.zy.component.UsrComponent;
@@ -36,6 +38,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.*;
 import static com.zy.entity.fnc.CurrencyType.现金;
@@ -245,27 +248,7 @@ public class UserServiceImpl implements UserService {
         usrComponent.recordUserLog(id, operatorId, "设置用户等级", "从" + plainUserRank + "改为" + userRank + ", 备注" + remark);
     }
 
-    /**
-     * 修改大区
-     * @param id
-     * @param largeArea
-     * @param operatorId
-     * @param remark2
-     */
-    @Override
-    public void modifyLargeAreaAdmin(@NotNull Long id,@NotNull String largeArea,@NotNull Long operatorId, String remark2) {
-        User user = findAndValidate(id);
-        SystemCode oldlargeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea()+"");
-        SystemCode newlargeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", largeArea);
-        user.setLargearea(Integer.parseInt(largeArea));
-        user.setSetlargearearemark(remark2);
-        userMapper.update(user);
-        if(oldlargeAreaType == null){
-            usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + null + "改为" + newlargeAreaType.getSystemName() + ", 备注" + remark2);
-        }else{
-            usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + oldlargeAreaType.getSystemName() + "改为" + newlargeAreaType.getSystemName() + ", 备注" + remark2);
-        }
-    }
+
 
     @Override
     public User findByOpenId(@NotBlank String openId) {
@@ -590,24 +573,129 @@ public class UserServiceImpl implements UserService {
         userMapper.merge(merge, "isDeleted");
     }
 
+//    /**
+//     * 设置大区总裁
+//     * @param id
+//     * @param isPresident
+//     */
+//    @Override
+//    public void modifyIsPresident(Long id, List<Long> userIds,Long parentId,Long operatorId, boolean isPresident) {
+//        User user = findAndValidate(id);
+//        String label = isPresident ? "设置" : "取消";
+//        if (user.getIsBoss() != null) {
+//            if (user.getIsPresident() == isPresident) {
+//                return;
+//            }
+//        }
+//        if(isPresident){
+//            user.setIsPresident(isPresident);
+//            user.setPresidentId(null);
+//            userMapper.merge(user, "isPresident","presidentId");
+//            usrComponent.recordUserLog(id, operatorId, label + "大区总裁", null);
+//            for(Long userId : userIds) {
+//                User merge = new User();
+//                merge.setId(userId);
+//                merge.setPresidentId(id);
+//                userMapper.merge(merge, "presidentId");
+//            }
+//        }else{
+//            user.setIsPresident(isPresident);
+//            user.setPresidentId(parentId);
+//            userMapper.merge(user, "isPresident","presidentId");
+//            usrComponent.recordUserLog(id, operatorId, label + "大区总裁", null);
+//            for(Long userId : userIds) {
+//                User merge = new User();
+//                merge.setId(userId);
+//                merge.setPresidentId(parentId);
+//                userMapper.merge(merge, "presidentId");
+//            }
+//        }
+//    }
+
+
     /**
-     * 设置大区总裁
+     * 修改大区
      * @param id
+     * @param largeArea
+     * @param operatorId
+     * @param remark2
+     */
+    @Override
+    public void modifyLargeAreaAdmin(@NotNull Long id,@NotNull String largeArea,@NotNull Long operatorId, String remark2) {
+        User user = findAndValidate(id);
+        String oldLargeArea = user.getLargearea() == null ? "空" : systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea()+"").getSystemName();
+        String newLargeArea = systemCodeService.findByTypeAndValue("LargeAreaType", largeArea).getSystemName();
+        user.setLargearea(Integer.parseInt(largeArea));
+        user.setSetlargearearemark(remark2);
+        userMapper.update(user);
+        usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + oldLargeArea + "改为" + newLargeArea + ", 备注" + remark2);
+        if(user.getIsPresident()){
+            List<User> teamV4 = findTeamV4(id);
+            List<User> filterV4Users = teamV4.stream().filter(v -> v.getPresidentId() != null && v.getPresidentId() == id).collect(Collectors.toList());
+            for(User u : filterV4Users) {
+                String old = u.getLargearea() == null ? "null" :systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea()+"").getSystemName();
+                usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + old + "改为" + newLargeArea + ", 备注:跟随大区总裁"+user.getNickname()+"更改大区");
+                u.setLargearea(Integer.parseInt(largeArea));
+                userMapper.merge(u, "bossId");
+            }
+        }
+    }
+
+
+    /**
+     * 用户设置大区总裁
+     * @param id
+     * @param operatorId
      * @param isPresident
      */
     @Override
-    public void modifyIsPresident(Long id, boolean isPresident) {
-        findAndValidate(id);
-
-        User merge = new User();
-        merge.setId(id);
-        merge.setIsPresident(isPresident);
-
-        userMapper.merge(merge, "isPresident");
+    public void modifyIsPresident(Long id, Long operatorId, boolean isPresident) {
+        User user = findAndValidate(id);
+        String label = isPresident ? "设置" : "取消";
+        if (user.getIsBoss() != null) {
+            if (user.getIsPresident() == isPresident) {
+                return;
+            }
+        }
+        List<User> v4Users = findTeamV4(id);
+        List<User> filterV4Users = null;
+        if(isPresident){//设置大区总裁
+            user.setIsPresident(isPresident);
+            user.setPresidentId(null);
+            userMapper.merge(user, "isPresident","presidentId");
+            usrComponent.recordUserLog(id, operatorId, label + "大区总裁", null);
+            if(null == user.getPresidentId()){
+                //过滤特级
+                filterV4Users = v4Users.stream().filter(v -> !v.getIsPresident() && null == v.getPresidentId() ).collect(Collectors.toList());
+            }else{
+                //过滤特级
+                filterV4Users = v4Users.stream().filter(v -> v.getPresidentId() != null && v.getPresidentId() == user.getPresidentId() ).collect(Collectors.toList());
+            }
+            for (User u: filterV4Users ) {
+                u.setPresidentId(id);
+                userMapper.merge(u,"presidentId");
+            }
+        }else{//取消大区总裁
+            User parent = user;
+            do{
+                parent = userMapper.findOne(parent.getParentId());
+            }while(parent != null && !(parent.getIsPresident() || parent.getPresidentId() !=null));
+            Long parentId = parent == null ? null : parent.getId();
+            user.setIsPresident(isPresident);
+            user.setPresidentId(parentId);
+            userMapper.merge(user, "isPresident","presidentId");
+            usrComponent.recordUserLog(id, operatorId, label + "大区总裁", null);
+            //过滤特级
+            filterV4Users = v4Users.stream().filter(v -> v.getPresidentId() != null && v.getPresidentId() == id ).collect(Collectors.toList());
+            for (User u: filterV4Users ) {
+                u.setPresidentId(parentId);
+                userMapper.merge(u,"presidentId");
+            }
+        }
     }
 
     @Override
-    public void modifyIsToV4(@NotNull Long id, boolean isToV4) {
+    public void modifyIsToV4(@NotNull Long id,boolean isToV4) {
         findAndValidate(id);
 
         User merge = new User();
@@ -1021,6 +1109,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public long countUserAll(UserQueryModel userQueryModel) {
         return userMapper.countUserAll(userQueryModel);
+    }
+
+    //获取团队里所有的特级
+    private  List<User> findTeamV4(Long id){
+        List<User> userList = userMapper.findAll(new UserQueryModel());//统计所有用户
+        //获取该用户团队所有成员
+        List<User> children = TreeHelper.sortBreadth2(userList, id.toString(), v -> {
+            TreeNode treeNode = new TreeNode();
+            treeNode.setId(v.getId().toString());
+            treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
+            return treeNode;
+        });
+        List<User> v4Users = children.stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList());
+        return  v4Users;
     }
 
 

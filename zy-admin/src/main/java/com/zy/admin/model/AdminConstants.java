@@ -192,5 +192,10 @@ public class AdminConstants {
 			sub.put("tourSetting:edit", "黑/白名单管理(编辑)");
 			SETTING_PERMISSION_MAP.put("旅游管理", sub);
 		}
+		{
+			sub = new LinkedHashMap<>();
+			sub.put("newReport:base", "基础报表(查看)");
+			SETTING_PERMISSION_MAP.put("新报表", sub);
+		}
 	}
 }

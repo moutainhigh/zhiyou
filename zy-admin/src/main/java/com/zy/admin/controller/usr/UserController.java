@@ -8,6 +8,8 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.model.tree.TreeHelper;
+import com.zy.common.model.tree.TreeNode;
 import com.zy.common.model.ui.Grid;
 import com.zy.common.util.Identities;
 import com.zy.common.util.JsonUtils;
@@ -247,7 +249,10 @@ public class UserController {
 	@RequestMapping("/setLargeArea")
 	@ResponseBody
 	public Result<?> setLargeArea(Long id, String largeArea3, String remark2) {
-		checkAndValidateIsPlatform(id);
+		User user = userService.findOne(id);
+		if(user != null && user.getUserRank() == UserRank.V4){
+			return new ResultBuilder<>().error("设置大区失败，特级用户才能设置大区");
+		}
 		try {
 			userService.modifyLargeAreaAdmin(id, largeArea3, getPrincipalUserId(), remark2);
 		} catch (Exception e) {
@@ -452,10 +457,11 @@ public class UserController {
 			if(user.getLargearea() == null){
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("操作失败，用户未设置大区"));
 			}else {
+				//设置大区总裁
 				if(null != flag && flag == 0){
-					userService.modifyIsPresident(id, true);
-				}else {
-					userService.modifyIsPresident(id, false);
+					userService.modifyIsPresident(id,getPrincipalUserId(), true);
+				}else {//取消大区总裁
+					userService.modifyIsPresident(id,getPrincipalUserId(),false);
 				}
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 			}
@@ -465,63 +471,63 @@ public class UserController {
 		return "redirect:/user";
 	}
 
-	/**
-	 * 批量设置大区总裁
-	 * @param ids
-	 * @return
-     */
-	@RequiresPermissions("user:setIsPresident")
-	@RequestMapping(value = "/batchSetPresident")
-	@ResponseBody
-	public Result<?> batchSetPresident(@NotBlank String ids) {
-		if(StringUtils.isBlank(ids)){
-			return ResultBuilder.error("请至少选择一条记录！");
-		} else {
-			String[] idStringArray = ids.split(",");
-			for(String idString : idStringArray){
-				Long id = new Long(idString);
-				User user = userService.findOne(id);
-				validate(user, NOT_NULL, "user is null, id = " + id);
-				if(user.getUserRank() != UserRank.V4){
-					return ResultBuilder.error("操作失败，非特级用户不能设置大区总裁");
-				}
-				if(user.getLargearea() == null){
-					return ResultBuilder.error("操作失败，用户"+user.getNickname()+"未设置大区");
-				}
-				try {
-					userService.modifyIsPresident(id,true);
-				} catch (Exception e) {
-					return ResultBuilder.error(e.getMessage());
-				}
-			}
-			return ResultBuilder.ok("批量设置成功！");
-		}
-	}
+//	/**
+//	 * 批量设置大区总裁
+//	 * @param ids
+//	 * @return
+//     */
+//	@RequiresPermissions("user:setIsPresident")
+//	@RequestMapping(value = "/batchSetPresident")
+//	@ResponseBody
+//	public Result<?> batchSetPresident(@NotBlank String ids) {
+//		if(StringUtils.isBlank(ids)){
+//			return ResultBuilder.error("请至少选择一条记录！");
+//		} else {
+//			String[] idStringArray = ids.split(",");
+//			for(String idString : idStringArray){
+//				Long id = new Long(idString);
+//				User user = userService.findOne(id);
+//				validate(user, NOT_NULL, "user is null, id = " + id);
+//				if(user.getUserRank() != UserRank.V4){
+//					return ResultBuilder.error("操作失败，非特级用户不能设置大区总裁");
+//				}
+//				if(user.getLargearea() == null){
+//					return ResultBuilder.error("操作失败，用户"+user.getNickname()+"未设置大区");
+//				}
+//				try {
+//					userService.modifyIsPresident(id,true);
+//				} catch (Exception e) {
+//					return ResultBuilder.error(e.getMessage());
+//				}
+//			}
+//			return ResultBuilder.ok("批量设置成功！");
+//		}
+//	}
 
-	/**
-	 * 批量取消大区总裁
-	 * @param ids
-	 * @return
-     */
-	@RequiresPermissions("user:setIsPresident")
-	@RequestMapping(value = "/batchCancelPresident")
-	@ResponseBody
-	public Result<?> batchCancelPresident(@NotBlank String ids) {
-		if(StringUtils.isBlank(ids)){
-			return ResultBuilder.error("请至少选择一条记录！");
-		} else {
-			String[] idStringArray = ids.split(",");
-			for(String idString : idStringArray){
-				Long id = new Long(idString);
-				try {
-					userService.modifyIsPresident(id,false);
-				} catch (Exception e) {
-					return ResultBuilder.error(e.getMessage());
-				}
-			}
-			return ResultBuilder.ok("批量取消成功！");
-		}
-	}
+//	/**
+//	 * 批量取消大区总裁
+//	 * @param ids
+//	 * @return
+//     */
+//	@RequiresPermissions("user:setIsPresident")
+//	@RequestMapping(value = "/batchCancelPresident")
+//	@ResponseBody
+//	public Result<?> batchCancelPresident(@NotBlank String ids) {
+//		if(StringUtils.isBlank(ids)){
+//			return ResultBuilder.error("请至少选择一条记录！");
+//		} else {
+//			String[] idStringArray = ids.split(",");
+//			for(String idString : idStringArray){
+//				Long id = new Long(idString);
+//				try {
+//					userService.modifyIsPresident(id,false);
+//				} catch (Exception e) {
+//					return ResultBuilder.error(e.getMessage());
+//				}
+//			}
+//			return ResultBuilder.ok("批量取消成功！");
+//		}
+//	}
 
 	/**
 	 * 批量设置大区

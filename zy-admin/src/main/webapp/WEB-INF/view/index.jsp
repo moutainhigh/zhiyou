@@ -622,6 +622,24 @@
           </li>
         </shiro:hasAnyPermissions>
 
+        <shiro:hasAnyPermissions name="newReport:base">
+          <li>
+            <a href="javascript:;">
+              <i class="icon-globe"></i>
+              <span class="title">新报表</span>
+              <span class="selected"></span>
+              <span class="arrow "></span>
+            </a>
+            <ul class="sub-menu">
+              <shiro:hasPermission name="newReport:base">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/newReport/base"><i class="icon-docs"></i> 基础报表<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
+
       </ul>
       <!-- END SIDEBAR MENU -->
     </div>
