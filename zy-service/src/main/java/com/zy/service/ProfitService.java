@@ -3,6 +3,7 @@ package com.zy.service;
 import com.zy.common.model.query.Page;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
+import com.zy.entity.usr.User;
 import com.zy.model.query.ProfitQueryModel;
 
 import java.math.BigDecimal;
@@ -29,4 +30,6 @@ public interface ProfitService {
 	Map<String,Object> countIncomeDataByUser(Long userId, Map<String, Object> map);
 
 	List<Profit> orderRevenueDetail(ProfitQueryModel profitQueryModel);
+
+	void insert(List<User> v4Users);
 }

@@ -34,6 +34,7 @@
 	<dubbo:reference  interface="com.zy.service.NewReportTeamService" id="newReportTeamService"/>
 	<dubbo:reference  interface="com.zy.service.LargeareaDaySalesService" id="largeareaDaySalesService"/>
 	<dubbo:reference  interface="com.zy.service.LargeareaMonthSalesService" id="largeareaMonthSalesService"/>
+	<dubbo:reference  interface="com.zy.service.LargeAreaProfitService" id="largeAreaProfitService"/>
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
 
@@ -208,6 +209,18 @@
 					</property>
 					<property name="cronExpression">
 						<value>0 0/5 * * * ?</value>
+					</property>
+				</bean>
+               <!-- 大区收益报表 -->
+				<bean id="largeAreaProfitJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id ="largeAreaProfitJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.LargeAreaProfitJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0 0 1 1/1 ?</value>
 					</property>
 				</bean>
 

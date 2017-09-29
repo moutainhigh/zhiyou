@@ -10,12 +10,19 @@ import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.fnc.Profit.ProfitStatus;
 import com.zy.entity.fnc.Profit.ProfitType;
+import com.zy.entity.report.LargeAreaProfit;
+import com.zy.entity.sys.SystemCode;
+import com.zy.entity.usr.User;
+import com.zy.mapper.LargeAreaProfitMapper;
 import com.zy.mapper.ProfitMapper;
 import com.zy.model.BizCode;
 import com.zy.model.dto.DepositSumDto;
 import com.zy.model.dto.ProfitSumDto;
+import com.zy.model.query.LargeAreaProfitQueryModel;
 import com.zy.model.query.ProfitQueryModel;
+import com.zy.service.LargeAreaProfitService;
 import com.zy.service.ProfitService;
+import com.zy.service.SystemCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -44,6 +51,12 @@ public class ProfitServiceImpl implements ProfitService {
 
 	@Autowired
 	private Config config;
+
+	@Autowired
+	private SystemCodeService systemCodeService;
+
+	@Autowired
+	private LargeAreaProfitService largeAreaProfitService;
 
 	@Override
 	public Page<Profit> findPage(@NotNull ProfitQueryModel profitQueryModel) {
@@ -130,6 +143,75 @@ public class ProfitServiceImpl implements ProfitService {
 		profitQueryModel.setCreatedTimeLT(DateUtil.getBeforeMonthEnd(new Date(),profitQueryModel.getMonth() + 7,-1));
 		List<Profit> list = profitMapper.orderRevenueDetail(profitQueryModel);
 		return list;
+	}
+
+	//所有特级收益
+	@Override
+	public void insert(List<User> v4Users) {
+		LargeAreaProfit largeAreaProfit = null;
+		//获取当前月份
+		int moth = DateUtil.getMoth(new Date());
+		ProfitQueryModel profitQueryModel = new ProfitQueryModel();
+		profitQueryModel.setCreatedTimeGTE(DateUtil.getMonthBegin(new Date(),moth -1,0));
+		profitQueryModel.setCreatedTimeLT(DateUtil.getBeforeMonthEnd(new Date(),moth +3,-1));
+		profitQueryModel.setProfitStatusEQ(Profit.ProfitStatus.已发放);
+		for (User user: v4Users) {
+			largeAreaProfit = new LargeAreaProfit();
+			largeAreaProfit.setLargeAreaValue(user.getLargearea());
+			SystemCode largeArea = systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea().toString());
+			largeAreaProfit.setLargeAreaName(largeArea.getSystemName());
+			largeAreaProfit.setYear(DateUtil.getYear(new Date()));
+			largeAreaProfit.setMonth(moth-1);
+			largeAreaProfit.setUserId(user.getId());
+			largeAreaProfit.setCreateTime(new Date());
+			//查询每一位上月收益
+			profitQueryModel.setUserIdEQ(user.getId());
+			Double profirs =  profitMapper.findRevenue(profitQueryModel);
+			largeAreaProfit.setProfit(profirs);
+			//环比
+			LargeAreaProfitQueryModel largeAreaProfitQueryModel = new LargeAreaProfitQueryModel();
+			largeAreaProfitQueryModel.setUserIdEQ(user.getId());
+			largeAreaProfitQueryModel.setYearEQ(DateUtil.getYear(new Date()));
+			largeAreaProfitQueryModel.setMonthEQ(moth-2);
+			LargeAreaProfit la = largeAreaProfitService.findLargeAreaProfit(largeAreaProfitQueryModel);
+			if (la != null){
+				if (la.getProfit() == 0.00 && profirs > 0){
+					largeAreaProfit.setRelativeRate(100.00);
+				}else if (la.getProfit() > 0 && profirs > 0 ){
+					largeAreaProfit.setRelativeRate(DateUtil.formatDouble( (profirs - la.getProfit()) / la.getProfit() * 100));
+				}else if (la.getProfit() == 0.00 && profirs == 0){
+					largeAreaProfit.setRelativeRate(0.00);
+				}
+			}else {
+				if (profirs > 0){
+					largeAreaProfit.setRelativeRate(100.00);
+				}else {
+					largeAreaProfit.setRelativeRate(0.00);
+				}
+			}
+			//同比
+			LargeAreaProfitQueryModel largeQueryModel = new LargeAreaProfitQueryModel();
+			largeQueryModel.setUserIdEQ(user.getId());
+			largeQueryModel.setYearEQ(DateUtil.getYear(new Date()) - 1);
+			largeQueryModel.setMonthEQ(moth-1);
+			LargeAreaProfit largeA = largeAreaProfitService.findLargeAreaProfit(largeQueryModel);
+			if (largeA != null){
+				if (largeA.getProfit() == 0.00 && profirs > 0){
+					largeAreaProfit.setSameRate(100.00);
+				}else if (largeA.getProfit() > 0 && profirs > 0 ){
+					largeAreaProfit.setSameRate(DateUtil.formatDouble( (profirs - largeA.getProfit()) / largeA.getProfit() * 100));
+				}else if (largeA.getProfit() == 0.00 && profirs == 0){
+					largeAreaProfit.setSameRate(0.00);
+				}
+			}else {
+				if (profirs > 0){
+					largeAreaProfit.setSameRate(100.00);
+				}else {
+					largeAreaProfit.setSameRate(0.00);
+				}
+			}
+			largeAreaProfitService.insert(largeAreaProfit);
+		}
 	}
 
 	@Override
