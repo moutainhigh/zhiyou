@@ -76,7 +76,9 @@ public interface UserService {
 
 	void modifyIsDeleted(Long id, boolean isDeleted);
 
-	void modifyIsPresident(Long id, boolean isPresident);
+	//void modifyIsPresident(Long id, List<Long> userIds,Long parentId,Long principalUserId, boolean isPresident);
+
+	void modifyIsPresident(Long id, Long principalUserId, boolean isPresident);
 
 	void modifyIsToV4(Long id, boolean isToV4);
 
