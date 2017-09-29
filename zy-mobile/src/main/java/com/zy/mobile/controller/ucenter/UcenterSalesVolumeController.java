@@ -10,13 +10,11 @@ import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.OrderService;
 import com.zy.service.UserService;
-import io.gd.generator.api.query.Direction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
