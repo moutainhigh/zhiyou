@@ -37,10 +37,9 @@ public class NewReportController {
      * @param type  类型  公司（0）或者大区
      * @return 跳转到首页并准备 头部数据
      */
-    @RequestMapping("/toMian")
+    @RequestMapping("/base")
     public String toMian(Model model,String type){
-
-        return "";
+        return "base";
     }
 
 
