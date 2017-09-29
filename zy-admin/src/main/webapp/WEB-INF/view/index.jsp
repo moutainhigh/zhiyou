@@ -315,7 +315,7 @@
               <span class="arrow"></span>
             </a>
             <ul class="sub-menu">
-              <shiro:hasPermission name="user:view">
+              <shiro:hasPermission name="user:view,userTargetSales:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/user"><i class="icon-user"></i> 用户信息<span class="badge badge-danger"></span></a>
                 </li>
@@ -328,6 +328,11 @@
               <shiro:hasPermission name="userInfo:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/userInfo"><i class="icon-graduation"></i> 用户认证管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="userTargetSales:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/userTargetSales"><i class="icon-graduation"></i> 用户目标销量管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>
