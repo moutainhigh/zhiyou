@@ -59,7 +59,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">用户名<span class="required"> * </span></label>
 							<div class="col-md-5">
-								<input type="number" readonly="true" class="form-control" name="phone" id="phone" value="${userTargetSales.user.nickname}"/>
+								<input  readonly="true" class="form-control" name="phone" id="phone" value="${userTargetSales.user.nickname}"/>
 							</div>
 						</div>
 						<div class="form-group">

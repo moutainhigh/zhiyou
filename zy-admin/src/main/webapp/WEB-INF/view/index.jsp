@@ -306,7 +306,7 @@
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="user:view,address:view,userInfo:view">
+        <shiro:hasAnyPermissions name="user:view,address:view,userInfo:view,userTargetSales:view">
           <li class="start active open">
             <a href="javascript:;">
               <i class="icon-users"></i>
@@ -315,7 +315,7 @@
               <span class="arrow"></span>
             </a>
             <ul class="sub-menu">
-              <shiro:hasPermission name="user:view,userTargetSales:view">
+              <shiro:hasPermission name="user:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/user"><i class="icon-user"></i> 用户信息<span class="badge badge-danger"></span></a>
                 </li>

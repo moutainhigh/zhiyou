@@ -37,7 +37,7 @@
 <%--</form>--%>
 <%--</script>--%>
 <script id="modifyValidTimeTmpl" type="text/x-handlebars-template">
-    <form id="modifyForm2" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
+    <form id="modifyForma" action="" data-action="" class="form-horizontal" method="post" style="width: 95%; margin: 10px;">
         <input type="hidden" name="ids" value="{{ids}}"/>
         <div class="form-body">
             <div class="alert alert-danger display-hide">
@@ -195,7 +195,7 @@
             });
         });
 
-        var modifyTemplate = Handlebars.compile($('#modifyImpl').html());
+        var modifyTemplate2 = Handlebars.compile($('#modifyImpl').html());
         $('#dataTable').on('click', '.modify-info', function () {
             var id = $(this).data('id');
             var nickname = $(this).data('nickname');
@@ -205,7 +205,7 @@
                 nickname: nickname,
                 phone: phone
             };
-            var html = modifyTemplate(data);
+            var html = modifyTemplate2(data);
             var index = layer.open({
                 type: 1,
                 //skin: 'layui-layer-rim', //加上边框
@@ -379,6 +379,7 @@
                     var url = '${ctx}/user/setBoss';
                     $.post(url, $form.serialize(), function (data) {
                         if (data.code === 0) {
+                            layer.alert('操作成功');
                             layer.close(index);
                             grid.getDataTable().ajax.reload(null, false);
                         } else {
@@ -421,9 +422,10 @@
             $('#joinTeamSubmit' + id).bind('click', function () {
                 var result = $form.validate().form();
                 if (result) {
-                    var url = '${ctx}/user/boss/joinTeam';
+                    var url = '${ctx}/user/president/joinTeam';
                     $.post(url, $form.serialize(), function (data) {
                         if (data.code === 0) {
+                            layer.alert('操作成功');
                             layer.close(index);
                             grid.getDataTable().ajax.reload(null, false);
                         } else {
@@ -458,7 +460,11 @@
                         data: 'id',
                         title: '<input type="checkbox" name="checkAll" id="checkAll" value=""/>',
                         render: function (data, type, full) {
+                            if(full.userRank == 'V4'){
                                 return '<input type="checkbox" name="id" id="id" value="' + data + '"/>';
+                            } else {
+                                return '<input type="checkbox" name="id" disabled="disabled" id="id" value="' + data + '"/>';
+                            }
                         }
                     },
                     {
@@ -496,11 +502,11 @@
                     },
                     {
                         data: '',
-                        title: '总经理信息',
+                        title: '大区总裁信息',
                         orderable: false,
                         render: function (data, type, full) {
-                            if (full.boss) {
-                                return formatUser(full.boss) + '<p>' + full.boss.bossName + '</p>';
+                            if (full.president) {
+                                return formatUser(full.president);
                             }
                             return '';
                         }
@@ -604,14 +610,14 @@
                                     optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/freeze/' + data + '" data-confirm="您确定要冻结用户[' + full.nickname + ']？"><i class="fa fa-meh-o"></i> 冻结 </a>';
                                 }
                                 </shiro:hasPermission>
-                                <shiro:hasPermission name="user:setBoss">
-                                if (full.isBoss == null || full.isBoss == false) {
-                                    optionHtml += '<a class="btn btn-xs default yellow-stripe set-boss" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-male"></i> 设置总经理 </a>';
-                                    optionHtml += '<a class="btn btn-xs default blue-stripe join-team" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-child"></i> 加入总经理团队 </a>';
-                                } else if (full.isBoss) {
-                                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setBoss?id=' + full.id + '" data-confirm="您确定要取消总经理团队？"><i class="fa fa-edit"></i> 取消总经理 </a>';
-                                }
-                                </shiro:hasPermission>
+                                <%--<shiro:hasPermission name="user:setBoss">--%>
+                                <%--if (full.isBoss == null || full.isBoss == false) {--%>
+                                    <%--optionHtml += '<a class="btn btn-xs default yellow-stripe set-boss" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-male"></i> 设置总经理 </a>';--%>
+                                    <%--optionHtml += '<a class="btn btn-xs default blue-stripe join-team" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-child"></i> 加入总经理团队 </a>';--%>
+                                <%--} else if (full.isBoss) {--%>
+                                    <%--optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setBoss?id=' + full.id + '" data-confirm="您确定要取消总经理团队？"><i class="fa fa-edit"></i> 取消总经理 </a>';--%>
+                                <%--}--%>
+                                <%--</shiro:hasPermission>--%>
                                 <shiro:hasPermission name="user:setIsDeleted">
                                 if (full.isDeleted == null || full.isDeleted == false) {
                                     optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setIsDeleted?id=' + full.id + '" data-confirm="您确定要删除[' + full.nickname + ']吗？"><i class="fa fa-times"></i> 删除（开除） </a>';
@@ -621,9 +627,7 @@
                                 if (full.isPresident) {
                                     optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setIsPresident?id=' + full.id + '" data-confirm="您确定要取消[' + full.nickname + ']的大区总裁吗？"><i class="fa fa-smile-o"></i> 取消大区总裁 </a>';
                                 }
-                                if (!full.isPresident) {
-                                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setIsPresident?id=' + full.id + '&flag=0" data-confirm="您确定要设置[' + full.nickname + ']为大区总裁吗？"><i class="fa fa-smile-o"></i> 成为大区总裁 </a>';
-                                }
+
                                 </shiro:hasPermission>
                                 <shiro:hasPermission name="user:setIsToV4">
                                 if (full.isToV4 == null || full.isToV4 == false) {
@@ -644,15 +648,22 @@
                                         optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setShareholder?id=' + full.id + '" data-confirm="您确定要升级[' + full.nickname + ']为股东？"><i class="fa fa-smile-o"></i> 成为股东 </a>';
                                     }
                                     </shiro:hasPermission>
+                                    <shiro:hasPermission name="user:setIsPresident">
+                                    if (!full.isPresident) {
+                                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setIsPresident?id=' + full.id + '&flag=0" data-confirm="您确定要设置[' + full.nickname + ']为大区总裁吗？"><i class="fa fa-smile-o"></i> 成为大区总裁 </a>';
+                                        optionHtml += '<a class="btn btn-xs default blue-stripe join-team" href="javascript:;" data-id="' + full.id + '"><i class="fa fa-child"></i> 加入大区总裁团队 </a>';
+
+                                    }
+                                    </shiro:hasPermission>
+                                    <shiro:hasPermission name="user:setLargeArea">
+                                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="addLargeArea(' + full.id + ')"><i class="fa fa-user"></i> 设置大区 </a>';
+                                    </shiro:hasPermission>
                                 }
                                 <shiro:hasPermission name="user:setShareholder">
 
                                 </shiro:hasPermission>
                                 <shiro:hasPermission name="user:edit">
                                 optionHtml += '<a class="btn btn-xs default green-stripe" href="javascript:;" onclick="editLastLoginTimeAjax(' + full.id + ')"><i class="fa fa-trash-o"></i> 重置登录时间 </a>';
-                                </shiro:hasPermission>
-                                <shiro:hasPermission name="user:setLargeArea">
-                                optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" onclick="addLargeArea(' + full.id + ')"><i class="fa fa-user"></i> 设置大区 </a>';
                                 </shiro:hasPermission>
                             }
                             return optionHtml;
@@ -683,7 +694,7 @@
                     content: html
                 });
 
-                $form = $('#modifyForm2');
+                $form = $('#modifyForma');
                 $form.validate({
                     rules: {
                         'largeArea2': {
@@ -697,7 +708,7 @@
                     var result = $form.validate().form();
                     if (result) {
                         var url = '${ctx}/user/batchSetLargeArea';
-                        $.post(url, $('#modifyForm2').serialize(), function (data) {
+                        $.post(url, $('#modifyForma').serialize(), function (data) {
                             if (data.code === 0) {
                                 layer.alert('操作成功');
                                 layer.close(index);
@@ -744,75 +755,75 @@
             }
     );
 
-    <shiro:hasPermission name="user:setIsPresident">
-    $('.table-toolbar').on('click', '#grantBtn',function(){
-        layer.confirm('您确认要批量设置大区总裁吗？', {
-            btn: ['设置','取消']
-        }, function(){
-            var ids = '';
-            $("input[name='id']").each(function() {
-                var isChecked = $(this).attr("checked");
-                if(isChecked == 'checked'){
-                    ids += $(this).val() + ',';
-                }
-            })
-            if(ids.length > 0){
-                $.ajax({
-                    url : '${ctx}/user/batchSetPresident',
-                    dataType:"json",
-                    type: "post",
-                    data : {
-                        ids : ids
-                    },
-                    success: function( result ) {
-                        layer.alert(result.message, {icon: 1});
-                        grid.getDataTable().ajax.reload(null, false);
-                    }
-                });
+    <%--<shiro:hasPermission name="user:setIsPresident">--%>
+    <%--$('.table-toolbar').on('click', '#grantBtn',function(){--%>
+        <%--layer.confirm('您确认要批量设置大区总裁吗？', {--%>
+            <%--btn: ['设置','取消']--%>
+        <%--}, function(){--%>
+            <%--var ids = '';--%>
+            <%--$("input[name='id']").each(function() {--%>
+                <%--var isChecked = $(this).attr("checked");--%>
+                <%--if(isChecked == 'checked'){--%>
+                    <%--ids += $(this).val() + ',';--%>
+                <%--}--%>
+            <%--})--%>
+            <%--if(ids.length > 0){--%>
+                <%--$.ajax({--%>
+                    <%--url : '${ctx}/user/batchSetPresident',--%>
+                    <%--dataType:"json",--%>
+                    <%--type: "post",--%>
+                    <%--data : {--%>
+                        <%--ids : ids--%>
+                    <%--},--%>
+                    <%--success: function( result ) {--%>
+                        <%--layer.alert(result.message, {icon: 1});--%>
+                        <%--grid.getDataTable().ajax.reload(null, false);--%>
+                    <%--}--%>
+                <%--});--%>
 
-            } else {
-                layer.alert("请至少选择一条记录！", {icon: 2});
-            }
+            <%--} else {--%>
+                <%--layer.alert("请至少选择一条记录！", {icon: 2});--%>
+            <%--}--%>
 
-        }, function(){
+        <%--}, function(){--%>
 
-        });
-    });
+        <%--});--%>
+    <%--});--%>
 
-    $('.table-toolbar').on('click', '#cancelBtn',function(){
-        layer.confirm('您确认要批量取消大区总裁吗？', {
-            btn: ['确认','取消']
-        }, function(){
-            var ids = '';
-            $("input[name='id']").each(function() {
-                var isChecked = $(this).attr("checked");
-                if(isChecked == 'checked'){
-                    ids += $(this).val() + ',';
-                }
-            })
-            if(ids.length > 0){
-                $.ajax({
-                    url : '${ctx}/user/batchCancelPresident',
-                    dataType:"json",
-                    type: "post",
-                    data : {
-                        ids : ids
-                    },
-                    success: function( result ) {
-                        layer.alert(result.message, {icon: 1});
-                        grid.getDataTable().ajax.reload(null, false);
-                    }
-                });
+    <%--$('.table-toolbar').on('click', '#cancelBtn',function(){--%>
+        <%--layer.confirm('您确认要批量取消大区总裁吗？', {--%>
+            <%--btn: ['确认','取消']--%>
+        <%--}, function(){--%>
+            <%--var ids = '';--%>
+            <%--$("input[name='id']").each(function() {--%>
+                <%--var isChecked = $(this).attr("checked");--%>
+                <%--if(isChecked == 'checked'){--%>
+                    <%--ids += $(this).val() + ',';--%>
+                <%--}--%>
+            <%--})--%>
+            <%--if(ids.length > 0){--%>
+                <%--$.ajax({--%>
+                    <%--url : '${ctx}/user/batchCancelPresident',--%>
+                    <%--dataType:"json",--%>
+                    <%--type: "post",--%>
+                    <%--data : {--%>
+                        <%--ids : ids--%>
+                    <%--},--%>
+                    <%--success: function( result ) {--%>
+                        <%--layer.alert(result.message, {icon: 1});--%>
+                        <%--grid.getDataTable().ajax.reload(null, false);--%>
+                    <%--}--%>
+                <%--});--%>
 
-            } else {
-                layer.alert("请至少选择一条记录！", {icon: 2});
-            }
+            <%--} else {--%>
+                <%--layer.alert("请至少选择一条记录！", {icon: 2});--%>
+            <%--}--%>
 
-        }, function(){
+        <%--}, function(){--%>
 
-        });
-    });
-    </shiro:hasPermission>
+        <%--});--%>
+    <%--});--%>
+    <%--</shiro:hasPermission>--%>
 
     var $addVipDialog;
     function addVip(id) {
@@ -944,9 +955,9 @@
                 <span class="form-errors">您填写的信息有误，请检查。</span>
             </div>
             <div class="form-group">
-                <label class="control-label col-md-3">总经理手机号<span class="required"> * </span></label>
+                <label class="control-label col-md-3">大区总裁手机号<span class="required"> * </span></label>
                 <div class="col-md-5">
-                    <input type="text" name="bossPhone" value="" class="form-control" placeholder="总经理手机号"/>
+                    <input type="text" name="presidentPhone" value="" class="form-control" placeholder="大区总裁手机号"/>
                 </div>
             </div>
         </div>
@@ -1055,18 +1066,18 @@
                                 </button>
                             </div>
 
-                            <shiro:hasPermission name="user:setIsPresident">
-                                <div class="form-group">
-                                    <button type="button" class="btn green" id="grantBtn">
-                                        <i class="fa fa-send-o"></i> 批量设置大区总裁
-                                    </button>
-                                </div>
-                                <div class="form-group">
-                                    <button type="button" class="btn cancel" id="cancelBtn">
-                                        <i class="fa fa-times"></i> 批量取消大区总裁
-                                    </button>
-                                </div>
-                            </shiro:hasPermission>
+                            <%--<shiro:hasPermission name="user:setIsPresident">--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<button type="button" class="btn green" id="grantBtn">--%>
+                                        <%--<i class="fa fa-send-o"></i> 批量设置大区总裁--%>
+                                    <%--</button>--%>
+                                <%--</div>--%>
+                                <%--<div class="form-group">--%>
+                                    <%--<button type="button" class="btn cancel" id="cancelBtn">--%>
+                                        <%--<i class="fa fa-times"></i> 批量取消大区总裁--%>
+                                    <%--</button>--%>
+                                <%--</div>--%>
+                            <%--</shiro:hasPermission>--%>
 
                             <shiro:hasPermission name="user:setLargeArea">
                                 <div class="form-group">

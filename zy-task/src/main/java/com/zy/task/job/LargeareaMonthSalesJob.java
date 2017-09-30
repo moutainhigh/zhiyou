@@ -107,7 +107,7 @@ public class LargeareaMonthSalesJob implements Job {
                 if( all != null && (all.size() > 0 && all.get(0).getSales() > 0)){
                     la.setRelativeRate(DateUtil.formatDouble((la.getSales() - all.get(0).getSales()) / all.get(0).getSales() * 100));
                 }else {
-                    if(la.getSales() == 0.00){
+                    if(la.getSales() == 0){
                         la.setRelativeRate(0.00);
                     }else {
                         la.setRelativeRate(100.00);
@@ -116,10 +116,16 @@ public class LargeareaMonthSalesJob implements Job {
                 if( all2 != null && (all2.size()>0 && all2.get(0).getSales() > 0) ){
                     la.setSameRate(DateUtil.formatDouble((la.getSales() - all2.get(0).getSales()) / all2.get(0).getSales() * 100));
                 }else {
-                    la.setSameRate(100.00);
+                    if(la.getSales() == 0){
+                        la.setSameRate(0.00);
+                    }else {
+                        la.setSameRate(100.00);
+                    }
                 }
                 largeareaMonthSalesService.insert(la);
             }
+            //未设置目标销量的大区总裁，按平均值设置本月目标销量
+            userTargetSalesService.avgUserTargetSales(DateUtil.getYear(now),DateUtil.getMothNum(now));
         } catch (ConcurrentException e) {
                 try {
                     TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}

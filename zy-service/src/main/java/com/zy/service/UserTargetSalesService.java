@@ -24,4 +24,8 @@ public interface UserTargetSalesService {
 
 	long count(UserTargetSalesQueryModel userTargetSalesQueryModel);
 
+	void avgUserTargetSales(Integer year,Integer month);
+
+	void delete(Long id);
+
 }

@@ -50,13 +50,9 @@ public class UserTargerSalesController {
 	@Autowired
 	private UserTargetSalesComponent userTargetSalesComponent;
 
-
-
-	@RequiresPermissions("userTargetSales:view")
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {return "usr/userTargetSalesList";}
 
-	@RequiresPermissions("userTargetSales:view")
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public Grid<UserTargetSalesVo> list(UserTargetSalesQueryModel userTargetSalesQueryModel, String nicknameLK , String phoneEQ) {
@@ -94,14 +90,12 @@ public class UserTargerSalesController {
 		try {
 			User user = userService.findByPhone(phone);
 			if(user == null){
-				model.addAttribute("userTargetSales", userTargetSales);
 				redirectAttributes.addFlashAttribute(ResultBuilder.error("新增失败，手机号不存在"));
-				return "usr/userTargetSalesCreate";
+				return "redirect:/userTargetSales/create";
 			}
-			if(user.getUserRank() == UserRank.V4 && user.getIsPresident()){
-				model.addAttribute("userTargetSales", userTargetSales);
+			if(user.getUserRank() != UserRank.V4 || (user.getIsPresident() == null || !user.getIsPresident())){
 				redirectAttributes.addFlashAttribute(ResultBuilder.error("新增失败，用户不是大区总裁"));
-				return "usr/userTargetSalesCreate";
+				return "redirect:/userTargetSales/create";
 			}
 			Date now = DateUtil.getMonthData(new Date(),1,0);
 			userTargetSales.setUserId(user.getId());
@@ -110,15 +104,13 @@ public class UserTargerSalesController {
 			userTargetSales.setCreateTime(now);
 			List<UserTargetSales> all = userTargetSalesService.findAll(UserTargetSalesQueryModel.builder().userIdEQ(user.getId()).yearEQ(userTargetSales.getYear()).monthEQ(userTargetSales.getMonth()).build());
 			if(all != null && all.size() > 0 ){
-				model.addAttribute("userTargetSales", userTargetSales);
 				redirectAttributes.addFlashAttribute(ResultBuilder.error("新增失败，该用户当月已设置过目标量，如需更改，请编辑"));
-				return "usr/userTargetSalesCreate";
+				return "redirect:/userTargetSales/create";
 			}
 			userTargetSalesService.create(userTargetSales);
 		} catch (Exception e) {
-			model.addAttribute("userTargetSales", userTargetSales);
-			model.addAttribute(e.getMessage());
-			return "usr/userTargetSalesCreate";
+			redirectAttributes.addFlashAttribute(ResultBuilder.error("新增失败, 原因" + e.getMessage()));
+			return "redirect:/userTargetSales/create";
 		}
 		redirectAttributes.addFlashAttribute(ResultBuilder.ok("新增成功"));
 		return "redirect:/userTargetSales";
@@ -128,7 +120,7 @@ public class UserTargerSalesController {
 	public String update(@PathVariable Long userTargetSalesId, Model model) {
 		validate(userTargetSalesId, NOT_NULL, "userTargetSales id is null");
 		UserTargetSales userTargetSales = userTargetSalesService.findOne(userTargetSalesId);
-		model.addAttribute("userTargetSales", userTargetSales);
+		model.addAttribute("userTargetSales", userTargetSalesComponent.buildVo(userTargetSales));
 		return "usr/userTargetSalesUpdate";
 	}
 
@@ -146,6 +138,26 @@ public class UserTargerSalesController {
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
 			return "redirect:/userTargetSales/update/" + userTargetSalesId;
+		}
+		return "redirect:/userTargetSales";
+	}
+
+	@RequestMapping("/delete/{id}")
+	public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes, Model model) {
+		if (id == null) {
+			model.addAttribute(ResultBuilder.error("id为空"));
+			return "usr/userTargetSalesList";
+		}
+		UserTargetSales targetSales = userTargetSalesService.findOne(id);
+		if (targetSales == null) {
+			model.addAttribute(ResultBuilder.error("没有查询到数据，id = " + id));
+			return "usr/userTargetSalesList";
+		}
+		try {
+			userTargetSalesService.delete(id);
+			redirectAttributes.addFlashAttribute(ResultBuilder.ok("删除成功"));
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute(ResultBuilder.error("删除失败,原因：" + e.getMessage()));
 		}
 		return "redirect:/userTargetSales";
 	}

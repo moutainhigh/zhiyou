@@ -63,6 +63,7 @@
                         render: function (data, type, full) {
                             <shiro:hasPermission name="userTargetSales:edit">
                             var optionHtml = '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/userTargetSales/update/' + data + '"><i class="fa fa-edit"></i> 编辑 </a>';
+                            optionHtml += '<a class="btn btn-xs default red-stripe" href="javascript:;" data-href="${ctx}/userTargetSales/delete/' + data + '" data-confirm="您确定要删除选中数据吗?"><i class="fa fa-trash-o"></i> 删除 </a>';
                             </shiro:hasPermission>
                             return optionHtml;
                         }
@@ -107,6 +108,18 @@
                             <input id="_direction" name="direction" type="hidden" value=""/>
                             <input id="_pageNumber" name="pageNumber" type="hidden" value="0"/>
                             <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
+
+                            <div class="form-group">
+                                <input type="text" name="nicknameLK" class="form-control" placeholder="昵称"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="phoneEQ" class="form-control" placeholder="手机"/>
+                            </div>
+                            <div class="form-group input-inline">
+                                <button class="btn blue filter-submit">
+                                    <i class="fa fa-search"></i> 查询
+                                </button>
+                            </div>
                         </form>
                     </div>
                     <table class="table table-striped table-bordered table-hover" id="dataTable">

@@ -530,6 +530,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void modifyPresidentId(@NotNull Long id,@NotNull Long presidentId) {
+        validate(id, v -> !v.equals(presidentId), "user id is same to presidentId, error");
+        findAndValidate(id);
+        User president = findAndValidate(presidentId);
+        validate(president, v -> v.getIsPresident(), "president id " + presidentId + " is wrong");
+
+        User merge = new User();
+        merge.setId(id);
+        merge.setPresidentId(presidentId);
+        userMapper.merge(merge, "presidentId");
+    }
+
+    @Override
     public void modifyIsDirector(@NotNull Long id, boolean isDirector) {
         User userForMerge = new User();
         userForMerge.setId(id);
@@ -652,7 +665,7 @@ public class UserServiceImpl implements UserService {
     public void modifyIsPresident(Long id, Long operatorId, boolean isPresident) {
         User user = findAndValidate(id);
         String label = isPresident ? "设置" : "取消";
-        if (user.getIsBoss() != null) {
+        if (user.getIsPresident() != null) {
             if (user.getIsPresident() == isPresident) {
                 return;
             }
@@ -679,7 +692,7 @@ public class UserServiceImpl implements UserService {
             User parent = user;
             do{
                 parent = userMapper.findOne(parent.getParentId());
-            }while(parent != null && !(parent.getIsPresident() || parent.getPresidentId() !=null));
+            }while(parent != null && !((parent.getIsPresident() != null && parent.getIsPresident()) || parent.getPresidentId() !=null));
             Long parentId = parent == null ? null : parent.getId();
             user.setIsPresident(isPresident);
             user.setPresidentId(parentId);
@@ -693,6 +706,8 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
+
+
 
     @Override
     public void modifyIsToV4(@NotNull Long id,boolean isToV4) {

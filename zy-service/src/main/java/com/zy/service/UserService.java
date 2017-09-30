@@ -80,6 +80,8 @@ public interface UserService {
 
 	void modifyIsPresident(Long id, Long principalUserId, boolean isPresident);
 
+	void modifyPresidentId(Long id, Long presidentId);
+
 	void modifyIsToV4(Long id, boolean isToV4);
 
 	long[] conyteamTotal(Long userId);
