@@ -73,6 +73,16 @@ public class UserTargetSalesServiceImpl implements UserTargetSalesService {
         userTargetSalesMapper.merge(userTargetSales,"targetCount");
     }
 
+    @Override
+    public long totalTargetSales(UserTargetSalesQueryModel userTargetSalesQueryModel) {
+        return userTargetSalesMapper.totalTargetSales(userTargetSalesQueryModel);
+    }
+
+    @Override
+    public long count(UserTargetSalesQueryModel userTargetSalesQueryModel) {
+        return userTargetSalesMapper.count(userTargetSalesQueryModel);
+    }
+
     private UserTargetSales findAndValidate(Long id) {
         UserTargetSales userTargetSales = userTargetSalesMapper.findOne(id);
         validate(userTargetSales, NOT_NULL, "userTargetSales id " + id + "not found");

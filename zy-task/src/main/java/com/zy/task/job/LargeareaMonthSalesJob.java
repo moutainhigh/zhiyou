@@ -9,10 +9,8 @@ import com.zy.entity.usr.User;
 import com.zy.model.query.LargeareaMonthSalesQueryModel;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.UserQueryModel;
-import com.zy.service.LargeareaMonthSalesService;
-import com.zy.service.OrderService;
-import com.zy.service.SystemCodeService;
-import com.zy.service.UserService;
+import com.zy.model.query.UserTargetSalesQueryModel;
+import com.zy.service.*;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -45,6 +43,9 @@ public class LargeareaMonthSalesJob implements Job {
 
     @Autowired
     private SystemCodeService systemCodeService;
+
+    @Autowired
+    private UserTargetSalesService userTargetSalesService;
 
 
     /**
@@ -104,12 +105,16 @@ public class LargeareaMonthSalesJob implements Job {
                 List<LargeareaMonthSales> all = largeareaMonthSalesService.findAll(LargeareaMonthSalesQueryModel.builder().largeareaNameEQ(la.getLargeareaName()).yearEQ(DateUtil.getYear(DateUtil.getMonthData(now, -2, 0))).monthEQ(DateUtil.getMothNum(DateUtil.getMonthData(now, -2, 0))).build());
                 List<LargeareaMonthSales> all2 = largeareaMonthSalesService.findAll(LargeareaMonthSalesQueryModel.builder().largeareaNameEQ(la.getLargeareaName()).yearEQ(DateUtil.getYear(DateUtil.getMonthData(now, -12, 0))).monthEQ(DateUtil.getMothNum(DateUtil.getMonthData(now, -12, 0))).build());
                 if( all != null && (all.size() > 0 && all.get(0).getSales() > 0)){
-                    la.setRelativeRate(DateUtil.formatDouble( Double.valueOf(la.getSales()) / Double.valueOf(all.get(0).getSales()) * 100));
+                    la.setRelativeRate(DateUtil.formatDouble((la.getSales() - all.get(0).getSales()) / all.get(0).getSales() * 100));
                 }else {
-                    la.setRelativeRate(100.00);
+                    if(la.getSales() == 0.00){
+                        la.setRelativeRate(0.00);
+                    }else {
+                        la.setRelativeRate(100.00);
+                    }
                 }
                 if( all2 != null && (all2.size()>0 && all2.get(0).getSales() > 0) ){
-                    la.setSameRate(DateUtil.formatDouble( Double.valueOf(la.getSales()) / Double.valueOf(all2.get(0).getSales()) * 100));
+                    la.setSameRate(DateUtil.formatDouble((la.getSales() - all2.get(0).getSales()) / all2.get(0).getSales() * 100));
                 }else {
                     la.setSameRate(100.00);
                 }
@@ -123,5 +128,14 @@ public class LargeareaMonthSalesJob implements Job {
             e.printStackTrace();
             logger.error(e.getMessage(), e);
         }
+    }
+
+    private  void checkTargetSales(){
+        Date now = new Date();
+        UserTargetSalesQueryModel userTargetSalesQueryModel = new UserTargetSalesQueryModel();
+        userTargetSalesQueryModel.setYearEQ(DateUtil.getYear(now));
+        userTargetSalesQueryModel.setMonthEQ(DateUtil.getMothNum(now));
+        long count = userTargetSalesService.count(userTargetSalesQueryModel);
+        long avg = userTargetSalesService.totalTargetSales(userTargetSalesQueryModel);
     }
 }

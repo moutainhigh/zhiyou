@@ -20,4 +20,8 @@ public interface UserTargetSalesService {
 
 	void modifySales(Long id, Integer targetSales);
 
+	long totalTargetSales(UserTargetSalesQueryModel userTargetSalesQueryModel);
+
+	long count(UserTargetSalesQueryModel userTargetSalesQueryModel);
+
 }

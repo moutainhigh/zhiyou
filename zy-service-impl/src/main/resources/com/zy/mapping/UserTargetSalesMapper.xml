@@ -68,6 +68,17 @@
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
 			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and user_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
 			<if test="yearEQ != null">
 				and year = #{yearEQ}
 			</if>
@@ -96,6 +107,43 @@
 			</if>
 			<if test="yearEQ != null">
 				and year = #{yearEQ}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and user_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="totalTargetSales" resultType="_long" parameterType="com.zy.model.query.UserTargetSalesQueryModel">
+		select sum(target_count) from `usr_user_target_sales`
+		<where>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and user_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
 			</if>
 		</where>
 	</select>
