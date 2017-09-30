@@ -552,7 +552,7 @@
                                         <td>501</td>
                                         <td>1<img src="${ctx}/image/up.png" style="width:10px;"/><img src="${ctx}/image/down.png" style="width:10px;"/></td>
                                     </tr>
-                                    <tr><td colspan="4">点击查看更多</td></tr>
+                                    <tr><td colspan="4" style="background: rgba(49,199,178,0.5);color: #fff;" onclick="alertMy(this)">点击查看更多</td></tr>
                                 </table>
 
                             </div>
@@ -600,6 +600,9 @@
     </div>
 
 <script>
+    function alertMy(obj){
+       alert("我是查看更多！");
+    }
     $(function(){
         var myChartxiao1 = echarts.init(document.getElementById('orderChart1'));
         // 异步加载数据
