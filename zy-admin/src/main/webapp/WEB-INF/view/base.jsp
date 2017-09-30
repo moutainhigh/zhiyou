@@ -221,6 +221,12 @@
     #orderChartTeam4 {
         width:100%;
     }
+    table tr {
+        text-align: center;
+    }
+    table tr td {
+        border-left: 1px solid #ccc;
+    }
 </style>
 <script>
 
@@ -457,6 +463,7 @@
                         </div>
                     </div>
                 </div>
+                <%--团队HTML--%>
                 <div class="AllThrTeam clearfloat" style="display: none">
                     <div style="float:left;width:30%;">
                         <div class="page-bar" style="margin-top: 30px;">
@@ -496,18 +503,58 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="portlet light bordered">
+                            <div class="portlet light bordered clearfloat">
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="icon-graph"></i>
                                         <span class="caption-subject bold uppercase"> 人员省份分布图</span>
                                     </div>
                                 </div>
-                                <div class="portlet-body">
-                                    <div id="orderChartTeam4" style="width:70%;height:800px;">
+                                <div class="portlet-body" style="width: 70%;float: left;">
+                                    <div id="orderChartTeam4" style="height:800px;">
 
                                     </div>
                                 </div>
+                                <table class="table table-hover" style="float: left;width: 25%;height:150px;border: 1px solid #ccc;margin-top: 200px;margin-left: 4%;">
+                                    <tr>
+                                        <td>排名</td>
+                                        <td>省份</td>
+                                        <td>人数</td>
+                                        <td>排名变化</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>广东省</td>
+                                        <td>688</td>
+                                        <td>+1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>江苏省</td>
+                                        <td>598</td>
+                                        <td>-2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>安徽省</td>
+                                        <td>550</td>
+                                        <td>+3</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>上海市</td>
+                                        <td>520</td>
+                                        <td>+2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>北京市</td>
+                                        <td>501</td>
+                                        <td>-1</td>
+                                    </tr>
+                                    <tr><td colspan="4">点击查看更多</td></tr>
+                                </table>
+
                             </div>
                         </div>
                     </div>

@@ -48,12 +48,12 @@ public class NewReportTeamJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         logger.info("NewReportTeamJob begin.......");
-        this.disposeTeamReport();
+        this.disposeNewTeamReport();
         logger.info("NewReportTeamJob end.......");
     }
 
     //处理 逻辑开始
-    public void disposeTeamReport(){
+    public void disposeNewTeamReport(){
         try{
             UserQueryModel userQueryModel = new UserQueryModel();
             userQueryModel.setUserRankEQ(User.UserRank.V4);
@@ -106,16 +106,19 @@ public class NewReportTeamJob implements Job {
           for(SystemCode systemCode:largeAreaTypes){
              List<NewReportTeam> newReportTeamList = new ArrayList<>();
              Map<Long,List<User>> UserMap = counting.get(systemCode.getSystemValue());
-             Map<Long,List<NewReportTeam>> OldnewReportTeam =newReportTeamOld.get(systemCode.getSystemValue());
              for (Area area :areaList){
-                 List<User> userList = UserMap.get(area.getId());
                  NewReportTeam newReportTeam = new NewReportTeam();
                  newReportTeam.setCreateDate(new Date());
                  newReportTeam.setProvinceId(area.getId());
                  newReportTeam.setProvinceName(area.getName());
                  newReportTeam.setYear(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
                  newReportTeam.setMonth(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
-                 newReportTeam.setNumber(userList!=null?userList.size():0);
+                 if(UserMap!=null){
+                     List<User> userList = UserMap.get(area.getId());
+                     newReportTeam.setNumber(userList!=null?userList.size():0);
+                 }else{
+                     newReportTeam.setNumber(0);
+                 }
                  newReportTeam.setRegion(Integer.parseInt(systemCode.getSystemValue()));
                  newReportTeamList.add(newReportTeam);
              }
@@ -124,6 +127,7 @@ public class NewReportTeamJob implements Job {
             //处理排名
             for (Object key : map.keySet()) {
                 List<NewReportTeam>rankList= map.get(key);
+                System.out.println("key"+key+":"+rankList.size());
                 //对list 进行排序
                 rankList = rankList.stream().sorted((teamReportNew1, teamReportNew2) ->
                         teamReportNew2.getNumber() - teamReportNew1.getNumber()).collect(Collectors.toList());
@@ -136,7 +140,10 @@ public class NewReportTeamJob implements Job {
                         i++;
                     }
                     newReportTeam.setRank(i);
-                    NewReportTeam teamReportNewOld = newReportTeamOld.get(newReportTeam.getRegion()).get(newReportTeam.getProvinceId()).get(0);
+                    NewReportTeam teamReportNewOld =null;
+                    if (newReportTeamOld!=null&&newReportTeamOld.get(newReportTeam.getRegion())!=null&&newReportTeamOld.get(newReportTeam.getRegion()).get(newReportTeam.getProvinceId())!=null){
+                        teamReportNewOld= newReportTeamOld.get(newReportTeam.getRegion()).get(newReportTeam.getProvinceId()).get(0);
+                    }
                     if(teamReportNewOld!=null){
                         newReportTeam.setRankChange(i-newReportTeam.getRank());
                     }else{
@@ -152,7 +159,7 @@ public class NewReportTeamJob implements Job {
             try {
                 TimeUnit.SECONDS.sleep(2);
                } catch (InterruptedException e1) {}
-                this.disposeTeamReport();
+                this.disposeNewTeamReport();
             }catch (Exception e){
                 e.printStackTrace();
                 logger.error(e.getMessage(), e);
