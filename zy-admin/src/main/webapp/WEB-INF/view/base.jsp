@@ -305,7 +305,7 @@
                           <div class="allExpenses" style="border-left: none;" change="3"  onclick="ajaxTeam(this)">收支</div>
                       </div>
                 </div>
-                <div class="AllThrVolume">
+                <div class="AllThrVolume clearfloat">
                     <div class="page-bar" style="margin-top: 30px;">
                         <ul class="page-breadcrumb">
                             <li><span class="ajaxify">当月日销量情况</span>
@@ -350,10 +350,71 @@
                             </div>
                         </div>
                     </div>
+                    <div style="float:left;width:48%;">
+                        <div class="page-bar" style="margin-top: 30px;">
+                            <ul class="page-breadcrumb">
+                                <li><span class="ajaxify">销量环比</span>
+                            </ul>
+                        </div>
+                        <div class="portlet-body">
+                            <div id="orderChart5" style="height:350px;">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float:left;width:48%;margin-left: 4%;">
+                        <div class="page-bar" style="margin-top: 30px;">
+                            <ul class="page-breadcrumb">
+                                <li><span class="ajaxify">销量同比</span>
+                            </ul>
+                        </div>
+                        <div class="portlet-body">
+                            <div id="orderChart6" style="height:350px;">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="AllThrTeam">
+                <div class="AllThrTeam clearfloat" style="display: none">
+                    <div style="float:left;width:30%;">
+                        <div class="page-bar" style="margin-top: 30px;">
+                            <ul class="page-breadcrumb">
+                                <li><span class="ajaxify">各大区总人数</span>
+                            </ul>
+                        </div>
+                        <div class="portlet-body">
+                            <div id="orderChartTeam1" style="height:350px;">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float:left;width:30%;margin-left: 5%">
+                        <div class="page-bar" style="margin-top: 30px;">
+                            <ul class="page-breadcrumb">
+                                <li><span class="ajaxify">各大区本月新增人员占比</span>
+                            </ul>
+                        </div>
+                        <div class="portlet-body">
+                            <div id="orderChartTeam2" style="height:350px;">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float:left;width:30%;margin-left: 5%">
+                        <div class="page-bar" style="margin-top: 30px;">
+                            <ul class="page-breadcrumb">
+                                <li><span class="ajaxify">各大区沉睡人员占比</span>
+                            </ul>
+                        </div>
+                        <div class="portlet-body">
+                            <div id="orderChartTeam3" style="height:350px;">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="AllThrExpenses">
+                <div class="AllThrExpenses" style="display: none">
+
                 </div>
             </div>
         </div>
@@ -408,187 +469,402 @@
                 })()
             });
         });
+
+        var myChartxiao2 = echarts.init(document.getElementById('orderChart2'));
+        // 异步加载数据
+        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
+            console.log(result);
+            var categories = ['东部','南部','西部','北部','中部'];
+            myChartxiao2.setOption({
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: [{
+                    data: categories.map(function (a) {
+                        return a;
+                    })
+                }],
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : (function (){
+                    var series = [];
+                    for (var i = 0; i <categories.length; i++) {
+                        series.push({
+                            name:categories[i],
+                            type:'bar',
+                            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                        });
+                    }
+                    return series;
+                })()
+            });
+        });
+        var myChartxiao3 = echarts.init(document.getElementById('orderChart3'));
+        // 异步加载数据
+        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
+            console.log(result);
+            var categories = ['东部','南部','西部','北部','中部'];
+            myChartxiao3.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        dataView: {show: true, readOnly: false},
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                legend: {
+                    data:['目标量','完成量','完成率']
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: categories.map(function (a) {
+                            return a;
+                        }),
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '当月量',
+                        axisLabel: {
+                            formatter: '{value} '
+                        }
+                    },
+                    {
+                        type: 'value',
+                        name: '完成率',
+                        axisLabel: {
+                            formatter: '{value} %'
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name:'目标量',
+                        type:'bar',
+                        data:[2.0, 4.9, 7.0, 23.2, 25.6]
+                    },
+                    {
+                        name:'完成量',
+                        type:'bar',
+                        data:[2.6, 5.9, 9.0, 26.4, 28.7]
+                    },
+                    {
+                        name:'完成率',
+                        type:'line',
+                        yAxisIndex: 1,
+                        data:[2.0, 4.2, 3.3, 4.5, 6.3]
+                    }
+                ]
+            });
+        });
+        var myChartxiao4 = echarts.init(document.getElementById('orderChart4'));
+        // 异步加载数据
+        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
+            console.log(result);
+            var categories = ['东部','南部','西部','北部','中部'];
+            var data=[
+                {value:335, name:'东部'},
+                {value:310, name:'南部'},
+                {value:234, name:'西部'},
+                {value:135, name:'北部'},
+                {value:1548, name:'中部'}
+            ];
+            myChartxiao4.setOption({
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: categories.map(function (a) {
+                        return a;
+                    })
+                },
+                series : [
+                    {
+                        type: 'pie',
+                        radius : '55%',
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        },
+                        data:data
+                    }
+                ]
+            });
+        });
+        var myChartxiao5 = echarts.init(document.getElementById('orderChart5'));
+        // 异步加载数据
+        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
+            console.log(result);
+            var categories = ['东部','南部','西部','北部','中部'];
+            myChartxiao5.setOption({
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: [{
+                    data: categories.map(function (a) {
+                        return a;
+                    })
+                }],
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series : (function (){
+                    var series = [];
+                    for (var i = 0; i <categories.length; i++) {
+                        series.push({
+                            name:categories[i],
+                            type:'line',
+                            stack: '总量',
+                            data:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90]
+                        });
+                    }
+                    return series;
+                })()
+            });
+        });
+        var myChartxiao6 = echarts.init(document.getElementById('orderChart6'));
+        // 异步加载数据
+        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
+            console.log(result);
+            var categories = ['东部','南部','西部','北部','中部'];
+            myChartxiao6.setOption({
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: [{
+                    data: categories.map(function (a) {
+                        return a;
+                    })
+                }],
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series : (function (){
+                    var series = [];
+                    for (var i = 0; i <categories.length; i++) {
+                        series.push({
+                            name:categories[i],
+                            type:'line',
+                            stack: '总量',
+                            data:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90]
+                        });
+                    }
+                    return series;
+                })()
+            });
+        });
     })
 </script>
 <script>
-    var myChartxiao2 = echarts.init(document.getElementById('orderChart2'));
-    // 异步加载数据
-    $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-        console.log(result);
-        var categories = ['东部','南部','西部','北部','中部'];
-        myChartxiao2.setOption({
-            tooltip : {
-                trigger: 'axis'
-            },
-            legend: [{
-                data: categories.map(function (a) {
-                    return a;
-                })
-            }],
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },
-            calculable : true,
-            xAxis : [
-                {
-                    type : 'category',
-                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-                }
-            ],
-            yAxis : [
-                {
-                    type : 'value'
-                }
-            ],
-            series : (function (){
-                var series = [];
-                for (var i = 0; i <categories.length; i++) {
-                    series.push({
-                        name:categories[i],
-                        type:'bar',
-                        data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
-                    });
-                }
-                return series;
-            })()
-        });
-    });
-</script>
-<script>
-    var myChartxiao3 = echarts.init(document.getElementById('orderChart3'));
-    // 异步加载数据
-    $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-        console.log(result);
-        var categories = ['东部','南部','西部','北部','中部'];
-        myChartxiao3.setOption({
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross',
-                    crossStyle: {
-                        color: '#999'
-                    }
-                }
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            toolbox: {
-                feature: {
-                    dataView: {show: true, readOnly: false},
-                    magicType: {show: true, type: ['line', 'bar']},
-                    restore: {show: true},
-                    saveAsImage: {show: true}
-                }
-            },
-            legend: {
-                data:['目标量','完成量','完成率']
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    data: categories.map(function (a) {
-                        return a;
-                    }),
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    name: '当月量',
-                    axisLabel: {
-                        formatter: '{value} '
-                    }
-                },
-                {
-                    type: 'value',
-                    name: '完成率',
-                    axisLabel: {
-                        formatter: '{value} %'
-                    }
-                }
-            ],
-            series: [
-                {
-                    name:'目标量',
-                    type:'bar',
-                    data:[2.0, 4.9, 7.0, 23.2, 25.6]
-                },
-                {
-                    name:'完成量',
-                    type:'bar',
-                    data:[2.6, 5.9, 9.0, 26.4, 28.7]
-                },
-                {
-                    name:'完成率',
-                    type:'line',
-                    yAxisIndex: 1,
-                    data:[2.0, 4.2, 3.3, 4.5, 6.3]
-                }
-            ]
-        });
-    });
-</script>
-<script>
-    var myChartxiao4 = echarts.init(document.getElementById('orderChart4'));
-    // 异步加载数据
-    $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-        console.log(result);
-        var categories = ['东部','南部','西部','北部','中部'];
-        var data=[
-            {value:335, name:'东部'},
-            {value:310, name:'南部'},
-            {value:234, name:'西部'},
-            {value:135, name:'北部'},
-            {value:1548, name:'中部'}
-        ];
-        myChartxiao4.setOption({
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                data: categories.map(function (a) {
-                    return a;
-                })
-            },
-            series : [
-                {
-                    type: 'pie',
-                    radius : '55%',
-                    itemStyle: {
-                        emphasis: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    },
-                    data:data
-                }
-            ]
-        });
-    });
-</script>
-<script>
-    function orderChartTwo() {
+     function scaleColTeam(){
+         var myCharTeam1 = echarts.init(document.getElementById('orderChartTeam1'));
+         // 异步加载数据
+         $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
+             console.log(result);
+             var categories = ['东部','南部','西部','北部','中部'];
+             myCharTeam1.setOption({
+                 tooltip: {
+                     trigger: 'axis',
+                     axisPointer: {
+                         type: 'shadow'
+                     }
+                 },
+                 legend: {
+                     data: categories.map(function (a) {
+                         return a;
+                     })
+                 },
+                 grid: {
+                     left: '3%',
+                     right: '4%',
+                     bottom: '3%',
+                     containLabel: true
+                 },
+                 xAxis: {
+                     type: 'value',
+                     boundaryGap: [0, 0.01]
+                 },
+                 yAxis: {
+                     type: 'category',
+                     data: categories.map(function (a) {
+                         return a;
+                     })
+                 },
+                 series: [
+                     {
+                         name:"总人数",
+                         type: 'bar',
+                         data: [18203, 23489, 29034, 104970, 131744]
+                     }
+                 ]
+             });
+         });
+         var myCharTeam2 = echarts.init(document.getElementById('orderChartTeam2'));
+         // 异步加载数据
+         $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
+             console.log(result);
+             var categories = ['东部','南部','西部','北部','中部'];
+             var data=[
+                 {value:335, name:'东部'},
+                 {value:310, name:'南部'},
+                 {value:234, name:'西部'},
+                 {value:135, name:'北部'},
+                 {value:1548, name:'中部'}
+             ];
+             myCharTeam2.setOption({
+                 tooltip : {
+                     trigger: 'item',
+                     formatter: "{a} <br/>{b} : {c} ({d}%)"
+                 },
+                 legend: {
+                     orient: 'vertical',
+                     left: 'left',
+                     data: categories.map(function (a) {
+                         return a;
+                     })
+                 },
+                 series : [
+                     {
+                         type: 'pie',
+                         radius : '55%',
+                         itemStyle: {
+                             emphasis: {
+                                 shadowBlur: 10,
+                                 shadowOffsetX: 0,
+                                 shadowColor: 'rgba(0, 0, 0, 0.5)'
+                             }
+                         },
+                         data:data
+                     }
+                 ]
+             });
+         });
+         var myCharTeam3 = echarts.init(document.getElementById('orderChartTeam3'));
+         // 异步加载数据
+         $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
+             console.log(result);
+             var categories = ['东部','南部','西部','北部','中部'];
+             var data=[
+                 {value:335, name:'东部'},
+                 {value:310, name:'南部'},
+                 {value:234, name:'西部'},
+                 {value:135, name:'北部'},
+                 {value:1548, name:'中部'}
+             ];
+             myCharTeam3.setOption({
+                 tooltip : {
+                     trigger: 'item',
+                     formatter: "{a} <br/>{b} : {c} ({d}%)"
+                 },
+                 legend: {
+                     orient: 'vertical',
+                     left: 'left',
+                     data: categories.map(function (a) {
+                         return a;
+                     })
+                 },
+                 series : [
+                     {
+                         type: 'pie',
+                         radius : '55%',
+                         itemStyle: {
+                             emphasis: {
+                                 shadowBlur: 10,
+                                 shadowOffsetX: 0,
+                                 shadowColor: 'rgba(0, 0, 0, 0.5)'
+                             }
+                         },
+                         data:data
+                     }
+                 ]
+             });
+         });
+     }
+    function scaleColExpenses(){
 
     }
+</script>
+<script>
     function scaleCol(obj){
         var num=parseInt($(obj).attr("change"));
         switch(num)
@@ -676,6 +952,7 @@
                 $(obj).siblings(".allExpenses").eq(1).removeClass("on3");
                 $(".AllThrTeam").show();
                 $(".AllThrVolume,.AllThrExpenses").hide();
+                scaleColTeam();
                 break;
             case 3:
                 $(obj).addClass("on3");
@@ -683,6 +960,7 @@
                 $(obj).siblings(".allExpenses").eq(1).removeClass("on2");
                 $(".AllThrExpenses").show();
                 $(".AllThrVolume,.AllThrTeam").hide();
+                scaleColExpenses();
                 break;
             default:
         }
