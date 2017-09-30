@@ -48,12 +48,12 @@ public class NewReportTeamJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         logger.info("NewReportTeamJob begin.......");
-        this.disposeTeamReport();
+        this.disposeNewTeamReport();
         logger.info("NewReportTeamJob end.......");
     }
 
     //处理 逻辑开始
-    public void disposeTeamReport(){
+    public void disposeNewTeamReport(){
         try{
             UserQueryModel userQueryModel = new UserQueryModel();
             userQueryModel.setUserRankEQ(User.UserRank.V4);
@@ -127,6 +127,7 @@ public class NewReportTeamJob implements Job {
             //处理排名
             for (Object key : map.keySet()) {
                 List<NewReportTeam>rankList= map.get(key);
+                System.out.println("key"+key+":"+rankList.size());
                 //对list 进行排序
                 rankList = rankList.stream().sorted((teamReportNew1, teamReportNew2) ->
                         teamReportNew2.getNumber() - teamReportNew1.getNumber()).collect(Collectors.toList());
@@ -158,7 +159,7 @@ public class NewReportTeamJob implements Job {
             try {
                 TimeUnit.SECONDS.sleep(2);
                } catch (InterruptedException e1) {}
-                this.disposeTeamReport();
+                this.disposeNewTeamReport();
             }catch (Exception e){
                 e.printStackTrace();
                 logger.error(e.getMessage(), e);
