@@ -426,7 +426,7 @@ public class NewReportComponent {
     public Map<String,String> disposeTeamUb(String type) {
         //处理U币逻辑
         Map<String,String>UMap = new HashMap<>();
-        List<Deposit> depositList=localCacheComponent.getDeposits().stream().filter(deposit -> deposit.getPaidTime().after(DateUtil.getDateEnd(DateUtil.getMonthData(new Date(),0,-1)))).
+        List<Deposit> depositList=localCacheComponent.getDeposits().stream().filter(deposit ->(deposit.getPaidTime()!=null &&deposit.getPaidTime().after(DateUtil.getDateEnd(DateUtil.getMonthData(new Date(),-1,0))))).
                 filter(deposit -> deposit.getDepositStatus()== Deposit.DepositStatus.充值成功).collect(Collectors.toList());
         List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
         Map<Integer,List<User>> userMap = userList.stream().collect(Collectors.groupingBy(User::getLargearea));
@@ -469,10 +469,10 @@ public class NewReportComponent {
      * @param mory 年或者月 m 月 Y是年
      */
     private  void disposeProfit(List<Profit> profitList,String type ,String mory,Map<String,String>UMap,Map<Integer,List<User>> userMap){
-        if ("y".equals(mory)){ //年
-            profitList = profitList.stream().filter(profit -> profit.getGrantedTime().after(DateUtil.getBeforeMonthBegin(new Date(),0,0))).collect(Collectors.toList());
-        }else{//月
-            profitList = profitList.stream().filter(profit -> profit.getGrantedTime().after(DateUtil.getCurrYearFirst())).collect(Collectors.toList());
+        if ("m".equals(mory)){ //月
+            profitList = profitList.stream().filter(profit -> (profit.getGrantedTime()!=null&&profit.getGrantedTime().after(DateUtil.getBeforeMonthBegin(new Date(),0,0)))).collect(Collectors.toList());
+        }else{//年
+            profitList = profitList.stream().filter(profit -> (profit.getGrantedTime()!=null&&profit.getGrantedTime().after(DateUtil.getCurrYearFirst()))).collect(Collectors.toList());
         }
         if(!"0".equals(type)){//公司的不需要处理
             List<User> ateatUaerList = userMap.get(type);
@@ -523,7 +523,7 @@ public class NewReportComponent {
         String number = this.statOrderNumber(type,"m");
         tageMap.put("finishNumber",DateUtil.formatString(Double.valueOf(number)));
         if(targetCount==0){
-            tageMap.put("rate","0.00");
+            tageMap.put("rate","100.00");
         }else {
             String rate = DateUtil.formatString(Double.valueOf(number)/Double.valueOf(targetCount)*100);
             tageMap.put("rate",rate);

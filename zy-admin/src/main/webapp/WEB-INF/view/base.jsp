@@ -219,6 +219,85 @@
         color: #fff;
     }
 </style>
+<script>
+
+    $(document).ready(function() {
+      //销量
+        orderFunction();
+       //特級
+        userV4Function();
+        //奖金
+        ubFunction();
+    });
+    function orderFunction () {
+       var  type = ${type};
+        $.ajax({
+            url : '${ctx}/newReport/ajaxNewReportTeamTage',
+            data : {
+                type:type
+            },
+            dataType : 'json',
+            type : 'POST',
+            success : function(result) {
+                if(result.code != 0) {
+                    layer.msg("销量信息加载失败："+result.message);
+                    return;
+                }else{
+                    var data =result.data;
+                    $("#tageNumber").html(data.tageNumber+"次");
+                    $("#finishNumber").html(data.finishNumber+"次")
+                    $("#rate").html(data.rate+"%")
+
+                }
+            }
+        });
+    }
+    function userV4Function() {
+        var  type = ${type};
+        $.ajax({
+            url : '${ctx}/newReport/ajaxNewReportTeamV4',
+            data : {
+                type:type
+            },
+            dataType : 'json',
+            type : 'POST',
+            success : function(result) {
+                if(result.code != 0) {
+                    layer.msg("团队信息加载失败："+result.message);
+                    return;
+                }else{
+                    var data =result.data;
+                    $("#V4Number").html(data.V4Number+"人");
+                    $("#V4NewNumber").html(data.V4NewNumber+"人")
+                    $("#V4SleepNumber").html(data.V4SleepNumber+"人")
+                }
+            }
+        });
+    }
+
+    function ubFunction() {
+        var  type = ${type};
+        $.ajax({
+            url : '${ctx}/newReport/ajaxNewReportTeamUb',
+            data : {
+                type:type
+            },
+            dataType : 'json',
+            type : 'POST',
+            success : function(result) {
+                if(result.code != 0) {
+                    layer.msg("奖励信息加载失败："+result.message);
+                    return;
+                }else{
+                    var data =result.data;
+                    $("#Ub").html(data.Ub+"元");
+                    $("#mMunber").html(data.mMunber+"元")
+                    $("#yMunber").html(data.yMunber+"元")
+                }
+            }
+        });
+    }
+</script>
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li><img src="${ctx}/image/dataXiao.png" /> <span class="ajaxify">今日销量</span>
@@ -238,15 +317,15 @@
                     <div class="col-md-2 volume">销量</div>
                     <div class="col-md-10 dataGoal">
                         <div class="colMl" change="1" onmouseover="scaleCol(this)" onmouseout="scaleColTo(this)">
-                            <span class="num">185次</span>
+                            <span class="num" id="tageNumber">0次</span>
                             <span class="dateVol">当月销量目标</span>
                         </div>
                         <div class="colMl" change="2" onmouseover="scaleCol(this)" onmouseout="scaleColTo(this)">
-                            <span class="num">18500次</span>
+                            <span class="num" id="finishNumber">0次</span>
                             <span class="dateVol">当月销量完成</span>
                         </div>
                         <div class="colMl" change="3" onmouseover="scaleCol(this)" onmouseout="scaleColTo(this)">
-                            <span class="num">88%</span>
+                            <span class="num" id="rate">0%</span>
                             <span class="dateVol">当月销量达成率</span>
                         </div>
                     </div>
@@ -255,15 +334,15 @@
                     <div class="col-md-2 team">团队</div>
                         <div class="col-md-10 dataTeam">
                             <div class="colMl" change="4" onmouseover="scaleCol(this)" onmouseout="scaleColTo(this)">
-                                <span class="num">185人</span>
+                                <span class="num" id="V4Number">0人</span>
                                 <span class="dateVol">当月总特级数</span>
                             </div>
                             <div class="colMl" change="5" onmouseover="scaleCol(this)" onmouseout="scaleColTo(this)">
-                                <span class="num">18500人</span>
+                                <span class="num" id="V4NewNumber">0人</span>
                                 <span class="dateVol">当月新增特级数</span>
                             </div>
                             <div class="colMl" change="6" onmouseover="scaleCol(this)" onmouseout="scaleColTo(this)">
-                                <span class="num">88人</span>
+                                <span class="num" id="V4SleepNumber">0人</span>
                                 <span class="dateVol">沉睡特级数</span>
                             </div>
                         </div>
@@ -272,15 +351,15 @@
                     <div class="col-md-2 expenses">收支</div>
                     <div class="col-md-10 dataExpenses">
                         <div class="colMl" change="7" onmouseover="scaleCol(this)" onmouseout="scaleColTo(this)">
-                            <span class="num">185元</span>
+                            <span class="num" id="Ub">0元</span>
                             <span class="dateVol">当月U币充值金额</span>
                         </div>
                         <div class="colMl" change="8" onmouseover="scaleCol(this)" onmouseout="scaleColTo(this)">
-                            <span class="num">18500元</span>
+                            <span class="num" id="mMunber">0元</span>
                             <span class="dateVol">上月奖励发放金额</span>
                         </div>
                         <div class="colMl" change="9" onmouseover="scaleCol(this)" onmouseout="scaleColTo(this)">
-                            <span class="num">88元</span>
+                            <span class="num"id="yMunber">0元</span>
                             <span class="dateVol">本年度累计发放金额</span>
                         </div>
                     </div>

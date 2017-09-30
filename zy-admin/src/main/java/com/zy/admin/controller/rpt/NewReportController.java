@@ -39,6 +39,7 @@ public class NewReportController {
      */
     @RequestMapping("/base")
     public String toMian(Model model,String type){
+        model.addAttribute("type",type);
         return "base";
     }
 

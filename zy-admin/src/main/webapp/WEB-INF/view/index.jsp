@@ -638,7 +638,7 @@
             <ul class="sub-menu">
               <shiro:hasPermission name="newReport:base">
                 <li>
-                  <a href="javascript:;" data-href="${ctx}/newReport/base"><i class="icon-docs"></i> 基础报表<span class="badge badge-danger"></span></a>
+                  <a href="javascript:;" data-href="${ctx}/newReport/base?type=0"><i class="icon-docs"></i> 基础报表<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>
