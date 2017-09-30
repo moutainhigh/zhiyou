@@ -1139,12 +1139,6 @@
                 profit.unshift(arrayT);
             }
 
-            //获取环比数据
-            var relativeRate = result.data.relativeRate ;
-            var rRate = [];
-            for (let i in relativeRate) {
-                rRate.unshift(relativeRate[i]);
-            }
 
             orderChartEX1.setOption({
                 tooltip : {
@@ -1193,6 +1187,14 @@
 
 
             //环比
+            //获取环比数据
+            var relativeRate = result.data.relativeRate ;
+            var rRate = [];
+            for (let i in relativeRate) {
+                var sArray = relativeRate[i];
+                var arrayT = sArray.split(",");
+                rRate.unshift(arrayT);
+            }
             var orderChartEX2 = echarts.init(document.getElementById('orderChartEX2'));
             orderChartEX2.setOption({
                 tooltip: {
@@ -1236,6 +1238,16 @@
                 })()
             });
 
+
+            //同比
+            //获取环比数据
+            var sameiveRate = result.data.sameiveRate ;
+            var sRate = [];
+            for (let i in sameiveRate) {
+                var sArray = sameiveRate[i];
+                var arrayT = sArray.split(",");
+                sRate.unshift(arrayT);
+            }
             var orderChartEX3 = echarts.init(document.getElementById('orderChartEX3'));
             orderChartEX3.setOption({
                 tooltip: {
@@ -1272,7 +1284,7 @@
                             name:area[i],
                             type:'line',
                             stack: '总量',
-                            data:[0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0]
+                            data:sRate[i]
                         });
                     }
                     return series;

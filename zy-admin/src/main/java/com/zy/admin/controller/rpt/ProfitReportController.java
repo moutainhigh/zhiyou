@@ -53,7 +53,6 @@ public class ProfitReportController {
     @ResponseBody
     public Result<?> profit() {
         LargeAreaProfitQueryModel largeAreaProfitQueryModel = new LargeAreaProfitQueryModel();
-        largeAreaProfitQueryModel.setYearEQ(DateUtil.getYear(new Date()));
         Map<String ,Object> returnMap = largeAreaProfitService.findAll(largeAreaProfitQueryModel);
         return ResultBuilder.result(returnMap);
     }
