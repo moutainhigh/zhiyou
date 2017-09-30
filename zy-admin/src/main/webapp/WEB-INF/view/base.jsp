@@ -218,6 +218,9 @@
         background: #2582c1;
         color: #fff;
     }
+    #orderChartTeam4 {
+        width:100%;
+    }
 </style>
 <script>
 
@@ -491,9 +494,59 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-graph"></i>
+                                        <span class="caption-subject bold uppercase"> 人员省份分布图</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div id="orderChartTeam4" style="width:70%;height:800px;">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="AllThrExpenses" style="display: none">
+                    <div class="page-bar" style="margin-top: 30px;">
+                        <ul class="page-breadcrumb">
+                            <li><span class="ajaxify">五大区历史收益情况</span>
+                        </ul>
+                    </div>
+                    <div class="portlet-body">
+                        <div id="orderChartEX1" style="height:350px;">
 
+                        </div>
+                    </div>
+                    <div style="float:left;width:48%;">
+                        <div class="page-bar" style="margin-top: 30px;">
+                            <ul class="page-breadcrumb">
+                                <li><span class="ajaxify">收益环比</span>
+                            </ul>
+                        </div>
+                        <div class="portlet-body">
+                            <div id="orderChartEX2" style="height:350px;">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float:left;width:48%;margin-left: 4%;">
+                        <div class="page-bar" style="margin-top: 30px;">
+                            <ul class="page-breadcrumb">
+                                <li><span class="ajaxify">收益同比</span>
+                            </ul>
+                        </div>
+                        <div class="portlet-body">
+                            <div id="orderChartEX3" style="height:350px;">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -938,10 +991,241 @@
                  ]
              });
          });
+         $.get('${ctx}/map/json/china.json', function (chinaJson) {
+             echarts.registerMap('china', chinaJson);
+             var orderChartTeam4 = echarts.init(document.getElementById('orderChartTeam4'));
+             orderChartTeam4.setOption({
+                 tooltip: {
+                     trigger: 'item'
+                 },
+                 legend: {
+                     orient: 'vertical',
+                     left: 'left',
+                 },
+                 visualMap: {
+                     min: 0,
+                     max: 500,
+                     left: 'left',
+                     top: 'bottom',
+                     text: ['人数高','人数低'],           // 文本，默认为数值文本
+                     calculable: true
+                 },
+                 toolbox: {
+                     show: true,
+                     orient: 'vertical',
+                     left: 'right',
+                     top: 'center',
+                     feature: {
+                         dataView: {readOnly: false},
+                         restore: {},
+                         saveAsImage: {}
+                     }
+                 },
+                 series: [
+                     {
+                         name: '特级人数',
+                         type: 'map',
+                         mapType: 'china',
+                         roam: false,
+                         label: {
+                             normal: {
+                                 show: true
+                             },
+                             emphasis: {
+                                 show: true
+                             }
+                         },
+                         data:[
+                             {name: '北京',value: randomData() },
+                             {name: '天津',value: randomData() },
+                             {name: '上海',value: randomData() },
+                             {name: '重庆',value: randomData() },
+                             {name: '河北',value: randomData() },
+                             {name: '河南',value: randomData() },
+                             {name: '云南',value: randomData() },
+                             {name: '辽宁',value: randomData() },
+                             {name: '黑龙江',value: randomData() },
+                             {name: '湖南',value: randomData() },
+                             {name: '安徽',value: randomData() },
+                             {name: '山东',value: randomData() },
+                             {name: '新疆',value: randomData() },
+                             {name: '江苏',value: randomData() },
+                             {name: '浙江',value: randomData() },
+                             {name: '江西',value: randomData() },
+                             {name: '湖北',value: randomData() },
+                             {name: '广西',value: randomData() },
+                             {name: '甘肃',value: randomData() },
+                             {name: '山西',value: randomData() },
+                             {name: '内蒙古',value: randomData() },
+                             {name: '陕西',value: randomData() },
+                             {name: '吉林',value: randomData() },
+                             {name: '福建',value: randomData() },
+                             {name: '贵州',value: randomData() },
+                             {name: '广东',value: randomData() },
+                             {name: '青海',value: randomData() },
+                             {name: '西藏',value: randomData() },
+                             {name: '四川',value: randomData() },
+                             {name: '宁夏',value: randomData() },
+                             {name: '海南',value: randomData() },
+                             {name: '台湾',value: randomData() },
+                             {name: '香港',value: randomData() },
+                             {name: '澳门',value: randomData() }
+                         ]
+                     }
+                 ]
+             });
+         });
      }
+     //收益方法
     function scaleColExpenses(){
-
+        var orderChartEX1 = echarts.init(document.getElementById('orderChartEX1'));
+        // 异步加载数据
+        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
+            console.log(result);
+            var categories = ['东部','南部','西部','北部','中部'];
+            orderChartEX1.setOption({
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: [{
+                    data: categories.map(function (a) {
+                        return a;
+                    })
+                }],
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : (function (){
+                    var series = [];
+                    for (var i = 0; i <categories.length; i++) {
+                        series.push({
+                            name:categories[i],
+                            type:'bar',
+                            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                        });
+                    }
+                    return series;
+                })()
+            });
+        });
+        var orderChartEX2 = echarts.init(document.getElementById('orderChartEX2'));
+        // 异步加载数据
+        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
+            console.log(result);
+            var categories = ['东部','南部','西部','北部','中部'];
+            orderChartEX2.setOption({
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: [{
+                    data: categories.map(function (a) {
+                        return a;
+                    })
+                }],
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series : (function (){
+                    var series = [];
+                    for (var i = 0; i <categories.length; i++) {
+                        series.push({
+                            name:categories[i],
+                            type:'line',
+                            stack: '总量',
+                            data:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90]
+                        });
+                    }
+                    return series;
+                })()
+            });
+        });
+        var orderChartEX3 = echarts.init(document.getElementById('orderChartEX3'));
+        // 异步加载数据
+        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
+            console.log(result);
+            var categories = ['东部','南部','西部','北部','中部'];
+            orderChartEX3.setOption({
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: [{
+                    data: categories.map(function (a) {
+                        return a;
+                    })
+                }],
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series : (function (){
+                    var series = [];
+                    for (var i = 0; i <categories.length; i++) {
+                        series.push({
+                            name:categories[i],
+                            type:'line',
+                            stack: '总量',
+                            data:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90]
+                        });
+                    }
+                    return series;
+                })()
+            });
+        });
     }
+     function randomData() {
+         return Math.round(Math.random()*1000);
+     }
 </script>
 <script>
     function scaleCol(obj){
@@ -1044,4 +1328,95 @@
             default:
         }
     }
+</script>
+
+<script>
+    $.get('${ctx}/map/json/china.json', function (chinaJson) {
+        echarts.registerMap('china', chinaJson);
+        var chart = echarts.init(document.getElementById('orderChartTeam4'));
+        chart.setOption({
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+            },
+            visualMap: {
+                min: 0,
+                max: 500,
+                left: 'left',
+                top: 'bottom',
+                text: ['高','低'],           // 文本，默认为数值文本
+                calculable: true
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    dataView: {readOnly: false},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            series: [
+                {
+                    name: '特级人数',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,
+                    label: {
+                        normal: {
+                            show: true
+                        },
+                        emphasis: {
+                            show: true
+                        }
+                    },
+                    data:[
+                        {name: '北京',value: randomData() },
+                        {name: '天津',value: randomData() },
+                        {name: '上海',value: randomData() },
+                        {name: '重庆',value: randomData() },
+                        {name: '河北',value: randomData() },
+                        {name: '河南',value: randomData() },
+                        {name: '云南',value: randomData() },
+                        {name: '辽宁',value: randomData() },
+                        {name: '黑龙江',value: randomData() },
+                        {name: '湖南',value: randomData() },
+                        {name: '安徽',value: randomData() },
+                        {name: '山东',value: randomData() },
+                        {name: '新疆',value: randomData() },
+                        {name: '江苏',value: randomData() },
+                        {name: '浙江',value: randomData() },
+                        {name: '江西',value: randomData() },
+                        {name: '湖北',value: randomData() },
+                        {name: '广西',value: randomData() },
+                        {name: '甘肃',value: randomData() },
+                        {name: '山西',value: randomData() },
+                        {name: '内蒙古',value: randomData() },
+                        {name: '陕西',value: randomData() },
+                        {name: '吉林',value: randomData() },
+                        {name: '福建',value: randomData() },
+                        {name: '贵州',value: randomData() },
+                        {name: '广东',value: randomData() },
+                        {name: '青海',value: randomData() },
+                        {name: '西藏',value: randomData() },
+                        {name: '四川',value: randomData() },
+                        {name: '宁夏',value: randomData() },
+                        {name: '海南',value: randomData() },
+                        {name: '台湾',value: randomData() },
+                        {name: '香港',value: randomData() },
+                        {name: '澳门',value: randomData() }
+                    ]
+                }
+            ]
+        });
+    });
+    function randomData() {
+        return Math.round(Math.random()*500);
+    }
+
 </script>
