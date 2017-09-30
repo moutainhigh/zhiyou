@@ -523,34 +523,34 @@
                                         <td>排名变化</td>
                                     </tr>
                                     <tr>
-                                        <td>1</td>
+                                        <td><img src="${ctx}/image/first.png" style="width:25px;" /></td>
                                         <td>广东省</td>
                                         <td>688</td>
-                                        <td>+1</td>
+                                        <td>1<img src="${ctx}/image/up.png" style="width:10px;" /><img src="${ctx}/image/down.png" style="width:10px;"/></td>
                                     </tr>
                                     <tr>
-                                        <td>2</td>
+                                        <td><img src="${ctx}/image/sec.png" style="width: 25px;"/></td>
                                         <td>江苏省</td>
                                         <td>598</td>
-                                        <td>-2</td>
+                                        <td>2<img src="${ctx}/image/up.png" style="width:10px;"/><img src="${ctx}/image/down.png" style="width:10px;"/></td>
                                     </tr>
                                     <tr>
-                                        <td>3</td>
+                                        <td><img src="${ctx}/image/thr.png" style="width: 25px;"/></td>
                                         <td>安徽省</td>
                                         <td>550</td>
-                                        <td>+3</td>
+                                        <td>3<img src="${ctx}/image/up.png" style="width:10px;"/><img src="${ctx}/image/down.png" style="width:10px;"/></td>
                                     </tr>
                                     <tr>
                                         <td>4</td>
                                         <td>上海市</td>
                                         <td>520</td>
-                                        <td>+2</td>
+                                        <td>2<img src="${ctx}/image/up.png" style="width:10px;"/><img src="${ctx}/image/down.png" style="width:10px;"/></td>
                                     </tr>
                                     <tr>
                                         <td>5</td>
                                         <td>北京市</td>
                                         <td>501</td>
-                                        <td>-1</td>
+                                        <td>1<img src="${ctx}/image/up.png" style="width:10px;"/><img src="${ctx}/image/down.png" style="width:10px;"/></td>
                                     </tr>
                                     <tr><td colspan="4">点击查看更多</td></tr>
                                 </table>
