@@ -108,14 +108,18 @@ public class NewReportTeamJob implements Job {
              Map<Long,List<User>> UserMap = counting.get(systemCode.getSystemValue());
              Map<Long,List<NewReportTeam>> OldnewReportTeam =newReportTeamOld.get(systemCode.getSystemValue());
              for (Area area :areaList){
-                 List<User> userList = UserMap.get(area.getId());
                  NewReportTeam newReportTeam = new NewReportTeam();
                  newReportTeam.setCreateDate(new Date());
                  newReportTeam.setProvinceId(area.getId());
                  newReportTeam.setProvinceName(area.getName());
                  newReportTeam.setYear(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
                  newReportTeam.setMonth(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
-                 newReportTeam.setNumber(userList!=null?userList.size():0);
+                 if(UserMap!=null){
+                     List<User> userList = UserMap.get(area.getId());
+                     newReportTeam.setNumber(userList!=null?userList.size():0);
+                 }else{
+                     newReportTeam.setNumber(0);
+                 }
                  newReportTeam.setRegion(Integer.parseInt(systemCode.getSystemValue()));
                  newReportTeamList.add(newReportTeam);
              }
