@@ -43,6 +43,21 @@ public class NewReportController {
     }
 
 
+    //统计 服务次数
+    @RequestMapping(value = "/ajaxOrderNumber", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxOrderNumber(String type) {
+       String number ="000000";
+        try {
+            number = newReportComponent.statOrderNumber(type,"d");
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            return ResultBuilder.error(e.getMessage());
+        }
+        return ResultBuilder.ok(number);
+    }
+
+
     /**
      * 查询团队信息
      * @param type
@@ -63,7 +78,7 @@ public class NewReportController {
 
 
     /**
-     * 查询团队信息
+     * 查询团队地区分布详细信息
      * @param type
      * @return
      */
@@ -79,5 +94,67 @@ public class NewReportController {
         }
         return ResultBuilder.result(resultMap);
     }
+
+
+
+    /**
+     * 查询团队 特价逻辑
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/ajaxNewReportTeamV4", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxTeamV4(String type) {
+        Map<String, String> resultMap = new HashMap<>();
+        try {
+            resultMap = newReportComponent.disposeTeamV4(type);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            return ResultBuilder.error(e.getMessage());
+        }
+        return ResultBuilder.result(resultMap);
+
+    }
+
+
+    /**
+     * 查询团队  U币  以及奖金发放情况（上月）
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/ajaxNewReportTeamUb", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxTeamUb(String type) {
+        Map<String, String> resultMap = new HashMap<>();
+        try {
+            resultMap = newReportComponent.disposeTeamUb(type);
+         }catch (Exception e){
+            logger.error(e.getMessage());
+            return ResultBuilder.error(e.getMessage());
+        }
+        return ResultBuilder.result(resultMap);
+
+    }
+
+    /**
+     * 查询团队 目标量
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/ajaxNewReportTeamTage", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxTeamTage(String type) {
+        Map<String, String> resultMap = new HashMap<>();
+        try {
+            resultMap = newReportComponent.disposeTeamTage(type);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            return ResultBuilder.error(e.getMessage());
+        }
+        return ResultBuilder.result(resultMap);
+
+    }
+
+
 
 }
