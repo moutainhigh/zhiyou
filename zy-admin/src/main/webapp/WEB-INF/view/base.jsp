@@ -218,6 +218,15 @@
         background: #2582c1;
         color: #fff;
     }
+    #orderChartTeam4 {
+        width:100%;
+    }
+    table tr {
+        text-align: center;
+    }
+    table tr td {
+        border-left: 1px solid #ccc;
+    }
 </style>
 <script>
 
@@ -454,6 +463,7 @@
                         </div>
                     </div>
                 </div>
+                <%--团队HTML--%>
                 <div class="AllThrTeam clearfloat" style="display: none">
                     <div style="float:left;width:30%;">
                         <div class="page-bar" style="margin-top: 30px;">
@@ -491,15 +501,108 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="portlet light bordered clearfloat">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-graph"></i>
+                                        <span class="caption-subject bold uppercase"> 人员省份分布图</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body" style="width: 70%;float: left;">
+                                    <div id="orderChartTeam4" style="height:800px;">
+
+                                    </div>
+                                </div>
+                                <table class="table table-hover" style="float: left;width: 25%;height:150px;border: 1px solid #ccc;margin-top: 200px;margin-left: 4%;">
+                                    <tr>
+                                        <td>排名</td>
+                                        <td>省份</td>
+                                        <td>人数</td>
+                                        <td>排名变化</td>
+                                    </tr>
+                                    <tr>
+                                        <td><img src="${ctx}/image/first.png" style="width:25px;" /></td>
+                                        <td>广东省</td>
+                                        <td>688</td>
+                                        <td>1<img src="${ctx}/image/up.png" style="width:10px;" /><img src="${ctx}/image/down.png" style="width:10px;"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><img src="${ctx}/image/sec.png" style="width: 25px;"/></td>
+                                        <td>江苏省</td>
+                                        <td>598</td>
+                                        <td>2<img src="${ctx}/image/up.png" style="width:10px;"/><img src="${ctx}/image/down.png" style="width:10px;"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><img src="${ctx}/image/thr.png" style="width: 25px;"/></td>
+                                        <td>安徽省</td>
+                                        <td>550</td>
+                                        <td>3<img src="${ctx}/image/up.png" style="width:10px;"/><img src="${ctx}/image/down.png" style="width:10px;"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>上海市</td>
+                                        <td>520</td>
+                                        <td>2<img src="${ctx}/image/up.png" style="width:10px;"/><img src="${ctx}/image/down.png" style="width:10px;"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>北京市</td>
+                                        <td>501</td>
+                                        <td>1<img src="${ctx}/image/up.png" style="width:10px;"/><img src="${ctx}/image/down.png" style="width:10px;"/></td>
+                                    </tr>
+                                    <tr><td colspan="4" style="background: rgba(49,199,178,0.5);color: #fff;" onclick="alertMy(this)">点击查看更多</td></tr>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="AllThrExpenses" style="display: none">
+                    <div class="page-bar" style="margin-top: 30px;">
+                        <ul class="page-breadcrumb">
+                            <li><span class="ajaxify">五大区历史收益情况</span>
+                        </ul>
+                    </div>
+                    <div class="portlet-body">
+                        <div id="orderChartEX1" style="height:350px;">
 
+                        </div>
+                    </div>
+                    <div style="float:left;width:48%;">
+                        <div class="page-bar" style="margin-top: 30px;">
+                            <ul class="page-breadcrumb">
+                                <li><span class="ajaxify">收益环比</span>
+                            </ul>
+                        </div>
+                        <div class="portlet-body">
+                            <div id="orderChartEX2" style="height:350px;">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float:left;width:48%;margin-left: 4%;">
+                        <div class="page-bar" style="margin-top: 30px;">
+                            <ul class="page-breadcrumb">
+                                <li><span class="ajaxify">收益同比</span>
+                            </ul>
+                        </div>
+                        <div class="portlet-body">
+                            <div id="orderChartEX3" style="height:350px;">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
 <script>
+    function alertMy(obj){
+       alert("我是查看更多！");
+    }
     $(function(){
         var myChartxiao1 = echarts.init(document.getElementById('orderChart1'));
         // 异步加载数据
@@ -938,10 +1041,263 @@
                  ]
              });
          });
+         $.get('${ctx}/map/json/china.json', function (chinaJson) {
+             echarts.registerMap('china', chinaJson);
+             var orderChartTeam4 = echarts.init(document.getElementById('orderChartTeam4'));
+             orderChartTeam4.setOption({
+                 tooltip: {
+                     trigger: 'item'
+                 },
+                 legend: {
+                     orient: 'vertical',
+                     left: 'left',
+                 },
+                 visualMap: {
+                     min: 0,
+                     max: 500,
+                     left: 'left',
+                     top: 'bottom',
+                     text: ['人数高','人数低'],           // 文本，默认为数值文本
+                     calculable: true
+                 },
+                 toolbox: {
+                     show: true,
+                     orient: 'vertical',
+                     left: 'right',
+                     top: 'center',
+                     feature: {
+                         dataView: {readOnly: false},
+                         restore: {},
+                         saveAsImage: {}
+                     }
+                 },
+                 series: [
+                     {
+                         name: '特级人数',
+                         type: 'map',
+                         mapType: 'china',
+                         roam: false,
+                         label: {
+                             normal: {
+                                 show: true
+                             },
+                             emphasis: {
+                                 show: true
+                             }
+                         },
+                         data:[
+                             {name: '北京',value: randomData() },
+                             {name: '天津',value: randomData() },
+                             {name: '上海',value: randomData() },
+                             {name: '重庆',value: randomData() },
+                             {name: '河北',value: randomData() },
+                             {name: '河南',value: randomData() },
+                             {name: '云南',value: randomData() },
+                             {name: '辽宁',value: randomData() },
+                             {name: '黑龙江',value: randomData() },
+                             {name: '湖南',value: randomData() },
+                             {name: '安徽',value: randomData() },
+                             {name: '山东',value: randomData() },
+                             {name: '新疆',value: randomData() },
+                             {name: '江苏',value: randomData() },
+                             {name: '浙江',value: randomData() },
+                             {name: '江西',value: randomData() },
+                             {name: '湖北',value: randomData() },
+                             {name: '广西',value: randomData() },
+                             {name: '甘肃',value: randomData() },
+                             {name: '山西',value: randomData() },
+                             {name: '内蒙古',value: randomData() },
+                             {name: '陕西',value: randomData() },
+                             {name: '吉林',value: randomData() },
+                             {name: '福建',value: randomData() },
+                             {name: '贵州',value: randomData() },
+                             {name: '广东',value: randomData() },
+                             {name: '青海',value: randomData() },
+                             {name: '西藏',value: randomData() },
+                             {name: '四川',value: randomData() },
+                             {name: '宁夏',value: randomData() },
+                             {name: '海南',value: randomData() },
+                             {name: '台湾',value: randomData() },
+                             {name: '香港',value: randomData() },
+                             {name: '澳门',value: randomData() }
+                         ]
+                     }
+                 ]
+             });
+         });
      }
+     //收益方法
     function scaleColExpenses(){
+        var orderChartEX1 = echarts.init(document.getElementById('orderChartEX1'));
+        // 异步加载数据
+        $.post('${ctx}/report/profit/profit',{},function(result) {
+            //获取收益数据
+            var data = result.data.profit ;
+            var area = [];
+            var profit = [];
+            for (let i in data) {
+                area.unshift(i);
+                var sArray = data[i];
+                var arrayT = sArray.split(",");
+                profit.unshift(arrayT);
+            }
 
+
+            orderChartEX1.setOption({
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: [{
+                    data: area.map(function (a) {
+                        return a;
+                    })
+                }],
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : (function (){
+                    var series = [];
+                    for (var i = 0; i <area.length; i++) {
+                        series.push({
+                            name:area[i],
+                            type:'bar',
+                            data:profit[i]
+                        });
+                    }
+                    return series;
+                })()
+            });
+
+
+            //环比
+            //获取环比数据
+            var relativeRate = result.data.relativeRate ;
+            var rRate = [];
+            for (let i in relativeRate) {
+                var sArray = relativeRate[i];
+                var arrayT = sArray.split(",");
+                rRate.unshift(arrayT);
+            }
+            var orderChartEX2 = echarts.init(document.getElementById('orderChartEX2'));
+            orderChartEX2.setOption({
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: [{
+                    data: area.map(function (a) {
+                        return a;
+                    })
+                }],
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series : (function (){
+                    var series = [];
+                    for (var i = 0; i <area.length; i++) {
+                        series.push({
+                            name:area[i],
+                            type:'line',
+                            stack: '总量',
+                            data:rRate[i]
+                        });
+                    }
+                    return series;
+                })()
+            });
+
+
+            //同比
+            //获取环比数据
+            var sameiveRate = result.data.sameiveRate ;
+            var sRate = [];
+            for (let i in sameiveRate) {
+                var sArray = sameiveRate[i];
+                var arrayT = sArray.split(",");
+                sRate.unshift(arrayT);
+            }
+            var orderChartEX3 = echarts.init(document.getElementById('orderChartEX3'));
+            orderChartEX3.setOption({
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: [{
+                    data: area.map(function (a) {
+                        return a;
+                    })
+                }],
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series : (function (){
+                    var series = [];
+                    for (var i = 0; i <area.length; i++) {
+                        series.push({
+                            name:area[i],
+                            type:'line',
+                            stack: '总量',
+                            data:sRate[i]
+                        });
+                    }
+                    return series;
+                })()
+            });
+        });
     }
+     function randomData() {
+         return Math.round(Math.random()*1000);
+     }
 </script>
 <script>
     function scaleCol(obj){
@@ -1044,4 +1400,95 @@
             default:
         }
     }
+</script>
+
+<script>
+    $.get('${ctx}/map/json/china.json', function (chinaJson) {
+        echarts.registerMap('china', chinaJson);
+        var chart = echarts.init(document.getElementById('orderChartTeam4'));
+        chart.setOption({
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+            },
+            visualMap: {
+                min: 0,
+                max: 500,
+                left: 'left',
+                top: 'bottom',
+                text: ['高','低'],           // 文本，默认为数值文本
+                calculable: true
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    dataView: {readOnly: false},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            series: [
+                {
+                    name: '特级人数',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,
+                    label: {
+                        normal: {
+                            show: true
+                        },
+                        emphasis: {
+                            show: true
+                        }
+                    },
+                    data:[
+                        {name: '北京',value: randomData() },
+                        {name: '天津',value: randomData() },
+                        {name: '上海',value: randomData() },
+                        {name: '重庆',value: randomData() },
+                        {name: '河北',value: randomData() },
+                        {name: '河南',value: randomData() },
+                        {name: '云南',value: randomData() },
+                        {name: '辽宁',value: randomData() },
+                        {name: '黑龙江',value: randomData() },
+                        {name: '湖南',value: randomData() },
+                        {name: '安徽',value: randomData() },
+                        {name: '山东',value: randomData() },
+                        {name: '新疆',value: randomData() },
+                        {name: '江苏',value: randomData() },
+                        {name: '浙江',value: randomData() },
+                        {name: '江西',value: randomData() },
+                        {name: '湖北',value: randomData() },
+                        {name: '广西',value: randomData() },
+                        {name: '甘肃',value: randomData() },
+                        {name: '山西',value: randomData() },
+                        {name: '内蒙古',value: randomData() },
+                        {name: '陕西',value: randomData() },
+                        {name: '吉林',value: randomData() },
+                        {name: '福建',value: randomData() },
+                        {name: '贵州',value: randomData() },
+                        {name: '广东',value: randomData() },
+                        {name: '青海',value: randomData() },
+                        {name: '西藏',value: randomData() },
+                        {name: '四川',value: randomData() },
+                        {name: '宁夏',value: randomData() },
+                        {name: '海南',value: randomData() },
+                        {name: '台湾',value: randomData() },
+                        {name: '香港',value: randomData() },
+                        {name: '澳门',value: randomData() }
+                    ]
+                }
+            ]
+        });
+    });
+    function randomData() {
+        return Math.round(Math.random()*500);
+    }
+
 </script>
