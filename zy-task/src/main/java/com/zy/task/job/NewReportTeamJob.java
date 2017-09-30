@@ -106,7 +106,6 @@ public class NewReportTeamJob implements Job {
           for(SystemCode systemCode:largeAreaTypes){
              List<NewReportTeam> newReportTeamList = new ArrayList<>();
              Map<Long,List<User>> UserMap = counting.get(systemCode.getSystemValue());
-             Map<Long,List<NewReportTeam>> OldnewReportTeam =newReportTeamOld.get(systemCode.getSystemValue());
              for (Area area :areaList){
                  NewReportTeam newReportTeam = new NewReportTeam();
                  newReportTeam.setCreateDate(new Date());
@@ -140,7 +139,10 @@ public class NewReportTeamJob implements Job {
                         i++;
                     }
                     newReportTeam.setRank(i);
-                    NewReportTeam teamReportNewOld = newReportTeamOld.get(newReportTeam.getRegion()).get(newReportTeam.getProvinceId()).get(0);
+                    NewReportTeam teamReportNewOld =null;
+                    if (newReportTeamOld!=null&&newReportTeamOld.get(newReportTeam.getRegion())!=null&&newReportTeamOld.get(newReportTeam.getRegion()).get(newReportTeam.getProvinceId())!=null){
+                        teamReportNewOld= newReportTeamOld.get(newReportTeam.getRegion()).get(newReportTeam.getProvinceId()).get(0);
+                    }
                     if(teamReportNewOld!=null){
                         newReportTeam.setRankChange(i-newReportTeam.getRank());
                     }else{
