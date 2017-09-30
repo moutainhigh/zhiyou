@@ -1,20 +1,35 @@
 package com.zy.admin.controller.rpt;
 
 import com.zy.admin.controller.act.ActivityController;
+import com.zy.common.model.query.Page;
+import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.model.ui.Grid;
+import com.zy.common.util.DateUtil;
+import com.zy.entity.act.Activity;
 import com.zy.entity.usr.User;
+import com.zy.model.Principal;
+import com.zy.model.query.ActivityQueryModel;
+import com.zy.model.query.LargeAreaProfitQueryModel;
 import com.zy.model.query.UserQueryModel;
+import com.zy.service.LargeAreaProfitService;
 import com.zy.service.UserService;
+import com.zy.vo.ActivitySummaryReportVo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -23,12 +38,12 @@ import java.util.stream.Collectors;
  * Date: 2017/9/28.
  */
 @Controller
-@RequestMapping("/report/activitySummary")
+@RequestMapping("/report/profit")
 public class ProfitReportController {
     Logger logger = LoggerFactory.getLogger(ActivityController.class);
 
     @Autowired
-    private UserService userService;
+    private LargeAreaProfitService largeAreaProfitService;
 
     /**
      * 公司收益
@@ -37,11 +52,10 @@ public class ProfitReportController {
     @RequestMapping(value = "/profit", method = RequestMethod.POST)
     @ResponseBody
     public Result<?> profit() {
-        //过滤大区非空特级
-        List<User> v4Users = userService.findAll(UserQueryModel.builder().userRankEQ(User.UserRank.V4).build()).stream().filter(v -> v.getLargearea() != null).collect(Collectors.toList());
-
-
-        return ResultBuilder.result(0);
+        LargeAreaProfitQueryModel largeAreaProfitQueryModel = new LargeAreaProfitQueryModel();
+        largeAreaProfitQueryModel.setYearEQ(DateUtil.getYear(new Date()));
+        Map<String ,Object> returnMap = largeAreaProfitService.findAll(largeAreaProfitQueryModel);
+        return ResultBuilder.result(returnMap);
     }
 
 }

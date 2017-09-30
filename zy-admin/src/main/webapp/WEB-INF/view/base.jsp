@@ -1080,15 +1080,31 @@
     function scaleColExpenses(){
         var orderChartEX1 = echarts.init(document.getElementById('orderChartEX1'));
         // 异步加载数据
-        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-            console.log(result);
-            var categories = ['东部','南部','西部','北部','中部'];
+        $.post('${ctx}/report/profit/profit',{},function(result) {
+            //获取收益数据
+            var data = result.data.profit ;
+            var area = [];
+            var profit = [];
+            for (let i in data) {
+                area.unshift(i);
+                var sArray = data[i];
+                var arrayT = sArray.split(",");
+                profit.unshift(arrayT);
+            }
+
+            //获取环比数据
+            var relativeRate = result.data.relativeRate ;
+            var rRate = [];
+            for (let i in relativeRate) {
+                rRate.unshift(relativeRate[i]);
+            }
+
             orderChartEX1.setOption({
                 tooltip : {
                     trigger: 'axis'
                 },
                 legend: [{
-                    data: categories.map(function (a) {
+                    data: area.map(function (a) {
                         return a;
                     })
                 }],
@@ -1117,28 +1133,26 @@
                 ],
                 series : (function (){
                     var series = [];
-                    for (var i = 0; i <categories.length; i++) {
+                    for (var i = 0; i <area.length; i++) {
                         series.push({
-                            name:categories[i],
+                            name:area[i],
                             type:'bar',
-                            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                            data:profit[i]
                         });
                     }
                     return series;
                 })()
             });
-        });
-        var orderChartEX2 = echarts.init(document.getElementById('orderChartEX2'));
-        // 异步加载数据
-        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-            console.log(result);
-            var categories = ['东部','南部','西部','北部','中部'];
+
+
+            //环比
+            var orderChartEX2 = echarts.init(document.getElementById('orderChartEX2'));
             orderChartEX2.setOption({
                 tooltip: {
                     trigger: 'axis'
                 },
                 legend: [{
-                    data: categories.map(function (a) {
+                    data: area.map(function (a) {
                         return a;
                     })
                 }],
@@ -1163,29 +1177,25 @@
                 },
                 series : (function (){
                     var series = [];
-                    for (var i = 0; i <categories.length; i++) {
+                    for (var i = 0; i <area.length; i++) {
                         series.push({
-                            name:categories[i],
+                            name:area[i],
                             type:'line',
                             stack: '总量',
-                            data:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90]
+                            data:rRate[i]
                         });
                     }
                     return series;
                 })()
             });
-        });
-        var orderChartEX3 = echarts.init(document.getElementById('orderChartEX3'));
-        // 异步加载数据
-        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-            console.log(result);
-            var categories = ['东部','南部','西部','北部','中部'];
+
+            var orderChartEX3 = echarts.init(document.getElementById('orderChartEX3'));
             orderChartEX3.setOption({
                 tooltip: {
                     trigger: 'axis'
                 },
                 legend: [{
-                    data: categories.map(function (a) {
+                    data: area.map(function (a) {
                         return a;
                     })
                 }],
@@ -1210,12 +1220,12 @@
                 },
                 series : (function (){
                     var series = [];
-                    for (var i = 0; i <categories.length; i++) {
+                    for (var i = 0; i <area.length; i++) {
                         series.push({
-                            name:categories[i],
+                            name:area[i],
                             type:'line',
                             stack: '总量',
-                            data:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90]
+                            data:[0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0]
                         });
                     }
                     return series;

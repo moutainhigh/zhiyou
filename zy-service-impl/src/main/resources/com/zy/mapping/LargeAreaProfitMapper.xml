@@ -66,6 +66,63 @@
 		</if>
 	</select>
 
+	<select id="findList" resultMap="baseResultMap" parameterType="com.zy.model.query.LargeAreaProfitQueryModel">
+		select
+			a.large_area_name AS largeAreaName,
+			a.year AS year,
+			a.month AS month,
+			sum(a.profit) AS profit
+		from `rpt_largearea_profit`
+		<where>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="largeAreaNameEQ != null">
+				and large_area_name = #{largeAreaNameEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="largeAreaValueEQ != null">
+				and large_area_value = #{largeAreaValueEQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+		</where>
+		GROUP BY a.month
+		ORDER BY a.month ASC
+	</select>
+
+	<select id="queryProfitByMonth" resultType="_double" parameterType="com.zy.model.query.LargeAreaProfitQueryModel">
+		select
+			sum(profit) AS profit
+		from `rpt_largearea_profit`
+		<where>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="largeAreaNameEQ != null">
+				and large_area_name = #{largeAreaNameEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="largeAreaValueEQ != null">
+				and large_area_value = #{largeAreaValueEQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+		</where>
+	</select>
+
 	<!--<select id="count" resultType="_long" parameterType="com.zy.model.query.LargeareaMonthSalesQueryModel">-->
 		<!--select count(*) from `ts_largearea_month_sales`-->
 		<!--<where>-->
