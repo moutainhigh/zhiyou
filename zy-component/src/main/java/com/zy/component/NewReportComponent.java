@@ -531,7 +531,7 @@ public class NewReportComponent {
             }).collect(Collectors.toList());
         }
         if(!"0".equals(type)){//公司的不需要处理
-            List<User> ateatUaerList = userMap.get(type);
+            List<User> ateatUaerList = userMap.get(Integer.valueOf(type));
             if (ateatUaerList!=null){//处理大区的奖励
                 Map<Long,User> areatUserMap = ateatUaerList.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
                 profitList = profitList.stream().filter(deposit -> {
@@ -562,7 +562,7 @@ public class NewReportComponent {
                         monthEQ(DateUtil.getMothNum(new Date())).build());
         if (!"0".equals(type)){//处理大区  公司
           Map<Integer,List<User>> userMap =  userList.stream().collect(Collectors.groupingBy(User::getLargearea));
-          List<User> areatUserList =  userMap.get(type);
+          List<User> areatUserList =  userMap.get(Integer.valueOf(type));
             if (areatUserList!=null) {
                 Map<Long,User> areatUserMap = areatUserList.stream().collect(Collectors.toMap(v->v.getId(),v->v));
                 userTargetSalesList = userTargetSalesList.stream().filter(userTargetSales -> {
