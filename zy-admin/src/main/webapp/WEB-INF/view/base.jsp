@@ -789,16 +789,30 @@
         });
         var myChartxiao4 = echarts.init(document.getElementById('orderChart4'));
         // 异步加载数据
-        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-            console.log(result);
-            var categories = ['东部','南部','西部','北部','中部'];
-            var data=[
-                {value:335, name:'东部'},
-                {value:310, name:'南部'},
-                {value:234, name:'西部'},
-                {value:135, name:'北部'},
-                {value:1548, name:'中部'}
-            ];
+        $.post('${ctx}/main/ajaxLargeAreaThisMonthSalesHasRate?type='+${type},function(result) {
+            var categories = new Array();
+            var data = [];
+            var siteMap = eval(result.data.sleep);
+            for(var j=0;j<siteMap.length;j++) {
+                var newsiteMap = siteMap[j];
+                for ( var key in newsiteMap ) {
+                    categories[j]=key+"部";
+                    data.push({
+                        value:newsiteMap[key],
+                        name:key+"部"
+                    });
+                }
+
+            }
+//            console.log(result);
+//            var categories = ['东部','南部','西部','北部','中部'];
+//            var data=[
+//                {value:335, name:'东部'},
+//                {value:310, name:'南部'},
+//                {value:234, name:'西部'},
+//                {value:135, name:'北部'},
+//                {value:1548, name:'中部'}
+//            ];
             myChartxiao4.setOption({
                 tooltip : {
                     trigger: 'item',

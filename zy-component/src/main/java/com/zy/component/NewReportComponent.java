@@ -401,7 +401,6 @@ public class NewReportComponent {
                 if (orderOldList!=null&&!orderOldList.isEmpty()){
                     newOrderList.addAll(orderOldList);
                 }
-
             }
             Long sum = newOrderList.parallelStream().mapToLong(Order::getQuantity).sum();
             number = DateUtil.toStringLength(sum,8);
@@ -587,4 +586,22 @@ public class NewReportComponent {
         }
         return tageMap;
     }
+
+    public Map<String,Object> disposeLargeareaSalesHaveRate(String type) {
+        Date now = new Date();
+        //过滤订单
+        localCacheComponent.getOrders().stream().filter(v -> {
+            Order.OrderStatus orderStatus = v.getOrderStatus();
+            if (orderStatus == Order.OrderStatus.已支付 || orderStatus == Order.OrderStatus.已发货 || orderStatus == Order.OrderStatus.已完成) {
+                if( v.getSellerUserRank() == User.UserRank.V4 && v.getPaidTime().after(DateUtil.getMonthBegin(now,0,0)) ){
+                    return true;
+                }
+            }
+            return false;
+        }).filter(v -> v.getPaidTime().after(DateUtil.getMonthBegin(now,0,0))).collect(Collectors.toList());
+
+        return null;
+    }
+
+
 }

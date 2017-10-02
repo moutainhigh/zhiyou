@@ -193,6 +193,25 @@ public class NewReportController {
 
     }
 
+    /**
+     * 查询团队信息 人数
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/ajaxLargeAreaThisMonthSalesHasRate", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxSalesHaveRate(String type) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            resultMap = newReportComponent.disposeLargeareaSalesHaveRate(type);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            return ResultBuilder.error(e.getMessage());
+        }
+        return ResultBuilder.result(resultMap);
+    }
+
 
 
 }
