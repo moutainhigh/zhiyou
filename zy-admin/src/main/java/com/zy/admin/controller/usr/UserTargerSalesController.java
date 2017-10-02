@@ -16,9 +16,7 @@ import com.zy.service.UserTargetSalesService;
 import com.zy.vo.UserTargetSalesVo;
 import io.gd.generator.api.query.Direction;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +39,6 @@ import static com.zy.common.util.ValidateUtils.validate;
 public class UserTargerSalesController {
 
 	@Autowired
-	@Lazy
 	private UserService userService;
 
 	@Autowired

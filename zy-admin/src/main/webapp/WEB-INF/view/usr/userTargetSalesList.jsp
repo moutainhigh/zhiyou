@@ -15,8 +15,8 @@
                 // execute some code on network or other general error
             },
             dataTable: {
-                "sDom": "<'table-responsive't><'row'>",
-                lengthMenu : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here
+                //"sDom": "<'table-responsive't><'row'>",
+                 lengthMenu : [ [ 10, 20, 50, 100 ], [ 10, 20, 50, 100 ] ],// change per page values here
                 pageLength: 20, // default record count per page
                 order: [], // set first column as a default sort by desc
                 ajax: {
@@ -34,6 +34,7 @@
                     {
                         data: '',
                         title: '所属大区',
+                        orderable: false,
                         render: function (data, type, full) {
                             return full.user.largeareaLabel;
                         }

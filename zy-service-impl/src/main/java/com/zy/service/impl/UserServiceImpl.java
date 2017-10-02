@@ -586,44 +586,6 @@ public class UserServiceImpl implements UserService {
         userMapper.merge(merge, "isDeleted");
     }
 
-//    /**
-//     * 设置大区总裁
-//     * @param id
-//     * @param isPresident
-//     */
-//    @Override
-//    public void modifyIsPresident(Long id, List<Long> userIds,Long parentId,Long operatorId, boolean isPresident) {
-//        User user = findAndValidate(id);
-//        String label = isPresident ? "设置" : "取消";
-//        if (user.getIsBoss() != null) {
-//            if (user.getIsPresident() == isPresident) {
-//                return;
-//            }
-//        }
-//        if(isPresident){
-//            user.setIsPresident(isPresident);
-//            user.setPresidentId(null);
-//            userMapper.merge(user, "isPresident","presidentId");
-//            usrComponent.recordUserLog(id, operatorId, label + "大区总裁", null);
-//            for(Long userId : userIds) {
-//                User merge = new User();
-//                merge.setId(userId);
-//                merge.setPresidentId(id);
-//                userMapper.merge(merge, "presidentId");
-//            }
-//        }else{
-//            user.setIsPresident(isPresident);
-//            user.setPresidentId(parentId);
-//            userMapper.merge(user, "isPresident","presidentId");
-//            usrComponent.recordUserLog(id, operatorId, label + "大区总裁", null);
-//            for(Long userId : userIds) {
-//                User merge = new User();
-//                merge.setId(userId);
-//                merge.setPresidentId(parentId);
-//                userMapper.merge(merge, "presidentId");
-//            }
-//        }
-//    }
 
 
     /**
@@ -643,13 +605,12 @@ public class UserServiceImpl implements UserService {
         userMapper.update(user);
         usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + oldLargeArea + "改为" + newLargeArea + ", 备注" + remark2);
         if(user.getIsPresident()){
-            List<User> teamV4 = findTeamV4(id);
-            List<User> filterV4Users = teamV4.stream().filter(v -> v.getPresidentId() != null && v.getPresidentId() == id).collect(Collectors.toList());
+            List<User> filterV4Users = userMapper.findAll(UserQueryModel.builder().presidentId(id).build());
             for(User u : filterV4Users) {
                 String old = u.getLargearea() == null ? "null" :systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea()+"").getSystemName();
                 usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + old + "改为" + newLargeArea + ", 备注:跟随大区总裁"+user.getNickname()+"更改大区");
                 u.setLargearea(Integer.parseInt(largeArea));
-                userMapper.merge(u, "bossId");
+                userMapper.merge(u, "largearea");
             }
         }
     }
@@ -698,9 +659,9 @@ public class UserServiceImpl implements UserService {
             user.setPresidentId(parentId);
             userMapper.merge(user, "isPresident","presidentId");
             usrComponent.recordUserLog(id, operatorId, label + "大区总裁", null);
-            //过滤特级
-            filterV4Users = v4Users.stream().filter(v -> v.getPresidentId() != null && v.getPresidentId() == id ).collect(Collectors.toList());
-            for (User u: filterV4Users ) {
+            //过滤用户
+            List<User> filterUsers = userMapper.findAll(UserQueryModel.builder().presidentId(id).build());
+            for (User u: filterUsers ) {
                 u.setPresidentId(parentId);
                 userMapper.merge(u,"presidentId");
             }
