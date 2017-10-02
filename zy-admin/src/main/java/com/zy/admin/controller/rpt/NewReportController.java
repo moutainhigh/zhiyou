@@ -60,23 +60,60 @@ public class NewReportController {
 
 
     /**
-     * 查询团队信息
+     * 查询团队信息 人数
      * @param type
      * @return
      */
-    @RequestMapping(value = "/ajaxNewReportTeam", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxNewReportTeamNumber", method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> ajaxTeam(String type) {
+    public Result<?> ajaxTeamNumber(String type) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            resultMap = newReportComponent.disposeTeam(type);
+            resultMap = newReportComponent.disposeTeamAreatNumber(type);
         }catch (Exception e){
             logger.error(e.getMessage());
+            e.printStackTrace();
             return ResultBuilder.error(e.getMessage());
         }
         return ResultBuilder.result(resultMap);
     }
 
+    /**
+     * 查询团队信息 新晋特级占比
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/ajaxNewReportTeamNewNumber", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxTeamNewNumber(String type) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            resultMap = newReportComponent.disposeTeamAreatNewNumber(type);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            return ResultBuilder.error(e.getMessage());
+        }
+        return ResultBuilder.result(resultMap);
+    }
+    /**
+     * 查询团队信息 沉睡特级占比
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/ajaxNewReportTeamSleepNumber", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxTeamSleepNumber(String type) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            resultMap = newReportComponent.disposeTeamAreatSleepNumber(type);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            return ResultBuilder.error(e.getMessage());
+        }
+        return ResultBuilder.result(resultMap);
+    }
 
     /**
      * 查询团队地区分布详细信息

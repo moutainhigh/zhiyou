@@ -50,11 +50,11 @@ public class NewReportComponent {
     private  UserTargetSalesService userTargetSalesService;
 
     /**
-     * 处理查询大区数据
+     * 处理查询特级分布数据
      * @param type
      * @return
      */
-    public Map<String,Object> disposeTeam(String type) {
+    public Map<String,Object> disposeTeamAreatNumber(String type) {
         //过滤出所有的V4成员 且分过大区的 有大区总裁的
         List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
         List<User>largeUserList = users.stream().filter(user ->  user.getLargearea()!=null).collect(Collectors.toList());
@@ -62,11 +62,45 @@ public class NewReportComponent {
         List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null).collect(Collectors.toList());//查询所有大区总裁
         Map<String ,Object> map = new HashMap<>();
         map.put("number",this.disposeTeamNumber(type,largeUserList,largeAreaTypes,presidentUserList));
-        map.put("newV4",this.disposeTeamNewV4(type,largeUserList,largeAreaTypes,presidentUserList));
-        map.put("sleep",this.disposeTeamSleep(type,largeUserList,largeAreaTypes,presidentUserList));
+        //map.put("newV4",this.disposeTeamNewV4(type,largeUserList,largeAreaTypes,presidentUserList));
+        //map.put("sleep",this.disposeTeamSleep(type,largeUserList,largeAreaTypes,presidentUserList));
         map.put("areat",this.disposeTeamAreat(type,users));
         return map;
     }
+
+       /**
+     * 处理查询新晋特级分布
+     * @param type
+     * @return
+     */
+    public Map<String,Object> disposeTeamAreatNewNumber(String type) {
+        //过滤出所有的V4成员 且分过大区的 有大区总裁的
+        List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
+        List<User>largeUserList = users.stream().filter(user ->  user.getLargearea()!=null).collect(Collectors.toList());
+        List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");//查询说有大区
+        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null).collect(Collectors.toList());//查询所有大区总裁
+        Map<String ,Object> map = new HashMap<>();
+        map.put("newV4",this.disposeTeamNewV4(type,largeUserList,largeAreaTypes,presidentUserList));
+        return map;
+    }
+
+    /**
+     * 处理查询沉睡特级分布
+     * @param type
+     * @return
+     */
+    public Map<String,Object> disposeTeamAreatSleepNumber(String type) {
+        //过滤出所有的V4成员 且分过大区的 有大区总裁的
+        List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
+        List<User>largeUserList = users.stream().filter(user ->  user.getLargearea()!=null).collect(Collectors.toList());
+        List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");//查询说有大区
+        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null).collect(Collectors.toList());//查询所有大区总裁
+        Map<String ,Object> map = new HashMap<>();
+        map.put("sleep",this.disposeTeamSleep(type,largeUserList,largeAreaTypes,presidentUserList));
+        // map.put("areat",this.disposeTeamAreat(type,users));
+        return map;
+    }
+
 
     //处理团队人数
     private List<Map<String,Integer>> disposeTeamNumber(String type,List<User> userList,List<SystemCode> largeAreaTypes,List<User>presidentUserList){
@@ -75,11 +109,11 @@ public class NewReportComponent {
         if ("0".equals(type)){//公司不需要 过滤大区总裁
             for (SystemCode systemCode :largeAreaTypes){
                 Map<String,Integer> naemap= new HashMap<>();
-                naemap.put(systemCode.getSystemName(),userMap.get(systemCode.getSystemValue())!=null?userMap.get(systemCode.getSystemValue()).size():0);
+                naemap.put(systemCode.getSystemName(),userMap.get(Integer.valueOf(systemCode.getSystemValue()))!=null?userMap.get(Integer.valueOf(systemCode.getSystemValue())).size():0);
                 resultList.add(naemap);
             }
           }else{//统计各个大区的分布
-           List<User> areatUserList = userMap.get(type);//获取大区的所有人
+           List<User> areatUserList = userMap.get(Integer.valueOf(type));//获取大区的所有人
             Map<Long,List<User>> areatMap = areatUserList.stream().collect(Collectors.groupingBy(User::getPresidentId));
             for(User user :presidentUserList){
                 Map<String,Integer> naemap= new HashMap<>();
@@ -103,8 +137,8 @@ public class NewReportComponent {
         //统计所有的新晋特
         UserUpgradeQueryModel userUpgradeQueryModel = new UserUpgradeQueryModel();
         userUpgradeQueryModel.setToUserRankEQ(User.UserRank.V4);
-        userUpgradeQueryModel.setUpgradedTimeGTE(DateUtil.getBeforeMonthBegin(new Date(), -1, 0));
-        userUpgradeQueryModel.setUpgradedTimeLT(DateUtil.getBeforeMonthEnd(new Date(), 0, 0));
+        userUpgradeQueryModel.setUpgradedTimeGTE(DateUtil.getBeforeMonthBegin(new Date(), 0, 0));
+        userUpgradeQueryModel.setUpgradedTimeLT(DateUtil.getBeforeMonthEnd(new Date(), 1, 0));
         Map<Long,List<UserUpgrade >>userUpgradeList = userUpgradeService.findAll(userUpgradeQueryModel).stream().collect(Collectors.groupingBy(UserUpgrade::getUserId));//查询所有的升级用户
         Map<Integer,List<User>> userMap = userList.stream().collect( Collectors.groupingBy(User::getLargearea));
         if ("0".equals(type)){//处理公司
@@ -112,22 +146,22 @@ public class NewReportComponent {
             for (SystemCode systemCode :largeAreaTypes){
                 int count = 0;
                 Map<String,Integer> naemap= new HashMap<>();
-                List<User> areatList = userMap.get(systemCode.getSystemValue());
+                List<User> areatList = userMap.get(Integer.valueOf(systemCode.getSystemValue()))==null?new ArrayList<>():userMap.get(Integer.valueOf(systemCode.getSystemValue()));
                 for(User user : areatList ){
                     if (userUpgradeList.get(user.getId())!=null){//能取到  说明是新晋的
                         count++;
                     }
                 }
                 if (V4==0){
-                    naemap.put(systemCode.getSystemName()+":0.00%",0);
+                    naemap.put(systemCode.getSystemName(),0);
                 }else{
                     Double duty  = DateUtil.formatDouble( new Double(count) / new Double(V4) * 100);
-                    naemap.put(systemCode.getSystemName()+":" +DateUtil.formatString(duty)+"%",count);
+                    naemap.put(systemCode.getSystemName(),count);
                 }
                 resultList.add(naemap);
             }
         }else{//处理  大区
-            List<User> areatUserList = userMap.get(type);//获取大区的所有人
+            List<User> areatUserList = userMap.get(Integer.valueOf(type));//获取大区的所有人
             int sum=0;
             for(User user0:areatUserList){
                 if (userUpgradeList.get(user0.getId())!=null){//能取到  说明是新晋的
@@ -146,10 +180,10 @@ public class NewReportComponent {
                     }
                 }
                 if (sum==0){
-                    naemap.put(user.getNickname()+":0.00%",count);
+                    naemap.put(user.getNickname(),count);
                 }else{
                     Double duty  = DateUtil.formatDouble( new Double(count) / new Double(sum) * 100);
-                    naemap.put(user.getNickname()+":"+DateUtil.formatString(duty)+"%",count);
+                    naemap.put(user.getNickname(),count);
                 }
                 naemap.put(user.getNickname(),count);
                 resultList.add(naemap);
@@ -171,27 +205,27 @@ public class NewReportComponent {
         List<Map<String,Integer>> resultList = new ArrayList<>();
         Map<Integer,List<User>> userMap = userList.stream().collect( Collectors.groupingBy(User::getLargearea));
         if("0".equals(type)){//公司
-           userList = userList.stream().filter(user -> user.getLastloginTime().getTime()<DateUtil.getMonthData(new Date(),-3,0).getTime()).collect(Collectors.toList());
+           userList = userList.stream().filter(user -> user.getLastloginTime().getTime()<DateUtil.getMonthData(new Date(),-3,0).getTime()).collect(Collectors.toList());//统计所有的沉睡用户
           for (SystemCode systemCode :largeAreaTypes){
               Map<String,Integer> naemap= new HashMap<>();
               int count =0;
-              List<User> areatUserList = userMap.get(systemCode.getSystemValue());
+              List<User> areatUserList = userMap.get(Integer.valueOf(systemCode.getSystemValue()));
               if (areatUserList!=null){
                   areatUserList =  areatUserList.stream().filter(user -> user.getLastloginTime().getTime()<DateUtil.getMonthData(new Date(),-3,0).getTime()).collect(Collectors.toList());
                  count=areatUserList.size();
               }
               if (userList.size()==0){
-                  naemap.put(systemCode.getSystemName()+":0.00%",0);
+                  naemap.put(systemCode.getSystemName(),0);
               }else{
-                  Double duty  = DateUtil.formatDouble( new Double(userList.size()) / new Double(count) * 100);
-                  naemap.put(systemCode.getSystemName()+":"+DateUtil.formatString(duty)+"%",userList.size());
+                  Double duty   = DateUtil.formatDouble( new Double(count)/ new Double(userList.size())  * 100);
+                  naemap.put(systemCode.getSystemName(),count);
               }
               resultList.add(naemap);
           }
         }else{//大区
-            List<User> areatUserList = userMap.get(type);
+            List<User> areatUserList = userMap.get(Integer.valueOf(type));
             Map<Long,List<User>> areatMap = areatUserList.stream().collect(Collectors.groupingBy(User::getPresidentId));
-            areatUserList =areatUserList.stream().filter(user -> user.getLastloginTime().getTime()<DateUtil.getMonthData(new Date(),-3,0).getTime()).collect(Collectors.toList());
+            areatUserList =areatUserList.stream().filter(user -> user.getLastloginTime().getTime()<DateUtil.getMonthData(new Date(),-3,0).getTime()).collect(Collectors.toList());//统计这个大区所有沉睡用户
             for(User user1 :presidentUserList){
              Map<String,Integer> naemap= new HashMap<>();
               int count =0;
@@ -201,15 +235,13 @@ public class NewReportComponent {
                     count=presidentAreatUserList.size();
                 }
                 if (areatUserList.size()==0){
-                    naemap.put(user1.getNickname()+":0.00%",0);
+                    naemap.put(user1.getNickname(),0);
                 }else{
-                    Double duty  = DateUtil.formatDouble( new Double(areatUserList.size()) / new Double(count) * 100);
-                    naemap.put(user1.getNickname()+":"+DateUtil.formatString(duty)+"%",areatUserList.size());
+                    Double duty = DateUtil.formatDouble( new Double(count)/new Double(areatUserList.size())  * 100);
+                    naemap.put(user1.getNickname(),areatUserList.size());
                 }
                 resultList.add(naemap);
             }
-
-
         }
         return resultList;
     }
@@ -224,8 +256,8 @@ public class NewReportComponent {
         Map<Long, Area> areaMap= teamReportNewService.findAreaAll(new AreaQueryModel()).stream().collect(Collectors.toMap(v -> v.getId(), v -> v));//将区域转成map类型
         Map<Long,UserInfo>userInfoMap = userInfoService.findAll(new UserInfoQueryModel()).stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v));
         NewReportTeamQueryModel newReportTeamQueryModel =  new NewReportTeamQueryModel();
-        newReportTeamQueryModel.setYearEQ(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
-        newReportTeamQueryModel.setMonthEQ(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
+        newReportTeamQueryModel.setYearEQ(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
+        newReportTeamQueryModel.setMonthEQ(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         Map<Integer,Map<Long,List<NewReportTeam>>> newReportTeamOld = newReportTeamService.findAll(newReportTeamQueryModel).stream().collect(Collectors.groupingBy(NewReportTeam::getRegion, Collectors.groupingBy(NewReportTeam::getProvinceId)));
         List<User> newList = new ArrayList<>();
 
@@ -254,7 +286,7 @@ public class NewReportComponent {
                 newReportTeam.setProvinceName(area.getName());
                 newReportTeam.setYear(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
                 newReportTeam.setMonth(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
-                newReportTeam.setNumber(userList!=null?userList.size():0);
+                newReportTeam.setNumber(newUserList!=null?newUserList.size():0);
                 newReportTeam.setRegion(0);
                 newReportTeamList.add(newReportTeam);
             }
@@ -263,7 +295,7 @@ public class NewReportComponent {
             Map<Integer, Map<Long, List<User>>> counting = newList.stream().collect(
                     Collectors.groupingBy(User::getLargearea, Collectors.groupingBy(User::getBossId)));
 
-            Map<Long, List<User>>userMap= counting.get(type);
+            Map<Long, List<User>>userMap= counting.get(Integer.valueOf(type));
             if (userMap!=null){
                 for (Area area :areaList){
                     List<User> newUserList = userMap.get(area.getId());
@@ -273,7 +305,7 @@ public class NewReportComponent {
                     newReportTeam.setProvinceName(area.getName());
                     newReportTeam.setYear(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
                     newReportTeam.setMonth(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
-                    newReportTeam.setNumber(userList!=null?userList.size():0);
+                    newReportTeam.setNumber(newUserList!=null?newUserList.size():0);
                     newReportTeam.setRegion(Integer.valueOf(type));
                     newReportTeamList.add(newReportTeam);
                 }
@@ -293,7 +325,10 @@ public class NewReportComponent {
                 i++;
             }
             newReportTeam.setRank(i);
-            NewReportTeam teamReportNewOld = newReportTeamOld.get(newReportTeam.getRegion()).get(newReportTeam.getProvinceId()).get(0);
+            NewReportTeam teamReportNewOld = null;
+            if (newReportTeamOld!=null&&newReportTeamOld.get(newReportTeam.getRegion())!=null&&newReportTeamOld.get(newReportTeam.getRegion()).get(newReportTeam.getProvinceId())!=null){
+                teamReportNewOld = newReportTeamOld.get(newReportTeam.getRegion()).get(newReportTeam.getProvinceId()).get(0);
+            }
             if(teamReportNewOld!=null){
                 newReportTeam.setRankChange(i-newReportTeam.getRank());
             }else{
@@ -426,7 +461,7 @@ public class NewReportComponent {
     public Map<String,String> disposeTeamUb(String type) {
         //处理U币逻辑
         Map<String,String>UMap = new HashMap<>();
-        List<Deposit> depositList=localCacheComponent.getDeposits().stream().filter(deposit ->(deposit.getPaidTime()!=null &&deposit.getPaidTime().after(DateUtil.getDateEnd(DateUtil.getMonthData(new Date(),-1,0))))).
+        List<Deposit> depositList=localCacheComponent.getDeposits().stream().filter(deposit ->(deposit.getPaidTime()!=null &&deposit.getPaidTime().after(DateUtil.getBeforeMonthEnd(new Date(),0,0)))).
                 filter(deposit -> deposit.getDepositStatus()== Deposit.DepositStatus.充值成功).collect(Collectors.toList());
         List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
         Map<Integer,List<User>> userMap = userList.stream().collect(Collectors.groupingBy(User::getLargearea));

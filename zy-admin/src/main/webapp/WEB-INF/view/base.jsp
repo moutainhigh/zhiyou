@@ -515,20 +515,15 @@
 
                                     </div>
                                 </div>
-                                <table class="table table-hover" style="float: left;width: 25%;height:150px;border: 1px solid #ccc;margin-top: 200px;margin-left: 4%;">
-                                    <tr>
+                                <table class="table table-hover" style="float: left;width: 25%;height:150px;border: 1px solid #ccc;margin-top: 200px;margin-left: 4%;" >
+                                    <tr id="areatV4user">
                                         <td>排名</td>
                                         <td>省份</td>
                                         <td>人数</td>
                                         <td>排名变化</td>
                                     </tr>
-                                    <tr>
-                                        <td><img src="${ctx}/image/first.png" style="width:25px;" /></td>
-                                        <td>广东省</td>
-                                        <td>688</td>
-                                        <td>1<img src="${ctx}/image/up.png" style="width:10px;" /><img src="${ctx}/image/down.png" style="width:10px;"/></td>
-                                    </tr>
-                                    <tr>
+
+                                  <%--  <tr>
                                         <td><img src="${ctx}/image/sec.png" style="width: 25px;"/></td>
                                         <td>江苏省</td>
                                         <td>598</td>
@@ -551,7 +546,7 @@
                                         <td>北京市</td>
                                         <td>501</td>
                                         <td>1<img src="${ctx}/image/up.png" style="width:10px;"/><img src="${ctx}/image/down.png" style="width:10px;"/></td>
-                                    </tr>
+                                    </tr>--%>
                                     <tr><td colspan="4" style="background: rgba(49,199,178,0.5);color: #fff;" onclick="alertMy(this)">点击查看更多</td></tr>
                                 </table>
 
@@ -600,8 +595,19 @@
     </div>
 
 <script>
+
+    var tablehtml= "<table class='table table-hover' style='float: left;width: 100%;border: 1px solid #ccc;' > <tr  style='text-align: center;'> " +
+            "<td>排名</td> <td>省份</td> <td>人数</td> <td>排名变化</td> </tr>";
     function alertMy(obj){
-       alert("我是查看更多！");
+
+        layer.open({
+            type: 1,
+            area:['30%', '90%'],
+            title: false,
+            scrollbar: false,
+            closeBtn: 1,
+            content: tablehtml
+        });
     }
     $(function(){
         var myChartxiao1 = echarts.init(document.getElementById('orderChart1'));
@@ -921,9 +927,19 @@
      function scaleColTeam(){
          var myCharTeam1 = echarts.init(document.getElementById('orderChartTeam1'));
          // 异步加载数据
-         $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-             console.log(result);
-             var categories = ['东部','南部','西部','北部','中部'];
+         $.post('${ctx}/newReport/ajaxNewReportTeamNumber?type='+${type},{},function(result) {
+             var categories = new Array();
+             var categoriesData = new Array();
+             var siteMap = eval(result.data.number);
+             for(var j=0;j<siteMap.length;j++) {
+                 var newsiteMap = siteMap[j];
+                 for ( var key in newsiteMap ) {
+                     categories[j]=key+"部";
+                     categoriesData[j]=newsiteMap[key];
+
+                 }
+
+             }
              myCharTeam1.setOption({
                  tooltip: {
                      trigger: 'axis',
@@ -956,23 +972,28 @@
                      {
                          name:"总人数",
                          type: 'bar',
-                         data: [18203, 23489, 29034, 104970, 131744]
+                         data: categoriesData
                      }
                  ]
              });
          });
          var myCharTeam2 = echarts.init(document.getElementById('orderChartTeam2'));
          // 异步加载数据
-         $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-             console.log(result);
-             var categories = ['东部','南部','西部','北部','中部'];
-             var data=[
-                 {value:335, name:'东部'},
-                 {value:310, name:'南部'},
-                 {value:234, name:'西部'},
-                 {value:135, name:'北部'},
-                 {value:1548, name:'中部'}
-             ];
+         $.post('${ctx}/newReport/ajaxNewReportTeamNewNumber?type='+${type},{},function(result) {
+             var categories = new Array();
+             var data = [];
+             var siteMap = eval(result.data.newV4);
+             for(var j=0;j<siteMap.length;j++) {
+                 var newsiteMap = siteMap[j];
+                 for ( var key in newsiteMap ) {
+                     categories[j]=key+"部";
+                     data.push({
+                         value:newsiteMap[key],
+                         name:key+"部"
+                     });
+                 }
+
+             }
              myCharTeam2.setOption({
                  tooltip : {
                      trigger: 'item',
@@ -1003,16 +1024,21 @@
          });
          var myCharTeam3 = echarts.init(document.getElementById('orderChartTeam3'));
          // 异步加载数据
-         $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-             console.log(result);
-             var categories = ['东部','南部','西部','北部','中部'];
-             var data=[
-                 {value:335, name:'东部'},
-                 {value:310, name:'南部'},
-                 {value:234, name:'西部'},
-                 {value:135, name:'北部'},
-                 {value:1548, name:'中部'}
-             ];
+         $.post('${ctx}/newReport/ajaxNewReportTeamSleepNumber?type='+${type},{},function(result) {
+             var categories = new Array();
+             var data = [];
+             var siteMap = eval(result.data.sleep);
+             for(var j=0;j<siteMap.length;j++) {
+                 var newsiteMap = siteMap[j];
+                 for ( var key in newsiteMap ) {
+                     categories[j]=key+"部";
+                     data.push({
+                         value:newsiteMap[key],
+                         name:key+"部"
+                     });
+                 }
+
+             }
              myCharTeam3.setOption({
                  tooltip : {
                      trigger: 'item',
@@ -1041,7 +1067,110 @@
                  ]
              });
          });
-         $.get('${ctx}/map/json/china.json', function (chinaJson) {
+         $.post('${ctx}/newReport/ajaxNewReportTeamAreat?type='+${type},{},function(result) {
+             var data1 = [];
+             var siteMap = result.data.areat;
+             var i=0;
+             var trhtml="";
+             var imges;
+             for(var j=0;j<siteMap.length;j++) {
+                 var newsite = siteMap[j];
+                 var key = newsite.provinceName;
+                     if (key =="内蒙古自治区"||key=="黑龙江省"){
+                         key = key.substring(0,3);
+                     }else{
+                         key = key.substring(0,2);
+                     }
+                     data1.push({
+                         value:newsite.number,
+                         name:key
+                     });
+                if(i<5){
+                 if (newsite.rank==1){
+                     trhtml=trhtml+ "<tr> <td><img src='${ctx}/image/first.png' style='width:20px;' /></td><td>"+key +"</td><td>"+newsite.number+"</td>";
+                     if(newsite.rankChange>0){
+                         trhtml=trhtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
+                     }else if(newsite.rankChange<0){
+                         trhtml=trhtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/down.png' style='width:10px;' /></td> </tr>";
+                     }else{
+                         trhtml=trhtml+"<td>"+newsite.rankChange+"</td> </tr>";
+                     }
+
+                 } else if(newsite.rank==2){
+                     trhtml=trhtml+ "<tr> <td><img src='${ctx}/image/sec.png' style='width:20px;' /></td> <td>"+key +"</td><td>"+newsite.number+"</td>";
+                     if(newsite.rankChange>0){
+                         trhtml= trhtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
+                     }else if(newsite.rankChange<0){
+                         trhtml= trhtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/down.png' style='width:10px;' /></td> </tr>";
+                     }else{
+                         trhtml= trhtml+"<td>"+newsite.rankChange+"</td> </tr>";
+                     }
+
+                 }else if(newsite.rank==3){
+                     trhtml=trhtml+ "<tr> <td><img src='${ctx}/image/thr.png' style='width:20px;' /></td>  <td>"+key +"</td><td>"+newsite.number+"</td>";
+                     if(newsite.rankChange>0){
+                         trhtml= trhtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
+                     }else if(newsite.rankChange<0){
+                         trhtml=  trhtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/down.png' style='width:10px;' /></td> </tr>";
+                     }else{
+                         trhtml=  trhtml+"<td>"+newsite.rankChange+"</td> </tr>";
+                     }
+                 }else{
+                     trhtml=trhtml+ "<tr> <td>"+newsite.rank+"</td> <td>"+key +"</td><td>"+newsite.number+"</td>";
+                     if(newsite.rankChange>0){
+                         trhtml= trhtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
+                     }else if(newsite.rankChange<0){
+                         trhtml=  trhtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/down.png' style='width:10px;' /></td> </tr>";
+                     }else{
+                         trhtml= trhtml+"<td>"+newsite.rankChange+"</td> </tr>";
+                     }
+                 }
+               }
+              i++;
+               //拼接   更多页面
+                 if (newsite.rank==1){
+                     tablehtml=tablehtml+ "<tr> <td><img src='${ctx}/image/first.png' style='width:20px;' /></td><td>"+key +"</td><td>"+newsite.number+"</td>";
+                     if(newsite.rankChange>0){
+                         tablehtml=tablehtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
+                     }else if(newsite.rankChange<0){
+                         tablehtml=tablehtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/down.png' style='width:10px;' /></td> </tr>";
+                     }else{
+                         tablehtml=tablehtml+"<td>"+newsite.rankChange+"</td> </tr>";
+                     }
+
+                 } else if(newsite.rank==2){
+                     tablehtml=tablehtml+ "<tr> <td><img src='${ctx}/image/sec.png' style='width:20px;' /></td> <td>"+key +"</td><td>"+newsite.number+"</td>";
+                     if(newsite.rankChange>0){
+                         tablehtml= tablehtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
+                     }else if(newsite.rankChange<0){
+                         tablehtml= tablehtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/down.png' style='width:10px;' /></td> </tr>";
+                     }else{
+                         tablehtml= tablehtml+"<td>"+newsite.rankChange+"</td> </tr>";
+                     }
+
+                 }else if(newsite.rank==3){
+                     tablehtml=tablehtml+ "<tr> <td><img src='${ctx}/image/thr.png' style='width:20px;' /></td>  <td>"+key +"</td><td>"+newsite.number+"</td>";
+                     if(newsite.rankChange>0){
+                         tablehtml= tablehtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
+                     }else if(newsite.rankChange<0){
+                         tablehtml=  tablehtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/down.png' style='width:10px;' /></td> </tr>";
+                     }else{
+                         tablehtml=  tablehtml+"<td>"+newsite.rankChange+"</td> </tr>";
+                     }
+                 }else{
+                     tablehtml=tablehtml+ "<tr> <td>"+newsite.rank+"</td> <td>"+key +"</td><td>"+newsite.number+"</td>";
+                     if(newsite.rankChange>0){
+                         tablehtml= tablehtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
+                     }else if(newsite.rankChange<0){
+                         tablehtml=  tablehtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/down.png' style='width:10px;' /></td> </tr>";
+                     }else{
+                         tablehtml= tablehtml+"<td>"+newsite.rankChange+"</td> </tr>";
+                     }
+                 }
+
+             }
+            $("#areatV4user").after(trhtml);
+          $.get('${ctx}/map/json/china.json', function (chinaJson) {
              echarts.registerMap('china', chinaJson);
              var orderChartTeam4 = echarts.init(document.getElementById('orderChartTeam4'));
              orderChartTeam4.setOption({
@@ -1054,7 +1183,7 @@
                  },
                  visualMap: {
                      min: 0,
-                     max: 500,
+                     max: 100,
                      left: 'left',
                      top: 'bottom',
                      text: ['人数高','人数低'],           // 文本，默认为数值文本
@@ -1085,8 +1214,9 @@
                                  show: true
                              }
                          },
-                         data:[
-                             {name: '北京',value: randomData() },
+                        data:data1
+                       /*  data:[
+                             {name: '北京',value: 10 },
                              {name: '天津',value: randomData() },
                              {name: '上海',value: randomData() },
                              {name: '重庆',value: randomData() },
@@ -1120,11 +1250,12 @@
                              {name: '台湾',value: randomData() },
                              {name: '香港',value: randomData() },
                              {name: '澳门',value: randomData() }
-                         ]
+                         ]*/
                      }
                  ]
              });
          });
+    });
      }
      //收益方法
     function scaleColExpenses(){
@@ -1239,6 +1370,7 @@
                     }
                     return series;
                 })()
+
             });
 
 
@@ -1400,95 +1532,4 @@
             default:
         }
     }
-</script>
-
-<script>
-    $.get('${ctx}/map/json/china.json', function (chinaJson) {
-        echarts.registerMap('china', chinaJson);
-        var chart = echarts.init(document.getElementById('orderChartTeam4'));
-        chart.setOption({
-            tooltip: {
-                trigger: 'item'
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-            },
-            visualMap: {
-                min: 0,
-                max: 500,
-                left: 'left',
-                top: 'bottom',
-                text: ['高','低'],           // 文本，默认为数值文本
-                calculable: true
-            },
-            toolbox: {
-                show: true,
-                orient: 'vertical',
-                left: 'right',
-                top: 'center',
-                feature: {
-                    dataView: {readOnly: false},
-                    restore: {},
-                    saveAsImage: {}
-                }
-            },
-            series: [
-                {
-                    name: '特级人数',
-                    type: 'map',
-                    mapType: 'china',
-                    roam: false,
-                    label: {
-                        normal: {
-                            show: true
-                        },
-                        emphasis: {
-                            show: true
-                        }
-                    },
-                    data:[
-                        {name: '北京',value: randomData() },
-                        {name: '天津',value: randomData() },
-                        {name: '上海',value: randomData() },
-                        {name: '重庆',value: randomData() },
-                        {name: '河北',value: randomData() },
-                        {name: '河南',value: randomData() },
-                        {name: '云南',value: randomData() },
-                        {name: '辽宁',value: randomData() },
-                        {name: '黑龙江',value: randomData() },
-                        {name: '湖南',value: randomData() },
-                        {name: '安徽',value: randomData() },
-                        {name: '山东',value: randomData() },
-                        {name: '新疆',value: randomData() },
-                        {name: '江苏',value: randomData() },
-                        {name: '浙江',value: randomData() },
-                        {name: '江西',value: randomData() },
-                        {name: '湖北',value: randomData() },
-                        {name: '广西',value: randomData() },
-                        {name: '甘肃',value: randomData() },
-                        {name: '山西',value: randomData() },
-                        {name: '内蒙古',value: randomData() },
-                        {name: '陕西',value: randomData() },
-                        {name: '吉林',value: randomData() },
-                        {name: '福建',value: randomData() },
-                        {name: '贵州',value: randomData() },
-                        {name: '广东',value: randomData() },
-                        {name: '青海',value: randomData() },
-                        {name: '西藏',value: randomData() },
-                        {name: '四川',value: randomData() },
-                        {name: '宁夏',value: randomData() },
-                        {name: '海南',value: randomData() },
-                        {name: '台湾',value: randomData() },
-                        {name: '香港',value: randomData() },
-                        {name: '澳门',value: randomData() }
-                    ]
-                }
-            ]
-        });
-    });
-    function randomData() {
-        return Math.round(Math.random()*500);
-    }
-
 </script>

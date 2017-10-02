@@ -491,20 +491,21 @@ public class DateUtil {
 
     public static void  main(String []age) throws ParseException {
         System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
-        System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         System.out.println(DateUtil.getMoth(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         System.out.println("-------------------");
         System.out.println(new Date().after(DateUtil.getDateEnd(DateUtil.getMonthData(new Date(),0,-1))));
         System.out.println("----------##########--");
-        System.out.println(DateFormatUtils.format(getDateEnd(DateUtil.getMonthData(new Date(),-1,0)),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-2,0)),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-2,0)),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("-------------------");
         System.out.println(DateUtil.getDay(DateUtil.getMonthData(new Date(),0,-1)));
         System.out.println("---------1----------");
         System.out.println(DateFormatUtils.format(DateUtil.getCurrYearFirst(),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("-------------------");
-        System.out.println(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
-        System.out.println(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-2,0)));
+        System.out.println(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
+        System.out.println(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         System.out.println("----------##########--");
         System.out.println(DateUtil.toStringLength(123343342232L,6));
         System.out.println(DateUtil.formatString(123));
