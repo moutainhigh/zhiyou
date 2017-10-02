@@ -105,7 +105,7 @@ public class NewReportTeamJob implements Job {
                     Collectors.groupingBy(User::getLargearea, Collectors.groupingBy(User::getBossId)));
           for(SystemCode systemCode:largeAreaTypes){
              List<NewReportTeam> newReportTeamList = new ArrayList<>();
-             Map<Long,List<User>> UserMap = counting.get(systemCode.getSystemValue());
+             Map<Long,List<User>> UserMap = counting.get(Integer.valueOf(systemCode.getSystemValue()));
              for (Area area :areaList){
                  NewReportTeam newReportTeam = new NewReportTeam();
                  newReportTeam.setCreateDate(new Date());
@@ -127,7 +127,6 @@ public class NewReportTeamJob implements Job {
             //处理排名
             for (Object key : map.keySet()) {
                 List<NewReportTeam>rankList= map.get(key);
-                System.out.println("key"+key+":"+rankList.size());
                 //对list 进行排序
                 rankList = rankList.stream().sorted((teamReportNew1, teamReportNew2) ->
                         teamReportNew2.getNumber() - teamReportNew1.getNumber()).collect(Collectors.toList());

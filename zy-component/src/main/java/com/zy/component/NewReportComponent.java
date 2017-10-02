@@ -64,7 +64,7 @@ public class NewReportComponent {
         map.put("number",this.disposeTeamNumber(type,largeUserList,largeAreaTypes,presidentUserList));
         //map.put("newV4",this.disposeTeamNewV4(type,largeUserList,largeAreaTypes,presidentUserList));
         //map.put("sleep",this.disposeTeamSleep(type,largeUserList,largeAreaTypes,presidentUserList));
-        map.put("areat",this.disposeTeamAreat(type,users));
+       // map.put("areat",this.disposeTeamAreat(type,users));
         return map;
     }
 
@@ -388,13 +388,13 @@ public class NewReportComponent {
 
         if("0".equals(type)){ //处理公司
             Long sum = orders.parallelStream().mapToLong(Order::getQuantity).sum();
-            number = DateUtil.toStringLength(sum,6);
+            number = DateUtil.toStringLength(sum,8);
         }else{//处理大区
           //将订单按用户进行分组
             Map<Long ,List<Order>> orderMap = orders.stream().collect(Collectors.groupingBy(Order::getUserId));
             List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
             Map<Integer,List<User>> usertMap = userList.stream().collect(Collectors.groupingBy(User::getLargearea));
-            List <User> areatUserList = usertMap.get(type);
+            List <User> areatUserList = usertMap.get(Integer.valueOf(type));
              List<Order> newOrderList = new ArrayList<>();
             for (User user : areatUserList){
                 List<Order> orderOldList = orderMap.get(user.getId());
@@ -404,7 +404,7 @@ public class NewReportComponent {
 
             }
             Long sum = newOrderList.parallelStream().mapToLong(Order::getQuantity).sum();
-            number = DateUtil.toStringLength(sum,6);
+            number = DateUtil.toStringLength(sum,8);
         }
 
         return  number;
@@ -425,7 +425,7 @@ public class NewReportComponent {
         }else{
           userList = localCacheComponent.getUsers().stream().filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
            Map<Integer,List<User>> areatUserMap =  userList.stream().collect(Collectors.groupingBy(User::getLargearea));
-            userNewList = areatUserMap.get(type);
+            userNewList = areatUserMap.get(Integer.valueOf(type));
         }
         if (userNewList!=null&&!userNewList.isEmpty()){//处理逻辑
             V4Map.put("V4Number",userNewList.size()+"");//将总人数放进去
@@ -467,7 +467,7 @@ public class NewReportComponent {
         Map<Integer,List<User>> userMap = userList.stream().collect(Collectors.groupingBy(User::getLargearea));
         Map<Long ,User> userV4list= userList.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
         if (!"0".equals(type)){
-            List<User> ateatUaerList = userMap.get(type);
+            List<User> ateatUaerList = userMap.get(Integer.valueOf(type));
             if(ateatUaerList!=null) {//大区有人才有充值
                 Map<Long,User> areatUserMap = ateatUaerList.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
                 depositList = depositList.stream().filter(deposit -> {
@@ -487,7 +487,14 @@ public class NewReportComponent {
                 return true;
             }
             return false;
-        }).filter(profit -> (profit.getProfitType()!=Profit.ProfitType.补偿||profit.getProfitType()!=Profit.ProfitType.订单收款)).collect(Collectors.toList()); //取到  所有奖励
+        }).filter(profit -> (profit.getProfitType()!=Profit.ProfitType.补偿||profit.getProfitType()!=Profit.ProfitType.订单收款)).filter(profit->{//过滤成本年的
+            String year = DateUtil.getYear(new Date())+"";
+            String  title = profit.getTitle().substring(0,4);
+            if (year.equals(title)){
+                return true;
+            }
+            return false;
+        }).collect(Collectors.toList()); //取到  所有奖励
         List<Profit> profitListYear = profitList;
         //处理月
         this.disposeProfit(profitList,type,"m",UMap,userMap);
@@ -504,10 +511,25 @@ public class NewReportComponent {
      * @param mory 年或者月 m 月 Y是年
      */
     private  void disposeProfit(List<Profit> profitList,String type ,String mory,Map<String,String>UMap,Map<Integer,List<User>> userMap){
+
         if ("m".equals(mory)){ //月
-            profitList = profitList.stream().filter(profit -> (profit.getGrantedTime()!=null&&profit.getGrantedTime().after(DateUtil.getBeforeMonthBegin(new Date(),0,0)))).collect(Collectors.toList());
+            String m = DateUtil.getMothNum(new Date())-1+"";//上个月
+            profitList = profitList.stream().filter(profit -> {
+                String title  =profit.getTitle().substring(5,6);
+                if(m.equals(title)){
+                    return true;
+                }
+                return false;
+            }).collect(Collectors.toList());
         }else{//年
-            profitList = profitList.stream().filter(profit -> (profit.getGrantedTime()!=null&&profit.getGrantedTime().after(DateUtil.getCurrYearFirst()))).collect(Collectors.toList());
+            List<String> tempList = Arrays.asList("1","2","3","4","5","6","7","8","9","10","11","12");
+            profitList = profitList.stream().filter(profit -> {
+                String title  =profit.getTitle().substring(5,6);
+                if (tempList.contains(title)){
+                    return true;
+                }
+                return false;
+            }).collect(Collectors.toList());
         }
         if(!"0".equals(type)){//公司的不需要处理
             List<User> ateatUaerList = userMap.get(type);
@@ -537,8 +559,8 @@ public class NewReportComponent {
          List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
         List<UserTargetSales> userTargetSalesList =  userTargetSalesService.findAll(
                 UserTargetSalesQueryModel.builder().
-                        yearEQ(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0))).
-                        monthEQ(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0))).build());
+                        yearEQ(DateUtil.getYear(new Date())).
+                        monthEQ(DateUtil.getMothNum(new Date())).build());
         if (!"0".equals(type)){//处理大区  公司
           Map<Integer,List<User>> userMap =  userList.stream().collect(Collectors.groupingBy(User::getLargearea));
           List<User> areatUserList =  userMap.get(type);
