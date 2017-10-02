@@ -50,8 +50,18 @@
             }
           },
           {
+            data: 'sumTotalLabel',
+            title: '总收益',
+            orderable: false
+          },
+          {
             data: 'amountLabel',
-            title: '收益',
+            title: '发放收益',
+            orderable: false
+          },
+          {
+            data: 'deductionLabel',
+            title: '平台保留金额',
             orderable: false
           },
 	        {

@@ -29,6 +29,8 @@ public class ProfitComponent {
 		profitAdminVo.setProfitStatusStyle(GcUtils.getProfitStatusStyle(profit.getProfitStatus()));
 
 		profitAdminVo.setAmountLabel(GcUtils.formatCurreny(profit.getAmount()));
+		profitAdminVo.setSumTotalLabel(GcUtils.formatCurreny(profit.getSumTotal()));
+		profitAdminVo.setDeductionLabel(GcUtils.formatCurreny(profit.getDeduction()));
 
 		return profitAdminVo;
 	}

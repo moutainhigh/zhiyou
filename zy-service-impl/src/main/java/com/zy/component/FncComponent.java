@@ -144,6 +144,8 @@ public class FncComponent {
 		profit.setTitle(title);
 		profit.setUserId(userId);
 		profit.setAmount(amount);
+		profit.setSumTotal(amount);
+		profit.setDeduction(new BigDecimal(0.00));
 		profit.setSn(ServiceUtils.generateProfitSn());
 		profit.setCurrencyType(currencyType);
 		profit.setCreatedTime(createdTime);
@@ -163,7 +165,7 @@ public class FncComponent {
 
 	public Profit createProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title
 	                                          , @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount
-												, Date createdTime, String remark) {
+												, Date createdTime, String remark,@NotNull @DecimalMin("0.01") BigDecimal sumTotal,@NotNull  BigDecimal deduction) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
@@ -174,6 +176,8 @@ public class FncComponent {
 		profit.setTitle(title);
 		profit.setUserId(userId);
 		profit.setAmount(amount);
+		profit.setSumTotal(sumTotal);
+		profit.setDeduction(deduction);
 		String sn = ServiceUtils.generateProfitSn();
 		log.error(sn);
 		profit.setSn(sn);

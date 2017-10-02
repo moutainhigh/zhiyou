@@ -96,7 +96,7 @@ public class Profit implements Serializable {
 
 	@NotNull
 	@DecimalMin("0.01")
-	@Field(label = "金额")
+	@Field(label = "应发金额")
 	@View(groups = VO_ADMIN)
 	@View(name = "amountLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal amount;
@@ -133,5 +133,20 @@ public class Profit implements Serializable {
 	@Version
 	@Field(label = "乐观锁")
 	private Integer version;
+
+	@NotNull
+	@DecimalMin("0.01")
+	@Field(label = "总金额")
+	@View(groups = VO_ADMIN)
+	@View(name = "sumTotalLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
+	private BigDecimal sumTotal;
+
+	@NotNull
+	@DecimalMin("0.00")
+	@Field(label = "平台扣压金额")
+	@View(groups = VO_ADMIN)
+	@View(name = "deductionLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
+	private BigDecimal deduction;
+
 
 }

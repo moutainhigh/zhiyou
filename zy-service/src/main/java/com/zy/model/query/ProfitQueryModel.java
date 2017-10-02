@@ -106,8 +106,10 @@ public class ProfitQueryModel implements Serializable {
 		fieldNames.add("title");
 		fieldNames.add("userId");
 		fieldNames.add("version");
+		fieldNames.add("sumTotal");
 		fieldNames.add("profitType");
 		fieldNames.add("grantedTime");
+		fieldNames.add("deduction");
 		fieldNames.add("createdTime");
 		fieldNames.add("id");
 		fieldNames.add("profitStatus");

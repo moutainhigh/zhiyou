@@ -143,7 +143,7 @@ public  interface Constants {
     BigDecimal SETTING_MAX_WITHDRAW_FEE_RATE = new BigDecimal("0.05"); // 提现最大费率 设置不可超过该值
     BigDecimal SETTING_MIN_MERCHANT_DEPOSIT_MONEY = new BigDecimal("100.00"); // 商家充值本金最小金额
 
-    BigDecimal FEE_RATE = new BigDecimal("0.06");
+    BigDecimal FEE_RATE = new BigDecimal("0.4");
 
     /*
      * topic 用于发送mq

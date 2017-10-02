@@ -15,14 +15,16 @@
 		<result column="profit_type" property="profitType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
 		<result column="ref_id" property="refId" />
 		<result column="remark" property="remark" />
+		<result column="sum_total" property="sumTotal" />
+		<result column="deduction" property="deduction" />
 		<result column="version" property="version" />
 	</resultMap>
 
-	<sql id="baseColumn">id,profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark,version</sql>
+	<sql id="baseColumn">id,profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark,sum_total,deduction,version</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.Profit" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_profit` (profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark,version)
-	  values (#{profitStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userId},#{sn},#{title},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount},#{createdTime},#{grantedTime},#{profitType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{remark},#{version})
+	  insert into `fnc_profit` (profit_status,user_id,sn,title,currency_type,amount,created_time,granted_time,profit_type,ref_id,remark,sum_total,deduction,version)
+	  values (#{profitStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userId},#{sn},#{title},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{amount},#{createdTime},#{grantedTime},#{profitType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{remark},#{sumTotal},#{deduction},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -43,6 +45,8 @@
 			profit_type = #{profitType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
 			ref_id = #{refId},
 			remark = #{remark},
+			sum_total = #{sumTotal},
+			deduction = #{deduction},
 			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
@@ -64,13 +68,15 @@
 					<when test="field == 'profitType'">profit_type = #{profit.profitType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.fnc.Profit$ProfitType},</when>
 					<when test="field == 'refId'">ref_id = #{profit.refId},</when>
 					<when test="field == 'remark'">remark = #{profit.remark},</when>
+					<when test="field == 'sumTotal'">sum_total = #{profit.sumTotal},</when>
+					<when test="field == 'deduction'">deduction = #{profit.deduction},</when>
 				</choose>
 				</foreach>
 			</set>
 		where id = #{profit.id}
 	</update>
 
-	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+	<select id="findOne" resultMap="baseResultMap">
 		select
 		<include refid="baseColumn"/>
 		from `fnc_profit`
@@ -200,11 +206,11 @@
 		</where>
 	</select>
 
-	<!--求和查询 -->
 	<resultMap id="sumResultMap" type="com.zy.model.dto.DepositSumDto">
 		<result column="countId" property="count"/>
 		<result column="sumAmount" property="sumAmount"/>
 	</resultMap>
+
 	<select id="sum" resultMap="sumResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
 		select count(id) countId,sum(amount) sumAmount from `fnc_profit`
 		<where>
@@ -261,7 +267,7 @@
 	</select>
 
 	<resultMap id="sumProResultMap" type="com.zy.model.dto.ProfitSumDto">
-		<result column="profitTtype" property="profitType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="profitTtype" property="profitType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
 		<result column="sumAmount" property="sumAmount"/>
 	</resultMap>
 
@@ -323,7 +329,6 @@
 		</where>
 	</select>
 
-	<!-- 查询每月奖项金额-->
 	<select id="queryRevenue" resultMap="sumResultMap" parameterType="com.zy.model.query.ProfitQueryModel">
 		SELECT
 	 		 SUM(a.amount) AS sumAmount
