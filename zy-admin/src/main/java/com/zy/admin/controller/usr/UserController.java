@@ -238,28 +238,6 @@ public class UserController {
 		return new ResultBuilder<>().message("加VIP成功").build();
 	}
 
-	/**
-	 * 设置大区
-	 * @param id
-	 * @param largeArea3
-	 * @param remark2
-     * @return
-     */
-	@RequiresPermissions("user:setLargeArea")
-	@RequestMapping("/setLargeArea")
-	@ResponseBody
-	public Result<?> setLargeArea(Long id, String largeArea3, String remark2) {
-		User user = userService.findOne(id);
-		if(user != null && user.getUserRank() == UserRank.V4){
-			return new ResultBuilder<>().error("设置大区失败，特级用户才能设置大区");
-		}
-		try {
-			userService.modifyLargeAreaAdmin(id, largeArea3, getPrincipalUserId(), remark2);
-		} catch (Exception e) {
-			return new ResultBuilder<>().message(e.getMessage()).build();
-		}
-		return new ResultBuilder<>().message("设置大区成功").build();
-	}
 
 	@RequiresPermissions("user:freeze")
 	@RequestMapping("/freeze/{id}")
@@ -547,6 +525,30 @@ public class UserController {
 //	}
 
 	/**
+	 * 设置大区
+	 * @param id
+	 * @param largeArea3
+	 * @param remark2
+	 * @return
+	 */
+	@RequiresPermissions("user:setLargeArea")
+	@RequestMapping("/setLargeArea")
+	@ResponseBody
+	public Result<?> setLargeArea(Long id, String largeArea3, String remark2) {
+		User user = userService.findOne(id);
+		if(user != null && user.getUserRank() != UserRank.V4){
+			return new ResultBuilder<>().error("设置大区失败，特级用户才能设置大区");
+		}
+		try {
+			userService.modifyLargeAreaAdmin(id, largeArea3, getPrincipalUserId(), remark2);
+		} catch (Exception e) {
+			return new ResultBuilder<>().message(e.getMessage()).build();
+		}
+		return new ResultBuilder<>().message("设置大区成功").build();
+	}
+
+
+	/**
 	 * 批量设置大区
 	 * @param ids
 	 * @param largeArea2
@@ -565,6 +567,9 @@ public class UserController {
 				Long id = new Long(idString);
 				User user = userService.findOne(id);
 				validate(user, NOT_NULL, "user id" + id + " not found");
+				if(user.getUserRank() != UserRank.V4){
+					return ResultBuilder.error("设置大区失败，特级用户才能设置大区");
+				}
 				try {
 					userService.modifyLargeAreaAdmin(id, largeArea2, getPrincipalUserId(), remark3);
 				} catch (Exception e) {

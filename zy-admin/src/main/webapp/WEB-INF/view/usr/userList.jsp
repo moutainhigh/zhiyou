@@ -1028,13 +1028,13 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <select name="isBossEQ" class="form-control">
-                                    <option value="">-- 是否总经理 --</option>
-                                    <option value="1">是</option>
-                                    <option value="0">否</option>
-                                </select>
-                            </div>
+                            <%--<div class="form-group">--%>
+                                <%--<select name="isBossEQ" class="form-control">--%>
+                                    <%--<option value="">-- 是否总经理 --</option>--%>
+                                    <%--<option value="1">是</option>--%>
+                                    <%--<option value="0">否</option>--%>
+                                <%--</select>--%>
+                            <%--</div>--%>
 
                             <div class="form-group">
                                 <select name="isPresident" class="form-control">

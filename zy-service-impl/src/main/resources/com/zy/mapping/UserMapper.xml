@@ -125,6 +125,7 @@
 					<when test="field == 'isToV4'">is_to_v4 = #{user.isToV4},</when>
 					<when test="field == 'viewflag'">viewflag = #{user.viewflag},</when>
 					<when test="field == 'lastloginTime'">lastlogin_time = #{user.lastloginTime},</when>
+					<when test="field == 'largearea'">largearea = #{user.largearea},</when>
 					<when test="field == 'isPresident'">is_president = #{user.isPresident},</when>
 					<when test="field == 'presidentId'">president_id = #{user.presidentId},</when>
 				</choose>
