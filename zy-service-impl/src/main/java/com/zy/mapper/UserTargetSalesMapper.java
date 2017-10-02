@@ -24,6 +24,6 @@ public interface UserTargetSalesMapper {
 
 	long count(UserTargetSalesQueryModel userTargetSalesQueryModel);
 
-	long totalTargetSales(UserTargetSalesQueryModel userTargetSalesQueryModel);
+	Long totalTargetSales(UserTargetSalesQueryModel userTargetSalesQueryModel);
 
 }

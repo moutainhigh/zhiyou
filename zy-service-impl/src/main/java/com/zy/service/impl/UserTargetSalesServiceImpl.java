@@ -104,36 +104,31 @@ public class UserTargetSalesServiceImpl implements UserTargetSalesService {
     public void avgUserTargetSales(Integer year, Integer month) {
         Date now = new Date();
         UserTargetSalesQueryModel userTargetSalesQueryModel = new UserTargetSalesQueryModel();
-        userTargetSalesQueryModel.setYearEQ(year);
         userTargetSalesQueryModel.setMonthEQ(month);
-        long total = userTargetSalesMapper.totalTargetSales(userTargetSalesQueryModel);
+        userTargetSalesQueryModel.setYearEQ(year);
+        Long total = userTargetSalesMapper.totalTargetSales(userTargetSalesQueryModel);
+        total = total == null ? 0 : total;
         List<UserTargetSales> all = userTargetSalesMapper.findAll(userTargetSalesQueryModel);
         List<User> users = userService.findAll(UserQueryModel.builder().userRankEQ(User.UserRank.V4).isPresident(true).build());
         Integer avg = null;
         if(total == 0){
             avg = Integer.parseInt(systemCodeService.findByTypeAndName("DEFAULTTARGETSALES","PRESIDENT").getSystemValue());
         }else {
-            avg = (int)total/all.size();
+            avg = (int)(total/all.size());
         }
-        Map<Long, User> userMap = users.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
-        List<UserTargetSales> newList = null;
-        for (UserTargetSales us: all ) {
-            if(userMap.get(us.getId()) != null){
-                newList.add(us);
-            }
-        }
-        if(newList == null){
+       // Map<Long, User> userMap = users.stream().collect(Collectors.toMap(v -> v.getId(), v -> v));
+        if(all != null && all.size() == 0){
             for (User u: users) {
-                    UserTargetSales userTargetSales = new UserTargetSales();
-                    userTargetSales.setCreateTime(now);
-                    userTargetSales.setMonth(month);
-                    userTargetSales.setYear(year);
-                    userTargetSales.setUserId(u.getId());
-                    userTargetSales.setTargetCount(avg);
-                    userTargetSalesMapper.insert(userTargetSales);
+                UserTargetSales userTargetSales = new UserTargetSales();
+                userTargetSales.setCreateTime(now);
+                userTargetSales.setMonth(month);
+                userTargetSales.setYear(year);
+                userTargetSales.setUserId(u.getId());
+                userTargetSales.setTargetCount(avg);
+                userTargetSalesMapper.insert(userTargetSales);
             }
-        }else {
-            Map<Long, UserTargetSales> userTargetSalesMap = newList.stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v));
+        }else if(all != null && all.size() > 0){
+            Map<Long, UserTargetSales> userTargetSalesMap = all.stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v));
             for (User u: users) {
                 if(userTargetSalesMap.get(u.getId()) == null){
                     UserTargetSales userTargetSales = new UserTargetSales();
@@ -146,6 +141,37 @@ public class UserTargetSalesServiceImpl implements UserTargetSalesService {
                 }
             }
         }
+
+//        List<UserTargetSales> newList = null;
+//        for (UserTargetSales us: all ) {
+//            if(userMap.get(us.getId()) == null){
+//                newList.add(us);
+//            }
+//        }
+//        if(newList == null){
+//            for (User u: users) {
+//                    UserTargetSales userTargetSales = new UserTargetSales();
+//                    userTargetSales.setCreateTime(now);
+//                    userTargetSales.setMonth(month);
+//                    userTargetSales.setYear(year);
+//                    userTargetSales.setUserId(u.getId());
+//                    userTargetSales.setTargetCount(avg);
+//                    userTargetSalesMapper.insert(userTargetSales);
+//            }
+//        }else {
+//            Map<Long, UserTargetSales> userTargetSalesMap = newList.stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v));
+//            for (User u: users) {
+//                if(userTargetSalesMap.get(u.getId()) == null){
+//                    UserTargetSales userTargetSales = new UserTargetSales();
+//                    userTargetSales.setCreateTime(now);
+//                    userTargetSales.setMonth(month);
+//                    userTargetSales.setYear(year);
+//                    userTargetSales.setUserId(u.getId());
+//                    userTargetSales.setTargetCount(avg);
+//                    userTargetSalesMapper.insert(userTargetSales);
+//                }
+//            }
+//        }
     }
 
     @Override
