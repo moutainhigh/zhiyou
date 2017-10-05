@@ -654,7 +654,14 @@ public class UserServiceImpl implements UserService {
             do{
                 parent = userMapper.findOne(parent.getParentId());
             }while(parent != null && !((parent.getIsPresident() != null && parent.getIsPresident()) || parent.getPresidentId() !=null));
-            Long parentId = parent == null ? null : parent.getId();
+            Long parentId = null;
+            if(parent == null){
+                parentId = null;
+            }else if(parent.getIsPresident()){
+                parentId = parent.getId();
+            }else{
+                parentId = parent.getParentId();
+            }
             user.setIsPresident(isPresident);
             user.setPresidentId(parentId);
             userMapper.merge(user, "isPresident","presidentId");
