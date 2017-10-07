@@ -861,7 +861,31 @@
                   <option value="0">否</option>
                 </select>
               </div>
-              
+
+              <div class="form-group">
+                <select name="isDirectorEQ" class="form-control">
+                  <option value="">-- 是否董事 --</option>
+                  <option value="1">是</option>
+                  <option value="0">否</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <select name="isHonorDirectorEQ" class="form-control">
+                  <option value="">-- 是否荣誉董事 --</option>
+                  <option value="1">是</option>
+                  <option value="0">否</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <select name="isShareholderEQ" class="form-control">
+                  <option value="">-- 是否股东 --</option>
+                  <option value="1">是</option>
+                  <option value="0">否</option>
+                </select>
+              </div>
+
               <div class="form-group">
                 <select name="userRankEQ" class="form-control">
                   <option value="">-- 用户等级 --</option>
