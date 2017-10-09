@@ -230,10 +230,10 @@
 
     .dateNewVol{
         border:1px solid #ccc;
-        -webkit-border-radius: 8px !important;
-        -moz-border-radius: 8px !important;
-        -o-border-radius: 8px !important;
-        border-radius:8px !important;
+        -webkit-border-radius: 5px !important;
+        -moz-border-radius: 5px !important;
+        -o-border-radius: 5px !important;
+        border-radius:5px !important;
         -moz-box-shadow:0px 1px 10px #aaa;
         -o-box-shadow:0px 1px 10px #aaa;
         -webkit-box-shadow:0px 1px 10px #aaa;
@@ -241,13 +241,13 @@
     }
     .number {
         width:7%;
-        height:60px;
+        height:90px;
         border:1px solid #ccc;
         float: left;
-        margin-left: 5%;
+        margin-left: 3%;
         margin-top: 10px;
         text-align: center;
-        line-height: 60px;
+        line-height: 90px;
         font-size: 60px;
         color: #269952;
     }
@@ -338,8 +338,9 @@
 
 </div>
 <div class="portlet-body">
-    <div class="dateNewVol" style="margin-left:2%;width: 96%;height: 80px;border: 1px solid #ccc; margin-bottom: 30px;">
-        <div class="clearfloat">
+    <div class="dateNewVol" style="margin-left:5%;width: 90%;height: 110px;border: 1px solid #ccc; margin-bottom: 30px;">
+        <div class="clearfloat" style="margin-left: 5%;">
+             <div class="number">0</div>
              <div class="number">0</div>
              <div class="number">0</div>
              <div class="number">0</div>
