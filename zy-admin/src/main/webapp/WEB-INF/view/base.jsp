@@ -264,7 +264,7 @@
 
         //先调用一下在执行定时器
         ajaxOrderNumber();
-        window.setInterval(ajaxOrderNumber,18000);
+        window.setInterval(ajaxOrderNumber,300000);
     });
 
 
