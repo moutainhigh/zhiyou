@@ -48,7 +48,7 @@ public class NewReportController {
     @RequestMapping(value = "/ajaxOrderNumber", method = RequestMethod.POST)
     @ResponseBody
     public Result<?> ajaxOrderNumber(String type) {
-       String number ="000000";
+       String number ="000000000";
         try {
             number = newReportComponent.statOrderNumber(type,"d");
         }catch (Exception e){

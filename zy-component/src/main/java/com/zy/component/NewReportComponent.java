@@ -388,7 +388,7 @@ public class NewReportComponent {
 
         if("0".equals(type)){ //处理公司
             Long sum = orders.parallelStream().mapToLong(Order::getQuantity).sum();
-            number = DateUtil.toStringLength(sum,8);
+            number = DateUtil.toStringLength(sum,9);
         }else{//处理大区
           //将订单按用户进行分组
             Map<Long ,List<Order>> orderMap = orders.stream().collect(Collectors.groupingBy(Order::getUserId));
@@ -403,7 +403,7 @@ public class NewReportComponent {
                 }
             }
             Long sum = newOrderList.parallelStream().mapToLong(Order::getQuantity).sum();
-            number = DateUtil.toStringLength(sum,8);
+            number = DateUtil.toStringLength(sum,9);
         }
 
         return  number;

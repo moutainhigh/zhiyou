@@ -253,7 +253,6 @@
     }
 </style>
 <script>
-
     $(document).ready(function() {
       //销量
         orderFunction();
@@ -261,7 +260,40 @@
         userV4Function();
         //奖金
         ubFunction();
+
+
+        //先调用一下在执行定时器
+        ajaxOrderNumber();
+        window.setInterval(ajaxOrderNumber,18000);
     });
+
+
+    //处理  日销量
+    function ajaxOrderNumber(){
+        var  type = ${type};
+        $.ajax({
+            url : '${ctx}/newReport/ajaxOrderNumber',
+            data : {
+                type:type
+            },
+            dataType : 'json',
+            type : 'POST',
+            success : function(result) {
+                if(result.code != 0) {
+                    layer.msg("销量信息加载失败："+result.message);
+                    return;
+                }else{
+                 var data = result.message;
+                    for(i=0;i<data.length;i++){
+                        $("#number"+i).html(data.charAt(i));
+                    }
+
+
+                }
+            }
+        });
+    }
+
     function orderFunction () {
        var  type = ${type};
         $.ajax({
@@ -340,15 +372,15 @@
 <div class="portlet-body">
     <div class="dateNewVol" style="margin-left:5%;width: 90%;height: 110px;border: 1px solid #ccc; margin-bottom: 30px;">
         <div class="clearfloat" style="margin-left: 5%;">
-             <div class="number">0</div>
-             <div class="number">0</div>
-             <div class="number">0</div>
-             <div class="number">0</div>
-             <div class="number">0</div>
-             <div class="number">0</div>
-             <div class="number">0</div>
-             <div class="number">0</div>
-             <div class="number">0</div>
+             <div class="number" id="number0">0</div>
+             <div class="number" id="number1">0</div>
+             <div class="number" id="number2">0</div>
+             <div class="number" id="number3">0</div>
+             <div class="number" id="number4">0</div>
+             <div class="number" id="number5">0</div>
+             <div class="number" id="number6">0</div>
+             <div class="number" id="number7">0</div>
+             <div class="number" id="number8">0</div>
             <span style="float:left;font-size: 20px;color: #269952;margin-left: 5px;margin-top: 5px;">次</span>
         </div>
     </div>
@@ -637,16 +669,13 @@
 
 <script>
 
-    var tablehtml= "<table class='table table-hover' style='float: left;width: 100%;border: 1px solid #ccc;' > <tr  style='text-align: center;'> " +
-            "<td>排名</td> <td>省份</td> <td>人数</td> <td>排名变化</td> </tr>";
+    var tablehtml= "";
     function alertMy(obj){
 
         layer.open({
             type: 1,
             area:['50%', '50%'],
-            title: false,
-            scrollbar: false,
-            closeBtn: 2,
+         /*   skin: 'layui-layer-rim', //加上边框*/
             content: tablehtml
         });
     }
@@ -1123,6 +1152,10 @@
              });
          });
          $.post('${ctx}/newReport/ajaxNewReportTeamAreat?type='+${type},{},function(result) {
+             tablehtml="";
+             $("#areatV4user").siblings(".tr").remove();
+             tablehtml=  "<table class='table table-hover' style='float: left;width: 100%;border: 1px solid #ccc;' > <tr  style='text-align: center;'> " +
+             "<td>排名</td> <td>省份</td> <td>人数</td> <td>排名变化</td> </tr>";
              var data1 = [];
              var siteMap = result.data.areat;
              var i=0;
@@ -1142,7 +1175,7 @@
                      });
                 if(i<5){
                  if (newsite.rank==1){
-                     trhtml=trhtml+ "<tr> <td><img src='${ctx}/image/first.png' style='width:20px;' /></td><td>"+key +"</td><td>"+newsite.number+"</td>";
+                     trhtml=trhtml+ "<tr class='tr'> <td><img src='${ctx}/image/first.png' style='width:20px;' /></td><td>"+key +"</td><td>"+newsite.number+"</td>";
                      if(newsite.rankChange>0){
                          trhtml=trhtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
                      }else if(newsite.rankChange<0){
@@ -1152,7 +1185,7 @@
                      }
 
                  } else if(newsite.rank==2){
-                     trhtml=trhtml+ "<tr> <td><img src='${ctx}/image/sec.png' style='width:20px;' /></td> <td>"+key +"</td><td>"+newsite.number+"</td>";
+                     trhtml=trhtml+ "<tr class='tr'> <td><img src='${ctx}/image/sec.png' style='width:20px;' /></td> <td>"+key +"</td><td>"+newsite.number+"</td>";
                      if(newsite.rankChange>0){
                          trhtml= trhtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
                      }else if(newsite.rankChange<0){
@@ -1162,7 +1195,7 @@
                      }
 
                  }else if(newsite.rank==3){
-                     trhtml=trhtml+ "<tr> <td><img src='${ctx}/image/thr.png' style='width:20px;' /></td>  <td>"+key +"</td><td>"+newsite.number+"</td>";
+                     trhtml=trhtml+ "<tr class='tr'> <td><img src='${ctx}/image/thr.png' style='width:20px;' /></td>  <td>"+key +"</td><td>"+newsite.number+"</td>";
                      if(newsite.rankChange>0){
                          trhtml= trhtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
                      }else if(newsite.rankChange<0){
@@ -1171,7 +1204,7 @@
                          trhtml=  trhtml+"<td>"+newsite.rankChange+"</td> </tr>";
                      }
                  }else{
-                     trhtml=trhtml+ "<tr> <td>"+newsite.rank+"</td> <td>"+key +"</td><td>"+newsite.number+"</td>";
+                     trhtml=trhtml+ "<tr class='tr'> <td>"+newsite.rank+"</td> <td>"+key +"</td><td>"+newsite.number+"</td>";
                      if(newsite.rankChange>0){
                          trhtml= trhtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
                      }else if(newsite.rankChange<0){
@@ -1184,7 +1217,7 @@
               i++;
                //拼接   更多页面
                  if (newsite.rank==1){
-                     tablehtml=tablehtml+ "<tr> <td><img src='${ctx}/image/first.png' style='width:20px;' /></td><td>"+key +"</td><td>"+newsite.number+"</td>";
+                     tablehtml=tablehtml+ "<tr class='tr'> <td><img src='${ctx}/image/first.png' style='width:20px;' /></td><td>"+key +"</td><td>"+newsite.number+"</td>";
                      if(newsite.rankChange>0){
                          tablehtml=tablehtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
                      }else if(newsite.rankChange<0){
@@ -1194,7 +1227,7 @@
                      }
 
                  } else if(newsite.rank==2){
-                     tablehtml=tablehtml+ "<tr> <td><img src='${ctx}/image/sec.png' style='width:20px;' /></td> <td>"+key +"</td><td>"+newsite.number+"</td>";
+                     tablehtml=tablehtml+ "<tr class='tr'> <td><img src='${ctx}/image/sec.png' style='width:20px;' /></td> <td>"+key +"</td><td>"+newsite.number+"</td>";
                      if(newsite.rankChange>0){
                          tablehtml= tablehtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
                      }else if(newsite.rankChange<0){
@@ -1204,7 +1237,7 @@
                      }
 
                  }else if(newsite.rank==3){
-                     tablehtml=tablehtml+ "<tr> <td><img src='${ctx}/image/thr.png' style='width:20px;' /></td>  <td>"+key +"</td><td>"+newsite.number+"</td>";
+                     tablehtml=tablehtml+ "<tr class='tr'> <td><img src='${ctx}/image/thr.png' style='width:20px;' /></td>  <td>"+key +"</td><td>"+newsite.number+"</td>";
                      if(newsite.rankChange>0){
                          tablehtml= tablehtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
                      }else if(newsite.rankChange<0){
@@ -1213,7 +1246,7 @@
                          tablehtml=  tablehtml+"<td>"+newsite.rankChange+"</td> </tr>";
                      }
                  }else{
-                     tablehtml=tablehtml+ "<tr> <td>"+newsite.rank+"</td> <td>"+key +"</td><td>"+newsite.number+"</td>";
+                     tablehtml=tablehtml+ "<tr class='tr'> <td>"+newsite.rank+"</td> <td>"+key +"</td><td>"+newsite.number+"</td>";
                      if(newsite.rankChange>0){
                          tablehtml= tablehtml+"<td>"+newsite.rankChange+"<img src='${ctx}/image/up.png' style='width:10px;' /></td> </tr>";
                      }else if(newsite.rankChange<0){
@@ -1222,8 +1255,8 @@
                          tablehtml= tablehtml+"<td>"+newsite.rankChange+"</td> </tr>";
                      }
                  }
-
              }
+             tablehtml=tablehtml+"</table>"
             $("#areatV4user").after(trhtml);
           $.get('${ctx}/map/json/china.json', function (chinaJson) {
              echarts.registerMap('china', chinaJson);
