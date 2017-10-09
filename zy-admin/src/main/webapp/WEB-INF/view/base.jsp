@@ -227,6 +227,30 @@
     table tr td {
         border-left: 1px solid #ccc;
     }
+
+    .dateNewVol{
+        border:1px solid #ccc;
+        -webkit-border-radius: 8px !important;
+        -moz-border-radius: 8px !important;
+        -o-border-radius: 8px !important;
+        border-radius:8px !important;
+        -moz-box-shadow:0px 1px 10px #aaa;
+        -o-box-shadow:0px 1px 10px #aaa;
+        -webkit-box-shadow:0px 1px 10px #aaa;
+        box-shadow:0px 1px 10px #aaa;
+    }
+    .number {
+        width:7%;
+        height:60px;
+        border:1px solid #ccc;
+        float: left;
+        margin-left: 5%;
+        margin-top: 10px;
+        text-align: center;
+        line-height: 60px;
+        font-size: 60px;
+        color: #269952;
+    }
 </style>
 <script>
 
@@ -311,6 +335,22 @@
     <ul class="page-breadcrumb">
         <li><img src="${ctx}/image/dataXiao.png" /> <span class="ajaxify">今日销量</span>
     </ul>
+
+</div>
+<div class="portlet-body">
+    <div class="dateNewVol" style="margin-left:2%;width: 96%;height: 80px;border: 1px solid #ccc; margin-bottom: 30px;">
+        <div class="clearfloat">
+             <div class="number">0</div>
+             <div class="number">0</div>
+             <div class="number">0</div>
+             <div class="number">0</div>
+             <div class="number">0</div>
+             <div class="number">0</div>
+             <div class="number">0</div>
+             <div class="number">0</div>
+            <span style="float:left;font-size: 20px;color: #269952;margin-left: 5px;margin-top: 5px;">次</span>
+        </div>
+    </div>
 </div>
 <!-- END PAGE HEADER-->
     <div class="row">
@@ -383,7 +423,7 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <img src="${ctx}/image/dataTong.png" />
-                        <span class="caption-subject bold uppercase">销量统计</span>
+                        <span class="caption-subject bold uppercase uppercaseNew">销量统计</span>
                     </div>
                 </div>
                 <div class="portlet-body clearfloat">
@@ -547,7 +587,7 @@
                                         <td>501</td>
                                         <td>1<img src="${ctx}/image/up.png" style="width:10px;"/><img src="${ctx}/image/down.png" style="width:10px;"/></td>
                                     </tr>--%>
-                                    <tr><td colspan="4" style="background: rgba(49,199,178,0.5);color: #fff;" onclick="alertMy(this)">点击查看更多</td></tr>
+                                    <tr><td colspan="4" style="background: rgba(49,199,178,0.5);color: #fff;cursor: pointer" onclick="alertMy(this)">点击查看更多</td></tr>
                                 </table>
 
                             </div>
@@ -602,10 +642,10 @@
 
         layer.open({
             type: 1,
-            area:['30%', '90%'],
+            area:['50%', '50%'],
             title: false,
             scrollbar: false,
-            closeBtn: 1,
+            closeBtn: 2,
             content: tablehtml
         });
     }
@@ -1526,6 +1566,7 @@
                 $(obj).siblings(".allExpenses").eq(1).removeClass("on3");
                 $(".AllThrVolume").show();
                 $(".AllThrTeam,.AllThrExpenses").hide();
+                $(".uppercaseNew").html("销量统计");
                 break;
             case 2:
                 $(obj).addClass("on2");
@@ -1533,6 +1574,7 @@
                 $(obj).siblings(".allExpenses").eq(1).removeClass("on3");
                 $(".AllThrTeam").show();
                 $(".AllThrVolume,.AllThrExpenses").hide();
+                $(".uppercaseNew").html("团队统计");
                 scaleColTeam();
                 break;
             case 3:
@@ -1541,6 +1583,7 @@
                 $(obj).siblings(".allExpenses").eq(1).removeClass("on2");
                 $(".AllThrExpenses").show();
                 $(".AllThrVolume,.AllThrTeam").hide();
+                $(".uppercaseNew").html("收支统计");
                 scaleColExpenses();
                 break;
             default:
