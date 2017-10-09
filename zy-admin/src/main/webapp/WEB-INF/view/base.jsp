@@ -918,7 +918,8 @@
             var categories = ['东部','南部','西部','北部','中部'];
             myChartxiao5.setOption({
                 tooltip: {
-                    trigger: 'axis'
+                    trigger: 'axis',
+
                 },
                 legend: [{
                     data: categories.map(function (a) {
@@ -942,7 +943,10 @@
                     data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
                 },
                 yAxis: {
-                    type: 'value'
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} %'
+                    }
                 },
                 series : (function (){
                     var series = [];
@@ -989,7 +993,10 @@
                     data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
                 },
                 yAxis: {
-                    type: 'value'
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} %'
+                    }
                 },
                 series : (function (){
                     var series = [];
