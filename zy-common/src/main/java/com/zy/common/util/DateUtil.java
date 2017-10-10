@@ -489,6 +489,24 @@ public class DateUtil {
     }
 
 
+    /**
+     * 从字符串里面提取 月份
+     * @param str
+     * @return
+     */
+    public static  int StringtoInt(String str){
+        String  m1= str.substring(5,6);
+        String  m2= str.substring(6, 7);
+        try {
+            Integer.parseInt(m2);
+            return new Integer(m1+m2);
+        } catch (NumberFormatException e) {
+            return new Integer(m1);
+        }
+
+    }
+
+
     public static void  main(String []age) throws ParseException {
         System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));
@@ -509,6 +527,9 @@ public class DateUtil {
         System.out.println("----------##########--");
         System.out.println(DateUtil.toStringLength(123343342232L,6));
         System.out.println(DateUtil.formatString(123));
+        System.out.println(StringtoInt("2017年10月推荐奖"));
+
+
 
       /*  ystem.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("年龄:"+getAge("411528201607192688"));
