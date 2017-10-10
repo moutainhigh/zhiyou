@@ -4,6 +4,7 @@ import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.weixinpay.WeixinPayClient;
+import com.zy.component.LocalCacheComponent;
 import com.zy.component.NewReportComponent;
 import com.zy.service.SystemCodeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -31,6 +32,9 @@ public class NewReportController {
     @Autowired
     private NewReportComponent newReportComponent;
 
+    @Autowired
+    private LocalCacheComponent localCacheComponent;
+
     /**
      * 跳转到  首页
      * @param model
@@ -50,7 +54,7 @@ public class NewReportController {
     public Result<?> ajaxOrderNumber(String type) {
        String number ="000000000";
         try {
-            number = newReportComponent.statOrderNumber(type,"d");
+            number = newReportComponent.statOrderNumber(type,"d",localCacheComponent);
         }catch (Exception e){
             logger.error(e.getMessage());
             return ResultBuilder.error(e.getMessage());
@@ -69,7 +73,7 @@ public class NewReportController {
     public Result<?> ajaxTeamNumber(String type) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            resultMap = newReportComponent.disposeTeamAreatNumber(type);
+            resultMap = newReportComponent.disposeTeamAreatNumber(type,localCacheComponent);
         }catch (Exception e){
             logger.error(e.getMessage());
             e.printStackTrace();
@@ -88,7 +92,7 @@ public class NewReportController {
     public Result<?> ajaxTeamNewNumber(String type) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            resultMap = newReportComponent.disposeTeamAreatNewNumber(type);
+            resultMap = newReportComponent.disposeTeamAreatNewNumber(type,localCacheComponent);
         }catch (Exception e){
             logger.error(e.getMessage());
             e.printStackTrace();
@@ -106,7 +110,7 @@ public class NewReportController {
     public Result<?> ajaxTeamSleepNumber(String type) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            resultMap = newReportComponent.disposeTeamAreatSleepNumber(type);
+            resultMap = newReportComponent.disposeTeamAreatSleepNumber(type,localCacheComponent);
         }catch (Exception e){
             logger.error(e.getMessage());
             e.printStackTrace();
@@ -125,7 +129,7 @@ public class NewReportController {
     public Result<?> ajaxTeamAreat(String type) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            resultMap = newReportComponent.disposeTeamAreat(type);
+            resultMap = newReportComponent.disposeTeamAreat(type,localCacheComponent);
         }catch (Exception e){
             logger.error(e.getMessage());
             return ResultBuilder.error(e.getMessage());
@@ -145,7 +149,7 @@ public class NewReportController {
     public Result<?> ajaxTeamV4(String type) {
         Map<String, String> resultMap = new HashMap<>();
         try {
-            resultMap = newReportComponent.disposeTeamV4(type);
+            resultMap = newReportComponent.disposeTeamV4(type,localCacheComponent);
         }catch (Exception e){
             logger.error(e.getMessage());
             return ResultBuilder.error(e.getMessage());
@@ -165,7 +169,7 @@ public class NewReportController {
     public Result<?> ajaxTeamUb(String type) {
         Map<String, String> resultMap = new HashMap<>();
         try {
-            resultMap = newReportComponent.disposeTeamUb(type);
+            resultMap = newReportComponent.disposeTeamUb(type,localCacheComponent);
          }catch (Exception e){
             logger.error(e.getMessage());
             return ResultBuilder.error(e.getMessage());
@@ -184,7 +188,7 @@ public class NewReportController {
     public Result<?> ajaxTeamTage(String type) {
         Map<String, String> resultMap = new HashMap<>();
         try {
-            resultMap = newReportComponent.disposeTeamTage(type);
+            resultMap = newReportComponent.disposeTeamTage(type,localCacheComponent);
         }catch (Exception e){
             logger.error(e.getMessage());
             return ResultBuilder.error(e.getMessage());
@@ -203,7 +207,7 @@ public class NewReportController {
     public Result<?> ajaxSalesHaveRate(String type) {
         Map<String, Object> resultMap = new HashMap<>();
         try {
-            resultMap = newReportComponent.disposeLargeareaSalesHaveRate(type);
+            resultMap = newReportComponent.disposeLargeareaSalesHaveRate(type,localCacheComponent);
         }catch (Exception e){
             logger.error(e.getMessage());
             e.printStackTrace();

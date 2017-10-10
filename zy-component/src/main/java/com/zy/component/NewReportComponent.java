@@ -28,8 +28,7 @@ import java.util.stream.Collectors;
  */
 @Component
 public class NewReportComponent {
-    @Autowired
-    private LocalCacheComponent localCacheComponent;
+
 
     @Autowired
     private SystemCodeService systemCodeService;
@@ -54,7 +53,7 @@ public class NewReportComponent {
      * @param type
      * @return
      */
-    public Map<String,Object> disposeTeamAreatNumber(String type) {
+    public Map<String,Object> disposeTeamAreatNumber(String type ,LocalCacheComponent localCacheComponent) {
         //过滤出所有的V4成员 且分过大区的 有大区总裁的
         List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
         List<User>largeUserList = users.stream().filter(user ->  user.getLargearea()!=null).collect(Collectors.toList());
@@ -73,7 +72,7 @@ public class NewReportComponent {
      * @param type
      * @return
      */
-    public Map<String,Object> disposeTeamAreatNewNumber(String type) {
+    public Map<String,Object> disposeTeamAreatNewNumber(String type,LocalCacheComponent localCacheComponent) {
         //过滤出所有的V4成员 且分过大区的 有大区总裁的
         List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
         List<User>largeUserList = users.stream().filter(user ->  user.getLargearea()!=null).collect(Collectors.toList());
@@ -89,7 +88,7 @@ public class NewReportComponent {
      * @param type
      * @return
      */
-    public Map<String,Object> disposeTeamAreatSleepNumber(String type) {
+    public Map<String,Object> disposeTeamAreatSleepNumber(String type,LocalCacheComponent localCacheComponent) {
         //过滤出所有的V4成员 且分过大区的 有大区总裁的
         List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
         List<User>largeUserList = users.stream().filter(user ->  user.getLargearea()!=null).collect(Collectors.toList());
@@ -347,7 +346,7 @@ public class NewReportComponent {
      * @param type
      * @return
      */
-    public Map<String,Object> disposeTeamAreat(String type) {
+    public Map<String,Object> disposeTeamAreat(String type,LocalCacheComponent localCacheComponent) {
         List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
         Map<String ,Object> map = new HashMap<>();
         map.put("areat",this.disposeTeamAreat(type,users));
@@ -361,7 +360,7 @@ public class NewReportComponent {
      * @param yorm y:年 m：月 d：日
      * @return
      */
-    public String statOrderNumber(String type,String yorm) {
+    public String statOrderNumber(String type,String yorm,LocalCacheComponent localCacheComponent) {
         String number = "000000";
          //处理订单
         List<Order> orders = localCacheComponent.getOrders().stream()
@@ -415,7 +414,7 @@ public class NewReportComponent {
      * @param type
      * @return
      */
-    public Map<String,String> disposeTeamV4(String type) {
+    public Map<String,String> disposeTeamV4(String type,LocalCacheComponent localCacheComponent) {
         Map<String,String>V4Map = new HashMap<>();
         List <User>userNewList = new  ArrayList<>();
         List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).collect(Collectors.toList());
@@ -457,7 +456,7 @@ public class NewReportComponent {
      * @return
      */
 
-    public Map<String,String> disposeTeamUb(String type) {
+    public Map<String,String> disposeTeamUb(String type,LocalCacheComponent localCacheComponent) {
         //处理U币逻辑
         Map<String,String>UMap = new HashMap<>();
         List<Deposit> depositList=localCacheComponent.getDeposits().stream().filter(deposit ->(deposit.getPaidTime()!=null &&deposit.getPaidTime().after(DateUtil.getBeforeMonthEnd(new Date(),0,0)))).
@@ -552,7 +551,7 @@ public class NewReportComponent {
      * @param type
      * @return
      */
-    public Map<String,String> disposeTeamTage(String type) {
+    public Map<String,String> disposeTeamTage(String type ,LocalCacheComponent localCacheComponent) {
         Map<String,String>tageMap = new HashMap<>();
         //处理目标量
          List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
@@ -576,7 +575,7 @@ public class NewReportComponent {
         int targetCount = userTargetSalesList.stream().mapToInt(UserTargetSales::getTargetCount).sum();
         tageMap.put("tageNumber",DateUtil.formatString(targetCount));
         //处理完成量
-        String number = this.statOrderNumber(type,"m");
+        String number = this.statOrderNumber(type,"m",localCacheComponent);
         tageMap.put("finishNumber",DateUtil.formatString(Double.valueOf(number)));
         if(targetCount==0){
             tageMap.put("rate","100.00");
@@ -587,7 +586,7 @@ public class NewReportComponent {
         return tageMap;
     }
 
-    public Map<String,Object> disposeLargeareaSalesHaveRate(String type) {
+    public Map<String,Object> disposeLargeareaSalesHaveRate(String type,LocalCacheComponent localCacheComponent) {
         Date now = new Date();
         //过滤订单
         localCacheComponent.getOrders().stream().filter(v -> {
