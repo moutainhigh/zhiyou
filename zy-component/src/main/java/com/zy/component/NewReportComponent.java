@@ -513,7 +513,7 @@ public class NewReportComponent {
         if ("m".equals(mory)){ //月
             int m = DateUtil.getMothNum(new Date())-1;//上个月
             profitList = profitList.stream().filter(profit -> {
-                int titleMonth  = DateUtil.StringtoInt(profit.getTitle());
+                int titleMonth  = DateUtil.StringtoInt(profit.getTitle(),5);
                 if(m==titleMonth){
                     return true;
                 }
@@ -521,7 +521,7 @@ public class NewReportComponent {
             }).collect(Collectors.toList());
         }else{//年
             profitList = profitList.stream().filter(profit -> {
-                int titleMonth  = DateUtil.StringtoInt(profit.getTitle());
+                int titleMonth  = DateUtil.StringtoInt(profit.getTitle(),5);
                 if (1<=titleMonth&&titleMonth<=12){
                     return true;
                 }
