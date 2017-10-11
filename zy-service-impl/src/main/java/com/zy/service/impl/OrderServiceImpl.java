@@ -25,6 +25,7 @@ import com.zy.entity.mal.Product;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
+import com.zy.entity.usr.UserUpgrade;
 import com.zy.extend.Producer;
 import com.zy.mapper.*;
 import com.zy.model.BizCode;
@@ -36,8 +37,10 @@ import com.zy.model.dto.OrderSumDto;
 import com.zy.model.query.OrderFillUserQueryModel;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.UserQueryModel;
+import com.zy.model.query.UserUpgradeQueryModel;
 import com.zy.service.OrderService;
 import com.zy.service.UserService;
+import io.gd.generator.api.query.Direction;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.validator.constraints.NotBlank;
@@ -103,6 +106,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private Producer producer;
+
+	@Autowired
+	private UserUpgradeMapper userUpgradeMapper;
 
 	public static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -655,7 +661,9 @@ public class OrderServiceImpl implements OrderService {
 		if (orderMonthlySettlement != null) {
 			return; // 幂等操作
 		}
-
+       //查询v4的晋升时间 按晋升时间 转成Map
+		Map<Long,List<UserUpgrade>> userUpgradeMap = userUpgradeMapper.findAll(UserUpgradeQueryModel.builder().toUserRankEQ(User.UserRank.V4).orderBy("upgradedTime")
+				.direction(Direction.ASC).build()).stream().collect(Collectors.groupingBy(UserUpgrade::getUserId));
 		LocalDate beginDate = LocalDate.of(year, month, 1);
 		LocalDate endDate = beginDate.with(TemporalAdjusters.firstDayOfNextMonth());
 
@@ -703,7 +711,7 @@ public class OrderServiceImpl implements OrderService {
 			@SuppressWarnings("unused")
 			UserRank sellerUserRank = order.getSellerUserRank();
 
-			Date paidTime = order.getPaidTime();
+			Date paidTime = new Date();//order.getPaidTime(); 根据要求改成   当前job跑的时间
 
 			if (config.isOld(productId)) {
 
@@ -800,12 +808,29 @@ public class OrderServiceImpl implements OrderService {
 						if (deletedUserIds.contains(buyerId)) {
 							Long parentId = buyer.getParentId();
 							User parent = getV4ParentId(parentId);
+							Boolean newV4 =newV4(userUpgradeMap.get(parent.getId()),yearMonth);
+							if(newV4){
+								 fee = saleBonus.multiply(FEE_RATE1);
+								 saleBonusAfter = saleBonus.subtract(fee);
+								fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE1,saleBonus,fee);
+								logger.error(buyer.getNickname() + "直升特级, 但被踢出系统，业绩奖给上级" + parent.getNickname() + "业绩奖：" + saleBonusAfter + "费率：" + fee);
+							}else{
+								fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
+								logger.error(buyer.getNickname() + "直升特级, 但被踢出系统，业绩奖给上级" + parent.getNickname() + "业绩奖：" + saleBonusAfter + "保留发放：" + fee);
+							}
 
-							fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
-							logger.error(buyer.getNickname() + "直升特级, 但被踢出系统，业绩奖给上级" + parent.getNickname() + "业绩奖：" + saleBonusAfter + "保留发放：" + fee);
 						} else {
-							fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
-							logger.error(buyer.getNickname() + "直升特级, 业绩奖：" + saleBonusAfter + "保留发放：" + fee);
+							Boolean newV4 =newV4(userUpgradeMap.get(buyerId),yearMonth);
+							if(newV4){
+								fee = saleBonus.multiply(FEE_RATE1);
+								saleBonusAfter = saleBonus.subtract(fee);
+								fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
+								logger.error(buyer.getNickname() + "直升特级, 业绩奖：" + saleBonusAfter + "保留发放：" + fee);
+							 }else{
+								fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
+								logger.error(buyer.getNickname() + "直升特级, 业绩奖：" + saleBonusAfter + "保留发放：" + fee);
+							}
+
 						}
 
 						Long parentId = buyer.getParentId();
@@ -814,14 +839,24 @@ public class OrderServiceImpl implements OrderService {
 						if (parent.getUserRank() == UserRank.V4) {
 							final BigDecimal saleBonusToV4Parent = new BigDecimal("1.00").multiply(BigDecimal.valueOf(quantity));
 							BigDecimal feeToV4Parent = saleBonusToV4Parent.multiply(FEE_RATE);
+							Boolean newV4 =newV4(userUpgradeMap.get(parent.getId()),yearMonth);
+							if(newV4){
+								feeToV4Parent = saleBonusToV4Parent.multiply(FEE_RATE1);
+							}
 							BigDecimal saleBonusAfterToV4Parent = saleBonusToV4Parent.subtract(feeToV4Parent);
+
 							try {
 								TimeUnit.MILLISECONDS.sleep(50);
 							} catch (InterruptedException e1) {
 							}
-							fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月" + buyer.getNickname() + "业绩奖", CurrencyType.积分, saleBonusAfterToV4Parent, paidTime, "保留发放:" + feeToV4Parent + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonusToV4Parent,feeToV4Parent);
+							if(newV4){
+								fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月" + buyer.getNickname() + "业绩奖", CurrencyType.积分, saleBonusAfterToV4Parent, paidTime, "已扣除手续费:" + feeToV4Parent + ";费率: " + FEE_RATE1,saleBonusToV4Parent,feeToV4Parent);
+								logger.error(buyer.getNickname() + "直升特级, 给上级" + parent.getNickname() + "的业绩奖：" + saleBonusAfterToV4Parent + "已扣除手续费：" + feeToV4Parent);
+							}else{
+								fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月" + buyer.getNickname() + "业绩奖", CurrencyType.积分, saleBonusAfterToV4Parent, paidTime, "保留发放:" + feeToV4Parent + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonusToV4Parent,feeToV4Parent);
+								logger.error(buyer.getNickname() + "直升特级, 给上级" + parent.getNickname() + "的业绩奖：" + saleBonusAfterToV4Parent + "保留发放：" + feeToV4Parent);
+							}
 
-							logger.error(buyer.getNickname() + "直升特级, 给上级" + parent.getNickname() + "的业绩奖：" + saleBonusAfterToV4Parent + "保留发放：" + feeToV4Parent);
 						}
 					}
 				}
@@ -837,12 +872,29 @@ public class OrderServiceImpl implements OrderService {
 					if (deletedUserIds.contains(buyerId)) {
 						Long parentId = buyer.getParentId();
 						User parent = getV4ParentId(parentId);
+						Boolean newV4 =newV4(userUpgradeMap.get(parent.getId()),yearMonth);
+						if (newV4){
+							 fee = saleBonus.multiply(FEE_RATE1);
+							 saleBonusAfter = saleBonus.subtract(fee);
+							fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE1,saleBonus,fee);
+							logger.error(buyer.getNickname() + "特级业绩奖，但被系统踢出，奖励给上级" + parent.getNickname() + "：" + saleBonusAfter + "已扣除手续费：" + fee);
+						}else{
+							fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
+							logger.error(buyer.getNickname() + "特级业绩奖，但被系统踢出，奖励给上级" + parent.getNickname() + "：" + saleBonusAfter + "保留发放：" + fee);
+						}
 
-						fncComponent.createProfit(parent.getId(), Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
-						logger.error(buyer.getNickname() + "特级业绩奖，但被系统踢出，奖励给上级" + parent.getNickname() + "：" + saleBonusAfter + "保留发放：" + fee);
 					} else {
-						fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
-						logger.error(buyer.getNickname() + "特级业绩奖：" + saleBonusAfter + "保留发放：" + fee);
+						Boolean newV4 =newV4(userUpgradeMap.get(buyerId),yearMonth);
+						if (newV4){
+							fee = saleBonus.multiply(FEE_RATE1);
+							saleBonusAfter = saleBonus.subtract(fee);
+							fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE1,saleBonus,fee);
+							logger.error(buyer.getNickname() + "特级业绩奖：" + saleBonusAfter + "已扣除手续费：" + fee);
+						}else{
+							fncComponent.createProfit(buyerId, Profit.ProfitType.业绩奖, orderId, year + "年" + month + "月业绩奖", CurrencyType.积分, saleBonusAfter, paidTime, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
+							logger.error(buyer.getNickname() + "特级业绩奖：" + saleBonusAfter + "保留发放：" + fee);
+						}
+
 					}
 
 				}
@@ -902,13 +954,23 @@ public class OrderServiceImpl implements OrderService {
 								} else {
 									final BigDecimal saleBonus = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
 									BigDecimal fee = saleBonus.multiply(FEE_RATE);
+									Boolean newV4 =newV4(userUpgradeMap.get(parentId),yearMonth);
+									if (newV4){
+										fee = saleBonus.multiply(FEE_RATE1);
+									}
 									BigDecimal saleBonusAfter = saleBonus.subtract(fee);
 									try {
 										TimeUnit.MILLISECONDS.sleep(50);
 									} catch (InterruptedException e1) {
 									}
-									fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, year + "年" + month + "月推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
-									logger.error(buyer.getNickname() + "直升特级，订单给上级V4的上级V4：" + buyerParent.getNickname() + "推荐奖：" + saleBonusAfter + "保留发放:" + fee);
+									if (newV4){
+										fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, year + "年" + month + "月推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE1,saleBonus,fee);
+										logger.error(buyer.getNickname() + "直升特级，订单给上级V4的上级V4：" + buyerParent.getNickname() + "推荐奖：" + saleBonusAfter + "已扣除手续费:" + fee);
+									}else{
+										fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, year + "年" + month + "月推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
+										logger.error(buyer.getNickname() + "直升特级，订单给上级V4的上级V4：" + buyerParent.getNickname() + "推荐奖：" + saleBonusAfter + "保留发放:" + fee);
+									}
+
 									break;
 								}
 							}
@@ -936,13 +998,23 @@ public class OrderServiceImpl implements OrderService {
 						if(foundV4Parent && !deletedUserIds.contains(parentId)) {
 							final BigDecimal saleBonus = new BigDecimal("6.00").multiply(BigDecimal.valueOf(quantity));
 							BigDecimal fee = saleBonus.multiply(FEE_RATE);
+							Boolean newV4 =newV4(userUpgradeMap.get(parentId),yearMonth);
+							if (newV4){
+								fee = saleBonus.multiply(FEE_RATE1);
+							}
 							BigDecimal saleBonusAfter = saleBonus.subtract(fee);
 							try {
 								TimeUnit.MILLISECONDS.sleep(50);
 							} catch (InterruptedException e1) {
 							}
-							fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, year + "年" + month + "月推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
-							logger.error(buyer.getNickname() + "buyerUserRank==V4, quantity: " + quantity + " order id= " + order.getId() + ";" + buyerParent.getNickname() + "推荐奖：" + saleBonusAfter + "保留发放:" + fee);
+							if (newV4){
+								fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, year + "年" + month + "月推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "已扣除手续费:" + fee + ";费率: " + FEE_RATE1,saleBonus,fee);
+								logger.error(buyer.getNickname() + "buyerUserRank==V4, quantity: " + quantity + " order id= " + order.getId() + ";" + buyerParent.getNickname() + "推荐奖：" + saleBonusAfter + "已扣除手续费:" + fee);
+							}else{
+								fncComponent.createProfit(parentId, Profit.ProfitType.推荐奖, orderId, year + "年" + month + "月推荐奖", CurrencyType.积分, saleBonusAfter, paidTime, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",saleBonus,fee);
+								logger.error(buyer.getNickname() + "buyerUserRank==V4, quantity: " + quantity + " order id= " + order.getId() + ";" + buyerParent.getNickname() + "推荐奖：" + saleBonusAfter + "保留发放:" + fee);
+							}
+
 							break;
 						}
 
@@ -1150,6 +1222,9 @@ public class OrderServiceImpl implements OrderService {
 				.filter(v -> v.getQuantity() >= toV4Quantity && v.getBuyerUserRank().ordinal() < UserRank.V4.ordinal())
 				.collect(Collectors.toMap(v -> v.getUserId(), v -> true, (existingValue, newValue) -> existingValue));
 
+		//查询v4的晋升时间 按晋升时间 转成Map
+		Map<Long,List<UserUpgrade>> userUpgradeMap = userUpgradeMapper.findAll(UserUpgradeQueryModel.builder().toUserRankEQ(User.UserRank.V4).orderBy("upgradedTime")
+				.direction(Direction.ASC).build()).stream().collect(Collectors.groupingBy(UserUpgrade::getUserId));
 		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
 		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
 		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
@@ -1260,15 +1335,25 @@ public class OrderServiceImpl implements OrderService {
 			for (Map.Entry<Long, BigDecimal> entry : profitMap.entrySet()) {
 				BigDecimal amount = entry.getValue();
 				Long userId = entry.getKey();
+				Boolean newV4 =newV4(userUpgradeMap.get(userId),yearMonth);
 				if (amount.compareTo(zero) > 0) {
 					try {
 						TimeUnit.MILLISECONDS.sleep(200);
 					} catch (InterruptedException e1) {
 					}
 					BigDecimal fee = amount.multiply(FEE_RATE);
+					if(newV4){
+						fee = amount.multiply(FEE_RATE1);
+					}
 					BigDecimal amountAfter = amount.subtract(fee);
-					fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "月返利奖", CurrencyType.积分, amountAfter, now, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",amount,fee);
-					logger.error(userMap.get(userId).getNickname() + "返利奖" + amountAfter + "积分");
+					if (newV4){
+						fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "月返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE1,amount,fee);
+						logger.error(userMap.get(userId).getNickname() + "返利奖" + amountAfter + "积分");
+					}else{
+						fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "月返利奖", CurrencyType.积分, amountAfter, now, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",amount,fee);
+						logger.error(userMap.get(userId).getNickname() + "返利奖" + amountAfter + "积分");
+					}
+
 				}
 			}
 		}
@@ -1319,7 +1404,9 @@ public class OrderServiceImpl implements OrderService {
 		Map<Long, Boolean> toV4Map = orders.stream()
 				.filter(v -> v.getQuantity() >= toV4Quantity && v.getBuyerUserRank().ordinal() < UserRank.V4.ordinal())
 				.collect(Collectors.toMap(v -> v.getUserId(), v -> true, (existingValue, newValue) -> existingValue));
-
+		//查询v4的晋升时间 按晋升时间 转成Map
+		Map<Long,List<UserUpgrade>> userUpgradeMap = userUpgradeMapper.findAll(UserUpgradeQueryModel.builder().toUserRankEQ(User.UserRank.V4).orderBy("upgradedTime")
+				.direction(Direction.ASC).build()).stream().collect(Collectors.groupingBy(UserUpgrade::getUserId));
 		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
 		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
 		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
@@ -1393,12 +1480,22 @@ public class OrderServiceImpl implements OrderService {
 		for (Map.Entry<Long, BigDecimal> entry : profitDirectorMap.entrySet()) {
 			BigDecimal amount = entry.getValue();
 			Long userId = entry.getKey();
+			Boolean newV4 =newV4(userUpgradeMap.get(userId),yearMonth);
 			if (amount.compareTo(zero) > 0) {
 				try {TimeUnit.MILLISECONDS.sleep(200);} catch (InterruptedException e1) {}
 				BigDecimal fee = amount.multiply(FEE_RATE);
+				if (newV4){
+					fee = amount.multiply(FEE_RATE1);
+				}
 				BigDecimal amountAfter = amount.subtract(fee);
-				fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "月董事贡献奖", CurrencyType.积分, amountAfter, now, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",amount,fee);
-				logger.error(userMap.get(userId).getNickname() + "董事贡献奖" + amount + "积分");
+				if(newV4){
+					fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "月董事贡献奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE1,amount,fee);
+					logger.error(userMap.get(userId).getNickname() + "董事贡献奖" + amount + "积分");
+				 }else{
+					fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "月董事贡献奖", CurrencyType.积分, amountAfter, now, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",amount,fee);
+					logger.error(userMap.get(userId).getNickname() + "董事贡献奖" + amount + "积分");
+				}
+
 			}
 		}
 		logger.error("董事贡献奖励：end...");
@@ -1522,7 +1619,9 @@ public class OrderServiceImpl implements OrderService {
 		List<User> users = userMapper.findAll(UserQueryModel.builder().userTypeEQ(User.UserType.代理).build());
 		List<User> v4Users = users.stream().filter(predicate).collect(Collectors.toList());
 		Map<Long, User> userMap = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
-
+        //查询v4的晋升时间 按晋升时间 转成Map
+		Map<Long,List<UserUpgrade>> userUpgradeMap = userUpgradeMapper.findAll(UserUpgradeQueryModel.builder().toUserRankEQ(User.UserRank.V4).orderBy("upgradedTime")
+				.direction(Direction.ASC).build()).stream().collect(Collectors.groupingBy(UserUpgrade::getUserId));
 		List<Order> copyOrders = orders.stream().map(v -> {
 			Long userId = v.getUserId();
 
@@ -1627,6 +1726,7 @@ public class OrderServiceImpl implements OrderService {
 			for (Map.Entry<Long, BigDecimal> entry : profitMap.entrySet()) {
 				BigDecimal amount = entry.getValue();
 				Long userId = entry.getKey();
+
 				if (amount.compareTo(zero) > 0) {
 					try {
 						TimeUnit.MILLISECONDS.sleep(200);
@@ -1634,15 +1734,30 @@ public class OrderServiceImpl implements OrderService {
 					}
 					BigDecimal fee = amount.multiply(FEE_RATE);
 					BigDecimal amountAfter = amount.subtract(fee);
-
 					if (deletedUserIds.contains(userId)) {
 						User v4Parent = getV4ParentId(userId);
+						Boolean newV4 =newV4(userUpgradeMap.get(v4Parent.getId()),yearMonth);
+						if(newV4){
+							fee = amount.multiply(FEE_RATE1);
+							amountAfter = amount.subtract(fee);
+							fncComponent.createProfit(v4Parent.getId(), Profit.ProfitType.返利奖, null, year + "年" + month + "月返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率:" + FEE_RATE1, amount, fee);
+							logger.error(userMap.get(userId).getNickname() + "被踢出系统，奖励给上级" + v4Parent.getNickname() + ";返利奖" + amount + "积分");
+						 }else {
+								fncComponent.createProfit(v4Parent.getId(), Profit.ProfitType.返利奖, null, year + "年" + month + "月返利奖", CurrencyType.积分, amountAfter, now, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100)) + "%", amount, fee);
+								logger.error(userMap.get(userId).getNickname() + "被踢出系统，奖励给上级" + v4Parent.getNickname() + ";返利奖" + amount + "积分");
+							}
 
-						fncComponent.createProfit(v4Parent.getId(), Profit.ProfitType.返利奖, null, year + "年" + month + "月返利奖", CurrencyType.积分, amountAfter, now, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",amount,fee);
-						logger.error(userMap.get(userId).getNickname() + "被踢出系统，奖励给上级" + v4Parent.getNickname() + ";返利奖" + amount + "积分");
-					} else {
-						fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "月返利奖", CurrencyType.积分, amountAfter, now, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",amount,fee);
-						logger.error(userMap.get(userId).getNickname() + "返利奖" + amount + "积分");
+						} else {
+						  Boolean newV4 =newV4(userUpgradeMap.get(userId),yearMonth);
+							if (newV4){
+								fee = amount.multiply(FEE_RATE1);
+								amountAfter = amount.subtract(fee);
+								fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "月返利奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE1,amount,fee);
+								logger.error(userMap.get(userId).getNickname() + "返利奖" + amount + "积分");
+							}else{
+								fncComponent.createProfit(userId, Profit.ProfitType.返利奖, null, year + "年" + month + "月返利奖", CurrencyType.积分, amountAfter, now, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",amount,fee);
+								logger.error(userMap.get(userId).getNickname() + "返利奖" + amount + "积分");
+							}
 					}
 				}
 			}
@@ -1808,12 +1923,29 @@ public class OrderServiceImpl implements OrderService {
 					BigDecimal amountAfter = amount.subtract(fee);
 					if (deletedUserIds.contains(userId)) {
 						User v4Parent = getV4ParentId(userId);
+						Boolean newV4 =newV4(userUpgradeMap.get(v4Parent.getId()),yearMonth);
+						if (newV4){
+							fee = amount.multiply(FEE_RATE1);
+							amountAfter = amount.subtract(fee);
+							fncComponent.createProfit(v4Parent.getId(), Profit.ProfitType.董事贡献奖, null, year + "年" + month + "月董事贡献奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE1,amount,fee);
+							logger.error(userMap.get(userId).getNickname() + "被踢出系统，奖励给上级" + v4Parent.getNickname()   + ";董事贡献奖" + amount + "积分");
+						}else{
+							fncComponent.createProfit(v4Parent.getId(), Profit.ProfitType.董事贡献奖, null, year + "年" + month + "月董事贡献奖", CurrencyType.积分, amountAfter, now, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",amount,fee);
+							logger.error(userMap.get(userId).getNickname() + "被踢出系统，奖励给上级" + v4Parent.getNickname()   + ";董事贡献奖" + amount + "积分");
+						}
 
-						fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "月董事贡献奖", CurrencyType.积分, amountAfter, now, "平台扣除:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",amount,fee);
-						logger.error(userMap.get(userId).getNickname() + "被踢出系统，奖励给上级" + v4Parent.getNickname()   + ";董事贡献奖" + amount + "积分");
 					} else {
-						fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "月董事贡献奖", CurrencyType.积分, amountAfter, now, "平台扣除:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",amount,fee);
-						logger.error(userMap.get(userId).getNickname() + "董事贡献奖" + amount + "积分");
+						Boolean newV4 =newV4(userUpgradeMap.get(userId),yearMonth);
+						if(newV4){
+							fee = amount.multiply(FEE_RATE1);
+							amountAfter = amount.subtract(fee);
+							fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "月董事贡献奖", CurrencyType.积分, amountAfter, now, "已扣除手续费:" + fee + ";费率: " + FEE_RATE1,amount,fee);
+							logger.error(userMap.get(userId).getNickname() + "董事贡献奖" + amount + "积分");
+						}else{
+							fncComponent.createProfit(userId, Profit.ProfitType.董事贡献奖, null, year + "年" + month + "月董事贡献奖", CurrencyType.积分, amountAfter, now, "保留发放:" + fee + ";占比: " + FEE_RATE.multiply(new BigDecimal(100))+"%",amount,fee);
+							logger.error(userMap.get(userId).getNickname() + "董事贡献奖" + amount + "积分");
+						}
+
 					}
 
 				}
@@ -2183,6 +2315,25 @@ public class OrderServiceImpl implements OrderService {
 			times ++;
 		}
 		return directV4ParentId;
+	}
+
+
+	/**
+	 * 判断是不是新生特级（两个月内升上来的）
+	 * @param userUpgradesList
+	 * @param yearMonth
+     * @return
+     */
+	private boolean newV4(List<UserUpgrade>userUpgradesList,YearMonth yearMonth){
+		if (userUpgradesList!=null&&!userUpgradesList.isEmpty()){
+			UserUpgrade userUpgrade = userUpgradesList.get(0);
+			YearMonth yearMonth1 = YearMonth.of(DateUtil.getYear(DateUtil.getMonthData(userUpgrade.getUpgradedTime(), 2, 0)),
+					DateUtil.getMothNum(DateUtil.getMonthData(userUpgrade.getUpgradedTime(), 2, 0)));
+			if (yearMonth1.isAfter(yearMonth)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

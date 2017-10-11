@@ -144,6 +144,7 @@ public  interface Constants {
     BigDecimal SETTING_MIN_MERCHANT_DEPOSIT_MONEY = new BigDecimal("100.00"); // 商家充值本金最小金额
 
     BigDecimal FEE_RATE = new BigDecimal("0.4");
+    BigDecimal FEE_RATE1 = new BigDecimal("0.06");
 
     /*
      * topic 用于发送mq
