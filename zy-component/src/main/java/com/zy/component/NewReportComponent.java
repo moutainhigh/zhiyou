@@ -516,19 +516,18 @@ public class NewReportComponent {
     private  void disposeProfit(List<Profit> profitList,String type ,String mory,Map<String,String>UMap,Map<Integer,List<User>> userMap){
 
         if ("m".equals(mory)){ //月
-            String m = DateUtil.getMothNum(new Date())-1+"";//上个月
+            int m = DateUtil.getMothNum(new Date())-1;//上个月
             profitList = profitList.stream().filter(profit -> {
-                String title  =profit.getTitle().substring(5,6);
-                if(m.equals(title)){
+                int titleMonth  = DateUtil.StringtoInt(profit.getTitle(),5);
+                if(m==titleMonth){
                     return true;
                 }
                 return false;
             }).collect(Collectors.toList());
         }else{//年
-            List<String> tempList = Arrays.asList("1","2","3","4","5","6","7","8","9","10","11","12");
             profitList = profitList.stream().filter(profit -> {
-                String title  =profit.getTitle().substring(5,6);
-                if (tempList.contains(title)){
+                int titleMonth  = DateUtil.StringtoInt(profit.getTitle(),5);
+                if (1<=titleMonth&&titleMonth<=12){
                     return true;
                 }
                 return false;

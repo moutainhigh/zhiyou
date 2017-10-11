@@ -495,6 +495,24 @@ public class DateUtil {
     }
 
 
+    /**
+     * 从字符串里面提取 月份 月份可能是两位
+     * @param str
+     * @return
+     */
+    public static  int StringtoInt(String str,int length ){
+        String  m1= str.substring(length,length+1);
+        String  m2= str.substring(length+1, length+2);
+        try {
+            Integer.parseInt(m2);
+            return new Integer(m1+m2);
+        } catch (NumberFormatException e) {
+            return new Integer(m1);
+        }
+
+    }
+
+
     public static void  main(String []age) throws ParseException {
         System.out.println(DateFormatUtils.format( DateUtil.getBeforeMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getBeforeMonthEnd(new Date(),1,0),"yyyy-MM-dd HH:mm:ss"));
@@ -503,7 +521,7 @@ public class DateUtil {
         System.out.println("-------------------");
         System.out.println(new Date().after(DateUtil.getDateEnd(DateUtil.getMonthData(new Date(),0,-1))));
         System.out.println("----------##########--");
-        System.out.println(DateFormatUtils.format(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-2,0)),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format( DateUtil.getDateEnd(DateUtil.getMonthData(new Date(),0,-1)),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateFormatUtils.format(DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-2,0)),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("-------------------");
         System.out.println(DateUtil.getDay(DateUtil.getMonthData(new Date(),0,-1)));
@@ -514,6 +532,10 @@ public class DateUtil {
         System.out.println(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         System.out.println("----------##########--");
         System.out.println(DateUtil.toStringLength(123343342232L,6));
+        System.out.println(DateUtil.formatString(123));
+        System.out.println(StringtoInt("2017年10月推荐奖",5));
+
+
         System.out.println("----------???????????--");
         System.out.println(DateUtil.getDaysOfMonth(new Date()));
 
