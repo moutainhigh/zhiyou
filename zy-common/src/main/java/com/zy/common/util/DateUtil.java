@@ -81,6 +81,11 @@ public class DateUtil {
         return currYearLast;
     }
 
+    /**
+     * 获取该月的天数
+     * @param date
+     * @return
+     */
     public static int getDaysOfMonth(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -538,7 +543,7 @@ public class DateUtil {
 
 
         System.out.println("----------???????????--");
-        System.out.println(DateUtil.getDaysOfMonth(new Date()));
+        System.out.println(DateFormatUtils.format(DateUtil.getMonthBegin(new Date(),0,0),"yyyy-MM-dd HH:mm:ss"));
 
       /*  ystem.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("年龄:"+getAge("411528201607192688"));

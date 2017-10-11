@@ -141,37 +141,6 @@ public class UserTargetSalesServiceImpl implements UserTargetSalesService {
                 }
             }
         }
-
-//        List<UserTargetSales> newList = null;
-//        for (UserTargetSales us: all ) {
-//            if(userMap.get(us.getId()) == null){
-//                newList.add(us);
-//            }
-//        }
-//        if(newList == null){
-//            for (User u: users) {
-//                    UserTargetSales userTargetSales = new UserTargetSales();
-//                    userTargetSales.setCreateTime(now);
-//                    userTargetSales.setMonth(month);
-//                    userTargetSales.setYear(year);
-//                    userTargetSales.setUserId(u.getId());
-//                    userTargetSales.setTargetCount(avg);
-//                    userTargetSalesMapper.insert(userTargetSales);
-//            }
-//        }else {
-//            Map<Long, UserTargetSales> userTargetSalesMap = newList.stream().collect(Collectors.toMap(v -> v.getUserId(), v -> v));
-//            for (User u: users) {
-//                if(userTargetSalesMap.get(u.getId()) == null){
-//                    UserTargetSales userTargetSales = new UserTargetSales();
-//                    userTargetSales.setCreateTime(now);
-//                    userTargetSales.setMonth(month);
-//                    userTargetSales.setYear(year);
-//                    userTargetSales.setUserId(u.getId());
-//                    userTargetSales.setTargetCount(avg);
-//                    userTargetSalesMapper.insert(userTargetSales);
-//                }
-//            }
-//        }
     }
 
     @Override
