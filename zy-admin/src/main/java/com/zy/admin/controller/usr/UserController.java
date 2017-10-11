@@ -361,6 +361,9 @@ public class UserController {
 		if (president == null) {
 			return ResultBuilder.error("大区总裁手机号不存在");
 		}
+		if(president.getIsPresident() == null || !president.getIsPresident()){
+			return ResultBuilder.error("用户不是大区总裁");
+		}
 		userService.modifyPresidentId(id, president.getId());
 		return ResultBuilder.ok("已加入: " + president.getNickname()+"大区总裁团队");
 	}
