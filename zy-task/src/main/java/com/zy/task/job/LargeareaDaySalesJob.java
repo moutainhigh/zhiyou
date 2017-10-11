@@ -65,7 +65,7 @@ public class LargeareaDaySalesJob implements Job {
             //过滤订单
             List<Order> filterOrders = orders.stream().filter(order -> order.getOrderStatus() == Order.OrderStatus.已完成
                      || order.getOrderStatus() == Order.OrderStatus.已支付 || order.getOrderStatus() == Order.OrderStatus.已发货)
-                    .filter(order -> order.getSellerUserRank() == User.UserRank.V4).collect(Collectors.toList());
+                    .filter(order -> order.getSellerId()==1).collect(Collectors.toList());
             Map<Long, List<Order>> orderMap = filterOrders.stream().collect(Collectors.groupingBy(Order::getUserId));
 
             //过滤大区非空特级

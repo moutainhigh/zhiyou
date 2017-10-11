@@ -98,7 +98,7 @@ public class UserTargerSalesController {
 			userTargetSales.setUserId(user.getId());
 			userTargetSales.setYear(DateUtil.getYear(now));
 			userTargetSales.setMonth(DateUtil.getMothNum(now));
-			userTargetSales.setCreateTime(now);
+			userTargetSales.setCreateTime(new Date());
 			List<UserTargetSales> all = userTargetSalesService.findAll(UserTargetSalesQueryModel.builder().userIdEQ(user.getId()).yearEQ(userTargetSales.getYear()).monthEQ(userTargetSales.getMonth()).build());
 			if(all != null && all.size() > 0 ){
 				redirectAttributes.addFlashAttribute(ResultBuilder.error("新增失败，该用户当月已设置过目标量，如需更改，请编辑"));

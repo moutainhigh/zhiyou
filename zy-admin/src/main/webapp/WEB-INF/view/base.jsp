@@ -682,9 +682,17 @@
     $(function(){
         var myChartxiao1 = echarts.init(document.getElementById('orderChart1'));
         // 异步加载数据
-        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-            console.log(result);
-            var categories = ['东部','南部','西部','北部','中部'];
+        $.post('${ctx}/newReport/largeAreaDaySales?type='+${type},function(result) {
+            var dataMap = result.data.largeAreaMonthDaySales ;
+            var days = result.data.days ;
+            var categories = [];
+            var daySales = [];
+            for (let i in dataMap) {
+                categories.unshift(i);
+                var sArray = dataMap[i];
+                var arrayT = sArray.split(",");
+                daySales.unshift(arrayT);
+            }
             myChartxiao1.setOption({
                 tooltip: {
                     trigger: 'axis'
@@ -708,7 +716,7 @@
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                    data : days
                 },
                 yAxis: {
                     type: 'value'
@@ -720,7 +728,7 @@
                             name:categories[i],
                             type:'line',
                             stack: '总量',
-                            data:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90]
+                            data:daySales[i]
                         });
                     }
                     return series;
@@ -728,61 +736,23 @@
             });
         });
 
-        var myChartxiao2 = echarts.init(document.getElementById('orderChart2'));
-        // 异步加载数据
-        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-            console.log(result);
-            var categories = ['东部','南部','西部','北部','中部'];
-            myChartxiao2.setOption({
-                tooltip : {
-                    trigger: 'axis'
-                },
-                legend: [{
-                    data: categories.map(function (a) {
-                        return a;
-                    })
-                }],
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
-                calculable : true,
-                xAxis : [
-                    {
-                        type : 'category',
-                        data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-                    }
-                ],
-                yAxis : [
-                    {
-                        type : 'value'
-                    }
-                ],
-                series : (function (){
-                    var series = [];
-                    for (var i = 0; i <categories.length; i++) {
-                        series.push({
-                            name:categories[i],
-                            type:'bar',
-                            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
-                        });
-                    }
-                    return series;
-                })()
-            });
-        });
         var myChartxiao3 = echarts.init(document.getElementById('orderChart3'));
-        // 异步加载数据
-        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-            console.log(result);
-            var categories = ['东部','南部','西部','北部','中部'];
+        // 异步加载数据salesAndTargets
+        $.post('${ctx}/newReport/monthSalesAndTarget?type='+${type},function(result) {
+            var categories = new Array();
+            var targets = [];
+            var finish = [];
+            var rate = [];
+            var siteMap = eval(result.data.salesAndTargets);
+            for(var j=0;j<siteMap.length;j++) {
+                var newsiteMap = siteMap[j];
+                for ( var key in newsiteMap ) {
+                    categories[j]=key+"部";
+                    targets[j]=newsiteMap[key][0];
+                    finish[j]=newsiteMap[key][1];
+                    rate[j]=newsiteMap[key][2];
+                }
+            }
             myChartxiao3.setOption({
                 tooltip: {
                     trigger: 'axis',
@@ -841,28 +811,28 @@
                     {
                         name:'目标量',
                         type:'bar',
-                        data:[2.0, 4.9, 7.0, 23.2, 25.6]
+                        data:targets
                     },
                     {
                         name:'完成量',
                         type:'bar',
-                        data:[2.6, 5.9, 9.0, 26.4, 28.7]
+                        data:finish
                     },
                     {
                         name:'完成率',
                         type:'line',
                         yAxisIndex: 1,
-                        data:[2.0, 4.2, 3.3, 4.5, 6.3]
+                        data:rate
                     }
                 ]
             });
         });
         var myChartxiao4 = echarts.init(document.getElementById('orderChart4'));
         // 异步加载数据
-        $.post('${ctx}/main/ajaxLargeAreaThisMonthSalesHasRate?type='+${type},function(result) {
+        $.post('${ctx}/newReport/ajaxLargeAreaThisMonthSalesHaveRate?type='+${type},function(result) {
             var categories = new Array();
             var data = [];
-            var siteMap = eval(result.data.sleep);
+            var siteMap = eval(result.data.thisMonthSales);
             for(var j=0;j<siteMap.length;j++) {
                 var newsiteMap = siteMap[j];
                 for ( var key in newsiteMap ) {
@@ -874,15 +844,6 @@
                 }
 
             }
-//            console.log(result);
-//            var categories = ['东部','南部','西部','北部','中部'];
-//            var data=[
-//                {value:335, name:'东部'},
-//                {value:310, name:'南部'},
-//                {value:234, name:'西部'},
-//                {value:135, name:'北部'},
-//                {value:1548, name:'中部'}
-//            ];
             myChartxiao4.setOption({
                 tooltip : {
                     trigger: 'item',
@@ -913,16 +874,25 @@
         });
         var myChartxiao5 = echarts.init(document.getElementById('orderChart5'));
         // 异步加载数据
-        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-            console.log(result);
-            var categories = ['东部','南部','西部','北部','中部'];
+        $.post('${ctx}/newReport/largeAreaMonthSalesRelativeRate?type='+${type},function(result) {
+            //获取大区年份销量数据
+            var relativeRate = result.data.largeAreaYearRelativeRate ;
+            var area = [];
+            var rRate = [];
+            for (let i in relativeRate) {
+                area.unshift(i);
+                var sArray = relativeRate[i];
+                var arrayT = sArray.split(",");
+                rRate.unshift(arrayT);
+            }
+            //环比
             myChartxiao5.setOption({
                 tooltip: {
                     trigger: 'axis',
 
                 },
                 legend: [{
-                    data: categories.map(function (a) {
+                    data: area.map(function (a) {
                         return a;
                     })
                 }],
@@ -950,29 +920,34 @@
                 },
                 series : (function (){
                     var series = [];
-                    for (var i = 0; i <categories.length; i++) {
+                    for (var i = 0; i <area.length; i++) {
                         series.push({
-                            name:categories[i],
+                            name:area[i],
                             type:'line',
                             stack: '总量',
-                            data:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90]
+                            data:rRate[i]
                         });
                     }
                     return series;
                 })()
             });
-        });
-        var myChartxiao6 = echarts.init(document.getElementById('orderChart6'));
-        // 异步加载数据
-        $.post('${ctx}/main/ajaxChart/salesvolume',{},function(result) {
-            console.log(result);
-            var categories = ['东部','南部','西部','北部','中部'];
+
+
+            //同比
+            var sameiveRate = result.data.largeAreaYearSameRate ;
+            var sRate = [];
+            for (let i in sameiveRate) {
+                var sArray = sameiveRate[i];
+                var arrayT = sArray.split(",");
+                sRate.unshift(arrayT);
+            }
+            var myChartxiao6 = echarts.init(document.getElementById('orderChart6'));
             myChartxiao6.setOption({
                 tooltip: {
                     trigger: 'axis'
                 },
                 legend: [{
-                    data: categories.map(function (a) {
+                    data: area.map(function (a) {
                         return a;
                     })
                 }],
@@ -1000,12 +975,68 @@
                 },
                 series : (function (){
                     var series = [];
-                    for (var i = 0; i <categories.length; i++) {
+                    for (var i = 0; i <area.length; i++) {
                         series.push({
-                            name:categories[i],
+                            name:area[i],
                             type:'line',
                             stack: '总量',
-                            data:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90]
+                            data:sRate[i]
+                        });
+                    }
+                    return series;
+                })()
+            });
+
+
+            //大区年份销量
+            var yearSales = result.data.largeAreaYearSales;
+            var sales = [];
+            for (let i in yearSales) {
+                var sArray = yearSales[i];
+                var arrayT = sArray.split(",");
+                sales.unshift(arrayT);
+            }
+            var myChartxiao2 = echarts.init(document.getElementById('orderChart2'));
+            myChartxiao2.setOption({
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: [{
+                    data: area.map(function (a) {
+                        return a;
+                    })
+                }],
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : (function (){
+                    var series = [];
+                    for (var i = 0; i <area.length; i++) {
+                        series.push({
+                            name:area[i],
+                            type:'line',
+                            stack: '总量',
+                            data:sales[i]
                         });
                     }
                     return series;
