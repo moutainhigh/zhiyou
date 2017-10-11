@@ -63,7 +63,7 @@ public class NewReportComponent {
         List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
         List<User>largeUserList = users.stream().filter(user ->  user.getLargearea()!=null).collect(Collectors.toList());
         List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");//查询说有大区
-        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null).collect(Collectors.toList());//查询所有大区总裁
+        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null && user.getIsPresident()).collect(Collectors.toList());//查询所有大区总裁
         Map<String ,Object> map = new HashMap<>();
         map.put("number",this.disposeTeamNumber(type,largeUserList,largeAreaTypes,presidentUserList));
         //map.put("newV4",this.disposeTeamNewV4(type,largeUserList,largeAreaTypes,presidentUserList));
@@ -82,7 +82,7 @@ public class NewReportComponent {
         List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
         List<User>largeUserList = users.stream().filter(user ->  user.getLargearea()!=null).collect(Collectors.toList());
         List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");//查询说有大区
-        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null).collect(Collectors.toList());//查询所有大区总裁
+        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null && user.getIsPresident()).collect(Collectors.toList());//查询所有大区总裁
         Map<String ,Object> map = new HashMap<>();
         map.put("newV4",this.disposeTeamNewV4(type,largeUserList,largeAreaTypes,presidentUserList));
         return map;
@@ -98,7 +98,7 @@ public class NewReportComponent {
         List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
         List<User>largeUserList = users.stream().filter(user ->  user.getLargearea()!=null).collect(Collectors.toList());
         List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");//查询说有大区
-        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null).collect(Collectors.toList());//查询所有大区总裁
+        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null && user.getIsPresident()).collect(Collectors.toList());//查询所有大区总裁
         Map<String ,Object> map = new HashMap<>();
         map.put("sleep",this.disposeTeamSleep(type,largeUserList,largeAreaTypes,presidentUserList));
         // map.put("areat",this.disposeTeamAreat(type,users));
