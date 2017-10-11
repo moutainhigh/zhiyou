@@ -1,11 +1,12 @@
 package com.zy.component;
 
-import com.sun.tools.javac.util.*;
 import com.zy.common.util.DateUtil;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Deposit;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.mal.Order;
+import com.zy.entity.report.LargeareaDaySales;
+import com.zy.entity.report.LargeareaMonthSales;
 import com.zy.entity.report.NewReportTeam;
 import com.zy.entity.sys.Area;
 import com.zy.entity.sys.SystemCode;
@@ -18,9 +19,7 @@ import com.zy.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -47,6 +46,12 @@ public class NewReportComponent {
 
     @Autowired
     private  UserTargetSalesService userTargetSalesService;
+
+    @Autowired
+    private  LargeareaMonthSalesService largeareaMonthSalesService;
+
+    @Autowired
+    private LargeareaDaySalesService largeareaDaySalesService;
 
     /**
      * 处理查询特级分布数据
@@ -586,20 +591,197 @@ public class NewReportComponent {
         return tageMap;
     }
 
+    //大区当月销量占比
     public Map<String,Object> disposeLargeareaSalesHaveRate(String type,LocalCacheComponent localCacheComponent) {
-        Date now = new Date();
-        //过滤订单
-        localCacheComponent.getOrders().stream().filter(v -> {
-            Order.OrderStatus orderStatus = v.getOrderStatus();
-            if (orderStatus == Order.OrderStatus.已支付 || orderStatus == Order.OrderStatus.已发货 || orderStatus == Order.OrderStatus.已完成) {
-                if( v.getSellerUserRank() == User.UserRank.V4 && v.getPaidTime().after(DateUtil.getMonthBegin(now,0,0)) ){
-                    return true;
-                }
-            }
-            return false;
-        }).filter(v -> v.getPaidTime().after(DateUtil.getMonthBegin(now,0,0))).collect(Collectors.toList());
+        Map<String ,Object> map = new HashMap<>();
+        List<Map<String,Long>> resultList = new ArrayList<>();
+        List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");//查询说有大区
+        //处理订单
+        List<Order> orders = localCacheComponent.getOrders().stream()
+                .filter(v -> {
+                    Order.OrderStatus orderStatus = v.getOrderStatus();
+                    if (orderStatus == Order.OrderStatus.已支付 || orderStatus == Order.OrderStatus.已发货 || orderStatus == Order.OrderStatus.已完成) {
+                        return true;
+                    }
+                    return false;
+                }).
+        filter(v -> v.getPaidTime().after(DateUtil.getMonthBegin(new Date(),0,0))).filter(v->v.getSellerId()==1).collect(Collectors.toList());
 
-        return null;
+        if("0".equals(type)){ //处理公司
+            //将订单按用户进行分组
+            Map<Long ,List<Order>> orderMap = orders.stream().collect(Collectors.groupingBy(Order::getUserId));
+            List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
+            Map<Integer,List<User>> usertMap = userList.stream().collect(Collectors.groupingBy(User::getLargearea));
+            for (SystemCode largeArea : largeAreaTypes) {
+                List<Order> newOrderList = new ArrayList<>();
+                Map<String,Long> naemap= new HashMap<>();
+                List<User> users = usertMap.get(largeArea.getSystemValue());
+                Long sum = 0l;
+                if(users != null && !users.isEmpty()){
+                    for( User user : users){
+                        List<Order> orders1 = orderMap.get(user.getId());
+                        if(orders1 != null && !orders1.isEmpty()){
+                            newOrderList.addAll(orders1);
+                        }
+                    }
+                    sum = newOrderList.parallelStream().mapToLong(Order::getQuantity).sum();
+                }
+                naemap.put(largeArea.getSystemName(),sum);
+                resultList.add(naemap);
+            }
+        }else{//处理大区
+        }
+        map.put("thisMonthSales",resultList);
+        return map;
+    }
+
+    //大区年份销量
+    public Map<String,Object> disposeLargeAreaMonthSalesRelativeRate(String type) {
+        Map<String ,Object> returnMap = new HashMap<>();
+        Map<String ,Object> rMap = new HashMap<>();
+        Map<String ,Object> sMap = new HashMap<>();
+        Map<String ,Object> salesMap = new HashMap<>();
+        List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");//查询所有大区
+        //Collections.sort(largeAreaTypes, Comparator.comparing(SystemCode::getSystemValue));
+        Integer year = DateUtil.getYear(new Date());
+        List<LargeareaMonthSales> monthSales = largeareaMonthSalesService.findAll(LargeareaMonthSalesQueryModel.builder().yearEQ(year).build());
+        if("0".equals(type)){ //处理公司
+            for(SystemCode largeArea : largeAreaTypes){
+                double relativeRate [] = new double[12];
+                double sameRate [] = new double[12];
+                long sales[] = new long[12];
+                for(int a = 0; a<12;a++){
+                    int d=a+1;
+                    List<LargeareaMonthSales> newList = monthSales.stream().filter(m -> m.getMonth() == d && m.getLargeareaName().equals(largeArea.getSystemName())).collect(Collectors.toList());
+                    if(newList != null && !newList.isEmpty()){
+                        relativeRate[a] = newList.get(0).getRelativeRate();
+                        sameRate[a] = newList.get(0).getSameRate();
+                        sales[a] = newList.get(0).getSales();
+                    }else {
+                        relativeRate[a] = 0.00d;
+                        sameRate[a] = 0.00d;
+                        sales[a] = 0;
+                    }
+
+                }
+                rMap.put(largeArea.getSystemName(),DateUtil.arryToString(relativeRate,false));
+                sMap.put(largeArea.getSystemName(),DateUtil.arryToString(sameRate,false));
+                salesMap.put(largeArea.getSystemName(),DateUtil.longarryToString(sales,false));
+            }
+            returnMap.put("largeAreaYearRelativeRate",rMap);
+            returnMap.put("largeAreaYearSameRate",sMap);
+            returnMap.put("largeAreaYearSales",salesMap);
+        }else {//处理大区
+
+        }
+        return  returnMap;
+    }
+
+    //大区当月销量
+    public Map<String,Object> disposeMonthSalesAndTarget(String type,LocalCacheComponent localCacheComponent) {
+        Map<String ,Object> map = new HashMap<>();
+        List<Map<String,String[]>> resultList = new ArrayList<>();
+        List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");//查询说有大区
+        Date now = new Date();
+        int year = DateUtil.getYear(now);
+        int mothNum = DateUtil.getMothNum(now);
+        Map<Long, List<UserTargetSales>> userTarMap = userTargetSalesService.findAll(UserTargetSalesQueryModel.builder().monthEQ(mothNum).yearEQ(year).build()).stream().collect(Collectors.groupingBy(UserTargetSales::getUserId));
+
+        //处理订单
+        List<Order> orders = localCacheComponent.getOrders().stream()
+                .filter(v -> {
+                    Order.OrderStatus orderStatus = v.getOrderStatus();
+                    if (orderStatus == Order.OrderStatus.已支付 || orderStatus == Order.OrderStatus.已发货 || orderStatus == Order.OrderStatus.已完成) {
+                        return true;
+                    }
+                    return false;
+                })
+                .filter(v -> v.getPaidTime().after(DateUtil.getMonthBegin(now,0,0))).filter(v->v.getSellerId()==1).collect(Collectors.toList());
+
+        if("0".equals(type)){ //处理公司
+            //将订单按用户进行分组
+            Map<Long ,List<Order>> orderMap = orders.stream().collect(Collectors.groupingBy(Order::getUserId));
+            List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
+            Map<Integer,List<User>> usertMap = userList.stream().collect(Collectors.groupingBy(User::getLargearea));
+            for (SystemCode largeArea : largeAreaTypes) {
+                String[] data = new String[3];
+                List<UserTargetSales> newTarList = new ArrayList<>();
+                List<Order> newOrderList = new ArrayList<>();
+                Map<String,String[]> naemap= new HashMap<>();
+                List<User> users = usertMap.get(largeArea.getSystemValue());
+                //计算目标销量
+                Long tarNum = 0l;
+                if(users != null && !users.isEmpty()){
+                    for( User user : users){
+                        List<UserTargetSales> us = userTarMap.get(user.getId());
+                        if(us != null && !us.isEmpty()){
+                            newTarList.addAll(us);
+                        }
+                    }
+                    tarNum = newTarList.parallelStream().mapToLong(UserTargetSales::getTargetCount).sum();
+                }
+                //计算完成量
+                Long finSum = 0l;
+                if(users != null && !users.isEmpty()){
+                    for( User user : users){
+                        List<Order> orders1 = orderMap.get(user.getId());
+                        if(orders1 != null && !orders1.isEmpty()){
+                            newOrderList.addAll(orders1);
+                        }
+                    }
+                    finSum = newOrderList.parallelStream().mapToLong(Order::getQuantity).sum();
+                }
+                data[0] = tarNum+"";
+                data[1] = finSum+"";
+                if(tarNum==0){
+                    data[2] = "100.00";
+                }else {
+                    String rate = DateUtil.formatString(Double.valueOf(finSum)/Double.valueOf(tarNum)*100);
+                    data[2] = rate;
+                }
+                naemap.put(largeArea.getSystemName(),data);
+                resultList.add(naemap);
+            }
+        }else{//处理大区
+        }
+        map.put("salesAndTargets",resultList);
+        return map;
+    }
+
+    //大区月份每日销量
+    public Map<String,Object> disposeLargeAreaDaySales(String type) {
+        Date now = new Date();
+        int yearNum = DateUtil.getYear(now);
+        int mothNum = DateUtil.getMothNum(now);
+        int daysOfMonth = DateUtil.getDaysOfMonth(now);
+        List<LargeareaDaySales> daySales = largeareaDaySalesService.findAll(LargeareaDaySalesQueryModel.builder().dayEQ(yearNum).monthEQ(mothNum).build());
+        Map<String ,Object> returnMap = new HashMap<>();
+        Map<String ,Object> dataMap = new HashMap<>();
+        String days[] = new String[daysOfMonth];
+        for(int i = 0;i<(daysOfMonth);i++){
+            days[i] = i+1 + "日";
+        }
+        List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");//查询所有大区
+        if("0".equals(type)){ //处理公司
+            for(SystemCode largeArea : largeAreaTypes){
+                long sales[] = new long[daysOfMonth];
+                for(int a = 0; a<daysOfMonth;a++){
+                    int d=a + 1;
+                    List<LargeareaDaySales> newList = daySales.stream().filter(m -> m.getDay() == d && m.getLargeareaName().equals(largeArea.getSystemName())).collect(Collectors.toList());
+                    if(newList != null && !newList.isEmpty()){
+                        sales[a] = newList.get(0).getSales();
+                    }else {
+                        sales[a] = 0;
+                    }
+                }
+                dataMap.put(largeArea.getSystemName(),DateUtil.longarryToString(sales,false));
+            }
+            returnMap.put("largeAreaMonthDaySales",dataMap);
+        }else {//处理大区
+
+        }
+        returnMap.put("days",days);
+        return  returnMap;
     }
 
 

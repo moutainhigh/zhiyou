@@ -80,6 +80,12 @@ public class DateUtil {
         return currYearLast;
     }
 
+    public static int getDaysOfMonth(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+    }
+
 
 
     /**
@@ -508,7 +514,8 @@ public class DateUtil {
         System.out.println(DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         System.out.println("----------##########--");
         System.out.println(DateUtil.toStringLength(123343342232L,6));
-        System.out.println(DateUtil.formatString(123));
+        System.out.println("----------???????????--");
+        System.out.println(DateUtil.getDaysOfMonth(new Date()));
 
       /*  ystem.out.println(DateFormatUtils.format( DateUtil.getDateEnd(new Date()),"yyyy-MM-dd HH:mm:ss"));
         System.out.println("年龄:"+getAge("411528201607192688"));

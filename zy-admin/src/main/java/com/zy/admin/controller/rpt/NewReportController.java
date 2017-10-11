@@ -1,13 +1,9 @@
 package com.zy.admin.controller.rpt;
 
-import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
-import com.zy.common.support.weixinpay.WeixinPayClient;
 import com.zy.component.LocalCacheComponent;
 import com.zy.component.NewReportComponent;
-import com.zy.service.SystemCodeService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Created by it001 on 2017-09-28.
@@ -198,11 +193,11 @@ public class NewReportController {
     }
 
     /**
-     * 查询团队信息 人数
+     * 查询大区本月销量占比
      * @param type
      * @return
      */
-    @RequestMapping(value = "/ajaxLargeAreaThisMonthSalesHasRate", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxLargeAreaThisMonthSalesHaveRate", method = RequestMethod.POST)
     @ResponseBody
     public Result<?> ajaxSalesHaveRate(String type) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -216,6 +211,61 @@ public class NewReportController {
         return ResultBuilder.result(resultMap);
     }
 
+    /**
+     * 查询各大区年份销量
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/largeAreaMonthSalesRelativeRate", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxSalesRelativeRate(String type) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            resultMap = newReportComponent.disposeLargeAreaMonthSalesRelativeRate(type);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            return ResultBuilder.error(e.getMessage());
+        }
+        return ResultBuilder.result(resultMap);
+    }
 
+    /**
+     * 查询各大区当月销量
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/monthSalesAndTarget", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxMonthSalesAndTarget(String type) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            resultMap = newReportComponent.disposeMonthSalesAndTarget(type,localCacheComponent);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            return ResultBuilder.error(e.getMessage());
+        }
+        return ResultBuilder.result(resultMap);
+    }
+
+    /**
+     * 查询各大区当月销量
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/largeAreaDaySales", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> ajaxLargeAreaDaySales(String type) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            resultMap = newReportComponent.disposeLargeAreaDaySales(type);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            e.printStackTrace();
+            return ResultBuilder.error(e.getMessage());
+        }
+        return ResultBuilder.result(resultMap);
+    }
 
 }
