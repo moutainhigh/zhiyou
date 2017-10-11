@@ -63,6 +63,7 @@ public class DateUtil {
         calendar.set(Calendar.YEAR, year);
         Date currYearFirst = calendar.getTime();
         return currYearFirst;
+
     }
 
     /**
