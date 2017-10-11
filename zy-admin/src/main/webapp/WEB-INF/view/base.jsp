@@ -371,7 +371,7 @@
 </div>
 <div class="portlet-body">
     <div class="dateNewVol" style="margin-left:5%;width: 90%;height: 110px;border: 1px solid #ccc; margin-bottom: 30px;">
-        <div class="clearfloat" style="margin-left: 5%;">
+        <div class="clearfloat" style="margin-left: 2%;">
              <div class="number" id="number0">0</div>
              <div class="number" id="number1">0</div>
              <div class="number" id="number2">0</div>
@@ -381,7 +381,7 @@
              <div class="number" id="number6">0</div>
              <div class="number" id="number7">0</div>
              <div class="number" id="number8">0</div>
-            <span style="float:left;font-size: 20px;color: #269952;margin-left: 5px;margin-top: 5px;">次</span>
+            <span style="float:left;font-size: 45px;color: #269952;margin-left: 3%;margin-top: 25px;">次</span>
         </div>
     </div>
 </div>
