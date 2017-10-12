@@ -63,7 +63,7 @@ public class NewReportComponent {
         List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
         List<User>largeUserList = users.stream().filter(user ->  user.getLargearea()!=null).collect(Collectors.toList());
         List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");//查询说有大区
-        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null).collect(Collectors.toList());//查询所有大区总裁
+        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null && user.getIsPresident()).collect(Collectors.toList());//查询所有大区总裁
         Map<String ,Object> map = new HashMap<>();
         map.put("number",this.disposeTeamNumber(type,largeUserList,largeAreaTypes,presidentUserList));
         //map.put("newV4",this.disposeTeamNewV4(type,largeUserList,largeAreaTypes,presidentUserList));
@@ -82,7 +82,7 @@ public class NewReportComponent {
         List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
         List<User>largeUserList = users.stream().filter(user ->  user.getLargearea()!=null).collect(Collectors.toList());
         List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");//查询说有大区
-        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null).collect(Collectors.toList());//查询所有大区总裁
+        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null && user.getIsPresident()).collect(Collectors.toList());//查询所有大区总裁
         Map<String ,Object> map = new HashMap<>();
         map.put("newV4",this.disposeTeamNewV4(type,largeUserList,largeAreaTypes,presidentUserList));
         return map;
@@ -98,7 +98,7 @@ public class NewReportComponent {
         List<User> users = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()==User.UserRank.V4).collect(Collectors.toList());
         List<User>largeUserList = users.stream().filter(user ->  user.getLargearea()!=null).collect(Collectors.toList());
         List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");//查询说有大区
-        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null).collect(Collectors.toList());//查询所有大区总裁
+        List<User>presidentUserList =users.stream().filter(user -> user.getIsPresident()!=null && user.getIsPresident()).collect(Collectors.toList());//查询所有大区总裁
         Map<String ,Object> map = new HashMap<>();
         map.put("sleep",this.disposeTeamSleep(type,largeUserList,largeAreaTypes,presidentUserList));
         // map.put("areat",this.disposeTeamAreat(type,users));
@@ -604,7 +604,7 @@ public class NewReportComponent {
                     }
                     return false;
                 }).
-        filter(v -> v.getPaidTime().after(DateUtil.getMonthBegin(new Date(),0,0))).filter(v->v.getSellerId()==1).collect(Collectors.toList());
+        filter(v -> v.getPaidTime().after(DateUtil.getBeforeMonthBegin(new Date(),0,0))).filter(v->v.getSellerId()==1).collect(Collectors.toList());
 
         if("0".equals(type)){ //处理公司
             //将订单按用户进行分组
@@ -614,7 +614,7 @@ public class NewReportComponent {
             for (SystemCode largeArea : largeAreaTypes) {
                 List<Order> newOrderList = new ArrayList<>();
                 Map<String,Long> naemap= new HashMap<>();
-                List<User> users = usertMap.get(largeArea.getSystemValue());
+                List<User> users = usertMap.get(Integer.parseInt(largeArea.getSystemValue()));
                 Long sum = 0l;
                 if(users != null && !users.isEmpty()){
                     for( User user : users){
@@ -695,7 +695,7 @@ public class NewReportComponent {
                     }
                     return false;
                 })
-                .filter(v -> v.getPaidTime().after(DateUtil.getMonthBegin(now,0,0))).filter(v->v.getSellerId()==1).collect(Collectors.toList());
+                .filter(v -> v.getPaidTime().after(DateUtil.getBeforeMonthBegin(now,0,0))).filter(v->v.getSellerId()==1).collect(Collectors.toList());
 
         if("0".equals(type)){ //处理公司
             //将订单按用户进行分组
@@ -707,7 +707,7 @@ public class NewReportComponent {
                 List<UserTargetSales> newTarList = new ArrayList<>();
                 List<Order> newOrderList = new ArrayList<>();
                 Map<String,String[]> naemap= new HashMap<>();
-                List<User> users = usertMap.get(largeArea.getSystemValue());
+                List<User> users = usertMap.get(Integer.parseInt(largeArea.getSystemValue()));
                 //计算目标销量
                 Long tarNum = 0l;
                 if(users != null && !users.isEmpty()){

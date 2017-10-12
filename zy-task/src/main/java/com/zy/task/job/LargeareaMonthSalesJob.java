@@ -89,7 +89,7 @@ public class LargeareaMonthSalesJob implements Job {
             }));
             //处理逻辑，计算各区销量
             for (User user : v4Users){
-                LargeareaMonthSales largeareaMonthSales = map.get(user.getLargearea());
+                LargeareaMonthSales largeareaMonthSales = map.get(user.getLargearea()+"");
                 if(largeareaMonthSales != null){
                     List<Order> orderList = orderMap.get(user.getId());
                     if(orderList != null ){

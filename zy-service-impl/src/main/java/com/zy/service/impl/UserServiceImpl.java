@@ -604,7 +604,7 @@ public class UserServiceImpl implements UserService {
         user.setSetlargearearemark(remark2);
         userMapper.update(user);
         usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + oldLargeArea + "改为" + newLargeArea + ", 备注" + remark2);
-        if(user.getIsPresident()){
+        if(user.getIsPresident() != null && user.getIsPresident()){
             List<User> filterV4Users = userMapper.findAll(UserQueryModel.builder().presidentId(id).build());
             for(User u : filterV4Users) {
                 String old = u.getLargearea() == null ? "null" :systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea()+"").getSystemName();

@@ -84,7 +84,7 @@ public class LargeareaDaySalesJob implements Job {
             }));
             //处理逻辑，计算各区销量
             for (User user : v4Users){
-                LargeareaDaySales largeareaDaySales = map.get(user.getLargearea()     );
+                LargeareaDaySales largeareaDaySales = map.get(user.getLargearea()+"");
                 if(largeareaDaySales != null){
                     List<Order> orderList = orderMap.get(user.getId());
                     if(orderList != null ){
