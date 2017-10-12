@@ -66,7 +66,11 @@
           messageAlert('省级服务商和特级服务商每次购买最小单位' + MIN_QUANTITY + '次');
           return;
         }
-        $('#form').submit();
+        if(quantity>3600){
+          messageAlert("单次购买量不能超过3600！");
+          return;
+        }
+          $('#form').submit();
       });
 
     })
