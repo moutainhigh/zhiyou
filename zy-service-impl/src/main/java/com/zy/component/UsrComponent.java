@@ -37,7 +37,7 @@ public class UsrComponent {
 	@Autowired
 	private UserUpgradeMapper userUpgradeMapper;
 
-	public void upgrade(@NotNull Long userId, @NotNull User.UserRank from, @NotNull User.UserRank to) {
+	public void upgrade(@NotNull Long userId, @NotNull User.UserRank from, @NotNull User.UserRank to,Boolean isToV4) {
 		User user = userMapper.findOne(userId);
 		validate(user, NOT_NULL, "user id " + userId + " is not found");
 		User.UserRank userRank = user.getUserRank();
@@ -55,6 +55,14 @@ public class UsrComponent {
 
 		user.setLastUpgradedTime(new Date());
 		user.setUserRank(to);
+		if(isToV4 != null && isToV4){
+			user.setIsToV4(true);
+			User parent = user;
+			do{
+				parent = userMapper.findOne(parent.getParentId());
+			}while (parent.getLargearea() == null);
+			user.setLargearea(parent.getLargearea());
+		}
 		userMapper.update(user);
 		producer.send(TOPIC_USER_RANK_CHANGED, user.getId());
 	}

@@ -244,7 +244,7 @@ public class UserServiceImpl implements UserService {
             return; // 幂等操作
         }
 
-        usrComponent.upgrade(id, plainUserRank, userRank);
+        usrComponent.upgrade(id, plainUserRank, userRank,null);
         usrComponent.recordUserLog(id, operatorId, "设置用户等级", "从" + plainUserRank + "改为" + userRank + ", 备注" + remark);
     }
 
