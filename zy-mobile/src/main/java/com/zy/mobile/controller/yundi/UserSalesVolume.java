@@ -106,7 +106,7 @@ public class UserSalesVolume {
         UserQueryModel userQueryModel = new UserQueryModel();
         userQueryModel.setParentIdEQ(id);
         List<User> userList = userService.findAll(userQueryModel);
-
+        userList= userList.stream().filter(user -> user.getUserRank()!=User.UserRank.V0).collect(Collectors.toList());
         List<User> v4List = new ArrayList<>();
         if (userRank.equals("V4")) {
             //我的直属特级
@@ -153,7 +153,8 @@ public class UserSalesVolume {
         if (null != nameorPhone) {
             userQueryModel.setNameorPhone("%" + nameorPhone + "%");
         }
-        Page<User> page = userService.findPage(userQueryModel);
+        Page<User> page = userService.findPage1(userQueryModel);
+        page.setData(page.getData().stream().filter(user -> user.getUserRank()!=User.UserRank.V0).collect(Collectors.toList()));
         Map<String, Object> map = new HashMap<>();
         map.put("page", page);
         return ResultBuilder.result(map);
