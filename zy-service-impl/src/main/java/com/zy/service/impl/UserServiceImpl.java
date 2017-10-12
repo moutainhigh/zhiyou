@@ -41,7 +41,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.*;
-import static com.zy.entity.fnc.CurrencyType.现金;
+import static com.zy.entity.fnc.CurrencyType.U币;
 import static com.zy.entity.fnc.CurrencyType.积分;
 import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
 
@@ -263,7 +263,7 @@ public class UserServiceImpl implements UserService {
         {
             Account account = new Account();
             account.setAmount(zero);
-            account.setCurrencyType(现金);
+            account.setCurrencyType(U币);
             account.setUserId(userId);
             account.setVersion(0);
             validate(account);

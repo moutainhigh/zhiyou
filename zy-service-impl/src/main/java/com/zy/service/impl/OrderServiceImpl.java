@@ -1916,7 +1916,7 @@ public class OrderServiceImpl implements OrderService {
 		if(order.getIsPayToPlatform()){
 			Payment payment = new Payment();
 			payment.setAmount1(order.getAmount());
-			payment.setCurrencyType1(CurrencyType.现金);
+			payment.setCurrencyType1(CurrencyType.U币);
 			payment.setPaymentType(PaymentType.订单支付);
 			payment.setRefId(orderId);
 			payment.setUserId(order.getUserId());

@@ -3,10 +3,13 @@ package com.zy.service.impl;
 import com.zy.common.util.DateUtil;
 import com.zy.entity.report.LargeAreaProfit;
 import com.zy.entity.sys.SystemCode;
+import com.zy.entity.usr.User;
 import com.zy.mapper.LargeAreaProfitMapper;
 import com.zy.model.query.LargeAreaProfitQueryModel;
+import com.zy.model.query.UserQueryModel;
 import com.zy.service.LargeAreaProfitService;
 import com.zy.service.SystemCodeService;
+import com.zy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Author: Xuwq
@@ -28,6 +32,9 @@ public class LargeAreaProfitServiceImpl implements LargeAreaProfitService{
 
     @Autowired
     private SystemCodeService systemCodeService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public void insert(LargeAreaProfit largeAreaProfit) {
@@ -139,7 +146,15 @@ public class LargeAreaProfitServiceImpl implements LargeAreaProfitService{
         double yProfit [] = new double[12];
         double relativeRate [] = new double[12];
         double sameiveRate [] = new double[12];
-        //根据大区查询所有总裁的团队收益
+        //根据大区查询所有总裁
+        List<User> v4Users = userService.findAll(UserQueryModel.builder().userRankEQ(User.UserRank.V4).build())
+                .stream().filter(v -> v.getLargearea() != null).collect(Collectors.toList());
+
+        //过滤出所有的大区总裁
+        List<User> users = v4Users.stream()
+                    .filter(v -> v.getIsBoss() == true)
+                    .filter(v -> v.getLargearea().equals(largeAreaProfitQueryModel.getLargeAreaValueEQ()))
+                    .collect(Collectors.toList());
 
 
         //根据大区查询数据

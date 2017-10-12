@@ -298,10 +298,10 @@ public class ReportServiceImpl implements ReportService {
 //
 //
 //			/* 全额给一个人 */
-//			fncComponent.createProfit(topId, ProfitType.历史收益, id, title, CurrencyType.现金, new BigDecimal("18.00"), new Date(), null); // TODO	 写死
+//			fncComponent.createProfit(topId, ProfitType.历史收益, id, title, CurrencyType.U币, new BigDecimal("18.00"), new Date(), null); // TODO	 写死
 //
 //			if (hasTransfer) {
-//				fncComponent.createTransfer(topId, transferUserId, Transfer.TransferType.历史收益, id, title, CurrencyType.现金, new BigDecimal("15.00"), new Date());
+//				fncComponent.createTransfer(topId, transferUserId, Transfer.TransferType.历史收益, id, title, CurrencyType.U币, new BigDecimal("15.00"), new Date());
 //			}
 
 			report.setIsSettledUp(true);

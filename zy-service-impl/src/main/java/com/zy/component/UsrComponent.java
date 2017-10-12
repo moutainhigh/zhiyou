@@ -63,6 +63,16 @@ public class UsrComponent {
 			}while (parent.getLargearea() == null);
 			user.setLargearea(parent.getLargearea());
 		}
+
+		//判断是否直接升为特级
+		if (userRank != null && userRank == User.UserRank.V4){
+			User parent = user;
+			do{
+				parent = userMapper.findOne(parent.getParentId());
+			}while (parent.getLargearea() == null);
+			user.setLargearea(parent.getLargearea());
+		}
+
 		userMapper.update(user);
 		producer.send(TOPIC_USER_RANK_CHANGED, user.getId());
 	}

@@ -98,13 +98,13 @@ public class TransferServiceImpl implements TransferService {
 			throw new BizException(BizCode.ERROR, "转账账户已被冻结");
 		}
 
-		Account account = accountMapper.findByUserIdAndCurrencyType(fromUserId, CurrencyType.现金);
+		Account account = accountMapper.findByUserIdAndCurrencyType(fromUserId, CurrencyType.U币);
 		if (account.getAmount().compareTo(amount) < 0) {
 			throw new BizException(BizCode.ERROR, "U币余额不足");
 		}
 
 		Transfer transfer = fncComponent.createTransfer(fromUserId, toUserId, Transfer.TransferType.U币转账, null, "U币转账"
-				, CurrencyType.现金, amount, new Date());
+				, CurrencyType.U币, amount, new Date());
 		transfer(transfer.getId(), remark);
 
 	}

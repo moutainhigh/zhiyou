@@ -739,7 +739,7 @@ CREATE TABLE `sys_setting` (
 # Data for table "sys_setting"
 #
 
-INSERT INTO `sys_setting` VALUES (1,1,2,'def result\r\nif (userType == UserType.代理) {\r\n\tif (currencyType == CurrencyType.现金) {\r\n\t\tresult = 0.0\r\n\t} else {\r\n\t\tresult = 0.01\r\n\t}\r\n} else {\r\n\tif (currencyType == CurrencyType.现金) {\r\n\t\tresult = 0.009\r\n\t} else {\r\n\t\tresult = 0.02\r\n\t}\r\n}\r\nreturn result',b'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `sys_setting` VALUES (1,1,2,'def result\r\nif (userType == UserType.代理) {\r\n\tif (currencyType == CurrencyType.U币) {\r\n\t\tresult = 0.0\r\n\t} else {\r\n\t\tresult = 0.01\r\n\t}\r\n} else {\r\n\tif (currencyType == CurrencyType.U币) {\r\n\t\tresult = 0.009\r\n\t} else {\r\n\t\tresult = 0.02\r\n\t}\r\n}\r\nreturn result',b'1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
 #
 # Structure for table "sys_short_message"

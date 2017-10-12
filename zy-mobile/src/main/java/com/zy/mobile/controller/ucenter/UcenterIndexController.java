@@ -78,7 +78,7 @@ public class UcenterIndexController {
 		List<Account> accounts = accountService.findByUserId(userId);
 		for (Account account : accounts) {
 			switch (account.getCurrencyType()) {
-			case 现金:
+			case U币:
 				model.addAttribute("money", account.getAmount());
 				break;
 //			case 金币:

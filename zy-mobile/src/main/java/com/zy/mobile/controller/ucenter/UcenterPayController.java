@@ -106,14 +106,14 @@ public class UcenterPayController {
 			Deposit deposit = deposits.stream().filter(v -> v.getPayType() == payType)
 					.filter(v -> (v.getDepositStatus() == DepositStatus.待充值))
 					.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
-					.filter(v -> v.getAmount1().equals(amount) && v.getCurrencyType1() == CurrencyType.现金
+					.filter(v -> v.getAmount1().equals(amount) && v.getCurrencyType1() == CurrencyType.U币
 							&& v.getCurrencyType2() == null)
 					.findFirst().orElse(null);
 
 			if (deposit == null) {
 				deposit = new Deposit();
 				deposit.setPayType(payType);
-				deposit.setCurrencyType1(CurrencyType.现金);
+				deposit.setCurrencyType1(CurrencyType.U币);
 				deposit.setTitle(title);
 				deposit.setAmount1(money);
 				deposit.setUserId(userId);
@@ -213,7 +213,7 @@ public class UcenterPayController {
 		model.addAttribute("amount", order.getAmount());
 		model.addAttribute("payType", payType);
 		model.addAttribute("orderId", orderId);
-		Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.现金);
+		Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.U币);
 		model.addAttribute("amount1", account.getAmount());
 		Account account1 = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.积分);
 		model.addAttribute("amount2", account1.getAmount());
@@ -285,7 +285,7 @@ public class UcenterPayController {
 		if (useAllCoin) {
 			payment.setCurrencyType1(CurrencyType.积分);
 		} else {
-			payment.setCurrencyType1(CurrencyType.现金);
+			payment.setCurrencyType1(CurrencyType.U币);
 			if(amount2 != null) {
 				payment.setCurrencyType2(CurrencyType.积分);
 				payment.setAmount2(amount2);

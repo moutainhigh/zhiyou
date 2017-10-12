@@ -484,7 +484,7 @@ public class NewReportComponent {
         double sum = depositList.stream().mapToDouble(((Deposit o)->o.getAmount1().doubleValue())).sum();
         UMap.put("Ub",DateUtil.formatString(sum));
         //处理奖励发放
-        List<Profit> profitList=localCacheComponent.getProfits().stream().filter(profit -> (profit.getCurrencyType()== CurrencyType.积分||profit.getCurrencyType()== CurrencyType.现金)).
+        List<Profit> profitList=localCacheComponent.getProfits().stream().filter(profit -> (profit.getCurrencyType()== CurrencyType.积分||profit.getCurrencyType()== CurrencyType.U币)).
                 filter(profit -> profit.getProfitStatus()== Profit.ProfitStatus.已发放).filter(profit -> { //是V4的
             if(userV4list.get(profit.getUserId())!=null){
                 return true;

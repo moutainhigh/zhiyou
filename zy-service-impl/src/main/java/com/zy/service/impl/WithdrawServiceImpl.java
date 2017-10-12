@@ -80,7 +80,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		/* check 提现币种 */
 		UserType userType = user.getUserType();
 
-		if (userType != UserType.代理 && (currencyType != CurrencyType.现金 || currencyType != CurrencyType.积分)) {
+		if (userType != UserType.代理 && (currencyType != CurrencyType.U币 || currencyType != CurrencyType.积分)) {
 			throw new BizException(BizCode.ERROR, "暂只支持代理现金和积分提现");
 
 		}

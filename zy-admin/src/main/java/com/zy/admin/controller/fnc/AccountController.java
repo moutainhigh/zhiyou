@@ -67,7 +67,7 @@ public class AccountController {
 		}
 
 		try {
-			profitService.createAndGrant(userId, remark, CurrencyType.现金, amount, new Date());
+			profitService.createAndGrant(userId, remark, CurrencyType.U币, amount, new Date());
 		} catch (Exception e) {
 			return ResultBuilder.error("充值失败," + e.getMessage());
 		}
