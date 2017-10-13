@@ -35,6 +35,7 @@
 	<dubbo:reference  interface="com.zy.service.LargeareaDaySalesService" id="largeareaDaySalesService"/>
 	<dubbo:reference  interface="com.zy.service.LargeareaMonthSalesService" id="largeareaMonthSalesService"/>
 	<dubbo:reference  interface="com.zy.service.LargeAreaProfitService" id="largeAreaProfitService"/>
+	<dubbo:reference  interface="com.zy.service.UserTargetSalesService" id="userTargetSalesService"/>
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
 
