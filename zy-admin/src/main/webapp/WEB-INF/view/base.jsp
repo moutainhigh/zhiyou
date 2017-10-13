@@ -725,9 +725,7 @@
                     var series = [];
                     for (var i = 0; i <categories.length; i++) {
                         series.push({
-                            name:categories[i],
                             type:'line',
-                            stack: '总量',
                             data:daySales[i]
                         });
                     }
@@ -877,19 +875,21 @@
         $.post('${ctx}/newReport/largeAreaMonthSalesRelativeRate?type='+${type},function(result) {
             //获取大区年份销量数据
             var relativeRate = result.data.largeAreaYearRelativeRate ;
-            var area = [];
-            var rRate = [];
+            var area = [];   //五大区数组
+            var rRate = [];  //数组里面方数组，每个数组里面就是每个大区的量
             for (let i in relativeRate) {
                 area.unshift(i);
                 var sArray = relativeRate[i];
                 var arrayT = sArray.split(",");
                 rRate.unshift(arrayT);
             }
+
+            console.log(area);
+            console.log(rRate);
             //环比
             myChartxiao5.setOption({
                 tooltip: {
                     trigger: 'axis',
-
                 },
                 legend: [{
                     data: area.map(function (a) {
@@ -922,9 +922,7 @@
                     var series = [];
                     for (var i = 0; i <area.length; i++) {
                         series.push({
-                            name:area[i],
                             type:'line',
-                            stack: '总量',
                             data:rRate[i]
                         });
                     }
@@ -977,9 +975,7 @@
                     var series = [];
                     for (var i = 0; i <area.length; i++) {
                         series.push({
-                            name:area[i],
                             type:'line',
-                            stack: '总量',
                             data:sRate[i]
                         });
                     }
@@ -1033,9 +1029,7 @@
                     var series = [];
                     for (var i = 0; i <area.length; i++) {
                         series.push({
-                            name:area[i],
                             type:'line',
-                            stack: '总量',
                             data:sales[i]
                         });
                     }
@@ -1436,7 +1430,6 @@
                     var series = [];
                     for (var i = 0; i <area.length; i++) {
                         series.push({
-                            name:area[i],
                             type:'bar',
                             data:profit[i]
                         });
@@ -1491,9 +1484,7 @@
                     var series = [];
                     for (var i = 0; i <area.length; i++) {
                         series.push({
-                            name:area[i],
                             type:'line',
-                            stack: '总量',
                             data:rRate[i]
                         });
                     }
@@ -1548,9 +1539,7 @@
                     var series = [];
                     for (var i = 0; i <area.length; i++) {
                         series.push({
-                            name:area[i],
                             type:'line',
-                            stack: '总量',
                             data:sRate[i]
                         });
                     }
