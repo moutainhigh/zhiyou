@@ -55,18 +55,13 @@ public class UsrComponent {
 
 		user.setLastUpgradedTime(new Date());
 		user.setUserRank(to);
-		if(isToV4 != null && isToV4){
-			user.setIsToV4(true);
-			User parent = user;
-			do{
-				parent = userMapper.findOne(parent.getParentId());
-			}while (parent.getLargearea() == null);
-			user.setLargearea(parent.getLargearea());
-		}
 
 		//判断是否直接升为特级
 		if (userRank != null && userRank == User.UserRank.V4){
 			User parent = user;
+			if(isToV4 != null && isToV4) {
+				user.setIsToV4(true);
+			}
 			do{
 				parent = userMapper.findOne(parent.getParentId());
 			}while (parent.getLargearea() == null);
