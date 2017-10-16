@@ -68,7 +68,6 @@
         }
         $('#form').submit();
       });
-
     })
   </script>
 </head>

@@ -723,11 +723,10 @@
                 },
                 series : (function (){
                     var series = [];
-                    for (var i = 0; i <categories.length; i++) {
+                    for (let i = 0; i <categories.length; i++) {
                         series.push({
                             name:categories[i],
                             type:'line',
-                            stack: '总量',
                             data:daySales[i]
                         });
                     }
@@ -876,20 +875,20 @@
         // 异步加载数据
         $.post('${ctx}/newReport/largeAreaMonthSalesRelativeRate?type='+${type},function(result) {
             //获取大区年份销量数据
-            var relativeRate = result.data.largeAreaYearRelativeRate ;
-            var area = [];
-            var rRate = [];
+            var relativeRate = result.data.largeAreaYearRelativeRate;
+            var area = [];   //五大区数组
+            var rRate = [];  //数组里面方数组，每个数组里面就是每个大区的量
             for (let i in relativeRate) {
                 area.unshift(i);
                 var sArray = relativeRate[i];
                 var arrayT = sArray.split(",");
                 rRate.unshift(arrayT);
             }
+            {
             //环比
             myChartxiao5.setOption({
                 tooltip: {
                     trigger: 'axis',
-
                 },
                 legend: [{
                     data: area.map(function (a) {
@@ -910,7 +909,7 @@
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
                 },
                 yAxis: {
                     type: 'value',
@@ -918,130 +917,128 @@
                         formatter: '{value} %'
                     }
                 },
-                series : (function (){
+                series: (function () {
                     var series = [];
-                    for (var i = 0; i <area.length; i++) {
+                    for (let i = 0; i < area.length; i++) {
                         series.push({
-                            name:area[i],
-                            type:'line',
-                            stack: '总量',
-                            data:rRate[i]
+                            name: area[i],
+                            type: 'line',
+                            data: rRate[i]
                         });
                     }
                     return series;
                 })()
             });
-
-
-            //同比
-            var sameiveRate = result.data.largeAreaYearSameRate ;
-            var sRate = [];
-            for (let i in sameiveRate) {
-                var sArray = sameiveRate[i];
-                var arrayT = sArray.split(",");
-                sRate.unshift(arrayT);
+        }
+            {
+                //同比
+                var sameiveRate = result.data.largeAreaYearSameRate;
+                var sRate = [];
+                for (let i in sameiveRate) {
+                    var sArray = sameiveRate[i];
+                    var arrayT = sArray.split(",");
+                    sRate.unshift(arrayT);
+                }
+                var myChartxiao6 = echarts.init(document.getElementById('orderChart6'));
+                myChartxiao6.setOption({
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: [{
+                        data: area.map(function (a) {
+                            return a;
+                        })
+                    }],
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '{value} %'
+                        }
+                    },
+                    series: (function () {
+                        var series = [];
+                        for (let i = 0; i < area.length; i++) {
+                            series.push({
+                                name: area[i],
+                                type: 'line',
+                                data: sRate[i]
+                            });
+                        }
+                        return series;
+                    })()
+                });
             }
-            var myChartxiao6 = echarts.init(document.getElementById('orderChart6'));
-            myChartxiao6.setOption({
-                tooltip: {
-                    trigger: 'axis'
-                },
-                legend: [{
-                    data: area.map(function (a) {
-                        return a;
-                    })
-                }],
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-                },
-                yAxis: {
-                    type: 'value',
-                    axisLabel: {
-                        formatter: '{value} %'
-                    }
-                },
-                series : (function (){
-                    var series = [];
-                    for (var i = 0; i <area.length; i++) {
-                        series.push({
-                            name:area[i],
-                            type:'line',
-                            stack: '总量',
-                            data:sRate[i]
-                        });
-                    }
-                    return series;
-                })()
-            });
-
-
-            //大区年份销量
-            var yearSales = result.data.largeAreaYearSales;
-            var sales = [];
-            for (let i in yearSales) {
-                var sArray = yearSales[i];
-                var arrayT = sArray.split(",");
-                sales.unshift(arrayT);
+            {
+                //大区年份销量
+                var yearSales = result.data.largeAreaYearSales;
+                var sales = [];
+                for (let i in yearSales) {
+                    var sArray = yearSales[i];
+                    var arrayT = sArray.split(",");
+                    sales.unshift(arrayT);
+                }
+                var myChartxiao2 = echarts.init(document.getElementById('orderChart2'));
+                myChartxiao2.setOption({
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: [{
+                        data: area.map(function (a) {
+                            return a;
+                        })
+                    }],
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: (function () {
+                        var series = [];
+                        for (let i = 0; i < area.length; i++) {
+                            series.push({
+                                name: area[i],
+                                type: 'line',
+                                data: sales[i]
+                            });
+                        }
+                        return series;
+                    })()
+                });
             }
-            var myChartxiao2 = echarts.init(document.getElementById('orderChart2'));
-            myChartxiao2.setOption({
-                tooltip : {
-                    trigger: 'axis'
-                },
-                legend: [{
-                    data: area.map(function (a) {
-                        return a;
-                    })
-                }],
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
-                calculable : true,
-                xAxis : [
-                    {
-                        type : 'category',
-                        data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-                    }
-                ],
-                yAxis : [
-                    {
-                        type : 'value'
-                    }
-                ],
-                series : (function (){
-                    var series = [];
-                    for (var i = 0; i <area.length; i++) {
-                        series.push({
-                            name:area[i],
-                            type:'line',
-                            stack: '总量',
-                            data:sales[i]
-                        });
-                    }
-                    return series;
-                })()
-            });
         });
     })
 </script>
@@ -1389,7 +1386,7 @@
         // 异步加载数据
         $.post('${ctx}/report/profit/profit',{},function(result) {
             //获取收益数据
-            var data = result.data.profit ;
+            var data = result.data.profit;
             var area = [];
             var profit = [];
             for (let i in data) {
@@ -1399,64 +1396,8 @@
                 profit.unshift(arrayT);
             }
 
-
+            {
             orderChartEX1.setOption({
-                tooltip : {
-                    trigger: 'axis'
-                },
-                legend: [{
-                    data: area.map(function (a) {
-                        return a;
-                    })
-                }],
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
-                calculable : true,
-                xAxis : [
-                    {
-                        type : 'category',
-                        data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-                    }
-                ],
-                yAxis : [
-                    {
-                        type : 'value'
-                    }
-                ],
-                series : (function (){
-                    var series = [];
-                    for (var i = 0; i <area.length; i++) {
-                        series.push({
-                            name:area[i],
-                            type:'bar',
-                            data:profit[i]
-                        });
-                    }
-                    return series;
-                })()
-            });
-
-
-            //环比
-            //获取环比数据
-            var relativeRate = result.data.relativeRate ;
-            var rRate = [];
-            for (let i in relativeRate) {
-                var sArray = relativeRate[i];
-                var arrayT = sArray.split(",");
-                rRate.unshift(arrayT);
-            }
-            var orderChartEX2 = echarts.init(document.getElementById('orderChartEX2'));
-            orderChartEX2.setOption({
                 tooltip: {
                     trigger: 'axis'
                 },
@@ -1476,87 +1417,142 @@
                         saveAsImage: {}
                     }
                 },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-                },
-                yAxis: {
-                    type: 'value',
-                    axisLabel: {
-                        formatter: '{value} %'
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
                     }
-                },
-                series : (function (){
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: (function () {
                     var series = [];
-                    for (var i = 0; i <area.length; i++) {
+                    for (var i = 0; i < area.length; i++) {
                         series.push({
-                            name:area[i],
-                            type:'line',
-                            stack: '总量',
-                            data:rRate[i]
+                            name: area[i],
+                            type: 'bar',
+                            data: profit[i]
                         });
                     }
                     return series;
                 })()
-
             });
+        }
+            {
+                //环比
+                //获取环比数据
+                var relativeRate = result.data.relativeRate;
+                var rRate = [];
+                for (let i in relativeRate) {
+                    var sArray = relativeRate[i];
+                    var arrayT = sArray.split(",");
+                    rRate.unshift(arrayT);
+                }
+                var orderChartEX2 = echarts.init(document.getElementById('orderChartEX2'));
+                orderChartEX2.setOption({
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: [{
+                        data: area.map(function (a) {
+                            return a;
+                        })
+                    }],
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '{value} %'
+                        }
+                    },
+                    series: (function () {
+                        var series = [];
+                        for (let i = 0; i < area.length; i++) {
+                            series.push({
+                                name: area[i],
+                                type: 'line',
+                                data: rRate[i]
+                            });
+                        }
+                        return series;
+                    })()
 
-
-            //同比
-            //获取环比数据
-            var sameiveRate = result.data.sameiveRate ;
-            var sRate = [];
-            for (let i in sameiveRate) {
-                var sArray = sameiveRate[i];
-                var arrayT = sArray.split(",");
-                sRate.unshift(arrayT);
+                });
             }
-            var orderChartEX3 = echarts.init(document.getElementById('orderChartEX3'));
-            orderChartEX3.setOption({
-                tooltip: {
-                    trigger: 'axis'
-                },
-                legend: [{
-                    data: area.map(function (a) {
-                        return a;
-                    })
-                }],
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-                },
-                yAxis: {
-                    type: 'value',
-                    axisLabel: {
-                        formatter: '{value} %'
-                    }
-                },
-                series : (function (){
-                    var series = [];
-                    for (var i = 0; i <area.length; i++) {
-                        series.push({
-                            name:area[i],
-                            type:'line',
-                            stack: '总量',
-                            data:sRate[i]
-                        });
-                    }
-                    return series;
-                })()
-            });
+            {
+                //同比
+                //获取环比数据
+                var sameiveRate = result.data.sameiveRate;
+                var sRate = [];
+                for (let i in sameiveRate) {
+                    var sArray = sameiveRate[i];
+                    var arrayT = sArray.split(",");
+                    sRate.unshift(arrayT);
+                }
+                var orderChartEX3 = echarts.init(document.getElementById('orderChartEX3'));
+                orderChartEX3.setOption({
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: [{
+                        data: area.map(function (a) {
+                            return a;
+                        })
+                    }],
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '{value} %'
+                        }
+                    },
+                    series: (function () {
+                        var series = [];
+                        for (let i = 0; i < area.length; i++) {
+                            series.push({
+                                name: area[i],
+                                type: 'line',
+                                data: sRate[i]
+                            });
+                        }
+                        return series;
+                    })()
+                });
+            }
         });
     }
      function randomData() {

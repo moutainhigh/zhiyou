@@ -753,7 +753,7 @@ public class NewReportComponent {
         int yearNum = DateUtil.getYear(now);
         int mothNum = DateUtil.getMothNum(now);
         int daysOfMonth = DateUtil.getDaysOfMonth(now);
-        List<LargeareaDaySales> daySales = largeareaDaySalesService.findAll(LargeareaDaySalesQueryModel.builder().dayEQ(yearNum).monthEQ(mothNum).build());
+        List<LargeareaDaySales> daySales = largeareaDaySalesService.findAll(LargeareaDaySalesQueryModel.builder().yearEQ(yearNum).monthEQ(mothNum).build());
         Map<String ,Object> returnMap = new HashMap<>();
         Map<String ,Object> dataMap = new HashMap<>();
         String days[] = new String[daysOfMonth];

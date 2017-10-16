@@ -104,6 +104,7 @@ public class LargeareaMonthSalesJob implements Job {
             for (LargeareaMonthSales la : las) {
                 List<LargeareaMonthSales> all = largeareaMonthSalesService.findAll(LargeareaMonthSalesQueryModel.builder().largeareaNameEQ(la.getLargeareaName()).yearEQ(DateUtil.getYear(DateUtil.getMonthData(now, -2, 0))).monthEQ(DateUtil.getMothNum(DateUtil.getMonthData(now, -2, 0))).build());
                 List<LargeareaMonthSales> all2 = largeareaMonthSalesService.findAll(LargeareaMonthSalesQueryModel.builder().largeareaNameEQ(la.getLargeareaName()).yearEQ(DateUtil.getYear(DateUtil.getMonthData(now, -12, 0))).monthEQ(DateUtil.getMothNum(DateUtil.getMonthData(now, -12, 0))).build());
+                //环比
                 if( all != null && (all.size() > 0 && all.get(0).getSales() > 0)){
                     la.setRelativeRate(DateUtil.formatDouble((la.getSales() - all.get(0).getSales()) / all.get(0).getSales() * 100));
                 }else {
@@ -113,6 +114,7 @@ public class LargeareaMonthSalesJob implements Job {
                         la.setRelativeRate(100.00);
                     }
                 }
+                //同比
                 if( all2 != null && (all2.size()>0 && all2.get(0).getSales() > 0) ){
                     la.setSameRate(DateUtil.formatDouble((la.getSales() - all2.get(0).getSales()) / all2.get(0).getSales() * 100));
                 }else {
