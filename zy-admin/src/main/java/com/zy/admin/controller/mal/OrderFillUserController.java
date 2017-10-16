@@ -1,5 +1,6 @@
 package com.zy.admin.controller.mal;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -8,6 +9,7 @@ import com.zy.common.model.ui.Grid;
 import com.zy.component.OrderFillUserComponent;
 import com.zy.entity.mal.OrderFillUser;
 import com.zy.entity.usr.User;
+import com.zy.model.Principal;
 import com.zy.model.query.OrderFillUserQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.OrderFillUserService;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.model.result.ResultBuilder.ok;
@@ -71,7 +74,7 @@ public class OrderFillUserController {
 	@RequiresPermissions("orderFillUser:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> create(String phone, String remark) {
+	public Result<?> create(String phone, String remark, AdminPrincipal principal) {
 
 		User user = userService.findByPhone(phone);
 		if(user == null) {
@@ -81,14 +84,17 @@ public class OrderFillUserController {
 		OrderFillUser orderFillUser = new OrderFillUser();
 		orderFillUser.setUserId(user.getId());
 		orderFillUser.setRemark(remark);
+		orderFillUser.setCreateId(principal.getUserId());
+		orderFillUser.setCreateTime(new Date());
+		orderFillUser.setStatus(1);
 		orderFillUserService.create(orderFillUser);
 		return ResultBuilder.ok("操作成功");
 	}
 
 	@RequiresPermissions("orderFillUser:edit")
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public String delete(@RequestParam Long id, RedirectAttributes redirectAttributes) {
-		orderFillUserService.delete(id);
+	public String delete(@RequestParam Long id, RedirectAttributes redirectAttributes, AdminPrincipal principal) {
+		orderFillUserService.delete(id, principal.getUserId());
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ok("操作成功"));
 		return "redirect:/orderFillUser";
 	}

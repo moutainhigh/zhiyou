@@ -23,8 +23,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.Product" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_product` (title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time,is_settlement)
-	  values (#{title},#{detail},#{productPriceType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{price},#{priceScript},#{marketPrice},#{skuCode},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime},#{isSettlement})
+	  insert into `mal_product` (title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time,is_settlement,create_id,update_time,update_id)
+	  values (#{title},#{detail},#{productPriceType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{price},#{priceScript},#{marketPrice},#{skuCode},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime},#{isSettlement},#{createId},#{updateTime},#{updateId})
 	</insert>
 
 	<delete id="delete">
@@ -50,6 +50,9 @@
 			image6 = #{image6},
 			created_time = #{createdTime},
 			is_settlement = #{isSettlement},
+			create_id = #{createId},
+			update_time = #{updateTime},
+			update_id = #{updateId},
 		</set>
 		where id = #{id}
 	</update>
@@ -75,6 +78,9 @@
 					<when test="field == 'image6'">image6 = #{product.image6},</when>
 					<when test="field == 'createdTime'">created_time = #{product.createdTime},</when>
 					<when test="field == 'isSettlement'">is_settlement = #{product.isSettlement},</when>
+					<when test="field == 'createId'">create_id = #{product.createId},</when>
+					<when test="field == 'updateTime'">update_time = #{product.updateTime},</when>
+					<when test="field == 'updateId'">update_id = #{product.updateId},</when>
 				</choose>
 				</foreach>
 			</set>

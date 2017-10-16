@@ -119,6 +119,22 @@ public class Product implements Serializable {
 	@View(groups = { VO_ADMIN })
 	private Date createdTime;
 
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@Query({GTE,LT})
+	@View(groups = { VO_ADMIN })
+	private Date updateTime;
+
+	@Id
+	@Query(IN)
+	@View
+	private Long createId;
+
+	@Id
+	@Query(IN)
+	@View
+	private Long updateId;
+
 	@View
 	@Field(label = "是否结算")
 	@Query(Predicate.EQ)

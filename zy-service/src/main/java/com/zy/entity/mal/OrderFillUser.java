@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "mal_order_fill_user")
@@ -46,4 +47,24 @@ public class OrderFillUser implements Serializable {
 	@View(groups = {VO_ADMIN})
 	@Field(label = "备注")
 	private String remark;
+
+	@NotBlank
+	@View(groups = {VO_ADMIN})
+	private Long createId;
+
+	@NotBlank
+	@View(groups = {VO_ADMIN})
+	private Date createTime;
+
+	@NotBlank
+	@View(groups = {VO_ADMIN})
+	private Long updateId;
+
+	@NotBlank
+	@View(groups = {VO_ADMIN})
+	private Date updateTime;
+
+	@NotBlank
+	@View(groups = {VO_ADMIN})
+	private Integer status;
 }

@@ -86,11 +86,13 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public void release(@NotNull Long activityId, boolean isReleased) {
+	public void release(@NotNull Long activityId, boolean isReleased, Long userId) {
 		checkAndFindActivity(activityId);
 		Activity activityForMerage = new Activity();
 		activityForMerage.setId(activityId);
 		activityForMerage.setIsReleased(isReleased);
+		activityForMerage.setUpdateId(userId);
+		activityForMerage.setUpdateTime(new Date());
 		activityMapper.merge(activityForMerage, "isReleased");
 	}
 

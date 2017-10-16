@@ -37,7 +37,7 @@ public interface UserService {
 
 	void modifyNickname(Long id, String nickname);
 
-	void modifyLastLoginTime(Long id);
+	void modifyLastLoginTime(Long id, Long updateId);
 
 	void modifyAvatar(Long id, String avatar);
 
@@ -68,21 +68,21 @@ public interface UserService {
 
 	void modifyBossId(Long id, Long bossId);
 
-	void modifyIsDirector(Long id, boolean isDirector);
+	void modifyIsDirector(Long id, Long userId, boolean isDirector);
 
-	void modifyIsHonorDirector(Long id, boolean isHonorDirector);
+	void modifyIsHonorDirector(Long id, Long userId, boolean isHonorDirector);
 
-	void modifyIsShareholder(Long id, boolean isShareholder);
+	void modifyIsShareholder(Long id, Long userId, boolean isShareholder);
 
-	void modifyIsDeleted(Long id, boolean isDeleted);
+	void modifyIsDeleted(Long id, Long userId, boolean isDeleted);
 
 	//void modifyIsPresident(Long id, List<Long> userIds,Long parentId,Long principalUserId, boolean isPresident);
 
 	void modifyIsPresident(Long id, Long principalUserId, boolean isPresident);
 
-	void modifyPresidentId(Long id, Long presidentId);
+	void modifyPresidentId(Long id, Long presidentId, Long loginUser);
 
-	void modifyIsToV4(Long id, boolean isToV4);
+	void modifyIsToV4(Long id, Long userId, boolean isToV4);
 
 	long[] conyteamTotal(Long userId);
 

@@ -424,7 +424,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setIsUseLogistics(isUseLogistics);
 		order.setDeliveredTime(date);
 		order.setOrderStatus(OrderStatus.已发货);
-
+		order.setDeliveredId(orderDeliverDto.getDeliveredId());
 		if (orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
 		}

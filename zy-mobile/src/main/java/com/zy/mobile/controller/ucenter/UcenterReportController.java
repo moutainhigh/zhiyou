@@ -307,7 +307,7 @@ public class UcenterReportController {
 			return "redirect:/u/report";
 		}
 		try {
-			reportService.modify(report);
+			reportService.modify(report,principal.getUserId());
 		} catch (Exception e) {
 			model.addAttribute(ResultBuilder.error(e.getMessage()));
 			return edit(report.getId(), principal, model, redirectAttributes);

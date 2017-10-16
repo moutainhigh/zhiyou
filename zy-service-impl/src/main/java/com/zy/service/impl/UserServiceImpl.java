@@ -12,7 +12,6 @@ import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.sys.SystemCode;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
@@ -343,12 +342,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void modifyLastLoginTime(@NotNull Long userId) {
+    public void modifyLastLoginTime(@NotNull Long userId, Long updateId) {
         findAndValidate(userId);
         User user = new User();
         user.setId(userId);
         user.setLastloginTime(new Date());
         userMapper.merge(user, "lastloginTime");
+
+        usrComponent.recordUserLog(userId, updateId, "重置登陆时间", null);
     }
 
     @Override
@@ -530,7 +531,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void modifyPresidentId(@NotNull Long id,@NotNull Long presidentId) {
+    public void modifyPresidentId(@NotNull Long id, @NotNull Long presidentId, Long loginUser) {
         validate(id, v -> !v.equals(presidentId), "user id is same to presidentId, error");
         findAndValidate(id);
         User president = findAndValidate(presidentId);
@@ -540,35 +541,40 @@ public class UserServiceImpl implements UserService {
         merge.setId(id);
         merge.setPresidentId(presidentId);
         userMapper.merge(merge, "presidentId");
+        usrComponent.recordUserLog(id, loginUser, "加入大区总裁团队", null);
     }
 
     @Override
-    public void modifyIsDirector(@NotNull Long id, boolean isDirector) {
+    public void modifyIsDirector(@NotNull Long id, Long userId, boolean isDirector) {
         User userForMerge = new User();
         userForMerge.setId(id);
         userForMerge.setIsDirector(isDirector);
         userForMerge.setIsHonorDirector(!isDirector);
         userMapper.merge(userForMerge, "isDirector", "isHonorDirector");
+
+        usrComponent.recordUserLog(id, userId, "成为董事", null);
     }
 
     @Override
-    public void modifyIsHonorDirector(@NotNull Long id, boolean isHonorDirector) {
+    public void modifyIsHonorDirector(@NotNull Long id, Long userId, boolean isHonorDirector) {
         User userForMerge = new User();
         userForMerge.setId(id);
         userForMerge.setIsHonorDirector(isHonorDirector);
         userForMerge.setIsDirector(!isHonorDirector);
         userMapper.merge(userForMerge, "isDirector", "isHonorDirector");
+
+        usrComponent.recordUserLog(id, userId, "成为荣誉董事", null);
     }
 
     @Override
-    public void modifyIsShareholder(@NotNull Long id, boolean isShareholder) {
+    public void modifyIsShareholder(@NotNull Long id, Long userId, boolean isShareholder) {
         User user = findAndValidate(id);
 
         User userForMerge = new User();
         userForMerge.setId(id);
         userForMerge.setIsShareholder(isShareholder);
         userMapper.merge(userForMerge, "isShareholder");
-
+        usrComponent.recordUserLog(id, userId, "成为股东", null);
         //升级股东获得50W股
         if(isShareholder) {
             fncComponent.createAndGrantProfit(id, Profit.ProfitType.股份奖励, null, user.getNickname() + "升级股东,获得股份奖励", CurrencyType.货币股份, new BigDecimal("500000.00"), new Date());
@@ -576,7 +582,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void modifyIsDeleted(@NotNull Long id, boolean isDeleted) {
+    public void modifyIsDeleted(@NotNull Long id, Long userId, boolean isDeleted) {
         findAndValidate(id);
 
         User merge = new User();
@@ -584,6 +590,7 @@ public class UserServiceImpl implements UserService {
         merge.setIsDeleted(isDeleted);
 
         userMapper.merge(merge, "isDeleted");
+        usrComponent.recordUserLog(id, userId, "删除用户", null);
     }
 
 
@@ -678,7 +685,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void modifyIsToV4(@NotNull Long id,boolean isToV4) {
+    public void modifyIsToV4(@NotNull Long id, Long userId, boolean isToV4) {
         findAndValidate(id);
 
         User merge = new User();
@@ -686,6 +693,8 @@ public class UserServiceImpl implements UserService {
         merge.setIsToV4(isToV4);
 
         userMapper.merge(merge, "isToV4");
+
+        usrComponent.recordUserLog(id, userId, "直升特级", null);
     }
 
     @Override

@@ -356,38 +356,39 @@ public class UserController {
      */
 	@RequestMapping(value = "/president/joinTeam", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Void> joinPresidentTeam(@RequestParam Long id, @RequestParam String presidentPhone) {
+	public Result<Void> joinPresidentTeam(@RequestParam Long id, @RequestParam String presidentPhone, AdminPrincipal adminPrincipal) {
 		User president = userService.findByPhone(presidentPhone);
+		Long loginUser = adminPrincipal.getUserId();
 		if (president == null) {
 			return ResultBuilder.error("大区总裁手机号不存在");
 		}
 		if(president.getIsPresident() == null || !president.getIsPresident()){
 			return ResultBuilder.error("用户不是大区总裁");
 		}
-		userService.modifyPresidentId(id, president.getId());
+		userService.modifyPresidentId(id, president.getId(), loginUser);
 		return ResultBuilder.ok("已加入: " + president.getNickname()+"大区总裁团队");
 	}
 
 	@RequiresPermissions("user:setDirector")
 	@RequestMapping(value = "/setDirector", method = RequestMethod.GET)
-	public String setDirector(@RequestParam Long id, RedirectAttributes redirectAttributes) {
-		userService.modifyIsDirector(id, true);
+	public String setDirector(@RequestParam Long id, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
+		userService.modifyIsDirector(id, adminPrincipal.getUserId() ,true);
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		return "redirect:/user";
 	}
 
 	@RequiresPermissions("user:setDirector")
 	@RequestMapping(value = "/isHonorDirector", method = RequestMethod.GET)
-	public String isHonorDirector(@RequestParam Long id, RedirectAttributes redirectAttributes) {
-		userService.modifyIsHonorDirector(id, true);
+	public String isHonorDirector(@RequestParam Long id, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
+		userService.modifyIsHonorDirector(id, adminPrincipal.getUserId() , true);
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		return "redirect:/user";
 	}
 
 	@RequiresPermissions("user:setShareholder")
 	@RequestMapping(value = "/setShareholder", method = RequestMethod.GET)
-	public String setShareholder(@RequestParam Long id, RedirectAttributes redirectAttributes) {
-		userService.modifyIsShareholder(id, true);
+	public String setShareholder(@RequestParam Long id, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
+		userService.modifyIsShareholder(id, adminPrincipal.getUserId() , true);
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		return "redirect:/user";
 	}
@@ -402,16 +403,16 @@ public class UserController {
 
 	@RequiresPermissions("user:setIsDeleted")
 	@RequestMapping(value = "/setIsDeleted", method = RequestMethod.GET)
-	public String setIsDeleted(@RequestParam Long id, RedirectAttributes redirectAttributes) {
-		userService.modifyIsDeleted(id, true);
+	public String setIsDeleted(@RequestParam Long id, RedirectAttributes redirectAttributes ,AdminPrincipal adminPrincipal) {
+		userService.modifyIsDeleted(id, adminPrincipal.getUserId(), true);
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		return "redirect:/user";
 	}
 
 	@RequiresPermissions("user:setIsToV4")
 	@RequestMapping(value = "/setIsToV4", method = RequestMethod.GET)
-	public String setIsToV4(@RequestParam Long id, RedirectAttributes redirectAttributes) {
-		userService.modifyIsToV4(id, true);
+	public String setIsToV4(@RequestParam Long id, RedirectAttributes redirectAttributes ,AdminPrincipal adminPrincipal) {
+		userService.modifyIsToV4(id, adminPrincipal.getUserId(),true);
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		return "redirect:/user";
 	}
@@ -433,10 +434,10 @@ public class UserController {
 	@RequiresPermissions("user:edit")
 	@RequestMapping(value = "/editLastLoginTime", method = RequestMethod.POST)
 	@ResponseBody
-	public boolean editLastLoginTime(@RequestParam Long id) {
+	public boolean editLastLoginTime(@RequestParam Long id, AdminPrincipal adminPrincipal) {
 		User user = userService.findOne(id);
 		validate(user, NOT_NULL, "user not found, id is " + id);
-		userService.modifyLastLoginTime(id);
+		userService.modifyLastLoginTime(id, adminPrincipal.getUserId());
 		return true;
 	}
 

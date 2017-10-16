@@ -13,9 +13,9 @@ public interface ProductReplacementService {
 
 	ProductReplacement findOne(Long id);
 
-	void reject(Long id, String remark); // 驳回
+	void reject(Long id, String remark, Long userId); // 驳回
 
-	void deliver(Long id, LogisticsDto logisticsDto); // 发货
+	void deliver(Long id, LogisticsDto logisticsDto, Long userId); // 发货
 
 	void receive(Long id); // 确认收货
 

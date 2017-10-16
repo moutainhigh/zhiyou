@@ -62,7 +62,7 @@ public class ProductReplacementServiceImpl implements ProductReplacementService{
 	}
 
 	@Override
-	public void reject(@NotNull Long id, String remark) {
+	public void reject(@NotNull Long id, String remark, Long userId) {
 
 		ProductReplacement andValidate = findAndValidate(id);
 
@@ -79,11 +79,13 @@ public class ProductReplacementServiceImpl implements ProductReplacementService{
 		mergeEntity.setId(id);
 		mergeEntity.setProductReplacementStatus(已驳回);
 		mergeEntity.setRemark(remark);
+		mergeEntity.setUpdateId(userId);
+		mergeEntity.setUpdateTime(new Date());
 		productReplacementMapper.merge(mergeEntity, "productReplacementStatus", "remark");
 	}
 
 	@Override
-	public void deliver(@NotNull Long id, @NotNull LogisticsDto logisticsDto) {
+	public void deliver(@NotNull Long id, @NotNull LogisticsDto logisticsDto, Long userId) {
 		ProductReplacement andValidate = findAndValidate(id);
 
 		ProductReplacement.ProductReplacementStatus productReplacementStatus = andValidate.getProductReplacementStatus();
@@ -96,6 +98,7 @@ public class ProductReplacementServiceImpl implements ProductReplacementService{
 
 		ProductReplacement mergeEntity = new ProductReplacement();
 		mergeEntity.setId(id);
+		mergeEntity.setDeliveredId(userId);
 		mergeEntity.setLogisticsName(logisticsDto.getName());
 		mergeEntity.setLogisticsSn(logisticsDto.getSn());
 		mergeEntity.setLogisticsFee(logisticsDto.getFee());

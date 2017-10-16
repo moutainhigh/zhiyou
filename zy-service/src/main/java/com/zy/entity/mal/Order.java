@@ -230,6 +230,11 @@ public class Order implements Serializable {
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	private Date deliveredTime;
 
+	@NotNull
+	@Field(label = "发货人")
+	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
+	private Long deliveredId;
+
 	@Field(label = "是否物流发货")
 	@View(name = "isUseLogisticsLabel", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL})
 	@View(groups = {VO_DETAIL, VO_ADMIN})

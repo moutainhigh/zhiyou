@@ -60,11 +60,13 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
-	public void on(@NotNull Long id, @NotNull Boolean isOn) {
+	public void on(@NotNull Long id, @NotNull Boolean isOn ,@NotNull Long userId) {
 		Product product = productMapper.findOne(id);
 		validate(product, NOT_NULL, "product is null");
 		
 		product.setIsOn(isOn);
+		product.setUpdateTime(new Date());
+		product.setUpdateId(userId);
 		productMapper.update(product);
 	}
 

@@ -16,7 +16,7 @@ public interface OrderFillUserMapper {
 
 	int merge(@Param("orderFillUser") OrderFillUser orderFillUser, @Param("fields")String... fields);
 
-	int delete(Long id);
+	int delete(OrderFillUser orderFillUser);
 
 	OrderFillUser findOne(Long id);
 

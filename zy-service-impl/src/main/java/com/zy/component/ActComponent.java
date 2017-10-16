@@ -64,7 +64,7 @@ public class ActComponent {
     @Autowired
     private AliyunOssSupport aliyunOssSupport;
 
-	public void recordReportLog(@NotNull Long reportId, @NotBlank String remark) {
+	public void recordReportLog(@NotNull Long reportId, Long userId, @NotBlank String remark) {
 		Report report = reportMapper.findOne(reportId);
 		validate(report, NOT_NULL, "report id " + reportId + " not found");
 
@@ -74,6 +74,7 @@ public class ActComponent {
 		reportLog.setReportConfirmStatus(report.getConfirmStatus());
 		reportLog.setRemark(remark);
 		reportLog.setCreatedTime(new Date());
+		reportLog.setCreateId(userId);
 		reportLogMapper.insert(reportLog);
 	}
 

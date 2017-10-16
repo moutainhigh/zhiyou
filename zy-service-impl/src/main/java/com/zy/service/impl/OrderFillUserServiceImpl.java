@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
@@ -41,8 +42,11 @@ public class OrderFillUserServiceImpl implements OrderFillUserService{
 	}
 
 	@Override
-	public void delete(@NotNull Long id) {
-		orderFillUserMapper.delete(id);
+	public void delete(@NotNull Long id, Long userId) {
+		OrderFillUser orderFillUser = new OrderFillUser();
+		orderFillUser.setUpdateId(userId);
+		orderFillUser.setUpdateTime(new Date());
+		orderFillUserMapper.delete(orderFillUser);
 	}
 
 	@Override

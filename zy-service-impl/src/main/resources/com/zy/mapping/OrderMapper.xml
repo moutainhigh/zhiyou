@@ -119,6 +119,7 @@
 			price = #{price},
 			quantity = #{quantity},
 			is_settlement = #{isSettlement},
+			delivered_id = #{deliveredId},
 			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
