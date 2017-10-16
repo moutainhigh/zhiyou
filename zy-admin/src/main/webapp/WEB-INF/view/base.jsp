@@ -723,11 +723,10 @@
                 },
                 series : (function (){
                     var series = [];
-                    for (var i = 0; i <categories.length; i++) {
+                    for (let i = 0; i <categories.length; i++) {
                         series.push({
                             name:categories[i],
                             type:'line',
-                            stack: '总量',
                             data:daySales[i]
                         });
                     }
