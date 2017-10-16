@@ -1458,6 +1458,12 @@ public class OrderServiceImpl implements OrderService {
 
 							parentId = directV4ParentId;
 						}
+						//自己是董事且有量 计算 只能算到上级董事
+						if(u.getIsDirector() != null && u.getIsDirector()){
+							if (! getflage(userMap,u,userId)){
+								return zero;
+							}
+						}
 						Long quantity = userQuantityMap.get(u.getId()) == null ? 0L : userQuantityMap.get(u.getId());
 						BigDecimal innerProfit = zero;
 						if(u.getIsDirector() != null && u.getIsDirector()) {
@@ -1897,6 +1903,13 @@ public class OrderServiceImpl implements OrderService {
 							if (isMoreLevelDirector) {
 								return innerProfit;
 							}
+							//自己是董事且有量 计算 只能算到上级董事
+							if(u.getIsDirector() != null && u.getIsDirector()){
+								if (! getflage(userMap,u,userId)){
+									return zero;
+								}
+							}
+
 							if(u.getIsDirector() != null && u.getIsDirector()) {
 								innerProfit = new BigDecimal(quantity);
 							} else {
@@ -2335,5 +2348,34 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return false;
 	}
+
+	/**
+	 * 查询 当前董事是不是 直属董事（即董事下面的董事）
+	 * 是 ：返回true
+	 * @param userMap
+	 * @param u
+     * @return
+     */
+	private boolean getflage(Map<Long,User>userMap,User u,long userId){
+	    boolean returnfalge = false;
+		boolean flage =true;
+		User u1 = u;
+		do{
+		  User up = userMap.get(u1.getParentId());
+		  if(up==null) {
+			  flage= false;
+			  returnfalge=true;
+		  }else if(up.getIsDirector() != null && up.getIsDirector()){
+			if (up.getId()==userId) {
+				returnfalge=true;
+			}
+			 flage=false;
+		  }
+			u1=up;
+	   }while (flage);
+		return returnfalge;
+	}
+
+
 
 }

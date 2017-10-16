@@ -3,8 +3,10 @@ package com.zy.admin.controller.sys;
 import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
+import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
+import com.zy.component.LocalCacheComponent;
 import com.zy.component.SystemCodeComponent;
 import com.zy.entity.sys.SystemCode;
 import com.zy.entity.usr.User;
@@ -42,6 +44,9 @@ public class SystemCodeController {
 
     @Autowired
     private SystemCodeComponent systemCodeComponent;
+
+    @Autowired
+    private LocalCacheComponent localCacheComponent;
 
     @RequiresPermissions("systemCode:view")
     @RequestMapping(method = RequestMethod.GET)
@@ -175,4 +180,17 @@ public class SystemCodeController {
         return "redirect:/systemCode";
     }
 
+    /**
+     * 算董事量小工具
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/sealUtil",method = RequestMethod.GET)
+    @ResponseBody
+    public Result<?> sealUtil(Long userId,String date){
+       String sum =  systemCodeComponent.sealUtil(userId,localCacheComponent,date);
+       System.out.println(sum);
+       return  ResultBuilder.ok(sum);
+
+    }
 }
