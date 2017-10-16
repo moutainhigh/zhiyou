@@ -57,7 +57,7 @@ public class UsrComponent {
 		user.setUserRank(to);
 
 		//判断是否直接升为特级
-		if (userRank != null && userRank == User.UserRank.V4){
+		if (userRank != null && to == User.UserRank.V4){
 			User parent = user;
 			if(isToV4 != null && isToV4) {
 				user.setIsToV4(true);
