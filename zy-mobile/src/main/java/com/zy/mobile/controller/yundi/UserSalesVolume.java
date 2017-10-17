@@ -62,6 +62,9 @@ public class UserSalesVolume {
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Map<String, Object> map = new HashMap<>();
         Long id =  Long.parseLong(userId);
+        if (userService.findOne(id)==null){
+            ResultBuilder.error("用户信息不存在");
+        }
         List<Account> accounts = accountService.findByUserId(id);
         for (Account account : accounts) {
             switch (account.getCurrencyType()) {
@@ -97,6 +100,9 @@ public class UserSalesVolume {
         response.setHeader("Access-Control-Allow-Methods", "POST");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Long id =  Long.parseLong(userId);
+        if (userService.findOne(id)==null){
+            ResultBuilder.error("用户信息不存在");
+        }
         OrderQueryModel orderQueryModel = new OrderQueryModel();
         orderQueryModel.setUserIdEQ(id);
         orderQueryModel.setSellerIdEQ(id);
@@ -130,6 +136,9 @@ public class UserSalesVolume {
         response.setHeader("Access-Control-Allow-Methods", "POST");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Long id =  Long.parseLong(userId);
+        if (userService.findOne(id)==null){
+            ResultBuilder.error("用户信息不存在");
+        }
         OrderQueryModel orderQueryModel = new OrderQueryModel();
         orderQueryModel.setUserIdEQ(id);
         orderQueryModel.setSellerIdEQ(id);
@@ -148,6 +157,9 @@ public class UserSalesVolume {
         response.setHeader("Access-Control-Allow-Methods", "POST");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Long id =  Long.parseLong(userId);
+        if (userService.findOne(id)==null){
+            ResultBuilder.error("用户信息不存在");
+        }
         UserQueryModel userQueryModel = new UserQueryModel();
         userQueryModel.setParentIdEQ(id);
         if (null != nameorPhone) {
@@ -171,6 +183,9 @@ public class UserSalesVolume {
         response.setHeader("Access-Control-Allow-Methods", "POST");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Long id =  Long.parseLong(userId);
+        if (userService.findOne(id)==null){
+            ResultBuilder.error("用户信息不存在");
+        }
         //我的直属特级
         List<User> v4List = userComponent.conyteamTotalV4(id);
         Map<String, Object> map = new HashMap<>();
@@ -191,6 +206,9 @@ public class UserSalesVolume {
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Map<String, Object> map = new HashMap<>();
         Long id =  Long.parseLong(userId);
+        if (userService.findOne(id)==null){
+            ResultBuilder.error("用户信息不存在");
+        }
         //我的直属下级
         UserQueryModel userQueryModel = new UserQueryModel();
         userQueryModel.setParentIdEQ(id);

@@ -10,6 +10,7 @@ import com.zy.model.Principal;
 import com.zy.model.query.ProfitQueryModel;
 import com.zy.service.AccountService;
 import com.zy.service.ProfitService;
+import com.zy.service.UserService;
 import com.zy.vo.ProfitListVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,9 @@ public class UserAccount  {
     @Autowired
     private ProfitComponent profitComponent;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value="/countIncomeDataByUser", method = RequestMethod.POST)
     @ResponseBody
     public Result<?> countIncomeDataByUser(HttpServletRequest request, HttpServletResponse response,String userIdstr) {
@@ -58,6 +62,9 @@ public class UserAccount  {
                 return ResultBuilder.error("参数有错");
             }
             Long userId = Long.valueOf(userIdstr);
+            if (userService.findOne(userId)==null){
+                ResultBuilder.error("用户信息不存在");
+            }
             Map<String, Object> map = new HashMap<>();
             List<Account> accounts = accountService.findByUserId(userId);//统计u币 ，积分，股权
             accounts.stream().forEach(v -> {
@@ -100,6 +107,9 @@ public class UserAccount  {
                 return ResultBuilder.error("参数有错");
             }
             Long userId = Long.valueOf(userIdstr);
+            if (userService.findOne(userId)==null){
+                ResultBuilder.error("用户信息不存在");
+            }
             ProfitQueryModel profitQueryModel = new ProfitQueryModel();
             profitQueryModel.setUserIdEQ(userId);
             if(type.equals("7")){//返利奖
@@ -151,6 +161,9 @@ public class UserAccount  {
                 return ResultBuilder.error("参数有错");
             }
             Long userId = Long.valueOf(userIdstr);
+            if (userService.findOne(userId)==null){
+                ResultBuilder.error("用户信息不存在");
+            }
             int month = Integer.valueOf(monthstr);
             ProfitQueryModel profitQueryModel = new ProfitQueryModel();
             profitQueryModel.setUserIdEQ(userId);
