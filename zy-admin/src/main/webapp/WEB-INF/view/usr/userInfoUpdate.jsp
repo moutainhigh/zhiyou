@@ -76,7 +76,12 @@
               <label class="control-label col-md-3">出生年月: <span class="required"> * </span>
               </label>
               <div class="col-md-4">
-                <input type="date" name="birthday" class="form-control" value="${userInfo.birthdayLabel}" placeholder="填写生日  1900-01-01">
+                 <c:if test="${userInfo.birthdayLabel == null}">
+                     <input type="date" name="birthday" class="form-control" value="1900-01-01">
+                 </c:if>
+                 <c:if test="${userInfo.birthdayLabel != null}">
+                     <input type="date" name="birthday" class="form-control" value="${userInfo.birthdayLabel}" placeholder="填写生日  1900-01-01">
+                 </c:if>
               </div>
             </div>
 
@@ -127,6 +132,9 @@
               <button type="button" class="btn green btn-submit">
                 <i class="fa fa-save"></i> 保存
               </button>
+            <button class="btn default" data-href="${ctx}/userInfo">
+                <i class="fa fa-chevron-left"></i> 返回
+            </button>
             </div>
           </div>
         </form>
