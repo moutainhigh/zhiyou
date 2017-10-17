@@ -55,7 +55,7 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 	}
 
 	@Override
-	public void create(@NotNull ReportVisitedLog reportVisitedLog) {
+	public void create(@NotNull ReportVisitedLog reportVisitedLog, Long userId) {
 
 		Long reportId = reportVisitedLog.getReportId();
 		validate(reportId, NOT_NULL, "report id " + reportId + " is null");
@@ -85,7 +85,7 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 				report.setConfirmedTime(new Date());
 			}
 			reportMapper.update(report);
-			actComponent.recordReportLog(reportId, "新增回访结果");
+			actComponent.recordReportLog(reportId, userId, "新增回访结果");
 		} else {
 			reportVisitedLog.setConfirmStatus(待审核);
 		}
@@ -99,7 +99,7 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 	}
 
 	@Override
-	public void modify(@NotNull ReportVisitedLog reportVisitedLog) {
+	public void modify(@NotNull ReportVisitedLog reportVisitedLog, Long userId) {
 
 		Long id = reportVisitedLog.getId();
 		ReportVisitedLog persistence = reportVisitedLogMapper.findOne(id);
@@ -212,7 +212,7 @@ public class ReportVisitedLogServiceImpl implements ReportVisitedLogService{
 		validate(persistence);
 		reportVisitedLogMapper.update(persistence);
 		reportMapper.update(report);
-		actComponent.recordReportLog(reportId, "检测报告再次回访");
+		actComponent.recordReportLog(reportId, userId, "检测报告再次回访");
 	}
 
 	private ConfirmStatus checkSuccessAndReturnStatus(String visitedStatus) {

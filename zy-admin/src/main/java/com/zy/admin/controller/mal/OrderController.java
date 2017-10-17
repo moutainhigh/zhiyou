@@ -1,6 +1,7 @@
 package com.zy.admin.controller.mal;
 
 import com.zy.Config;
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -15,6 +16,7 @@ import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
+import com.zy.model.Principal;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.PaymentQueryModel;
@@ -255,8 +257,9 @@ public class OrderController {
 
 	@RequiresPermissions("order:deliver")
 	@RequestMapping(value = "/paid/deliver", method = RequestMethod.POST)
-	public String paidDeliver(OrderDeliverDto orderDeliverDto, RedirectAttributes redirectAttributes) {
+	public String paidDeliver(OrderDeliverDto orderDeliverDto, RedirectAttributes redirectAttributes, AdminPrincipal principal) {
 		try {
+			orderDeliverDto.setDeliveredId(principal.getUserId());
 			orderService.platformDeliver(orderDeliverDto);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("发货成功"));
 			return "redirect:/order/paid";

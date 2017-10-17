@@ -1,5 +1,6 @@
 package com.zy.admin.controller.mal;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -66,9 +67,9 @@ public class ProductReplacementController {
 	@RequiresPermissions("productReplacement:deliver")
 	@RequestMapping(value = "/deliver", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> deliver(@RequestParam Long id, LogisticsDto logisticsDto) {
+	public Result<?> deliver(@RequestParam Long id, LogisticsDto logisticsDto , AdminPrincipal principal) {
 		try {
-			productReplacementService.deliver(id, logisticsDto);
+			productReplacementService.deliver(id, logisticsDto, principal.getUserId());
 			return ResultBuilder.ok("操作成功");
 		} catch (Exception e) {
 			return ResultBuilder.error(e.getMessage());
@@ -78,9 +79,9 @@ public class ProductReplacementController {
 	@RequiresPermissions("productReplacement:reject")
 	@RequestMapping(value = "/reject", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> reject(@RequestParam Long id, String remark) {
+	public Result<?> reject(@RequestParam Long id, String remark, AdminPrincipal principal) {
 		try {
-			productReplacementService.reject(id, remark);
+			productReplacementService.reject(id, remark, principal.getUserId());
 			return ResultBuilder.ok("操作成功");
 		} catch (Exception e) {
 			return ResultBuilder.error(e.getMessage());

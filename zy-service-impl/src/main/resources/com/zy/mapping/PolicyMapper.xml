@@ -50,6 +50,8 @@
 			valid_time_begin = #{validTimeBegin},
 			valid_time_end = #{validTimeEnd},
 			version = version + 1,
+			update_id = #{updateId},
+			update_time = #{updateTime}
 		</set>
 		where id = #{id} and version=#{version}
 	</update>
@@ -73,6 +75,8 @@
 					<when test="field == 'createdTime'">created_time = #{policy.createdTime},</when>
 					<when test="field == 'validTimeBegin'">valid_time_begin = #{policy.validTimeBegin},</when>
 					<when test="field == 'validTimeEnd'">valid_time_end = #{policy.validTimeEnd},</when>
+					<when test="field == 'updateId'">update_id = #{policy.updateId},</when>
+					<when test="field == 'updateTime'">update_time = #{policy.updateTime},</when>
 				</choose>
 				</foreach>
 			</set>

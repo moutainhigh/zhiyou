@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "act_activity_ticket")
@@ -61,5 +62,13 @@ public class ActivityTicket implements Serializable {
 	@NotNull
 	@Query({Predicate.EQ})
 	private Integer isUsed;
+
+	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date updateTime;
+
+	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long updateId;
 
 }

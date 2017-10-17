@@ -1,36 +1,23 @@
 package com.zy.service.impl;
 
-import com.zy.common.exception.ConcurrentException;
 import com.zy.common.model.query.Page;
-import com.zy.entity.fnc.Account;
-import com.zy.entity.fnc.AccountLog;
-import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.star.Lesson;
 import com.zy.entity.star.LessonUser;
-import com.zy.mapper.AccountLogMapper;
-import com.zy.mapper.AccountMapper;
 import com.zy.mapper.LessonMapper;
 import com.zy.mapper.LessonUserMapper;
-import com.zy.model.query.AccountLogQueryModel;
 import com.zy.model.query.LessonQueryModel;
 import com.zy.model.query.LessonUserQueryModel;
-import com.zy.service.AccountLogService;
 import com.zy.service.LessonService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.fnc.AccountLog.InOut.收入;
 
 @Service
 @Validated
@@ -73,12 +60,15 @@ public class LessonServiceImpl implements LessonService {
 	/**
 	 * 删除 课程 并更新其他课程
 	 * @param lessonId
-     */
+	 * @param userId
+	 */
 	@Override
-	public void updateEdit(Long lessonId) {
+	public void updateEdit(Long lessonId, Long userId) {
 		Lesson lesson = lessonMapper.findOne(lessonId);
 		if (lesson!=null){
 			lesson.setViewFlage(0);
+			lesson.setUpdateTime(new Date());
+			lesson.setUpdateId(userId);
 			lessonMapper.update(lesson);
 		}
 		//将所有 parentId 是这个的更新掉
@@ -94,6 +84,8 @@ public class LessonServiceImpl implements LessonService {
 				parentAllId=null;
 			}
 			lessons.setParentAllId(parentAllId);
+			lessons.setUpdateTime(new Date());
+			lessons.setUpdateId(userId);
 			lessonMapper.update(lessons);
 		}
 

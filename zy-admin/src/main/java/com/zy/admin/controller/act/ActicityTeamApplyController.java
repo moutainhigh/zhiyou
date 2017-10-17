@@ -1,5 +1,6 @@
 package com.zy.admin.controller.act;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
@@ -8,6 +9,7 @@ import com.zy.component.ActivityTeamApplyComponent;
 import com.zy.component.ActivityTicketComponent;
 import com.zy.entity.act.*;
 import com.zy.entity.usr.User;
+import com.zy.model.Principal;
 import com.zy.model.query.ActivityQueryModel;
 import com.zy.model.query.ActivityTeamApplyQueryModel;
 import com.zy.model.query.ActivityTicketQueryModel;
@@ -23,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
@@ -161,7 +164,7 @@ public class ActicityTeamApplyController {
      */
 	@RequiresPermissions("activityTicket:edit")
 	@RequestMapping(value = "/ticketReset" , method = RequestMethod.POST)
-	public String freeze(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+	public String freeze(@RequestParam Long id, RedirectAttributes redirectAttributes, AdminPrincipal principal) {
 		validate(id, NOT_NULL, "activityTicket id is null");
 		ActivityTicket activityTicket = activityTicketService.findOne(id);
 		validate(activityTicket, NOT_NULL, "activityTicket id " + id + " not found");
@@ -184,6 +187,8 @@ public class ActicityTeamApplyController {
 				validate(activityApplyId, NOT_NULL, "activityApply id is null");
 				validate(activityApply, NOT_NULL, "activityApply id " + activityApplyId + " not found");
 				activityTicket.setIsUsed(0);
+				activityTicket.setUpdateId(principal.getUserId());
+				activityTicket.setUpdateTime(new Date());
 				activityApply.setInviterId(null);
 				activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已报名);
 				activityTicketService.update(activityTicket);

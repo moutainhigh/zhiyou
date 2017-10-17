@@ -10,9 +10,9 @@ public interface ReportVisitedLogService {
 
 	ReportVisitedLog findOne(Long id);
 
-	void create(ReportVisitedLog reportVisitedLog);
+	void create(ReportVisitedLog reportVisitedLog, Long userId);
 
-	void modify(ReportVisitedLog reportVisitedLog);
+	void modify(ReportVisitedLog reportVisitedLog, Long userId);
 
 	ReportVisitedLog findByReportId(Long reportId);
 

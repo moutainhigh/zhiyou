@@ -83,6 +83,9 @@
 					<when test="field == 'logisticsSn'">logistics_sn = #{productReplacement.logisticsSn},</when>
 					<when test="field == 'logisticsFee'">logistics_fee = #{productReplacement.logisticsFee},</when>
 					<when test="field == 'remark'">remark = #{productReplacement.remark},</when>
+					<when test="field == 'deliveredId'">delivered_id = #{productReplacement.deliveredId},</when>
+					<when test="field == 'updateTime'">update_time = #{productReplacement.updateTime},</when>
+					<when test="field == 'updateId'">update_id = #{productReplacement.updateId},</when>
 				</choose>
 				</foreach>
 			</set>

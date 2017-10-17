@@ -30,8 +30,8 @@
 	<sql id="baseColumn">id,title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,max_count,ticket_type,version,level,lesson_id</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.act.Activity" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_activity` (title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version,max_count,ticket_type,level,lesson_id)
-	  values (#{title},#{areaId},#{amount},#{address},#{latitude},#{longitude},#{image},#{detail},#{applyDeadline},#{startTime},#{endTime},#{signedInCount},#{collectedCount},#{appliedCount},#{viewedCount},#{isReleased},#{version},#{maxCount},#{ticketType},#{level},#{lessonId})
+	  insert into `act_activity` (title,area_id,amount,address,latitude,longitude,image,detail,apply_deadline,start_time,end_time,signed_in_count,collected_count,applied_count,viewed_count,is_released,version,max_count,ticket_type,level,lesson_id,create_id,create_time)
+	  values (#{title},#{areaId},#{amount},#{address},#{latitude},#{longitude},#{image},#{detail},#{applyDeadline},#{startTime},#{endTime},#{signedInCount},#{collectedCount},#{appliedCount},#{viewedCount},#{isReleased},#{version},#{maxCount},#{ticketType},#{level},#{lessonId},#{createId},#{createTime})
 	</insert>
 
 	<delete id="delete">
@@ -61,7 +61,9 @@
 			ticket_type = #{ticketType},
 			version = version + 1,
 			level = #{level},
-			lesson_id =#{lessonId}
+			lesson_id =#{lessonId},
+			update_id = #{updateId},
+			update_time = #{updateTime}
 		</set>
 		where id = #{id} and version=#{version}
 	</update>
@@ -91,6 +93,8 @@
 					<when test="field == 'ticketType'">ticket_type = #{activity.ticketType},</when>
 					<when test="field == 'level'">level = #{activity.level},</when>
 					<when test="field == 'lessonId'">lesson_id = #{activity.lessonId},</when>
+					<when test="field == 'lessonId'">update_id = #{activity.updateId},</when>
+					<when test="field == 'lessonId'">update_time = #{activity.updateTime},</when>
 				</choose>
 				</foreach>
 			</set>
