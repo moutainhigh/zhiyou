@@ -93,7 +93,7 @@ public class UcenterPayController {
 	public String pay(@BigDecimalBinder BigDecimal money, @RequestParam PayType payType, @StringBinder String paymentSn, Model model, Principal principal) {
 		if (StringUtils.isBlank(paymentSn)) {
 			final BigDecimal zero = new BigDecimal("0.00");
-			String title = "积分余额充值";
+			String title = "U币余额充值";
 			Long userId = principal.getUserId();
 			validate(money, v -> v.compareTo(zero) > 0, "money must be more than 0.00");
 			final BigDecimal amount = money;
