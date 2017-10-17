@@ -26,6 +26,6 @@ public interface UserTargetSalesService {
 
 	void avgUserTargetSales(Integer year,Integer month);
 
-	void delete(Long id);
+	void delete(Long id, Long userId);
 
 }

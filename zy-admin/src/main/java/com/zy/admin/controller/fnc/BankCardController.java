@@ -1,5 +1,6 @@
 package com.zy.admin.controller.fnc;
 
+import com.zy.admin.model.AdminPrincipal;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,9 +48,9 @@ public class BankCardController {
 	@RequiresPermissions("bankCard:confirm")
 	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> confirm(@RequestParam Long id, @RequestParam boolean isSuccess, String confirmRemark) {
+	public Result<?> confirm(@RequestParam Long id, @RequestParam boolean isSuccess, String confirmRemark, AdminPrincipal adminPrincipal) {
 		try{
-			bankCardService.confirm(id, isSuccess, confirmRemark);
+			bankCardService.confirm(id, isSuccess, confirmRemark,adminPrincipal.getUserId());
 		}catch (BizException e) {
 			return ResultBuilder.error("操作失败:" + e.getMessage());
 		}

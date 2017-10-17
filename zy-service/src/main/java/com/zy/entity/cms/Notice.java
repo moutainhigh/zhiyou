@@ -4,6 +4,7 @@ import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
 import io.gd.generator.annotation.query.QueryModel;
+import io.gd.generator.annotation.view.View;
 import io.gd.generator.api.query.Predicate;
 
 import java.io.Serializable;
@@ -58,5 +59,19 @@ public class Notice implements Serializable {
 	@Field(label = "通知类型")
 	private NoticeType noticeType;
 
+	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long createId;
+
+	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date updateTime;
+
+	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long updateId;
+
+	@NotNull
+	private Integer status;
 
 }

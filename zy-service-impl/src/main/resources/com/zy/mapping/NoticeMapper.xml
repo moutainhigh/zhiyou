@@ -13,12 +13,18 @@
 	<sql id="baseColumn">id,title,content,created_time,notice_type</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.cms.Notice" useGeneratedKeys="true" keyProperty="id">
-	  insert into `cms_notice` (title,content,created_time,notice_type)
-	  values (#{title},#{content},#{createdTime},#{noticeType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler})
+	  insert into `cms_notice` (title,content,created_time,notice_type,create_id)
+	  values (#{title},#{content},#{createdTime},#{noticeType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{createId})
 	</insert>
 
-	<delete id="delete">
-		delete from `cms_notice` where id = #{id}
+	<delete id="delete" parameterType="com.zy.entity.cms.Notice">
+		update `cms_notice`
+		<set>
+			update_id = #{updateId},
+			update_time = #{updateTime},
+			status = #{status},
+		</set>
+		where id = #{id}
 	</delete>
 
 	<update id="update" parameterType="com.zy.entity.cms.Notice">
@@ -28,6 +34,8 @@
 			content = #{content},
 			created_time = #{createdTime},
 			notice_type = #{noticeType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			update_id = #{updateId},
+			update_time = #{updateTime},
 		</set>
 		where id = #{id}
 	</update>
@@ -59,6 +67,7 @@
 		<include refid="baseColumn"/>
 		from `cms_notice`
 		<where>
+			status = 1
 			<if test="noticeTypeIN != null">
 				<if test="noticeTypeIN.length != 0">
 				and notice_type in

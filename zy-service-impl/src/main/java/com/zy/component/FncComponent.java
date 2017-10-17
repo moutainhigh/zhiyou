@@ -76,7 +76,8 @@ public class FncComponent {
 		accountLog.setUserId(account.getUserId());
 		accountLog.setInOut(inOut);
 		accountLog.setRefUserId(refUserId);
-
+		accountLog.setUpdateId(refUserId);
+		accountLog.setUpdateTime(new Date());
 		if (ref instanceof Payment) {
 			Payment payment = (Payment) ref;
 			accountLog.setRefSn(payment.getSn());
@@ -133,8 +134,8 @@ public class FncComponent {
 		}
 	}
 
-	public Profit createAndGrantProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
-	                           @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount, Date createdTime) {
+	public Profit createAndGrantProfit(@NotNull Long userId, Long loginId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
+									   @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount, Date createdTime) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");

@@ -63,5 +63,19 @@ public class UserTargetSales implements Serializable {
 	@View
 	private Date createTime;
 
+	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long createId;
 
+	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date updateTime;
+
+	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long updateId;
+
+	@View
+	@Query(Predicate.EQ)
+	private Integer status;
 }

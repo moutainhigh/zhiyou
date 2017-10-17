@@ -13,7 +13,6 @@ import com.zy.entity.fnc.Profit.ProfitType;
 import com.zy.entity.report.LargeAreaProfit;
 import com.zy.entity.sys.SystemCode;
 import com.zy.entity.usr.User;
-import com.zy.mapper.LargeAreaProfitMapper;
 import com.zy.mapper.ProfitMapper;
 import com.zy.model.BizCode;
 import com.zy.model.dto.DepositSumDto;
@@ -82,7 +81,7 @@ public class ProfitServiceImpl implements ProfitService {
 
 	@Override
 	public Profit createAndGrant(Long userId, String title, CurrencyType currencyType, BigDecimal amount, Date createdTime) {
-		return fncComponent.createAndGrantProfit(userId, ProfitType.补偿, null, title, currencyType, amount, createdTime);
+		return fncComponent.createAndGrantProfit(userId, userId, ProfitType.补偿, null, title, currencyType, amount, createdTime);
 	}
 
 	@Override
@@ -104,6 +103,8 @@ public class ProfitServiceImpl implements ProfitService {
 		}
 		profit.setGrantedTime(new Date());
 		profit.setProfitStatus(Profit.ProfitStatus.已发放);
+		profit.setUpdateTime(new Date());
+		profit.setUpdateId(sysUserId);
 		if (profitMapper.update(profit) == 0) {
 			throw new ConcurrentException();
 		}
@@ -218,7 +219,7 @@ public class ProfitServiceImpl implements ProfitService {
 	public void cancel(@NotNull Long id) {
 		Profit profit = profitMapper.findOne(id);
 		validate(profit, NOT_NULL, "profit id " + id + " not found");
-
+		Long sysUserId = config.getSysUserId();
 		if (profit.getProfitStatus() == ProfitStatus.已取消) {
 			return;
 		} else if (profit.getProfitStatus() != ProfitStatus.待发放) {
@@ -226,6 +227,8 @@ public class ProfitServiceImpl implements ProfitService {
 		}
 
 		profit.setProfitStatus(ProfitStatus.已取消);
+		profit.setUpdateId(sysUserId);
+		profit.setUpdateTime(new Date());
 		if (profitMapper.update(profit) == 0) {
 			throw new ConcurrentException();
 		}

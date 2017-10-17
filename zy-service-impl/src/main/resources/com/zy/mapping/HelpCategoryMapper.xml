@@ -14,8 +14,8 @@
 	<sql id="baseColumn">id,code,name,created_time,user_type,index_number</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.cms.HelpCategory" useGeneratedKeys="true" keyProperty="id">
-	  insert into `cms_help_category` (code,name,created_time,user_type,index_number)
-	  values (#{code},#{name},#{createdTime},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{indexNumber})
+	  insert into `cms_help_category` (code,name,created_time,user_type,index_number,create_id)
+	  values (#{code},#{name},#{createdTime},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{indexNumber},#{createId})
 	</insert>
 
 	<delete id="delete">
@@ -44,6 +44,8 @@
 					<when test="field == 'createdTime'">created_time = #{helpCategory.createdTime},</when>
 					<when test="field == 'userType'">user_type = #{helpCategory.userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.User$UserType},</when>
 					<when test="field == 'indexNumber'">index_number = #{helpCategory.indexNumber},</when>
+					<when test="field == 'updateId'">update_id = #{helpCategory.updateId},</when>
+					<when test="field == 'updateTime'">update_time = #{helpCategory.updateTime},</when>
 				</choose>
 				</foreach>
 			</set>

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BannerService {
 
-	void delete(Long id);
+	void delete(Long id, Long userId);
 
 	Banner findOne(Long id);
 
@@ -20,5 +20,5 @@ public interface BannerService {
 
 	List<Banner> findAll(BannerQueryModel bannerQueryModel);
 
-	void release(Long id, boolean isReleased);
+	void release(Long id, boolean isReleased, Long userId);
 }

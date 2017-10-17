@@ -1,5 +1,6 @@
 package com.zy.admin.controller.fnc;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.extend.BigDecimalBinder;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
@@ -67,7 +68,7 @@ public class AccountController {
 		}
 
 		try {
-			profitService.createAndGrant(userId, remark, CurrencyType.U币, amount, new Date());
+			profitService.createAndGrant(userId,remark, CurrencyType.U币, amount, new Date());
 		} catch (Exception e) {
 			return ResultBuilder.error("充值失败," + e.getMessage());
 		}

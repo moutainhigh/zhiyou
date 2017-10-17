@@ -14,12 +14,17 @@
 	<sql id="baseColumn">id,user_id,target_count,year,month,create_time</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.UserTargetSales" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user_target_sales` (user_id,target_count,year,month,create_time)
-	  values (#{userId},#{targetCount},#{year},#{month},#{createTime})
+	  insert into `usr_user_target_sales` (user_id,target_count,year,month,create_time,create_id)
+	  values (#{userId},#{targetCount},#{year},#{month},#{createTime},#{createId})
 	</insert>
 
-	<delete id="delete">
-		delete from `usr_user_target_sales` where id = #{id}
+	<delete id="delete" parameterType="com.zy.entity.usr.UserTargetSales">
+		update `usr_user_target_sales`
+		SET
+			update_id = #{updateId},
+			update_time = #{updateTime},
+			status = #{status}
+		where id = #{id}
 	</delete>
 
 	<update id="update" parameterType="com.zy.entity.usr.UserTargetSales">
@@ -30,6 +35,8 @@
 			year = #{year},
 			month = #{month},
 			create_time = #{createTime},
+			update_id = #{updateId},
+			update_time = #{updateTime},
 		</set>
 		where id = #{id}
 	</update>
@@ -62,6 +69,7 @@
 		<include refid="baseColumn"/>
 		from `usr_user_target_sales`
 		<where>
+			status = 1
 			<if test="monthEQ != null">
 				and month = #{monthEQ}
 			</if>

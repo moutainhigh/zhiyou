@@ -22,8 +22,8 @@
 	<sql id="baseColumn">id,in_out,title,user_id,ref_user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount,is_acknowledged</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.fnc.AccountLog" useGeneratedKeys="true" keyProperty="id">
-	  insert into `fnc_account_log` (in_out,title,user_id,ref_user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount,is_acknowledged)
-	  values (#{inOut,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{title},#{userId},#{refUserId},#{accountLogType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{refSn},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{transTime},#{beforeAmount},#{transAmount},#{afterAmount},#{isAcknowledged})
+	  insert into `fnc_account_log` (in_out,title,user_id,ref_user_id,account_log_type,ref_id,ref_sn,currency_type,trans_time,before_amount,trans_amount,after_amount,is_acknowledged,update_id,update_time)
+	  values (#{inOut,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{title},#{userId},#{refUserId},#{accountLogType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{refId},#{refSn},#{currencyType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{transTime},#{beforeAmount},#{transAmount},#{afterAmount},#{isAcknowledged},#{updateId},#{updateTime})
 	</insert>
 
 	<delete id="delete">
@@ -46,6 +46,8 @@
 			trans_amount = #{transAmount},
 			after_amount = #{afterAmount},
 			is_acknowledged = #{isAcknowledged},
+			update_id = #{updateId},
+			update_time = #{updateTime}
 		</set>
 		where id = #{id}
 	</update>

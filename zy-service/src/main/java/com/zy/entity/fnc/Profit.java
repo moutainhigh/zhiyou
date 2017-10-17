@@ -134,4 +134,12 @@ public class Profit implements Serializable {
 	@Field(label = "乐观锁")
 	private Integer version;
 
+
+	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date updateTime;
+
+	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long updateId;
 }

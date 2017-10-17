@@ -1,5 +1,6 @@
 package com.zy.admin.controller.usr;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
@@ -83,7 +84,7 @@ public class UserTargerSalesController {
      * @return
      */
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String create(UserTargetSales userTargetSales,String phone, Model model, RedirectAttributes redirectAttributes) {
+	public String create(UserTargetSales userTargetSales, String phone, Model model, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
 		try {
 			User user = userService.findByPhone(phone);
 			if(user == null){
@@ -99,6 +100,8 @@ public class UserTargerSalesController {
 			userTargetSales.setYear(DateUtil.getYear(now));
 			userTargetSales.setMonth(DateUtil.getMothNum(now));
 			userTargetSales.setCreateTime(new Date());
+			userTargetSales.setCreateId(adminPrincipal.getUserId());
+			userTargetSales.setStatus(1);
 			List<UserTargetSales> all = userTargetSalesService.findAll(UserTargetSalesQueryModel.builder().userIdEQ(user.getId()).yearEQ(userTargetSales.getYear()).monthEQ(userTargetSales.getMonth()).build());
 			if(all != null && all.size() > 0 ){
 				redirectAttributes.addFlashAttribute(ResultBuilder.error("新增失败，该用户当月已设置过目标量，如需更改，请编辑"));
@@ -128,9 +131,11 @@ public class UserTargerSalesController {
      * @return
      */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(UserTargetSales userTargetSales, RedirectAttributes redirectAttributes) {
+	public String update(UserTargetSales userTargetSales, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
 		Long userTargetSalesId = userTargetSales.getId();
 		try {
+			userTargetSales.setUpdateId(adminPrincipal.getUserId());
+			userTargetSales.setUpdateTime(new Date());
 			userTargetSalesService.modifySales(userTargetSalesId,userTargetSales.getTargetCount());
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
@@ -140,7 +145,7 @@ public class UserTargerSalesController {
 	}
 
 	@RequestMapping("/delete/{id}")
-	public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes, Model model) {
+	public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes, Model model, AdminPrincipal adminPrincipal) {
 		if (id == null) {
 			model.addAttribute(ResultBuilder.error("id为空"));
 			return "usr/userTargetSalesList";
@@ -151,7 +156,8 @@ public class UserTargerSalesController {
 			return "usr/userTargetSalesList";
 		}
 		try {
-			userTargetSalesService.delete(id);
+
+			userTargetSalesService.delete(id, adminPrincipal.getUserId());
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("删除成功"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error("删除失败,原因：" + e.getMessage()));

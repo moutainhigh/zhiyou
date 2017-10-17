@@ -577,7 +577,7 @@ public class UserServiceImpl implements UserService {
         usrComponent.recordUserLog(id, userId, "成为股东", null);
         //升级股东获得50W股
         if(isShareholder) {
-            fncComponent.createAndGrantProfit(id, Profit.ProfitType.股份奖励, null, user.getNickname() + "升级股东,获得股份奖励", CurrencyType.货币股份, new BigDecimal("500000.00"), new Date());
+            fncComponent.createAndGrantProfit(id, userId, Profit.ProfitType.股份奖励, null, user.getNickname() + "升级股东,获得股份奖励", CurrencyType.货币股份, new BigDecimal("500000.00"), new Date());
         }
     }
 
