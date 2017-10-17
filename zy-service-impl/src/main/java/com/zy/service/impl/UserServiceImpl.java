@@ -569,15 +569,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyIsShareholder(@NotNull Long id, Long userId, boolean isShareholder) {
         User user = findAndValidate(id);
+        String label = isShareholder ? "设置" : "取消";
 
         User userForMerge = new User();
         userForMerge.setId(id);
         userForMerge.setIsShareholder(isShareholder);
         userMapper.merge(userForMerge, "isShareholder");
-        usrComponent.recordUserLog(id, userId, "成为股东", null);
-        //升级股东获得50W股
-        if(isShareholder) {
+        usrComponent.recordUserLog(id, userId, label + "股东", null);
+        if(isShareholder) {//升级股东获得50W股
             fncComponent.createAndGrantProfit(id, Profit.ProfitType.股份奖励, null, user.getNickname() + "升级股东,获得股份奖励", CurrencyType.货币股份, new BigDecimal("500000.00"), new Date());
+        }else {//取消股东，收回所有股份
+            fncComponent.cancelShareholder(id, Profit.ProfitType.股份奖励, null, user.getNickname() + "取消股东,收回所有股份", CurrencyType.货币股份, new BigDecimal("500000.00"), new Date());
         }
     }
 

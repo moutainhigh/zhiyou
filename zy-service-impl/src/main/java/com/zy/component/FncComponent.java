@@ -161,6 +161,31 @@ public class FncComponent {
 		return profit;
 	}
 
+	public Profit cancelShareholder(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
+									   @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount, Date createdTime) {
+
+		Profit profit = new Profit();
+		profit.setProfitType(profitType);
+		profit.setTitle(title);
+		profit.setUserId(userId);
+		profit.setAmount(new BigDecimal(-500000.00));
+		profit.setSn(ServiceUtils.generateProfitSn());
+		profit.setCurrencyType(currencyType);
+		profit.setCreatedTime(createdTime);
+		profit.setRefId(refId);
+		profit.setProfitStatus(Profit.ProfitStatus.已发放);
+		profit.setGrantedTime(createdTime);
+		profit.setVersion(0);
+		validate(profit);
+		profitMapper.insert(profit);
+		Long sysUserId = config.getSysUserId();
+		if (!sysUserId.equals(userId)) {
+			this.recordAccountLog(userId, title, currencyType, amount, 支出, profit, sysUserId);
+			this.recordAccountLog(sysUserId, title, currencyType, amount, 收入, profit, userId);
+		}
+		return profit;
+	}
+
 	public Profit createProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title
 	                                          , @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount
 												, Date createdTime, String remark) {

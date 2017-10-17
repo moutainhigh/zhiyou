@@ -620,7 +620,7 @@
                                 <%--</shiro:hasPermission>--%>
                                 <shiro:hasPermission name="user:setIsDeleted">
                                 if (full.isDeleted == null || full.isDeleted == false) {
-                                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setIsDeleted?id=' + full.id + '" data-confirm="您确定要删除[' + full.nickname + ']吗？"><i class="fa fa-times"></i> 删除（开除） </a>';
+                                    optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setIsDeleted?id=' + full.id + '" data-confirm="您确定要删除[' + full.nickname + ']吗？"><i class="fa fa-times"></i> 开除 </a>';
                                 }
                                 </shiro:hasPermission>
                                 <shiro:hasPermission name="user:setIsPresident">
@@ -645,7 +645,10 @@
                                     </shiro:hasPermission>
                                     <shiro:hasPermission name="user:setShareholder">
                                     if(!full.isShareholder) {
-                                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setShareholder?id=' + full.id + '" data-confirm="您确定要升级[' + full.nickname + ']为股东？"><i class="fa fa-smile-o"></i> 成为股东 </a>';
+                                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setShareholder?id=' + full.id + '&flag=0" data-confirm="您确定要升级[' + full.nickname + ']为股东？"><i class="fa fa-smile-o"></i> 成为股东 </a>';
+                                    }
+                                    if(full.isShareholder) {
+                                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setShareholder?id=' + full.id + '" data-confirm="您确定要取消[' + full.nickname + ']的股东身份？"><i class="fa fa-smile-o"></i> 取消股东 </a>';
                                     }
                                     </shiro:hasPermission>
                                     <shiro:hasPermission name="user:setIsPresident">
@@ -1028,6 +1031,22 @@
                                 </select>
                             </div>
 
+                            <div class="form-group">
+                                <select name="isDeletedEQ" class="form-control">
+                                    <option value="">-- 是否开除 --</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <select name="isToV4EQ" class="form-control">
+                                    <option value="">-- 是否直升特 --</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+
                             <%--<div class="form-group">--%>
                                 <%--<select name="isBossEQ" class="form-control">--%>
                                     <%--<option value="">-- 是否总经理 --</option>--%>
@@ -1035,6 +1054,14 @@
                                     <%--<option value="0">否</option>--%>
                                 <%--</select>--%>
                             <%--</div>--%>
+
+                            <div class="form-group">
+                                <select name="isShareholderEQ" class="form-control">
+                                    <option value="">-- 是否股东 --</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
 
                             <div class="form-group">
                                 <select name="isPresident" class="form-control">

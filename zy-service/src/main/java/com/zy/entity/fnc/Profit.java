@@ -95,7 +95,7 @@ public class Profit implements Serializable {
 	private CurrencyType currencyType;
 
 	@NotNull
-	@DecimalMin("0.01")
+	//@DecimalMin("0.01")
 	@Field(label = "金额")
 	@View(groups = VO_ADMIN)
 	@View(name = "amountLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})

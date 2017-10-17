@@ -387,8 +387,12 @@ public class UserController {
 
 	@RequiresPermissions("user:setShareholder")
 	@RequestMapping(value = "/setShareholder", method = RequestMethod.GET)
-	public String setShareholder(@RequestParam Long id, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
-		userService.modifyIsShareholder(id, adminPrincipal.getUserId() , true);
+	public String setShareholder(@RequestParam Long id, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal,Integer flag) {
+		if(null != flag && flag == 0){//设置股东
+			userService.modifyIsShareholder(id, adminPrincipal.getUserId() , true);
+		}else {//取消股东
+			userService.modifyIsShareholder(id, adminPrincipal.getUserId() , false);
+		}
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		return "redirect:/user";
 	}
