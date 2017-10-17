@@ -77,7 +77,7 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(String phone, String password, Model model,
+	public String login(String phone, String password, Model model,Principal principal,
 	                    HttpServletRequest request, HttpServletResponse response,
 	                    HttpSession session, RedirectAttributes redirectAttributes) {
 
@@ -108,7 +108,7 @@ public class LoginController {
 		}
 
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("登录成功"));
-		userService.modifyLastLoginTime(user.getId(), adminPrincipal.getUserId());
+		userService.modifyLastLoginTime(user.getId(), principal.getUserId());
 		onLoginSuccess(request, response, user.getId());
 		return "redirect:" + redirectUrl;
 	}
@@ -164,7 +164,7 @@ public class LoginController {
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, @RequestParam String smsCode,
-	                       @RequestParam String phone, Long parentId, @RequestParam String realname) {
+	                       @RequestParam String phone, Long parentId, @RequestParam String realname, Principal principal) {
 
 		logger.info("register begin...........");
 		if (GcUtils.getPrincipal() != null) {
@@ -219,7 +219,7 @@ public class LoginController {
 		}
 		logger.info("redirect url = " + redirectUrl);
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("恭喜您, 注册成功"));
-		userService.modifyLastLoginTime(user.getId(), adminPrincipal.getUserId());
+		userService.modifyLastLoginTime(user.getId(), principal.getUserId());
 		onLoginSuccess(request, response, user.getId());
 		return "redirect:" + redirectUrl;
 	}
