@@ -142,6 +142,9 @@
 			<if test="userRankEQ != null">
 				and user_rank = #{userRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 			</if>
+			<if test="nameorPhone != null">
+				and (phone LIKE #{nameorPhone} or nickname like #{nameorPhone})
+			</if>
 			<if test="isDeletedEQ != null">
 				and is_deleted = #{isDeletedEQ}
 			</if>
@@ -251,6 +254,9 @@
 			</if>
 			<if test="isDeletedEQ != null">
 				and is_deleted = #{isDeletedEQ}
+			</if>
+			<if test="nameorPhone != null">
+				and (phone LIKE #{nameorPhone} or nickname like #{nameorPhone})
 			</if>
 			<if test="isShareholderEQ != null">
 				and is_shareholder = #{isShareholderEQ}

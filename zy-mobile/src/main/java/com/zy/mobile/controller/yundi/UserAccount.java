@@ -5,6 +5,7 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.ProfitComponent;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.Profit;
+import com.zy.entity.usr.User;
 import com.zy.mobile.controller.notify.WeixinMpNotifyController;
 import com.zy.model.Principal;
 import com.zy.model.query.ProfitQueryModel;
@@ -62,7 +63,8 @@ public class UserAccount  {
                 return ResultBuilder.error("参数有错");
             }
             Long userId = Long.valueOf(userIdstr);
-            if (userService.findOne(userId)==null){
+            User usercheck = userService.findOne(userId);
+            if (usercheck==null||usercheck.getId()==null){
                 ResultBuilder.error("用户信息不存在");
             }
             Map<String, Object> map = new HashMap<>();
@@ -107,7 +109,8 @@ public class UserAccount  {
                 return ResultBuilder.error("参数有错");
             }
             Long userId = Long.valueOf(userIdstr);
-            if (userService.findOne(userId)==null){
+            User usercheck = userService.findOne(userId);
+            if (usercheck==null||usercheck.getId()==null){
                 ResultBuilder.error("用户信息不存在");
             }
             ProfitQueryModel profitQueryModel = new ProfitQueryModel();
@@ -161,7 +164,8 @@ public class UserAccount  {
                 return ResultBuilder.error("参数有错");
             }
             Long userId = Long.valueOf(userIdstr);
-            if (userService.findOne(userId)==null){
+            User usercheck = userService.findOne(userId);
+            if (usercheck==null||usercheck.getId()==null){
                 ResultBuilder.error("用户信息不存在");
             }
             int month = Integer.valueOf(monthstr);

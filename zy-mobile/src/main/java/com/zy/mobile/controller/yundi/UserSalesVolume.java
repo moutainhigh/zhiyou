@@ -62,7 +62,8 @@ public class UserSalesVolume {
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Map<String, Object> map = new HashMap<>();
         Long id =  Long.parseLong(userId);
-        if (userService.findOne(id)==null){
+        User user = userService.findOne(id);
+        if (user==null||user.getId()==null){
             ResultBuilder.error("用户信息不存在");
         }
         List<Account> accounts = accountService.findByUserId(id);
@@ -100,7 +101,8 @@ public class UserSalesVolume {
         response.setHeader("Access-Control-Allow-Methods", "POST");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Long id =  Long.parseLong(userId);
-        if (userService.findOne(id)==null){
+        User usercheck = userService.findOne(id);
+        if (usercheck==null||usercheck.getId()==null){
             ResultBuilder.error("用户信息不存在");
         }
         OrderQueryModel orderQueryModel = new OrderQueryModel();
@@ -136,7 +138,9 @@ public class UserSalesVolume {
         response.setHeader("Access-Control-Allow-Methods", "POST");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Long id =  Long.parseLong(userId);
-        if (userService.findOne(id)==null){
+        User user = userService.findOne(id);
+        User usercheck = userService.findOne(id);
+        if (usercheck==null||usercheck.getId()==null){
             ResultBuilder.error("用户信息不存在");
         }
         OrderQueryModel orderQueryModel = new OrderQueryModel();
@@ -157,7 +161,8 @@ public class UserSalesVolume {
         response.setHeader("Access-Control-Allow-Methods", "POST");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Long id =  Long.parseLong(userId);
-        if (userService.findOne(id)==null){
+        User usercheck = userService.findOne(id);
+        if (usercheck==null||usercheck.getId()==null){
             ResultBuilder.error("用户信息不存在");
         }
         UserQueryModel userQueryModel = new UserQueryModel();
@@ -183,7 +188,8 @@ public class UserSalesVolume {
         response.setHeader("Access-Control-Allow-Methods", "POST");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Long id =  Long.parseLong(userId);
-        if (userService.findOne(id)==null){
+        User usercheck = userService.findOne(id);
+        if (usercheck==null||usercheck.getId()==null){
             ResultBuilder.error("用户信息不存在");
         }
         //我的直属特级
@@ -206,7 +212,8 @@ public class UserSalesVolume {
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type");
         Map<String, Object> map = new HashMap<>();
         Long id =  Long.parseLong(userId);
-        if (userService.findOne(id)==null){
+        User usercheck = userService.findOne(id);
+        if (usercheck==null||usercheck.getId()==null){
             ResultBuilder.error("用户信息不存在");
         }
         //我的直属下级
