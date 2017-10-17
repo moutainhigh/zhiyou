@@ -26,8 +26,13 @@ public class ArticleServiceImpl implements ArticleService {
 	private ArticleMapper articleMapper;
 	
 	@Override
-	public void delete(@NotNull Long id) {
-		articleMapper.delete(id);		
+	public void delete(@NotNull Long id, Long userId) {
+		Article article = new Article();
+		article.setId(id);
+		article.setUpdateId(userId);
+		article.setUpdateTime(new Date());
+		article.setStatus(0);
+		articleMapper.delete(article);
 	}
 
 	@Override

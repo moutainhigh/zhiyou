@@ -20,12 +20,18 @@
 	<sql id="baseColumn">id,title,brief,author,released_time,is_released,image,content,created_time,visit_count,order_number,is_hot</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.cms.Article" useGeneratedKeys="true" keyProperty="id">
-	  insert into `cms_article` (title,brief,author,released_time,is_released,image,content,created_time,visit_count,order_number,is_hot)
-	  values (#{title},#{brief},#{author},#{releasedTime},#{isReleased},#{image},#{content},#{createdTime},#{visitCount},#{orderNumber},#{isHot})
+	  insert into `cms_article` (title,brief,author,released_time,is_released,image,content,created_time,visit_count,order_number,is_hot,create_id)
+	  values (#{title},#{brief},#{author},#{releasedTime},#{isReleased},#{image},#{content},#{createdTime},#{visitCount},#{orderNumber},#{isHot},#{createId})
 	</insert>
 
 	<delete id="delete">
-		delete from `cms_article` where id = #{id}
+		UPDATE `cms_article`
+		<set>
+			update_id = #{updateId},
+			update_time = #{updateTime},
+			status = #{status},
+		</set>
+		where id = #{id}
 	</delete>
 
 	<update id="update" parameterType="com.zy.entity.cms.Article">
@@ -42,6 +48,8 @@
 			visit_count = #{visitCount},
 			order_number = #{orderNumber},
 			is_hot = #{isHot},
+			update_id = #{updateId},
+			update_time = #{updateTime},
 		</set>
 		where id = #{id}
 	</update>
@@ -62,6 +70,8 @@
 					<when test="field == 'visitCount'">visit_count = #{article.visitCount},</when>
 					<when test="field == 'orderNumber'">order_number = #{article.orderNumber},</when>
 					<when test="field == 'isHot'">is_hot = #{article.isHot},</when>
+					<when test="field == 'updateId'">update_id = #{article.updateId},</when>
+					<when test="field == 'updateTime'">update_Time = #{article.updateTime},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -80,6 +90,7 @@
 		<include refid="baseColumn"/>
 		from `cms_article`
 		<where>
+			status = 1
 			<if test="releasedTimeLT != null">
 				and released_time &lt; #{releasedTimeLT}
 			</if>

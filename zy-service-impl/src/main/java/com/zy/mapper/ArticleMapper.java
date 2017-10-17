@@ -16,7 +16,7 @@ public interface ArticleMapper {
 
 	int merge(@Param("article") Article article, @Param("fields")String... fields);
 
-	int delete(Long id);
+	int delete(Article id);
 
 	Article findOne(Long id);
 

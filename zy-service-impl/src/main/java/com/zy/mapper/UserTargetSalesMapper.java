@@ -16,7 +16,7 @@ public interface UserTargetSalesMapper {
 
 	int merge(@Param("userTargetSales") UserTargetSales userTargetSales, @Param("fields")String... fields);
 
-	int delete(Long id);
+	int delete(UserTargetSales userTargetSales);
 
 	UserTargetSales findOne(Long id);
 

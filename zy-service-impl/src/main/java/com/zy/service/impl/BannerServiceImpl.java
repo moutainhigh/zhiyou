@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.validate;
@@ -22,8 +23,13 @@ public class BannerServiceImpl implements BannerService {
 	private BannerMapper bannerMapper;
 
 	@Override
-	public void delete(@NotNull Long id) {
-		bannerMapper.delete(id);
+	public void delete(@NotNull Long id, Long userId) {
+		Banner banner = new Banner();
+		banner.setId(id);
+		banner.setUpdateId(userId);
+		banner.setUpdateTime(new Date());
+		banner.setStatus(0);
+		bannerMapper.delete(banner);
 	}
 
 	@Override
@@ -66,10 +72,12 @@ public class BannerServiceImpl implements BannerService {
 	}
 
 	@Override
-	public void release(@NotNull Long id, boolean isReleased) {
+	public void release(@NotNull Long id, boolean isReleased, Long userId) {
 		Banner bannerForMerage = new Banner();
 		bannerForMerage.setId(id);
 		bannerForMerage.setIsReleased(isReleased);
+		bannerForMerage.setUpdateId(userId);
+		bannerForMerage.setUpdateTime(new Date());
 		bannerMapper.merge(bannerForMerage, "isReleased");
 	}
 

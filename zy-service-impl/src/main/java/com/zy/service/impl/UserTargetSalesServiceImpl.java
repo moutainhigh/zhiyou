@@ -144,8 +144,13 @@ public class UserTargetSalesServiceImpl implements UserTargetSalesService {
     }
 
     @Override
-    public void delete(Long id) {
-        userTargetSalesMapper.delete(id);
+    public void delete(Long id, Long userId) {
+        UserTargetSales userTargetSales = new UserTargetSales();
+        userTargetSales.setId(id);
+        userTargetSales.setUpdateId(userId);
+        userTargetSales.setUpdateTime(new Date());
+        userTargetSales.setStatus(0);
+        userTargetSalesMapper.delete(userTargetSales);
     }
 
     private UserTargetSales findAndValidate(Long id) {

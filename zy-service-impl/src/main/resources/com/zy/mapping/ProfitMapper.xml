@@ -44,6 +44,8 @@
 			ref_id = #{refId},
 			remark = #{remark},
 			version = version + 1,
+			update_id = #{updateId},
+			update_time = #{updateTime}
 		</set>
 		where id = #{id} and version=#{version}
 	</update>

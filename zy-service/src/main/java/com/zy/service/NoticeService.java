@@ -8,7 +8,7 @@ import com.zy.model.query.NoticeQueryModel;
 
 public interface NoticeService {
 
-	void delete(Long id);
+	void delete(Long id, Long userId);
 	Notice findOne(Long id);
 	Notice create(Notice notice);
 	Notice update(Notice notice);

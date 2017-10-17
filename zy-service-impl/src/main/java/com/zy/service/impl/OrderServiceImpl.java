@@ -36,7 +36,6 @@ import com.zy.model.query.OrderFillUserQueryModel;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.OrderService;
-import com.zy.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.validator.constraints.NotBlank;
@@ -1854,7 +1853,7 @@ public class OrderServiceImpl implements OrderService {
 		Long sysUserId = config.getSysUserId();
 
 		Date paidTime = order.getPaidTime();
-
+		Long loginId = config.getSysUserId();
 		/* 订单收款 */
 		if (order.getIsPayToPlatform()) {
 			BigDecimal amount = order.getAmount();
@@ -1866,7 +1865,7 @@ public class OrderServiceImpl implements OrderService {
 					amount = amount.subtract(v4Amount);
 					/*fncComponent.createAndGrantProfit(sysUserId, Profit.ProfitType.平台收款, orderId, "订单" + order.getSn() + "平台收款", currencyType, v4Amount);*/
 				}
-				fncComponent.createAndGrantProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单" + order.getSn() + "收款", CurrencyType.积分, amount, paidTime);
+				fncComponent.createAndGrantProfit(sellerId, loginId, Profit.ProfitType.订单收款, orderId, "订单" + order.getSn() + "收款", CurrencyType.积分, amount, paidTime);
 			}
 		}
 

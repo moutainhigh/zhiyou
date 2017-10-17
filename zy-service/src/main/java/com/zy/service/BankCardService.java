@@ -22,5 +22,5 @@ public interface BankCardService {
 
 	long count(BankCardQueryModel bankCardQueryModel);
 	
-	void confirm(Long id, boolean isSuccess, String confirmRemark);
+	void confirm(Long id, boolean isSuccess, String confirmRemark, Long userId);
 }

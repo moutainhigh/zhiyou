@@ -1,5 +1,6 @@
 package com.zy.admin.controller.cms;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Date;
 
 
 @RequestMapping("/notice")
@@ -50,7 +53,9 @@ public class NoticeController {
 
 	@RequiresPermissions("notice:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String create(RedirectAttributes redirectAttributes, Notice notice, Model model) {
+	public String create(RedirectAttributes redirectAttributes, Notice notice, Model model, AdminPrincipal adminPrincipal) {
+		notice.setCreateId(adminPrincipal.getUserId());
+		notice.setStatus(1);
 		try {
 			noticeService.create(notice);
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("Notice[" + notice.getTitle() + "]保存成功"));
@@ -71,7 +76,9 @@ public class NoticeController {
 
 	@RequiresPermissions("notice:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(Notice notice, RedirectAttributes redirectAttributes) {
+	public String update(Notice notice, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
+		notice.setUpdateId(adminPrincipal.getUserId());
+		notice.setUpdateTime(new Date());
 		try {
 			noticeService.update(notice);
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("Notice[" + notice.getTitle() + "]保存成功"));
@@ -83,7 +90,7 @@ public class NoticeController {
 
 	@RequiresPermissions("notice:edit")
 	@RequestMapping("/delete/{id}")
-	public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes, Model model) {
+	public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes, Model model, AdminPrincipal adminPrincipal) {
 		if (id == null) {
 			model.addAttribute(ResultBuilder.error("id为空"));
 			return "cms/noticeList";
@@ -94,7 +101,7 @@ public class NoticeController {
 			return "cms/noticeList";
 		}
 		try {
-			noticeService.delete(id);
+			noticeService.delete(id,adminPrincipal.getUserId());
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("Notice[" + notice.getTitle() + "]删除成功"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error("Notice[[" + notice.getTitle() + "]删除失败,原因：" + e.getMessage()));

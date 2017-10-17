@@ -25,7 +25,12 @@ public class NoticeServiceImpl implements NoticeService {
 	private NoticeMapper noticeMapper;
 	
 	@Override
-	public void delete(@NotNull Long id){
+	public void delete(@NotNull Long id, Long userId){
+		Notice notice = new Notice();
+		notice.setId(id);
+		notice.setUpdateId(userId);
+		notice.setUpdateTime(new Date());
+		notice.setStatus(0);
 		noticeMapper.delete(id);
 	}
 	

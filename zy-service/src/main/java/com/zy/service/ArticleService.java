@@ -8,7 +8,7 @@ import com.zy.model.query.ArticleQueryModel;
 
 public interface ArticleService {
 
-	void delete(Long id);
+	void delete(Long id, Long userId);
 	void visit(Long id);
 	Article findOne(Long id);
 	Article create(Article article);

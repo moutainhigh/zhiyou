@@ -150,7 +150,7 @@ public class BankCardServiceImpl implements BankCardService {
 	}
 
 	@Override
-	public void confirm(@NotNull Long id,@NotNull boolean isSuccess, String confirmRemark) {
+	public void confirm(@NotNull Long id, @NotNull boolean isSuccess, String confirmRemark, Long userId) {
 		validate(id, NOT_NULL, "id can not be null");
 		BankCard bankCard = bankCardMapper.findOne(id);
 		validate(bankCard, NOT_NULL, "appearance is not exists");
@@ -166,6 +166,7 @@ public class BankCardServiceImpl implements BankCardService {
 		} else {
 			merge.setConfirmStatus(ConfirmStatus.已通过);
 			merge.setConfirmedTime(new Date());
+			merge.setConfirmId(userId);
 		}
 		bankCardMapper.merge(merge, "confirmStatus", "confirmRemark", "confirmedTime");
 		producer.send(Constants.TOPIC_BANKCARD_CONFIRMED, bankCard.getId());

@@ -74,6 +74,7 @@
 					<when test="field == 'confirmRemark'">confirm_remark = #{bankCard.confirmRemark},</when>
 					<when test="field == 'confirmedTime'">confirmed_time = #{bankCard.confirmedTime},</when>
 					<when test="field == 'appliedTime'">applied_time = #{bankCard.appliedTime},</when>
+					<when test="field == 'confirmId'">confirm_id = #{bankCard.confirmId},</when>
 				</choose>
 				</foreach>
 			</set>
