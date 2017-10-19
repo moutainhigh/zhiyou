@@ -73,6 +73,7 @@ public class TeamReportNewController {
             model.addAttribute("queryDate",DateUtil.getYear(DateUtil.getBeforeMonthBegin(new Date(),-1,0))+SPLIT_PATTERN+DateUtil.getMothNum(DateUtil.getBeforeMonthBegin(new Date(),-1,0)));
         }
         model.addAttribute("queryDateLabels", getQueryTimeLabels());
+        model.addAttribute("type", systemCodeService.findByType("LargeAreaType"));
         return "rpt/teamReportNewList";
     }
 

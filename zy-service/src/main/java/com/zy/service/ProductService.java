@@ -17,7 +17,7 @@ public interface ProductService {
 	List<Product> findAll(ProductQueryModel productQueryModel);
 	Product modify(Product product);
 	Product modifyPrice(Product product);
-	void on(Long id, Boolean isOn);
+	void on(Long id, Boolean isOn,Long userId);
 
 	BigDecimal getPrice(Long productId, User.UserRank userRank, long quantity);
 

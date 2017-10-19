@@ -93,7 +93,7 @@ public class UcenterPayController {
 	public String pay(@BigDecimalBinder BigDecimal money, @RequestParam PayType payType, @StringBinder String paymentSn, Model model, Principal principal) {
 		if (StringUtils.isBlank(paymentSn)) {
 			final BigDecimal zero = new BigDecimal("0.00");
-			String title = "积分余额充值";
+			String title = "U币余额充值";
 			Long userId = principal.getUserId();
 			validate(money, v -> v.compareTo(zero) > 0, "money must be more than 0.00");
 			final BigDecimal amount = money;
@@ -106,14 +106,14 @@ public class UcenterPayController {
 			Deposit deposit = deposits.stream().filter(v -> v.getPayType() == payType)
 					.filter(v -> (v.getDepositStatus() == DepositStatus.待充值))
 					.filter(v -> v.getExpiredTime() == null || v.getExpiredTime().after(new Date()))
-					.filter(v -> v.getAmount1().equals(amount) && v.getCurrencyType1() == CurrencyType.现金
+					.filter(v -> v.getAmount1().equals(amount) && v.getCurrencyType1() == CurrencyType.U币
 							&& v.getCurrencyType2() == null)
 					.findFirst().orElse(null);
 
 			if (deposit == null) {
 				deposit = new Deposit();
 				deposit.setPayType(payType);
-				deposit.setCurrencyType1(CurrencyType.现金);
+				deposit.setCurrencyType1(CurrencyType.U币);
 				deposit.setTitle(title);
 				deposit.setAmount1(money);
 				deposit.setUserId(userId);
@@ -213,7 +213,7 @@ public class UcenterPayController {
 		model.addAttribute("amount", order.getAmount());
 		model.addAttribute("payType", payType);
 		model.addAttribute("orderId", orderId);
-		Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.现金);
+		Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.U币);
 		model.addAttribute("amount1", account.getAmount());
 		Account account1 = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.积分);
 		model.addAttribute("amount2", account1.getAmount());
@@ -251,7 +251,7 @@ public class UcenterPayController {
 		}
 		Payment payment =createPayment(order, amount2);
 
-		paymentService.balancePay(payment.getId(), true);
+		paymentService.balancePay(payment.getId(), true, principal.getUserId());
 
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分余额支付成功"));
 		return "redirect:/u/order/" + orderId;
@@ -285,7 +285,7 @@ public class UcenterPayController {
 		if (useAllCoin) {
 			payment.setCurrencyType1(CurrencyType.积分);
 		} else {
-			payment.setCurrencyType1(CurrencyType.现金);
+			payment.setCurrencyType1(CurrencyType.U币);
 			if(amount2 != null) {
 				payment.setCurrencyType2(CurrencyType.积分);
 				payment.setAmount2(amount2);
@@ -343,7 +343,7 @@ public class UcenterPayController {
 		} else if (payType == PayType.余额) {
 			try {
 				Payment payment = createPayment(activityApply, userId, activity.getTitle(), CurrencyType.积分, PayType.余额);
-				paymentService.balancePay(payment.getId(), true);
+				paymentService.balancePay(payment.getId(), true, principal.getUserId());
 				if (userId.equals(activityApply.getPayerUserId())) {
 					redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("代付：积分支付成功"));
 					return "redirect:/u/activity/payer";
@@ -454,7 +454,7 @@ public class UcenterPayController {
 		} else if (payType == PayType.余额) {
 			try {
 				Payment payment = createTeamPayment(activityTeamApply, userId, activity.getTitle(), CurrencyType.积分, PayType.余额);
-				paymentService.balancePay(payment.getId(), true);
+				paymentService.balancePay(payment.getId(), true, principal.getUserId());
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分支付成功"));
 				return "redirect:/activity/" + activityId;
 			} catch (Exception e) {

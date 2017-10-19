@@ -58,7 +58,7 @@ public class SettingServiceImpl implements SettingService {
 				return setting;
 			}
 		};
-		sb.append("提现费率").append(config.getWithdrawFeeRate(UserType.代理, CurrencyType.现金)).append("</br>");
+		sb.append("提现费率").append(config.getWithdrawFeeRate(UserType.代理, CurrencyType.U币)).append("</br>");
 		return sb.toString();
 	}
 

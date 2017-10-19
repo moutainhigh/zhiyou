@@ -50,7 +50,7 @@ public class FncComponent {
 	private Config config;
 
 	public void recordAccountLog(@NotNull Long userId, @NotBlank String title, @NotNull CurrencyType currencyType,
-	                             @NotNull @DecimalMin("0.01") BigDecimal transAmount,  @NotNull InOut inOut,  @NotNull Object ref,  @NotNull Long refUserId) {
+								 @NotNull @DecimalMin("0.01") BigDecimal transAmount, @NotNull InOut inOut, @NotNull Object ref, @NotNull Long refUserId, Long loginId) {
 
 		validate(refUserId, v -> !v.equals(userId), "ref user id must not be same with user id");
 
@@ -61,7 +61,7 @@ public class FncComponent {
 		if (transAmount.compareTo(zero) <= 0) {
 			throw new ValidationException(currencyType + " trans amount " + transAmount + " is wrong");
 		}
-		if (account.getCurrencyType() != currencyType) {
+		if (account != null && account.getCurrencyType() != currencyType) {
 			throw new ValidationException(currencyType + " does not match account currency type " + account.getCurrencyType());
 		}
 
@@ -76,7 +76,8 @@ public class FncComponent {
 		accountLog.setUserId(account.getUserId());
 		accountLog.setInOut(inOut);
 		accountLog.setRefUserId(refUserId);
-
+		accountLog.setUpdateId(loginId);
+		accountLog.setUpdateTime(new Date());
 		if (ref instanceof Payment) {
 			Payment payment = (Payment) ref;
 			accountLog.setRefSn(payment.getSn());
@@ -133,8 +134,8 @@ public class FncComponent {
 		}
 	}
 
-	public Profit createAndGrantProfit(@NotNull Long userId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
-	                           @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount, Date createdTime) {
+	public Profit createAndGrantProfit(@NotNull Long userId, Long loginId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
+									   @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount, Date createdTime) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		if (amount.compareTo(zero) <= 0) {
 			throw new ValidationException("profit amount " + amount + " is wrong");
@@ -157,8 +158,35 @@ public class FncComponent {
 		profitMapper.insert(profit);
 		Long sysUserId = config.getSysUserId();
 		if (!sysUserId.equals(userId)) {
-			this.recordAccountLog(sysUserId, title, currencyType, amount, 支出, profit, userId);
-			this.recordAccountLog(userId, title, currencyType, amount, 收入, profit, sysUserId);
+			this.recordAccountLog(sysUserId, title, currencyType, amount, 支出, profit, userId,loginId);
+			this.recordAccountLog(userId, title, currencyType, amount, 收入, profit, sysUserId,loginId);
+		}
+		return profit;
+	}
+
+	public Profit cancelShareholder(@NotNull Long userId,Long loginId, @NotNull ProfitType profitType, Long refId, @NotBlank String title,
+									   @NotNull CurrencyType currencyType, @NotNull @DecimalMin("0.01") BigDecimal amount, Date createdTime) {
+
+		Profit profit = new Profit();
+		profit.setProfitType(profitType);
+		profit.setTitle(title);
+		profit.setUserId(userId);
+		profit.setAmount(new BigDecimal(-500000.00));
+		profit.setSn(ServiceUtils.generateProfitSn());
+		profit.setCurrencyType(currencyType);
+		profit.setCreatedTime(createdTime);
+		profit.setRefId(refId);
+		profit.setSumTotal(amount);
+		profit.setDeduction(new BigDecimal(0.00));
+		profit.setProfitStatus(Profit.ProfitStatus.已发放);
+		profit.setGrantedTime(createdTime);
+		profit.setVersion(0);
+		validate(profit);
+		profitMapper.insert(profit);
+		Long sysUserId = config.getSysUserId();
+		if (!sysUserId.equals(userId)) {
+			this.recordAccountLog(userId, title, currencyType, amount, 支出, profit, sysUserId, loginId);
+			this.recordAccountLog(sysUserId, title, currencyType, amount, 收入, profit, userId, loginId);
 		}
 		return profit;
 	}

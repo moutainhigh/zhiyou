@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 import static com.zy.entity.cms.Banner.VO_ADMIN;
 
@@ -106,4 +107,18 @@ public class Banner implements Serializable {
 	@NotNull
 	private Boolean isOpenBlank;
 
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date createTime;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long createId;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date updateTime;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long updateId;
+
+	@View(groups = VO_ADMIN)
+	private Integer status;
 }

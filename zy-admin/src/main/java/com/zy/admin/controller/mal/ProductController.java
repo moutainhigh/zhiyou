@@ -1,5 +1,6 @@
 package com.zy.admin.controller.mal;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Date;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -58,8 +61,9 @@ public class ProductController {
 	
 	@RequiresPermissions("product:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String create(Product product, Model mode, RedirectAttributes redirectAttributes) {
+	public String create(AdminPrincipal principal, Product product, Model mode, RedirectAttributes redirectAttributes) {
 		try {
+			product.setCreateId(principal.getUserId());
 			productService.create(product);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));
 			return "redirect:/product";
@@ -71,7 +75,7 @@ public class ProductController {
 	
 	@RequiresPermissions("product:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public String update(@RequestParam Long id, Model model) {
+	public String update(@RequestParam Long id, Model model,AdminPrincipal principal) {
 		Product product = productService.findOne(id);
 		validate(product, NOT_NULL, "product not fund, id = " + id);
 		model.addAttribute("product", productComponent.buildAdminVo(product));
@@ -86,8 +90,10 @@ public class ProductController {
 	
 	@RequiresPermissions("product:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(Product product, RedirectAttributes redirectAttributes) {
+	public String update(Product product, RedirectAttributes redirectAttributes,AdminPrincipal principal) {
 		try {
+			product.setUpdateId(principal.getUserId());
+			product.setUpdateTime(new Date());
 			productService.modify(product);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));
 			return "redirect:/product";
@@ -108,8 +114,10 @@ public class ProductController {
 	
 	@RequiresPermissions("product:modifyPrice")
 	@RequestMapping(value = "/modifyPrice", method = RequestMethod.POST)
-	public String modifyPrice(Product product, RedirectAttributes redirectAttributes) {
+	public String modifyPrice(Product product, RedirectAttributes redirectAttributes,AdminPrincipal principal) {
 		try {
+			product.setUpdateId(principal.getUserId());
+			product.setUpdateTime(new Date());
 			productService.modifyPrice(product);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("保存成功"));
 			return "redirect:/product";
@@ -121,8 +129,8 @@ public class ProductController {
 	
 	@RequiresPermissions("product:on")
 	@RequestMapping(value = "/on")
-	public String on(@RequestParam Long id, RedirectAttributes redirectAttributes, @RequestParam boolean isOn) {
-		
+	public String on(@RequestParam Long id, RedirectAttributes redirectAttributes, @RequestParam boolean isOn,AdminPrincipal principal) {
+		Long userId = principal.getUserId();
 		Product product = productService.findOne(id);
 		validate(product, NOT_NULL, "product is null");
 		if(product.getProductPriceType() == null) {
@@ -132,7 +140,7 @@ public class ProductController {
 		
 		String released = isOn ? "上架" : "下架";
 		try {
-			productService.on(id, isOn);
+			productService.on(id, isOn, userId);
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("商品" + released + "成功"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error("商品" + released + "失败, 原因" + e.getMessage()));

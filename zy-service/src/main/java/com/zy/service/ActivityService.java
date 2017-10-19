@@ -12,7 +12,7 @@ public interface ActivityService {
 
 	void view(Long activityId);
 
-	void release(Long activityId, boolean isReleased);
+	void release(Long activityId, boolean isReleased, Long userId);
 
 	void modify(Activity activity);
 

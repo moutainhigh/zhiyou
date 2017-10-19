@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
-import static com.zy.entity.fnc.Profit.ProfitStatus.待发放;
-import static com.zy.model.query.ProfitQueryModel.builder;
-
 ;
 
 /**
@@ -41,7 +38,7 @@ public class ProfitGrantJob implements Job {
 
 	private void gant(Long profitId) {
 		try {
-			this.profitService.grant(profitId);
+			this.profitService.grant(profitId, profitId);
 			logger.info("profitId  {} success", profitId);
 		} catch (ConcurrentException e) {
 			try {TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}

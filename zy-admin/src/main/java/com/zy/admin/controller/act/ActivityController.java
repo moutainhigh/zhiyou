@@ -6,6 +6,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -20,6 +21,7 @@ import com.zy.entity.act.ActivityApply;
 import com.zy.entity.star.Lesson;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
+import com.zy.model.Principal;
 import com.zy.model.query.ActivityQueryModel;
 import com.zy.model.query.ActivityReportQueryModel;
 import com.zy.model.query.LessonQueryModel;
@@ -103,8 +105,10 @@ public class ActivityController {
 
 	@RequiresPermissions("activity:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String create(RedirectAttributes redirectAttributes, Activity activity) {
+	public String create(RedirectAttributes redirectAttributes, Activity activity, AdminPrincipal principal) {
 		try {
+			activity.setCreateTime(new Date());
+			activity.setCreateId(principal.getUserId());
 			activityService.create(activity);
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("活动保存成功"));
 		} catch (Exception e) {
@@ -128,8 +132,10 @@ public class ActivityController {
 
 	@RequiresPermissions("activity:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(Activity activity, RedirectAttributes redirectAttributes) {
+	public String update(Activity activity, RedirectAttributes redirectAttributes, AdminPrincipal principal) {
 		try {
+			activity.setUpdateId(principal.getUserId());
+			activity.setUpdateTime(new Date());
 			activityService.modify(activity);
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("活动保存成功"));
 		} catch (Exception e) {
@@ -140,10 +146,10 @@ public class ActivityController {
 
 	@RequiresPermissions("activity:edit")
 	@RequestMapping(value = "/release")
-	public String release(Long id, RedirectAttributes redirectAttributes, boolean isReleased) {
+	public String release(Long id, RedirectAttributes redirectAttributes, boolean isReleased, AdminPrincipal principal) {
 		String released = isReleased ? "上架" : "下架";
 		try {
-			activityService.release(id, isReleased);
+			activityService.release(id, isReleased,principal.getUserId());
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("活动" + released + "成功"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error("活动" + released + "失败, 原因" + e.getMessage()));

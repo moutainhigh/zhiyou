@@ -121,7 +121,7 @@ public class PolicyServiceImpl implements PolicyService {
 	}
 
 	@Override
-	public void modifyValidTime(@NotNull Long id , @NotNull Date beginTime, @NotNull Date endTime) {
+	public void modifyValidTime(@NotNull Long id, @NotNull Date beginTime, @NotNull Date endTime, Long userId) {
 		Policy policy = findOne(id);
 		validate(policy, NOT_NULL, "policy id " + id + " not found");
 		Policy.PolicyStatus policyStatus = policy.getPolicyStatus();
@@ -142,7 +142,9 @@ public class PolicyServiceImpl implements PolicyService {
 		policy.setPolicyStatus(Policy.PolicyStatus.已生效);
 		policy.setValidTimeBegin(beginTime);
 		policy.setValidTimeEnd(endTime);
-		policyMapper.merge(policy, "policyStatus", "validTimeBegin", "validTimeEnd");
+		policy.setUpdateTime(new Date());
+		policy.setUpdateId(userId);
+		policyMapper.merge(policy,"updateId", "updateTime", "policyStatus", "validTimeBegin", "validTimeEnd");
 	}
 
 	@Override
@@ -175,7 +177,7 @@ public class PolicyServiceImpl implements PolicyService {
 	}
 
 	@Override
-	public void fail(@NotNull Long id) {
+	public void fail(@NotNull Long id, Long userId) {
 		Policy policy = findOne(id);
 		validate(policy, NOT_NULL, "policy id " + id + " not found");
 		if (policy.getPolicyStatus() == Policy.PolicyStatus.未通过) {
@@ -188,7 +190,9 @@ public class PolicyServiceImpl implements PolicyService {
 		Policy merge = new Policy();
 		merge.setId(id);
 		merge.setPolicyStatus(Policy.PolicyStatus.未通过);
-		policyMapper.merge(merge, "policyStatus");
+		merge.setUpdateId(userId);
+		merge.setUpdateTime(new Date());
+		policyMapper.merge(merge,"updateId", "updateTime", "policyStatus");
 	}
 
 

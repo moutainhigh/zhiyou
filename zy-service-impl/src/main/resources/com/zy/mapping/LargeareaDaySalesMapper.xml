@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.LargeareaDaySalesMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.report.LargeareaDaySales">
+		<id column="id" property="id" />
+		<result column="largearea_name" property="largeareaName" />
+		<result column="largearea_value" property="largeareaValue" />
+		<result column="sales" property="sales" />
+		<result column="year" property="year" />
+		<result column="month" property="month" />
+		<result column="day" property="day" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+	<sql id="baseColumn">id,largearea_name,largearea_value,sales,year,month,day,create_time</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.report.LargeareaDaySales" useGeneratedKeys="true" keyProperty="id">
+	  insert into `ts_largearea_day_sales` (largearea_name,largearea_value,sales,year,month,day,create_time)
+	  values (#{largeareaName},#{largeareaValue},#{sales},#{year},#{month},#{day},#{createTime})
+	</insert>
+
+	<delete id="delete">
+		delete from `ts_largearea_day_sales` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.report.LargeareaDaySales">
+		update `ts_largearea_day_sales`
+		<set>
+			largearea_name = #{largeareaName},
+			largearea_value = #{largeareaValue},
+			sales = #{sales},
+			year = #{year},
+			month = #{month},
+			day = #{day},
+			create_time = #{createTime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `ts_largearea_day_sales`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'largeareaName'">largearea_name = #{largeareaDaySales.largeareaName},</when>
+					<when test="field == 'largeareaValue'">largearea_value = #{largeareaDaySales.largeareaValue},</when>
+					<when test="field == 'sales'">sales = #{largeareaDaySales.sales},</when>
+					<when test="field == 'year'">year = #{largeareaDaySales.year},</when>
+					<when test="field == 'month'">month = #{largeareaDaySales.month},</when>
+					<when test="field == 'day'">day = #{largeareaDaySales.day},</when>
+					<when test="field == 'createTime'">create_time = #{largeareaDaySales.createTime},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{largeareaDaySales.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `ts_largearea_day_sales`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.LargeareaDaySalesQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `ts_largearea_day_sales`
+		<where>
+			<if test="largeareaNameEQ != null">
+				and largearea_name = #{largeareaNameEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="largeareaValueEQ != null">
+				and largearea_value = #{largeareaValueEQ}
+			</if>
+			<if test="dayEQ != null">
+				and day = #{dayEQ}
+			</if>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.LargeareaDaySalesQueryModel">
+		select count(*) from `ts_largearea_day_sales`
+		<where>
+			<if test="largeareaNameEQ != null">
+				and largearea_name = #{largeareaNameEQ}
+			</if>
+			<if test="idEQ != null">
+				and id = #{idEQ}
+			</if>
+			<if test="largeareaValueEQ != null">
+				and largearea_value = #{largeareaValueEQ}
+			</if>
+			<if test="dayEQ != null">
+				and day = #{dayEQ}
+			</if>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+		</where>
+	</select>
+
+</mapper>

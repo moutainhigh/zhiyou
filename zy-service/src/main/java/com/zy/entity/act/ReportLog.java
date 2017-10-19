@@ -48,6 +48,10 @@ public class ReportLog {
 	@Field(label = "创建时间")
 	private Date createdTime;
 
+	@NotNull
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long createId;
+
 	@NotBlank
 	@Field(label = "备注 ")
 	private String remark;

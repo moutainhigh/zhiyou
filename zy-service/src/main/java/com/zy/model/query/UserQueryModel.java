@@ -56,6 +56,8 @@ public class UserQueryModel implements Serializable {
 
 	private Long bossIdEQ;
 
+	private Long presidentId;
+
 	private Boolean isDirectorEQ;
 
 	private Boolean isHonorDirectorEQ;
@@ -66,9 +68,13 @@ public class UserQueryModel implements Serializable {
 
 	private Boolean isToV4EQ;
 
+	private Boolean isPresident;
+
 	private String nameorPhone;
 
 	private String remark;
+
+	private Integer largeArea;
 
 	private Integer pageNumber;
 
@@ -128,6 +134,7 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("rootName");
 		fieldNames.add("remark");
 		fieldNames.add("isToV4");
+		fieldNames.add("isPresident");
 		fieldNames.add("userRank");
 		fieldNames.add("password");
 		fieldNames.add("isDeleted");

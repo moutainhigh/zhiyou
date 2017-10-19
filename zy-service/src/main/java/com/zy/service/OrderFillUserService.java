@@ -10,7 +10,7 @@ public interface OrderFillUserService {
 
 	void create(OrderFillUser orderFillUser);
 
-	void delete(Long id);
+	void delete(Long id, Long userId);
 
 	List<OrderFillUser> findAll(OrderFillUserQueryModel orderFillUserQueryModel);
 

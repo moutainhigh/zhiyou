@@ -62,7 +62,7 @@ public class ProductReplacementServiceImpl implements ProductReplacementService{
 	}
 
 	@Override
-	public void reject(@NotNull Long id, String remark) {
+	public void reject(@NotNull Long id, String remark, Long userId) {
 
 		ProductReplacement andValidate = findAndValidate(id);
 
@@ -79,11 +79,13 @@ public class ProductReplacementServiceImpl implements ProductReplacementService{
 		mergeEntity.setId(id);
 		mergeEntity.setProductReplacementStatus(已驳回);
 		mergeEntity.setRemark(remark);
-		productReplacementMapper.merge(mergeEntity, "productReplacementStatus", "remark");
+		mergeEntity.setUpdateId(userId);
+		mergeEntity.setUpdateTime(new Date());
+		productReplacementMapper.merge(mergeEntity,"updateId","updateTime", "productReplacementStatus", "remark");
 	}
 
 	@Override
-	public void deliver(@NotNull Long id, @NotNull LogisticsDto logisticsDto) {
+	public void deliver(@NotNull Long id, @NotNull LogisticsDto logisticsDto, Long userId) {
 		ProductReplacement andValidate = findAndValidate(id);
 
 		ProductReplacement.ProductReplacementStatus productReplacementStatus = andValidate.getProductReplacementStatus();
@@ -96,11 +98,14 @@ public class ProductReplacementServiceImpl implements ProductReplacementService{
 
 		ProductReplacement mergeEntity = new ProductReplacement();
 		mergeEntity.setId(id);
+		mergeEntity.setDeliveredId(userId);
 		mergeEntity.setLogisticsName(logisticsDto.getName());
 		mergeEntity.setLogisticsSn(logisticsDto.getSn());
 		mergeEntity.setLogisticsFee(logisticsDto.getFee());
+		mergeEntity.setUpdateId(userId);
+		mergeEntity.setUpdateTime(new Date());
 		mergeEntity.setProductReplacementStatus(ProductReplacement.ProductReplacementStatus.已发货);
-		productReplacementMapper.merge(mergeEntity, "logisticsName", "logisticsSn", "logisticsFee", "logisticsSn", "productReplacementStatus");
+		productReplacementMapper.merge(mergeEntity, "logisticsName","updateId","updateTime", "logisticsSn", "logisticsFee", "logisticsSn", "productReplacementStatus");
 	}
 
 	@Override
@@ -118,7 +123,7 @@ public class ProductReplacementServiceImpl implements ProductReplacementService{
 		ProductReplacement mergeEntity = new ProductReplacement();
 		mergeEntity.setId(id);
 		mergeEntity.setProductReplacementStatus(ProductReplacement.ProductReplacementStatus.已完成);
-		productReplacementMapper.merge(mergeEntity, "productReplacementStatus");
+		productReplacementMapper.merge(mergeEntity,"updateId","updateTime", "productReplacementStatus");
 	}
 
 	@Override

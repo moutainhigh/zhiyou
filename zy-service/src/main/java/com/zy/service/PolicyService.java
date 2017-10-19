@@ -13,7 +13,7 @@ public interface PolicyService {
 	
 	Policy findOne(Long id);
 
-	void modifyValidTime(Long id, Date beginTime, Date endTime);
+	void modifyValidTime(Long id, Date beginTime, Date endTime, Long userId);
 
 	List<Policy> findAll(PolicyQueryModel policyQueryModel);
 	
@@ -21,7 +21,7 @@ public interface PolicyService {
 
 	void checkAndModify(Long id);
 
-	void fail(Long id);
+	void fail(Long id, Long userId);
 
 	void updateProductNumber(String productNumber, boolean b);
 }

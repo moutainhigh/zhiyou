@@ -11,6 +11,7 @@ import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Tag;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
+import com.zy.model.Constants;
 import com.zy.model.query.AreaQueryModel;
 import com.zy.model.query.UserInfoQueryModel;
 import com.zy.model.query.UserQueryModel;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -130,20 +132,21 @@ public class UserInfoController {
 
 	@RequiresPermissions("userInfo:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	@ResponseBody
-	public Result<?> update(UserInfo userInfo) {
+	public String update(UserInfo userInfo, RedirectAttributes redirectAttributes) {
 		Long userId = userInfo.getUserId();
 		UserInfo persistence = userInfoService.findByUserId(userId);
 		if(userInfo == null) {
-			return ResultBuilder.error("user id " + userId +  " not found");
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("操作失败，"+"user id " + userId +  " not found"));
+			return "redirect:/userInfo/update?userId="+userId;
 		}
 		userInfo.setId(persistence.getId());
 		try {
 			userInfoService.adminModify(userInfo);
-			return ResultBuilder.ok("修改成功");
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		} catch (Exception e) {
-			return ResultBuilder.error(e.getMessage());
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error(e.getMessage()));
 		}
+		return "redirect:/userInfo";
 	}
 
 	private Map<String, List<Tag>> getTags() {

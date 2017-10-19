@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.UserTargetSalesMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.usr.UserTargetSales">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="target_count" property="targetCount" />
+		<result column="year" property="year" />
+		<result column="month" property="month" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+	<sql id="baseColumn">id,user_id,target_count,year,month,create_time</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.usr.UserTargetSales" useGeneratedKeys="true" keyProperty="id">
+	  insert into `usr_user_target_sales` (user_id,target_count,year,month,create_time,create_id,status)
+	  values (#{userId},#{targetCount},#{year},#{month},#{createTime},#{createId},#{status})
+	</insert>
+
+	<delete id="delete" parameterType="com.zy.entity.usr.UserTargetSales">
+		update `usr_user_target_sales`
+		SET
+			update_id = #{updateId},
+			update_time = #{updateTime},
+			status = #{status}
+		where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.usr.UserTargetSales">
+		update `usr_user_target_sales`
+		<set>
+			user_id = #{userId},
+			target_count = #{targetCount},
+			year = #{year},
+			month = #{month},
+			create_time = #{createTime},
+			update_id = #{updateId},
+			update_time = #{updateTime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `usr_user_target_sales`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{userTargetSales.userId},</when>
+					<when test="field == 'targetCount'">target_count = #{userTargetSales.targetCount},</when>
+					<when test="field == 'year'">year = #{userTargetSales.year},</when>
+					<when test="field == 'month'">month = #{userTargetSales.month},</when>
+					<when test="field == 'updateId'">update_id = #{userTargetSales.updateId},</when>
+					<when test="field == 'updateTime'">update_time = #{userTargetSales.updateTime},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{userTargetSales.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `usr_user_target_sales`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserTargetSalesQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `usr_user_target_sales`
+		<where>
+			status = 1
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and user_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.UserTargetSalesQueryModel">
+		select count(*) from `usr_user_target_sales`
+		<where>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and user_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="totalTargetSales" resultType="_long" parameterType="com.zy.model.query.UserTargetSalesQueryModel">
+		select sum(target_count) from `usr_user_target_sales`
+		<where>
+			<if test="monthEQ != null">
+				and month = #{monthEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="yearEQ != null">
+				and year = #{yearEQ}
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+					and user_id in
+					<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+					and 1 = 2
+				</if>
+			</if>
+		</where>
+	</select>
+
+</mapper>

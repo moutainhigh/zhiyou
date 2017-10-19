@@ -39,7 +39,7 @@ public class AccountComponent {
 				if (u.getUserId().equals(userId)) {
 					BigDecimal amount = u.getAmount();
 					switch (u.getCurrencyType()) {
-					case 现金:
+					case U币:
 						accountAdminVo.setMoney(amount);
 						accountAdminVo.setMoneyLabel(GcUtils.formatCurreny(amount));
 						break;

@@ -57,4 +57,13 @@ public class HelpCategory implements Serializable {
 	@Field(label = "排序")
 	private Integer indexNumber;
 
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long createId;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date updateTime;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long updateId;
+
 }

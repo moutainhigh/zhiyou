@@ -145,7 +145,7 @@ public class ProfitMOMReportController {
 		List<Profit> filterProfits = profits.stream()
 				.filter(v -> v.getProfitStatus() == Profit.ProfitStatus.已发放)
 				.filter(v -> v.getProfitType() != Profit.ProfitType.订单收款)
-				.filter(v -> v.getCurrencyType() == CurrencyType.现金)
+				.filter(v -> v.getCurrencyType() == CurrencyType.U币)
 				.filter(v -> childrenIds.contains(v.getUserId()) || bossUserIds.contains(v.getUserId()))
 				.filter(v -> {
 					boolean result = true;

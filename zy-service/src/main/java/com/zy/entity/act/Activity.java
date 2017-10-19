@@ -178,4 +178,15 @@ public class Activity implements Serializable {
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
 	private Long lessonId;
 
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date createTime;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long createId;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date updateTime;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long updateId;
 }

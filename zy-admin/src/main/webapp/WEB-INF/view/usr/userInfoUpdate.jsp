@@ -27,18 +27,18 @@
 	    }
     });
 
-	  $('.btn-submit').click(function() {
-		  if($('#form').valid()) {
-			  $.post('${ctx}/userInfo/update', $('#form').serialize(), function(data) {
-				  if(data.code == 0) {
-					  parent.grid.getDataTable().ajax.reload(null, false);
-					  layer.closeAll();
-				  } else {
-					  layer.alert(data.message);
-				  }
-			  });
-      }
-	  });
+	  <%--$('.btn-submit').click(function() {--%>
+		  <%--if($('#form').valid()) {--%>
+			  <%--$.post('${ctx}/userInfo/update', $('#form').serialize(), function(data) {--%>
+				  <%--if(data.code == 0) {--%>
+					  <%--parent.grid.getDataTable().ajax.reload(null, false);--%>
+					  <%--layer.closeAll();--%>
+				  <%--} else {--%>
+					  <%--layer.alert(data.message);--%>
+				  <%--}--%>
+			  <%--});--%>
+      <%--}--%>
+	  <%--});--%>
   });
 </script>
 <!-- END JAVASCRIPTS -->
@@ -54,7 +54,7 @@
       </div>
       <div class="portlet-body form">
         <!-- BEGIN FORM-->
-        <form id="form" action="" data-action="" class="form-horizontal" method="post">
+        <form id="form" action="" data-action="${ctx}/userInfo/update" class="form-horizontal" method="post">
           <input type="hidden" name="userId" value="${userInfo.userId}" />
           <input type="hidden" name="id" value="${userInfo.id}" />
           <div class="form-body">
@@ -76,7 +76,12 @@
               <label class="control-label col-md-3">出生年月: <span class="required"> * </span>
               </label>
               <div class="col-md-4">
-                <input type="date" name="birthday" class="form-control" value="${userInfo.birthdayLabel}" placeholder="填写生日  1900-01-01">
+                 <c:if test="${userInfo.birthdayLabel == null}">
+                     <input type="date" name="birthday" class="form-control" value="1900-01-01">
+                 </c:if>
+                 <c:if test="${userInfo.birthdayLabel != null}">
+                     <input type="date" name="birthday" class="form-control" value="${userInfo.birthdayLabel}" placeholder="填写生日  1900-01-01">
+                 </c:if>
               </div>
             </div>
 
@@ -124,9 +129,12 @@
           </div>
           <div class="form-actions fluid">
             <div class="col-md-offset-3 col-md-9">
-              <button type="button" class="btn green btn-submit">
-                <i class="fa fa-save"></i> 保存
-              </button>
+                <button type="submit" class="btn green">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+            <button class="btn default" data-href="${ctx}/userInfo">
+                <i class="fa fa-chevron-left"></i> 返回
+            </button>
             </div>
           </div>
         </form>

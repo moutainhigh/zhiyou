@@ -28,7 +28,7 @@
     <i class="icon icon-money icon-6x block center mt-30"></i>
     <h2 class="font-777 fs-16 lh-30 text-center mt-20">我的${currencyType.alias}余额(元)</h2>
     <div class="font-333 fs-36 lh-60 text-center">${amount}</div>
-    <c:if test="${currencyType == '现金'}">
+    <c:if test="${currencyType == 'U币'}">
       <c:if test="${!hasUserInfo}">
         <div class="form-btn">
           <nav class="footer footer-nav flex">

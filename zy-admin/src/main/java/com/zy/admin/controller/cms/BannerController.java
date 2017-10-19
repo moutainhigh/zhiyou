@@ -1,5 +1,6 @@
 package com.zy.admin.controller.cms;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.ResultBuilder;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Date;
 
 @RequestMapping("/banner")
 @Controller
@@ -63,7 +66,10 @@ public class BannerController {
 
 	@RequiresPermissions("banner:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String create(RedirectAttributes redirectAttributes, Banner banner) {
+	public String create(RedirectAttributes redirectAttributes, Banner banner, AdminPrincipal adminPrincipal) {
+		banner.setCreateId(adminPrincipal.getUserId());
+		banner.setCreateTime(new Date());
+		banner.setStatus(1);
 		try {
 			bannerService.create(banner);
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("Banner保存成功"));
@@ -83,7 +89,9 @@ public class BannerController {
 
 	@RequiresPermissions("banner:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(Banner banner, RedirectAttributes redirectAttributes) {
+	public String update(Banner banner, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
+		banner.setUpdateTime(new Date());
+		banner.setUpdateId(adminPrincipal.getUserId());
 		try {
 			bannerService.modify(banner);
 			clearCache();
@@ -96,9 +104,9 @@ public class BannerController {
 
 	@RequiresPermissions("banner:edit")
 	@RequestMapping("/delete")
-	public String delete(Long id, RedirectAttributes redirectAttributes) {
+	public String delete(Long id, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
 		try {
-			bannerService.delete(id);
+			bannerService.delete(id, adminPrincipal.getUserId());
 			clearCache();
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("Banner删除成功"));
 		} catch (Exception e) {
@@ -109,10 +117,10 @@ public class BannerController {
 
 	@RequiresPermissions("banner:edit")
 	@RequestMapping(value = "/release")
-	public String release(Long id, RedirectAttributes redirectAttributes, boolean isReleased) {
+	public String release(Long id, RedirectAttributes redirectAttributes, boolean isReleased, AdminPrincipal adminPrincipal) {
 		String released = isReleased ? "上架" : "下架";
 		try {
-			bannerService.release(id, isReleased);
+			bannerService.release(id, isReleased,adminPrincipal.getUserId());
 			clearCache();
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("Banner" + released + "成功"));
 		} catch (Exception e) {

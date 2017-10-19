@@ -11,12 +11,14 @@
 	<sql id="baseColumn">id,user_id,remark</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.OrderFillUser" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_order_fill_user` (user_id,remark)
-	  values (#{userId},#{remark})
+	  insert into `mal_order_fill_user` (user_id,remark,create_id,create_time,status)
+	  values (#{userId},#{remark},#{createId},#{createTime},#{status})
 	</insert>
 
-	<delete id="delete">
-		delete from `mal_order_fill_user` where id = #{id}
+	<delete id="delete" parameterType="com.zy.entity.mal.OrderFillUser">
+		update `mal_order_fill_user`
+		set status = 0, update_id = #{updateId}, update_time = #{updateTime}
+		where id = #{id}
 	</delete>
 
 	<update id="update" parameterType="com.zy.entity.mal.OrderFillUser">
@@ -53,6 +55,7 @@
 		<include refid="baseColumn"/>
 		from `mal_order_fill_user`
 		<where>
+			status = 1
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
 			</if>

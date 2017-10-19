@@ -32,6 +32,8 @@
 		<result column="is_shareholder" property="isShareholder" />
 		<result column="is_deleted" property="isDeleted" />
 		<result column="is_to_v4" property="isToV4" />
+		<result column="is_president" property="isPresident" />
+		<result column="president_id" property="presidentId" />
 		<result column="viewflag" property="viewflag" />
 		<result column="lastlogin_time" property="lastloginTime" />
 		<result column="largearea" property="largearea" />
@@ -39,8 +41,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.User" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark)
-	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossName},#{bossId},#{code},#{isDirector},#{isHonorDirector},#{isShareholder},#{isDeleted},#{isToV4},#{viewflag},#{lastloginTime},#{largearea},#{setlargearearemark})
+		insert into `usr_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark,is_president,president_id)
+		values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossName},#{bossId},#{code},#{isDirector},#{isHonorDirector},#{isShareholder},#{isDeleted},#{isToV4},#{viewflag},#{lastloginTime},#{largearea},#{setlargearearemark},#{isPresident},#{presidentId})
 	</insert>
 
 	<delete id="delete">
@@ -82,14 +84,16 @@
 			lastlogin_time = #{lastloginTime},
 			largearea = #{largearea},
 			setlargearearemark = #{setlargearearemark},
+			is_president = #{isPresident},
+			president_id = #{presidentId},
 		</set>
 		where id = #{id}
 	</update>
 
 	<update id="merge">
 		update `usr_user`
-			<set>
-				<foreach collection="fields" item="field">
+		<set>
+			<foreach collection="fields" item="field">
 				<choose>
 					<when test="field == 'phone'">phone = #{user.phone},</when>
 					<when test="field == 'password'">password = #{user.password},</when>
@@ -121,22 +125,25 @@
 					<when test="field == 'isToV4'">is_to_v4 = #{user.isToV4},</when>
 					<when test="field == 'viewflag'">viewflag = #{user.viewflag},</when>
 					<when test="field == 'lastloginTime'">lastlogin_time = #{user.lastloginTime},</when>
+					<when test="field == 'largearea'">largearea = #{user.largearea},</when>
+					<when test="field == 'isPresident'">is_president = #{user.isPresident},</when>
+					<when test="field == 'presidentId'">president_id = #{user.presidentId},</when>
 				</choose>
-				</foreach>
-			</set>
+			</foreach>
+		</set>
 		where id = #{user.id}
 	</update>
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark,is_president,president_id
 		from `usr_user`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
 		select
-		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark
+		id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark,is_president,president_id
 		from `usr_user`
 		<where>
 			<if test="userRankEQ != null">
@@ -157,6 +164,9 @@
 			<if test="inviterIdEQ != null">
 				and inviter_id = #{inviterIdEQ}
 			</if>
+			<if test="largeArea != null">
+				and largeArea = #{largeArea}
+			</if>
 			<if test="isHonorDirectorEQ != null">
 				and is_honor_director = #{isHonorDirectorEQ}
 			</if>
@@ -166,15 +176,21 @@
 			<if test="isToV4EQ != null">
 				and is_to_v4 = #{isToV4EQ}
 			</if>
+			<if test="isPresident != null">
+				and is_president = #{isPresident}
+			</if>
+			<if test="presidentId != null">
+				and president_id = #{presidentId}
+			</if>
 			<if test="parentIdIN != null">
 				<if test="parentIdIN.length != 0">
-				and parent_id in
-				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
+					and parent_id in
+					<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
 				</if>
 				<if test="parentIdIN.length == 0">
-				and 1 = 2
+					and 1 = 2
 				</if>
 			</if>
 			<if test="bossIdEQ != null">
@@ -185,13 +201,13 @@
 			</if>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
-				and id in
-				<foreach collection="idIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
+					and id in
+					<foreach collection="idIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				and 1 = 2
+					and 1 = 2
 				</if>
 			</if>
 			<if test="userTypeEQ != null">
@@ -220,13 +236,13 @@
 			</if>
 			<if test="inviterIdIN != null">
 				<if test="inviterIdIN.length != 0">
-				and inviter_id in
-				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
+					and inviter_id in
+					<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
 				</if>
 				<if test="inviterIdIN.length == 0">
-				and 1 = 2
+					and 1 = 2
 				</if>
 			</if>
 		</where>
@@ -264,6 +280,9 @@
 			<if test="inviterIdEQ != null">
 				and inviter_id = #{inviterIdEQ}
 			</if>
+			<if test="largeArea != null">
+				and largeArea = #{largeArea}
+			</if>
 			<if test="isHonorDirectorEQ != null">
 				and is_honor_director = #{isHonorDirectorEQ}
 			</if>
@@ -273,15 +292,21 @@
 			<if test="isToV4EQ != null">
 				and is_to_v4 = #{isToV4EQ}
 			</if>
+			<if test="isPresident != null">
+				and is_president = #{isPresident}
+			</if>
+			<if test="presidentId != null">
+				and president_id = #{presidentId}
+			</if>
 			<if test="parentIdIN != null">
 				<if test="parentIdIN.length != 0">
-				and parent_id in
-				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
+					and parent_id in
+					<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
 				</if>
 				<if test="parentIdIN.length == 0">
-				and 1 = 2
+					and 1 = 2
 				</if>
 			</if>
 			<if test="bossIdEQ != null">
@@ -292,13 +317,13 @@
 			</if>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
-				and id in
-				<foreach collection="idIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
+					and id in
+					<foreach collection="idIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
 				</if>
 				<if test="idIN.length == 0">
-				and 1 = 2
+					and 1 = 2
 				</if>
 			</if>
 			<if test="userTypeEQ != null">
@@ -327,19 +352,19 @@
 			</if>
 			<if test="inviterIdIN != null">
 				<if test="inviterIdIN.length != 0">
-				and inviter_id in
-				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
-				#{item}
-				</foreach>
+					and inviter_id in
+					<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
 				</if>
 				<if test="inviterIdIN.length == 0">
-				and 1 = 2
+					and 1 = 2
 				</if>
 			</if>
 		</where>
 	</select>
 
-	<sql id="baseColumn">id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,code,is_director,is_shareholder,lastlogin_time,largearea,setlargearearemark</sql>
+	<sql id="baseColumn">id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,code,is_director,is_shareholder,lastlogin_time,largearea,setlargearearemark,is_president,president_id</sql>
 
 	<select id="findByPhone" resultMap="baseResultMap">
 		select * from `usr_user` where phone = #{phone}
@@ -379,7 +404,7 @@
 		SELECT * from usr_user uu
 		<where>
 			<if test="parentIdNL !=null">
-			   AND uu.parent_id =#{parentIdNL}
+				AND uu.parent_id =#{parentIdNL}
 			</if>
 			<if test="nameorPhone != null">
 				and (uu.phone LIKE #{nameorPhone} or uu.nickname like #{nameorPhone})
@@ -397,9 +422,9 @@
 			</if>
 			)
 		</where>
-			<if test="offset != null">
-				limit #{offset}, #{pageSize}
-			</if>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
 
 	</select>
 
@@ -407,7 +432,7 @@
 		SELECT count(*) from usr_user
 		<where>
 			<if test="parentIdNL !=null">
-			  and parent_id =#{parentIdNL}
+				and parent_id =#{parentIdNL}
 			</if>
 			<if test="nameorPhone != null">
 				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
@@ -432,31 +457,31 @@
 	</select>
 
 	<select id="findSupAll" resultMap="baseResultMap">
-		 select * from `usr_user` u where
-	    u.id in(
-		    select l.user_id from usr_user_log l
-		  <where>
-			  <if test="parentIdIN != null">
-				  <if test="parentIdIN.length != 0">
-					  and l.user_id in
-					  <foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
-						  #{item}
-					  </foreach>
-					  <if test="endTime !=null">
-						  AND l.operated_Time &lt;= #{endTime}
-					  </if>
-					  <if test="beginTime !=null">
-						  AND l.operated_Time &gt;= #{beginTime}
-					  </if>
-					  <if test="remark !=null">
-						  AND l.remark LIKE #{remark}
-					  </if>
-				  </if>
+		select * from `usr_user` u where
+		u.id in(
+		select l.user_id from usr_user_log l
+		<where>
+			<if test="parentIdIN != null">
+				<if test="parentIdIN.length != 0">
+					and l.user_id in
+					<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+					<if test="endTime !=null">
+						AND l.operated_Time &lt;= #{endTime}
+					</if>
+					<if test="beginTime !=null">
+						AND l.operated_Time &gt;= #{beginTime}
+					</if>
+					<if test="remark !=null">
+						AND l.remark LIKE #{remark}
+					</if>
+				</if>
 
-			  </if>
+			</if>
 
-		 </where>
-      )
+		</where>
+		)
 
 	</select>
 
@@ -465,13 +490,13 @@
 		l.user_id = u.id
 		AND l.remark like #{remark}
 		<if test="registerTimeGTE !=null">
-		  and l.operated_Time &gt;=#{registerTimeGTE}
+			and l.operated_Time &gt;=#{registerTimeGTE}
 		</if>
 		<if test="registerTimeLT !=null">
-		  and l.operated_Time &lt;=#{registerTimeLT}
+			and l.operated_Time &lt;=#{registerTimeLT}
 		</if>
 		<if test="parentIdNL !=null">
-		   AND u.parent_id =#{parentIdNL}
+			AND u.parent_id =#{parentIdNL}
 		</if>
 		<if test="nameorPhone !=null">
 			and (u.phone like #{nameorPhone} or u.nickname like #{nameorPhone})

@@ -55,16 +55,18 @@ public class ProductServiceImpl implements ProductService{
 	public Product modify(@NotNull Product product) {
 		findAndValidate(product.getId());
 		validate(product, "title", "detail", "image1");
-		productMapper.merge(product, "title", "detail", "marketPrice", "skuCode", "image1");
+		productMapper.merge(product,"updateId","updateTime", "title", "detail", "marketPrice", "skuCode", "image1");
 		return product;
 	}
 	
 	@Override
-	public void on(@NotNull Long id, @NotNull Boolean isOn) {
+	public void on(@NotNull Long id, @NotNull Boolean isOn ,@NotNull Long userId) {
 		Product product = productMapper.findOne(id);
 		validate(product, NOT_NULL, "product is null");
 		
 		product.setIsOn(isOn);
+		product.setUpdateTime(new Date());
+		product.setUpdateId(userId);
 		productMapper.update(product);
 	}
 
@@ -113,7 +115,9 @@ public class ProductServiceImpl implements ProductService{
 			validate(priceScript, NOT_BLANK, "product price script is null");
 			productForMerge.setPriceScript(priceScript);
 		}
-		productMapper.merge(productForMerge, "productPriceType", "price", "priceScript");
+		productForMerge.setUpdateTime(new Date());
+		productForMerge.setUpdateId(product.getUpdateId());
+		productMapper.merge(productForMerge,"updateId","updateTime", "productPriceType", "price", "priceScript");
 
 		return null;
 	}

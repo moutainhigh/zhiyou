@@ -173,6 +173,22 @@ public class MalComponent {
 		return upgradeUserRank;
 	}
 
+	public Boolean isToV4(User.UserRank userRank, Long productId, long quantity) {
+		UserRank upgradeUserRank = userRank;
+		if(userRank != null && userRank == UserRank.V4){
+			return  null;
+		}
+		if (config.isOld(productId)) {
+			return null;
+		} else {
+			/*一次性购买3600支 升级成特级服务商*/
+			if(quantity >= 3600) {
+				return true;
+			}
+		}
+		return null;
+	}
+
 
 	public void successOrder(@NotNull Long orderId) {
 		final Order order = orderMapper.findOne(orderId);
@@ -205,9 +221,9 @@ public class MalComponent {
 		UserRank userRank = user.getUserRank();
 
 		UserRank upgradeUserRank = getUpgradeUserRank(userRank, productId, quantity);
-
+		Boolean isToV4 = isToV4(userRank,productId,quantity);
 		if (upgradeUserRank.getLevel() > userRank.getLevel()) {
-			usrComponent.upgrade(userId, userRank, upgradeUserRank);
+			usrComponent.upgrade(userId, userRank, upgradeUserRank,isToV4);
 		}
 		
 		producer.send(Constants.TOPIC_ORDER_PAID, order.getId());

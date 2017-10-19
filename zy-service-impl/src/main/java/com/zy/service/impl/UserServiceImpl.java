@@ -3,33 +3,30 @@ package com.zy.service.impl;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
-import com.zy.common.util.DateUtil;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
+import com.zy.common.util.DateUtil;
 import com.zy.component.FncComponent;
 import com.zy.component.UsrComponent;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
 import com.zy.entity.sys.ConfirmStatus;
-import com.zy.entity.sys.SystemCode;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.entity.usr.User.UserType;
 import com.zy.entity.usr.UserInfo;
 import com.zy.extend.Producer;
-import com.zy.mapper.*;
+import com.zy.mapper.AccountMapper;
 import com.zy.mapper.UserInfoMapper;
+import com.zy.mapper.UserLogMapper;
+import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
-import com.zy.model.dto.AgentRegisterDto;
-import com.zy.model.dto.DepositSumDto;
-import com.zy.model.dto.UserTeamCountDto;
-import com.zy.model.dto.UserTeamDto;
+import com.zy.model.dto.*;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserlongQueryModel;
 import com.zy.service.SystemCodeService;
 import com.zy.service.UserService;
-import com.zy.model.dto.UserDto;
 import me.chanjar.weixin.common.util.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
@@ -41,12 +38,9 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.*;
 
-import static com.zy.common.util.ValidateUtils.NOT_BLANK;
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.fnc.CurrencyType.现金;
+import static com.zy.common.util.ValidateUtils.*;
+import static com.zy.entity.fnc.CurrencyType.U币;
 import static com.zy.entity.fnc.CurrencyType.积分;
 import static com.zy.model.Constants.TOPIC_REGISTER_SUCCESS;
 
@@ -249,24 +243,11 @@ public class UserServiceImpl implements UserService {
             return; // 幂等操作
         }
 
-        usrComponent.upgrade(id, plainUserRank, userRank);
+        usrComponent.upgrade(id, plainUserRank, userRank,null);
         usrComponent.recordUserLog(id, operatorId, "设置用户等级", "从" + plainUserRank + "改为" + userRank + ", 备注" + remark);
     }
 
-    @Override
-    public void modifyLargeAreaAdmin(@NotNull Long id,@NotNull String largeArea,@NotNull Long operatorId, String remark2) {
-        User user = findAndValidate(id);
-        SystemCode oldlargeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea()+"");
-        SystemCode newlargeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", largeArea);
-        user.setLargearea(Integer.parseInt(largeArea));
-        user.setSetlargearearemark(remark2);
-        userMapper.update(user);
-        if(oldlargeAreaType == null){
-            usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + null + "改为" + newlargeAreaType.getSystemName() + ", 备注" + remark2);
-        }else{
-            usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + oldlargeAreaType.getSystemName() + "改为" + newlargeAreaType.getSystemName() + ", 备注" + remark2);
-        }
-    }
+
 
     @Override
     public User findByOpenId(@NotBlank String openId) {
@@ -281,21 +262,21 @@ public class UserServiceImpl implements UserService {
         {
             Account account = new Account();
             account.setAmount(zero);
-            account.setCurrencyType(现金);
+            account.setCurrencyType(U币);
             account.setUserId(userId);
             account.setVersion(0);
             validate(account);
             accountMapper.insert(account);
         }
-		{
-			Account account = new Account();
-			account.setAmount(zero);
-			account.setCurrencyType(积分);
-			account.setUserId(userId);
-			account.setVersion(0);
-			validate(account);
-			accountMapper.insert(account);
-		}
+        {
+            Account account = new Account();
+            account.setAmount(zero);
+            account.setCurrencyType(积分);
+            account.setUserId(userId);
+            account.setVersion(0);
+            validate(account);
+            accountMapper.insert(account);
+        }
         {
             Account account = new Account();
             account.setAmount(zero);
@@ -361,12 +342,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void modifyLastLoginTime(@NotNull Long userId) {
+    public void modifyLastLoginTime(@NotNull Long userId, Long updateId) {
         findAndValidate(userId);
         User user = new User();
         user.setId(userId);
         user.setLastloginTime(new Date());
         userMapper.merge(user, "lastloginTime");
+
+        usrComponent.recordUserLog(userId, updateId, "重置登陆时间", null);
     }
 
     @Override
@@ -548,40 +531,60 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void modifyIsDirector(@NotNull Long id, boolean isDirector) {
+    public void modifyPresidentId(@NotNull Long id, @NotNull Long presidentId, Long loginUser) {
+        validate(id, v -> !v.equals(presidentId), "user id is same to presidentId, error");
+        findAndValidate(id);
+        User president = findAndValidate(presidentId);
+        validate(president, v -> v.getIsPresident(), "president id " + presidentId + " is wrong");
+
+        User merge = new User();
+        merge.setId(id);
+        merge.setPresidentId(presidentId);
+        userMapper.merge(merge, "presidentId");
+        usrComponent.recordUserLog(id, loginUser, "加入大区总裁团队", null);
+    }
+
+    @Override
+    public void modifyIsDirector(@NotNull Long id, Long userId, boolean isDirector) {
         User userForMerge = new User();
         userForMerge.setId(id);
         userForMerge.setIsDirector(isDirector);
         userForMerge.setIsHonorDirector(!isDirector);
         userMapper.merge(userForMerge, "isDirector", "isHonorDirector");
+
+        usrComponent.recordUserLog(id, userId, "成为董事", null);
     }
 
     @Override
-    public void modifyIsHonorDirector(@NotNull Long id, boolean isHonorDirector) {
+    public void modifyIsHonorDirector(@NotNull Long id, Long userId, boolean isHonorDirector) {
         User userForMerge = new User();
         userForMerge.setId(id);
         userForMerge.setIsHonorDirector(isHonorDirector);
         userForMerge.setIsDirector(!isHonorDirector);
         userMapper.merge(userForMerge, "isDirector", "isHonorDirector");
+
+        usrComponent.recordUserLog(id, userId, "成为荣誉董事", null);
     }
 
     @Override
-    public void modifyIsShareholder(@NotNull Long id, boolean isShareholder) {
+    public void modifyIsShareholder(@NotNull Long id, Long userId, boolean isShareholder) {
         User user = findAndValidate(id);
+        String label = isShareholder ? "设置" : "取消";
 
         User userForMerge = new User();
         userForMerge.setId(id);
         userForMerge.setIsShareholder(isShareholder);
         userMapper.merge(userForMerge, "isShareholder");
-
-        //升级股东获得50W股
-        if(isShareholder) {
-            fncComponent.createAndGrantProfit(id, Profit.ProfitType.股份奖励, null, user.getNickname() + "升级股东,获得股份奖励", CurrencyType.货币股份, new BigDecimal("500000.00"), new Date());
+        usrComponent.recordUserLog(id, userId, label + "股东", null);
+        if(isShareholder) {//升级股东获得50W股
+            fncComponent.createAndGrantProfit(id,userId, Profit.ProfitType.股份奖励, null, user.getNickname() + "升级股东,获得股份奖励", CurrencyType.货币股份, new BigDecimal("500000.00"), new Date());
+        }else {//取消股东，收回所有股份
+            fncComponent.cancelShareholder(id,userId, Profit.ProfitType.股份奖励, null, user.getNickname() + "取消股东,收回所有股份", CurrencyType.货币股份, new BigDecimal("500000.00"), new Date());
         }
     }
 
     @Override
-    public void modifyIsDeleted(@NotNull Long id, boolean isDeleted) {
+    public void modifyIsDeleted(@NotNull Long id, Long userId, boolean isDeleted) {
         findAndValidate(id);
 
         User merge = new User();
@@ -589,10 +592,102 @@ public class UserServiceImpl implements UserService {
         merge.setIsDeleted(isDeleted);
 
         userMapper.merge(merge, "isDeleted");
+        usrComponent.recordUserLog(id, userId, "删除用户", null);
     }
 
+
+
+    /**
+     * 修改大区
+     * @param id
+     * @param largeArea
+     * @param operatorId
+     * @param remark2
+     */
     @Override
-    public void modifyIsToV4(@NotNull Long id, boolean isToV4) {
+    public void modifyLargeAreaAdmin(@NotNull Long id,@NotNull String largeArea,@NotNull Long operatorId, String remark2) {
+        User user = findAndValidate(id);
+        String oldLargeArea = user.getLargearea() == null ? "空" : systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea()+"").getSystemName();
+        String newLargeArea = systemCodeService.findByTypeAndValue("LargeAreaType", largeArea).getSystemName();
+        user.setLargearea(Integer.parseInt(largeArea));
+        user.setSetlargearearemark(remark2);
+        userMapper.update(user);
+        usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + oldLargeArea + "改为" + newLargeArea + ", 备注" + remark2);
+        if(user.getIsPresident() != null && user.getIsPresident()){
+            List<User> filterV4Users = userMapper.findAll(UserQueryModel.builder().presidentId(id).build());
+            for(User u : filterV4Users) {
+                String old = u.getLargearea() == null ? "null" :systemCodeService.findByTypeAndValue("LargeAreaType", user.getLargearea()+"").getSystemName();
+                usrComponent.recordUserLog(id, operatorId, "设置用户大区", "从" + old + "改为" + newLargeArea + ", 备注:跟随大区总裁"+user.getNickname()+"更改大区");
+                u.setLargearea(Integer.parseInt(largeArea));
+                userMapper.merge(u, "largearea");
+            }
+        }
+    }
+
+
+    /**
+     * 用户设置大区总裁
+     * @param id
+     * @param operatorId
+     * @param isPresident
+     */
+    @Override
+    public void modifyIsPresident(Long id, Long operatorId, boolean isPresident) {
+        User user = findAndValidate(id);
+        String label = isPresident ? "设置" : "取消";
+        if (user.getIsPresident() != null) {
+            if (user.getIsPresident() == isPresident) {
+                return;
+            }
+        }
+        List<User> v4Users = findTeamV4(id);
+        List<User> filterV4Users = null;
+        if(isPresident){//设置大区总裁
+            user.setIsPresident(isPresident);
+            user.setPresidentId(null);
+            userMapper.merge(user, "isPresident","presidentId");
+            usrComponent.recordUserLog(id, operatorId, label + "大区总裁", null);
+            if(null == user.getPresidentId()){
+                //过滤特级
+                filterV4Users = v4Users.stream().filter(v -> !v.getIsPresident() && null == v.getPresidentId() ).collect(Collectors.toList());
+            }else{
+                //过滤特级
+                filterV4Users = v4Users.stream().filter(v -> v.getPresidentId() != null && v.getPresidentId() == user.getPresidentId() ).collect(Collectors.toList());
+            }
+            for (User u: filterV4Users ) {
+                u.setPresidentId(id);
+                userMapper.merge(u,"presidentId");
+            }
+        }else{//取消大区总裁
+            User parent = user;
+            do{
+                parent = userMapper.findOne(parent.getParentId());
+            }while(parent != null && !((parent.getIsPresident() != null && parent.getIsPresident()) || parent.getPresidentId() !=null));
+            Long parentId = null;
+            if(parent == null){
+                parentId = null;
+            }else if(parent.getIsPresident()){
+                parentId = parent.getId();
+            }else{
+                parentId = parent.getParentId();
+            }
+            user.setIsPresident(isPresident);
+            user.setPresidentId(parentId);
+            userMapper.merge(user, "isPresident","presidentId");
+            usrComponent.recordUserLog(id, operatorId, label + "大区总裁", null);
+            //过滤用户
+            List<User> filterUsers = userMapper.findAll(UserQueryModel.builder().presidentId(id).build());
+            for (User u: filterUsers ) {
+                u.setPresidentId(parentId);
+                userMapper.merge(u,"presidentId");
+            }
+        }
+    }
+
+
+
+    @Override
+    public void modifyIsToV4(@NotNull Long id, Long userId, boolean isToV4) {
         findAndValidate(id);
 
         User merge = new User();
@@ -600,11 +695,13 @@ public class UserServiceImpl implements UserService {
         merge.setIsToV4(isToV4);
 
         userMapper.merge(merge, "isToV4");
+
+        usrComponent.recordUserLog(id, userId, "直升特级", null);
     }
 
     @Override
-	public void setParentId(Long id, Long parentId) {
-		User user = findAndValidate(id);
+    public void setParentId(Long id, Long parentId) {
+        User user = findAndValidate(id);
         User parent = findAndValidate(parentId);
         if (parent.getUserType() != UserType.代理) {
             throw new BizException(BizCode.ERROR, "推荐人用户类型必须是代理");
@@ -615,7 +712,7 @@ public class UserServiceImpl implements UserService {
         Long originParentId = parentId;
         Long plainParentId = user.getParentId();
         if (plainParentId != null && !originParentId.equals(plainParentId)) {
-        	throw new BizException(BizCode.ERROR, "用户[id=" + id + "]已经存在推荐人, 不能设置推荐人");
+            throw new BizException(BizCode.ERROR, "用户[id=" + id + "]已经存在推荐人, 不能设置推荐人");
         }
         if (parentId.equals(plainParentId)) {
             return; // 幂等操作
@@ -634,8 +731,8 @@ public class UserServiceImpl implements UserService {
         }
         user.setParentId(originParentId);
         userMapper.update(user);
-	}
-	
+    }
+
     @Override
     public void modifyParentIdAdmin(@NotNull Long id, @NotNull Long parentId, @NotNull Long operatorId, String remark) {
         User user = findAndValidate(id);
@@ -692,12 +789,12 @@ public class UserServiceImpl implements UserService {
         long []data = new long[]{0,0,0,0};
         if(user.getUserRank()==UserRank.V4){//特级的做   递归处理
             Map<String,Long> returnMap = new HashMap<String,Long>();
-         Map<String,Long> dataMap = conyteamTotalV4(userId,returnMap);
+            Map<String,Long> dataMap = conyteamTotalV4(userId,returnMap);
             data[0] = dataMap.get("V4");
             data[1] = dataMap.get("V3");
             data[2] = dataMap.get("V2");
             data[3] = dataMap.get("V1");
-         }else{ //直属查询
+        }else{ //直属查询
             List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
             for (UserTeamCountDto userTeamDto :dataList){
                 if (UserRank.V4==userTeamDto.getUserRankEQ()){
@@ -710,7 +807,7 @@ public class UserServiceImpl implements UserService {
                     data[4] = userTeamDto.getTotalnumber()==null?0L:userTeamDto.getTotalnumber();
                 }
             }
-         }
+        }
         return data;
     }
 
@@ -718,48 +815,48 @@ public class UserServiceImpl implements UserService {
      * 递归统计数据
      * @return
      */
-   private Map<String,Long> conyteamTotalV4(Long userId, Map<String,Long> returnMap){
-       List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
-       if (dataList==null||dataList.isEmpty()){
-           return returnMap;
-       }
-       for (UserTeamCountDto userTeamDto :dataList){
-           if (UserRank.V4==userTeamDto.getUserRankEQ()){
-               Long countV4 = returnMap.get("V4")==null?0L:returnMap.get("V4");
-                  if (userTeamDto.getTotalnumber()!=null){
-                      countV4=countV4+userTeamDto.getTotalnumber();
-                  }
-               returnMap.put("V4",countV4);
-           }else if (UserRank.V3==userTeamDto.getUserRankEQ()){
-               Long countV3 = returnMap.get("V3")==null?0L:returnMap.get("V3");
-                   if (userTeamDto.getTotalnumber()!=null){
-                       countV3=countV3+userTeamDto.getTotalnumber();
-                   }
-               returnMap.put("V3",countV3);
+    private Map<String,Long> conyteamTotalV4(Long userId, Map<String,Long> returnMap){
+        List<UserTeamCountDto> dataList =userMapper.countByUserId(userId);
+        if (dataList==null||dataList.isEmpty()){
+            return returnMap;
+        }
+        for (UserTeamCountDto userTeamDto :dataList){
+            if (UserRank.V4==userTeamDto.getUserRankEQ()){
+                Long countV4 = returnMap.get("V4")==null?0L:returnMap.get("V4");
+                if (userTeamDto.getTotalnumber()!=null){
+                    countV4=countV4+userTeamDto.getTotalnumber();
+                }
+                returnMap.put("V4",countV4);
+            }else if (UserRank.V3==userTeamDto.getUserRankEQ()){
+                Long countV3 = returnMap.get("V3")==null?0L:returnMap.get("V3");
+                if (userTeamDto.getTotalnumber()!=null){
+                    countV3=countV3+userTeamDto.getTotalnumber();
+                }
+                returnMap.put("V3",countV3);
 
-           }else if(UserRank.V2==userTeamDto.getUserRankEQ()){
-               Long countV2 = returnMap.get("V2")==null?0L:returnMap.get("V2");
-                   if (userTeamDto.getTotalnumber()!=null){
-                       countV2=countV2+userTeamDto.getTotalnumber();
-                   }
-               returnMap.put("V2",countV2);
+            }else if(UserRank.V2==userTeamDto.getUserRankEQ()){
+                Long countV2 = returnMap.get("V2")==null?0L:returnMap.get("V2");
+                if (userTeamDto.getTotalnumber()!=null){
+                    countV2=countV2+userTeamDto.getTotalnumber();
+                }
+                returnMap.put("V2",countV2);
 
-           }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
-               Long countV1 = returnMap.get("V1")==null?0L:returnMap.get("V1");
-               if (userTeamDto.getTotalnumber()!=null){
-                   countV1=countV1+userTeamDto.getTotalnumber();
-               }
-               returnMap.put("V1",countV1);
-           }
-       }
-       UserQueryModel userQueryModel = new UserQueryModel();
-       userQueryModel.setParentIdNL(userId);
-       List<User> userList = userMapper.findAll(userQueryModel);
-       for (User user :userList){
-           conyteamTotalV4(user.getId(),returnMap);
-       }
-       return returnMap;
-   }
+            }else if (UserRank.V1==userTeamDto.getUserRankEQ()){
+                Long countV1 = returnMap.get("V1")==null?0L:returnMap.get("V1");
+                if (userTeamDto.getTotalnumber()!=null){
+                    countV1=countV1+userTeamDto.getTotalnumber();
+                }
+                returnMap.put("V1",countV1);
+            }
+        }
+        UserQueryModel userQueryModel = new UserQueryModel();
+        userQueryModel.setParentIdNL(userId);
+        List<User> userList = userMapper.findAll(userQueryModel);
+        for (User user :userList){
+            conyteamTotalV4(user.getId(),returnMap);
+        }
+        return returnMap;
+    }
 
     /**
      * 统计 直属团队
@@ -800,10 +897,10 @@ public class UserServiceImpl implements UserService {
         dataMap.put("remark","从V0%");
         dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),0,0));
         dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthEnd(new Date(),1,0));
-          if(flag){
-              long total=userLogMapper.count(dataMap);
-              returnMap.put("total",total);
-          }
+        if(flag){
+            long total=userLogMapper.count(dataMap);
+            returnMap.put("total",total);
+        }
         dataMap.put("parentid",userId);
         List<UserTeamCountDto>userTeamDtoList=userLogMapper.findGByRank(dataMap);
         for (UserTeamCountDto userTeamDto :userTeamDtoList){
@@ -857,7 +954,7 @@ public class UserServiceImpl implements UserService {
         List<UserTeamDto> userRankList= userLogMapper.findByRank(userlongQueryModel);
         Page<UserTeamDto> page = new Page<>();
         if (flag){//详情页
-           long total =userLogMapper.countByRank(userlongQueryModel);
+            long total =userLogMapper.countByRank(userlongQueryModel);
             page.setTotal(total);
         }
         page.setPageNumber(userlongQueryModel.getPageNumber());
@@ -1006,6 +1103,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public long countUserAll(UserQueryModel userQueryModel) {
         return userMapper.countUserAll(userQueryModel);
+    }
+
+    //获取团队里所有的特级
+    private  List<User> findTeamV4(Long id){
+        List<User> userList = userMapper.findAll(new UserQueryModel());//统计所有用户
+        //获取该用户团队所有成员
+        List<User> children = TreeHelper.sortBreadth2(userList, id.toString(), v -> {
+            TreeNode treeNode = new TreeNode();
+            treeNode.setId(v.getId().toString());
+            treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
+            return treeNode;
+        });
+        List<User> v4Users = children.stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList());
+        return  v4Users;
     }
 
 

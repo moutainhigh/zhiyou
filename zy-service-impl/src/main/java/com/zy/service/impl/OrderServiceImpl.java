@@ -431,7 +431,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setIsUseLogistics(isUseLogistics);
 		order.setDeliveredTime(date);
 		order.setOrderStatus(OrderStatus.已发货);
-
+		order.setDeliveredId(orderDeliverDto.getDeliveredId());
 		if (orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
 		}
@@ -2000,7 +2000,7 @@ public class OrderServiceImpl implements OrderService {
 		Long sysUserId = config.getSysUserId();
 
 		Date paidTime = order.getPaidTime();
-
+		Long loginId = config.getSysUserId();
 		/* 订单收款 */
 		if (order.getIsPayToPlatform()) {
 			BigDecimal amount = order.getAmount();
@@ -2012,7 +2012,7 @@ public class OrderServiceImpl implements OrderService {
 					amount = amount.subtract(v4Amount);
 					/*fncComponent.createAndGrantProfit(sysUserId, Profit.ProfitType.平台收款, orderId, "订单" + order.getSn() + "平台收款", currencyType, v4Amount);*/
 				}
-				fncComponent.createAndGrantProfit(sellerId, Profit.ProfitType.订单收款, orderId, "订单" + order.getSn() + "收款", CurrencyType.积分, amount, paidTime);
+				fncComponent.createAndGrantProfit(sellerId, loginId, Profit.ProfitType.订单收款, orderId, "订单" + order.getSn() + "收款", CurrencyType.积分, amount, paidTime);
 			}
 		}
 
@@ -2062,7 +2062,7 @@ public class OrderServiceImpl implements OrderService {
 		if(order.getIsPayToPlatform()){
 			Payment payment = new Payment();
 			payment.setAmount1(order.getAmount());
-			payment.setCurrencyType1(CurrencyType.现金);
+			payment.setCurrencyType1(CurrencyType.U币);
 			payment.setPaymentType(PaymentType.订单支付);
 			payment.setRefId(orderId);
 			payment.setUserId(order.getUserId());

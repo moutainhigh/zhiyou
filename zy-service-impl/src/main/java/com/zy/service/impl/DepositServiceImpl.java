@@ -198,10 +198,10 @@ public class DepositServiceImpl implements DepositService {
 
 		Long sysUserId = config.getSysUserId();
 
-		fncComponent.recordAccountLog(userId, "充值进账", currencyType1, deposit.getAmount1(), InOut.收入, deposit, sysUserId);
+		fncComponent.recordAccountLog(userId, "充值进账", currencyType1, deposit.getAmount1(), InOut.收入, deposit, sysUserId, deposit.getOperatorId());
 
 		if (currencyType2 != null) {
-			fncComponent.recordAccountLog(userId, "充值进账", currencyType2, deposit.getAmount2(), InOut.收入, deposit, sysUserId);
+			fncComponent.recordAccountLog(userId, "充值进账", currencyType2, deposit.getAmount2(), InOut.收入, deposit, sysUserId, deposit.getOperatorId());
 		}
 
 		producer.send(Constants.TOPIC_DEPOSIT_SUCCESS, deposit.getId());

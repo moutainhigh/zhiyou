@@ -10,6 +10,7 @@ import com.zy.component.LessonComponent;
 import com.zy.entity.star.Lesson;
 import com.zy.entity.star.LessonUser;
 import com.zy.entity.usr.User;
+import com.zy.model.Principal;
 import com.zy.model.query.LessonQueryModel;
 import com.zy.model.query.LessonUserQueryModel;
 import com.zy.service.LessonService;
@@ -124,8 +125,8 @@ public class LessonController {
     @RequiresPermissions("lesson:edit")
     @RequestMapping( value = "/delete",method = RequestMethod.POST)
     @ResponseBody
-    public boolean delete(Long lessonId){
-        lessonService.updateEdit(lessonId);
+    public boolean delete(Long lessonId, AdminPrincipal adminPrincipal){
+        lessonService.updateEdit(lessonId, adminPrincipal.getUserId());
         return true;
     }
 
@@ -145,10 +146,12 @@ public class LessonController {
      * @return
      */
     @RequestMapping( value = "/updateEdit",method = RequestMethod.POST)
-    public String updateEdit(Lesson lesson){
+    public String updateEdit(Lesson lesson, AdminPrincipal adminPrincipal){
         Lesson lessons = lessonService.findOne(lesson.getId());
         lessons.setTitle(lesson.getTitle());
         lessons.setParentAllId(lesson.getParentAllId());
+        lessons.setUpdateId(adminPrincipal.getUserId());
+        lessons.setUpdateTime(new Date());
         lessonService.update(lessons);
         return "redirect:/lesson";
     }
