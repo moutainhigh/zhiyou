@@ -176,6 +176,8 @@ public class FncComponent {
 		profit.setCurrencyType(currencyType);
 		profit.setCreatedTime(createdTime);
 		profit.setRefId(refId);
+		profit.setSumTotal(amount);
+		profit.setDeduction(new BigDecimal(0.00));
 		profit.setProfitStatus(Profit.ProfitStatus.已发放);
 		profit.setGrantedTime(createdTime);
 		profit.setVersion(0);
