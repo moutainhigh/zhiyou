@@ -150,7 +150,7 @@ public class BankCardServiceImpl implements BankCardService {
 	}
 
 	@Override
-	public void confirm(@NotNull Long id,@NotNull boolean isSuccess, String confirmRemark) {
+	public void confirm(@NotNull Long id, @NotNull boolean isSuccess, String confirmRemark, Long userId) {
 		validate(id, NOT_NULL, "id can not be null");
 		BankCard bankCard = bankCardMapper.findOne(id);
 		validate(bankCard, NOT_NULL, "appearance is not exists");
@@ -158,6 +158,7 @@ public class BankCardServiceImpl implements BankCardService {
 			throw new BizException(BizCode.ERROR, "已审核,不能再次审核");
 		BankCard merge = new BankCard();
 		merge.setId(id);
+		merge.setConfirmId(userId);
 		if (!isSuccess) {
 			validate(confirmRemark, NOT_NULL, "审核不通过时,备注必须填写");
 			merge.setConfirmRemark(confirmRemark);
@@ -167,7 +168,7 @@ public class BankCardServiceImpl implements BankCardService {
 			merge.setConfirmStatus(ConfirmStatus.已通过);
 			merge.setConfirmedTime(new Date());
 		}
-		bankCardMapper.merge(merge, "confirmStatus", "confirmRemark", "confirmedTime");
+		bankCardMapper.merge(merge,"confirmId", "confirmStatus", "confirmRemark", "confirmedTime");
 		producer.send(Constants.TOPIC_BANKCARD_CONFIRMED, bankCard.getId());
 	}
 

@@ -87,7 +87,7 @@
   <article class="page-wrap">
     <header class="header">
       <h1>转出</h1>
-      <a href="${ctx}/u/account" class="button-left"><i class="fa fa-angle-left"></i></a>
+      <a href="${ctx}/u/money?currencyType=0" class="button-left"><i class="fa fa-angle-left"></i></a>
     </header>
 
     <nav class="miui-scroll-nav">

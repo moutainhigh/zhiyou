@@ -16,7 +16,7 @@ public interface LessonService {
 
 	void insert(Lesson lesson);
 
-	void updateEdit(Long lessonId);
+	void updateEdit(Long lessonId, Long userId);
 
 	Lesson findOne(Long lessonId);
 

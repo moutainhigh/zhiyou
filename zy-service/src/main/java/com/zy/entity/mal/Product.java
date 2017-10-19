@@ -9,21 +9,17 @@ import io.gd.generator.annotation.view.ViewObject;
 import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import static com.zy.entity.mal.Product.VO_ADMIN;
-import static com.zy.entity.mal.Product.VO_DETAIL;
-import static com.zy.entity.mal.Product.VO_LIST;
+import static com.zy.entity.mal.Product.*;
 import static io.gd.generator.api.query.Predicate.*;
 
 @Entity
@@ -118,6 +114,20 @@ public class Product implements Serializable {
 	@Field(label = "创建时间")
 	@View(groups = { VO_ADMIN })
 	private Date createdTime;
+
+	@Query({GTE,LT})
+	@View(groups = { VO_ADMIN })
+	private Date updateTime;
+
+	@Id
+	@Query(IN)
+	@View
+	private Long createId;
+
+	@Id
+	@Query(IN)
+	@View
+	private Long updateId;
 
 	@View
 	@Field(label = "是否结算")

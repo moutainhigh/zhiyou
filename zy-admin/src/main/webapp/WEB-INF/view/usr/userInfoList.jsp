@@ -149,7 +149,7 @@
                 </shiro:hasPermission>
               }
               <shiro:hasPermission name="userInfo:edit">
-	            optionHtml += '<a class="btn btn-xs default blue-stripe user-info-update" href="javascript:;" data-user-id="' + full.userId + '"><i class="fa fa-edit"></i> 编辑 </a>';
+	            optionHtml += '<a class="btn btn-xs default blue-stripe user-info-update" data-href="${ctx}/userInfo/update?userId=' + full.userId + '"><i class="fa fa-edit"></i> 编辑 </a>';
               </shiro:hasPermission>
               return optionHtml;
             }
@@ -165,21 +165,21 @@
       });
     });
 
-	  $('#dataTable').on('click', '.user-info-update', function() {
-		  var userId = $(this).data('user-id');
-		  $.ajax({
-			  url: '${ctx}/userInfo/update?userId=' + userId,
-			  dataType: 'html',
-			  success: function(data) {
-				  layer.open({
-					  type: 1,
-					  skin: 'layui-layer-rim', //加上边框
-					  area: ['1080px', '600px'], //宽高
-					  content: data
-				  });
-			  }
-		  });
-	  });
+	  <%--$('#dataTable').on('click', '.user-info-update', function() {--%>
+		  <%--var userId = $(this).data('user-id');--%>
+		  <%--$.ajax({--%>
+			  <%--url: '${ctx}/userInfo/update?userId=' + userId,--%>
+			  <%--dataType: 'html',--%>
+			  <%--success: function(data) {--%>
+				  <%--layer.open({--%>
+					  <%--type: 1,--%>
+					  <%--skin: 'layui-layer-rim', //加上边框--%>
+					  <%--area: ['1080px', '600px'], //宽高--%>
+					  <%--content: data--%>
+				  <%--});--%>
+			  <%--}--%>
+		  <%--});--%>
+	  <%--});--%>
 
   });
   var $confirmDialog;

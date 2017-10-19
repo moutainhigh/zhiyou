@@ -17,7 +17,7 @@ public interface BannerMapper {
 
 	int merge(@Param("banner") Banner banner, @Param("fields")String... fields);
 
-	int delete(Long id);
+	int delete(Banner id);
 
 	Banner findOne(Long id);
 

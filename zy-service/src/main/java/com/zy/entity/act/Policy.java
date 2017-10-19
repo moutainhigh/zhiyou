@@ -150,5 +150,11 @@ public class Policy implements Serializable {
 	@Version
 	@Field(label = "乐观锁")
 	private Integer version;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date updateTime;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long updateId;
 	
 }

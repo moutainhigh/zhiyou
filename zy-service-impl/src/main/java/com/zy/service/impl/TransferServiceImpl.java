@@ -11,7 +11,6 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import com.zy.ServiceUtils;
 import com.zy.common.exception.ValidationException;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.usr.User;
@@ -73,8 +72,8 @@ public class TransferServiceImpl implements TransferService {
 		BigDecimal amount = transfer.getAmount();
 		Long fromUserId = transfer.getFromUserId();
 		Long toUserId = transfer.getToUserId();
-		fncComponent.recordAccountLog(fromUserId, title, currencyType, amount, 支出, transfer, toUserId);
-		fncComponent.recordAccountLog(toUserId, title, currencyType, amount, 收入, transfer, fromUserId);
+		fncComponent.recordAccountLog(fromUserId, title, currencyType, amount, 支出, transfer, toUserId, fromUserId);
+		fncComponent.recordAccountLog(toUserId, title, currencyType, amount, 收入, transfer, fromUserId, fromUserId);
 	}
 
 	@Override
@@ -98,13 +97,13 @@ public class TransferServiceImpl implements TransferService {
 			throw new BizException(BizCode.ERROR, "转账账户已被冻结");
 		}
 
-		Account account = accountMapper.findByUserIdAndCurrencyType(fromUserId, CurrencyType.现金);
+		Account account = accountMapper.findByUserIdAndCurrencyType(fromUserId, CurrencyType.U币);
 		if (account.getAmount().compareTo(amount) < 0) {
 			throw new BizException(BizCode.ERROR, "U币余额不足");
 		}
 
 		Transfer transfer = fncComponent.createTransfer(fromUserId, toUserId, Transfer.TransferType.U币转账, null, "U币转账"
-				, CurrencyType.现金, amount, new Date());
+				, CurrencyType.U币, amount, new Date());
 		transfer(transfer.getId(), remark);
 
 	}

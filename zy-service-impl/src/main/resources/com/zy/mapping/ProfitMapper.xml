@@ -48,6 +48,8 @@
 			sum_total = #{sumTotal},
 			deduction = #{deduction},
 			version = version + 1,
+			update_id = #{updateId},
+			update_time = #{updateTime}
 		</set>
 		where id = #{id} and version=#{version}
 	</update>
@@ -338,6 +340,27 @@
 		AND a.profit_status = 1
 		AND a.created_time &gt;= #{createdTimeGTE}
 		AND a.created_time &lt;= #{createdTimeLT}
+	</select>
+
+	<!-- 查询每月所有奖项金额-->
+	<select id="findRevenue" resultType="_double" parameterType="com.zy.model.query.ProfitQueryModel">
+		SELECT
+	 		 IFNULL(SUM(a.amount),0) AS sumAmount
+		FROM fnc_profit a
+		<where>
+			<if test="userIdEQ != null">
+				and a.user_id = #{userIdEQ}
+			</if>
+			<if test="createdTimeGTE != null">
+				and a.created_time &gt;= #{createdTimeGTE}
+			</if>
+			<if test="createdTimeLT != null">
+				and a.created_time &lt;= #{createdTimeLT}
+			</if>
+			<if test="profitStatusEQ != null">
+				and a.profit_status = #{profitStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+		</where>
 	</select>
 
 	<select id="orderRevenueDetail" resultMap="baseResultMap" parameterType="com.zy.model.query.ProfitQueryModel">

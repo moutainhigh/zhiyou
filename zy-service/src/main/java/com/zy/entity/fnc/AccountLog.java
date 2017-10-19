@@ -130,4 +130,9 @@ public class AccountLog implements Serializable {
 	@Query(Predicate.EQ)
 	private Boolean isAcknowledged;
 
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date updateTime;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long updateId;
 }

@@ -99,4 +99,14 @@ public class Article implements Serializable {
 	@Query(Predicate.EQ)
 	private Boolean isHot;
 
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long createId;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date updateTime;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long updateId;
+
+	private Integer status;
 }

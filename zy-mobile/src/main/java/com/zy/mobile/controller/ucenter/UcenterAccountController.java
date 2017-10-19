@@ -82,7 +82,7 @@ public class UcenterAccountController {
 		List<Account> accounts = accountService.findByUserId(userId);
 		accounts.stream().forEach(v -> {
 			switch (v.getCurrencyType()) {
-				case 现金:
+				case U币:
 					model.addAttribute("amount1", v.getAmount());
 					break;
 				case 积分:
@@ -269,7 +269,7 @@ public class UcenterAccountController {
 			throw new BizException(BizCode.ERROR, "只有特技服务商才可以转账");
 		}
 
-		Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.现金);
+		Account account = accountService.findByUserIdAndCurrencyType(principal.getUserId(), CurrencyType.U币);
 		model.addAttribute("amount", account.getAmount());
 		return "ucenter/account/transfer";
 	}
@@ -340,7 +340,7 @@ public class UcenterAccountController {
 		List<Account> accounts = accountService.findByUserId(userId);//统计u币 ，积分，股权
 		accounts.stream().forEach(v -> {
 			switch (v.getCurrencyType()) {
-				case 现金:
+				case U币:
 					map.put("amount1", v.getAmount());
 					break;
 				case 积分:

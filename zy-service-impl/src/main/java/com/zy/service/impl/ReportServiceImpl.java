@@ -9,9 +9,6 @@ import com.zy.component.FncComponent;
 import com.zy.entity.act.PolicyCode;
 import com.zy.entity.act.Report;
 import com.zy.entity.adm.Admin;
-import com.zy.entity.fnc.CurrencyType;
-import com.zy.entity.fnc.Profit.ProfitType;
-import com.zy.entity.fnc.Transfer;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.tour.TourUser;
 import com.zy.entity.usr.User;
@@ -24,11 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import static com.zy.common.support.weixinpay.WeixinPayUtils.logger;
 import static com.zy.common.util.ValidateUtils.*;
 
 @Service
@@ -138,7 +133,7 @@ public class ReportServiceImpl implements ReportService {
 	}
 	
 	@Override
-	public Report adminModify(@NotNull Report report) {
+	public Report adminModify(@NotNull Report report, Long userId) {
 		Long id = report.getId();
 		validate(id, NOT_NULL, "id is null");
 
@@ -172,7 +167,7 @@ public class ReportServiceImpl implements ReportService {
 		}
 		
 		reportMapper.update(persistence);
-		actComponent.recordReportLog(id, "admin修改检测报告");
+		actComponent.recordReportLog(id,userId , "admin修改检测报告");
 		return persistence;
 	}
 	
@@ -193,7 +188,7 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
-	public void confirm(@NotNull Long id, boolean isSuccess, String confirmRemark) {
+	public void confirm(@NotNull Long id, boolean isSuccess, Long userId, String confirmRemark) {
 		Report report = reportMapper.findOne(id);
 		validate(report, NOT_NULL, "report id " + id + " is not found");
 		validate(report.getPreConfirmStatus(), v -> v == ConfirmStatus.已通过, "pre confirm status error");
@@ -212,7 +207,7 @@ public class ReportServiceImpl implements ReportService {
 		if (reportMapper.update(report) == 0) {
 			throw new ConcurrentException();
 		}
-		actComponent.recordReportLog(id, "终审确认");
+		actComponent.recordReportLog(id, userId, "终审确认");
 	}
 
 	@Override
@@ -298,10 +293,10 @@ public class ReportServiceImpl implements ReportService {
 //
 //
 //			/* 全额给一个人 */
-//			fncComponent.createProfit(topId, ProfitType.历史收益, id, title, CurrencyType.现金, new BigDecimal("18.00"), new Date(), null); // TODO	 写死
+//			fncComponent.createProfit(topId, ProfitType.历史收益, id, title, CurrencyType.U币, new BigDecimal("18.00"), new Date(), null); // TODO	 写死
 //
 //			if (hasTransfer) {
-//				fncComponent.createTransfer(topId, transferUserId, Transfer.TransferType.历史收益, id, title, CurrencyType.现金, new BigDecimal("15.00"), new Date());
+//				fncComponent.createTransfer(topId, transferUserId, Transfer.TransferType.历史收益, id, title, CurrencyType.U币, new BigDecimal("15.00"), new Date());
 //			}
 
 			report.setIsSettledUp(true);
@@ -315,11 +310,11 @@ public class ReportServiceImpl implements ReportService {
 			}
 
 		}
-		actComponent.recordReportLog(id, "检测报告结算");
+		actComponent.recordReportLog(id, userId, "检测报告结算");
 	}
 
 	@Override
-	public void checkReportResult(@NotNull Long id, @NotNull Report.ReportResult reportResult) {
+	public void checkReportResult(@NotNull Long id, Long userId, @NotNull Report.ReportResult reportResult) {
 		Report report = reportMapper.findOne(id);
 		validate(report, NOT_NULL, "report id " + id + " not fount");
 
@@ -334,11 +329,11 @@ public class ReportServiceImpl implements ReportService {
 		}
 		report.setCheckReportResult(reportResult);
 		reportMapper.update(report);
-		actComponent.recordReportLog(id, "客服检测结果");
+		actComponent.recordReportLog(id, userId, "客服检测结果");
 	}
 
 	@Override
-	public void visitUser(@NotNull Long id, @NotNull Long userId) {
+	public void visitUser(@NotNull Long id, @NotNull Long userId, Long aLong) {
 		Report report = reportMapper.findOne(id);
 		validate(report, NOT_NULL, "report id " + id + " not fount");
 		validate(report, v -> v.getCheckReportResult() != null, "客服检测结果为空");
@@ -362,7 +357,7 @@ public class ReportServiceImpl implements ReportService {
 
 		report.setVisitUserId(userId);
 		reportMapper.update(report);
-		actComponent.recordReportLog(id, "分配回访客服");
+		actComponent.recordReportLog(id, userId, "分配回访客服");
 	}
 
 	@Override
@@ -376,7 +371,7 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
-	public Report modify(@NotNull Report report) {
+	public Report modify(@NotNull Report report, Long userId) {
 		Long id = report.getId();
 		validate(id, NOT_NULL, "id is null");
 
@@ -413,7 +408,7 @@ public class ReportServiceImpl implements ReportService {
 		}
 		validate(persistence);
 		reportMapper.update(persistence);
-		actComponent.recordReportLog(id, "用户修改检测报告");
+		actComponent.recordReportLog(id, userId, "用户修改检测报告");
 		return persistence;
 	}
 
@@ -464,7 +459,7 @@ public class ReportServiceImpl implements ReportService {
 		if (reportMapper.update(report) == 0) {
 			throw new ConcurrentException();
 		}
-		actComponent.recordReportLog(id, "预审核");
+		actComponent.recordReportLog(id, userId, "预审核");
 	}
 
 	@Override

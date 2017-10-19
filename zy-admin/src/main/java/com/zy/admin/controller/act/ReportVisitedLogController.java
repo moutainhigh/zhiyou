@@ -90,7 +90,8 @@ public class ReportVisitedLogController {
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(ReportVisitedLog reportVisitedLog, Model model, RedirectAttributes redirectAttributes) {
 		try{
-			reportVisitedLogService.create(reportVisitedLog);
+			Long userId = getPrincipalUserId();
+			reportVisitedLogService.create(reportVisitedLog, userId);
 			redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ok("操作成功"));
 			return "redirect:/reportVisitedLog";
 		} catch (Exception e) {
@@ -119,9 +120,9 @@ public class ReportVisitedLogController {
 	@RequiresPermissions("reportVisitedLog:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> update(ReportVisitedLog reportVisitedLog, Model model) {
+	public Result<?> update(ReportVisitedLog reportVisitedLog, Model model , AdminPrincipal principal) {
 		try {
-			reportVisitedLogService.modify(reportVisitedLog);
+			reportVisitedLogService.modify(reportVisitedLog,principal.getUserId());
 			return ResultBuilder.ok("保存成功");
 		} catch (Exception e) {
 			return ResultBuilder.error(e.getMessage());

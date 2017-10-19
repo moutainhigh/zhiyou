@@ -15,6 +15,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -77,6 +78,10 @@ public class Lesson implements Serializable {
     @Query(Predicate.EQ)
     private Integer viewFlage;
 
+    @Query({Predicate.GTE, Predicate.LT})
+    private Date updateTime;
 
+    @Query({Predicate.GTE, Predicate.LT})
+    private Long updateId;
 
 }

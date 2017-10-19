@@ -95,7 +95,7 @@ public class Profit implements Serializable {
 	private CurrencyType currencyType;
 
 	@NotNull
-	@DecimalMin("0.01")
+	//@DecimalMin("0.01")
 	@Field(label = "应发金额")
 	@View(groups = VO_ADMIN)
 	@View(name = "amountLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
@@ -148,5 +148,10 @@ public class Profit implements Serializable {
 	@View(name = "deductionLabel", type = String.class, groups = {VO_LIST, VO_ADMIN})
 	private BigDecimal deduction;
 
+	@Query({Predicate.GTE, Predicate.LT})
+	private Date updateTime;
+
+	@Query({Predicate.GTE, Predicate.LT})
+	private Long updateId;
 
 }

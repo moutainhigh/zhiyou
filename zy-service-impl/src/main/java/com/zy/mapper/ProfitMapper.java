@@ -33,4 +33,6 @@ public interface ProfitMapper {
 	List<Profit> orderRevenueDetail(ProfitQueryModel profitQueryModel);
 
 	DepositSumDto queryRevenue(ProfitQueryModel profitQueryModel);
+
+	Double findRevenue(ProfitQueryModel profitQueryModel);
 }

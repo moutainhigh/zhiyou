@@ -1,5 +1,6 @@
 package com.zy.admin.controller.act;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
@@ -79,7 +80,7 @@ public class PolicyController {
 	@RequiresPermissions("policy:modify")
 	@RequestMapping(value = "/modifyValidTime")
 	@ResponseBody
-	public Result<?> modifyValidTime(@NotBlank String ids, Date beginTime, Date endTime) {
+	public Result<?> modifyValidTime(@NotBlank String ids, Date beginTime, Date endTime , AdminPrincipal principal) {
 		if(StringUtils.isBlank(ids)){
 			return ResultBuilder.error("请至少选择一条记录！");
 		} else {
@@ -90,7 +91,7 @@ public class PolicyController {
 				validate(policy, NOT_NULL, "policy id" + id + " not found");
 				validate(policy, v -> (v.getPolicyStatus() == Policy.PolicyStatus.审核中), "PolicyStatus is error, policy id is " + id + "");
 				try {
-					policyService.modifyValidTime(id, beginTime, endTime);
+					policyService.modifyValidTime(id, beginTime, endTime,principal.getUserId());
 				} catch (Exception e) {
 					return ResultBuilder.error(e.getMessage());
 				}
@@ -102,7 +103,7 @@ public class PolicyController {
 	@RequiresPermissions("policy:modify")
 	@RequestMapping(value = "/fail")
 	@ResponseBody
-	public Result<?> fail(@NotBlank String ids) {
+	public Result<?> fail(@NotBlank String ids, AdminPrincipal principal) {
 		if(StringUtils.isBlank(ids)){
 			return ResultBuilder.error("请至少选择一条记录！");
 		} else {
@@ -113,7 +114,7 @@ public class PolicyController {
 				validate(policy, NOT_NULL, "policy id" + id + " not found");
 				validate(policy, v -> (v.getPolicyStatus() == Policy.PolicyStatus.审核中), "PolicyStatus is error, policy id is " + id + "");
 				try {
-					policyService.fail(id);
+					policyService.fail(id, principal.getUserId());
 				} catch (Exception e) {
 					return ResultBuilder.error(e.getMessage());
 				}

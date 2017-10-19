@@ -4,11 +4,13 @@ import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
 
 import java.awt.image.BufferedImage;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.zy.admin.model.AdminPrincipal;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -80,8 +82,9 @@ public class ArticleController {
 
 	@RequiresPermissions("article:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String create(Article article, Model model, RedirectAttributes redirectAttributes) {
-
+	public String create(Article article, Model model, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
+		article.setCreateId(adminPrincipal.getUserId());
+		article.setStatus(1);
 		try {
 			articleService.create(article);
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("新闻创建成功"));
@@ -108,12 +111,11 @@ public class ArticleController {
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(Article article, RedirectAttributes redirectAttributes) {
+	public String update(Article article, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
 		Long id = article.getId();
 		validate(id, NOT_NULL, "article id is null");
-
 		try {
-			articleService.modify(article);
+			articleService.modify(article,adminPrincipal.getUserId());
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("新闻保存成功"));
 			return "redirect:/article";
 		} catch (Exception e) {
@@ -126,21 +128,20 @@ public class ArticleController {
 	@RequiresPermissions("article:edit")
 	@RequestMapping(value = "/release", method = RequestMethod.POST)
 	@ResponseBody
-	public boolean release(@RequestParam Long id, @RequestParam boolean isRelease) {
+	public boolean release(@RequestParam Long id, @RequestParam boolean isRelease, AdminPrincipal adminPrincipal) {
 		Article article = articleService.findOne(id);
 		validate(article, NOT_NULL, "article not found, id is " + id);
-
-		articleService.release(id, isRelease);
+		articleService.release(id, isRelease,adminPrincipal.getUserId());
 		return true;
 	}
 	
 	@RequiresPermissions("article:edit")
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public boolean delete(@RequestParam Long id) {
+	public boolean delete(@RequestParam Long id, AdminPrincipal adminPrincipal) {
 		Article article = articleService.findOne(id);
 		validate(article, NOT_NULL, "article not found, id is " + id);
-		articleService.delete(id);
+		articleService.delete(id,adminPrincipal.getUserId());
 		return true;
 	}
 

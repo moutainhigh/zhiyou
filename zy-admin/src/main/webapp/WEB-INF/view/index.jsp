@@ -306,7 +306,7 @@
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="user:view,address:view,userInfo:view">
+        <shiro:hasAnyPermissions name="user:view,address:view,userInfo:view,userTargetSales:view">
           <li class="start active open">
             <a href="javascript:;">
               <i class="icon-users"></i>
@@ -328,6 +328,11 @@
               <shiro:hasPermission name="userInfo:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/userInfo"><i class="icon-graduation"></i> 用户认证管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="userTargetSales:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/userTargetSales"><i class="icon-graduation"></i> 用户目标销量管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>
@@ -616,6 +621,24 @@
               <shiro:hasPermission name="tourJoinUser:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/tourJoinUser"><i class="icon-docs"></i> 参游旅客信息管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+            </ul>
+          </li>
+        </shiro:hasAnyPermissions>
+
+        <shiro:hasAnyPermissions name="newReport:base">
+          <li>
+            <a href="javascript:;">
+              <i class="icon-globe"></i>
+              <span class="title">新报表</span>
+              <span class="selected"></span>
+              <span class="arrow "></span>
+            </a>
+            <ul class="sub-menu">
+              <shiro:hasPermission name="newReport:base">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/newReport/base?type=0"><i class="icon-docs"></i> 基础报表<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>

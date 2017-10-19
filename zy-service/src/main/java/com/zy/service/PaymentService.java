@@ -27,7 +27,7 @@ public interface PaymentService {
 	
 	void offlineFailure(Long id, Long operatorId, String remark);
 
-	void balancePay(Long paymentId, boolean checkBalance);
+	void balancePay(Long paymentId, boolean checkBalance, Long loginId);
 	
 	void modifyOffline(Long paymentId, String offlineImage, String offlineMemo);
 
@@ -37,6 +37,6 @@ public interface PaymentService {
 
 	void cancel(Long id);
 
-	void refund(Long id);
+	void refund(Long id, Long loginId);
 
 }

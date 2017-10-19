@@ -6,14 +6,14 @@ import java.util.Map;
 
 public class AdminConstants {
 
-	
+
 	public static final String[] IMAGE_UPLOAD_ALLOWED_EXTENTIONS = new String[] {"jpg", "png", "jpeg", "bmp", "gif"};
 	public static final long IMAGE_UPLOAD_MAX_SIZE = 5 * 1024 *1024;
-	
+
 	public static final Map<String, Map<String, String>> SETTING_PERMISSION_MAP;
-	
+
 	static {
-		
+
 		SETTING_PERMISSION_MAP = new HashMap<>();
 		Map<String, String> sub;
 
@@ -30,12 +30,15 @@ public class AdminConstants {
 			sub.put("user:setBoss", "用户信息(设置总经理)");
 			sub.put("user:setIsDeleted", "用户信息(开除用户)");
 			sub.put("user:setIsToV4", "用户信息(直升特级)");
+			sub.put("user:setIsPresident", "用户信息(设置大区总裁)");
 			sub.put("user:export", "用户信息(导出)");
 			sub.put("userInfo:view", "用户认证(查看)");
 			sub.put("userInfo:edit", "用户认证(编辑)");
 			sub.put("userInfo:confirm", "用户认证(审核)");
+			sub.put("userTargetSales:view", "用户目标销量(查看)");
+			sub.put("userTargetSales:edit", "用户目标销量(编辑)");
 			sub.put("address:view", "地址管理(查看)");
-	 		SETTING_PERMISSION_MAP.put("用户中心", sub);
+			SETTING_PERMISSION_MAP.put("用户中心", sub);
 		}
 		{
 			sub = new LinkedHashMap<>();
@@ -51,7 +54,7 @@ public class AdminConstants {
 			sub.put("productReplacement:view", "换货管理(查看)");
 			sub.put("productReplacement:deliver", "换货管理(发货)");
 			sub.put("productReplacement:reject", "换货管理(驳回)");
-	 		SETTING_PERMISSION_MAP.put("下单中心", sub);
+			SETTING_PERMISSION_MAP.put("下单中心", sub);
 		}
 		{
 			sub = new LinkedHashMap<>();
@@ -96,7 +99,7 @@ public class AdminConstants {
 			sub.put("feedback:view", "反馈管理");
 			sub.put("help:view", "帮助中心(查看)");
 			sub.put("help:edit", "帮助中心(编辑)");
-	 		SETTING_PERMISSION_MAP.put("内容管理", sub);
+			SETTING_PERMISSION_MAP.put("内容管理", sub);
 		}
 		{
 			sub = new LinkedHashMap<>();
@@ -118,7 +121,7 @@ public class AdminConstants {
 			sub.put("payment:view", "支付单查看");
 			sub.put("payment:confirmPaid", "支付单确认支付");
 			sub.put("transfer:view", "转账单管理");
-	 		SETTING_PERMISSION_MAP.put("财务管理", sub);
+			SETTING_PERMISSION_MAP.put("财务管理", sub);
 		}
 		{
 			sub = new LinkedHashMap<>();
@@ -149,7 +152,7 @@ public class AdminConstants {
 			sub.put("teamReportNew:export", "团队报表导出");
 			sub.put("teamProvinceReport:view", "省份服务商活跃度(查看)");
 			sub.put("teamProvinceReport:export", "省份服务商活跃度(导出)");
-	 		SETTING_PERMISSION_MAP.put("报表管理", sub);
+			SETTING_PERMISSION_MAP.put("报表管理", sub);
 		}
 		{
 			sub = new LinkedHashMap<>();
@@ -190,6 +193,11 @@ public class AdminConstants {
 			sub.put("tourSetting:view", "黑/白名单管理(查看)");
 			sub.put("tourSetting:edit", "黑/白名单管理(编辑)");
 			SETTING_PERMISSION_MAP.put("旅游管理", sub);
+		}
+		{
+			sub = new LinkedHashMap<>();
+			sub.put("newReport:base", "基础报表(查看)");
+			SETTING_PERMISSION_MAP.put("新报表", sub);
 		}
 	}
 }

@@ -16,6 +16,7 @@ import com.zy.entity.mal.Product;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
+import com.zy.model.Principal;
 import com.zy.model.query.ProductQueryModel;
 import com.zy.model.query.ReportQueryModel;
 import com.zy.model.query.UserQueryModel;
@@ -147,11 +148,11 @@ public class ReportController {
 	@RequiresPermissions("report:edit")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> update(Report report, Model model) {
+	public Result<?> update(Report report, Model model, AdminPrincipal principal) {
 		Long id = report.getId();
 		validate(id, NOT_NULL, "id is null");
 		try {
-			reportService.adminModify(report);
+			reportService.adminModify(report,principal.getUserId());
 		} catch (Exception e) {
 			return ResultBuilder.error(e.getMessage());
 		}
@@ -161,21 +162,21 @@ public class ReportController {
 	@RequiresPermissions("report:checkReportResult")
 	@RequestMapping(value = "/checkReportResult", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> checkReportResult(@RequestParam Long id, @RequestParam ReportResult reportResult) {
-		reportService.checkReportResult(id, reportResult);
+	public Result<?> checkReportResult(@RequestParam Long id, @RequestParam ReportResult reportResult,AdminPrincipal principal) {
+		reportService.checkReportResult(id, principal.getUserId() , reportResult);
 		return ResultBuilder.ok("操作成功");
 	}
 
 	@RequiresPermissions("report:visitUser")
 	@RequestMapping(value = "/visitUser", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> visitUser(@RequestParam Long id, @RequestParam String phone) {
+	public Result<?> visitUser(@RequestParam Long id, @RequestParam String phone ,AdminPrincipal principal) {
 		User user = userService.findByPhone(phone);
 		if(user == null ) {
 			return ResultBuilder.error("客服不存在");
 		}
 		try{
-			reportService.visitUser(id, user.getId());
+			reportService.visitUser(id, principal.getUserId(), user.getId());
 			return ResultBuilder.ok("操作成功");
 		} catch (Exception e) {
 			return ResultBuilder.error(e.getMessage());
@@ -187,8 +188,8 @@ public class ReportController {
 	@RequiresPermissions("report:confirm")
 	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> confirm(@RequestParam Long id, @RequestParam boolean isSuccess, String confirmRemark) {
-		reportService.confirm(id, isSuccess, confirmRemark);
+	public Result<?> confirm(@RequestParam Long id, @RequestParam boolean isSuccess, String confirmRemark,Principal principal) {
+		reportService.confirm(id, isSuccess, principal.getUserId(), confirmRemark);
 		return ResultBuilder.ok("操作成功");
 	}
 	

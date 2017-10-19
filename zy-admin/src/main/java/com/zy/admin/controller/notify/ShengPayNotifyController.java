@@ -1,5 +1,6 @@
 package com.zy.admin.controller.notify;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.common.exception.BizException;
 import com.zy.common.support.shengpay.BatchPaymentClient;
 import com.zy.common.support.shengpay.BatchPaymentNotify;
@@ -30,7 +31,7 @@ public class ShengPayNotifyController {
 
 	@RequestMapping("/batchPayment")
 	@ResponseBody
-	public String batchPayment(BatchPaymentNotify batchPaymentNotify) {
+	public String batchPayment(BatchPaymentNotify batchPaymentNotify, AdminPrincipal adminPrincipal) {
 		if (!batchPaymentClient.checkBatchPaymentNotifySign(batchPaymentNotify)) {
 			log.error("验签错误");
 			throw new BizException(BizCode.ERROR, "验证签名错误");
@@ -41,7 +42,7 @@ public class ShengPayNotifyController {
 			Withdraw withdraw = withdrawService.findBySn(sn);
 			Long withdrawId = withdraw.getId();
 			if (batchPaymentClient.isBatchPaymentNotifySuccess(batchPaymentNotify)) {
-				withdrawService.autoSuccess(withdrawId);
+				withdrawService.autoSuccess(withdrawId, adminPrincipal.getUserId());
 			} else {
 				withdrawService.autoFailure(withdrawId, "错误code:" + batchPaymentNotify.getResultCode() + ", 错误名称:" + batchPaymentNotify.getResultName());
 			}

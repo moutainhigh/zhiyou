@@ -1,5 +1,6 @@
 package com.zy.admin.controller.cms;
 
+import com.zy.admin.model.AdminPrincipal;
 import com.zy.entity.cms.Help;
 import com.zy.entity.cms.HelpCategory;
 import com.zy.entity.usr.User.UserType;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.zy.model.Constants.CACHE_NAME_HELP;
@@ -62,8 +64,8 @@ public class HelpController {
 	}
 	
 	@RequestMapping(value = "/helpCategory/create", method = RequestMethod.POST)
-	public String create(HelpCategory helpCategory, Model model, RedirectAttributes redirectAttributes) {
-		
+	public String create(HelpCategory helpCategory, Model model, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
+		helpCategory.setCreateId(adminPrincipal.getUserId());
 		try {
 			helpCategoryService.create(helpCategory);
 			cacheDelete(CACHE_NAME_HELP_CATEGORY, UserType.代理.toString());
@@ -86,9 +88,11 @@ public class HelpController {
 	}
 	
 	@RequestMapping(value = "/helpCategory/update", method = RequestMethod.POST)
-	public String update(HelpCategory helpCategory, Model model, RedirectAttributes redirectAttributes) {
+	public String update(HelpCategory helpCategory, Model model, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
 		Long helpCategoryId = helpCategory.getId();
 		validate(helpCategoryId, NOT_NULL, "help category id is null");
+		helpCategory.setUpdateId(adminPrincipal.getUserId());
+		helpCategory.setUpdateTime(new Date());
 		try {
 			helpCategoryService.update(helpCategory);
 			cacheDelete(CACHE_NAME_HELP_CATEGORY, UserType.代理.toString());

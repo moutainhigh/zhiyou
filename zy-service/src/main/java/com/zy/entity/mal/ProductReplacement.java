@@ -126,6 +126,15 @@ public class ProductReplacement implements Serializable {
 	@View(groups = {VO_DETAIL, VO_ADMIN})
 	private Date deliveredTime;
 
+	@View(groups = {VO_DETAIL, VO_ADMIN})
+	private Long deliveredId;
+
+	@View(groups = {VO_DETAIL, VO_ADMIN})
+	private Date updateTime;
+
+	@View(groups = {VO_DETAIL, VO_ADMIN})
+	private Long updateId;
+
 	@Query(Predicate.LK)
 	@Field(label = "物流公司名")
 	@StringBinder

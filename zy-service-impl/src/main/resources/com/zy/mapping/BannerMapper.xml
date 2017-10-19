@@ -16,12 +16,16 @@
 	<sql id="baseColumn">id,is_released,image,url,title,order_number,banner_position,is_open_blank</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.cms.Banner" useGeneratedKeys="true" keyProperty="id">
-	  insert into `cms_banner` (is_released,image,url,title,order_number,banner_position,is_open_blank)
-	  values (#{isReleased},#{image},#{url},#{title},#{orderNumber},#{bannerPosition,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{isOpenBlank})
+	  insert into `cms_banner` (is_released,image,url,title,order_number,banner_position,is_open_blank,create_id,create_time,status)
+	  values (#{isReleased},#{image},#{url},#{title},#{orderNumber},#{bannerPosition,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{isOpenBlank},#{createId},#{createTime},#{status})
 	</insert>
 
-	<delete id="delete">
-		delete from `cms_banner` where id = #{id}
+	<delete id="delete" parameterType="com.zy.entity.cms.Banner">
+		update `cms_banner`
+		SET update_id = #{updateId},
+			update_time = #{updateTime},
+			status = #{status}
+		where id = #{id}
 	</delete>
 
 	<update id="update" parameterType="com.zy.entity.cms.Banner">
@@ -50,6 +54,8 @@
 					<when test="field == 'orderNumber'">order_number = #{banner.orderNumber},</when>
 					<when test="field == 'bannerPosition'">banner_position = #{banner.bannerPosition,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.cms.Banner$BannerPosition},</when>
 					<when test="field == 'isOpenBlank'">is_open_blank = #{banner.isOpenBlank},</when>
+					<when test="field == 'updateId'">update_id = #{banner.updateId},</when>
+					<when test="field == 'updateTime'">update_time = #{banner.updateTime},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -68,6 +74,7 @@
 		<include refid="baseColumn"/>
 		from `cms_banner`
 		<where>
+			status = 1
 			<if test="titleLK != null">
 				<bind name="titleLK" value="'%' + titleLK + '%'"/> and title like #{titleLK}
 			</if>

@@ -72,7 +72,6 @@
         }
           $('#form').submit();
       });
-
     })
   </script>
 </head>

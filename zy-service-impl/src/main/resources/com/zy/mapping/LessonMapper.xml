@@ -32,6 +32,8 @@
 			create_by_id = #{createById},
 			create_date = #{createDate},
 			view_flage = #{viewFlage},
+			update_id = #{updateId},
+			update_time = #{updateTime},
 		</set>
 		where id = #{id}
 	</update>

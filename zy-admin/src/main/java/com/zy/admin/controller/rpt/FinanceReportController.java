@@ -255,7 +255,7 @@ public class FinanceReportController {
 				CurrencyType currencyType = withdraw.getCurrencyType();
 				BigDecimal withdrawAmount = withdraw.getAmount();
 
-				if (currencyType == CurrencyType.现金) {
+				if (currencyType == CurrencyType.U币) {
 					BigDecimal amount = financeReportVo.getWithdrawAmount() == null? zero : financeReportVo.getWithdrawAmount();
 					financeReportVo.setWithdrawAmount(amount.add(withdrawAmount));
 				} else
@@ -276,7 +276,7 @@ public class FinanceReportController {
 				CurrencyType currencyType = profit.getCurrencyType();
 				BigDecimal profitAmount = profit.getAmount();
 
-				if (currencyType == CurrencyType.现金) {
+				if (currencyType == CurrencyType.U币) {
 					BigDecimal amount = financeReportVo.getProfitAmount() == null? zero : financeReportVo.getProfitAmount();
 					financeReportVo.setProfitAmount(amount.add(profitAmount));
 				} else if (currencyType == CurrencyType.积分) {
@@ -526,7 +526,7 @@ public class FinanceReportController {
 				CurrencyType currencyType = withdraw.getCurrencyType();
 				BigDecimal withdrawAmount = withdraw.getAmount();
 
-				if (currencyType == CurrencyType.现金) {
+				if (currencyType == CurrencyType.U币) {
 					BigDecimal amount = financeReportVo.getWithdrawAmount() == null? zero : financeReportVo.getWithdrawAmount();
 					financeReportVo.setWithdrawAmount(amount.add(withdrawAmount));
 				} else
@@ -547,7 +547,7 @@ public class FinanceReportController {
 				CurrencyType currencyType = profit.getCurrencyType();
 				BigDecimal profitAmount = profit.getAmount();
 
-				if (currencyType == CurrencyType.现金) {
+				if (currencyType == CurrencyType.U币) {
 					BigDecimal amount = financeReportVo.getProfitAmount() == null? zero : financeReportVo.getProfitAmount();
 					financeReportVo.setProfitAmount(amount.add(profitAmount));
 				} else if (currencyType == CurrencyType.积分) {
@@ -733,7 +733,7 @@ public class FinanceReportController {
 				}).collect(Collectors.toList());
 
 		List<Account> filterAccounts = accounts.stream()
-				.filter(account -> account.getCurrencyType() == CurrencyType.现金)
+				.filter(account -> account.getCurrencyType() == CurrencyType.U币)
 				.filter(account -> {
 				return userIdMap.get(account.getUserId()) != null;
 		}).collect(Collectors.toList());

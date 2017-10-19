@@ -14,8 +14,8 @@
 	<sql id="baseColumn">id,report_id,report_pre_confirm_status,report_confirm_status,created_time,remark</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.act.ReportLog" useGeneratedKeys="true" keyProperty="id">
-	  insert into `act_report_log` (report_id,report_pre_confirm_status,report_confirm_status,created_time,remark)
-	  values (#{reportId},#{reportPreConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{reportConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{createdTime},#{remark})
+	  insert into `act_report_log` (report_id,report_pre_confirm_status,report_confirm_status,created_time,remark,create_id)
+	  values (#{reportId},#{reportPreConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{reportConfirmStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{createdTime},#{remark},#{createId})
 	</insert>
 
 	<delete id="delete">

@@ -45,7 +45,7 @@ public class UserUpgradeServiceImpl implements UserUpgradeService {
 			throw new BizException(BizCode.ERROR, "用户已被冻结");
 		}
 		
-		usrComponent.upgrade(userId, fromUserRank, toUserRank);
+		usrComponent.upgrade(userId, fromUserRank, toUserRank,null);
 
 	}
 

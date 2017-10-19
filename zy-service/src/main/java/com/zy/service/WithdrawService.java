@@ -28,7 +28,7 @@ public interface WithdrawService {
 
 	void push(Long id); // 推送
 
-	void autoSuccess(Long id); // 自动成功
+	void autoSuccess(Long id, Long loginId); // 自动成功
 
 	void autoFailure(Long id, String remark); // 自动失败
 }
