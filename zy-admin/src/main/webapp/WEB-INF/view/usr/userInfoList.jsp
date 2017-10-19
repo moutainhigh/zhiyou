@@ -149,7 +149,7 @@
                 </shiro:hasPermission>
               }
               <shiro:hasPermission name="userInfo:edit">
-	            optionHtml += '<a class="btn btn-xs default blue-stripe user-info-update" data-href="${ctx}/userInfo/update?userId=' + full.id + '" data-user-id="' + full.userId + '"><i class="fa fa-edit"></i> 编辑 </a>';
+	            optionHtml += '<a class="btn btn-xs default blue-stripe user-info-update" data-href="${ctx}/userInfo/update?userId=' + full.userId + '"><i class="fa fa-edit"></i> 编辑 </a>';
               </shiro:hasPermission>
               return optionHtml;
             }
