@@ -81,7 +81,7 @@ public class ProductReplacementServiceImpl implements ProductReplacementService{
 		mergeEntity.setRemark(remark);
 		mergeEntity.setUpdateId(userId);
 		mergeEntity.setUpdateTime(new Date());
-		productReplacementMapper.merge(mergeEntity, "productReplacementStatus", "remark");
+		productReplacementMapper.merge(mergeEntity,"updateId","updateTime", "productReplacementStatus", "remark");
 	}
 
 	@Override
@@ -102,8 +102,10 @@ public class ProductReplacementServiceImpl implements ProductReplacementService{
 		mergeEntity.setLogisticsName(logisticsDto.getName());
 		mergeEntity.setLogisticsSn(logisticsDto.getSn());
 		mergeEntity.setLogisticsFee(logisticsDto.getFee());
+		mergeEntity.setUpdateId(userId);
+		mergeEntity.setUpdateTime(new Date());
 		mergeEntity.setProductReplacementStatus(ProductReplacement.ProductReplacementStatus.已发货);
-		productReplacementMapper.merge(mergeEntity, "logisticsName", "logisticsSn", "logisticsFee", "logisticsSn", "productReplacementStatus");
+		productReplacementMapper.merge(mergeEntity, "logisticsName","updateId","updateTime", "logisticsSn", "logisticsFee", "logisticsSn", "productReplacementStatus");
 	}
 
 	@Override
@@ -121,7 +123,7 @@ public class ProductReplacementServiceImpl implements ProductReplacementService{
 		ProductReplacement mergeEntity = new ProductReplacement();
 		mergeEntity.setId(id);
 		mergeEntity.setProductReplacementStatus(ProductReplacement.ProductReplacementStatus.已完成);
-		productReplacementMapper.merge(mergeEntity, "productReplacementStatus");
+		productReplacementMapper.merge(mergeEntity,"updateId","updateTime", "productReplacementStatus");
 	}
 
 	@Override

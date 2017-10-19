@@ -11,7 +11,6 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import com.zy.ServiceUtils;
 import com.zy.common.exception.ValidationException;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.usr.User;
@@ -73,8 +72,8 @@ public class TransferServiceImpl implements TransferService {
 		BigDecimal amount = transfer.getAmount();
 		Long fromUserId = transfer.getFromUserId();
 		Long toUserId = transfer.getToUserId();
-		fncComponent.recordAccountLog(fromUserId, title, currencyType, amount, 支出, transfer, toUserId);
-		fncComponent.recordAccountLog(toUserId, title, currencyType, amount, 收入, transfer, fromUserId);
+		fncComponent.recordAccountLog(fromUserId, title, currencyType, amount, 支出, transfer, toUserId, fromUserId);
+		fncComponent.recordAccountLog(toUserId, title, currencyType, amount, 收入, transfer, fromUserId, fromUserId);
 	}
 
 	@Override

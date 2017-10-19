@@ -158,6 +158,7 @@ public class BankCardServiceImpl implements BankCardService {
 			throw new BizException(BizCode.ERROR, "已审核,不能再次审核");
 		BankCard merge = new BankCard();
 		merge.setId(id);
+		merge.setConfirmId(userId);
 		if (!isSuccess) {
 			validate(confirmRemark, NOT_NULL, "审核不通过时,备注必须填写");
 			merge.setConfirmRemark(confirmRemark);
@@ -166,9 +167,8 @@ public class BankCardServiceImpl implements BankCardService {
 		} else {
 			merge.setConfirmStatus(ConfirmStatus.已通过);
 			merge.setConfirmedTime(new Date());
-			merge.setConfirmId(userId);
 		}
-		bankCardMapper.merge(merge, "confirmStatus", "confirmRemark", "confirmedTime");
+		bankCardMapper.merge(merge,"confirmId", "confirmStatus", "confirmRemark", "confirmedTime");
 		producer.send(Constants.TOPIC_BANKCARD_CONFIRMED, bankCard.getId());
 	}
 

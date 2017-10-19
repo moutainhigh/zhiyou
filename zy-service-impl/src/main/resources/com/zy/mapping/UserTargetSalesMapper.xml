@@ -14,8 +14,8 @@
 	<sql id="baseColumn">id,user_id,target_count,year,month,create_time</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.usr.UserTargetSales" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_user_target_sales` (user_id,target_count,year,month,create_time,create_id)
-	  values (#{userId},#{targetCount},#{year},#{month},#{createTime},#{createId})
+	  insert into `usr_user_target_sales` (user_id,target_count,year,month,create_time,create_id,status)
+	  values (#{userId},#{targetCount},#{year},#{month},#{createTime},#{createId},#{status})
 	</insert>
 
 	<delete id="delete" parameterType="com.zy.entity.usr.UserTargetSales">
@@ -50,7 +50,8 @@
 					<when test="field == 'targetCount'">target_count = #{userTargetSales.targetCount},</when>
 					<when test="field == 'year'">year = #{userTargetSales.year},</when>
 					<when test="field == 'month'">month = #{userTargetSales.month},</when>
-					<when test="field == 'createTime'">create_time = #{userTargetSales.createTime},</when>
+					<when test="field == 'updateId'">update_id = #{userTargetSales.updateId},</when>
+					<when test="field == 'updateTime'">update_time = #{userTargetSales.updateTime},</when>
 				</choose>
 				</foreach>
 			</set>

@@ -44,6 +44,7 @@ public class OrderFillUserServiceImpl implements OrderFillUserService{
 	@Override
 	public void delete(@NotNull Long id, Long userId) {
 		OrderFillUser orderFillUser = new OrderFillUser();
+		orderFillUser.setId(id);
 		orderFillUser.setUpdateId(userId);
 		orderFillUser.setUpdateTime(new Date());
 		orderFillUserMapper.delete(orderFillUser);

@@ -22,6 +22,8 @@
 		<result column="logistics_sn" property="logisticsSn" />
 		<result column="logistics_fee" property="logisticsFee" />
 		<result column="remark" property="remark" />
+		<result column="update_id" property="updateId" />
+		<result column="update_time" property="updateTime" />
 	</resultMap>
 
 	<sql id="baseColumn">id,user_id,product_replacement_status,from_product,to_product,quantity,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,created_time,delivered_time,logistics_name,logistics_sn,logistics_fee,remark</sql>

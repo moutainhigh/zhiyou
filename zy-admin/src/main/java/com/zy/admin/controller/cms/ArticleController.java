@@ -114,10 +114,8 @@ public class ArticleController {
 	public String update(Article article, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
 		Long id = article.getId();
 		validate(id, NOT_NULL, "article id is null");
-		article.setUpdateId(adminPrincipal.getUserId());
-		article.setUpdateTime(new Date());
 		try {
-			articleService.modify(article);
+			articleService.modify(article,adminPrincipal.getUserId());
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("新闻保存成功"));
 			return "redirect:/article";
 		} catch (Exception e) {
@@ -133,9 +131,7 @@ public class ArticleController {
 	public boolean release(@RequestParam Long id, @RequestParam boolean isRelease, AdminPrincipal adminPrincipal) {
 		Article article = articleService.findOne(id);
 		validate(article, NOT_NULL, "article not found, id is " + id);
-		article.setUpdateId(adminPrincipal.getUserId());
-		article.setUpdateTime(new Date());
-		articleService.release(id, isRelease);
+		articleService.release(id, isRelease,adminPrincipal.getUserId());
 		return true;
 	}
 	

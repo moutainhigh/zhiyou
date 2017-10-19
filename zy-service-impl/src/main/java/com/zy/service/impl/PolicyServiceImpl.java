@@ -144,7 +144,7 @@ public class PolicyServiceImpl implements PolicyService {
 		policy.setValidTimeEnd(endTime);
 		policy.setUpdateTime(new Date());
 		policy.setUpdateId(userId);
-		policyMapper.merge(policy, "policyStatus", "validTimeBegin", "validTimeEnd");
+		policyMapper.merge(policy,"updateId", "updateTime", "policyStatus", "validTimeBegin", "validTimeEnd");
 	}
 
 	@Override
@@ -192,7 +192,7 @@ public class PolicyServiceImpl implements PolicyService {
 		merge.setPolicyStatus(Policy.PolicyStatus.未通过);
 		merge.setUpdateId(userId);
 		merge.setUpdateTime(new Date());
-		policyMapper.merge(merge, "policyStatus");
+		policyMapper.merge(merge,"updateId", "updateTime", "policyStatus");
 	}
 
 

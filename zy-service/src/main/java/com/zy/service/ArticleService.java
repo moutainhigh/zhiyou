@@ -13,8 +13,8 @@ public interface ArticleService {
 	Article findOne(Long id);
 	Article create(Article article);
 	Article update(Article article);
-	Article modify(Article article);
-	void release(Long id, boolean isReleased);
+	Article modify(Article article, Long userId);
+	void release(Long id, boolean isReleased, Long userId);
 	
 	Page<Article> findPage(ArticleQueryModel articleQueryModel);
 	List<Article> findAll(ArticleQueryModel articleQueryModel);

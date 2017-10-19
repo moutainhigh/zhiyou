@@ -31,7 +31,7 @@ public class NoticeServiceImpl implements NoticeService {
 		notice.setUpdateId(userId);
 		notice.setUpdateTime(new Date());
 		notice.setStatus(0);
-		noticeMapper.delete(id);
+		noticeMapper.delete(notice);
 	}
 	
 	@Override

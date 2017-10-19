@@ -16,8 +16,8 @@
 	<sql id="baseColumn">id,is_released,image,url,title,order_number,banner_position,is_open_blank</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.cms.Banner" useGeneratedKeys="true" keyProperty="id">
-	  insert into `cms_banner` (is_released,image,url,title,order_number,banner_position,is_open_blank,create_id,create_time)
-	  values (#{isReleased},#{image},#{url},#{title},#{orderNumber},#{bannerPosition,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{isOpenBlank},#{createId},#{createTime})
+	  insert into `cms_banner` (is_released,image,url,title,order_number,banner_position,is_open_blank,create_id,create_time,status)
+	  values (#{isReleased},#{image},#{url},#{title},#{orderNumber},#{bannerPosition,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{isOpenBlank},#{createId},#{createTime},#{status})
 	</insert>
 
 	<delete id="delete" parameterType="com.zy.entity.cms.Banner">

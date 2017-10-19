@@ -38,7 +38,7 @@ public class HelpCategoryServiceImpl implements HelpCategoryService{
 	public HelpCategory update(@NotNull HelpCategory helpCategory) {
 		helpCategory.setUserType(UserType.代理);
 		validate(helpCategory,"code", "name", "userType", "indexNumber", "id");
-		helpCategoryMapper.merge(helpCategory, "code", "name", "userType", "indexNumber");
+		helpCategoryMapper.merge(helpCategory, "updateId","updateTime","code", "name", "userType", "indexNumber");
 		return helpCategory;
 	}
 

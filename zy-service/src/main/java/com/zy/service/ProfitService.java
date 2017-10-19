@@ -19,7 +19,7 @@ public interface ProfitService {
 	
 	Profit createAndGrant(Long userId, String title, CurrencyType currencyType, BigDecimal amount, Date createdTime);
 
-	void grant(Long id);
+	void grant(Long id, Long loginId);
 	
 	void cancel(Long id);
 	

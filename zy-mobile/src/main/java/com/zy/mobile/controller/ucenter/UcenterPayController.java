@@ -251,7 +251,7 @@ public class UcenterPayController {
 		}
 		Payment payment =createPayment(order, amount2);
 
-		paymentService.balancePay(payment.getId(), true);
+		paymentService.balancePay(payment.getId(), true, principal.getUserId());
 
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分余额支付成功"));
 		return "redirect:/u/order/" + orderId;
@@ -343,7 +343,7 @@ public class UcenterPayController {
 		} else if (payType == PayType.余额) {
 			try {
 				Payment payment = createPayment(activityApply, userId, activity.getTitle(), CurrencyType.积分, PayType.余额);
-				paymentService.balancePay(payment.getId(), true);
+				paymentService.balancePay(payment.getId(), true, principal.getUserId());
 				if (userId.equals(activityApply.getPayerUserId())) {
 					redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("代付：积分支付成功"));
 					return "redirect:/u/activity/payer";
@@ -454,7 +454,7 @@ public class UcenterPayController {
 		} else if (payType == PayType.余额) {
 			try {
 				Payment payment = createTeamPayment(activityTeamApply, userId, activity.getTitle(), CurrencyType.积分, PayType.余额);
-				paymentService.balancePay(payment.getId(), true);
+				paymentService.balancePay(payment.getId(), true, principal.getUserId());
 				redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("积分支付成功"));
 				return "redirect:/activity/" + activityId;
 			} catch (Exception e) {

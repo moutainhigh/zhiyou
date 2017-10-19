@@ -122,8 +122,8 @@ public class WithdrawServiceImpl implements WithdrawService {
 		withdrawMapper.insert(withdraw);
 
 		Long sysUserId = config.getSysUserId();
-		fncComponent.recordAccountLog(userId, "提现申请", currencyType, amount, InOut.支出, withdraw, sysUserId);
-		fncComponent.recordAccountLog(sysUserId, "提现申请", currencyType, amount, InOut.收入, withdraw, userId);
+		fncComponent.recordAccountLog(userId, "提现申请", currencyType, amount, InOut.支出, withdraw, sysUserId, userId);
+		fncComponent.recordAccountLog(sysUserId, "提现申请", currencyType, amount, InOut.收入, withdraw, userId, userId);
 		return withdraw;
 	}
 
@@ -154,7 +154,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		CurrencyType currencyType = withdraw.getCurrencyType();
 		Long sysUserId = config.getSysUserId();
 
-		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw, withdraw.getUserId());
+		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw, withdraw.getUserId(), operatorId);
 	}
 
 	@Override
@@ -188,8 +188,8 @@ public class WithdrawServiceImpl implements WithdrawService {
 		Long userId = withdraw.getUserId();
 		Long sysUserId = config.getSysUserId();
 
-		fncComponent.recordAccountLog(userId, "提现取消退款", currencyType, amount, InOut.收入, withdraw, sysUserId);
-		fncComponent.recordAccountLog(sysUserId, "提现取消退款", currencyType, amount, InOut.支出, withdraw, userId);
+		fncComponent.recordAccountLog(userId, "提现取消退款", currencyType, amount, InOut.收入, withdraw, sysUserId, operatorId);
+		fncComponent.recordAccountLog(sysUserId, "提现取消退款", currencyType, amount, InOut.支出, withdraw, userId, operatorId);
 	}
 
 	@Override
@@ -253,7 +253,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 	}
 
 	@Override
-	public void autoSuccess(@NotNull Long id) {
+	public void autoSuccess(@NotNull Long id, Long loginId) {
 		Withdraw withdraw = withdrawMapper.findOne(id);
 		validate(withdraw, NOT_NULL, "withdraw id " + id + " is not found null");
 
@@ -274,7 +274,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 		CurrencyType currencyType = withdraw.getCurrencyType();
 		Long sysUserId = config.getSysUserId();
 
-		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw, withdraw.getUserId());
+		fncComponent.recordAccountLog(sysUserId, "提现出账", currencyType, withdraw.getRealAmount(), InOut.支出, withdraw, withdraw.getUserId(), loginId);
 	}
 
 	@Override

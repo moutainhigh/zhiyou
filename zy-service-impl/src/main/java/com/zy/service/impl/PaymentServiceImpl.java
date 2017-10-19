@@ -243,10 +243,10 @@ public class PaymentServiceImpl implements PaymentService {
 		CurrencyType currencyType1 = payment.getCurrencyType1();
 		CurrencyType currencyType2 = payment.getCurrencyType2();
 
-		fncComponent.recordAccountLog(sysUserId, "支付成功", currencyType1, payment.getAmount1(), AccountLog.InOut.收入, payment, userId);
+		fncComponent.recordAccountLog(sysUserId, "支付成功", currencyType1, payment.getAmount1(), AccountLog.InOut.收入, payment, userId, payment.getOperatorId());
 
 		if (currencyType2 != null) {
-			fncComponent.recordAccountLog(sysUserId, "支付成功", currencyType2, payment.getAmount2(), AccountLog.InOut.收入, payment, userId);
+			fncComponent.recordAccountLog(sysUserId, "支付成功", currencyType2, payment.getAmount2(), AccountLog.InOut.收入, payment, userId, payment.getOperatorId());
 		}
 	}
 
@@ -272,7 +272,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public void balancePay(@NotNull Long paymentId, boolean checkBalance) {
+	public void balancePay(@NotNull Long paymentId, boolean checkBalance, Long loginId) {
 		final BigDecimal zero = new BigDecimal("0.00");
 		Payment payment = paymentMapper.findOne(paymentId);
 		validate(payment, NOT_NULL, "payment id " + paymentId + " is not found");
@@ -306,8 +306,8 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 
 		String title = payment.getTitle();
-		fncComponent.recordAccountLog(userId, title, currencyType1, amount1, AccountLog.InOut.支出, payment, sysUserId);
-		fncComponent.recordAccountLog(sysUserId, title, currencyType1, amount1, AccountLog.InOut.收入, payment, userId);
+		fncComponent.recordAccountLog(userId, title, currencyType1, amount1, AccountLog.InOut.支出, payment, sysUserId, loginId);
+		fncComponent.recordAccountLog(sysUserId, title, currencyType1, amount1, AccountLog.InOut.收入, payment, userId, loginId);
 
 		if (currencyType2 != null) {
 			Account account2 = accountMapper.findByUserIdAndCurrencyType(userId, currencyType2);
@@ -320,8 +320,8 @@ public class PaymentServiceImpl implements PaymentService {
 			}
 
 			title = payment.getTitle();
-			fncComponent.recordAccountLog(userId, title, currencyType2, amount2, AccountLog.InOut.支出, payment, sysUserId);
-			fncComponent.recordAccountLog(sysUserId, title, currencyType2, amount2, AccountLog.InOut.收入, payment, userId);
+			fncComponent.recordAccountLog(userId, title, currencyType2, amount2, AccountLog.InOut.支出, payment, sysUserId, loginId);
+			fncComponent.recordAccountLog(sysUserId, title, currencyType2, amount2, AccountLog.InOut.收入, payment, userId, loginId);
 		}
 
 		payment.setPaidTime(new Date());
@@ -387,7 +387,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public void refund(@NotNull Long id) {
+	public void refund(@NotNull Long id, Long loginId) {
 
 		Payment payment = paymentMapper.findOne(id);
 		validate(payment, NOT_NULL, "payment id " + id + " is not found");
@@ -409,15 +409,15 @@ public class PaymentServiceImpl implements PaymentService {
 			String title = payment.getTitle() + currencyType1.getAlias() + "退款";
 			Long sysUserId = config.getSysUserId();
 			Long userId = payment.getUserId();
-			fncComponent.recordAccountLog(sysUserId, title, currencyType1, amount1, AccountLog.InOut.支出, payment, userId);
-			fncComponent.recordAccountLog(userId, title, currencyType1, amount1, AccountLog.InOut.收入, payment, sysUserId);
+			fncComponent.recordAccountLog(sysUserId, title, currencyType1, amount1, AccountLog.InOut.支出, payment, userId, loginId);
+			fncComponent.recordAccountLog(userId, title, currencyType1, amount1, AccountLog.InOut.收入, payment, sysUserId, loginId);
 
 			CurrencyType currencyType2 = payment.getCurrencyType2();
 			BigDecimal amount2 = payment.getAmount2();
 			if (currencyType2 != null) {
 				title = payment.getTitle() + currencyType2.getAlias() + "退款";
-				fncComponent.recordAccountLog(sysUserId, title, currencyType2, amount2, AccountLog.InOut.支出, payment, userId);
-				fncComponent.recordAccountLog(userId, title, currencyType2, amount2, AccountLog.InOut.收入, payment, sysUserId);
+				fncComponent.recordAccountLog(sysUserId, title, currencyType2, amount2, AccountLog.InOut.支出, payment, userId, loginId);
+				fncComponent.recordAccountLog(userId, title, currencyType2, amount2, AccountLog.InOut.收入, payment, sysUserId, loginId);
 			}
 			payment.setRefundedTime(new Date());
 			payment.setRefund1(amount1);

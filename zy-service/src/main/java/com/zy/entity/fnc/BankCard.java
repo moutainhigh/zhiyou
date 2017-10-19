@@ -131,7 +131,6 @@ public class BankCard implements Serializable {
 	@View(groups = "BankCardAdminVo")
 	private Date appliedTime;
 
-	@NotNull
 	@Query({Predicate.GTE, Predicate.LT})
 	private Long confirmId;
 

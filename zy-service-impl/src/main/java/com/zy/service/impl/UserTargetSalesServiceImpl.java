@@ -76,13 +76,16 @@ public class UserTargetSalesServiceImpl implements UserTargetSalesService {
     /**
      * 修改目标销量
      * @param id
+     * @param userId
      * @param targetSales
      */
     @Override
-    public void modifySales(Long id, Integer targetSales) {
+    public void modifySales(Long id, Long userId, Integer targetSales) {
         UserTargetSales userTargetSales = findAndValidate(id);
         userTargetSales.setTargetCount(targetSales);
-        userTargetSalesMapper.merge(userTargetSales,"targetCount");
+        userTargetSales.setUpdateId(userId);
+        userTargetSales.setUpdateTime(new Date());
+        userTargetSalesMapper.merge(userTargetSales,"updateId","updateTime","targetCount");
     }
 
     @Override

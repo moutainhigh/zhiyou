@@ -18,7 +18,7 @@ public interface UserTargetSalesService {
 
 	List<UserTargetSales> findAll(UserTargetSalesQueryModel userTargetSalesQueryModel);
 
-	void modifySales(Long id, Integer targetSales);
+	void modifySales(Long id, Long userId, Integer targetSales);
 
 	long totalTargetSales(UserTargetSalesQueryModel userTargetSalesQueryModel);
 

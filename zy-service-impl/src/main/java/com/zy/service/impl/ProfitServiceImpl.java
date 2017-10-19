@@ -85,7 +85,7 @@ public class ProfitServiceImpl implements ProfitService {
 	}
 
 	@Override
-	public void grant(@NotNull Long id) {
+	public void grant(@NotNull Long id, Long loginId) {
 		Profit profit = profitMapper.findOne(id);
 		Profit.ProfitStatus profitStatus = profit.getProfitStatus();
 		if (profitStatus == Profit.ProfitStatus.已发放) {
@@ -98,8 +98,8 @@ public class ProfitServiceImpl implements ProfitService {
 		Long userId = profit.getUserId();
 		Long sysUserId = config.getSysUserId();
 		if (!sysUserId.equals(userId)) {
-			fncComponent.recordAccountLog(sysUserId, title, currencyType, amount, 支出, profit, userId);
-			fncComponent.recordAccountLog(userId, title, currencyType, amount, 收入, profit, sysUserId);
+			fncComponent.recordAccountLog(sysUserId, title, currencyType, amount, 支出, profit, userId, loginId);
+			fncComponent.recordAccountLog(userId, title, currencyType, amount, 收入, profit, sysUserId, loginId);
 		}
 		profit.setGrantedTime(new Date());
 		profit.setProfitStatus(Profit.ProfitStatus.已发放);

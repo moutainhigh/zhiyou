@@ -86,6 +86,7 @@ public class UsrComponent {
 		userLog.setOperatedTime(new Date());
 		userLog.setOperation(operation);
 		userLog.setRemark(remark);
+
 		userLogMapper.insert(userLog);
 	}
 

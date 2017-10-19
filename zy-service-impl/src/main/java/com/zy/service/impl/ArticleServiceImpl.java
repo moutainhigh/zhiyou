@@ -78,7 +78,7 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public Article modify(@NotNull Article article) {
+	public Article modify(@NotNull Article article, Long userId) {
 		Long id = article.getId();
 		Article persistence = articleMapper.findOne(id);
 		validate(persistence, NOT_NULL, "article id " + id + " not found");
@@ -91,19 +91,22 @@ public class ArticleServiceImpl implements ArticleService {
 		persistence.setReleasedTime(article.getReleasedTime());
 		persistence.setIsHot(article.getIsHot());
 		persistence.setOrderNumber(article.getOrderNumber());
+		persistence.setUpdateId(userId);
+		persistence.setUpdateTime(new Date());
 		articleMapper.update(persistence);
 		return null;
 	}
 
 	@Override
-	public void release(@NotNull Long id, boolean isReleased) {
+	public void release(@NotNull Long id, boolean isReleased, Long userId) {
 		Article article = articleMapper.findOne(id);
 		validate(article, NOT_NULL, "article id " + id + " not found");
 		Article articleForMerge = new Article();
 		articleForMerge.setId(id);
 		articleForMerge.setIsReleased(isReleased);
-		
-		articleMapper.merge(articleForMerge, "isReleased");
+		articleForMerge.setUpdateId(userId);
+		articleForMerge.setUpdateTime(new Date());
+		articleMapper.merge(articleForMerge, "updateId" ,"updateTime","isReleased");
 	}
 
 	@Override

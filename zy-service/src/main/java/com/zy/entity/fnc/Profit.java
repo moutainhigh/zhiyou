@@ -135,11 +135,9 @@ public class Profit implements Serializable {
 	private Integer version;
 
 
-	@NotNull
 	@Query({Predicate.GTE, Predicate.LT})
 	private Date updateTime;
 
-	@NotNull
 	@Query({Predicate.GTE, Predicate.LT})
 	private Long updateId;
 }

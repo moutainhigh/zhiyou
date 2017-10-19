@@ -170,7 +170,7 @@ public class ReportController {
 	@RequiresPermissions("report:visitUser")
 	@RequestMapping(value = "/visitUser", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> visitUser(@RequestParam Long id, @RequestParam String phone ,Principal principal) {
+	public Result<?> visitUser(@RequestParam Long id, @RequestParam String phone ,AdminPrincipal principal) {
 		User user = userService.findByPhone(phone);
 		if(user == null ) {
 			return ResultBuilder.error("客服不存在");

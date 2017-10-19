@@ -20,11 +20,11 @@
 	<sql id="baseColumn">id,title,brief,author,released_time,is_released,image,content,created_time,visit_count,order_number,is_hot</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.cms.Article" useGeneratedKeys="true" keyProperty="id">
-	  insert into `cms_article` (title,brief,author,released_time,is_released,image,content,created_time,visit_count,order_number,is_hot,create_id)
-	  values (#{title},#{brief},#{author},#{releasedTime},#{isReleased},#{image},#{content},#{createdTime},#{visitCount},#{orderNumber},#{isHot},#{createId})
+	  insert into `cms_article` (title,brief,author,released_time,is_released,image,content,created_time,visit_count,order_number,is_hot,create_id,status)
+	  values (#{title},#{brief},#{author},#{releasedTime},#{isReleased},#{image},#{content},#{createdTime},#{visitCount},#{orderNumber},#{isHot},#{createId},#{status})
 	</insert>
 
-	<delete id="delete">
+	<update id="delete" parameterType="com.zy.entity.cms.Article">
 		UPDATE `cms_article`
 		<set>
 			update_id = #{updateId},
@@ -32,7 +32,7 @@
 			status = #{status},
 		</set>
 		where id = #{id}
-	</delete>
+	</update>
 
 	<update id="update" parameterType="com.zy.entity.cms.Article">
 		update `cms_article`

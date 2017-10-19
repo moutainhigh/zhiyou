@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.zy.admin.model.AdminPrincipal;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hibernate.validator.constraints.NotBlank;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -81,12 +81,12 @@ public class ProfitController {
     
 	@RequiresPermissions("profit:grant")
 	@RequestMapping(value = "/grant")
-	public String grant(@NotNull Long id, RedirectAttributes redirectAttributes) {
+	public String grant(@NotNull Long id, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
 		Profit profit = profitService.findOne(id);
 		validate(profit, NOT_NULL, "profit id" + id + " not found");
 		validate(profit, v -> (v.getProfitStatus() == ProfitStatus.待发放), "ProfitStatus is error, profit id is " + id + "");
 		try {
-			profitService.grant(id);
+			profitService.grant(id, adminPrincipal.getUserId());
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("收益发放成功！"));
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
@@ -108,7 +108,7 @@ public class ProfitController {
 				validate(profit, NOT_NULL, "profit id" + id + " not found");
 				validate(profit, v -> (v.getProfitStatus() == ProfitStatus.待发放), "ProfitStatus is error, profit id is " + id + "");
 				try {
-					profitService.grant(id);
+					profitService.grant(id, id);
 				} catch (Exception e) {
 					return ResultBuilder.error(e.getMessage());
 				}

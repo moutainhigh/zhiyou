@@ -20,11 +20,13 @@
 		<result column="image6" property="image6" />
 		<result column="created_time" property="createdTime" />
 		<result column="is_settlement" property="isSettlement" />
+		<result column="update_id" property="updateId" />
+		<result column="update_time" property="updateTime" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.Product" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_product` (title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time,is_settlement,create_id,update_time,update_id)
-	  values (#{title},#{detail},#{productPriceType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{price},#{priceScript},#{marketPrice},#{skuCode},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime},#{isSettlement},#{createId},#{updateTime},#{updateId})
+	  insert into `mal_product` (title,detail,product_price_type,price,price_script,market_price,sku_code,is_on,image1,image2,image3,image4,image5,image6,created_time,is_settlement,create_id)
+	  values (#{title},#{detail},#{productPriceType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{price},#{priceScript},#{marketPrice},#{skuCode},#{isOn},#{image1},#{image2},#{image3},#{image4},#{image5},#{image6},#{createdTime},#{isSettlement},#{createId})
 	</insert>
 
 	<delete id="delete">

@@ -17,7 +17,7 @@
 
 	<delete id="delete" parameterType="com.zy.entity.mal.OrderFillUser">
 		update `mal_order_fill_user`
-		set status = 0, update_id = {updateId}, update_time = #{updateTime}
+		set status = 0, update_id = #{updateId}, update_time = #{updateTime}
 		where id = #{id}
 	</delete>
 

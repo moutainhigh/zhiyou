@@ -93,8 +93,8 @@
 					<when test="field == 'ticketType'">ticket_type = #{activity.ticketType},</when>
 					<when test="field == 'level'">level = #{activity.level},</when>
 					<when test="field == 'lessonId'">lesson_id = #{activity.lessonId},</when>
-					<when test="field == 'lessonId'">update_id = #{activity.updateId},</when>
-					<when test="field == 'lessonId'">update_time = #{activity.updateTime},</when>
+					<when test="field == 'updateId'">update_id = #{activity.updateId},</when>
+					<when test="field == 'updateTime'">update_time = #{activity.updateTime},</when>
 				</choose>
 				</foreach>
 			</set>

@@ -63,11 +63,9 @@ public class ActivityTicket implements Serializable {
 	@Query({Predicate.EQ})
 	private Integer isUsed;
 
-	@NotNull
 	@Query({Predicate.GTE, Predicate.LT})
 	private Date updateTime;
 
-	@NotNull
 	@Query({Predicate.GTE, Predicate.LT})
 	private Long updateId;
 

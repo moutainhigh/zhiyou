@@ -16,7 +16,7 @@ public interface NoticeMapper {
 
 	int merge(@Param("notice") Notice notice, @Param("fields")String... fields);
 
-	int delete(Long id);
+	int delete(Notice id);
 
 	Notice findOne(Long id);
 

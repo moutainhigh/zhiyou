@@ -195,7 +195,7 @@ public class OrderController {
 	
 	@RequiresPermissions("order:refund")
 	@RequestMapping(value = "/refund")
-	public String refund(@NotNull Long paymentId, RedirectAttributes redirectAttributes) {
+	public String refund(@NotNull Long paymentId, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
 		Payment payment = paymentService.findOne(paymentId);
 		validate(payment, NOT_NULL, "payment id" + paymentId + " not found");
 		validate(payment, v -> (v.getPaymentStatus() == PaymentStatus.已支付 && v.getPaymentType() == PaymentType.订单支付), "paymentStatus and paymentType is error, payment id is " + paymentId + "");
@@ -204,7 +204,7 @@ public class OrderController {
 		
 		long count = paymentService.count(PaymentQueryModel.builder().refIdEQ(payment.getRefId()).paymentTypeEQ(PaymentType.订单支付).paymentStatusEQ(PaymentStatus.已支付).build());
 		if(count > 1){
-			paymentService.refund(paymentId);
+			paymentService.refund(paymentId, adminPrincipal.getUserId());
 			redirectAttributes.addFlashAttribute(ResultBuilder.ok("退款成功！"));
 		} else {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error("退款失败，订单退款仅支持重复支付退款！"));

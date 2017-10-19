@@ -78,7 +78,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Override
 	public void modify(@NotNull Activity activity) {
-		String[] fields = new String[] { "areaId", "address", "latitude", "longitude", "image", "detail", "applyDeadline", "startTime", "endTime", "title", "amount" , "level" , "ticketType" , "maxCount" ,"lessonId"};
+		String[] fields = new String[] { "areaId", "address", "latitude", "longitude", "image", "detail","updateId","updateTime", "applyDeadline", "startTime", "endTime", "title", "amount" , "level" , "ticketType" , "maxCount" ,"lessonId"};
 		validate(activity, fields);
 		checkAndFindActivity(activity.getId());
 		checkArea(activity.getAreaId());
@@ -93,7 +93,7 @@ public class ActivityServiceImpl implements ActivityService {
 		activityForMerage.setIsReleased(isReleased);
 		activityForMerage.setUpdateId(userId);
 		activityForMerage.setUpdateTime(new Date());
-		activityMapper.merge(activityForMerage, "isReleased");
+		activityMapper.merge(activityForMerage, "updateId","updateTime","isReleased");
 	}
 
 	@Override

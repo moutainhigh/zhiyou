@@ -48,23 +48,18 @@ public class OrderFillUser implements Serializable {
 	@Field(label = "备注")
 	private String remark;
 
-	@NotBlank
 	@View(groups = {VO_ADMIN})
 	private Long createId;
 
-	@NotBlank
 	@View(groups = {VO_ADMIN})
 	private Date createTime;
 
-	@NotBlank
 	@View(groups = {VO_ADMIN})
 	private Long updateId;
 
-	@NotBlank
 	@View(groups = {VO_ADMIN})
 	private Date updateTime;
 
-	@NotBlank
 	@View(groups = {VO_ADMIN})
 	private Integer status;
 }

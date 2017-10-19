@@ -134,9 +134,7 @@ public class UserTargerSalesController {
 	public String update(UserTargetSales userTargetSales, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal) {
 		Long userTargetSalesId = userTargetSales.getId();
 		try {
-			userTargetSales.setUpdateId(adminPrincipal.getUserId());
-			userTargetSales.setUpdateTime(new Date());
-			userTargetSalesService.modifySales(userTargetSalesId,userTargetSales.getTargetCount());
+			userTargetSalesService.modifySales(userTargetSalesId,adminPrincipal.getUserId(),userTargetSales.getTargetCount());
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute(ResultBuilder.error(e.getMessage()));
 			return "redirect:/userTargetSales/update/" + userTargetSalesId;

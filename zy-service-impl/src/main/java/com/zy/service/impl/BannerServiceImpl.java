@@ -47,7 +47,7 @@ public class BannerServiceImpl implements BannerService {
 
 	@Override
 	public void modify(@NotNull Banner banner) {
-		bannerMapper.merge(banner, "title", "url", "image", "isOpenBlank", "orderNumber");
+		bannerMapper.merge(banner,"updateId" ,"updateTime", "title", "url", "image", "isOpenBlank", "orderNumber");
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class BannerServiceImpl implements BannerService {
 		bannerForMerage.setIsReleased(isReleased);
 		bannerForMerage.setUpdateId(userId);
 		bannerForMerage.setUpdateTime(new Date());
-		bannerMapper.merge(bannerForMerage, "isReleased");
+		bannerMapper.merge(bannerForMerage,"updateId" ,"updateTime", "isReleased");
 	}
 
 }

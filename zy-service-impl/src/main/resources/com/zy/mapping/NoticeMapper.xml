@@ -13,11 +13,11 @@
 	<sql id="baseColumn">id,title,content,created_time,notice_type</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.cms.Notice" useGeneratedKeys="true" keyProperty="id">
-	  insert into `cms_notice` (title,content,created_time,notice_type,create_id)
-	  values (#{title},#{content},#{createdTime},#{noticeType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{createId})
+	  insert into `cms_notice` (title,content,created_time,notice_type,create_id,status)
+	  values (#{title},#{content},#{createdTime},#{noticeType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{createId},#{status})
 	</insert>
 
-	<delete id="delete" parameterType="com.zy.entity.cms.Notice">
+	<update id="delete" parameterType="com.zy.entity.cms.Notice">
 		update `cms_notice`
 		<set>
 			update_id = #{updateId},
@@ -25,7 +25,7 @@
 			status = #{status},
 		</set>
 		where id = #{id}
-	</delete>
+	</update>
 
 	<update id="update" parameterType="com.zy.entity.cms.Notice">
 		update `cms_notice`
