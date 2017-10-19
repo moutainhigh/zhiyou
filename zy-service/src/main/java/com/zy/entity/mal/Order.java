@@ -230,7 +230,7 @@ public class Order implements Serializable {
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	private Date deliveredTime;
 
-	@NotNull
+
 	@Field(label = "发货人")
 	@View(groups = {VO_DETAIL, VO_ADMIN, VO_ADMIN_FULL})
 	private Long deliveredId;
