@@ -100,7 +100,8 @@ public class WeixinMpNotifyController {
 				cacheSupport.set(Constants.CACHE_NAME_TGT, tgt, userId, expire);
 				session.setAttribute(SESSION_ATTRIBUTE_PRINCIPAL, PrincipalBuilder.build(userId, tgt));
 				logger.info("login success, tgt:" + tgt);
-				userService.modifyLastLoginTime(userId, principal.getUserId());
+				//userService.modifyLastLoginTime(userId, principal.getUserId()); //已经在非空判断的else里面了 肯定会空指针异常
+				userService.modifyLastLoginTime(userId, userId);
 
 				String redirectUrl = (String) session.getAttribute(SESSION_ATTRIBUTE_REDIRECT_URL);
 				if (StringUtils.isBlank(redirectUrl)) {
