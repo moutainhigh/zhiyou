@@ -102,6 +102,7 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.NoticeQueryModel">
 		select count(*) from `cms_notice`
 		<where>
+			status = 1
 			<if test="noticeTypeIN != null">
 				<if test="noticeTypeIN.length != 0">
 				and notice_type in
