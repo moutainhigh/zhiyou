@@ -67,7 +67,7 @@
     <a href="javascript:history.go(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
-  <c:if test="${amount > amount1}">
+  <c:if test="${amount > amount1+amount2}">
     <div class="note note-warning mb-0">
       <p>
         <i class="fa fa-exclamation-circle"></i> 对不起，您账户积分余额不足！
@@ -96,6 +96,7 @@
           <div class="list-text">账户U币余额</div>
           <div class="list-unit">${amount1}元</div>
         </div>
+        <c:if test="${amount2 > 0}">
         <div class="list-item">
           <div class="list-text">使用积分余额</div>
           <div class="list-unit form-switch">
@@ -104,6 +105,7 @@
             <label class="i-switch" for="useCurrency2"></label>
           </div>
         </div>
+          </c:if>
         <div class="list-item amount2-text">
           <div class="list-text">积分余额</div>
           <div class="list-unit" style="color: #d9d9d9;">${amount2}</div>
