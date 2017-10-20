@@ -668,7 +668,7 @@
     </div>
 
 <script>
-
+    var colors = ['#07a33e', '#97c618', '#f5804a', '#18d6d7', '#0090e2'];
     var tablehtml= "";
     function alertMy(obj){
 
@@ -680,6 +680,7 @@
         });
     }
     $(function(){
+
         var myChartxiao1 = echarts.init(document.getElementById('orderChart1'));
         // 异步加载数据
         $.post('${ctx}/newReport/largeAreaDaySales?type='+${type},function(result) {
@@ -694,6 +695,7 @@
                 daySales.unshift(arrayT);
             }
             myChartxiao1.setOption({
+                color: colors,
                 tooltip: {
                     trigger: 'axis'
                 },
@@ -753,6 +755,7 @@
                 }
             }
             myChartxiao3.setOption({
+                color: colors,
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -844,6 +847,7 @@
 
             }
             myChartxiao4.setOption({
+                color: colors,
                 tooltip : {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -887,6 +891,7 @@
             {
             //环比
             myChartxiao5.setOption({
+                color: colors,
                 tooltip: {
                     trigger: 'axis',
                 },
@@ -941,6 +946,7 @@
                 }
                 var myChartxiao6 = echarts.init(document.getElementById('orderChart6'));
                 myChartxiao6.setOption({
+                    color: colors,
                     tooltip: {
                         trigger: 'axis'
                     },
@@ -995,6 +1001,7 @@
                 }
                 var myChartxiao2 = echarts.init(document.getElementById('orderChart2'));
                 myChartxiao2.setOption({
+                    color: colors,
                     tooltip: {
                         trigger: 'axis'
                     },
@@ -1043,6 +1050,7 @@
     })
 </script>
 <script>
+
      function scaleColTeam(){
          var myCharTeam1 = echarts.init(document.getElementById('orderChartTeam1'));
          // 异步加载数据
@@ -1060,6 +1068,7 @@
 
              }
              myCharTeam1.setOption({
+                 color: colors,
                  tooltip: {
                      trigger: 'axis',
                      axisPointer: {
@@ -1114,6 +1123,7 @@
 
              }
              myCharTeam2.setOption({
+                 color: colors,
                  tooltip : {
                      trigger: 'item',
                      formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -1156,9 +1166,10 @@
                          name:key+"部"
                      });
                  }
-
              }
+
              myCharTeam3.setOption({
+                 color: colors,
                  tooltip : {
                      trigger: 'item',
                      formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -1297,6 +1308,7 @@
              echarts.registerMap('china', chinaJson);
              var orderChartTeam4 = echarts.init(document.getElementById('orderChartTeam4'));
              orderChartTeam4.setOption({
+                 color: colors,
                  tooltip: {
                      trigger: 'item'
                  },
@@ -1398,6 +1410,7 @@
 
             {
             orderChartEX1.setOption({
+                color: colors,
                 tooltip: {
                     trigger: 'axis'
                 },
@@ -1454,6 +1467,7 @@
                 }
                 var orderChartEX2 = echarts.init(document.getElementById('orderChartEX2'));
                 orderChartEX2.setOption({
+                    color: colors,
                     tooltip: {
                         trigger: 'axis'
                     },
@@ -1510,6 +1524,7 @@
                 }
                 var orderChartEX3 = echarts.init(document.getElementById('orderChartEX3'));
                 orderChartEX3.setOption({
+                    color: colors,
                     tooltip: {
                         trigger: 'axis'
                     },
