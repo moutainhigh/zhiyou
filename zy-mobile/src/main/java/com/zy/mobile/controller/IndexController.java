@@ -44,7 +44,7 @@ public class IndexController {
 		/* banner */
 		BannerPosition bannerPosition = BannerPosition.首页顶部;
 		List<Banner> banners = cacheSupport.get(Constants.CACHE_NAME_BANNER, bannerPosition.toString());
-		if(banners == null ) {
+		if(banners == null || banners.isEmpty()) {
 			BannerQueryModel bannerQueryModel = new BannerQueryModel();
 			bannerQueryModel.setBannerPositionEQ(bannerPosition);
 			bannerQueryModel.setIsReleasedEQ(true);
