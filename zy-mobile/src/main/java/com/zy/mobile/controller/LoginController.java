@@ -77,7 +77,7 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(String phone, String password, Model model,Principal principal,
+	public String login(String phone, String password, Model model,
 	                    HttpServletRequest request, HttpServletResponse response,
 	                    HttpSession session, RedirectAttributes redirectAttributes) {
 
@@ -108,7 +108,7 @@ public class LoginController {
 		}
 
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("登录成功"));
-		userService.modifyLastLoginTime(user.getId(), principal.getUserId());
+		userService.modifyLastLoginTime(user.getId(), user.getId());
 		onLoginSuccess(request, response, user.getId());
 		return "redirect:" + redirectUrl;
 	}
