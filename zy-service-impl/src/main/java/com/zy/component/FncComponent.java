@@ -62,7 +62,7 @@ public class FncComponent {
 			throw new ValidationException(currencyType + " trans amount " + transAmount + " is wrong");
 		}
 		if (account==null||(account != null && account.getCurrencyType() != currencyType)) {
-			throw new ValidationException(currencyType + " does not match account currency type " + account.getCurrencyType());
+			throw new ValidationException(currencyType + " does not match account currency type " + (account==null||account.getCurrencyType()==null?"":account.getCurrencyType()));
 		}
 
 		User refUser = userMapper.findOne(userId);
