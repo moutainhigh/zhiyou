@@ -65,7 +65,9 @@ public class UsrComponent {
 			do{
 				parent = userMapper.findOne(parent.getParentId());
 			}while ( parent!=null&&parent.getParentId()!=null&&parent.getLargearea() == null);
-			user.setLargearea(parent.getLargearea());
+			if (parent!=null) {
+				user.setLargearea(parent.getLargearea());
+			}
 		}
 
 		userMapper.update(user);
