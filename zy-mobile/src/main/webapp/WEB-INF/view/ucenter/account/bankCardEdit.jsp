@@ -82,7 +82,7 @@
     
     $('#btnDelete').click(function() {
       if (window.confirm('您确定要删除该银行卡吗?') == 1) {
-        location.href = '${ctx}/u/bankCard/delete/${address.id}';
+        location.href = '${ctx}/u/bankCard/delete/${bankCard.id}';
       }
     });
     

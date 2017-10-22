@@ -176,7 +176,7 @@ public class ReportController {
 			return ResultBuilder.error("客服不存在");
 		}
 		try{
-			reportService.visitUser(id, principal.getUserId(), user.getId());
+			reportService.visitUser(id,  user.getId(),principal.getUserId());
 			return ResultBuilder.ok("操作成功");
 		} catch (Exception e) {
 			return ResultBuilder.error(e.getMessage());

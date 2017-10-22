@@ -52,6 +52,7 @@ public class BankCardServiceImpl implements BankCardService {
 	public List<BankCard> findByUserId(@NotNull Long userId) {
 		BankCardQueryModel bankCardQueryModel = new BankCardQueryModel();
 		bankCardQueryModel.setUserIdEQ(userId);
+		bankCardQueryModel.setIsDeletedEQ(false);
 		List<BankCard> bankCards = bankCardMapper.findAll(bankCardQueryModel);
 		return bankCards;
 	}
