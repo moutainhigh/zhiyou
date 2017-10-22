@@ -61,7 +61,7 @@ public class FncComponent {
 		if (transAmount.compareTo(zero) <= 0) {
 			throw new ValidationException(currencyType + " trans amount " + transAmount + " is wrong");
 		}
-		if (account != null && account.getCurrencyType() != currencyType) {
+		if (account==null||(account != null && account.getCurrencyType() != currencyType)) {
 			throw new ValidationException(currencyType + " does not match account currency type " + account.getCurrencyType());
 		}
 
