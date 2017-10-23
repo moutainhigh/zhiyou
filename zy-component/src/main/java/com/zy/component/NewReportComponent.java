@@ -492,9 +492,12 @@ public class NewReportComponent {
             return false;
         }).filter(profit -> (profit.getProfitType()!=Profit.ProfitType.补偿||profit.getProfitType()!=Profit.ProfitType.订单收款)).filter(profit->{//过滤成本年的
             String year = DateUtil.getYear(new Date())+"";
+            if(profit.getTitle().length()>4&&profit.getTitle().indexOf(year)!=-1){
             String  title = profit.getTitle().substring(0,4);
             if (year.equals(title)){
                 return true;
+            }
+             return false;
             }
             return false;
         }).collect(Collectors.toList()); //取到  所有奖励
