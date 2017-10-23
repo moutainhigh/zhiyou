@@ -95,6 +95,7 @@
         <div class="list-item">
           <div class="list-text">账户U币余额</div>
           <div class="list-unit">${amount1}元</div>
+
         </div>
         <c:if test="${amount2 > 0}">
         <div class="list-item">
