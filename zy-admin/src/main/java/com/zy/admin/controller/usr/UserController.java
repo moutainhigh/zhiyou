@@ -604,16 +604,18 @@ public class UserController {
 			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("操作失败，参数异常: flag is null"));
 			return "redirect:/user";
 		}
-        User user = userService.findOne(id);
-        if(user == null || user.getLargearea() == null){
-            redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("操作失败，参数异常: user is null or largearea is null"));
-            return "redirect:/user";
+        if(flag == 1){
+            User user = userService.findOne(id);
+            if(user == null || user.getLargearea() == null){
+                redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("操作失败，参数异常: user is null or largearea is null"));
+                return "redirect:/user";
+            }
+            List<User> userList = userService.findAll(UserQueryModel.builder().largeareaDirector(1).largeArea(user.getLargearea()).build());
+            if(userList != null && !userList.isEmpty() && userList.size() > 0 ){
+                redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("操作失败，该用户所在大区已经存在大区董事长"));
+                return "redirect:/user";
+            }
         }
-        List<User> userList = userService.findAll(UserQueryModel.builder().largeareaDirector(1).largeArea(user.getLargearea()).build());
-        if(userList != null && !userList.isEmpty() && userList.size() > 0 ){
-            redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("操作失败，该用户所在大区已经存在大区董事长"));
-            return "redirect:/user";
-		}
 		userService.modifyLargeareaDirector(id, adminPrincipal.getUserId() , flag);
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
 		return "redirect:/user";
