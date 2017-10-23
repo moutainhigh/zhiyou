@@ -1120,7 +1120,7 @@
                             </div>
 
                             <div class="form-group">
-                                <select name="largeareaDirectorEQ" class="form-control">
+                                <select name="largeareaDirector" class="form-control">
                                     <option value="">-- 是否大区董事/副董事 --</option>
                                     <option value="1">大区董事长</option>
                                     <option value="2">大区副董事长</option>

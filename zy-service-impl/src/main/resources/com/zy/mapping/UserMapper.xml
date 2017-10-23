@@ -170,7 +170,7 @@
 			<if test="largeArea != null">
 				and largeArea = #{largeArea}
 			</if>
-			<if test="largeareaDirectorEQ != null">
+			<if test="largeareaDirector != null">
 				and largearea_director = #{largeareaDirector}
 			</if>
 			<if test="isHonorDirectorEQ != null">
@@ -289,7 +289,7 @@
 			<if test="largeArea != null">
 				and largeArea = #{largeArea}
 			</if>
-			<if test="largeareaDirectorEQ != null">
+			<if test="largeareaDirector != null">
 				and largearea_director = #{largeareaDirector}
 			</if>
 			<if test="isHonorDirectorEQ != null">

@@ -76,7 +76,7 @@ public class UserQueryModel implements Serializable {
 
 	private Integer largeArea;
 
-	private Integer largeareaDirectorEQ;
+	private Integer largeareaDirector;
 
 	private Integer pageNumber;
 
@@ -164,6 +164,7 @@ public class UserQueryModel implements Serializable {
 		fieldNames.add("userType");
 		fieldNames.add("lastloginTime");
 		fieldNames.add("largearea");
+		fieldNames.add("largeareaDirector");
 	}
 
 }
