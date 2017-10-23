@@ -547,6 +547,13 @@ public class UserController {
 		if(user != null && user.getUserRank() != UserRank.V4){
 			return new ResultBuilder<>().error("设置大区失败，特级用户才能设置大区");
 		}
+        //该用户是大区董事长
+        if(user.getLargeareaDirector() != null && user.getLargeareaDirector() == 1){
+            List<User> userList = userService.findAll(UserQueryModel.builder().largeareaDirector(1).largeArea(Integer.parseInt(largeArea3)).build());
+            if(userList != null && !userList.isEmpty() && userList.size() > 0 ){
+                return new ResultBuilder<>().error("设置大区失败，所要设置的大区已经存在大区董事长");
+            }
+        }
 		try {
 			userService.modifyLargeAreaAdmin(id, largeArea3, getPrincipalUserId(), remark2);
 		} catch (Exception e) {
