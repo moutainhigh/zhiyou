@@ -585,6 +585,20 @@
                         }
                     },
                     {
+                        data: 'largeareaDirector',
+                        title: '大区董事',
+                        orderable: false,
+                        render: function (data, type, full) {
+                            if (!full.largeareaDirector) {
+                                return '';
+                            } else if(full.largeareaDirector == 1){
+                                return '<label class="badge badge-info">大区董事长</label>';
+                            }else if(full.largeareaDirector == 2){
+                                return '<label class="badge badge-info">大区副董事长</label>';
+                            }
+                        }
+                    },
+                    {
                         data: 'id',
                         title: '操作',
                         width: '20%',
@@ -626,6 +640,18 @@
                                 <shiro:hasPermission name="user:setIsPresident">
                                 if (full.isPresident) {
                                     optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setIsPresident?id=' + full.id + '" data-confirm="您确定要取消[' + full.nickname + ']的大区总裁吗？"><i class="fa fa-smile-o"></i> 取消大区总裁 </a>';
+                                    <shiro:hasPermission name="user:setLargeareaDirector">
+                                    if(!full.largeareaDirector){//不是大区董事长、副董事长
+                                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setLargeareaDirector?id=' + full.id + '&flag=1" data-confirm="您确定要设置[' + full.nickname + ']为大区董事长吗？"><i class="fa fa-smile-o"></i> 设置大区董事长 </a>';
+                                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setLargeareaDirector?id=' + full.id + '&flag=2" data-confirm="您确定要设置[' + full.nickname + ']为大区副董事长吗？"><i class="fa fa-smile-o"></i> 设置大区副董事长 </a>';
+                                    }else if(full.largeareaDirector == 1){//大区董事长
+                                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setLargeareaDirector?id=' + full.id + '&flag=0" data-confirm="您确定要取消[' + full.nickname + ']的董事长身份吗？"><i class="fa fa-edit"></i> 取消大区董事长 </a>';
+                                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setLargeareaDirector?id=' + full.id + '&flag=2" data-confirm="您确定要设置[' + full.nickname + ']为大区副董事长吗？"><i class="fa fa-smile-o"></i> 设置大区副董事长 </a>';
+                                    }else if(full.largeareaDirector == 2){//大区副董事长
+                                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setLargeareaDirector?id=' + full.id + '&flag=0" data-confirm="您确定要取消[' + full.nickname + ']的副董事长身份吗？"><i class="fa fa-edit"></i> 取消大区副董事长 </a>';
+                                        optionHtml += '<a class="btn btn-xs default yellow-stripe" href="javascript:;" data-href="${ctx}/user/setLargeareaDirector?id=' + full.id + '&flag=1" data-confirm="您确定要设置[' + full.nickname + ']为大区董事长吗？"><i class="fa fa-smile-o"></i> 设置大区董事长 </a>';
+                                    }
+                                    </shiro:hasPermission>
                                 }
 
                                 </shiro:hasPermission>
@@ -1091,6 +1117,14 @@
                                         <option value=''>-- 大区类型 --</option>
                                         <c:forEach items='${largeAreas}' var='largeArea'><option value='${largeArea.systemValue}'>${largeArea.systemName}</option></c:forEach>
                                     </select>
+                            </div>
+
+                            <div class="form-group">
+                                <select name="largeareaDirectorEQ" class="form-control">
+                                    <option value="">-- 是否大区董事/副董事 --</option>
+                                    <option value="1">大区董事长</option>
+                                    <option value="2">大区副董事长</option>
+                                </select>
                             </div>
 
                             <div class="form-group">

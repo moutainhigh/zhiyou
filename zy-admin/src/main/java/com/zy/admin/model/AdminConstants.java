@@ -37,6 +37,7 @@ public class AdminConstants {
 			sub.put("userInfo:confirm", "用户认证(审核)");
 			sub.put("userTargetSales:view", "用户目标销量(查看)");
 			sub.put("userTargetSales:edit", "用户目标销量(编辑)");
+			sub.put("user:setLargeareaDirector", "用户大区董事、副董事身份设置");
 			sub.put("address:view", "地址管理(查看)");
 			SETTING_PERMISSION_MAP.put("用户中心", sub);
 		}

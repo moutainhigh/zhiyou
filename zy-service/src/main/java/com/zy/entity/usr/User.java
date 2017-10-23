@@ -258,4 +258,10 @@ public class User implements Serializable {
 	@Field(label = "所属大区总裁id")
 	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
 	private Long presidentId;
+
+
+	@Query(Predicate.EQ)
+	@Field(label = "1：大区董事长  2：大区副董事长")
+	@View(groups = {VO_ADMIN, VO_ADMIN_FULL})
+	private Integer largeareaDirector;
 }

@@ -76,6 +76,8 @@ public class UserQueryModel implements Serializable {
 
 	private Integer largeArea;
 
+	private Integer largeareaDirectorEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;

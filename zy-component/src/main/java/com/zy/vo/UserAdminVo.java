@@ -61,6 +61,8 @@ public class UserAdminVo implements Serializable {
 	private Date lastloginTime;
 	@Field(label = "所属大区")
 	private Integer largearea;
+	@Field(label = "大区董事长")
+	private Integer largeareaDirector;
 
 	/* 扩展 */
 	@Field(label = "用户等级")

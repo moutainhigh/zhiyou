@@ -584,6 +584,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void modifyLargeareaDirector(Long id, Long userId, Integer flag) {
+        findAndValidate(id);
+        User userForMerge = new User();
+        userForMerge.setId(id);
+        String title = "";
+        if(flag == 0){//取消大区董事、大区副董事
+            userForMerge.setLargeareaDirector(null);
+            title = "取消大区董事/副董事";
+        }
+        if(flag == 1){//设置大区董事长
+            userForMerge.setLargeareaDirector(1);
+            title = "设置大区董事长";
+        }
+        if(flag == 2){//设置大区副董事长
+            userForMerge.setLargeareaDirector(2);
+            title = "设置大区副董事长";
+        }
+        userMapper.merge(userForMerge, "largeareaDirector");
+        usrComponent.recordUserLog(id, userId, title, null);
+    }
+
+    @Override
     public void modifyIsDeleted(@NotNull Long id, Long userId, boolean isDeleted) {
         findAndValidate(id);
 

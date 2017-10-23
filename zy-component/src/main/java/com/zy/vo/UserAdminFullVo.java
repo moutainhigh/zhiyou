@@ -59,6 +59,8 @@ public class UserAdminFullVo implements Serializable {
 	private Boolean isPresident;
 	@Field(label = "所属大区总裁id")
 	private Long presidentId;
+	@Field(label = "大区董事长")
+	private Integer largeareaDirector;
 
 	/* 扩展 */
 	@Field(label = "userInfo")

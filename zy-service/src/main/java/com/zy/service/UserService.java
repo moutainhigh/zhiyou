@@ -74,6 +74,8 @@ public interface UserService {
 
 	void modifyIsShareholder(Long id, Long userId, boolean isShareholder);
 
+	void modifyLargeareaDirector(Long id, Long userId, Integer flag);
+
 	void modifyIsDeleted(Long id, Long userId, boolean isDeleted);
 
 	//void modifyIsPresident(Long id, List<Long> userIds,Long parentId,Long principalUserId, boolean isPresident);

@@ -589,4 +589,25 @@ public class UserController {
 	}
 
 
+	/**
+	 * 设置或取消大区董事、大区副董事长身份
+	 * @param id
+	 * @param redirectAttributes
+	 * @param adminPrincipal
+	 * @param flag
+     * @return
+     */
+	@RequiresPermissions("user:setLargeareaDirector")
+	@RequestMapping(value = "/setLargeareaDirector", method = RequestMethod.GET)
+	public String setLargeareaDirector(@RequestParam Long id, RedirectAttributes redirectAttributes, AdminPrincipal adminPrincipal,Integer flag) {
+		if(flag == null){
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("操作失败，参数异常: flag is null"));
+			return "redirect:/user";
+		}
+		userService.modifyLargeareaDirector(id, adminPrincipal.getUserId() , flag);
+		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("操作成功"));
+		return "redirect:/user";
+	}
+
+
 }
