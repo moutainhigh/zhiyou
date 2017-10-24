@@ -916,9 +916,14 @@
             largeArea3: largeArea,
             remark2: remark2
         }, function (result) {
-            toastr.success(result.message, '提示信息');
-            $addLargeAreaDialog.close();
-            grid.getDataTable().ajax.reload(null, false);
+            if (result.code === 0) {
+                toastr.success(result.message, '提示信息');
+                $addLargeAreaDialog.close();
+                gretDataTable().ajax.reload(null, false);
+            } else {
+                toastr.error(result.message, '操作失败');
+                $addLargeAreaDialog.close();
+            }
         })
 
     }

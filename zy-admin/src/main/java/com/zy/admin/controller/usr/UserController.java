@@ -551,7 +551,7 @@ public class UserController {
         if(user.getLargeareaDirector() != null && user.getLargeareaDirector() == 1){
             List<User> userList = userService.findAll(UserQueryModel.builder().largeareaDirector(1).largeArea(Integer.parseInt(largeArea3)).build());
             if(userList != null && !userList.isEmpty() && userList.size() > 0 ){
-                return new ResultBuilder<>().error("设置大区失败，所要设置的大区已经存在大区董事长");
+                return  ResultBuilder.error("设置大区失败，所要设置的大区已经存在大区董事长");
             }
         }
 		try {
