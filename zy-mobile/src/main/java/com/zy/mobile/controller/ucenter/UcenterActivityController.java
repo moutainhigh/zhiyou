@@ -6,6 +6,8 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.*;
 import com.zy.entity.act.*;
+import com.zy.entity.sys.InviteNumber;
+import com.zy.entity.sys.SystemCode;
 import com.zy.entity.usr.User;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
@@ -80,6 +82,12 @@ public class UcenterActivityController {
 
 	@Autowired
 	private LessonComponent lessonComponent;
+
+	@Autowired
+	private SystemCodeService systemCodeService;
+
+	@Autowired
+	private InviteNumberService inviteNumberService;
 	/**
 	 * 报名后跳转到选择支付方式页面
 	 *
@@ -150,7 +158,15 @@ public class UcenterActivityController {
 		if (activityApply.getActivityApplyStatus() != ActivityApply.ActivityApplyStatus.已报名) {
 			return "redirect:/activity/" + activityId;
 		}
-
+		List<SystemCode> largeAreaTypes = systemCodeService.findByType("INVITENUMBER");
+		boolean falge =false;
+		for (SystemCode systemCode:largeAreaTypes){
+			if (activityId.toString().equals(systemCode.getSystemValue())){
+				falge=true;
+				break;
+			}
+		}
+		model.addAttribute("falge",falge);
 		model.addAttribute("title", activity.getTitle());
 		model.addAttribute("activityApplyId", activityApply.getId());
 		model.addAttribute("amount", activityApply.getAmount());
@@ -532,5 +548,32 @@ public class UcenterActivityController {
 
 	}
 
+	/**
+	 * 检测 number是否可用
+	 * @param number
+	 * @return
+     */
+	@RequestMapping(value = "/ndtInviteNumber")
+	@ResponseBody
+	public  Result<?> ndtInviteNumber(String number, Principal principal){
+		try{
+			Long  numberLong = Long.valueOf(number);
+			InviteNumber inviteNumber =inviteNumberService.findOneByNumber(numberLong);
+			if ((inviteNumber.getUserId()==null&&inviteNumber.getFlage()==0)||(inviteNumber.getUserId().longValue()==principal.getUserId().longValue()&&inviteNumber.getFlage()==1)){
+				if(inviteNumber.getUserId()==null){
+					inviteNumber.setUserId(principal.getUserId());
+					inviteNumber.setFlage(1);
+					inviteNumber.setUpdateTime(new Date());
+					inviteNumberService.update(inviteNumber);
+				}
+				return ResultBuilder.ok("成功");
+			}else{
+				return ResultBuilder.error("失败");
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+			return ResultBuilder.error(e.getMessage());
+		}
+	}
 
 }
