@@ -30,7 +30,8 @@
   .hide {
     display: none;
   }
-  .acitivityANew  img{
+  .acitivityANew {display: none;}
+  .acitivityANew img{
     display: block;
     width:100%;
   }
@@ -92,34 +93,43 @@
    });
  });
 
+  $(function(){
+    test();
+  });
 
   function  test() {
     var flage = ${falge};
-    var pass=$(".ANeInput input").val();
-    if(flage){
-        $.ajax({
-          url : '${ctx}/u/activity/ndtInviteNumber',
-          data : {
-            number : pass
-          },
-          dataType : 'json',
-          type : 'POST',
-          success : function(result) {
-            var code = result.code;
-            if(code!=0){
-              messageShow("邀请码输入不正确，请重新输入！");
-            }else{
-              $(".valid-form").show();
-              $(".acitivityANew").hide();
-            }
-          }
-        });
+    if(flage) {
+      $(".valid-form").hide();
+      $(".acitivityANew").show();
+      $(".header h1").html("填写邀请码");
+    }
   }
+    function Anew(){
+      var pass=$(".ANeInput input").val();
+      $.ajax({
+        url : '${ctx}/u/activity/ndtInviteNumber',
+        data : {
+          number : pass
+        },
+        dataType : 'json',
+        type : 'POST',
+        success : function(result) {
+          var code = result.code;
+          if(code!=0){
+            messageShow("邀请码输入不正确，请重新输入！");
+          }else{
+            $(".valid-form").show();
+            $(".acitivityANew").hide();
+            $(".header h1").html("活动订单支付");
+          }
+        }
+      });
+    }
     /*layer.prompt(function(value, index, elem){
       alert(value); //得到value
       layer.close(index);
     });*/
-  }
 </script>
 
 </head>
@@ -133,11 +143,11 @@
      <img src="http://image.zhi-you.net/image/9cbac3a0-96b5-4e6e-9cb1-40da63cd240f@450h_750w_1e_1c.jpg" />
      <div class="ANeInput clearfloat">
           <p>输入邀请码</p>
-          <input type="text" placeholder="请输入邀请码" />
+          <input type="number" placeholder="请输入邀请码" />
      </div>
-     <div class="ANewtrue" onclick="test()">确认支付</div>
+     <div class="ANewtrue" onclick="Anew()">确认</div>
    </div>
-  <form action="${ctx}/u/activity/activityApply" class="valid-form"  method="post" style="display: none;">
+  <form action="${ctx}/u/activity/activityApply" class="valid-form"  method="post">
     <input type="hidden" name="activityApplyId" value="${activityApplyId}">
 
     <article class="mt-15 mb-15 clearfix">
