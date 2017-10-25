@@ -11,13 +11,14 @@
 		<result column="month" property="month" />
 		<result column="day" property="day" />
 		<result column="create_time" property="createTime" />
+		<result column="region" property="region" />
 	</resultMap>
 
-	<sql id="baseColumn">id,largearea_name,largearea_value,sales,year,month,day,create_time</sql>
+	<sql id="baseColumn">id,largearea_name,largearea_value,sales,year,month,day,create_time,region</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.report.LargeareaDaySales" useGeneratedKeys="true" keyProperty="id">
-	  insert into `ts_largearea_day_sales` (largearea_name,largearea_value,sales,year,month,day,create_time)
-	  values (#{largeareaName},#{largeareaValue},#{sales},#{year},#{month},#{day},#{createTime})
+	  insert into `ts_largearea_day_sales` (largearea_name,largearea_value,sales,year,month,day,create_time,region)
+	  values (#{largeareaName},#{largeareaValue},#{sales},#{year},#{month},#{day},#{createTime},#{region})
 	</insert>
 
 	<delete id="delete">
@@ -34,6 +35,7 @@
 			month = #{month},
 			day = #{day},
 			create_time = #{createTime},
+			region = #{region},
 		</set>
 		where id = #{id}
 	</update>
@@ -50,6 +52,7 @@
 					<when test="field == 'month'">month = #{largeareaDaySales.month},</when>
 					<when test="field == 'day'">day = #{largeareaDaySales.day},</when>
 					<when test="field == 'createTime'">create_time = #{largeareaDaySales.createTime},</when>
+					<when test="field == 'region'">region = #{largeareaDaySales.region},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -86,6 +89,9 @@
 			<if test="yearEQ != null">
 				and year = #{yearEQ}
 			</if>
+			<if test="regionEQ != null">
+				and year = #{regionEQ}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -120,6 +126,9 @@
 			</if>
 			<if test="yearEQ != null">
 				and year = #{yearEQ}
+			</if>
+			<if test="regionEQ != null">
+				and year = #{regionEQ}
 			</if>
 		</where>
 	</select>

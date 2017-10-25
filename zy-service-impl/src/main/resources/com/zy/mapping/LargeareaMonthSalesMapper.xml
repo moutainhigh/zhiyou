@@ -13,13 +13,14 @@
 		<result column="same_rate" property="sameRate" />
 		<result column="relative_rate" property="relativeRate" />
 		<result column="create_time" property="createTime" />
+		<result column="region" property="region" />
 	</resultMap>
 
-	<sql id="baseColumn">id,largearea_name,largearea_value,sales,target_count,year,month,same_rate,relative_rate,create_time</sql>
+	<sql id="baseColumn">id,largearea_name,largearea_value,sales,target_count,year,month,same_rate,relative_rate,create_time,region</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.report.LargeareaMonthSales" useGeneratedKeys="true" keyProperty="id">
-	  insert into `ts_largearea_month_sales` (largearea_name,largearea_value,sales,target_count,year,month,same_rate,relative_rate,create_time)
-	  values (#{largeareaName},#{largeareaValue},#{sales},#{targetCount},#{year},#{month},#{sameRate},#{relativeRate},#{createTime})
+	  insert into `ts_largearea_month_sales` (largearea_name,largearea_value,sales,target_count,year,month,same_rate,relative_rate,create_time,region)
+	  values (#{largeareaName},#{largeareaValue},#{sales},#{targetCount},#{year},#{month},#{sameRate},#{relativeRate},#{createTime},#{region})
 	</insert>
 
 	<delete id="delete">
@@ -38,6 +39,7 @@
 			same_rate = #{sameRate},
 			relative_rate = #{relativeRate},
 			create_time = #{createTime},
+			region = #{region},
 		</set>
 		where id = #{id}
 	</update>
@@ -56,6 +58,7 @@
 					<when test="field == 'sameRate'">same_rate = #{largeareaMonthSales.sameRate},</when>
 					<when test="field == 'relativeRate'">relative_rate = #{largeareaMonthSales.relativeRate},</when>
 					<when test="field == 'createTime'">create_time = #{largeareaMonthSales.createTime},</when>
+					<when test="field == 'region'">region = #{largeareaDaySales.region},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -89,6 +92,9 @@
 			<if test="yearEQ != null">
 				and year = #{yearEQ}
 			</if>
+			<if test="regionEQ != null">
+				and year = #{regionEQ}
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -120,6 +126,9 @@
 			</if>
 			<if test="yearEQ != null">
 				and year = #{yearEQ}
+			</if>
+			<if test="regionEQ != null">
+				and year = #{regionEQ}
 			</if>
 		</where>
 	</select>

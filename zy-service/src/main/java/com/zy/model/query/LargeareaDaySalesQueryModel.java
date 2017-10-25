@@ -29,6 +29,8 @@ public class LargeareaDaySalesQueryModel implements Serializable {
 
 	private Integer monthEQ;
 
+	private Integer regionEQ;
+
 	private Integer dayEQ;
 
 	private Integer pageNumber;

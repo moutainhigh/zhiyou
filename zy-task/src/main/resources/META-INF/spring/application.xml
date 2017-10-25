@@ -199,7 +199,8 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0 0 * * ?</value>
+						<!--<value>0 0 0 * * ?</value>-->
+						<value>0 0/5 * * * ?</value>
 					</property>
 				</bean>
                <!-- 大区销量月报表 -->
@@ -211,7 +212,8 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0 0 1 1/1 ?</value>
+						<!--<value>0 0 0 1 1/1 ?</value>-->
+						<value>0 0/5 * * * ?</value>
 					</property>
 				</bean>
                <!-- 大区收益报表 -->
