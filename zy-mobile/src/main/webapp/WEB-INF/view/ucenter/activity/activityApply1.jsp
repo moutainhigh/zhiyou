@@ -15,10 +15,23 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
   <script src="${stc}/js/layer/layer.js"></script>
 <style>
+  /*清除浮动代码*/
+  .clearfloat:before, .clearfloat:after {
+    content:"";
+    display:table;
+  }
+  .clearfloat:after{
+    clear:both;
+    overflow:hidden;
+  }
+  .clearfloat{
+    zoom:1;
+  }
   .hide {
     display: none;
   }
   .acitivityANew  img{
+    display: block;
     width:100%;
   }
   .ANewtrue {
@@ -26,12 +39,33 @@
     bottom:0;
     left:0;
     width:100%;
-    height:60px;
+    height:48px;
     color: #fff;
     background: #6cb92d;
-    font-size: 24px;
-    line-height:60px;
+    font-size: 14px;
+    line-height:48px;
     text-align: center;
+  }
+  .ANeInput {
+    padding:10px 15px;
+    margin-bottom: 48px;
+    border-top:1px solid #eee;
+    background: #fff;
+  }
+  .ANeInput p,.ANeInput input {
+    float: left;
+    height:30px;
+    font-size: 16px;
+    line-height: 30px;
+  }
+  .ANeInput p {
+    width:35%;
+    color: #333;
+  }
+  .ANeInput input {
+    width:65%;
+    color: #555;
+    border:none;
   }
 </style>
 <script type="text/javascript">
@@ -61,9 +95,8 @@
 
   function  test() {
     var flage = ${falge};
+    var pass=$(".ANeInput input").val();
     if(flage){
-
-      layer.prompt(function(pass){
         $.ajax({
           url : '${ctx}/u/activity/ndtInviteNumber',
           data : {
@@ -74,15 +107,13 @@
           success : function(result) {
             var code = result.code;
             if(code!=0){
-              alert("验证不通过 停留在这个页面");
+              messageShow("邀请码输入不正确，请重新输入！");
+            }else{
+              $(".valid-form").show();
+              $(".acitivityANew").hide();
             }
-
           }
-
         });
-      },function () {
-        alert("ssss");
-      });
   }
     /*layer.prompt(function(value, index, elem){
       alert(value); //得到value
@@ -92,16 +123,19 @@
 </script>
 
 </head>
-<body  onload=test()>
+<body >
 
   <header class="header">
     <h1>活动订单支付</h1>
     <a href="javascript:history.go(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
    <div class="acitivityANew">
-     <img src="http://image.zhi-you.net/editor/66d43985-0b02-44d0-9b48-794d1ae5f945" />
-
-     <div class="ANewtrue">确认支付</div>
+     <img src="http://image.zhi-you.net/image/9cbac3a0-96b5-4e6e-9cb1-40da63cd240f@450h_750w_1e_1c.jpg" />
+     <div class="ANeInput clearfloat">
+          <p>输入邀请码</p>
+          <input type="text" placeholder="请输入邀请码" />
+     </div>
+     <div class="ANewtrue" onclick="test()">确认支付</div>
    </div>
   <form action="${ctx}/u/activity/activityApply" class="valid-form"  method="post" style="display: none;">
     <input type="hidden" name="activityApplyId" value="${activityApplyId}">
