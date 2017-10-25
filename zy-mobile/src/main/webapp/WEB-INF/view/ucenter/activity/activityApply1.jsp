@@ -30,7 +30,8 @@
   .hide {
     display: none;
   }
-  .acitivityANew  img{
+  .acitivityANew {display: none;}
+  .acitivityANew img{
     display: block;
     width:100%;
   }
@@ -92,34 +93,42 @@
    });
  });
 
+  $(function(){
+    test();
+  });
 
   function  test() {
     var flage = ${falge};
-    var pass=$(".ANeInput input").val();
-    if(flage){
-        $.ajax({
-          url : '${ctx}/u/activity/ndtInviteNumber',
-          data : {
-            number : pass
-          },
-          dataType : 'json',
-          type : 'POST',
-          success : function(result) {
-            var code = result.code;
-            if(code!=0){
-              messageShow("邀请码输入不正确，请重新输入！");
-            }else{
-              $(".valid-form").show();
-              $(".acitivityANew").hide();
-            }
-          }
-        });
+    if(flage) {
+      $(".valid-form").hide();
+      $(".acitivityANew").show();
+      $(".header h1").html("填写邀请码");
+    }
   }
+    function Anew(){
+      var pass=$(".ANeInput input").val();
+      $.ajax({
+        url : '${ctx}/u/activity/ndtInviteNumber',
+        data : {
+          number : pass
+        },
+        dataType : 'json',
+        type : 'POST',
+        success : function(result) {
+          var code = result.code;
+          if(code!=0){
+            messageShow("邀请码输入不正确，请重新输入！");
+          }else{
+            $(".valid-form").show();
+            $(".acitivityANew").hide();
+          }
+        }
+      });
+    }
     /*layer.prompt(function(value, index, elem){
       alert(value); //得到value
       layer.close(index);
     });*/
-  }
 </script>
 
 </head>
@@ -135,9 +144,9 @@
           <p>输入邀请码</p>
           <input type="text" placeholder="请输入邀请码" />
      </div>
-     <div class="ANewtrue" onclick="test()">确认支付</div>
+     <div class="ANewtrue" onclick="Anew()">确认</div>
    </div>
-  <form action="${ctx}/u/activity/activityApply" class="valid-form"  method="post" style="display: none;">
+  <form action="${ctx}/u/activity/activityApply" class="valid-form"  method="post">
     <input type="hidden" name="activityApplyId" value="${activityApplyId}">
 
     <article class="mt-15 mb-15 clearfix">
