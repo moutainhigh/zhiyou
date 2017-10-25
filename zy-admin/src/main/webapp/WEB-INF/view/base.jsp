@@ -748,7 +748,7 @@
             for(var j=0;j<siteMap.length;j++) {
                 var newsiteMap = siteMap[j];
                 for ( var key in newsiteMap ) {
-                    categories[j]=key+"部";
+                    categories[j]=key;
                     targets[j]=newsiteMap[key][0];
                     finish[j]=newsiteMap[key][1];
                     rate[j]=newsiteMap[key][2];
@@ -838,10 +838,10 @@
             for(var j=0;j<siteMap.length;j++) {
                 var newsiteMap = siteMap[j];
                 for ( var key in newsiteMap ) {
-                    categories[j]=key+"部";
+                    categories[j]=key;
                     data.push({
                         value:newsiteMap[key],
-                        name:key+"部"
+                        name:key
                     });
                 }
 
