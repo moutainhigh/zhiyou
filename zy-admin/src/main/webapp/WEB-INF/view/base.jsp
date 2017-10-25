@@ -479,7 +479,7 @@
                     </div>
                     <div class="page-bar" style="margin-top: 30px;">
                         <ul class="page-breadcrumb">
-                            <li><span class="ajaxify">五大区各区每月历史完成销量</span>
+                            <li><span class="ajaxify">每月历史完成销量</span>
                         </ul>
                     </div>
                     <div class="portlet-body">
@@ -490,7 +490,7 @@
                     <div style="float:left;width:48%;">
                         <div class="page-bar" style="margin-top: 30px;">
                             <ul class="page-breadcrumb">
-                                <li><span class="ajaxify">五大区当月完成量及目标量</span>
+                                <li><span class="ajaxify">当月完成量及目标量</span>
                             </ul>
                         </div>
                         <div class="portlet-body">
@@ -502,7 +502,7 @@
                     <div style="float:left;width:48%;margin-left: 4%;">
                         <div class="page-bar" style="margin-top: 30px;">
                             <ul class="page-breadcrumb">
-                                <li><span class="ajaxify">五大区当月达成的销量占比</span>
+                                <li><span class="ajaxify">当月达成的销量占比</span>
                             </ul>
                         </div>
                         <div class="portlet-body">
@@ -541,7 +541,7 @@
                     <div style="float:left;width:30%;">
                         <div class="page-bar" style="margin-top: 30px;">
                             <ul class="page-breadcrumb">
-                                <li><span class="ajaxify">各大区总人数</span>
+                                <li><span class="ajaxify">总人数</span>
                             </ul>
                         </div>
                         <div class="portlet-body">
@@ -553,7 +553,7 @@
                     <div style="float:left;width:30%;margin-left: 5%">
                         <div class="page-bar" style="margin-top: 30px;">
                             <ul class="page-breadcrumb">
-                                <li><span class="ajaxify">各大区本月新增人员占比</span>
+                                <li><span class="ajaxify">本月新增人员占比</span>
                             </ul>
                         </div>
                         <div class="portlet-body">
@@ -565,7 +565,7 @@
                     <div style="float:left;width:30%;margin-left: 5%">
                         <div class="page-bar" style="margin-top: 30px;">
                             <ul class="page-breadcrumb">
-                                <li><span class="ajaxify">各大区沉睡人员占比</span>
+                                <li><span class="ajaxify">沉睡人员占比</span>
                             </ul>
                         </div>
                         <div class="portlet-body">
@@ -630,7 +630,7 @@
                 <div class="AllThrExpenses" style="display: none">
                     <div class="page-bar" style="margin-top: 30px;">
                         <ul class="page-breadcrumb">
-                            <li><span class="ajaxify">五大区历史收益情况</span>
+                            <li><span class="ajaxify">历史收益情况</span>
                         </ul>
                     </div>
                     <div class="portlet-body">
@@ -748,7 +748,7 @@
             for(var j=0;j<siteMap.length;j++) {
                 var newsiteMap = siteMap[j];
                 for ( var key in newsiteMap ) {
-                    categories[j]=key+"部";
+                    categories[j]=key;
                     targets[j]=newsiteMap[key][0];
                     finish[j]=newsiteMap[key][1];
                     rate[j]=newsiteMap[key][2];
@@ -838,10 +838,10 @@
             for(var j=0;j<siteMap.length;j++) {
                 var newsiteMap = siteMap[j];
                 for ( var key in newsiteMap ) {
-                    categories[j]=key+"部";
+                    categories[j]=key;
                     data.push({
                         value:newsiteMap[key],
-                        name:key+"部"
+                        name:key
                     });
                 }
 

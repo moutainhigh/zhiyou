@@ -108,6 +108,7 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.UserTargetSalesQueryModel">
 		select count(*) from `usr_user_target_sales`
 		<where>
+			status = 1
 			<if test="monthEQ != null">
 				and month = #{monthEQ}
 			</if>

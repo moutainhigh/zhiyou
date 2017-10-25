@@ -636,12 +636,14 @@ public class NewReportComponent {
             }
         }else{//处理大区
             List<User> presidentList = userService.findAll(UserQueryModel.builder().isPresident(true).largeArea(Integer.parseInt(type)).build());
-            Map<String,Long> naemap= new HashMap<>();
             Long sum = 0l;
             if(presidentList != null && !presidentList.isEmpty()){
                 for (User u: presidentList) {
+                    Map<String,Long> naemap= new HashMap<>();
                     List<Order> orders1 = orderMap.get(u.getId());
-                    sum = orders1.parallelStream().mapToLong(Order::getQuantity).sum();
+                    if(orders1 != null && !orders1.isEmpty()){
+                        sum = orders1.parallelStream().mapToLong(Order::getQuantity).sum();
+                    }
                     naemap.put(u.getNickname(),sum);
                     resultList.add(naemap);
                 }
@@ -793,11 +795,15 @@ public class NewReportComponent {
                     //计算目标销量
                     Long tarNum = 0l;
                     List<UserTargetSales> us = userTarMap.get(u.getId());
-                    tarNum = us.parallelStream().mapToLong(UserTargetSales::getTargetCount).sum();
+                    if(us != null && !us.isEmpty()){
+                        tarNum = us.parallelStream().mapToLong(UserTargetSales::getTargetCount).sum();
+                    }
                     //计算完成量
                     Long finSum = 0l;
                     List<Order> orders1 = orderMap.get(u.getId());
-                    finSum = orders1.parallelStream().mapToLong(Order::getQuantity).sum();
+                    if(orders1 != null && !orders1.isEmpty()){
+                        finSum = orders1.parallelStream().mapToLong(Order::getQuantity).sum();
+                    }
                     data[0] = tarNum+"";
                     data[1] = finSum+"";
                     if(tarNum==0){
