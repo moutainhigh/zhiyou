@@ -142,7 +142,7 @@
      <img src="http://image.zhi-you.net/image/9cbac3a0-96b5-4e6e-9cb1-40da63cd240f@450h_750w_1e_1c.jpg" />
      <div class="ANeInput clearfloat">
           <p>输入邀请码</p>
-          <input type="text" placeholder="请输入邀请码" />
+          <input type="number" placeholder="请输入邀请码" />
      </div>
      <div class="ANewtrue" onclick="Anew()">确认</div>
    </div>
