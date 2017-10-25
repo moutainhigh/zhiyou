@@ -1396,7 +1396,7 @@
     function scaleColExpenses(){
         var orderChartEX1 = echarts.init(document.getElementById('orderChartEX1'));
         // 异步加载数据
-        $.post('${ctx}/report/profit/profit',{},function(result) {
+        $.post('${ctx}/report/profit/profit?type='+${type},{},function(result) {
             //获取收益数据
             var data = result.data.profit;
             var area = [];
