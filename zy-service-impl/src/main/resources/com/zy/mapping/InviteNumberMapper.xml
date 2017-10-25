@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.InviteNumberMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.sys.InviteNumber">
+		<id column="id" property="id" />
+		<result column="invite_number" property="inviteNumber" />
+		<result column="flage" property="flage" />
+		<result column="user_id" property="userId" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<sql id="baseColumn">id,invite_number,flage,user_id,update_time</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.sys.InviteNumber" useGeneratedKeys="true" keyProperty="id">
+	  insert into `ts_invite` (invite_number,flage,user_id,update_time)
+	  values (#{inviteNumber},#{flage},#{userId},#{updateTime})
+	</insert>
+
+	<delete id="delete">
+		delete from `ts_invite` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.sys.InviteNumber">
+		update `ts_invite`
+		<set>
+			invite_number = #{inviteNumber},
+			flage = #{flage},
+			user_id = #{userId},
+			update_time = #{updateTime},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `ts_invite`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'inviteNumber'">invite_number = #{inviteNumber.inviteNumber},</when>
+					<when test="field == 'flage'">flage = #{inviteNumber.flage},</when>
+					<when test="field == 'userId'">user_id = #{inviteNumber.userId},</when>
+					<when test="field == 'updateTime'">update_time = #{inviteNumber.updateTime},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{inviteNumber.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `ts_invite`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.InviteNumberQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `ts_invite`
+		<where>
+			<if test="updateTimeLT != null">
+				and update_time &lt; #{updateTimeLT}
+			</if>
+			<if test="inviteNumberEQ != null">
+				and invite_number = #{inviteNumberEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="flageEQ != null">
+				and flage = #{flageEQ}
+			</if>
+			<if test="updateTimeGTE != null">
+				and update_time &gt;= #{updateTimeGTE}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.InviteNumberQueryModel">
+		select count(*) from `ts_invite`
+		<where>
+			<if test="updateTimeLT != null">
+				and update_time &lt; #{updateTimeLT}
+			</if>
+			<if test="inviteNumberEQ != null">
+				and invite_number = #{inviteNumberEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="flageEQ != null">
+				and flage = #{flageEQ}
+			</if>
+			<if test="updateTimeGTE != null">
+				and update_time &gt;= #{updateTimeGTE}
+			</if>
+		</where>
+	</select>
+
+</mapper>

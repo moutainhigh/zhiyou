@@ -13,14 +13,29 @@
 
 <title>支付</title>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
+  <script src="${stc}/js/layer/layer.js"></script>
 <style>
   .hide {
     display: none;
   }
+  .acitivityANew  img{
+    width:100%;
+  }
+  .ANewtrue {
+    position: fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:60px;
+    color: #fff;
+    background: #6cb92d;
+    font-size: 24px;
+    line-height:60px;
+    text-align: center;
+  }
 </style>
 <script type="text/javascript">
  $(function() {
-
 	 $('#userPay').click(function() {
     $('.payer-phone').addClass('hide');
     $('#phone').val('');
@@ -42,17 +57,53 @@
     $('.valid-form').submit();
    });
  });
+
+
+  function  test() {
+    var flage = ${falge};
+    if(flage){
+
+      layer.prompt(function(pass){
+        $.ajax({
+          url : '${ctx}/u/activity/ndtInviteNumber',
+          data : {
+            number : pass
+          },
+          dataType : 'json',
+          type : 'POST',
+          success : function(result) {
+            var code = result.code;
+            if(code!=0){
+              alert("验证不通过 停留在这个页面");
+            }
+
+          }
+
+        });
+      },function () {
+        alert("ssss");
+      });
+  }
+    /*layer.prompt(function(value, index, elem){
+      alert(value); //得到value
+      layer.close(index);
+    });*/
+  }
 </script>
 
 </head>
-<body>
+<body  onload=test()>
 
   <header class="header">
-    <h1></h1>活动订单支付</h1>
+    <h1>活动订单支付</h1>
     <a href="javascript:history.go(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
+   <div class="acitivityANew">
+     <img src="http://image.zhi-you.net/editor/66d43985-0b02-44d0-9b48-794d1ae5f945" />
 
-  <form action="${ctx}/u/activity/activityApply" class="valid-form"  method="post">
+     <div class="ANewtrue">确认支付</div>
+   </div>
+  <form action="${ctx}/u/activity/activityApply" class="valid-form"  method="post" style="display: none;">
     <input type="hidden" name="activityApplyId" value="${activityApplyId}">
 
     <article class="mt-15 mb-15 clearfix">
