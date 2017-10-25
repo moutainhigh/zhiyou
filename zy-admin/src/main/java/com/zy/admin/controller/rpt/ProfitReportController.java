@@ -51,22 +51,9 @@ public class ProfitReportController {
      */
     @RequestMapping(value = "/profit", method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> profit() {
+    public Result<?> profit(String type) {
         LargeAreaProfitQueryModel largeAreaProfitQueryModel = new LargeAreaProfitQueryModel();
-        Map<String ,Object> returnMap = largeAreaProfitService.findAll(largeAreaProfitQueryModel);
-        return ResultBuilder.result(returnMap);
-    }
-
-    /**
-     * 大区各个总裁收益
-     * @return
-     */
-    @RequestMapping(value = "/largeAreaProfit", method = RequestMethod.POST)
-    @ResponseBody
-    public Result<?> largeAreaProfit(String largeAreaName) {
-        LargeAreaProfitQueryModel largeAreaProfitQueryModel = new LargeAreaProfitQueryModel();
-        largeAreaProfitQueryModel.setLargeAreaNameEQ(largeAreaName);
-        Map<String ,Object> returnMap = largeAreaProfitService.findByLargeAreaName(largeAreaProfitQueryModel);
+        Map<String ,Object> returnMap = largeAreaProfitService.findAll(type,largeAreaProfitQueryModel);
         return ResultBuilder.result(returnMap);
     }
 }

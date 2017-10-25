@@ -120,6 +120,13 @@
 			<if test="yearEQ != null">
 				and year = #{yearEQ}
 			</if>
+			<if test="ids != null and ids.size() > 0">
+				AND user_id in(
+					<foreach collection="ids" item="userId" separator=",">
+						#{userId}
+					</foreach>
+				)
+			</if>
 		</where>
 	</select>
 

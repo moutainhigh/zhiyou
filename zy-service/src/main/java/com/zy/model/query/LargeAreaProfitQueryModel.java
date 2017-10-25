@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -31,6 +32,8 @@ public class LargeAreaProfitQueryModel implements Serializable {
 	private Integer pageSize;
 
 	private String orderBy;
+
+	private List<Long> ids;
 
 	private Direction direction;
 
