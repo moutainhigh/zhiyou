@@ -128,6 +128,7 @@ public class UserTargetSalesServiceImpl implements UserTargetSalesService {
                 userTargetSales.setYear(year);
                 userTargetSales.setUserId(u.getId());
                 userTargetSales.setTargetCount(avg);
+                userTargetSales.setStatus(1);
                 userTargetSalesMapper.insert(userTargetSales);
             }
         }else if(all != null && all.size() > 0){
@@ -140,6 +141,7 @@ public class UserTargetSalesServiceImpl implements UserTargetSalesService {
                     userTargetSales.setYear(year);
                     userTargetSales.setUserId(u.getId());
                     userTargetSales.setTargetCount(avg);
+                    userTargetSales.setStatus(1);
                     userTargetSalesMapper.insert(userTargetSales);
                 }
             }
