@@ -17,5 +17,4 @@ public interface LargeAreaProfitService {
 
     Map<String, Object> findAll(String type, LargeAreaProfitQueryModel largeAreaProfitQueryModel);
 
-    Map<String,Object> findByLargeAreaName(LargeAreaProfitQueryModel largeAreaProfitQueryModel);
 }

@@ -207,39 +207,4 @@ public class LargeAreaProfitServiceImpl implements LargeAreaProfitService{
         return map;
 
     }
-
-    /**
-     * 大区收益
-     * @return
-     */
-    @Override
-    public Map<String, Object> findByLargeAreaName(LargeAreaProfitQueryModel largeAreaProfitQueryModel) {
-        Map<String ,Object> returnMap = new HashMap<>();
-        Map<String ,Object> rMap = new HashMap<>();
-        Map<String ,Object> sMap = new HashMap<>();
-        Map<String ,Object> map = new HashMap<>();
-        double profit [] = new double[12];
-        double yProfit [] = new double[12];
-        double relativeRate [] = new double[12];
-        double sameiveRate [] = new double[12];
-
-
-
-        //根据大区查询数据
-        for (int i = 12; i >= 1;i--){
-            //查询今年的数据
-            largeAreaProfitQueryModel.setYearEQ(DateUtil.getYear(new Date()));
-            largeAreaProfitQueryModel.setMonthEQ(i);
-            double pData = 0d;
-            Double num = largeAreaProfitMapper.queryProfitByMonth(largeAreaProfitQueryModel);
-            if (num == null){
-                num = 0d;
-            }
-            pData = num;
-            profit [i-1] = pData;
-        }
-        returnMap.put("profit",profit);
-        return returnMap;
-    }
-
 }
