@@ -121,6 +121,7 @@
           }else{
             $(".valid-form").show();
             $(".acitivityANew").hide();
+            $(".header h1").html("活动订单支付");
           }
         }
       });
