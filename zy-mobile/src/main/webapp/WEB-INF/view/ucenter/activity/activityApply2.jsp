@@ -48,7 +48,7 @@
 <body>
 
   <header class="header">
-    <h1></h1>活动订单支付</h1>
+    <h1>活动订单支付</h1>
     <a href="javascript:history.go(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
   </header>
 
