@@ -1128,13 +1128,13 @@
                      trigger: 'item',
                      formatter: "{a} <br/>{b} : {c} ({d}%)"
                  },
-                 legend: {
-                     orient: 'vertical',
-                     left: 'left',
-                     data: categories.map(function (a) {
-                         return a;
-                     })
-                 },
+//                 legend: {
+//                     orient: 'vertical',
+//                     left: 'left',
+//                     data: categories.map(function (a) {
+//                         return a;
+//                     })
+//                 },
                  series : [
                      {
                          type: 'pie',
@@ -1174,13 +1174,13 @@
                      trigger: 'item',
                      formatter: "{a} <br/>{b} : {c} ({d}%)"
                  },
-                 legend: {
-                     orient: 'vertical',
-                     left: 'left',
-                     data: categories.map(function (a) {
-                         return a;
-                     })
-                 },
+//                 legend: {
+//                     orient: 'vertical',
+//                     left: 'left',
+//                     data: categories.map(function (a) {
+//                         return a;
+//                     })
+//                 },
                  series : [
                      {
                          type: 'pie',
