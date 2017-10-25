@@ -1061,7 +1061,7 @@
              for(var j=0;j<siteMap.length;j++) {
                  var newsiteMap = siteMap[j];
                  for ( var key in newsiteMap ) {
-                     categories[j]=key+"部";
+                     categories[j]=key;
                      categoriesData[j]=newsiteMap[key];
 
                  }
@@ -1114,10 +1114,10 @@
              for(var j=0;j<siteMap.length;j++) {
                  var newsiteMap = siteMap[j];
                  for ( var key in newsiteMap ) {
-                     categories[j]=key+"部";
+                     categories[j]=key;
                      data.push({
                          value:newsiteMap[key],
-                         name:key+"部"
+                         name:key
                      });
                  }
 
@@ -1160,10 +1160,10 @@
              for(var j=0;j<siteMap.length;j++) {
                  var newsiteMap = siteMap[j];
                  for ( var key in newsiteMap ) {
-                     categories[j]=key+"部";
+                     categories[j]=key;
                      data.push({
                          value:newsiteMap[key],
-                         name:key+"部"
+                         name:key
                      });
                  }
              }
