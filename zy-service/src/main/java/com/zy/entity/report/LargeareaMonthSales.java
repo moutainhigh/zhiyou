@@ -79,4 +79,9 @@ public class LargeareaMonthSales implements Serializable {
     @Field(label = "创建时间")
     @View
     private Date createTime;
+
+    @Field(label = "region")
+    @View
+    @Query(Predicate.EQ)
+    private Integer region;
 }

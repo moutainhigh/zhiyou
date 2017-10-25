@@ -198,6 +198,7 @@ public class AdminConstants {
 		{
 			sub = new LinkedHashMap<>();
 			sub.put("newReport:base", "基础报表(查看)");
+			sub.put("newReport:largeArea", "大区报表(查看)");
 			SETTING_PERMISSION_MAP.put("新报表", sub);
 		}
 	}

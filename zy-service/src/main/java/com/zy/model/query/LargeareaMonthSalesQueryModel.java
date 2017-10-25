@@ -29,6 +29,8 @@ public class LargeareaMonthSalesQueryModel implements Serializable {
 
 	private Integer monthEQ;
 
+	private Integer regionEQ;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
