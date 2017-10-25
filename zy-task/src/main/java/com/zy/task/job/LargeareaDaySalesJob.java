@@ -53,9 +53,9 @@ public class LargeareaDaySalesJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        logger.info("LargeareaDaySalesJob begin.......");
+        logger.info("LargeareaDaySalesJob begin......................................................");
            this.disposeLargeareaDaySales();
-        logger.info("LargeareaDaySalesJob end.......");
+        logger.info("LargeareaDaySalesJob end.........................................................");
     }
 
     private void disposeLargeareaDaySales(){
@@ -68,9 +68,13 @@ public class LargeareaDaySalesJob implements Job {
                     .filter(order -> order.getSellerId()==1).collect(Collectors.toList());
             Map<Long, List<Order>> orderMap = filterOrders.stream().collect(Collectors.groupingBy(Order::getUserId));
 
+
             //过滤大区非空特级
             List<User> v4Users = userService.findAll(UserQueryModel.builder().userRankEQ(User.UserRank.V4).build()).stream().filter(v -> v.getLargearea() != null).collect(Collectors.toList());
+            //过滤所有大区总裁
+            Map<Integer, List<User>> presidentMap = v4Users.stream().filter(u -> u.getIsPresident() != null && u.getIsPresident()).collect(Collectors.groupingBy(User::getLargearea));
             List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");
+            //处理公司
             Map<String, LargeareaDaySales> map = largeAreaTypes.stream().collect(Collectors.toMap(v -> v.getSystemValue(), v -> {
                 LargeareaDaySales largeareaDaySales = new LargeareaDaySales();
                 largeareaDaySales.setCreateTime(new Date());
@@ -80,6 +84,7 @@ public class LargeareaDaySalesJob implements Job {
                 largeareaDaySales.setLargeareaName(v.getSystemName());
                 largeareaDaySales.setLargeareaValue(Integer.parseInt(v.getSystemValue()));
                 largeareaDaySales.setSales(0);
+                largeareaDaySales.setRegion(0);
                 return largeareaDaySales;
             }));
             //处理逻辑，计算各区销量
@@ -98,6 +103,28 @@ public class LargeareaDaySalesJob implements Job {
             //插入数据库
             for (LargeareaDaySales la : las) {
                  largeareaDaySalesService.insert(la);
+            }
+            //处理大区
+            for (Integer key : presidentMap.keySet()) {
+                List<User> presidentList = presidentMap.get(key);
+                for (User u: presidentList) {
+                    LargeareaDaySales la = new LargeareaDaySales();
+                    la.setCreateTime(new Date());
+                    la.setMonth(DateUtil.getMothNum(DateUtil.getMonthData(new Date(),0,-1)));
+                    la.setYear(DateUtil.getYear(DateUtil.getMonthData(new Date(),0,-1)));
+                    la.setDay(DateUtil.getDay(DateUtil.getMonthData(new Date(),0,-1)));
+                    la.setLargeareaName(u.getNickname());
+                    la.setLargeareaValue(u.getId().intValue());
+                    la.setRegion(key);
+                    la.setSales(0);
+                    List<Order> orderList = orderMap.get(u.getId());
+                    if(orderList != null ){
+                        for (Order order: orderList ) {
+                            la.setSales(la.getSales() + order.getQuantity().intValue());
+                        }
+                    }
+                    largeareaDaySalesService.insert(la);
+                }
             }
         } catch (ConcurrentException e) {
                 try {

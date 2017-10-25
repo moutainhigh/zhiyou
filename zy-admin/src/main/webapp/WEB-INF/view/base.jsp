@@ -668,7 +668,7 @@
     </div>
 
 <script>
-    var colors = ['#07a33e', '#97c618', '#f5804a', '#18d6d7', '#0090e2'];
+    var colors = ['#07a33e', '#97c618', '#f5804a', '#18d6d7', '#0090e2',"#3765a1",'#9a0432','#326966','#67686a','#fdfd07','#feffc6','#ce9a2d','#696796','#97cbfd','#646a00'];
     var tablehtml= "";
     function alertMy(obj){
 

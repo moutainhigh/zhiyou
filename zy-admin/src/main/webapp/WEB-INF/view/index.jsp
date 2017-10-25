@@ -641,6 +641,11 @@
                   <a href="javascript:;" data-href="${ctx}/newReport/base?type=0"><i class="icon-docs"></i> 基础报表<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
+              <shiro:hasPermission name="newReport:largeArea">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/newReport/largeArea"><i class="icon-docs"></i> 大区<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
             </ul>
           </li>
         </shiro:hasAnyPermissions>

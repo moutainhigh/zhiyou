@@ -42,6 +42,9 @@ public class NewReportComponent {
     private UserInfoService userInfoService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private NewReportTeamService newReportTeamService;
 
     @Autowired
@@ -609,9 +612,9 @@ public class NewReportComponent {
                 }).
         filter(v -> v.getPaidTime().after(DateUtil.getBeforeMonthBegin(new Date(),0,0))).filter(v->v.getSellerId()==1).collect(Collectors.toList());
 
+        Map<Long ,List<Order>> orderMap = orders.stream().collect(Collectors.groupingBy(Order::getUserId));
         if("0".equals(type)){ //处理公司
             //将订单按用户进行分组
-            Map<Long ,List<Order>> orderMap = orders.stream().collect(Collectors.groupingBy(Order::getUserId));
             List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
             Map<Integer,List<User>> usertMap = userList.stream().collect(Collectors.groupingBy(User::getLargearea));
             for (SystemCode largeArea : largeAreaTypes) {
@@ -632,6 +635,17 @@ public class NewReportComponent {
                 resultList.add(naemap);
             }
         }else{//处理大区
+            List<User> presidentList = userService.findAll(UserQueryModel.builder().isPresident(true).largeArea(Integer.parseInt(type)).build());
+            Map<String,Long> naemap= new HashMap<>();
+            Long sum = 0l;
+            if(presidentList != null && !presidentList.isEmpty()){
+                for (User u: presidentList) {
+                    List<Order> orders1 = orderMap.get(u.getId());
+                    sum = orders1.parallelStream().mapToLong(Order::getQuantity).sum();
+                    naemap.put(u.getNickname(),sum);
+                    resultList.add(naemap);
+                }
+            }
         }
         map.put("thisMonthSales",resultList);
         return map;
@@ -654,7 +668,7 @@ public class NewReportComponent {
                 long sales[] = new long[12];
                 for(int a = 0; a<12;a++){
                     int d=a+1;
-                    List<LargeareaMonthSales> newList = monthSales.stream().filter(m -> m.getMonth() == d && m.getLargeareaName().equals(largeArea.getSystemName())).collect(Collectors.toList());
+                    List<LargeareaMonthSales> newList = monthSales.stream().filter(m -> m.getMonth() == d && m.getLargeareaName().equals(largeArea.getSystemName()) && m.getRegion() == 0).collect(Collectors.toList());
                     if(newList != null && !newList.isEmpty()){
                         relativeRate[a] = newList.get(0).getRelativeRate();
                         sameRate[a] = newList.get(0).getSameRate();
@@ -674,6 +688,32 @@ public class NewReportComponent {
             returnMap.put("largeAreaYearSameRate",sMap);
             returnMap.put("largeAreaYearSales",salesMap);
         }else {//处理大区
+            List<User> presidentList = userService.findAll(UserQueryModel.builder().isPresident(true).largeArea(Integer.parseInt(type)).build());
+            for(User u : presidentList){
+                double relativeRate [] = new double[12];
+                double sameRate [] = new double[12];
+                long sales[] = new long[12];
+                for(int a = 0; a<12;a++){
+                    int d=a+1;
+                    List<LargeareaMonthSales> newList = monthSales.stream().filter(m -> m.getMonth() == d && m.getLargeareaValue() == u.getId().intValue() && m.getRegion() == u.getLargearea()).collect(Collectors.toList());
+                    if(newList != null && !newList.isEmpty()){
+                        relativeRate[a] = newList.get(0).getRelativeRate();
+                        sameRate[a] = newList.get(0).getSameRate();
+                        sales[a] = newList.get(0).getSales();
+                    }else {
+                        relativeRate[a] = 0.00d;
+                        sameRate[a] = 0.00d;
+                        sales[a] = 0;
+                    }
+                }
+                rMap.put(u.getNickname(),DateUtil.arryToString(relativeRate,false));
+                sMap.put(u.getNickname(),DateUtil.arryToString(sameRate,false));
+                salesMap.put(u.getNickname(),DateUtil.longarryToString(sales,false));
+            }
+            returnMap.put("largeAreaYearRelativeRate",rMap);
+            returnMap.put("largeAreaYearSameRate",sMap);
+            returnMap.put("largeAreaYearSales",salesMap);
+
 
         }
         return  returnMap;
@@ -700,9 +740,9 @@ public class NewReportComponent {
                 })
                 .filter(v -> v.getPaidTime().after(DateUtil.getBeforeMonthBegin(now,0,0))).filter(v->v.getSellerId()==1).collect(Collectors.toList());
 
+        Map<Long ,List<Order>> orderMap = orders.stream().collect(Collectors.groupingBy(Order::getUserId));
         if("0".equals(type)){ //处理公司
             //将订单按用户进行分组
-            Map<Long ,List<Order>> orderMap = orders.stream().collect(Collectors.groupingBy(Order::getUserId));
             List<User> userList = localCacheComponent.getUsers().stream().filter(user -> user.getUserRank()== User.UserRank.V4).filter(user -> user.getLargearea()!=null).collect(Collectors.toList());
             Map<Integer,List<User>> usertMap = userList.stream().collect(Collectors.groupingBy(User::getLargearea));
             for (SystemCode largeArea : largeAreaTypes) {
@@ -745,6 +785,31 @@ public class NewReportComponent {
                 resultList.add(naemap);
             }
         }else{//处理大区
+            List<User> presidentList = userService.findAll(UserQueryModel.builder().isPresident(true).largeArea(Integer.parseInt(type)).build());
+            if(presidentList != null && !presidentList.isEmpty()){
+                for (User u: presidentList) {
+                    String[] data = new String[3];
+                    Map<String,String[]> naemap= new HashMap<>();
+                    //计算目标销量
+                    Long tarNum = 0l;
+                    List<UserTargetSales> us = userTarMap.get(u.getId());
+                    tarNum = us.parallelStream().mapToLong(UserTargetSales::getTargetCount).sum();
+                    //计算完成量
+                    Long finSum = 0l;
+                    List<Order> orders1 = orderMap.get(u.getId());
+                    finSum = orders1.parallelStream().mapToLong(Order::getQuantity).sum();
+                    data[0] = tarNum+"";
+                    data[1] = finSum+"";
+                    if(tarNum==0){
+                        data[2] = "100.00";
+                    }else {
+                        String rate = DateUtil.formatString(Double.valueOf(finSum)/Double.valueOf(tarNum)*100);
+                        data[2] = rate;
+                    }
+                    naemap.put(u.getNickname(),data);
+                    resultList.add(naemap);
+                }
+            }
         }
         map.put("salesAndTargets",resultList);
         return map;
@@ -769,7 +834,7 @@ public class NewReportComponent {
                 long sales[] = new long[daysOfMonth];
                 for(int a = 0; a<daysOfMonth;a++){
                     int d=a + 1;
-                    List<LargeareaDaySales> newList = daySales.stream().filter(m -> m.getDay() == d && m.getLargeareaName().equals(largeArea.getSystemName())).collect(Collectors.toList());
+                    List<LargeareaDaySales> newList = daySales.stream().filter(m -> m.getDay() == d && m.getLargeareaName().equals(largeArea.getSystemName()) && m.getRegion() == 0).collect(Collectors.toList());
                     if(newList != null && !newList.isEmpty()){
                         sales[a] = newList.get(0).getSales();
                     }else {
@@ -780,6 +845,21 @@ public class NewReportComponent {
             }
             returnMap.put("largeAreaMonthDaySales",dataMap);
         }else {//处理大区
+            List<User> presidentList = userService.findAll(UserQueryModel.builder().isPresident(true).largeArea(Integer.parseInt(type)).build());
+            for(User u : presidentList){
+                long sales[] = new long[daysOfMonth];
+                for(int a = 0; a<daysOfMonth;a++){
+                    int d=a + 1;
+                    List<LargeareaDaySales> newList = daySales.stream().filter(m -> m.getDay() == d && m.getLargeareaValue() == u.getId().intValue() && m.getRegion() == Integer.parseInt(type)).collect(Collectors.toList());
+                    if(newList != null && !newList.isEmpty()){
+                        sales[a] = newList.get(0).getSales();
+                    }else {
+                        sales[a] = 0;
+                    }
+                }
+                dataMap.put(u.getNickname(),DateUtil.longarryToString(sales,false));
+            }
+            returnMap.put("largeAreaMonthDaySales",dataMap);
 
         }
         returnMap.put("days",days);

@@ -11,25 +11,24 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import java.util.Date;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LargeareaMonthSalesQueryModel implements Serializable {
+public class InviteNumberQueryModel implements Serializable {
 
-	private Long idEQ;
+	private Long inviteNumberEQ;
 
-	private String largeareaNameEQ;
+	private Integer flageEQ;
 
-	private Integer largeareaValueEQ;
+	private Long userIdEQ;
 
-	private Integer yearEQ;
+	private Date updateTimeGTE;
 
-	private Integer monthEQ;
-
-	private Integer regionEQ;
+	private Date updateTimeLT;
 
 	private Integer pageNumber;
 
@@ -83,16 +82,11 @@ public class LargeareaMonthSalesQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
-		fieldNames.add("largeareaValue");
-		fieldNames.add("month");
-		fieldNames.add("relativeRate");
-		fieldNames.add("year");
-		fieldNames.add("createTime");
+		fieldNames.add("flage");
+		fieldNames.add("inviteNumber");
+		fieldNames.add("updateTime");
 		fieldNames.add("id");
-		fieldNames.add("largeareaName");
-		fieldNames.add("targetCount");
-		fieldNames.add("sales");
-		fieldNames.add("sameRate");
+		fieldNames.add("userId");
 	}
 
 }

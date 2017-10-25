@@ -36,6 +36,8 @@
 	<dubbo:reference  interface="com.zy.service.LargeareaMonthSalesService" id="largeareaMonthSalesService"/>
 	<dubbo:reference  interface="com.zy.service.LargeAreaProfitService" id="largeAreaProfitService"/>
 	<dubbo:reference  interface="com.zy.service.UserTargetSalesService" id="userTargetSalesService"/>
+	<dubbo:reference  interface="com.zy.service.InviteNumberService" id="inviteNumberService"/>
+	<dubbo:reference interface="com.zy.service.ActivityApplyService" id="activityApplyService" />
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
 
@@ -197,7 +199,8 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0 0 * * ?</value>
+						<!--<value>0 0 0 * * ?</value>-->
+						<value>0 0/5 * * * ?</value>
 					</property>
 				</bean>
                <!-- 大区销量月报表 -->
@@ -209,7 +212,8 @@
 						</bean>
 					</property>
 					<property name="cronExpression">
-						<value>0 0 0 1 1/1 ?</value>
+						<!--<value>0 0 0 1 1/1 ?</value>-->
+						<value>0 0/5 * * * ?</value>
 					</property>
 				</bean>
                <!-- 大区收益报表 -->
@@ -235,6 +239,18 @@
 					</property>
 					<property name="cronExpression">
 						<value>0 0 0 1 1/1 ?</value>
+					</property>
+				</bean>
+				<!-- 邀请码检测 -->
+				<bean id="dntInviteNumberJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+					<property name="jobDetail">
+						<bean id ="dntInviteNumberJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+							<property name="durability" value="true"></property>
+							<property name="jobClass" value="com.zy.task.job.DntInviteNumberJob"></property>
+						</bean>
+					</property>
+					<property name="cronExpression">
+						<value>0 0/2 * * * ?</value>
 					</property>
 				</bean>
 				<!--收益单结算job-->

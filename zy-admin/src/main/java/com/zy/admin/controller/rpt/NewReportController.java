@@ -4,6 +4,8 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.LocalCacheComponent;
 import com.zy.component.NewReportComponent;
+import com.zy.entity.sys.SystemCode;
+import com.zy.service.SystemCodeService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +33,9 @@ public class NewReportController {
     @Autowired
     private LocalCacheComponent localCacheComponent;
 
+    @Autowired
+    private SystemCodeService systemCodeService;
+
     /**
      * 跳转到  首页
      * @param model
@@ -40,6 +46,18 @@ public class NewReportController {
     public String toMian(Model model,String type){
         model.addAttribute("type",type);
         return "base";
+    }
+
+    /**
+     * 大区页面
+     * @param model
+     * @return
+     */
+    @RequestMapping("/largeArea")
+    public String toMian(Model model){
+        List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");
+        model.addAttribute("largeAreaTypes",largeAreaTypes);
+        return "largeArea";
     }
 
 
