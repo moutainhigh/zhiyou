@@ -539,8 +539,9 @@ public class UserServiceImpl implements UserService {
 
         User merge = new User();
         merge.setId(id);
+        merge.setLargearea(president.getLargearea());
         merge.setPresidentId(presidentId);
-        userMapper.merge(merge, "presidentId");
+        userMapper.merge(merge, "presidentId","largearea");
         usrComponent.recordUserLog(id, loginUser, "加入大区总裁团队", null);
     }
 
