@@ -670,7 +670,7 @@ public class UserServiceImpl implements UserService {
                 filterV4Users = v4Users.stream().filter(v -> !v.getIsPresident() && null == v.getPresidentId() ).collect(Collectors.toList());
             }else{
                 //过滤特级
-                filterV4Users = v4Users.stream().filter(v -> v.getPresidentId() != null && v.getPresidentId() == user.getPresidentId() ).collect(Collectors.toList());
+                filterV4Users = v4Users.stream().filter(v -> v.getPresidentId() != null && v.getPresidentId().longValue() == user.getPresidentId().longValue()).collect(Collectors.toList());
             }
             user.setIsPresident(isPresident);
             user.setPresidentId(null);
