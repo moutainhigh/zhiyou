@@ -665,10 +665,6 @@ public class UserServiceImpl implements UserService {
         List<User> v4Users = findTeamV4(id);
         List<User> filterV4Users = null;
         if(isPresident){//设置大区总裁
-            user.setIsPresident(isPresident);
-            user.setPresidentId(null);
-            userMapper.merge(user, "isPresident","presidentId");
-            usrComponent.recordUserLog(id, operatorId, label + "大区总裁", null);
             if(null == user.getPresidentId()){
                 //过滤特级
                 filterV4Users = v4Users.stream().filter(v -> !v.getIsPresident() && null == v.getPresidentId() ).collect(Collectors.toList());
@@ -676,6 +672,10 @@ public class UserServiceImpl implements UserService {
                 //过滤特级
                 filterV4Users = v4Users.stream().filter(v -> v.getPresidentId() != null && v.getPresidentId() == user.getPresidentId() ).collect(Collectors.toList());
             }
+            user.setIsPresident(isPresident);
+            user.setPresidentId(null);
+            userMapper.merge(user, "isPresident","presidentId");
+            usrComponent.recordUserLog(id, operatorId, label + "大区总裁", null);
             for (User u: filterV4Users ) {
                 u.setPresidentId(id);
                 u.setLargearea(user.getLargearea());

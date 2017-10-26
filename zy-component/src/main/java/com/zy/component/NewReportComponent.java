@@ -654,9 +654,9 @@ public class NewReportComponent {
             }
         }else{//处理大区
             List<User> presidentList = userService.findAll(UserQueryModel.builder().isPresident(true).largeArea(Integer.parseInt(type)).build());
-            Long sum = 0l;
             if(presidentList != null && !presidentList.isEmpty()){
                 for (User u: presidentList) {
+                    Long sum = 0l;
                     Map<String,Long> naemap= new HashMap<>();
                     List<Order> newOrderList = new ArrayList<>();
                     List<Order> orders1 = orderMap.get(u.getId());
