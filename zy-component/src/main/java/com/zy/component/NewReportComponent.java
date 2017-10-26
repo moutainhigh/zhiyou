@@ -658,9 +658,23 @@ public class NewReportComponent {
             if(presidentList != null && !presidentList.isEmpty()){
                 for (User u: presidentList) {
                     Map<String,Long> naemap= new HashMap<>();
+                    List<Order> newOrderList = new ArrayList<>();
                     List<Order> orders1 = orderMap.get(u.getId());
                     if(orders1 != null && !orders1.isEmpty()){
-                        sum = orders1.parallelStream().mapToLong(Order::getQuantity).sum();
+                        newOrderList.addAll(orders1);
+                        //sum = orders1.parallelStream().mapToLong(Order::getQuantity).sum();
+                    }
+                    List<User> team = userService.findAll(UserQueryModel.builder().presidentId(u.getId()).build());
+                    if(team != null && !team.isEmpty()){
+                        for (User t: team) {
+                            List<Order> o = orderMap.get(t.getId());
+                            if(o != null && !o.isEmpty()){
+                                newOrderList.addAll(o);
+                            }
+                        }
+                    }
+                    if(!newOrderList.isEmpty()){
+                        sum = newOrderList.parallelStream().mapToLong(Order::getQuantity).sum();
                     }
                     naemap.put(u.getNickname(),sum);
                     resultList.add(naemap);
@@ -808,6 +822,7 @@ public class NewReportComponent {
             List<User> presidentList = userService.findAll(UserQueryModel.builder().isPresident(true).largeArea(Integer.parseInt(type)).build());
             if(presidentList != null && !presidentList.isEmpty()){
                 for (User u: presidentList) {
+                    List<Order> newOrderList = new ArrayList<>();
                     String[] data = new String[3];
                     Map<String,String[]> naemap= new HashMap<>();
                     //计算目标销量
@@ -820,7 +835,19 @@ public class NewReportComponent {
                     Long finSum = 0l;
                     List<Order> orders1 = orderMap.get(u.getId());
                     if(orders1 != null && !orders1.isEmpty()){
-                        finSum = orders1.parallelStream().mapToLong(Order::getQuantity).sum();
+                        newOrderList.addAll(orders1);
+                    }
+                    List<User> team = userService.findAll(UserQueryModel.builder().presidentId(u.getId()).build());
+                    if(team != null && !team.isEmpty()){
+                        for (User t: team) {
+                            List<Order> o = orderMap.get(t.getId());
+                            if(o != null && !o.isEmpty()){
+                                newOrderList.addAll(o);
+                            }
+                        }
+                    }
+                    if(!newOrderList.isEmpty()){
+                        finSum = newOrderList.parallelStream().mapToLong(Order::getQuantity).sum();
                     }
                     data[0] = tarNum+"";
                     data[1] = finSum+"";

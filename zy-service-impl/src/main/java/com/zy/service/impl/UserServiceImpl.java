@@ -678,7 +678,8 @@ public class UserServiceImpl implements UserService {
             }
             for (User u: filterV4Users ) {
                 u.setPresidentId(id);
-                userMapper.merge(u,"presidentId");
+                u.setLargearea(user.getLargearea());
+                userMapper.merge(u,"presidentId","largearea");
             }
         }else{//取消大区总裁
             User parent = user;
@@ -686,12 +687,16 @@ public class UserServiceImpl implements UserService {
                 parent = userMapper.findOne(parent.getParentId());
             }while(parent != null && !((parent.getIsPresident() != null && parent.getIsPresident()) || parent.getPresidentId() !=null));
             Long parentId = null;
+            Integer largearea = null ;
             if(parent == null){
                 parentId = null;
+                largearea = null;
             }else if(parent.getIsPresident()){
                 parentId = parent.getId();
+                largearea = parent.getLargearea();
             }else{
-                parentId = parent.getParentId();
+                parentId = parent.getPresidentId();
+                largearea = parent.getLargearea();
             }
             user.setIsPresident(isPresident);
             user.setPresidentId(parentId);
@@ -701,7 +706,8 @@ public class UserServiceImpl implements UserService {
             List<User> filterUsers = userMapper.findAll(UserQueryModel.builder().presidentId(id).build());
             for (User u: filterUsers ) {
                 u.setPresidentId(parentId);
-                userMapper.merge(u,"presidentId");
+                u.setLargearea(largearea);
+                userMapper.merge(u,"presidentId","largearea");
             }
         }
     }

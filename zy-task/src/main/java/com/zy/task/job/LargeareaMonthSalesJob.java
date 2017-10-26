@@ -74,7 +74,8 @@ public class LargeareaMonthSalesJob implements Job {
             //过滤大区非空特级
             List<User> v4Users = userService.findAll(UserQueryModel.builder().userRankEQ(User.UserRank.V4).build()).stream().filter(v -> v.getLargearea() != null).collect(Collectors.toList());
             //过滤所有大区总裁
-            Map<Integer, List<User>> presidentMap = v4Users.stream().filter(u -> u.getIsPresident() != null && u.getIsPresident()).collect(Collectors.groupingBy(User::getLargearea));
+            List<User> allPresidentList = v4Users.stream().filter(u -> u.getIsPresident() != null && u.getIsPresident()).collect(Collectors.toList());
+            Map<Integer, List<User>> presidentMap = allPresidentList.stream().collect(Collectors.groupingBy(User::getLargearea));
             List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");
             //处理公司
             Map<String, LargeareaMonthSales> map = largeAreaTypes.stream().collect(Collectors.toMap(v -> v.getSystemValue(), v -> {
@@ -134,6 +135,7 @@ public class LargeareaMonthSalesJob implements Job {
             for (Integer key : presidentMap.keySet()) {
                 List<User> presidentList = presidentMap.get(key);
                 for (User u: presidentList) {
+                    List<Order> newOrderList = new ArrayList<>();
                     LargeareaMonthSales largeareaMonthSales = new LargeareaMonthSales();
                     largeareaMonthSales.setCreateTime(new Date());
                     largeareaMonthSales.setMonth(DateUtil.getMothNum(DateUtil.getMonthData(now,-1,0)));
@@ -147,9 +149,20 @@ public class LargeareaMonthSalesJob implements Job {
                     largeareaMonthSales.setRegion(u.getLargearea());
                     List<Order> orderList = orderMap.get(u.getId());
                     if(orderList != null ){
-                        for (Order order: orderList ) {
-                            largeareaMonthSales.setSales(largeareaMonthSales.getSales() + order.getQuantity().intValue());
+                        newOrderList.addAll(orderList);
+                    }
+                    List<User> team = userService.findAll(UserQueryModel.builder().presidentId(u.getId()).build());
+                    if(team != null && !team.isEmpty()){
+                        for (User t: team) {
+                            List<Order> o = orderMap.get(t.getId());
+                            if(o != null && !o.isEmpty()){
+                                newOrderList.addAll(o);
+                            }
                         }
+                    }
+                    if(!newOrderList.isEmpty()){
+                        Long sum = newOrderList.parallelStream().mapToLong(Order::getQuantity).sum();
+                        largeareaMonthSales.setSales(sum.intValue());
                     }
                     List<LargeareaMonthSales> all = largeareaMonthSalesService.findAll(LargeareaMonthSalesQueryModel.builder().largeareaValueEQ(u.getId().intValue()).yearEQ(DateUtil.getYear(DateUtil.getMonthData(now, -2, 0))).monthEQ(DateUtil.getMothNum(DateUtil.getMonthData(now, -2, 0))).regionEQ(key).build());
                     List<LargeareaMonthSales> all2 = largeareaMonthSalesService.findAll(LargeareaMonthSalesQueryModel.builder().largeareaValueEQ(u.getId().intValue()).yearEQ(DateUtil.getYear(DateUtil.getMonthData(now, -12, 0))).monthEQ(DateUtil.getMothNum(DateUtil.getMonthData(now, -12, 0))).regionEQ(key).build());

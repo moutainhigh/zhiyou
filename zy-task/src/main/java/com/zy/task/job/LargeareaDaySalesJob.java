@@ -72,7 +72,8 @@ public class LargeareaDaySalesJob implements Job {
             //过滤大区非空特级
             List<User> v4Users = userService.findAll(UserQueryModel.builder().userRankEQ(User.UserRank.V4).build()).stream().filter(v -> v.getLargearea() != null).collect(Collectors.toList());
             //过滤所有大区总裁
-            Map<Integer, List<User>> presidentMap = v4Users.stream().filter(u -> u.getIsPresident() != null && u.getIsPresident()).collect(Collectors.groupingBy(User::getLargearea));
+            List<User> allPresidentList = v4Users.stream().filter(u -> u.getIsPresident() != null && u.getIsPresident()).collect(Collectors.toList());
+            Map<Integer, List<User>> presidentMap = allPresidentList.stream().collect(Collectors.groupingBy(User::getLargearea));
             List<SystemCode> largeAreaTypes = systemCodeService.findByType("LargeAreaType");
             //处理公司
             Map<String, LargeareaDaySales> map = largeAreaTypes.stream().collect(Collectors.toMap(v -> v.getSystemValue(), v -> {
@@ -107,23 +108,37 @@ public class LargeareaDaySalesJob implements Job {
             //处理大区
             for (Integer key : presidentMap.keySet()) {
                 List<User> presidentList = presidentMap.get(key);
-                for (User u: presidentList) {
-                    LargeareaDaySales la = new LargeareaDaySales();
-                    la.setCreateTime(new Date());
-                    la.setMonth(DateUtil.getMothNum(DateUtil.getMonthData(new Date(),0,-1)));
-                    la.setYear(DateUtil.getYear(DateUtil.getMonthData(new Date(),0,-1)));
-                    la.setDay(DateUtil.getDay(DateUtil.getMonthData(new Date(),0,-1)));
-                    la.setLargeareaName(u.getNickname());
-                    la.setLargeareaValue(u.getId().intValue());
-                    la.setRegion(key);
-                    la.setSales(0);
-                    List<Order> orderList = orderMap.get(u.getId());
-                    if(orderList != null ){
-                        for (Order order: orderList ) {
-                            la.setSales(la.getSales() + order.getQuantity().intValue());
+                if(presidentList != null && !presidentList.isEmpty()){
+                    for (User u: presidentList) {
+                        List<Order> newOrderList = new ArrayList<>();
+                        LargeareaDaySales la = new LargeareaDaySales();
+                        la.setCreateTime(new Date());
+                        la.setMonth(DateUtil.getMothNum(DateUtil.getMonthData(new Date(),0,-1)));
+                        la.setYear(DateUtil.getYear(DateUtil.getMonthData(new Date(),0,-1)));
+                        la.setDay(DateUtil.getDay(DateUtil.getMonthData(new Date(),0,-1)));
+                        la.setLargeareaName(u.getNickname());
+                        la.setLargeareaValue(u.getId().intValue());
+                        la.setRegion(key);
+                        la.setSales(0);
+                        List<Order> orderList = orderMap.get(u.getId());
+                        if(orderList != null && !orderList.isEmpty() ){
+                            newOrderList.addAll(orderList);
                         }
+                        List<User> team = userService.findAll(UserQueryModel.builder().presidentId(u.getId()).build());
+                        if(team != null && !team.isEmpty()){
+                            for (User t: team) {
+                                List<Order> o = orderMap.get(t.getId());
+                                if(o != null && !o.isEmpty()){
+                                    newOrderList.addAll(o);
+                                }
+                            }
+                        }
+                        if(!newOrderList.isEmpty()){
+                            Long sum = newOrderList.parallelStream().mapToLong(Order::getQuantity).sum();
+                            la.setSales(sum.intValue());
+                        }
+                        largeareaDaySalesService.insert(la);
                     }
-                    largeareaDaySalesService.insert(la);
                 }
             }
         } catch (ConcurrentException e) {
