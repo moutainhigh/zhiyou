@@ -702,7 +702,7 @@ public class NewReportComponent {
                 long sales[] = new long[12];
                 for(int a = 0; a<12;a++){
                     int d=a+1;
-                    List<LargeareaMonthSales> newList = monthSales.stream().filter(m -> m.getMonth() == d && m.getLargeareaName().equals(largeArea.getSystemName()) && m.getRegion() == 0).collect(Collectors.toList());
+                    List<LargeareaMonthSales> newList = monthSales.stream().filter(m -> m.getMonth().intValue() == d && m.getLargeareaName().equals(largeArea.getSystemName()) && m.getRegion().intValue() == 0).collect(Collectors.toList());
                     if(newList != null && !newList.isEmpty()){
                         relativeRate[a] = newList.get(0).getRelativeRate();
                         sameRate[a] = newList.get(0).getSameRate();
@@ -729,7 +729,7 @@ public class NewReportComponent {
                 long sales[] = new long[12];
                 for(int a = 0; a<12;a++){
                     int d=a+1;
-                    List<LargeareaMonthSales> newList = monthSales.stream().filter(m -> m.getMonth() == d && m.getLargeareaValue() == u.getId().intValue() && m.getRegion() == u.getLargearea()).collect(Collectors.toList());
+                    List<LargeareaMonthSales> newList = monthSales.stream().filter(m -> m.getMonth().longValue() == d && m.getLargeareaValue().intValue() == u.getId().intValue() && m.getRegion().intValue() == u.getLargearea().intValue()).collect(Collectors.toList());
                     if(newList != null && !newList.isEmpty()){
                         relativeRate[a] = newList.get(0).getRelativeRate();
                         sameRate[a] = newList.get(0).getSameRate();
@@ -901,7 +901,7 @@ public class NewReportComponent {
                 long sales[] = new long[daysOfMonth];
                 for(int a = 0; a<daysOfMonth;a++){
                     int d=a + 1;
-                    List<LargeareaDaySales> newList = daySales.stream().filter(m -> m.getDay() == d && m.getLargeareaValue() == u.getId().intValue() && m.getRegion() == Integer.parseInt(type)).collect(Collectors.toList());
+                    List<LargeareaDaySales> newList = daySales.stream().filter(m -> m.getDay() == d && m.getLargeareaValue() == u.getId().intValue() && m.getRegion().intValue() == Integer.parseInt(type)).collect(Collectors.toList());
                     if(newList != null && !newList.isEmpty()){
                         sales[a] = newList.get(0).getSales();
                     }else {
