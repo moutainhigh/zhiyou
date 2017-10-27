@@ -919,7 +919,7 @@
             if (result.code === 0) {
                 toastr.success(result.message, '提示信息');
                 $addLargeAreaDialog.close();
-                gretDataTable().ajax.reload(null, false);
+                grid.getDataTable().ajax.reload(null, false);
             } else {
                 toastr.error(result.message, '操作失败');
                 $addLargeAreaDialog.close();
