@@ -702,7 +702,7 @@ public class NewReportComponent {
                 long sales[] = new long[12];
                 for(int a = 0; a<12;a++){
                     int d=a+1;
-                    List<LargeareaMonthSales> newList = monthSales.stream().filter(m -> m.getMonth().intValue() == d && m.getLargeareaName().equals(largeArea.getSystemName()) && m.getRegion().intValue() == 0).collect(Collectors.toList());
+                    List<LargeareaMonthSales> newList = monthSales.stream().filter(m -> m.getMonth().intValue() == d && m.getLargeareaValue().equals(largeArea.getSystemValue()) && m.getRegion().intValue() == 0).collect(Collectors.toList());
                     if(newList != null && !newList.isEmpty()){
                         relativeRate[a] = newList.get(0).getRelativeRate();
                         sameRate[a] = newList.get(0).getSameRate();

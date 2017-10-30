@@ -107,8 +107,8 @@ public class LargeareaMonthSalesJob implements Job {
             List<LargeareaMonthSales> las = new ArrayList<>(map.values());
             //计算环比、同比
             for (LargeareaMonthSales la : las) {
-                List<LargeareaMonthSales> all = largeareaMonthSalesService.findAll(LargeareaMonthSalesQueryModel.builder().largeareaNameEQ(la.getLargeareaName()).yearEQ(DateUtil.getYear(DateUtil.getMonthData(now, -2, 0))).monthEQ(DateUtil.getMothNum(DateUtil.getMonthData(now, -2, 0))).regionEQ(0).build());
-                List<LargeareaMonthSales> all2 = largeareaMonthSalesService.findAll(LargeareaMonthSalesQueryModel.builder().largeareaNameEQ(la.getLargeareaName()).yearEQ(DateUtil.getYear(DateUtil.getMonthData(now, -12, 0))).monthEQ(DateUtil.getMothNum(DateUtil.getMonthData(now, -12, 0))).regionEQ(0).build());
+                List<LargeareaMonthSales> all = largeareaMonthSalesService.findAll(LargeareaMonthSalesQueryModel.builder().largeareaValueEQ(la.getLargeareaValue()).yearEQ(DateUtil.getYear(DateUtil.getMonthData(now, -2, 0))).monthEQ(DateUtil.getMothNum(DateUtil.getMonthData(now, -2, 0))).regionEQ(0).build());
+                List<LargeareaMonthSales> all2 = largeareaMonthSalesService.findAll(LargeareaMonthSalesQueryModel.builder().largeareaValueEQ(la.getLargeareaValue()).yearEQ(DateUtil.getYear(DateUtil.getMonthData(now, -12, 0))).monthEQ(DateUtil.getMothNum(DateUtil.getMonthData(now, -12, 0))).regionEQ(0).build());
                 //环比
                 if( all != null && (all.size() > 0 && all.get(0).getSales() > 0)){
                     la.setRelativeRate(DateUtil.formatDouble((la.getSales() - all.get(0).getSales()) / all.get(0).getSales() * 100));
