@@ -74,17 +74,17 @@ public class DntInviteNumberJob implements Job {
             for (ActivityApply activityApply : activityApplyList0) {
                 List<InviteNumber> inviteNumberList0 = inviteNumberMap.get(activityApply.getUserId());
                 if (inviteNumberList0 == null || inviteNumberList0.isEmpty()) {//填邀请码不存在直接结束这个
-                    return;
+                    continue;
                 }
                 ActivityApply activityApply1 = activityApplyMap1.get(activityApply.getUserId()); //取到用户报名成功的
                 if (inviteNumberList0.size() == 1) {//只有一条
                     if (activityApply1 == null) {//没有成功的 需要重置数据
                         InviteNumber inviteNumber = inviteNumberList0.get(0);
                         Date pastDate = DateUtil.getMonthData(inviteNumber.getUpdateTime(), 0, 1);
-                        if (pastDate.getTime() >= new Date().getTime()) {//已经过期
+                        if (pastDate.getTime() <= new Date().getTime()) {//已经过期
                             inviteNumber.setUpdateTime(null);
                             inviteNumber.setUserId(null);
-                            inviteNumber.setFlage(null);
+                            inviteNumber.setFlage(0);
                             inviteNumberService.update(inviteNumber);
                         }
                     }
@@ -92,10 +92,10 @@ public class DntInviteNumberJob implements Job {
                     if (activityApply1 == null) {//没有成功的 需要重置数据
                         for (InviteNumber inviteNumber0 : inviteNumberList0) {
                             Date pastDate = DateUtil.getMonthData(inviteNumber0.getUpdateTime(), 0, 1);
-                            if (pastDate.getTime() >= new Date().getTime()) {//已经过期
+                            if (pastDate.getTime() <= new Date().getTime()) {//已经过期
                                 inviteNumber0.setUpdateTime(null);
                                 inviteNumber0.setUserId(null);
-                                inviteNumber0.setFlage(null);
+                                inviteNumber0.setFlage(0);
                                 inviteNumberService.update(inviteNumber0);
                             }
                         }
@@ -103,10 +103,10 @@ public class DntInviteNumberJob implements Job {
                         for (int i = 1; i < inviteNumberList0.size(); i++) {
                             InviteNumber inviteNumber0 = inviteNumberList0.get(i);
                             Date pastDate = DateUtil.getMonthData(inviteNumber0.getUpdateTime(), 0, 1);
-                            if (pastDate.getTime() >=new Date().getTime()) {//已经过期
+                            if (pastDate.getTime() <=new Date().getTime()) {//已经过期
                                 inviteNumber0.setUpdateTime(null);
                                 inviteNumber0.setUserId(null);
-                                inviteNumber0.setFlage(null);
+                                inviteNumber0.setFlage(0);
                                 inviteNumberService.update(inviteNumber0);
                             }
                         }
