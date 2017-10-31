@@ -107,6 +107,10 @@
   }
     function Anew(){
       var pass=$(".ANeInput input").val();
+      if(pass==null||pass==""){
+        messageShow("邀请码不能为空，请输入！");
+        return;
+      }
       $.ajax({
         url : '${ctx}/u/activity/ndtInviteNumber',
         data : {
