@@ -149,6 +149,7 @@ public class LargeAreaProfitServiceImpl implements LargeAreaProfitService{
                     la.setYearEQ(DateUtil.getYear(new Date()));
                     la.setMonthEQ(i);
                     la.setIds(ids);
+                    la.setLargeAreaValueEQ(Integer.parseInt(type));
                     Double num = largeAreaProfitMapper.queryProfitByMonth(la);
                     if (num == null){
                         num = 0d;
