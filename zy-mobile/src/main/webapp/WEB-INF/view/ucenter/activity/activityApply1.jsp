@@ -110,7 +110,8 @@
       $.ajax({
         url : '${ctx}/u/activity/ndtInviteNumber',
         data : {
-          number : pass
+          number : pass,
+          activityApplyId:$("#activityApplyId").val()
         },
         dataType : 'json',
         type : 'POST',
@@ -119,9 +120,12 @@
           if(code!=0){
             messageShow("邀请码输入不正确，请重新输入！");
           }else{
-            $(".valid-form").show();
+            messageShow("报名成功");
+            $(".button-left").attr("href","${ctx}/activity/${activityId}");
+            $("#fa-angle-left").click();
+           /* $(".valid-form").show();
             $(".acitivityANew").hide();
-            $(".header h1").html("活动订单支付");
+            $(".header h1").html("活动订单支付");*/
           }
         }
       });
@@ -137,7 +141,7 @@
 
   <header class="header">
     <h1>活动订单支付</h1>
-    <a href="javascript:history.go(-1);" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="javascript:history.go(-1);" class="button-left"><i class="fa fa-angle-left" id="fa-angle-left"></i></a>
   </header>
    <div class="acitivityANew">
      <img src="http://image.zhi-you.net/image/9cbac3a0-96b5-4e6e-9cb1-40da63cd240f@450h_750w_1e_1c.jpg" />
@@ -148,7 +152,7 @@
      <div class="ANewtrue" onclick="Anew()">确认</div>
    </div>
   <form action="${ctx}/u/activity/activityApply" class="valid-form"  method="post">
-    <input type="hidden" name="activityApplyId" value="${activityApplyId}">
+    <input type="hidden" name="activityApplyId" id ="activityApplyId" value="${activityApplyId}">
 
     <article class="mt-15 mb-15 clearfix">
       <div class="list-title">单据信息</div>

@@ -167,6 +167,7 @@ public class UcenterActivityController {
 			}
 		}
 		model.addAttribute("falge",falge);
+		model.addAttribute("activityId",activityId);
 		model.addAttribute("title", activity.getTitle());
 		model.addAttribute("activityApplyId", activityApply.getId());
 		model.addAttribute("amount", activityApply.getAmount());
@@ -555,10 +556,13 @@ public class UcenterActivityController {
      */
 	@RequestMapping(value = "/ndtInviteNumber")
 	@ResponseBody
-	public  Result<?> ndtInviteNumber(String number, Principal principal){
+	public  Result<?> ndtInviteNumber(String number,Long activityApplyId ,Principal principal){
 		try{
 			Long  numberLong = Long.valueOf(number);
 			InviteNumber inviteNumber =inviteNumberService.findOneByNumber(numberLong);
+			if (inviteNumber==null){
+				return ResultBuilder.error("失败");
+			}
 			if ((inviteNumber.getUserId()==null&&inviteNumber.getFlage()==0)||(inviteNumber.getUserId().longValue()==principal.getUserId().longValue()&&inviteNumber.getFlage()==1)){
 				if(inviteNumber.getUserId()==null){
 					inviteNumber.setUserId(principal.getUserId());
@@ -566,6 +570,18 @@ public class UcenterActivityController {
 					inviteNumber.setUpdateTime(new Date());
 					inviteNumberService.update(inviteNumber);
 				}
+					//取到 要付款的数据 更新活动 和 付款信息
+					ActivityApply activityApply = activityApplyService.findOne(activityApplyId);
+					activityApply.setAmount( new BigDecimal(588));
+					activityApply.setActivityApplyStatus(ActivityApply.ActivityApplyStatus.已支付);
+					activityApply.setAppliedTime(new Date());
+					activityApplyService.update(activityApply);
+					Activity activity = activityService.findOne(activityApply.getActivityId());
+					Long number1 = activity.getAppliedCount();
+					number1 =number1==null?0:number1+1;
+					activity.setAppliedCount(number1);
+					activityService.modify(activity);
+
 				return ResultBuilder.ok("成功");
 			}else{
 				return ResultBuilder.error("失败");
