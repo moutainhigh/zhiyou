@@ -1,11 +1,11 @@
 package com.zy.task.job;
 
 import com.zy.common.exception.ConcurrentException;
-import com.zy.common.util.DateUtil;
 import com.zy.entity.mal.Order;
+import com.zy.entity.mergeusr.MergeUser;
 import com.zy.entity.usr.User;
 import com.zy.model.query.OrderQueryModel;
-import com.zy.model.query.UserQueryModel;
+import com.zy.service.MergeUserService;
 import com.zy.service.OrderService;
 import com.zy.service.UserService;
 import org.quartz.Job;
@@ -35,6 +35,9 @@ public class MoveUserJob implements Job {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private MergeUserService mergeUserService;
+
 
     /**
      * job 开始
@@ -51,18 +54,36 @@ public class MoveUserJob implements Job {
 
     private void disposeMoveUser(){
         try {
-            Date now = new Date();
-            List<Order> orders = orderService.findAll(OrderQueryModel.builder().paidTimeGTE(DateUtil.getMonthData(now, 0, -1)).paidTimeLT(now).build());
+            List<Order> orders = orderService.findAll(OrderQueryModel.builder().productTypeEQ(2).build());
             //过滤订单
             List<Order> filterOrders = orders.stream().filter(order -> order.getOrderStatus() == Order.OrderStatus.已完成
                      || order.getOrderStatus() == Order.OrderStatus.已支付 || order.getOrderStatus() == Order.OrderStatus.已发货)
-                    .filter(order -> order.getSellerId()==1).collect(Collectors.toList());
+                    .collect(Collectors.toList());
             Map<Long, List<Order>> orderMap = filterOrders.stream().collect(Collectors.groupingBy(Order::getUserId));
-            //过滤大区非空特级
-            List<User> v4Users = userService.findAll(UserQueryModel.builder().userRankEQ(User.UserRank.V4).build()).stream().filter(v -> v.getLargearea() != null).collect(Collectors.toList());
-            //过滤所有大区总裁
-            List<User> allPresidentList = v4Users.stream().filter(u -> u.getIsPresident() != null && u.getIsPresident()).collect(Collectors.toList());
-            Map<Integer, List<User>> presidentMap = allPresidentList.stream().collect(Collectors.groupingBy(User::getLargearea));
+            for (Long key : orderMap.keySet()) {
+                User user = userService.findOne(key);
+                MergeUser mergeUser = new MergeUser();
+                mergeUser.setUserId(key);
+                mergeUser.setInviterId(user.getParentId());
+                mergeUser.setProductType(2);
+                mergeUser.setUserRank(MergeUser.UserRank.valueOf(user.getUserRank().name()));
+                if(user.getParentId() == null){
+                    //原始关系没有上级，将新上级设置为万总
+                    mergeUser.setParentId(10370l);
+                }else {
+                    User parent = null;
+                    do{
+                        parent = userService.findOne(user.getParentId());
+                    }while (parent != null && (orderMap.get(parent.getId()) == null || orderMap.get(parent.getId()).isEmpty()));
+                    if(parent == null){
+                        //父级团队里面没有一个转移的，将新上级设置为万总
+                       mergeUser.setParentId(10370l);
+                    }else {
+                       mergeUser.setParentId(parent.getId());
+                    }
+                }
+                mergeUserService.create(mergeUser);
+            }
         } catch (ConcurrentException e) {
                 try {
                     TimeUnit.SECONDS.sleep(2);} catch (InterruptedException e1) {}
