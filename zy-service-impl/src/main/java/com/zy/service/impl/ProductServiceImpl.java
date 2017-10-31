@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService{
 	public Product modify(@NotNull Product product) {
 		findAndValidate(product.getId());
 		validate(product, "title", "detail", "image1");
-		productMapper.merge(product,"updateId","updateTime", "title", "detail", "marketPrice", "skuCode", "image1");
+		productMapper.merge(product,"updateId","updateTime", "title", "detail", "marketPrice", "skuCode", "image1", "productType");
 		return product;
 	}
 	

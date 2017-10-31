@@ -42,12 +42,17 @@ public class ProductController {
 	private Config config;
 	
 	@RequestMapping
-	public String list(Model model, String orderFill) {
+	public String list(Model model, String orderFill, Principal principal) {
+		Long userId = principal.getUserId();
+		User user = userService.findOne(userId);
+		User.UserRank userRank = user.getUserRank();
+
 		ProductQueryModel productQueryModel = new ProductQueryModel();
 		productQueryModel.setIsOnEQ(true);
 		List<Product> products = productService.findAll(productQueryModel);
 		model.addAttribute("products", products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
 		model.addAttribute("orderFill", orderFill);
+		model.addAttribute("userRank", userRank);
 		return "product/productList";
 	}
 

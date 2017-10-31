@@ -37,6 +37,8 @@ public class ProductAdminVo implements Serializable {
 	private Date createdTime;
 	@Field(label = "是否结算")
 	private Boolean isSettlement;
+	@Field(label = "商品类型")
+	private Integer productType;
 
 	/* 扩展 */
 	@Field(label = "主图")

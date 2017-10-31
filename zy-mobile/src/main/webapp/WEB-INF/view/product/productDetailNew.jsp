@@ -21,7 +21,7 @@
 <body class="product-detail footer-fixed">
 <a class="header-back" href="${ctx}/product"><i class="fa fa-angle-left"></i></a>
 
-<form id="form" action="${ctx}/u/order/create" method="get">
+<form id="form" action="${ctx}/u/newOrder/order" method="get">
   <input type="hidden" name="productId" value="${product.id}">
   <article class="product-wrap">
     <figure class="product-image">
@@ -37,42 +37,45 @@
         </div>
       </div>
       <%--联合创始人--%>
-      <div class="list-item">
-        <div class="font-777 fs-14">
-          <span class="fs-15">数量： <span>160</span></span>
+      <c:if test="${userRank == 'V4'}">
+        <div class="list-item">
+          <div class="font-777 fs-14">
+            <span class="fs-15">数量： <span>160</span></span>
+          </div>
         </div>
-      </div>
-      <div class="list-item">
-        <div class="font-777 fs-14">
-          <span class="fs-15">服务零售价： <span> ¥ 248</span></span>
+        <div class="list-item">
+          <div class="font-777 fs-14">
+            <span class="fs-15">服务零售价： <span> ¥ 248</span></span>
+          </div>
         </div>
-      </div>
-      <div class="list-item">
-        <div class="font-777 fs-14">
-          <span class="fs-15">服务总价： <span> ¥ 39680</span></span>
+        <div class="list-item">
+          <div class="font-777 fs-14">
+            <span class="fs-15">服务总价： <span> ¥ 39680</span></span>
+          </div>
         </div>
-      </div>
+      </c:if>
 
       <%--品牌创始人--%>
-      <div style="display: none;">
-        <div class="list-item">
-          <div class="font-777 fs-14">
-            <span class="fs-15">数量： <span>20</span></span>
+      <c:if test="${userRank == 'V3'}">
+        <div style="display: none;">
+          <div class="list-item">
+            <div class="font-777 fs-14">
+              <span class="fs-15">数量： <span>20</span></span>
+            </div>
           </div>
-        </div>
-        <div class="list-item">
-          <div class="font-777 fs-14">
-            <span class="fs-15">服务零售价： <span> ¥ 320</span></span>
+          <div class="list-item">
+            <div class="font-777 fs-14">
+              <span class="fs-15">服务零售价： <span> ¥ 320</span></span>
+            </div>
           </div>
-        </div>
-        <div class="list-item">
-          <div class="font-777 fs-14">
-            <span class="fs-15">服务总价价： <span> ¥ 6400</span></span>
+          <div class="list-item">
+            <div class="font-777 fs-14">
+              <span class="fs-15">服务总价价： <span> ¥ 6400</span></span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
+    </c:if>
     <div class="list-group mb-0">
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-list-alt font-orange"></i></div>

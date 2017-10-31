@@ -27,31 +27,47 @@
 
 <article class="mb-15 clearfix">
   <c:forEach items="${products}" var="product">
-    <a href="${ctx}/product/${product.id}" class="product">
-      <div class="image-box">
-        <img class="abs-lt" src="${product.image1Thumbnail}">
-      </div>
-      <h3>${product.title}</h3>
-      <div class="product-info">
-        <span class="fs-16 font-orange">¥ ${product.marketPrice}</span>
-      </div>
-    </a>
-    <%--新增代码 start--%>
-    <a href="${ctx}/product/${product.id}" class="product">
-      <div class="image-box">
-        <img class="abs-lt" src="${product.image1Thumbnail}">
-      </div>
-      <h3>新品</h3>
-        <%--联合创始人--%>
-      <div class="product-info">
-        <span class="fs-16 font-orange">¥ 248.00</span>
-      </div>
-        <%--品牌创始人--%>
-      <div class="product-info" style="display: none;">
-        <span class="fs-16 font-orange">¥ 320.00</span>
-      </div>
-    </a>
-    <%--新增代码 end--%>
+    <c:if test="${product.productType == 1}">
+      <a href="${ctx}/product/${product.id}" class="product">
+        <div class="image-box">
+          <img class="abs-lt" src="${product.image1Thumbnail}">
+        </div>
+        <h3>${product.title}</h3>
+        <div class="product-info">
+          <span class="fs-16 font-orange">¥ ${product.marketPrice}</span>
+        </div>
+      </a>
+    </c:if>
+    
+    <c:if test="${userRank == 'V4' || userRank == 'V3'}">
+      <c:if test="${product.productType == 2}">
+        <a href="${ctx}/u/newOrder/${product.id}" class="product">
+          <div class="image-box">
+            <img class="abs-lt" src="${product.image1Thumbnail}">
+          </div>
+          <h3>${product.title}</h3>
+          <div class="product-info">
+            <span class="fs-16 font-orange">¥ ${product.marketPrice}</span>
+          </div>
+        </a>
+      </c:if>
+    </c:if>
+    <%--&lt;%&ndash;新增代码 start&ndash;%&gt;--%>
+    <%--<a href="${ctx}/product/${product.id}" class="product">--%>
+      <%--<div class="image-box">--%>
+        <%--<img class="abs-lt" src="${product.image1Thumbnail}">--%>
+      <%--</div>--%>
+      <%--<h3>新品</h3>--%>
+        <%--&lt;%&ndash;联合创始人&ndash;%&gt;--%>
+      <%--<div class="product-info">--%>
+        <%--<span class="fs-16 font-orange">¥ 248.00</span>--%>
+      <%--</div>--%>
+        <%--&lt;%&ndash;品牌创始人&ndash;%&gt;--%>
+      <%--<div class="product-info" style="display: none;">--%>
+        <%--<span class="fs-16 font-orange">¥ 320.00</span>--%>
+      <%--</div>--%>
+    <%--</a>--%>
+    <%--&lt;%&ndash;新增代码 end&ndash;%&gt;--%>
   </c:forEach>
 </article>
 
