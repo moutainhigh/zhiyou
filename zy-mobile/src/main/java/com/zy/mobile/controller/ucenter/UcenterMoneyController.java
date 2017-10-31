@@ -84,7 +84,7 @@ public class UcenterMoneyController {
 
 		/* 这些用户U币可提现 */
 		User user = userService.findOne(userId);
-		if (Arrays.asList("15961120498", "18562011678", "13614717775", "18605361950","13808389037","18868685858","18369611513","13576362283","15838020555").contains(user.getPhone())) {
+		if (Arrays.asList("15961120498", "18562011678", "13614717775", "18605361950","13808389037","18868685858","18369611513","13576362283","15838020555" ).contains(user.getPhone())) {
 			model.addAttribute("moneyWithdraw", true);
 		}
 		model.addAttribute("userRank", user.getUserRank());
