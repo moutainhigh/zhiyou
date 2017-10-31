@@ -68,4 +68,5 @@
     <dubbo:reference id="largeAreaProfitService" interface="com.zy.service.LargeAreaProfitService" protocol="dubbo"/>
     <dubbo:reference id="userTargetSalesService" interface="com.zy.service.UserTargetSalesService" protocol="dubbo"/>
     <dubbo:reference id="inviteNumberService" interface="com.zy.service.InviteNumberService" protocol="dubbo"/>
+    <dubbo:reference id="mergeUserService" interface="com.zy.service.MergeUserService" protocol="dubbo"/>
 </beans>

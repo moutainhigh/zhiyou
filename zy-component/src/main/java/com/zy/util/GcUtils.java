@@ -6,6 +6,7 @@ import com.zy.entity.act.Policy;
 import com.zy.entity.fnc.*;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.ProductReplacement;
+import com.zy.entity.mergeusr.MergeUser;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
@@ -252,6 +253,22 @@ public class GcUtils {
 			return "省级服务商";
 		} else if (userRank == User.UserRank.V4) {
 			return "特级服务商";
+		} else {
+			return "-";
+		}
+	}
+
+	public static String getMergeUserRankLabel(MergeUser.UserRank userRank) {
+		if (userRank == MergeUser.UserRank.V0) {
+			return "普通用户";
+		} else if (userRank == MergeUser.UserRank.V1) {
+			return "VIP";
+		} else if (userRank == MergeUser.UserRank.V2) {
+			return "品牌经理";
+		} else if (userRank == MergeUser.UserRank.V3) {
+			return "品牌合伙人";
+		} else if (userRank == MergeUser.UserRank.V4) {
+			return "联合创始人";
 		} else {
 			return "-";
 		}
