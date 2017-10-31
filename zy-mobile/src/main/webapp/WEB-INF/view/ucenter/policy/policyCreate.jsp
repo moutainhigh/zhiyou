@@ -32,9 +32,17 @@
         if(!reportId) {
           messageAlert('请选择检测报告');
           return;
+        }else{
+          $.dialog({
+            content : '请确保填写所有信息均和身份证信息保持一致，是否确认？',
+            callback : function(index) {
+              if (index == 1) {
+                $(form).find(':submit').prop('disabled', true);
+                form.submit();
+              }
+            }
+          });
         }
-        $(form).find(':submit').prop('disabled', true);
-        form.submit();
       }
     });
     
@@ -66,6 +74,7 @@
   }
   
   function setReport(report) {
+
     hideReportList();
     $('#reportId').val(report.id);
     $('#realname').text(report.realname);
