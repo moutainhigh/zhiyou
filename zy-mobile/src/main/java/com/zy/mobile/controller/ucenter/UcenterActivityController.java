@@ -171,6 +171,9 @@ public class UcenterActivityController {
 		model.addAttribute("title", activity.getTitle());
 		model.addAttribute("activityApplyId", activityApply.getId());
 		model.addAttribute("amount", activityApply.getAmount());
+		if (falge){
+			return "ucenter/activity/activityApply3";
+		}
 		return "ucenter/activity/activityApply1";
 	}
 
