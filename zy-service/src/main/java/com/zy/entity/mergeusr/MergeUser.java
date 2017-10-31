@@ -32,7 +32,7 @@ import static io.gd.generator.api.query.Predicate.IN;
 @ViewObject(groups = { VO_ADMIN})
 public class MergeUser implements Serializable {
 
-	public static final String VO_ADMIN = "MergeUserAdminVo";
+	public static final String VO_ADMIN = "UserAdminVo";
 
 
 	@Type(label = "用户等级")
