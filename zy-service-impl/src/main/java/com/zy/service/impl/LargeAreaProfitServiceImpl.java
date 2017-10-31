@@ -135,12 +135,10 @@ public class LargeAreaProfitServiceImpl implements LargeAreaProfitService{
                 List<Long> ids = new ArrayList<>();
                 ids.add(user.getId());
                 //查询所有大区总裁的特级团队
-                List<User> users = userService.findAll(UserQueryModel.builder().parentIdEQ(user.getId()).build()).stream()
-                        .filter(v -> v.getUserRank() == User.UserRank.V4).collect(Collectors.toList());
+                List<User> users = userService.findAll(UserQueryModel.builder().presidentId(user.getId()).build()).stream().collect(Collectors.toList());
                 for (User u: users) {
                     ids.add(u.getId());
                 }
-
                 //查询每个总裁每个月的数据
                 for (int i = 12; i >= 1;i--){
                     double pdata = 0d;
