@@ -330,6 +330,12 @@ public class Order implements Serializable {
 	@View
 	private Long productId;
 
+	//@NotNull
+	@Query(Predicate.EQ)
+	@Field(label = "商品类型")
+	@View
+	private Integer productType;
+
 	//@NotBlank
 	@Field(label = "商品图")
 	@View(name = "imageThumbnail", type = String.class, groups = {VO_ADMIN, VO_ADMIN_FULL, VO_DETAIL, VO_LIST})

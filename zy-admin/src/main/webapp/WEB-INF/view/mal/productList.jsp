@@ -52,6 +52,18 @@
             orderable: false
           },
           {
+            data: 'productType',
+            title: '商品类型',
+            orderable: false,
+            render: function (data, type, full) {
+              if (data == 1) {
+                return '旧品';
+              }else if (data == 2){
+                return '新品';
+              }
+            }
+          },
+          {
             data: 'isOn',
             title: '是否上架',
             orderable: false,

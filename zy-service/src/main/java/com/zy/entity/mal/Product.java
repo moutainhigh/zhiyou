@@ -80,6 +80,12 @@ public class Product implements Serializable {
 	@Field(label = "商品编码")
 	private String skuCode;
 
+	@NotNull
+	@Query(Predicate.EQ)
+	@Field(label = "商品类型")
+	@View
+	private Integer productType;
+
 	@Query(EQ)
 	@Field(label = "是否上架")
 	@NotNull

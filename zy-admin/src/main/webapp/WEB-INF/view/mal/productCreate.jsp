@@ -34,6 +34,9 @@
         },
         'image1' : {
           required : true
+        },
+        'productType' : {
+          required : true
         }
       },
       messages : {},
@@ -132,6 +135,19 @@
               <label class="control-label col-md-3">sku编码 </label>
               <div class="col-md-4">
                 <input type="text" class="form-control" name="skuCode" value="${product.skuCode}" placeholder="sku编码" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-md-3">商品类型<span class="required"> * </span></label>
+              <div class="col-md-4">
+                <div class="input-icon right">
+                  <select name="productType" id="productType" class="form-control">
+                    <option value="">--请选择商品类型-- </option>
+                      <option value="1">旧品</option>
+                      <option value="2">新品</option>
+                  </select>
+                </div>
               </div>
             </div>
 
