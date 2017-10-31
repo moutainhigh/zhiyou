@@ -5,28 +5,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="Cache-Control" content="no-store" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <meta http-equiv="Cache-Control" content="no-store" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>全部服务</title>
-<%@ include file="/WEB-INF/view/include/head.jsp"%>
-<link href="${stccdn}/css/product.css" rel="stylesheet" />
+  <title>全部服务</title>
+  <%@ include file="/WEB-INF/view/include/head.jsp"%>
+  <link href="${stccdn}/css/product.css" rel="stylesheet" />
 
 </head>
 <body class="product-list footer-fixed">
 
-  <header class="header">
-    <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a>
-    <h1>全部服务</h1>
-  </header>
+<header class="header">
+  <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a>
+  <h1>全部服务</h1>
+</header>
 
-  <article class="mb-15 clearfix">
-    <c:forEach items="${products}" var="product">
+<article class="mb-15 clearfix">
+  <c:forEach items="${products}" var="product">
     <a href="${ctx}/product/${product.id}" class="product">
       <div class="image-box">
         <img class="abs-lt" src="${product.image1Thumbnail}">
@@ -36,9 +36,25 @@
         <span class="fs-16 font-orange">¥ ${product.marketPrice}</span>
       </div>
     </a>
-    </c:forEach>
-  </article>
+    <%--新增代码 start--%>
+    <a href="${ctx}/product/${product.id}" class="product">
+      <div class="image-box">
+        <img class="abs-lt" src="${product.image1Thumbnail}">
+      </div>
+      <h3>新品</h3>
+        <%--联合创始人--%>
+      <div class="product-info">
+        <span class="fs-16 font-orange">¥ 248.00</span>
+      </div>
+        <%--品牌创始人--%>
+      <div class="product-info" style="display: none;">
+        <span class="fs-16 font-orange">¥ 320.00</span>
+      </div>
+    </a>
+    <%--新增代码 end--%>
+  </c:forEach>
+</article>
 
-  <%@ include file="/WEB-INF/view/include/footer.jsp"%>
+<%@ include file="/WEB-INF/view/include/footer.jsp"%>
 </body>
 </html>
