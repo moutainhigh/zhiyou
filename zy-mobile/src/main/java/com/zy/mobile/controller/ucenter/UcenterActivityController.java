@@ -599,6 +599,7 @@ public class UcenterActivityController {
 						String name = userService.findRealName(user.getId());
 						SenActiviteSucessMsg.send_template_message(name,user.getOpenId(),token);
 					}
+					tokenComponent.setToken();//置空tokent
 				}
 			}catch (Exception e){
 				e.printStackTrace();

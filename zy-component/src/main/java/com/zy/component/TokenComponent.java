@@ -28,6 +28,11 @@ public class TokenComponent {
         return token;
     }
 
+    //置空操作
+    public  void setToken(){
+        token=null;
+    }
+
     private  Logger logger = LoggerFactory.getLogger(TokenComponent.class);
     // 凭证获取（GET）
     public final static String token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
