@@ -27,6 +27,8 @@ public class OrderQueryModel implements Serializable {
 
 	private Long userIdEQ;
 
+	private Integer productTypeEQ;
+
 	private Long[] userIdIN;
 
 	private Long sellerIdEQ;

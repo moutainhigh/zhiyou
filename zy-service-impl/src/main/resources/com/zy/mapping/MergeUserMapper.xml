@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.MergeUserMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.mergeusr.MergeUser">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="inviter_id" property="inviterId" />
+		<result column="parent_id" property="parentId" />
+		<result column="user_rank" property="userRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="product_type" property="productType" />
+	</resultMap>
+
+	<sql id="baseColumn">id,user_id,inviter_id,parent_id,user_rank,product_type</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.mergeusr.MergeUser" useGeneratedKeys="true" keyProperty="id">
+	  insert into `usr_merge_user` (user_id,inviter_id,parent_id,user_rank,product_type)
+	  values (#{userId},#{inviterId},#{parentId},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{productType})
+	</insert>
+
+	<delete id="delete">
+		delete from `usr_merge_user` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.mergeusr.MergeUser">
+		update `usr_merge_user`
+		<set>
+			user_id = #{userId},
+			inviter_id = #{inviterId},
+			parent_id = #{parentId},
+			user_rank = #{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			product_type = #{productType},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `usr_merge_user`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{mergeUser.userId},</when>
+					<when test="field == 'inviterId'">inviter_id = #{mergeUser.inviterId},</when>
+					<when test="field == 'parentId'">parent_id = #{mergeUser.parentId},</when>
+					<when test="field == 'userRank'">user_rank = #{mergeUser.userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.mergeusr.MergeUser$UserRank},</when>
+					<when test="field == 'productType'">product_type = #{mergeUser.productType},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{mergeUser.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `usr_merge_user`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.MergeUserQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `usr_merge_user`
+		<where>
+			<if test="userRankEQ != null">
+				and user_rank = #{userRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+				and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="parentIdEQ != null">
+				and parent_id = #{parentIdEQ}
+			</if>
+			<if test="inviterIdEQ != null">
+				and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="inviterIdIN != null">
+				<if test="inviterIdIN.length != 0">
+				and inviter_id in
+				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="inviterIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="parentIdIN != null">
+				<if test="parentIdIN.length != 0">
+				and parent_id in
+				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="parentIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="productTypeEQ != null">
+				and product_type = #{productTypeEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.MergeUserQueryModel">
+		select count(*) from `usr_merge_user`
+		<where>
+			<if test="userRankEQ != null">
+				and user_rank = #{userRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="userIdIN != null">
+				<if test="userIdIN.length != 0">
+				and user_id in
+				<foreach collection="userIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="userIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="parentIdEQ != null">
+				and parent_id = #{parentIdEQ}
+			</if>
+			<if test="inviterIdEQ != null">
+				and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="inviterIdIN != null">
+				<if test="inviterIdIN.length != 0">
+				and inviter_id in
+				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="inviterIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="parentIdIN != null">
+				<if test="parentIdIN.length != 0">
+				and parent_id in
+				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="parentIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="productTypeEQ != null">
+				and product_type = #{productTypeEQ}
+			</if>
+		</where>
+	</select>
+
+</mapper>

@@ -55,11 +55,12 @@
 		<result column="quantity" property="quantity" />
 		<result column="is_settlement" property="isSettlement" />
 		<result column="version" property="version" />
+		<result column="product_type" property="productType" />
 	</resultMap>
 
 	<insert id="insert" parameterType="com.zy.entity.mal.Order" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_order` (sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,version)
-	  values (#{sn},#{userId},#{buyerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{sellerId},#{sellerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{rootId},#{v4UserId},#{isPayToPlatform},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{discountFee},#{amount},#{refund},#{refundRemark},#{buyerMemo},#{sellerMemo},#{remark},#{isProfitSettledUp},#{isSettledUp},#{isCopied},#{copiedTime},#{refId},#{deliveredTime},#{isUseLogistics},#{logisticsName},#{logisticsSn},#{logisticsFee},#{isBuyerPayLogisticsFee},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{offlineImage},#{offlineMemo},#{isDeleted},#{isMultiple},#{productId},#{image},#{marketPrice},#{price},#{quantity},#{isSettlement},#{version})
+	  insert into `mal_order` (sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,version,product_type)
+	  values (#{sn},#{userId},#{buyerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{sellerId},#{sellerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{rootId},#{v4UserId},#{isPayToPlatform},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{discountFee},#{amount},#{refund},#{refundRemark},#{buyerMemo},#{sellerMemo},#{remark},#{isProfitSettledUp},#{isSettledUp},#{isCopied},#{copiedTime},#{refId},#{deliveredTime},#{isUseLogistics},#{logisticsName},#{logisticsSn},#{logisticsFee},#{isBuyerPayLogisticsFee},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{offlineImage},#{offlineMemo},#{isDeleted},#{isMultiple},#{productId},#{image},#{marketPrice},#{price},#{quantity},#{isSettlement},#{version},#{productType})
 	</insert>
 
 	<delete id="delete">
@@ -121,6 +122,7 @@
 			is_settlement = #{isSettlement},
 			delivered_id = #{deliveredId},
 			version = version + 1,
+			product_type = productType,
 		</set>
 		where id = #{id} and version=#{version}
 	</update>
@@ -180,6 +182,7 @@
 					<when test="field == 'price'">price = #{order.price},</when>
 					<when test="field == 'quantity'">quantity = #{order.quantity},</when>
 					<when test="field == 'isSettlement'">is_settlement = #{order.isSettlement},</when>
+					<when test="field == 'productType'">product_type = #{order.productType},</when>
 				</choose>
 				</foreach>
 			</set>
@@ -188,14 +191,14 @@
 
 	<select id="findOne" resultMap="baseResultMap" parameterType="long">
 		select
-		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,version
+		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,version,product_type
 		from `mal_order`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderQueryModel">
 		select
-		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,version
+		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,version,product_type
 		from `mal_order`
 		<where>
 			<if test="rootIdEQ != null">
@@ -209,6 +212,9 @@
 			</if>
 			<if test="sellerIdEQ != null">
 				and seller_id = #{sellerIdEQ}
+			</if>
+			<if test="productTypeEQ != null">
+				and product_type = #{productTypeEQ}
 			</if>
 			<if test="paidTimeGTE != null">
 				and paid_time &gt;= #{paidTimeGTE}
@@ -335,6 +341,9 @@
 			<if test="sellerIdEQ != null">
 				and seller_id = #{sellerIdEQ}
 			</if>
+			<if test="productTypeEQ != null">
+				and product_type = #{productTypeEQ}
+			</if>
 			<if test="paidTimeGTE != null">
 				and paid_time &gt;= #{paidTimeGTE}
 			</if>
@@ -434,7 +443,7 @@
 		</where>
 	</select>
 
-	<sql id="baseColumn">id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,version</sql>
+	<sql id="baseColumn">id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,version,product_type</sql>
 
 	<select id="findBySn" resultMap="baseResultMap">
 		select
