@@ -614,14 +614,4 @@ public class UcenterActivityController {
 		}
 	}
 
-
-
-
-	private void  sendMsg(){
-
-	}
-
-
-
-
 }
