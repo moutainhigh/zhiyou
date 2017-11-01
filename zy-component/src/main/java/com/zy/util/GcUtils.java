@@ -258,16 +258,16 @@ public class GcUtils {
 		}
 	}
 
-	public static String getMergeUserRankLabel(MergeUser.UserRank userRank) {
-		if (userRank == MergeUser.UserRank.V0) {
+	public static String getMergeUserRankLabel(User.UserRank userRank) {
+		if (userRank == User.UserRank.V0) {
 			return "普通用户";
-		} else if (userRank == MergeUser.UserRank.V1) {
+		} else if (userRank == User.UserRank.V1) {
 			return "VIP";
-		} else if (userRank == MergeUser.UserRank.V2) {
+		} else if (userRank == User.UserRank.V2) {
 			return "品牌经理";
-		} else if (userRank == MergeUser.UserRank.V3) {
+		} else if (userRank == User.UserRank.V3) {
 			return "品牌合伙人";
-		} else if (userRank == MergeUser.UserRank.V4) {
+		} else if (userRank == User.UserRank.V4) {
 			return "联合创始人";
 		} else {
 			return "-";
