@@ -4,6 +4,9 @@ import com.zy.common.exception.BizException;
 import com.zy.common.exception.UnauthenticatedException;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.common.util.weiXinUtils.SenActiviteSucessMsg;
+import com.zy.common.util.weiXinUtils.SendPaySuccessMsg;
+import com.zy.common.util.weiXinUtils.Token;
 import com.zy.component.*;
 import com.zy.entity.act.*;
 import com.zy.entity.sys.InviteNumber;
@@ -88,6 +91,9 @@ public class UcenterActivityController {
 
 	@Autowired
 	private InviteNumberService inviteNumberService;
+
+	@Autowired
+	private TokenComponent tokenComponent;
 	/**
 	 * 报名后跳转到选择支付方式页面
 	 *
@@ -584,7 +590,19 @@ public class UcenterActivityController {
 					number1 =number1==null?0:number1+1;
 					activity.setAppliedCount(number1);
 					activityService.modify(activity);
-
+				//微信  推送消息
+				User user = userService.findOne(principal.getUserId());
+			try{
+					if (user!=null&&user.getOpenId()!=null){ //推送微信
+					Token token = tokenComponent.getToken();
+					if (token!=null){//获取到token才推送消息
+						String name = userService.findRealName(user.getId());
+						SenActiviteSucessMsg.send_template_message(name,user.getOpenId(),token);
+					}
+				}
+			}catch (Exception e){
+				e.printStackTrace();
+			}
 				return ResultBuilder.ok("成功");
 			}else{
 				return ResultBuilder.error("失败");
@@ -594,5 +612,15 @@ public class UcenterActivityController {
 			return ResultBuilder.error(e.getMessage());
 		}
 	}
+
+
+
+
+	private void  sendMsg(){
+
+	}
+
+
+
 
 }
