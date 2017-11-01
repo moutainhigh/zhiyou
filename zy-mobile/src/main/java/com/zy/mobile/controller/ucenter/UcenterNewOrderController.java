@@ -78,6 +78,7 @@ public class UcenterNewOrderController {
         }
         validate(product, NOT_NULL, "product id" + id + " not found");
         validate(product.getIsOn(), v -> true, "product is not on");
+
         model.addAttribute("product", productComponent.buildDetailVo(product));
         return "product/productDetailNew";
     }
