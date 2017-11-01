@@ -16,12 +16,20 @@
   <title>服务详情</title>
   <%@ include file="/WEB-INF/view/include/head.jsp"%>
   <link href="${stccdn}/css/product.css" rel="stylesheet" />
+  <script>
+    //下单
+    $(function(){
+      $('#btnOrder').click(function() {
+        $('#form').submit();
+      });
+    })
+  </script>
 </head>
 
 <body class="product-detail footer-fixed">
 <a class="header-back" href="${ctx}/product"><i class="fa fa-angle-left"></i></a>
 
-<form id="form" action="${ctx}/u/newOrder/order" method="get">
+<form id="form" action="${ctx}/u/newOrder/create" method="get">
   <input type="hidden" name="productId" value="${product.id}">
   <article class="product-wrap">
     <figure class="product-image">
@@ -38,6 +46,8 @@
       </div>
       <%--联合创始人--%>
       <c:if test="${userRank == 'V4'}">
+        <input type="hidden" name="quantity" value="160">
+        <input type="hidden" name="price" value="248">
         <div class="list-item">
           <div class="font-777 fs-14">
             <span class="fs-15">数量： <span>160</span></span>
@@ -50,6 +60,11 @@
         </div>
         <div class="list-item">
           <div class="font-777 fs-14">
+            <span class="fs-15">市场指导价： <span> ¥ ${product.marketPrice}</span></span>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="font-777 fs-14">
             <span class="fs-15">服务总价： <span> ¥ 39680</span></span>
           </div>
         </div>
@@ -57,25 +72,30 @@
 
       <%--品牌创始人--%>
       <c:if test="${userRank == 'V3'}">
-        <div style="display: none;">
-          <div class="list-item">
-            <div class="font-777 fs-14">
-              <span class="fs-15">数量： <span>20</span></span>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="font-777 fs-14">
-              <span class="fs-15">服务零售价： <span> ¥ 320</span></span>
-            </div>
-          </div>
-          <div class="list-item">
-            <div class="font-777 fs-14">
-              <span class="fs-15">服务总价价： <span> ¥ 6400</span></span>
-            </div>
+        <input type="hidden" name="quantity" value="20">
+        <input type="hidden" name="price" value="320">
+        <div class="list-item">
+          <div class="font-777 fs-14">
+            <span class="fs-15">数量： <span>20</span></span>
           </div>
         </div>
-      </div>
-    </c:if>
+        <div class="list-item">
+          <div class="font-777 fs-14">
+            <span class="fs-15">服务零售价： <span> ¥ 320</span></span>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="font-777 fs-14">
+            <span class="fs-15">市场指导价： <span> ¥ ${product.marketPrice}</span></span>
+          </div>
+        </div>
+        <div class="list-item">
+          <div class="font-777 fs-14">
+            <span class="fs-15">服务总价： <span> ¥ 6400</span></span>
+          </div>
+        </div>
+      </c:if>
+
     <div class="list-group mb-0">
       <div class="list-item">
         <div class="list-icon"><i class="fa fa-list-alt font-orange"></i></div>

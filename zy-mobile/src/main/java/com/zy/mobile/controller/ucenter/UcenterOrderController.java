@@ -13,6 +13,7 @@ import com.zy.entity.fnc.Profit;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
 import com.zy.entity.mal.OrderItem;
+import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
@@ -20,10 +21,7 @@ import com.zy.model.Principal;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.model.query.ProfitQueryModel;
-import com.zy.service.OrderItemService;
-import com.zy.service.OrderService;
-import com.zy.service.ProfitService;
-import com.zy.service.UserService;
+import com.zy.service.*;
 import io.gd.generator.api.query.Direction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,6 +50,9 @@ public class UcenterOrderController {
 
 	@Autowired
 	private OrderItemService orderItemService;
+
+	@Autowired
+	private ProductService productService;
 	
 	@Autowired
 	private ProfitService profitService;
@@ -131,11 +132,14 @@ public class UcenterOrderController {
 			throw new UnauthorizedException("权限不足");
 		}
 		OrderItem persistentOrderItem = orderItemService.findByOrderId(id).get(0);
-
+		int minQuantity = 0;
 		Long productId = persistentOrderItem.getProductId();
+		Product product = productService.findOne(productId);
 		boolean canCopy = false;
-		int minQuantity = config.isOld(productId) ? SETTING_OLD_MIN_QUANTITY : SETTING_NEW_MIN_QUANTITY;
-		
+		if (product.getProductType() == 1){
+			minQuantity = config.isOld(productId) ? SETTING_OLD_MIN_QUANTITY : SETTING_NEW_MIN_QUANTITY;
+		}
+
 		model.addAttribute("inOut", order.getUserId().equals(principal.getUserId()) ? "in" : "out");
 		User buyer = userService.findOne(order.getUserId());
 		model.addAttribute("buyer", userComponent.buildListVo(buyer));
@@ -155,8 +159,10 @@ public class UcenterOrderController {
 		}
 		model.addAttribute("order", orderComponent.buildDetailVo(order));
 
-		if (order.getSellerUserRank() == User.UserRank.V4 && quantity >= minQuantity && quantity % minQuantity == 0) {
-			canCopy = true;
+		if (product.getProductType() == 1) {
+			if (order.getSellerUserRank() == User.UserRank.V4 && quantity >= minQuantity && quantity % minQuantity == 0) {
+				canCopy = true;
+			}
 		}
 		model.addAttribute("canCopy", canCopy);
 
