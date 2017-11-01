@@ -18,6 +18,22 @@
   <link href="${stccdn}/css/product.css" rel="stylesheet" />
 
 </head>
+<script>
+ var userRank ='${userRank}';
+ function  tohref(id) {
+   if(userRank=="V0"||userRank=="V1"||userRank=="V2"){
+     messageShow('敬请等待新品上线', 'error', 2);
+   }else {
+     $("#newproduct").attr("href","${ctx}/u/newOrder/"+id);
+     $("#newproduct").click();
+   }
+
+ }
+
+
+
+</script>
+
 <body class="product-list footer-fixed">
 
 <header class="header">
@@ -39,9 +55,9 @@
       </a>
     </c:if>
     
-    <c:if test="${userRank == 'V4' || isUse == 1}">
+
       <c:if test="${product.productType == 2}">
-        <a href="${ctx}/u/newOrder/${product.id}" class="product">
+        <a href="javascript:void(0)" class="product" onclick="tohref(${product.id})" id="newproduct">
           <div class="image-box">
             <img class="abs-lt" src="${product.image1Thumbnail}">
           </div>
@@ -51,7 +67,6 @@
           </div>
         </a>
       </c:if>
-    </c:if>
     <%--&lt;%&ndash;新增代码 start&ndash;%&gt;--%>
     <%--<a href="${ctx}/product/${product.id}" class="product">--%>
       <%--<div class="image-box">--%>
