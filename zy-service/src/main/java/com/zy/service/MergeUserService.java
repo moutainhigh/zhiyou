@@ -10,6 +10,8 @@ public interface MergeUserService {
 
 	MergeUser findOne(Long id);
 
+	MergeUser findByUserIdAndProductType(Long userId,Integer productType);
+
 	void create(MergeUser mergeUser);
 
 	Page<MergeUser> findPage(MergeUserQueryModel mergeUserQueryModel);

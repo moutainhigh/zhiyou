@@ -1,5 +1,6 @@
 package com.zy.service.impl;
 
+import com.sun.istack.internal.NotNull;
 import com.zy.common.model.query.Page;
 import com.zy.entity.mergeusr.MergeUser;
 import com.zy.entity.usr.User;
@@ -11,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -24,11 +27,19 @@ public class MergeUserServiceImpl implements MergeUserService  {
     private MergeUserMapper mergeUserMapper;
 
     @Autowired
-    private UserMapper userMapperl;
+    private UserMapper userMapper;
 
     @Override
     public MergeUser findOne(Long id) {
         return mergeUserMapper.findOne(id);
+    }
+
+    @Override
+    public MergeUser findByUserIdAndProductType( Long userId, Integer productType) {
+        Map<String , Object> map = new HashMap<>();
+        map.put("userId" , userId);
+        map.put("productType" , productType);
+        return mergeUserMapper.findByUserIdAndProductType(map);
     }
 
     @Override
@@ -73,7 +84,7 @@ public class MergeUserServiceImpl implements MergeUserService  {
 
     private User findAndValidateUser(Long id) {
         validate(id, NOT_NULL, "id is null");
-        User user = userMapperl.findOne(id);
+        User user = userMapper.findOne(id);
         validate(user, NOT_NULL, "product id" + id + " not found");
         return user;
     }

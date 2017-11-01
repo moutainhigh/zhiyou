@@ -11,7 +11,7 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.zy.entity.mergeusr.MergeUser.UserRank;
+import com.zy.entity.usr.User.UserRank;
 
 @Getter
 @Setter

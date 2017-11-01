@@ -1,6 +1,7 @@
 package com.zy.entity.mergeusr;
 
 import com.zy.entity.usr.User;
+import com.zy.entity.usr.User.UserRank;
 import io.gd.generator.annotation.Field;
 import io.gd.generator.annotation.Type;
 import io.gd.generator.annotation.query.Query;
@@ -33,22 +34,6 @@ import static io.gd.generator.api.query.Predicate.IN;
 public class MergeUser implements Serializable {
 
 	public static final String VO_ADMIN = "UserAdminVo";
-
-
-	@Type(label = "用户等级")
-	public enum UserRank {
-		V0(0), V1(1), V2(2), V3(3), V4(4);
-
-		UserRank(int level) {
-			this.level = level;
-		}
-
-		private final int level;
-
-	public int getLevel() {
-		return level;
-	}
-}
 
 	@Id
 	@Query(Predicate.IN)

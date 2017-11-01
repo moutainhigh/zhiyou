@@ -299,6 +299,13 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	public void modifyOrder(Order order) {
+		if (orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
+	}
+
+	@Override
 	public Page<Order> findPage(@NotNull OrderQueryModel orderQueryModel) {
 		if (orderQueryModel.getPageNumber() == null)
 			orderQueryModel.setPageNumber(0);

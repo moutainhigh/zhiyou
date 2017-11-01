@@ -21,6 +21,8 @@ public interface OrderService {
 	Order findOne(Long id);
 	
 	Order findBySn(String sn);
+
+	void modifyOrder(Order order);
 	
 	void confirmPay(Long id); // 确认支付
 	

@@ -65,23 +65,75 @@ public class MoveUserJob implements Job {
                 mergeUser.setUserId(key);
                 mergeUser.setInviterId(user.getParentId());
                 mergeUser.setProductType(2);
-                mergeUser.setUserRank(MergeUser.UserRank.valueOf(user.getUserRank().name()));
+                mergeUser.setUserRank(user.getUserRank());
+                //查询直属上级
+                User parent = user;
                 if(user.getParentId() == null){
-                    //原始关系没有上级，将新上级设置为万总
+                    //原始关系没有上级，将新上级设置为万伟民
                     mergeUser.setParentId(10370l);
                 }else {
-                    User parent = null;
                     do{
-                        parent = userService.findOne(user.getParentId());
+                        parent = userService.findOne(parent.getParentId());
                     }while (parent != null && (orderMap.get(parent.getId()) == null || orderMap.get(parent.getId()).isEmpty()));
                     if(parent == null){
-                        //父级团队里面没有一个转移的，将新上级设置为万总
+                        //父级团队里面没有一个转移的，将新上级设置为万伟民
                        mergeUser.setParentId(10370l);
                     }else {
                        mergeUser.setParentId(parent.getId());
                     }
                 }
+//                User.UserRank parentRank = parent == null ? null : parent.getUserRank();
+//                //查询新的直属特级
+//                User v4Parent = null;
+//                do{
+//                    v4Parent = userService.findOne(mergeUser.getParentId());
+//                }while (v4Parent != null && ((orderMap.get(v4Parent.getId()) == null || orderMap.get(v4Parent.getId()).isEmpty()) || v4Parent.getUserRank() != User.UserRank.V4 ));
+//                Long v4UserId = v4Parent == null ? null : v4Parent.getId();
+//                if(user.getUserRank() == User.UserRank.V4){
+//                    List<Order> orderList = orderMap.get(key);
+//                    for (Order o: orderList) {
+//                        o.setSellerId(1l);
+//                        o.setSellerUserRank(null);
+//                        o.setV4UserId(v4UserId);
+//                        orderService.modifyOrder(o);
+//                    }
+//                }else if(user.getUserRank() == User.UserRank.V3){
+//                    List<Order> orderList = orderMap.get(key);
+//                    for (Order o: orderList) {
+//                        o.setSellerId(mergeUser.getParentId());
+//                        o.setSellerUserRank(parentRank);
+//                        o.setV4UserId(v4UserId);
+//                        orderService.modifyOrder(o);
+//                    }
+//                }
                 mergeUserService.create(mergeUser);
+            }
+            for (Long key : orderMap.keySet()) {
+                MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(key, 2);
+                MergeUser parentUser = mergeUserService.findByUserIdAndProductType(mergeUser.getParentId(), 2);
+                User.UserRank parentRank = parentUser == null ? null : parentUser.getUserRank();
+                MergeUser v4User = mergeUser;
+                do{
+                    v4User = mergeUserService.findByUserIdAndProductType(v4User.getParentId(),2);
+                }while(v4User != null && v4User.getUserRank() != User.UserRank.V4);
+                Long v4UserId = v4User == null ? null : v4User.getId();
+                if(mergeUser.getUserRank() == User.UserRank.V4){
+                    List<Order> orderList = orderMap.get(key);
+                    for (Order o: orderList) {
+                        o.setSellerId(1l);
+                        o.setSellerUserRank(null);
+                        o.setV4UserId(v4UserId);
+                        orderService.modifyOrder(o);
+                    }
+                }else if(mergeUser.getUserRank() == User.UserRank.V3){
+                    List<Order> orderList = orderMap.get(key);
+                    for (Order o: orderList) {
+                        o.setSellerId(mergeUser.getParentId());
+                        o.setSellerUserRank(parentRank);
+                        o.setV4UserId(v4UserId);
+                        orderService.modifyOrder(o);
+                    }
+                }
             }
         } catch (ConcurrentException e) {
                 try {
