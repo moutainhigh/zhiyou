@@ -188,9 +188,12 @@ public class OrderServiceImpl implements OrderService {
 		BigDecimal amount = price.multiply(new BigDecimal(quantity));
 
 		boolean isPayToPlatform = orderCreateDto.getIsPayToPlatform();
-		UserRank upgradeUserRank = malComponent.getUpgradeUserRank(userRank, productId, quantity);
-		if(upgradeUserRank == UserRank.V4) {  //升特级只允许支付给平台
-			isPayToPlatform = true;
+
+		if (product.getProductType() == 1){
+			UserRank upgradeUserRank = malComponent.getUpgradeUserRank(userRank, productId, quantity);
+			if(upgradeUserRank == UserRank.V4) {  //升特级只允许支付给平台
+				isPayToPlatform = true;
+			}
 		}
 
 		Date createdTime = null;
@@ -200,10 +203,17 @@ public class OrderServiceImpl implements OrderService {
 			createdTime = config.getOrderFillTime();
 		}
 
-		LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-		LocalDateTime localDateTime = LocalDateTime.of(lastDate, LocalTime.parse("23:59:59"));
-		Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
-		Date expiredTime = Date.from(instant);
+		Date expiredTime = null;
+		if (product.getProductType() == 1){
+			LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+			LocalDateTime localDateTime = LocalDateTime.of(lastDate, LocalTime.parse("23:59:59"));
+			Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+			expiredTime = Date.from(instant);
+		}else if (product.getProductType() == 2){
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(2017, 11, 11,23, 59 ,59);
+			expiredTime = calendar.getTime();
+		}
 
 		Order order = new Order();
 		order.setUserId(userId);
@@ -225,7 +235,12 @@ public class OrderServiceImpl implements OrderService {
 		order.setOrderStatus(OrderStatus.待支付);
 		order.setOrderType(orderType);
 		order.setVersion(0);
-		order.setSellerId(sellerId);
+		if (product.getProductType() == 1){
+			order.setSellerId(sellerId);
+		}else if (product.getProductType() == 2){
+			order.setSellerId(1l);
+		}
+		order.setProductType(product.getProductType());
 		order.setSn(ServiceUtils.generateOrderSn());
 		order.setIsSettledUp(false);
 		order.setDiscountFee(new BigDecimal("0.00"));

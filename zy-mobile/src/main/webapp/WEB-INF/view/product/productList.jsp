@@ -39,7 +39,7 @@
       </a>
     </c:if>
     
-    <c:if test="${userRank == 'V4' || userRank == 'V3'}">
+    <c:if test="${userRank == 'V4' || isUse == 1}">
       <c:if test="${product.productType == 2}">
         <a href="${ctx}/u/newOrder/${product.id}" class="product">
           <div class="image-box">

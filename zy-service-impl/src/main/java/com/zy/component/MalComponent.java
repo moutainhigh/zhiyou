@@ -89,11 +89,17 @@ public class MalComponent {
 	}
 
 	public User calculateSeller(User.UserRank userRank, Long productId, long quantity, Long parentId) {
+		Product product = productMapper.findOne(productId);
+
 		if (userRank == V4) {
 			return userMapper.findOne(config.getSysUserId());
 		}
-
-		UserRank upgradeUserRank = getUpgradeUserRank(userRank, productId, quantity);
+		UserRank upgradeUserRank = null;
+		if (product.getProductType() == 1){
+			upgradeUserRank = getUpgradeUserRank(userRank, productId, quantity);
+		}else if (product.getProductType() == 2){
+			upgradeUserRank = userRank;
+		}
 
 		if (upgradeUserRank == V4) {
 			return userMapper.findOne(config.getSysUserId());
@@ -220,12 +226,23 @@ public class MalComponent {
 		User user = userMapper.findOne(userId);
 		UserRank userRank = user.getUserRank();
 
-		UserRank upgradeUserRank = getUpgradeUserRank(userRank, productId, quantity);
-		Boolean isToV4 = isToV4(userRank,productId,quantity);
-		if (upgradeUserRank.getLevel() > userRank.getLevel()) {
-			usrComponent.upgrade(userId, userRank, upgradeUserRank,isToV4);
+		Product product = productMapper.findOne(productId);
+
+		UserRank upgradeUserRank = null;
+
+		if (product.getProductType() == 1){
+			upgradeUserRank = getUpgradeUserRank(userRank, productId, quantity);
+		}else if (product.getProductType() == 2){
+			upgradeUserRank = userRank;
 		}
-		
+
+		if (product.getProductType() == 1){
+			Boolean isToV4 = isToV4(userRank,productId,quantity);
+			if (upgradeUserRank.getLevel() > userRank.getLevel()) {
+				usrComponent.upgrade(userId, userRank, upgradeUserRank,isToV4);
+			}
+		}
+
 		producer.send(Constants.TOPIC_ORDER_PAID, order.getId());
 	}
 
