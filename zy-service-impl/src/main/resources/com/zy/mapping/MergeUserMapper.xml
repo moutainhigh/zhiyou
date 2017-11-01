@@ -42,7 +42,7 @@
 					<when test="field == 'userId'">user_id = #{mergeUser.userId},</when>
 					<when test="field == 'inviterId'">inviter_id = #{mergeUser.inviterId},</when>
 					<when test="field == 'parentId'">parent_id = #{mergeUser.parentId},</when>
-					<when test="field == 'userRank'">user_rank = #{mergeUser.userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.mergeusr.MergeUser$UserRank},</when>
+					<when test="field == 'userRank'">user_rank = #{mergeUser.userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.User$UserRank},</when>
 					<when test="field == 'productType'">product_type = #{mergeUser.productType},</when>
 				</choose>
 				</foreach>
