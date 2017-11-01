@@ -59,13 +59,15 @@ public class ProductController {
 			int whileTimes = 0;
 			while (parentId != null) {
 				if (whileTimes > 1000) {
-					throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
+					break;
 				}
 				User parent = userService.findOne(parentId);
 				if (parent.getUserRank() == UserRank.V4) {
 					parentId = user.getParentId();
+					break;
+				}else {
+					parentId = parent.getParentId();
 				}
-				parentId = parent.getParentId();
 				whileTimes ++;
 			}
 
