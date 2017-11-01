@@ -57,6 +57,13 @@
 		where id = #{id}
 	</select>
 
+	<select id="findByUserIdAndProductType" resultMap="baseResultMap">
+		select
+		*
+		from `usr_merge_user`
+		where user_id = #{userId} and product_type = #{productType}
+	</select>
+
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.MergeUserQueryModel">
 		select
 		<include refid="baseColumn"/>
