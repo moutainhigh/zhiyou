@@ -82,30 +82,6 @@ public class MoveUserJob implements Job {
                        mergeUser.setParentId(parent.getId());
                     }
                 }
-//                User.UserRank parentRank = parent == null ? null : parent.getUserRank();
-//                //查询新的直属特级
-//                User v4Parent = null;
-//                do{
-//                    v4Parent = userService.findOne(mergeUser.getParentId());
-//                }while (v4Parent != null && ((orderMap.get(v4Parent.getId()) == null || orderMap.get(v4Parent.getId()).isEmpty()) || v4Parent.getUserRank() != User.UserRank.V4 ));
-//                Long v4UserId = v4Parent == null ? null : v4Parent.getId();
-//                if(user.getUserRank() == User.UserRank.V4){
-//                    List<Order> orderList = orderMap.get(key);
-//                    for (Order o: orderList) {
-//                        o.setSellerId(1l);
-//                        o.setSellerUserRank(null);
-//                        o.setV4UserId(v4UserId);
-//                        orderService.modifyOrder(o);
-//                    }
-//                }else if(user.getUserRank() == User.UserRank.V3){
-//                    List<Order> orderList = orderMap.get(key);
-//                    for (Order o: orderList) {
-//                        o.setSellerId(mergeUser.getParentId());
-//                        o.setSellerUserRank(parentRank);
-//                        o.setV4UserId(v4UserId);
-//                        orderService.modifyOrder(o);
-//                    }
-//                }
                 mergeUserService.create(mergeUser);
             }
             for (Long key : orderMap.keySet()) {
