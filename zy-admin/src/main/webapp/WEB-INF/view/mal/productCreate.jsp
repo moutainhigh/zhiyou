@@ -144,8 +144,11 @@
                 <div class="input-icon right">
                   <select name="productType" id="productType" class="form-control">
                     <option value="">--请选择商品类型-- </option>
-                      <option value="1">旧品</option>
-                      <option value="2">新品</option>
+                    <c:forEach  items="${productTypes}" var="productType">
+                      <option value="${productType.systemValue}">${productType.systemName}</option>
+                    </c:forEach>
+                     <%-- <option value="1">旧品</option>
+                      <option value="2">新品</option>--%>
                   </select>
                 </div>
               </div>

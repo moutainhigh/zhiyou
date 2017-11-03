@@ -150,8 +150,11 @@
               <div class="col-md-4">
                 <div class="input-icon right">
                   <select name="productType" id="productType" class="form-control">
-                    <option value="2"<c:if test="${product.productType == 2}"> selected="selected"</c:if>>新品</option>
-                    <option value="1"<c:if test="${product.productType == 1}"> selected="selected"</c:if>>旧品</option>
+                    <c:forEach  items="${productTypes}" var="productType">
+                      <option value="${productType.systemValue}" ${productType.systemValue==product.productType?"selected":""}>${productType.systemName}</option>
+                    </c:forEach>
+                    <%--<option value="2"<c:if test="${product.productType == 2}"> selected="selected"</c:if>>新品</option>
+                    <option value="1"<c:if test="${product.productType == 1}"> selected="selected"</c:if>>旧品</option>--%>
                   </select>
                 </div>
               </div>
