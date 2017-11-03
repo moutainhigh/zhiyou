@@ -39,6 +39,8 @@ public class AdminConstants {
 			sub.put("userTargetSales:edit", "用户目标销量(编辑)");
 			sub.put("user:setLargeareaDirector", "用户大区董事、副董事身份设置");
 			sub.put("address:view", "地址管理(查看)");
+			sub.put("accountNumber:view", "用户账号迁移管理(查看)");
+			sub.put("accountNumber:edit", "用户账号迁移管理(编辑)");
 			SETTING_PERMISSION_MAP.put("用户中心", sub);
 		}
 		{
