@@ -25,7 +25,7 @@
                     {
                         data: 'id',
                         title: '编号',
-                        orderable: false
+                        orderable: true
                     },
                     {
                         data: 'oldName',
@@ -56,7 +56,7 @@
                     {
                         data: 'createDate',
                         title: '发布时间',
-                        orderable: true,
+                        orderable: false,
                         render: function (data, type, full) {
                             return full.createDateLable;
                         }
@@ -173,17 +173,17 @@
                             <input id="_pageSize" name="pageSize" type="hidden" value="20"/>
 
                             <div class="form-group">
-                                <input type="text" name="oldPhone" class="form-control" placeholder="原账号手机号"/>
+                                <input type="text" name="oldPhoneEQ" class="form-control" placeholder="原账号手机号"/>
                             </div>
                             <div class="form-group">
-                                <input type="text" name="oldName" class="form-control" placeholder="新账号手机号"/>
+                                <input type="text" name="newPhoneEQ" class="form-control" placeholder="新账号手机号"/>
                             </div>
-                            <div class="form-group input-inline">
+                           <%-- <div class="form-group input-inline">
                                 <input class="Wdate form-control" type="text" id="createDate" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',readOnly:true})"
                                        name="createDate" value="" placeholder="创建时间"/>
-                            </div>
+                            </div>--%>
                             <div class="form-group">
-                                <select name="flage" class="form-control">
+                                <select name="flageEQ" class="form-control">
                                     <option value="">-- 是否使用 --</option>
                                     <option value="1">是</option>
                                     <option value="0">否</option>
