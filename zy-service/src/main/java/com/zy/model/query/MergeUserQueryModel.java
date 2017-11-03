@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import java.util.Date;
 import com.zy.entity.usr.User.UserRank;
 
 @Getter
@@ -37,6 +38,24 @@ public class MergeUserQueryModel implements Serializable {
 	private UserRank userRankEQ;
 
 	private Integer productTypeEQ;
+
+	private Date registerTimeGTE;
+
+	private Date registerTimeLT;
+
+	private Boolean isFrozenEQ;
+
+	private Boolean isDirectorEQ;
+
+	private Boolean isHonorDirectorEQ;
+
+	private Boolean isDeletedEQ;
+
+	private Boolean isToV4EQ;
+
+	private Long v4IdEQ;
+
+	private Long[] v4IdIN;
 
 	private Integer pageNumber;
 
@@ -90,11 +109,19 @@ public class MergeUserQueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
-		fieldNames.add("inviterId");
-		fieldNames.add("id");
+		fieldNames.add("registerTime");
+		fieldNames.add("lastUpgradedTime");
+		fieldNames.add("isToV4");
 		fieldNames.add("userRank");
 		fieldNames.add("userId");
 		fieldNames.add("parentId");
+		fieldNames.add("v4Id");
+		fieldNames.add("isDeleted");
+		fieldNames.add("inviterId");
+		fieldNames.add("isDirector");
+		fieldNames.add("isHonorDirector");
+		fieldNames.add("id");
+		fieldNames.add("isFrozen");
 		fieldNames.add("productType");
 	}
 

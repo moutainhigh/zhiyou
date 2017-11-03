@@ -20,6 +20,8 @@ public interface MergeUserService {
 
 	void modifyParentId(Long id, Long parentId);
 
+	void modifyV4Id(Long id, Long v4Id);
+
 	long count(MergeUserQueryModel mergeUserQueryModel);
 
 }

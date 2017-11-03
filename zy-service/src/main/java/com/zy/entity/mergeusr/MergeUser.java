@@ -13,12 +13,10 @@ import io.gd.generator.api.query.Predicate;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 import static com.zy.entity.mergeusr.MergeUser.VO_ADMIN;
 import static io.gd.generator.api.query.Predicate.EQ;
@@ -33,7 +31,7 @@ import static io.gd.generator.api.query.Predicate.IN;
 @ViewObject(groups = { VO_ADMIN})
 public class MergeUser implements Serializable {
 
-	public static final String VO_ADMIN = "UserAdminVo";
+	public static final String VO_ADMIN = "MergeUserAdminVo";
 
 	@Id
 	@Query(Predicate.IN)
@@ -43,30 +41,23 @@ public class MergeUser implements Serializable {
 
 	@NotNull
 	@Query({EQ,IN})
-	@Column(unique = true)
 	@Field(label = "用户id")
 	@View
-	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_FULL)
+	@AssociationView(name = "user", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long userId;
 
-	@NotNull
 	@Query({EQ,IN})
-	@Column(unique = true)
 	@Field(label = "原始上级id")
 	@View
 	@AssociationView(name = "inviter", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long inviterId;
 
-	@NotNull
 	@Query({EQ,IN})
-	@Column(unique = true)
 	@Field(label = "上级id")
 	@View
 	@AssociationView(name = "parent", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long parentId;
 
-
-	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "用户等级")
 	@View(groups = {VO_ADMIN})
@@ -78,6 +69,46 @@ public class MergeUser implements Serializable {
 	@Field(label = "产品类型")
 	@View(groups = {VO_ADMIN})
 	private Integer productType;
+
+	@Field(label = "上次升级时间")
+	private Date lastUpgradedTime;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Query({Predicate.GTE, Predicate.LT})
+	@Field(label = "注册时间")
+	@View(groups = {VO_ADMIN})
+	private Date registerTime;
+
+	@Query(Predicate.EQ)
+	@Field(label = "是否冻结")
+	@View(groups = {VO_ADMIN})
+	private Boolean isFrozen;
+
+	@Field(label = "是否董事")
+	@Query(Predicate.EQ)
+	@View(groups = {VO_ADMIN})
+	private Boolean isDirector;
+
+	@Field(label = "是否荣誉董事")
+	@Query(Predicate.EQ)
+	@View(groups = {VO_ADMIN})
+	private Boolean isHonorDirector;
+
+	@Query(Predicate.EQ)
+	@Field(label = "是否删除")
+	@View(groups = {VO_ADMIN})
+	private Boolean isDeleted;
+
+	@Query(Predicate.EQ)
+	@Field(label = "是否直升特级")
+	@View(groups = {VO_ADMIN})
+	private Boolean isToV4;
+
+	@Query({EQ,IN})
+	@Field(label = "直属v4Id")
+	@View
+	@AssociationView(name = "v4Parent", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
+	private Long v4Id;
 
 
 }

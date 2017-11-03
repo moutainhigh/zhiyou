@@ -72,9 +72,15 @@ public class MergeUserServiceImpl implements MergeUserService  {
     @Override
     public void modifyParentId(Long id, Long parentId) {
         MergeUser mergeUser = findAndValidateMergeUser(id);
-        findAndValidateUser(parentId);
         mergeUser.setParentId(parentId);
         mergeUserMapper.merge(mergeUser,"parentId");
+    }
+
+    @Override
+    public void modifyV4Id(Long id, Long v4Id) {
+        MergeUser mergeUser = findAndValidateMergeUser(id);
+        mergeUser.setParentId(v4Id);
+        mergeUserMapper.merge(mergeUser,"v4Id");
     }
 
     @Override

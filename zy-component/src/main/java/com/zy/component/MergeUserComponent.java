@@ -26,6 +26,9 @@ public class MergeUserComponent {
 		if(mergeUser.getParentId() != null) {
 			mergeUserAdminVo.setParent(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(mergeUser.getParentId())));
 		}
+		if(mergeUser.getV4Id() != null){
+			mergeUserAdminVo.setV4Parent(VoHelper.buildUserAdminSimpleVo(cacheComponent.getUser(mergeUser.getV4Id())));
+		}
 		mergeUserAdminVo.setUserRankLabel(GcUtils.getMergeUserRankLabel(mergeUser.getUserRank()));
 		return mergeUserAdminVo;
 	}
