@@ -38,6 +38,18 @@ public class MergeUserAdminVo implements Serializable {
 	private Boolean isToV4;
 	@Field(label = "直属v4Id")
 	private Long v4Id;
+	@Field(label = "是否股东")
+	private Boolean isShareholder;
+	@Field(label = "所属大区")
+	private Integer largearea;
+	@Field(label = "设置大区备注")
+	private String setlargearearemark;
+	@Field(label = "是否大区总裁")
+	private Boolean isPresident;
+	@Field(label = "所属大区总裁id")
+	private Long presidentId;
+	@Field(label = "1：大区董事长  2：大区副董事长")
+	private Integer largeareaDirector;
 
 	/* 扩展 */
 	@Field(label = "用户id")

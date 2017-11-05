@@ -154,8 +154,8 @@ public class MergeUserServiceImpl implements MergeUserService  {
         dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),0,0));
         dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthEnd(new Date(),1,0));
         if(flag){
-            long total=mergeUserLogMapper.count(dataMap);
-            returnMap.put("total",total);
+         //   long total=mergeUserLogMapper.count(dataMap);
+         //   returnMap.put("total",total);
         }
         dataMap.put("parentid",userId);
         List<UserTeamCountDto>userTeamDtoList=mergeUserLogMapper.findGByRank(dataMap);
@@ -184,20 +184,20 @@ public class MergeUserServiceImpl implements MergeUserService  {
      */
     @Override
     public Page<UserTeamDto> disposeRank(UserlongQueryModel userlongQueryModel, boolean flag) {
-        Long parentId = userlongQueryModel.getParentIdNL();//将id暂存下来
-        userlongQueryModel.setRemark("从V0%");
-        userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
-        userlongQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0,0));
-        userlongQueryModel.setParentIdNL(null);
-        List<UserTeamDto> userRankList= mergeUserLogMapper.findByRank(userlongQueryModel);
-        Page<UserTeamDto> page = new Page<>();
-        if (flag){//详情页
-            long total =userLogMapper.countByRank(userlongQueryModel);
-            page.setTotal(total);
-        }
-        page.setPageNumber(userlongQueryModel.getPageNumber());
-        page.setPageSize(userlongQueryModel.getPageSize());
-        page.setData(userRankList);
-        return page;
+//        Long parentId = userlongQueryModel.getParentIdNL();//将id暂存下来
+//        userlongQueryModel.setRemark("从V0%");
+//        userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+//        userlongQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0,0));
+//        userlongQueryModel.setParentIdNL(null);
+//        List<UserTeamDto> userRankList= mergeUserLogMapper.findByRank(userlongQueryModel);
+//        Page<UserTeamDto> page = new Page<>();
+//        if (flag){//详情页
+//            long total =userLogMapper.countByRank(userlongQueryModel);
+//            page.setTotal(total);
+//        }
+//        page.setPageNumber(userlongQueryModel.getPageNumber());
+//        page.setPageSize(userlongQueryModel.getPageSize());
+//        page.setData(userRankList);
+        return null;
     }
 }

@@ -82,4 +82,5 @@
 	<dubbo:service ref="mergeUserServiceImpl" interface="com.zy.service.MergeUserService"/>
 	<dubbo:service ref="accountNumberServiceImpl" interface="com.zy.service.AccountNumberService"/>
 	<dubbo:service ref="userCheckServiceImpl" interface="com.zy.service.UserCheckService"/>
+	<dubbo:service ref="mergeUserViewServiceImpl" interface="com.zy.service.MergeUserViewService"/>
 </beans>
