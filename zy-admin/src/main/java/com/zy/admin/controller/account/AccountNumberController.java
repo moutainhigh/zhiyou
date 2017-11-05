@@ -109,10 +109,10 @@ public class AccountNumberController {
     public Result<?> update(Long id,String phone,AdminPrincipal adminPrincipal){
         try {
             AccountNumber accountNumber = accountNumberService.findOne(id);
-            User user = userService.findByPhone(phone);
+           /* User user = userService.findByPhone(phone);
             if (user == null) {
                 return ResultBuilder.error("原账号不存在");
-            }
+            }*/
             accountNumber.setNewPhone(phone);
             accountNumber.setUpdateBy(adminPrincipal.getUserId());
             accountNumber.setUpdateDate(new Date());

@@ -53,7 +53,7 @@
                         async: false,
                         data: {
                             id: $("#id").val(),
-                            phone: oldPhone
+                            phone: newPhone
                         },
                         success: function( result ) {
                             if (result.code == 0) {
@@ -84,7 +84,7 @@
         <div class="portlet light bordered">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="icon-social-dropbox"></i> 创建旅游信息
+                    <i class="icon-social-dropbox"></i> 创建账号迁移信息
                 </div>
             </div>
             <div class="portlet-body form">
@@ -100,13 +100,13 @@
                         <div class="form-group">
                             <label class="control-label col-md-3">原账号手机号<span class="required"></span></label>
                             <div class="col-md-5">
-                                <input type="text" class="form-control" name="oldPhone" id="oldPhone" value="${accountNumber.oldPhone}"/>
+                                <input type="text" class="form-control" name="oldPhone" id="oldPhone" value="${accountNumber.oldPhone}" ${accountNumber.newPhone==null?"":"readonly"}/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">新账号手机号<span class="required"></span></label>
                             <div class="col-md-5">
-                                <input type="text" class="form-control" name="newPhone" id="newPhone" value="${accountNumber.newPhone}" ${accountNumber.newPhone==null?"":"readonly"} />
+                                <input type="text" class="form-control" name="newPhone" id="newPhone" value="${accountNumber.newPhone}" />
                             </div>
                         </div>
                     </div>
