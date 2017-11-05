@@ -86,10 +86,12 @@ public class AccountNumberController {
 
     @RequestMapping(value = "delete")
     @ResponseBody
-    public Result<?> delete(Long id){
+    public Result<?> delete(Long id,AdminPrincipal adminPrincipal){
         try {
             AccountNumber accountNumber = accountNumberService.findOne(id);
             accountNumber.setFlage("3");
+            accountNumber.setUpdateBy(adminPrincipal.getUserId());
+            accountNumber.setUpdateDate(new Date());
             accountNumberService.update(accountNumber);
             return  ResultBuilder.ok("操作成功");
         }catch (Exception e){
