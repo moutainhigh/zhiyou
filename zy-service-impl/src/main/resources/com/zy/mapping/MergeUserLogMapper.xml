@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.MergeUserLogMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.mergeusr.MergeUserLog">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="operation" property="operation" />
+		<result column="operator_id" property="operatorId" />
+		<result column="operated_time" property="operatedTime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<sql id="baseColumn">id,user_id,operation,operator_id,operated_time,remark</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.mergeusr.MergeUserLog" useGeneratedKeys="true" keyProperty="id">
+	  insert into `usr_merge_user_log` (user_id,operation,operator_id,operated_time,remark)
+	  values (#{userId},#{operation},#{operatorId},#{operatedTime},#{remark})
+	</insert>
+
+	<delete id="delete">
+		delete from `usr_merge_user_log` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.mergeusr.MergeUserLog">
+		update `usr_merge_user_log`
+		<set>
+			user_id = #{userId},
+			operation = #{operation},
+			operator_id = #{operatorId},
+			operated_time = #{operatedTime},
+			remark = #{remark},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `usr_merge_user_log`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{mergeUserLog.userId},</when>
+					<when test="field == 'operation'">operation = #{mergeUserLog.operation},</when>
+					<when test="field == 'operatorId'">operator_id = #{mergeUserLog.operatorId},</when>
+					<when test="field == 'operatedTime'">operated_time = #{mergeUserLog.operatedTime},</when>
+					<when test="field == 'remark'">remark = #{mergeUserLog.remark},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{mergeUserLog.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `usr_merge_user_log`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `usr_merge_user_log`
+		order by id desc
+	</select>
+
+
+	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
+		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="totalnumber" property="totalnumber"/>
+	</resultMap>
+	<select id="findGByRank" resultMap="countResultMap">
+		SELECT u.user_rank userRankEQ,count(*) totalnumber from usr_merge_user_log l,usr_merge_user u WHERE
+		l.user_id = u.user_id
+		AND l.remark like #{remark}
+		and l.operated_Time &gt;=#{operatedTimeBegin}
+		and l.operated_Time &lt;=#{operatedTimeEnd}
+		AND u.parent_id =#{parentid}
+		GROUP BY u.user_rank
+	</select>
+
+	<select id="count" resultType="_long">
+		select count(*) FROM `usr_merge_user_log` where remark like #{remark} and operated_Time &gt;=#{operatedTimeBegin} and operated_Time &lt;=#{operatedTimeEnd}
+		<if test="userId">
+			and user_id=#{userId}
+		</if>
+	</select>
+
+	<resultMap id="rankResultMap" type="com.zy.model.dto.UserTeamDto">
+		<result column="userId" property="userId"/>
+		<result column="num" property="num"/>
+		<result column="nickname" property="nickname"/>
+		<result column="avatar" property="avatar"/>
+		<result column="phone" property="phone"/>
+		<result column="userRank" property="userRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+	</resultMap>
+	<select id="findByRank" resultMap="rankResultMap" parameterType="com.zy.model.query.UserlongQueryModel">
+		SELECT a.parent_id userId, a.num num,b.nickname,b.avatar avatar,b.phone phone,b.user_rank userRank from
+		(SELECT count(*) num,u.parent_id FROM
+		usr_merge_user_log l,
+		usr_merge_user u
+		WHERE
+		l.user_id = u.user_id AND u.parent_id is NOT null
+		<if test="remark !=null">
+			AND l.remark LIKE #{remark}
+		</if>
+		<if test="registerTimeGTE !=null">
+			and l.operated_Time &gt;=#{registerTimeGTE}
+		</if>
+		<if test="registerTimeLT !=null">
+			and l.operated_Time &lt;=#{registerTimeLT}
+		</if>
+		<if test="parentIdNL !=null">
+			AND u.parent_id =#{parentIdNL}
+		</if>
+		GROUP BY u.parent_id ) a,
+		usr_merge_user b where a.parent_id =b.user_id
+		<if test="nameorPhone != null">
+			and (b.phone like #{nameorPhone} or b.nickname like #{nameorPhone})
+		</if>
+		order by num
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="countByRank" resultType="_long" parameterType="com.zy.model.query.UserlongQueryModel">
+		SELECT count(*)  from
+		(SELECT count(*) num,u.parent_id FROM
+		usr_user_log l,
+		usr_user u
+		WHERE
+		l.user_id = u.id AND u.parent_id is NOT null
+		<if test="remark !=null">
+			AND l.remark LIKE #{remark}
+		</if>
+		<if test="registerTimeGTE !=null">
+			and l.operated_Time &gt;=#{registerTimeGTE}
+		</if>
+		<if test="registerTimeLT !=null">
+			and l.operated_Time &lt;=#{registerTimeLT}
+		</if>
+		<if test="parentIdNL !=null">
+			AND u.parent_id =#{parentIdNL}
+		</if>
+		<if test="nameorPhone != null">
+			and (u.phone like #{nameorPhone} or u.nickname like #{nameorPhone})
+		</if>
+		GROUP BY u.parent_id ) a
+	</select>
+
+</mapper>

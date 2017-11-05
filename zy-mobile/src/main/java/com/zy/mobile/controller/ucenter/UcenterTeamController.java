@@ -5,19 +5,25 @@ import com.zy.common.model.query.PageBuilder;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.util.DateUtil;
+import com.zy.component.MergeUserComponent;
+import com.zy.component.ProductComponent;
 import com.zy.component.UserComponent;
+import com.zy.entity.mal.Product;
+import com.zy.entity.mergeusr.MergeUser;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Principal;
 import com.zy.model.dto.UserDto;
 import com.zy.model.dto.UserTeamDto;
+import com.zy.model.query.ProductQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserlongQueryModel;
 import com.zy.service.AddressService;
+import com.zy.service.MergeUserService;
+import com.zy.service.ProductService;
 import com.zy.service.UserService;
 import com.zy.vo.UserInfoVo;
-import io.gd.generator.api.query.Direction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +47,30 @@ public class UcenterTeamController {
 	
 	@Autowired
 	private UserComponent userComponent;
+
+	@Autowired
+	private ProductComponent productComponent;
+
+	@Autowired
+	private ProductService productService;
+
+	@Autowired
+	private MergeUserService mergeUserService;
+
+	@Autowired
+	private MergeUserComponent mergeUserComponent;
+
+
+	@RequestMapping(value = "/products", method = RequestMethod.GET)
+	public String list(Model model,Principal principal) {
+		List<Product> products = productService.findAll(ProductQueryModel.builder().isOnEQ(true).build());
+		Long userId = principal.getUserId();
+		MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId, 2);
+		boolean isnew = mergeUser == null ? false : true;
+		model.addAttribute("products",products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
+		model.addAttribute("isnew",isnew);
+		return "ucenter/productType";
+	}
 
 	@RequestMapping
 	public String agent(Principal principal, Model model) {
@@ -113,51 +143,97 @@ public class UcenterTeamController {
 	 * @param model
      * @return
      */
-	@RequestMapping(value = "/newTeam", method = RequestMethod.GET)
-	public String  newTeam(Principal principal, Model model){
-		Long userId = principal.getUserId();
-        Map<String,Object> dataMap = new HashMap<String,Object>();
-		//统计团队人数
-		User user = userService.findOne(userId);
-		if (user.getUserRank()==User.UserRank.V4||user.getUserRank()==User.UserRank.V3){
-			long[]teamTotal=userComponent.conyteamTotal(userId);
-			/*long[]teamTotal = userService.conyteamTotal(userId);*/
-			dataMap.put("TTot", DateUtil.longarryToString(teamTotal,false));
-			dataMap.put("flag", userComponent.findRole(user));//是否 能查看到 直属特级按钮
-		}
-		//直属团队 人数统计
 
-		long [] dirTotal = userService.countdirTotal(userId);
-		/*long [] dirTotal = userComponent.countdirTotal(userId);*/
-		dataMap.put("DTot", DateUtil.longarryToString(dirTotal,false));//直属团队成员
-        //统计团队新成员
-		 Map<String,Object>map =userService.countNewMemTotal(userId,true);
-		long [] newMem = (long[])map.get("MTot");//新增人员  数据
-		dataMap.put("MTot", DateUtil.longarryToString(newMem,false));
-		dataMap.put("Pro",DateUtil.countPro((long[])map.get("MTot"),(long)map.get("total")));//新增人员占比
-        //处理排名
-		UserlongQueryModel userlongQueryModel = new UserlongQueryModel();
-		userlongQueryModel.setParentIdNL(userId);
-		userlongQueryModel.setPageNumber(0);
-		userlongQueryModel.setPageSize(5);
-		Page<UserTeamDto> page= userService.disposeRank(userlongQueryModel,false);
-		Page<UserTeamDto> voPage = PageBuilder.copyAndConvert(page, v-> userComponent.buildUserTeamDto(v));
-		dataMap.put("rankList",voPage.getData());//排名数据
-		dataMap.put("myRank",userComponent.getRank(userId));//我的排序
-        //处理新进特级
-        long ids[]=userComponent.tId(userComponent.conyteamTotalV4(userId));
-        dataMap.put("myTids", DateUtil.longarryToString(dirTotal,false));//将直属特级 存下来
-		if (ids!=null) {
-			Map<String, Object> newSup = userService.findNewSup(ids);
-			dataMap.put("mynT", newSup.get("MY"));//直属特级*/
+	@RequestMapping(value = "/newTeam", method = RequestMethod.GET)
+	public String  newTeam(Principal principal, Model model,Integer productType){
+		Long userId = principal.getUserId();
+		Map<String,Object> dataMap = new HashMap<String,Object>();
+		if(productType != null && productType == 1){
+			//统计团队人数
+			User user = userService.findOne(userId);
+			if (user.getUserRank()==User.UserRank.V4||user.getUserRank()==User.UserRank.V3){
+				long[]teamTotal=userComponent.conyteamTotal(userId);
+			/*long[]teamTotal = userService.conyteamTotal(userId);*/
+				dataMap.put("TTot", DateUtil.longarryToString(teamTotal,false));
+				dataMap.put("flag", userComponent.findRole(user));//是否 能查看到 直属特级按钮
+			}
+			//直属团队 人数统计
+
+			long [] dirTotal = userService.countdirTotal(userId);
+			/*long [] dirTotal = userComponent.countdirTotal(userId);*/
+			dataMap.put("DTot", DateUtil.longarryToString(dirTotal,false));//直属团队成员
+			//统计团队新成员
+			Map<String,Object>map =userService.countNewMemTotal(userId,true);
+			long [] newMem = (long[])map.get("MTot");//新增人员  数据
+			dataMap.put("MTot", DateUtil.longarryToString(newMem,false));
+			dataMap.put("Pro",DateUtil.countPro((long[])map.get("MTot"),(long)map.get("total")));//新增人员占比
+			//处理排名
+			UserlongQueryModel userlongQueryModel = new UserlongQueryModel();
+			userlongQueryModel.setParentIdNL(userId);
+			userlongQueryModel.setPageNumber(0);
+			userlongQueryModel.setPageSize(5);
+			Page<UserTeamDto> page= userService.disposeRank(userlongQueryModel,false);
+			Page<UserTeamDto> voPage = PageBuilder.copyAndConvert(page, v-> userComponent.buildUserTeamDto(v));
+			dataMap.put("rankList",voPage.getData());//排名数据
+			dataMap.put("myRank",userComponent.getRank(userId));//我的排序
+			//处理新进特级
+			long ids[]=userComponent.tId(userComponent.conyteamTotalV4(userId));
+			dataMap.put("myTids", DateUtil.longarryToString(dirTotal,false));//将直属特级 存下来
+			if (ids!=null) {
+				Map<String, Object> newSup = userService.findNewSup(ids);
+				dataMap.put("mynT", newSup.get("MY"));//直属特级*/
+			}
+			dataMap.put("actPer",userComponent.activeProportion(userId)); //活跃占比
+			UserQueryModel userQueryModel = new UserQueryModel();
+			userQueryModel.setParentIdNL(userId);
+			userQueryModel.setPageNumber(0);
+			userQueryModel.setPageSize(5);
+			Page<User> pageact= userService.findActive(userQueryModel,false);
+			dataMap.put("act",pageact.getData());//不活跃人员
+			model.addAttribute("title","优检");
+		}else if(productType != null && productType == 2){
+			//统计团队人数
+			MergeUser user = mergeUserService.findByUserIdAndProductType(userId,2);
+			if (user.getUserRank()==User.UserRank.V4||user.getUserRank()==User.UserRank.V3){
+				long[]teamTotal=mergeUserComponent.conyNewProducTeamTotal(userId);
+				dataMap.put("TTot", DateUtil.longarryToString(teamTotal,false));
+				dataMap.put("flag", "T");//是否 能查看到 直属特级按钮，默认看到
+			}
+			//直属团队 人数统计
+
+			long [] dirTotal = mergeUserService.countdirTotal(userId,2);
+			dataMap.put("DTot", DateUtil.longarryToString(dirTotal,false));//直属团队成员
+			//统计团队新成员
+			Map<String,Object>map =mergeUserService.countNewMemTotal(userId,true);
+			long [] newMem = (long[])map.get("MTot");//新增人员  数据
+			dataMap.put("MTot", DateUtil.longarryToString(newMem,false));
+			dataMap.put("Pro",DateUtil.countPro((long[])map.get("MTot"),(long)map.get("total")));//新增人员占比
+			//处理排名
+			UserlongQueryModel userlongQueryModel = new UserlongQueryModel();
+			userlongQueryModel.setParentIdNL(userId);
+			userlongQueryModel.setPageNumber(0);
+			userlongQueryModel.setPageSize(5);
+			Page<UserTeamDto> page= userService.disposeRank(userlongQueryModel,false);
+			Page<UserTeamDto> voPage = PageBuilder.copyAndConvert(page, v-> userComponent.buildUserTeamDto(v));
+			dataMap.put("rankList",voPage.getData());//排名数据
+			dataMap.put("myRank",userComponent.getRank(userId));//我的排序
+			//处理新进特级
+			long ids[]=userComponent.tId(userComponent.conyteamTotalV4(userId));
+			dataMap.put("myTids", DateUtil.longarryToString(dirTotal,false));//将直属特级 存下来
+			if (ids!=null) {
+				Map<String, Object> newSup = userService.findNewSup(ids);
+				dataMap.put("mynT", newSup.get("MY"));//直属特级*/
+			}
+			dataMap.put("actPer",userComponent.activeProportion(userId)); //活跃占比
+			UserQueryModel userQueryModel = new UserQueryModel();
+			userQueryModel.setParentIdNL(userId);
+			userQueryModel.setPageNumber(0);
+			userQueryModel.setPageSize(5);
+			Page<User> pageact= userService.findActive(userQueryModel,false);
+			dataMap.put("act",pageact.getData());//不活跃人员
+			model.addAttribute("title","参龄集");
 		}
-		dataMap.put("actPer",userComponent.activeProportion(userId)); //活跃占比
-		UserQueryModel userQueryModel = new UserQueryModel();
-		userQueryModel.setParentIdNL(userId);
-		userQueryModel.setPageNumber(0);
-		userQueryModel.setPageSize(5);
-		Page<User> pageact= userService.findActive(userQueryModel,false);
-		dataMap.put("act",pageact.getData());//不活跃人员
+
 		model.addAttribute("dataMap",dataMap);
 		return "ucenter/teamNew/userListNew";
 	}

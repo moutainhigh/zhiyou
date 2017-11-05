@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.zy.entity.mergeusr.MergeUser;
 import com.zy.model.query.MergeUserQueryModel;
 
+import com.zy.model.dto.UserTeamCountDto;
 import java.util.Map;
 
 public interface MergeUserMapper {
@@ -26,5 +27,7 @@ public interface MergeUserMapper {
 	long count(MergeUserQueryModel mergeUserQueryModel);
 
 	MergeUser findByUserIdAndProductType(Map<String,Object> map);
+
+	List<UserTeamCountDto> countByUserId(Map<String,Object> map);
 
 }

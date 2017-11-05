@@ -301,4 +301,12 @@
 		where user_id = #{userId} and product_type = #{productType}
 	</select>
 
+	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
+		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+		<result column="totalnumber" property="totalnumber"/>
+	</resultMap>
+	<select id="countByUserId" resultMap="countResultMap" parameterType="long">
+		select user_rank userRankEQ,COUNT(*) totalnumber FROM `usr_user` where parent_id = #{parentId}  and product_type = #{productType} GROUP BY user_rank
+	</select>
+
 </mapper>
