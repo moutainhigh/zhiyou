@@ -40,7 +40,7 @@ public class MergeUserServiceImpl implements MergeUserService  {
 
     @Override
     public MergeUser findOne(Long id) {
-        return mergeUserMapper.findOne(id);
+        return findByUserIdAndProductType(id,2);
     }
 
     @Override
@@ -49,6 +49,14 @@ public class MergeUserServiceImpl implements MergeUserService  {
         map.put("userId" , userId);
         map.put("productType" , productType);
         return mergeUserMapper.findByUserIdAndProductType(map);
+    }
+
+    @Override
+    public MergeUser findBycodeAndProductType( String code, Integer productType) {
+        Map<String , Object> map = new HashMap<>();
+        map.put("code" , code);
+        map.put("productType" , productType);
+        return mergeUserMapper.findBycodeAndProductType(map);
     }
 
     @Override
@@ -79,15 +87,16 @@ public class MergeUserServiceImpl implements MergeUserService  {
     }
 
     @Override
-    public void modifyParentId(Long id, Long parentId) {
-        MergeUser mergeUser = findAndValidateMergeUser(id);
+    public void modifyParentId(Long id, Long parentId,Integer productType) {
+        MergeUser mergeUser = findAndValidateMergeUser(id,productType);
         mergeUser.setParentId(parentId);
         mergeUserMapper.merge(mergeUser,"parentId");
     }
 
+
     @Override
-    public void modifyV4Id(Long id, Long v4Id) {
-        MergeUser mergeUser = findAndValidateMergeUser(id);
+    public void modifyV4Id(Long id, Long v4Id,Integer productType) {
+        MergeUser mergeUser = findAndValidateMergeUser(id,productType);
         mergeUser.setParentId(v4Id);
         mergeUserMapper.merge(mergeUser,"v4Id");
     }
@@ -104,9 +113,9 @@ public class MergeUserServiceImpl implements MergeUserService  {
         return user;
     }
 
-    private MergeUser findAndValidateMergeUser(Long id) {
+    private MergeUser findAndValidateMergeUser(Long id,Integer productType) {
         validate(id, NOT_NULL, "id is null");
-        MergeUser mergeUser = mergeUserMapper.findOne(id);
+        MergeUser mergeUser = findByUserIdAndProductType(id,productType);
         validate(mergeUser, NOT_NULL, "product id" + id + " not found");
         return mergeUser;
     }

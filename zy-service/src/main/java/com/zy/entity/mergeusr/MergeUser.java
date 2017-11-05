@@ -64,7 +64,7 @@ public class MergeUser implements Serializable {
 	@View(name = "userRankLabel", type = String.class, groups = {VO_ADMIN})
 	private UserRank userRank;
 
-
+	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "产品类型")
 	@View(groups = {VO_ADMIN})

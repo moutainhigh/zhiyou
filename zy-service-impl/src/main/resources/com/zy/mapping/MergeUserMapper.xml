@@ -33,9 +33,9 @@
 	  values (#{userId},#{inviterId},#{parentId},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{productType},#{lastUpgradedTime},#{registerTime},#{isFrozen},#{isDirector},#{isHonorDirector},#{isDeleted},#{isToV4},#{v4Id},#{code},#{isShareholder},#{largearea},#{setlargearearemark},#{isPresident},#{presidentId},#{largeareaDirector})
 	</insert>
 
-	<delete id="delete">
-		delete from `usr_merge_user` where id = #{id}
-	</delete>
+	<!--<delete id="delete">-->
+		<!--delete from `usr_merge_user` where id = #{id} and product_type = #{productType}-->
+	<!--</delete>-->
 
 	<update id="update" parameterType="com.zy.entity.mergeusr.MergeUser">
 		update `usr_merge_user`
@@ -61,7 +61,7 @@
 			president_id = #{presidentId},
 			largearea_director = #{largeareaDirector},
 		</set>
-		where id = #{id}
+		where id = #{id} and product_type = #{productType}
 	</update>
 
 	<update id="merge">
@@ -73,7 +73,6 @@
 					<when test="field == 'inviterId'">inviter_id = #{mergeUser.inviterId},</when>
 					<when test="field == 'parentId'">parent_id = #{mergeUser.parentId},</when>
 					<when test="field == 'userRank'">user_rank = #{mergeUser.userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.User$UserRank},</when>
-					<when test="field == 'productType'">product_type = #{mergeUser.productType},</when>
 					<when test="field == 'lastUpgradedTime'">last_upgraded_time = #{mergeUser.lastUpgradedTime},</when>
 					<when test="field == 'registerTime'">register_time = #{mergeUser.registerTime},</when>
 					<when test="field == 'isFrozen'">is_frozen = #{mergeUser.isFrozen},</when>
@@ -92,15 +91,15 @@
 				</choose>
 				</foreach>
 			</set>
-		where id = #{mergeUser.id}
+		where id = #{mergeUser.id} and product_type = #{mergeUser.productType}
 	</update>
 
-	<select id="findOne" resultMap="baseResultMap">
-		select
-		<include refid="baseColumn"/>
-		from `usr_merge_user`
-		where id = #{id}
-	</select>
+	<!--<select id="findOne" resultMap="baseResultMap">-->
+		<!--select-->
+		<!--<include refid="baseColumn"/>-->
+		<!--from `usr_merge_user`-->
+		<!--where id = #{id}-->
+	<!--</select>-->
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.MergeUserQueryModel">
 		select
@@ -350,6 +349,12 @@
 		*
 		from `usr_merge_user`
 		where user_id = #{userId} and product_type = #{productType}
+	</select>
+	<select id="findBycodeAndProductType" resultMap="baseResultMap">
+		select
+		*
+		from `usr_merge_user`
+		where code = #{code} and product_type = #{productType}
 	</select>
 
 	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
