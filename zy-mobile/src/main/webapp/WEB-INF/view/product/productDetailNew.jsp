@@ -17,10 +17,17 @@
   <%@ include file="/WEB-INF/view/include/head.jsp"%>
   <link href="${stccdn}/css/product.css" rel="stylesheet" />
   <script>
+    var userRank ='${userRank}';
+    var isUse ='${isUse}';
     //下单
     $(function(){
       $('#btnOrder').click(function() {
-        $('#form').submit();
+          if(userRank == "V4" || isUse == 1){
+            $('#form').submit();
+          }else {
+            messageShow('敬请等待新品上线', 'error', 2);
+            return;
+          }
       });
     })
   </script>
@@ -44,6 +51,11 @@
           <span class="fs-15">编号： <span> ${product.skuCode}</span></span>
         </div>
       </div>
+      <div class="list-item">
+        <div class="font-777 fs-14">
+          <span class="fs-15">市场指导价： <span> ¥ ${product.marketPrice}</span></span>
+        </div>
+      </div>
       <%--联合创始人--%>
       <c:if test="${userRank == 'V4'}">
         <input type="hidden" name="quantity" value="160">
@@ -56,11 +68,6 @@
         <div class="list-item">
           <div class="font-777 fs-14">
             <span class="fs-15">服务零售价： <span> ¥ 248</span></span>
-          </div>
-        </div>
-        <div class="list-item">
-          <div class="font-777 fs-14">
-            <span class="fs-15">市场指导价： <span> ¥ ${product.marketPrice}</span></span>
           </div>
         </div>
         <div class="list-item">
@@ -82,11 +89,6 @@
         <div class="list-item">
           <div class="font-777 fs-14">
             <span class="fs-15">服务零售价： <span> ¥ 320</span></span>
-          </div>
-        </div>
-        <div class="list-item">
-          <div class="font-777 fs-14">
-            <span class="fs-15">市场指导价： <span> ¥ ${product.marketPrice}</span></span>
           </div>
         </div>
         <div class="list-item">

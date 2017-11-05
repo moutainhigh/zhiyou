@@ -48,69 +48,12 @@ public class ProductController {
 	private Config config;
 	
 	@RequestMapping
-	public String list(Model model, String orderFill, Principal principal) {
-		int isUse = 0;
-		Long userId = principal.getUserId();
-		User user = userService.findOne(userId);
-		User.UserRank userRank = user.getUserRank();
-		Long parentId = user.getParentId();
-		//判断团队人数
-		if (userRank == User.UserRank.V3){
-			int whileTimes = 0;
-			while (parentId != null) {
-				if (whileTimes > 1000) {
-					break;
-				}
-				User parent = userService.findOne(parentId);
-				if (parent.getUserRank() == UserRank.V4) {
-					parentId = user.getParentId();
-					break;
-				}else {
-					parentId = parent.getParentId();
-				}
-				whileTimes ++;
-			}
-
-			//根据id查询团队省级人数
-			UserQueryModel userQueryModel = new UserQueryModel();
-			userQueryModel.setParentIdEQ(parentId);
-			Page<User> page= userService.findPage(userQueryModel);
-
-			List<User> list = page.getData().stream().filter(v -> v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
-			if (list.size() > 8 ){
-				//判断时间小于11 11 23 59 59
-				Date expiredTime = null;
-				Date date = new Date();
-				Calendar calendar = Calendar.getInstance();
-				calendar.set(2017, 11, 11, 23, 59 ,59);
-				expiredTime = calendar.getTime();
-				if (date.getTime() < expiredTime.getTime()){
-					isUse = 1;
-				}else {
-					isUse = 0;
-				}
-			}else if (list.size() <= 8  && list.size() > 0){
-				//判断时间小于11 31 23 59 59
-				Date expiredTime = null;
-				Date date = new Date();
-				Calendar calendar = Calendar.getInstance();
-				calendar.set(2017, 11, 31, 23, 59 ,59);
-				expiredTime = calendar.getTime();
-				if (date.getTime() < expiredTime.getTime()){
-					isUse = 1;
-				}else {
-					isUse = 0;
-				}
-			}
-		}
-
+	public String list(Model model, String orderFill) {
 		ProductQueryModel productQueryModel = new ProductQueryModel();
 		productQueryModel.setIsOnEQ(true);
 		List<Product> products = productService.findAll(productQueryModel);
 		model.addAttribute("products", products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
 		model.addAttribute("orderFill", orderFill);
-		model.addAttribute("userRank", userRank);
-		model.addAttribute("isUse", isUse);
 		return "product/productList";
 	}
 
@@ -150,5 +93,4 @@ public class ProductController {
 		model.addAttribute("orderFill", orderFill);
 		return "product/productDetail";
 	}
-
 }
