@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import com.zy.entity.usr.User.UserType;
 import java.util.Date;
 import com.zy.entity.usr.User.UserRank;
 
@@ -19,13 +20,23 @@ import com.zy.entity.usr.User.UserRank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MergeUserQueryModel implements Serializable {
+public class MergeUserViewQueryModel implements Serializable {
 
 	private Long[] idIN;
 
-	private Long userIdEQ;
+	private String phoneEQ;
 
-	private Long[] userIdIN;
+	private String nicknameLK;
+
+	private UserType userTypeEQ;
+
+	private UserRank userRankEQ;
+
+	private Boolean isFrozenEQ;
+
+	private Date registerTimeGTE;
+
+	private Date registerTimeLT;
 
 	private Long inviterIdEQ;
 
@@ -35,37 +46,35 @@ public class MergeUserQueryModel implements Serializable {
 
 	private Long[] parentIdIN;
 
-	private UserRank userRankEQ;
+	private Long parentIdNL;
 
-	private Integer productTypeEQ;
+	private Boolean isRootEQ;
 
-	private Date registerTimeGTE;
+	private Boolean isBossEQ;
 
-	private Date registerTimeLT;
+	private String bossNameLK;
 
-	private Boolean isFrozenEQ;
+	private Long bossIdEQ;
 
 	private Boolean isDirectorEQ;
 
 	private Boolean isHonorDirectorEQ;
 
+	private Boolean isShareholderEQ;
+
 	private Boolean isDeletedEQ;
 
 	private Boolean isToV4EQ;
-
-	private Long v4IdEQ;
-
-	private Long[] v4IdIN;
-
-	private Boolean isShareholderEQ;
-
-	private Integer largeareaEQ;
 
 	private Boolean isPresidentEQ;
 
 	private Long presidentIdEQ;
 
 	private Integer largeareaDirectorEQ;
+
+	private Long v4IdEQ;
+
+	private Long[] v4IdIN;
 
 	private Integer pageNumber;
 
@@ -120,25 +129,41 @@ public class MergeUserQueryModel implements Serializable {
 
 	static {
 		fieldNames.add("code");
+		fieldNames.add("isRoot");
 		fieldNames.add("presidentId");
-		fieldNames.add("registerTime");
-		fieldNames.add("lastUpgradedTime");
+		fieldNames.add("openId");
+		fieldNames.add("rootName");
+		fieldNames.add("remark");
 		fieldNames.add("isToV4");
 		fieldNames.add("userRank");
 		fieldNames.add("isPresident");
-		fieldNames.add("userId");
-		fieldNames.add("parentId");
 		fieldNames.add("v4Id");
 		fieldNames.add("largeareaDirector");
+		fieldNames.add("password");
 		fieldNames.add("isDeleted");
-		fieldNames.add("inviterId");
+		fieldNames.add("isBoss");
 		fieldNames.add("isShareholder");
-		fieldNames.add("isDirector");
 		fieldNames.add("isHonorDirector");
+		fieldNames.add("nickname");
+		fieldNames.add("vipExpiredDate");
 		fieldNames.add("id");
 		fieldNames.add("isFrozen");
-		fieldNames.add("productType");
+		fieldNames.add("viewflag");
 		fieldNames.add("setlargearearemark");
+		fieldNames.add("lastloginTime");
+		fieldNames.add("qq");
+		fieldNames.add("registerIp");
+		fieldNames.add("unionId");
+		fieldNames.add("registerTime");
+		fieldNames.add("bossName");
+		fieldNames.add("bossId");
+		fieldNames.add("lastUpgradedTime");
+		fieldNames.add("avatar");
+		fieldNames.add("parentId");
+		fieldNames.add("phone");
+		fieldNames.add("inviterId");
+		fieldNames.add("isDirector");
+		fieldNames.add("userType");
 		fieldNames.add("largearea");
 	}
 

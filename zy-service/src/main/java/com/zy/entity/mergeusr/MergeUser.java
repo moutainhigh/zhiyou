@@ -64,7 +64,7 @@ public class MergeUser implements Serializable {
 	@View(name = "userRankLabel", type = String.class, groups = {VO_ADMIN})
 	private UserRank userRank;
 
-
+	@NotNull
 	@Query(Predicate.EQ)
 	@Field(label = "产品类型")
 	@View(groups = {VO_ADMIN})
@@ -110,8 +110,37 @@ public class MergeUser implements Serializable {
 	@AssociationView(name = "v4Parent", groups = VO_ADMIN, associationGroup = User.VO_ADMIN_SIMPLE)
 	private Long v4Id;
 
+	@Field(label = "授权码")
+	@Column(length = 60)
+	private String code;
 
+	@Field(label = "是否股东")
+	@Query(Predicate.EQ)
+	@View(groups = {VO_ADMIN})
+	private Boolean isShareholder;
 
+	@Field(label = "所属大区")
+	@Query(Predicate.EQ)
+	@View(groups = {VO_ADMIN})
+	private Integer largearea;
 
+	@Field(label = "设置大区备注")
+	@View(groups = {VO_ADMIN})
+	private String setlargearearemark;
+
+	@Query(Predicate.EQ)
+	@Field(label = "是否大区总裁")
+	@View(groups = {VO_ADMIN})
+	private Boolean isPresident;
+
+	@Query(Predicate.EQ)
+	@Field(label = "所属大区总裁id")
+	@View(groups = {VO_ADMIN})
+	private Long presidentId;
+
+	@Query(Predicate.EQ)
+	@Field(label = "1：大区董事长  2：大区副董事长")
+	@View(groups = {VO_ADMIN})
+	private Integer largeareaDirector;
 
 }

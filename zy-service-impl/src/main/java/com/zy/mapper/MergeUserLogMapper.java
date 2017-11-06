@@ -2,13 +2,12 @@ package com.zy.mapper;
 
 
 import java.util.List;
-import java.util.Map;
-
-import com.zy.model.dto.UserTeamCountDto;
 import org.apache.ibatis.annotations.Param;
 
 import com.zy.entity.mergeusr.MergeUserLog;
 
+import java.util.Map;
+import com.zy.model.dto.UserTeamCountDto;
 
 public interface MergeUserLogMapper {
 
@@ -23,8 +22,6 @@ public interface MergeUserLogMapper {
 	MergeUserLog findOne(Long id);
 
 	List<MergeUserLog> findAll();
-
-	long count(Map<String,Object> dataMap);
 
 	List<UserTeamCountDto> findGByRank(Map<String,Object> dataMap);
 

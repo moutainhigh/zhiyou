@@ -18,15 +18,17 @@ public interface MergeUserMapper {
 
 	int merge(@Param("mergeUser") MergeUser mergeUser, @Param("fields")String... fields);
 
-	int delete(Long id);
-
-	MergeUser findOne(Long id);
+//	int delete(Long id);
+//
+//	MergeUser findOne(Long id);
 
 	List<MergeUser> findAll(MergeUserQueryModel mergeUserQueryModel);
 
 	long count(MergeUserQueryModel mergeUserQueryModel);
 
 	MergeUser findByUserIdAndProductType(Map<String,Object> map);
+
+	MergeUser findBycodeAndProductType(Map<String,Object> map);
 
 	List<UserTeamCountDto> countByUserId(Map<String,Object> map);
 

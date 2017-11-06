@@ -15,6 +15,8 @@ public interface MergeUserService {
 
 	MergeUser findByUserIdAndProductType(Long userId,Integer productType);
 
+	MergeUser findBycodeAndProductType(String code,Integer productType);
+
 	long[] countdirTotal(Long userId,Integer productType);
 
 	void create(MergeUser mergeUser);
@@ -23,9 +25,9 @@ public interface MergeUserService {
 
 	List<MergeUser> findAll(MergeUserQueryModel mergeUserQueryModel);
 
-	void modifyParentId(Long id, Long parentId);
+	void modifyParentId(Long id, Long parentId,Integer productType);
 
-	void modifyV4Id(Long id, Long v4Id);
+	void modifyV4Id(Long id, Long v4Id,Integer productType);
 
 	long count(MergeUserQueryModel mergeUserQueryModel);
 

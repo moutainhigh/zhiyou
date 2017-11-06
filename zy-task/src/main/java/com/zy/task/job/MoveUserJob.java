@@ -17,9 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -73,6 +75,7 @@ public class MoveUserJob implements Job {
                 mergeUser.setUserRank(user.getUserRank());
                 mergeUser.setRegisterTime(now);
                 mergeUser.setLastUpgradedTime(now);
+                mergeUser.setCode(getCode());
                 //查询直属上级
                 User parent = user;
                 if(user.getParentId() == null){
@@ -101,24 +104,24 @@ public class MoveUserJob implements Job {
                 Long v4UserId = v4User == null ? null : v4User.getId();
                 Long sellerId = v4UserId == null ? 10370l : v4UserId;
                 //修改user的直属特级
-                mergeUserService.modifyV4Id(key,v4UserId);
-                if(mergeUser.getUserRank() == User.UserRank.V4){
-                    List<Order> orderList = orderMap.get(key);
-                    for (Order o: orderList) {
-                        o.setSellerId(1l);
-                        o.setSellerUserRank(null);
-                        o.setV4UserId(v4UserId);
-                        orderService.modifyOrder(o);
-                    }
-                }else if(mergeUser.getUserRank() == User.UserRank.V3){
-                    List<Order> orderList = orderMap.get(key);
-                    for (Order o: orderList) {
-                        o.setSellerId(sellerId);
-                        o.setSellerUserRank(User.UserRank.V4);
-                        o.setV4UserId(v4UserId);
-                        orderService.modifyOrder(o);
-                    }
-                }
+                mergeUserService.modifyV4Id(key,v4UserId,2);
+//                if(mergeUser.getUserRank() == User.UserRank.V4){
+//                    List<Order> orderList = orderMap.get(key);
+//                    for (Order o: orderList) {
+//                        o.setSellerId(1l);
+//                        o.setSellerUserRank(null);
+//                        o.setV4UserId(v4UserId);
+//                        orderService.modifyOrder(o);
+//                    }
+//                }else if(mergeUser.getUserRank() == User.UserRank.V3){
+//                    List<Order> orderList = orderMap.get(key);
+//                    for (Order o: orderList) {
+//                        o.setSellerId(sellerId);
+//                        o.setSellerUserRank(User.UserRank.V4);
+//                        o.setV4UserId(v4UserId);
+//                        orderService.modifyOrder(o);
+//                    }
+//                }
             }
         } catch (ConcurrentException e) {
                 try {
@@ -146,5 +149,35 @@ public class MoveUserJob implements Job {
         }
         return null;
     }
+
+
+    static char[] codeSeq = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '2', '3', '4', '5', '6',
+            '7', '8', '9'};
+    static Random random = new Random();
+    private String createCode() {
+        //授权书
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < 14; i++) {
+            s.append(codeSeq[random.nextInt(codeSeq.length)]);
+        }
+        return "ZY" + s.toString();
+    }
+
+    public String getCode() {
+
+        String code = createCode();
+        MergeUser mergeUser = mergeUserService.findBycodeAndProductType(code,2);
+        int times = 0;
+        while (mergeUser != null) {
+            if (times > 1000) {
+                throw new BizException(BizCode.ERROR, "生成code失败");
+            }
+            code = createCode();
+            mergeUser = mergeUserService.findBycodeAndProductType(code,2);
+            times++;
+        }
+        return code;
+    }
+
 }
 

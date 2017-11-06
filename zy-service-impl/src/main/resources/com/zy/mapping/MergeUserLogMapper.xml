@@ -64,11 +64,11 @@
 		order by id desc
 	</select>
 
-
 	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
-		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
 		<result column="totalnumber" property="totalnumber"/>
 	</resultMap>
+
 	<select id="findGByRank" resultMap="countResultMap">
 		SELECT u.user_rank userRankEQ,count(*) totalnumber from usr_merge_user_log l,usr_merge_user u WHERE
 		l.user_id = u.user_id
@@ -79,13 +79,6 @@
 		GROUP BY u.user_rank
 	</select>
 
-	<select id="count" resultType="_long">
-		select count(*) FROM `usr_merge_user_log` where remark like #{remark} and operated_Time &gt;=#{operatedTimeBegin} and operated_Time &lt;=#{operatedTimeEnd}
-		<if test="userId">
-			and user_id=#{userId}
-		</if>
-	</select>
-
 	<resultMap id="rankResultMap" type="com.zy.model.dto.UserTeamDto">
 		<result column="userId" property="userId"/>
 		<result column="num" property="num"/>
@@ -94,6 +87,7 @@
 		<result column="phone" property="phone"/>
 		<result column="userRank" property="userRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
 	</resultMap>
+
 	<select id="findByRank" resultMap="rankResultMap" parameterType="com.zy.model.query.UserlongQueryModel">
 		SELECT a.parent_id userId, a.num num,b.nickname,b.avatar avatar,b.phone phone,b.user_rank userRank from
 		(SELECT count(*) num,u.parent_id FROM

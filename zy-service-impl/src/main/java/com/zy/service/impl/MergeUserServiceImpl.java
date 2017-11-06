@@ -40,7 +40,7 @@ public class MergeUserServiceImpl implements MergeUserService  {
 
     @Override
     public MergeUser findOne(Long id) {
-        return mergeUserMapper.findOne(id);
+        return findByUserIdAndProductType(id,2);
     }
 
     @Override
@@ -49,6 +49,14 @@ public class MergeUserServiceImpl implements MergeUserService  {
         map.put("userId" , userId);
         map.put("productType" , productType);
         return mergeUserMapper.findByUserIdAndProductType(map);
+    }
+
+    @Override
+    public MergeUser findBycodeAndProductType( String code, Integer productType) {
+        Map<String , Object> map = new HashMap<>();
+        map.put("code" , code);
+        map.put("productType" , productType);
+        return mergeUserMapper.findBycodeAndProductType(map);
     }
 
     @Override
@@ -79,15 +87,16 @@ public class MergeUserServiceImpl implements MergeUserService  {
     }
 
     @Override
-    public void modifyParentId(Long id, Long parentId) {
-        MergeUser mergeUser = findAndValidateMergeUser(id);
+    public void modifyParentId(Long id, Long parentId,Integer productType) {
+        MergeUser mergeUser = findAndValidateMergeUser(id,productType);
         mergeUser.setParentId(parentId);
         mergeUserMapper.merge(mergeUser,"parentId");
     }
 
+
     @Override
-    public void modifyV4Id(Long id, Long v4Id) {
-        MergeUser mergeUser = findAndValidateMergeUser(id);
+    public void modifyV4Id(Long id, Long v4Id,Integer productType) {
+        MergeUser mergeUser = findAndValidateMergeUser(id,productType);
         mergeUser.setParentId(v4Id);
         mergeUserMapper.merge(mergeUser,"v4Id");
     }
@@ -104,9 +113,9 @@ public class MergeUserServiceImpl implements MergeUserService  {
         return user;
     }
 
-    private MergeUser findAndValidateMergeUser(Long id) {
+    private MergeUser findAndValidateMergeUser(Long id,Integer productType) {
         validate(id, NOT_NULL, "id is null");
-        MergeUser mergeUser = mergeUserMapper.findOne(id);
+        MergeUser mergeUser = findByUserIdAndProductType(id,productType);
         validate(mergeUser, NOT_NULL, "product id" + id + " not found");
         return mergeUser;
     }
@@ -154,8 +163,8 @@ public class MergeUserServiceImpl implements MergeUserService  {
         dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),0,0));
         dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthEnd(new Date(),1,0));
         if(flag){
-            long total=mergeUserLogMapper.count(dataMap);
-            returnMap.put("total",total);
+         //   long total=mergeUserLogMapper.count(dataMap);
+         //   returnMap.put("total",total);
         }
         dataMap.put("parentid",userId);
         List<UserTeamCountDto>userTeamDtoList=mergeUserLogMapper.findGByRank(dataMap);
@@ -184,20 +193,20 @@ public class MergeUserServiceImpl implements MergeUserService  {
      */
     @Override
     public Page<UserTeamDto> disposeRank(UserlongQueryModel userlongQueryModel, boolean flag) {
-        Long parentId = userlongQueryModel.getParentIdNL();//将id暂存下来
-        userlongQueryModel.setRemark("从V0%");
-        userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
-        userlongQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0,0));
-        userlongQueryModel.setParentIdNL(null);
-        List<UserTeamDto> userRankList= mergeUserLogMapper.findByRank(userlongQueryModel);
-        Page<UserTeamDto> page = new Page<>();
-        if (flag){//详情页
-            long total =userLogMapper.countByRank(userlongQueryModel);
-            page.setTotal(total);
-        }
-        page.setPageNumber(userlongQueryModel.getPageNumber());
-        page.setPageSize(userlongQueryModel.getPageSize());
-        page.setData(userRankList);
-        return page;
+//        Long parentId = userlongQueryModel.getParentIdNL();//将id暂存下来
+//        userlongQueryModel.setRemark("从V0%");
+//        userlongQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+//        userlongQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0,0));
+//        userlongQueryModel.setParentIdNL(null);
+//        List<UserTeamDto> userRankList= mergeUserLogMapper.findByRank(userlongQueryModel);
+//        Page<UserTeamDto> page = new Page<>();
+//        if (flag){//详情页
+//            long total =userLogMapper.countByRank(userlongQueryModel);
+//            page.setTotal(total);
+//        }
+//        page.setPageNumber(userlongQueryModel.getPageNumber());
+//        page.setPageSize(userlongQueryModel.getPageSize());
+//        page.setData(userRankList);
+        return null;
     }
 }

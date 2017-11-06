@@ -17,18 +17,25 @@
 		<result column="is_deleted" property="isDeleted" />
 		<result column="is_to_v4" property="isToV4" />
 		<result column="v4_id" property="v4Id" />
+		<result column="code" property="code" />
+		<result column="is_shareholder" property="isShareholder" />
+		<result column="largearea" property="largearea" />
+		<result column="setlargearearemark" property="setlargearearemark" />
+		<result column="is_president" property="isPresident" />
+		<result column="president_id" property="presidentId" />
+		<result column="largearea_director" property="largeareaDirector" />
 	</resultMap>
 
-	<sql id="baseColumn">id,user_id,inviter_id,parent_id,user_rank,product_type,last_upgraded_time,register_time,is_frozen,is_director,is_honor_director,is_deleted,is_to_v4,v4_id</sql>
+	<sql id="baseColumn">id,user_id,inviter_id,parent_id,user_rank,product_type,last_upgraded_time,register_time,is_frozen,is_director,is_honor_director,is_deleted,is_to_v4,v4_id,code,is_shareholder,largearea,setlargearearemark,is_president,president_id,largearea_director</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.mergeusr.MergeUser" useGeneratedKeys="true" keyProperty="id">
-	  insert into `usr_merge_user` (user_id,inviter_id,parent_id,user_rank,product_type,last_upgraded_time,register_time,is_frozen,is_director,is_honor_director,is_deleted,is_to_v4,v4_id)
-	  values (#{userId},#{inviterId},#{parentId},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{productType},#{lastUpgradedTime},#{registerTime},#{isFrozen},#{isDirector},#{isHonorDirector},#{isDeleted},#{isToV4},#{v4Id})
+	  insert into `usr_merge_user` (user_id,inviter_id,parent_id,user_rank,product_type,last_upgraded_time,register_time,is_frozen,is_director,is_honor_director,is_deleted,is_to_v4,v4_id,code,is_shareholder,largearea,setlargearearemark,is_president,president_id,largearea_director)
+	  values (#{userId},#{inviterId},#{parentId},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{productType},#{lastUpgradedTime},#{registerTime},#{isFrozen},#{isDirector},#{isHonorDirector},#{isDeleted},#{isToV4},#{v4Id},#{code},#{isShareholder},#{largearea},#{setlargearearemark},#{isPresident},#{presidentId},#{largeareaDirector})
 	</insert>
 
-	<delete id="delete">
-		delete from `usr_merge_user` where id = #{id}
-	</delete>
+	<!--<delete id="delete">-->
+		<!--delete from `usr_merge_user` where id = #{id} and product_type = #{productType}-->
+	<!--</delete>-->
 
 	<update id="update" parameterType="com.zy.entity.mergeusr.MergeUser">
 		update `usr_merge_user`
@@ -46,8 +53,15 @@
 			is_deleted = #{isDeleted},
 			is_to_v4 = #{isToV4},
 			v4_id = #{v4Id},
+			code = #{code},
+			is_shareholder = #{isShareholder},
+			largearea = #{largearea},
+			setlargearearemark = #{setlargearearemark},
+			is_president = #{isPresident},
+			president_id = #{presidentId},
+			largearea_director = #{largeareaDirector},
 		</set>
-		where id = #{id}
+		where id = #{id} and product_type = #{productType}
 	</update>
 
 	<update id="merge">
@@ -59,7 +73,6 @@
 					<when test="field == 'inviterId'">inviter_id = #{mergeUser.inviterId},</when>
 					<when test="field == 'parentId'">parent_id = #{mergeUser.parentId},</when>
 					<when test="field == 'userRank'">user_rank = #{mergeUser.userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.User$UserRank},</when>
-					<when test="field == 'productType'">product_type = #{mergeUser.productType},</when>
 					<when test="field == 'lastUpgradedTime'">last_upgraded_time = #{mergeUser.lastUpgradedTime},</when>
 					<when test="field == 'registerTime'">register_time = #{mergeUser.registerTime},</when>
 					<when test="field == 'isFrozen'">is_frozen = #{mergeUser.isFrozen},</when>
@@ -68,18 +81,25 @@
 					<when test="field == 'isDeleted'">is_deleted = #{mergeUser.isDeleted},</when>
 					<when test="field == 'isToV4'">is_to_v4 = #{mergeUser.isToV4},</when>
 					<when test="field == 'v4Id'">v4_id = #{mergeUser.v4Id},</when>
+					<when test="field == 'code'">code = #{mergeUser.code},</when>
+					<when test="field == 'isShareholder'">is_shareholder = #{mergeUser.isShareholder},</when>
+					<when test="field == 'largearea'">largearea = #{mergeUser.largearea},</when>
+					<when test="field == 'setlargearearemark'">setlargearearemark = #{mergeUser.setlargearearemark},</when>
+					<when test="field == 'isPresident'">is_president = #{mergeUser.isPresident},</when>
+					<when test="field == 'presidentId'">president_id = #{mergeUser.presidentId},</when>
+					<when test="field == 'largeareaDirector'">largearea_director = #{mergeUser.largeareaDirector},</when>
 				</choose>
 				</foreach>
 			</set>
-		where id = #{mergeUser.id}
+		where id = #{mergeUser.id} and product_type = #{mergeUser.productType}
 	</update>
 
-	<select id="findOne" resultMap="baseResultMap">
-		select
-		<include refid="baseColumn"/>
-		from `usr_merge_user`
-		where id = #{id}
-	</select>
+	<!--<select id="findOne" resultMap="baseResultMap">-->
+		<!--select-->
+		<!--<include refid="baseColumn"/>-->
+		<!--from `usr_merge_user`-->
+		<!--where id = #{id}-->
+	<!--</select>-->
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.MergeUserQueryModel">
 		select
@@ -91,6 +111,12 @@
 			</if>
 			<if test="isDeletedEQ != null">
 				and is_deleted = #{isDeletedEQ}
+			</if>
+			<if test="isShareholderEQ != null">
+				and is_shareholder = #{isShareholderEQ}
+			</if>
+			<if test="largeareaDirectorEQ != null">
+				and largearea_director = #{largeareaDirectorEQ}
 			</if>
 			<if test="v4IdIN != null">
 				<if test="v4IdIN.length != 0">
@@ -105,6 +131,9 @@
 			</if>
 			<if test="inviterIdEQ != null">
 				and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="largeareaEQ != null">
+				and largearea = #{largeareaEQ}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
@@ -162,6 +191,12 @@
 			</if>
 			<if test="parentIdEQ != null">
 				and parent_id = #{parentIdEQ}
+			</if>
+			<if test="isPresidentEQ != null">
+				and is_president = #{isPresidentEQ}
+			</if>
+			<if test="presidentIdEQ != null">
+				and president_id = #{presidentIdEQ}
 			</if>
 			<if test="inviterIdIN != null">
 				<if test="inviterIdIN.length != 0">
@@ -203,6 +238,12 @@
 			<if test="isDeletedEQ != null">
 				and is_deleted = #{isDeletedEQ}
 			</if>
+			<if test="isShareholderEQ != null">
+				and is_shareholder = #{isShareholderEQ}
+			</if>
+			<if test="largeareaDirectorEQ != null">
+				and largearea_director = #{largeareaDirectorEQ}
+			</if>
 			<if test="v4IdIN != null">
 				<if test="v4IdIN.length != 0">
 				and v4_id in
@@ -216,6 +257,9 @@
 			</if>
 			<if test="inviterIdEQ != null">
 				and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="largeareaEQ != null">
+				and largearea = #{largeareaEQ}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
@@ -274,6 +318,12 @@
 			<if test="parentIdEQ != null">
 				and parent_id = #{parentIdEQ}
 			</if>
+			<if test="isPresidentEQ != null">
+				and is_president = #{isPresidentEQ}
+			</if>
+			<if test="presidentIdEQ != null">
+				and president_id = #{presidentIdEQ}
+			</if>
 			<if test="inviterIdIN != null">
 				<if test="inviterIdIN.length != 0">
 				and inviter_id in
@@ -300,11 +350,18 @@
 		from `usr_merge_user`
 		where user_id = #{userId} and product_type = #{productType}
 	</select>
+	<select id="findBycodeAndProductType" resultMap="baseResultMap">
+		select
+		*
+		from `usr_merge_user`
+		where code = #{code} and product_type = #{productType}
+	</select>
 
 	<resultMap id="countResultMap" type="com.zy.model.dto.UserTeamCountDto">
 		<result column="userRankEQ" property="userRankEQ" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
 		<result column="totalnumber" property="totalnumber"/>
 	</resultMap>
+
 	<select id="countByUserId" resultMap="countResultMap" parameterType="long">
 		select user_rank userRankEQ,COUNT(*) totalnumber FROM `usr_user` where parent_id = #{parentId}  and product_type = #{productType} GROUP BY user_rank
 	</select>
