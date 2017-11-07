@@ -36,25 +36,22 @@ public class MergeUserUpgrade implements Serializable {
 	@View(groups = VO_ADMIN)
 	private Long id;
 
-	@NotNull
+
 	@Query(Predicate.EQ)
 	@Field(label = "用户")
 	@View(groups = VO_ADMIN)
 	private Long userId;
 
-	@NotNull
 	@Field(label = "升级前等级")
 	@View(groups = VO_ADMIN)
 	@View(name = "fromUserRankLabel", type = String.class, groups = {VO_ADMIN})
 	private User.UserRank fromUserRank;
 
-	@NotNull
 	@Field(label = "升级后等级")
 	@View(groups = VO_ADMIN)
 	@View(name = "toUserRankLabel", type = String.class, groups = {VO_ADMIN})
 	private User.UserRank toUserRank;
 
-	@NotNull
 	@Field(label = "升级时间")
 	@View(groups = VO_ADMIN)
 	@View(name = "upgradedTimeLabel", type = String.class)
