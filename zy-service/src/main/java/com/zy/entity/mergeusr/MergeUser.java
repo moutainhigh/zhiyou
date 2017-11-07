@@ -35,7 +35,7 @@ public class MergeUser implements Serializable {
 
 	@Id
 	@Query(Predicate.IN)
-	@Field(label = "id")
+		@Field(label = "id")
 	@View(groups = { VO_ADMIN})
 	private Long id;
 

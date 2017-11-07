@@ -253,7 +253,7 @@ public class UserCheckServiceImpl implements UserCheckService {
 
 
     /**
-     * V1 晋升V2  逻辑
+     * V1 晋升V2或升V3 逻辑
      * @param parentInvter
      * @param prodectType
      */
@@ -277,6 +277,7 @@ public class UserCheckServiceImpl implements UserCheckService {
                   List<Order> orderList = orderMapper.findAll(OrderQueryModel.builder().productTypeEQ(prodectType).userIdEQ(parentInvter.getUserId())
                           .createdTimeGTE(DateUtil.getMonthData(new Date(),-2,0)).build());
                    if(orderList!=null&&!orderList.isEmpty()){
+                       orderList = orderList.stream().filter(v->v.getBuyerUserRank()==parentInvter.getUserRank()).collect(Collectors.toList());
                        Long sum = orderList.parallelStream().mapToLong(Order::getQuantity).sum();
                        if (sum>=20&&sum<150){
                            parentInvterUpgrade.setToUserRank(User.UserRank.V2);
@@ -323,6 +324,7 @@ public class UserCheckServiceImpl implements UserCheckService {
             List<Order> orderList = orderMapper.findAll(OrderQueryModel.builder().productTypeEQ(prodectType).userIdEQ(parentInvter.getUserId())
                     .createdTimeGTE(DateUtil.getMonthData(new Date(),-2,0)).build());
             if(orderList!=null&&!orderList.isEmpty()){
+                orderList = orderList.stream().filter(v->v.getBuyerUserRank()==parentInvter.getUserRank()).collect(Collectors.toList());
                 Long sum = orderList.parallelStream().mapToLong(Order::getQuantity).sum();
             if(sum>=150){
                     parentInvterUpgrade.setToUserRank(User.UserRank.V3);
@@ -354,7 +356,7 @@ public class UserCheckServiceImpl implements UserCheckService {
             long  num =0;
             List<Order>myOrderLlist = orderMap.get(parentInvter.getUserId());
             if (myOrderLlist!=null&&!myOrderLlist.isEmpty()){ //只计算已经是V3的量
-                num = myOrderLlist.stream().filter(v->v.getBuyerUserRank()== User.UserRank.V3).mapToLong(Order::getQuantity).sum();
+                num = myOrderLlist.stream().filter(v->v.getBuyerUserRank()== parentInvter.getUserRank()).mapToLong(Order::getQuantity).sum();
             }
             for (MergeUser mergeUser:mergeUserMap.get(parentInvter.getUserId())){
                 if (mergeUser.getUserRank()== User.UserRank.V4){
@@ -379,7 +381,6 @@ public class UserCheckServiceImpl implements UserCheckService {
                         }
                     }
                 }
-
             }
             if(num>=1800){
                 parentInvterUpgrade.setToUserRank(User.UserRank.V4);

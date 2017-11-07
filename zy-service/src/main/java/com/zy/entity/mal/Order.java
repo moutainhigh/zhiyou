@@ -364,4 +364,14 @@ public class Order implements Serializable {
 	@Query(Predicate.EQ)
 	private Boolean isSettlement;
 
+	@View
+	@Field(label = "推荐人ID")
+	@Query(Predicate.EQ)
+	private Long inviterId;
+
+	@View
+	@Field(label = "晋级标记位")
+	@Query(Predicate.EQ)
+	private Integer exaltFlage;
+
 }
