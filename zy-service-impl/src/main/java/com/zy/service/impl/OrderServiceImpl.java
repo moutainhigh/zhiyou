@@ -253,7 +253,7 @@ public class OrderServiceImpl implements OrderService {
 				}
 				if (uses.size() >= 8 ){
 					Calendar calendar = Calendar.getInstance();
-					calendar.set(2017, 10, 11, 23, 59, 59);
+					calendar.set(2017, 10, 12, 23, 59, 59);
 					expiredTime = calendar.getTime();
 				}else if (uses.size() < 8  && uses.size() > 0){
 					//判断时间小于11 31 23 59 59
