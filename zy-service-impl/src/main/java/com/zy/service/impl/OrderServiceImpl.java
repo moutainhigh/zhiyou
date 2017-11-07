@@ -233,6 +233,7 @@ public class OrderServiceImpl implements OrderService {
 				//根据id查询团队省级人数
 				UserQueryModel userQueryModel  = new UserQueryModel();
 				userQueryModel.setIsDeletedEQ(false);
+				userQueryModel.setIsFrozenEQ(false);
 				List<User> users = userMapper.findAll(userQueryModel);
 				List<User> children = TreeHelper.sortBreadth2(users, parentId.toString(), v -> {
 					TreeNode treeNode = new TreeNode();
@@ -257,7 +258,7 @@ public class OrderServiceImpl implements OrderService {
 				}else if (uses.size() < 8  && uses.size() > 0){
 					//判断时间小于11 31 23 59 59
 					Calendar calendar = Calendar.getInstance();
-					calendar.set(2017, 10, 31, 23, 59 ,59);
+					calendar.set(2017, 11, 31, 23, 59, 59);
 					expiredTime = calendar.getTime();
 				}
 			}

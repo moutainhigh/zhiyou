@@ -93,7 +93,7 @@ public class UcenterNewOrderController {
             Date expiredTime = null;
             Date date = new Date();
             Calendar calendar = Calendar.getInstance();
-            calendar.set(2017, 10, 06, 17, 30 ,00);
+            calendar.set(2017, 10, 11, 23, 59, 59);
             expiredTime = calendar.getTime();
             if (date.getTime() < expiredTime.getTime()){
                 isUse = 1;
@@ -120,6 +120,7 @@ public class UcenterNewOrderController {
             //根据id查询团队省级人数
             UserQueryModel userQueryModel  = new UserQueryModel();
             userQueryModel.setIsDeletedEQ(false);
+            userQueryModel.setIsFrozenEQ(false);
             List<User> users = userService.findAll(userQueryModel);
             List<User> children = TreeHelper.sortBreadth2(users, parentId.toString(), v -> {
                 TreeNode treeNode = new TreeNode();
@@ -155,7 +156,7 @@ public class UcenterNewOrderController {
                 Date expiredTime = null;
                 Date date = new Date();
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(2017, 10, 31, 23, 59 ,59);
+                calendar.set(2017, 11, 31, 23, 59 ,59);
                 expiredTime = calendar.getTime();
                 if (date.getTime() < expiredTime.getTime()){
                     isUse = 1;
