@@ -143,7 +143,7 @@ public class UcenterNewOrderController {
                 Date expiredTime = null;
                 Date date = new Date();
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(2017, 11, 11, 23, 59 ,59);
+                calendar.set(2017, 10, 11, 23, 59 ,59);
                 expiredTime = calendar.getTime();
                 if (date.getTime() < expiredTime.getTime()){
                     isUse = 1;
