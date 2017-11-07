@@ -22,7 +22,7 @@
     //下单
     $(function(){
       $('#btnOrder').click(function() {
-          if(userRank == "V4" || isUse == 1){
+          if(isUse == 1){
             $('#form').submit();
           }else {
             messageShow('敬请等待新品上线', 'error', 2);

@@ -3,6 +3,8 @@ package com.zy.mobile.controller.ucenter;
 import com.zy.Config;
 import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
+import com.zy.common.model.tree.TreeHelper;
+import com.zy.common.model.tree.TreeNode;
 import com.zy.component.ProductComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.mal.OrderFillUser;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -85,6 +88,19 @@ public class UcenterNewOrderController {
 
         int isUse = 0;
         Long parentId = user.getParentId();
+        if (userRank == User.UserRank.V4){
+            //判断时间小于11 11 23 59 59
+            Date expiredTime = null;
+            Date date = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(2017, 10, 06, 17, 30 ,00);
+            expiredTime = calendar.getTime();
+            if (date.getTime() < expiredTime.getTime()){
+                isUse = 1;
+            }else {
+                isUse = 0;
+            }
+        }
         //判断团队人数
         if (userRank == User.UserRank.V3){
             int whileTimes = 0;
@@ -94,21 +110,35 @@ public class UcenterNewOrderController {
                 }
                 User parent = userService.findOne(parentId);
                 if (parent.getUserRank() == User.UserRank.V4) {
-                    parentId = user.getParentId();
-                    break;
+                    parentId = parent.getId();
+                   break;
                 }else {
                     parentId = parent.getParentId();
                 }
                 whileTimes ++;
             }
-
             //根据id查询团队省级人数
-            UserQueryModel userQueryModel = new UserQueryModel();
-            userQueryModel.setParentIdEQ(parentId);
-            Page<User> page= userService.findPage(userQueryModel);
+            UserQueryModel userQueryModel  = new UserQueryModel();
+            userQueryModel.setIsDeletedEQ(false);
+            List<User> users = userService.findAll(userQueryModel);
+            List<User> children = TreeHelper.sortBreadth2(users, parentId.toString(), v -> {
+                TreeNode treeNode = new TreeNode();
+                treeNode.setId(v.getId().toString());
+                treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
+                return treeNode;
+            });
 
-            List<User> list = page.getData().stream().filter(v -> v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
-            if (list.size() > 8 ){
+            List<User> list = children.stream().filter(v -> v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
+
+            //找出第一个特级是parentId
+            List<User> uses = new ArrayList<>();
+            for (User use: list) {
+                Long pId = calculateV4UserId(use);
+                if (pId != null && pId.toString().equals(parentId.toString())){
+                    uses.add(use);
+                }
+            }
+            if (uses.size() >= 8 ){
                 //判断时间小于11 11 23 59 59
                 Date expiredTime = null;
                 Date date = new Date();
@@ -120,12 +150,12 @@ public class UcenterNewOrderController {
                 }else {
                     isUse = 0;
                 }
-            }else if (list.size() <= 8  && list.size() > 0){
+            }else if (uses.size() < 8  && uses.size() > 0){
                 //判断时间小于11 31 23 59 59
                 Date expiredTime = null;
                 Date date = new Date();
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(2017, 11, 31, 23, 59 ,59);
+                calendar.set(2017, 10, 31, 23, 59 ,59);
                 expiredTime = calendar.getTime();
                 if (date.getTime() < expiredTime.getTime()){
                     isUse = 1;
@@ -141,6 +171,23 @@ public class UcenterNewOrderController {
         model.addAttribute("isUse", isUse);
         model.addAttribute("product", productComponent.buildDetailVo(product));
         return "product/productDetailNew";
+    }
+
+    private Long calculateV4UserId(User user) {
+        Long parentId = user.getParentId();
+        int whileTimes = 0;
+        while (parentId != null) {
+            if (whileTimes > 1000) {
+                throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
+            }
+            User parent = userService.findOne(parentId);
+            if (parent.getUserRank() == User.UserRank.V4) {
+                return parentId;
+            }
+            parentId = parent.getParentId();
+            whileTimes ++;
+        }
+        return null;
     }
 
     /**
