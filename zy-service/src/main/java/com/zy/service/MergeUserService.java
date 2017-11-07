@@ -21,6 +21,8 @@ public interface MergeUserService {
 
 	void create(MergeUser mergeUser);
 
+	void createByUserId(Long userId,Integer productType);
+
 	Page<MergeUser> findPage(MergeUserQueryModel mergeUserQueryModel);
 
 	List<MergeUser> findAll(MergeUserQueryModel mergeUserQueryModel);
@@ -32,7 +34,5 @@ public interface MergeUserService {
 	long count(MergeUserQueryModel mergeUserQueryModel);
 
 	Map<String,Object> countNewMemTotal(Long userId, boolean b);
-
-	Page<UserTeamDto> disposeRank(UserlongQueryModel userlongQueryModel, boolean b);
 
 }

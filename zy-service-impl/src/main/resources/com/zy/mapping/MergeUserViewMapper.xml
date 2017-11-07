@@ -405,4 +405,73 @@
 		select * from `view_merge_user` where code = #{code}
 	</select>
 
+	<select id="findSupAll" resultMap="baseResultMap">
+		select * from `view_merge_user` u where
+		u.id in(
+		select l.user_id from usr_merge_user_log l
+		<where>
+			<if test="parentIdIN != null">
+				<if test="parentIdIN.length != 0">
+					and l.user_id in
+					<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+					<if test="endTime !=null">
+						AND l.operated_Time &lt;= #{endTime}
+					</if>
+					<if test="beginTime !=null">
+						AND l.operated_Time &gt;= #{beginTime}
+					</if>
+					<if test="remark !=null">
+						AND l.remark LIKE #{remark}
+					</if>
+				</if>
+
+			</if>
+
+		</where>
+		)
+	</select>
+
+	<select id="countByActive" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
+		select count(m.id) from usr_user u,mal_order m where m.user_id=u.id
+		<if test="parentIdNL !=null">
+			AND u.parent_id =#{parentIdNL}
+		</if>
+		<if test="registerTimeLT !=null">
+			and m.created_time &lt;=#{registerTimeLT}
+		</if>
+		<if test="registerTimeGTE !=null">
+			and m.created_time &gt;=#{registerTimeGTE}
+		</if>
+	</select>
+
+	<select id="findByNotActive" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT * from usr_user uu
+		<where>
+			<if test="parentIdNL !=null">
+				AND uu.parent_id =#{parentIdNL}
+			</if>
+			<if test="nameorPhone != null">
+				and (uu.phone LIKE #{nameorPhone} or uu.nickname like #{nameorPhone})
+			</if>
+			AND uu.id not in( SELECT DISTINCT(u.id) from usr_user u,mal_order m
+			where m.user_id = u.id
+			<if test="parentIdNL !=null">
+				and u.parent_id =#{parentIdNL}
+			</if>
+			<if test="registerTimeGTE !=null">
+				AND m.created_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="registerTimeLT !=null">
+				AND m.created_time &lt;= #{registerTimeLT}
+			</if>
+			)
+		</where>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+
+	</select>
+
 </mapper>

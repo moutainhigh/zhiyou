@@ -366,4 +366,6 @@
 		select user_rank userRankEQ,COUNT(*) totalnumber FROM `usr_user` where parent_id = #{parentId}  and product_type = #{productType} GROUP BY user_rank
 	</select>
 
+
+
 </mapper>

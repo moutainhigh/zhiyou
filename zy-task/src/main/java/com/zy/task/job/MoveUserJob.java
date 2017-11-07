@@ -66,62 +66,62 @@ public class MoveUserJob implements Job {
             Map<Long, List<Order>> orderMap = filterOrders.stream().collect(Collectors.groupingBy(Order::getUserId));
             //平移user
             for (Long key : orderMap.keySet()) {
-                Date now = new Date();
-                User user = userService.findOne(key);
-                MergeUser mergeUser = new MergeUser();
-                mergeUser.setUserId(key);
-                mergeUser.setInviterId(user.getParentId());
-                mergeUser.setProductType(2);
-                mergeUser.setUserRank(user.getUserRank());
-                mergeUser.setRegisterTime(now);
-                mergeUser.setLastUpgradedTime(now);
-                mergeUser.setCode(getCode());
-                //查询直属上级
-                User parent = user;
-                if(user.getParentId() == null){
-                    //原始关系没有上级，将新上级设置为万伟民
-                    mergeUser.setParentId(10370l);
-                }else {
-                    do{
-                        parent = userService.findOne(parent.getParentId());
-                    }while (parent != null  && parent.getParentId() != null && (orderMap.get(parent.getId()) == null || orderMap.get(parent.getId()).isEmpty()));
-                    if(parent == null){
-                        //父级团队里面没有一个转移的，将新上级设置为万伟民
-                       mergeUser.setParentId(10370l);
+                MergeUser m = mergeUserService.findByUserIdAndProductType(key, 2);
+                if(m == null){
+                    Date now = new Date();
+                    User user = userService.findOne(key);
+                    MergeUser mergeUser = new MergeUser();
+                    mergeUser.setUserId(key);
+                    mergeUser.setInviterId(user.getParentId());
+                    mergeUser.setProductType(2);
+                    mergeUser.setUserRank(user.getUserRank());
+                    mergeUser.setRegisterTime(now);
+                    mergeUser.setLastUpgradedTime(now);
+                    mergeUser.setCode(getCode());
+                    //查询直属上级
+                    User parent = user;
+                    if(user.getParentId() == null){
+                        //原始关系没有上级，将新上级设置为万伟民
+                        mergeUser.setParentId(10370l);
                     }else {
-                       mergeUser.setParentId(parent.getId());
+                        do{
+                            parent = userService.findOne(parent.getParentId());
+                        }while (parent != null  && parent.getParentId() != null && (orderMap.get(parent.getId()) == null || orderMap.get(parent.getId()).isEmpty()));
+                        if(parent == null){
+                            //父级团队里面没有一个转移的，将新上级设置为万伟民
+                            mergeUser.setParentId(10370l);
+                        }else {
+                            mergeUser.setParentId(parent.getId());
+                        }
                     }
+                    mergeUserService.create(mergeUser);
                 }
-                mergeUserService.create(mergeUser);
+
             }
             //修改订单
             for (Long key : orderMap.keySet()) {
                 MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(key, 2);
-                MergeUser v4User = mergeUser;
-                do{
-                    v4User = mergeUserService.findByUserIdAndProductType(v4User.getParentId(),2);
-                }while(v4User != null && v4User.getParentId() != null && v4User.getUserRank() != User.UserRank.V4);
-                Long v4UserId = v4User == null ? null : v4User.getId();
-                Long sellerId = v4UserId == null ? 10370l : v4UserId;
+                Long v4UserId = calculateV4UserId(mergeUser);
                 //修改user的直属特级
                 mergeUserService.modifyV4Id(key,v4UserId,2);
-//                if(mergeUser.getUserRank() == User.UserRank.V4){
-//                    List<Order> orderList = orderMap.get(key);
-//                    for (Order o: orderList) {
-//                        o.setSellerId(1l);
-//                        o.setSellerUserRank(null);
-//                        o.setV4UserId(v4UserId);
-//                        orderService.modifyOrder(o);
-//                    }
-//                }else if(mergeUser.getUserRank() == User.UserRank.V3){
-//                    List<Order> orderList = orderMap.get(key);
-//                    for (Order o: orderList) {
-//                        o.setSellerId(sellerId);
-//                        o.setSellerUserRank(User.UserRank.V4);
-//                        o.setV4UserId(v4UserId);
-//                        orderService.modifyOrder(o);
-//                    }
-//                }
+                Long sellerId = v4UserId == null ? 10370l : v4UserId;
+                if(mergeUser.getUserRank() == User.UserRank.V4){
+                    List<Order> orderList = orderMap.get(key);
+                    for (Order o: orderList) {
+                        o.setSellerId(1l);
+                        o.setSellerUserRank(null);
+                        o.setV4UserId(v4UserId);
+                        orderService.modifyOrder(o);
+                    }
+                }else if(mergeUser.getUserRank() == User.UserRank.V3){
+                    List<Order> orderList = orderMap.get(key);
+                    for (Order o: orderList) {
+                        o.setSellerId(sellerId);
+                        o.setSellerUserRank(User.UserRank.V4);
+                        o.setV4UserId(v4UserId);
+                        orderService.modifyOrder(o);
+                    }
+                }
             }
         } catch (ConcurrentException e) {
                 try {
@@ -133,12 +133,12 @@ public class MoveUserJob implements Job {
         }
     }
 
-    private Long calculateV4UserId(User user) {
-        Long parentId = user.getParentId();
+    private Long calculateV4UserId(MergeUser mergeUser) {
+        Long parentId = mergeUser.getParentId();
         int whileTimes = 0;
         while (parentId != null) {
             if (whileTimes > 1000) {
-                throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
+                throw new BizException(BizCode.ERROR, "循环引用错误, mergeUser id is " + mergeUser.getUserId());
             }
             MergeUser parent = mergeUserService.findByUserIdAndProductType(parentId,2);
             if (parent.getUserRank() == User.UserRank.V4) {

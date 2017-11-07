@@ -25,4 +25,6 @@ public interface MergeUserLogMapper {
 
 	List<UserTeamCountDto> findGByRank(Map<String,Object> dataMap);
 
+	long count(Map<String,Object> dataMap);
+
 }
