@@ -134,7 +134,7 @@ public class UcenterNewOrderController {
             //找出第一个特级是parentId
             List<User> uses = new ArrayList<>();
             for (User use: list) {
-                Long pId = calculateV4UserId(use);
+                Long pId = this.calculateV4UserId(use);
                 if (pId != null && pId.toString().equals(parentId.toString())){
                     uses.add(use);
                 }
