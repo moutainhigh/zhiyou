@@ -6,23 +6,23 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.util.DateUtil;
 import com.zy.component.MergeUserComponent;
+import com.zy.component.MergeUserViewComponent;
 import com.zy.component.ProductComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.mal.Product;
 import com.zy.entity.mergeusr.MergeUser;
+import com.zy.entity.mergeusr.MergeUserView;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Principal;
 import com.zy.model.dto.UserDto;
 import com.zy.model.dto.UserTeamDto;
+import com.zy.model.query.MergeUserViewQueryModel;
 import com.zy.model.query.ProductQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserlongQueryModel;
-import com.zy.service.AddressService;
-import com.zy.service.MergeUserService;
-import com.zy.service.ProductService;
-import com.zy.service.UserService;
+import com.zy.service.*;
 import com.zy.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,6 +59,12 @@ public class UcenterTeamController {
 
 	@Autowired
 	private MergeUserComponent mergeUserComponent;
+
+	@Autowired
+	private MergeUserViewService mergeUserViewService;
+
+	@Autowired
+	private MergeUserViewComponent mergeUserViewComponent;
 
 
 	@RequestMapping(value = "/products", method = RequestMethod.GET)
@@ -209,31 +215,31 @@ public class UcenterTeamController {
 			dataMap.put("MTot", DateUtil.longarryToString(newMem,false));
 			dataMap.put("Pro",DateUtil.countPro((long[])map.get("MTot"),(long)map.get("total")));//新增人员占比
 			//处理排名
-			UserlongQueryModel userlongQueryModel = new UserlongQueryModel();
-			userlongQueryModel.setParentIdNL(userId);
-			userlongQueryModel.setPageNumber(0);
-			userlongQueryModel.setPageSize(5);
-			Page<UserTeamDto> page= userService.disposeRank(userlongQueryModel,false);
-			Page<UserTeamDto> voPage = PageBuilder.copyAndConvert(page, v-> userComponent.buildUserTeamDto(v));
-			dataMap.put("rankList",voPage.getData());//排名数据
-			dataMap.put("myRank",userComponent.getRank(userId));//我的排序
+//			UserlongQueryModel userlongQueryModel = new UserlongQueryModel();
+//			userlongQueryModel.setParentIdNL(userId);
+//			userlongQueryModel.setPageNumber(0);
+//			userlongQueryModel.setPageSize(5);
+//			Page<UserTeamDto> page= userService.disposeRank(userlongQueryModel,false);
+//			Page<UserTeamDto> voPage = PageBuilder.copyAndConvert(page, v-> userComponent.buildUserTeamDto(v));
+//			dataMap.put("rankList",voPage.getData());//排名数据
+//			dataMap.put("myRank",userComponent.getRank(userId));//我的排序
 			//处理新进特级
-			long ids[]=userComponent.tId(userComponent.conyteamTotalV4(userId));
-			dataMap.put("myTids", DateUtil.longarryToString(dirTotal,false));//将直属特级 存下来
+			long ids[]=mergeUserComponent.tId(mergeUserComponent.conyteamTotalV4(userId,2));
+			//dataMap.put("myTids", DateUtil.longarryToString(dirTotal,false));//将直属特级 存下来
 			if (ids!=null) {
-				Map<String, Object> newSup = userService.findNewSup(ids);
+				Map<String, Object> newSup = mergeUserViewService.findNewSup(ids);
 				dataMap.put("mynT", newSup.get("MY"));//直属特级*/
 			}
-			dataMap.put("actPer",userComponent.activeProportion(userId)); //活跃占比
-			UserQueryModel userQueryModel = new UserQueryModel();
-			userQueryModel.setParentIdNL(userId);
-			userQueryModel.setPageNumber(0);
-			userQueryModel.setPageSize(5);
-			Page<User> pageact= userService.findActive(userQueryModel,false);
+			dataMap.put("actPer",mergeUserViewComponent.activeProportion(userId)); //活跃占比
+			MergeUserViewQueryModel mergeUserViewQueryModel = new MergeUserViewQueryModel();
+			mergeUserViewQueryModel.setParentIdNL(userId);
+			mergeUserViewQueryModel.setPageNumber(0);
+			mergeUserViewQueryModel.setPageSize(5);
+			Page<MergeUserView> pageact= mergeUserViewService.findActive(mergeUserViewQueryModel,false);
 			dataMap.put("act",pageact.getData());//不活跃人员
 			model.addAttribute("title","参龄集");
 		}
-
+		model.addAttribute("productType",productType);
 		model.addAttribute("dataMap",dataMap);
 		return "ucenter/teamNew/userListNew";
 	}
@@ -243,7 +249,7 @@ public class UcenterTeamController {
 	 * @return
      */
 	@RequestMapping(value = "findDirectlySup")
-	public String  findDirectlySup(Principal principal, Model model){
+	public String  findDirectlySup(Principal principal, Model model,Integer productType){
 	    List<UserInfoVo> userList= userComponent.conyteamTotalV4Vo(principal.getUserId());
 		model.addAttribute("data",userList);
 		return "ucenter/teamNew/mustDetil";
@@ -261,7 +267,7 @@ public class UcenterTeamController {
 	 *  跳转到直属团队详情 页面
 	 */
 	@RequestMapping(value = "teamDetail")
-	public String  teamDetail(Principal principal, Model model){
+	public String  teamDetail(Principal principal, Model model,Integer productType){
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdEQ(userId);
@@ -301,7 +307,7 @@ public class UcenterTeamController {
 	 * 查询沉睡成员
 	 */
 	@RequestMapping(value = "teamSleep")
-	public String teamSleep(Principal principal, Model model){
+	public String teamSleep(Principal principal, Model model,Integer productType){
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
@@ -387,7 +393,7 @@ public class UcenterTeamController {
 	 * @return
      */
 	@RequestMapping(value = "teamNew")
-	public String teamNew(Principal principal,Model model){
+	public String teamNew(Principal principal,Model model,Integer productType){
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);

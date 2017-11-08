@@ -3,6 +3,7 @@ package com.zy.component;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
 import com.zy.common.util.BeanUtils;
+import com.zy.entity.cms.Matter;
 import com.zy.entity.mergeusr.MergeUser;
 import com.zy.entity.usr.User;
 import com.zy.model.query.MatterCollectQueryModel;
@@ -81,6 +82,31 @@ public class MergeUserComponent {
 			}
 		}
 		return  falg;
+	}
+
+	/**
+	 * 统计 直属特级
+	 * @param userID
+	 * @return
+	 */
+	public  List<MergeUser> conyteamTotalV4(Long userID,Integer productType) {
+		List<MergeUser> mergeUsers = mergeUserService.findAll(MergeUserQueryModel.builder().productTypeEQ(productType).userRankEQ(User.UserRank.V4).v4IdEQ(userID).build());
+		return mergeUsers;
+	}
+
+	/**
+	 * 返回直属特接的ID
+	 * @return
+	 */
+	public long[] tId(List<MergeUser> filterV4User ){
+		if (filterV4User==null||filterV4User.isEmpty()){
+			return null;
+		}
+		long [] ids = new long[filterV4User.size()];
+		for (int i=0;i<filterV4User.size();i++){
+			ids[i]= filterV4User.get(i).getUserId();
+		}
+		return ids;
 	}
 
 }

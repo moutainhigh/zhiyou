@@ -1,8 +1,11 @@
 package com.zy.component;
 
 import com.zy.common.util.BeanUtils;
+import com.zy.common.util.DateUtil;
 import com.zy.entity.mergeusr.MergeUserView;
 import com.zy.entity.sys.SystemCode;
+import com.zy.model.query.MergeUserViewQueryModel;
+import com.zy.model.query.UserQueryModel;
 import com.zy.service.MergeUserViewService;
 import com.zy.service.SystemCodeService;
 import com.zy.util.GcUtils;
@@ -10,6 +13,9 @@ import com.zy.util.VoHelper;
 import com.zy.vo.MergeUserViewVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.text.DecimalFormat;
+import java.util.Date;
 
 @Component
 public class MergeUserViewComponent {
@@ -55,6 +61,26 @@ public class MergeUserViewComponent {
 			}
 		}
 		return mergeUserViewVo;
+	}
+
+	/**
+	 * 计算 活动占比
+	 * @param userId
+	 * @return
+	 */
+	public String activeProportion(Long userId) {
+		MergeUserViewQueryModel mergeUserViewQueryModel = new MergeUserViewQueryModel();
+		mergeUserViewQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+		mergeUserViewQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-2,0));
+		long total = mergeUserViewService.countByActive(mergeUserViewQueryModel);
+		mergeUserViewQueryModel.setParentIdNL(userId);
+		long mytotal = mergeUserViewService.countByActive(mergeUserViewQueryModel);
+		DecimalFormat df = new DecimalFormat("###0.00");
+		if (total==0){
+			return "0.00";
+		}else{
+			return df.format((double)mytotal/(double)total*100);
+		}
 	}
 
 }

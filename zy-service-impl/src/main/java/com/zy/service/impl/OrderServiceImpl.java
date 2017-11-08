@@ -235,11 +235,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setOrderStatus(OrderStatus.待支付);
 		order.setOrderType(orderType);
 		order.setVersion(0);
-		if (product.getProductType() == 1){
-			order.setSellerId(sellerId);
-		}else if (product.getProductType() == 2){
-			order.setSellerId(1l);
-		}
+		order.setSellerId(sellerId);
 		order.setProductType(product.getProductType());
 		order.setSn(ServiceUtils.generateOrderSn());
 		order.setIsSettledUp(false);
