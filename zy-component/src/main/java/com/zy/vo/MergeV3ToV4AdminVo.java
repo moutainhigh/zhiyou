@@ -33,6 +33,8 @@ public class MergeV3ToV4AdminVo implements Serializable {
 	private String image2;
 	@Field(label = "删除标记为")
 	private Integer delFlage;
+	@Field(label = "备注")
+	private String remark;
 
 	/* 扩展 */
 	@Field(label = "升级时间")

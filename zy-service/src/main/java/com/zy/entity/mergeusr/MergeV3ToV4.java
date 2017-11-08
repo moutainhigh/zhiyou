@@ -90,4 +90,9 @@ public class MergeV3ToV4 implements Serializable {
     @View(groups = VO_ADMIN)
     private Integer delFlage;
 
+    @Query(Predicate.LK)
+    @Field(label = "备注")
+    @View(groups = VO_ADMIN)
+    private String remark;
+
 }

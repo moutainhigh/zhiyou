@@ -42,6 +42,8 @@ public class MergeV3ToV4QueryModel implements Serializable {
 
 	private Integer delFlageEQ;
 
+	private String remarkLK;
+
 	private Integer pageNumber;
 
 	private Integer pageSize;
@@ -98,6 +100,7 @@ public class MergeV3ToV4QueryModel implements Serializable {
 		fieldNames.add("UserId");
 		fieldNames.add("flage");
 		fieldNames.add("name");
+		fieldNames.add("remark");
 		fieldNames.add("id");
 		fieldNames.add("create_date");
 		fieldNames.add("update_by");
