@@ -251,6 +251,9 @@
 					and 1 = 2
 				</if>
 			</if>
+			<if test="nameorPhone != null">
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
+			</if>
 		</where>
 		<choose>
 			<when test="orderByAndDirection != null">
@@ -369,6 +372,9 @@
 				<if test="inviterIdIN.length == 0">
 					and 1 = 2
 				</if>
+			</if>
+			<if test="nameorPhone != null">
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
 			</if>
 		</where>
 	</select>

@@ -243,7 +243,7 @@
 <body>
 <header class="header">
     <h1>直属团队详情</h1>
-    <a href="${ctx}/u/team/newTeam" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/team/newTeam?productType=${productType}" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
 <article>
@@ -550,7 +550,7 @@
     //点击下拉箭头
     function showNum(obj,id,type,index){
         $.ajax({
-            url : '${ctx}/u/team/findDirectlyNum',
+            url : '${ctx}/u/team/findDirectlyNum?productType=${productType}',
             data : {
                 userId : id
             },
@@ -594,7 +594,7 @@
             var phoneOrmame = $(".searchInput").val();
 
             $.ajax({
-                url : '${ctx}/u/team/ajaxTeamDetail',
+                url : '${ctx}/u/team/ajaxTeamDetail?productType=${productType}',
                 data : {
                     nameorPhone:phoneOrmame
                 },

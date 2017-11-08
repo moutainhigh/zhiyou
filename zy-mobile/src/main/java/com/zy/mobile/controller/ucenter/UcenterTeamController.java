@@ -18,10 +18,7 @@ import com.zy.entity.usr.User.UserRank;
 import com.zy.model.Principal;
 import com.zy.model.dto.UserDto;
 import com.zy.model.dto.UserTeamDto;
-import com.zy.model.query.MergeUserViewQueryModel;
-import com.zy.model.query.ProductQueryModel;
-import com.zy.model.query.UserQueryModel;
-import com.zy.model.query.UserlongQueryModel;
+import com.zy.model.query.*;
 import com.zy.service.*;
 import com.zy.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,7 +198,7 @@ public class UcenterTeamController {
 			//统计团队人数
 			MergeUser user = mergeUserService.findByUserIdAndProductType(userId,2);
 			if (user.getUserRank()==User.UserRank.V4||user.getUserRank()==User.UserRank.V3){
-				long[]teamTotal=mergeUserComponent.conyNewProducTeamTotal(userId);
+				long[]teamTotal=mergeUserComponent.conyNewProducTeamTotal(userId,2);
 				dataMap.put("TTot", DateUtil.longarryToString(teamTotal,false));
 				dataMap.put("flag", "T");//是否 能查看到 直属特级按钮，默认看到
 			}
@@ -250,8 +247,14 @@ public class UcenterTeamController {
      */
 	@RequestMapping(value = "findDirectlySup")
 	public String  findDirectlySup(Principal principal, Model model,Integer productType){
-	    List<UserInfoVo> userList= userComponent.conyteamTotalV4Vo(principal.getUserId());
-		model.addAttribute("data",userList);
+		if(productType != null && productType == 1){
+			List<UserInfoVo> userList= userComponent.conyteamTotalV4Vo(principal.getUserId());
+			model.addAttribute("data",userList);
+		}else if(productType != null && productType == 2){
+			List<UserInfoVo> userList = mergeUserComponent.conyteamTotalV4Vo(principal.getUserId(), productType);
+			model.addAttribute("data",userList);
+		}
+		model.addAttribute("productType",productType);
 		return "ucenter/teamNew/mustDetil";
 	}
 	/**
@@ -269,15 +272,25 @@ public class UcenterTeamController {
 	@RequestMapping(value = "teamDetail")
 	public String  teamDetail(Principal principal, Model model,Integer productType){
 		Long userId = principal.getUserId();
-		UserQueryModel userQueryModel = new UserQueryModel();
-		userQueryModel.setParentIdEQ(userId);
-		Page<User> page= userService.findPage1(userQueryModel);
-		/*model.addAttribute("page",page);*/
-		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
-		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
-		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
-		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
-		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
+		if(productType != null && productType == 1){
+			UserQueryModel userQueryModel = new UserQueryModel();
+			userQueryModel.setParentIdEQ(userId);
+			Page<User> page= userService.findPage1(userQueryModel);
+			model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
+			model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
+			model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
+			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
+			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
+		}else if(productType != null && productType == 2){
+			Page<MergeUserView> page= mergeUserViewService.findAllPage(MergeUserViewQueryModel.builder().parentIdEQ(userId).build());
+			model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
+			model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
+			model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
+			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
+			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
+
+		}
+		model.addAttribute("productType",productType);
 		return "ucenter/teamNew/teamDetil";
 	}
 
@@ -286,7 +299,7 @@ public class UcenterTeamController {
 	 */
 	@RequestMapping(value = "ajaxTeamDetail",method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> ajaxTeamDetail(Principal principal,String nameorPhone,Integer pageNumber){
+	public Result<?> ajaxTeamDetail(Principal principal,String nameorPhone,Integer pageNumber,Integer productType){
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdEQ(userId);
@@ -297,9 +310,14 @@ public class UcenterTeamController {
 			userQueryModel.setPageNumber(pageNumber);
 			userQueryModel.setPageSize(10);
 		}
-		Page<User> page= userService.findPage1(userQueryModel);
 		Map<String, Object> map = new HashMap<>();
-		map.put("page",page);
+		if(productType != null && productType == 1){
+			Page<User> page= userService.findPage1(userQueryModel);
+			map.put("page",page);
+		}else if(productType != null && productType == 2){
+			Page<UserDto> page = mergeUserViewComponent.findUserAll(userQueryModel);
+			map.put("page",page);
+		}
 		return ResultBuilder.result(map);
 	}
 
@@ -308,6 +326,11 @@ public class UcenterTeamController {
 	 */
 	@RequestMapping(value = "teamSleep")
 	public String teamSleep(Principal principal, Model model,Integer productType){
+		if(productType != null && productType == 1){
+
+		}else if(productType != null && productType == 2){
+
+		}
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
@@ -397,12 +420,21 @@ public class UcenterTeamController {
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
-		Page<User> page =userService.findAddpeople(userQueryModel);
-		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
-		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
-		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
-		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
-		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
+		if(productType != null && productType == 1){
+			Page<User> page =userService.findAddpeople(userQueryModel);
+			model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
+			model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
+			model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
+			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
+			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
+		}else if(productType != null && productType == 2){
+			Page<MergeUserView> page = mergeUserViewService.findAddpeople(userQueryModel);
+			model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
+			model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
+			model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
+			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
+			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
+		}
 		return "ucenter/teamNew/newTeamDetil";
 	}
 
@@ -415,7 +447,12 @@ public class UcenterTeamController {
 	 */
 	@RequestMapping(value = "ajaxteamNew",method = RequestMethod.POST)
 	@ResponseBody
-	public  Result<?> ajaxteamNew(Principal principal,String nameorPhone,Integer pageNumber){
+	public  Result<?> ajaxteamNew(Principal principal,String nameorPhone,Integer pageNumber,Integer productType){
+		if(productType != null && productType == 1){
+
+		}else if(productType != null && productType == 2){
+
+		}
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
@@ -438,9 +475,15 @@ public class UcenterTeamController {
      */
 	@RequestMapping(value = "findDirectlyNum",method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> findDirectlyNum(Long userId, Model model){
-		long [] dirTotal = userService.countdirTotal(userId);
-		String result= DateUtil.longarryToString(dirTotal,false);
+	public Result<Object> findDirectlyNum(Long userId, Model model,Integer productType){
+		String result="";
+		if(productType != null && productType == 1){
+			long [] dirTotal = userService.countdirTotal(userId);
+			result= DateUtil.longarryToString(dirTotal,false);
+		}else if(productType != null && productType == 2){
+			long[] dirTotal = mergeUserService.countdirTotal(userId, productType);
+			result= DateUtil.longarryToString(dirTotal,false);
+		}
 		return ResultBuilder.ok(result);
 	}
 
@@ -449,10 +492,16 @@ public class UcenterTeamController {
 	 */
 	@RequestMapping(value = "ajaxfindDirectlySup",method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> findDirectlySupNum(Long userId, Model model){
-		long[]teamTotal=userComponent.conyteamTotal(userId);
-		String result= DateUtil.longarryToString(teamTotal,false);
-		 return ResultBuilder.ok(result);
+	public Result<Object> findDirectlySupNum(Long userId,Integer productType){
+		String result = "";
+		if(productType != null && productType == 1){
+			long[]teamTotal=userComponent.conyteamTotal(userId);
+			result= DateUtil.longarryToString(teamTotal,false);
+		}else if(productType != null && productType == 2){
+			long[] teamTotal = mergeUserComponent.conyNewProducTeamTotal(userId, productType);
+			result= DateUtil.longarryToString(teamTotal,false);
+		}
+		return ResultBuilder.ok(result);
 	}
 
 	/**
@@ -461,7 +510,7 @@ public class UcenterTeamController {
      */
 	@RequestMapping(value = "ajaxfindUserAll",method = RequestMethod.POST)
 	@ResponseBody
-	public Result<Object> findUserAll(String nameorPhone,Integer pageNumber){
+	public Result<Object> findUserAll(String nameorPhone,Integer pageNumber,Integer productType){
 		UserQueryModel userQueryModel = new UserQueryModel();
 		if (pageNumber!=null){
 			userQueryModel.setPageNumber(pageNumber);
@@ -470,9 +519,14 @@ public class UcenterTeamController {
 		if (null!=nameorPhone){
 			userQueryModel.setNameorPhone("%"+nameorPhone+"%");
 		}
-		Page<UserDto> page =userComponent.findUserAll(userQueryModel);
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("page",page);
+		if(productType != null && productType == 1){
+			Page<UserDto> page =userComponent.findUserAll(userQueryModel);
+			map.put("page",page);
+		}else if(productType != null && productType == 2){
+			Page<UserDto> page = mergeUserViewComponent.findUserAll(userQueryModel);
+			map.put("page",page);
+		}
 		return ResultBuilder.result(map);
 	}
 }

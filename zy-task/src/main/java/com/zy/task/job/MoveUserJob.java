@@ -64,11 +64,24 @@ public class MoveUserJob implements Job {
                      || order.getOrderStatus() == Order.OrderStatus.已支付 || order.getOrderStatus() == Order.OrderStatus.已发货)
                     .collect(Collectors.toList());
             Map<Long, List<Order>> orderMap = filterOrders.stream().collect(Collectors.groupingBy(Order::getUserId));
+            Date now = new Date();
+            MergeUser wan = mergeUserService.findByUserIdAndProductType(10370l, 2);
+            User one = userService.findOne(10370l);
+            if(wan == null){
+                MergeUser me = new MergeUser();
+                me.setUserId(10370l);
+                me.setInviterId(one.getParentId());
+                me.setProductType(2);
+                me.setUserRank(one.getUserRank());
+                me.setRegisterTime(now);
+                me.setLastUpgradedTime(now);
+                me.setCode(getCode());
+                mergeUserService.create(me);
+            }
             //平移user
             for (Long key : orderMap.keySet()) {
                 MergeUser m = mergeUserService.findByUserIdAndProductType(key, 2);
                 if(m == null){
-                    Date now = new Date();
                     User user = userService.findOne(key);
                     MergeUser mergeUser = new MergeUser();
                     mergeUser.setUserId(key);
@@ -78,22 +91,39 @@ public class MoveUserJob implements Job {
                     mergeUser.setRegisterTime(now);
                     mergeUser.setLastUpgradedTime(now);
                     mergeUser.setCode(getCode());
-                    //查询直属上级
-                    User parent = user;
-                    if(user.getParentId() == null){
-                        //原始关系没有上级，将新上级设置为万伟民
-                        mergeUser.setParentId(10370l);
-                    }else {
-                        do{
-                            parent = userService.findOne(parent.getParentId());
-                        }while (parent != null  && parent.getParentId() != null && (orderMap.get(parent.getId()) == null || orderMap.get(parent.getId()).isEmpty()));
-                        if(parent == null){
-                            //父级团队里面没有一个转移的，将新上级设置为万伟民
-                            mergeUser.setParentId(10370l);
-                        }else {
-                            mergeUser.setParentId(parent.getId());
+                    if(user.getUserRank() == User.UserRank.V3){
+                        //查询直属上级
+                        User parent = user;
+                        if(user.getParentId() != null){
+                            do{
+                                parent = userService.findOne(parent.getParentId());
+                            }while (parent != null  && (orderMap.get(parent.getId()) == null || orderMap.get(parent.getId()).isEmpty()) && parent.getParentId() != null );
+                            if(parent == null){
+                                //父级团队里面没有一个转移的，将新上级设置为万伟民
+                                mergeUser.setParentId(10370l);
+                            }else {
+                                if(orderMap.get(parent.getId()) == null || orderMap.get(parent.getId()).isEmpty()){
+                                    mergeUser.setParentId(10370l);
+                                }else {
+                                    mergeUser.setParentId(parent.getId());
+                                }
+                            }
+                        }
+                    }else if(user.getUserRank() == User.UserRank.V4) {
+                        //查询直属上级
+                        User parent = user;
+                        if(user.getParentId() != null){
+                            do{
+                                parent = userService.findOne(parent.getParentId());
+                            }while (parent != null  && (orderMap.get(parent.getId()) == null || orderMap.get(parent.getId()).isEmpty()) && parent.getParentId() != null );
+                            if(parent != null ){
+                                if(orderMap.get(parent.getId()) != null && !orderMap.get(parent.getId()).isEmpty()){
+                                    mergeUser.setParentId(parent.getId());
+                                }
+                            }
                         }
                     }
+
                     mergeUserService.create(mergeUser);
                 }
 

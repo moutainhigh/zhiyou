@@ -6,7 +6,9 @@ import com.zy.common.util.DateUtil;
 import com.zy.entity.mergeusr.MergeUserView;
 import com.zy.entity.usr.User;
 import com.zy.mapper.MergeUserViewMapper;
+import com.zy.model.dto.UserDto;
 import com.zy.model.query.MergeUserViewQueryModel;
+import com.zy.model.query.UserQueryModel;
 import com.zy.service.MergeUserViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,18 @@ public class MergeUserViewServiceImpl implements MergeUserViewService {
             mergeUserViewQueryModel.setPageNumber(0);
         if(mergeUserViewQueryModel.getPageSize() == null)
             mergeUserViewQueryModel.setPageSize(20);
+        long total = mergeUserViewMapper.count(mergeUserViewQueryModel);
+        List<MergeUserView> data = mergeUserViewMapper.findAll(mergeUserViewQueryModel);
+        Page<MergeUserView> page = new Page<>();
+        page.setPageNumber(mergeUserViewQueryModel.getPageNumber());
+        page.setPageSize(mergeUserViewQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
+    }
+
+    @Override
+    public Page<MergeUserView> findAllPage(MergeUserViewQueryModel mergeUserViewQueryModel) {
         long total = mergeUserViewMapper.count(mergeUserViewQueryModel);
         List<MergeUserView> data = mergeUserViewMapper.findAll(mergeUserViewQueryModel);
         Page<MergeUserView> page = new Page<>();
@@ -103,6 +117,40 @@ public class MergeUserViewServiceImpl implements MergeUserViewService {
         page.setData(userRankList);
         return page;
     }
+
+    /**
+     * 查询说有用户
+     * @param userQueryModel
+     * @return
+     */
+    @Override
+    public List<UserDto> findUserAll(UserQueryModel userQueryModel) {
+        return mergeUserViewMapper.findMergeUserViewAll(userQueryModel);
+    }
+
+    /**
+     * 查询团队新成员
+     * @param userQueryModel
+     * @return
+     */
+    @Override
+    public Page<MergeUserView> findAddpeople(UserQueryModel userQueryModel) {
+        userQueryModel.setRemark("从V0%");
+        userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+        userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),0,0));
+        List<MergeUserView>myuserList = mergeUserViewMapper.findAddpeople(userQueryModel);
+        Page<MergeUserView> page = new Page<>();
+        page.setPageNumber(userQueryModel.getPageNumber());
+        page.setPageSize(userQueryModel.getPageSize());
+        page.setData(myuserList);
+        return page;
+    }
+
+    @Override
+    public long countUserAll(UserQueryModel userQueryModel) {
+        return mergeUserViewMapper.countMergeUserViewAll(userQueryModel);
+    }
+
 
 
 }

@@ -10,12 +10,15 @@ import com.zy.model.query.MatterCollectQueryModel;
 import com.zy.model.query.MergeUserQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.MergeUserService;
+import com.zy.service.UserService;
 import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.MergeUserAdminVo;
+import com.zy.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +30,9 @@ public class MergeUserComponent {
 
 	@Autowired
 	private MergeUserService mergeUserService;
+
+	@Autowired
+	private UserService userService;
 	
 	public MergeUserAdminVo buildAdminVo(MergeUser mergeUser) {
 		MergeUserAdminVo mergeUserAdminVo = new MergeUserAdminVo();
@@ -52,9 +58,9 @@ public class MergeUserComponent {
 	 * @param userId
 	 * @return
 	 */
-	public long[] conyNewProducTeamTotal(Long userId) {
+	public long[] conyNewProducTeamTotal(Long userId,Integer productType) {
 		long [] data = new long[]{0,0,0,0};
-		List<MergeUser> users = mergeUserService.findAll(MergeUserQueryModel.builder().productTypeEQ(2).build());
+		List<MergeUser> users = mergeUserService.findAll(MergeUserQueryModel.builder().productTypeEQ(productType).build());
 		List<MergeUser> children = TreeHelper.sortBreadth2(users, userId.toString(), v -> {
 			TreeNode treeNode = new TreeNode();
 			treeNode.setId(v.getId().toString());
@@ -107,6 +113,28 @@ public class MergeUserComponent {
 			ids[i]= filterV4User.get(i).getUserId();
 		}
 		return ids;
+	}
+
+	public List<UserInfoVo> conyteamTotalV4Vo(long userId,Integer productType){
+		List<MergeUser> mergeUsers = this.conyteamTotalV4(userId, productType);
+		List<UserInfoVo> dataList = new ArrayList<UserInfoVo>();
+		for(MergeUser m : mergeUsers){
+			User user = userService.findOne(m.getUserId());
+			User newUser = userService.findOne(m.getParentId());
+			UserInfoVo userVo = new UserInfoVo();
+			userVo.setImage1(user.getAvatar());
+			userVo.setId(user.getId());
+			userVo.setRealname(user.getNickname());
+			userVo.setPhone(user.getPhone());
+			userVo.setPname(newUser.getNickname());
+			userVo.setPphone(newUser.getPhone());
+			//判断是不是 新晋成员
+			if (mergeUserService.findNewOne(user.getId())) {
+				userVo.setNewflag("T");
+			}
+			dataList.add(userVo);
+		}
+		return dataList;
 	}
 
 }

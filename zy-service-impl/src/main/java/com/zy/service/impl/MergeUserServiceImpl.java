@@ -162,6 +162,23 @@ public class MergeUserServiceImpl implements MergeUserService  {
         return page;
     }
 
+    /**
+     *查询所有  没有默认分页
+     * @param mergeUserQueryModel
+     * @return
+     */
+    @Override
+    public Page<MergeUser> findPage1(MergeUserQueryModel mergeUserQueryModel) {
+        long total = mergeUserMapper.count(mergeUserQueryModel);
+        List<MergeUser> data = mergeUserMapper.findAll(mergeUserQueryModel);
+        Page<MergeUser> page = new Page<>();
+        page.setPageNumber(mergeUserQueryModel.getPageNumber());
+        page.setPageSize(mergeUserQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
+    }
+
     @Override
     public List<MergeUser> findAll(MergeUserQueryModel mergeUserQueryModel) {
         return mergeUserMapper.findAll(mergeUserQueryModel);
@@ -264,6 +281,25 @@ public class MergeUserServiceImpl implements MergeUserService  {
         }
         returnMap.put("MTot",data);
         return returnMap;
+    }
+
+    /**
+     * 判断是不是新晋特级
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean findNewOne(Long id) {
+        Map<String,Object>dataMap = new HashMap<String,Object>();
+        dataMap.put("remark","%改为V4%");
+        dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),0,0));
+        dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthEnd(new Date(),1,0));
+        dataMap.put("userId",id);
+        long total=mergeUserLogMapper.count(dataMap);
+        if(total>0){
+            return true;
+        }
+        return false;
     }
 
 

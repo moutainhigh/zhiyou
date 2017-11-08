@@ -235,7 +235,7 @@
 <body>
 <header class="header">
   <h1 id="h1must">直属特级详情</h1>
-  <a href="${ctx}/u/team/newTeam" class="button-left"><i class="fa fa-angle-left"></i></a>
+  <a href="${ctx}/u/team/newTeam?productType=${productType}" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 <div class="teamTop">
   <img src="${ctx}/images/seatch.png" />
@@ -353,7 +353,7 @@
   //点击下拉箭头
   function showNum(obj,id,index){
     $.ajax({
-      url : '${ctx}/u/team/ajaxfindDirectlySup',
+      url : '${ctx}/u/team/ajaxfindDirectlySup?productType=${productType}',
       data : {
         userId : id
       },
@@ -386,7 +386,7 @@
   function addTate(){
     $(".searchList").hide();
     $.ajax({
-      url : '${ctx}/u/team/ajaxfindUserAll',
+      url : '${ctx}/u/team/ajaxfindUserAll?productType=${productType}',
       data : {
         nameorPhone:$(".searchInput").val(),
         pageNumber : pageNumber

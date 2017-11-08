@@ -1,9 +1,11 @@
 package com.zy.component;
 
+import com.zy.common.model.query.Page;
 import com.zy.common.util.BeanUtils;
 import com.zy.common.util.DateUtil;
 import com.zy.entity.mergeusr.MergeUserView;
 import com.zy.entity.sys.SystemCode;
+import com.zy.model.dto.UserDto;
 import com.zy.model.query.MergeUserViewQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.MergeUserViewService;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class MergeUserViewComponent {
@@ -40,10 +43,10 @@ public class MergeUserViewComponent {
 			mergeUserViewVo.setParent(VoHelper.buildMergeUserViewSimpleVo(mergeUserViewService.findOne(mergeUserView.getParentId())));
 		}
 		mergeUserViewVo.setUserRankLabel(GcUtils.getUserRankLabel(mergeUserView.getUserRank()));
-		Long bossId = mergeUserView.getBossId();
-		if (bossId != null) {
-			mergeUserViewVo.setBoss(VoHelper.buildMergeUserViewSimpleVo(mergeUserViewService.findOne(mergeUserView.getBossId())));
-		}
+//		Long bossId = mergeUserView.getBossId();
+//		if (bossId != null) {
+//			mergeUserViewVo.setBoss(VoHelper.buildMergeUserViewSimpleVo(mergeUserViewService.findOne(mergeUserView.getBossId())));
+//		}
 		Long presidentId = mergeUserView.getPresidentId();
 		if(presidentId != null){
 			mergeUserViewVo.setPresident(VoHelper.buildMergeUserViewSimpleVo(mergeUserViewService.findOne(mergeUserView.getParentId())));
@@ -81,6 +84,22 @@ public class MergeUserViewComponent {
 		}else{
 			return df.format((double)mytotal/(double)total*100);
 		}
+	}
+
+	/**
+	 * 查询  所有 用户 信息
+	 * @param userQueryModel
+	 * @return
+	 */
+	public Page<UserDto> findUserAll(UserQueryModel userQueryModel) {
+		List<UserDto> userList = mergeUserViewService.findUserAll(userQueryModel);
+		long total = mergeUserViewService.countUserAll(userQueryModel);
+		Page<UserDto> page = new Page<>();
+		page.setPageNumber(userQueryModel.getPageNumber());
+		page.setPageSize(userQueryModel.getPageSize());
+		page.setData(userList);
+		page.setTotal(total);
+		return page;
 	}
 
 }

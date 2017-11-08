@@ -242,7 +242,7 @@
 <body>
 <header class="header">
     <h1>新成员详情</h1>
-    <a href="${ctx}/u/team/newTeam" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/team/newTeam?productType=${productType}" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
 <article>
@@ -423,7 +423,7 @@
             $(".searchListShow").show();
 
             $.ajax({
-                url : '${ctx}/u/team/ajaxteamNew',
+                url : '${ctx}/u/team/ajaxteamNew?productType=${productType}',
                 data : {
                     nameorPhone:$(".searchInput").val()
                 },
