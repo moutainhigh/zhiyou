@@ -139,6 +139,8 @@ public class UcenterNewOrderController {
                     uses.add(use);
                 }
             }
+            logger.info("listuses:"+uses.size());
+            System.out.println("listuses:"+uses.size());
             if (uses.size() >= 8 ){
                 //判断时间小于11 11 23 59 59
                 Date expiredTime = null;
