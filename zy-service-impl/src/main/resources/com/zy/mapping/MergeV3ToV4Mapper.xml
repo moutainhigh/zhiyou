@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.MergeV3ToV4Mapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.mergeusr.MergeV3ToV4">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="_user_id" property="UserId" />
+		<result column="flage" property="flage" />
+		<result column="create_by" property="create_by" />
+		<result column="create_date" property="create_date" />
+		<result column="update_by" property="update_by" />
+		<result column="update_date" property="update_date" />
+		<result column="image1" property="image1" />
+		<result column="image2" property="image2" />
+		<result column="del_flage" property="delFlage" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<sql id="baseColumn">id,name,_user_id,flage,create_by,create_date,update_by,update_date,image1,image2,del_flage,remark</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.mergeusr.MergeV3ToV4" useGeneratedKeys="true" keyProperty="id">
+	  insert into `td_v3_to_v4` (name,_user_id,flage,create_by,create_date,update_by,update_date,image1,image2,del_flage,remark)
+	  values (#{name},#{UserId},#{flage},#{create_by},#{create_date},#{update_by},#{update_date},#{image1},#{image2},#{delFlage},#{remark})
+	</insert>
+
+	<delete id="delete">
+		delete from `td_v3_to_v4` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.mergeusr.MergeV3ToV4">
+		update `td_v3_to_v4`
+		<set>
+			name = #{name},
+			_user_id = #{UserId},
+			flage = #{flage},
+			create_by = #{create_by},
+			create_date = #{create_date},
+			update_by = #{update_by},
+			update_date = #{update_date},
+			image1 = #{image1},
+			image2 = #{image2},
+			del_flage = #{delFlage},
+			remark = #{remark},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `td_v3_to_v4`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'name'">name = #{mergeV3ToV4.name},</when>
+					<when test="field == 'UserId'">_user_id = #{mergeV3ToV4.UserId},</when>
+					<when test="field == 'flage'">flage = #{mergeV3ToV4.flage},</when>
+					<when test="field == 'create_by'">create_by = #{mergeV3ToV4.create_by},</when>
+					<when test="field == 'create_date'">create_date = #{mergeV3ToV4.create_date},</when>
+					<when test="field == 'update_by'">update_by = #{mergeV3ToV4.update_by},</when>
+					<when test="field == 'update_date'">update_date = #{mergeV3ToV4.update_date},</when>
+					<when test="field == 'image1'">image1 = #{mergeV3ToV4.image1},</when>
+					<when test="field == 'image2'">image2 = #{mergeV3ToV4.image2},</when>
+					<when test="field == 'delFlage'">del_flage = #{mergeV3ToV4.delFlage},</when>
+					<when test="field == 'remark'">remark = #{mergeV3ToV4.remark},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{mergeV3ToV4.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `td_v3_to_v4`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.MergeV3ToV4QueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `td_v3_to_v4`
+		<where>
+			<if test="UserIdEQ != null">
+				and _user_id = #{UserIdEQ}
+			</if>
+			<if test="create_dateLT != null">
+				and create_date &lt; #{create_dateLT}
+			</if>
+			<if test="create_byEQ != null">
+				and create_by = #{create_byEQ}
+			</if>
+			<if test="flageEQ != null">
+				and flage = #{flageEQ}
+			</if>
+			<if test="update_dateGTE != null">
+				and update_date &gt;= #{update_dateGTE}
+			</if>
+			<if test="delFlageEQ != null">
+				and del_flage = #{delFlageEQ}
+			</if>
+			<if test="update_byEQ != null">
+				and update_by = #{update_byEQ}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="update_dateLT != null">
+				and update_date &lt; #{update_dateLT}
+			</if>
+			<if test="nameLK != null">
+				<bind name="nameLK" value="'%' + nameLK + '%'"/> and name like #{nameLK}
+			</if>
+			<if test="remarkLK != null">
+				<bind name="remarkLK" value="'%' + remarkLK + '%'"/> and remark like #{remarkLK}
+			</if>
+			<if test="create_dateGTE != null">
+				and create_date &gt;= #{create_dateGTE}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.MergeV3ToV4QueryModel">
+		select count(*) from `td_v3_to_v4`
+		<where>
+			<if test="UserIdEQ != null">
+				and _user_id = #{UserIdEQ}
+			</if>
+			<if test="create_dateLT != null">
+				and create_date &lt; #{create_dateLT}
+			</if>
+			<if test="create_byEQ != null">
+				and create_by = #{create_byEQ}
+			</if>
+			<if test="flageEQ != null">
+				and flage = #{flageEQ}
+			</if>
+			<if test="update_dateGTE != null">
+				and update_date &gt;= #{update_dateGTE}
+			</if>
+			<if test="delFlageEQ != null">
+				and del_flage = #{delFlageEQ}
+			</if>
+			<if test="update_byEQ != null">
+				and update_by = #{update_byEQ}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="update_dateLT != null">
+				and update_date &lt; #{update_dateLT}
+			</if>
+			<if test="nameLK != null">
+				<bind name="nameLK" value="'%' + nameLK + '%'"/> and name like #{nameLK}
+			</if>
+			<if test="remarkLK != null">
+				<bind name="remarkLK" value="'%' + remarkLK + '%'"/> and remark like #{remarkLK}
+			</if>
+			<if test="create_dateGTE != null">
+				and create_date &gt;= #{create_dateGTE}
+			</if>
+		</where>
+	</select>
+
+</mapper>

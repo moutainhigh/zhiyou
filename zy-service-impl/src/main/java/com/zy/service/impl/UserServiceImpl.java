@@ -8,6 +8,7 @@ import com.zy.common.model.tree.TreeNode;
 import com.zy.common.util.DateUtil;
 import com.zy.component.FncComponent;
 import com.zy.component.UsrComponent;
+import com.zy.entity.account.AccountNumber;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.fnc.CurrencyType;
 import com.zy.entity.fnc.Profit;
@@ -25,6 +26,7 @@ import com.zy.model.BizCode;
 import com.zy.model.dto.*;
 import com.zy.model.query.UserQueryModel;
 import com.zy.model.query.UserlongQueryModel;
+import com.zy.service.AccountNumberService;
 import com.zy.service.SystemCodeService;
 import com.zy.service.UserService;
 import me.chanjar.weixin.common.util.StringUtils;
@@ -71,6 +73,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private SystemCodeService systemCodeService;
+
+    @Autowired
+    private AccountNumberService accountNumberService;
 
 
     @Override
@@ -179,9 +184,15 @@ public class UserServiceImpl implements UserService {
             user.setUnionId(unionId);
             user.setLastloginTime(new Date());
             validate(user);
-            userMapper.insert(user);
-            insertAccount(user); // 初始化
-            insertUserInfo(user.getId(), realname);
+            AccountNumber accountNumber = accountNumberService.findOneByPhone(user.getPhone(),"N");
+            if(accountNumber!=null){//账号逻辑
+                accountNumberService.insertChangeAccountNumber(accountNumber,user);
+
+            }else{
+                userMapper.insert(user);
+                insertAccount(user); // 初始化
+                insertUserInfo(user.getId(), realname);
+            }
         }
 
         if (parentId != null) {

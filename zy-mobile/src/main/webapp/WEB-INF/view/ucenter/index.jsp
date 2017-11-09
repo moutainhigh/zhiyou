@@ -113,12 +113,22 @@
         </c:if>
 
 
+        <%--<c:if test="${user.userRank != 'V0'}">--%>
+        <%--<a class="flex-1 bd-r" href="${ctx}/u/team/newTeam">--%>
+          <%--<i class="icon icon-users icon-2x"></i>--%>
+          <%--<em>我的团队</em>--%>
+        <%--</a>--%>
+        <%--</c:if>--%>
+
         <c:if test="${user.userRank != 'V0'}">
-        <a class="flex-1 bd-r" href="${ctx}/u/team/newTeam">
+        <a class="flex-1 bd-r" href="${ctx}/u/team/products">
           <i class="icon icon-users icon-2x"></i>
           <em>我的团队</em>
         </a>
         </c:if>
+
+
+
         <a class="flex-1 bd-r" href="${ctx}/u/salesVolume/salesVolume?userRank=${user.userRank}">
           <i class="icon icon-2x" style='background: url("${ctx}/images/xiaoliang.png")'></i>
           <em>我的销量</em>

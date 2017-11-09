@@ -6,7 +6,8 @@ import com.zy.common.exception.ConcurrentException;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.OrderItem;
 import com.zy.entity.mal.Product;
-import com.zy.entity.usr.User;
+ import com.zy.entity.mergeusr.MergeUser;
+ import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
 import com.zy.extend.Producer;
 import com.zy.mapper.OrderItemMapper;
@@ -15,7 +16,8 @@ import com.zy.mapper.ProductMapper;
 import com.zy.mapper.UserMapper;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
-import groovy.lang.Binding;
+ import com.zy.service.MergeUserService;
+ import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 import org.codehaus.groovy.control.CompilerConfiguration;
@@ -28,7 +30,8 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
+ import java.util.Calendar;
+ import java.util.Date;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -58,7 +61,10 @@ public class MalComponent {
 
 	@Autowired
 	private UsrComponent usrComponent;
-	
+
+	@Autowired
+	private MergeUserService mergeUserService;
+
 	@Autowired
 	private Producer producer;
 
@@ -234,6 +240,13 @@ public class MalComponent {
 			upgradeUserRank = getUpgradeUserRank(userRank, productId, quantity);
 		}else if (product.getProductType() == 2){
 			upgradeUserRank = userRank;
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(2017, 10, 11, 23, 59, 59);
+			Date date = calendar.getTime();
+			Date now = new Date();
+			if (now.getTime() > date.getTime() ){
+				mergeUserService.createByUserId(userId, 2);
+			}
 		}
 
 		if (product.getProductType() == 1){
@@ -245,6 +258,8 @@ public class MalComponent {
 
 		producer.send(Constants.TOPIC_ORDER_PAID, order.getId());
 	}
+
+
 
 	public void failureOrder(@NotNull Long orderId, String remark) {
 		final Order order = orderMapper.findOne(orderId);

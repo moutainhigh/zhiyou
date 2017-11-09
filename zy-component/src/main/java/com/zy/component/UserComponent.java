@@ -318,6 +318,7 @@ public class UserComponent {
 		return data;
 	}
 
+
 	/**
 	 * 查看权限
 	 * @param user

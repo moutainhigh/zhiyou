@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.MergeUserViewMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.mergeusr.MergeUserView">
+		<id column="id" property="id" />
+		<result column="phone" property="phone" />
+		<result column="password" property="password" />
+		<result column="nickname" property="nickname" />
+		<result column="user_type" property="userType" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="user_rank" property="userRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="qq" property="qq" />
+		<result column="avatar" property="avatar" />
+		<result column="is_frozen" property="isFrozen" />
+		<result column="register_time" property="registerTime" />
+		<result column="register_ip" property="registerIp" />
+		<result column="inviter_id" property="inviterId" />
+		<result column="parent_id" property="parentId" />
+		<result column="remark" property="remark" />
+		<result column="vip_expired_date" property="vipExpiredDate" />
+		<result column="open_id" property="openId" />
+		<result column="union_id" property="unionId" />
+		<result column="last_upgraded_time" property="lastUpgradedTime" />
+		<result column="is_root" property="isRoot" />
+		<result column="root_name" property="rootName" />
+		<result column="is_boss" property="isBoss" />
+		<result column="boss_name" property="bossName" />
+		<result column="boss_id" property="bossId" />
+		<result column="code" property="code" />
+		<result column="is_director" property="isDirector" />
+		<result column="is_honor_director" property="isHonorDirector" />
+		<result column="is_shareholder" property="isShareholder" />
+		<result column="is_deleted" property="isDeleted" />
+		<result column="is_to_v4" property="isToV4" />
+		<result column="viewflag" property="viewflag" />
+		<result column="lastlogin_time" property="lastloginTime" />
+		<result column="largearea" property="largearea" />
+		<result column="setlargearearemark" property="setlargearearemark" />
+		<result column="is_president" property="isPresident" />
+		<result column="president_id" property="presidentId" />
+		<result column="largearea_director" property="largeareaDirector" />
+		<result column="v4_id" property="v4Id" />
+	</resultMap>
+
+	<sql id="baseColumn">id,phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark,is_president,president_id,largearea_director,v4_id</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.mergeusr.MergeUserView" useGeneratedKeys="true" keyProperty="id">
+	  insert into `view_merge_user` (phone,password,nickname,user_type,user_rank,qq,avatar,is_frozen,register_time,register_ip,inviter_id,parent_id,remark,vip_expired_date,open_id,union_id,last_upgraded_time,is_root,root_name,is_boss,boss_name,boss_id,code,is_director,is_honor_director,is_shareholder,is_deleted,is_to_v4,viewflag,lastlogin_time,largearea,setlargearearemark,is_president,president_id,largearea_director,v4_id)
+	  values (#{phone},#{password},#{nickname},#{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{qq},#{avatar},#{isFrozen},#{registerTime},#{registerIp},#{inviterId},#{parentId},#{remark},#{vipExpiredDate},#{openId},#{unionId},#{lastUpgradedTime},#{isRoot},#{rootName},#{isBoss},#{bossName},#{bossId},#{code},#{isDirector},#{isHonorDirector},#{isShareholder},#{isDeleted},#{isToV4},#{viewflag},#{lastloginTime},#{largearea},#{setlargearearemark},#{isPresident},#{presidentId},#{largeareaDirector},#{v4Id})
+	</insert>
+
+	<delete id="delete">
+		delete from `view_merge_user` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.mergeusr.MergeUserView">
+		update `view_merge_user`
+		<set>
+			phone = #{phone},
+			password = #{password},
+			nickname = #{nickname},
+			user_type = #{userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			user_rank = #{userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			qq = #{qq},
+			avatar = #{avatar},
+			is_frozen = #{isFrozen},
+			register_time = #{registerTime},
+			register_ip = #{registerIp},
+			inviter_id = #{inviterId},
+			parent_id = #{parentId},
+			remark = #{remark},
+			vip_expired_date = #{vipExpiredDate},
+			open_id = #{openId},
+			union_id = #{unionId},
+			last_upgraded_time = #{lastUpgradedTime},
+			is_root = #{isRoot},
+			root_name = #{rootName},
+			is_boss = #{isBoss},
+			boss_name = #{bossName},
+			boss_id = #{bossId},
+			code = #{code},
+			is_director = #{isDirector},
+			is_honor_director = #{isHonorDirector},
+			is_shareholder = #{isShareholder},
+			is_deleted = #{isDeleted},
+			is_to_v4 = #{isToV4},
+			viewflag = #{viewflag},
+			lastlogin_time = #{lastloginTime},
+			largearea = #{largearea},
+			setlargearearemark = #{setlargearearemark},
+			is_president = #{isPresident},
+			president_id = #{presidentId},
+			largearea_director = #{largeareaDirector},
+			v4_id = #{v4Id},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `view_merge_user`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'phone'">phone = #{mergeUserView.phone},</when>
+					<when test="field == 'password'">password = #{mergeUserView.password},</when>
+					<when test="field == 'nickname'">nickname = #{mergeUserView.nickname},</when>
+					<when test="field == 'userType'">user_type = #{mergeUserView.userType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.User$UserType},</when>
+					<when test="field == 'userRank'">user_rank = #{mergeUserView.userRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler,javaType=com.zy.entity.usr.User$UserRank},</when>
+					<when test="field == 'qq'">qq = #{mergeUserView.qq},</when>
+					<when test="field == 'avatar'">avatar = #{mergeUserView.avatar},</when>
+					<when test="field == 'isFrozen'">is_frozen = #{mergeUserView.isFrozen},</when>
+					<when test="field == 'registerTime'">register_time = #{mergeUserView.registerTime},</when>
+					<when test="field == 'registerIp'">register_ip = #{mergeUserView.registerIp},</when>
+					<when test="field == 'inviterId'">inviter_id = #{mergeUserView.inviterId},</when>
+					<when test="field == 'parentId'">parent_id = #{mergeUserView.parentId},</when>
+					<when test="field == 'remark'">remark = #{mergeUserView.remark},</when>
+					<when test="field == 'vipExpiredDate'">vip_expired_date = #{mergeUserView.vipExpiredDate},</when>
+					<when test="field == 'openId'">open_id = #{mergeUserView.openId},</when>
+					<when test="field == 'unionId'">union_id = #{mergeUserView.unionId},</when>
+					<when test="field == 'lastUpgradedTime'">last_upgraded_time = #{mergeUserView.lastUpgradedTime},</when>
+					<when test="field == 'isRoot'">is_root = #{mergeUserView.isRoot},</when>
+					<when test="field == 'rootName'">root_name = #{mergeUserView.rootName},</when>
+					<when test="field == 'isBoss'">is_boss = #{mergeUserView.isBoss},</when>
+					<when test="field == 'bossName'">boss_name = #{mergeUserView.bossName},</when>
+					<when test="field == 'bossId'">boss_id = #{mergeUserView.bossId},</when>
+					<when test="field == 'code'">code = #{mergeUserView.code},</when>
+					<when test="field == 'isDirector'">is_director = #{mergeUserView.isDirector},</when>
+					<when test="field == 'isHonorDirector'">is_honor_director = #{mergeUserView.isHonorDirector},</when>
+					<when test="field == 'isShareholder'">is_shareholder = #{mergeUserView.isShareholder},</when>
+					<when test="field == 'isDeleted'">is_deleted = #{mergeUserView.isDeleted},</when>
+					<when test="field == 'isToV4'">is_to_v4 = #{mergeUserView.isToV4},</when>
+					<when test="field == 'viewflag'">viewflag = #{mergeUserView.viewflag},</when>
+					<when test="field == 'lastloginTime'">lastlogin_time = #{mergeUserView.lastloginTime},</when>
+					<when test="field == 'largearea'">largearea = #{mergeUserView.largearea},</when>
+					<when test="field == 'setlargearearemark'">setlargearearemark = #{mergeUserView.setlargearearemark},</when>
+					<when test="field == 'isPresident'">is_president = #{mergeUserView.isPresident},</when>
+					<when test="field == 'presidentId'">president_id = #{mergeUserView.presidentId},</when>
+					<when test="field == 'largeareaDirector'">largearea_director = #{mergeUserView.largeareaDirector},</when>
+					<when test="field == 'v4Id'">v4_id = #{mergeUserView.v4Id},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{mergeUserView.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `view_merge_user`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.MergeUserViewQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `view_merge_user`
+		<where>
+			<if test="isShareholderEQ != null">
+				and is_shareholder = #{isShareholderEQ}
+			</if>
+			<if test="nicknameLK != null">
+				<bind name="nicknameLK" value="'%' + nicknameLK + '%'"/> and nickname like #{nicknameLK}
+			</if>
+			<if test="largeareaDirectorEQ != null">
+				and largearea_director = #{largeareaDirectorEQ}
+			</if>
+			<if test="v4IdIN != null">
+				<if test="v4IdIN.length != 0">
+				and v4_id in
+				<foreach collection="v4IdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="v4IdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="parentIdNL != null">
+				and parent_id is null
+			</if>
+			<if test="isHonorDirectorEQ != null">
+				and is_honor_director = #{isHonorDirectorEQ}
+			</if>
+			<if test="isDirectorEQ != null">
+				and is_director = #{isDirectorEQ}
+			</if>
+			<if test="isFrozenEQ != null">
+				and is_frozen = #{isFrozenEQ}
+			</if>
+			<if test="registerTimeGTE != null">
+				and register_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="bossNameLK != null">
+				<bind name="bossNameLK" value="'%' + bossNameLK + '%'"/> and boss_name like #{bossNameLK}
+			</if>
+			<if test="isPresidentEQ != null">
+				and is_president = #{isPresidentEQ}
+			</if>
+			<if test="isBossEQ != null">
+				and is_boss = #{isBossEQ}
+			</if>
+			<if test="presidentIdEQ != null">
+				and president_id = #{presidentIdEQ}
+			</if>
+			<if test="phoneEQ != null">
+				and phone = #{phoneEQ}
+			</if>
+			<if test="isRootEQ != null">
+				and is_root = #{isRootEQ}
+			</if>
+			<if test="userRankEQ != null">
+				and user_rank = #{userRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="isDeletedEQ != null">
+				and is_deleted = #{isDeletedEQ}
+			</if>
+			<if test="inviterIdEQ != null">
+				and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="isToV4EQ != null">
+				and is_to_v4 = #{isToV4EQ}
+			</if>
+			<if test="parentIdIN != null">
+				<if test="parentIdIN.length != 0">
+				and parent_id in
+				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="parentIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="bossIdEQ != null">
+				and boss_id = #{bossIdEQ}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="userTypeEQ != null">
+				and user_type = #{userTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="registerTimeLT != null">
+				and register_time &lt; #{registerTimeLT}
+			</if>
+			<if test="parentIdEQ != null">
+				and parent_id = #{parentIdEQ}
+			</if>
+			<if test="inviterIdIN != null">
+				<if test="inviterIdIN.length != 0">
+				and inviter_id in
+				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="inviterIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="v4IdEQ != null">
+				and v4_id = #{v4IdEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.MergeUserViewQueryModel">
+		select count(*) from `view_merge_user`
+		<where>
+			<if test="isShareholderEQ != null">
+				and is_shareholder = #{isShareholderEQ}
+			</if>
+			<if test="nicknameLK != null">
+				<bind name="nicknameLK" value="'%' + nicknameLK + '%'"/> and nickname like #{nicknameLK}
+			</if>
+			<if test="largeareaDirectorEQ != null">
+				and largearea_director = #{largeareaDirectorEQ}
+			</if>
+			<if test="v4IdIN != null">
+				<if test="v4IdIN.length != 0">
+				and v4_id in
+				<foreach collection="v4IdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="v4IdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="parentIdNL != null">
+				and parent_id is null
+			</if>
+			<if test="isHonorDirectorEQ != null">
+				and is_honor_director = #{isHonorDirectorEQ}
+			</if>
+			<if test="isDirectorEQ != null">
+				and is_director = #{isDirectorEQ}
+			</if>
+			<if test="isFrozenEQ != null">
+				and is_frozen = #{isFrozenEQ}
+			</if>
+			<if test="registerTimeGTE != null">
+				and register_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="bossNameLK != null">
+				<bind name="bossNameLK" value="'%' + bossNameLK + '%'"/> and boss_name like #{bossNameLK}
+			</if>
+			<if test="isPresidentEQ != null">
+				and is_president = #{isPresidentEQ}
+			</if>
+			<if test="isBossEQ != null">
+				and is_boss = #{isBossEQ}
+			</if>
+			<if test="presidentIdEQ != null">
+				and president_id = #{presidentIdEQ}
+			</if>
+			<if test="phoneEQ != null">
+				and phone = #{phoneEQ}
+			</if>
+			<if test="isRootEQ != null">
+				and is_root = #{isRootEQ}
+			</if>
+			<if test="userRankEQ != null">
+				and user_rank = #{userRankEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="isDeletedEQ != null">
+				and is_deleted = #{isDeletedEQ}
+			</if>
+			<if test="inviterIdEQ != null">
+				and inviter_id = #{inviterIdEQ}
+			</if>
+			<if test="isToV4EQ != null">
+				and is_to_v4 = #{isToV4EQ}
+			</if>
+			<if test="parentIdIN != null">
+				<if test="parentIdIN.length != 0">
+				and parent_id in
+				<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="parentIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="bossIdEQ != null">
+				and boss_id = #{bossIdEQ}
+			</if>
+			<if test="idIN != null">
+				<if test="idIN.length != 0">
+				and id in
+				<foreach collection="idIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="idIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="userTypeEQ != null">
+				and user_type = #{userTypeEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="registerTimeLT != null">
+				and register_time &lt; #{registerTimeLT}
+			</if>
+			<if test="parentIdEQ != null">
+				and parent_id = #{parentIdEQ}
+			</if>
+			<if test="inviterIdIN != null">
+				<if test="inviterIdIN.length != 0">
+				and inviter_id in
+				<foreach collection="inviterIdIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="inviterIdIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="v4IdEQ != null">
+				and v4_id = #{v4IdEQ}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByCode" resultMap="baseResultMap">
+		select * from `view_merge_user` where code = #{code}
+	</select>
+
+	<select id="findSupAll" resultMap="baseResultMap">
+		select * from `view_merge_user` u where
+		u.id in(
+		select l.user_id from usr_merge_user_log l
+		<where>
+			<if test="parentIdIN != null">
+				<if test="parentIdIN.length != 0">
+					and l.user_id in
+					<foreach collection="parentIdIN" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+					<if test="endTime !=null">
+						AND l.operated_Time &lt;= #{endTime}
+					</if>
+					<if test="beginTime !=null">
+						AND l.operated_Time &gt;= #{beginTime}
+					</if>
+					<if test="remark !=null">
+						AND l.remark LIKE #{remark}
+					</if>
+				</if>
+
+			</if>
+
+		</where>
+		)
+	</select>
+
+	<select id="countByActive" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
+		select count(m.id) from usr_user u,mal_order m where m.user_id=u.id
+		<if test="parentIdNL !=null">
+			AND u.parent_id =#{parentIdNL}
+		</if>
+		<if test="registerTimeLT !=null">
+			and m.created_time &lt;=#{registerTimeLT}
+		</if>
+		<if test="registerTimeGTE !=null">
+			and m.created_time &gt;=#{registerTimeGTE}
+		</if>
+	</select>
+
+	<select id="findByNotActive" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT * from usr_user uu
+		<where>
+			<if test="parentIdNL !=null">
+				AND uu.parent_id =#{parentIdNL}
+			</if>
+			<if test="nameorPhone != null">
+				and (uu.phone LIKE #{nameorPhone} or uu.nickname like #{nameorPhone})
+			</if>
+			AND uu.id not in( SELECT DISTINCT(u.id) from usr_user u,mal_order m
+			where m.user_id = u.id
+			<if test="parentIdNL !=null">
+				and u.parent_id =#{parentIdNL}
+			</if>
+			<if test="registerTimeGTE !=null">
+				AND m.created_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="registerTimeLT !=null">
+				AND m.created_time &lt;= #{registerTimeLT}
+			</if>
+			)
+		</where>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+
+	</select>
+
+	<resultMap id="userdtoResultMap" type="com.zy.model.dto.UserDto">
+		<result column="id" property="id"/>
+		<result column="userRank" property="userRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+		<result column="nickname" property="nickname"/>
+		<result column="pnickname" property="pnickname"/>
+		<result column="avatar" property="avatar"/>
+		<result column="phone" property="phone"/>
+		<result column="pphone" property="pphone"/>
+	</resultMap>
+
+	<select id="findMergeUserViewAll" resultMap="userdtoResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		select a.id id,a.user_rank userRank,a.nickname nickname,b.nickname pnickname,a.avatar avatar, a.phone phone ,b.phone pphone from view_merge_user a LEFT JOIN view_merge_user b ON a.parent_id=b.id where a.user_type!=0
+		<if test="nameorPhone !=null">
+			and (a.phone like #{nameorPhone} or a.nickname like #{nameorPhone})
+		</if>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="countMergeUserViewAll" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
+		select count(*) from view_merge_user where user_type!=0
+		<if test="nameorPhone !=null">
+			and (phone like #{nameorPhone} or nickname like #{nameorPhone})
+		</if>
+	</select>
+
+	<select id="findAddpeople" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT u.* from usr_merge_user_log l,view_merge_user u WHERE
+		l.user_id = u.id
+		AND l.remark like #{remark}
+		<if test="registerTimeGTE !=null">
+			and l.operated_Time &gt;=#{registerTimeGTE}
+		</if>
+		<if test="registerTimeLT !=null">
+			and l.operated_Time &lt;=#{registerTimeLT}
+		</if>
+		<if test="parentIdNL !=null">
+			AND u.parent_id =#{parentIdNL}
+		</if>
+		<if test="nameorPhone !=null">
+			and (u.phone like #{nameorPhone} or u.nickname like #{nameorPhone})
+		</if>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="countByNotActive" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT count(*) from usr_merge_user
+		<where>
+			<if test="parentIdNL !=null">
+				and parent_id =#{parentIdNL}
+			</if>
+			<if test="nameorPhone != null">
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
+			</if>
+			and id not in( SELECT DISTINCT(u.id)
+			FROM
+			usr_user u,
+			mal_order m
+			WHERE
+			m.user_id = u.id
+			<if test="parentIdNL !=null">
+				and u.parent_id =#{parentIdNL}
+			</if>
+			<if test="registerTimeGTE !=null">
+				AND m.created_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="registerTimeLT !=null">
+				AND m.created_time &lt;= #{registerTimeLT}
+			</if>
+			)
+		</where>
+	</select>
+
+</mapper>

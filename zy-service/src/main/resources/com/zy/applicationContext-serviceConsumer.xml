@@ -69,4 +69,7 @@
     <dubbo:reference id="userTargetSalesService" interface="com.zy.service.UserTargetSalesService" protocol="dubbo"/>
     <dubbo:reference id="inviteNumberService" interface="com.zy.service.InviteNumberService" protocol="dubbo"/>
     <dubbo:reference id="mergeUserService" interface="com.zy.service.MergeUserService" protocol="dubbo"/>
+    <dubbo:reference id="accountNumberService" interface="com.zy.service.AccountNumberService" protocol="dubbo"/>
+    <dubbo:reference id="userCheckService" interface="com.zy.service.UserCheckService" protocol="dubbo"/>
+    <dubbo:reference id="mergeUserViewService" interface="com.zy.service.MergeUserViewService" protocol="dubbo"/>
 </beans>

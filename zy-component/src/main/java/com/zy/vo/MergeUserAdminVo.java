@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -23,6 +24,32 @@ public class MergeUserAdminVo implements Serializable {
 	private UserRank userRank;
 	@Field(label = "产品类型")
 	private Integer productType;
+	@Field(label = "注册时间")
+	private Date registerTime;
+	@Field(label = "是否冻结")
+	private Boolean isFrozen;
+	@Field(label = "是否董事")
+	private Boolean isDirector;
+	@Field(label = "是否荣誉董事")
+	private Boolean isHonorDirector;
+	@Field(label = "是否删除")
+	private Boolean isDeleted;
+	@Field(label = "是否直升特级")
+	private Boolean isToV4;
+	@Field(label = "直属v4Id")
+	private Long v4Id;
+	@Field(label = "是否股东")
+	private Boolean isShareholder;
+	@Field(label = "所属大区")
+	private Integer largearea;
+	@Field(label = "设置大区备注")
+	private String setlargearearemark;
+	@Field(label = "是否大区总裁")
+	private Boolean isPresident;
+	@Field(label = "所属大区总裁id")
+	private Long presidentId;
+	@Field(label = "1：大区董事长  2：大区副董事长")
+	private Integer largeareaDirector;
 
 	/* 扩展 */
 	@Field(label = "用户id")
@@ -33,5 +60,7 @@ public class MergeUserAdminVo implements Serializable {
 	private UserAdminSimpleVo parent;
 	@Field(label = "用户等级")
 	private String userRankLabel;
+	@Field(label = "直属v4Id")
+	private UserAdminSimpleVo v4Parent;
 
 }

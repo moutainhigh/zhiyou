@@ -7,9 +7,11 @@ import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.model.ui.Grid;
 import com.zy.component.ProductComponent;
 import com.zy.entity.mal.Product;
+import com.zy.entity.sys.SystemCode;
 import com.zy.model.Constants;
 import com.zy.model.query.ProductQueryModel;
 import com.zy.service.ProductService;
+import com.zy.service.SystemCodeService;
 import com.zy.vo.ProductAdminVo;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -37,6 +40,9 @@ public class ProductController {
 	
 	@Autowired
 	private ProductComponent productComponent;
+
+	@Autowired
+	private SystemCodeService systemCodeService;
 	
 	@RequiresPermissions("product:view")
 	@RequestMapping(method = RequestMethod.GET)
@@ -54,8 +60,10 @@ public class ProductController {
 	
 	@RequiresPermissions("product:edit")
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String create() {
-		
+	public String create( Model model) {
+		//准备  商品类型
+		List<SystemCode> productTypes = systemCodeService.findByType("PRODUCTTYPE");//查询商品类型
+		model.addAttribute("productTypes",productTypes);
 		return "mal/productCreate";
 	}
 	
@@ -84,6 +92,9 @@ public class ProductController {
 		if (StringUtils.isNotBlank(detail)) {
 			detail = detail.replace("\r\n", "").replace("'", "\\'");
 		}
+		//准备  商品类型
+		List<SystemCode> productTypes = systemCodeService.findByType("PRODUCTTYPE");//查询商品类型
+		model.addAttribute("productTypes",productTypes);
 		model.addAttribute("detail", detail);
 		return "mal/productUpdate";
 	}

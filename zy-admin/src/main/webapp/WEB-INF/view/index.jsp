@@ -233,7 +233,7 @@
           </li>
         </shiro:hasAnyPermissions>
 
-        <shiro:hasAnyPermissions name="activity:view,report:view,activityReport:view,activityTicket:view,activityApply:view,policy:view,policyCode:view,reportVisitedLog:view,lesson:view,lessonUser:view">
+        <shiro:hasAnyPermissions name="activity:view,report:view,activityReport:view,activityTicket:view,activityApply:view,policy:view,policyCode:view,reportVisitedLog:view,lesson:view,lessonUser:view,accountNumber:view">
           <li>
             <a href="javascript:;">
               <i class="icon-globe"></i>
@@ -333,6 +333,11 @@
               <shiro:hasPermission name="userTargetSales:view">
                 <li>
                   <a href="javascript:;" data-href="${ctx}/userTargetSales"><i class="icon-graduation"></i> 用户目标销量管理<span class="badge badge-danger"></span></a>
+                </li>
+              </shiro:hasPermission>
+              <shiro:hasPermission name="accountNumber:view">
+                <li>
+                  <a href="javascript:;" data-href="${ctx}/accountnumber"><i class="icon-graduation"></i> 账号迁移管理<span class="badge badge-danger"></span></a>
                 </li>
               </shiro:hasPermission>
             </ul>

@@ -158,7 +158,7 @@
 </head>
 <body>
 <header class="header">
-  <h1>我的团队</h1>
+  <h1>我的${title}团队</h1>
   <a href="${ctx}/u" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
@@ -168,7 +168,7 @@
       <div class="teamAll">
         <img src="${ctx}/images/teamNew.png"/>
         <span>团队总人数</span><span id="teamNewCount"></span>
-        <c:if test="${dataMap.flag eq 'T'}"> <a href="${ctx}/u/team/findDirectlySup">直属特级详情>></a></c:if>
+        <c:if test="${dataMap.flag eq 'T'}"> <a href="${ctx}/u/team/findDirectlySup?productType=${productType}">直属特级详情>></a></c:if>
       </div>
       <div id="echartTeam"></div>
     </div>
@@ -177,7 +177,7 @@
     <div class="teamAll">
       <img src="${ctx}/images/team3.png"/>
       <span>直属团队</span>
-      <a href="${ctx}/u/team/teamDetail">直属详情>></a>
+      <a href="${ctx}/u/team/teamDetail?productType=${productType}">直属详情>></a>
     </div>
     <div id="echartTeamTwo"></div>
   </div>
@@ -186,7 +186,7 @@
     <div class="teamAll">
       <img src="${ctx}/images/team5.png"/>
       <span>团队新成员</span>
-      <a href="${ctx}/u/team/teamNew">新成员详情>></a>
+      <a href="${ctx}/u/team/teamNew?productType=${productType}">新成员详情>></a>
     </div>
     <div id="echartTeamFor"></div>
   </div>
@@ -253,7 +253,7 @@
       </div>
       </c:if>
     </c:forEach>
-    <a href="${ctx}/u/team/teamSleep" class="lookDetil">查看详情>></a>
+    <a href="${ctx}/u/team/teamSleep?productType=${productType}" class="lookDetil">查看详情>></a>
   </div>
 </article>
 <script src="${ctx}/js/echarts.min.js"></script>

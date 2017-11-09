@@ -6,7 +6,6 @@ import com.zy.entity.act.Policy;
 import com.zy.entity.fnc.*;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.ProductReplacement;
-import com.zy.entity.mergeusr.MergeUser;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
@@ -26,6 +25,8 @@ import java.util.*;
 import static com.zy.model.Constants.ALIYUN_URL_IMAGE;
 
 public class GcUtils {
+
+
 
 	public static String getHost() {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -258,6 +259,18 @@ public class GcUtils {
 		}
 	}
 
+	public static String getLargeareaDirectorLabel(Integer largeareaDirector) {
+		if(largeareaDirector == null){
+			return "";
+		}else if(largeareaDirector == 1){
+			return "大区董事长";
+		}else if(largeareaDirector == 2){
+			return "大区副董事长";
+		}else {
+			return "";
+		}
+	}
+
 	public static String getMergeUserRankLabel(User.UserRank userRank) {
 		if (userRank == User.UserRank.V0) {
 			return "普通用户";
@@ -273,6 +286,18 @@ public class GcUtils {
 			return "-";
 		}
 	}
+
+//	public  String getLargeAreaLabel(Integer largearea) {
+//		if(largearea == null){
+//			return "";
+//		}
+//		SystemCode largeAreaType = systemCodeService.findByTypeAndValue("LargeAreaType", largearea + "");
+//		if(largeAreaType == null){
+//			return "-";
+//		}else {
+//			return largeAreaType.getSystemName();
+//		}
+//	}
 
 	public static String getConfirmStatusStyle(ConfirmStatus confirmStatus) {
 		String labelClass = "default";

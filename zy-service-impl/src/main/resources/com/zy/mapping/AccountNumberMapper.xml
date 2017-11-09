@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.AccountNumberMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.account.AccountNumber">
+		<id column="id" property="id" />
+		<result column="old_phone" property="oldPhone" />
+		<result column="old_name" property="oldName" />
+		<result column="new_phone" property="newPhone" />
+		<result column="flage" property="flage" />
+		<result column="create_by" property="createBy" />
+		<result column="create_date" property="createDate" />
+		<result column="update_by" property="updateBy" />
+		<result column="update_date" property="updateDate" />
+	</resultMap>
+
+	<sql id="baseColumn">id,old_phone,old_name,new_phone,flage,create_by,create_date,update_by,update_date</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.account.AccountNumber" useGeneratedKeys="true" keyProperty="id">
+	  insert into `td_account_number` (old_phone,old_name,new_phone,flage,create_by,create_date,update_by,update_date)
+	  values (#{oldPhone},#{oldName},#{newPhone},#{flage},#{createBy},#{createDate},#{updateBy},#{updateDate})
+	</insert>
+
+	<delete id="delete">
+		delete from `td_account_number` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.account.AccountNumber">
+		update `td_account_number`
+		<set>
+			old_phone = #{oldPhone},
+			old_name = #{oldName},
+			new_phone = #{newPhone},
+			flage = #{flage},
+			create_by = #{createBy},
+			create_date = #{createDate},
+			update_by = #{updateBy},
+			update_date = #{updateDate},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `td_account_number`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'oldPhone'">old_phone = #{accountNumber.oldPhone},</when>
+					<when test="field == 'oldName'">old_name = #{accountNumber.oldName},</when>
+					<when test="field == 'newPhone'">new_phone = #{accountNumber.newPhone},</when>
+					<when test="field == 'flage'">flage = #{accountNumber.flage},</when>
+					<when test="field == 'createBy'">create_by = #{accountNumber.createBy},</when>
+					<when test="field == 'createDate'">create_date = #{accountNumber.createDate},</when>
+					<when test="field == 'updateBy'">update_by = #{accountNumber.updateBy},</when>
+					<when test="field == 'updateDate'">update_date = #{accountNumber.updateDate},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{accountNumber.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `td_account_number`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.AccountNumberQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `td_account_number`
+		<where>
+			<if test="flageIN != null">
+				<if test="flageIN.length != 0">
+				and flage in
+				<foreach collection="flageIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="flageIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="flageEQ != null">
+				and flage = #{flageEQ}
+			</if>
+			<if test="oldPhoneEQ != null">
+				and old_phone = #{oldPhoneEQ}
+			</if>
+			<if test="newPhoneEQ != null">
+				and new_phone = #{newPhoneEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.AccountNumberQueryModel">
+		select count(*) from `td_account_number`
+		<where>
+			<if test="flageIN != null">
+				<if test="flageIN.length != 0">
+				and flage in
+				<foreach collection="flageIN" item="item" open="(" separator="," close=")">
+				#{item}
+				</foreach>
+				</if>
+				<if test="flageIN.length == 0">
+				and 1 = 2
+				</if>
+			</if>
+			<if test="flageEQ != null">
+				and flage = #{flageEQ}
+			</if>
+			<if test="oldPhoneEQ != null">
+				and old_phone = #{oldPhoneEQ}
+			</if>
+			<if test="newPhoneEQ != null">
+				and new_phone = #{newPhoneEQ}
+			</if>
+		</where>
+	</select>
+
+</mapper>
