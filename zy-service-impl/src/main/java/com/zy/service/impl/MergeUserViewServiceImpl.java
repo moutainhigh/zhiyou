@@ -87,6 +87,23 @@ public class MergeUserViewServiceImpl implements MergeUserViewService {
     }
 
     /**
+     *查询所有  没有默认分页
+     * @param mergeUserViewQueryModel
+     * @return
+     */
+    @Override
+    public Page<MergeUserView> findPage1(MergeUserViewQueryModel mergeUserViewQueryModel) {
+        long total = mergeUserViewMapper.count(mergeUserViewQueryModel);
+        List<MergeUserView> data = mergeUserViewMapper.findAll(mergeUserViewQueryModel);
+        Page<MergeUserView> page = new Page<>();
+        page.setPageNumber(mergeUserViewQueryModel.getPageNumber());
+        page.setPageSize(mergeUserViewQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
+    }
+
+    /**
      * 统计查询 活跃人数
      * @param userQueryModel
      * @return

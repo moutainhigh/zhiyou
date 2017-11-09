@@ -15,6 +15,8 @@ public interface MergeUserViewService {
 
 	Page<MergeUserView> findPage(MergeUserViewQueryModel mergeUserViewQueryModel);
 
+	Page<MergeUserView> findPage1(MergeUserViewQueryModel mergeUserViewQueryModel);
+
 	Page<MergeUserView> findAllPage(MergeUserViewQueryModel mergeUserViewQueryModel);
 
 	List<MergeUserView> findAll(MergeUserViewQueryModel mergeUserViewQueryModel);

@@ -25,7 +25,6 @@ public interface MergeUserService {
 
 	Page<MergeUser> findPage(MergeUserQueryModel mergeUserQueryModel);
 
-	Page<MergeUser> findPage1(MergeUserQueryModel mergeUserQueryModel);
 
 	List<MergeUser> findAll(MergeUserQueryModel mergeUserQueryModel);
 

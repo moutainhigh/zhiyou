@@ -72,6 +72,8 @@ public class MergeUserViewQueryModel implements Serializable {
 
 	private Integer largeareaDirectorEQ;
 
+	private String nameorPhone;
+
 	private Long v4IdEQ;
 
 	private Long[] v4IdIN;
