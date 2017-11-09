@@ -27,11 +27,7 @@
      $("#newproduct").attr("href","${ctx}/u/newOrder/"+id);
      $("#newproduct").click();
    }
-
  }
-
-
-
 </script>
 
 <body class="product-list footer-fixed">
@@ -56,8 +52,8 @@
     </c:if>
     
 
-      <c:if test="${product.productType == 2}">
-        <a href="javascript:void(0)" class="product" onclick="tohref(${product.id})" id="newproduct">
+      <c:if test="${product.productType == 2 and product.skuCode == 'zy-slj-pyqzy'}">
+          <a href="javascript:void(0)" class="product" onclick="tohref(${product.id})" id="newproduct">
           <div class="image-box">
             <img class="abs-lt" src="${product.image1Thumbnail}">
           </div>
@@ -67,22 +63,18 @@
           </div>
         </a>
       </c:if>
-    <%--&lt;%&ndash;新增代码 start&ndash;%&gt;--%>
-    <%--<a href="${ctx}/product/${product.id}" class="product">--%>
-      <%--<div class="image-box">--%>
-        <%--<img class="abs-lt" src="${product.image1Thumbnail}">--%>
-      <%--</div>--%>
-      <%--<h3>新品</h3>--%>
-        <%--&lt;%&ndash;联合创始人&ndash;%&gt;--%>
-      <%--<div class="product-info">--%>
-        <%--<span class="fs-16 font-orange">¥ 248.00</span>--%>
-      <%--</div>--%>
-        <%--&lt;%&ndash;品牌创始人&ndash;%&gt;--%>
-      <%--<div class="product-info" style="display: none;">--%>
-        <%--<span class="fs-16 font-orange">¥ 320.00</span>--%>
-      <%--</div>--%>
-    <%--</a>--%>
-    <%--&lt;%&ndash;新增代码 end&ndash;%&gt;--%>
+
+      <c:if test="${product.productType == 2 and product.skuCode == 'zy-slj'}">
+          <a href="${ctx}/u/newOrder/newDetail/${product.id}" class="product">
+          <div class="image-box">
+            <img class="abs-lt" src="${product.image1Thumbnail}">
+          </div>
+          <h3>${product.title}</h3>
+          <div class="product-info">
+            <span class="fs-16 font-orange">¥ ${product.marketPrice}</span>
+          </div>
+        </a>
+      </c:if>
   </c:forEach>
 </article>
 

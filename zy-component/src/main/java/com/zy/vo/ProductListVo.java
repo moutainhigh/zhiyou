@@ -23,6 +23,8 @@ public class ProductListVo implements Serializable {
 	private Boolean isSettlement;
 	@Field(label = "商品类型")
 	private Integer productType;
+	@Field(label = "skuCode")
+	private String skuCode;
 
 	/* 扩展 */
 	@Field(label = "主图")

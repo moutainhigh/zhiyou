@@ -15,6 +15,7 @@ import com.zy.util.GcUtils;
 import com.zy.util.VoHelper;
 import com.zy.vo.MergeUserAdminVo;
 import com.zy.vo.UserInfoVo;
+import com.zy.vo.UserListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -123,4 +124,15 @@ public class MergeUserComponent {
 		return dataList;
 	}
 
+	public Object buildVo(MergeUser mergeUser) {
+		User user = userService.findOne(mergeUser.getUserId());
+		UserListVo userListVo = new UserListVo();
+		userListVo.setId(user.getId());
+		userListVo.setAvatarThumbnail(GcUtils.getThumbnail(user.getAvatar()));
+		userListVo.setNickname(user.getNickname());
+		userListVo.setPhone(user.getPhone());
+		userListVo.setUserRank(user.getUserRank());
+		userListVo.setIsFrozen(user.getIsFrozen());
+		return userListVo;
+	}
 }

@@ -9,6 +9,7 @@ import com.zy.component.ProductComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.mal.OrderFillUser;
 import com.zy.entity.mal.Product;
+import com.zy.entity.mergeusr.MergeUser;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
@@ -39,6 +40,7 @@ import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
 import static com.zy.common.util.ValidateUtils.validate;
+import static com.zy.model.Constants.*;
 
 /**
  * Author: Xuwq
@@ -70,6 +72,9 @@ public class UcenterNewOrderController {
 
     @Autowired
     private Config config;
+
+    @Autowired
+    private MergeUserService mergeUserService;
 
     @Autowired
     private ProductComponent productComponent;
@@ -190,6 +195,42 @@ public class UcenterNewOrderController {
         }
         return null;
     }
+
+
+    @RequestMapping(value = "/newDetail/{id}", method = RequestMethod.GET)
+    public String newDetail(@PathVariable Long id, Model model) {
+
+        Product product = productService.findOne(id);
+        Principal principal = GcUtils.getPrincipal();
+        if(principal == null) {
+            model.addAttribute("isFirst", true);
+        }
+        MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(principal.getUserId(),2);
+        int minQuantity = 1;
+        User.UserRank userRank = null;
+        if(principal != null) {
+            if (mergeUser == null){
+                userRank = User.UserRank.V0;
+            }else {
+                userRank = mergeUser.getUserRank();
+            }
+            model.addAttribute("userRank", userRank);
+            product.setPrice(productService.getPrice(product.getId(), userRank, 1L));
+            if (userRank == User.UserRank.V3 || userRank == User.UserRank.V4) {
+                minQuantity = NEW_SETTING_NEW_MIN_QUANTITY;
+            }else if (userRank == User.UserRank.V2 || userRank == User.UserRank.V1){
+                minQuantity = NEW_UP_SETTING_NEW_MIN_QUANTITY;
+            }else if (userRank == User.UserRank.V0){
+                minQuantity = NEW_DOWN_SETTING_NEW_MIN_QUANTITY;
+            }
+        }
+        model.addAttribute("minQuantity", minQuantity);
+        validate(product, NOT_NULL, "product id" + id + " not found");
+        validate(product.getIsOn(), v -> true, "product is not on");
+        model.addAttribute("product", productComponent.buildDetailVo(product));
+        return "product/productNewDetail";
+    }
+
 
     /**
      * 下单

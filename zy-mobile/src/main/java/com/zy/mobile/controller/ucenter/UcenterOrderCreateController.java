@@ -2,11 +2,13 @@ package com.zy.mobile.controller.ucenter;
 
 import com.zy.Config;
 import com.zy.common.model.result.ResultBuilder;
+import com.zy.component.MergeUserComponent;
 import com.zy.component.ProductComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.OrderFillUser;
 import com.zy.entity.mal.Product;
+import com.zy.entity.mergeusr.MergeUser;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
@@ -48,6 +50,9 @@ public class UcenterOrderCreateController {
 	private UserService userService;
 
 	@Autowired
+	private MergeUserService mergeUserService;
+
+	@Autowired
 	private UserInfoService userInfoService;
 
 	@Autowired
@@ -65,52 +70,80 @@ public class UcenterOrderCreateController {
 	@Autowired
 	private UserComponent userComponent;
 
+	@Autowired
+	private MergeUserComponent mergeUserComponent;
+
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create(@RequestParam Long productId, @RequestParam Long quantity, Boolean isPayToPlatform, Model model, Principal principal) {
-
-		Long userId = principal.getUserId();
-		User user = userService.findOne(userId);
-		User.UserRank userRank = user.getUserRank();
-
-		Address address = addressService.findDefaultByUserId(userId);
 		Product product = productService.findOne(productId);
-		product.setPrice(productService.getPrice(productId, user.getUserRank(), quantity));
+		Long userId = principal.getUserId();
+		User.UserRank userRank = null;
+		if (product.getProductType() == 1){
+			User user = userService.findOne(userId);
+			userRank = user.getUserRank();
+			product.setPrice(productService.getPrice(productId, userRank, quantity));
+			if (userRank == User.UserRank.V0) {
+				Long parentId = user.getParentId();
+				Long inviterId = user.getInviterId();
+				if (parentId != null) {
+					User parent = userService.findOne(parentId);
+					if (parent != null) {
+						model.addAttribute("parent", userComponent.buildListVo(parent));
+					}
+				}
+				if (inviterId != null) {
+					User inviter = userService.findOne(inviterId);
+					if (inviter != null) {
+						model.addAttribute("inviter", userComponent.buildListVo(inviter));
+					}
+				}
+			}
+		}else if (product.getProductType() == 2){
+			MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId,product.getProductType());
+			userRank = mergeUser.getUserRank();
+			product.setPrice(productService.getPrice(productId, userRank, quantity));
+			if (userRank == User.UserRank.V3) {
+				Long parentId = mergeUser.getParentId();
+				Long inviterId = mergeUser.getInviterId();
+				if (parentId != null) {
+					MergeUser parent = mergeUserService.findByUserIdAndProductType(parentId,product.getProductType());
+					if (parent != null) {
+						model.addAttribute("parent", mergeUserComponent.buildVo(parent));
+					}
+				}
+				if (inviterId != null) {
+					MergeUser inviter = mergeUserService.findByUserIdAndProductType(inviterId,product.getProductType());
+					if (inviter != null) {
+						model.addAttribute("inviter", mergeUserComponent.buildVo(inviter));
+					}
+				}
+			}
+		}
+		Address address = addressService.findDefaultByUserId(userId);
+
 		validate(product, NOT_NULL, "product id:" + productId + " is not found !");
 		ProductListVo productVo = productComponent.buildListVo(product);
 		model.addAttribute("product", productVo);
 		model.addAttribute("quantity", quantity);
 		model.addAttribute("address", address);
 		model.addAttribute("userRank", userRank);
-		model.addAttribute("useOfflinePay", quantity < 3600L);
-
-		if (userRank == User.UserRank.V0) {
-			Long parentId = user.getParentId();
-			Long inviterId = user.getInviterId();
-			if (parentId != null) {
-				User parent = userService.findOne(parentId);
-				if (parent != null) {
-					model.addAttribute("parent", userComponent.buildListVo(parent));
+		boolean orderFill = false;
+		if (product.getProductType() == 1){
+			model.addAttribute("useOfflinePay", quantity < 3600L);
+			orderFill = config.isOpenOrderFill();
+			if(orderFill) {
+				List<OrderFillUser> all = orderFillUserService.findAll(OrderFillUserQueryModel.builder().userIdEQ(userId).build());
+				if(all.isEmpty()) {
+					orderFill = false;
+				} else {
+					orderFill = true;
 				}
 			}
-			if (inviterId != null) {
-				User inviter = userService.findOne(inviterId);
-				if (inviter != null) {
-					model.addAttribute("inviter", userComponent.buildListVo(inviter));
-				}
-			}
-		}
-
-		boolean orderFill = config.isOpenOrderFill();
-		if(orderFill) {
-			List<OrderFillUser> all = orderFillUserService.findAll(OrderFillUserQueryModel.builder().userIdEQ(userId).build());
-			if(all.isEmpty()) {
-				orderFill = false;
-			} else {
-				orderFill = true;
-			}
+		}else if (product.getProductType() == 2){
+			model.addAttribute("useOfflinePay", quantity < 2000L);
 		}
 		UserInfo userInfo = userInfoService.findByUserId(userId);
-		if (userInfo!=null&&userInfo.getConfirmStatus() == ConfirmStatus.已通过){
+		if (userInfo != null && userInfo.getConfirmStatus() == ConfirmStatus.已通过){
 			model.addAttribute("realFlage", true);
 		}else{
 			model.addAttribute("realFlage", false);

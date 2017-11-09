@@ -139,6 +139,10 @@ public  interface Constants {
     int SETTING_OLD_MIN_QUANTITY = 100;
     int SETTING_NEW_MIN_QUANTITY = 80;
 
+    int NEW_SETTING_NEW_MIN_QUANTITY = 10;
+    int NEW_DOWN_SETTING_NEW_MIN_QUANTITY = 4;
+    int NEW_UP_SETTING_NEW_MIN_QUANTITY = 2;
+
 
     BigDecimal SETTING_MAX_WITHDRAW_FEE_RATE = new BigDecimal("0.05"); // 提现最大费率 设置不可超过该值
     BigDecimal SETTING_MIN_MERCHANT_DEPOSIT_MONEY = new BigDecimal("100.00"); // 商家充值本金最小金额
