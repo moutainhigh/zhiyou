@@ -2,7 +2,9 @@ package com.zy.mapper;
 
 
 import com.zy.entity.mergeusr.MergeUserView;
+import com.zy.model.dto.UserDto;
 import com.zy.model.query.MergeUserViewQueryModel;
+import com.zy.model.query.UserQueryModel;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -29,8 +31,16 @@ public interface MergeUserViewMapper {
 
 	List<MergeUserView> findSupAll(Map<String, Object> dataMap);
 
-	long countByActive(MergeUserViewQueryModel mergeUserViewQueryModel);
+	long countByActive(UserQueryModel userQueryModel);
 
-	List<MergeUserView> findByNotActive(MergeUserViewQueryModel mergeUserViewQueryModel);
+	List<MergeUserView> findByNotActive(UserQueryModel userQueryModel);
+
+	List<UserDto> findMergeUserViewAll(UserQueryModel userQueryModel);
+
+	long countMergeUserViewAll(UserQueryModel userQueryModel);
+
+	long countByNotActive(UserQueryModel userQueryModel);
+
+	List<MergeUserView> findAddpeople(UserQueryModel userQueryModel);
 
 }

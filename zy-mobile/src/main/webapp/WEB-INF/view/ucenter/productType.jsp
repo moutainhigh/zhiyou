@@ -29,7 +29,7 @@
 <article class="mb-15 clearfix">
   <c:forEach items="${products}" var="product">
     <c:if test="${product.productType == 1}">
-      <a href="${ctx}/u/team/newTeam?productType=${product.productType}" id="${product.productType}" class="product">
+      <a href="${ctx}/u/team/newTeam?productType=${product.productType}"  class="product">
         <div class="image-box">
           <img class="abs-lt" src="${product.image1Thumbnail}">
         </div>
@@ -37,7 +37,7 @@
       </a>
     </c:if>
     <c:if test="${product.productType == 2 && isnew}">
-      <a href="${ctx}/u/team/newTeam?productType=${product.productType}" id="${product.productType}" class="product">
+      <a href="${ctx}/u/team/newTeam?productType=${product.productType}"  class="product">
         <div class="image-box">
           <img class="abs-lt" src="${product.image1Thumbnail}">
         </div>

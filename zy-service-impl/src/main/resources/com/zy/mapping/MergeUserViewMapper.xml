@@ -474,4 +474,80 @@
 
 	</select>
 
+	<resultMap id="userdtoResultMap" type="com.zy.model.dto.UserDto">
+		<result column="id" property="id"/>
+		<result column="userRank" property="userRank" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+		<result column="nickname" property="nickname"/>
+		<result column="pnickname" property="pnickname"/>
+		<result column="avatar" property="avatar"/>
+		<result column="phone" property="phone"/>
+		<result column="pphone" property="pphone"/>
+	</resultMap>
+
+	<select id="findMergeUserViewAll" resultMap="userdtoResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		select a.id id,a.user_rank userRank,a.nickname nickname,b.nickname pnickname,a.avatar avatar, a.phone phone ,b.phone pphone from view_merge_user a LEFT JOIN view_merge_user b ON a.parent_id=b.id where a.user_type!=0
+		<if test="nameorPhone !=null">
+			and (a.phone like #{nameorPhone} or a.nickname like #{nameorPhone})
+		</if>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="countMergeUserViewAll" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
+		select count(*) from view_merge_user where user_type!=0
+		<if test="nameorPhone !=null">
+			and (phone like #{nameorPhone} or nickname like #{nameorPhone})
+		</if>
+	</select>
+
+	<select id="findAddpeople" resultMap="baseResultMap" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT u.* from usr_merge_user_log l,view_merge_user u WHERE
+		l.user_id = u.id
+		AND l.remark like #{remark}
+		<if test="registerTimeGTE !=null">
+			and l.operated_Time &gt;=#{registerTimeGTE}
+		</if>
+		<if test="registerTimeLT !=null">
+			and l.operated_Time &lt;=#{registerTimeLT}
+		</if>
+		<if test="parentIdNL !=null">
+			AND u.parent_id =#{parentIdNL}
+		</if>
+		<if test="nameorPhone !=null">
+			and (u.phone like #{nameorPhone} or u.nickname like #{nameorPhone})
+		</if>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="countByNotActive" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT count(*) from usr_merge_user
+		<where>
+			<if test="parentIdNL !=null">
+				and parent_id =#{parentIdNL}
+			</if>
+			<if test="nameorPhone != null">
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
+			</if>
+			and id not in( SELECT DISTINCT(u.id)
+			FROM
+			usr_user u,
+			mal_order m
+			WHERE
+			m.user_id = u.id
+			<if test="parentIdNL !=null">
+				and u.parent_id =#{parentIdNL}
+			</if>
+			<if test="registerTimeGTE !=null">
+				AND m.created_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="registerTimeLT !=null">
+				AND m.created_time &lt;= #{registerTimeLT}
+			</if>
+			)
+		</where>
+	</select>
+
 </mapper>

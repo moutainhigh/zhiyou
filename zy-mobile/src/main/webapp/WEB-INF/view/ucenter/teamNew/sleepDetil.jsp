@@ -236,7 +236,7 @@
 <body>
 <header class="header">
     <h1>沉睡成员详情</h1>
-    <a href="${ctx}/u/team/newTeam" class="button-left"><i class="fa fa-angle-left"></i></a>
+    <a href="${ctx}/u/team/newTeam?productType=${productType}" class="button-left"><i class="fa fa-angle-left"></i></a>
 </header>
 
 <article>
@@ -419,7 +419,7 @@
             $(".numberList").hide();
             $(".searchListShow").show();
             $.ajax({
-                url : '${ctx}/u/team/ajaxTeamSleep',
+                url : '${ctx}/u/team/ajaxTeamSleep?productType=${productType}',
                 data : {
                     nameorPhone:$(".searchInput").val(),
                     pageNumber:-1

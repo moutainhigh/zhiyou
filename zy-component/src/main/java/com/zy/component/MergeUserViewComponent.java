@@ -1,9 +1,11 @@
 package com.zy.component;
 
+import com.zy.common.model.query.Page;
 import com.zy.common.util.BeanUtils;
 import com.zy.common.util.DateUtil;
 import com.zy.entity.mergeusr.MergeUserView;
 import com.zy.entity.sys.SystemCode;
+import com.zy.model.dto.UserDto;
 import com.zy.model.query.MergeUserViewQueryModel;
 import com.zy.model.query.UserQueryModel;
 import com.zy.service.MergeUserViewService;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class MergeUserViewComponent {
@@ -40,10 +43,10 @@ public class MergeUserViewComponent {
 			mergeUserViewVo.setParent(VoHelper.buildMergeUserViewSimpleVo(mergeUserViewService.findOne(mergeUserView.getParentId())));
 		}
 		mergeUserViewVo.setUserRankLabel(GcUtils.getUserRankLabel(mergeUserView.getUserRank()));
-		Long bossId = mergeUserView.getBossId();
-		if (bossId != null) {
-			mergeUserViewVo.setBoss(VoHelper.buildMergeUserViewSimpleVo(mergeUserViewService.findOne(mergeUserView.getBossId())));
-		}
+//		Long bossId = mergeUserView.getBossId();
+//		if (bossId != null) {
+//			mergeUserViewVo.setBoss(VoHelper.buildMergeUserViewSimpleVo(mergeUserViewService.findOne(mergeUserView.getBossId())));
+//		}
 		Long presidentId = mergeUserView.getPresidentId();
 		if(presidentId != null){
 			mergeUserViewVo.setPresident(VoHelper.buildMergeUserViewSimpleVo(mergeUserViewService.findOne(mergeUserView.getParentId())));
@@ -69,18 +72,34 @@ public class MergeUserViewComponent {
 	 * @return
 	 */
 	public String activeProportion(Long userId) {
-		MergeUserViewQueryModel mergeUserViewQueryModel = new MergeUserViewQueryModel();
-		mergeUserViewQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
-		mergeUserViewQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-2,0));
-		long total = mergeUserViewService.countByActive(mergeUserViewQueryModel);
-		mergeUserViewQueryModel.setParentIdNL(userId);
-		long mytotal = mergeUserViewService.countByActive(mergeUserViewQueryModel);
+		UserQueryModel userQueryModel = new UserQueryModel();
+		userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+		userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-2,0));
+		long total = mergeUserViewService.countByActive(userQueryModel);
+		userQueryModel.setParentIdNL(userId);
+		long mytotal = mergeUserViewService.countByActive(userQueryModel);
 		DecimalFormat df = new DecimalFormat("###0.00");
 		if (total==0){
 			return "0.00";
 		}else{
 			return df.format((double)mytotal/(double)total*100);
 		}
+	}
+
+	/**
+	 * 查询  所有 用户 信息
+	 * @param userQueryModel
+	 * @return
+	 */
+	public Page<UserDto> findUserAll(UserQueryModel userQueryModel) {
+		List<UserDto> userList = mergeUserViewService.findUserAll(userQueryModel);
+		long total = mergeUserViewService.countUserAll(userQueryModel);
+		Page<UserDto> page = new Page<>();
+		page.setPageNumber(userQueryModel.getPageNumber());
+		page.setPageSize(userQueryModel.getPageSize());
+		page.setData(userList);
+		page.setTotal(total);
+		return page;
 	}
 
 }

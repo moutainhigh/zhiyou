@@ -38,10 +38,6 @@ public class MergeUserServiceImpl implements MergeUserService  {
     @Autowired
     private MergeUserLogMapper mergeUserLogMapper;
 
-    @Override
-    public MergeUser findOne(Long id) {
-        return findByUserIdAndProductType(id,2);
-    }
 
     @Override
     public MergeUser findByUserIdAndProductType( Long userId, Integer productType) {
@@ -78,7 +74,7 @@ public class MergeUserServiceImpl implements MergeUserService  {
             mergeUser.setUserRank(user.getUserRank());
             mergeUser.setRegisterTime(now);
             mergeUser.setLastUpgradedTime(now);
-            mergeUser.setCode(getCode());
+            mergeUser.setCode(this.getCode());
             mergeUser.setV4Id(null);
             //查询直属上级
             User parent = user;
@@ -162,6 +158,23 @@ public class MergeUserServiceImpl implements MergeUserService  {
         return page;
     }
 
+    /**
+     *查询所有  没有默认分页
+     * @param mergeUserQueryModel
+     * @return
+     */
+    @Override
+    public Page<MergeUser> findPage1(MergeUserQueryModel mergeUserQueryModel) {
+        long total = mergeUserMapper.count(mergeUserQueryModel);
+        List<MergeUser> data = mergeUserMapper.findAll(mergeUserQueryModel);
+        Page<MergeUser> page = new Page<>();
+        page.setPageNumber(mergeUserQueryModel.getPageNumber());
+        page.setPageSize(mergeUserQueryModel.getPageSize());
+        page.setData(data);
+        page.setTotal(total);
+        return page;
+    }
+
     @Override
     public List<MergeUser> findAll(MergeUserQueryModel mergeUserQueryModel) {
         return mergeUserMapper.findAll(mergeUserQueryModel);
@@ -177,8 +190,8 @@ public class MergeUserServiceImpl implements MergeUserService  {
 
     @Override
     public void modifyV4Id(Long id, Long v4Id,Integer productType) {
-        MergeUser mergeUser = findAndValidateMergeUser(id,productType);
-        mergeUser.setParentId(v4Id);
+        MergeUser mergeUser = this.findAndValidateMergeUser(id,productType);
+        mergeUser.setV4Id(v4Id);
         mergeUserMapper.merge(mergeUser,"v4Id");
     }
 
@@ -264,6 +277,25 @@ public class MergeUserServiceImpl implements MergeUserService  {
         }
         returnMap.put("MTot",data);
         return returnMap;
+    }
+
+    /**
+     * 判断是不是新晋特级
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean findNewOne(Long id) {
+        Map<String,Object>dataMap = new HashMap<String,Object>();
+        dataMap.put("remark","%改为V4%");
+        dataMap.put("operatedTimeBegin", DateUtil.getBeforeMonthBegin(new Date(),0,0));
+        dataMap.put("operatedTimeEnd",DateUtil.getBeforeMonthEnd(new Date(),1,0));
+        dataMap.put("userId",id);
+        long total=mergeUserLogMapper.count(dataMap);
+        if(total>0){
+            return true;
+        }
+        return false;
     }
 
 

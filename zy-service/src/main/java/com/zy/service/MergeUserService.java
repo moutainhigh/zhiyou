@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface MergeUserService {
 
-	MergeUser findOne(Long id);
+	//MergeUser findOne(Long id);
 
 	MergeUser findByUserIdAndProductType(Long userId,Integer productType);
 
@@ -25,6 +25,8 @@ public interface MergeUserService {
 
 	Page<MergeUser> findPage(MergeUserQueryModel mergeUserQueryModel);
 
+	Page<MergeUser> findPage1(MergeUserQueryModel mergeUserQueryModel);
+
 	List<MergeUser> findAll(MergeUserQueryModel mergeUserQueryModel);
 
 	void modifyParentId(Long id, Long parentId,Integer productType);
@@ -34,5 +36,7 @@ public interface MergeUserService {
 	long count(MergeUserQueryModel mergeUserQueryModel);
 
 	Map<String,Object> countNewMemTotal(Long userId, boolean b);
+
+	boolean findNewOne(Long id);
 
 }
