@@ -27,8 +27,6 @@ public class OrderQueryModel implements Serializable {
 
 	private Long userIdEQ;
 
-	private Integer productTypeEQ;
-
 	private Long[] userIdIN;
 
 	private Long sellerIdEQ;
@@ -85,11 +83,17 @@ public class OrderQueryModel implements Serializable {
 
 	private Long productIdEQ;
 
-	private Integer exaltFlageEQ;
+	private Integer productTypeEQ;
+
+	private Boolean isSettlementEQ;
 
 	private Long inviterIdEQ;
 
-	private Boolean isSettlementEQ;
+	private Integer exaltFlageEQ;
+
+	private Integer isUkuEQ;
+
+	private Integer sendQuantityEQ;
 
 	private Integer pageNumber;
 
@@ -162,11 +166,13 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("isBuyerPayLogisticsFee");
 		fieldNames.add("productId");
 		fieldNames.add("isProfitSettledUp");
+		fieldNames.add("sendQuantity");
 		fieldNames.add("paidTime");
 		fieldNames.add("version");
 		fieldNames.add("logisticsName");
 		fieldNames.add("receiverAddress");
 		fieldNames.add("buyerUserRank");
+		fieldNames.add("inviterId");
 		fieldNames.add("copiedTime");
 		fieldNames.add("sellerMemo");
 		fieldNames.add("deliveredTime");
@@ -177,6 +183,7 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("marketPrice");
 		fieldNames.add("isUseLogistics");
 		fieldNames.add("rootId");
+		fieldNames.add("deliveredId");
 		fieldNames.add("orderStatus");
 		fieldNames.add("remark");
 		fieldNames.add("title");
@@ -185,9 +192,11 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("receiverDistrict");
 		fieldNames.add("refundRemark");
 		fieldNames.add("sn");
+		fieldNames.add("productType");
 		fieldNames.add("amount");
 		fieldNames.add("isCopied");
 		fieldNames.add("quantity");
+		fieldNames.add("isUku");
 		fieldNames.add("isMultiple");
 		fieldNames.add("userId");
 		fieldNames.add("expiredTime");
@@ -195,6 +204,7 @@ public class OrderQueryModel implements Serializable {
 		fieldNames.add("v4UserId");
 		fieldNames.add("refId");
 		fieldNames.add("logisticsFee");
+		fieldNames.add("exaltFlage");
 	}
 
 }

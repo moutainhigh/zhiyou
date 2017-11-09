@@ -6,6 +6,7 @@ import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
+import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
@@ -17,11 +18,9 @@ import com.zy.component.MalComponent;
 import com.zy.entity.fnc.*;
 import com.zy.entity.fnc.Payment.PaymentStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
-import com.zy.entity.mal.Order;
+import com.zy.entity.mal.*;
 import com.zy.entity.mal.Order.OrderStatus;
-import com.zy.entity.mal.OrderItem;
-import com.zy.entity.mal.OrderMonthlySettlement;
-import com.zy.entity.mal.Product;
+import com.zy.entity.mergeusr.MergeUser;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
@@ -34,10 +33,7 @@ import com.zy.model.TeamModel;
 import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.dto.OrderSumDto;
-import com.zy.model.query.OrderFillUserQueryModel;
-import com.zy.model.query.OrderQueryModel;
-import com.zy.model.query.UserQueryModel;
-import com.zy.model.query.UserUpgradeQueryModel;
+import com.zy.model.query.*;
 import com.zy.service.OrderService;
 import com.zy.service.UserService;
 import io.gd.generator.api.query.Direction;
@@ -50,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -109,6 +106,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private UserUpgradeMapper userUpgradeMapper;
+
+	@Autowired
+	private OrderStoreMapper orderStoreMapper;
 
 	public static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -2291,7 +2291,7 @@ public class OrderServiceImpl implements OrderService {
         return returnMap;
     }
 
-    private User getV4ParentId(Long id) {
+	private User getV4ParentId(Long id) {
 	    Long parentId = id;
 	    User parent = userMapper.findOne(parentId);
 	    int whileTimes = 0;
@@ -2395,5 +2395,92 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 
+	/**
+	 * 处理入库
+	 * @param orderId
+	 * @param userId
+     */
+	@Override
+	public void editOderStoreIn(Long orderId, Long userId,Integer productType) {
+		Order order = orderMapper.findOne(orderId);
+		if(order.getQuantity().intValue()>(order.getSendQuantity()==null?0:order.getSendQuantity())) {//订货量和发货量一致  不用进库存
+			OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
+			orderStoreQueryModel.setIsEndEQ(1);
+			orderStoreQueryModel.setUserIdEQ(userId);
+			List<OrderStore> orderList = orderStoreMapper.findAll(orderStoreQueryModel);
+			if (orderList != null && !orderList.isEmpty()) {//处理  业务逻辑
+				OrderStore orderStoreOld = orderList.get(0);
+				orderStoreOld.setIsEnd(0);
+				orderStoreMapper.update(orderStoreOld);
+				OrderStore orderStore = new OrderStore();
+				orderStore.setIsEnd(1);
+				orderStore.setOrderId(orderId);
+				orderStore.setUserId(orderStoreOld.getUserId());
+				orderStore.setCreateDate(new Date());
+				orderStore.setNumber(order.getQuantity().intValue() - order.getSendQuantity());
+				orderStore.setType(2);
+				orderStore.setBeforeNumber(orderStoreOld.getAfterNumber());
+				orderStore.setAfterNumber(orderStoreOld.getAfterNumber() + (order.getQuantity().intValue() - order.getSendQuantity()));
+				orderStore.setCreateBy(orderStoreOld.getUserId());
+				orderStoreMapper.insert(orderStore);
+			} else {//没有数据  则插入一条
+				OrderStore orderStore = new OrderStore();
+				orderStore.setIsEnd(1);
+				orderStore.setOrderId(orderId);
+				orderStore.setUserId(userId);
+				orderStore.setCreateDate(new Date());
+				orderStore.setNumber(order.getQuantity().intValue() - order.getSendQuantity());
+				orderStore.setType(2);
+				orderStore.setBeforeNumber(0);
+				orderStore.setAfterNumber((order.getQuantity().intValue() - order.getSendQuantity()));
+				orderStore.setCreateBy(userId);
+				orderStoreMapper.insert(orderStore);
+			}
+		}
+	}
+
+	/**
+	 * 处理出库
+	 * @param orderId
+	 * @param userId
+	 */
+	@Override
+	public void editOrderStoreOut(Long orderId, Long userId, Integer productType) {
+		Order order = orderMapper.findOne(orderId);
+		OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
+		orderStoreQueryModel.setIsEndEQ(1);
+		orderStoreQueryModel.setUserIdEQ(userId);
+		orderStoreQueryModel.setProductTypeEQ(productType);
+		List<OrderStore> orderList = orderStoreMapper.findAll(orderStoreQueryModel);
+		if (orderList!=null&&!orderList.isEmpty()){//处理  业务逻辑
+			OrderStore orderStoreOld = orderList.get(0);
+			orderStoreOld.setIsEnd(0);
+			orderStoreMapper.update(orderStoreOld);
+			OrderStore orderStore = new  OrderStore();
+			orderStore.setIsEnd(1);
+			orderStore.setOrderId(orderId);
+			orderStore.setUserId(orderStoreOld.getUserId());
+			orderStore.setCreateDate(new Date());
+			orderStore.setNumber(order.getQuantity().intValue());
+			orderStore.setType(1);
+			orderStore.setBeforeNumber(orderStoreOld.getAfterNumber());
+			orderStore.setAfterNumber(orderStoreOld.getAfterNumber()-order.getQuantity().intValue());
+			orderStore.setCreateBy(orderStoreOld.getUserId());
+			orderStoreMapper.insert(orderStore);
+		}else{
+			throw new UnauthorizedException("库存异常");
+		}
+
+	}
+
+	/**
+	 * 检测 能不能下单
+	 * @param userId 自己的ID
+	 * @return
+     */
+	@Override
+	public Boolean checkOrderStore(MergeUser mergeUser, Integer productType) {
+		return null;
+	}
 
 }

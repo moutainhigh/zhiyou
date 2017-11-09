@@ -2,6 +2,7 @@ package com.zy.service;
 
 import com.zy.common.model.query.Page;
 import com.zy.entity.mal.Order;
+import com.zy.entity.mergeusr.MergeUser;
 import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.dto.OrderSumDto;
@@ -60,4 +61,11 @@ public interface OrderService {
 	Map<String,Object> querySalesVolume(OrderQueryModel orderQueryModel);
 
 	Map<String,Object> querySalesVolumeDetail(OrderQueryModel orderQueryModel);
+
+	void editOderStoreIn(Long orderId,Long userId,Integer productType);
+
+	void editOrderStoreOut(Long orderId,Long userId,Integer productType);
+
+	Boolean checkOrderStore(MergeUser mergeUser, Integer productType);
+
 }
