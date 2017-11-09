@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface MergeUserService {
 
-	MergeUser findOne(Long id);
+	//MergeUser findOne(Long id);
 
 	MergeUser findByUserIdAndProductType(Long userId,Integer productType);
 

@@ -88,32 +88,32 @@ public class MergeUserViewServiceImpl implements MergeUserViewService {
 
     /**
      * 统计查询 活跃人数
-     * @param mergeUserViewQueryModel
+     * @param userQueryModel
      * @return
      */
     @Override
-    public long countByActive(MergeUserViewQueryModel mergeUserViewQueryModel) {
-        return mergeUserViewMapper.countByActive(mergeUserViewQueryModel);
+    public long countByActive(UserQueryModel userQueryModel) {
+        return mergeUserViewMapper.countByActive(userQueryModel);
     }
 
     /**
      * 查询  不活跃的人数
-     * @param mergeUserViewQueryModel
+     * @param userQueryModel
      * @param flag
      * @return
      */
     @Override
-    public Page<MergeUserView> findActive(MergeUserViewQueryModel mergeUserViewQueryModel, boolean flag) {
-        mergeUserViewQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
-        mergeUserViewQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-2,0));
-        List<MergeUserView> userRankList= mergeUserViewMapper.findByNotActive(mergeUserViewQueryModel);
+    public Page<MergeUserView> findActive(UserQueryModel userQueryModel, boolean flag) {
+        userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+        userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-2,0));
+        List<MergeUserView> userRankList= mergeUserViewMapper.findByNotActive(userQueryModel);
         Page<MergeUserView> page = new Page<>();
-//        if (flag) {
-//            long total = mergeUserViewMapper.countByNotActive(userQueryModel);
-//            page.setTotal(total);
-//        }
-        page.setPageNumber(mergeUserViewQueryModel.getPageNumber());
-        page.setPageSize(mergeUserViewQueryModel.getPageSize());
+        if (flag) {
+            long total = mergeUserViewMapper.countByNotActive(userQueryModel);
+            page.setTotal(total);
+        }
+        page.setPageNumber(userQueryModel.getPageNumber());
+        page.setPageSize(userQueryModel.getPageSize());
         page.setData(userRankList);
         return page;
     }

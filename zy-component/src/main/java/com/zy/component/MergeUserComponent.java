@@ -63,7 +63,7 @@ public class MergeUserComponent {
 		List<MergeUser> users = mergeUserService.findAll(MergeUserQueryModel.builder().productTypeEQ(productType).build());
 		List<MergeUser> children = TreeHelper.sortBreadth2(users, userId.toString(), v -> {
 			TreeNode treeNode = new TreeNode();
-			treeNode.setId(v.getId().toString());
+			treeNode.setId(v.getUserId().toString());
 			treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
 			return treeNode;
 		});
@@ -75,20 +75,6 @@ public class MergeUserComponent {
 		return data;
 	}
 
-	/**
-	 * 查看权限
-	 * @param user
-	 * @return
-	 */
-	public String  findRole(User user) {
-		String falg = "F";
-		if (user!=null&&user.getUserRank()==User.UserRank.V4){
-			if (1!=user.getViewflag()){
-				falg ="T";
-			}
-		}
-		return  falg;
-	}
 
 	/**
 	 * 统计 直属特级

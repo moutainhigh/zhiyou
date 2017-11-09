@@ -66,6 +66,7 @@ public class MoveUserJob implements Job {
             Map<Long, List<Order>> orderMap = filterOrders.stream().collect(Collectors.groupingBy(Order::getUserId));
             Date now = new Date();
             MergeUser wan = mergeUserService.findByUserIdAndProductType(10370l, 2);
+            MergeUser company = mergeUserService.findByUserIdAndProductType(1l, 2);
             User one = userService.findOne(10370l);
             if(wan == null){
                 MergeUser me = new MergeUser();
@@ -75,8 +76,16 @@ public class MoveUserJob implements Job {
                 me.setUserRank(one.getUserRank());
                 me.setRegisterTime(now);
                 me.setLastUpgradedTime(now);
-                me.setCode(getCode());
+                me.setCode(this.getCode());
                 mergeUserService.create(me);
+            }
+            if(company == null){
+                MergeUser com = new MergeUser();
+                com.setUserId(1l);
+                com.setProductType(2);
+                com.setRegisterTime(now);
+                com.setCode(this.getCode());
+                mergeUserService.create(com);
             }
             //平移user
             for (Long key : orderMap.keySet()) {
@@ -90,7 +99,7 @@ public class MoveUserJob implements Job {
                     mergeUser.setUserRank(user.getUserRank());
                     mergeUser.setRegisterTime(now);
                     mergeUser.setLastUpgradedTime(now);
-                    mergeUser.setCode(getCode());
+                    mergeUser.setCode(this.getCode());
                     if(user.getUserRank() == User.UserRank.V3){
                         //查询直属上级
                         User parent = user;
@@ -131,7 +140,7 @@ public class MoveUserJob implements Job {
             //修改订单
             for (Long key : orderMap.keySet()) {
                 MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(key, 2);
-                Long v4UserId = calculateV4UserId(mergeUser);
+                Long v4UserId = this.calculateV4UserId(mergeUser);
                 //修改user的直属特级
                 mergeUserService.modifyV4Id(key,v4UserId,2);
                 Long sellerId = v4UserId == null ? 10370l : v4UserId;
@@ -195,7 +204,7 @@ public class MoveUserJob implements Job {
 
     public String getCode() {
 
-        String code = createCode();
+        String code = this.createCode();
         MergeUser mergeUser = mergeUserService.findBycodeAndProductType(code,2);
         int times = 0;
         while (mergeUser != null) {

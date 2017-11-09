@@ -38,10 +38,6 @@ public class MergeUserServiceImpl implements MergeUserService  {
     @Autowired
     private MergeUserLogMapper mergeUserLogMapper;
 
-    @Override
-    public MergeUser findOne(Long id) {
-        return findByUserIdAndProductType(id,2);
-    }
 
     @Override
     public MergeUser findByUserIdAndProductType( Long userId, Integer productType) {
@@ -78,7 +74,7 @@ public class MergeUserServiceImpl implements MergeUserService  {
             mergeUser.setUserRank(user.getUserRank());
             mergeUser.setRegisterTime(now);
             mergeUser.setLastUpgradedTime(now);
-            mergeUser.setCode(getCode());
+            mergeUser.setCode(this.getCode());
             mergeUser.setV4Id(null);
             //查询直属上级
             User parent = user;
@@ -194,8 +190,8 @@ public class MergeUserServiceImpl implements MergeUserService  {
 
     @Override
     public void modifyV4Id(Long id, Long v4Id,Integer productType) {
-        MergeUser mergeUser = findAndValidateMergeUser(id,productType);
-        mergeUser.setParentId(v4Id);
+        MergeUser mergeUser = this.findAndValidateMergeUser(id,productType);
+        mergeUser.setV4Id(v4Id);
         mergeUserMapper.merge(mergeUser,"v4Id");
     }
 

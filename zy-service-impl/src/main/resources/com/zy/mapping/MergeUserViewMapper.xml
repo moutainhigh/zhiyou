@@ -522,4 +522,32 @@
 		</if>
 	</select>
 
+	<select id="countByNotActive" resultType="_long" parameterType="com.zy.model.query.UserQueryModel">
+		SELECT count(*) from usr_merge_user
+		<where>
+			<if test="parentIdNL !=null">
+				and parent_id =#{parentIdNL}
+			</if>
+			<if test="nameorPhone != null">
+				and (phone like #{nameorPhone} or nickname like #{nameorPhone})
+			</if>
+			and id not in( SELECT DISTINCT(u.id)
+			FROM
+			usr_user u,
+			mal_order m
+			WHERE
+			m.user_id = u.id
+			<if test="parentIdNL !=null">
+				and u.parent_id =#{parentIdNL}
+			</if>
+			<if test="registerTimeGTE !=null">
+				AND m.created_time &gt;= #{registerTimeGTE}
+			</if>
+			<if test="registerTimeLT !=null">
+				AND m.created_time &lt;= #{registerTimeLT}
+			</if>
+			)
+		</where>
+	</select>
+
 </mapper>

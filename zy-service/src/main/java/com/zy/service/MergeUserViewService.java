@@ -23,9 +23,9 @@ public interface MergeUserViewService {
 
 	Map<String,Object> findNewSup(long[] ids);
 
-	long countByActive(MergeUserViewQueryModel mergeUserViewQueryModel);
+	long countByActive(UserQueryModel userQueryModel);
 
-	Page<MergeUserView> findActive(MergeUserViewQueryModel mergeUserViewQueryModel, boolean b);
+	Page<MergeUserView> findActive(UserQueryModel userQueryModel, boolean b);
 
 	List<UserDto> findUserAll(UserQueryModel userQueryModel);
 

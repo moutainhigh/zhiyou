@@ -72,12 +72,12 @@ public class MergeUserViewComponent {
 	 * @return
 	 */
 	public String activeProportion(Long userId) {
-		MergeUserViewQueryModel mergeUserViewQueryModel = new MergeUserViewQueryModel();
-		mergeUserViewQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
-		mergeUserViewQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-2,0));
-		long total = mergeUserViewService.countByActive(mergeUserViewQueryModel);
-		mergeUserViewQueryModel.setParentIdNL(userId);
-		long mytotal = mergeUserViewService.countByActive(mergeUserViewQueryModel);
+		UserQueryModel userQueryModel = new UserQueryModel();
+		userQueryModel.setRegisterTimeLT(DateUtil.getBeforeMonthEnd(new Date(),1,0));
+		userQueryModel.setRegisterTimeGTE(DateUtil.getBeforeMonthBegin(new Date(),-2,0));
+		long total = mergeUserViewService.countByActive(userQueryModel);
+		userQueryModel.setParentIdNL(userId);
+		long mytotal = mergeUserViewService.countByActive(userQueryModel);
 		DecimalFormat df = new DecimalFormat("###0.00");
 		if (total==0){
 			return "0.00";
