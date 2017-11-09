@@ -9,6 +9,7 @@ import com.zy.component.AccountLogComponent;
 import com.zy.component.BankCardComponent;
 import com.zy.entity.fnc.*;
 import com.zy.entity.sys.ConfirmStatus;
+import com.zy.entity.sys.SystemCode;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
 import com.zy.model.Principal;
@@ -66,6 +67,9 @@ public class UcenterMoneyController {
 	private BankCardComponent bankCardComponent;
 
 	@Autowired
+	private SystemCodeService systemCodeService;
+
+	@Autowired
 	private Config config;
 	
 	@RequestMapping(method = RequestMethod.GET)
@@ -84,9 +88,17 @@ public class UcenterMoneyController {
 
 		/* 这些用户U币可提现 */
 		User user = userService.findOne(userId);
-		if (Arrays.asList("15961120498", "18562011678", "13614717775", "18605361950","13808389037","18868685858","18369611513","13576362283","15838020555" ).contains(user.getPhone())) {
-			model.addAttribute("moneyWithdraw", true);
+
+		List<SystemCode> systemCodeList = systemCodeService.findByType("U_WITHDRAW_FLAGE");
+		if (systemCodeList!=null){
+			Map<String,SystemCode>map = systemCodeList.stream().collect(Collectors.toMap(SystemCode::getSystemValue,v->v));
+			if (map.get(user.getPhone())!=null){
+				model.addAttribute("moneyWithdraw", true);
+			}
 		}
+		/*if (Arrays.asList("15961120498", "18562011678", "13614717775", "18605361950","13808389037","18868685858","18369611513","13576362283","15838020555" ).contains(user.getPhone())) {
+			model.addAttribute("moneyWithdraw", true);
+		}*/
 		model.addAttribute("userRank", user.getUserRank());
 
 		UserInfo userInfo = userInfoService.findByUserId(principal.getUserId());
