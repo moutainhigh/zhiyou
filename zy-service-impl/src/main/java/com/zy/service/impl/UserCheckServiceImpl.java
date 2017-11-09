@@ -165,6 +165,9 @@ public class UserCheckServiceImpl implements UserCheckService {
         do {
              map.put("userId" , parent.getParentId());
              parent = mergeUserMapper.findByUserIdAndProductType(map);
+            if (parent.getUserRank().getLevel()>mergeUser.getUserRank().getLevel()){
+                return parent;
+            }
              i++;
         }while (i<num&&parent!=null);
       return parent;
