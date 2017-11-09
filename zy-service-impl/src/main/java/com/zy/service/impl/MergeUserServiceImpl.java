@@ -158,23 +158,6 @@ public class MergeUserServiceImpl implements MergeUserService  {
         return page;
     }
 
-    /**
-     *查询所有  没有默认分页
-     * @param mergeUserQueryModel
-     * @return
-     */
-    @Override
-    public Page<MergeUser> findPage1(MergeUserQueryModel mergeUserQueryModel) {
-        long total = mergeUserMapper.count(mergeUserQueryModel);
-        List<MergeUser> data = mergeUserMapper.findAll(mergeUserQueryModel);
-        Page<MergeUser> page = new Page<>();
-        page.setPageNumber(mergeUserQueryModel.getPageNumber());
-        page.setPageSize(mergeUserQueryModel.getPageSize());
-        page.setData(data);
-        page.setTotal(total);
-        return page;
-    }
-
     @Override
     public List<MergeUser> findAll(MergeUserQueryModel mergeUserQueryModel) {
         return mergeUserMapper.findAll(mergeUserQueryModel);

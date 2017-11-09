@@ -15,6 +15,7 @@ import com.zy.entity.mergeusr.MergeUserView;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.User.UserRank;
+import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.dto.UserDto;
 import com.zy.model.dto.UserTeamDto;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -148,10 +150,14 @@ public class UcenterTeamController {
      */
 
 	@RequestMapping(value = "/newTeam", method = RequestMethod.GET)
-	public String  newTeam(Principal principal, Model model,Integer productType){
+	public String  newTeam(Principal principal, Model model,Integer productType,RedirectAttributes redirectAttributes){
+		if(productType == null || productType > 2){
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("非法数据，productType参数异常"));
+			return "redirect:/u";
+		}
 		Long userId = principal.getUserId();
 		Map<String,Object> dataMap = new HashMap<String,Object>();
-		if(productType != null && productType == 1){
+		if(productType == 1){
 			//统计团队人数
 			User user = userService.findOne(userId);
 			if (user.getUserRank()==User.UserRank.V4||user.getUserRank()==User.UserRank.V3){
@@ -194,7 +200,8 @@ public class UcenterTeamController {
 			Page<User> pageact= userService.findActive(userQueryModel,false);
 			dataMap.put("act",pageact.getData());//不活跃人员
 			model.addAttribute("title","优检");
-		}else if(productType != null && productType == 2){
+		}
+		if(productType == 2){
 			//统计团队人数
 			MergeUser user = mergeUserService.findByUserIdAndProductType(userId,2);
 			if (user.getUserRank()==User.UserRank.V4||user.getUserRank()==User.UserRank.V3){
@@ -211,15 +218,6 @@ public class UcenterTeamController {
 			long [] newMem = (long[])map.get("MTot");//新增人员  数据
 			dataMap.put("MTot", DateUtil.longarryToString(newMem,false));
 			dataMap.put("Pro",DateUtil.countPro((long[])map.get("MTot"),(long)map.get("total")));//新增人员占比
-			//处理排名
-//			UserlongQueryModel userlongQueryModel = new UserlongQueryModel();
-//			userlongQueryModel.setParentIdNL(userId);
-//			userlongQueryModel.setPageNumber(0);
-//			userlongQueryModel.setPageSize(5);
-//			Page<UserTeamDto> page= userService.disposeRank(userlongQueryModel,false);
-//			Page<UserTeamDto> voPage = PageBuilder.copyAndConvert(page, v-> userComponent.buildUserTeamDto(v));
-//			dataMap.put("rankList",voPage.getData());//排名数据
-//			dataMap.put("myRank",userComponent.getRank(userId));//我的排序
 			//处理新进特级
 			long ids[]=mergeUserComponent.tId(mergeUserComponent.conyteamTotalV4(userId,2));
 			//dataMap.put("myTids", DateUtil.longarryToString(dirTotal,false));//将直属特级 存下来
@@ -246,11 +244,16 @@ public class UcenterTeamController {
 	 * @return
      */
 	@RequestMapping(value = "findDirectlySup")
-	public String  findDirectlySup(Principal principal, Model model,Integer productType){
-		if(productType != null && productType == 1){
+	public String  findDirectlySup(Principal principal, Model model,Integer productType,RedirectAttributes redirectAttributes){
+		if(productType == null || productType > 2){
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("非法数据，productType参数异常"));
+			return "redirect:/u";
+		}
+		if(productType == 1){
 			List<UserInfoVo> userList= userComponent.conyteamTotalV4Vo(principal.getUserId());
 			model.addAttribute("data",userList);
-		}else if(productType != null && productType == 2){
+		}
+		if(productType == 2){
 			List<UserInfoVo> userList = mergeUserComponent.conyteamTotalV4Vo(principal.getUserId(), productType);
 			model.addAttribute("data",userList);
 		}
@@ -270,9 +273,13 @@ public class UcenterTeamController {
 	 *  跳转到直属团队详情 页面
 	 */
 	@RequestMapping(value = "teamDetail")
-	public String  teamDetail(Principal principal, Model model,Integer productType){
+	public String  teamDetail(Principal principal, Model model,Integer productType,RedirectAttributes redirectAttributes){
+		if(productType == null || productType > 2){
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("非法数据，productType参数异常"));
+			return "redirect:/u";
+		}
 		Long userId = principal.getUserId();
-		if(productType != null && productType == 1){
+		if(productType == 1){
 			UserQueryModel userQueryModel = new UserQueryModel();
 			userQueryModel.setParentIdEQ(userId);
 			Page<User> page= userService.findPage1(userQueryModel);
@@ -281,7 +288,8 @@ public class UcenterTeamController {
 			model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
 			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
 			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
-		}else if(productType != null && productType == 2){
+		}
+		if(productType == 2){
 			Page<MergeUserView> page= mergeUserViewService.findAllPage(MergeUserViewQueryModel.builder().parentIdEQ(userId).build());
 			model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
 			model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
@@ -300,6 +308,9 @@ public class UcenterTeamController {
 	@RequestMapping(value = "ajaxTeamDetail",method = RequestMethod.POST)
 	@ResponseBody
 	public Result<?> ajaxTeamDetail(Principal principal,String nameorPhone,Integer pageNumber,Integer productType){
+		if(productType == null || productType > 2){
+			return ResultBuilder.error("非法数据，productType参数异常");
+		}
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdEQ(userId);
@@ -311,11 +322,21 @@ public class UcenterTeamController {
 			userQueryModel.setPageSize(10);
 		}
 		Map<String, Object> map = new HashMap<>();
-		if(productType != null && productType == 1){
+		if(productType == 1){
 			Page<User> page= userService.findPage1(userQueryModel);
 			map.put("page",page);
-		}else if(productType != null && productType == 2){
-			Page<UserDto> page = mergeUserViewComponent.findUserAll(userQueryModel);
+		}
+		if(productType == 2){
+			MergeUserViewQueryModel mergeUserViewQueryModel = new MergeUserViewQueryModel();
+			mergeUserViewQueryModel.setParentIdEQ(userId);
+			if (null!=nameorPhone){
+				mergeUserViewQueryModel.setNameorPhone("%"+nameorPhone+"%");
+			}
+			if (pageNumber!=null){
+				mergeUserViewQueryModel.setPageNumber(pageNumber);
+				mergeUserViewQueryModel.setPageSize(10);
+			}
+			Page<MergeUserView> page = mergeUserViewService.findPage1(mergeUserViewQueryModel);
 			map.put("page",page);
 		}
 		return ResultBuilder.result(map);
@@ -325,18 +346,23 @@ public class UcenterTeamController {
 	 * 查询沉睡成员
 	 */
 	@RequestMapping(value = "teamSleep")
-	public String teamSleep(Principal principal, Model model,Integer productType){
+	public String teamSleep(Principal principal, Model model,Integer productType,RedirectAttributes redirectAttributes){
+		if(productType == null || productType > 2){
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("非法数据，productType参数异常"));
+			return "redirect:/u";
+		}
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
-		if(productType != null && productType == 1){
+		if(productType == 1){
 			Page<User> page = userService.findActive(userQueryModel,true);
 			model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
 			model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
 			model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
 			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
 			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
-		}else if(productType != null && productType == 2){
+		}
+		if(productType == 2){
 			Page<MergeUserView> page = mergeUserViewService.findActive(userQueryModel, true);
 			model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
 			model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
@@ -345,6 +371,7 @@ public class UcenterTeamController {
 			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
 
 		}
+		model.addAttribute("productType",productType);
 		return "ucenter/teamNew/sleepDetil";
 	}
 
@@ -359,7 +386,7 @@ public class UcenterTeamController {
 	@ResponseBody
 	public  Result<?> ajaxTeamSleep(Principal principal,String nameorPhone,Integer pageNumber,Integer productType){
 		if(productType == null || productType > 2){
-			return ResultBuilder.error("参数异常,productType非法数据");
+			return ResultBuilder.error("非法数据，productType参数异常");
 		}
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
@@ -447,6 +474,7 @@ public class UcenterTeamController {
 			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
 			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
 		}
+		model.addAttribute("productType",productType);
 		return "ucenter/teamNew/newTeamDetil";
 	}
 
