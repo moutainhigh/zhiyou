@@ -1,42 +1,44 @@
  package com.zy.component;
 
  import com.zy.Config;
-import com.zy.common.exception.BizException;
-import com.zy.common.exception.ConcurrentException;
-import com.zy.entity.mal.Order;
-import com.zy.entity.mal.OrderItem;
-import com.zy.entity.mal.Product;
+ import com.zy.common.exception.BizException;
+ import com.zy.common.exception.ConcurrentException;
+ import com.zy.entity.mal.Order;
+ import com.zy.entity.mal.OrderItem;
+ import com.zy.entity.mal.Product;
  import com.zy.entity.mergeusr.MergeUser;
  import com.zy.entity.usr.User;
-import com.zy.entity.usr.User.UserRank;
-import com.zy.extend.Producer;
-import com.zy.mapper.OrderItemMapper;
-import com.zy.mapper.OrderMapper;
-import com.zy.mapper.ProductMapper;
-import com.zy.mapper.UserMapper;
-import com.zy.model.BizCode;
-import com.zy.model.Constants;
+ import com.zy.entity.usr.User.UserRank;
+ import com.zy.extend.Producer;
+ import com.zy.mapper.OrderItemMapper;
+ import com.zy.mapper.OrderMapper;
+ import com.zy.mapper.ProductMapper;
+ import com.zy.mapper.UserMapper;
+ import com.zy.model.BizCode;
+ import com.zy.model.Constants;
  import com.zy.service.MergeUserService;
+ import com.zy.service.OrderService;
+ import com.zy.service.UserCheckService;
  import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
-import groovy.lang.Script;
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.customizers.ImportCustomizer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
+ import groovy.lang.GroovyShell;
+ import groovy.lang.Script;
+ import org.codehaus.groovy.control.CompilerConfiguration;
+ import org.codehaus.groovy.control.customizers.ImportCustomizer;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Component;
+ import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
+ import javax.validation.constraints.NotNull;
+ import java.math.BigDecimal;
  import java.util.Calendar;
  import java.util.Date;
 
-import static com.zy.common.util.ValidateUtils.NOT_NULL;
-import static com.zy.common.util.ValidateUtils.validate;
-import static com.zy.entity.mal.Order.OrderStatus.*;
-import static com.zy.entity.usr.User.UserRank.V4;
+ import static com.zy.common.util.ValidateUtils.NOT_NULL;
+ import static com.zy.common.util.ValidateUtils.validate;
+ import static com.zy.entity.mal.Order.OrderStatus.*;
+ import static com.zy.entity.usr.User.UserRank.V4;
 
 @Component
 @Validated
@@ -64,6 +66,12 @@ public class MalComponent {
 
 	@Autowired
 	private MergeUserService mergeUserService;
+
+	@Autowired
+	private OrderService orderService;
+
+	@Autowired
+	private UserCheckService userCheckService;
 
 	@Autowired
 	private Producer producer;
@@ -212,6 +220,14 @@ public class MalComponent {
 			logger.warn("订单状态警告 {} 订单id {}", order.getOrderStatus(), order.getId());
 		}
 
+		//判断商品类型
+		if (order.getProductType() == 2){
+			orderService.editOderStoreIn(order.getId(),order.getUserId(),2);
+			orderService.editOrderStoreOut(order.getId(),order.getUserId(),2);
+			userCheckService.checkUserLevel(order.getUserId(),order.getQuantity(),2);
+
+		}
+
 		Date paidTime = null;
 		if(order.getOrderType() == Order.OrderType.补单) {
 			paidTime = order.getCreatedTime();
@@ -238,10 +254,10 @@ public class MalComponent {
 
 		if (product.getProductType() == 1){
 			upgradeUserRank = getUpgradeUserRank(userRank, productId, quantity);
-		}else if (product.getProductType() == 2){
+		}else if (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj-pyqzy")){
 			upgradeUserRank = userRank;
 			Calendar calendar = Calendar.getInstance();
-			calendar.set(2017, 10, 11, 23, 59, 59);
+			calendar.set(2017, 10, 12, 23, 59, 59);
 			Date date = calendar.getTime();
 			Date now = new Date();
 			if (now.getTime() > date.getTime() ){
@@ -281,4 +297,66 @@ public class MalComponent {
 
 	}
 
+	public MergeUser catchSellerId(UserRank userRank, Long productId, long quantity, Long parentId) {
+		Product product = productMapper.findOne(productId);
+
+		if (userRank == V4) {
+			return mergeUserService.findByUserIdAndProductType(config.getSysUserId(),product.getProductType());
+		}
+		UserRank upgradeUserRank = null;
+		upgradeUserRank = getUpUserRank(userRank, productId, quantity);
+
+		if (upgradeUserRank == V4) {
+			return mergeUserService.findByUserIdAndProductType(config.getSysUserId(),product.getProductType());
+		}
+
+		int whileTimes = 0;
+		while (parentId != null) {
+			if (whileTimes > 1000) {
+				break; // 防御性循环引用校验
+			}
+			MergeUser parent = mergeUserService.findByUserIdAndProductType(parentId,product.getProductType());
+			if (parent == null) {
+				logger.error("代理父级数据错误,parentId=" + parentId);
+				throw new BizException(BizCode.ERROR, "代理父级数据错误"); // 防御性校验
+			}
+			if (parent.getUserRank().getLevel() > upgradeUserRank.getLevel()) {
+				return parent;
+			}
+			parentId = parent.getParentId();
+			whileTimes ++;
+		}
+
+		logger.error("代理父级数据错误,parentId=" + parentId);
+		throw new BizException(BizCode.ERROR, "代理父级数据错误");
+	}
+
+	public UserRank getUpUserRank(User.UserRank userRank, Long productId, long quantity) {
+		UserRank upgradeUserRank = userRank;
+		if (userRank == UserRank.V0) {
+			if (quantity >= 150 && quantity <2000) {
+				upgradeUserRank = UserRank.V3;
+			} else if (quantity >= 20 && quantity < 150) {
+				upgradeUserRank = UserRank.V2;
+			} else if (quantity >= 4 && quantity < 20) {
+				upgradeUserRank = UserRank.V1;
+			}
+		} else if (userRank == UserRank.V1) {
+			if (quantity >= 150 && quantity <2000) {
+				upgradeUserRank = UserRank.V3;
+			} else if (quantity >= 20 && quantity < 150) {
+				upgradeUserRank = UserRank.V2;
+			}
+		} else if (userRank == UserRank.V2) {
+			if (quantity >= 150 && quantity <2000) {
+				upgradeUserRank = UserRank.V3;
+			}
+		}
+
+		/*一次性购买3600支 升级成特级服务商*/
+		if(quantity >= 2000) {
+			upgradeUserRank = UserRank.V4;
+		}
+		return upgradeUserRank;
+	}
 }

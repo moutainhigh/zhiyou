@@ -8,6 +8,7 @@ import com.zy.common.util.CookieUtils;
 import com.zy.common.util.DateUtil;
 import com.zy.common.util.Identities;
 import com.zy.common.util.ValidateUtils;
+import com.zy.entity.mergeusr.MergeUser;
 import com.zy.entity.sys.ShortMessage;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
@@ -15,6 +16,7 @@ import com.zy.model.PhoneAndSmsCode;
 import com.zy.model.Principal;
 import com.zy.model.PrincipalBuilder;
 import com.zy.model.dto.AgentRegisterDto;
+import com.zy.service.MergeUserService;
 import com.zy.service.ShortMessageService;
 import com.zy.service.UserService;
 import com.zy.util.GcUtils;
@@ -56,6 +58,9 @@ public class LoginController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private MergeUserService mergeUserService;
 
 	@Autowired
 	private CacheSupport cacheSupport;
@@ -269,16 +274,23 @@ public class LoginController {
 
 	@RequestMapping(value = "/checkParentPhone", method = RequestMethod.POST)
 	@ResponseBody
-	public Result<?> checkParentPhone(@RequestParam String phone) {
+	public Result<?> checkParentPhone(@RequestParam String phone,Integer productType) {
 		User user = userService.findByPhone(phone);
 		if (user == null) {
 			return ResultBuilder.error("推荐人手机号不存在");
 		}
-		if (user.getUserType() != User.UserType.代理) {
-			return ResultBuilder.error("推荐人用户类型必须是代理");
-		}
-		if (user.getUserRank() == User.UserRank.V0) {
-			return ResultBuilder.error("推荐人必须成为代理");
+		if (productType == 2){
+			MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(user.getId(),2);
+			if (mergeUser == null || (mergeUser != null && mergeUser.getUserRank() == User.UserRank.V0)){
+				return ResultBuilder.error("推荐人暂未经营此产品");
+			}
+		}else {
+			if (user.getUserType() != User.UserType.代理) {
+				return ResultBuilder.error("推荐人用户类型必须是代理");
+			}
+			if (user.getUserRank() == User.UserRank.V0) {
+				return ResultBuilder.error("推荐人必须成为代理");
+			}
 		}
 		return ResultBuilder.ok(String.valueOf(user.getId()));
 	}

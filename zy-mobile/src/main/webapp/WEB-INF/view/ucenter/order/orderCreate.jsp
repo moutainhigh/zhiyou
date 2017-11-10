@@ -29,6 +29,11 @@
         return false;  
       }
 
+      if ($('#sendQuantity').val() > ${quantity}){
+        messageFlash('发货数量不能大于订单数量');
+        return false;
+      }
+
       // 检测是否  实名认证realFlage
       <c:if test="${!realFlage}">
          $.dialog({
@@ -60,6 +65,7 @@
       }*/
         <c:if test="${userRank == 'V0' && empty parent}">
         var parentPhone = $('#parentPhone').val();
+        var productType = ${product.productType};
         if(!parentPhone) {
           messageFlash('请填写推荐人手机号');
           return false;
@@ -67,7 +73,8 @@
         $.ajax({
           url: '${ctx}/checkParentPhone',
           data: {
-            phone: parentPhone
+            phone: parentPhone,
+            productType: productType
           },
           type: 'POST',
           dataType: 'JSON',
@@ -82,6 +89,7 @@
         });
         return false;
         </c:if>
+
     });
     
   	//选择收货地址
@@ -430,7 +438,18 @@
         </div>
       </div>
     </c:if>
-    
+
+    <c:if test="${product.productType == 2 && product.skuCode == 'zy-slj'}">
+      <div class="list-group">
+        <div class="list-item">
+          <label class="list-label">发货数量</label>
+          <div class="list-text">
+            <input id="sendQuantity" name="sendQuantity" class="form-input" type="tel" value="${sendQuantity}" placeholder="输入发货数量">
+          </div>
+        </div>
+      </div>
+    </c:if>
+
     <div class="form-btn">
       <input id="btnSubmit" type="submit" value="确认订单" class="btn btn-block orange round-2">
     </div>

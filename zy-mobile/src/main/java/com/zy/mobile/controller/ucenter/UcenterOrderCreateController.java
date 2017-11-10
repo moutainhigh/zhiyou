@@ -1,6 +1,7 @@
 package com.zy.mobile.controller.ucenter;
 
 import com.zy.Config;
+import com.zy.common.exception.BizException;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.component.MergeUserComponent;
 import com.zy.component.ProductComponent;
@@ -13,6 +14,7 @@ import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.Address;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
+import com.zy.model.BizCode;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
 import com.zy.model.dto.OrderCreateDto;
@@ -100,24 +102,28 @@ public class UcenterOrderCreateController {
 			}
 		}else if (product.getProductType() == 2){
 			MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId,product.getProductType());
-			userRank = mergeUser.getUserRank();
-			product.setPrice(productService.getPrice(productId, userRank, quantity));
-			if (userRank == User.UserRank.V3) {
-				Long parentId = mergeUser.getParentId();
-				Long inviterId = mergeUser.getInviterId();
-				if (parentId != null) {
-					MergeUser parent = mergeUserService.findByUserIdAndProductType(parentId,product.getProductType());
-					if (parent != null) {
-						model.addAttribute("parent", mergeUserComponent.buildVo(parent));
-					}
-				}
-				if (inviterId != null) {
-					MergeUser inviter = mergeUserService.findByUserIdAndProductType(inviterId,product.getProductType());
-					if (inviter != null) {
-						model.addAttribute("inviter", mergeUserComponent.buildVo(inviter));
-					}
-				}
+			if(mergeUser != null){
+				userRank = mergeUser.getUserRank();
+			}else {
+				userRank = User.UserRank.V0;
 			}
+			product.setPrice(productService.getPrice(productId, userRank, quantity));
+//			if (userRank == User.UserRank.V0) {
+//				Long parentId = mergeUser.getParentId();
+//				Long inviterId = mergeUser.getInviterId();
+//				if (parentId != null) {
+//					MergeUser parent = mergeUserService.findByUserIdAndProductType(parentId,product.getProductType());
+//					if (parent != null) {
+//						model.addAttribute("parent", mergeUserComponent.buildVo(parent));
+//					}
+//				}
+//				if (inviterId != null) {
+//					MergeUser inviter = mergeUserService.findByUserIdAndProductType(inviterId,product.getProductType());
+//					if (inviter != null) {
+//						model.addAttribute("inviter", mergeUserComponent.buildVo(inviter));
+//					}
+//				}
+//			}
 		}
 		Address address = addressService.findDefaultByUserId(userId);
 
@@ -174,6 +180,23 @@ public class UcenterOrderCreateController {
 		redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("下单成功，请继续支付"));
 		return "redirect:/u/order/" + order.getId();
 
+	}
+
+	private Long calculateV4UserId(MergeUser mergeUser) {
+		Long parentId = mergeUser.getParentId();
+		int whileTimes = 0;
+		while (parentId != null) {
+			if (whileTimes > 1000) {
+				throw new BizException(BizCode.ERROR, "循环引用错误, mergeUser id is " + mergeUser.getUserId());
+			}
+			MergeUser parent = mergeUserService.findByUserIdAndProductType(parentId,2);
+			if (parent.getUserRank() == User.UserRank.V4) {
+				return parentId;
+			}
+			parentId = parent.getParentId();
+			whileTimes ++;
+		}
+		return null;
 	}
 	
 }

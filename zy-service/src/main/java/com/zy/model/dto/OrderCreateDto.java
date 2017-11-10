@@ -25,6 +25,8 @@ public class OrderCreateDto implements Serializable {
 	@Min(1)
 	private long quantity;
 
+	private long sendQuantity;
+
 	@NotNull
 	private Long addressId;
 

@@ -80,12 +80,12 @@
             return;
           }
         }else if(userRank == 'V1' || userRank == 'V2'){
-          if(quantity < 2) {
+          if(quantity < MIN_QUANTITY) {
             messageAlert('品牌经理和VIP每次购买最小单位' + MIN_QUANTITY + '次');
             return;
           }
         }else if(userRank == 'V0'){
-            if(quantity < 4) {
+            if(quantity < MIN_QUANTITY) {
               messageAlert('普通用户每次购买最小单位' + MIN_QUANTITY + '次');
               return;
             }

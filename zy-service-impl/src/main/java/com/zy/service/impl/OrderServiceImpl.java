@@ -11,8 +11,8 @@ import com.zy.common.model.query.Page;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
 import com.zy.common.model.tree.TreeNodeResolver;
-import com.zy.common.util.DateUtil;
 import com.zy.common.util.BeanUtils;
+import com.zy.common.util.DateUtil;
 import com.zy.component.FncComponent;
 import com.zy.component.MalComponent;
 import com.zy.entity.fnc.*;
@@ -34,8 +34,8 @@ import com.zy.model.dto.OrderCreateDto;
 import com.zy.model.dto.OrderDeliverDto;
 import com.zy.model.dto.OrderSumDto;
 import com.zy.model.query.*;
+import com.zy.service.MergeUserService;
 import com.zy.service.OrderService;
-import com.zy.service.UserService;
 import io.gd.generator.api.query.Direction;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -46,7 +46,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -108,10 +107,13 @@ public class OrderServiceImpl implements OrderService {
 	private UserUpgradeMapper userUpgradeMapper;
 
 	@Autowired
-	private OrderStoreMapper orderStoreMapper;
+	private MergeUserService mergeUserService;
 
 	@Autowired
 	private MergeUserMapper mergeUserMapper;
+
+	@Autowired
+	private OrderStoreMapper orderStoreMapper;
 
 	public static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -131,18 +133,6 @@ public class OrderServiceImpl implements OrderService {
 			}
 		}
 
-		/* check user */
-		Long userId = orderCreateDto.getUserId();
-		User user = userMapper.findOne(userId);
-		validate(user, NOT_NULL, "user id " + userId + " is not found");
-		validate(user, v -> v.getUserType() == User.UserType.代理, "user type is wrong");
-
-		/* check address */
-		Long addressId = orderCreateDto.getAddressId();
-		Address address = addressMapper.findOne(addressId);
-		validate(address, NOT_NULL, "address id " + addressId + " is not found");
-		validate(address, v -> v.getUserId().equals(userId), "address " + addressId + " is not own");
-
 		/* check product */
 		Long productId = orderCreateDto.getProductId();
 		Product product = productMapper.findOne(productId);
@@ -151,46 +141,101 @@ public class OrderServiceImpl implements OrderService {
 			throw new BizException(BizCode.ERROR, "必须上架的商品才能购买");
 		}
 
-		/* calculate parent id */
-		Long parentId;
-		UserRank userRank = user.getUserRank();
-		if (userRank == UserRank.V0 && user.getParentId() == null) {
-			parentId = orderCreateDto.getParentId();
-			if (parentId == null) {
-				throw new BizException(BizCode.ERROR, "首次下单必须填写邀请人");
-			}
-			User parent = userMapper.findOne(parentId);
-			if (parent == null) {
-				throw new BizException(BizCode.ERROR, "邀请人手机号没找到");
-			} else if (parent.getId().equals(userId)) {
-				throw new BizException(BizCode.ERROR, "邀请人不能为自己");
-			} else if (parent.getUserRank() == UserRank.V0) {
-				throw new BizException(BizCode.ERROR, "邀请人资格不足");
-			} else if (parent.getUserType() != User.UserType.代理) {
-				throw new BizException(BizCode.ERROR, "非法邀请人");
-			}
-			user.setParentId(parentId);
-			userMapper.update(user);
-		} else {
-			parentId = user.getParentId();
-		}
+		Long userId = orderCreateDto.getUserId();
 
+		/* check address */
+		Long addressId = orderCreateDto.getAddressId();
+		Address address = addressMapper.findOne(addressId);
+		validate(address, NOT_NULL, "address id " + addressId + " is not found");
+		validate(address, v -> v.getUserId().equals(userId), "address " + addressId + " is not own");
 
 		String title = orderCreateDto.getTitle();
 		long quantity = orderCreateDto.getQuantity();
-		UserRank buyerUserRank = user.getUserRank();
 
-		User seller = malComponent.calculateSeller(userRank, productId, quantity, parentId);
-		Long sellerId = seller.getId();
-		UserRank sellerUserRank = sellerId.equals(config.getSysUserId()) ? null : seller.getUserRank();
 
-		Long v4UserId = calculateV4UserId(user);
-		Long rootId = calculateRootId(user);
+		/* check user */
+		Long parentId = null;
+        User user = null;
+		UserRank userRank = null;
+		UserRank buyerUserRank = null;
+		Long sellerId = null;
+		UserRank sellerUserRank = null;
+		Long v4UserId = null;
 
-		BigDecimal price = malComponent.getPrice(productId, user.getUserRank(), quantity);
+		if (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj")){
+			MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId,product.getProductType());
+			if (mergeUser == null){
+				new MergeUser();
+				mergeUser.setUserId(userId);
+				mergeUser.setParentId(orderCreateDto.getParentId());
+				mergeUser.setInviterId(orderCreateDto.getParentId());
+				mergeUser.setProductType(product.getProductType());
+				mergeUser.setUserRank(UserRank.V0);
+				mergeUser.setRegisterTime(new Date());
+				mergeUserMapper.insert(mergeUser);
+
+				userRank = UserRank.V0;
+				buyerUserRank = userRank;
+				MergeUser mUser = malComponent.catchSellerId(userRank, productId, quantity, parentId);
+				sellerId = mUser.getUserId();
+				sellerUserRank = mUser.getUserRank();
+				v4UserId = calculateV4MergeUserId(mergeUser);
+			}else {
+				userRank = mergeUser.getUserRank();
+				buyerUserRank = mergeUser.getUserRank();
+                MergeUser mUser = malComponent.catchSellerId(userRank, productId, quantity, parentId);
+                sellerId = mUser.getUserId();
+                sellerUserRank = mUser.getUserRank();
+				v4UserId = calculateV4MergeUserId(mergeUser);
+			}
+		}else {
+			user = userMapper.findOne(userId);
+			validate(user, NOT_NULL, "user id " + userId + " is not found");
+			validate(user, v -> v.getUserType() == User.UserType.代理, "user type is wrong");
+
+			/* calculate parent id */
+			userRank = user.getUserRank();
+			buyerUserRank = user.getUserRank();
+			if (userRank == UserRank.V0 && user.getParentId() == null) {
+				parentId = orderCreateDto.getParentId();
+				if (parentId == null) {
+					throw new BizException(BizCode.ERROR, "首次下单必须填写邀请人");
+				}
+				User parent = userMapper.findOne(parentId);
+				if (parent == null) {
+					throw new BizException(BizCode.ERROR, "邀请人手机号没找到");
+				} else if (parent.getId().equals(userId)) {
+					throw new BizException(BizCode.ERROR, "邀请人不能为自己");
+				} else if (parent.getUserRank() == UserRank.V0) {
+					throw new BizException(BizCode.ERROR, "邀请人资格不足");
+				} else if (parent.getUserType() != User.UserType.代理) {
+					throw new BizException(BizCode.ERROR, "非法邀请人");
+				}
+				user.setParentId(parentId);
+				userMapper.update(user);
+			} else {
+				parentId = user.getParentId();
+			}
+
+			User seller = malComponent.calculateSeller(userRank, productId, quantity, parentId);
+			sellerId = seller.getId();
+			sellerUserRank = sellerId.equals(config.getSysUserId()) ? null : seller.getUserRank();
+			v4UserId = calculateV4UserId(user);
+		}
+
+        if (product.getProductType() == 2){
+            Boolean  flag = checkOrderStore(sellerId,2,quantity);
+            if (flag == false){
+                throw new BizException(BizCode.ERROR, "卖家库存不足，请提醒卖家进货");
+            }
+        }
+
+		BigDecimal price = malComponent.getPrice(productId, userRank, quantity);
 		BigDecimal amount = price.multiply(new BigDecimal(quantity));
 
 		boolean isPayToPlatform = orderCreateDto.getIsPayToPlatform();
+
+//		Long rootId = calculateRootId(user);
 
 		if (product.getProductType() == 1){
 			UserRank upgradeUserRank = malComponent.getUpgradeUserRank(userRank, productId, quantity);
@@ -207,19 +252,19 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 		Date expiredTime = null;
-		if (product.getProductType() == 1){
+		if (product.getProductType() == 1 || (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj"))){
 			LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
 			LocalDateTime localDateTime = LocalDateTime.of(lastDate, LocalTime.parse("23:59:59"));
 			Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 			expiredTime = Date.from(instant);
-		}else if (product.getProductType() == 2){
+		}else if (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj-pyqzy")){
 			if (userRank == UserRank.V4){
 				Calendar calendar = Calendar.getInstance();
 				calendar.set(2017, 10, 11, 23, 59, 59);
 				expiredTime = calendar.getTime();
 			}else if (userRank == UserRank.V3) {
 				int whileTimes = 0;
-				while (parentId != null) {
+				while ( parentId != null) {
 					if (whileTimes > 1000) {
 						throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
 					}
@@ -255,9 +300,15 @@ public class OrderServiceImpl implements OrderService {
 					}
 				}
 				if (uses.size() >= 8 ){
-					Calendar calendar = Calendar.getInstance();
-					calendar.set(2017, 10, 12, 23, 59, 59);
-					expiredTime = calendar.getTime();
+					if (isPayToPlatform == true){
+						Calendar calendar = Calendar.getInstance();
+						calendar.set(2017, 10, 11, 23, 59, 59);
+						expiredTime = calendar.getTime();
+					}else {
+						Calendar calendar = Calendar.getInstance();
+						calendar.set(2017, 10, 12, 23, 59, 59);
+						expiredTime = calendar.getTime();
+					}
 				}else if (uses.size() < 8  && uses.size() > 0){
 					//判断时间小于11 31 23 59 59
 					Calendar calendar = Calendar.getInstance();
@@ -296,7 +347,8 @@ public class OrderServiceImpl implements OrderService {
 		order.setExpiredTime(expiredTime);
 		order.setIsPayToPlatform(orderCreateDto.getIsPayToPlatform());
 		order.setIsDeleted(false);
-
+        order.setExaltFlage(0);
+        order.setSendQuantity((int) quantity);
 		/* 追加字段 */
 		order.setIsMultiple(false);
 		order.setProductId(productId);
@@ -305,7 +357,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setPrice(price);
 		order.setImage(product.getImage1());
 		order.setV4UserId(v4UserId);
-		order.setRootId(rootId);
+//		order.setRootId(rootId);
 
 		if (StringUtils.isNotBlank(title)) {
 			order.setTitle(title);
@@ -328,6 +380,23 @@ public class OrderServiceImpl implements OrderService {
 		validate(orderItem);
 		orderItemMapper.insert(orderItem);
 		return order;
+	}
+
+	private Long calculateV4MergeUserId(MergeUser mergeUser) {
+		Long parentId = mergeUser.getParentId();
+		int whileTimes = 0;
+		while (parentId != null) {
+			if (whileTimes > 1000) {
+				throw new BizException(BizCode.ERROR, "循环引用错误, mergeUser id is " + mergeUser.getUserId());
+			}
+			MergeUser parent = mergeUserService.findByUserIdAndProductType(parentId,2);
+			if (parent.getUserRank() == User.UserRank.V4) {
+				return parentId;
+			}
+			parentId = parent.getParentId();
+			whileTimes ++;
+		}
+		return null;
 	}
 
 	@Override
@@ -2459,7 +2528,6 @@ public class OrderServiceImpl implements OrderService {
 			OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
 			orderStoreQueryModel.setIsEndEQ(1);
 			orderStoreQueryModel.setUserIdEQ(userId);
-			orderStoreQueryModel.setProductTypeEQ(productType);
 			List<OrderStore> orderList = orderStoreMapper.findAll(orderStoreQueryModel);
 			if (orderList != null && !orderList.isEmpty()) {//处理  业务逻辑
 				OrderStore orderStoreOld = orderList.get(0);
@@ -2488,7 +2556,6 @@ public class OrderServiceImpl implements OrderService {
 				orderStore.setBeforeNumber(0);
 				orderStore.setAfterNumber((order.getQuantity().intValue() - order.getSendQuantity()));
 				orderStore.setCreateBy(userId);
-				orderStore.setProductType(productType);
 				orderStoreMapper.insert(orderStore);
 			}
 		}
