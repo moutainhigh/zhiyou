@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zy.mapper.OrderStoreMapper" >
+
+	<resultMap id="baseResultMap" type="com.zy.entity.mal.OrderStore">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="order_id" property="orderId" />
+		<result column="type" property="type" />
+		<result column="number" property="number" />
+		<result column="before_number" property="beforeNumber" />
+		<result column="after_number" property="afterNumber" />
+		<result column="create_date" property="createDate" />
+		<result column="create_by" property="createBy" />
+		<result column="is_end" property="isEnd" />
+		<result column="product_type" property="productType" />
+	</resultMap>
+
+	<sql id="baseColumn">id,user_id,order_id,type,number,before_number,after_number,create_date,create_by,is_end,product_type</sql>
+
+	<insert id="insert" parameterType="com.zy.entity.mal.OrderStore" useGeneratedKeys="true" keyProperty="id">
+	  insert into `td_order_store` (user_id,order_id,type,number,before_number,after_number,create_date,create_by,is_end,product_type)
+	  values (#{userId},#{orderId},#{type},#{number},#{beforeNumber},#{afterNumber},#{createDate},#{createBy},#{isEnd},#{productType})
+	</insert>
+
+	<delete id="delete">
+		delete from `td_order_store` where id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.zy.entity.mal.OrderStore">
+		update `td_order_store`
+		<set>
+			user_id = #{userId},
+			order_id = #{orderId},
+			type = #{type},
+			number = #{number},
+			before_number = #{beforeNumber},
+			after_number = #{afterNumber},
+			create_date = #{createDate},
+			create_by = #{createBy},
+			is_end = #{isEnd},
+			product_type = #{productType},
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="merge">
+		update `td_order_store`
+			<set>
+				<foreach collection="fields" item="field">
+				<choose>
+					<when test="field == 'userId'">user_id = #{orderStore.userId},</when>
+					<when test="field == 'orderId'">order_id = #{orderStore.orderId},</when>
+					<when test="field == 'type'">type = #{orderStore.type},</when>
+					<when test="field == 'number'">number = #{orderStore.number},</when>
+					<when test="field == 'beforeNumber'">before_number = #{orderStore.beforeNumber},</when>
+					<when test="field == 'afterNumber'">after_number = #{orderStore.afterNumber},</when>
+					<when test="field == 'createDate'">create_date = #{orderStore.createDate},</when>
+					<when test="field == 'createBy'">create_by = #{orderStore.createBy},</when>
+					<when test="field == 'isEnd'">is_end = #{orderStore.isEnd},</when>
+					<when test="field == 'productType'">product_type = #{orderStore.productType},</when>
+				</choose>
+				</foreach>
+			</set>
+		where id = #{orderStore.id}
+	</update>
+
+	<select id="findOne" resultMap="baseResultMap">
+		select
+		<include refid="baseColumn"/>
+		from `td_order_store`
+		where id = #{id}
+	</select>
+
+	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderStoreQueryModel">
+		select
+		<include refid="baseColumn"/>
+		from `td_order_store`
+		<where>
+			<if test="createDateGTE != null">
+				and create_date &gt;= #{createDateGTE}
+			</if>
+			<if test="beforeNumberGTE != null">
+				and before_number &gt;= #{beforeNumberGTE}
+			</if>
+			<if test="afterNumberGTE != null">
+				and after_number &gt;= #{afterNumberGTE}
+			</if>
+			<if test="afterNumberLT != null">
+				and after_number &lt; #{afterNumberLT}
+			</if>
+			<if test="typeEQ != null">
+				and type = #{typeEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="createByEQ != null">
+				and create_by = #{createByEQ}
+			</if>
+			<if test="createDateLT != null">
+				and create_date &lt; #{createDateLT}
+			</if>
+			<if test="orderIdEQ != null">
+				and order_id = #{orderIdEQ}
+			</if>
+			<if test="isEndEQ != null">
+				and is_end = #{isEndEQ}
+			</if>
+			<if test="beforeNumberLT != null">
+				and before_number &lt; #{beforeNumberLT}
+			</if>
+			<if test="numberGTE != null">
+				and number &gt;= #{numberGTE}
+			</if>
+			<if test="numberLT != null">
+				and number &lt; #{numberLT}
+			</if>
+			<if test="productTypeEQ != null">
+				and product_type = #{productTypeEQ}
+			</if>
+		</where>
+		<choose>
+			<when test="orderByAndDirection != null">
+				order by ${orderByAndDirection}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null">
+			limit #{offset}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="_long" parameterType="com.zy.model.query.OrderStoreQueryModel">
+		select count(*) from `td_order_store`
+		<where>
+			<if test="createDateGTE != null">
+				and create_date &gt;= #{createDateGTE}
+			</if>
+			<if test="beforeNumberGTE != null">
+				and before_number &gt;= #{beforeNumberGTE}
+			</if>
+			<if test="afterNumberGTE != null">
+				and after_number &gt;= #{afterNumberGTE}
+			</if>
+			<if test="afterNumberLT != null">
+				and after_number &lt; #{afterNumberLT}
+			</if>
+			<if test="typeEQ != null">
+				and type = #{typeEQ}
+			</if>
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
+			</if>
+			<if test="createByEQ != null">
+				and create_by = #{createByEQ}
+			</if>
+			<if test="createDateLT != null">
+				and create_date &lt; #{createDateLT}
+			</if>
+			<if test="orderIdEQ != null">
+				and order_id = #{orderIdEQ}
+			</if>
+			<if test="isEndEQ != null">
+				and is_end = #{isEndEQ}
+			</if>
+			<if test="beforeNumberLT != null">
+				and before_number &lt; #{beforeNumberLT}
+			</if>
+			<if test="numberGTE != null">
+				and number &gt;= #{numberGTE}
+			</if>
+			<if test="numberLT != null">
+				and number &lt; #{numberLT}
+			</if>
+			<if test="productTypeEQ != null">
+				and product_type = #{productTypeEQ}
+			</if>
+		</where>
+	</select>
+
+</mapper>

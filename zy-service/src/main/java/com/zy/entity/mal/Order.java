@@ -374,4 +374,16 @@ public class Order implements Serializable {
 	@Query(Predicate.EQ)
 	private Integer exaltFlage;
 
+	@View
+	@Field(label = "发货标记位")
+	@Query(Predicate.EQ)
+	private Integer isUku;
+
+	@View
+	@Field(label = "发货数量")
+	@Query(Predicate.EQ)
+	private Integer sendQuantity;
+
+
+
 }

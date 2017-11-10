@@ -32,6 +32,7 @@
 		<result column="copied_time" property="copiedTime" />
 		<result column="ref_id" property="refId" />
 		<result column="delivered_time" property="deliveredTime" />
+		<result column="delivered_id" property="deliveredId" />
 		<result column="is_use_logistics" property="isUseLogistics" />
 		<result column="logistics_name" property="logisticsName" />
 		<result column="logistics_sn" property="logisticsSn" />
@@ -49,20 +50,24 @@
 		<result column="is_deleted" property="isDeleted" />
 		<result column="is_multiple" property="isMultiple" />
 		<result column="product_id" property="productId" />
+		<result column="product_type" property="productType" />
 		<result column="image" property="image" />
 		<result column="market_price" property="marketPrice" />
 		<result column="price" property="price" />
 		<result column="quantity" property="quantity" />
 		<result column="is_settlement" property="isSettlement" />
-		<result column="version" property="version" />
-		<result column="product_type" property="productType" />
 		<result column="inviter_id" property="inviterId" />
 		<result column="exalt_flage" property="exaltFlage" />
+		<result column="is_uku" property="isUku" />
+		<result column="send_quantity" property="sendQuantity" />
+		<result column="version" property="version" />
 	</resultMap>
 
+	<sql id="baseColumn">id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,delivered_id,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,product_type,image,market_price,price,quantity,is_settlement,inviter_id,exalt_flage,is_uku,send_quantity,version</sql>
+
 	<insert id="insert" parameterType="com.zy.entity.mal.Order" useGeneratedKeys="true" keyProperty="id">
-	  insert into `mal_order` (sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,version,product_type,inviter_id,exalt_flage)
-	  values (#{sn},#{userId},#{buyerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{sellerId},#{sellerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{rootId},#{v4UserId},#{isPayToPlatform},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{discountFee},#{amount},#{refund},#{refundRemark},#{buyerMemo},#{sellerMemo},#{remark},#{isProfitSettledUp},#{isSettledUp},#{isCopied},#{copiedTime},#{refId},#{deliveredTime},#{isUseLogistics},#{logisticsName},#{logisticsSn},#{logisticsFee},#{isBuyerPayLogisticsFee},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{offlineImage},#{offlineMemo},#{isDeleted},#{isMultiple},#{productId},#{image},#{marketPrice},#{price},#{quantity},#{isSettlement},#{version},#{productType},#{inviterId},#{exaltFlage})
+	  insert into `mal_order` (sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,delivered_id,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,product_type,image,market_price,price,quantity,is_settlement,inviter_id,exalt_flage,is_uku,send_quantity,version)
+	  values (#{sn},#{userId},#{buyerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{sellerId},#{sellerUserRank,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{rootId},#{v4UserId},#{isPayToPlatform},#{title},#{createdTime},#{expiredTime},#{paidTime},#{refundedTime},#{orderStatus,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{orderType,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{discountFee},#{amount},#{refund},#{refundRemark},#{buyerMemo},#{sellerMemo},#{remark},#{isProfitSettledUp},#{isSettledUp},#{isCopied},#{copiedTime},#{refId},#{deliveredTime},#{deliveredId},#{isUseLogistics},#{logisticsName},#{logisticsSn},#{logisticsFee},#{isBuyerPayLogisticsFee},#{receiverAreaId},#{receiverRealname},#{receiverPhone},#{receiverProvince},#{receiverCity},#{receiverDistrict},#{receiverAddress},#{offlineImage},#{offlineMemo},#{isDeleted},#{isMultiple},#{productId},#{productType},#{image},#{marketPrice},#{price},#{quantity},#{isSettlement},#{inviterId},#{exaltFlage},#{isUku},#{sendQuantity},#{version})
 	</insert>
 
 	<delete id="delete">
@@ -100,6 +105,7 @@
 			copied_time = #{copiedTime},
 			ref_id = #{refId},
 			delivered_time = #{deliveredTime},
+			delivered_id = #{deliveredId},
 			is_use_logistics = #{isUseLogistics},
 			logistics_name = #{logisticsName},
 			logistics_sn = #{logisticsSn},
@@ -117,16 +123,17 @@
 			is_deleted = #{isDeleted},
 			is_multiple = #{isMultiple},
 			product_id = #{productId},
+			product_type = #{productType},
 			image = #{image},
 			market_price = #{marketPrice},
 			price = #{price},
 			quantity = #{quantity},
 			is_settlement = #{isSettlement},
-			delivered_id = #{deliveredId},
-			version = version + 1,
-			product_type = #{productType},
 			inviter_id = #{inviterId},
 			exalt_flage = #{exaltFlage},
+			is_uku = #{isUku},
+			send_quantity = #{sendQuantity},
+			version = version + 1,
 		</set>
 		where id = #{id} and version=#{version}
 	</update>
@@ -164,6 +171,7 @@
 					<when test="field == 'copiedTime'">copied_time = #{order.copiedTime},</when>
 					<when test="field == 'refId'">ref_id = #{order.refId},</when>
 					<when test="field == 'deliveredTime'">delivered_time = #{order.deliveredTime},</when>
+					<when test="field == 'deliveredId'">delivered_id = #{order.deliveredId},</when>
 					<when test="field == 'isUseLogistics'">is_use_logistics = #{order.isUseLogistics},</when>
 					<when test="field == 'logisticsName'">logistics_name = #{order.logisticsName},</when>
 					<when test="field == 'logisticsSn'">logistics_sn = #{order.logisticsSn},</when>
@@ -181,30 +189,32 @@
 					<when test="field == 'isDeleted'">is_deleted = #{order.isDeleted},</when>
 					<when test="field == 'isMultiple'">is_multiple = #{order.isMultiple},</when>
 					<when test="field == 'productId'">product_id = #{order.productId},</when>
+					<when test="field == 'productType'">product_type = #{order.productType},</when>
 					<when test="field == 'image'">image = #{order.image},</when>
 					<when test="field == 'marketPrice'">market_price = #{order.marketPrice},</when>
 					<when test="field == 'price'">price = #{order.price},</when>
 					<when test="field == 'quantity'">quantity = #{order.quantity},</when>
 					<when test="field == 'isSettlement'">is_settlement = #{order.isSettlement},</when>
-					<when test="field == 'productType'">product_type = #{order.productType},</when>
 					<when test="field == 'inviterId'">inviter_id = #{order.inviterId},</when>
 					<when test="field == 'exaltFlage'">exalt_flage = #{order.exaltFlage},</when>
+					<when test="field == 'isUku'">is_uku = #{order.isUku},</when>
+					<when test="field == 'sendQuantity'">send_quantity = #{order.sendQuantity},</when>
 				</choose>
 				</foreach>
 			</set>
 		where id = #{order.id}
 	</update>
 
-	<select id="findOne" resultMap="baseResultMap" parameterType="long">
+	<select id="findOne" resultMap="baseResultMap">
 		select
-		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,version,product_type,inviter_id,exalt_flage
+		<include refid="baseColumn"/>
 		from `mal_order`
 		where id = #{id}
 	</select>
 
 	<select id="findAll" resultMap="baseResultMap" parameterType="com.zy.model.query.OrderQueryModel">
 		select
-		id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,is_settlement,version,product_type,inviter_id,exalt_flage
+		<include refid="baseColumn"/>
 		from `mal_order`
 		<where>
 			<if test="rootIdEQ != null">
@@ -219,8 +229,8 @@
 			<if test="sellerIdEQ != null">
 				and seller_id = #{sellerIdEQ}
 			</if>
-			<if test="productTypeEQ != null">
-				and product_type = #{productTypeEQ}
+			<if test="isUkuEQ != null">
+				and is_uku = #{isUkuEQ}
 			</if>
 			<if test="paidTimeGTE != null">
 				and paid_time &gt;= #{paidTimeGTE}
@@ -240,6 +250,9 @@
 			<if test="logisticsSnLK != null">
 				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
 			</if>
+			<if test="productTypeEQ != null">
+				and product_type = #{productTypeEQ}
+			</if>
 			<if test="isDeletedEQ != null">
 				and is_deleted = #{isDeletedEQ}
 			</if>
@@ -251,6 +264,12 @@
 			</if>
 			<if test="orderStatusEQ != null">
 				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="exaltFlageEQ != null">
+				and exalt_flage = #{exaltFlageEQ}
+			</if>
+			<if test="inviterIdEQ != null">
+				and inviter_id = #{inviterIdEQ}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
@@ -268,6 +287,9 @@
 				<if test="orderStatusIN.length == 0">
 				and 1 = 2
 				</if>
+			</if>
+			<if test="sendQuantityEQ != null">
+				and send_quantity = #{sendQuantityEQ}
 			</if>
 			<if test="snLK != null">
 				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
@@ -317,12 +339,6 @@
 				<if test="sellerIdIN.length == 0">
 				and 1 = 2
 				</if>
-			</if>
-			<if test="inviterIdEQ != null">
-				and inviter_id = #{inviterIdEQ}
-			</if>
-			<if test="exaltFlageEQ != null">
-				and exalt_flage = #{exaltFlageEQ}
 			</if>
 		</where>
 		<choose>
@@ -353,8 +369,8 @@
 			<if test="sellerIdEQ != null">
 				and seller_id = #{sellerIdEQ}
 			</if>
-			<if test="productTypeEQ != null">
-				and product_type = #{productTypeEQ}
+			<if test="isUkuEQ != null">
+				and is_uku = #{isUkuEQ}
 			</if>
 			<if test="paidTimeGTE != null">
 				and paid_time &gt;= #{paidTimeGTE}
@@ -374,6 +390,9 @@
 			<if test="logisticsSnLK != null">
 				<bind name="logisticsSnLK" value="'%' + logisticsSnLK + '%'"/> and logistics_sn like #{logisticsSnLK}
 			</if>
+			<if test="productTypeEQ != null">
+				and product_type = #{productTypeEQ}
+			</if>
 			<if test="isDeletedEQ != null">
 				and is_deleted = #{isDeletedEQ}
 			</if>
@@ -385,6 +404,12 @@
 			</if>
 			<if test="orderStatusEQ != null">
 				and order_status = #{orderStatusEQ,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+			</if>
+			<if test="exaltFlageEQ != null">
+				and exalt_flage = #{exaltFlageEQ}
+			</if>
+			<if test="inviterIdEQ != null">
+				and inviter_id = #{inviterIdEQ}
 			</if>
 			<if test="userIdEQ != null">
 				and user_id = #{userIdEQ}
@@ -402,6 +427,9 @@
 				<if test="orderStatusIN.length == 0">
 				and 1 = 2
 				</if>
+			</if>
+			<if test="sendQuantityEQ != null">
+				and send_quantity = #{sendQuantityEQ}
 			</if>
 			<if test="snLK != null">
 				<bind name="snLK" value="'%' + snLK + '%'"/> and sn like #{snLK}
@@ -452,16 +480,8 @@
 				and 1 = 2
 				</if>
 			</if>
-			<if test="inviterIdEQ != null">
-				and inviter_id = #{inviterIdEQ}
-			</if>
-			<if test="exaltFlageEQ != null">
-				and exalt_flage = #{exaltFlageEQ}
-			</if>
 		</where>
 	</select>
-
-	<sql id="baseColumn">id,sn,user_id,buyer_user_rank,seller_id,seller_user_rank,root_id,v4_user_id,is_pay_to_platform,title,created_time,expired_time,paid_time,refunded_time,order_status,order_type,discount_fee,amount,refund,refund_remark,buyer_memo,seller_memo,remark,is_profit_settled_up,is_settled_up,is_copied,copied_time,ref_id,delivered_time,is_use_logistics,logistics_name,logistics_sn,logistics_fee,is_buyer_pay_logistics_fee,receiver_area_id,receiver_realname,receiver_phone,receiver_province,receiver_city,receiver_district,receiver_address,offline_image,offline_memo,is_deleted,is_multiple,product_id,image,market_price,price,quantity,version,product_type</sql>
 
 	<select id="findBySn" resultMap="baseResultMap">
 		select
