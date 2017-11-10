@@ -69,10 +69,15 @@ public class UcenterTeamController {
 	@RequestMapping(value = "/products", method = RequestMethod.GET)
 	public String list(Model model,Principal principal) {
 		List<Product> products = productService.findAll(ProductQueryModel.builder().isOnEQ(true).build());
+		Map<Integer, List<Product>> orderMap = products.stream().collect(Collectors.groupingBy(Product::getProductType));
+		List<Product> plist = new ArrayList<Product>();
+		for(Integer type : orderMap.keySet()){
+			plist.add(orderMap.get(type).get(0));
+		}
 		Long userId = principal.getUserId();
 		MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId, 2);
 		boolean isnew = mergeUser == null ? false : true;
-		model.addAttribute("products",products.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
+		model.addAttribute("products",plist.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
 		model.addAttribute("isnew",isnew);
 		return "ucenter/productType";
 	}
@@ -207,7 +212,8 @@ public class UcenterTeamController {
 			if (user.getUserRank()==User.UserRank.V4||user.getUserRank()==User.UserRank.V3){
 				long[]teamTotal=mergeUserComponent.conyNewProducTeamTotal(userId,2);
 				dataMap.put("TTot", DateUtil.longarryToString(teamTotal,false));
-				dataMap.put("flag", "T");//是否 能查看到 直属特级按钮，默认看到
+				String flag = user.getUserRank()==User.UserRank.V4 ? "T" : "F";
+				dataMap.put("flag",flag);//是否 能查看到 直属特级按钮，默认看到
 			}
 			//直属团队 人数统计
 

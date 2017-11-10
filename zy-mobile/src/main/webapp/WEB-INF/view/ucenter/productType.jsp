@@ -23,7 +23,7 @@
 
 <header class="header">
   <a href="${ctx}/" class="button-left"><i class="fa fa-angle-left"></i></a>
-  <h1>全部服务</h1>
+  <h1>选择商品体系</h1>
 </header>
 
 <article class="mb-15 clearfix">

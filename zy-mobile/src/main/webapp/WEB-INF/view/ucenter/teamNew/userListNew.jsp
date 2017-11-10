@@ -191,21 +191,25 @@
     <div id="echartTeamFor"></div>
   </div>
 
-  <div class="all allName clearfloat">
-    <div class="teamAll allList">
-      <img src="${ctx}/images/team4.png"/>
-      <span>新晋直属特级</span>
-    </div>
-    <c:forEach items="${dataMap.mynT}" var="tlist">
-      <div class="TeamName">
-        <img src="${tlist.avatar}" />
-        <span>${tlist.nickname}</span>
-        <a href="tel:${tlist.phone}">
-            <span>${tlist.phone}</span>
-        </a>
+<c:if test="${dataMap.flag != null}">
+  <c:if test="${dataMap.flag eq 'T'}">
+    <div class="all allName clearfloat">
+      <div class="teamAll allList">
+        <img src="${ctx}/images/team4.png"/>
+        <span>新晋直属特级</span>
       </div>
-    </c:forEach>
-  </div>
+      <c:forEach items="${dataMap.mynT}" var="tlist">
+        <div class="TeamName">
+          <img src="${tlist.avatar}" />
+          <span>${tlist.nickname}</span>
+          <a href="tel:${tlist.phone}">
+              <span>${tlist.phone}</span>
+          </a>
+        </div>
+      </c:forEach>
+    </div>
+  </c:if>
+</c:if>
 
   <%--<div class="all">--%>
     <%--<div class="teamAll allList">--%>

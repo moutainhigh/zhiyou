@@ -84,21 +84,25 @@ public class MergeUserServiceImpl implements MergeUserService  {
             }else {
                 do{
                     parent = userMapper.findOne(parent.getParentId());
-                }while (parent != null  && parent.getParentId() != null && findByUserIdAndProductType(parent.getId(),2) == null);
+                }while (parent != null && findByUserIdAndProductType(parent.getId(),2) == null && parent.getParentId() != null );
                 if(parent == null){
                     //父级团队里面没有一个转移的，将新上级设置为万伟民
                     mergeUser.setParentId(10370l);
                 }else {
-                    mergeUser.setParentId(parent.getId());
+                    if(findByUserIdAndProductType(parent.getId(),2) == null){
+                        mergeUser.setParentId(10370l);
+                    }else {
+                        mergeUser.setParentId(parent.getId());
+                    }
                 }
             }
-            //查找直属特级
-            User v4User = user;
-            do{
-                v4User = userMapper.findOne(v4User.getParentId());
-            }while(v4User != null && v4User.getParentId() != null && (findByUserIdAndProductType(parent.getId(),2) == null || findByUserIdAndProductType(parent.getId(),2).getUserRank() != User.UserRank.V4));
-            Long v4UserId = v4User == null ? null : v4User.getId();
-            mergeUser.setV4Id(v4UserId);
+//            //查找直属特级
+//            User v4User = user;
+//            do{
+//                v4User = userMapper.findOne(v4User.getParentId());
+//            }while(v4User != null && v4User.getParentId() != null && (findByUserIdAndProductType(parent.getId(),2) == null || findByUserIdAndProductType(parent.getId(),2).getUserRank() != User.UserRank.V4));
+//            Long v4UserId = v4User == null ? null : v4User.getId();
+//            mergeUser.setV4Id(v4UserId);
             mergeUserMapper.insert(mergeUser);
             //修改parentId
             List<User> all = userMapper.findAll(UserQueryModel.builder().parentIdEQ(userId).build()) ;
