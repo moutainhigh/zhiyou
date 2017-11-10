@@ -2475,6 +2475,7 @@ public class OrderServiceImpl implements OrderService {
 				orderStore.setBeforeNumber(orderStoreOld.getAfterNumber());
 				orderStore.setAfterNumber(orderStoreOld.getAfterNumber() + (order.getQuantity().intValue() - order.getSendQuantity()));
 				orderStore.setCreateBy(orderStoreOld.getUserId());
+				orderStore.setProductType(productType);
 				orderStoreMapper.insert(orderStore);
 			} else {//没有数据  则插入一条
 				OrderStore orderStore = new OrderStore();
@@ -2517,6 +2518,7 @@ public class OrderServiceImpl implements OrderService {
 			orderStore.setCreateDate(new Date());
 			orderStore.setNumber(order.getQuantity().intValue());
 			orderStore.setType(1);
+			orderStore.setProductType(productType);
 			orderStore.setBeforeNumber(orderStoreOld.getAfterNumber());
 			orderStore.setAfterNumber(orderStoreOld.getAfterNumber()-order.getQuantity().intValue());
 			orderStore.setCreateBy(orderStoreOld.getUserId());
