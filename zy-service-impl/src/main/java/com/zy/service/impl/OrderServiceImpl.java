@@ -110,6 +110,9 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderStoreMapper orderStoreMapper;
 
+	@Autowired
+	private MergeUserMapper mergeUserMapper;
+
 	public static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
 	@Override
@@ -2456,6 +2459,7 @@ public class OrderServiceImpl implements OrderService {
 			OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
 			orderStoreQueryModel.setIsEndEQ(1);
 			orderStoreQueryModel.setUserIdEQ(userId);
+			orderStoreQueryModel.setProductTypeEQ(productType);
 			List<OrderStore> orderList = orderStoreMapper.findAll(orderStoreQueryModel);
 			if (orderList != null && !orderList.isEmpty()) {//处理  业务逻辑
 				OrderStore orderStoreOld = orderList.get(0);
@@ -2483,6 +2487,7 @@ public class OrderServiceImpl implements OrderService {
 				orderStore.setBeforeNumber(0);
 				orderStore.setAfterNumber((order.getQuantity().intValue() - order.getSendQuantity()));
 				orderStore.setCreateBy(userId);
+				orderStore.setProductType(productType);
 				orderStoreMapper.insert(orderStore);
 			}
 		}
@@ -2524,12 +2529,24 @@ public class OrderServiceImpl implements OrderService {
 
 	/**
 	 * 检测 能不能下单
-	 * @param userId 自己的ID
+	 * @param parentId 发货人的ID
 	 * @return
      */
 	@Override
-	public Boolean checkOrderStore(MergeUser mergeUser, Integer productType) {
-		return null;
+	public Boolean checkOrderStore(Long parentId, Integer productType,Long quantity) {
+		OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
+		orderStoreQueryModel.setIsEndEQ(1);
+		orderStoreQueryModel.setUserIdEQ(parentId);
+		orderStoreQueryModel.setProductTypeEQ(productType);
+		List<OrderStore> orderList = orderStoreMapper.findAll(orderStoreQueryModel);
+		if(orderList!=null&&!orderList.isEmpty()){
+			OrderStore orderStoreOld = orderList.get(0);
+			if (orderStoreOld.getAfterNumber()>=quantity){
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }

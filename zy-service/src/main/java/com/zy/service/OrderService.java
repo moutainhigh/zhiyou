@@ -66,6 +66,6 @@ public interface OrderService {
 
 	void editOrderStoreOut(Long orderId,Long userId,Integer productType);
 
-	Boolean checkOrderStore(MergeUser mergeUser, Integer productType);
+	Boolean checkOrderStore(Long parentId, Integer productType,Long quantity);
 
 }
