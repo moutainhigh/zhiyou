@@ -17,7 +17,6 @@
  import com.zy.model.BizCode;
  import com.zy.model.Constants;
  import com.zy.service.MergeUserService;
- import com.zy.service.OrderService;
  import com.zy.service.UserCheckService;
  import groovy.lang.Binding;
  import groovy.lang.GroovyShell;
@@ -66,9 +65,6 @@ public class MalComponent {
 
 	@Autowired
 	private MergeUserService mergeUserService;
-
-	@Autowired
-	private OrderService orderService;
 
 	@Autowired
 	private UserCheckService userCheckService;
@@ -222,8 +218,8 @@ public class MalComponent {
 
 		//判断商品类型
 		if (order.getProductType() == 2){
-			orderService.editOderStoreIn(order.getId(),order.getUserId(),2);
-			orderService.editOrderStoreOut(order.getId(),order.getUserId(),2);
+			userCheckService.editOderStoreIn(order.getId(),order.getUserId(),2);
+			userCheckService.editOrderStoreOut(order.getId(),order.getUserId(),2);
 			userCheckService.checkUserLevel(order.getUserId(),order.getQuantity(),2);
 
 		}

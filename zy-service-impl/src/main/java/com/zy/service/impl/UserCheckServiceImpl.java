@@ -2,8 +2,10 @@ package com.zy.service.impl;
 
 
 import com.zy.common.exception.BizException;
+import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.util.DateUtil;
 import com.zy.entity.mal.Order;
+import com.zy.entity.mal.OrderStore;
 import com.zy.entity.mergeusr.MergeUser;
 import com.zy.entity.mergeusr.MergeUserUpgrade;
 import com.zy.entity.mergeusr.MergeV3ToV4;
@@ -13,6 +15,7 @@ import com.zy.model.BizCode;
 import com.zy.model.query.MergeUserQueryModel;
 import com.zy.model.query.MergeUserUpgradeQueryModel;
 import com.zy.model.query.OrderQueryModel;
+import com.zy.model.query.OrderStoreQueryModel;
 import com.zy.service.UserCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +51,9 @@ public class UserCheckServiceImpl implements UserCheckService {
 
     @Autowired
     private MergeV3ToV4Mapper mergeV3ToV4Mapper;
+
+    @Autowired
+    private OrderStoreMapper orderStoreMapper;
     /**
      * 处理用户关系 回调
      * @param id  购买人id
@@ -596,6 +602,86 @@ public class UserCheckServiceImpl implements UserCheckService {
             this.orderToV4(mergeUser,quantity,prodectType,0);
         }else if (userRank==User.UserRank.V3){
             this.orderToV4(mergeUser,quantity,prodectType,0);
+        }
+    }
+
+
+    /**
+     * 处理入库
+     * @param orderId
+     * @param userId
+     */
+    @Override
+    public void editOderStoreIn(Long orderId, Long userId,Integer productType) {
+        Order order = orderMapper.findOne(orderId);
+        if(order.getQuantity().intValue()>(order.getSendQuantity()==null?0:order.getSendQuantity())) {//订货量和发货量一致  不用进库存
+            OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
+            orderStoreQueryModel.setIsEndEQ(1);
+            orderStoreQueryModel.setUserIdEQ(userId);
+            List<OrderStore> orderList = orderStoreMapper.findAll(orderStoreQueryModel);
+            if (orderList != null && !orderList.isEmpty()) {//处理  业务逻辑
+                OrderStore orderStoreOld = orderList.get(0);
+                orderStoreOld.setIsEnd(0);
+                orderStoreMapper.update(orderStoreOld);
+                OrderStore orderStore = new OrderStore();
+                orderStore.setIsEnd(1);
+                orderStore.setOrderId(orderId);
+                orderStore.setUserId(orderStoreOld.getUserId());
+                orderStore.setCreateDate(new Date());
+                orderStore.setNumber(order.getQuantity().intValue() - order.getSendQuantity());
+                orderStore.setType(2);
+                orderStore.setBeforeNumber(orderStoreOld.getAfterNumber());
+                orderStore.setAfterNumber(orderStoreOld.getAfterNumber() + (order.getQuantity().intValue() - order.getSendQuantity()));
+                orderStore.setCreateBy(orderStoreOld.getUserId());
+                orderStore.setProductType(productType);
+                orderStoreMapper.insert(orderStore);
+            } else {//没有数据  则插入一条
+                OrderStore orderStore = new OrderStore();
+                orderStore.setIsEnd(1);
+                orderStore.setOrderId(orderId);
+                orderStore.setUserId(userId);
+                orderStore.setCreateDate(new Date());
+                orderStore.setNumber(order.getQuantity().intValue() - order.getSendQuantity());
+                orderStore.setType(2);
+                orderStore.setBeforeNumber(0);
+                orderStore.setAfterNumber((order.getQuantity().intValue() - order.getSendQuantity()));
+                orderStore.setCreateBy(userId);
+                orderStoreMapper.insert(orderStore);
+            }
+        }
+    }
+
+    /**
+     * 处理出库
+     * @param orderId
+     * @param userId
+     */
+    @Override
+    public void editOrderStoreOut(Long orderId, Long userId, Integer productType) {
+        Order order = orderMapper.findOne(orderId);
+        OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
+        orderStoreQueryModel.setIsEndEQ(1);
+        orderStoreQueryModel.setUserIdEQ(userId);
+        orderStoreQueryModel.setProductTypeEQ(productType);
+        List<OrderStore> orderList = orderStoreMapper.findAll(orderStoreQueryModel);
+        if (orderList!=null&&!orderList.isEmpty()){//处理  业务逻辑
+            OrderStore orderStoreOld = orderList.get(0);
+            orderStoreOld.setIsEnd(0);
+            orderStoreMapper.update(orderStoreOld);
+            OrderStore orderStore = new  OrderStore();
+            orderStore.setIsEnd(1);
+            orderStore.setOrderId(orderId);
+            orderStore.setUserId(orderStoreOld.getUserId());
+            orderStore.setCreateDate(new Date());
+            orderStore.setNumber(order.getQuantity().intValue());
+            orderStore.setType(1);
+            orderStore.setProductType(productType);
+            orderStore.setBeforeNumber(orderStoreOld.getAfterNumber());
+            orderStore.setAfterNumber(orderStoreOld.getAfterNumber()-order.getQuantity().intValue());
+            orderStore.setCreateBy(orderStoreOld.getUserId());
+            orderStoreMapper.insert(orderStore);
+        }else{
+            throw new UnauthorizedException("库存异常");
         }
     }
 }

@@ -62,10 +62,6 @@ public interface OrderService {
 
 	Map<String,Object> querySalesVolumeDetail(OrderQueryModel orderQueryModel);
 
-	void editOderStoreIn(Long orderId,Long userId,Integer productType);
-
-	void editOrderStoreOut(Long orderId,Long userId,Integer productType);
-
 	Boolean checkOrderStore(Long parentId, Integer productType,Long quantity);
 
 }
