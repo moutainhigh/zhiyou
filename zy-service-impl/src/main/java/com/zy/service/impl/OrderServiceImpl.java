@@ -6,7 +6,6 @@ import com.zy.Config;
 import com.zy.ServiceUtils;
 import com.zy.common.exception.BizException;
 import com.zy.common.exception.ConcurrentException;
-import com.zy.common.exception.UnauthorizedException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
@@ -117,272 +116,283 @@ public class OrderServiceImpl implements OrderService {
 
 	public static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
-	@Override
-	public Order create(@NotNull OrderCreateDto orderCreateDto) {
-		validate(orderCreateDto);
+    @Override
+    public Order create(@NotNull OrderCreateDto orderCreateDto) {
+        validate(orderCreateDto);
 
-		Order.OrderType orderType = orderCreateDto.getOrderType();
-		if(orderType == Order.OrderType.补单) {
-			if(!config.isOpenOrderFill()) {
-				throw new BizException(BizCode.ERROR, "补单已关闭");
-			}
+        Order.OrderType orderType = orderCreateDto.getOrderType();
+        if(orderType == Order.OrderType.补单) {
+            if(!config.isOpenOrderFill()) {
+                throw new BizException(BizCode.ERROR, "补单已关闭");
+            }
 
-			long count = orderFillUserMapper.count(OrderFillUserQueryModel.builder().userIdEQ(orderCreateDto.getUserId()).build());
-			if(count == 0) {
-				throw new BizException(BizCode.ERROR, "当前权限不能补单");
-			}
-		}
-
-		/* check product */
-		Long productId = orderCreateDto.getProductId();
-		Product product = productMapper.findOne(productId);
-		validate(product, NOT_NULL, "product id " + productId + " is not found");
-		if (!product.getIsOn()) {
-			throw new BizException(BizCode.ERROR, "必须上架的商品才能购买");
-		}
-
-		Long userId = orderCreateDto.getUserId();
-
-		/* check address */
-		Long addressId = orderCreateDto.getAddressId();
-		Address address = addressMapper.findOne(addressId);
-		validate(address, NOT_NULL, "address id " + addressId + " is not found");
-		validate(address, v -> v.getUserId().equals(userId), "address " + addressId + " is not own");
-
-		String title = orderCreateDto.getTitle();
-		long quantity = orderCreateDto.getQuantity();
-
-
-		/* check user */
-		Long parentId = null;
-        User user = null;
-		UserRank userRank = null;
-		UserRank buyerUserRank = null;
-		Long sellerId = null;
-		UserRank sellerUserRank = null;
-		Long v4UserId = null;
-
-		if (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj")){
-			MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId,product.getProductType());
-			if (mergeUser == null){
-				new MergeUser();
-				mergeUser.setUserId(userId);
-				mergeUser.setParentId(orderCreateDto.getParentId());
-				mergeUser.setInviterId(orderCreateDto.getParentId());
-				mergeUser.setProductType(product.getProductType());
-				mergeUser.setUserRank(UserRank.V0);
-				mergeUser.setRegisterTime(new Date());
-				mergeUserMapper.insert(mergeUser);
-
-				userRank = UserRank.V0;
-				buyerUserRank = userRank;
-				MergeUser mUser = malComponent.catchSellerId(userRank, productId, quantity, parentId);
-				sellerId = mUser.getUserId();
-				sellerUserRank = mUser.getUserRank();
-				v4UserId = calculateV4MergeUserId(mergeUser);
-			}else {
-				userRank = mergeUser.getUserRank();
-				buyerUserRank = mergeUser.getUserRank();
-                MergeUser mUser = malComponent.catchSellerId(userRank, productId, quantity, parentId);
-                sellerId = mUser.getUserId();
-                sellerUserRank = mUser.getUserRank();
-				v4UserId = calculateV4MergeUserId(mergeUser);
-			}
-		}else {
-			user = userMapper.findOne(userId);
-			validate(user, NOT_NULL, "user id " + userId + " is not found");
-			validate(user, v -> v.getUserType() == User.UserType.代理, "user type is wrong");
-
-			/* calculate parent id */
-			userRank = user.getUserRank();
-			buyerUserRank = user.getUserRank();
-			if (userRank == UserRank.V0 && user.getParentId() == null) {
-				parentId = orderCreateDto.getParentId();
-				if (parentId == null) {
-					throw new BizException(BizCode.ERROR, "首次下单必须填写邀请人");
-				}
-				User parent = userMapper.findOne(parentId);
-				if (parent == null) {
-					throw new BizException(BizCode.ERROR, "邀请人手机号没找到");
-				} else if (parent.getId().equals(userId)) {
-					throw new BizException(BizCode.ERROR, "邀请人不能为自己");
-				} else if (parent.getUserRank() == UserRank.V0) {
-					throw new BizException(BizCode.ERROR, "邀请人资格不足");
-				} else if (parent.getUserType() != User.UserType.代理) {
-					throw new BizException(BizCode.ERROR, "非法邀请人");
-				}
-				user.setParentId(parentId);
-				userMapper.update(user);
-			} else {
-				parentId = user.getParentId();
-			}
-
-			User seller = malComponent.calculateSeller(userRank, productId, quantity, parentId);
-			sellerId = seller.getId();
-			sellerUserRank = sellerId.equals(config.getSysUserId()) ? null : seller.getUserRank();
-			v4UserId = calculateV4UserId(user);
-		}
-
-        if (product.getProductType() == 2){
-            Boolean  flag = checkOrderStore(sellerId,2,quantity);
-            if (flag == false){
-                throw new BizException(BizCode.ERROR, "卖家库存不足，请提醒卖家进货");
+            long count = orderFillUserMapper.count(OrderFillUserQueryModel.builder().userIdEQ(orderCreateDto.getUserId()).build());
+            if(count == 0) {
+                throw new BizException(BizCode.ERROR, "当前权限不能补单");
             }
         }
 
-		BigDecimal price = malComponent.getPrice(productId, userRank, quantity);
-		BigDecimal amount = price.multiply(new BigDecimal(quantity));
+		/* check product */
+        Long productId = orderCreateDto.getProductId();
+        Product product = productMapper.findOne(productId);
+        validate(product, NOT_NULL, "product id " + productId + " is not found");
+        if (!product.getIsOn()) {
+            throw new BizException(BizCode.ERROR, "必须上架的商品才能购买");
+        }
 
-		boolean isPayToPlatform = orderCreateDto.getIsPayToPlatform();
+        Long userId = orderCreateDto.getUserId();
+
+		/* check address */
+        Long addressId = orderCreateDto.getAddressId();
+        Address address = addressMapper.findOne(addressId);
+        validate(address, NOT_NULL, "address id " + addressId + " is not found");
+        validate(address, v -> v.getUserId().equals(userId), "address " + addressId + " is not own");
+
+        String title = orderCreateDto.getTitle();
+        long quantity = orderCreateDto.getQuantity();
+
+
+		/* check user */
+        Long parentId = null;
+        User user = null;
+        UserRank userRank = null;
+        UserRank buyerUserRank = null;
+        Long sellerId = null;
+        UserRank sellerUserRank = null;
+        Long v4UserId = null;
+
+        if (product.getProductType() == 2){
+            MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId,product.getProductType());
+            if (mergeUser == null){
+                if (product.getSkuCode().equals("zy-slj")){
+                    new MergeUser();
+                    mergeUser.setUserId(userId);
+                    mergeUser.setParentId(orderCreateDto.getParentId());
+                    mergeUser.setInviterId(orderCreateDto.getParentId());
+                    mergeUser.setProductType(product.getProductType());
+                    mergeUser.setUserRank(UserRank.V0);
+                    mergeUser.setRegisterTime(new Date());
+                    mergeUserMapper.insert(mergeUser);
+
+                    userRank = UserRank.V0;
+                    buyerUserRank = userRank;
+                }else if (product.getSkuCode().equals("zy-slj-pyqzy")){
+                    mergeUserService.createByUserId(userId,2);
+                    MergeUser mergeU = mergeUserService.findByUserIdAndProductType(userId,product.getProductType());
+
+                    userRank = mergeU.getUserRank();
+                    buyerUserRank = userRank;
+                }
+
+                MergeUser mUser = malComponent.catchSellerId(userRank, productId, quantity, parentId);
+                sellerId = mUser.getUserId();
+                sellerUserRank = mUser.getUserRank();
+                v4UserId = calculateV4MergeUserId(mergeUser);
+            }else {
+                userRank = mergeUser.getUserRank();
+                buyerUserRank = mergeUser.getUserRank();
+                MergeUser mUser = malComponent.catchSellerId(userRank, productId, quantity, parentId);
+                sellerId = mUser.getUserId();
+                sellerUserRank = mUser.getUserRank();
+                v4UserId = calculateV4MergeUserId(mergeUser);
+            }
+        }else {
+            user = userMapper.findOne(userId);
+            validate(user, NOT_NULL, "user id " + userId + " is not found");
+            validate(user, v -> v.getUserType() == User.UserType.代理, "user type is wrong");
+
+			/* calculate parent id */
+            userRank = user.getUserRank();
+            buyerUserRank = user.getUserRank();
+            if (userRank == UserRank.V0 && user.getParentId() == null) {
+                parentId = orderCreateDto.getParentId();
+                if (parentId == null) {
+                    throw new BizException(BizCode.ERROR, "首次下单必须填写邀请人");
+                }
+                User parent = userMapper.findOne(parentId);
+                if (parent == null) {
+                    throw new BizException(BizCode.ERROR, "邀请人手机号没找到");
+                } else if (parent.getId().equals(userId)) {
+                    throw new BizException(BizCode.ERROR, "邀请人不能为自己");
+                } else if (parent.getUserRank() == UserRank.V0) {
+                    throw new BizException(BizCode.ERROR, "邀请人资格不足");
+                } else if (parent.getUserType() != User.UserType.代理) {
+                    throw new BizException(BizCode.ERROR, "非法邀请人");
+                }
+                user.setParentId(parentId);
+                userMapper.update(user);
+            } else {
+                parentId = user.getParentId();
+            }
+
+            User seller = malComponent.calculateSeller(userRank, productId, quantity, parentId);
+            sellerId = seller.getId();
+            sellerUserRank = sellerId.equals(config.getSysUserId()) ? null : seller.getUserRank();
+            v4UserId = calculateV4UserId(user);
+        }
+        if (userRank != UserRank.V4){
+            if (product.getProductType() == 2){
+                Boolean  flag = checkOrderStore(sellerId,2,quantity);
+                if (flag == false){
+                    throw new BizException(BizCode.ERROR, "卖家库存不足，请提醒卖家进货");
+                }
+            }
+        }
+
+        BigDecimal price = malComponent.getPrice(productId, userRank, quantity);
+        BigDecimal amount = price.multiply(new BigDecimal(quantity));
+
+        boolean isPayToPlatform = orderCreateDto.getIsPayToPlatform();
 
 //		Long rootId = calculateRootId(user);
 
-		if (product.getProductType() == 1){
-			UserRank upgradeUserRank = malComponent.getUpgradeUserRank(userRank, productId, quantity);
-			if(upgradeUserRank == UserRank.V4) {  //升特级只允许支付给平台
-				isPayToPlatform = true;
-			}
-		}
+        if (product.getProductType() == 1){
+            UserRank upgradeUserRank = malComponent.getUpgradeUserRank(userRank, productId, quantity);
+            if(upgradeUserRank == UserRank.V4) {  //升特级只允许支付给平台
+                isPayToPlatform = true;
+            }
+        }
 
-		Date createdTime = null;
-		if(orderCreateDto.getOrderType() == Order.OrderType.普通订单) {
-			createdTime = new Date();
-		} else {
-			createdTime = config.getOrderFillTime();
-		}
+        Date createdTime = null;
+        if(orderCreateDto.getOrderType() == Order.OrderType.普通订单) {
+            createdTime = new Date();
+        } else {
+            createdTime = config.getOrderFillTime();
+        }
 
-		Date expiredTime = null;
-		if (product.getProductType() == 1 || (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj"))){
-			LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-			LocalDateTime localDateTime = LocalDateTime.of(lastDate, LocalTime.parse("23:59:59"));
-			Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
-			expiredTime = Date.from(instant);
-		}else if (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj-pyqzy")){
-			if (userRank == UserRank.V4){
-				Calendar calendar = Calendar.getInstance();
-				calendar.set(2017, 10, 11, 23, 59, 59);
-				expiredTime = calendar.getTime();
-			}else if (userRank == UserRank.V3) {
-				int whileTimes = 0;
-				while ( parentId != null) {
-					if (whileTimes > 1000) {
-						throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
-					}
-					User parent = userMapper.findOne(parentId);
-					if (parent.getUserRank() == User.UserRank.V4) {
-						parentId = parent.getId();
-						break;
-					}else {
-						parentId = parent.getParentId();
-					}
-					whileTimes ++;
-				}
+        Date expiredTime = null;
+        if (product.getProductType() == 1 || (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj"))){
+            LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+            LocalDateTime localDateTime = LocalDateTime.of(lastDate, LocalTime.parse("23:59:59"));
+            Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+            expiredTime = Date.from(instant);
+        }else if (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj-pyqzy")){
+            if (userRank == UserRank.V4){
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(2017, 10, 11, 23, 59, 59);
+                expiredTime = calendar.getTime();
+            }else if (userRank == UserRank.V3) {
+                int whileTimes = 0;
+                while ( parentId != null) {
+                    if (whileTimes > 1000) {
+                        throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
+                    }
+                    User parent = userMapper.findOne(parentId);
+                    if (parent.getUserRank() == User.UserRank.V4) {
+                        parentId = parent.getId();
+                        break;
+                    }else {
+                        parentId = parent.getParentId();
+                    }
+                    whileTimes ++;
+                }
 
-				//根据id查询团队省级人数
-				UserQueryModel userQueryModel  = new UserQueryModel();
-				userQueryModel.setIsDeletedEQ(false);
-				userQueryModel.setIsFrozenEQ(false);
-				List<User> users = userMapper.findAll(userQueryModel);
-				List<User> children = TreeHelper.sortBreadth2(users, parentId.toString(), v -> {
-					TreeNode treeNode = new TreeNode();
-					treeNode.setId(v.getId().toString());
-					treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
-					return treeNode;
-				});
+                //根据id查询团队省级人数
+                UserQueryModel userQueryModel  = new UserQueryModel();
+                userQueryModel.setIsDeletedEQ(false);
+                userQueryModel.setIsFrozenEQ(false);
+                List<User> users = userMapper.findAll(userQueryModel);
+                List<User> children = TreeHelper.sortBreadth2(users, parentId.toString(), v -> {
+                    TreeNode treeNode = new TreeNode();
+                    treeNode.setId(v.getId().toString());
+                    treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
+                    return treeNode;
+                });
 
-				List<User> list = children.stream().filter(v -> v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
-				//找出第一个特级是parentId
-				List<User> uses = new ArrayList<>();
-				for (User use: list) {
-					Long pId = calculateV4UserId(use);
-					if (pId != null && pId.toString().equals(parentId.toString())){
-						uses.add(use);
-					}
-				}
-				if (uses.size() >= 8 ){
-					if (isPayToPlatform == true){
-						Calendar calendar = Calendar.getInstance();
-						calendar.set(2017, 10, 11, 23, 59, 59);
-						expiredTime = calendar.getTime();
-					}else {
-						Calendar calendar = Calendar.getInstance();
-						calendar.set(2017, 10, 12, 23, 59, 59);
-						expiredTime = calendar.getTime();
-					}
-				}else if (uses.size() < 8  && uses.size() > 0){
-					//判断时间小于11 31 23 59 59
-					Calendar calendar = Calendar.getInstance();
-					calendar.set(2017, 11, 31, 23, 59, 59);
-					expiredTime = calendar.getTime();
-				}
-			}
-		}
+                List<User> list = children.stream().filter(v -> v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
+                //找出第一个特级是parentId
+                List<User> uses = new ArrayList<>();
+                for (User use: list) {
+                    Long pId = calculateV4UserId(use);
+                    if (pId != null && pId.toString().equals(parentId.toString())){
+                        uses.add(use);
+                    }
+                }
+                if (uses.size() >= 8 ){
+                    if (isPayToPlatform == true){
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(2017, 10, 11, 23, 59, 59);
+                        expiredTime = calendar.getTime();
+                    }else {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(2017, 10, 12, 23, 59, 59);
+                        expiredTime = calendar.getTime();
+                    }
+                }else if (uses.size() < 8  && uses.size() > 0){
+                    //判断时间小于11 31 23 59 59
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(2017, 11, 31, 23, 59, 59);
+                    expiredTime = calendar.getTime();
+                }
+            }
+        }
 
-		Order order = new Order();
-		order.setUserId(userId);
-		order.setAmount(amount);
-		order.setCreatedTime(createdTime);
-		order.setIsSettledUp(false);
-		order.setIsProfitSettledUp(false);
-		order.setIsCopied(false);
-		order.setBuyerUserRank(buyerUserRank);
-		order.setSellerUserRank(sellerUserRank);
-		order.setReceiverAreaId(address.getAreaId());
-		order.setReceiverProvince(address.getProvince());
-		order.setReceiverCity(address.getCity());
-		order.setReceiverDistrict(address.getDistrict());
-		order.setReceiverAddress(address.getAddress());
-		order.setReceiverRealname(address.getRealname());
-		order.setReceiverPhone(address.getPhone());
-		order.setBuyerMemo(orderCreateDto.getBuyerMemo());
-		order.setOrderStatus(OrderStatus.待支付);
-		order.setOrderType(orderType);
-		order.setVersion(0);
-		order.setSellerId(sellerId);
-		order.setProductType(product.getProductType());
-		order.setSn(ServiceUtils.generateOrderSn());
-		order.setIsSettledUp(false);
-		order.setDiscountFee(new BigDecimal("0.00"));
-		//order.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_ORDER_EXPIRE_IN_MINUTES));
-		order.setExpiredTime(expiredTime);
-		order.setIsPayToPlatform(orderCreateDto.getIsPayToPlatform());
-		order.setIsDeleted(false);
+        Order order = new Order();
+        order.setUserId(userId);
+        order.setAmount(amount);
+        order.setCreatedTime(createdTime);
+        order.setIsSettledUp(false);
+        order.setIsProfitSettledUp(false);
+        order.setIsCopied(false);
+        order.setBuyerUserRank(buyerUserRank);
+        order.setSellerUserRank(sellerUserRank);
+        order.setReceiverAreaId(address.getAreaId());
+        order.setReceiverProvince(address.getProvince());
+        order.setReceiverCity(address.getCity());
+        order.setReceiverDistrict(address.getDistrict());
+        order.setReceiverAddress(address.getAddress());
+        order.setReceiverRealname(address.getRealname());
+        order.setReceiverPhone(address.getPhone());
+        order.setBuyerMemo(orderCreateDto.getBuyerMemo());
+        order.setOrderStatus(OrderStatus.待支付);
+        order.setOrderType(orderType);
+        order.setVersion(0);
+        order.setSellerId(sellerId);
+        order.setProductType(product.getProductType());
+        order.setSn(ServiceUtils.generateOrderSn());
+        order.setIsSettledUp(false);
+        order.setDiscountFee(new BigDecimal("0.00"));
+        //order.setExpiredTime(DateUtils.addMinutes(new Date(), Constants.SETTING_ORDER_EXPIRE_IN_MINUTES));
+        order.setExpiredTime(expiredTime);
+        order.setIsPayToPlatform(orderCreateDto.getIsPayToPlatform());
+        order.setIsDeleted(false);
         order.setExaltFlage(0);
         order.setSendQuantity((int) quantity);
 		/* 追加字段 */
-		order.setIsMultiple(false);
-		order.setProductId(productId);
-		order.setMarketPrice(product.getMarketPrice());
-		order.setQuantity(quantity);
-		order.setPrice(price);
-		order.setImage(product.getImage1());
-		order.setV4UserId(v4UserId);
+        order.setIsMultiple(false);
+        order.setProductId(productId);
+        order.setMarketPrice(product.getMarketPrice());
+        order.setQuantity(quantity);
+        order.setPrice(price);
+        order.setImage(product.getImage1());
+        order.setV4UserId(v4UserId);
 //		order.setRootId(rootId);
 
-		if (StringUtils.isNotBlank(title)) {
-			order.setTitle(title);
-		} else {
-			order.setTitle(product.getTitle());
-		}
+        if (StringUtils.isNotBlank(title)) {
+            order.setTitle(title);
+        } else {
+            order.setTitle(product.getTitle());
+        }
 
-		validate(order);
-		orderMapper.insert(order);
+        validate(order);
+        orderMapper.insert(order);
 
-		OrderItem orderItem = new OrderItem();
-		orderItem.setPrice(price);
-		orderItem.setOrderId(order.getId());
-		orderItem.setProductId(productId);
-		orderItem.setMarketPrice(product.getMarketPrice());
-		orderItem.setQuantity(quantity);
-		orderItem.setAmount(amount);
-		orderItem.setTitle(product.getTitle());
-		orderItem.setImage(product.getImage1());
-		validate(orderItem);
-		orderItemMapper.insert(orderItem);
-		return order;
-	}
+        OrderItem orderItem = new OrderItem();
+        orderItem.setPrice(price);
+        orderItem.setOrderId(order.getId());
+        orderItem.setProductId(productId);
+        orderItem.setMarketPrice(product.getMarketPrice());
+        orderItem.setQuantity(quantity);
+        orderItem.setAmount(amount);
+        orderItem.setTitle(product.getTitle());
+        orderItem.setImage(product.getImage1());
+        validate(orderItem);
+        orderItemMapper.insert(orderItem);
+        return order;
+    }
 
-	private Long calculateV4MergeUserId(MergeUser mergeUser) {
+
+    private Long calculateV4MergeUserId(MergeUser mergeUser) {
 		Long parentId = mergeUser.getParentId();
 		int whileTimes = 0;
 		while (parentId != null) {

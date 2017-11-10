@@ -29,7 +29,7 @@
         return false;  
       }
 
-      if ($('#sendQuantity').val() > ${quantity}){
+      if($('#sendQuantity').val() > ${quantity}){
         messageFlash('发货数量不能大于订单数量');
         return false;
       }
@@ -89,7 +89,6 @@
         });
         return false;
         </c:if>
-
     });
     
   	//选择收货地址
@@ -439,7 +438,7 @@
       </div>
     </c:if>
 
-    <c:if test="${product.productType == 2 && product.skuCode == 'zy-slj'}">
+    <c:if test="${product.productType == 2}">
       <div class="list-group">
         <div class="list-item">
           <label class="list-label">发货数量</label>

@@ -74,7 +74,9 @@ public class MergeUserServiceImpl implements MergeUserService  {
             mergeUser.setUserRank(user.getUserRank());
             mergeUser.setRegisterTime(now);
             mergeUser.setLastUpgradedTime(now);
-            mergeUser.setCode(this.getCode());
+            if (user.getUserRank() != User.UserRank.V0){
+                mergeUser.setCode(this.getCode());
+            }
             mergeUser.setV4Id(null);
             //查询直属上级
             User parent = user;

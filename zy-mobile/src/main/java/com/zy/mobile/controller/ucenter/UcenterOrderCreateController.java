@@ -44,7 +44,7 @@ public class UcenterOrderCreateController {
 
 	@Autowired
 	private AddressService addressService;
-	
+
 	@Autowired
 	private OrderService orderService;
 
@@ -68,7 +68,7 @@ public class UcenterOrderCreateController {
 
 	@Autowired
 	private ProductComponent productComponent;
-	
+
 	@Autowired
 	private UserComponent userComponent;
 
@@ -80,11 +80,11 @@ public class UcenterOrderCreateController {
 		Product product = productService.findOne(productId);
 		Long userId = principal.getUserId();
 		User.UserRank userRank = null;
-		if (product.getProductType() == 1){
+		if (product.getProductType() == 1 || (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj-pyqzy"))){
 			User user = userService.findOne(userId);
 			userRank = user.getUserRank();
 			product.setPrice(productService.getPrice(productId, userRank, quantity));
-			if (userRank == User.UserRank.V0) {
+			if (userRank == User.UserRank.V0 || userRank == User.UserRank.V3) {
 				Long parentId = user.getParentId();
 				Long inviterId = user.getInviterId();
 				if (parentId != null) {
@@ -100,7 +100,7 @@ public class UcenterOrderCreateController {
 					}
 				}
 			}
-		}else if (product.getProductType() == 2){
+		}else if (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj")){
 			MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId,product.getProductType());
 			if(mergeUser != null){
 				userRank = mergeUser.getUserRank();
@@ -108,22 +108,22 @@ public class UcenterOrderCreateController {
 				userRank = User.UserRank.V0;
 			}
 			product.setPrice(productService.getPrice(productId, userRank, quantity));
-//			if (userRank == User.UserRank.V0) {
-//				Long parentId = mergeUser.getParentId();
-//				Long inviterId = mergeUser.getInviterId();
-//				if (parentId != null) {
-//					MergeUser parent = mergeUserService.findByUserIdAndProductType(parentId,product.getProductType());
-//					if (parent != null) {
-//						model.addAttribute("parent", mergeUserComponent.buildVo(parent));
-//					}
-//				}
-//				if (inviterId != null) {
-//					MergeUser inviter = mergeUserService.findByUserIdAndProductType(inviterId,product.getProductType());
-//					if (inviter != null) {
-//						model.addAttribute("inviter", mergeUserComponent.buildVo(inviter));
-//					}
-//				}
-//			}
+			if (userRank != User.UserRank.V0) {
+				Long parentId = mergeUser.getParentId();
+				Long inviterId = mergeUser.getInviterId();
+				if (parentId != null) {
+					MergeUser parent = mergeUserService.findByUserIdAndProductType(parentId,product.getProductType());
+					if (parent != null) {
+						model.addAttribute("parent", mergeUserComponent.buildVo(parent));
+					}
+				}
+				if (inviterId != null) {
+					MergeUser inviter = mergeUserService.findByUserIdAndProductType(inviterId,product.getProductType());
+					if (inviter != null) {
+						model.addAttribute("inviter", mergeUserComponent.buildVo(inviter));
+					}
+				}
+			}
 		}
 		Address address = addressService.findDefaultByUserId(userId);
 
@@ -157,10 +157,10 @@ public class UcenterOrderCreateController {
 		model.addAttribute("orderFill", orderFill);
 		return "ucenter/order/orderCreate";
 	}
-	
+
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(OrderCreateDto orderCreateDto, boolean isOrderFill, Long parentId, Principal principal, RedirectAttributes redirectAttributes) {
-		
+
 		orderCreateDto.setUserId(principal.getUserId());
 		orderCreateDto.setParentId(parentId);
 		if(isOrderFill) {
@@ -198,5 +198,5 @@ public class UcenterOrderCreateController {
 		}
 		return null;
 	}
-	
+
 }
