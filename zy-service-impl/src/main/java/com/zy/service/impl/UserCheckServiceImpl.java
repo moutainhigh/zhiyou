@@ -234,8 +234,7 @@ public class UserCheckServiceImpl implements UserCheckService {
          }
          return false;
      }).collect(Collectors.toList());
-    /* return mergeUserList.size();*/
-     return 0;
+    return mergeUserList.size();
  }
 
 
@@ -270,12 +269,12 @@ public class UserCheckServiceImpl implements UserCheckService {
             }
             return false;
         };
-        List<Order> orderList = orderMapper.findAll(OrderQueryModel.builder().inviterIdEQ(mergeUser.getInviterId()).paidTimeGTE(DateUtil.getMonthData(new Date(),-2,0))
+        List<Order> orderList = orderMapper.findAll(OrderQueryModel.builder().inviterIdEQ(mergeUser.getUserId()).paidTimeGTE(DateUtil.getMonthData(new Date(),-2,0))
                 .orderStatusIN(new Order.OrderStatus[] {Order.OrderStatus.已支付, Order.OrderStatus.已发货, Order.OrderStatus.已完成})
                 .productTypeEQ(prodectType).exaltFlageEQ(0).build()).stream().filter(predicate).collect(Collectors.toList());
 
-        Map<Long,List<MergeUserUpgrade>> map = mergeUserUpgradeMapper.findAll(MergeUserUpgradeQueryModel.builder().upgradedTimeGTE(DateUtil.getMonthData(new Date(),-2,0)).build())
-                .stream().collect(Collectors.groupingBy(MergeUserUpgrade::getUserId));
+        /*Map<Long,List<MergeUserUpgrade>> map = mergeUserUpgradeMapper.findAll(MergeUserUpgradeQueryModel.builder().upgradedTimeGTE(DateUtil.getMonthData(new Date(),-2,0)).build())
+                .stream().collect(Collectors.groupingBy(MergeUserUpgrade::getUserId));*/
         return orderList;
     }
 
@@ -390,7 +389,7 @@ public class UserCheckServiceImpl implements UserCheckService {
     private Boolean v3ToV4(MergeUser parentInvter, Integer prodectType){
         int number = this.count(parentInvter,prodectType,3);
         if(number>=5) { //让推荐人晋级
-           Map<Long,List<MergeUser>> mergeUserMap = mergeUserMapper.findAll(MergeUserQueryModel.builder().productTypeEQ(prodectType).build()).stream()
+           Map<Long,List<MergeUser>> mergeUserMap = mergeUserMapper.findAll(MergeUserQueryModel.builder().productTypeEQ(prodectType).build()).stream().filter(v->v.getParentId()!=null)
                     .collect(Collectors.groupingBy(MergeUser::getParentId));
             Map<Long,List<Order>> orderMap = orderMapper.findAll(OrderQueryModel.builder().productTypeEQ(prodectType)
                     .createdTimeGTE(DateUtil.getMonthData(new Date(),-2,0)).build()).stream().collect(Collectors.groupingBy(Order::getUserId));
@@ -403,7 +402,7 @@ public class UserCheckServiceImpl implements UserCheckService {
                 if (mergeUser.getUserRank()== User.UserRank.V4){
                     num +=150;
                 }else{
-                 List<Order> orderList = orderMap.get(mergeUser.getId());
+                 List<Order> orderList = orderMap.get(mergeUser.getUserId());
                     if(orderList!=null&&!orderList.isEmpty()){
                         Long sum = orderList.parallelStream().filter(v->v.getBuyerUserRank()== mergeUser.getUserRank()).mapToLong(Order::getQuantity).sum();
                         num+=sum;
@@ -412,7 +411,7 @@ public class UserCheckServiceImpl implements UserCheckService {
                                 if (mergeUser1.getUserRank()== User.UserRank.V4){
                                     num +=150;
                                 }else{
-                                    List<Order> orderList1 = orderMap.get(mergeUser.getId());
+                                    List<Order> orderList1 = orderMap.get(mergeUser.getUserId());
                                     if(orderList1!=null&&!orderList1.isEmpty()){
                                         Long sum1 = orderList1.parallelStream().filter(v->v.getBuyerUserRank()== mergeUser1.getUserRank()).mapToLong(Order::getQuantity).sum();
                                         num+=sum1;
