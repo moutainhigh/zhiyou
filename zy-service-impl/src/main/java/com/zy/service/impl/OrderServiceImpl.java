@@ -342,6 +342,7 @@ public class OrderServiceImpl implements OrderService {
         order.setIsCopied(false);
         order.setBuyerUserRank(buyerUserRank);
         order.setSellerUserRank(sellerUserRank);
+        order.setInviterId(orderCreateDto.getParentId());
         order.setReceiverAreaId(address.getAreaId());
         order.setReceiverProvince(address.getProvince());
         order.setReceiverCity(address.getCity());
