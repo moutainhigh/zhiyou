@@ -220,7 +220,7 @@ public class MalComponent {
 		if (order.getProductType() == 2){
 			userCheckService.editOderStoreIn(order.getId(),order.getUserId(),2);
 			if (order.getBuyerUserRank() != UserRank.V4){
-				userCheckService.editOrderStoreOut(order.getId(),order.getUserId(),2);
+				userCheckService.editOrderStoreOut(order.getId(),order.getSellerId(),2);
 			}
 			userCheckService.checkUserLevel(order.getUserId(),order.getQuantity(),2);
 
