@@ -165,7 +165,7 @@ public class OrderServiceImpl implements OrderService {
             MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId,product.getProductType());
             if (mergeUser == null){
                 if (product.getSkuCode().equals("zy-slj")){
-                    new MergeUser();
+                    mergeUser = new MergeUser();
                     mergeUser.setUserId(userId);
                     mergeUser.setParentId(orderCreateDto.getParentId());
                     mergeUser.setInviterId(orderCreateDto.getParentId());
@@ -176,21 +176,26 @@ public class OrderServiceImpl implements OrderService {
 
                     userRank = UserRank.V0;
                     buyerUserRank = userRank;
+                    parentId = orderCreateDto.getParentId();
+                    v4UserId = calculateV4MergeUserId(mergeUser);
                 }else if (product.getSkuCode().equals("zy-slj-pyqzy")){
                     mergeUserService.createByUserId(userId,2);
                     MergeUser mergeU = mergeUserService.findByUserIdAndProductType(userId,product.getProductType());
 
                     userRank = mergeU.getUserRank();
                     buyerUserRank = userRank;
-                }
 
+                    parentId = mergeU.getParentId();
+
+                    v4UserId = calculateV4MergeUserId(mergeU);
+                }
                 MergeUser mUser = malComponent.catchSellerId(userRank, productId, quantity, parentId);
                 sellerId = mUser.getUserId();
                 sellerUserRank = mUser.getUserRank();
-                v4UserId = calculateV4MergeUserId(mergeUser);
             }else {
                 userRank = mergeUser.getUserRank();
                 buyerUserRank = mergeUser.getUserRank();
+                parentId = mergeUser.getParentId();
                 MergeUser mUser = malComponent.catchSellerId(userRank, productId, quantity, parentId);
                 sellerId = mUser.getUserId();
                 sellerUserRank = mUser.getUserRank();
@@ -357,7 +362,7 @@ public class OrderServiceImpl implements OrderService {
         order.setIsPayToPlatform(orderCreateDto.getIsPayToPlatform());
         order.setIsDeleted(false);
         order.setExaltFlage(0);
-        order.setSendQuantity((int) quantity);
+        order.setSendQuantity(0);
 		/* 追加字段 */
         order.setIsMultiple(false);
         order.setProductId(productId);

@@ -216,12 +216,10 @@ public class UcenterNewOrderController {
             }
             model.addAttribute("userRank", userRank);
             product.setPrice(productService.getPrice(product.getId(), userRank, 1L));
-            if (userRank == User.UserRank.V3 || userRank == User.UserRank.V4) {
+            if (userRank == User.UserRank.V3 || userRank == User.UserRank.V4 || userRank == User.UserRank.V2) {
                 minQuantity = NEW_SETTING_NEW_MIN_QUANTITY;
-            }else if (userRank == User.UserRank.V2 || userRank == User.UserRank.V1){
+            }else if (userRank == User.UserRank.V1 || userRank == User.UserRank.V0){
                 minQuantity = NEW_UP_SETTING_NEW_MIN_QUANTITY;
-            }else if (userRank == User.UserRank.V0){
-                minQuantity = NEW_DOWN_SETTING_NEW_MIN_QUANTITY;
             }
         }
         model.addAttribute("minQuantity", minQuantity);
@@ -238,12 +236,18 @@ public class UcenterNewOrderController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(@RequestParam Long productId,@RequestParam  Long quantity,@RequestParam BigDecimal price, Model model, Principal principal) {
+        Product product = productService.findOne(productId);
         Long userId = principal.getUserId();
-        User user = userService.findOne(userId);
-        User.UserRank userRank = user.getUserRank();
+        User.UserRank userRank = null;
+        MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId,product.getProductType());
+        if(mergeUser != null){
+            userRank = mergeUser.getUserRank();
+        }else {
+            userRank = User.UserRank.V0;
+        }
+        product.setPrice(productService.getPrice(productId, userRank, quantity));
 
         Address address = addressService.findDefaultByUserId(userId);
-        Product product = productService.findOne(productId);
         product.setPrice(price);
         validate(product, NOT_NULL, "product id:" + productId + " is not found !");
         ProductListVo productVo = productComponent.buildListVo(product);
@@ -252,24 +256,6 @@ public class UcenterNewOrderController {
         model.addAttribute("address", address);
         model.addAttribute("userRank", userRank);
         model.addAttribute("useOfflinePay", quantity <= 160L );
-
-
-        if (userRank == User.UserRank.V0) {
-            Long parentId = user.getParentId();
-            Long inviterId = user.getInviterId();
-            if (parentId != null) {
-                User parent = userService.findOne(parentId);
-                if (parent != null) {
-                    model.addAttribute("parent", userComponent.buildListVo(parent));
-                }
-            }
-            if (inviterId != null) {
-                User inviter = userService.findOne(inviterId);
-                if (inviter != null) {
-                    model.addAttribute("inviter", userComponent.buildListVo(inviter));
-                }
-            }
-        }
 
         boolean orderFill = config.isOpenOrderFill();
         if(orderFill) {

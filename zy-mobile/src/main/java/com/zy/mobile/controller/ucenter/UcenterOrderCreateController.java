@@ -80,11 +80,11 @@ public class UcenterOrderCreateController {
 		Product product = productService.findOne(productId);
 		Long userId = principal.getUserId();
 		User.UserRank userRank = null;
-		if (product.getProductType() == 1 || (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj-pyqzy"))){
+		if (product.getProductType() == 1){
 			User user = userService.findOne(userId);
 			userRank = user.getUserRank();
 			product.setPrice(productService.getPrice(productId, userRank, quantity));
-			if (userRank == User.UserRank.V0 || userRank == User.UserRank.V3) {
+			if (userRank == User.UserRank.V0) {
 				Long parentId = user.getParentId();
 				Long inviterId = user.getInviterId();
 				if (parentId != null) {
@@ -100,7 +100,7 @@ public class UcenterOrderCreateController {
 					}
 				}
 			}
-		}else if (product.getProductType() == 2 && product.getSkuCode().equals("zy-slj")){
+		}else if (product.getProductType() == 2){
 			MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId,product.getProductType());
 			if(mergeUser != null){
 				userRank = mergeUser.getUserRank();
@@ -108,22 +108,22 @@ public class UcenterOrderCreateController {
 				userRank = User.UserRank.V0;
 			}
 			product.setPrice(productService.getPrice(productId, userRank, quantity));
-			if (userRank != User.UserRank.V0) {
-				Long parentId = mergeUser.getParentId();
-				Long inviterId = mergeUser.getInviterId();
-				if (parentId != null) {
-					MergeUser parent = mergeUserService.findByUserIdAndProductType(parentId,product.getProductType());
-					if (parent != null) {
-						model.addAttribute("parent", mergeUserComponent.buildVo(parent));
-					}
-				}
-				if (inviterId != null) {
-					MergeUser inviter = mergeUserService.findByUserIdAndProductType(inviterId,product.getProductType());
-					if (inviter != null) {
-						model.addAttribute("inviter", mergeUserComponent.buildVo(inviter));
-					}
-				}
-			}
+//			if (userRank == User.UserRank.V0) {
+//				Long parentId = mergeUser.getParentId();
+//				Long inviterId = mergeUser.getInviterId();
+//				if (parentId != null) {
+//					MergeUser parent = mergeUserService.findByUserIdAndProductType(parentId,product.getProductType());
+//					if (parent != null) {
+//						model.addAttribute("parent", mergeUserComponent.buildVo(parent));
+//					}
+//				}
+//				if (inviterId != null) {
+//					MergeUser inviter = mergeUserService.findByUserIdAndProductType(inviterId,product.getProductType());
+//					if (inviter != null) {
+//						model.addAttribute("inviter", mergeUserComponent.buildVo(inviter));
+//					}
+//				}
+//			}
 		}
 		Address address = addressService.findDefaultByUserId(userId);
 
