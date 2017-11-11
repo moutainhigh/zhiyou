@@ -39,6 +39,7 @@
 	<dubbo:reference  interface="com.zy.service.InviteNumberService" id="inviteNumberService"/>
 	<dubbo:reference interface="com.zy.service.ActivityApplyService" id="activityApplyService" />
 	<dubbo:reference interface="com.zy.service.MergeUserService" id="mergeUserService" />
+	<dubbo:reference interface="com.zy.service.UserCheckService" id="userCheckService" />
 
 	<dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}" file="false"/>
 

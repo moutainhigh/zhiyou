@@ -9,6 +9,7 @@ import com.zy.model.BizCode;
 import com.zy.model.query.OrderQueryModel;
 import com.zy.service.MergeUserService;
 import com.zy.service.OrderService;
+import com.zy.service.UserCheckService;
 import com.zy.service.UserService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -18,10 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -41,6 +40,9 @@ public class MoveUserJob implements Job {
 
     @Autowired
     private MergeUserService mergeUserService;
+
+    @Autowired
+    private UserCheckService userCheckService;
 
 
     /**
@@ -64,6 +66,7 @@ public class MoveUserJob implements Job {
                      || order.getOrderStatus() == Order.OrderStatus.已支付 || order.getOrderStatus() == Order.OrderStatus.已发货)
                     .collect(Collectors.toList());
             Map<Long, List<Order>> orderMap = filterOrders.stream().collect(Collectors.groupingBy(Order::getUserId));
+            Map<User.UserRank, List<Order>> rankOrderMap = filterOrders.stream().collect(Collectors.groupingBy(Order::getBuyerUserRank));
             Date now = new Date();
             MergeUser wan = mergeUserService.findByUserIdAndProductType(10370l, 2);
             MergeUser company = mergeUserService.findByUserIdAndProductType(1l, 2);
@@ -132,11 +135,11 @@ public class MoveUserJob implements Job {
                             }
                         }
                     }
-
                     mergeUserService.create(mergeUser);
                 }
 
             }
+            List<Order> v3Orders = new ArrayList<>();
             //修改订单
             for (Long key : orderMap.keySet()) {
                 MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(key, 2);
@@ -150,6 +153,8 @@ public class MoveUserJob implements Job {
                         o.setSellerId(1l);
                         o.setSellerUserRank(null);
                         o.setV4UserId(v4UserId);
+                        //初始化库存
+                        userCheckService.editOderStoreIn(o.getId(),o.getUserId(),2);
                         orderService.modifyOrder(o);
                     }
                 }else if(mergeUser.getUserRank() == User.UserRank.V3){
@@ -158,8 +163,16 @@ public class MoveUserJob implements Job {
                         o.setSellerId(sellerId);
                         o.setSellerUserRank(User.UserRank.V4);
                         o.setV4UserId(v4UserId);
+                        v3Orders.add(o);
                         orderService.modifyOrder(o);
                     }
+                }
+            }
+            //初始化库存
+            if(v3Orders != null && !v3Orders.isEmpty()){
+                for(Order o : v3Orders){
+                    userCheckService.editOderStoreIn(o.getId(),o.getUserId(),2);
+                    userCheckService.editOrderStoreOut(o.getId(),o.getSellerId(),2);
                 }
             }
         } catch (ConcurrentException e) {

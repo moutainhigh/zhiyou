@@ -614,7 +614,8 @@ public class UserCheckServiceImpl implements UserCheckService {
     @Override
     public void editOderStoreIn(Long orderId, Long userId,Integer productType) {
         Order order = orderMapper.findOne(orderId);
-        if(order.getQuantity().intValue()>(order.getSendQuantity()==null?0:order.getSendQuantity())) {//订货量和发货量一致  不用进库存
+        Integer sendQuantity = order.getSendQuantity() == null ? 0 : order.getSendQuantity();
+        if(order.getQuantity().intValue()>sendQuantity) {//订货量和发货量一致  不用进库存
             OrderStoreQueryModel orderStoreQueryModel = new OrderStoreQueryModel();
             orderStoreQueryModel.setIsEndEQ(1);
             orderStoreQueryModel.setUserIdEQ(userId);
@@ -628,10 +629,10 @@ public class UserCheckServiceImpl implements UserCheckService {
                 orderStore.setOrderId(orderId);
                 orderStore.setUserId(orderStoreOld.getUserId());
                 orderStore.setCreateDate(new Date());
-                orderStore.setNumber(order.getQuantity().intValue() - order.getSendQuantity());
+                orderStore.setNumber(order.getQuantity().intValue() - sendQuantity);
                 orderStore.setType(2);
                 orderStore.setBeforeNumber(orderStoreOld.getAfterNumber());
-                orderStore.setAfterNumber(orderStoreOld.getAfterNumber() + (order.getQuantity().intValue() - order.getSendQuantity()));
+                orderStore.setAfterNumber(orderStoreOld.getAfterNumber() + (order.getQuantity().intValue() - sendQuantity));
                 orderStore.setCreateBy(orderStoreOld.getUserId());
                 orderStore.setProductType(productType);
                 orderStoreMapper.insert(orderStore);
@@ -641,11 +642,12 @@ public class UserCheckServiceImpl implements UserCheckService {
                 orderStore.setOrderId(orderId);
                 orderStore.setUserId(userId);
                 orderStore.setCreateDate(new Date());
-                orderStore.setNumber(order.getQuantity().intValue() - order.getSendQuantity());
+                orderStore.setNumber(order.getQuantity().intValue() - sendQuantity);
                 orderStore.setType(2);
                 orderStore.setBeforeNumber(0);
-                orderStore.setAfterNumber((order.getQuantity().intValue() - order.getSendQuantity()));
+                orderStore.setAfterNumber((order.getQuantity().intValue() - sendQuantity));
                 orderStore.setCreateBy(userId);
+                orderStore.setProductType(productType);
                 orderStoreMapper.insert(orderStore);
             }
         }
