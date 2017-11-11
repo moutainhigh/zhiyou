@@ -24,21 +24,21 @@ public class MergeV3ToV4QueryModel implements Serializable {
 
 	private String nameLK;
 
-	private Long UserIdEQ;
+	private Long userIdEQ;
 
 	private Integer flageEQ;
 
-	private Long create_byEQ;
+	private Long createByEQ;
 
-	private Date create_dateGTE;
+	private Date createDateGTE;
 
-	private Date create_dateLT;
+	private Date createDateLT;
 
-	private Long update_byEQ;
+	private Long updateByEQ;
 
-	private Date update_dateGTE;
+	private Date updateDateGTE;
 
-	private Date update_dateLT;
+	private Date updateDateLT;
 
 	private Integer delFlageEQ;
 
@@ -96,18 +96,18 @@ public class MergeV3ToV4QueryModel implements Serializable {
 	private static Set<String> fieldNames = new HashSet<>();
 
 	static {
-		fieldNames.add("create_by");
-		fieldNames.add("UserId");
+		fieldNames.add("createBy");
+		fieldNames.add("updateDate");
+		fieldNames.add("updateBy");
 		fieldNames.add("flage");
 		fieldNames.add("name");
 		fieldNames.add("remark");
 		fieldNames.add("id");
-		fieldNames.add("create_date");
-		fieldNames.add("update_by");
 		fieldNames.add("image1");
+		fieldNames.add("userId");
 		fieldNames.add("image2");
 		fieldNames.add("delFlage");
-		fieldNames.add("update_date");
+		fieldNames.add("createDate");
 	}
 
 }

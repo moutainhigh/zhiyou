@@ -439,8 +439,8 @@ public class UserCheckServiceImpl implements UserCheckService {
                 mergeV3ToV4.setName(user==null?null:user.getNickname());
                 mergeV3ToV4.setFlage(0);
                 mergeV3ToV4.setDelFlage(0);
-                mergeV3ToV4.setCreate_by(-1L);
-                mergeV3ToV4.setCreate_date(new Date());
+                mergeV3ToV4.setCreateBy(-1L);
+                mergeV3ToV4.setCreateDate(new Date());
                 mergeV3ToV4.setRemark("两个月有五个大于品牌合伙人且销量累计大于等于1800");
                 mergeV3ToV4Mapper.insert(mergeV3ToV4);
                 return true;
@@ -573,8 +573,8 @@ public class UserCheckServiceImpl implements UserCheckService {
             mergeV3ToV4.setName(user == null ? null : user.getNickname());
             mergeV3ToV4.setFlage(0);
             mergeV3ToV4.setDelFlage(0);
-            mergeV3ToV4.setCreate_by(-1L);
-            mergeV3ToV4.setCreate_date(new Date());
+            mergeV3ToV4.setCreateBy(-1L);
+            mergeV3ToV4.setCreateDate(new Date());
             mergeV3ToV4.setRemark("一次购买量大于等于2000");
             mergeV3ToV4Mapper.insert(mergeV3ToV4);
             this.disposeParent(mergeUser, prodectType); //处理paeren 晋级逻辑

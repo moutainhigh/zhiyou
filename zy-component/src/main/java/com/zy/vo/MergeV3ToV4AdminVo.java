@@ -16,17 +16,17 @@ public class MergeV3ToV4AdminVo implements Serializable {
 	@Field(label = "用户明")
 	private String name;
 	@Field(label = "用户ID")
-	private Long UserId;
+	private Long userId;
 	@Field(label = "使用标记位")
 	private Integer flage;
 	@Field(label = "创建人")
-	private Long create_by;
+	private Long createBy;
 	@Field(label = "升级时间")
-	private Date create_date;
+	private Date createDate;
 	@Field(label = "创建人")
-	private Long update_by;
+	private Long updateBy;
 	@Field(label = "更新时间")
-	private Date update_date;
+	private Date updateDate;
 	@Field(label = "图片")
 	private String image1;
 	@Field(label = "图片")

@@ -5,12 +5,12 @@
 	<resultMap id="baseResultMap" type="com.zy.entity.mergeusr.MergeV3ToV4">
 		<id column="id" property="id" />
 		<result column="name" property="name" />
-		<result column="user_id" property="UserId" />
+		<result column="user_id" property="userId" />
 		<result column="flage" property="flage" />
-		<result column="create_by" property="create_by" />
-		<result column="create_date" property="create_date" />
-		<result column="update_by" property="update_by" />
-		<result column="update_date" property="update_date" />
+		<result column="create_by" property="createBy" />
+		<result column="create_date" property="createDate" />
+		<result column="update_by" property="updateBy" />
+		<result column="update_date" property="updateDate" />
 		<result column="image1" property="image1" />
 		<result column="image2" property="image2" />
 		<result column="del_flage" property="delFlage" />
@@ -21,7 +21,7 @@
 
 	<insert id="insert" parameterType="com.zy.entity.mergeusr.MergeV3ToV4" useGeneratedKeys="true" keyProperty="id">
 	  insert into `td_v3_to_v4` (name,user_id,flage,create_by,create_date,update_by,update_date,image1,image2,del_flage,remark)
-	  values (#{name},#{UserId},#{flage},#{create_by},#{create_date},#{update_by},#{update_date},#{image1},#{image2},#{delFlage},#{remark})
+	  values (#{name},#{userId},#{flage},#{createBy},#{createDate},#{updateBy},#{updateDate},#{image1},#{image2},#{delFlage},#{remark})
 	</insert>
 
 	<delete id="delete">
@@ -32,12 +32,12 @@
 		update `td_v3_to_v4`
 		<set>
 			name = #{name},
-			user_id = #{UserId},
+			user_id = #{userId},
 			flage = #{flage},
-			create_by = #{create_by},
-			create_date = #{create_date},
-			update_by = #{update_by},
-			update_date = #{update_date},
+			create_by = #{createBy},
+			create_date = #{createDate},
+			update_by = #{updateBy},
+			update_date = #{updateDate},
 			image1 = #{image1},
 			image2 = #{image2},
 			del_flage = #{delFlage},
@@ -52,12 +52,12 @@
 				<foreach collection="fields" item="field">
 				<choose>
 					<when test="field == 'name'">name = #{mergeV3ToV4.name},</when>
-					<when test="field == 'UserId'">user_id = #{mergeV3ToV4.UserId},</when>
+					<when test="field == 'userId'">user_id = #{mergeV3ToV4.userId},</when>
 					<when test="field == 'flage'">flage = #{mergeV3ToV4.flage},</when>
-					<when test="field == 'create_by'">create_by = #{mergeV3ToV4.create_by},</when>
-					<when test="field == 'create_date'">create_date = #{mergeV3ToV4.create_date},</when>
-					<when test="field == 'update_by'">update_by = #{mergeV3ToV4.update_by},</when>
-					<when test="field == 'update_date'">update_date = #{mergeV3ToV4.update_date},</when>
+					<when test="field == 'createBy'">create_by = #{mergeV3ToV4.createBy},</when>
+					<when test="field == 'createDate'">create_date = #{mergeV3ToV4.createDate},</when>
+					<when test="field == 'updateBy'">update_by = #{mergeV3ToV4.updateBy},</when>
+					<when test="field == 'updateDate'">update_date = #{mergeV3ToV4.updateDate},</when>
 					<when test="field == 'image1'">image1 = #{mergeV3ToV4.image1},</when>
 					<when test="field == 'image2'">image2 = #{mergeV3ToV4.image2},</when>
 					<when test="field == 'delFlage'">del_flage = #{mergeV3ToV4.delFlage},</when>
@@ -80,26 +80,23 @@
 		<include refid="baseColumn"/>
 		from `td_v3_to_v4`
 		<where>
-			<if test="UserIdEQ != null">
-				and user_id = #{UserIdEQ}
+			<if test="createDateGTE != null">
+				and create_date &gt;= #{createDateGTE}
 			</if>
-			<if test="create_dateLT != null">
-				and create_date &lt; #{create_dateLT}
-			</if>
-			<if test="create_byEQ != null">
-				and create_by = #{create_byEQ}
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="flageEQ != null">
 				and flage = #{flageEQ}
 			</if>
-			<if test="update_dateGTE != null">
-				and update_date &gt;= #{update_dateGTE}
+			<if test="createByEQ != null">
+				and create_by = #{createByEQ}
+			</if>
+			<if test="updateDateLT != null">
+				and update_date &lt; #{updateDateLT}
 			</if>
 			<if test="delFlageEQ != null">
 				and del_flage = #{delFlageEQ}
-			</if>
-			<if test="update_byEQ != null">
-				and update_by = #{update_byEQ}
 			</if>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
@@ -112,17 +109,20 @@
 				and 1 = 2
 				</if>
 			</if>
-			<if test="update_dateLT != null">
-				and update_date &lt; #{update_dateLT}
+			<if test="createDateLT != null">
+				and create_date &lt; #{createDateLT}
 			</if>
 			<if test="nameLK != null">
 				<bind name="nameLK" value="'%' + nameLK + '%'"/> and name like #{nameLK}
 			</if>
+			<if test="updateByEQ != null">
+				and update_by = #{updateByEQ}
+			</if>
 			<if test="remarkLK != null">
 				<bind name="remarkLK" value="'%' + remarkLK + '%'"/> and remark like #{remarkLK}
 			</if>
-			<if test="create_dateGTE != null">
-				and create_date &gt;= #{create_dateGTE}
+			<if test="updateDateGTE != null">
+				and update_date &gt;= #{updateDateGTE}
 			</if>
 		</where>
 		<choose>
@@ -141,26 +141,23 @@
 	<select id="count" resultType="_long" parameterType="com.zy.model.query.MergeV3ToV4QueryModel">
 		select count(*) from `td_v3_to_v4`
 		<where>
-			<if test="UserIdEQ != null">
-				and user_id = #{UserIdEQ}
+			<if test="createDateGTE != null">
+				and create_date &gt;= #{createDateGTE}
 			</if>
-			<if test="create_dateLT != null">
-				and create_date &lt; #{create_dateLT}
-			</if>
-			<if test="create_byEQ != null">
-				and create_by = #{create_byEQ}
+			<if test="userIdEQ != null">
+				and user_id = #{userIdEQ}
 			</if>
 			<if test="flageEQ != null">
 				and flage = #{flageEQ}
 			</if>
-			<if test="update_dateGTE != null">
-				and update_date &gt;= #{update_dateGTE}
+			<if test="createByEQ != null">
+				and create_by = #{createByEQ}
+			</if>
+			<if test="updateDateLT != null">
+				and update_date &lt; #{updateDateLT}
 			</if>
 			<if test="delFlageEQ != null">
 				and del_flage = #{delFlageEQ}
-			</if>
-			<if test="update_byEQ != null">
-				and update_by = #{update_byEQ}
 			</if>
 			<if test="idIN != null">
 				<if test="idIN.length != 0">
@@ -173,17 +170,20 @@
 				and 1 = 2
 				</if>
 			</if>
-			<if test="update_dateLT != null">
-				and update_date &lt; #{update_dateLT}
+			<if test="createDateLT != null">
+				and create_date &lt; #{createDateLT}
 			</if>
 			<if test="nameLK != null">
 				<bind name="nameLK" value="'%' + nameLK + '%'"/> and name like #{nameLK}
 			</if>
+			<if test="updateByEQ != null">
+				and update_by = #{updateByEQ}
+			</if>
 			<if test="remarkLK != null">
 				<bind name="remarkLK" value="'%' + remarkLK + '%'"/> and remark like #{remarkLK}
 			</if>
-			<if test="create_dateGTE != null">
-				and create_date &gt;= #{create_dateGTE}
+			<if test="updateDateGTE != null">
+				and update_date &gt;= #{updateDateGTE}
 			</if>
 		</where>
 	</select>

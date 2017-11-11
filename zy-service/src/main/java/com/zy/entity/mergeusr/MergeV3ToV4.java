@@ -47,7 +47,7 @@ public class MergeV3ToV4 implements Serializable {
     @Query(Predicate.EQ)
     @Field(label = "用户ID")
     @View(groups = VO_ADMIN)
-    private  Long UserId;
+    private  Long userId;
 
     @Query(Predicate.EQ)
     @Field(label = "使用标记位")
@@ -57,25 +57,25 @@ public class MergeV3ToV4 implements Serializable {
     @Query(Predicate.EQ)
     @Field(label = "创建人")
     @View(groups = VO_ADMIN)
-    private Long create_by;
+    private Long createBy;
 
     @Field(label = "升级时间")
     @View(groups = VO_ADMIN)
     @View(name = "createDateLabel", type = String.class)
     @Query({Predicate.GTE, Predicate.LT})
-    private Date create_date;
+    private Date createDate;
 
 
     @Query(Predicate.EQ)
     @Field(label = "创建人")
     @View(groups = VO_ADMIN)
-    private Long update_by;
+    private Long updateBy;
 
     @Field(label = "更新时间")
     @View(groups = VO_ADMIN)
     @View(name = "updateDateLabel", type = String.class)
     @Query({Predicate.GTE, Predicate.LT})
-    private Date update_date;
+    private Date updateDate;
 
     @Field(label = "图片")
     @View(groups = VO_ADMIN)
