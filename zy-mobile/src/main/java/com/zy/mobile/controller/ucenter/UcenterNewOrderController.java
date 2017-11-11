@@ -218,10 +218,8 @@ public class UcenterNewOrderController {
             product.setPrice(productService.getPrice(product.getId(), userRank, 1L));
             if (userRank == User.UserRank.V3 || userRank == User.UserRank.V4 || userRank == User.UserRank.V2) {
                 minQuantity = NEW_SETTING_NEW_MIN_QUANTITY;
-            }else if (userRank == User.UserRank.V1){
+            }else if (userRank == User.UserRank.V1 || userRank == User.UserRank.V0){
                 minQuantity = NEW_UP_SETTING_NEW_MIN_QUANTITY;
-            }else if (userRank == User.UserRank.V0){
-                minQuantity = NEW_DOWN_SETTING_NEW_MIN_QUANTITY;
             }
         }
         model.addAttribute("minQuantity", minQuantity);

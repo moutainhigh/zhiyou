@@ -28,7 +28,7 @@
         editQuantity(parseInt(quantity));
       });
 
-      if (userRank != 'V0'){
+      if (userRank == 'V4' || userRank == 'V3' || userRank == 'V2'){
         $('.fa-plus').click(function() {
           var quantity = $("#quantity").val();
           editQuantity(parseInt(quantity) + MIN_QUANTITY);
@@ -41,12 +41,12 @@
       }else {
         $('.fa-plus').click(function() {
           var quantity = $("#quantity").val();
-          editQuantity(parseInt(quantity) + 1);
+          editQuantity(parseInt(quantity) + 2);
         });
 
         $('.fa-minus').click(function() {
           var quantity = $("#quantity").val();
-          editQuantity(parseInt(quantity) - 1);
+          editQuantity(parseInt(quantity) - 2);
         });
       }
       function editQuantity(quantity) {
@@ -56,14 +56,7 @@
           } else if(quantity % MIN_QUANTITY != 0) {
             quantity = quantity - quantity % MIN_QUANTITY;
           }
-        }else if(userRank == 'V1'){
-          if (isNaN(quantity) || quantity < MIN_QUANTITY) {
-            quantity = MIN_QUANTITY;
-          } else if(quantity % MIN_QUANTITY != 0) {
-            quantity = quantity - quantity % 2;
-          }
-        }
-        else {
+        }else {
           if (isNaN(quantity) || quantity < MIN_QUANTITY) {
             quantity = MIN_QUANTITY;
           }
@@ -81,21 +74,16 @@
       //下单
       $('#btnOrder').click(function() {
         var quantity = $("#quantity").val();
-        if(userRank == 'V4' || userRank == 'V3'){
+        if(userRank == 'V4' || userRank == 'V3' || userRank == 'V2'){
           if(quantity < MIN_QUANTITY || quantity % MIN_QUANTITY != 0) {
-            messageAlert('联合创始人和品牌合伙人每次购买最小单位' + MIN_QUANTITY + '次');
+            messageAlert('联合创始人和品牌合伙人和品牌经理每次购买最小单位' + MIN_QUANTITY + '次');
             return;
           }
-        }else if(userRank == 'V1' || userRank == 'V2'){
+        }else if(userRank == 'V1' ||userRank == 'V0'){
           if(quantity < MIN_QUANTITY) {
-            messageAlert('品牌经理和VIP每次购买最小单位' + MIN_QUANTITY + '次');
+            messageAlert('普通用户和VIP每次购买最小单位' + MIN_QUANTITY + '次');
             return;
           }
-        }else if(userRank == 'V0'){
-            if(quantity < MIN_QUANTITY) {
-              messageAlert('普通用户每次购买最小单位' + MIN_QUANTITY + '次');
-              return;
-            }
         }
         $('#form').submit();
       });

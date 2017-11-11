@@ -140,7 +140,6 @@ public  interface Constants {
     int SETTING_NEW_MIN_QUANTITY = 80;
 
     int NEW_SETTING_NEW_MIN_QUANTITY = 10;
-    int NEW_DOWN_SETTING_NEW_MIN_QUANTITY = 4;
     int NEW_UP_SETTING_NEW_MIN_QUANTITY = 4;
 
 

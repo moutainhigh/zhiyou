@@ -165,7 +165,7 @@ public class OrderServiceImpl implements OrderService {
             MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId,product.getProductType());
             if (mergeUser == null){
                 if (product.getSkuCode().equals("zy-slj")){
-                    new MergeUser();
+                    mergeUser = new MergeUser();
                     mergeUser.setUserId(userId);
                     mergeUser.setParentId(orderCreateDto.getParentId());
                     mergeUser.setInviterId(orderCreateDto.getParentId());
