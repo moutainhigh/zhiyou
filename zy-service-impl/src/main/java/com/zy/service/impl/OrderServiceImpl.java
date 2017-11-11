@@ -191,14 +191,14 @@ public class OrderServiceImpl implements OrderService {
                 }
                 MergeUser mUser = malComponent.catchSellerId(userRank, productId, quantity, parentId);
                 sellerId = mUser.getUserId();
-                sellerUserRank = mUser.getUserRank();
+                sellerUserRank = sellerId.equals(config.getSysUserId()) ? null : mUser.getUserRank();
             }else {
                 userRank = mergeUser.getUserRank();
                 buyerUserRank = mergeUser.getUserRank();
                 parentId = mergeUser.getParentId();
                 MergeUser mUser = malComponent.catchSellerId(userRank, productId, quantity, parentId);
                 sellerId = mUser.getUserId();
-                sellerUserRank = mUser.getUserRank();
+                sellerUserRank = sellerId.equals(config.getSysUserId()) ? null : mUser.getUserRank();
                 v4UserId = calculateV4MergeUserId(mergeUser);
             }
         }else {
@@ -236,7 +236,7 @@ public class OrderServiceImpl implements OrderService {
             v4UserId = calculateV4UserId(user);
         }
         if (userRank != UserRank.V4){
-            if (product.getProductType() == 2){
+            if (product.getProductType() == 2 && quantity < 2000){
                 Boolean  flag = checkOrderStore(sellerId,2,quantity);
                 if (flag == false){
                     throw new BizException(BizCode.ERROR, "卖家库存不足，请提醒卖家进货");
