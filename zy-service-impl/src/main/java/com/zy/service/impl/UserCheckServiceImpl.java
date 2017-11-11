@@ -466,15 +466,16 @@ public class UserCheckServiceImpl implements UserCheckService {
        do{
            map.put("userId" , parentId);
            MergeUser mergeUser = mergeUserMapper.findByUserIdAndProductType(map);
-           if (mergeUser!=null){//其他不处理
-               if(mergeUser.getUserRank()== User.UserRank.V1){
-                   this.v1ToOther(mergeUser,prodectType);
-               }else if(mergeUser.getUserRank()== User.UserRank.V2){
-                   this.v2ToV3(mergeUser,prodectType);
-               }else if(mergeUser.getUserRank()== User.UserRank.V3){
-                   this.v3ToV4(mergeUser,prodectType);
+               if (mergeUser != null) {//其他不处理
+                   if (mergeUser.getUserRank() == User.UserRank.V1) {
+                       this.v1ToOther(mergeUser, prodectType);
+                   } else if (mergeUser.getUserRank() == User.UserRank.V2) {
+                       this.v2ToV3(mergeUser, prodectType);
+                   } else if (mergeUser.getUserRank() == User.UserRank.V3) {
+                       this.v3ToV4(mergeUser, prodectType);
+                       return;
+                   }
                }
-           }
            parentId = mergeUser.getParentId();
            flage= parentId!=null&&mergeUser.getUserRank()!=User.UserRank.V4; //上级已经是V4的不做晋级处理
        }while (flage);
