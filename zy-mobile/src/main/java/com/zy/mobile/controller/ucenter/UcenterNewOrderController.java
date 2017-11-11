@@ -31,10 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_NULL;
@@ -134,7 +131,7 @@ public class UcenterNewOrderController {
             //找出第一个特级是parentId
             List<User> uses = new ArrayList<>();
             for (User use: list) {
-                Long pId = this.calculateV4UserId(use);
+                Long pId = this.calculateV4UserId(use,users);
                 if (pId != null && pId.toString().equals(parentId.toString())){
                     uses.add(use);
                 }
@@ -174,15 +171,19 @@ public class UcenterNewOrderController {
         return "product/productDetailNew";
     }
 
-    private Long calculateV4UserId(User user) {
+    private Long calculateV4UserId(User user,List<User> users) {
+        if (users==null||users.isEmpty()){
+            return null;
+        }
+        Map<Long,User> map = users.stream().collect(Collectors.toMap(User::getId, v->v));
         Long parentId = user.getParentId();
         int whileTimes = 0;
         while (parentId != null) {
             if (whileTimes > 1000) {
                 throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
             }
-            User parent = userService.findOne(parentId);
-            if (parent.getUserRank() == User.UserRank.V4) {
+            User parent = map.get(parentId);
+            if (parent!=null&&parent.getUserRank() == User.UserRank.V4) {
                 return parentId;
             }
             parentId = parent.getParentId();
