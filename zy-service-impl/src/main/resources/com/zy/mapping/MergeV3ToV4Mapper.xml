@@ -5,7 +5,7 @@
 	<resultMap id="baseResultMap" type="com.zy.entity.mergeusr.MergeV3ToV4">
 		<id column="id" property="id" />
 		<result column="name" property="name" />
-		<result column="_user_id" property="UserId" />
+		<result column="user_id" property="UserId" />
 		<result column="flage" property="flage" />
 		<result column="create_by" property="create_by" />
 		<result column="create_date" property="create_date" />
@@ -17,10 +17,10 @@
 		<result column="remark" property="remark" />
 	</resultMap>
 
-	<sql id="baseColumn">id,name,_user_id,flage,create_by,create_date,update_by,update_date,image1,image2,del_flage,remark</sql>
+	<sql id="baseColumn">id,name,user_id,flage,create_by,create_date,update_by,update_date,image1,image2,del_flage,remark</sql>
 
 	<insert id="insert" parameterType="com.zy.entity.mergeusr.MergeV3ToV4" useGeneratedKeys="true" keyProperty="id">
-	  insert into `td_v3_to_v4` (name,_user_id,flage,create_by,create_date,update_by,update_date,image1,image2,del_flage,remark)
+	  insert into `td_v3_to_v4` (name,user_id,flage,create_by,create_date,update_by,update_date,image1,image2,del_flage,remark)
 	  values (#{name},#{UserId},#{flage},#{create_by},#{create_date},#{update_by},#{update_date},#{image1},#{image2},#{delFlage},#{remark})
 	</insert>
 
@@ -32,7 +32,7 @@
 		update `td_v3_to_v4`
 		<set>
 			name = #{name},
-			_user_id = #{UserId},
+			user_id = #{UserId},
 			flage = #{flage},
 			create_by = #{create_by},
 			create_date = #{create_date},
@@ -52,7 +52,7 @@
 				<foreach collection="fields" item="field">
 				<choose>
 					<when test="field == 'name'">name = #{mergeV3ToV4.name},</when>
-					<when test="field == 'UserId'">_user_id = #{mergeV3ToV4.UserId},</when>
+					<when test="field == 'UserId'">user_id = #{mergeV3ToV4.UserId},</when>
 					<when test="field == 'flage'">flage = #{mergeV3ToV4.flage},</when>
 					<when test="field == 'create_by'">create_by = #{mergeV3ToV4.create_by},</when>
 					<when test="field == 'create_date'">create_date = #{mergeV3ToV4.create_date},</when>
@@ -81,7 +81,7 @@
 		from `td_v3_to_v4`
 		<where>
 			<if test="UserIdEQ != null">
-				and _user_id = #{UserIdEQ}
+				and user_id = #{UserIdEQ}
 			</if>
 			<if test="create_dateLT != null">
 				and create_date &lt; #{create_dateLT}
@@ -142,7 +142,7 @@
 		select count(*) from `td_v3_to_v4`
 		<where>
 			<if test="UserIdEQ != null">
-				and _user_id = #{UserIdEQ}
+				and user_id = #{UserIdEQ}
 			</if>
 			<if test="create_dateLT != null">
 				and create_date &lt; #{create_dateLT}

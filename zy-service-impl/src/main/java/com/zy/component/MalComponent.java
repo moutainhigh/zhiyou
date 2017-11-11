@@ -220,7 +220,7 @@ public class MalComponent {
 		//判断商品类型
 		if (order.getProductType() == 2){
 			userCheckService.editOderStoreIn(order.getId(),order.getUserId(),2);
-			if (order.getBuyerUserRank() != UserRank.V4){
+			if (order.getBuyerUserRank() != UserRank.V4 && order.getQuantity() < 2000){
 				userCheckService.editOrderStoreOut(order.getId(),order.getSellerId(),2);
 			}
 			if (product.getSkuCode().equals("zy-slj")){
