@@ -172,6 +172,7 @@ public class OrderServiceImpl implements OrderService {
                     mergeUser.setProductType(product.getProductType());
                     mergeUser.setUserRank(UserRank.V0);
                     mergeUser.setRegisterTime(new Date());
+                    mergeUser.setCode(getCode());
                     mergeUserMapper.insert(mergeUser);
 
                     userRank = UserRank.V0;
@@ -341,6 +342,7 @@ public class OrderServiceImpl implements OrderService {
         order.setIsCopied(false);
         order.setBuyerUserRank(buyerUserRank);
         order.setSellerUserRank(sellerUserRank);
+        order.setInviterId(orderCreateDto.getParentId());
         order.setReceiverAreaId(address.getAreaId());
         order.setReceiverProvince(address.getProvince());
         order.setReceiverCity(address.getCity());
@@ -2552,4 +2554,31 @@ public class OrderServiceImpl implements OrderService {
 		return false;
 	}
 
+    static char[] codeSeq = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '2', '3', '4', '5', '6',
+            '7', '8', '9'};
+    static Random random = new Random();
+    private String createCode() {
+        //授权书
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < 14; i++) {
+            s.append(codeSeq[random.nextInt(codeSeq.length)]);
+        }
+        return "ZY" + s.toString();
+    }
+
+    public String getCode() {
+
+        String code = createCode();
+        MergeUser mergeUser = mergeUserService.findBycodeAndProductType(code,2);
+        int times = 0;
+        while (mergeUser != null) {
+            if (times > 1000) {
+                throw new BizException(BizCode.ERROR, "生成code失败");
+            }
+            code = createCode();
+            mergeUser = mergeUserService.findBycodeAndProductType(code,2);
+            times++;
+        }
+        return code;
+    }
 }

@@ -217,6 +217,9 @@ public class MalComponent {
 			logger.warn("订单状态警告 {} 订单id {}", order.getOrderStatus(), order.getId());
 		}
 
+		//判断推荐人是否要升级
+		MergeUser inviter = mergeUserService.findByUserIdAndProductType(order.getInviterId(), 2);
+
 		//判断商品类型
 		if (order.getProductType() == 2){
 			userCheckService.editOderStoreIn(order.getId(),order.getUserId(),2);
@@ -224,6 +227,9 @@ public class MalComponent {
 				userCheckService.editOrderStoreOut(order.getId(),order.getSellerId(),2);
 			}
 			if (product.getSkuCode().equals("zy-slj")){
+				if (inviter.getUserRank() != UserRank.V0){
+					userCheckService.checkUserLevel(order.getInviterId(), 0l,2);
+				}
 				userCheckService.checkUserLevel(order.getUserId(),order.getQuantity(),2);
 			}
 
