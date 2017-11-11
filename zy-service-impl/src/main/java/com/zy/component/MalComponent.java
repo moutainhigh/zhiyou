@@ -208,6 +208,7 @@ public class MalComponent {
 
 	public void successOrder(@NotNull Long orderId) {
 		final Order order = orderMapper.findOne(orderId);
+		Product product = productMapper.findOne(order.getProductId());
 		validate(order, NOT_NULL, "order does not found, order id " + orderId);
 		Order.OrderStatus orderStatus = order.getOrderStatus();
 		if (orderStatus == 已支付) {
@@ -222,7 +223,9 @@ public class MalComponent {
 			if (order.getBuyerUserRank() != UserRank.V4){
 				userCheckService.editOrderStoreOut(order.getId(),order.getSellerId(),2);
 			}
-			userCheckService.checkUserLevel(order.getUserId(),order.getQuantity(),2);
+			if (product.getSkuCode().equals("zy-slj")){
+				userCheckService.checkUserLevel(order.getUserId(),order.getQuantity(),2);
+			}
 
 		}
 
@@ -245,8 +248,6 @@ public class MalComponent {
 		Long userId = order.getUserId();
 		User user = userMapper.findOne(userId);
 		UserRank userRank = user.getUserRank();
-
-		Product product = productMapper.findOne(productId);
 
 		UserRank upgradeUserRank = null;
 
