@@ -196,7 +196,7 @@ public class OrderServiceImpl implements OrderService {
                 userRank = mergeUser.getUserRank();
                 buyerUserRank = mergeUser.getUserRank();
                 parentId = mergeUser.getParentId();
-                MergeUser mUser = malComponent.catchSellerId(userRank, productId, quantity, parentId);
+                MergeUser mUser = malComponent.catchSellerId(buyerUserRank, productId, quantity, parentId);
                 sellerId = mUser.getUserId();
                 sellerUserRank = sellerId.equals(config.getSysUserId()) ? null : mUser.getUserRank();
                 v4UserId = calculateV4MergeUserId(mergeUser);

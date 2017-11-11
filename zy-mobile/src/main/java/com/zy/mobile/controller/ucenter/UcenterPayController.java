@@ -232,10 +232,12 @@ public class UcenterPayController {
 		validate(order, NOT_NULL, "order id" + orderId + " not found");
 
 		//校验库存
-		if (order.getProductType() == 2){
-			Boolean  flag = orderService.checkOrderStore(order.getSellerId(), 2, order.getQuantity());
-			if (flag == false){
-				throw new BizException(BizCode.ERROR, "卖家库存不足，请提醒卖家进货");
+		if (order.getBuyerUserRank() != User.UserRank.V4 && order.getQuantity() < 2000){
+			if (order.getProductType() == 2){
+				Boolean  flag = orderService.checkOrderStore(order.getSellerId(), 2, order.getQuantity());
+				if (flag == false){
+					throw new BizException(BizCode.ERROR, "卖家库存不足，请提醒卖家进货");
+				}
 			}
 		}
 		if(!order.getUserId().equals(principal.getUserId())){
