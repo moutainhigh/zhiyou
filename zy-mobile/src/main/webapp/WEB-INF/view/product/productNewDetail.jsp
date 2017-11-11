@@ -28,7 +28,7 @@
         editQuantity(parseInt(quantity));
       });
 
-      if (userRank == 'V4' || userRank == 'V3'){
+      if (userRank != 'V0'){
         $('.fa-plus').click(function() {
           var quantity = $("#quantity").val();
           editQuantity(parseInt(quantity) + MIN_QUANTITY);
@@ -50,13 +50,20 @@
         });
       }
       function editQuantity(quantity) {
-        if (userRank == 'V4' || userRank == 'V3'){
+        if (userRank == 'V4' || userRank == 'V3' || userRank == 'V2'){
           if (isNaN(quantity) || quantity < MIN_QUANTITY) {
             quantity = MIN_QUANTITY;
           } else if(quantity % MIN_QUANTITY != 0) {
             quantity = quantity - quantity % MIN_QUANTITY;
           }
-        }else {
+        }else if(userRank == 'V1'){
+          if (isNaN(quantity) || quantity < MIN_QUANTITY) {
+            quantity = MIN_QUANTITY;
+          } else if(quantity % MIN_QUANTITY != 0) {
+            quantity = quantity - quantity % 2;
+          }
+        }
+        else {
           if (isNaN(quantity) || quantity < MIN_QUANTITY) {
             quantity = MIN_QUANTITY;
           }

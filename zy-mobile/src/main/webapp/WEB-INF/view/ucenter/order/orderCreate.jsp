@@ -19,7 +19,9 @@
 
 <script>
   $(function() {
+
     $('#btnSubmit').click(function(){
+
       if(!$('#addressId').val()) {
         messageFlash('请先选择收货地址.');
         return false;  
@@ -29,9 +31,14 @@
         return false;  
       }
 
-      if($('#sendQuantity').val() > ${quantity}){
-        messageFlash('发货数量不能大于订单数量');
+      if($('#sendQuantity').val() == '' ){
+        messageFlash('发货数量不能为空');
         return false;
+      }else {
+        if ($('#sendQuantity').val() > ${quantity}){
+          messageFlash('发货数量不能大于订单数量');
+          return false;
+        }
       }
 
       // 检测是否  实名认证realFlage
@@ -434,17 +441,6 @@
         </div>
         <div style="color: #8a6d3b; padding: 15px 30px 15px 15px;">
           <p>此手机号码为直属推荐人的手机号码，填写错误，则推荐关系不予以更改</p>
-        </div>
-      </div>
-    </c:if>
-
-    <c:if test="${product.productType == 2}">
-      <div class="list-group">
-        <div class="list-item">
-          <label class="list-label">发货数量</label>
-          <div class="list-text">
-            <input id="sendQuantity" name="sendQuantity" class="form-input" type="tel" value="${sendQuantity}" placeholder="输入发货数量">
-          </div>
         </div>
       </div>
     </c:if>
