@@ -7,6 +7,7 @@ import com.zy.common.support.AliyunOssSupport;
 import com.zy.component.UserComponent;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.mal.Order;
+import com.zy.entity.mergeusr.MergeUser;
 import com.zy.entity.sys.ConfirmStatus;
 import com.zy.entity.usr.User;
 import com.zy.entity.usr.UserInfo;
@@ -64,6 +65,9 @@ public class UcenterIndexController {
 	
 	@Autowired
 	private OrderService orderService;
+
+    @Autowired
+    private MergeUserService mergeUserService;
 	
 	@Autowired
     private AliyunOssSupport aliyunOssSupport;
@@ -73,7 +77,13 @@ public class UcenterIndexController {
 		Long userId = principal.getUserId();
 		
 		User user = userService.findOne(userId);
-		model.addAttribute("user", user);
+        MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId, 2);
+        Boolean flag = false;
+        if(mergeUser != null && mergeUser.getUserRank().getLevel()>0){
+            flag = true;
+        }
+        model.addAttribute("flag",flag);
+        model.addAttribute("user", user);
 		
 		List<Account> accounts = accountService.findByUserId(userId);
 		for (Account account : accounts) {

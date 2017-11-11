@@ -111,7 +111,7 @@
       font-size: 12px;
     }
     /*color:['#5d77e5','#ef7b54','#ffb558','#51c187'],*/
-    /*特级*/
+    /*联合创始人*/
     .must {
       background: #ffcd48;
     }
@@ -168,7 +168,7 @@
       <div class="teamAll">
         <img src="${ctx}/images/teamNew.png"/>
         <span>团队总人数</span><span id="teamNewCount"></span>
-        <c:if test="${dataMap.flag eq 'T'}"> <a href="${ctx}/u/team/findDirectlySup?productType=${productType}">直属特级详情>></a></c:if>
+        <c:if test="${dataMap.flag eq 'T'}"> <a href="${ctx}/u/team/findDirectlySup?productType=${productType}">直属联合创始人详情>></a></c:if>
       </div>
       <div id="echartTeam"></div>
     </div>
@@ -196,7 +196,7 @@
     <div class="all allName clearfloat">
       <div class="teamAll allList">
         <img src="${ctx}/images/team4.png"/>
-          <span>新晋直属特级</span>
+          <span>新晋直属联合创始人</span>
       </div>
       <c:forEach items="${dataMap.mynT}" var="tlist">
         <div class="TeamName">
@@ -250,7 +250,7 @@
         <img src="${user.avatar}" />
         <div class="ranking">
           <span>${user.nickname}</span>
-          <span class="rankingSpan ${user.userRank.level==4?"must":user.userRank.level==3?"province":user.userRank.level==2?"city":user.userRank.level==1?"VIP":user.userRank.level==0?"com":""}">${user.userRank.level==4?"特级":user.userRank.level==3?"省级":user.userRank.level==2?"市级":user.userRank.level==1?"VIP":user.userRank.level==0?"普通":""}</span>
+          <span class="rankingSpan ${user.userRank.level==4?"must":user.userRank.level==3?"province":user.userRank.level==2?"city":user.userRank.level==1?"VIP":user.userRank.level==0?"com":""}">${user.userRank.level==4?"联合创始人":user.userRank.level==3?"品牌合伙人":user.userRank.level==2?"品牌经理":user.userRank.level==1?"VIP":user.userRank.level==0?"普通":""}</span>
         </div>
         <a href="tel:${user.phone}" class="tel"><img src="${ctx}/images/tel.png" style="width: 15px;height: 15px;padding-right: 5px"><span class="tel">${user.phone}</span></a>
 
@@ -299,10 +299,10 @@
         radius: ['40%', '55%'],
         color:['#ffcd48','#7ed1df','#ffb558','#51c187'],
         data:[
-          {value:array[0], name:'特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
-          {value:array[1], name:'省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
-          {value:array[2], name:'市级服务商('+Math.round(array[2]/arrayNum*100*100)/100+'%)'},
-          {value:array[3], name:'VIP服务商('+Math.round(array[3]/arrayNum*100*100)/100+'%)'}
+          {value:array[0], name:'联合创始人('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
+          {value:array[1], name:'品牌合伙人('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
+          {value:array[2], name:'品牌经理('+Math.round(array[2]/arrayNum*100*100)/100+'%)'},
+          {value:array[3], name:'VIP('+Math.round(array[3]/arrayNum*100*100)/100+'%)'}
         ]
       },
 //        {
@@ -319,10 +319,10 @@
 //            }
 //          },
 //          data:[
-//            {value:array[0], name:'特级服务商'},
-//            {value:array[1], name:'省级服务商'},
-//            {value:array[2], name:'市级服务商'},
-//            {value:array[3], name:'VIP服务商'}
+//            {value:array[0], name:'联合创始人'},
+//            {value:array[1], name:'品牌合伙人'},
+//            {value:array[2], name:'品牌经理'},
+//            {value:array[3], name:'VIP'}
 //          ]
 //        }
     ]
@@ -368,11 +368,11 @@
         color:['#ffcd48','#7ed1df','#ffb558','#51c187'],
 //        color:['#ffcd48','#7ed1df','#ffb558','#51c187','#91c7ae'],
         data: [
-          {value: array[0], name: '特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
-          {value: array[1], name: '省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
-          {value: array[2], name: '市级服务商('+Math.round(array[2]/arrayNum*100*100)/100+'%)'},
-          {value: array[3], name: 'VIP服务商('+Math.round(array[3]/arrayNum*100*100)/100+'%)'}
-//          {value: array[4], name: '普通服务商('+Math.round(array[4]/arrayNum*100*100)/100+'%)'}
+          {value: array[0], name: '联合创始人('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
+          {value: array[1], name: '品牌合伙人('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
+          {value: array[2], name: '品牌经理('+Math.round(array[2]/arrayNum*100*100)/100+'%)'},
+          {value: array[3], name: 'VIP('+Math.round(array[3]/arrayNum*100*100)/100+'%)'}
+//          {value: array[4], name: '普通('+Math.round(array[4]/arrayNum*100*100)/100+'%)'}
         ],
         itemStyle: {
           emphasis: {
@@ -397,11 +397,11 @@
 //            }
 //          },
 //          data:[
-//            {value:array[0], name:'特级服务商'},
-//            {value:array[1], name:'省级服务商'},
-//            {value:array[2], name:'市级服务商'},
-//            {value:array[3], name:'VIP服务商'},
-//            {value:array[4], name:'普通服务商'}
+//            {value:array[0], name:'联合创始人'},
+//            {value:array[1], name:'品牌合伙人'},
+//            {value:array[2], name:'品牌经理'},
+//            {value:array[3], name:'VIP'},
+//            {value:array[4], name:'普通'}
 //          ],
 //          itemStyle: {
 //            emphasis: {
@@ -449,7 +449,7 @@
 //      legend: {
 //        x : 'center',
 //        y : 'bottom',
-//        data:['特级服务商','省级服务商','市级服务商','VIP服务商','普通服务商']
+//        data:['联合创始人','品牌合伙人','品牌经理','VIP','普通']
 //      },
     series : [
       {
@@ -459,11 +459,11 @@
         color:['#ffcd48','#7ed1df','#ffb558','#51c187'],
 //        color:['#ffcd48','#7ed1df','#ffb558','#51c187','#91c7ae'],
         data:[
-          {value:array[0], name:'特级服务商('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
-          {value:array[1], name:'省级服务商('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
-          {value:array[2], name:'市级服务商('+Math.round(array[2]/arrayNum*100*100)/100+'%)'},
-          {value:array[3], name:'VIP服务商('+Math.round(array[3]/arrayNum*100*100)/100+'%)'},
-//          {value:array[4], name:'普通服务商('+Math.round(array[4]/arrayNum*100*100)/100+'%)'}
+          {value:array[0], name:'联合创始人('+Math.round(array[0]/arrayNum*100*100)/100+'%)'},
+          {value:array[1], name:'品牌合伙人('+Math.round(array[1]/arrayNum*100*100)/100+'%)'},
+          {value:array[2], name:'品牌经理('+Math.round(array[2]/arrayNum*100*100)/100+'%)'},
+          {value:array[3], name:'VIP('+Math.round(array[3]/arrayNum*100*100)/100+'%)'},
+//          {value:array[4], name:'普通('+Math.round(array[4]/arrayNum*100*100)/100+'%)'}
         ]
       },
 //        {
@@ -482,11 +482,11 @@
 //            }
 //          },
 //          data:[
-//            {value:array[0], name:'特级服务商'},
-//            {value:array[1], name:'省级服务商'},
-//            {value:array[2], name:'市级服务商'},
-//            {value:array[3], name:'VIP服务商'},
-//            {value:array[4], name:'普通服务商'}
+//            {value:array[0], name:'联合创始人'},
+//            {value:array[1], name:'品牌合伙人'},
+//            {value:array[2], name:'品牌经理'},
+//            {value:array[3], name:'VIP'},
+//            {value:array[4], name:'普通'}
 //          ]
 //        }
     ]

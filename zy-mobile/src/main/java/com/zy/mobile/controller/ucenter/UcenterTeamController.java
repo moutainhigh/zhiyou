@@ -205,44 +205,45 @@ public class UcenterTeamController {
 			Page<User> pageact= userService.findActive(userQueryModel,false);
 			dataMap.put("act",pageact.getData());//不活跃人员
 			model.addAttribute("title","优检");
+			model.addAttribute("productType",productType);
+			model.addAttribute("dataMap",dataMap);
+			return "ucenter/teamNew/userListNew";
 		}
-		if(productType == 2){
-			//统计团队人数
-			MergeUser user = mergeUserService.findByUserIdAndProductType(userId,2);
-			if (user.getUserRank()==User.UserRank.V4||user.getUserRank()==User.UserRank.V3){
-				long[]teamTotal=mergeUserComponent.conyNewProducTeamTotal(userId,2);
-				dataMap.put("TTot", DateUtil.longarryToString(teamTotal,false));
-				String flag = user.getUserRank()==User.UserRank.V4 ? "T" : "F";
-				dataMap.put("flag",flag);//是否 能查看到 直属特级按钮，默认看到
-			}
-			//直属团队 人数统计
+		//统计团队人数
+		MergeUser user = mergeUserService.findByUserIdAndProductType(userId,2);
+		if (user.getUserRank()==User.UserRank.V4||user.getUserRank()==User.UserRank.V3){
+			long[]teamTotal=mergeUserComponent.conyNewProducTeamTotal(userId,2);
+			dataMap.put("TTot", DateUtil.longarryToString(teamTotal,false));
+			String flag = user.getUserRank()==User.UserRank.V4 ? "T" : "F";
+			dataMap.put("flag",flag);//是否 能查看到 直属特级按钮，默认看到
+		}
+		//直属团队 人数统计
 
-			long [] dirTotal = mergeUserService.countdirTotal(userId,2);
-			dataMap.put("DTot", DateUtil.longarryToString(dirTotal,false));//直属团队成员
-			//统计团队新成员
-			Map<String,Object>map =mergeUserService.countNewMemTotal(userId,true);
-			long [] newMem = (long[])map.get("MTot");//新增人员  数据
-			dataMap.put("MTot", DateUtil.longarryToString(newMem,false));
-			dataMap.put("Pro",DateUtil.countPro((long[])map.get("MTot"),(long)map.get("total")));//新增人员占比
-			//处理新进特级
-			long ids[]=mergeUserComponent.tId(mergeUserComponent.conyteamTotalV4(userId,2));
-			//dataMap.put("myTids", DateUtil.longarryToString(dirTotal,false));//将直属特级 存下来
-			if (ids!=null) {
-				Map<String, Object> newSup = mergeUserViewService.findNewSup(ids);
-				dataMap.put("mynT", newSup.get("MY"));//直属特级*/
-			}
-			dataMap.put("actPer",mergeUserViewComponent.activeProportion(userId)); //活跃占比
-			UserQueryModel userQueryModel = new UserQueryModel();
-			userQueryModel.setParentIdNL(userId);
-			userQueryModel.setPageNumber(0);
-			userQueryModel.setPageSize(5);
-			Page<MergeUserView> pageact= mergeUserViewService.findActive(userQueryModel,false);
-			dataMap.put("act",pageact.getData());//不活跃人员
-			model.addAttribute("title","参龄集");
+		long [] dirTotal = mergeUserService.countdirTotal(userId,2);
+		dataMap.put("DTot", DateUtil.longarryToString(dirTotal,false));//直属团队成员
+		//统计团队新成员
+		Map<String,Object>map =mergeUserService.countNewMemTotal(userId,true);
+		long [] newMem = (long[])map.get("MTot");//新增人员  数据
+		dataMap.put("MTot", DateUtil.longarryToString(newMem,false));
+		dataMap.put("Pro",DateUtil.countPro((long[])map.get("MTot"),(long)map.get("total")));//新增人员占比
+		//处理新进特级
+		long ids[]=mergeUserComponent.tId(mergeUserComponent.conyteamTotalV4(userId,2));
+		//dataMap.put("myTids", DateUtil.longarryToString(dirTotal,false));//将直属特级 存下来
+		if (ids!=null) {
+			Map<String, Object> newSup = mergeUserViewService.findNewSup(ids);
+			dataMap.put("mynT", newSup.get("MY"));//直属特级*/
 		}
+		dataMap.put("actPer",mergeUserViewComponent.activeProportion(userId)); //活跃占比
+		UserQueryModel userQueryModel = new UserQueryModel();
+		userQueryModel.setParentIdNL(userId);
+		userQueryModel.setPageNumber(0);
+		userQueryModel.setPageSize(5);
+		Page<MergeUserView> pageact= mergeUserViewService.findActive(userQueryModel,false);
+		dataMap.put("act",pageact.getData());//不活跃人员
+		model.addAttribute("title","参龄集");
 		model.addAttribute("productType",productType);
 		model.addAttribute("dataMap",dataMap);
-		return "ucenter/teamNew/userListNew";
+		return "ucenter/teamNew/mergeUserListNew";
 	}
 
 	/**
@@ -258,13 +259,13 @@ public class UcenterTeamController {
 		if(productType == 1){
 			List<UserInfoVo> userList= userComponent.conyteamTotalV4Vo(principal.getUserId());
 			model.addAttribute("data",userList);
+			model.addAttribute("productType",productType);
+			return "ucenter/teamNew/mustDetil";
 		}
-		if(productType == 2){
-			List<UserInfoVo> userList = mergeUserComponent.conyteamTotalV4Vo(principal.getUserId(), productType);
-			model.addAttribute("data",userList);
-		}
+		List<UserInfoVo> userList = mergeUserComponent.conyteamTotalV4Vo(principal.getUserId(), productType);
+		model.addAttribute("data",userList);
 		model.addAttribute("productType",productType);
-		return "ucenter/teamNew/mustDetil";
+		return "ucenter/teamNew/mustDetil2";
 	}
 	/**
 	 * 查看直属特级详情
@@ -294,18 +295,17 @@ public class UcenterTeamController {
 			model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
 			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
 			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
+			model.addAttribute("productType",productType);
+			return "ucenter/teamNew/teamDetil";
 		}
-		if(productType == 2){
-			Page<MergeUserView> page= mergeUserViewService.findAllPage(MergeUserViewQueryModel.builder().parentIdEQ(userId).build());
-			model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
-			model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
-			model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
-			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
-			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
-
-		}
+		Page<MergeUserView> page= mergeUserViewService.findAllPage(MergeUserViewQueryModel.builder().parentIdEQ(userId).build());
+		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
+		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
+		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
+		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
+		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
 		model.addAttribute("productType",productType);
-		return "ucenter/teamNew/teamDetil";
+		return "ucenter/teamNew/teamDetil2";
 	}
 
 	/**
@@ -367,18 +367,17 @@ public class UcenterTeamController {
 			model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
 			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
 			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
+			model.addAttribute("productType",productType);
+			return "ucenter/teamNew/sleepDetil";
 		}
-		if(productType == 2){
-			Page<MergeUserView> page = mergeUserViewService.findActive(userQueryModel, true);
-			model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
-			model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
-			model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
-			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
-			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
-
-		}
+		Page<MergeUserView> page = mergeUserViewService.findActive(userQueryModel, true);
+		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
+		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
+		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
+		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
+		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
 		model.addAttribute("productType",productType);
-		return "ucenter/teamNew/sleepDetil";
+		return "ucenter/teamNew/sleepDetil2";
 	}
 
 	/**
@@ -461,27 +460,32 @@ public class UcenterTeamController {
 	 * @return
      */
 	@RequestMapping(value = "teamNew")
-	public String teamNew(Principal principal,Model model,Integer productType){
+	public String teamNew(Principal principal,Model model,Integer productType,RedirectAttributes redirectAttributes){
+		if(productType == null || productType > 2){
+			redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("非法数据，productType参数异常"));
+			return "redirect:/u";
+		}
 		Long userId = principal.getUserId();
 		UserQueryModel userQueryModel = new UserQueryModel();
 		userQueryModel.setParentIdNL(userId);
-		if(productType != null && productType == 1){
+		if(productType == 1){
 			Page<User> page =userService.findAddpeople(userQueryModel);
 			model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
 			model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
 			model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
 			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
 			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
-		}else if(productType != null && productType == 2){
-			Page<MergeUserView> page = mergeUserViewService.findAddpeople(userQueryModel);
-			model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
-			model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
-			model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
-			model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
-			model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
+			model.addAttribute("productType",productType);
+			return "ucenter/teamNew/newTeamDetil";
 		}
+		Page<MergeUserView> page = mergeUserViewService.findAddpeople(userQueryModel);
+		model.addAttribute("v4",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V4).collect(Collectors.toList()));
+		model.addAttribute("v3",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V3).collect(Collectors.toList()));
+		model.addAttribute("v2",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V2).collect(Collectors.toList()));
+		model.addAttribute("v1",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V1).collect(Collectors.toList()));
+		model.addAttribute("v0",page.getData().stream().filter(v -> v.getUserRank() == UserRank.V0).collect(Collectors.toList()));
 		model.addAttribute("productType",productType);
-		return "ucenter/teamNew/newTeamDetil";
+		return "ucenter/teamNew/newTeamDetil2";
 	}
 
 	/**

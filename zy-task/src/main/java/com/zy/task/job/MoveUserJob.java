@@ -66,7 +66,6 @@ public class MoveUserJob implements Job {
                      || order.getOrderStatus() == Order.OrderStatus.已支付 || order.getOrderStatus() == Order.OrderStatus.已发货)
                     .collect(Collectors.toList());
             Map<Long, List<Order>> orderMap = filterOrders.stream().collect(Collectors.groupingBy(Order::getUserId));
-            Map<User.UserRank, List<Order>> rankOrderMap = filterOrders.stream().collect(Collectors.groupingBy(Order::getBuyerUserRank));
             Date now = new Date();
             MergeUser wan = mergeUserService.findByUserIdAndProductType(10370l, 2);
             MergeUser company = mergeUserService.findByUserIdAndProductType(1l, 2);
