@@ -211,7 +211,7 @@ public class MoveUserJob implements Job {
             if (times > 1000) {
                 throw new BizException(BizCode.ERROR, "生成code失败");
             }
-            code = createCode();
+            code = this.createCode();
             mergeUser = mergeUserService.findBycodeAndProductType(code,2);
             times++;
         }
