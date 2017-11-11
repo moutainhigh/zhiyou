@@ -20,6 +20,7 @@ import com.zy.entity.fnc.Deposit.DepositStatus;
 import com.zy.entity.fnc.Payment.PaymentType;
 import com.zy.entity.mal.Order;
 import com.zy.entity.mal.Order.OrderStatus;
+import com.zy.entity.mal.Product;
 import com.zy.entity.usr.User;
 import com.zy.model.BizCode;
 import com.zy.model.Constants;
@@ -59,7 +60,7 @@ public class UcenterPayController {
 
 	@Autowired
 	private OrderService orderService;
-	
+
 	@Autowired
 	private PaymentService paymentService;
 
@@ -229,6 +230,14 @@ public class UcenterPayController {
 		validate(orderId, NOT_NULL, "order id " + orderId + " is null");
 		Order order = orderService.findOne(orderId);
 		validate(order, NOT_NULL, "order id" + orderId + " not found");
+
+		//校验库存
+		if (order.getProductType() == 2){
+			Boolean  flag = orderService.checkOrderStore(order.getSellerId(), 2, order.getQuantity());
+			if (flag == false){
+				throw new BizException(BizCode.ERROR, "卖家库存不足，请提醒卖家进货");
+			}
+		}
 		if(!order.getUserId().equals(principal.getUserId())){
 			throw new BizException(BizCode.ERROR, "非自己的订单不能操作");
 		}
