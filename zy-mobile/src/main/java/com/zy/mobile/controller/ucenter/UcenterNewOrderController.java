@@ -76,7 +76,7 @@ public class UcenterNewOrderController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String detail(@PathVariable Long id, Model model) {
-
+        logger.info("新品逻辑开始："+new Date().getTime());
         Product product = productService.findOne(id);
         Principal principal = GcUtils.getPrincipal();
         User user = userService.findOne(principal.getUserId());
@@ -100,7 +100,9 @@ public class UcenterNewOrderController {
         }
         //判断团队人数
         if (userRank == User.UserRank.V3){
-            int whileTimes = 0;
+            logger.info("v3逻辑开始："+new Date().getTime());
+            isUse = 0;
+           /* int whileTimes = 0;
             while (parentId != null) {
                 if (whileTimes > 1000) {
                     throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
@@ -160,7 +162,8 @@ public class UcenterNewOrderController {
                 }else {
                     isUse = 0;
                 }
-            }
+            }*/
+            logger.info("v3逻辑结束："+new Date().getTime());
         }
 
 
@@ -168,6 +171,7 @@ public class UcenterNewOrderController {
         validate(product.getIsOn(), v -> true, "product is not on");
         model.addAttribute("isUse", isUse);
         model.addAttribute("product", productComponent.buildDetailVo(product));
+        logger.info("新品逻辑开始："+new Date().getTime());
         return "product/productDetailNew";
     }
 
