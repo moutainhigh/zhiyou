@@ -63,10 +63,10 @@
       <img class="avatar round mr-20 ml-10" src="${userAvatarSmall}">
       <div class="list-text font-white lh-30">
         <div class="fs-18 bold">${user.nickname}</div>
-        <c:if test="${user.userRank == 'V1'}"><label class="label purple">VIP服务商</label></c:if>
-        <c:if test="${user.userRank == 'V2'}"><label class="label blue">市级服务商</label></c:if>
-        <c:if test="${user.userRank == 'V3'}"><label class="label orange">省级服务商</label></c:if>
-        <c:if test="${user.userRank == 'V4'}"><label class="label red">特级服务商</label></c:if>
+        <%--<c:if test="${user.userRank == 'V1'}"><label class="label purple">VIP服务商</label></c:if>--%>
+        <%--<c:if test="${user.userRank == 'V2'}"><label class="label blue">市级服务商</label></c:if>--%>
+        <%--<c:if test="${user.userRank == 'V3'}"><label class="label orange">省级服务商</label></c:if>--%>
+        <%--<c:if test="${user.userRank == 'V4'}"><label class="label red">特级服务商</label></c:if>--%>
       </div>
       <i class="list-arrow"></i>
     </a>
@@ -126,6 +126,13 @@
           <em>我的团队</em>
         </a>
         </c:if>
+
+        <%--<c:if test="${flag}">--%>
+          <%--<a class="flex-1 bd-r" href="${ctx}/u/team/newTeam?productType=2">--%>
+            <%--<i class="icon icon-users icon-2x"></i>--%>
+            <%--<em>我的参龄集团队</em>--%>
+          <%--</a>--%>
+        <%--</c:if>--%>
 
 
 
