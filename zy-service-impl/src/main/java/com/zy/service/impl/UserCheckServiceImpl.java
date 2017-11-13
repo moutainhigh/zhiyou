@@ -396,7 +396,7 @@ public class UserCheckServiceImpl implements UserCheckService {
            Map<Long,List<MergeUser>> mergeUserMap = mergeUserMapper.findAll(MergeUserQueryModel.builder().productTypeEQ(prodectType).build()).stream().filter(v->v.getParentId()!=null)
                     .collect(Collectors.groupingBy(MergeUser::getParentId));
             Map<Long,List<Order>> orderMap = orderMapper.findAll(OrderQueryModel.builder().productTypeEQ(prodectType)
-                    .createdTimeGTE(DateUtil.getMonthData(new Date(),-2,0)).build()).stream().collect(Collectors.groupingBy(Order::getUserId));
+                    .createdTimeGTE(DateUtil.getMonthData(new Date(),-2,0)).orderStatusIN(new Order.OrderStatus[] {Order.OrderStatus.已支付, Order.OrderStatus.已发货, Order.OrderStatus.已完成}).build()).stream().collect(Collectors.groupingBy(Order::getUserId));
             long  num =0;
             List<Order>myOrderLlist = orderMap.get(parentInvter.getUserId());
             if (myOrderLlist!=null&&!myOrderLlist.isEmpty()){ //只计算已经是V3的量
