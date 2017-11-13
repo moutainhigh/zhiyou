@@ -214,6 +214,17 @@ public class UcenterOrderController {
 	public String confirmPay(Long id, RedirectAttributes redirectAttributes, Principal principal) {
 		Order persistence = orderService.findOne(id);
 		validate(persistence, NOT_NULL, "order id" + id + " not found");
+
+		//校验库存
+		if (persistence.getBuyerUserRank() != User.UserRank.V4 && persistence.getQuantity() < 2000){
+			if (persistence.getProductType() == 2){
+				Boolean  flag = orderService.checkOrderStore(persistence.getSellerId(), 2, persistence.getQuantity());
+				if (flag == false){
+					throw new BizException(BizCode.ERROR, "卖家库存不足，请提醒卖家进货");
+				}
+			}
+		}
+
 		if (!principal.getUserId().equals(persistence.getSellerId())) {
 			throw new UnauthorizedException("权限不足");
 		}
@@ -245,6 +256,16 @@ public class UcenterOrderController {
 	@RequestMapping(path = "/deliver", method = RequestMethod.GET)
 	public String deliver(Long id, Model model, Principal principal) {
 		Order persistence = orderService.findOne(id);
+		//校验库存
+		if (persistence.getBuyerUserRank() != User.UserRank.V4 && persistence.getQuantity() < 2000){
+			if (persistence.getProductType() == 2){
+				Boolean  flag = orderService.checkOrderStore(persistence.getSellerId(), 2, persistence.getQuantity());
+				if (flag == false){
+					throw new BizException(BizCode.ERROR, "卖家库存不足，请提醒卖家进货");
+				}
+			}
+		}
+
 		validate(persistence, NOT_NULL, "order id" + id + " not found");
 		if (!principal.getUserId().equals(persistence.getSellerId())) {
 			throw new UnauthorizedException("权限不足");

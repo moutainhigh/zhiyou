@@ -122,55 +122,62 @@ public class UcenterNewOrderController {
                 }
                 whileTimes ++;
             }
-            //根据id查询团队省级人数
-            UserQueryModel userQueryModel  = new UserQueryModel();
-            userQueryModel.setIsDeletedEQ(false);
-            userQueryModel.setIsFrozenEQ(false);
-            List<User> users = userService.findAll(userQueryModel);
-            List<User> children = TreeHelper.sortBreadth2(users, parentId.toString(), v -> {
-                TreeNode treeNode = new TreeNode();
-                treeNode.setId(v.getId().toString());
-                treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
-                return treeNode;
-            });
 
-            List<User> list = children.stream().filter(v -> v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
+            //判断特级是否是直升特级
+            User parent = userService.findOne(parentId);
+            if (parent.getIsToV4() == true){
 
-            //找出第一个特级是parentId
-            List<User> uses = new ArrayList<>();
-            for (User use: list) {
-                Long pId = this.calculateV4UserId(use);
-                if (pId != null && pId.toString().equals(parentId.toString())){
-                    uses.add(use);
+                //根据id查询团队省级人数
+                UserQueryModel userQueryModel  = new UserQueryModel();
+                userQueryModel.setIsDeletedEQ(false);
+                userQueryModel.setIsFrozenEQ(false);
+                List<User> users = userService.findAll(userQueryModel);
+                List<User> children = TreeHelper.sortBreadth2(users, parentId.toString(), v -> {
+                    TreeNode treeNode = new TreeNode();
+                    treeNode.setId(v.getId().toString());
+                    treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
+                    return treeNode;
+                });
+
+                List<User> list = children.stream().filter(v -> v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
+
+                //找出第一个特级是parentId
+                List<User> uses = new ArrayList<>();
+                for (User use: list) {
+                    Long pId = this.calculateV4UserId(use);
+                    if (pId != null && pId.toString().equals(parentId.toString())){
+                        uses.add(use);
+                    }
                 }
-            }
-            if (uses.size() >= 8 ){
-                //判断时间小于11 11 23 59 59
-                Date expiredTime = null;
-                Date date = new Date();
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(2017, 10, 11, 23, 59 ,59);
-                expiredTime = calendar.getTime();
-                if (date.getTime() < expiredTime.getTime()){
-                    isUse = 1;
-                }else {
-                    isUse = 0;
+                if (uses.size() >= 8 ){
+                    //判断时间小于11 11 23 59 59
+                    Date expiredTime = null;
+                    Date date = new Date();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(2017, 10, 11, 23, 59 ,59);
+                    expiredTime = calendar.getTime();
+                    if (date.getTime() < expiredTime.getTime()){
+                        isUse = 1;
+                    }else {
+                        isUse = 0;
+                    }
+                }else if (uses.size() < 8  && uses.size() > 0){
+                    //判断时间小于11 31 23 59 59
+                    Date expiredTime = null;
+                    Date date = new Date();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(2017, 11, 31, 23, 59 ,59);
+                    expiredTime = calendar.getTime();
+                    if (date.getTime() < expiredTime.getTime()){
+                        isUse = 1;
+                    }else {
+                        isUse = 0;
+                    }
                 }
-            }else if (uses.size() < 8  && uses.size() > 0){
-                //判断时间小于11 31 23 59 59
-                Date expiredTime = null;
-                Date date = new Date();
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(2017, 11, 31, 23, 59 ,59);
-                expiredTime = calendar.getTime();
-                if (date.getTime() < expiredTime.getTime()){
-                    isUse = 1;
-                }else {
-                    isUse = 0;
-                }
+            }else {
+                isUse = 0;
             }
         }
-
 
         validate(product, NOT_NULL, "product id" + id + " not found");
         validate(product.getIsOn(), v -> true, "product is not on");
