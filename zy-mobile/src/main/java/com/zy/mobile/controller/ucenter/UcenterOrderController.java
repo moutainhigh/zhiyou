@@ -202,7 +202,7 @@ public class UcenterOrderController {
 		if (!principal.getUserId().equals(order.getUserId())) {
 			throw new UnauthorizedException("权限不足");
 		}
-		
+
 		validate(offlineImage, NOT_BLANK, "order offlineImage is blank");
 		validate(offlineMemo, NOT_BLANK, "order offlineMemo is blank");
 		orderService.offlinePay(id, offlineImage, offlineMemo);
@@ -220,7 +220,9 @@ public class UcenterOrderController {
 			if (persistence.getProductType() == 2){
 				Boolean  flag = orderService.checkOrderStore(persistence.getSellerId(), 2, persistence.getQuantity());
 				if (flag == false){
-					throw new BizException(BizCode.ERROR, "卖家库存不足，请提醒卖家进货");
+					redirectAttributes.addFlashAttribute(Constants.MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("您的库存已不足，请及时进货"));
+					return "redirect:/u/order/" + persistence.getId();
+//					throw new BizException(BizCode.ERROR, "您的库存已不足，请及时进货");
 				}
 			}
 		}
@@ -261,7 +263,7 @@ public class UcenterOrderController {
 			if (persistence.getProductType() == 2){
 				Boolean  flag = orderService.checkOrderStore(persistence.getSellerId(), 2, persistence.getQuantity());
 				if (flag == false){
-					throw new BizException(BizCode.ERROR, "卖家库存不足，请提醒卖家进货");
+					throw new BizException(BizCode.ERROR, "您的库存已不足，请及时进货");
 				}
 			}
 		}
