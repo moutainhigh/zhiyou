@@ -217,23 +217,6 @@ public class MalComponent {
 			logger.warn("订单状态警告 {} 订单id {}", order.getOrderStatus(), order.getId());
 		}
 
-		//判断推荐人是否要升级
-		MergeUser inviter = mergeUserService.findByUserIdAndProductType(order.getInviterId(), 2);
-
-		//判断商品类型
-		if (order.getProductType() == 2){
-			userCheckService.editOderStoreIn(order.getId(),order.getUserId(),2);
-			if (order.getBuyerUserRank() != UserRank.V4 && order.getQuantity() < 2000){
-				userCheckService.editOrderStoreOut(order.getId(),order.getSellerId(),2);
-			}
-			if (product.getSkuCode().equals("zy-slj")){
-				if (inviter.getUserRank() != UserRank.V0){
-					userCheckService.checkUserLevel(order.getInviterId(), 0l,2);
-				}
-				userCheckService.checkUserLevel(order.getUserId(),order.getQuantity(),2);
-			}
-
-		}
 
 		Date paidTime = null;
 		if(order.getOrderType() == Order.OrderType.补单) {
@@ -245,6 +228,26 @@ public class MalComponent {
 		order.setPaidTime(paidTime);
 		if(orderMapper.update(order) == 0) {
 			throw new ConcurrentException();
+		}
+		//判断推荐人是否要升级
+		MergeUser inviter = null;
+		if (order.getInviterId() != null){
+			inviter = mergeUserService.findByUserIdAndProductType(order.getInviterId(), 2);
+		}
+
+		//判断商品类型
+		if (order.getProductType() == 2){
+			userCheckService.editOderStoreIn(order.getId(),order.getUserId(),2);
+			if (order.getBuyerUserRank() != UserRank.V4 && order.getQuantity() < 2000){
+				userCheckService.editOrderStoreOut(order.getId(),order.getSellerId(),2);
+			}
+			if (product.getSkuCode().equals("zy-slj")){
+				if ( inviter != null && inviter.getUserRank() != UserRank.V0){
+					userCheckService.checkUserLevel(order.getInviterId(), 0l,2);
+				}
+				userCheckService.checkUserLevel(order.getUserId(),order.getQuantity(),2);
+			}
+
 		}
 
 		OrderItem orderItem = orderItemMapper.findByOrderId(orderId).get(0);
