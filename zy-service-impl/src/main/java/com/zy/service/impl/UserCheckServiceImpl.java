@@ -166,11 +166,15 @@ public class UserCheckServiceImpl implements UserCheckService {
     private MergeUser findParent(MergeUser mergeUser,Integer prodectType,int num){
         Map<String,Object> map = new HashMap<>();
         MergeUser parent =mergeUser;
+
         map.put("productType" , prodectType);
         int i=0;
         do {
              map.put("userId" , parent.getParentId());
              parent = mergeUserMapper.findByUserIdAndProductType(map);
+            if(parent.getUserRank()== User.UserRank.V3||parent.getUserRank()== User.UserRank.V4){
+                return parent;
+            }
             if (parent.getUserRank().getLevel()>mergeUser.getUserRank().getLevel()){
                 return parent;
             }
