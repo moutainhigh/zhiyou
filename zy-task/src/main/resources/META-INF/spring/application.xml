@@ -244,7 +244,7 @@
 					</property>
 				</bean>
 				<!-- 邀请码检测 -->
-				<bean id="dntInviteNumberJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+				<!--<bean id="dntInviteNumberJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">
 						<bean id ="dntInviteNumberJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 							<property name="durability" value="true"></property>
@@ -254,7 +254,7 @@
 					<property name="cronExpression">
 						<value>0 0/2 * * * ?</value>
 					</property>
-				</bean>
+				</bean>-->
 				<!-- 平移用户 -->
 				<bean id="moveUserJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 					<property name="jobDetail">

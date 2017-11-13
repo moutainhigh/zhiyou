@@ -4,6 +4,7 @@ import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
+import com.zy.common.model.tree.TreeNodeResolver;
 import com.zy.common.util.BeanUtils;
 import com.zy.common.util.DateUtil;
 import com.zy.entity.sys.SystemCode;
@@ -416,5 +417,25 @@ public class UserComponent {
 		page.setData(userList);
 		page.setTotal(total);
 		return page;
+	}
+
+	public  List<User> sortBreadthV3(Collection<User> entities, String parentId) {
+		List<User> result = new ArrayList<>();
+		Map<String, List<User>> childrenMap = entities.stream().collect(Collectors.groupingBy(v -> v.getParentId() == null ? "DEFAULT_NULL_KEY" :v.getParentId().toString()));
+		sortBreadthV3(childrenMap, result, parentId);
+		return result;
+	}
+
+	private  void sortBreadthV3(Map<String, List<User>> childrenMap, Collection<User> result, String parentId) {
+		parentId = parentId == null ? "DEFAULT_NULL_KEY" : parentId;
+		List<User> plist = childrenMap.get(parentId);
+		if (plist == null) {
+			return;
+		}
+		plist = plist.stream().filter(u -> u.getUserRank()== User.UserRank.V3).collect(Collectors.toList());
+		result.addAll(plist);
+		for (User user : plist) {
+			sortBreadthV3(childrenMap, result, user.getId().toString());
+		}
 	}
 }
