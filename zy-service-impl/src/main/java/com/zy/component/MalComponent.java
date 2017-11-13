@@ -217,6 +217,18 @@ public class MalComponent {
 			logger.warn("订单状态警告 {} 订单id {}", order.getOrderStatus(), order.getId());
 		}
 
+
+		Date paidTime = null;
+		if(order.getOrderType() == Order.OrderType.补单) {
+			paidTime = order.getCreatedTime();
+		} else {
+			paidTime = new Date();
+		}
+		order.setOrderStatus(已支付);
+		order.setPaidTime(paidTime);
+		if(orderMapper.update(order) == 0) {
+			throw new ConcurrentException();
+		}
 		//判断推荐人是否要升级
 		MergeUser inviter = null;
 		if (order.getInviterId() != null){
@@ -236,18 +248,6 @@ public class MalComponent {
 				userCheckService.checkUserLevel(order.getUserId(),order.getQuantity(),2);
 			}
 
-		}
-
-		Date paidTime = null;
-		if(order.getOrderType() == Order.OrderType.补单) {
-			paidTime = order.getCreatedTime();
-		} else {
-			paidTime = new Date();
-		}
-		order.setOrderStatus(已支付);
-		order.setPaidTime(paidTime);
-		if(orderMapper.update(order) == 0) {
-			throw new ConcurrentException();
 		}
 
 		OrderItem orderItem = orderItemMapper.findByOrderId(orderId).get(0);
