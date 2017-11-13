@@ -56,7 +56,7 @@ public class CommonController {
     }
 
 
-    @RequestMapping("/superLogin/{userId}")
+    /*@RequestMapping("/superLogin/{userId}")*/
     public String superLogin(@PathVariable Long userId, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
         User user = userService.findOne(userId);
         if (user == null) {
