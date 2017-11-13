@@ -278,58 +278,64 @@ public class OrderServiceImpl implements OrderService {
                 calendar.set(2017, 10, 11, 23, 59, 59);
                 expiredTime = calendar.getTime();
             }else if (userRank == UserRank.V3) {
-                int whileTimes = 0;
-                while ( parentId != null) {
-                    if (whileTimes > 1000) {
-                        throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
-                    }
-                    User parent = userMapper.findOne(parentId);
-                    if (parent.getUserRank() == User.UserRank.V4) {
-                        parentId = parent.getId();
-                        break;
-                    }else {
-                        parentId = parent.getParentId();
-                    }
-                    whileTimes ++;
-                }
-
-                //根据id查询团队省级人数
-                UserQueryModel userQueryModel  = new UserQueryModel();
-                userQueryModel.setIsDeletedEQ(false);
-                userQueryModel.setIsFrozenEQ(false);
-                List<User> users = userMapper.findAll(userQueryModel);
-                List<User> children = TreeHelper.sortBreadth2(users, parentId.toString(), v -> {
-                    TreeNode treeNode = new TreeNode();
-                    treeNode.setId(v.getId().toString());
-                    treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
-                    return treeNode;
-                });
-
-                List<User> list = children.stream().filter(v -> v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
-                //找出第一个特级是parentId
-                List<User> uses = new ArrayList<>();
-                for (User use: list) {
-                    Long pId = calculateV4UserId(use);
-                    if (pId != null && pId.toString().equals(parentId.toString())){
-                        uses.add(use);
-                    }
-                }
-                if (uses.size() >= 8 ){
-                    if (isPayToPlatform == true){
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(2017, 10, 11, 23, 59, 59);
-                        expiredTime = calendar.getTime();
-                    }else {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(2017, 10, 12, 23, 59, 59);
-                        expiredTime = calendar.getTime();
-                    }
-                }else if (uses.size() < 8  && uses.size() > 0){
-                    //判断时间小于11 31 23 59 59
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(2017, 11, 31, 23, 59, 59);
-                    expiredTime = calendar.getTime();
-                }
+//                int whileTimes = 0;
+//                while ( parentId != null) {
+//                    if (whileTimes > 1000) {
+//                        throw new BizException(BizCode.ERROR, "循环引用错误, user id is " + user.getId());
+//                    }
+//                    User parent = userMapper.findOne(parentId);
+//                    if (parent.getUserRank() == User.UserRank.V4) {
+//                        parentId = parent.getId();
+//                        break;
+//                    }else {
+//                        parentId = parent.getParentId();
+//                    }
+//                    whileTimes ++;
+//                }
+//
+//                //判断特级是否是直升特级
+//                User parent = userMapper.findOne(parentId);
+//
+//                //根据id查询团队省级人数
+//                UserQueryModel userQueryModel  = new UserQueryModel();
+//                userQueryModel.setIsDeletedEQ(false);
+//                userQueryModel.setIsFrozenEQ(false);
+//                List<User> users = userMapper.findAll(userQueryModel);
+//                List<User> children = TreeHelper.sortBreadth2(users, parentId.toString(), v -> {
+//                    TreeNode treeNode = new TreeNode();
+//                    treeNode.setId(v.getId().toString());
+//                    treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
+//                    return treeNode;
+//                });
+//
+//                List<User> list = children.stream().filter(v -> v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
+//                //找出第一个特级是parentId
+//                List<User> uses = new ArrayList<>();
+//                for (User use: list) {
+//                    Long pId = calculateV4UserId(use);
+//                    if (pId != null && pId.toString().equals(parentId.toString())){
+//                        uses.add(use);
+//                    }
+//                }
+//                if (uses.size() >= 8 ){
+//                    if (isPayToPlatform == true){
+//                        Calendar calendar = Calendar.getInstance();
+//                        calendar.set(2017, 10, 11, 23, 59, 59);
+//                        expiredTime = calendar.getTime();
+//                    }else {
+//                        Calendar calendar = Calendar.getInstance();
+//                        calendar.set(2017, 10, 12, 23, 59, 59);
+//                        expiredTime = calendar.getTime();
+//                    }
+//                }else if (uses.size() < 8  && uses.size() > 0){
+//                    //判断时间小于11 31 23 59 59
+//                    Calendar calendar = Calendar.getInstance();
+//                    calendar.set(2017, 11, 31, 23, 59, 59);
+//                    expiredTime = calendar.getTime();
+//                }
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(2017, 11, 31, 23, 59, 59);
+                expiredTime = calendar.getTime();
             }
         }
 
