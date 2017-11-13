@@ -5,6 +5,7 @@ import com.zy.common.exception.BizException;
 import com.zy.common.model.query.Page;
 import com.zy.common.model.tree.TreeHelper;
 import com.zy.common.model.tree.TreeNode;
+import com.zy.component.LocalCacheComponent;
 import com.zy.component.ProductComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.mal.OrderFillUser;
@@ -80,6 +81,9 @@ public class UcenterNewOrderController {
     private ProductComponent productComponent;
 
     @Autowired
+    private LocalCacheComponent localCacheComponent;
+
+    @Autowired
     private UserComponent userComponent;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -128,18 +132,7 @@ public class UcenterNewOrderController {
             if (parent.getIsToV4() == true){
 
                 //根据id查询团队省级人数
-                UserQueryModel userQueryModel  = new UserQueryModel();
-                userQueryModel.setIsDeletedEQ(false);
-                userQueryModel.setIsFrozenEQ(false);
-                List<User> users = userService.findAll(userQueryModel);
-                List<User> children = TreeHelper.sortBreadth2(users, parentId.toString(), v -> {
-                    TreeNode treeNode = new TreeNode();
-                    treeNode.setId(v.getId().toString());
-                    treeNode.setParentId(v.getParentId() == null ? null : v.getParentId().toString());
-                    return treeNode;
-                });
-
-                List<User> list = children.stream().filter(v -> v.getUserRank() == User.UserRank.V3).collect(Collectors.toList());
+                List<User> list = userComponent.sortBreadthV3(localCacheComponent.getUsers(), parentId.toString());
 
                 //找出第一个特级是parentId
                 List<User> uses = new ArrayList<>();
