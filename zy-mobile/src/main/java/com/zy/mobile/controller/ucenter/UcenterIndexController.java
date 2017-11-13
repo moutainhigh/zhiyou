@@ -4,6 +4,7 @@ import com.zy.common.exception.ValidationException;
 import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.AliyunOssSupport;
+import com.zy.component.LocalCacheComponent;
 import com.zy.component.UserComponent;
 import com.zy.entity.fnc.Account;
 import com.zy.entity.mal.Order;
@@ -32,8 +33,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.zy.common.util.ValidateUtils.NOT_BLANK;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -64,6 +67,9 @@ public class UcenterIndexController {
 	
 	@Autowired
 	private OrderService orderService;
+
+    @Autowired
+    private LocalCacheComponent localCacheComponent;
 	
 	@Autowired
     private AliyunOssSupport aliyunOssSupport;
@@ -99,13 +105,52 @@ public class UcenterIndexController {
 		messageQueryModel.setIsReadEQ(false);
 		model.addAttribute("unreadMessageCount", messageService.count(messageQueryModel));
 
-		OrderSumDto inSum = orderService.sum(OrderQueryModel.builder()
-				.orderStatusIN(new Order.OrderStatus[]{Order.OrderStatus.已完成, Order.OrderStatus.已发货, Order.OrderStatus.已支付})
-				.userIdEQ(userId).build());
+        List<Order> orders = localCacheComponent.getOrders();
+        List<Order> filterOrders = orders.stream().filter(order -> order.getOrderStatus() == Order.OrderStatus.已完成
+                || order.getOrderStatus() == Order.OrderStatus.已支付 || order.getOrderStatus() == Order.OrderStatus.已发货)
+                .collect(Collectors.toList());
+        List<Order> filterInOrders = filterOrders.stream().filter(order -> order.getUserId().equals(userId)).collect(Collectors.toList());
 
-		OrderSumDto outSum = orderService.sum(OrderQueryModel.builder()
-				.orderStatusIN(new Order.OrderStatus[]{Order.OrderStatus.已完成, Order.OrderStatus.已发货, Order.OrderStatus.已支付})
-				.sellerIdEQ(userId).build());
+        List<Order> filterOutOrders = filterOrders.stream().filter(order -> order.getSellerId().longValue() == userId.longValue()).collect(Collectors.toList());
+        OrderSumDto inSum = new OrderSumDto();
+        OrderSumDto outSum = new OrderSumDto();
+        if(filterInOrders != null && !filterInOrders.isEmpty()){
+            inSum.setCountNumber(filterInOrders.size());
+           Long qty= filterInOrders.parallelStream().mapToLong(Order::getQuantity).sum();
+            inSum.setSumQuantity(qty.intValue());
+          Double sum1 = filterInOrders.parallelStream().mapToDouble(v -> {
+                Double  sum  = v.getAmount().doubleValue();
+                return sum;
+            }).sum();
+            inSum.setSumAmount(new BigDecimal(sum1));
+        }else {
+            inSum.setSumAmount(new BigDecimal(0.00));
+            inSum.setSumQuantity(0);
+            inSum.setCountNumber(0);
+        }
+        if(filterOutOrders != null && !filterOutOrders.isEmpty()){
+            outSum.setCountNumber(filterOutOrders.size());
+            Long qty2= filterOutOrders.parallelStream().mapToLong(Order::getQuantity).sum();
+            outSum.setSumQuantity(qty2.intValue());
+            Double sum2 = filterOutOrders.parallelStream().mapToDouble(v -> {
+                Double  s  = v.getAmount().doubleValue();
+                return s;
+            }).sum();
+            outSum.setSumAmount(new BigDecimal(sum2));
+        }else {
+            outSum.setSumAmount(new BigDecimal(0.00));
+            outSum.setSumQuantity(0);
+            outSum.setCountNumber(0);
+        }
+
+
+//		OrderSumDto inSum = orderService.sum(OrderQueryModel.builder()
+//				.orderStatusIN(new Order.OrderStatus[]{Order.OrderStatus.已完成, Order.OrderStatus.已发货, Order.OrderStatus.已支付})
+//				.userIdEQ(userId).build());
+//
+//		OrderSumDto outSum = orderService.sum(OrderQueryModel.builder()
+//				.orderStatusIN(new Order.OrderStatus[]{Order.OrderStatus.已完成, Order.OrderStatus.已发货, Order.OrderStatus.已支付})
+//				.sellerIdEQ(userId).build());
 
 
 		model.addAttribute("inSumQuantity", inSum.getSumQuantity() == null ? 0 : inSum.getSumQuantity());
