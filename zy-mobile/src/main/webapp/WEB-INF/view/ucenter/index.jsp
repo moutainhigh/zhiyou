@@ -120,7 +120,7 @@
         <%--</a>--%>
         <%--</c:if>--%>
 
-        <c:if test="${user.userRank != 'V0'}">
+        <c:if test="${user.userRank != 'V0' || flag}">
         <a class="flex-1 bd-r" href="${ctx}/u/team/products">
           <i class="icon icon-users icon-2x"></i>
           <em>我的团队</em>
