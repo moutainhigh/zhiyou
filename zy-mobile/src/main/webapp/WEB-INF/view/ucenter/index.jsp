@@ -151,17 +151,20 @@
             <em>升级服务商</em>
           </a>
         </c:if>--%>
-        <c:choose><c:when test="${user.userRank == 'V1' || user.userRank == 'V2'}">
+        <c:choose>
+          <c:when test="${user.userRank == 'V1' || user.userRank == 'V2'}">
           <a class="flex-1 bd-r" href="${ctx}/u/agent">
             <i class="icon icon-agent icon-2x"></i>
             <em>升级服务商</em>
           </a>
         </c:when>
          <c:otherwise>
+           <c:if test="${user.userRank == 'V3' || user.userRank == 'V4'}">
            <a class="flex-1" href="#">
              <i class="icon icon-out icon-2x" style="background: none;"></i>
              <em></em>
            </a>
+           </c:if>
          </c:otherwise>
         </c:choose>
 
