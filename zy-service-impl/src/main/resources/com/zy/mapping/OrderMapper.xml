@@ -458,7 +458,7 @@
 		<result column="amount" property="sumAmount"/>
 	</resultMap>
 
-	<select id="orderSum" resultMap="sumResultMap" parameterType="com.zy.model.query.OrderQueryModel">
+	<!--<select id="orderSum" resultMap="sumResultMap" parameterType="com.zy.model.query.OrderQueryModel">
 		select count(id) countNumber, sum(quantity) quantity, sum(amount) amount 
 		from mal_order_item where order_id in 
 		(select id from mal_order
@@ -552,7 +552,7 @@
 			</if>
 		</where>
 		)
-	</select>
+	</select>-->
 
 	<select id="queryRetailPurchases" resultType="_long" parameterType="com.zy.model.query.OrderQueryModel">
 		SELECT IFNULL(SUM(a.quantity), 0)
