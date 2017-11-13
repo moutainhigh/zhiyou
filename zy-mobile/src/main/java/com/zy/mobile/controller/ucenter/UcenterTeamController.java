@@ -76,9 +76,13 @@ public class UcenterTeamController {
 		}
 		Long userId = principal.getUserId();
 		MergeUser mergeUser = mergeUserService.findByUserIdAndProductType(userId, 2);
+		User one = userService.findOne(userId);
 		boolean isnew = mergeUser == null ? false : true;
+		boolean isOld = one.getUserRank() == UserRank.V0 ? false:true;
+
 		model.addAttribute("products",plist.stream().map(productComponent::buildListVo).collect(Collectors.toList()));
 		model.addAttribute("isnew",isnew);
+		model.addAttribute("isOld",isOld);
 		return "ucenter/productType";
 	}
 

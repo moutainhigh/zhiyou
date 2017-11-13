@@ -28,7 +28,7 @@
 
 <article class="mb-15 clearfix">
   <c:forEach items="${products}" var="product">
-    <c:if test="${product.productType == 1}">
+    <c:if test="${product.productType == 1 && isOld}">
       <a href="${ctx}/u/team/newTeam?productType=${product.productType}"  class="product">
         <div class="image-box">
           <img class="abs-lt" src="${product.image1Thumbnail}">
