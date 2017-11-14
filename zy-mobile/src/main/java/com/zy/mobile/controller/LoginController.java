@@ -37,6 +37,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.Date;
 
 import static com.zy.common.util.ValidateUtils.validate;
@@ -106,6 +108,7 @@ public class LoginController {
 		if (StringUtils.isBlank(redirectUrl)) {
 			redirectUrl = "/";
 		}
+
 
 		redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.ok("登录成功"));
 		userService.modifyLastLoginTime(user.getId(), user.getId());
@@ -291,9 +294,28 @@ public class LoginController {
 		int expire = 60 * 60 * 24 * 7;
 		CookieUtils.add(response, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, expire, Constants.DOMAIN_MOBILE);
 		cacheSupport.set(Constants.CACHE_NAME_TGT, tgt, userId, expire);
+		Long  principalId = userId;
+		String ip = request.getRemoteAddr();
+		String method = request.getScheme()+"://"+ request.getServerName()+request.getRequestURI()+"?"+request.getQueryString();
+		String dateStr = DateUtil.formatDate(new Date());
+		String msg = principalId+"-----------"+ip+"-----------"+method+"-----------"+dateStr+"-----------"+tgt;
+		WriteStringToFile2(msg);
 
 	}
-	
+	public static void WriteStringToFile2(String msg) {
+		try {
+			String filePath = "/data/logs/txt/Login.txt";
+			FileWriter fw = new FileWriter(filePath, true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.append(msg);
+			bw.write("\r\n ");// 往已有的文件上添加字符串
+         /*   bw.write("def\r\n ");*/
+			bw.close();
+			fw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	
 }
