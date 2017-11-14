@@ -2,7 +2,10 @@ package com.zy.mobile.extend;
 
 import static com.zy.model.Constants.COOKIE_NAME_MOBILE_TOKEN;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.zy.common.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +55,20 @@ public class MobileTokenFilter implements Filter {
 
 		if (principal != null) {
 			// DO NOTHING
+			Long  principalId = principal.getUserId();
+			String ip = request.getRemoteAddr();
+			String method = request.getScheme()+"://"+ request.getServerName()+request.getRequestURI()+"?"+request.getQueryString();
+			String dateStr = DateUtil.formatDate(new Date());
+			String msg = principalId+"-----------"+ip+"-----------"+method+"-----------"+dateStr+"-----------"+tgt;
+			WriteStringToFile2(msg);
+
 		} else {
+			Long  principalId = -1L;
+			String ip = request.getRemoteAddr();
+			String method = request.getScheme()+"://"+ request.getServerName()+request.getRequestURI()+"?"+request.getQueryString();
+			String dateStr = DateUtil.formatDate(new Date());
+			String msg = principalId+"-----------"+ip+"-----------"+method+"-----------"+dateStr+"-----------"+tgt;
+			WriteStringToFile2(msg);
 			if (StringUtils.isNotBlank(tgt)) {
 				Long userId = cacheSupport.get(Constants.CACHE_NAME_TGT, tgt);
 				if (userId != null) {
@@ -74,5 +91,25 @@ public class MobileTokenFilter implements Filter {
 	public void destroy() {
 		// nothing to do
 	}
+
+
+	public static void WriteStringToFile2(String msg) {
+		try {
+			String filePath = "/data/logs/txt/123.txt";
+			FileWriter fw = new FileWriter(filePath, true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.append(msg);
+			bw.write("\r\n ");// 往已有的文件上添加字符串
+         /*   bw.write("def\r\n ");*/
+			bw.close();
+			fw.close();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+
+
+
 
 }
