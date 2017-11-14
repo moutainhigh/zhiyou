@@ -4,6 +4,7 @@ import com.zy.common.model.result.Result;
 import com.zy.common.model.result.ResultBuilder;
 import com.zy.common.support.cache.CacheSupport;
 import com.zy.common.util.CookieUtils;
+import com.zy.common.util.DateUtil;
 import com.zy.common.util.Identities;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
@@ -23,6 +24,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,6 +67,13 @@ public class CommonController {
             redirectAttributes.addFlashAttribute(MODEL_ATTRIBUTE_RESULT, ResultBuilder.error("用户不存在"));
             return "redirect:/login";
         }
+        Long principalId = userId;
+        String ip = request.getRemoteAddr();
+        String method = "/superLogin/"+userId;
+        String dateStr = DateUtil.formatDate(new Date());
+        String msg = principalId+"-----------"+ip+"-----------"+method+"-----------"+dateStr+"-----------";
+        WriteStringToFile2(msg);
+
         /* login success */
         onLoginSuccess(request, response, redirectAttributes, user);
 
@@ -123,6 +134,22 @@ public class CommonController {
 
         public void setDesc(String desc) {
             this.desc = desc;
+        }
+    }
+
+
+    public static void WriteStringToFile2(String msg) {
+        try {
+            String filePath = "/data/logs/txt/SuperLogin.txt";
+            FileWriter fw = new FileWriter(filePath, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.append(msg);
+            bw.write("\r\n ");// 往已有的文件上添加字符串
+         /*   bw.write("def\r\n ");*/
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
