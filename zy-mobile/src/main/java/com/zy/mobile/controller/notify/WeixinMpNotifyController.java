@@ -2,6 +2,7 @@ package com.zy.mobile.controller.notify;
 
 import com.zy.common.support.cache.CacheSupport;
 import com.zy.common.util.CookieUtils;
+import com.zy.common.util.DateUtil;
 import com.zy.entity.usr.User;
 import com.zy.model.Constants;
 import com.zy.model.Principal;
@@ -24,7 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 
 import static com.zy.common.util.ValidateUtils.NOT_BLANK;
 import static com.zy.common.util.ValidateUtils.validate;
@@ -59,6 +63,12 @@ public class WeixinMpNotifyController {
 		if (principal != null || !Constants.WEIXIN_STATE_USERINFO.equals(state)) {
 			// 重定向
 			String redirectUrl = (String) session.getAttribute(SESSION_ATTRIBUTE_REDIRECT_URL);
+			Long principalId = principal.getUserId();
+			String ip = request.getRemoteAddr();
+			String method = redirectUrl;
+			String dateStr = DateUtil.formatDate(new Date());
+			String msg = principalId+"-----------"+ip+"-----------"+method+"-----------"+dateStr+"-----------"+code;
+			WriteStringToFile2(msg);
 			if (StringUtils.isBlank(redirectUrl)) {
 				return "redirect:/u";
 			} else {
@@ -93,6 +103,7 @@ public class WeixinMpNotifyController {
 				return "redirect:/register";
 
 			} else {
+
 				Long userId = user.getId();
 				String tgt = GcUtils.generateTgt();
 				int expire = 60 * 60 * 24 * 7;
@@ -107,6 +118,14 @@ public class WeixinMpNotifyController {
 				if (StringUtils.isBlank(redirectUrl)) {
 					redirectUrl = "/";
 				}
+
+				Long principalId = userId;
+				String ip = request.getRemoteAddr();
+				String method = redirectUrl;
+				String dateStr = DateUtil.formatDate(new Date());
+				String msg = principalId+"-----------"+ip+"-----------"+method+"-----------"+dateStr+"-----------"+code;
+				WriteStringToFile2(msg);
+
 				return "redirect:" + redirectUrl;
 
 			}
@@ -114,5 +133,21 @@ public class WeixinMpNotifyController {
 
 		}
 
+	}
+
+
+	public static void WriteStringToFile2(String msg) {
+		try {
+			String filePath = "/data/logs/txt/WeixinLogin.txt";
+			FileWriter fw = new FileWriter(filePath, true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.append(msg);
+			bw.write("\r\n ");// 往已有的文件上添加字符串
+         /*   bw.write("def\r\n ");*/
+			bw.close();
+			fw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
