@@ -11,7 +11,7 @@ public  interface Constants {
     String SESSION_ATTRIBUTE_CAPTCHA = "captcha";
     String SESSION_ATTRIBUTE_REGISTER_SMS = "registerSms";
     String SESSION_ATTRIBUTE_BIND_PHONE_SMS = "bindPhoneSms";
-    String SESSION_ATTRIBUTE_PRINCIPAL = "principal";
+    String SESSION_ATTRIBUTE_PRINCIPAL = "zhiyou";
     String SESSION_ATTRIBUTE_NEED_CAPTCHA = "needCaptcha";
     String SESSION_ATTRIBUTE_REDIRECT_URL = "redirectUrl";
     String SESSION_ATTRIBUTE_SOCIAL_USER_INFO = "socialUserInfo";
