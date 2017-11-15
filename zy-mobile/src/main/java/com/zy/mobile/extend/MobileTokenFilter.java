@@ -80,7 +80,7 @@ public class MobileTokenFilter implements Filter {
 						//session.setAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL1, principal);
 						Long  userIdstr = userId;
 						String msg1 = "我是在这初始化的"+userIdstr+"-----------"+ip+"-----------"+method+"-----------"+dateStr+"-----------"+tgt;
-						WriteStringToFile2(msg);
+						WriteStringToFile2(msg1);
 					}
 				} else {
 					CookieUtils.remove(request, response, COOKIE_NAME_MOBILE_TOKEN);
