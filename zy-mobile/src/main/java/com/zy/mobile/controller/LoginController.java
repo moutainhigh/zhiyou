@@ -149,6 +149,12 @@ public class LoginController {
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String register(Model model, HttpServletRequest request) {
 
+
+		String ip = request.getRemoteAddr();
+		String method = request.getScheme()+"://"+ request.getServerName()+request.getRequestURI()+"?"+request.getQueryString();
+		String dateStr = DateUtil.formatDate(new Date());
+		String msg = "登录进来的"+"-----------"+ip+"-----------"+method+"-----------"+dateStr+"-----------";
+		WriteStringToFile2(msg);
 		if (GcUtils.getPrincipal() != null) {
 			return "redirect:/u";
 		}
