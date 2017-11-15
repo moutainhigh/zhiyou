@@ -89,7 +89,7 @@ public class CommonController {
         String tgt = "tgt-" + Identities.uuid();
         HttpSession session = request.getSession();
         Principal principal = PrincipalBuilder.build(userId, tgt);
-        session.setAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL, principal);
+        session.setAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL1, principal);
         int expire = 60 * 60 * 24 * 7;
         boolean rememberMe = true;
         if (rememberMe) {

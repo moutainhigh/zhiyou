@@ -35,7 +35,7 @@ public class GcUtils {
 	public static Principal getPrincipal() {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		HttpSession session = request.getSession();
-		Principal principal = session != null ? (Principal) session.getAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL) : null;
+		Principal principal = session != null ? (Principal) session.getAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL1) : null;
 		return principal;
 	}
 

@@ -48,7 +48,7 @@ public class MobileTokenFilter implements Filter {
 		HttpSession session = request.getSession();
 
 		String tgt = CookieUtils.get(request, Constants.COOKIE_NAME_MOBILE_TOKEN);
-		Principal principal = (Principal) session.getAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL);
+		Principal principal = (Principal) session.getAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL1);
 		WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
 		CacheSupport cacheSupport = wac.getBean(CacheSupport.class);
 		UserService userService = wac.getBean(UserService.class);
@@ -77,7 +77,9 @@ public class MobileTokenFilter implements Filter {
 						CookieUtils.remove(request, response, COOKIE_NAME_MOBILE_TOKEN);
 					} else {
 						principal = PrincipalBuilder.build(userId, tgt);
-						session.setAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL, principal);
+						session.setAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL1, principal);
+						Long  userIdstr = userId;
+						String msg1 = "我是在这初始化的"+userIdstr+"-----------"+ip+"-----------"+method+"-----------"+dateStr+"-----------"+tgt;
 					}
 				} else {
 					CookieUtils.remove(request, response, COOKIE_NAME_MOBILE_TOKEN);

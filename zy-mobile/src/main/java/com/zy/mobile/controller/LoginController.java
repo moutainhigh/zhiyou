@@ -296,7 +296,7 @@ public class LoginController {
 		String tgt = "tgt-" + Identities.uuid();
 		HttpSession session = request.getSession();
 		Principal principal = PrincipalBuilder.build(userId, tgt);
-		session.setAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL, principal);
+		session.setAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL1, principal);
 		int expire = 60 * 60 * 24 * 7;
 		CookieUtils.add(response, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, expire, Constants.DOMAIN_MOBILE);
 		cacheSupport.set(Constants.CACHE_NAME_TGT, tgt, userId, expire);

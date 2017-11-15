@@ -42,7 +42,7 @@ public class AuthenticationFilter implements Filter {
 		HttpSession session = request.getSession();
 		WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(session.getServletContext());
 
-		Principal principal = (Principal) session.getAttribute(SESSION_ATTRIBUTE_PRINCIPAL);
+		Principal principal = (Principal) session.getAttribute(SESSION_ATTRIBUTE_PRINCIPAL1);
 		WxMpService wxMpService  = wac.getBean(WxMpService.class);
 		UserService userService  = wac.getBean(UserService.class);
 		

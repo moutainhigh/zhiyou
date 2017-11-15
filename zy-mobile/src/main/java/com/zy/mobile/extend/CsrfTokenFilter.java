@@ -34,7 +34,7 @@ public class CsrfTokenFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		HttpSession session = request.getSession();
 
-		Principal principal = (Principal) session.getAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL);
+		Principal principal = (Principal) session.getAttribute(Constants.SESSION_ATTRIBUTE_PRINCIPAL1);
 
 		if (principal != null && request.getMethod().equalsIgnoreCase("POST")) {
 			String csrfToken = request.getParameter("csrfToken");

@@ -59,7 +59,7 @@ public class WeixinMpNotifyController {
 	/*@RequestMapping("/notify/weixinMp")*/
 	public String notifyWeixin1(String code, String state, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException, WxErrorException {
 
-		Principal principal = (Principal) session.getAttribute(SESSION_ATTRIBUTE_PRINCIPAL);
+		Principal principal = (Principal) session.getAttribute(SESSION_ATTRIBUTE_PRINCIPAL1);
 		if (principal != null || !Constants.WEIXIN_STATE_USERINFO.equals(state)) {
 			// 重定向
 			String redirectUrl = (String) session.getAttribute(SESSION_ATTRIBUTE_REDIRECT_URL);
@@ -109,7 +109,7 @@ public class WeixinMpNotifyController {
 				int expire = 60 * 60 * 24 * 7;
 				CookieUtils.add(response, Constants.COOKIE_NAME_MOBILE_TOKEN, tgt, expire, Constants.DOMAIN_MOBILE);
 				cacheSupport.set(Constants.CACHE_NAME_TGT, tgt, userId, expire);
-				session.setAttribute(SESSION_ATTRIBUTE_PRINCIPAL, PrincipalBuilder.build(userId, tgt));
+				session.setAttribute(SESSION_ATTRIBUTE_PRINCIPAL1, PrincipalBuilder.build(userId, tgt));
 				logger.info("login success, tgt:" + tgt);
 				//userService.modifyLastLoginTime(userId, principal.getUserId()); //已经在非空判断的else里面了 肯定会空指针异常
 				userService.modifyLastLoginTime(userId, userId);
