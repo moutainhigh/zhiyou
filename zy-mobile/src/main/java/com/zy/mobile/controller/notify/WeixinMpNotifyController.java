@@ -56,8 +56,8 @@ public class WeixinMpNotifyController {
 	@Autowired
 	private CacheSupport cacheSupport;
 
-	@RequestMapping("/notify/weixinMp")
-	public String notifyWeixin(String code, String state, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException, WxErrorException {
+	/*@RequestMapping("/notify/weixinMp")*/
+	public String notifyWeixin1(String code, String state, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException, WxErrorException {
 
 		Principal principal = (Principal) session.getAttribute(SESSION_ATTRIBUTE_PRINCIPAL);
 		if (principal != null || !Constants.WEIXIN_STATE_USERINFO.equals(state)) {
