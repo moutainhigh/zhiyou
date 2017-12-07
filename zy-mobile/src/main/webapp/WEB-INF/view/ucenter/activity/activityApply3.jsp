@@ -37,15 +37,15 @@
     .ANeInput {
       position: absolute;
       left:215px;
-      top:735px;
+      top:800px;
     }
     .ANeInput p {
       color: #fff;
     }
     .ANeInput img {
       position: absolute;
-      top:1px;
-      left:0;
+      top: -10px;
+      left: -28px;
     }
     .ANeInput .number{
       width: 190px;
@@ -61,9 +61,8 @@
       padding-left: 10px;
     }
     .ANewtrue {
-      width:320px;
-      height:68px;
-      background: #f2c837;
+      width:640px;
+      height:220px;
       color: #4d3205;
       font-size: 34px;
       text-align: center;
@@ -71,8 +70,10 @@
       -webkit-border-radius:5px;
       -moz-border-radius:5px;
       border-radius:5px;
+      background: url("${ctx}/images/queding.png");
       position: absolute;
-      left:0;
+      left:50%;
+      margin-left: -160px;
       top:70px;
     }
     .backNew {
@@ -124,11 +125,11 @@
   <img src="${ctx}/images/backNew.png"  />
 </a>
 <div class="acitivityANew">
-  <img src="${ctx}/images/backgroundNew.png" />
+  <img src="${ctx}/images/backgroundNewTwo.png" />
   <div class="ANeInput">
-    <img src="${ctx}/images/yaoqing.png" style="width: 110px;" />
+    <img src="${ctx}/images/yaoqingTwo.png" style="width: 140px;" />
     <input type="number" class="number" placeholder="请输入邀请码" />
-    <div class="ANewtrue" onclick="Anew()">确认</div>
+    <div class="ANewtrue" onclick="Anew()"></div>
   </div>
 
 </div>

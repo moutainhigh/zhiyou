@@ -11,19 +11,19 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>${sys} - 注册</title>
-<%@ include file="/WEB-INF/view/include/head.jsp"%>
-<%@ include file="/WEB-INF/view/include/validate.jsp"%>
-<script type="text/javascript">
-  $(function() {
-    // 验证码刷新
-    if ($('#captchaImage').length > 0) {
-      var refreshCaptcha = function() {
-        $("#captchaImage:visible").attr("src", Config.ctx + '/captcha?r=' + new Date().getTime());
+  <title>${sys} - 注册</title>
+  <%@ include file="/WEB-INF/view/include/head.jsp"%>
+  <%@ include file="/WEB-INF/view/include/validate.jsp"%>
+  <script type="text/javascript">
+    $(function() {
+      // 验证码刷新
+      if ($('#captchaImage').length > 0) {
+        var refreshCaptcha = function() {
+          $("#captchaImage:visible").attr("src", Config.ctx + '/captcha?r=' + new Date().getTime());
+        }
+        //$(".captcha-refresh").click(refreshCaptcha);
+        $("#captchaImage").click(refreshCaptcha);
       }
-      //$(".captcha-refresh").click(refreshCaptcha);
-      $("#captchaImage").click(refreshCaptcha);
-    }
 
       // 发送短信校验码
       $('#btnSend').click(function() {
@@ -89,37 +89,37 @@
           },
           'isAgree' : {
             required : true
+          },
+          'realname' : {
+            required : true
+          }
         },
-        'realname' : {
-          required : true
-        }
-      },
-	    messages : {},
-      submitHandler : function(form) {
-		    <%--var parentPhone = $('#parentPhone').val();--%>
-		    <%--if(parentPhone != null && parentPhone != '') {--%>
-			    <%--$.ajax({--%>
-				    <%--url: '${ctx}/checkParentPhone',--%>
-				    <%--data: {--%>
-					    <%--phone: parentPhone--%>
-				    <%--},--%>
-				    <%--type: 'POST',--%>
-				    <%--dataType: 'JSON',--%>
-				    <%--success: function(result){--%>
-					    <%--if(result.code == 0) {--%>
-						    <%--$('#parentId').val(result.message);--%>
-						    <%--form.submit();--%>
-					    <%--} else {--%>
-						    <%--messageFlash(result.message);--%>
-						    <%--return ;--%>
-					    <%--}--%>
-				    <%--}--%>
-			    <%--});--%>
-		    <%--} else {--%>
-			    form.submit();
+        messages : {},
+        submitHandler : function(form) {
+          <%--var parentPhone = $('#parentPhone').val();--%>
+          <%--if(parentPhone != null && parentPhone != '') {--%>
+          <%--$.ajax({--%>
+          <%--url: '${ctx}/checkParentPhone',--%>
+          <%--data: {--%>
+          <%--phone: parentPhone--%>
+          <%--},--%>
+          <%--type: 'POST',--%>
+          <%--dataType: 'JSON',--%>
+          <%--success: function(result){--%>
+          <%--if(result.code == 0) {--%>
+          <%--$('#parentId').val(result.message);--%>
+          <%--form.submit();--%>
+          <%--} else {--%>
+          <%--messageFlash(result.message);--%>
+          <%--return ;--%>
+          <%--}--%>
+          <%--}--%>
+          <%--});--%>
+          <%--} else {--%>
+          form.submit();
 //		    }
-	    }
-    });
+        }
+      });
 
       //注册协议
       $('#protocol').click(function(){
@@ -188,13 +188,13 @@
             <a id="btnSend" class="btn blue btn-sm">发送验证码</a>
           </div>
         </div>
-        <%--<div class="list-item">--%>
+          <%--<div class="list-item">--%>
           <%--<label class="list-label" for="phone">推荐人手机号</label>--%>
           <%--<div class="list-text">--%>
-            <%--<input type="text" id="parentPhone" name="parentPhone" class="form-input" placeholder="输入推荐人手机号" value="">--%>
-            <%--<input type="hidden" id="parentId" name="parentId" value="">--%>
+          <%--<input type="text" id="parentPhone" name="parentPhone" class="form-input" placeholder="输入推荐人手机号" value="">--%>
+          <%--<input type="hidden" id="parentId" name="parentId" value="">--%>
           <%--</div>--%>
-        <%--</div>--%>
+          <%--</div>--%>
         <div class="list-item">
           <label class="list-label" for="phone">真实姓名</label>
           <div class="list-text">
@@ -370,6 +370,14 @@
       </p>
       <p style="margin-top: 5px;margin-bottom: 5px;text-indent: 32px">
         <span style=";font-family:微软雅黑;font-size:16px">4. 本协议解释权及修订权归智优生物科技（上海）有限公司所有，本协议的执行及争议的解决均提交智优生物科技（上海）有限公司所在地人民法院裁决，应适用中华人民共和国法律。</span>
+      </p>
+      <p style=";font-family:微软雅黑;font-size:16px">
+        包括但不限于：<br />
+        （1）欢迎用户使用百度钱包进行合法网络交易，请您遵守<a href="###" style="color: blue;">《百度钱包用户协议》</a>。<br />
+        （2）欢迎用户使用百度糯米进行合法网络交易，请您遵守<a href="###" style="color: blue;">《百度糯米用户协议》</a>。<br />
+        （3）欢迎用户使用百度游戏进行合法网络交易，请您遵守<a href="###" style="color: blue;">《百度游戏服务协议》</a>。<br />
+        （4）欢迎用户使用百度网盘服务，请您遵守<a href="###" style="color: blue;">《百度网盘服务协议》</a>。<br />
+        （5）欢迎用户使用百度地图服务，请您遵守<a href="###" style="color: blue;">《百度地图用户服务条款》</a>。<br />
       </p>
     </div>
   </aside>
