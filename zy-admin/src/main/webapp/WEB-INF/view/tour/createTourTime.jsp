@@ -28,9 +28,9 @@
             areaId: {
                 required: true,
             },
-            address: {
+           /* address: {
                 required: true,
-            },
+            },*/
             fee: {
                 required: true,
                 number: true,

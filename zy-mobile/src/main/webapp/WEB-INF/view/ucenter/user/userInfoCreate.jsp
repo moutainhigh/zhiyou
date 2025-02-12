@@ -53,7 +53,12 @@
           required : true
         }
       },
-      messages : {}
+      messages : {
+        'age': {
+          required: '请输入年龄',
+          number : '只能输入数字'
+        },
+      }
     });
 
     $('.image-single').imageupload({
@@ -194,7 +199,9 @@
         </div>
         <div class="list-item">
           <label class="list-label">年龄</label>
-          <input type="text" id="age" name="age" class="form-input" value="${userInfo.age}" placeholder="填写年龄">
+          <div class="list-text">
+            <input type="number" id="age" name="age" class="form-input" value="${userInfo.age}" required placeholder="填写年龄">
+          </div>
         </div>
         <div class="list-item">
           <label class="list-label">生日</label>

@@ -685,6 +685,7 @@
   }
   //选择出游时间
   function selectValue(obj) {
+    tourTimeid="";
     $('.TravelDis').html("");
     $(".TravelDis").show();
     var num=$(obj).val();
@@ -872,6 +873,8 @@
   //点击报名申请表单中的返回
   function hideApply(){
     $(".tourDetil").show();
+    $("#selectTourTime option").eq(0).attr("selected",true);
+    tourTimeid="";
     $(".tourApplyTableNew").html("");
     $(".tourApplyTableNew").hide();
   }
@@ -955,7 +958,7 @@ $('#tourchange').append(html);
       </div>
       <div class="list-item">
         <label class="list-label" >年龄</label><div class="list-text">
-        <input type="text" name="ages"  class="form-input" value="{{d.userinfoVo.agestr}}" {{#if(d.userinfoVo.agestr !='') { }} readonly {{# } }}  placeholder="填写年龄" required>
+        <input type="number" name="ages"  class="form-input" value="{{d.userinfoVo.agestr}}" {{#if(d.userinfoVo.agestr !='') { }} readonly {{# } }}  placeholder="填写年龄" required>
       </div>
       </div>
       <div class="list-item">

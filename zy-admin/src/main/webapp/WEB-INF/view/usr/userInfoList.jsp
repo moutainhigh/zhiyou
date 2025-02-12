@@ -67,6 +67,10 @@
             title: '性别'
           },
           {
+            data: 'age',
+            title: '年龄'
+          },
+          {
             data: 'birthdayLabel',
             title: '出生年月',
             orderable: false,

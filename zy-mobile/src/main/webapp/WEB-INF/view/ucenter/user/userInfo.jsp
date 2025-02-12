@@ -61,6 +61,10 @@
         <div class="list-unit">${userInfo.gender}</div>
       </div>
       <div class="list-item">
+        <div class="list-text">年龄</div>
+        <div class="list-unit">${userInfo.age}</div>
+      </div>
+      <div class="list-item">
         <div class="list-text">生日</div>
         <div class="list-unit">${userInfo.birthdayLabel}</div>
       </div>

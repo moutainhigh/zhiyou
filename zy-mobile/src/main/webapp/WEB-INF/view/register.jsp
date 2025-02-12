@@ -78,7 +78,7 @@
       rules : {
         'phone' : {
           required : true,
-          mobile : true
+          phone : true
         },
         'captcha' : {
           required : true
