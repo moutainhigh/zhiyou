@@ -58,9 +58,9 @@
       </div>
     </div>
 
-    <div class="form-btn">
-      <a href="${ctx}/logout" class="btn red btn-block round-2">退出</a>
-    </div>
+    <%--<div class="form-btn">--%>
+      <%--<a href="${ctx}/logout" class="btn red btn-block round-2">退出</a>--%>
+    <%--</div>--%>
 
   </article>
 
